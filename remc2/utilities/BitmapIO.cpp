@@ -1,5 +1,7 @@
 #include "BitmapIO.h"
 
+#include <stdio.h>
+
 const int BitmapIO::TRUECOLOR_BYTES_PER_PIXEL = 3;
 const int BitmapIO::RGBA_BYTES_PER_PIXEL = 4;
 const int BitmapIO::BITMAP_FILE_HEADER_SIZE = 14;
@@ -255,7 +257,7 @@ void BitmapIO::WritePosistructToPng(uint8_t* ptrPalette, uint8_t* ptrBuffer, int
 			}
 		}
 	}
-	sprintf_s(textbuffer, "%s.png", filename);
+	sprintf(textbuffer, "%s.png", filename);
 	WriteImagePNG(textbuffer, width + (2 * padding), height + (2 * padding), buffer2.data(), title);
 }
 
@@ -268,7 +270,7 @@ void BitmapIO::WriteImagePNG(const char* filename, int width, int height, uint8_
 	png_bytep row = NULL;
 
 	// Open file for writing (binary mode)
-	fopen_s(&fp, filename, "wb");
+	fp = fopen(filename, "wb");
 	if (fp == NULL) {
 		fprintf(stderr, "Could not open file %s for writing\n", filename);
 		code = 1;

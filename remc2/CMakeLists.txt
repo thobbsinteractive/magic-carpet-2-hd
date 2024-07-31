@@ -214,7 +214,7 @@ if (UNIX)
         findfirst
         ADLMIDI_static
         Boost::system
-		fmt::fmt
+        fmt::fmt
     )
     target_link_directories(${PROJECT_NAME} PUBLIC
     )

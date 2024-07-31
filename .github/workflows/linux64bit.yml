@@ -14,6 +14,9 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        BUILD_CONFIGURATION: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v4
@@ -30,21 +33,21 @@ jobs:
         libpng-dev libpng++-dev \
         libz-dev libgtest-dev \
         libboost-system-dev \
-        libspdlog-dev \
+        libspdlog-dev libfmt-dev \
         rapidjson-dev \
         -o APT::Immediate-Configure=0
         
-    - name: cmake release
+    - name: cmake ${{matrix.BUILD_CONFIGURATION}}
       run: |
         cd ${{ github.workspace }}
-        mkdir build_release
-        cd build_release
-        cmake -DCMAKE_BUILD_TYPE=Release -DUSE_64_BIT=True -DUNIT_TESTS=True -DGITHUB_CI_COMPATIBILITY_PATH="${{env.GITHUB_CI_COMPATIBILITY_PATH}}" ..
+        mkdir build_${{matrix.BUILD_CONFIGURATION}}
+        cd build_${{matrix.BUILD_CONFIGURATION}}
+        cmake -DCMAKE_BUILD_TYPE=${{matrix.BUILD_CONFIGURATION}} -DUSE_64_BIT=True -DUNIT_TESTS=True -DGITHUB_CI_COMPATIBILITY_PATH="${{env.GITHUB_CI_COMPATIBILITY_PATH}}" ..
         
-    - name: make release
+    - name: make ${{matrix.BUILD_CONFIGURATION}}
       run: |
         cd ${{ github.workspace }}
-        cd build_release
+        cd build_${{matrix.BUILD_CONFIGURATION}}
         curl -L -O https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
         unzip -o build-wrapper-linux-x86.zip
         build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir build_wrapper_output make
@@ -52,7 +55,7 @@ jobs:
     - name: run unit tests
       run: |
         cd ${{ github.workspace }}
-        cd build_release/remc2-unit-test
+        cd build_${{matrix.BUILD_CONFIGURATION}}/remc2-unit-test
         ./remc2-unit-test 
 
     - name: sonarcloud scan
