@@ -1,5 +1,25 @@
 #include "GameRenderHD.h"
 
+#include <array>
+#include <thread>
+
+#include "../portability/bitmap_pos_struct.h"
+#include "../utilities/BitmapIO.h"
+#include "../utilities/Maths.h"
+#include "../utilities/RendererTests.h"
+#include "../utilities/SafeQueue.h"
+#include "Terrain.h"
+#include "TextureMaps.h"
+#include "Type_D404C.h"
+#include "Type_D93C0_Bldgprmbuffer.h"
+#include "Type_D94F0_Bldgprmbuffer.h"
+#include "Type_E9C38_Smalltit.h"
+#include "Type_F2C20ar.h"
+#include "Type_WORD_D951C.h"
+#include "XUnk_D4350.h"
+#include "defs.h"
+
+
 GameRenderHD::GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t renderThreads, bool assignToSpecificCores) : 
 	m_ptrDWORD_E9C38_smalltit(new uint8_t[GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT]),
 	m_ptrScreenBuffer_351628(ptrScreenBuffer),

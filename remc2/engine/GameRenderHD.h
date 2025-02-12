@@ -4,29 +4,9 @@
 #define GAME_RENDER_HD
 
 #include "GameRenderInterface.h"
-
-#include <array>
-#include <thread>
-#include <algorithm>
-
-#include "../utilities/Maths.h"
-#include "../utilities/BitmapIO.h"
-#include "../portability/bitmap_pos_struct.h"
-#include "../utilities/SafeQueue.h"
-#include "../utilities/RendererTests.h"
-#include "Terrain.h"
-#include "Type_F2C20ar.h"
-#include "Type_E9C38_Smalltit.h"
-#include "Type_Unk_F0E20x.h"
-#include "Type_WORD_D951C.h"
-#include "XUnk_D4350.h"
-#include "Type_D404C.h"
-#include "Type_D94F0_Bldgprmbuffer.h"
-#include "Type_D93C0_Bldgprmbuffer.h"
-#include "TextureMaps.h"
-#include "defs.h"
-#include "RenderThread.h"
 #include "ProjectionPolygon.h"
+#include "RenderThread.h"
+#include "Type_Unk_F0E20x.h"
 
 typedef struct {
 	int32_t startX;
@@ -95,11 +75,11 @@ private:
 
 	void DrawSky_40950(int16_t roll, uint8_t startLine, uint8_t drawEveryNthLine);
 	void DrawSky_40950_TH(int16_t roll);
-	void DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __int16 yaw, signed int posZ, int pitch, int16_t roll, int fov);
+	void DrawTerrainAndParticles_3C080(int16_t posX, int16_t posY, int16_t yaw, signed int posZ, int pitch, int16_t roll, int fov);
 	void SubDrawTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
 	void SubDrawInverseTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
 	void SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
-	void DrawSprite_41BD3(uint32 a1);
+	void DrawSprite_41BD3(uint32_t a1);
 	void DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture);
@@ -112,7 +92,7 @@ private:
 	uint16_t sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth);
 	void sub_88740(type_event_0x6E8E* a1, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);
-	void DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1, __int16 a2, int a3, __int16 a4);
+	void DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1, int16_t a2, int a3, int16_t a4);
 	void StartWorkerThreads(uint8_t numOfThreads, bool assignToSpecificCores);
 	void StartWorkerThread();
 	void StartWorkerThread(int core);
