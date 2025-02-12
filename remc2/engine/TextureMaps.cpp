@@ -1,4 +1,7 @@
 #include "TextureMaps.h"
+
+#include <filesystem>
+
 #include "../utilities/BitmapIO.h"
 
 type_BIG_SPRITES_BUFFER BIG_SPRITES_BUFFERx[max_sprites];

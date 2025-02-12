@@ -1,35 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#pragma once
+
+#include <string>
 #include <vector>
-#include <filesystem>
-#include <cstdlib>
 
-#ifdef _MSC_VER
-    #include <direct.h>  
-    #include <io.h>  
-    #include <windows.h>
-    #include "../portability/dirent-x.h"
-#else
-    #include "dirent.h"
-#endif
-
-#include "../portability/port_time.h"
-#include "../portability/port_filesystem.h"
-#include "../portability/port_sdl_sound.h"
 #include "../engine/CommandLineParser.h"
 #include "../utilities/Maths.h"
 #include "defs.h"
-
-#include "INIReader.h"
-#include "ini.h"
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-
-#ifndef READ_CONFIG
-#define READ_CONFIG
 
 bool readini();
 std::vector<Maths::Zone> ReadZones(std::string zonesJson);
@@ -110,4 +86,3 @@ struct gamepad_config {
 typedef struct gamepad_config gamepad_config_t;
 extern gamepad_config_t gpc;
 
-#endif //READ_CONFIG
