@@ -7,11 +7,13 @@
 
 #include <array>
 #include <thread>
+#include <algorithm>
 
 #include "../utilities/Maths.h"
 #include "../utilities/BitmapIO.h"
 #include "../portability/bitmap_pos_struct.h"
 #include "../utilities/SafeQueue.h"
+#include "../utilities/RendererTests.h"
 #include "Terrain.h"
 #include "Type_F2C20ar.h"
 #include "Type_E9C38_Smalltit.h"
