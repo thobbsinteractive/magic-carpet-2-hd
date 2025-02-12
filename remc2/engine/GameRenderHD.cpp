@@ -5478,8 +5478,8 @@ void DrawPolygonRasterLine_subB6253(
 
 			currentPixel = &v379[0];
 			do {
-				textureIndexU = std::clamp(textureIndexU, (int16_t)0, MAX_TEXTURE_INDEX);
-				textureIndexV = std::clamp(textureIndexV, (int16_t)0, MAX_TEXTURE_INDEX);
+				if (textureIndexV > MAX_TEXTURE_INDEX)
+					return;
 
 				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU;
 				LOBYTE(paletteMapping) = pTexture[textureIndex];
