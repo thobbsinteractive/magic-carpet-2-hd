@@ -5825,7 +5825,6 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	Rasterline_t *v114; // edi
 	int v115; // edi
 	int v116; // edi
-	int v117; // eax
 	int v118; // ebx
 	int v119; // ebx
 	int v120; // eax
@@ -5834,84 +5833,23 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	int v123; // edx
 	int v124; // esi
 	int v125; // edi
-	//x_DWORD* v126; // edi
 	int v127; // ebx
 	int v128; // eax
 	int v129; // ebx
 	int v130; // ecx
 	int v131; // edx
 	int v132; // edi
-	//x_DWORD* v133; // edi
-	//x_DWORD* v138; // edi
 	int v139; // eax
 	int v140; // ebx
 	int v141; // edi
-	//x_DWORD* v142; // edi
-	int dX_v4v3; // ebx
-	int v151; // edi
-	//x_DWORD* v152; // edi
-	int v154; // eax
-	int v155; // ebx
-	int v156; // ecx
-	int v157; // edx
-	int v158; // edi
-	//x_DWORD* v159; // edi
-	//x_DWORD* v164; // edi
-	int v166; // ebx
-	int v167; // edi
-	//x_DWORD* v168; // edi
 	uint8_t* renderBufferStartOfCurrentLine; // [esp+0h] [ebp-88h]
-	int v1105; // [esp+4h] [ebp-84h]
-	int v1109; // [esp+8h] [ebp-80h]
-	int v1115; // [esp+10h] [ebp-78h]
-	int v1117; // [esp+14h] [ebp-74h]
 	int linesToDraw; // [esp+20h] [ebp-68h]
 	int Uincrement; // [esp+24h] [ebp-64h]
-	int v1125; // [esp+28h] [ebp-60h]
-	int v1126; // [esp+28h] [ebp-60h]
-	int v1128; // [esp+28h] [ebp-60h]
-	int v1129; // [esp+28h] [ebp-60h]
-	int v1130; // [esp+28h] [ebp-60h]
-	int v1132; // [esp+28h] [ebp-60h]
-	int v1134; // [esp+2Ch] [ebp-5Ch]
 	uint32_t Vincrement; // [esp+30h] [ebp-58h]
-	int v1136; // [esp+34h] [ebp-54h]
-	int v1137; // [esp+34h] [ebp-54h]
-	int v1139; // [esp+34h] [ebp-54h]
-	int v1140; // [esp+34h] [ebp-54h]
-	int v1141; // [esp+34h] [ebp-54h]
-	int v1143; // [esp+34h] [ebp-54h]
-	int v1145; // [esp+38h] [ebp-50h]
 	uint32_t BrightnessIncrement = 0xAAAAAAAA; // [esp+3Ch] [ebp-4Ch]
-	int v1147; // [esp+40h] [ebp-48h]
-	int v1151; // [esp+40h] [ebp-48h]
-	int v1157; // [esp+48h] [ebp-40h]
-	int v1158; // [esp+48h] [ebp-40h]
-	int v1160; // [esp+48h] [ebp-40h]
-	int v1161; // [esp+48h] [ebp-40h]
-	int v1162; // [esp+48h] [ebp-40h]
-	int v1164; // [esp+48h] [ebp-40h]
-	int v1190; // [esp+54h] [ebp-34h]
-	int v1192; // [esp+54h] [ebp-34h]
-	char v1292; // [esp+62h] [ebp-26h]
-	bool vertYlowIsNegative; // [esp+62h] [ebp-26h]
-	char v1294; // [esp+62h] [ebp-26h]
-	bool v1298; // [esp+63h] [ebp-25h]
 
-	/*if(CommandLineParams.DoDebugafterload())
-	{
-		if (debugcounter_297253 >= 0x37) {
-			debugcounter_297253++;
-			debugcounter_297253--;
-		}
-		debugcounter_297253++;
-	}*/
-	//add_compare(0x297257, CommandLineParams.DoDebugafterload(),0x37);
-
-	//fix it
 	Uincrement = 0;
 	Vincrement = 0;
-	//fix it
 
 	// NOTE: vert_y_high does not neccessarily mean that it is the vertex with the highest y value.
 	//       It means that the raster lines are drawn from vert_y_low to vert_y_high.
@@ -6102,6 +6040,14 @@ LABEL_129_DrawTriangle:
 	// making sure that the slope low-middle is greater than the slope low-high.
 
 	{
+		int v1128;
+		int v1134;
+		int v1139;
+		int v1145;
+		int v1162;
+		int v1164;
+		bool vertYlowIsNegative;
+
 		const int vertLowY = vert_y_low->Y;
 		if (vertLowY >= 0)
 		{
@@ -6367,6 +6313,8 @@ LABEL_129_DrawTriangle:
 				int rasterU = vert_y_low->U;
 				int rasterV = vert_y_low->V;
 				int rasterBrighness = vert_y_low->Brightness;
+				int v1161;
+
 				if (vertYlowIsNegative)
 				{
 					v18 = __OFSUB__(linesToDraw, -vertLowY);
@@ -6458,25 +6406,33 @@ LABEL_24_DrawTriangle:
 	// Only the _left_ triangle is clock-wise, the right case will be culled by
 	// making sure that the slope low-middle is greater than the slope low-high.
 	{
-		v1190 = vert_y_low->Y;
+		int v1126;
+		int v1137;
+		int v1157;
+		int v1158;
+		int v1160;
+		bool v1292;
+
+		const int v1190 = vert_y_low->Y;
+
 		if (vert_y_low->Y >= 0)
 		{
 			if (vert_y_low->Y >= viewPort.Height_DE568)
 				return;
 			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554 + iScreenWidth_DE560 * vert_y_low->Y;
-			v1292 = 0;
+			v1292 = false;
 		}
 		else
 		{
 			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554;
-			v1292 = 1;
+			v1292 = true;
 		}
 		const bool vertYHigh_above_viewport = vert_y_high->Y > viewPort.Height_DE568;
 		const int dY_HighLowVert = vert_y_high->Y - vert_y_low->Y;
 		linesToDraw = dY_HighLowVert;
 		bool vertYMiddle_above_viewport = vert_y_middle->Y > viewPort.Height_DE568;
 		const int dY_MiddleLowVert = vert_y_middle->Y - vert_y_low->Y;
-		v1117 = dY_MiddleLowVert;
+		int v1117 = dY_MiddleLowVert;
 		const int fp_slope_HighLowVert = ((vert_y_high->X - vert_y_low->X) << 16) / dY_HighLowVert;
 		const int fp_slope_MiddleLowVert = ((vert_y_middle->X - vert_y_low->X) << 16) / dY_MiddleLowVert;
 
@@ -6703,9 +6659,9 @@ LABEL_24_DrawTriangle:
 					/ v20;
 				BrightnessIncrement = (signed int)(vert_y_middle->Brightness + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low->Brightness - vert_y_high->Brightness) / dY_HighLowVert) - vert_y_low->Brightness)
 					/ v20;
-				v1125 = (vert_y_high->U - vert_y_low->U) / dY_HighLowVert;
-				v1136 = (vert_y_high->V - vert_y_low->V) / dY_HighLowVert;
-				v1147 = (vert_y_high->Brightness - vert_y_low->Brightness) / dY_HighLowVert;
+				const int v1125 = (vert_y_high->U - vert_y_low->U) / dY_HighLowVert;
+				const int v1136 = (vert_y_high->V - vert_y_low->V) / dY_HighLowVert;
+				const int v1147 = (vert_y_high->Brightness - vert_y_low->Brightness) / dY_HighLowVert;
 				v21 = vert_y_low->X << 16;
 				v22 = vert_y_low->X << 16;
 				v23 = vert_y_low->U;
@@ -6814,26 +6770,33 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 	// vert_y_high = vertex1;
 
 	{
-		v117 = vert_y_low->Y;
-		v1192 = v117;
+		bool v1294;
+		int v1129;
+		int v1130;
+		int v1140;
+		int v1141;
+		int v1151;
+
+		const int v117 = vert_y_low->Y;
+		const int v1192 = v117;
 		if (v117 >= 0)
 		{
 			if (v117 >= viewPort.Height_DE568)
 				return;
 			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554 + iScreenWidth_DE560 * v117;
-			v1294 = 0;
+			v1294 = false;
 		}
 		else
 		{
 			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554;
-			v1294 = 1;
+			v1294 = true;
 		}
 		v118 = vert_y_high->Y;
-		v1298 = v118 > viewPort.Height_DE568;
-		v1115 = v118 - v117;
+		const bool v1298 = v118 > viewPort.Height_DE568;
+		int v1115 = v118 - v117;
 		linesToDraw = v118 - v117;
-		v1105 = ((vert_y_high->X - vert_y_low->X) << 16) / (v118 - v117);
-		v1109 = ((vert_y_middle->X - vert_y_low->X) << 16) / (v118 - v117);
+		const int v1105 = ((vert_y_high->X - vert_y_low->X) << 16) / (v118 - v117);
+		const int v1109 = ((vert_y_middle->X - vert_y_low->X) << 16) / (v118 - v117);
 		switch (x_BYTE_E126D)
 		{
 		case 0:
@@ -7022,7 +6985,19 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 		linesToDraw = vertHighY - vertLowY;
 		const int fp_slope_HighLowVert = ((vert_y_high->X - vert_y_low->X) << 16) / (dY_HighLow_actual_rows_to_draw);
 		const int v1110 = ((vert_y_high->X - vert_y_middle->X) << 16) / (dY_HighLow_actual_rows_to_draw);
+
+		int v154;
+		int v155;
+		int v156;
+		int v157;
+		int v158;
 		int v165;
+		int v166;
+		int v167;
+		int v1132;
+		int v1143;
+		int dX_v4v3;
+
 		switch (x_BYTE_E126D)
 		{
 		case 0:
@@ -7133,7 +7108,7 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 			int v150 = vert_y_low->Brightness;
 			if (vertLowYnegative)
 			{
-				v151 = -vertLowY;
+				const int v151 = -vertLowY;
 				dY_HighLow_actual_rows_to_draw += vertLowY;
 				v18 = __OFSUB__(linesToDraw, -vertLowY);
 				v16 = linesToDraw == -vertLowY;
