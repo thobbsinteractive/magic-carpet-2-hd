@@ -8,7 +8,10 @@
         "type_traits": "cpp",
         "functional": "cpp",
         "thread": "cpp",
-        "array": "cpp"
+        "array": "cpp",
+        "string": "cpp",
+        "cstdio": "cpp",
+        "algorithm": "cpp"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
