@@ -5532,6 +5532,7 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 {
 	// flat shading and reflections enabled
 	Rasterline_t *next_raster_line = pRasterLines;
+	Rasterline_t *current_raster_line;
 
 	uint8_t line8 = startLine;
 
@@ -5539,7 +5540,8 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 
 	uint8_t v18;
 	uint8_t v180;
-	uint32_t v406;
+	uint16_t startX;
+	uint16_t paletteMapping;
 	uint32_t textureIndex_v407;
 	int v408;
 	uint8_t* v409;
@@ -5553,75 +5555,74 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 
 	int maxPixelIdx = (x_BYTE_D41B5_texture_size << 8);
 
-	HIWORD(v406) = 0;
 	HIWORD(textureIndex_v407) = 0;
 
 	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Flatshading); }
-	while (1)
-	{
-		LOWORD(v406) = HIWORD(next_raster_line->startX);
-		v408 = HIWORD(next_raster_line->endX);
+	do {
+		current_raster_line = next_raster_line;
+		next_raster_line++;
+
+		LOWORD(startX) = HIWORD(current_raster_line->startX);
+		v408 = HIWORD(current_raster_line->endX);
 		v409 = iScreenWidth_DE560 + *pv1102;
 		*pv1102 += iScreenWidth_DE560;
 		line8++;
+
 		if (line8 >= drawEveryNthLine)
 		{
 			line8 = 0;
-			if ((v406 & 0x8000u) == 0)
-				break;
+			if ((startX & 0x8000u) == 0) {
+				if (v408 > viewPort.Width_DE564)
+					LOWORD(v408) = viewPort.Width_DE564;
+				v18 = __OFSUB__((x_WORD)v408, (x_WORD)startX);
+				LOWORD(v408) = v408 - startX;
+				if ((unsigned __int8)(((v408 & 0x8000u) != 0) ^ v18) | ((x_WORD)v408 == 0)) {
+					continue;
+				}
+				v409 += startX;
+				v412 = __SWAP_HILOWORD__(current_raster_line->V);
+				BYTE1(textureIndex_v407) = v412;
+				LOWORD(v412) = LOWORD(current_raster_line->U);
+				LOBYTE(textureIndex_v407) = BYTE2(current_raster_line->U);
+				goto LABEL_583;
+			}
 			if ((int16_t)v408 > 0)
 			{
-				v410 = (uint16_t)-(int16_t)v406;
-				v412 = __SWAP_HILOWORD__(next_raster_line->V + Vincrement * v410);
+				v410 = (uint16_t)-(int16_t)startX;
+				v412 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v410);
 				BYTE1(textureIndex_v407) = v412;
-				v411 = next_raster_line->U + Uincrement * v410;
+				v411 = current_raster_line->U + Uincrement * v410;
 				LOWORD(v412) = v411;
 				v413 = v411 >> 8;
 				LOBYTE(textureIndex_v407) = BYTE1(v413);
 				if (v408 > viewPort.Width_DE564)
 					LOWORD(v408) = viewPort.Width_DE564;
-				v406 = (uint16_t)v413;
+				startX = (uint16_t)v413;
 			LABEL_583:
-				v1278 = next_raster_line;
+				v1278 = current_raster_line;
 				ptrCurrentTexture_v414 = pTexture;
-				BYTE1(v406) = local_x_BYTE_E126C;
+				BYTE1(paletteMapping) = local_x_BYTE_E126C;
 				while (1)
 				{
 					if (textureIndex_v407 > maxPixelIdx)
 						break;
-					LOBYTE(v406) = *(x_BYTE*)(textureIndex_v407 + ptrCurrentTexture_v414);
+					LOBYTE(paletteMapping) = *(x_BYTE*)(textureIndex_v407 + ptrCurrentTexture_v414);
 					v180 = __CFADD__((x_WORD)Uincrement, (x_WORD)v412);
 					LOWORD(v412) = Uincrement + v412;
 					LOBYTE(textureIndex_v407) = BYTE2(Uincrement) + v180 + textureIndex_v407;
 					v180 = __CFADD__(v1169, v412);
 					v412 = v1169 + v412;
-					*v409 = x_BYTE_F6EE0_tablesx[v406];
+					*v409 = x_BYTE_F6EE0_tablesx[paletteMapping];
 					textureIndex_v407 = GameRenderHD::SumByte1WithByte2(textureIndex_v407, Vincrement, v180);
 					v408 = v408 - 1;
 					if (!v408)
 						break;
 					v409 += 1;
 				}
-				next_raster_line = v1278;
+				current_raster_line = v1278;
 			}
 		}
-	LABEL_602:
-		next_raster_line += 1;
-		if (!--linesToDraw)
-			return;
-	}
-	if (v408 > viewPort.Width_DE564)
-		LOWORD(v408) = viewPort.Width_DE564;
-	v18 = __OFSUB__((x_WORD)v408, (x_WORD)v406);
-	LOWORD(v408) = v408 - v406;
-	if ((unsigned __int8)(((v408 & 0x8000u) != 0) ^ v18) | ((x_WORD)v408 == 0))
-		goto LABEL_602;
-	v409 += v406;
-	v412 = __SWAP_HILOWORD__(next_raster_line->V);
-	BYTE1(textureIndex_v407) = v412;
-	LOWORD(v412) = LOWORD(next_raster_line->U);
-	LOBYTE(textureIndex_v407) = BYTE2(next_raster_line->U);
-	goto LABEL_583;
+	} while(--linesToDraw);
 }
 
 
