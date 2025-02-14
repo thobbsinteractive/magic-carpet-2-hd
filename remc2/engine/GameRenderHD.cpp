@@ -5365,7 +5365,7 @@ void DrawPolygonRasterLine_single_color_subB6253(
 	uint8_t line1 = startLine;
 
 	HIWORD(v172) = 0;
-	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::HD_BYTE_E126D_case_0_v173); }
+	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_SingleColor); }
 	while (1)
 	{
 		LOWORD(v172) = HIWORD(next_raster_line->startX);
@@ -5436,7 +5436,7 @@ void DrawPolygonRasterLine_subB6253(
 	//int maxPixelIdx = (x_BYTE_D41B5_texture_size << 8);
 	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
 
-	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::HD_BYTE_E126D_case_5_v377); }
+	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Standard); }
 	do
 	{
 		current_raster_line = next_raster_line;
@@ -5556,7 +5556,7 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 	HIWORD(v406) = 0;
 	HIWORD(textureIndex_v407) = 0;
 
-	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::HD_BYTE_E126D_case_7_v406); }
+	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Flatshading); }
 	while (1)
 	{
 		LOWORD(v406) = HIWORD(next_raster_line->startX);
@@ -5661,6 +5661,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 	HIWORD(v1046) = 0;
 	HIWORD(textureIndex_v1047) = 0;
 
+	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Reflections); }
 	while (1)
 	{
 		LOWORD(v1046) = HIWORD(next_raster_line->startX);

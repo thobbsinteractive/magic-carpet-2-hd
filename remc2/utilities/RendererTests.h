@@ -6,15 +6,15 @@
 
 // renderer regressions tests data for comparing HD and original renderer
 enum class RendererTestsHitCheckpoint {
-	HD_BYTE_E126D_case_0_v173, Original_BYTE_E126D_case_0_v173,
+	RendTest_HD_Draw_Rasterline_SingleColor, RendTest_Orig_Draw_Rasterline_SingleColor,
 	HD_BYTE_E126D_case_1_v176, Original_BYTE_E126D_case_1_v176,
 	HD_BYTE_E126D_case_2_v228, Original_BYTE_E126D_case_2_v228,
 	HD_BYTE_E126D_case_3_v383, Original_BYTE_E126D_case_3_v383,
 	HD_BYTE_E126D_case_4_v339, Original_BYTE_E126D_case_4_v339,
-	HD_BYTE_E126D_case_5_v377, Original_BYTE_E126D_case_5_v377,
+	RendTest_HD_Draw_Rasterline_Standard, RendTest_Orig_Draw_Rasterline_Standard,
 	HD_BYTE_E126D_case_6_v392, Original_BYTE_E126D_case_6_v392,
-	HD_BYTE_E126D_case_7_v406, Original_BYTE_E126D_case_7_v406,
-	HD_BYTE_E126D_case_8_v445, Original_BYTE_E126D_case_8_v445,
+	RendTest_HD_Draw_Rasterline_Flatshading, RendTest_Orig_Draw_Rasterline_Flatshading,
+	RendTest_HD_Draw_Rasterline_Reflections, RendTest_Orig_Draw_Rasterline_Reflections,
 };
 
 extern int renderer_tests_frame_count;

@@ -17,14 +17,17 @@ bool renderer_tests_quit = false;
 
 std::array<RendererTestsForLevel,25> renderer_tests{
 	RendererTestsForLevel{100, 0, 240, false, 0, { // level 1
-		{RendererTestsHitCheckpoint::HD_BYTE_E126D_case_5_v377, false}, {RendererTestsHitCheckpoint::Original_BYTE_E126D_case_5_v377, false},
+		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Standard, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Standard, false},
 	}},
-	RendererTestsForLevel{200, 320, 240, false, 0, {}}, // level 2
+	RendererTestsForLevel{200, 320, 240, false, 0, { // level 2
+		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Standard, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Standard, false},
+		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Reflections, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Reflections, false},
+	}}, 
 	RendererTestsForLevel{150, 310, 240, true, 0, { // level 3 - flat shading
- 		{RendererTestsHitCheckpoint::HD_BYTE_E126D_case_7_v406, false}, {RendererTestsHitCheckpoint::Original_BYTE_E126D_case_7_v406, false},
+ 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Flatshading, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Flatshading, false},
 	}},
 	RendererTestsForLevel{100, 0, 480, false, 0, { // level 4 - looking up to the ceiling
-		{RendererTestsHitCheckpoint::HD_BYTE_E126D_case_5_v377, false}, {RendererTestsHitCheckpoint::Original_BYTE_E126D_case_5_v377, false},
+		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Standard, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Standard, false},
 	}},
 	RendererTestsForLevel{1, 0, 240, false, 0, {}},
 	RendererTestsForLevel{1, 0, 240, false, 0, {}},
