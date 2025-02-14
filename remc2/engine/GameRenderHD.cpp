@@ -5562,7 +5562,7 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 		current_raster_line = next_raster_line;
 		next_raster_line++;
 
-		LOWORD(startX) = HIWORD(current_raster_line->startX);
+		startX = HIWORD(current_raster_line->startX);
 		v408 = HIWORD(current_raster_line->endX);
 		v409 = iScreenWidth_DE560 + *pv1102;
 		*pv1102 += iScreenWidth_DE560;
@@ -5584,9 +5584,8 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 				BYTE1(textureIndex_v407) = v412;
 				LOWORD(v412) = LOWORD(current_raster_line->U);
 				LOBYTE(textureIndex_v407) = BYTE2(current_raster_line->U);
-				goto LABEL_583;
 			}
-			if ((int16_t)v408 > 0)
+			else if ((int16_t)v408 > 0)
 			{
 				v410 = (uint16_t)-(int16_t)startX;
 				v412 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v410);
@@ -5598,29 +5597,33 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 				if (v408 > viewPort.Width_DE564)
 					LOWORD(v408) = viewPort.Width_DE564;
 				startX = (uint16_t)v413;
-			LABEL_583:
-				v1278 = current_raster_line;
-				ptrCurrentTexture_v414 = pTexture;
-				BYTE1(paletteMapping) = local_x_BYTE_E126C;
-				while (1)
-				{
-					if (textureIndex_v407 > maxPixelIdx)
-						break;
-					LOBYTE(paletteMapping) = *(x_BYTE*)(textureIndex_v407 + ptrCurrentTexture_v414);
-					v180 = __CFADD__((x_WORD)Uincrement, (x_WORD)v412);
-					LOWORD(v412) = Uincrement + v412;
-					LOBYTE(textureIndex_v407) = BYTE2(Uincrement) + v180 + textureIndex_v407;
-					v180 = __CFADD__(v1169, v412);
-					v412 = v1169 + v412;
-					*v409 = x_BYTE_F6EE0_tablesx[paletteMapping];
-					textureIndex_v407 = GameRenderHD::SumByte1WithByte2(textureIndex_v407, Vincrement, v180);
-					v408 = v408 - 1;
-					if (!v408)
-						break;
-					v409 += 1;
-				}
-				current_raster_line = v1278;
 			}
+			else
+			{
+				continue;
+			}
+
+			v1278 = current_raster_line;
+			ptrCurrentTexture_v414 = pTexture;
+			BYTE1(paletteMapping) = local_x_BYTE_E126C;
+			while (1)
+			{
+				if (textureIndex_v407 > maxPixelIdx)
+					break;
+				LOBYTE(paletteMapping) = *(x_BYTE*)(textureIndex_v407 + ptrCurrentTexture_v414);
+				v180 = __CFADD__((x_WORD)Uincrement, (x_WORD)v412);
+				LOWORD(v412) = Uincrement + v412;
+				LOBYTE(textureIndex_v407) = BYTE2(Uincrement) + v180 + textureIndex_v407;
+				v180 = __CFADD__(v1169, v412);
+				v412 = v1169 + v412;
+				*v409 = x_BYTE_F6EE0_tablesx[paletteMapping];
+				textureIndex_v407 = GameRenderHD::SumByte1WithByte2(textureIndex_v407, Vincrement, v180);
+				v408 = v408 - 1;
+				if (!v408)
+					break;
+				v409 += 1;
+			}
+			current_raster_line = v1278;
 		}
 	} while(--linesToDraw);
 }
