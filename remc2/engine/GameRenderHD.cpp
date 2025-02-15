@@ -5645,6 +5645,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 	)
 {
 	Rasterline_t *next_raster_line = pRasterLines;
+	Rasterline_t *current_raster_line;
 	uint8_t line25 = startLine;
 
 	int VincrementFixedPoint = Vincrement << 16;
@@ -5672,10 +5673,12 @@ void DrawPolygonRasterLine_reflections_subB6253(
 	HIWORD(textureIndex_v1047) = 0;
 
 	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Reflections); }
-	while (1)
-	{
-		LOWORD(v1046) = HIWORD(next_raster_line->startX);
-		v1048 = HIWORD(next_raster_line->endX);
+	do {
+		current_raster_line = next_raster_line;
+		next_raster_line++;
+
+		LOWORD(v1046) = HIWORD(current_raster_line->startX);
+		v1048 = HIWORD(current_raster_line->endX);
 		v1049 = (char*)(iScreenWidth_DE560 + *pv1102);
 		*pv1102 += iScreenWidth_DE560;
 
@@ -5683,80 +5686,81 @@ void DrawPolygonRasterLine_reflections_subB6253(
 		if (line25 >= drawEveryNthLine)
 		{
 			line25 = 0;
-			if ((v1046 & 0x8000u) == 0)
-				break;
-			if ((signed __int16)v1048 > 0)
+			if ((v1046 & 0x8000u) == 0) {
+				if (v1048 > viewPort.Width_DE564)
+					v1048 = viewPort.Width_DE564;
+				v18 = __OFSUB__((x_WORD)v1048, (x_WORD)v1046);
+				LOWORD(v1048) = v1048 - v1046;
+				if ((unsigned __int8)(((v1048 & 0x8000u) != 0) ^ v18) | ((x_WORD)v1048 == 0)) {
+					continue;
+				}
+				v1049 += v1046;
+				v1053 = __SWAP_HILOWORD__(current_raster_line->V);
+				BYTE1(textureIndex_v1047) = v1053;
+				LOWORD(v1053) = LOWORD(current_raster_line->U);
+				LOBYTE(textureIndex_v1047) = BYTE2(current_raster_line->U);
+				v1258 = v1048;
+				v1054 = __SWAP_HILOWORD__(current_raster_line->brightness);
+			}
+			else if ((signed __int16)v1048 > 0)
 			{
 				if (v1048 > viewPort.Width_DE564)
 					v1048 = viewPort.Width_DE564;
 				v1258 = v1048;
 				v1050 = (uint16_t)-(int16_t)v1046;
 				v1051 = v1050;
-				v1053 = __SWAP_HILOWORD__(next_raster_line->V + Vincrement * v1050);
+				v1053 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v1050);
 				BYTE1(textureIndex_v1047) = v1053;
-				v1052 = next_raster_line->U + Uincrement * v1050;
+				v1052 = current_raster_line->U + Uincrement * v1050;
 				LOWORD(v1053) = v1052;
 				v1046 = v1052 >> 8;
 				LOBYTE(textureIndex_v1047) = BYTE1(v1046);
-				v1054 = __SWAP_HILOWORD__(next_raster_line->brightness + BrightnessIncrement * v1051);
+				v1054 = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement * v1051);
 				v1046 = (unsigned __int16)v1046;
-			LABEL_1294:
-				v1291 = next_raster_line;
-				ptrCurrentTexture_v1055 = pTexture;
-				while (1)
-				{
-					if (textureIndex_v1047 > maxPixelIdx)
-						break;
-					LOBYTE(v1046) = *(x_BYTE*)(textureIndex_v1047 + ptrCurrentTexture_v1055);
-					v180 = __CFADD__((x_WORD)Uincrement, (x_WORD)v1053);
-					LOWORD(v1053) = Uincrement + v1053;
-					BYTE1(v1046) = v1054;
-					LOBYTE(textureIndex_v1047) = BYTE2(Uincrement) + v180 + textureIndex_v1047;
-					if ((unsigned __int8)v1046 >= 0xCu)
-					{
-						v1056 = x_BYTE_F6EE0_tablesx[v1046]; // Fixme: x_BYTE_F6EE0_tablesx should be passed as a parameter
-					}
-					else
-					{
-						LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
-						BYTE1(v1046) = *v1049;
-						v1056 = x_BYTE_F6EE0_tablesx[16384 + v1046];
-					}
-					v180 = __CFADD__(VincrementFixedPoint, v1053);
-					v1053 = VincrementFixedPoint + v1053;
-					textureIndex_v1047 = GameRenderHD::SumByte1WithByte2(textureIndex_v1047, Vincrement, v180);
-					v180 = __CFADD__(v1189, v1054);
-					v1054 = v1189 + v1054;
-					*v1049 = v1056;
-					LOBYTE(v1054) = BYTE2(BrightnessIncrement) + v180 + v1054;
-					v1258 = v1258 - 1;
-					if (!v1258)
-						break;
-
-					v1049 += 1;
-				}
-				next_raster_line = v1291;
 			}
+			else
+			{
+				// nothing to draw
+				continue;
+			}
+
+			v1291 = current_raster_line;
+			ptrCurrentTexture_v1055 = pTexture;
+			while (1)
+			{
+				if (textureIndex_v1047 > maxPixelIdx)
+					break;
+				LOBYTE(v1046) = *(x_BYTE*)(textureIndex_v1047 + ptrCurrentTexture_v1055);
+				v180 = __CFADD__((x_WORD)Uincrement, (x_WORD)v1053);
+				LOWORD(v1053) = Uincrement + v1053;
+				BYTE1(v1046) = v1054;
+				LOBYTE(textureIndex_v1047) = BYTE2(Uincrement) + v180 + textureIndex_v1047;
+				if ((unsigned __int8)v1046 >= 0xCu)
+				{
+					v1056 = x_BYTE_F6EE0_tablesx[v1046]; // Fixme: x_BYTE_F6EE0_tablesx should be passed as a parameter
+				}
+				else
+				{
+					LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
+					BYTE1(v1046) = *v1049;
+					v1056 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+				}
+				v180 = __CFADD__(VincrementFixedPoint, v1053);
+				v1053 = VincrementFixedPoint + v1053;
+				textureIndex_v1047 = GameRenderHD::SumByte1WithByte2(textureIndex_v1047, Vincrement, v180);
+				v180 = __CFADD__(v1189, v1054);
+				v1054 = v1189 + v1054;
+				*v1049 = v1056;
+				LOBYTE(v1054) = BYTE2(BrightnessIncrement) + v180 + v1054;
+				v1258 = v1258 - 1;
+				if (!v1258)
+					break;
+
+				v1049 += 1;
+			}
+			current_raster_line = v1291;
 		}
-	LABEL_1361:
-		next_raster_line += 1;
-		if (!--linesToDraw)
-			return;
-	}
-	if (v1048 > viewPort.Width_DE564)
-		v1048 = viewPort.Width_DE564;
-	v18 = __OFSUB__((x_WORD)v1048, (x_WORD)v1046);
-	LOWORD(v1048) = v1048 - v1046;
-	if ((unsigned __int8)(((v1048 & 0x8000u) != 0) ^ v18) | ((x_WORD)v1048 == 0))
-		goto LABEL_1361;
-	v1049 += v1046;
-	v1053 = __SWAP_HILOWORD__(next_raster_line->V);
-	BYTE1(textureIndex_v1047) = v1053;
-	LOWORD(v1053) = LOWORD(next_raster_line->U);
-	LOBYTE(textureIndex_v1047) = BYTE2(next_raster_line->U);
-	v1258 = v1048;
-	v1054 = __SWAP_HILOWORD__(next_raster_line->brightness);
-	goto LABEL_1294;
+	} while(--linesToDraw > 0);
 }
 
 
