@@ -5655,7 +5655,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 	uint8_t v180;
 	unsigned int v1046;
 	int textureIndex_v1047;
-	int v1048;
+	int16_t endX;
 	char* v1049;
 	int v1050;
 	int v1051;
@@ -5678,7 +5678,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 		next_raster_line++;
 
 		LOWORD(v1046) = HIWORD(current_raster_line->startX);
-		v1048 = HIWORD(current_raster_line->endX);
+		endX = HIWORD(current_raster_line->endX);
 		v1049 = (char*)(iScreenWidth_DE560 + *pv1102);
 		*pv1102 += iScreenWidth_DE560;
 
@@ -5687,11 +5687,11 @@ void DrawPolygonRasterLine_reflections_subB6253(
 		{
 			line25 = 0;
 			if ((v1046 & 0x8000u) == 0) {
-				if (v1048 > viewPort.Width_DE564)
-					v1048 = viewPort.Width_DE564;
-				v18 = __OFSUB__((x_WORD)v1048, (x_WORD)v1046);
-				LOWORD(v1048) = v1048 - v1046;
-				if ((unsigned __int8)(((v1048 & 0x8000u) != 0) ^ v18) | ((x_WORD)v1048 == 0)) {
+				if (endX > viewPort.Width_DE564)
+					endX = viewPort.Width_DE564;
+				v18 = __OFSUB__(endX, (x_WORD)v1046);
+				endX = endX - v1046;
+				if ((uint8_t)(((endX & 0x8000u) != 0) ^ v18) | (endX == 0)) {
 					continue;
 				}
 				v1049 += v1046;
@@ -5699,14 +5699,14 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				BYTE1(textureIndex_v1047) = v1053;
 				LOWORD(v1053) = LOWORD(current_raster_line->U);
 				LOBYTE(textureIndex_v1047) = BYTE2(current_raster_line->U);
-				v1258 = v1048;
+				v1258 = endX;
 				v1054 = __SWAP_HILOWORD__(current_raster_line->brightness);
 			}
-			else if ((signed __int16)v1048 > 0)
+			else if (endX > 0)
 			{
-				if (v1048 > viewPort.Width_DE564)
-					v1048 = viewPort.Width_DE564;
-				v1258 = v1048;
+				if (endX > viewPort.Width_DE564)
+					endX = viewPort.Width_DE564;
+				v1258 = endX;
 				v1050 = (uint16_t)-(int16_t)v1046;
 				v1051 = v1050;
 				v1053 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v1050);
@@ -5716,7 +5716,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				v1046 = v1052 >> 8;
 				LOBYTE(textureIndex_v1047) = BYTE1(v1046);
 				v1054 = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement * v1051);
-				v1046 = (unsigned __int16)v1046;
+				v1046 = (uint16_t)v1046;
 			}
 			else
 			{
@@ -5735,7 +5735,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				LOWORD(v1053) = Uincrement + v1053;
 				BYTE1(v1046) = v1054;
 				LOBYTE(textureIndex_v1047) = BYTE2(Uincrement) + v180 + textureIndex_v1047;
-				if ((unsigned __int8)v1046 >= 0xCu)
+				if ((uint8_t)v1046 >= 0xCu)
 				{
 					v1056 = x_BYTE_F6EE0_tablesx[v1046]; // Fixme: x_BYTE_F6EE0_tablesx should be passed as a parameter
 				}
