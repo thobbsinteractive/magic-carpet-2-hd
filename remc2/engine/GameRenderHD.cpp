@@ -5507,6 +5507,7 @@ void DrawPolygonRasterLine_subB6253(
 				v180 = __CFADD__((x_WORD)Uincrement, (x_WORD)v383);
 				LOWORD(v383) = Uincrement + v383;
 				textureIndexU = (int8_t)BYTE2(Uincrement) + textureIndexU + v180;
+
 				v180 = __CFADD__(fixedpointVincrement, v383);
 				v383 += fixedpointVincrement;
 				textureIndexV = (int8_t)BYTE2(Vincrement) + textureIndexV + v180;
@@ -5570,29 +5571,35 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 		if (line8 >= drawEveryNthLine)
 		{
 			line8 = 0;
-			if ((startX & 0x8000u) == 0) {
+			if (startX >= 0) {
 				if (endX > viewPort.Width_DE564)
 					endX = viewPort.Width_DE564;
+
 				v18 = __OFSUB__((x_WORD)endX, (x_WORD)startX);
 				endX = endX - startX;
 				if ((unsigned __int8)(((endX & 0x8000u) != 0) ^ v18) | (endX == 0)) {
 					continue;
 				}
 				currentPixel += startX;
+
 				v412 = __SWAP_HILOWORD__(current_raster_line->V);
 				textureIndexV = (uint8_t)v412;
+
 				LOWORD(v412) = LOWORD(current_raster_line->U);
 				textureIndexU = BYTE2(current_raster_line->U);
 			}
 			else if (endX > 0)
 			{
-				v410 = (uint16_t)-(int16_t)startX;
+				v410 = -startX;
+
 				v412 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v410);
 				textureIndexV = (uint8_t)v412;
+
 				v411 = current_raster_line->U + Uincrement * v410;
 				LOWORD(v412) = v411;
 				v413 = v411 >> 8;
 				textureIndexU = BYTE1(v413);
+
 				if (endX > viewPort.Width_DE564)
 					endX = viewPort.Width_DE564;
 				startX = (uint16_t)v413;
@@ -5617,10 +5624,9 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 
 				v180 = __CFADD__(v1169, v412);
 				v412 = v1169 + v412;
-
-				*currentPixel = x_BYTE_F6EE0_tablesx[paletteMapping];
 				textureIndexV = (int8_t)BYTE2(Vincrement) + textureIndexV + v180;
 
+				*currentPixel = x_BYTE_F6EE0_tablesx[paletteMapping];
 				currentPixel += 1;
 			} while(--endX);
 			current_raster_line = v1278;
