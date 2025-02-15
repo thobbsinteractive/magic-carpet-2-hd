@@ -5540,10 +5540,10 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 
 	uint8_t v18;
 	uint8_t v180;
-	uint16_t startX;
+	int16_t startX;
 	uint16_t paletteMapping;
 	uint32_t textureIndex_v407;
-	int v408;
+	int16_t endX;
 	uint8_t* v409;
 	int v410;
 	unsigned int v411;
@@ -5563,7 +5563,7 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 		next_raster_line++;
 
 		startX = HIWORD(current_raster_line->startX);
-		v408 = HIWORD(current_raster_line->endX);
+		endX = HIWORD(current_raster_line->endX);
 		v409 = iScreenWidth_DE560 + *pv1102;
 		*pv1102 += iScreenWidth_DE560;
 		line8++;
@@ -5572,11 +5572,11 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 		{
 			line8 = 0;
 			if ((startX & 0x8000u) == 0) {
-				if (v408 > viewPort.Width_DE564)
-					LOWORD(v408) = viewPort.Width_DE564;
-				v18 = __OFSUB__((x_WORD)v408, (x_WORD)startX);
-				LOWORD(v408) = v408 - startX;
-				if ((unsigned __int8)(((v408 & 0x8000u) != 0) ^ v18) | ((x_WORD)v408 == 0)) {
+				if (endX > viewPort.Width_DE564)
+					endX = viewPort.Width_DE564;
+				v18 = __OFSUB__((x_WORD)endX, (x_WORD)startX);
+				endX = endX - startX;
+				if ((unsigned __int8)(((endX & 0x8000u) != 0) ^ v18) | (endX == 0)) {
 					continue;
 				}
 				v409 += startX;
@@ -5585,7 +5585,7 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 				LOWORD(v412) = LOWORD(current_raster_line->U);
 				LOBYTE(textureIndex_v407) = BYTE2(current_raster_line->U);
 			}
-			else if ((int16_t)v408 > 0)
+			else if (endX > 0)
 			{
 				v410 = (uint16_t)-(int16_t)startX;
 				v412 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v410);
@@ -5594,8 +5594,8 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 				LOWORD(v412) = v411;
 				v413 = v411 >> 8;
 				LOBYTE(textureIndex_v407) = BYTE1(v413);
-				if (v408 > viewPort.Width_DE564)
-					LOWORD(v408) = viewPort.Width_DE564;
+				if (endX > viewPort.Width_DE564)
+					endX = viewPort.Width_DE564;
 				startX = (uint16_t)v413;
 			}
 			else
@@ -5618,8 +5618,8 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 				v412 = v1169 + v412;
 				*v409 = x_BYTE_F6EE0_tablesx[paletteMapping];
 				textureIndex_v407 = GameRenderHD::SumByte1WithByte2(textureIndex_v407, Vincrement, v180);
-				v408 = v408 - 1;
-				if (!v408)
+				endX = endX - 1;
+				if (!endX)
 					break;
 				v409 += 1;
 			}
