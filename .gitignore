@@ -5,6 +5,7 @@
 /.vs
 /.vs/remc2/v15
 /.vs/remc2/v16
+/.vscode/settings.json
 /remc2/Debug
 /remc2/Debug-Deploy-Enhanced-Assets
 /remc2/Release
