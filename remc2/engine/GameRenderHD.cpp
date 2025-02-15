@@ -5577,7 +5577,7 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 
 				v18 = __OFSUB__((x_WORD)endX, (x_WORD)startX);
 				endX = endX - startX;
-				if ((unsigned __int8)(((endX & 0x8000u) != 0) ^ v18) | (endX == 0)) {
+				if ((uint8_t)(((endX & 0x8000u) != 0) ^ v18) | (endX == 0)) {
 					continue;
 				}
 				currentPixel += startX;
