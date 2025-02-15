@@ -5512,11 +5512,12 @@ void DrawPolygonRasterLine_subB6253(
 				v383 += fixedpointVincrement;
 				textureIndexV = (int8_t)BYTE2(Vincrement) + textureIndexV + v180;
 
+				currentPixel[0] = x_BYTE_F6EE0_tablesx[paletteMapping];
+
 				v180 = __CFADD__(LOWORD(BrightnessIncrement), BrightnessFractionalPart_v384hi);
 				BrightnessFractionalPart_v384hi += BrightnessIncrement;
-
-				currentPixel[0] = x_BYTE_F6EE0_tablesx[paletteMapping];
 				paletteMapping = GameRenderHD::SumByte1WithByte2(paletteMapping, BrightnessIncrement, v180);
+
 				currentPixel += 1;
 			} while (--pixelCount_v384lo > 0);
 		}
@@ -5658,7 +5659,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 	int16_t textureIndexU = 0;
 	int16_t textureIndexV = 0;
 	int16_t endX;
-	char* v1049;
+	uint8_t* currentPixel;
 	int v1050;
 	int v1051;
 	unsigned int v1052;
@@ -5681,7 +5682,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 
 		LOWORD(v1046) = HIWORD(current_raster_line->startX);
 		endX = HIWORD(current_raster_line->endX);
-		v1049 = (char*)(iScreenWidth_DE560 + *pv1102);
+		currentPixel = (uint8_t*)(iScreenWidth_DE560 + *pv1102);
 		*pv1102 += iScreenWidth_DE560;
 
 		line25++;
@@ -5696,7 +5697,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				if ((uint8_t)(((endX & 0x8000u) != 0) ^ v18) | (endX == 0)) {
 					continue;
 				}
-				v1049 += v1046;
+				currentPixel += v1046;
 
 				v1053 = __SWAP_HILOWORD__(current_raster_line->V);
 				textureIndexV = BYTE2(current_raster_line->V);
@@ -5753,7 +5754,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				else
 				{
 					LOBYTE(paletteMapping) = x_BYTE_F6EE0_tablesx[paletteMapping];
-					BYTE1(paletteMapping) = *v1049;
+					BYTE1(paletteMapping) = *currentPixel;
 					v1056 = x_BYTE_F6EE0_tablesx[16384 + paletteMapping];
 				}
 
@@ -5763,10 +5764,10 @@ void DrawPolygonRasterLine_reflections_subB6253(
 
 				v180 = __CFADD__(v1189, v1054);
 				v1054 = v1189 + v1054;
-				*v1049 = v1056;
+				*currentPixel = v1056;
 				LOBYTE(v1054) = BYTE2(BrightnessIncrement) + v180 + v1054;
 
-				v1049 += 1;
+				currentPixel += 1;
 			} while (--pixelCount > 0);
 			current_raster_line = v1291;
 		}
