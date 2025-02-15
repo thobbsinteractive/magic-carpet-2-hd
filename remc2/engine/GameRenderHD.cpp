@@ -5542,20 +5542,19 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 	uint8_t v180;
 	int16_t startX;
 	uint16_t paletteMapping;
-	uint32_t textureIndex_v407;
+	uint16_t textureIndexU = 0;
+	uint16_t textureIndexV = 0;
 	int16_t endX;
-	uint8_t* v409;
+	uint8_t* currentPixel;
 	int v410;
 	unsigned int v411;
 	int v412;
 	unsigned int v413;
-	uint8_t* ptrCurrentTexture_v414;
 
 	Rasterline_t *v1278;
 
 	int maxPixelIdx = (x_BYTE_D41B5_texture_size << 8);
-
-	HIWORD(textureIndex_v407) = 0;
+	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
 
 	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Flatshading); }
 	do {
@@ -5564,7 +5563,7 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 
 		startX = HIWORD(current_raster_line->startX);
 		endX = HIWORD(current_raster_line->endX);
-		v409 = iScreenWidth_DE560 + *pv1102;
+		currentPixel = iScreenWidth_DE560 + *pv1102;
 		*pv1102 += iScreenWidth_DE560;
 		line8++;
 
@@ -5579,21 +5578,21 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 				if ((unsigned __int8)(((endX & 0x8000u) != 0) ^ v18) | (endX == 0)) {
 					continue;
 				}
-				v409 += startX;
+				currentPixel += startX;
 				v412 = __SWAP_HILOWORD__(current_raster_line->V);
-				BYTE1(textureIndex_v407) = v412;
+				textureIndexV = (uint8_t)v412;
 				LOWORD(v412) = LOWORD(current_raster_line->U);
-				LOBYTE(textureIndex_v407) = BYTE2(current_raster_line->U);
+				textureIndexU = BYTE2(current_raster_line->U);
 			}
 			else if (endX > 0)
 			{
 				v410 = (uint16_t)-(int16_t)startX;
 				v412 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v410);
-				BYTE1(textureIndex_v407) = v412;
+				textureIndexV = (uint8_t)v412;
 				v411 = current_raster_line->U + Uincrement * v410;
 				LOWORD(v412) = v411;
 				v413 = v411 >> 8;
-				LOBYTE(textureIndex_v407) = BYTE1(v413);
+				textureIndexU = BYTE1(v413);
 				if (endX > viewPort.Width_DE564)
 					endX = viewPort.Width_DE564;
 				startX = (uint16_t)v413;
@@ -5604,25 +5603,26 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 			}
 
 			v1278 = current_raster_line;
-			ptrCurrentTexture_v414 = pTexture;
 			BYTE1(paletteMapping) = local_x_BYTE_E126C;
-			while (1)
-			{
-				if (textureIndex_v407 > maxPixelIdx)
+			do {
+				if (textureIndexV > MAX_TEXTURE_INDEX)
 					break;
-				LOBYTE(paletteMapping) = *(x_BYTE*)(textureIndex_v407 + ptrCurrentTexture_v414);
+
+				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU;
+				LOBYTE(paletteMapping) = pTexture[textureIndex];
+
 				v180 = __CFADD__((x_WORD)Uincrement, (x_WORD)v412);
 				LOWORD(v412) = Uincrement + v412;
-				LOBYTE(textureIndex_v407) = BYTE2(Uincrement) + v180 + textureIndex_v407;
+				textureIndexU = (int8_t)BYTE2(Uincrement) + textureIndexU + v180;
+
 				v180 = __CFADD__(v1169, v412);
 				v412 = v1169 + v412;
-				*v409 = x_BYTE_F6EE0_tablesx[paletteMapping];
-				textureIndex_v407 = GameRenderHD::SumByte1WithByte2(textureIndex_v407, Vincrement, v180);
-				endX = endX - 1;
-				if (!endX)
-					break;
-				v409 += 1;
-			}
+
+				*currentPixel = x_BYTE_F6EE0_tablesx[paletteMapping];
+				textureIndexV = (int8_t)BYTE2(Vincrement) + textureIndexV + v180;
+
+				currentPixel += 1;
+			} while(--endX);
 			current_raster_line = v1278;
 		}
 	} while(--linesToDraw);
