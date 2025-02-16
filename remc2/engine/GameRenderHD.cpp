@@ -5654,24 +5654,18 @@ void DrawPolygonRasterLine_reflections_subB6253(
 
 	uint8_t v18;
 	uint8_t v180;
-	unsigned int v1046;
+	int16_t startX;
 	uint16_t paletteMapping;
 	int16_t textureIndexU = 0;
 	int16_t textureIndexV = 0;
 	int16_t endX;
 	uint8_t* currentPixel;
-	int v1050;
-	int v1051;
-	unsigned int v1052;
-	int v1053;
+	uint32_t v1053;
 	int v1054;
 	char v1056;
 	int pixelCount;
-	Rasterline_t *v1291;
 
 	int maxPixelIdx = (x_BYTE_D41B5_texture_size << 8);
-
-	HIWORD(v1046) = 0;
 
 	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
 
@@ -5680,7 +5674,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 		current_raster_line = next_raster_line;
 		next_raster_line++;
 
-		LOWORD(v1046) = HIWORD(current_raster_line->startX);
+		startX = HIWORD(current_raster_line->startX);
 		endX = HIWORD(current_raster_line->endX);
 		currentPixel = (uint8_t*)(iScreenWidth_DE560 + *pv1102);
 		*pv1102 += iScreenWidth_DE560;
@@ -5689,15 +5683,15 @@ void DrawPolygonRasterLine_reflections_subB6253(
 		if (line25 >= drawEveryNthLine)
 		{
 			line25 = 0;
-			if ((v1046 & 0x8000u) == 0) {
+			if (startX >= 0) {
 				if (endX > viewPort.Width_DE564)
 					endX = viewPort.Width_DE564;
-				v18 = __OFSUB__(endX, (x_WORD)v1046);
-				endX = endX - v1046;
+				v18 = __OFSUB__(endX, startX);
+				endX = endX - startX;
 				if ((uint8_t)(((endX & 0x8000u) != 0) ^ v18) | (endX == 0)) {
 					continue;
 				}
-				currentPixel += v1046;
+				currentPixel += startX;
 
 				v1053 = __SWAP_HILOWORD__(current_raster_line->V);
 				textureIndexV = BYTE2(current_raster_line->V);
@@ -5713,19 +5707,16 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				if (endX > viewPort.Width_DE564)
 					endX = viewPort.Width_DE564;
 				pixelCount = endX;
-				v1050 = (uint16_t)-(int16_t)v1046;
-				v1051 = v1050;
+				const int v1050 = (uint16_t)-startX;
 
 				v1053 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v1050);
 				textureIndexV = (uint8_t)v1053;
 
-				v1052 = current_raster_line->U + Uincrement * v1050;
+				const unsigned int v1052 = current_raster_line->U + Uincrement * v1050;
 				LOWORD(v1053) = v1052;
-				v1046 = v1052 >> 8;
 				textureIndexU = BYTE2(v1052);
 
-				v1054 = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement * v1051);
-				v1046 = (uint16_t)v1046;
+				v1054 = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement * v1050);
 			}
 			else
 			{
@@ -5733,8 +5724,6 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				continue;
 			}
 
-			v1291 = current_raster_line;
-			
 			do {
 				if (textureIndexV > MAX_TEXTURE_INDEX)
 					break;
@@ -5769,7 +5758,6 @@ void DrawPolygonRasterLine_reflections_subB6253(
 
 				currentPixel += 1;
 			} while (--pixelCount > 0);
-			current_raster_line = v1291;
 		}
 	} while(--linesToDraw > 0);
 }
