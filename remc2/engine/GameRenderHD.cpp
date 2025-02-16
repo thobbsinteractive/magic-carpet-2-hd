@@ -44,7 +44,7 @@ GameRenderHD::~GameRenderHD()
 
 void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov)
 {
-	unsigned __int16 v8; // ax
+	uint16_t v8; // ax
 	int v9; // ecx
 	int v10; // ebx
 	int v11; // edx
@@ -73,10 +73,10 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	int v36; // eax
 	x_BYTE* v37; // esi
 	signed int v38; // ecx
-	unsigned __int16 v39; // bx
-	unsigned __int16 v40; // dx
-	unsigned __int16 v41; // bx
-	unsigned __int16 v42; // dx
+	uint16_t v39; // bx
+	uint16_t v40; // dx
+	uint16_t v41; // bx
+	uint16_t v42; // dx
 	x_BYTE* v43; // edi
 	int v44; // esi
 	int v45; // ecx
@@ -93,9 +93,9 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	int vPosY; // [esp+38h] [ebp+1Ch]
 	LOBYTE(v8) = HIBYTE(posX);
 	HIBYTE(v8) = HIBYTE(posY);
-	if ((signed int)(unsigned __int8)posX < 128)
+	if ((signed int)(uint8_t)posX < 128)
 		LOBYTE(v8) = HIBYTE(posX) - 1;
-	if ((signed int)(unsigned __int8)posY < 128)
+	if ((signed int)(uint8_t)posY < 128)
 		HIBYTE(v8) = HIBYTE(posY) - 1;
 	v9 = mapHeightmap_11B4E0[v8];
 	LOBYTE(v8) += 2;
@@ -187,9 +187,9 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 			DrawTerrainAndParticles_3C080(vPosX, vPosY, vYaw, posZ, pitch, roll, fov);
 			//Apply Blur
 			viewPort.SetRenderViewPortSize_BCD45(v35, 0, 0, 0);
-			v51 = (signed int)(unsigned __int16)viewPort.Width_DE564 >> 2;
-			v49 = iScreenWidth_DE560 - (unsigned __int16)viewPort.Width_DE564;
-			v50 = (unsigned __int16)viewPort.Height_DE568;
+			v51 = (signed int)(uint16_t)viewPort.Width_DE564 >> 2;
+			v49 = iScreenWidth_DE560 - (uint16_t)viewPort.Width_DE564;
+			v50 = (uint16_t)viewPort.Height_DE568;
 			
 			if (D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 != 1)
 			{
@@ -197,7 +197,7 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 				goto LABEL_33;
 			}
 			v37 = (x_BYTE*)m_ptrBlurBuffer_E9C3C;
-			v38 = (signed int)(unsigned __int16)viewPort.Width_DE564 >> 2;
+			v38 = (signed int)(uint16_t)viewPort.Width_DE564 >> 2;
 			LOBYTE(v39) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 2);
 			HIBYTE(v39) = v35[2];
 			LOBYTE(v40) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 3);
@@ -245,11 +245,11 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 		if (D41A0_0.m_GameSettings.str_0x2192.xxxx_0x2192)
 		{
 			v53 = ViewPortRenderBufferStart_DE558;
-			for (i = (unsigned __int16)viewPort.Height_DE568 - 1; i; i--)
+			for (i = (uint16_t)viewPort.Height_DE568 - 1; i; i--)
 			{
 				v43 = (x_BYTE*)v53;
 				v44 = iScreenWidth_DE560;
-				v45 = (unsigned __int16)viewPort.Width_DE564 - 1;
+				v45 = (uint16_t)viewPort.Width_DE564 - 1;
 				HIWORD(v46) = 0;
 				HIWORD(v47) = 0;
 				HIWORD(v48) = 0;
@@ -458,7 +458,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	char v22; // ch
 	int v23; // eax
 	uint8_t* v25x; // edi
-	unsigned __int16 v26; // dx
+	uint16_t v26; // dx
 	int v27; // ebx
 	int v28; // eax
 	__int16 v29; // si
@@ -468,13 +468,13 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	int v33; // ecx
 	signed int v34; // esi
 	int v35; // ebx
-	unsigned __int16 v36; // dx
+	uint16_t v36; // dx
 	int v37; // eax
 	__int16 v38; // ax
 	int v39; // eax
 	int v40; // edi
 	//int v41x; // edx
-	unsigned __int16 v42; // bx
+	uint16_t v42; // bx
 	int v43x;
 	uint8_t* v44; // eax
 	char v45; // bh
@@ -487,15 +487,15 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	int v56x;
 	signed int v109; // esi
 	int v110; // ebx
-	unsigned __int16 v111; // dx
+	uint16_t v111; // dx
 	__int16 tickIdx; // ax
 	int v113; // eax
 	//int v114x;
 	//signed int v115; // edx
 	int v116; // eax
 	int v117x;
-	unsigned __int16 v118; // bx
-	unsigned __int8 v119; // al
+	uint16_t v118; // bx
+	uint8_t v119; // al
 	int v120x;
 	uint8_t* v121; // eax
 	int v122; // bh
@@ -514,11 +514,11 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	int v197; // ecx
 	signed int v198; // esi
 	int v199; // ebx
-	unsigned __int16 v200; // di
+	uint16_t v200; // di
 	__int16 v201; // ax
 	int v202; // eax
 	int v203; // eax
-	unsigned __int16 v204; // bx
+	uint16_t v204; // bx
 	int v205x;
 	int v206x;
 	uint8_t* v207; // eax
@@ -529,7 +529,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	uint8_t* v277; // [esp+84h] [ebp+22h]
 	//uint8_t* v278;
 	int v278x;
-	unsigned __int16 v279; // [esp+8Ch] [ebp+2Ah]
+	uint16_t v279; // [esp+8Ch] [ebp+2Ah]
 	int l; // [esp+90h] [ebp+2Eh]
 	char v283; // [esp+9Ch] [ebp+3Ah]
 	char k; // [esp+A0h] [ebp+3Eh]
@@ -542,14 +542,14 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 
 	shadows_F2CC7 = D41A0_0.m_GameSettings.m_Graphics.m_wShadows;//21d080
 	notDay_D4320 = D41A0_0.terrain_2FECE.MapType != MapType_t::Day;
-	str_F2C20ar.dword0x10 = (signed int)(unsigned __int16)viewPort.Height_DE568 >> 1;
+	str_F2C20ar.dword0x10 = (signed int)(uint16_t)viewPort.Height_DE568 >> 1;
 	x_WORD_F2CC4 = posX;
 	yaw_F2CC0 = yaw & 0x7FF;
 	x_WORD_F2CC2 = posY;
 	v9 = (yaw & 0x7FF) + 256;
 	str_F2C20ar.dword0x20 = posZ;
 	v10 = Maths::sin_DB750[256 + v9];
-	str_F2C20ar.dword0x24 = x_DWORD_D4324 + ((signed int)(unsigned __int16)viewPort.Width_DE564 >> 1);
+	str_F2C20ar.dword0x24 = x_DWORD_D4324 + ((signed int)(uint16_t)viewPort.Width_DE564 >> 1);
 	str_F2C20ar.dword0x0f = v10;
 	v11 = Maths::sin_DB750[v9 - 256];
 	v12 = ((((yaw & 0x7FF) + 256) & 0x1FF) - 256) & 0x7FF;
@@ -560,29 +560,29 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	SetBillboards_3B560(-roll & 0x7FF);//21d1aa
 	str_F2C20ar.dword0x18 = 7
 		* Maths::sub_7277A_radix_3d(
-			(unsigned __int16)viewPort.Width_DE564 * (unsigned __int16)viewPort.Width_DE564
-			+ (unsigned __int16)viewPort.Height_DE568 * (unsigned __int16)viewPort.Height_DE568)
+			(uint16_t)viewPort.Width_DE564 * (uint16_t)viewPort.Width_DE564
+			+ (uint16_t)viewPort.Height_DE568 * (uint16_t)viewPort.Height_DE568)
 		* fov >> 11;
 	v277 = unk_D4328x + 10 * projectedVertexBuffer[32];
 
 	//This is based on rotation direction there is always a direction
-	switch ((unsigned __int8)projectedVertexBuffer[32])//fixed? //rotations
+	switch ((uint8_t)projectedVertexBuffer[32])//fixed? //rotations
 	{
 	case 0u: // 270 -> 0
-		a2 = (unsigned __int8)posY - 256;
-		a1 = -(unsigned __int8)posX - 4864;
+		a2 = (uint8_t)posY - 256;
+		a1 = -(uint8_t)posX - 4864;
 		break;
 	case 1u: // 0 -> 90
-		a1 = -(unsigned __int8)posY - 4864;
-		a2 = -(unsigned __int8)posX;
+		a1 = -(uint8_t)posY - 4864;
+		a2 = -(uint8_t)posX;
 		break;
 	case 2u: // 90 -> 180
-		a1 = (unsigned __int8)posX - 4864;
-		a2 = -(unsigned __int8)posY;
+		a1 = (uint8_t)posX - 4864;
+		a2 = -(uint8_t)posY;
 		break;
 	case 3u: // 180 -> 270
-		a1 = (unsigned __int8)posY - 4864;
-		a2 = (unsigned __int8)posX - 256;
+		a1 = (uint8_t)posY - 4864;
+		a2 = (uint8_t)posX - 256;
 		break;
 	default:
 		break;
@@ -635,7 +635,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	v278x = 0;
 	str_F2C20ar.dword0x12 = 8912896;
 	v22 = v277[0];
-	str_F2C20ar.dword0x22 = pitch * (unsigned __int16)viewPort.Width_DE564 >> 8;
+	str_F2C20ar.dword0x22 = pitch * (uint16_t)viewPort.Width_DE564 >> 8;
 	LOBYTE(v279) = v22 + HIBYTE(posX);
 	HIBYTE(v279) = v277[1] + HIBYTE(posY);
 	v23 = roll & 0x7FF;
@@ -702,7 +702,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					Str_E9C38_smalltit[v47x].pnt3_24 = projectedVertexBuffer[25];
 					if (v53 >= 0)
 					{
-						if ((signed int)(unsigned __int16)viewPort.Width_DE564 <= Str_E9C38_smalltit[v47x].pnt1_16)
+						if ((signed int)(uint16_t)viewPort.Width_DE564 <= Str_E9C38_smalltit[v47x].pnt1_16)
 							Str_E9C38_smalltit[v47x].triangleFeatures_38 |= 0x10u;
 					}
 					else
@@ -712,7 +712,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v54 = Str_E9C38_smalltit[v47x].pnt2_20;
 					if (v54 >= 0)
 					{
-						if ((unsigned __int16)viewPort.Height_DE568 <= v54)
+						if ((uint16_t)viewPort.Height_DE568 <= v54)
 							Str_E9C38_smalltit[v47x].triangleFeatures_38 |= 0x40u;
 					}
 					else
@@ -721,7 +721,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					}
 					if (Str_E9C38_smalltit[v47x].pnt3_24 >= 0)
 					{
-						if ((signed int)(unsigned __int16)viewPort.Width_DE564 <= Str_E9C38_smalltit[v47x].pnt3_24)
+						if ((signed int)(uint16_t)viewPort.Width_DE564 <= Str_E9C38_smalltit[v47x].pnt3_24)
 							Str_E9C38_smalltit[v47x].triangleFeatures_38 |= 0x200u;
 					}
 					else
@@ -731,7 +731,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v55 = Str_E9C38_smalltit[v47x].pnt4_28;
 					if (v55 >= 0)
 					{
-						if ((unsigned __int16)viewPort.Height_DE568 <= v55)
+						if ((uint16_t)viewPort.Height_DE568 <= v55)
 							Str_E9C38_smalltit[v47x].triangleFeatures_38 |= 0x800u;
 					}
 					else
@@ -746,7 +746,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 			}
 			for (k = 40; k; k--)
 			{
-				v33 = ((unsigned __int8)mapShading_12B4E0[v279] << 8) + 128;
+				v33 = ((uint8_t)mapShading_12B4E0[v279] << 8) + 128;
 				v34 = Str_E9C38_smalltit[v278x].y_12;
 				v35 = v34 * v34 + Str_E9C38_smalltit[v278x].x_0 * Str_E9C38_smalltit[v278x].x_0;
 				Str_E9C38_smalltit[v278x].haveBillboard_36 = 0;
@@ -760,13 +760,13 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 				Str_E9C38_smalltit[v278x].pnt1_16 = str_F2C20ar.dword0x18 * Str_E9C38_smalltit[v278x].x_0 / v34;
 				v36 = v279;
 				Str_E9C38_smalltit[v278x].alt_4 = 32 * mapHeightmap_11B4E0[v279] - posZ;
-				Str_E9C38_smalltit[v278x].inverse_alt_8 = ((unsigned __int8)x_BYTE_14B4E0_second_heightmap[v36] << 15 >> 10) - posZ;
+				Str_E9C38_smalltit[v278x].inverse_alt_8 = ((uint8_t)x_BYTE_14B4E0_second_heightmap[v36] << 15 >> 10) - posZ;
 				v37 = 0;
 				if (!mapTerrainType_10B4E0[v36])
 				{
 					v38 = 32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248;
 					v37 = (Maths::sin_DB750[(v38 + (HIBYTE(v279) << 7)) & 0x7FF] >> 8)
-						* (Maths::sin_DB750[(((unsigned __int8)v279 << 7) + v38) & 0x7FF] >> 8);
+						* (Maths::sin_DB750[(((uint8_t)v279 << 7) + v38) & 0x7FF] >> 8);
 					Str_E9C38_smalltit[v278x].alt_4 -= v37 >> 13;
 					if (v33 >= 14464)
 						v37 = 0;
@@ -796,7 +796,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 				if (D41A0_0.m_GameSettings.str_0x2196.flat_0x2199)
 					Str_E9C38_smalltit[v43x].triangleFeatures_38 |= 0x1000u;
 				Str_E9C38_smalltit[v278x].textAtyp_43 = Maths::x_BYTE_D41D8[Str_E9C38_smalltit[v278x].textIndex_41];
-				Str_E9C38_smalltit[v278x].textUV_42 = projectedVertexBuffer[32] + (((signed int)(unsigned __int8)mapAngle_13B4E0[v42] >> 2) & 0x1C);
+				Str_E9C38_smalltit[v278x].textUV_42 = projectedVertexBuffer[32] + (((signed int)(uint8_t)mapAngle_13B4E0[v42] >> 2) & 0x1C);
 				LOBYTE(v42) = v277[4] + v42;
 				HIBYTE(v42) += v277[5];
 				Str_E9C38_smalltit[v278x].haveBillboard_36 = mapEntityIndex_15B4E0[v42];
@@ -841,7 +841,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					Str_E9C38_smalltit[v124x].pnt3_24 = projectedVertexBuffer[25];
 					if (v130 >= 0)
 					{
-						if ((signed int)(unsigned __int16)viewPort.Width_DE564 <= Str_E9C38_smalltit[v124x].pnt1_16)
+						if ((signed int)(uint16_t)viewPort.Width_DE564 <= Str_E9C38_smalltit[v124x].pnt1_16)
 							Str_E9C38_smalltit[v124x].triangleFeatures_38 |= 0x10u;
 					}
 					else
@@ -851,7 +851,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v131 = Str_E9C38_smalltit[v124x].pnt2_20;
 					if (v131 >= 0)
 					{
-						if ((unsigned __int16)viewPort.Height_DE568 <= v131)
+						if ((uint16_t)viewPort.Height_DE568 <= v131)
 							Str_E9C38_smalltit[v124x].triangleFeatures_38 |= 0x40u;
 					}
 					else
@@ -860,7 +860,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					}
 					if (Str_E9C38_smalltit[v124x].pnt3_24 >= 0)
 					{
-						if ((signed int)(unsigned __int16)viewPort.Width_DE564 <= Str_E9C38_smalltit[v124x].pnt3_24)
+						if ((signed int)(uint16_t)viewPort.Width_DE564 <= Str_E9C38_smalltit[v124x].pnt3_24)
 							Str_E9C38_smalltit[v124x].triangleFeatures_38 |= 0x200u;
 					}
 					else
@@ -870,7 +870,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v132 = Str_E9C38_smalltit[v124x].pnt4_28;
 					if (v132 >= 0)
 					{
-						if ((unsigned __int16)viewPort.Height_DE568 <= v132)
+						if ((uint16_t)viewPort.Height_DE568 <= v132)
 							Str_E9C38_smalltit[v124x].triangleFeatures_38 |= 0x800u;
 					}
 					else
@@ -893,7 +893,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 			//Populate vertexes?
 			for (jj = 40; jj; --jj)
 			{
-				projectedVertexBuffer[31] = ((unsigned __int8)mapShading_12B4E0[v279] << 8) + 128;
+				projectedVertexBuffer[31] = ((uint8_t)mapShading_12B4E0[v279] << 8) + 128;
 				v109 = Str_E9C38_smalltit[v278x].y_12;
 				v110 = v109 * v109 + Str_E9C38_smalltit[v278x].x_0 * Str_E9C38_smalltit[v278x].x_0;
 				Str_E9C38_smalltit[v278x].haveBillboard_36 = 0;
@@ -908,7 +908,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 				v111 = v279;
 				Str_E9C38_smalltit[v278x].alt_4 = 32 * mapHeightmap_11B4E0[v279] - posZ;
 				//Used for Reflection Wave Index.
-				tickIdx = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6;
+				tickIdx = (uint16_t)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6;
 				sinIdx = (tickIdx + (HIBYTE(v279) << 7)) & 0x7FF;
 				sinIdx2 = (tickIdx + ((uint8_t)v279 << 7)) & 0x7FF;
 				projectedVertexBuffer[26] = Maths::sin_DB750[sinIdx] >> 8;
@@ -944,7 +944,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					Str_E9C38_smalltit[v278x].triangleFeatures_38 |= 0x1000u;
 				v120x = v278x;
 				Str_E9C38_smalltit[v278x].textAtyp_43 = Maths::x_BYTE_D41D8[Str_E9C38_smalltit[v278x].textIndex_41];
-				Str_E9C38_smalltit[v120x].textUV_42 = projectedVertexBuffer[32] + (((signed int)(unsigned __int8)mapAngle_13B4E0[v118] >> 2) & 0x1C);
+				Str_E9C38_smalltit[v120x].textUV_42 = projectedVertexBuffer[32] + (((signed int)(uint8_t)mapAngle_13B4E0[v118] >> 2) & 0x1C);
 				LOBYTE(v118) = v277[4] + v118;
 				HIBYTE(v118) += v277[5];
 				Str_E9C38_smalltit[v278x].haveBillboard_36 = mapEntityIndex_15B4E0[v118];
@@ -1686,7 +1686,7 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 	int v35; // eax
 	int v36; // eax
 	int v38; // eax
-	unsigned __int8 v39; // al
+	uint8_t v39; // al
 	int v40; // [esp+0h] [ebp-Ch]
 	type_event_0x6E8E* v41x; // [esp+4h] [ebp-8h]
 	int v42; // [esp+8h] [ebp-4h]
@@ -2000,13 +2000,13 @@ void GameRenderHD::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t posY)
 {
 	int v3; // esi
 	type_event_0x6E8E* v4x; // edx
-	unsigned __int8 v5; // al
-	unsigned __int8 v6; // al
-	unsigned __int8 v7; // al
-	unsigned __int8 v8; // al
+	uint8_t v5; // al
+	uint8_t v6; // al
+	uint8_t v7; // al
+	uint8_t v8; // al
 	//char v9; // cl
 	signed int v10; // eax
-	unsigned __int8 v11; // al
+	uint8_t v11; // al
 	//unsigned int v12; // edi
 	signed int v13; // eax
 	//int v14; // esi
@@ -2150,7 +2150,7 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 	int16_t v5; // bx
 	signed int v6; // ecx
 	int v7; // edx
-	unsigned __int8 v8; // cf
+	uint8_t v8; // cf
 	int v9; // eax
 	int v10; // esi
 	uint32_t v11; // eax
@@ -2752,12 +2752,12 @@ void GameRenderHD::DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1x, __
 	int v30; // [esp+34h] [ebp-24h]
 	int v31; // [esp+38h] [ebp-20h]
 	int v32; // [esp+3Ch] [ebp-1Ch]
-	unsigned __int8 v33; // [esp+40h] [ebp-18h]
+	uint8_t v33; // [esp+40h] [ebp-18h]
 	char v34; // [esp+44h] [ebp-14h]
 	char v35; // [esp+48h] [ebp-10h]
 	char v36; // [esp+4Ch] [ebp-Ch]
 	char v37; // [esp+50h] [ebp-8h]
-	unsigned __int8 v38; // [esp+54h] [ebp-4h]
+	uint8_t v38; // [esp+54h] [ebp-4h]
 	int v39; // [esp+74h] [ebp+1Ch]
 	v31 = viewPort.PreWidth_EA3C4 + viewPort.PosX_EA3D0 - 4;
 	v29 = viewPort.PreHeight_EA3C0 + viewPort.PosY_EA3CC - 22;
@@ -3041,7 +3041,7 @@ void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index, u
 
 void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t x_BYTE_E88E0x[], int32_t x_DWORD_F5730[], type_event_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth)
 {
-	unsigned __int16 result; // ax
+	uint16_t result; // ax
 	type_event_0x6E8E* v3x; // eax
 	__int16 v4; // cx
 	int v5; // ecx
@@ -3059,9 +3059,9 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 	int v23; // eax
 	int v24; // eax
 	int v25; // ebx
-	unsigned __int16 v27; // ax
+	uint16_t v27; // ax
 	int v28; // eax
-	unsigned __int16 v30; // ax
+	uint16_t v30; // ax
 	int v31; // eax
 	int v32; // ebx
 	int v33; // eax
@@ -3074,7 +3074,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 	int v41; // eax
 	int v42; // eax
 	int v43; // ebx
-	unsigned __int8 v45; // al
+	uint8_t v45; // al
 	int v46; // ecx
 	int v47; // eax
 	int v48; // eax
@@ -3089,7 +3089,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 	int v61; // ebx
 	int v62; // ebx
 	int v63; // eax
-	unsigned __int16 v65; // ax
+	uint16_t v65; // ax
 	int v66; // eax
 	int v67; // eax
 	int v68; // eax
@@ -3109,11 +3109,11 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 	int v84; // eax
 	int v85; // eax
 	int v86; // eax
-	unsigned __int16 v88; // ax
+	uint16_t v88; // ax
 	int v89; // eax
 	type_event_0x6E8E* v90x; // ebx
 	__int16 v91; // cx
-	unsigned __int8 v92; // al
+	uint8_t v92; // al
 	char v93; // cl
 	int v94; // eax
 	int v95; // eax
@@ -3203,7 +3203,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 							case 16:
 								goto LABEL_29;
 							case 17:
-								v25 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4;
+								v25 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 								if (v25 < 8)
 								{
 									if (str_DWORD_F66F0x[v25 + v7x->word_0])
@@ -3240,7 +3240,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 								v21 = -str_F2C20ar.dword0x08_width;
 								goto LABEL_72;
 							case 18:
-								v32 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4;
+								v32 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 								v33 = v32 + v7x->word_0;
 								if (str_DWORD_F66F0x[v33])
 								{
@@ -3262,10 +3262,10 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 								v21 = str_F2C20ar.dword0x08_width;
 								goto LABEL_72;
 							case 19:
-								v18 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4;
+								v18 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 								if (v18 >= 8)
 								{
-									v22 = (unsigned __int8)x_BYTE_D4750[12 + v18];
+									v22 = (uint8_t)x_BYTE_D4750[12 + v18];
 									v23 = v22 + v7x->word_0;
 									if (str_DWORD_F66F0x[v23])
 									{
@@ -3273,11 +3273,11 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 									}
 									else
 									{
-										if (!MainInitTmaps_71520(v7x->word_0 + (unsigned __int8)v22))
+										if (!MainInitTmaps_71520(v7x->word_0 + (uint8_t)v22))
 											goto LABEL_178;
-										x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v7x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v18]].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
+										x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v7x->word_0 + (uint8_t)x_BYTE_D4750[12 + v18]].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
 									}
-									a1y = *str_DWORD_F66F0x[v7x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v18]];
+									a1y = *str_DWORD_F66F0x[v7x->word_0 + (uint8_t)x_BYTE_D4750[12 + v18]];
 									str_F2C20ar.dword0x08_width = a1y->width;
 									str_F2C20ar.dword0x06_height = a1y->height;
 									v24 = (signed __int64)(str_F2C20ar.dword0x18 * v7x->rotSpeed_8) / v99;
@@ -3287,18 +3287,18 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 								}
 								else
 								{
-									v19 = (unsigned __int8)x_BYTE_D4750[12 + v18] + v7x->word_0;
+									v19 = (uint8_t)x_BYTE_D4750[12 + v18] + v7x->word_0;
 									if (str_DWORD_F66F0x[v19])
 									{
 										x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v19].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
 									}
 									else
 									{
-										if (!MainInitTmaps_71520(v7x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v18]))
+										if (!MainInitTmaps_71520(v7x->word_0 + (uint8_t)x_BYTE_D4750[12 + v18]))
 											goto LABEL_178;
-										x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v7x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v18]].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
+										x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v7x->word_0 + (uint8_t)x_BYTE_D4750[12 + v18]].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
 									}
-									a1y = *str_DWORD_F66F0x[v7x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v18]];
+									a1y = *str_DWORD_F66F0x[v7x->word_0 + (uint8_t)x_BYTE_D4750[12 + v18]];
 									str_F2C20ar.dword0x08_width = a1y->width;
 									str_F2C20ar.dword0x06_height = a1y->height;
 									v20 = (signed __int64)(str_F2C20ar.dword0x18 * v7x->rotSpeed_8) / v99;
@@ -3308,18 +3308,18 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 								}
 								goto LABEL_72;
 							case 20:
-								v37 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4;
+								v37 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 								if (v37 >= 8)
 								{
-									v41 = v7x->word_0 + (unsigned __int8)x_BYTE_D4750[28 + v37];
+									v41 = v7x->word_0 + (uint8_t)x_BYTE_D4750[28 + v37];
 									if (!str_DWORD_F66F0x[v41])
 									{
-										if (!MainInitTmaps_71520(v7x->word_0 + (unsigned __int8)x_BYTE_D4750[28 + v37]))
+										if (!MainInitTmaps_71520(v7x->word_0 + (uint8_t)x_BYTE_D4750[28 + v37]))
 											goto LABEL_178;
-										v41 = (unsigned __int8)x_BYTE_D4750[28 + v37] + v7x->word_0;
+										v41 = (uint8_t)x_BYTE_D4750[28 + v37] + v7x->word_0;
 									}
 									x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v41].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
-									a1y = *str_DWORD_F66F0x[v7x->word_0 + (unsigned __int8)x_BYTE_D4750[28 + v37]];
+									a1y = *str_DWORD_F66F0x[v7x->word_0 + (uint8_t)x_BYTE_D4750[28 + v37]];
 									str_F2C20ar.dword0x08_width = a1y->width;
 									str_F2C20ar.dword0x06_height = a1y->height;
 									v42 = (signed __int64)(str_F2C20ar.dword0x18 * v7x->rotSpeed_8) / v99;
@@ -3329,7 +3329,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 								}
 								else
 								{
-									v38 = (unsigned __int8)x_BYTE_D4750[28 + v37];
+									v38 = (uint8_t)x_BYTE_D4750[28 + v37];
 									v39 = v38 + v7x->word_0;
 									if (str_DWORD_F66F0x[v39])
 									{
@@ -3337,11 +3337,11 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 									}
 									else
 									{
-										if (!MainInitTmaps_71520(v7x->word_0 + (unsigned __int8)v38))
+										if (!MainInitTmaps_71520(v7x->word_0 + (uint8_t)v38))
 											goto LABEL_178;
-										x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v7x->word_0 + (unsigned __int8)x_BYTE_D4750[28 + v37]].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
+										x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v7x->word_0 + (uint8_t)x_BYTE_D4750[28 + v37]].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
 									}
-									a1y = *str_DWORD_F66F0x[v7x->word_0 + (unsigned __int8)x_BYTE_D4750[28 + v37]];
+									a1y = *str_DWORD_F66F0x[v7x->word_0 + (uint8_t)x_BYTE_D4750[28 + v37]];
 									str_F2C20ar.dword0x08_width = a1y->width;
 									str_F2C20ar.dword0x06_height = a1y->height;
 									v40 = (signed __int64)(str_F2C20ar.dword0x18 * v7x->rotSpeed_8) / v99;
@@ -3443,7 +3443,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 			{
 				v50x = &str_D404C[str_F2C20ar.dword0x14x->byte_0x3B_59];
 				switch ((((x_DWORD_EA3E4[str_F2C20ar.dword0x14x->word_0x32_50]->word_0x1C_28
-					- (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4)
+					- (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4)
 				{
 				case 0:
 				case 15:
@@ -3540,9 +3540,9 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 				case 16:
 					goto LABEL_117;
 				case 17:
-					v72 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4;
+					v72 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 					if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] & 0x40)
-						v72 = (unsigned __int8)x_BYTE_D4750[44 + v72];
+						v72 = (uint8_t)x_BYTE_D4750[44 + v72];
 					if (v72 < 8)
 					{
 						v73 = v72 + v52x->word_0;
@@ -3580,7 +3580,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					v67 = -str_F2C20ar.dword0x08_width;
 					goto LABEL_163;
 				case 18:
-					v79 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4;
+					v79 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 					v80 = v79 + v52x->word_0;
 					if (str_DWORD_F66F0x[v80])
 					{
@@ -3601,22 +3601,22 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					v67 = str_F2C20ar.dword0x08_width;
 					goto LABEL_163;
 				case 19:
-					v62 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4;
+					v62 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 					if (v62 >= 8)
 					{
-						v68 = v52x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v62];
+						v68 = v52x->word_0 + (uint8_t)x_BYTE_D4750[12 + v62];
 						if (str_DWORD_F66F0x[v68])
 						{
 							v70 = str_TMAPS00TAB_BEGIN_BUFFER[v68].word_8;
 						}
 						else
 						{
-							if (!MainInitTmaps_71520(v52x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v62]))
+							if (!MainInitTmaps_71520(v52x->word_0 + (uint8_t)x_BYTE_D4750[12 + v62]))
 								break;
-							v70 = str_TMAPS00TAB_BEGIN_BUFFER[v52x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v62]].word_8;
+							v70 = str_TMAPS00TAB_BEGIN_BUFFER[v52x->word_0 + (uint8_t)x_BYTE_D4750[12 + v62]].word_8;
 						}
 						x_DWORD_F5730[v70] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
-						a1y = *str_DWORD_F66F0x[v52x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v62]];
+						a1y = *str_DWORD_F66F0x[v52x->word_0 + (uint8_t)x_BYTE_D4750[12 + v62]];
 						str_F2C20ar.dword0x08_width = a1y->width;
 						str_F2C20ar.dword0x06_height = a1y->height;
 						v71 = (signed __int64)(str_F2C20ar.dword0x18 * v52x->rotSpeed_8) / v100;
@@ -3626,19 +3626,19 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					}
 					else
 					{
-						v63 = v52x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v62];
+						v63 = v52x->word_0 + (uint8_t)x_BYTE_D4750[12 + v62];
 						if (str_DWORD_F66F0x[v63])
 						{
 							v65 = str_TMAPS00TAB_BEGIN_BUFFER[v63].word_8;
 						}
 						else
 						{
-							if (!MainInitTmaps_71520(v52x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v62]))
+							if (!MainInitTmaps_71520(v52x->word_0 + (uint8_t)x_BYTE_D4750[12 + v62]))
 								break;
-							v65 = str_TMAPS00TAB_BEGIN_BUFFER[(unsigned __int8)x_BYTE_D4750[12 + v62] + v52x->word_0].word_8;
+							v65 = str_TMAPS00TAB_BEGIN_BUFFER[(uint8_t)x_BYTE_D4750[12 + v62] + v52x->word_0].word_8;
 						}
 						x_DWORD_F5730[v65] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
-						a1y = *str_DWORD_F66F0x[v52x->word_0 + (unsigned __int8)x_BYTE_D4750[12 + v62]];
+						a1y = *str_DWORD_F66F0x[v52x->word_0 + (uint8_t)x_BYTE_D4750[12 + v62]];
 						str_F2C20ar.dword0x08_width = a1y->width;
 						str_F2C20ar.dword0x06_height = a1y->height;
 						v66 = (signed __int64)(str_F2C20ar.dword0x18 * v52x->rotSpeed_8) / v100;
@@ -3648,22 +3648,22 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					}
 					goto LABEL_163;
 				case 20:
-					v82 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4;
+					v82 = (((str_F2C20ar.dword0x14x->word_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 					if (v82 >= 8)
 					{
-						v86 = (unsigned __int8)x_BYTE_D4750[28 + v82] + v52x->word_0;
+						v86 = (uint8_t)x_BYTE_D4750[28 + v82] + v52x->word_0;
 						if (str_DWORD_F66F0x[v86])
 						{
 							v88 = str_TMAPS00TAB_BEGIN_BUFFER[v86].word_8;
 						}
 						else
 						{
-							if (!MainInitTmaps_71520(v52x->word_0 + (unsigned __int8)x_BYTE_D4750[28 + v82]))
+							if (!MainInitTmaps_71520(v52x->word_0 + (uint8_t)x_BYTE_D4750[28 + v82]))
 								break;
-							v88 = str_TMAPS00TAB_BEGIN_BUFFER[v52x->word_0 + (unsigned __int8)x_BYTE_D4750[28 + v82]].word_8;
+							v88 = str_TMAPS00TAB_BEGIN_BUFFER[v52x->word_0 + (uint8_t)x_BYTE_D4750[28 + v82]].word_8;
 						}
 						x_DWORD_F5730[v88] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
-						a1y = *str_DWORD_F66F0x[v52x->word_0 + (unsigned __int8)x_BYTE_D4750[28 + v82]];
+						a1y = *str_DWORD_F66F0x[v52x->word_0 + (uint8_t)x_BYTE_D4750[28 + v82]];
 						str_F2C20ar.dword0x08_width = a1y->width;
 						str_F2C20ar.dword0x06_height = a1y->height;
 						v89 = (signed __int64)(str_F2C20ar.dword0x18 * v52x->rotSpeed_8) / v100;
@@ -3673,7 +3673,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					}
 					else
 					{
-						v83 = (unsigned __int8)x_BYTE_D4750[28 + v82];
+						v83 = (uint8_t)x_BYTE_D4750[28 + v82];
 						v84 = v83 + v52x->word_0;
 						if (str_DWORD_F66F0x[v84])
 						{
@@ -3681,11 +3681,11 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 						}
 						else
 						{
-							if (!MainInitTmaps_71520(v52x->word_0 + (unsigned __int8)v83))
+							if (!MainInitTmaps_71520(v52x->word_0 + (uint8_t)v83))
 								break;
-							x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v52x->word_0 + (unsigned __int8)x_BYTE_D4750[28 + v82]].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
+							x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v52x->word_0 + (uint8_t)x_BYTE_D4750[28 + v82]].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
 						}
-						a1y = *str_DWORD_F66F0x[v52x->word_0 + (unsigned __int8)x_BYTE_D4750[28 + v82]];
+						a1y = *str_DWORD_F66F0x[v52x->word_0 + (uint8_t)x_BYTE_D4750[28 + v82]];
 						str_F2C20ar.dword0x08_width = a1y->width;
 						str_F2C20ar.dword0x06_height = a1y->height;
 						v85 = (signed __int64)(str_F2C20ar.dword0x18 * v52x->rotSpeed_8) / v100;
@@ -3757,14 +3757,14 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 						v93 = v90x->struct_byte_0xc_12_15.byte[3];
 						if (v93 & 2)
 						{
-							v94 = (unsigned __int8)x_BYTE_E88E0x[2 + 3
+							v94 = (uint8_t)x_BYTE_E88E0x[2 + 3
 								* x_DWORD_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->word_0x38_56];
 							str_F2C20ar.dword0x01_rotIdx = 4;
 							str_F2C20ar.dword0x07 = v94;
 						}
 						else if (v93 & 4)
 						{
-							v95 = (unsigned __int8)x_BYTE_E88E0x[2 + 3
+							v95 = (uint8_t)x_BYTE_E88E0x[2 + 3
 								* x_DWORD_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->word_0x38_56];
 							str_F2C20ar.dword0x01_rotIdx = 5;
 							str_F2C20ar.dword0x07 = v95;
@@ -4949,14 +4949,14 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 			str_F2C20ar.dword0x03_screenX += (str_F2C20ar.cos_0x11 * v138 >> 16) - v138;
 		}
 	}
-	if ((unsigned __int16)viewPort.Width_DE564 > str_F2C20ar.dword0x04_screenY)
+	if ((uint16_t)viewPort.Width_DE564 > str_F2C20ar.dword0x04_screenY)
 	{
 		v136 = (str_F2C20ar.dword0x05 << 16) / str_F2C20ar.dword0x09_realWidth;
 		if (-str_F2C20ar.dword0x04_screenY < 0 || str_F2C20ar.dword0x04_screenY == 0)
 		{
 			str_F2C20ar.dword0x0b = 0;
-			if (str_F2C20ar.dword0x09_realWidth + str_F2C20ar.dword0x04_screenY - (unsigned __int16)viewPort.Width_DE564 > 0)
-				str_F2C20ar.dword0x09_realWidth -= str_F2C20ar.dword0x09_realWidth + str_F2C20ar.dword0x04_screenY - (unsigned __int16)viewPort.Width_DE564;
+			if (str_F2C20ar.dword0x09_realWidth + str_F2C20ar.dword0x04_screenY - (uint16_t)viewPort.Width_DE564 > 0)
+				str_F2C20ar.dword0x09_realWidth -= str_F2C20ar.dword0x09_realWidth + str_F2C20ar.dword0x04_screenY - (uint16_t)viewPort.Width_DE564;
 		}
 		else
 		{
@@ -4965,17 +4965,17 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 				return;
 			str_F2C20ar.dword0x0b = v136 * -str_F2C20ar.dword0x04_screenY;
 			str_F2C20ar.dword0x04_screenY = 0;
-			if ((unsigned __int16)viewPort.Width_DE564 <= str_F2C20ar.dword0x09_realWidth)
-				str_F2C20ar.dword0x09_realWidth = (unsigned __int16)viewPort.Width_DE564;
+			if ((uint16_t)viewPort.Width_DE564 <= str_F2C20ar.dword0x09_realWidth)
+				str_F2C20ar.dword0x09_realWidth = (uint16_t)viewPort.Width_DE564;
 		}
-		if ((unsigned __int16)viewPort.Height_DE568 > str_F2C20ar.dword0x03_screenX)
+		if ((uint16_t)viewPort.Height_DE568 > str_F2C20ar.dword0x03_screenX)
 		{
 			v134 = (str_F2C20ar.dword0x06_height << 16) / str_F2C20ar.dword0x0c_realHeight;
 			if (-str_F2C20ar.dword0x03_screenX < 0 || str_F2C20ar.dword0x03_screenX == 0)
 			{
 				str_F2C20ar.dword0x0a_actIdx = 0;
-				if (str_F2C20ar.dword0x0c_realHeight + str_F2C20ar.dword0x03_screenX - (unsigned __int16)viewPort.Height_DE568 > 0)
-					str_F2C20ar.dword0x0c_realHeight -= str_F2C20ar.dword0x0c_realHeight + str_F2C20ar.dword0x03_screenX - (unsigned __int16)viewPort.Height_DE568;
+				if (str_F2C20ar.dword0x0c_realHeight + str_F2C20ar.dword0x03_screenX - (uint16_t)viewPort.Height_DE568 > 0)
+					str_F2C20ar.dword0x0c_realHeight -= str_F2C20ar.dword0x0c_realHeight + str_F2C20ar.dword0x03_screenX - (uint16_t)viewPort.Height_DE568;
 			}
 			else
 			{
@@ -4984,8 +4984,8 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 					return;
 				str_F2C20ar.dword0x0a_actIdx = v134 * -str_F2C20ar.dword0x03_screenX;
 				str_F2C20ar.dword0x03_screenX = 0;
-				if ((unsigned __int16)viewPort.Height_DE568 <= str_F2C20ar.dword0x0c_realHeight)
-					str_F2C20ar.dword0x0c_realHeight = (unsigned __int16)viewPort.Height_DE568;
+				if ((uint16_t)viewPort.Height_DE568 <= str_F2C20ar.dword0x0c_realHeight)
+					str_F2C20ar.dword0x0c_realHeight = (uint16_t)viewPort.Height_DE568;
 			}
 			v153 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
 			for (l = str_F2C20ar.dword0x09_realWidth; l; l--)
@@ -5393,7 +5393,7 @@ void DrawPolygonRasterLine_single_color_subB6253(
 		v173 = viewPort.Width_DE564;
 	v18 = __OFSUB__((x_WORD)v173, (x_WORD)v172);
 	LOWORD(v173) = v173 - v172;
-	if ((unsigned __int8)(((v173 & 0x8000u) != 0) ^ v18) | ((x_WORD)v173 == 0))
+	if ((uint8_t)(((v173 & 0x8000u) != 0) ^ v18) | ((x_WORD)v173 == 0))
 		goto LABEL_329;
 	v174 = &v170[v172];
 	goto LABEL_328;
@@ -6047,7 +6047,7 @@ LABEL_129_DrawTriangle:
 					v16 = linesToDraw == -vertLowY;
 					v17 = linesToDraw + vertLowY < 0;
 					linesToDraw += vertLowY;
-					if ((unsigned __int8)(v17 ^ v18) | (unsigned __int8)v16)
+					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
 					v1164 = -vertLowY;
 					if (-vertLowY - v1114 >= 0)
@@ -6135,7 +6135,7 @@ LABEL_129_DrawTriangle:
 				v86 = v84 + v85 == 0;
 				v17 = v84 + v85 < 0;
 				v87 = v84 + v85;
-				if ((unsigned __int8)v17 ^ v18)
+				if ((uint8_t)v17 ^ v18)
 					return;
 				if (!v86)
 				{
@@ -6159,7 +6159,7 @@ LABEL_129_DrawTriangle:
 					v16 = linesToDraw == -vertLowY;
 					v17 = linesToDraw + vertLowY < 0;
 					linesToDraw += vertLowY;
-					if ((unsigned __int8)(v17 ^ v18) | (unsigned __int8)v16)
+					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
 					v1162 = -vertLowY;
 					if (-vertLowY - v1114 >= 0)
@@ -6270,7 +6270,7 @@ LABEL_129_DrawTriangle:
 					v16 = linesToDraw == -vertLowY;
 					v17 = linesToDraw + vertLowY < 0;
 					linesToDraw += vertLowY;
-					if ((unsigned __int8)(v17 ^ v18) | (unsigned __int8)v16)
+					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
 					v1161 = -vertLowY;
 					if (-vertLowY - v1114 >= 0)
@@ -6447,7 +6447,7 @@ LABEL_24_DrawTriangle:
 				v16 = linesToDraw == -v1190;
 				v17 = linesToDraw + v1190 < 0;
 				linesToDraw += v1190;
-				if (!((unsigned __int8)(v17 ^ v18) | (unsigned __int8)v16))
+				if (!((uint8_t)(v17 ^ v18) | (uint8_t)v16))
 				{
 					v1160 = -v1190;
 					if (-v1190 - v1117 >= 0)
@@ -6519,7 +6519,7 @@ LABEL_24_DrawTriangle:
 				v34 = v32 + v33 == 0;
 				v17 = v32 + v33 < 0;
 				v35 = v32 + v33;
-				if ((unsigned __int8)v17 ^ v18)
+				if ((uint8_t)v17 ^ v18)
 					return;
 				if (!v34)
 				{
@@ -6541,7 +6541,7 @@ LABEL_24_DrawTriangle:
 					v16 = linesToDraw == -v1190;
 					v17 = linesToDraw + v1190 < 0;
 					linesToDraw += v1190;
-					if ((unsigned __int8)(v17 ^ v18) | (unsigned __int8)v16)
+					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
 					v1158 = -v1190;
 					if (-v1190 - v1117 >= 0)
@@ -6619,7 +6619,7 @@ LABEL_24_DrawTriangle:
 				v16 = v14 + v15 == 0;
 				v17 = v14 + v15 < 0;
 				int v19 = v14 + v15;
-				if ((unsigned __int8)v17 ^ v18)
+				if ((uint8_t)v17 ^ v18)
 					return;
 				const int v20 = v19 + 1;
 				Uincrement = (signed int)(vert_y_middle->U + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low->U - vert_y_high->U) / dY_HighLowVert) - vert_y_low->U)
@@ -6642,7 +6642,7 @@ LABEL_24_DrawTriangle:
 					v16 = linesToDraw == -v1190;
 					v17 = linesToDraw + v1190 < 0;
 					linesToDraw += v1190;
-					if ((unsigned __int8)(v17 ^ v18) | (unsigned __int8)v16)
+					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
 					v1157 = -v1190;
 					if (-v1190 - v1117 >= 0)
@@ -6795,7 +6795,7 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 				v16 = linesToDraw == -v1192;
 				v17 = linesToDraw + v1192 < 0;
 				linesToDraw += v1192;
-				if ((unsigned __int8)(v17 ^ v18) | (unsigned __int8)v16)
+				if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 					return;
 				v139 += v1105 * v141;
 				v140 += v141 * v1109;
@@ -6842,7 +6842,7 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 				v16 = linesToDraw == -v1192;
 				v17 = linesToDraw + v1192 < 0;
 				linesToDraw += v1192;
-				if ((unsigned __int8)(v17 ^ v18) | (unsigned __int8)v16)
+				if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 					return;
 				v128 += v1105 * v132;
 				v129 += v132 * v1109;
@@ -6893,7 +6893,7 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 				v16 = linesToDraw == -v1192;
 				v17 = linesToDraw + v1192 < 0;
 				linesToDraw += v1192;
-				if ((unsigned __int8)(v17 ^ v18) | (unsigned __int8)v16)
+				if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 					return;
 				v120 += v1105 * v125;
 				v121 += v125 * v1109;
