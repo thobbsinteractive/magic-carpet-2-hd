@@ -5803,7 +5803,7 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	int miny = std::min(y1, std::min(y2, y3));
 #endif
 
-	if (maxx - minx > 0x7f00 || maxy - miny > 0x7f00) {
+	if (maxx - minx > 0x7fff || maxy - miny > 0x7fff) {
 		// triangle is too large to be drawn and can cause problems with computations
 		return;
 	}
@@ -6777,9 +6777,9 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 		const int v118 = vert_y_high->Y;
 		const bool v1298 = v118 > viewPort.Height_DE568;
 		int v1115 = v118 - v117;
-		linesToDraw = v118 - v117;
-		const int v1105 = ((vert_y_high->X - vert_y_low->X) << 16) / (v118 - v117);
-		const int v1109 = ((vert_y_middle->X - vert_y_low->X) << 16) / (v118 - v117);
+		linesToDraw = v118 - v117; // NOTE: vert_y_high->Y = vert_y_middle->Y
+		const int v1105 = ((vert_y_high->X - vert_y_low->X) << 16) / linesToDraw;
+		const int v1109 = ((vert_y_middle->X - vert_y_low->X) << 16) / linesToDraw;
 		switch (x_BYTE_E126D)
 		{
 		case 0:
