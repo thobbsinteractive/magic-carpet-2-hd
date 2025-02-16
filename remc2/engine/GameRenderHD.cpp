@@ -3978,8 +3978,6 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 
 	int jy;
 
-	int maxRenderBufferSize = screenWidth_18062C * screenHeight_180624 * 4;
-
 	/*uint8_t origbyte2y[100];
 	uint8_t remakebyte2y[100];
 	int remakepos2y[100];
@@ -5433,7 +5431,6 @@ void DrawPolygonRasterLine_subB6253(
 	int16_t v385;
 	uint8_t* currentPixel;
 
-	//int maxPixelIdx = (x_BYTE_D41B5_texture_size << 8);
 	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
 
 	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Standard); }
@@ -5555,7 +5552,6 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 
 	Rasterline_t *v1278;
 
-	int maxPixelIdx = (x_BYTE_D41B5_texture_size << 8);
 	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
 
 	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Flatshading); }
@@ -5664,8 +5660,6 @@ void DrawPolygonRasterLine_reflections_subB6253(
 	int v1054;
 	char v1056;
 	int pixelCount;
-
-	int maxPixelIdx = (x_BYTE_D41B5_texture_size << 8);
 
 	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
 
