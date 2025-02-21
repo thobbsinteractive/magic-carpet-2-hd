@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <gtest/gtest.h>
+#include "../../remc2/engine/Basic.h"
 #include "../../remc2/engine/GameRenderHD.h"
 
 TEST(GameRenderHD, CalculateRotationTranslationX)

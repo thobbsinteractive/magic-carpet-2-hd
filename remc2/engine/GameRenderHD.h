@@ -4,27 +4,21 @@
 #define GAME_RENDER_HD
 
 #include "GameRenderInterface.h"
-
-#include <array>
-#include <thread>
-
-#include "../utilities/Maths.h"
-#include "../utilities/BitmapIO.h"
-#include "../portability/bitmap_pos_struct.h"
-#include "../utilities/SafeQueue.h"
-#include "Terrain.h"
-#include "Type_F2C20ar.h"
-#include "Type_E9C38_Smalltit.h"
-#include "Type_Unk_F0E20x.h"
-#include "Type_WORD_D951C.h"
-#include "XUnk_D4350.h"
-#include "Type_D404C.h"
-#include "Type_D94F0_Bldgprmbuffer.h"
-#include "Type_D93C0_Bldgprmbuffer.h"
-#include "TextureMaps.h"
-#include "defs.h"
-#include "RenderThread.h"
 #include "ProjectionPolygon.h"
+#include "RenderThread.h"
+#include "Type_Unk_F0E20x.h"
+
+typedef struct {
+	int32_t startX;
+	int32_t endX;
+	int32_t U;
+	int32_t V;
+	int32_t brightness;
+} Rasterline_t;
+
+constexpr int MAX_THREADS = 8;
+constexpr int MAX_RASTERLINES = 209716; // based on the original 2048 * 2048 / 20 bytes per Rasterline_t, can probably be reduced (to screen height + margin?)
+
 
 class GameRenderHD : public GameRenderInterface
 {
@@ -43,15 +37,8 @@ private:
 		0x00,0xFF,0xFF,0x00,0xFF,0x28,0x00,0xFF
 	};
 
-	uint8_t unk_DE56Cx[8][4194304]; //Number of possible render threads (8) //number of polygons (2048 * 2048)
+	std::array<std::array<Rasterline_t, MAX_RASTERLINES>, MAX_THREADS> rasterlines_DE56Cx;
 	
-	int offsets_B8845[16] = {
-		  0, -15, -14, -13,
-		-12, -11, -10,  -9,
-		 -8,  -7,  -6,  -5,
-		 -4,  -3,  -2,  -1
-	};
-
 	char x_BYTE_D4750[60] = {
 		0x00,0x00,0x02,0x03,0x04,0x05,0x01,0x00,0x06,0x07,0x04,0x05,0x00,0x01,0x01,0x02,
 		0x02,0x03,0x03,0x04,0x04,0x03,0x03,0x02,0x02,0x01,0x01,0x00,0x00,0x00,0x00,0x01,
@@ -73,7 +60,7 @@ private:
 
 	int x_DWORD_D4794 = 0;
 	int x_DWORD_D4798 = 0;
-	char x_BYTE_E126D = 0;
+	char x_BYTE_E126D = 0;     // 7: reflections off, 5: reflections on
 	char x_BYTE_E126C = 112;
 	int x_DWORD_D4790 = 20;
 	int x_DWORD_D4324 = 0;
@@ -88,24 +75,24 @@ private:
 
 	void DrawSky_40950(int16_t roll, uint8_t startLine, uint8_t drawEveryNthLine);
 	void DrawSky_40950_TH(int16_t roll);
-	void DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __int16 yaw, signed int posZ, int pitch, int16_t roll, int fov);
+	void DrawTerrainAndParticles_3C080(int16_t posX, int16_t posY, int16_t yaw, signed int posZ, int pitch, int16_t roll, int fov);
 	void SubDrawTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
 	void SubDrawInverseTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
 	void SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
-	void DrawSprite_41BD3(uint32 a1);
+	void DrawSprite_41BD3(uint32_t a1);
 	void DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture);
 	void DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t x_BYTE_E88E0x[], int32_t x_DWORD_F5730[], type_event_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth);
 	void DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* vertex1, const ProjectionPolygon* vertex2, const ProjectionPolygon* vertex3, uint8_t startLine, uint8_t drawEveryNthLine);
-	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int s0, int s1, int* line);
-	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v4, int s0, int s1, int s4, int* line);
-	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line);
-	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2, int* v3, int* v4, int s0, int s1, int s2, int s3, int s4, int* line);
+	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int s0, int s1, int* line);
+	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v4, int s0, int s1, int s4, int* line);
+	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line);
+	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v2, int* v3, int* v4, int s0, int s1, int s2, int s3, int s4, int* line);
 	uint16_t sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth);
 	void sub_88740(type_event_0x6E8E* a1, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);
-	void DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1, __int16 a2, int a3, __int16 a4);
+	void DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1, int16_t a2, int a3, int16_t a4);
 	void StartWorkerThreads(uint8_t numOfThreads, bool assignToSpecificCores);
 	void StartWorkerThread();
 	void StartWorkerThread(int core);
@@ -126,6 +113,7 @@ public:
 
 	static int32_t CalculateRotationTranslationX(int64_t cos_0x11, int64_t pnt1, int64_t sin_0x0d, int64_t pnt2);
 	static int32_t CalculateRotationTranslationY(int64_t pnt1, int64_t sin_0x0d, int64_t cos_0x11, int64_t pnt2);
+	static int SumByte1WithByte2(int byte1, int byte2, uint8_t v180);
 };
 
 #endif //GAME_RENDER_HD

@@ -47,7 +47,7 @@
 #define __CFSHL__(x, y) (x<<y)
 
 
-#pragma pack (1)
+#pragma pack (push,1)
 typedef struct//lenght 11
 {
 	int8_t connected_0;
@@ -59,14 +59,14 @@ typedef struct//lenght 11
 typedef struct {//lenght 18
 	int32_t dword_0;
 }type_17ECA0;
-#pragma pack (16)
+#pragma pack (pop)
 
 typedef struct {
 	TColor c[256];
 	uint8_t data[];
 }TcolNext;
 
-#pragma pack (1)
+#pragma pack (push,1)
 typedef struct//lenght 613 // end 17E09D
 {
 	TColor* x_DWORD_17DE38x; // weak
@@ -147,7 +147,7 @@ typedef struct//lenght 613 // end 17E09D
 	int16_t unk_17E084x[12]; // weak [11]
 	char x_BYTE_17E09C; // weak
 } type_x_DWORD_17DE38str;
-#pragma pack (16)
+#pragma pack (pop)
 
 //extern int16_t m_iViewPortX_EA3D0; // weak?x_DWORD_E9C4C_langindexbuffer[481]
 //extern uint16_t m_uiViewPortWidth_EA3C4; // weak?x_DWORD_E9C4C_langindexbuffer[478]
@@ -232,7 +232,7 @@ extern TColor unk_17D838x[]; // weak
 
 extern uint8_t x_BYTE_D41B5_texture_size;
 
-#pragma pack (1)
+#pragma pack (push,1)
 typedef struct {
 	bitmap_pos_struct2_t** begin_buffer;
 	bitmap_pos_struct2_t** end_buffer;
@@ -240,9 +240,6 @@ typedef struct {
 	bitmap_pos_struct_t** posistruct;
 } filearray_struct;
 
-#pragma pack (16)
-
-#pragma pack (1)
 typedef struct {//lenght 26
 	int32_t dword_2;
 	int32_t dword_6;
@@ -262,16 +259,14 @@ typedef struct {//lenght 80
 	type_SPELLS_BEGIN_BUFFER_str_sub subspell[3];
 }
 type_SPELLS_BEGIN_BUFFER_str;
-#pragma pack (16)
 
-#pragma pack (1)
 typedef struct {//lenght 10
 	int32_t dword_0;
 	int32_t dword_4;
 	int16_t word_8;
 }
 type_TMAPS00TAB_BEGIN_BUFFER;
-#pragma pack (16)
+#pragma pack (pop)
 
 extern int filearrayindex_POINTERSDATTAB;
 extern int filearrayindex_FONTS0DATTAB;
@@ -509,7 +504,6 @@ extern uint8_t* Zero_pointer;
 bool DefaultResolutions();
 
 void FreeMem_83E80(uint8_t* a1);
-int sub_84000(int a1);
 
 x_DWORD x_outp(x_DWORD, char);// weak
 x_DWORD x_inp(x_DWORD);// weak

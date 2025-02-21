@@ -120,7 +120,7 @@ type_event_0x6E8E* x_DWORD_EA3E4[1001];//2bb3e4
 
 uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
 uint8_t* x_BYTE_F6EE0_tablesx_pre = (uint8_t*)x_BYTE_F6EE0_tablesx;
-uint8_t* x_BYTE_FAEE0_tablesx_pre = (uint8_t*)&x_BYTE_F6EE0_tablesx[16384];
+uint8_t* x_BYTE_FAEE0_tablesx_pre = (uint8_t*)&x_BYTE_F6EE0_tablesx[0x4000];
 
 type_E9C38_smalltit Str_E9C38_smalltit[21 * 40];
 
@@ -503,31 +503,6 @@ void FreeMem_83E80(uint8_t* ptr)//264e80
 	}*/
 }
 // 17ECA0: using guessed type int x_DWORD_17ECA0;
-
-//----- (00084000) --------------------------------------------------------
-int sub_84000(int a1)//265000
-{
-	int result; // eax
-	int v2; // edx
-	int v3; // ebx
-
-	result = a1;
-	if (*(x_DWORD*)(a1 + 12))
-	{
-		*(x_BYTE*)(a1 + 16) = 0;
-		v2 = *(x_DWORD*)(a1 + 12);
-		if (*(x_BYTE*)(a1 + 17) == *(x_BYTE*)(v2 + 17) && !*(x_BYTE*)(v2 + 16))
-		{
-			v3 = *(x_DWORD*)(a1 + 8);
-			if (v3)
-				*(x_DWORD*)(v3 + 12) = v2;
-			*(x_DWORD*)(*(x_DWORD*)(a1 + 12) + 8) = *(x_DWORD*)(a1 + 8);
-			*(x_DWORD*)(*(x_DWORD*)(a1 + 12) + 4) += *(x_DWORD*)(a1 + 4);
-			*(x_DWORD*)(a1 + 4) = 0;
-		}
-	}
-	return result;
-}
 
 x_DWORD x_outp(x_DWORD, char) { stub_fix_it(); return 0; };// weak
 x_DWORD x_inp(x_DWORD) { stub_fix_it(); return 0; };// weak
