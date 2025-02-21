@@ -2781,7 +2781,7 @@ void GameRenderHD::DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1x, __
 	v39 = viewPort.PosY_EA3CC + a3 - 20;
 	if (v11 >= viewPort.PosX_EA3D0)
 	{
-		if ((signed __int16)v12 >= viewPort.PosY_EA3CC && v11 < v31 && (signed __int16)v12 < v29)
+		if ((int16_t)v12 >= viewPort.PosY_EA3CC && v11 < v31 && (int16_t)v12 < v29)
 		{
 			v9x = strlen(v24);
 			v13 = 8 * v9x + 4;
@@ -2794,7 +2794,7 @@ void GameRenderHD::DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1x, __
 			{
 				v24[v9x] = 0;
 				v32 = v13 + 2;
-				v26 = (signed __int16)(v13 + 2);
+				v26 = (int16_t)(v13 + 2);
 				v30 = v11;
 				DrawLine_2BC80(v11, v39, v13 + 2, 18, v37);//8
 				//v27 = v33;//30// v16
@@ -3136,8 +3136,8 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 		if (!(v3x->struct_byte_0xc_12_15.byte[0] & 0x21))
 		{
 			v4 = v3x->axis_0x4C_76.y;
-			v96 = (signed __int16)(v3x->axis_0x4C_76.x - x_WORD_F2CC4);
-			v97 = (signed __int16)(x_WORD_F2CC2 - v4);
+			v96 = (int16_t)(v3x->axis_0x4C_76.x - x_WORD_F2CC4);
+			v97 = (int16_t)(x_WORD_F2CC2 - v4);
 			if (shadows_F2CC7)
 			{
 				if (!Str_E9C38_smalltit[a2x].textAtyp_43 && !(v3x->struct_byte_0xc_12_15.word[1] & 0x808))
@@ -4914,13 +4914,13 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 						&& str_F2C20ar.dword0x14x->class_0x3F_63 == 3
 						&& (!str_F2C20ar.dword0x14x->model_0x40_64 || str_F2C20ar.dword0x14x->model_0x40_64 == 1))
 					{
-						DrawSorcererNameAndHealthBar_2CB30(str_F2C20ar.dword0x14x, str_F2C20ar.dword0x04_screenY, (signed __int16)str_F2C20ar.dword0x03_screenX, str_F2C20ar.dword0x09_realWidth);
+						DrawSorcererNameAndHealthBar_2CB30(str_F2C20ar.dword0x14x, str_F2C20ar.dword0x04_screenY, (int16_t)str_F2C20ar.dword0x03_screenX, str_F2C20ar.dword0x09_realWidth);
 					}
 					if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 						sub_88740(
 							str_F2C20ar.dword0x14x,
-							(signed __int16)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
-							(signed __int16)(str_F2C20ar.dword0x03_screenX + (str_F2C20ar.dword0x0c_realHeight >> 1)));
+							(int16_t)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
+							(int16_t)(str_F2C20ar.dword0x03_screenX + (str_F2C20ar.dword0x0c_realHeight >> 1)));
 					if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] & 0x40)
 					{
 						str_F2C20ar.dword0x14x->word_0x2A_42 |= 0x40u;
@@ -5001,8 +5001,8 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 			if (a1 == 1 && x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 				sub_88740(
 					str_F2C20ar.dword0x14x,
-					(signed __int16)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
-					(signed __int16)(str_F2C20ar.dword0x03_screenX + (str_F2C20ar.dword0x0c_realHeight >> 1)));
+					(int16_t)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
+					(int16_t)(str_F2C20ar.dword0x03_screenX + (str_F2C20ar.dword0x0c_realHeight >> 1)));
 			//v1 = (int)(x_DWORD_F2C2C * iScreenWidth_DE560 + x_DWORD_F2C30 + x_DWORD_DE558);
 
 			//               screen-Y                                            screen-X
@@ -5346,11 +5346,11 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 void DrawPolygonRasterLine_single_color_subB6253(
 	Rasterline_t *pRasterLines,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw, 
-	uint8_t **pv1102, char local_x_BYTE_E126C)
+	uint8_t **ptrRenderBufferStartOfCurrentLine_v1102, char local_x_BYTE_E126C)
 {
 	Rasterline_t* next_raster_line = pRasterLines;
 
-	uint8_t* v170 = *pv1102;
+	uint8_t* v170 = *ptrRenderBufferStartOfCurrentLine_v1102;
 
 	char v171 = local_x_BYTE_E126C;
 
