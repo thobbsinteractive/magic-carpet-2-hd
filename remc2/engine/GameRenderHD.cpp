@@ -1983,7 +1983,7 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 						str_F2C20ar.dword0x01_rotIdx = v39;
 						str_F2C20ar.dword0x09_realWidth++;
 						str_F2C20ar.dword0x0c_realHeight++;
-						DrawSprite_41BD3(2u);
+						DrawSprite_41BD3(2u, str_F2C20ar.dword0x08_width);
 						break;
 					default:
 						goto LABEL_70;
@@ -3423,7 +3423,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 									else
 										str_F2C20ar.dword0x00 = v47 + 0x2000;
 									str_F2C20ar.dword0x01_rotIdx = 8;
-									DrawSprite_41BD3(0);
+									DrawSprite_41BD3(0, str_F2C20ar.dword0x08_width);
 								}
 								break;
 							default:
@@ -3789,7 +3789,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					}
 					str_F2C20ar.dword0x09_realWidth++;
 					str_F2C20ar.dword0x0c_realHeight++;
-					DrawSprite_41BD3(1u);
+					DrawSprite_41BD3(1u, str_F2C20ar.dword0x08_width);
 					break;
 				default:
 					goto LABEL_164;
@@ -3801,7 +3801,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 	} while (result);
 }
 
-void GameRenderHD::DrawSprite_41BD3(uint32 a1)
+void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 {
 	int8_t* ptrSpriteRenderSrc_v2x; // ebx
 	x_DWORD* v3; // esi
@@ -4397,7 +4397,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 									//adress 2237d3
 									v169x = &m_str_F0E20x[*v165];
 									v155 = 8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1];
-									v121x = &str_F2C20ar.dword0x02_data[str_F2C20ar.dword0x08_width * (str_F2C20ar.dword0x0a_actIdx >> 16)];
+									v121x = &str_F2C20ar.dword0x02_data[spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16)];
 
 									if ((unsigned int)str_F2C20ar.dword0x01_rotIdx <= 8)
 									{
@@ -5017,8 +5017,8 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 					{
 					case 0:
 						//               width                  actual line                   base adress                 add index
-						//v2 = (char*)(str_F2C20ar.dword0x08_width * (str_F2C20ar.dword0x0a_actIdx >> 16) + (int)str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + 36964));//sprite
-						ptrSpriteRenderSrc_v2x = &str_F2C20ar.dword0x02_data[str_F2C20ar.dword0x08_width * (str_F2C20ar.dword0x0a_actIdx >> 16) + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4)];//sprite
+						//v2 = (char*)(spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16) + (int)str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + 36964));//sprite
+						ptrSpriteRenderSrc_v2x = &str_F2C20ar.dword0x02_data[spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16) + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4)];//sprite
 						v3 = (x_DWORD*)&(m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
 						v4 = v122x;//screen
 						//   parametres
@@ -5080,7 +5080,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 						break;
 					case 1:
 						v13 = str_F2C20ar.dword0x00;
-						ptrSpriteRenderSrc_v14 = (x_BYTE*)(str_F2C20ar.dword0x08_width * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
+						ptrSpriteRenderSrc_v14 = (x_BYTE*)(spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
 						v15 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
 						v16 = (uint8_t*)v122x;
 						v17 = str_F2C20ar.dword0x09_realWidth >> 1;
@@ -5111,7 +5111,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 						}
 						break;
 					case 2:
-						ptrSpriteRenderSrc_v18 = (x_BYTE*)(str_F2C20ar.dword0x08_width * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
+						ptrSpriteRenderSrc_v18 = (x_BYTE*)(spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
 						v19 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
 						v20 = (uint8_t*)v122x;
 						HIWORD(v21) = 0;
@@ -5149,7 +5149,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 						}
 						break;
 					case 3:
-						ptrSpriteRenderSrc_v23 = (x_BYTE*)(str_F2C20ar.dword0x08_width * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));//from mask
+						ptrSpriteRenderSrc_v23 = (x_BYTE*)(spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));//from mask
 						v24 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);//from image
 						v25 = v122x;//to adress
 						HIWORD(v26) = 0;
@@ -5188,7 +5188,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 						break;
 					case 4:
 						HIWORD(v31) = HIWORD(str_F2C20ar.dword0x07);
-						ptrSpriteRenderSrc_v28 = (x_BYTE*)(str_F2C20ar.dword0x08_width * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
+						ptrSpriteRenderSrc_v28 = (x_BYTE*)(spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
 						v29 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
 						v30 = v122x;
 						HIBYTE(v31) = str_F2C20ar.dword0x07;
@@ -5221,7 +5221,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 						break;
 					case 5:
 						v33 = str_F2C20ar.dword0x07;
-						ptrSpriteRenderSrc_v34 = (x_BYTE*)(str_F2C20ar.dword0x08_width * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
+						ptrSpriteRenderSrc_v34 = (x_BYTE*)(spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
 						v35 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
 						v36 = v122x;
 						v37 = str_F2C20ar.dword0x09_realWidth >> 1;
@@ -5253,7 +5253,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 						break;
 					case 6:
 						v38 = str_F2C20ar.dword0x00;
-						ptrSpriteRenderSrc_v39 = (x_BYTE*)(str_F2C20ar.dword0x08_width * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
+						ptrSpriteRenderSrc_v39 = (x_BYTE*)(spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
 						v40 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
 						v41 = v122x;
 						HIWORD(v42) = 0;
@@ -5294,7 +5294,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 						break;
 					case 7:
 						v44 = str_F2C20ar.dword0x00;
-						ptrSpriteRenderSrc_v45 = (x_BYTE*)(str_F2C20ar.dword0x08_width * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
+						ptrSpriteRenderSrc_v45 = (x_BYTE*)(spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16) + str_F2C20ar.dword0x02_data + *(x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_1 + 4));
 						v46 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
 						v47 = v122x;
 						HIWORD(v48) = 0;
