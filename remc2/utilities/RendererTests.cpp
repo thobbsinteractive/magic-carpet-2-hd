@@ -10,47 +10,46 @@ int renderer_tests_frame_count = 0;
 bool renderer_tests_success = false;
 bool renderer_tests_quit = false;
 
-// not yet covered renderer checkpoints:
-// 		{RendererTestsHitCheckpoint::HD_case_6_v392, false}, {RendererTestsHitCheckpoint::Original_case_6_v392, false},
-// 		{RendererTestsHitCheckpoint::HD_case_7_v406, false}, {RendererTestsHitCheckpoint::Original_case_7_v406, false},
-// 		{RendererTestsHitCheckpoint::HD_case_8_v445, false}, {RendererTestsHitCheckpoint::Original_case_8_v445, false}
-
+// TODO: inject sprites in one of the levels and use this for all sprite code paths
 std::array<RendererTestsForLevel,25> renderer_tests{
-	RendererTestsForLevel{100, 0, 240, false, 0, { // level 1
+	RendererTestsForLevel{100, 0, 240, false, 0, 0, false, { // level 0
 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Standard, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Standard, false},
 	}},
-	RendererTestsForLevel{200, 320, 240, false, 0, { // level 2
+	RendererTestsForLevel{200, 320, 240, false, 0, 0, false, { // level 1
 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Standard, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Standard, false},
 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Reflections, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Reflections, false},
 	}}, 
-	RendererTestsForLevel{150, 310, 240, true, 0, { // level 3 - flat shading
+	RendererTestsForLevel{150, 310, 240, true, 0, 2, false, { // level 2 - flat shading
  		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Flatshading, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Flatshading, false},
 	}},
-	RendererTestsForLevel{100, 0, 480, false, 0, { // level 4 - looking up to the ceiling
+	RendererTestsForLevel{100, 0, 480, false, 0, 0, false, { // level 3 - looking up to the ceiling
 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Standard, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Standard, false},
 	}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
-	RendererTestsForLevel{1, 0, 240, false, 0, {}},
+	RendererTestsForLevel{100, 480, 200, false, 0, 0, false, { // level 4 - looking down to the floor, right turn, goat sprite rendering
+		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_0, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_0, false},
+	}},
+	RendererTestsForLevel{150, 420, 220, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 15, false, {}}, // level 6
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 140, 240, false, 0, 4, false, {}}, // level 8 - lot of sprites
+	RendererTestsForLevel{150, 320, 240, false, 0, 2, false, {}}, // level 9
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
+	RendererTestsForLevel{150, 0, 240, false, 0, 0, false, {}},
 };
+
 bool stop_renderer_tests() {
 	if (renderer_tests_frame_count >= renderer_tests[CommandLineParams.GetSetLevel()].max_frames) {
 		renderer_tests_eval_findings();
@@ -58,6 +57,7 @@ bool stop_renderer_tests() {
 	}
 	return false;
 }
+
 void renderer_tests_eval_findings() {
 	renderer_tests_quit = true;
 
@@ -72,8 +72,8 @@ void renderer_tests_eval_findings() {
 	if (renderer_tests[CommandLineParams.GetSetLevel()].differences > 0) {
 		Logger->warn("Differences between HD and Original renderer: {0}", renderer_tests[CommandLineParams.GetSetLevel()].differences);
 
-		if (renderer_tests[CommandLineParams.GetSetLevel()].differences > renderer_tests[CommandLineParams.GetSetLevel()].max_frames) {
-			// NOTE: We accept up to 1 pixel difference per frame,
+		if (renderer_tests[CommandLineParams.GetSetLevel()].differences > renderer_tests[CommandLineParams.GetSetLevel()].differencesThreshold) {
+			// NOTE: We accept some differences as compared to the original renderer,
 			//       because the originial renderer accesses illegal texture memory.
 			//       Fixing this yields pixel differences in some corner cases.
 			Logger->error("Too many differences between HD and Original renderer");
@@ -88,6 +88,7 @@ void renderer_tests_eval_findings() {
 		Logger->info("No differences between HD and Original renderer and all checkpoints hit");
 	}
 }
+
 void renderer_tests_register_hit(const RendererTestsHitCheckpoint& checkpoint) {
 	renderer_tests[CommandLineParams.GetSetLevel()].must_hit_checkpoints[checkpoint] = true;
 }

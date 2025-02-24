@@ -7,14 +7,10 @@
 // renderer regressions tests data for comparing HD and original renderer
 enum class RendererTestsHitCheckpoint {
 	RendTest_HD_Draw_Rasterline_SingleColor, RendTest_Orig_Draw_Rasterline_SingleColor,
-	HD_BYTE_E126D_case_1_v176, Original_BYTE_E126D_case_1_v176,
-	HD_BYTE_E126D_case_2_v228, Original_BYTE_E126D_case_2_v228,
-	HD_BYTE_E126D_case_3_v383, Original_BYTE_E126D_case_3_v383,
-	HD_BYTE_E126D_case_4_v339, Original_BYTE_E126D_case_4_v339,
 	RendTest_HD_Draw_Rasterline_Standard, RendTest_Orig_Draw_Rasterline_Standard,
-	HD_BYTE_E126D_case_6_v392, Original_BYTE_E126D_case_6_v392,
 	RendTest_HD_Draw_Rasterline_Flatshading, RendTest_Orig_Draw_Rasterline_Flatshading,
 	RendTest_HD_Draw_Rasterline_Reflections, RendTest_Orig_Draw_Rasterline_Reflections,
+	RendTest_HD_Draw_Sprite_0, RendTest_Orig_Draw_Sprite_0
 };
 
 extern int renderer_tests_frame_count;
@@ -29,6 +25,8 @@ typedef struct {
 	int set_mouse_y;
 	bool set_flatshader;
 	int differences;
+	int differencesThreshold; // needed because some fixes lead to minor pixel differences
+	bool injectSprites; // create artificial sprites for tests
 	std::map<RendererTestsHitCheckpoint, bool> must_hit_checkpoints;
 } RendererTestsForLevel;
 extern std::array<RendererTestsForLevel,25> renderer_tests;

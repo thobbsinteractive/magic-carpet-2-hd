@@ -4012,6 +4012,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 					switch (str_F2C20ar.dword0x1e)//mirroring
 					{
 					case 0:
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_0); }
 						v156 = str_F2C20ar.dword0x1b * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
