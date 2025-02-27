@@ -5403,7 +5403,7 @@ void DrawPolygonRasterLine_single_color_subB6253(
 void DrawPolygonRasterLine_subB6253(
 	Rasterline_t *pRasterLines,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw, 
-	uint8_t **pv1102,
+	uint8_t **ptrViewPortRenderLineStart_v1102,
 	uint32_t Vincrement, int Uincrement, uint32_t BrightnessIncrement,
 	const uint8_t *pTexture) 
 {
@@ -5441,8 +5441,8 @@ void DrawPolygonRasterLine_subB6253(
 
 		startX = HIWORD(current_raster_line->startX);
 		endX = HIWORD(current_raster_line->endX);
-		v379 = iScreenWidth_DE560 + *pv1102;
-		*pv1102 += iScreenWidth_DE560;
+		v379 = iScreenWidth_DE560 + *ptrViewPortRenderLineStart_v1102;
+		*ptrViewPortRenderLineStart_v1102 += iScreenWidth_DE560;
 		line6++;
 
 		if (line6 >= drawEveryNthLine)
