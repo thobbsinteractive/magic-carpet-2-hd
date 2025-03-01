@@ -5404,7 +5404,7 @@ void DrawPolygonRasterLine_subB6253(
 	Rasterline_t *pRasterLines,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw, 
 	uint8_t **ptrViewPortRenderLineStart_v1102,
-	uint32_t Vincrement, int Uincrement, uint32_t BrightnessIncrement,
+	uint32_t Vincrement, int Uincrement, uint32_t BrightnessIncrement_v1146,
 	const uint8_t *pTexture) 
 {
 	Rasterline_t* next_raster_line = pRasterLines;
@@ -5479,7 +5479,7 @@ void DrawPolygonRasterLine_subB6253(
 				startX = v382 >> 8;
 				textureIndexU = BYTE2(v382);
 
-				v384tmp = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement * v380);
+				v384tmp = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement_v1146 * v380);
 				BrightnessFractionalPart_v384hi = HIWORD(v384tmp);
 				BYTE1(paletteMapping) = LOWORD(v384tmp);
 				pixelCount_v384lo = HIWORD(current_raster_line->endX);
@@ -5511,9 +5511,9 @@ void DrawPolygonRasterLine_subB6253(
 
 				currentPixel[0] = x_BYTE_F6EE0_tablesx[paletteMapping];
 
-				v180 = __CFADD__(LOWORD(BrightnessIncrement), BrightnessFractionalPart_v384hi);
-				BrightnessFractionalPart_v384hi += BrightnessIncrement;
-				paletteMapping = GameRenderHD::SumByte1WithByte2(paletteMapping, BrightnessIncrement, v180);
+				v180 = __CFADD__(LOWORD(BrightnessIncrement_v1146), BrightnessFractionalPart_v384hi);
+				BrightnessFractionalPart_v384hi += BrightnessIncrement_v1146;
+				paletteMapping = GameRenderHD::SumByte1WithByte2(paletteMapping, BrightnessIncrement_v1146, v180);
 
 				currentPixel += 1;
 			} while (--pixelCount_v384lo > 0);
