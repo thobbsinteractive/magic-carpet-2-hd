@@ -31102,16 +31102,16 @@ int8_t* x_DWORD_DBF50ar_ret(uint32_t adress) {
 // E9C38: using guessed type int x_DWORD_E9C38_smalltit;
 // F2C84: using guessed type int str_F2C20ar.dword0x19;
 // F2C88: using guessed type int str_F2C20ar.dword0x1a;
-// F2C8C: using guessed type int str_F2C20ar.dword0x1b;
+// F2C8C: using guessed type int str_F2C20ar.dword0x1b_cosRoll;
 // F2C90: using guessed type int str_F2C20ar.dword0x1c;
 // F2C94: using guessed type int str_F2C20ar.dword0x1d;
-// F2C98: using guessed type int str_F2C20ar.dword0x1e;
+// F2C98: using guessed type int str_F2C20ar.dword0x1e_spriteSymmetry;
 // F2C9C: using guessed type int str_F2C20ar.dword0x1f;
 // F2CA4: using guessed type int str_F2C20ar.dword0x21;
 // F2CAC: using guessed type int str_F2C20ar.dword0x23;
 // F2CB4: using guessed type int str_F2C20ar.dword0x25;
 // F2CB8: using guessed type int str_F2C20ar.dword0x26;
-// F2CBC: using guessed type int str_F2C20ar.dword0x27;
+// F2CBC: using guessed type int str_F2C20ar.dword0x27_sinRoll;
 
 /*
 8 x_DWORD_D9F50ar[0x800] 800 * 0

@@ -2251,17 +2251,17 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 	int16_t v108; // [esp+Ch] [ebp-4h]
 
 	v1 = roll & 0x7FF;
-	str_F2C20ar.dword0x1e = v1 >> 8;
+	str_F2C20ar.dword0x1e_spriteSymmetry = v1 >> 8;
 	switch (v1 >> 8)
 	{
 	case 0:
-		str_F2C20ar.dword0x27 = Maths::sin_DB750[v1];
-		str_F2C20ar.dword0x1b = Maths::sin_DB750[512 + v1];
+		str_F2C20ar.dword0x27_sinRoll = Maths::sin_DB750[v1];
+		str_F2C20ar.dword0x1b_cosRoll = Maths::sin_DB750[512 + v1];
 
 		v88 = iScreenWidth_DE560;
 		v92 = (uint16_t)viewPort.Width_DE564;
-		str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x27 << 8) / (str_F2C20ar.dword0x1b >> 8);
-		v101 = (str_F2C20ar.dword0x27 << 8) / (str_F2C20ar.dword0x1b >> 8);
+		str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x27_sinRoll << 8) / (str_F2C20ar.dword0x1b_cosRoll >> 8);
+		v101 = (str_F2C20ar.dword0x27_sinRoll << 8) / (str_F2C20ar.dword0x1b_cosRoll >> 8);
 		v2idx = 0;
 		v3 = (signed int*)&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_3];
 		v4 = 0;
@@ -2299,8 +2299,8 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 		v10 = Maths::sin_DB750[v1];
 		v11 = Maths::sin_DB750[512 + v1];
 
-		str_F2C20ar.dword0x27 = v10;
-		str_F2C20ar.dword0x1b = (int)v11;
+		str_F2C20ar.dword0x27_sinRoll = v10;
+		str_F2C20ar.dword0x1b_cosRoll = (int)v11;
 		v84 = iScreenWidth_DE560;
 		v93 = (uint16_t)viewPort.Height_DE568;
 		if (v1 == 256)
@@ -2327,8 +2327,8 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 		}
 		else
 		{
-			str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x1b << 8) / (v10 >> 8);
-			v102 = (str_F2C20ar.dword0x1b << 8) / (v10 >> 8);
+			str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x1b_cosRoll << 8) / (v10 >> 8);
+			v102 = (str_F2C20ar.dword0x1b_cosRoll << 8) / (v10 >> 8);
 			v17idx = 0;
 			v18 = (signed int*)&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_3];
 			v19 = 0;
@@ -2364,13 +2364,13 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 		str_F2C20ar.Height_0x19 = (uint16_t)viewPort.Width_DE564 + str_F2C20ar.dword0x21;
 		goto LABEL_66;
 	case 2:
-		str_F2C20ar.dword0x27 = Maths::sin_DB750[v1 - 512];//copy to other
-		str_F2C20ar.dword0x1b = Maths::sin_DB750[v1];
+		str_F2C20ar.dword0x27_sinRoll = Maths::sin_DB750[v1 - 512];//copy to other
+		str_F2C20ar.dword0x1b_cosRoll = Maths::sin_DB750[v1];
 		
 		v85 = iScreenWidth_DE560;
 		v94 = (uint16_t)viewPort.Height_DE568;
-		str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x27 << 8) / (str_F2C20ar.dword0x1b >> 8);
-		v103 = (str_F2C20ar.dword0x27 << 8) / (str_F2C20ar.dword0x1b >> 8);
+		str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x27_sinRoll << 8) / (str_F2C20ar.dword0x1b_cosRoll >> 8);
+		v103 = (str_F2C20ar.dword0x27_sinRoll << 8) / (str_F2C20ar.dword0x1b_cosRoll >> 8);
 		v23idx = 0;
 		v24 = (signed int*)&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_3];
 		v25 = 0;
@@ -2409,8 +2409,8 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 			return;
 		goto LABEL_68;
 	case 3:
-		str_F2C20ar.dword0x27 = Maths::sin_DB750[v1 - 512];//copy to other
-		str_F2C20ar.dword0x1b = Maths::sin_DB750[v1];
+		str_F2C20ar.dword0x27_sinRoll = Maths::sin_DB750[v1 - 512];//copy to other
+		str_F2C20ar.dword0x1b_cosRoll = Maths::sin_DB750[v1];
 		
 		v89 = iScreenWidth_DE560;
 		v96 = (uint16_t)viewPort.Width_DE564;
@@ -2438,8 +2438,8 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 		}
 		else
 		{
-			str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x1b << 8) / (str_F2C20ar.dword0x27 >> 8);
-			v104 = (str_F2C20ar.dword0x1b << 8) / (str_F2C20ar.dword0x27 >> 8);
+			str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x1b_cosRoll << 8) / (str_F2C20ar.dword0x27_sinRoll >> 8);
+			v104 = (str_F2C20ar.dword0x1b_cosRoll << 8) / (str_F2C20ar.dword0x27_sinRoll >> 8);
 			v36idx = 0;
 			v37 = (signed int*)&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_3];
 			v38 = 0;
@@ -2475,13 +2475,13 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 		v9 = -iScreenWidth_DE560;
 		goto LABEL_65;
 	case 4:
-		str_F2C20ar.dword0x27 = Maths::sin_DB750[v1 - 1024];//copy to other
-		str_F2C20ar.dword0x1b = Maths::sin_DB750[v1 - 512];//copy to other
+		str_F2C20ar.dword0x27_sinRoll = Maths::sin_DB750[v1 - 1024];//copy to other
+		str_F2C20ar.dword0x1b_cosRoll = Maths::sin_DB750[v1 - 512];//copy to other
 
 		v90 = -iScreenWidth_DE560;
 		v97 = (uint16_t)viewPort.Width_DE564;
-		str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x27 << 8) / (str_F2C20ar.dword0x1b >> 8);
-		v105 = (str_F2C20ar.dword0x27 << 8) / (str_F2C20ar.dword0x1b >> 8);
+		str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x27_sinRoll << 8) / (str_F2C20ar.dword0x1b_cosRoll >> 8);
+		v105 = (str_F2C20ar.dword0x27_sinRoll << 8) / (str_F2C20ar.dword0x1b_cosRoll >> 8);
 		v43idx = 0;
 		v44 = (signed int*)&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_3];
 		v45 = 0;
@@ -2518,8 +2518,8 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 		v9 = -iScreenWidth_DE560;
 		goto LABEL_65;
 	case 5:
-		str_F2C20ar.dword0x1b = Maths::sin_DB750[v1 - 512];//copy to other
-		str_F2C20ar.dword0x27 = Maths::sin_DB750[v1 - 1024];//copy to other
+		str_F2C20ar.dword0x1b_cosRoll = Maths::sin_DB750[v1 - 512];//copy to other
+		str_F2C20ar.dword0x27_sinRoll = Maths::sin_DB750[v1 - 1024];//copy to other
 
 		v86 = -iScreenWidth_DE560;
 		v98 = (uint16_t)viewPort.Height_DE568;
@@ -2547,8 +2547,8 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 		}
 		else
 		{
-			str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x1b << 8) / (str_F2C20ar.dword0x27 >> 8);
-			v106 = (str_F2C20ar.dword0x1b << 8) / (str_F2C20ar.dword0x27 >> 8);
+			str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x1b_cosRoll << 8) / (str_F2C20ar.dword0x27_sinRoll >> 8);
+			v106 = (str_F2C20ar.dword0x1b_cosRoll << 8) / (str_F2C20ar.dword0x27_sinRoll >> 8);
 			v57idx = 0;
 			v58 = (signed int*)&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_3];
 			v59 = 0;
@@ -2588,13 +2588,13 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 			return;
 		goto LABEL_68;
 	case 6:
-		str_F2C20ar.dword0x27 = Maths::sin_DB750[v1 - 1536];//copy to other
-		str_F2C20ar.dword0x1b = Maths::sin_DB750[v1 - 1024];//copy to other
+		str_F2C20ar.dword0x27_sinRoll = Maths::sin_DB750[v1 - 1536];//copy to other
+		str_F2C20ar.dword0x1b_cosRoll = Maths::sin_DB750[v1 - 1024];//copy to other
 
 		v87 = -iScreenWidth_DE560;
 		v99 = (uint16_t)viewPort.Height_DE568;
-		str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x27 << 8) / (str_F2C20ar.dword0x1b >> 8);
-		v107 = (str_F2C20ar.dword0x27 << 8) / (str_F2C20ar.dword0x1b >> 8);
+		str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x27_sinRoll << 8) / (str_F2C20ar.dword0x1b_cosRoll >> 8);
+		v107 = (str_F2C20ar.dword0x27_sinRoll << 8) / (str_F2C20ar.dword0x1b_cosRoll >> 8);
 		v63idx = 0;
 		v64 = (signed int*)&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_3];
 		v65 = 0;
@@ -2636,8 +2636,8 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 		v69 = Maths::sin_DB750[v1 - 1536];//copy to other
 		v70 = Maths::sin_DB750[v1 - 1024];//copy to other
 
-		str_F2C20ar.dword0x27 = v69;
-		str_F2C20ar.dword0x1b = v70;
+		str_F2C20ar.dword0x27_sinRoll = v69;
+		str_F2C20ar.dword0x1b_cosRoll = v70;
 		v91 = -iScreenWidth_DE560;
 		v100 = (uint16_t)viewPort.Width_DE564;
 		if (v1 == 1792)
@@ -2664,8 +2664,8 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 		}
 		else
 		{
-			str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x1b << 8) / (v69 >> 8);
-			v108 = (str_F2C20ar.dword0x1b << 8) / (v69 >> 8);
+			str_F2C20ar.dword0x1f = (str_F2C20ar.dword0x1b_cosRoll << 8) / (v69 >> 8);
+			v108 = (str_F2C20ar.dword0x1b_cosRoll << 8) / (v69 >> 8);
 			v76idx = 0;
 			v77 = (signed int*)&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_3];
 			v78 = 0;
@@ -4007,16 +4007,18 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 			if (a1 != 2)//a1 == 0,1
 			{
 			LABEL_126:
-				if ((unsigned int)str_F2C20ar.dword0x1e <= 7)
+				if ((unsigned int)str_F2C20ar.dword0x1e_spriteSymmetry <= 7)
 				{
-					switch (str_F2C20ar.dword0x1e)//mirroring
+					// probably only two cases are handled, because roll is between +45deg and -45deg
+					switch (str_F2C20ar.dword0x1e_spriteSymmetry)//mirroring
 					{
 					case 0:
+						// left rotation 0-45deg roll
 						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_0); }
-						v156 = str_F2C20ar.dword0x1b * str_F2C20ar.dword0x09_realWidth >> 16;
+						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b;
+						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
 						if (scaledHeight <= 0)
 							break;
 						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
@@ -4029,7 +4031,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
 							v135 = -v135;
 						}
-						v160 = str_F2C20ar.dword0x27 * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+						v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
 						v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 						v157 = str_F2C20ar.dword0x04_screenY << 16;
 						screenPosX = str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16);
@@ -4048,10 +4050,10 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 						}
 						break;
 					case 1:
-						v156 = str_F2C20ar.dword0x27 * str_F2C20ar.dword0x09_realWidth >> 16;
+						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27;
+						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
 						if (scaledHeight <= 0)
 							break;
 						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
@@ -4064,7 +4066,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
 							v135 = -v135;
 						}
-						v161 = str_F2C20ar.dword0x1b * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+						v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
 						v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 						v158 = str_F2C20ar.dword0x03_screenX << 16;
 						v171 = str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16);
@@ -4089,10 +4091,10 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 						}
 						break;
 					case 2:
-						v156 = str_F2C20ar.dword0x1b * str_F2C20ar.dword0x09_realWidth >> 16;
+						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b;
+						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
 						if (scaledHeight <= 0)
 							break;
 						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
@@ -4105,7 +4107,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
 							v135 = -v135;
 						}
-						v160 = str_F2C20ar.dword0x27 * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+						v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
 						v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 						v157 = str_F2C20ar.dword0x03_screenX << 16;
 						screenPosX = str_F2C20ar.width0x25 - str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16);
@@ -4122,10 +4124,10 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 						ptrRenderBuffer = str_F2C20ar.width0x25 + ViewPortRenderBufferStart_DE558 - 1 - screenPosX;
 						goto LABEL_137;
 					case 3:
-						v156 = str_F2C20ar.dword0x27 * str_F2C20ar.dword0x09_realWidth >> 16;
+						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27;
+						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
 						if (scaledHeight <= 0)
 							break;
 						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
@@ -4138,7 +4140,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
 							v135 = -v135;
 						}
-						v161 = str_F2C20ar.dword0x1b * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+						v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
 						v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 						v158 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) << 16;
 						v171 = str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) >> 16);
@@ -4160,10 +4162,10 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 						ptrRenderBuffer = str_F2C20ar.height0x26 + iScreenWidth_DE560 * v171 - 1 + ViewPortRenderBufferStart_DE558;
 						goto LABEL_285;
 					case 4:
-						v156 = str_F2C20ar.dword0x1b * str_F2C20ar.dword0x09_realWidth >> 16;
+						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b;
+						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
 						if (scaledHeight <= 0)
 							break;
 						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
@@ -4176,7 +4178,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
 							v135 = -v135;
 						}
-						v160 = str_F2C20ar.dword0x27 * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+						v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
 						v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 						v157 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) << 16;
 						screenPosX = str_F2C20ar.width0x25 - str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) >> 16);
@@ -4193,10 +4195,10 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 						ptrRenderBuffer = str_F2C20ar.height0x26 + ViewPortRenderBufferStart_DE558 + iScreenWidth_DE560 * (str_F2C20ar.width0x25 - screenPosX - 1) - 1;
 						goto LABEL_137;
 					case 5:
-						v156 = str_F2C20ar.dword0x27 * str_F2C20ar.dword0x09_realWidth >> 16;
+						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27;
+						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
 						if (scaledHeight <= 0)
 							break;
 						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
@@ -4209,7 +4211,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
 							v135 = -v135;
 						}
-						v161 = str_F2C20ar.dword0x1b * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+						v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
 						v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 						v158 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) << 16;
 						v113 = str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16;
@@ -4232,10 +4234,10 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 						ptrRenderBuffer = (str_F2C20ar.height0x26 - 1) * iScreenWidth_DE560 + str_F2C20ar.width0x25 + ViewPortRenderBufferStart_DE558 - 1 - v171;
 						goto LABEL_285;
 					case 6:
-						v156 = str_F2C20ar.dword0x1b * str_F2C20ar.dword0x09_realWidth >> 16;
+						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b;
+						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
 						if (scaledHeight <= 0)
 							break;
 						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
@@ -4248,7 +4250,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
 							v135 = -v135;
 						}
-						v160 = str_F2C20ar.dword0x27 * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+						v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
 						v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 						v157 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) << 16;
 						screenPosX = str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16);
@@ -4769,10 +4771,11 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 						}
 						break;
 					case 7:
-						v156 = str_F2C20ar.dword0x27 * str_F2C20ar.dword0x09_realWidth >> 16;
+						// right rotation 0-45 deg roll
+						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27;
+						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
 						if (scaledHeight <= 0)
 							break;
 						if (str_F2C20ar.dword0x04_screenY >= str_F2C20ar.height0x26)
@@ -4787,7 +4790,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1, const int32_t spriteWidth)
 							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
 							v135 = -v135;
 						}
-						v161 = str_F2C20ar.dword0x1b * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+						v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
 						v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 						v158 = str_F2C20ar.dword0x04_screenY << 16;
 						v114 = str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16;
