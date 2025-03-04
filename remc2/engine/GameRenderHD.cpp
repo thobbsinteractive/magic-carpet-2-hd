@@ -5771,7 +5771,7 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	bool v17; // sf
 	uint8_t v18; // of
 	uint8_t* renderBufferStartOfCurrentLine; // [esp+0h] [ebp-88h]
-	int linesToDraw; // [esp+20h] [ebp-68h]
+	int linesToDraw_v1123; // [esp+20h] [ebp-68h]
 	int Uincrement; // [esp+24h] [ebp-64h]
 	uint32_t Vincrement; // [esp+30h] [ebp-58h]
 	uint32_t BrightnessIncrement = 0xAAAAAAAA; // [esp+3Ch] [ebp-4Ch]
@@ -6017,7 +6017,7 @@ LABEL_129_DrawTriangle:
 		const bool v1301 = v67 > viewPort.Height_DE568;
 		const int v68 = v67 - vertLowY;
 		const int v1118 = v68;
-		linesToDraw = v68;
+		linesToDraw_v1123 = v68;
 		const int fp_slope_HighLowVert = ((vert_y_high->X - vert_y_low->X) << 16) / v1114;
 
 		// only draw triangle with clock-wise vertices by comparing the slopes
@@ -6043,10 +6043,10 @@ LABEL_129_DrawTriangle:
 				if (vertYlowIsNegative)
 				{
 					// clip triangle for negative y, top of the viewport
-					v18 = __OFSUB__(linesToDraw, -vertLowY);
-					v16 = linesToDraw == -vertLowY;
-					v17 = linesToDraw + vertLowY < 0;
-					linesToDraw += vertLowY;
+					v18 = __OFSUB__(linesToDraw_v1123, -vertLowY);
+					v16 = linesToDraw_v1123 == -vertLowY;
+					v17 = linesToDraw_v1123 + vertLowY < 0;
+					linesToDraw_v1123 += vertLowY;
 					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
 					v1164 = -vertLowY;
@@ -6060,7 +6060,7 @@ LABEL_129_DrawTriangle:
 						{
 							// middle vertex y > viewport
 							v1120 = viewPort.Height_DE568;
-							linesToDraw = viewPort.Height_DE568;
+							linesToDraw_v1123 = viewPort.Height_DE568;
 						}
 						v114 = &rasterlines_DE56Cx[startLine][0];
 						goto LABEL_228_DrawTriangle;
@@ -6071,7 +6071,7 @@ LABEL_129_DrawTriangle:
 					if (v1301)
 					{
 						// high vertex y > viewport
-						linesToDraw = viewPort.Height_DE568;
+						linesToDraw_v1123 = viewPort.Height_DE568;
 						if (v1297)
 						{
 							v1114 = viewPort.Height_DE568;
@@ -6086,7 +6086,7 @@ LABEL_129_DrawTriangle:
 				else if (v1301)
 				{
 					const int v115 = viewPort.Height_DE568 - vertLowY;
-					linesToDraw = viewPort.Height_DE568 - vertLowY;
+					linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY;
 					if (v1297)
 					{
 						v1114 = viewPort.Height_DE568 - vertLowY;
@@ -6155,10 +6155,10 @@ LABEL_129_DrawTriangle:
 				v92 = vert_y_low->V;
 				if (vertYlowIsNegative)
 				{
-					v18 = __OFSUB__(linesToDraw, -vertLowY);
-					v16 = linesToDraw == -vertLowY;
-					v17 = linesToDraw + vertLowY < 0;
-					linesToDraw += vertLowY;
+					v18 = __OFSUB__(linesToDraw_v1123, -vertLowY);
+					v16 = linesToDraw_v1123 == -vertLowY;
+					v17 = linesToDraw_v1123 + vertLowY < 0;
+					linesToDraw_v1123 += vertLowY;
 					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
 					v1162 = -vertLowY;
@@ -6173,7 +6173,7 @@ LABEL_129_DrawTriangle:
 						if (v1301)
 						{
 							v1120 = viewPort.Height_DE568;
-							linesToDraw = viewPort.Height_DE568;
+							linesToDraw_v1123 = viewPort.Height_DE568;
 						}
 						v95 = &rasterlines_DE56Cx[startLine][0];
 					LABEL_181_DrawTriangle:
@@ -6193,7 +6193,7 @@ LABEL_129_DrawTriangle:
 					v92 += v1162 * v1139;
 					if (v1301)
 					{
-						linesToDraw = viewPort.Height_DE568;
+						linesToDraw_v1123 = viewPort.Height_DE568;
 						if (v1297)
 						{
 							v1114 = viewPort.Height_DE568;
@@ -6208,7 +6208,7 @@ LABEL_129_DrawTriangle:
 				else if (v1301)
 				{
 					const int v96 = viewPort.Height_DE568 - vertLowY;
-					linesToDraw = viewPort.Height_DE568 - vertLowY;
+					linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY;
 					if (v1297)
 					{
 						v1114 = viewPort.Height_DE568 - vertLowY;
@@ -6266,10 +6266,10 @@ LABEL_129_DrawTriangle:
 
 				if (vertYlowIsNegative)
 				{
-					v18 = __OFSUB__(linesToDraw, -vertLowY);
-					v16 = linesToDraw == -vertLowY;
-					v17 = linesToDraw + vertLowY < 0;
-					linesToDraw += vertLowY;
+					v18 = __OFSUB__(linesToDraw_v1123, -vertLowY);
+					v16 = linesToDraw_v1123 == -vertLowY;
+					v17 = linesToDraw_v1123 + vertLowY < 0;
+					linesToDraw_v1123 += vertLowY;
 					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
 					v1161 = -vertLowY;
@@ -6285,7 +6285,7 @@ LABEL_129_DrawTriangle:
 						if (v1301)
 						{
 							v1120 = viewPort.Height_DE568;
-							linesToDraw = viewPort.Height_DE568;
+							linesToDraw_v1123 = viewPort.Height_DE568;
 						}
 						v81 = &rasterlines_DE56Cx[startLine][0];
 					LABEL_156_DrawTriangle:
@@ -6306,7 +6306,7 @@ LABEL_129_DrawTriangle:
 					rasterBrighness += v1161 * v1149;
 					if (v1301)
 					{
-						linesToDraw = viewPort.Height_DE568;
+						linesToDraw_v1123 = viewPort.Height_DE568;
 						if (v1297)
 						{
 							v1114 = viewPort.Height_DE568;
@@ -6321,7 +6321,7 @@ LABEL_129_DrawTriangle:
 				else if (v1301)
 				{
 					const int v82 = viewPort.Height_DE568 - vertLowY;
-					linesToDraw = viewPort.Height_DE568 - vertLowY;
+					linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY;
 					if (v1297)
 					{
 						v1114 = viewPort.Height_DE568 - vertLowY;
@@ -6398,7 +6398,7 @@ LABEL_24_DrawTriangle:
 		}
 		const bool vertYHigh_above_viewport = vert_y_high->Y > viewPort.Height_DE568;
 		const int dY_HighLowVert = vert_y_high->Y - vert_y_low->Y;
-		linesToDraw = dY_HighLowVert;
+		linesToDraw_v1123 = dY_HighLowVert;
 		bool vertYMiddle_above_viewport = vert_y_middle->Y > viewPort.Height_DE568;
 		const int dY_MiddleLowVert = vert_y_middle->Y - vert_y_low->Y;
 		int v1117 = dY_MiddleLowVert;
@@ -6428,7 +6428,7 @@ LABEL_24_DrawTriangle:
 					if (vertYHigh_above_viewport)
 					{
 						v63 = viewPort.Height_DE568 - v1190;
-						linesToDraw = viewPort.Height_DE568 - v1190;
+						linesToDraw_v1123 = viewPort.Height_DE568 - v1190;
 						if (vertYMiddle_above_viewport)
 						{
 							v1117 = viewPort.Height_DE568 - v1190;
@@ -6443,10 +6443,10 @@ LABEL_24_DrawTriangle:
 					}
 					goto LABEL_121_DrawTriangle;
 				}
-				v18 = __OFSUB__(linesToDraw, -v1190);
-				v16 = linesToDraw == -v1190;
-				v17 = linesToDraw + v1190 < 0;
-				linesToDraw += v1190;
+				v18 = __OFSUB__(linesToDraw_v1123, -v1190);
+				v16 = linesToDraw_v1123 == -v1190;
+				v17 = linesToDraw_v1123 + v1190 < 0;
+				linesToDraw_v1123 += v1190;
 				if (!((uint8_t)(v17 ^ v18) | (uint8_t)v16))
 				{
 					v1160 = -v1190;
@@ -6459,7 +6459,7 @@ LABEL_24_DrawTriangle:
 						if (vertYHigh_above_viewport)
 						{
 							v1119 = viewPort.Height_DE568;
-							linesToDraw = viewPort.Height_DE568;
+							linesToDraw_v1123 = viewPort.Height_DE568;
 						}
 						v62 = &rasterlines_DE56Cx[startLine][0];
 						goto LABEL_124_DrawTriangle;
@@ -6469,7 +6469,7 @@ LABEL_24_DrawTriangle:
 					v59 += v1160 * fp_slope_MiddleLowVert;
 					if (vertYHigh_above_viewport)
 					{
-						linesToDraw = viewPort.Height_DE568;
+						linesToDraw_v1123 = viewPort.Height_DE568;
 						if (vertYMiddle_above_viewport)
 						{
 							v1117 = viewPort.Height_DE568;
@@ -6537,10 +6537,10 @@ LABEL_24_DrawTriangle:
 				v40 = vert_y_low->V;
 				if (v1292)
 				{
-					v18 = __OFSUB__(linesToDraw, -v1190);
-					v16 = linesToDraw == -v1190;
-					v17 = linesToDraw + v1190 < 0;
-					linesToDraw += v1190;
+					v18 = __OFSUB__(linesToDraw_v1123, -v1190);
+					v16 = linesToDraw_v1123 == -v1190;
+					v17 = linesToDraw_v1123 + v1190 < 0;
+					linesToDraw_v1123 += v1190;
 					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
 					v1158 = -v1190;
@@ -6555,7 +6555,7 @@ LABEL_24_DrawTriangle:
 						if (vertYHigh_above_viewport)
 						{
 							v1119 = viewPort.Height_DE568;
-							linesToDraw = viewPort.Height_DE568;
+							linesToDraw_v1123 = viewPort.Height_DE568;
 						}
 						v43 = &rasterlines_DE56Cx[startLine][0];
 					LABEL_77_DrawTriangle:
@@ -6575,7 +6575,7 @@ LABEL_24_DrawTriangle:
 					v40 += v1158 * v1137;
 					if (vertYHigh_above_viewport)
 					{
-						linesToDraw = viewPort.Height_DE568;
+						linesToDraw_v1123 = viewPort.Height_DE568;
 						if (vertYMiddle_above_viewport)
 						{
 							v1117 = viewPort.Height_DE568;
@@ -6590,7 +6590,7 @@ LABEL_24_DrawTriangle:
 				else if (vertYHigh_above_viewport)
 				{
 					const int v44 = viewPort.Height_DE568 - v1190;
-					linesToDraw = viewPort.Height_DE568 - v1190;
+					linesToDraw_v1123 = viewPort.Height_DE568 - v1190;
 					if (vertYMiddle_above_viewport)
 					{
 						v1117 = viewPort.Height_DE568 - v1190;
@@ -6638,10 +6638,10 @@ LABEL_24_DrawTriangle:
 				int v25 = vert_y_low->Brightness;
 				if (v1292)
 				{
-					v18 = __OFSUB__(linesToDraw, -v1190);
-					v16 = linesToDraw == -v1190;
-					v17 = linesToDraw + v1190 < 0;
-					linesToDraw += v1190;
+					v18 = __OFSUB__(linesToDraw_v1123, -v1190);
+					v16 = linesToDraw_v1123 == -v1190;
+					v17 = linesToDraw_v1123 + v1190 < 0;
+					linesToDraw_v1123 += v1190;
 					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
 					v1157 = -v1190;
@@ -6657,7 +6657,7 @@ LABEL_24_DrawTriangle:
 						if (vertYHigh_above_viewport)
 						{
 							v1119 = viewPort.Height_DE568;
-							linesToDraw = viewPort.Height_DE568;
+							linesToDraw_v1123 = viewPort.Height_DE568;
 						}
 						v28 = &rasterlines_DE56Cx[startLine][0];
 					LABEL_51_DrawTriangle:
@@ -6678,7 +6678,7 @@ LABEL_24_DrawTriangle:
 					v25 += v1157 * v1147;
 					if (vertYHigh_above_viewport)
 					{
-						linesToDraw = viewPort.Height_DE568;
+						linesToDraw_v1123 = viewPort.Height_DE568;
 						if (vertYMiddle_above_viewport)
 						{
 							v1117 = viewPort.Height_DE568;
@@ -6693,7 +6693,7 @@ LABEL_24_DrawTriangle:
 				else if (vertYHigh_above_viewport)
 				{
 					const int v29 = viewPort.Height_DE568 - v1190;
-					linesToDraw = viewPort.Height_DE568 - v1190;
+					linesToDraw_v1123 = viewPort.Height_DE568 - v1190;
 					if (vertYMiddle_above_viewport)
 					{
 						v1117 = viewPort.Height_DE568 - v1190;
@@ -6777,9 +6777,9 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 		const int v118 = vert_y_high->Y;
 		const bool v1298 = v118 > viewPort.Height_DE568;
 		int v1115 = v118 - v117;
-		linesToDraw = v118 - v117; // NOTE: vert_y_high->Y = vert_y_middle->Y
-		const int v1105 = ((vert_y_high->X - vert_y_low->X) << 16) / linesToDraw;
-		const int v1109 = ((vert_y_middle->X - vert_y_low->X) << 16) / linesToDraw;
+		linesToDraw_v1123 = v118 - v117; // NOTE: vert_y_high->Y = vert_y_middle->Y
+		const int v1105 = ((vert_y_high->X - vert_y_low->X) << 16) / linesToDraw_v1123;
+		const int v1109 = ((vert_y_middle->X - vert_y_low->X) << 16) / linesToDraw_v1123;
 		switch (x_BYTE_E126D)
 		{
 		case 0:
@@ -6791,23 +6791,23 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 			{
 				int v141 = -v1192;
 				v1115 += v1192;
-				v18 = __OFSUB__(linesToDraw, -v1192);
-				v16 = linesToDraw == -v1192;
-				v17 = linesToDraw + v1192 < 0;
-				linesToDraw += v1192;
+				v18 = __OFSUB__(linesToDraw_v1123, -v1192);
+				v16 = linesToDraw_v1123 == -v1192;
+				v17 = linesToDraw_v1123 + v1192 < 0;
+				linesToDraw_v1123 += v1192;
 				if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 					return;
 				v139 += v1105 * v141;
 				v140 += v141 * v1109;
 				if (v1298)
 				{
-					linesToDraw = viewPort.Height_DE568;
+					linesToDraw_v1123 = viewPort.Height_DE568;
 					v1115 = viewPort.Height_DE568;
 				}
 			}
 			else if (v1298)
 			{
-				linesToDraw = viewPort.Height_DE568 - v1192;
+				linesToDraw_v1123 = viewPort.Height_DE568 - v1192;
 				v1115 = viewPort.Height_DE568 - v1192;
 			}
 			RasterizePolygon(&rasterlines_DE56Cx[startLine][0], &v139, &v140, v1105, v1109, &v1115);
@@ -6828,8 +6828,8 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 			v127 = vert_y_middle->X - vert_y_high->X;
 			Uincrement = (vert_y_middle->U - vert_y_high->U) / v127;
 			Vincrement = (vert_y_middle->V - vert_y_high->V) / v127;
-			v1130 = (vert_y_high->U - vert_y_low->U) / linesToDraw;
-			v1141 = (vert_y_high->V - vert_y_low->V) / linesToDraw;
+			v1130 = (vert_y_high->U - vert_y_low->U) / linesToDraw_v1123;
+			v1141 = (vert_y_high->V - vert_y_low->V) / linesToDraw_v1123;
 			v128 = vert_y_low->X << 16;
 			v129 = vert_y_low->X << 16;
 			v130 = vert_y_low->U;
@@ -6838,10 +6838,10 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 			{
 				const int v132 = -v1192;
 				v1115 += v1192;
-				v18 = __OFSUB__(linesToDraw, -v1192);
-				v16 = linesToDraw == -v1192;
-				v17 = linesToDraw + v1192 < 0;
-				linesToDraw += v1192;
+				v18 = __OFSUB__(linesToDraw_v1123, -v1192);
+				v16 = linesToDraw_v1123 == -v1192;
+				v17 = linesToDraw_v1123 + v1192 < 0;
+				linesToDraw_v1123 += v1192;
 				if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 					return;
 				v128 += v1105 * v132;
@@ -6850,13 +6850,13 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 				v131 += v132 * v1141;
 				if (v1298)
 				{
-					linesToDraw = viewPort.Height_DE568;
+					linesToDraw_v1123 = viewPort.Height_DE568;
 					v1115 = viewPort.Height_DE568;
 				}
 			}
 			else if (v1298)
 			{
-				linesToDraw = viewPort.Height_DE568 - v1192;
+				linesToDraw_v1123 = viewPort.Height_DE568 - v1192;
 				v1115 = viewPort.Height_DE568 - v1192;
 			}
 			RasterizePolygon(&rasterlines_DE56Cx[startLine][0], &v128, &v129, &v130, &v131, v1105, v1109, v1130, v1141, &v1115);
@@ -6877,9 +6877,9 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 			Uincrement = (vert_y_middle->U - vert_y_high->U) / v119;
 			Vincrement = (vert_y_middle->V - vert_y_high->V) / v119;
 			BrightnessIncrement = (vert_y_middle->Brightness - vert_y_high->Brightness) / v119;
-			v1129 = (vert_y_high->U - vert_y_low->U) / linesToDraw;
-			v1140 = (vert_y_high->V - vert_y_low->V) / linesToDraw;
-			v1151 = (vert_y_high->Brightness - vert_y_low->Brightness) / linesToDraw;
+			v1129 = (vert_y_high->U - vert_y_low->U) / linesToDraw_v1123;
+			v1140 = (vert_y_high->V - vert_y_low->V) / linesToDraw_v1123;
+			v1151 = (vert_y_high->Brightness - vert_y_low->Brightness) / linesToDraw_v1123;
 			v120 = vert_y_low->X << 16;
 			v121 = vert_y_low->X << 16;
 			v122 = vert_y_low->U;
@@ -6889,10 +6889,10 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 			{
 				v125 = -v1192;
 				v1115 += v1192;
-				v18 = __OFSUB__(linesToDraw, -v1192);
-				v16 = linesToDraw == -v1192;
-				v17 = linesToDraw + v1192 < 0;
-				linesToDraw += v1192;
+				v18 = __OFSUB__(linesToDraw_v1123, -v1192);
+				v16 = linesToDraw_v1123 == -v1192;
+				v17 = linesToDraw_v1123 + v1192 < 0;
+				linesToDraw_v1123 += v1192;
 				if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 					return;
 				v120 += v1105 * v125;
@@ -6902,13 +6902,13 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 				v124 += v125 * v1151;
 				if (v1298)
 				{
-					linesToDraw = viewPort.Height_DE568;
+					linesToDraw_v1123 = viewPort.Height_DE568;
 					v1115 = viewPort.Height_DE568;
 				}
 			}
 			else if (v1298)
 			{
-				linesToDraw = viewPort.Height_DE568 - v1192;
+				linesToDraw_v1123 = viewPort.Height_DE568 - v1192;
 				v1115 = viewPort.Height_DE568 - v1192;
 			}
 			RasterizePolygon(&rasterlines_DE56Cx[startLine][0], &v120, &v121, &v122, &v123, &v124, v1105, v1109, v1129, v1140, v1151, &v1115);
@@ -6965,7 +6965,7 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 		const bool vertHighYaboveViewport = vertHighY > viewPort.Height_DE568;
 		int dY_HighLow_actual_rows_to_draw = vertHighY - vertLowY;
 
-		linesToDraw = vertHighY - vertLowY;
+		linesToDraw_v1123 = vertHighY - vertLowY;
 		const int fp_slope_HighLowVert = ((vert_y_high->X - vert_y_low->X) << 16) / (dY_HighLow_actual_rows_to_draw);
 		const int v1110 = ((vert_y_high->X - vert_y_middle->X) << 16) / (dY_HighLow_actual_rows_to_draw);
 
@@ -6993,23 +6993,23 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 			{
 				v167 = -vertLowY;
 				dY_HighLow_actual_rows_to_draw += vertLowY;
-				v18 = __OFSUB__(linesToDraw, -vertLowY);
-				v16 = linesToDraw == -vertLowY;
-				v17 = linesToDraw + vertLowY < 0;
-				linesToDraw += vertLowY;
+				v18 = __OFSUB__(linesToDraw_v1123, -vertLowY);
+				v16 = linesToDraw_v1123 == -vertLowY;
+				v17 = linesToDraw_v1123 + vertLowY < 0;
+				linesToDraw_v1123 += vertLowY;
 				if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 					return;
 				v165 += fp_slope_HighLowVert * v167;
 				v166 += v167 * v1110;
 				if (vertHighYaboveViewport)
 				{
-					linesToDraw = viewPort.Height_DE568;
+					linesToDraw_v1123 = viewPort.Height_DE568;
 					dY_HighLow_actual_rows_to_draw = viewPort.Height_DE568;
 				}
 			}
 			else if (vertHighYaboveViewport)
 			{
-				linesToDraw = viewPort.Height_DE568 - vertLowY;
+				linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY;
 				dY_HighLow_actual_rows_to_draw = viewPort.Height_DE568 - vertLowY;
 			}
 			RasterizePolygon(&rasterlines_DE56Cx[startLine][0], &v165, &v166, fp_slope_HighLowVert, v1110, &dY_HighLow_actual_rows_to_draw);
@@ -7031,8 +7031,8 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 			dX_v4v3 = vert_y_middle->X - vert_y_low->X;
 			Uincrement = (vert_y_middle->U - vert_y_low->U) / dX_v4v3;
 			Vincrement = (vert_y_middle->V - vert_y_low->V) / dX_v4v3;
-			v1132 = (vert_y_high->U - vert_y_low->U) / linesToDraw;
-			v1143 = (vert_y_high->V - vert_y_low->V) / linesToDraw;
+			v1132 = (vert_y_high->U - vert_y_low->U) / linesToDraw_v1123;
+			v1143 = (vert_y_high->V - vert_y_low->V) / linesToDraw_v1123;
 			v154 = vert_y_low->X << 16;
 			v155 = vert_y_middle->X << 16;
 			v156 = vert_y_low->U;
@@ -7041,10 +7041,10 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 			{
 				v158 = -vertLowY;
 				dY_HighLow_actual_rows_to_draw += vertLowY;
-				v18 = __OFSUB__(linesToDraw, -vertLowY);
-				v16 = linesToDraw == -vertLowY;
-				v17 = linesToDraw + vertLowY < 0;
-				linesToDraw += vertLowY;
+				v18 = __OFSUB__(linesToDraw_v1123, -vertLowY);
+				v16 = linesToDraw_v1123 == -vertLowY;
+				v17 = linesToDraw_v1123 + vertLowY < 0;
+				linesToDraw_v1123 += vertLowY;
 				if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 					return;
 				v154 += fp_slope_HighLowVert * v158;
@@ -7053,13 +7053,13 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 				v157 += v158 * v1143;
 				if (vertHighYaboveViewport)
 				{
-					linesToDraw = viewPort.Height_DE568;
+					linesToDraw_v1123 = viewPort.Height_DE568;
 					dY_HighLow_actual_rows_to_draw = viewPort.Height_DE568;
 				}
 			}
 			else if (vertHighYaboveViewport)
 			{
-				linesToDraw = viewPort.Height_DE568 - vertLowY;
+				linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY;
 				dY_HighLow_actual_rows_to_draw = viewPort.Height_DE568 - vertLowY;
 			}
 			RasterizePolygon(&rasterlines_DE56Cx[startLine][0], &v154, &v155, &v156, &v157, fp_slope_HighLowVert, v1110, v1132, v1143, &dY_HighLow_actual_rows_to_draw);
@@ -7081,9 +7081,9 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 			Uincrement = (vert_y_middle->U - vert_y_low->U) / dX_v4v3;
 			Vincrement = (vert_y_middle->V - vert_y_low->V) / dX_v4v3;
 			BrightnessIncrement = (vert_y_middle->Brightness - vert_y_low->Brightness) / dX_v4v3;
-			int v1131 = (vert_y_high->U - vert_y_low->U) / linesToDraw;
-			int v1142 = (vert_y_high->V - vert_y_low->V) / linesToDraw;
-			int v1153 = (vert_y_high->Brightness - vert_y_low->Brightness) / linesToDraw;
+			int v1131 = (vert_y_high->U - vert_y_low->U) / linesToDraw_v1123;
+			int v1142 = (vert_y_high->V - vert_y_low->V) / linesToDraw_v1123;
+			int v1153 = (vert_y_high->Brightness - vert_y_low->Brightness) / linesToDraw_v1123;
 			int v146 = vert_y_low->X << 16;
 			int v147 = vert_y_middle->X << 16;
 			int v148 = vert_y_low->U;
@@ -7093,10 +7093,10 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 			{
 				const int v151 = -vertLowY;
 				dY_HighLow_actual_rows_to_draw += vertLowY;
-				v18 = __OFSUB__(linesToDraw, -vertLowY);
-				v16 = linesToDraw == -vertLowY;
-				v17 = linesToDraw + vertLowY < 0;
-				linesToDraw += vertLowY;
+				v18 = __OFSUB__(linesToDraw_v1123, -vertLowY);
+				v16 = linesToDraw_v1123 == -vertLowY;
+				v17 = linesToDraw_v1123 + vertLowY < 0;
+				linesToDraw_v1123 += vertLowY;
 				if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 					return;
 				v146 += fp_slope_HighLowVert * v151;
@@ -7106,13 +7106,13 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 				v150 += v151 * v1153;
 				if (vertHighYaboveViewport)
 				{
-					linesToDraw = viewPort.Height_DE568;
+					linesToDraw_v1123 = viewPort.Height_DE568;
 					dY_HighLow_actual_rows_to_draw = viewPort.Height_DE568;
 				}
 			}
 			else if (vertHighYaboveViewport)
 			{
-				linesToDraw = viewPort.Height_DE568 - vertLowY;
+				linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY;
 				dY_HighLow_actual_rows_to_draw = viewPort.Height_DE568 - vertLowY;
 			}
 			RasterizePolygon(&rasterlines_DE56Cx[startLine][0], &v146, &v147, &v148, &v149, &v150, fp_slope_HighLowVert, v1110, v1131, v1142, v1153, &dY_HighLow_actual_rows_to_draw);
@@ -7127,7 +7127,7 @@ LABEL_DrawRasterLines:
 	case 0:
 		DrawPolygonRasterLine_single_color_subB6253(
 			&rasterlines_DE56Cx[startLine][0],
-			startLine, drawEveryNthLine, linesToDraw,
+			startLine, drawEveryNthLine, linesToDraw_v1123,
 			&renderBufferStartOfCurrentLine,
 			x_BYTE_E126C
 		);
@@ -7135,7 +7135,7 @@ LABEL_DrawRasterLines:
 	case 5:
 		DrawPolygonRasterLine_subB6253(
 			&rasterlines_DE56Cx[startLine][0],
-			startLine, drawEveryNthLine, linesToDraw,
+			startLine, drawEveryNthLine, linesToDraw_v1123,
 			&renderBufferStartOfCurrentLine, 
 			Vincrement, Uincrement, BrightnessIncrement,
 			x_DWORD_DE55C_ActTexture
@@ -7145,7 +7145,7 @@ LABEL_DrawRasterLines:
 	case 0xB:
 		DrawPolygonRasterLine_flat_shading_subB6253(
 			&rasterlines_DE56Cx[startLine][0],
-			startLine, drawEveryNthLine, linesToDraw,
+			startLine, drawEveryNthLine, linesToDraw_v1123,
 			&renderBufferStartOfCurrentLine, 
 			Vincrement, Uincrement,
 			x_DWORD_DE55C_ActTexture, x_BYTE_E126C
@@ -7154,7 +7154,7 @@ LABEL_DrawRasterLines:
 	case 0x1A:
 		DrawPolygonRasterLine_reflections_subB6253(
 			&rasterlines_DE56Cx[startLine][0],
-			startLine, drawEveryNthLine, linesToDraw,
+			startLine, drawEveryNthLine, linesToDraw_v1123,
  			&renderBufferStartOfCurrentLine,
 			Vincrement, Uincrement, BrightnessIncrement,
 			x_DWORD_DE55C_ActTexture
