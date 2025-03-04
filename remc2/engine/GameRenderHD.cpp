@@ -5995,14 +5995,14 @@ LABEL_129_DrawTriangle:
 		int v1164;
 		bool vertYlowIsNegative;
 
-		const int vertLowY = vert_y_low->Y;
-		if (vertLowY >= 0)
+		const int vertLowY_v1190 = vert_y_low->Y;
+		if (vertLowY_v1190 >= 0)
 		{
-			if (vertLowY >= viewPort.Height_DE568) {
+			if (vertLowY_v1190 >= viewPort.Height_DE568) {
 				// even lowest y coordinate is outside of the viewport -> cull triangle
 				return;
 			}
-			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554 + iScreenWidth_DE560 * vertLowY;
+			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554 + iScreenWidth_DE560 * vertLowY_v1190;
 			vertYlowIsNegative = false;
 		}
 		else
@@ -6012,10 +6012,10 @@ LABEL_129_DrawTriangle:
 		}
 		const int vertHighY = vert_y_high->Y;
 		bool v1297 = vertHighY > viewPort.Height_DE568;
-		int v1114 = vertHighY - vertLowY;
+		int v1114 = vertHighY - vertLowY_v1190;
 		const int v67 = vert_y_middle->Y;
 		const bool v1301 = v67 > viewPort.Height_DE568;
-		const int v68 = v67 - vertLowY;
+		const int v68 = v67 - vertLowY_v1190;
 		const int v1118 = v68;
 		linesToDraw_v1123 = v68;
 		const int fp_slope_HighLowVert = ((vert_y_high->X - vert_y_low->X) << 16) / v1114;
@@ -6043,14 +6043,14 @@ LABEL_129_DrawTriangle:
 				if (vertYlowIsNegative)
 				{
 					// clip triangle for negative y, top of the viewport
-					v18 = __OFSUB__(linesToDraw_v1123, -vertLowY);
-					v16 = linesToDraw_v1123 == -vertLowY;
-					v17 = linesToDraw_v1123 + vertLowY < 0;
-					linesToDraw_v1123 += vertLowY;
+					v18 = __OFSUB__(linesToDraw_v1123, -vertLowY_v1190);
+					v16 = linesToDraw_v1123 == -vertLowY_v1190;
+					v17 = linesToDraw_v1123 + vertLowY_v1190 < 0;
+					linesToDraw_v1123 += vertLowY_v1190;
 					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
-					v1164 = -vertLowY;
-					if (-vertLowY - v1114 >= 0)
+					v1164 = -vertLowY_v1190;
+					if (-vertLowY_v1190 - v1114 >= 0)
 					{
 						const int v112 = v1164 - v1114;
 						v1120 -= v112;
@@ -6065,7 +6065,7 @@ LABEL_129_DrawTriangle:
 						v114 = &rasterlines_DE56Cx[startLine][0];
 						goto LABEL_228_DrawTriangle;
 					}
-					v1114 += vertLowY; // subtract -y from number of lines
+					v1114 += vertLowY_v1190; // subtract -y from number of lines
 					v110 += fp_slope_HighLowVert * v1164; // compute start x when entering viewport
 					v111 += v1164 * v1108; // compute end x when entering viewport
 					if (v1301)
@@ -6085,11 +6085,11 @@ LABEL_129_DrawTriangle:
 				}
 				else if (v1301)
 				{
-					const int v115 = viewPort.Height_DE568 - vertLowY;
-					linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY;
+					const int v115 = viewPort.Height_DE568 - vertLowY_v1190;
+					linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY_v1190;
 					if (v1297)
 					{
-						v1114 = viewPort.Height_DE568 - vertLowY;
+						v1114 = viewPort.Height_DE568 - vertLowY_v1190;
 					}
 					else
 					{
@@ -6155,14 +6155,14 @@ LABEL_129_DrawTriangle:
 				v92 = vert_y_low->V;
 				if (vertYlowIsNegative)
 				{
-					v18 = __OFSUB__(linesToDraw_v1123, -vertLowY);
-					v16 = linesToDraw_v1123 == -vertLowY;
-					v17 = linesToDraw_v1123 + vertLowY < 0;
-					linesToDraw_v1123 += vertLowY;
+					v18 = __OFSUB__(linesToDraw_v1123, -vertLowY_v1190);
+					v16 = linesToDraw_v1123 == -vertLowY_v1190;
+					v17 = linesToDraw_v1123 + vertLowY_v1190 < 0;
+					linesToDraw_v1123 += vertLowY_v1190;
 					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
-					v1162 = -vertLowY;
-					if (-vertLowY - v1114 >= 0)
+					v1162 = -vertLowY_v1190;
+					if (-vertLowY_v1190 - v1114 >= 0)
 					{
 						v93 = v1162 - v1114;
 						v1120 -= v93;
@@ -6186,7 +6186,7 @@ LABEL_129_DrawTriangle:
 						}
 						goto LABEL_DrawRasterLines;
 					}
-					v1114 += vertLowY;
+					v1114 += vertLowY_v1190;
 					v89 += fp_slope_HighLowVert * v1162;
 					v90 += v1162 * v1108;
 					v91 += v1162 * v1128;
@@ -6207,11 +6207,11 @@ LABEL_129_DrawTriangle:
 				}
 				else if (v1301)
 				{
-					const int v96 = viewPort.Height_DE568 - vertLowY;
-					linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY;
+					const int v96 = viewPort.Height_DE568 - vertLowY_v1190;
+					linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY_v1190;
 					if (v1297)
 					{
-						v1114 = viewPort.Height_DE568 - vertLowY;
+						v1114 = viewPort.Height_DE568 - vertLowY_v1190;
 					}
 					else
 					{
@@ -6266,14 +6266,14 @@ LABEL_129_DrawTriangle:
 
 				if (vertYlowIsNegative)
 				{
-					v18 = __OFSUB__(linesToDraw_v1123, -vertLowY);
-					v16 = linesToDraw_v1123 == -vertLowY;
-					v17 = linesToDraw_v1123 + vertLowY < 0;
-					linesToDraw_v1123 += vertLowY;
+					v18 = __OFSUB__(linesToDraw_v1123, -vertLowY_v1190);
+					v16 = linesToDraw_v1123 == -vertLowY_v1190;
+					v17 = linesToDraw_v1123 + vertLowY_v1190 < 0;
+					linesToDraw_v1123 += vertLowY_v1190;
 					if ((uint8_t)(v17 ^ v18) | (uint8_t)v16)
 						return;
-					v1161 = -vertLowY;
-					if (-vertLowY - v1114 >= 0)
+					v1161 = -vertLowY_v1190;
+					if (-vertLowY_v1190 - v1114 >= 0)
 					{
 						v79 = v1161 - v1114;
 						v1120 -= v79;
@@ -6298,7 +6298,7 @@ LABEL_129_DrawTriangle:
 						}
 						goto LABEL_DrawRasterLines; // draw raster lines
 					}
-					v1114 += vertLowY;
+					v1114 += vertLowY_v1190;
 					fpRasterStartX += fp_slope_HighLowVert * v1161;                  // FIXME: overflow here
 					fpRasterEndX += v1161 * v1108;                  // FIXME: overflow here
 					rasterU += v1161 * v1127;
@@ -6320,11 +6320,11 @@ LABEL_129_DrawTriangle:
 				}
 				else if (v1301)
 				{
-					const int v82 = viewPort.Height_DE568 - vertLowY;
-					linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY;
+					const int v82 = viewPort.Height_DE568 - vertLowY_v1190;
+					linesToDraw_v1123 = viewPort.Height_DE568 - vertLowY_v1190;
 					if (v1297)
 					{
-						v1114 = viewPort.Height_DE568 - vertLowY;
+						v1114 = viewPort.Height_DE568 - vertLowY_v1190;
 					}
 					else
 					{
