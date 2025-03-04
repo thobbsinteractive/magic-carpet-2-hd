@@ -5759,9 +5759,9 @@ void DrawPolygonRasterLine_reflections_subB6253(
 
 void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* vertex1, const ProjectionPolygon* vertex2, const ProjectionPolygon* vertex3, uint8_t startLine, uint8_t drawEveryNthLine)
 {
-	const ProjectionPolygon* vert_y_low; // esi
-	const ProjectionPolygon* vert_y_middle; // edi
-	const ProjectionPolygon* vert_y_high; // ecx
+	const ProjectionPolygon* vert_y_low_v3; // esi
+	const ProjectionPolygon* vert_y_middle_v4; // edi
+	const ProjectionPolygon* vert_y_high_v5; // ecx
 	int y1; // eax
 	int y2; // ebx
 	int y3; // edx
@@ -5780,13 +5780,13 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	Vincrement = 0;
 
 	// NOTE: vert_y_high does not neccessarily mean that it is the vertex with the highest y value.
-	//       It means that the raster lines are drawn from vert_y_low to vert_y_high.
-	//       vert_y_middle has a y value >= very_y_low
+	//       It means that the raster lines are drawn from vert_y_low_v3 to vert_y_high.
+	//       vert_y_middle_v4 has a y value >= very_y_low
 	//       The conditions in the code below sort the triangles and re-assign vert_y_xxx.
 	//       Triangles whith counter-clock-wise vertices are culled and not drawn.
-	vert_y_low = vertex1;
-	vert_y_middle = vertex2;
-	vert_y_high = vertex3;
+	vert_y_low_v3 = vertex1;
+	vert_y_middle_v4 = vertex2;
+	vert_y_high_v5 = vertex3;
 	y1 = vertex1->Y;
 	y2 = vertex2->Y;
 	y3 = vertex3->Y;
@@ -5827,9 +5827,9 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 				// vertex1 --- vertex2 
 				return; // face culling
 			}
-			vert_y_low = vertex3;
-			vert_y_middle = vertex1;
-			vert_y_high = vertex2;
+			vert_y_low_v3 = vertex3;
+			vert_y_middle_v4 = vertex1;
+			vert_y_high_v5 = vertex2;
 			//       vertex3
 			//       |     |
 			// vertex2 --- vertex1 
@@ -5855,9 +5855,9 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 			{
 				// y3 < y1 <= y2
 
-				vert_y_low = vertex3;
-				vert_y_middle = vertex1;
-				vert_y_high = vertex2;
+				vert_y_low_v3 = vertex3;
+				vert_y_middle_v4 = vertex1;
+				vert_y_high_v5 = vertex2;
 
 				goto LABEL_24_DrawTriangle;
 
@@ -5895,9 +5895,9 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 		// vertex3 --- vertex1
 		//       |     |
 		//       vertex2
-		vert_y_low = vertex3;
-		vert_y_middle = vertex1;
-		vert_y_high = vertex2;
+		vert_y_low_v3 = vertex3;
+		vert_y_middle_v4 = vertex1;
+		vert_y_high_v5 = vertex2;
 
 		goto LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop;
 	}
@@ -5913,17 +5913,17 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 			// vertex3 --- vertex1 
 			return; // face culling
 		}
-		vert_y_low = vertex2;
-		vert_y_middle = vertex3;
-		vert_y_high = vertex1;
+		vert_y_low_v3 = vertex2;
+		vert_y_middle_v4 = vertex3;
+		vert_y_high_v5 = vertex1;
 		goto LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom;
 	}
 	if (y1 < y3)
 	{
 		// y2 < y1 < y3
-		vert_y_low = vertex2;
-		vert_y_middle = vertex3; //?
-		vert_y_high = vertex1; //?
+		vert_y_low_v3 = vertex2;
+		vert_y_middle_v4 = vertex3; //?
+		vert_y_high_v5 = vertex1; //?
 		goto LABEL_129_DrawTriangle;
 	}
 	if (y2 == y3)
@@ -5935,25 +5935,25 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 			//       vertex1
 			return; // face culling
 		}
-		vert_y_low = vertex2;
-		vert_y_middle = vertex3;
-		vert_y_high = vertex1;
+		vert_y_low_v3 = vertex2;
+		vert_y_middle_v4 = vertex3;
+		vert_y_high_v5 = vertex1;
 		goto LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop;
 	}
 	if (y2 < y3)
 	{
 		// y2 < y1 and y2 < y3 (and not y1 < y3 - checked above)
 		// => y2 < y3 < y1
-		vert_y_low = vertex2;
-		vert_y_middle = vertex3;
-		vert_y_high = vertex1;
+		vert_y_low_v3 = vertex2;
+		vert_y_middle_v4 = vertex3;
+		vert_y_high_v5 = vertex1;
 		goto LABEL_24_DrawTriangle;
 	}
 
 	// y3 < y2 < y1
-	vert_y_low = vertex3;
-	vert_y_middle = vertex1;
-	vert_y_high = vertex2;
+	vert_y_low_v3 = vertex3;
+	vert_y_middle_v4 = vertex1;
+	vert_y_high_v5 = vertex2;
 
 LABEL_129_DrawTriangle:
 	// general case where
@@ -5995,7 +5995,7 @@ LABEL_129_DrawTriangle:
 		int v1164;
 		bool vertYlowIsNegative;
 
-		const int vertLowY_v1190 = vert_y_low->Y;
+		const int vertLowY_v1190 = vert_y_low_v3->Y;
 		if (vertLowY_v1190 >= 0)
 		{
 			if (vertLowY_v1190 >= viewPort.Height_DE568) {
@@ -6010,36 +6010,36 @@ LABEL_129_DrawTriangle:
 			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554;
 			vertYlowIsNegative = true;
 		}
-		const int vertHighY = vert_y_high->Y;
-		bool v1297 = vertHighY > viewPort.Height_DE568;
-		int v1114 = vertHighY - vertLowY_v1190;
-		const int v67 = vert_y_middle->Y;
+		const int vertHighY_v66 = vert_y_high_v5->Y;
+		bool v1297 = vertHighY_v66 > viewPort.Height_DE568;
+		int v1114 = vertHighY_v66 - vertLowY_v1190;
+		const int v67 = vert_y_middle_v4->Y;
 		const bool v1301 = v67 > viewPort.Height_DE568;
 		const int v68 = v67 - vertLowY_v1190;
 		const int v1118 = v68;
 		linesToDraw_v1123 = v68;
-		const int fp_slope_HighLowVert = ((vert_y_high->X - vert_y_low->X) << 16) / v1114;
+		const int fp_slope_HighLowVert = ((vert_y_high_v5->X - vert_y_low_v3->X) << 16) / v1114;
 
 		// only draw triangle with clock-wise vertices by comparing the slopes
-		if (((vert_y_middle->X - vert_y_low->X) << 16) / v68 > fp_slope_HighLowVert)
+		if (((vert_y_middle_v4->X - vert_y_low_v3->X) << 16) / v68 > fp_slope_HighLowVert)
 		{
 			//           vertex_low
 			//           |        |
 			// vertex_high        |     
 			//           |        |
 			//           vertex_middle
-			const int v1108 = ((vert_y_middle->X - vert_y_low->X) << 16) / v68;
-			const int v1112 = ((vert_y_middle->X - vert_y_high->X) << 16) / (vert_y_middle->Y - vert_y_high->Y);
-			int v1120 = vert_y_middle->Y - vert_y_high->Y;
-			const int fp_vertHighX = vert_y_high->X << 16;
+			const int v1108 = ((vert_y_middle_v4->X - vert_y_low_v3->X) << 16) / v68;
+			const int v1112 = ((vert_y_middle_v4->X - vert_y_high_v5->X) << 16) / (vert_y_middle_v4->Y - vert_y_high_v5->Y);
+			int v1120 = vert_y_middle_v4->Y - vert_y_high_v5->Y;
+			const int fp_vertHighX = vert_y_high_v5->X << 16;
 			switch (x_BYTE_E126D)
 			{
 			case 0:
 			case 0xE:
 			case 0xF:
 				// debug shading - single color
-				v110 = vert_y_low->X << 16;
-				v111 = vert_y_low->X << 16;
+				v110 = vert_y_low_v3->X << 16;
+				v111 = vert_y_low_v3->X << 16;
 				if (vertYlowIsNegative)
 				{
 					// clip triangle for negative y, top of the viewport
@@ -6129,8 +6129,8 @@ LABEL_129_DrawTriangle:
 			case 0x16:
 			case 0x17:
 				// flat shading
-				v84 = v1114 * (signed __int64)(vert_y_middle->X - vert_y_low->X) / v68;
-				v85 = vert_y_low->X - vert_y_high->X;
+				v84 = v1114 * (signed __int64)(vert_y_middle_v4->X - vert_y_low_v3->X) / v68;
+				v85 = vert_y_low_v3->X - vert_y_high_v5->X;
 				v18 = __OFADD__(v84, v85);
 				v86 = v84 + v85 == 0;
 				v17 = v84 + v85 < 0;
@@ -6140,19 +6140,19 @@ LABEL_129_DrawTriangle:
 				if (!v86)
 				{
 					const int v88 = v87 + 1;
-					Uincrement = (signed int)(vert_y_low->U + (unsigned __int64)(v1114 * (signed __int64)(vert_y_middle->U - vert_y_low->U) / v1118) - vert_y_high->U)
+					Uincrement = (signed int)(vert_y_low_v3->U + (unsigned __int64)(v1114 * (signed __int64)(vert_y_middle_v4->U - vert_y_low_v3->U) / v1118) - vert_y_high_v5->U)
 						/ v88;
-					Vincrement = (signed int)(vert_y_low->V + (unsigned __int64)(v1114 * (signed __int64)(vert_y_middle->V - vert_y_low->V) / v1118) - vert_y_high->V)
+					Vincrement = (signed int)(vert_y_low_v3->V + (unsigned __int64)(v1114 * (signed __int64)(vert_y_middle_v4->V - vert_y_low_v3->V) / v1118) - vert_y_high_v5->V)
 						/ v88;
 				}
-				v1128 = (vert_y_high->U - vert_y_low->U) / v1114;
-				v1139 = (vert_y_high->V - vert_y_low->V) / v1114;
-				v1134 = (vert_y_middle->U - vert_y_high->U) / v1120;
-				v1145 = (vert_y_middle->V - vert_y_high->V) / v1120;
-				v89 = vert_y_low->X << 16;
-				v90 = vert_y_low->X << 16;
-				v91 = vert_y_low->U;
-				v92 = vert_y_low->V;
+				v1128 = (vert_y_high_v5->U - vert_y_low_v3->U) / v1114;
+				v1139 = (vert_y_high_v5->V - vert_y_low_v3->V) / v1114;
+				v1134 = (vert_y_middle_v4->U - vert_y_high_v5->U) / v1120;
+				v1145 = (vert_y_middle_v4->V - vert_y_high_v5->V) / v1120;
+				v89 = vert_y_low_v3->X << 16;
+				v90 = vert_y_low_v3->X << 16;
+				v91 = vert_y_low_v3->U;
+				v92 = vert_y_low_v3->V;
 				if (vertYlowIsNegative)
 				{
 					v18 = __OFSUB__(linesToDraw_v1123, -vertLowY_v1190);
@@ -6232,8 +6232,8 @@ LABEL_129_DrawTriangle:
 			case 0x19:
 			case 0x1A:
 				// normal shading and reflections
-				v69 = v1114 * (int64_t)(vert_y_middle->X - vert_y_low->X) / v68;
-				v70 = vert_y_low->X - vert_y_high->X;
+				v69 = v1114 * (int64_t)(vert_y_middle_v4->X - vert_y_low_v3->X) / v68;
+				v70 = vert_y_low_v3->X - vert_y_high_v5->X;
 				v18 = __OFADD__(v69, v70);
 				v17 = v69 + v70 < 0;
 				v72 = v69 + v70;
@@ -6242,24 +6242,24 @@ LABEL_129_DrawTriangle:
 				if (!(v69 + v70 == 0))
 				{
 					const int v73 = v72 + 1;
-					Uincrement = (signed int)(vert_y_low->U + (uint64_t)(v1114 * (int64_t)(vert_y_middle->U - vert_y_low->U) / v1118) - vert_y_high->U)
+					Uincrement = (signed int)(vert_y_low_v3->U + (uint64_t)(v1114 * (int64_t)(vert_y_middle_v4->U - vert_y_low_v3->U) / v1118) - vert_y_high_v5->U)
 						/ v73;
-					Vincrement = (signed int)(vert_y_low->V + (uint64_t)(v1114 * (int64_t)(vert_y_middle->V - vert_y_low->V) / v1118) - vert_y_high->V)
+					Vincrement = (signed int)(vert_y_low_v3->V + (uint64_t)(v1114 * (int64_t)(vert_y_middle_v4->V - vert_y_low_v3->V) / v1118) - vert_y_high_v5->V)
 						/ v73;
-					v69 = (signed int)(vert_y_low->Brightness + (uint64_t)(v1114 * (int64_t)(vert_y_middle->Brightness - vert_y_low->Brightness) / v1118) - vert_y_high->Brightness) / v73;
+					v69 = (signed int)(vert_y_low_v3->Brightness + (uint64_t)(v1114 * (int64_t)(vert_y_middle_v4->Brightness - vert_y_low_v3->Brightness) / v1118) - vert_y_high_v5->Brightness) / v73;
 				}
 				BrightnessIncrement = v69;
-				int v1127 = (vert_y_high->U - vert_y_low->U) / v1114;
-				int v1138 = (vert_y_high->V - vert_y_low->V) / v1114;
-				int v1149 = (vert_y_high->Brightness - vert_y_low->Brightness) / v1114;
-				int v1133 = (vert_y_middle->U - vert_y_high->U) / v1120;
-				int v1144 = (vert_y_middle->V - vert_y_high->V) / v1120;
-				int v1155 = (vert_y_middle->Brightness - vert_y_high->Brightness) / v1120;
-				int fpRasterStartX = vert_y_low->X << 16;
-				int fpRasterEndX = vert_y_low->X << 16;
-				int rasterU = vert_y_low->U;
-				int rasterV = vert_y_low->V;
-				int rasterBrighness = vert_y_low->Brightness;
+				int v1127 = (vert_y_high_v5->U - vert_y_low_v3->U) / v1114;
+				int v1138 = (vert_y_high_v5->V - vert_y_low_v3->V) / v1114;
+				int v1149 = (vert_y_high_v5->Brightness - vert_y_low_v3->Brightness) / v1114;
+				int v1133 = (vert_y_middle_v4->U - vert_y_high_v5->U) / v1120;
+				int v1144 = (vert_y_middle_v4->V - vert_y_high_v5->V) / v1120;
+				int v1155 = (vert_y_middle_v4->Brightness - vert_y_high_v5->Brightness) / v1120;
+				int fpRasterStartX = vert_y_low_v3->X << 16;
+				int fpRasterEndX = vert_y_low_v3->X << 16;
+				int rasterU = vert_y_low_v3->U;
+				int rasterV = vert_y_low_v3->V;
+				int rasterBrighness = vert_y_low_v3->Brightness;
 				int v1161;
 				int v79;
 				int v80;
@@ -6382,13 +6382,13 @@ LABEL_24_DrawTriangle:
 		int v1160;
 		bool v1292;
 
-		const int v1190 = vert_y_low->Y;
+		const int v1190 = vert_y_low_v3->Y;
 
-		if (vert_y_low->Y >= 0)
+		if (vert_y_low_v3->Y >= 0)
 		{
-			if (vert_y_low->Y >= viewPort.Height_DE568)
+			if (vert_y_low_v3->Y >= viewPort.Height_DE568)
 				return;
-			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554 + iScreenWidth_DE560 * vert_y_low->Y;
+			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554 + iScreenWidth_DE560 * vert_y_low_v3->Y;
 			v1292 = false;
 		}
 		else
@@ -6396,14 +6396,14 @@ LABEL_24_DrawTriangle:
 			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554;
 			v1292 = true;
 		}
-		const bool vertYHigh_above_viewport = vert_y_high->Y > viewPort.Height_DE568;
-		const int dY_HighLowVert = vert_y_high->Y - vert_y_low->Y;
+		const bool vertYHigh_above_viewport = vert_y_high_v5->Y > viewPort.Height_DE568;
+		const int dY_HighLowVert = vert_y_high_v5->Y - vert_y_low_v3->Y;
 		linesToDraw_v1123 = dY_HighLowVert;
-		bool vertYMiddle_above_viewport = vert_y_middle->Y > viewPort.Height_DE568;
-		const int dY_MiddleLowVert = vert_y_middle->Y - vert_y_low->Y;
+		bool vertYMiddle_above_viewport = vert_y_middle_v4->Y > viewPort.Height_DE568;
+		const int dY_MiddleLowVert = vert_y_middle_v4->Y - vert_y_low_v3->Y;
 		int v1117 = dY_MiddleLowVert;
-		const int fp_slope_HighLowVert = ((vert_y_high->X - vert_y_low->X) << 16) / dY_HighLowVert;
-		const int fp_slope_MiddleLowVert = ((vert_y_middle->X - vert_y_low->X) << 16) / dY_MiddleLowVert;
+		const int fp_slope_HighLowVert = ((vert_y_high_v5->X - vert_y_low_v3->X) << 16) / dY_HighLowVert;
+		const int fp_slope_MiddleLowVert = ((vert_y_middle_v4->X - vert_y_low_v3->X) << 16) / dY_MiddleLowVert;
 
 		// only draw triangle with clock-wise vertices by comparing the slopes
 		if (fp_slope_MiddleLowVert > fp_slope_HighLowVert)
@@ -6413,16 +6413,16 @@ LABEL_24_DrawTriangle:
 			//  |       vertex_middle
 			//  |       |
 			// vertex_high
-			const int fp_slope_HighMiddleVert = ((vert_y_high->X - vert_y_middle->X) << 16) / (vert_y_high->Y - vert_y_middle->Y);
-			int v1119 = vert_y_high->Y - vert_y_middle->Y;
-			const int fp_vertMiddleX = vert_y_middle->X << 16;
+			const int fp_slope_HighMiddleVert = ((vert_y_high_v5->X - vert_y_middle_v4->X) << 16) / (vert_y_high_v5->Y - vert_y_middle_v4->Y);
+			int v1119 = vert_y_high_v5->Y - vert_y_middle_v4->Y;
+			const int fp_vertMiddleX = vert_y_middle_v4->X << 16;
 			switch (x_BYTE_E126D)
 			{
 			case 0:
 			case 0xE:
 			case 0xF:
-				v58 = vert_y_low->X << 16;
-				v59 = vert_y_low->X << 16;
+				v58 = vert_y_low_v3->X << 16;
+				v59 = vert_y_low_v3->X << 16;
 				if (!v1292)
 				{
 					if (vertYHigh_above_viewport)
@@ -6513,8 +6513,8 @@ LABEL_24_DrawTriangle:
 			case 0x16:
 			case 0x17:
 				// flat shading
-				v32 = dY_MiddleLowVert * (signed __int64)(vert_y_low->X - vert_y_high->X) / dY_HighLowVert;
-				v33 = vert_y_middle->X - vert_y_low->X;
+				v32 = dY_MiddleLowVert * (signed __int64)(vert_y_low_v3->X - vert_y_high_v5->X) / dY_HighLowVert;
+				v33 = vert_y_middle_v4->X - vert_y_low_v3->X;
 				v18 = __OFADD__(v32, v33);
 				v34 = v32 + v33 == 0;
 				v17 = v32 + v33 < 0;
@@ -6524,17 +6524,17 @@ LABEL_24_DrawTriangle:
 				if (!v34)
 				{
 					const int v36 = v35 + 1;
-					Uincrement = (signed int)(vert_y_middle->U + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low->U - vert_y_high->U) / dY_HighLowVert) - vert_y_low->U)
+					Uincrement = (signed int)(vert_y_middle_v4->U + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->U - vert_y_high_v5->U) / dY_HighLowVert) - vert_y_low_v3->U)
 						/ v36;
-					Vincrement = (signed int)(vert_y_middle->V + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low->V - vert_y_high->V) / dY_HighLowVert) - vert_y_low->V)
+					Vincrement = (signed int)(vert_y_middle_v4->V + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->V - vert_y_high_v5->V) / dY_HighLowVert) - vert_y_low_v3->V)
 						/ v36;
 				}
-				v1126 = (vert_y_high->U - vert_y_low->U) / dY_HighLowVert;
-				v1137 = (vert_y_high->V - vert_y_low->V) / dY_HighLowVert;
-				v37 = vert_y_low->X << 16;
-				v38 = vert_y_low->X << 16;
-				v39 = vert_y_low->U;
-				v40 = vert_y_low->V;
+				v1126 = (vert_y_high_v5->U - vert_y_low_v3->U) / dY_HighLowVert;
+				v1137 = (vert_y_high_v5->V - vert_y_low_v3->V) / dY_HighLowVert;
+				v37 = vert_y_low_v3->X << 16;
+				v38 = vert_y_low_v3->X << 16;
+				v39 = vert_y_low_v3->U;
+				v40 = vert_y_low_v3->V;
 				if (v1292)
 				{
 					v18 = __OFSUB__(linesToDraw_v1123, -v1190);
@@ -6613,8 +6613,8 @@ LABEL_24_DrawTriangle:
 			case 0x18:
 			case 0x19:
 			case 0x1A:
-				v14 = dY_MiddleLowVert * (signed __int64)(vert_y_low->X - vert_y_high->X) / dY_HighLowVert;
-				v15 = vert_y_middle->X - vert_y_low->X;
+				v14 = dY_MiddleLowVert * (signed __int64)(vert_y_low_v3->X - vert_y_high_v5->X) / dY_HighLowVert;
+				v15 = vert_y_middle_v4->X - vert_y_low_v3->X;
 				v18 = __OFADD__(v14, v15);
 				v16 = v14 + v15 == 0;
 				v17 = v14 + v15 < 0;
@@ -6622,20 +6622,20 @@ LABEL_24_DrawTriangle:
 				if ((uint8_t)v17 ^ v18)
 					return;
 				const int v20 = v19 + 1;
-				Uincrement = (signed int)(vert_y_middle->U + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low->U - vert_y_high->U) / dY_HighLowVert) - vert_y_low->U)
+				Uincrement = (signed int)(vert_y_middle_v4->U + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->U - vert_y_high_v5->U) / dY_HighLowVert) - vert_y_low_v3->U)
 					/ v20;
-				Vincrement = (signed int)(vert_y_middle->V + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low->V - vert_y_high->V) / dY_HighLowVert) - vert_y_low->V)
+				Vincrement = (signed int)(vert_y_middle_v4->V + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->V - vert_y_high_v5->V) / dY_HighLowVert) - vert_y_low_v3->V)
 					/ v20;
-				BrightnessIncrement = (signed int)(vert_y_middle->Brightness + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low->Brightness - vert_y_high->Brightness) / dY_HighLowVert) - vert_y_low->Brightness)
+				BrightnessIncrement = (signed int)(vert_y_middle_v4->Brightness + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->Brightness - vert_y_high_v5->Brightness) / dY_HighLowVert) - vert_y_low_v3->Brightness)
 					/ v20;
-				const int v1125 = (vert_y_high->U - vert_y_low->U) / dY_HighLowVert;
-				const int v1136 = (vert_y_high->V - vert_y_low->V) / dY_HighLowVert;
-				const int v1147 = (vert_y_high->Brightness - vert_y_low->Brightness) / dY_HighLowVert;
-				int v21 = vert_y_low->X << 16;
-				int v22 = vert_y_low->X << 16;
-				int v23 = vert_y_low->U;
-				int v24 = vert_y_low->V;
-				int v25 = vert_y_low->Brightness;
+				const int v1125 = (vert_y_high_v5->U - vert_y_low_v3->U) / dY_HighLowVert;
+				const int v1136 = (vert_y_high_v5->V - vert_y_low_v3->V) / dY_HighLowVert;
+				const int v1147 = (vert_y_high_v5->Brightness - vert_y_low_v3->Brightness) / dY_HighLowVert;
+				int v21 = vert_y_low_v3->X << 16;
+				int v22 = vert_y_low_v3->X << 16;
+				int v23 = vert_y_low_v3->U;
+				int v24 = vert_y_low_v3->V;
+				int v25 = vert_y_low_v3->Brightness;
 				if (v1292)
 				{
 					v18 = __OFSUB__(linesToDraw_v1123, -v1190);
@@ -6720,23 +6720,23 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 	//       vertex3
 	//       |     |
 	// vertex2 --- vertex1 
-	// vert_y_low = vertex3;
+	// vert_y_low_v3 = vertex3;
 	// vert_y_middle = vertex1;
-	// vert_y_high = vertex2;
+	// vert_y_high_v5 = vertex2;
 
 	//       vertex1
 	//       |     |
 	// vertex3 --- vertex2
-	// vert_y_low = vertex1;
+	// vert_y_low_v3 = vertex1;
 	// vert_y_middle = vertex2;
-	// vert_y_high = vertex3;
+	// vert_y_high_v5 = vertex3;
 
 	//       vertex2
 	//       |     | 
 	// vertex1 --- vertex3 
-	// vert_y_low = vertex2;
+	// vert_y_low_v3 = vertex2;
 	// vert_y_middle = vertex3;
-	// vert_y_high = vertex1;
+	// vert_y_high_v5 = vertex1;
 
 	{
 		int v119;
@@ -6760,7 +6760,7 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 		int v1141;
 		int v1151;
 
-		const int v117 = vert_y_low->Y;
+		const int v117 = vert_y_low_v3->Y;
 		const int v1192 = v117;
 		if (v117 >= 0)
 		{
@@ -6774,19 +6774,19 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 			renderBufferStartOfCurrentLine = ViewPortRenderBufferAltStart_DE554;
 			v1294 = true;
 		}
-		const int v118 = vert_y_high->Y;
+		const int v118 = vert_y_high_v5->Y;
 		const bool v1298 = v118 > viewPort.Height_DE568;
 		int v1115 = v118 - v117;
-		linesToDraw_v1123 = v118 - v117; // NOTE: vert_y_high->Y = vert_y_middle->Y
-		const int v1105 = ((vert_y_high->X - vert_y_low->X) << 16) / linesToDraw_v1123;
-		const int v1109 = ((vert_y_middle->X - vert_y_low->X) << 16) / linesToDraw_v1123;
+		linesToDraw_v1123 = v118 - v117; // NOTE: vert_y_high_v5->Y = vert_y_middle->Y
+		const int v1105 = ((vert_y_high_v5->X - vert_y_low_v3->X) << 16) / linesToDraw_v1123;
+		const int v1109 = ((vert_y_middle_v4->X - vert_y_low_v3->X) << 16) / linesToDraw_v1123;
 		switch (x_BYTE_E126D)
 		{
 		case 0:
 		case 0xE:
 		case 0xF:
-			v139 = vert_y_low->X << 16;
-			v140 = vert_y_low->X << 16;
+			v139 = vert_y_low_v3->X << 16;
+			v140 = vert_y_low_v3->X << 16;
 			if (v1294)
 			{
 				int v141 = -v1192;
@@ -6825,15 +6825,15 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 		case 0x13:
 		case 0x16:
 		case 0x17:
-			v127 = vert_y_middle->X - vert_y_high->X;
-			Uincrement = (vert_y_middle->U - vert_y_high->U) / v127;
-			Vincrement = (vert_y_middle->V - vert_y_high->V) / v127;
-			v1130 = (vert_y_high->U - vert_y_low->U) / linesToDraw_v1123;
-			v1141 = (vert_y_high->V - vert_y_low->V) / linesToDraw_v1123;
-			v128 = vert_y_low->X << 16;
-			v129 = vert_y_low->X << 16;
-			v130 = vert_y_low->U;
-			v131 = vert_y_low->V;
+			v127 = vert_y_middle_v4->X - vert_y_high_v5->X;
+			Uincrement = (vert_y_middle_v4->U - vert_y_high_v5->U) / v127;
+			Vincrement = (vert_y_middle_v4->V - vert_y_high_v5->V) / v127;
+			v1130 = (vert_y_high_v5->U - vert_y_low_v3->U) / linesToDraw_v1123;
+			v1141 = (vert_y_high_v5->V - vert_y_low_v3->V) / linesToDraw_v1123;
+			v128 = vert_y_low_v3->X << 16;
+			v129 = vert_y_low_v3->X << 16;
+			v130 = vert_y_low_v3->U;
+			v131 = vert_y_low_v3->V;
 			if (v1294)
 			{
 				const int v132 = -v1192;
@@ -6873,18 +6873,18 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 		case 0x18:
 		case 0x19:
 		case 0x1A:
-			v119 = vert_y_middle->X - vert_y_high->X;
-			Uincrement = (vert_y_middle->U - vert_y_high->U) / v119;
-			Vincrement = (vert_y_middle->V - vert_y_high->V) / v119;
-			BrightnessIncrement = (vert_y_middle->Brightness - vert_y_high->Brightness) / v119;
-			v1129 = (vert_y_high->U - vert_y_low->U) / linesToDraw_v1123;
-			v1140 = (vert_y_high->V - vert_y_low->V) / linesToDraw_v1123;
-			v1151 = (vert_y_high->Brightness - vert_y_low->Brightness) / linesToDraw_v1123;
-			v120 = vert_y_low->X << 16;
-			v121 = vert_y_low->X << 16;
-			v122 = vert_y_low->U;
-			v123 = vert_y_low->V;
-			v124 = vert_y_low->Brightness;
+			v119 = vert_y_middle_v4->X - vert_y_high_v5->X;
+			Uincrement = (vert_y_middle_v4->U - vert_y_high_v5->U) / v119;
+			Vincrement = (vert_y_middle_v4->V - vert_y_high_v5->V) / v119;
+			BrightnessIncrement = (vert_y_middle_v4->Brightness - vert_y_high_v5->Brightness) / v119;
+			v1129 = (vert_y_high_v5->U - vert_y_low_v3->U) / linesToDraw_v1123;
+			v1140 = (vert_y_high_v5->V - vert_y_low_v3->V) / linesToDraw_v1123;
+			v1151 = (vert_y_high_v5->Brightness - vert_y_low_v3->Brightness) / linesToDraw_v1123;
+			v120 = vert_y_low_v3->X << 16;
+			v121 = vert_y_low_v3->X << 16;
+			v122 = vert_y_low_v3->U;
+			v123 = vert_y_low_v3->V;
+			v124 = vert_y_low_v3->Brightness;
 			if (v1294)
 			{
 				v125 = -v1192;
@@ -6923,29 +6923,29 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 	// vertex3 --- vertex1
 	//       |     |
 	//       vertex2
-	// vert_y_low = vertex3;
+	// vert_y_low_v3 = vertex3;
 	// vert_y_middle = vertex1;
-	// vert_y_high = vertex2;
+	// vert_y_high_v5 = vertex2;
 
 	// vertex2 --- vertex3 
 	//       |     |
 	//       vertex1
-	// vert_y_low = vertex2;
+	// vert_y_low_v3 = vertex2;
 	// vert_y_middle = vertex3;
-	// vert_y_high = vertex1;
+	// vert_y_high_v5 = vertex1;
 
 	// vertex1 --- vertex2 
 	//       |     |
 	//       vertex3
-	// vert_y_low = vertex1;
+	// vert_y_low_v3 = vertex1;
 	// vert_y_middle = vertex2;
-	// vert_y_high = vertex3;
+	// vert_y_high_v5 = vertex3;
 
  	{
 		// clipping in Y direction to viewport
 		bool vertLowYnegative; // [esp+62h] [ebp-26h]
-		const int vertLowY = vert_y_low->Y;
-		const int vertHighY = vert_y_high->Y;
+		const int vertLowY = vert_y_low_v3->Y;
+		const int vertHighY = vert_y_high_v5->Y;
 
 		if (vertLowY >= 0)
 		{
@@ -6966,8 +6966,8 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 		int dY_HighLow_actual_rows_to_draw = vertHighY - vertLowY;
 
 		linesToDraw_v1123 = vertHighY - vertLowY;
-		const int fp_slope_HighLowVert = ((vert_y_high->X - vert_y_low->X) << 16) / (dY_HighLow_actual_rows_to_draw);
-		const int v1110 = ((vert_y_high->X - vert_y_middle->X) << 16) / (dY_HighLow_actual_rows_to_draw);
+		const int fp_slope_HighLowVert = ((vert_y_high_v5->X - vert_y_low_v3->X) << 16) / (dY_HighLow_actual_rows_to_draw);
+		const int v1110 = ((vert_y_high_v5->X - vert_y_middle_v4->X) << 16) / (dY_HighLow_actual_rows_to_draw);
 
 		int v154;
 		int v155;
@@ -6987,8 +6987,8 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 		case 0xE:
 		case 0xF:
 			// debug shading - single color
-			v165 = vert_y_low->X << 16;
-			v166 = vert_y_middle->X << 16;
+			v165 = vert_y_low_v3->X << 16;
+			v166 = vert_y_middle_v4->X << 16;
 			if (vertLowYnegative)
 			{
 				v167 = -vertLowY;
@@ -7028,15 +7028,15 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 		case 0x16:
 		case 0x17:
 			// flat shading
-			dX_v4v3 = vert_y_middle->X - vert_y_low->X;
-			Uincrement = (vert_y_middle->U - vert_y_low->U) / dX_v4v3;
-			Vincrement = (vert_y_middle->V - vert_y_low->V) / dX_v4v3;
-			v1132 = (vert_y_high->U - vert_y_low->U) / linesToDraw_v1123;
-			v1143 = (vert_y_high->V - vert_y_low->V) / linesToDraw_v1123;
-			v154 = vert_y_low->X << 16;
-			v155 = vert_y_middle->X << 16;
-			v156 = vert_y_low->U;
-			v157 = vert_y_low->V;
+			dX_v4v3 = vert_y_middle_v4->X - vert_y_low_v3->X;
+			Uincrement = (vert_y_middle_v4->U - vert_y_low_v3->U) / dX_v4v3;
+			Vincrement = (vert_y_middle_v4->V - vert_y_low_v3->V) / dX_v4v3;
+			v1132 = (vert_y_high_v5->U - vert_y_low_v3->U) / linesToDraw_v1123;
+			v1143 = (vert_y_high_v5->V - vert_y_low_v3->V) / linesToDraw_v1123;
+			v154 = vert_y_low_v3->X << 16;
+			v155 = vert_y_middle_v4->X << 16;
+			v156 = vert_y_low_v3->U;
+			v157 = vert_y_low_v3->V;
 			if (vertLowYnegative)
 			{
 				v158 = -vertLowY;
@@ -7077,18 +7077,18 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 		case 0x19:
 		case 0x1A:
 			// normal shading and reflections
-			dX_v4v3 = vert_y_middle->X - vert_y_low->X;
-			Uincrement = (vert_y_middle->U - vert_y_low->U) / dX_v4v3;
-			Vincrement = (vert_y_middle->V - vert_y_low->V) / dX_v4v3;
-			BrightnessIncrement = (vert_y_middle->Brightness - vert_y_low->Brightness) / dX_v4v3;
-			int v1131 = (vert_y_high->U - vert_y_low->U) / linesToDraw_v1123;
-			int v1142 = (vert_y_high->V - vert_y_low->V) / linesToDraw_v1123;
-			int v1153 = (vert_y_high->Brightness - vert_y_low->Brightness) / linesToDraw_v1123;
-			int v146 = vert_y_low->X << 16;
-			int v147 = vert_y_middle->X << 16;
-			int v148 = vert_y_low->U;
-			int v149 = vert_y_low->V;
-			int v150 = vert_y_low->Brightness;
+			dX_v4v3 = vert_y_middle_v4->X - vert_y_low_v3->X;
+			Uincrement = (vert_y_middle_v4->U - vert_y_low_v3->U) / dX_v4v3;
+			Vincrement = (vert_y_middle_v4->V - vert_y_low_v3->V) / dX_v4v3;
+			BrightnessIncrement = (vert_y_middle_v4->Brightness - vert_y_low_v3->Brightness) / dX_v4v3;
+			int v1131 = (vert_y_high_v5->U - vert_y_low_v3->U) / linesToDraw_v1123;
+			int v1142 = (vert_y_high_v5->V - vert_y_low_v3->V) / linesToDraw_v1123;
+			int v1153 = (vert_y_high_v5->Brightness - vert_y_low_v3->Brightness) / linesToDraw_v1123;
+			int v146 = vert_y_low_v3->X << 16;
+			int v147 = vert_y_middle_v4->X << 16;
+			int v148 = vert_y_low_v3->U;
+			int v149 = vert_y_low_v3->V;
+			int v150 = vert_y_low_v3->Brightness;
 			if (vertLowYnegative)
 			{
 				const int v151 = -vertLowY;
