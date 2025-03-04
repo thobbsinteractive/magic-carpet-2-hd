@@ -597,3 +597,7 @@ void Convert_to_shadow_str_E2A74(const type_array_str_E2A74 &from, type_shadow_s
 
 void sub_417A0_install_pal_and_mouse_minmax();
 unsigned long j___clock();
+
+void DrawSorcererNameAndHealthBar_2CB30(
+	type_event_0x6E8E* a1, int16_t a2, int a3, int16_t a4, uint8_t color_v35
+	);

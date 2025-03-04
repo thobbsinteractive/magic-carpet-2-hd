@@ -117,3 +117,5 @@ void SetMousePositionInMemory_5BDC0(int16_t posX, int16_t posY);
 void sub_1A5B0_getLangStrings(int a1, int* a2, int* a3);
 void GetOkayCancelButtonPositions_30BE0(int16_t* a1, int16_t* a2, uint8_t scale = 1);
 void sub_52D70(uint16_t playerIndex, char* cheatMessage);
+
+void DrawSpriteHelp_sub_88740(type_event_0x6E8E* a1, int16_t posX, int16_t posY);

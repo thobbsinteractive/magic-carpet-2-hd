@@ -43,6 +43,8 @@ set(SOURCE_FILES_ENGINE
     "engine/GameRenderGL.h"
     "engine/GameRenderHD.cpp"
     "engine/GameRenderHD.h"
+    "engine/GameRenderHDSprites.cpp"
+    "engine/GameRenderHDSprites.h"
     "engine/GameRenderInterface.h"
     "engine/GameRenderNG.cpp"
     "engine/GameRenderNG.h"

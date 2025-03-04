@@ -21,6 +21,8 @@ set(SOURCE_FILES_EDITOR
     "../remc2/engine/GameBitmapIndexes.h"
     "../remc2/engine/GameRenderHD.cpp"
     "../remc2/engine/GameRenderHD.h"
+    "../remc2/engine/GameRenderHDSprites.cpp"
+    "../remc2/engine/GameRenderHDSprites.h"
     "../remc2/engine/GameRenderNG.cpp"
     "../remc2/engine/GameRenderNG.h"
     "../remc2/engine/GameRenderOriginal.cpp"

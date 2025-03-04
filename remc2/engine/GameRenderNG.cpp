@@ -1,5 +1,6 @@
 #include "GameRenderNG.h"
 #include "CommandLineParser.h"
+#include "GameUI.h"
 
 #include "Compare.h"
 
@@ -1903,145 +1904,6 @@ uint16_t GameRenderNG::sub_3FD60(int a2x)
 	return result;
 }
 
-void GameRenderNG::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t posY)
-{
-	int v3; // esi
-	type_event_0x6E8E* v4x; // edx
-	unsigned __int8 v5; // al
-	unsigned __int8 v6; // al
-	unsigned __int8 v7; // al
-	unsigned __int8 v8; // al
-	signed int v10; // eax
-	unsigned __int8 v11; // al
-	signed int v13; // eax
-	char v18; // [esp+0h] [ebp-4h]
-
-	v3 = 0;
-	if (str_unk_1804B0ar.PopupStatusByte_0x9e & 1)
-		return;
-	v4x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
-	v5 = a1x->class_0x3F_63;
-	if (v5 < 5u)
-	{
-		if (v5 >= 2u)
-		{
-			if (v5 <= 2u)
-			{
-				v6 = a1x->model_0x40_64;
-				if (v6 >= 1u)
-				{
-					if (v6 <= 1u)
-					{
-						v3 = 27;
-					}
-					else if (v6 == 2)
-					{
-						v3 = 22;
-					}
-				}
-			}
-			else if (v5 == 3)
-			{
-				v11 = a1x->model_0x40_64;
-				if (v11 < 2u)
-				{
-					if (v11 == 1)
-						v3 = 28;
-				}
-				else if (v11 <= 2u)
-				{
-					v3 = (a1x->id_0x1A_26 != v4x->id_0x1A_26) + 24;
-				}
-				else if (v11 == 3)
-				{
-					if (a1x->id_0x1A_26 == v4x->id_0x1A_26)
-						v3 = 23;
-					else
-						v3 = 26;
-				}
-			}
-		}
-		goto LABEL_48;
-	}
-	if (v5 > 5u)
-	{
-		if (v5 >= 0xAu)
-		{
-			if (v5 <= 0xAu)
-			{
-				if (a1x->model_0x40_64 == 39 && a1x->word_0x94_148 != v4x->id_0x1A_26)
-					v3 = 18;
-			}
-			else if (v5 == 15 && !(a1x->struct_byte_0xc_12_15.byte[0] & 1))
-			{
-				v3 = 20;
-			}
-		}
-		goto LABEL_48;
-	}
-	if (a1x->id_0x1A_26 != v4x->id_0x1A_26)
-	{
-		v7 = a1x->model_0x40_64;
-		if (v7 < 0xCu)
-			goto LABEL_30;
-		if (v7 > 0xEu)
-		{
-			if (v7 == 22)
-			{
-				if (a1x->state_0x45_69 != -76 && a1x->word_0x94_148 != v4x->id_0x1A_26)
-					v3 = 18;
-				goto LABEL_48;
-			}
-		LABEL_30:
-			v8 = a1x->state_0x45_69;
-			if (v8 < 0xE8u || v8 > 0xEAu)
-			{
-				v10 = 1;
-				if ((a1x->StageVar2_0x49_73 == 14 || a1x->StageVar2_0x49_73 == 13) && a1x->parentId_0x28_40 == v4x->id_0x1A_26)
-					v10 = 0;
-				if (v10)
-					v3 = 19;
-			}
-			goto LABEL_48;
-		}
-	}
-LABEL_48:
-	if (v3)
-	{
-		if (x_WORD_180660_VGA_type_resolution & 1)
-		{
-			posX *= 2;
-			posY *= 2;
-		}
-		if (str_E2A74[v3].axis_2[0] & 2)
-		{
-			if (a1x == str_E2A74[v3].dword_12)
-			{
-				if (!(str_unk_1804B0ar.byte_0x9f & 0x1))
-				{
-					str_E2A74[v3].axis_2[3] = posX;
-					str_E2A74[v3].axis_2[0] |= 8;
-					str_E2A74[v3].axis_2[4] = posY;
-					str_unk_1804B0ar.byte_0x9f |= 2;
-				}
-			}
-		}
-		else
-		{
-			v18 = 0;
-			v13 = Maths::sub_58490_radix_3d_2(&v4x->axis_0x4C_76, &a1x->axis_0x4C_76);
-			if (!str_E2A74[v3].dword_12 || v13 < str_E2A74[v3].dword_20 && v13 > 1024)
-				v18 = 1;
-			if (v18)
-			{
-				str_E2A74[v3].dword_20 = v13;
-				str_E2A74[v3].dword_12 = a1x;
-				str_E2A74[v3].axis_2[0] |= 8;
-			}
-		}
-	}
-}
-
 void GameRenderNG::SetBillboards_3B560(int16_t roll)
 {
 	int v1; // edx
@@ -2624,107 +2486,6 @@ void GameRenderNG::SetBillboards_3B560(int16_t roll)
 		}
 		resultx->dword_0 = v82 - v83;
 		resultx++;
-	}
-}
-
-void GameRenderNG::DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1x, __int16 a2, int a3, __int16 a4)//20db30 //maybe draw sorcerer name
-{
-	char* v5; // esi
-	int v9x; // eax
-	int v9y; // eax
-	__int16 v10; // bx
-	__int16 v11; // bx
-	int v12; // edi
-	int v13; // esi
-	//unsigned __int8 v15; // ST10_1
-	//unsigned __int8 v16; // ST10_1
-	//unsigned __int8 v17; // ST10_1
-	//unsigned __int8 v18; // ST10_1
-	//unsigned __int8 v19; // ST10_1*/
-	char v24[32]; // [esp+0h] [ebp-58h]
-	int v25; // [esp+20h] [ebp-38h]
-	int v26; // [esp+24h] [ebp-34h]
-	//int v27; // [esp+28h] [ebp-30h]
-	//int v28; // [esp+2Ch] [ebp-2Ch]
-	int v29; // [esp+30h] [ebp-28h]
-	int v30; // [esp+34h] [ebp-24h]
-	int v31; // [esp+38h] [ebp-20h]
-	int v32; // [esp+3Ch] [ebp-1Ch]
-	unsigned __int8 v33; // [esp+40h] [ebp-18h]
-	char v34; // [esp+44h] [ebp-14h]
-	char v35; // [esp+48h] [ebp-10h]
-	char v36; // [esp+4Ch] [ebp-Ch]
-	char v37; // [esp+50h] [ebp-8h]
-	unsigned __int8 v38; // [esp+54h] [ebp-4h]
-	int v39; // [esp+74h] [ebp+1Ch]
-
-	// fix if begin
-	/*v14 = 0;
-	v15 = 0;
-	v16 = 0;
-	v17 = 0;
-	v18 = 0;
-	v19 = 0;
-	v22 = 0;
-	v23 = 0;*/
-	// end
-
-	v31 = viewPort.PreWidth_EA3C4 + viewPort.PosX_EA3D0 - 4;
-	v29 = viewPort.PreHeight_EA3C0 + viewPort.PosY_EA3CC - 22;
-	v25 = a1x->dword_0xA4_164x->word_0x38_56;
-	v5 = D41A0_0.array_0x2BDE[v25].WizardName_0x39f_2BFA_12157;
-	strcpy(v24, v5);
-	v36 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v25)];//c
-	v35 = (*xadataclrd0dat.colorPalette_var28)[0];//10 //v19
-	v34 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v25)];	//14 //v18
-	v33 = str_D94F0_bldgprmbuffer[static_cast<std::underlying_type<MapType_t>::type>(D41A0_0.terrain_2FECE.MapType)][2];//18 v14
-	v38 = str_D94F0_bldgprmbuffer[static_cast<std::underlying_type<MapType_t>::type>(D41A0_0.terrain_2FECE.MapType)][3];//4 v15
-	v37 = str_D94F0_bldgprmbuffer[static_cast<std::underlying_type<MapType_t>::type>(D41A0_0.terrain_2FECE.MapType)][0];//?v22
-	v10 = (a4 >> 1) + a2;
-	if (x_WORD_180660_VGA_type_resolution & 1)
-	{
-		v10 *= 2;
-		a3 *= 2;
-	}
-	v11 = viewPort.PosX_EA3D0 + v10;
-	v12 = viewPort.PosY_EA3CC + a3 - 20;
-	v39 = viewPort.PosY_EA3CC + a3 - 20;
-	if (v11 >= viewPort.PosX_EA3D0)
-	{
-		if ((signed __int16)v12 >= viewPort.PosY_EA3CC && v11 < v31 && (signed __int16)v12 < v29)
-		{
-			v9x = strlen(v24);
-			v13 = 8 * v9x + 4;
-			if (v11 + v13 > v31)
-			{
-				v13 = v31 - v11;
-				v9x = ((v31 - v11 - 4) - (my_sign32(v31 - v11 - 4) << 3) + my_sign32(v31 - v11 - 4)) >> 3;
-			}
-			if (v9x > 0)
-			{
-				v24[v9x] = 0;
-				v32 = v13 + 2;
-				v26 = (signed __int16)(v13 + 2);
-				v30 = v11;
-				DrawLine_2BC80(v11, v39, v13 + 2, 18, v37);//8
-				//v27 = v33;//30// v16
-				DrawLine_2BC80(v30, v39, v26, 2, v33);//18
-				//v28 = v38;//2c//v17
-				DrawLine_2BC80(v30, v39 + 16, v26, 2, v38);//4
-				DrawLine_2BC80(v30, v39, 2, 16, v33);//30,tj.18
-				DrawLine_2BC80(v11 + v32 - 2, v39, 2, 18, v38);//2c tj. 4
-				DrawText_2BC10(v24, v11 + 4, v39, v34);//14
-				DrawLine_2BC80(v11 + 2, v39 + 14, v13 - 2, 2, v35);//10
-				if (a1x->maxLife_0x4)
-				{
-					v9y = a1x->life_0x8 * (v13 - 2) / a1x->maxLife_0x4;
-					if (v30 + 2 + v9y > v31 - 2)
-						v9y = v31 - 2 - (v30 + 2);
-					if (v9y > 0)
-						DrawLine_2BC80(v11 + 2, v39 + 14, v9y, 2, v36);
-				}
-			}
-		}
 	}
 }
 
@@ -4587,10 +4348,13 @@ void GameRenderNG::DrawSprite_41BD3(uint32 a1)
 						&& str_F2C20ar.dword0x14x->class_0x3F_63 == 3
 						&& (!str_F2C20ar.dword0x14x->model_0x40_64 || str_F2C20ar.dword0x14x->model_0x40_64 == 1))
 					{
-						DrawSorcererNameAndHealthBar_2CB30(str_F2C20ar.dword0x14x, str_F2C20ar.dword0x04_screenY, (signed __int16)str_F2C20ar.dword0x03_screenX, str_F2C20ar.dword0x09_realWidth);
+						DrawSorcererNameAndHealthBar_2CB30(
+							str_F2C20ar.dword0x14x, str_F2C20ar.dword0x04_screenY, (signed __int16)str_F2C20ar.dword0x03_screenX, str_F2C20ar.dword0x09_realWidth,
+							(*xadataclrd0dat.colorPalette_var28)[0]
+						);
 					}
 					if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
-						sub_88740(
+						DrawSpriteHelp_sub_88740(
 							str_F2C20ar.dword0x14x,
 							(signed __int16)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
 							(signed __int16)(str_F2C20ar.dword0x03_screenX + (str_F2C20ar.dword0x0c_realHeight >> 1)));
@@ -4670,7 +4434,7 @@ void GameRenderNG::DrawSprite_41BD3(uint32 a1)
 				v153 += 2;
 			}
 			if (a1 == 1 && x_D41A0_BYTEARRAY_4_struct.showHelp_10)
-				sub_88740(
+				DrawSpriteHelp_sub_88740(
 					str_F2C20ar.dword0x14x,
 					(signed __int16)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
 					(signed __int16)(str_F2C20ar.dword0x03_screenX + (str_F2C20ar.dword0x0c_realHeight >> 1)));

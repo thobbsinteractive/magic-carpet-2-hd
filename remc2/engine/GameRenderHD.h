@@ -1,9 +1,7 @@
 #pragma once
 
-#ifndef GAME_RENDER_HD
-#define GAME_RENDER_HD
-
 #include "GameRenderInterface.h"
+#include "GameRenderHDSprites.h"
 #include "ProjectionPolygon.h"
 #include "RenderThread.h"
 #include "Type_Unk_F0E20x.h"
@@ -79,7 +77,6 @@ private:
 	void SubDrawTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
 	void SubDrawInverseTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
 	void SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
-	void DrawSprite_41BD3(uint32_t a1, int32_t spriteWidth);
 	void DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture);
@@ -90,9 +87,7 @@ private:
 	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line);
 	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v2, int* v3, int* v4, int s0, int s1, int s2, int s3, int s4, int* line);
 	uint16_t sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth);
-	void sub_88740(type_event_0x6E8E* a1, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);
-	void DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1, int16_t a2, int a3, int16_t a4);
 	void StartWorkerThreads(uint8_t numOfThreads, bool assignToSpecificCores);
 	void StartWorkerThread();
 	void StartWorkerThread(int core);
@@ -115,5 +110,3 @@ public:
 	static int32_t CalculateRotationTranslationY(int64_t pnt1, int64_t sin_0x0d, int64_t cos_0x11, int64_t pnt2);
 	static int SumByte1WithByte2(int byte1, int byte2, uint8_t v180);
 };
-
-#endif //GAME_RENDER_HD

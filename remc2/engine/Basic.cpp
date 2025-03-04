@@ -2,6 +2,8 @@
 #include "engine_support.h"
 #include "CommandLineParser.h"
 
+#include "Type_D94F0_Bldgprmbuffer.h"
+
 std::string gameDataPath;
 std::string cdDataPath;
 std::string bigGraphicsPath;
@@ -3732,3 +3734,87 @@ unsigned long _clock()
 unsigned long j___clock() {
 	return _clock();
 }; // weak
+
+void DrawSorcererNameAndHealthBar_2CB30(
+	type_event_0x6E8E* a1x, 
+	__int16 a2, int a3, __int16 a4,
+	uint8_t color_v35
+	)
+{
+	char* v5; // esi
+	int v9x; // eax
+	int v9y; // eax
+	__int16 v10; // bx
+	__int16 v11; // bx
+	int v12; // edi
+	int v13; // esi
+	char v24[32]; // [esp+0h] [ebp-58h]
+	int v25; // [esp+20h] [ebp-38h]
+	int v26; // [esp+24h] [ebp-34h]
+	//int v27; // [esp+28h] [ebp-30h]
+	//int v28; // [esp+2Ch] [ebp-2Ch]
+	int v29; // [esp+30h] [ebp-28h]
+	int v30; // [esp+34h] [ebp-24h]
+	int v31; // [esp+38h] [ebp-20h]
+	int v32; // [esp+3Ch] [ebp-1Ch]
+	char v34; // [esp+44h] [ebp-14h]
+	char v36; // [esp+4Ch] [ebp-Ch]
+	int v39; // [esp+74h] [ebp+1Ch]
+	v31 = viewPort.PreWidth_EA3C4 + viewPort.PosX_EA3D0 - 4;
+	v29 = viewPort.PreHeight_EA3C0 + viewPort.PosY_EA3CC - 22;
+	v25 = a1x->dword_0xA4_164x->word_0x38_56;
+	v5 = D41A0_0.array_0x2BDE[v25].WizardName_0x39f_2BFA_12157;
+	strcpy(v24, v5);
+	v36 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v25)];//c
+	// uint8_t color_v35 = m_ptrColorPalette[0];//10 //v19
+	v34 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v25)];	//14 //v18
+	uint8_t color_v33 = str_D94F0_bldgprmbuffer[static_cast<std::underlying_type<MapType_t>::type>(D41A0_0.terrain_2FECE.MapType)][2];//18 v14
+	uint8_t color_v38 = str_D94F0_bldgprmbuffer[static_cast<std::underlying_type<MapType_t>::type>(D41A0_0.terrain_2FECE.MapType)][3];//4 v15
+	uint8_t color_v37 = str_D94F0_bldgprmbuffer[static_cast<std::underlying_type<MapType_t>::type>(D41A0_0.terrain_2FECE.MapType)][0];//?v22
+	v10 = (a4 >> 1) + a2;
+	if (x_WORD_180660_VGA_type_resolution & 1)
+	{
+		v10 *= 2;
+		a3 *= 2;
+	}
+	v11 = viewPort.PosX_EA3D0 + v10;
+	v12 = viewPort.PosY_EA3CC + a3 - 20;
+	v39 = viewPort.PosY_EA3CC + a3 - 20;
+	if (v11 >= viewPort.PosX_EA3D0)
+	{
+		if ((int16_t)v12 >= viewPort.PosY_EA3CC && v11 < v31 && (int16_t)v12 < v29)
+		{
+			v9x = strlen(v24);
+			v13 = 8 * v9x + 4;
+			if (v11 + v13 > v31)
+			{
+				v13 = v31 - v11;
+				v9x = ((v31 - v11 - 4) - (my_sign32(v31 - v11 - 4) << 3) + my_sign32(v31 - v11 - 4)) >> 3;
+			}
+			if (v9x > 0)
+			{
+				v24[v9x] = 0;
+				v32 = v13 + 2;
+				v26 = (int16_t)(v13 + 2);
+				v30 = v11;
+				DrawLine_2BC80(v11, v39, v13 + 2, 18, color_v37);//8
+				//v27 = v33;//30// v16
+				DrawLine_2BC80(v30, v39, v26, 2, color_v33);//18
+				//v28 = v38;//2c//v17
+				DrawLine_2BC80(v30, v39 + 16, v26, 2, color_v38);//4
+				DrawLine_2BC80(v30, v39, 2, 16, color_v33);//30,tj.18
+				DrawLine_2BC80(v11 + v32 - 2, v39, 2, 18, color_v38);//2c tj. 4
+				DrawText_2BC10(v24, v11 + 4, v39, v34);//14
+				DrawLine_2BC80(v11 + 2, v39 + 14, v13 - 2, 2, color_v35);//10
+				if (a1x->maxLife_0x4)
+				{
+					v9y = a1x->life_0x8 * (v13 - 2) / a1x->maxLife_0x4;
+					if (v30 + 2 + v9y > v31 - 2)
+						v9y = v31 - 2 - (v30 + 2);
+					if (v9y > 0)
+						DrawLine_2BC80(v11 + 2, v39 + 14, v9y, 2, v36);
+				}
+			}
+		}
+	}
+}
