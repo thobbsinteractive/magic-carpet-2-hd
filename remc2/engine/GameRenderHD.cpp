@@ -5421,7 +5421,7 @@ void DrawPolygonRasterLine_subB6253(
 	int16_t textureIndexU = 0;
 	int16_t textureIndexV = 0;
 	int16_t endX;
-	uint8_t* v379; // pixel position in screen buffer
+	uint8_t* ptrViewPortRenderLine_v379; // pixel position in screen buffer
 	uint16_t v380;
 	unsigned int v382;
 	int v383;
@@ -5441,7 +5441,7 @@ void DrawPolygonRasterLine_subB6253(
 
 		startX = HIWORD(current_raster_line->startX);
 		endX = HIWORD(current_raster_line->endX);
-		v379 = iScreenWidth_DE560 + *ptrViewPortRenderLineStart_v1102;
+		ptrViewPortRenderLine_v379 = iScreenWidth_DE560 + *ptrViewPortRenderLineStart_v1102;
 		*ptrViewPortRenderLineStart_v1102 += iScreenWidth_DE560;
 		line6++;
 
@@ -5457,7 +5457,7 @@ void DrawPolygonRasterLine_subB6253(
 				if ((uint8_t)((v385 < 0) ^ v18) | (v385 == 0)) {
 					continue;
 				}
-				v379 += startX;
+				ptrViewPortRenderLine_v379 += startX;
 				textureIndexU = BYTE2(current_raster_line->U);
 				v383 = __SWAP_HILOWORD__(current_raster_line->V);
 				textureIndexV = (uint8_t)v383;
@@ -5493,7 +5493,7 @@ void DrawPolygonRasterLine_subB6253(
 				continue;
 			}
 
-			currentPixel = &v379[0];
+			currentPixel = &ptrViewPortRenderLine_v379[0];
 			do {
 				if (textureIndexV > MAX_TEXTURE_INDEX)
 					break;
