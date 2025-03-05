@@ -5430,6 +5430,7 @@ void DrawPolygonRasterLine_subB6253(
 	int16_t BrightnessFractionalPart_v384hi;
 	int16_t v385;
 	uint8_t* currentPixel;
+	uint32_t v375 = 0;
 
 	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
 
@@ -5438,7 +5439,8 @@ void DrawPolygonRasterLine_subB6253(
 	{
 		current_raster_line = next_raster_line;
 		next_raster_line++;
-
+		char* v377 = ((char*)current_raster_line);
+		LOWORD(v375) = *((x_WORD*)v377 + 1);
 		startX = HIWORD(current_raster_line->startX);
 		endX = HIWORD(current_raster_line->endX);
 		ptrViewPortRenderLine_v379 = iScreenWidth_DE560 + *ptrViewPortRenderLineStart_v1102;
