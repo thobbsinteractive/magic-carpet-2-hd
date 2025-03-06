@@ -5430,8 +5430,6 @@ void DrawPolygonRasterLine_subB6253(
 	int16_t BrightnessFractionalPart_v384hi;
 	int16_t v385;
 	uint8_t* currentPixel;
-	uint32_t v375 = 0;
-	uint32_t v378 = 0;
 
 	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
 
