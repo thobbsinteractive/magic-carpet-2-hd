@@ -1143,7 +1143,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 			v29 = v20 + (i * Maths::sin_DB750[v72] >> 16);
 			//v29 = v20 + (i * Maths::x_DWORD_DB750ar_ret(4*v72) >> 16);
 
-			if (v72 < 0 || 0x200 + v72 > 2560)
+			if (v72 < 0 || 0x200 + v72 >= 2560)
 				break;
 
 			v85 = v21 + (-i * Maths::sin_DB750[0x200 + v72] >> 16);
