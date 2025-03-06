@@ -5416,11 +5416,11 @@ void DrawPolygonRasterLine_subB6253(
 
 	uint8_t v18;
 	uint8_t v180;
-	int16_t startX;
+	uint16_t startX;
 	uint16_t paletteMapping;
 	int16_t textureIndexU = 0;
 	int16_t textureIndexV = 0;
-	int16_t endX;
+	uint16_t endX;
 	uint8_t* ptrViewPortRenderLine_v379; // pixel position in screen buffer
 	uint16_t v380;
 	unsigned int v382;
@@ -5431,6 +5431,7 @@ void DrawPolygonRasterLine_subB6253(
 	int16_t v385;
 	uint8_t* currentPixel;
 	uint32_t v375 = 0;
+	uint32_t v378 = 0;
 
 	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
 
@@ -5441,6 +5442,7 @@ void DrawPolygonRasterLine_subB6253(
 		next_raster_line++;
 		char* v377 = ((char*)current_raster_line);
 		LOWORD(v375) = *((x_WORD*)v377 + 1);
+		v378 = *((uint16_t*)v377 + 3);
 		startX = HIWORD(current_raster_line->startX);
 		endX = HIWORD(current_raster_line->endX);
 		ptrViewPortRenderLine_v379 = iScreenWidth_DE560 + *ptrViewPortRenderLineStart_v1102;
@@ -5450,12 +5452,16 @@ void DrawPolygonRasterLine_subB6253(
 		if (line6 >= drawEveryNthLine)
 		{
 			line6 = 0;
-			if (startX >= 0) {
+			if (startX >= 0 || (v375 & 0x8000u) == 0) {
 				// startX >= 0
 				if (endX > viewPort.Width_DE564)
 					endX = viewPort.Width_DE564;
+
+				if (v378 > viewPort.Width_DE564)
+					LOWORD(v378) = viewPort.Width_DE564;
+
 				v18 = __OFSUB__(endX, startX);
-				v385 = endX - startX;
+				v385 = v378 - v375;
 				if ((uint8_t)((v385 < 0) ^ v18) | (v385 == 0)) {
 					continue;
 				}
@@ -5805,11 +5811,7 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	int miny = std::min(y1, std::min(y2, y3));
 #endif
 
-	if (maxx - minx > 0x7fff || maxy - miny > 0x7fff) {
-		// triangle is too large to be drawn and can cause problems with computations
-		return;
-	}
-	else if (maxx < 0 || minx >= viewPort.Width_DE564 || maxy < 0 || miny >= viewPort.Height_DE568) {
+	if (maxx < 0 || minx >= viewPort.Width_DE564 || maxy < 0 || miny >= viewPort.Height_DE568) {
 		// triangle is outside of the viewport
 		return;
 	}
