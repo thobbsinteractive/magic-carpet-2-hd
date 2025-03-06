@@ -5416,11 +5416,11 @@ void DrawPolygonRasterLine_subB6253(
 
 	uint8_t v18;
 	uint8_t v180;
-	uint16_t startX;
+	uint16_t startX_v375;
 	uint16_t paletteMapping;
 	int16_t textureIndexU = 0;
 	int16_t textureIndexV = 0;
-	uint16_t endX;
+	uint16_t endX_v378;
 	uint8_t* ptrViewPortRenderLine_v379; // pixel position in screen buffer
 	uint16_t v380;
 	unsigned int v382;
@@ -5440,11 +5440,8 @@ void DrawPolygonRasterLine_subB6253(
 	{
 		current_raster_line = next_raster_line;
 		next_raster_line++;
-		char* v377 = ((char*)current_raster_line);
-		LOWORD(v375) = *((x_WORD*)v377 + 1);
-		v378 = *((uint16_t*)v377 + 3);
-		startX = HIWORD(current_raster_line->startX);
-		endX = HIWORD(current_raster_line->endX);
+		startX_v375 = HIWORD(current_raster_line->startX);
+		endX_v378 = HIWORD(current_raster_line->endX);
 		ptrViewPortRenderLine_v379 = iScreenWidth_DE560 + *ptrViewPortRenderLineStart_v1102;
 		*ptrViewPortRenderLineStart_v1102 += iScreenWidth_DE560;
 		line6++;
@@ -5452,20 +5449,17 @@ void DrawPolygonRasterLine_subB6253(
 		if (line6 >= drawEveryNthLine)
 		{
 			line6 = 0;
-			if (startX >= 0 || (v375 & 0x8000u) == 0) {
+			if ((startX_v375 & 0x8000u) == 0) {
 				// startX >= 0
-				if (endX > viewPort.Width_DE564)
-					endX = viewPort.Width_DE564;
+				if (endX_v378 > viewPort.Width_DE564)
+					endX_v378 = viewPort.Width_DE564;
 
-				if (v378 > viewPort.Width_DE564)
-					LOWORD(v378) = viewPort.Width_DE564;
-
-				v18 = __OFSUB__(endX, startX);
-				v385 = v378 - v375;
+				v18 = __OFSUB__(endX_v378, startX_v375);
+				v385 = endX_v378 - startX_v375;
 				if ((uint8_t)((v385 < 0) ^ v18) | (v385 == 0)) {
 					continue;
 				}
-				ptrViewPortRenderLine_v379 += startX;
+				ptrViewPortRenderLine_v379 += startX_v375;
 				textureIndexU = BYTE2(current_raster_line->U);
 				v383 = __SWAP_HILOWORD__(current_raster_line->V);
 				textureIndexV = (uint8_t)v383;
@@ -5476,15 +5470,15 @@ void DrawPolygonRasterLine_subB6253(
 				BYTE1(paletteMapping) = LOWORD(v384tmp);
 				pixelCount_v384lo = v385;
 			}
-			else if (endX > 0)
+			else if (endX_v378 > 0)
 			{
-				// startX is negative here, but endX is positive -> skip pixels by updating v,u,brightness
-				v380 = -startX;
+				// startX_v375 is negative here, but endX is positive -> skip pixels by updating v,u,brightness
+				v380 = -startX_v375;
 				v383 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v380);
 				textureIndexV = (uint8_t)v383;
 				v382 = current_raster_line->U + Uincrement * v380;
 				LOWORD(v383) = v382;
-				startX = v382 >> 8;
+				startX_v375 = v382 >> 8;
 				textureIndexU = BYTE2(v382);
 
 				v384tmp = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement_v1146 * v380);
