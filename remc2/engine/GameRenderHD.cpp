@@ -5539,11 +5539,11 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 
 	uint8_t v18;
 	uint8_t v180;
-	int16_t startX;
+	int16_t startX_v406;
 	uint16_t paletteMapping;
 	uint16_t textureIndexU = 0;
 	uint16_t textureIndexV = 0;
-	int16_t endX;
+	int16_t endX_v408;
 	uint8_t* currentPixel;
 	int v410;
 	unsigned int v411;
@@ -5559,8 +5559,8 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 		current_raster_line = next_raster_line;
 		next_raster_line++;
 
-		startX = HIWORD(current_raster_line->startX);
-		endX = HIWORD(current_raster_line->endX);
+		startX_v406 = HIWORD(current_raster_line->startX);
+		endX_v408 = HIWORD(current_raster_line->endX);
 		currentPixel = iScreenWidth_DE560 + *pv1102;
 		*pv1102 += iScreenWidth_DE560;
 		line8++;
@@ -5568,16 +5568,16 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 		if (line8 >= drawEveryNthLine)
 		{
 			line8 = 0;
-			if (startX >= 0) {
-				if (endX > viewPort.Width_DE564)
-					endX = viewPort.Width_DE564;
+			if ((startX_v406 & 0x8000u) == 0) {
+				if (endX_v408 > viewPort.Width_DE564)
+					endX_v408 = viewPort.Width_DE564;
 
-				v18 = __OFSUB__((x_WORD)endX, (x_WORD)startX);
-				endX = endX - startX;
-				if ((uint8_t)(((endX & 0x8000u) != 0) ^ v18) | (endX == 0)) {
+				v18 = __OFSUB__((x_WORD)endX_v408, (x_WORD)startX_v406);
+				endX_v408 = endX_v408 - startX_v406;
+				if ((uint8_t)(((endX_v408 & 0x8000u) != 0) ^ v18) | (endX_v408 == 0)) {
 					continue;
 				}
-				currentPixel += startX;
+				currentPixel += startX_v406;
 
 				v412 = __SWAP_HILOWORD__(current_raster_line->V);
 				textureIndexV = (uint8_t)v412;
@@ -5585,9 +5585,9 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 				LOWORD(v412) = LOWORD(current_raster_line->U);
 				textureIndexU = BYTE2(current_raster_line->U);
 			}
-			else if (endX > 0)
+			else if (endX_v408 > 0)
 			{
-				v410 = -startX;
+				v410 = -startX_v406;
 
 				v412 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v410);
 				textureIndexV = (uint8_t)v412;
@@ -5597,9 +5597,9 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 				v413 = v411 >> 8;
 				textureIndexU = BYTE1(v413);
 
-				if (endX > viewPort.Width_DE564)
-					endX = viewPort.Width_DE564;
-				startX = (uint16_t)v413;
+				if (endX_v408 > viewPort.Width_DE564)
+					endX_v408 = viewPort.Width_DE564;
+				startX_v406 = (uint16_t)v413;
 			}
 			else
 			{
@@ -5625,7 +5625,7 @@ void DrawPolygonRasterLine_flat_shading_subB6253(
 
 				*currentPixel = x_BYTE_F6EE0_tablesx[paletteMapping];
 				currentPixel += 1;
-			} while(--endX);
+			} while(--endX_v408);
 			current_raster_line = v1278;
 		}
 	} while(--linesToDraw);
