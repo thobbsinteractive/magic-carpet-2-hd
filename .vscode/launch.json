@@ -75,7 +75,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/build_vscode/inst/bin/remc2",
             "args": [
-                "--set_level", "3",
+                "--set_level", "24",
                 "--test_renderers",
                 "--config_file_path", "./renderer-config.ini"
             ],

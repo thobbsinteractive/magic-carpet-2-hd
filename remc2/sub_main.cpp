@@ -32355,10 +32355,11 @@ void sub_47320_in_game_loop(signed int a1)//228320
 		// force special settings for renderer tests			
 		if (CommandLineParams.DoTestRenderers()) {
 			auto rt = renderer_tests[CommandLineParams.GetSetLevel()];
-			// force player turn
 
+			// force player turn
 			SetMousePositionInMemory_5BDC0(rt.set_mouse_x, rt.set_mouse_y);
 
+			// force flat shading
 			if (rt.set_flatshader) {
 				D41A0_0.m_GameSettings.str_0x2196.flat_0x2199 = 1;
 			}
@@ -32368,11 +32369,25 @@ void sub_47320_in_game_loop(signed int a1)//228320
 				LastPressedKey_1806E4 = 0x48;
 				pressedKeys_180664[x_BYTE_EB39E_keys[0]] = 1;
 			}
-			if (static_cast<int>(rt.movements) & static_cast<int>(RendererTestsMovements::move_left)) {
-				pressedKeys_180664[x_BYTE_EB39E_keys[2]] = 1;
+			// barrel rolls every 30 frames
+			if (static_cast<int>(rt.movements) &
+					(static_cast<int>(RendererTestsMovements::move_left) | static_cast<int>(RendererTestsMovements::move_right))) {
+				if (renderer_tests_frame_count % 30 == 1) {
+					pressedKeys_180664[x_BYTE_EB39E_keys[2]] = 1;
+					pressedKeys_180664[x_BYTE_EB39E_keys[3]] = 1;
+				}
+				else {
+					pressedKeys_180664[x_BYTE_EB39E_keys[2]] = 0;
+					pressedKeys_180664[x_BYTE_EB39E_keys[3]] = 0;
+				}
 			}
-			if (static_cast<int>(rt.movements) & static_cast<int>(RendererTestsMovements::move_right)) {
-				pressedKeys_180664[x_BYTE_EB39E_keys[3]] = 1;
+			else {
+				if (static_cast<int>(rt.movements) & static_cast<int>(RendererTestsMovements::move_left)) {
+					pressedKeys_180664[x_BYTE_EB39E_keys[2]] = 1;
+				}
+				if (static_cast<int>(rt.movements) & static_cast<int>(RendererTestsMovements::move_right)) {
+					pressedKeys_180664[x_BYTE_EB39E_keys[3]] = 1;
+				}
 			}
 
 			if (stop_renderer_tests()) {
