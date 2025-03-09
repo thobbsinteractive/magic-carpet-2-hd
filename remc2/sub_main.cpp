@@ -32354,19 +32354,26 @@ void sub_47320_in_game_loop(signed int a1)//228320
 
 		// force special settings for renderer tests			
 		if (CommandLineParams.DoTestRenderers()) {
+			auto rt = renderer_tests[CommandLineParams.GetSetLevel()];
 			// force player turn
-			SetMousePositionInMemory_5BDC0(
-				renderer_tests[CommandLineParams.GetSetLevel()].set_mouse_x,
-				renderer_tests[CommandLineParams.GetSetLevel()].set_mouse_y
-			);
 
-			if (renderer_tests[CommandLineParams.GetSetLevel()].set_flatshader) {
+			SetMousePositionInMemory_5BDC0(rt.set_mouse_x, rt.set_mouse_y);
+
+			if (rt.set_flatshader) {
 				D41A0_0.m_GameSettings.str_0x2196.flat_0x2199 = 1;
 			}
 
-			// force up key pressed
-			LastPressedKey_1806E4 = 0x48;
-			pressedKeys_180664[x_BYTE_EB39E_keys[0]] = 1;
+			// force keys pressed
+			if (static_cast<int>(rt.movements) & static_cast<int>(RendererTestsMovements::move_forward)) {
+				LastPressedKey_1806E4 = 0x48;
+				pressedKeys_180664[x_BYTE_EB39E_keys[0]] = 1;
+			}
+			if (static_cast<int>(rt.movements) & static_cast<int>(RendererTestsMovements::move_left)) {
+				pressedKeys_180664[x_BYTE_EB39E_keys[2]] = 1;
+			}
+			if (static_cast<int>(rt.movements) & static_cast<int>(RendererTestsMovements::move_right)) {
+				pressedKeys_180664[x_BYTE_EB39E_keys[3]] = 1;
+			}
 
 			if (stop_renderer_tests()) {
 				break;
