@@ -12,10 +12,10 @@ bool renderer_tests_quit = false;
 
 // TODO: inject sprites in one of the levels and use this for all sprite code paths
 std::array<RendererTestsForLevel,25> renderer_tests{
-	RendererTestsForLevel{100, 0, 240, false, 0, 0, RendererTestsMovements::move_left, { // level 0
+	RendererTestsForLevel{100, 0, 240, false, 0, 0, RendererTestsMovements::move_forward, { // level 0
 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Standard, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Standard, false},
 	}},
-	RendererTestsForLevel{200, 320, 240, false, 0, 0, RendererTestsMovements::move_right, { // level 1
+	RendererTestsForLevel{200, 320, 240, false, 0, 0, RendererTestsMovements::move_forward, { // level 1
 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Standard, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Standard, false},
 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_Reflections, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Rasterline_Reflections, false},
 	}}, 

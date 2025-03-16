@@ -23,8 +23,6 @@ enum class RendererTestsMovements : int {
 	roll_left    = 0x008,
 	roll_right   = 0x010,
 };
-constexpr RendererTestsMovements forward_left = static_cast<RendererTestsMovements>(static_cast<int>(RendererTestsMovements::move_forward) | static_cast<int>(RendererTestsMovements::move_left));
-constexpr RendererTestsMovements forward_right = static_cast<RendererTestsMovements>(static_cast<int>(RendererTestsMovements::move_forward) | static_cast<int>(RendererTestsMovements::move_right));
 
 extern int renderer_tests_frame_count;
 extern bool renderer_tests_success;
