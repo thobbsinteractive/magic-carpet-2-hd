@@ -10,7 +10,14 @@ enum class RendererTestsHitCheckpoint {
 	RendTest_HD_Draw_Rasterline_Standard, RendTest_Orig_Draw_Rasterline_Standard,
 	RendTest_HD_Draw_Rasterline_Flatshading, RendTest_Orig_Draw_Rasterline_Flatshading,
 	RendTest_HD_Draw_Rasterline_Reflections, RendTest_Orig_Draw_Rasterline_Reflections,
-	RendTest_HD_Draw_Sprite_0, RendTest_Orig_Draw_Sprite_0
+	RendTest_HD_Draw_Sprite_0, RendTest_Orig_Draw_Sprite_0,
+	RendTest_HD_Draw_Sprite_1, RendTest_Orig_Draw_Sprite_1,
+	RendTest_HD_Draw_Sprite_2, RendTest_Orig_Draw_Sprite_2,
+	RendTest_HD_Draw_Sprite_3, RendTest_Orig_Draw_Sprite_3,
+	RendTest_HD_Draw_Sprite_4, RendTest_Orig_Draw_Sprite_4,
+	RendTest_HD_Draw_Sprite_5, RendTest_Orig_Draw_Sprite_5,
+	RendTest_HD_Draw_Sprite_6, RendTest_Orig_Draw_Sprite_6,
+	RendTest_HD_Draw_Sprite_7, RendTest_Orig_Draw_Sprite_7,
 };
 
 enum class RendererTestsMovements : int {

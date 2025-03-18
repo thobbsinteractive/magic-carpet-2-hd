@@ -3803,6 +3803,7 @@ void GameRenderOriginal::DrawSprite_41BD3(uint32 a1)
 					{
 					case 0:
 						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_0); }
+
 						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
@@ -3838,6 +3839,8 @@ void GameRenderOriginal::DrawSprite_41BD3(uint32 a1)
 						}
 						break;
 					case 1:
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_1); }
+
 						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
@@ -3879,6 +3882,8 @@ void GameRenderOriginal::DrawSprite_41BD3(uint32 a1)
 						}
 						break;
 					case 2:
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_2); }
+
 						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
@@ -3912,6 +3917,8 @@ void GameRenderOriginal::DrawSprite_41BD3(uint32 a1)
 						v123 = str_F2C20ar.width0x25 + ViewPortRenderBufferStart_DE558 - 1 - v170;
 						goto LABEL_137;
 					case 3:
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_3); }
+
 						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
@@ -3950,6 +3957,8 @@ void GameRenderOriginal::DrawSprite_41BD3(uint32 a1)
 						v123 = str_F2C20ar.height0x26 + iScreenWidth_DE560 * v171 - 1 + ViewPortRenderBufferStart_DE558;
 						goto LABEL_285;
 					case 4:
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_4); }
+
 						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
@@ -3983,6 +3992,8 @@ void GameRenderOriginal::DrawSprite_41BD3(uint32 a1)
 						v123 = str_F2C20ar.height0x26 + ViewPortRenderBufferStart_DE558 + iScreenWidth_DE560 * (str_F2C20ar.width0x25 - v170 - 1) - 1;
 						goto LABEL_137;
 					case 5:
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_5); }
+
 						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
@@ -4022,6 +4033,8 @@ void GameRenderOriginal::DrawSprite_41BD3(uint32 a1)
 						v123 = (str_F2C20ar.height0x26 - 1) * iScreenWidth_DE560 + str_F2C20ar.width0x25 + ViewPortRenderBufferStart_DE558 - 1 - v171;
 						goto LABEL_285;
 					case 6:
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_6); }
+
 						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
@@ -4525,6 +4538,8 @@ void GameRenderOriginal::DrawSprite_41BD3(uint32 a1)
 						}
 						break;
 					case 7:
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_7); }
+
 						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
 						if (v156 <= 0)
 							break;
