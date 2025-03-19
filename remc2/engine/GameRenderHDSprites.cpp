@@ -9,7 +9,7 @@
 #include "GameUI.h"
 
 void DrawSprite_41BD3(
-    uint32_t a1, 
+    uint32_t a1, // 0, 1, 2
     const int32_t spriteWidth,
     const char x_BYTE_F2CC6,
     type_F2C20ar &str_F2C20ar,
@@ -213,28 +213,17 @@ void DrawSprite_41BD3(
 
 	if (!x_BYTE_F2CC6)
 	{
-		if (a1 < 1)
+		if (a1 == 1)
 		{
-			if (a1)//a1==0
-				goto LABEL_126;
+			str_F2C20ar.dword0x04_screenY -= ((str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x09_realWidth >> 1) + str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x0c_realHeight) >> 16;
+			str_F2C20ar.dword0x03_screenX -= (str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x0c_realHeight - (str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x09_realWidth >> 1)) >> 16;
 		}
 		else
 		{
-			if (a1 <= 1)//a1==1
-			{
-				str_F2C20ar.dword0x04_screenY -= ((str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x09_realWidth >> 1) + str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x0c_realHeight) >> 16;
-				str_F2C20ar.dword0x03_screenX -= (str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x0c_realHeight - (str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x09_realWidth >> 1)) >> 16;
-				goto LABEL_126;
-			}
-			if (a1 != 2)//a1 == 0,1
-			{
-				goto LABEL_126;
-			}
+			str_F2C20ar.dword0x04_screenY -= str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x09_realWidth >> 17;
+			str_F2C20ar.dword0x03_screenX -= -(str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x09_realWidth) >> 17;
 		}
-		str_F2C20ar.dword0x04_screenY -= str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x09_realWidth >> 17;
-		str_F2C20ar.dword0x03_screenX -= -(str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x09_realWidth) >> 17;
 
-	LABEL_126:
 		if ((unsigned int)str_F2C20ar.dword0x1e_spriteSymmetry <= 7)
 		{
 			// probably only two cases are handled, because roll is between +45deg and -45deg
