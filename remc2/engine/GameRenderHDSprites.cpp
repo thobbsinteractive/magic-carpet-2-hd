@@ -228,961 +228,962 @@ void DrawSprite_41BD3(
 			}
 			if (a1 != 2)//a1 == 0,1
 			{
-			LABEL_126:
-				if ((unsigned int)str_F2C20ar.dword0x1e_spriteSymmetry <= 7)
-				{
-					// probably only two cases are handled, because roll is between +45deg and -45deg
-					switch (str_F2C20ar.dword0x1e_spriteSymmetry)//mirroring
-					{
-					case 0:
-						// left rotation 0-45deg roll
-						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_0); }
-
-						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
-						if (v156 <= 0)
-							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
-						if (scaledHeight <= 0)
-							break;
-						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-						if (a1 == 1)
-						{
-							str_F2C20ar.dword0x0a_actIdx = 0;
-						}
-						else
-						{
-							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
-							v135 = -v135;
-						}
-						v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
-						v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-						v157 = str_F2C20ar.dword0x04_screenY << 16;
-						screenPosX = str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16);
-						if (str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16) >= str_F2C20ar.dword0x21)
-							goto LABEL_136;
-						v139 = str_F2C20ar.dword0x21 - screenPosX;
-						scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
-						if (scaledHeight > 0)
-						{
-							str_F2C20ar.dword0x0a_actIdx += v139 * v135;
-							v157 -= v139 * v160;
-							screenPosX = str_F2C20ar.dword0x21;
-						LABEL_136:
-							ptrRenderBuffer = iScreenWidth_DE560 * screenPosX + ViewPortRenderBufferStart_DE558;
-							goto LABEL_137;
-						}
-						break;
-					case 1:
-						// ?deg roll
-						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_1); }
-
-						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
-						if (v156 <= 0)
-							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
-						if (scaledHeight <= 0)
-							break;
-						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-						if (a1 == 1)
-						{
-							str_F2C20ar.dword0x0a_actIdx = 0;
-						}
-						else
-						{
-							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
-							v135 = -v135;
-						}
-						v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
-						v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-						v158 = str_F2C20ar.dword0x03_screenX << 16;
-						v171 = str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16);
-						if (str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16) < str_F2C20ar.width0x25)
-						{
-							if (v171 >= str_F2C20ar.dword0x21)
-								goto LABEL_284;
-						}
-						else
-						{
-							v141 = v171 - str_F2C20ar.width0x25;
-							scaledHeight -= v171 - str_F2C20ar.width0x25;
-							if (scaledHeight > 0)
-							{
-								str_F2C20ar.dword0x0a_actIdx += v141 * v135;
-								v158 += v141 * v161;
-								v171 = str_F2C20ar.width0x25;
-							LABEL_284:
-								ptrRenderBuffer = v171 + ViewPortRenderBufferStart_DE558;
-								goto LABEL_285;
-							}
-						}
-						break;
-					case 2:
-						// ?deg roll
-						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_2); }
-
-						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
-						if (v156 <= 0)
-							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
-						if (scaledHeight <= 0)
-							break;
-						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-						if (a1 == 1)
-						{
-							str_F2C20ar.dword0x0a_actIdx = 0;
-						}
-						else
-						{
-							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
-							v135 = -v135;
-						}
-						v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
-						v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-						v157 = str_F2C20ar.dword0x03_screenX << 16;
-						screenPosX = str_F2C20ar.width0x25 - str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16);
-						if (screenPosX >= str_F2C20ar.dword0x21)
-							goto LABEL_329;
-						v147 = str_F2C20ar.dword0x21 - screenPosX;
-						scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
-						if (scaledHeight <= 0)
-							break;
-						str_F2C20ar.dword0x0a_actIdx += v147 * v135;
-						v157 -= v147 * v160;
-						screenPosX = str_F2C20ar.dword0x21;
-					LABEL_329:
-						ptrRenderBuffer = str_F2C20ar.width0x25 + ViewPortRenderBufferStart_DE558 - 1 - screenPosX;
-						goto LABEL_137;
-					case 3:
-						// ?deg roll
-						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_3); }
-
-						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
-						if (v156 <= 0)
-							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
-						if (scaledHeight <= 0)
-							break;
-						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-						if (a1 == 1)
-						{
-							str_F2C20ar.dword0x0a_actIdx = 0;
-						}
-						else
-						{
-							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
-							v135 = -v135;
-						}
-						v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
-						v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-						v158 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) << 16;
-						v171 = str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) >> 16);
-						if (str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) >> 16) < str_F2C20ar.width0x25)
-						{
-							if (v171 < str_F2C20ar.dword0x21)
-								break;
-						}
-						else
-						{
-							v148 = v171 - str_F2C20ar.width0x25;
-							scaledHeight -= v171 - str_F2C20ar.width0x25;
-							if (scaledHeight <= 0)
-								break;
-							str_F2C20ar.dword0x0a_actIdx += v148 * v135;
-							v158 += v148 * v161;
-							v171 = str_F2C20ar.width0x25;
-						}
-						ptrRenderBuffer = str_F2C20ar.height0x26 + iScreenWidth_DE560 * v171 - 1 + ViewPortRenderBufferStart_DE558;
-						goto LABEL_285;
-					case 4:
-						// ?deg roll
-						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_4); }
-
-						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
-						if (v156 <= 0)
-							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
-						if (scaledHeight <= 0)
-							break;
-						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-						if (a1 == 1)
-						{
-							str_F2C20ar.dword0x0a_actIdx = 0;
-						}
-						else
-						{
-							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
-							v135 = -v135;
-						}
-						v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
-						v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-						v157 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) << 16;
-						screenPosX = str_F2C20ar.width0x25 - str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) >> 16);
-						if (screenPosX >= str_F2C20ar.dword0x21)
-							goto LABEL_348;
-						v149 = str_F2C20ar.dword0x21 - screenPosX;
-						scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
-						if (scaledHeight <= 0)
-							break;
-						str_F2C20ar.dword0x0a_actIdx += v149 * v135;
-						v157 -= v149 * v160;
-						screenPosX = str_F2C20ar.dword0x21;
-					LABEL_348:
-						ptrRenderBuffer = str_F2C20ar.height0x26 + ViewPortRenderBufferStart_DE558 + iScreenWidth_DE560 * (str_F2C20ar.width0x25 - screenPosX - 1) - 1;
-						goto LABEL_137;
-					case 5:
-						// ?deg roll
-						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_5); }
-
-						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
-						if (v156 <= 0)
-							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
-						if (scaledHeight <= 0)
-							break;
-						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-						if (a1 == 1)
-						{
-							str_F2C20ar.dword0x0a_actIdx = 0;
-						}
-						else
-						{
-							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
-							v135 = -v135;
-						}
-						v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
-						v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-						v158 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) << 16;
-						v113 = str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16;
-						v171 = str_F2C20ar.width0x25 - str_F2C20ar.dword0x04_screenY - v113;
-						if (v171 < str_F2C20ar.width0x25)
-						{
-							if (v171 < str_F2C20ar.dword0x21)
-								break;
-						}
-						else
-						{
-							v150 = v171 - str_F2C20ar.width0x25;
-							scaledHeight -= v171 - str_F2C20ar.width0x25;
-							if (scaledHeight <= 0)
-								break;
-							str_F2C20ar.dword0x0a_actIdx += v150 * v135;
-							v158 += v150 * v161;
-							v171 = str_F2C20ar.width0x25;
-						}
-						ptrRenderBuffer = (str_F2C20ar.height0x26 - 1) * iScreenWidth_DE560 + str_F2C20ar.width0x25 + ViewPortRenderBufferStart_DE558 - 1 - v171;
-						goto LABEL_285;
-					case 6:
-						// ?deg roll
-						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_6); }
-
-						v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
-						if (v156 <= 0)
-							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
-						if (scaledHeight <= 0)
-							break;
-						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-						if (a1 == 1)
-						{
-							str_F2C20ar.dword0x0a_actIdx = 0;
-						}
-						else
-						{
-							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
-							v135 = -v135;
-						}
-						v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
-						v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-						v157 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) << 16;
-						screenPosX = str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16);
-						if (str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16) >= str_F2C20ar.dword0x21)
-							goto LABEL_367;
-						v151 = str_F2C20ar.dword0x21 - screenPosX;
-						scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
-						if (scaledHeight <= 0)
-							break;
-						str_F2C20ar.dword0x0a_actIdx += v151 * v135;
-						v157 -= v151 * v160;
-						screenPosX = str_F2C20ar.dword0x21;
-					LABEL_367:
-						ptrRenderBuffer = ViewPortRenderBufferStart_DE558 + iScreenWidth_DE560 * (str_F2C20ar.height0x26 - 1) + screenPosX;
-					LABEL_137:
-						v140 = str_F2C20ar.width0x25 - str_F2C20ar.dword0x21;
-						if (screenPosX <= 0)
-						{
-							if (scaledHeight > v140)
-								scaledHeight = str_F2C20ar.width0x25 - str_F2C20ar.dword0x21;
-						}
-						else if (screenPosX + scaledHeight > v140)
-						{
-							scaledHeight = v140 - screenPosX;
-							if (v140 - screenPosX <= 0)
-								break;
-						}
-						v116 = 9999999;
-						v124 = scaledHeight;
-						while (2)
-						{
-							if (!v124)
-								goto LABEL_154;
-							v172 = v157 >> 16;
-							if (v157 >> 16 >= 0)
-							{
-								v162[0] = v172;
-								v162[1] = v156;
-								v162[2] = 0;
-								v116 = 0;
-							LABEL_151:
-								if (v162[1] + *v162 > str_F2C20ar.height0x26)
-									v162[1] = str_F2C20ar.height0x26 - *v162;
-								v157 -= v160;
-								v162 += 3;
-								v124--;
-								continue;
-							}
-							break;
-						}
-						v173 = -v172;
-						v162[0] = 0;
-						v162[1] = v156 - v173;
-						if (v162[1] > 0)
-						{
-							v162[2] = v173;
-							if (v173 < v116)
-								v116 = v173;
-							goto LABEL_151;
-						}
-						scaledHeight -= v124;
-					LABEL_154:
-						if (screenPosX + scaledHeight > str_F2C20ar.Height_0x19)
-						{
-							if (str_F2C20ar.Height_0x19 - screenPosX <= 0)
-							{
-								v163 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-								v117 = (x_DWORD*)(4 * (str_F2C20ar.Height_0x19 - screenPosX) + str_F2C20ar.pbyte0x1a);
-								v125 = scaledHeight;
-							}
-							else
-							{
-								v163 = (x_DWORD*)(12 * (str_F2C20ar.Height_0x19 - screenPosX) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-								v117 = (x_DWORD*)str_F2C20ar.pbyte0x1a;
-								v125 = screenPosX + scaledHeight - str_F2C20ar.Height_0x19;
-							}
-							while (v125)
-							{
-								if (*v163 + v163[1] > *v117)
-								{
-									if (*v163 >= *v117)
-									{
-										scaledHeight -= v125;
-										break;
-									}
-									v163[1] = *v117 - *v163;
-								}
-								v163 += 3;
-								v117--;
-								v125--;
-							}
-						}
-						if (screenPosX < 0)
-						{
-							v118 = (x_DWORD*)(4 * (-1 - screenPosX) + m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_3);
-							v164 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-							while (screenPosX)
-							{
-								if (*v118 > *v164)
-								{
-									if (v164[1] + *v164 >= *v118)
-									{
-										v50 = *v118 - *v164;
-										v164[0] = *v118;
-										v164[2] += v50;
-										v164[1] -= v50;
-									}
-									else
-									{
-										v164[1] = 0;
-									}
-								}
-								v118--;
-								v164 += 3;
-								screenPosX++;
-							}
-						}
-					LABEL_172:
-						v137 = (str_F2C20ar.dword0x05 << 16) / v156;
-						str_F2C20ar.dword0x0b = 0;
-						if (str_F2C20ar.dword0x05 < 0)
-							str_F2C20ar.dword0x0b -= v137 * (v156 - 1);
-						v132 = v156 - v116;
-						if (v156 - v116 > 0)
-						{
-							if (v132 > str_F2C20ar.dword0x1c)
-								v132 = str_F2C20ar.dword0x1c;
-							str_F2C20ar.dword0x0b += v137 * v116;
-							v154 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
-							while (v132 >= 0)
-							{
-								v154[1] = str_F2C20ar.dword0x0b >> 16;
-								*v154 = v154[1] - *(v154 - 1);
-								str_F2C20ar.dword0x0b += v137;
-								v154 += 2;
-								v132--;
-							}
-							v165 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-
-							//Draw Sprite to Render Buffer (rotated and scaled)
-							for (i = scaledHeight; i; i--)
-							{
-								v133 = v165[1];
-								if (v133 > 0)
-								{
-									//adress 2237d3
-									v169x = &m_str_F0E20x[*v165];
-									v155 = 8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1];
-									v121x = &str_F2C20ar.dword0x02_data[spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16)];
-
-									if ((unsigned int)str_F2C20ar.dword0x01_rotIdx <= 8)
-									{
-										switch (str_F2C20ar.dword0x01_rotIdx)
-										{
-										case 0:
-											ptrSpriteRenderSrc_v51x = &v121x[*(x_DWORD*)(v155 + 4)];
-											ptrSpriteRenderDest_v52 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
-											v53 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
-											v54x = &m_str_F0E20x[*v165];
-											v55 = v133 >> 1;
-											if (!(v133 & 1))
-											{
-												v6 = v55 & 1;
-												v56 = v133 >> 2;
-												if (v6)
-												{
-													v56++;
-													v53 = (x_DWORD*)(v155 - 8);
-													v54x = &v169x[-1];
-													goto LABEL_197;
-												}
-												v53 = (x_DWORD*)(v155 + 8);
-												v54x = &v169x[1];
-												goto LABEL_191;
-											}
-											v57 = v55 + 2;
-											v6 = v57 & 1;
-											v56 = v57 >> 1;
-											if (!v6)
-											{
-												v53 = (x_DWORD*)(v155 - 16);
-												v54x = &v169x[-2];
-												goto LABEL_200;
-											}
-											while (1)
-											{
-												v59 = ptrSpriteRenderSrc_v51x[0];
-												ptrSpriteRenderSrc_v51x += v53[2];
-
-												if (v59)
-													*ptrSpriteRenderDest_v52 = v59;
-												ptrSpriteRenderDest_v52 += v54x[1].dword_0;
-
-											LABEL_197:
-
-												v60 = ptrSpriteRenderSrc_v51x[0];
-												ptrSpriteRenderSrc_v51x += v53[4];
-
-												if (v60)
-													*ptrSpriteRenderDest_v52 = v60;
-												ptrSpriteRenderDest_v52 += v54x[2].dword_0;
-
-											LABEL_200:
-
-												v61 = ptrSpriteRenderSrc_v51x[0];
-												ptrSpriteRenderSrc_v51x += v53[6];
-
-												if (v61)
-													*ptrSpriteRenderDest_v52 = v61;
-												ptrSpriteRenderDest_v52 += v54x[3].dword_0;
-
-												v53 += 8;
-												v54x += 4;
-												if (!--v56)
-													break;
-											LABEL_191:
-
-												v58 = ptrSpriteRenderSrc_v51x[0];
-												ptrSpriteRenderSrc_v51x += *v53;
-
-												if (v58)
-													*ptrSpriteRenderDest_v52 = v58;
-												ptrSpriteRenderDest_v52 += v54x[0].dword_0;
-											}
-											break;
-										case 1:
-											ptrSpriteRenderSrc_v62x = &v121x[*(x_DWORD*)(v155 + 4)];
-
-											v63 = str_F2C20ar.dword0x00;
-											ptrSpriteRenderDest_v64 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
-
-											v65 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
-											v66x = &m_str_F0E20x[*v165];
-											v67 = v133 >> 1;
-											if (!(v133 & 1))
-											{
-												v65 = (x_DWORD*)(v155 + 8);
-												v66x = &v169x[1];
-												goto LABEL_207;
-											}
-											v67++;
-											while (1)
-											{
-												LOBYTE(v63) = ptrSpriteRenderSrc_v62x[0];
-												ptrSpriteRenderSrc_v62x += v65[2];
-
-												if ((x_BYTE)v63)
-													*ptrSpriteRenderDest_v64 = x_BYTE_F6EE0_tablesx[v63];
-												ptrSpriteRenderDest_v64 += v66x[1].dword_0;
-
-												v65 += 4;
-												v66x += 2;
-												if (!--v67)
-													break;
-											LABEL_207:
-												LOBYTE(v63) = ptrSpriteRenderSrc_v62x[0];
-												ptrSpriteRenderSrc_v62x += *v65;
-
-												if ((x_BYTE)v63)
-													*ptrSpriteRenderDest_v64 = x_BYTE_F6EE0_tablesx[v63];
-												ptrSpriteRenderDest_v64 += v66x->dword_0;
-											}
-											break;
-										case 2:
-											ptrSpriteRenderSrc_v68x = &v121x[*(x_DWORD*)(v155 + 4)];
-											ptrSpriteRenderDest_v69 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
-											v70 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
-											v71x = &m_str_F0E20x[*v165];
-											HIWORD(v72) = 0;
-											v73 = v133 >> 1;
-											if (!(v133 & 1))
-											{
-												v70 = (x_DWORD*)(v155 + 8);
-												v71x = &v169x[1];
-												goto LABEL_217;
-											}
-											v73++;
-											while (1)
-											{
-												HIBYTE(v72) = ptrSpriteRenderSrc_v68x[0];
-												ptrSpriteRenderSrc_v68x += v70[2];
-
-												if (HIBYTE(v72))
-												{
-													LOBYTE(v72) = *ptrSpriteRenderDest_v69;
-													*ptrSpriteRenderDest_v69 = x_BYTE_F6EE0_tablesx[16384 + v72];
-												}
-												ptrSpriteRenderDest_v69 += v71x[1].dword_0;
-
-												v70 += 4;
-												v71x += 2;
-												if (!--v73)
-													break;
-											LABEL_217:
-												HIBYTE(v72) = ptrSpriteRenderSrc_v68x[0];
-												ptrSpriteRenderSrc_v68x += *v70;
-
-												if (HIBYTE(v72))
-												{
-													LOBYTE(v72) = *ptrSpriteRenderDest_v69;
-													*ptrSpriteRenderDest_v69 = x_BYTE_F6EE0_tablesx[16384 + v72];
-												}
-												ptrSpriteRenderDest_v69 += v71x->dword_0;
-											}
-											break;
-										case 3:
-											ptrSpriteRenderSrc_v74x = &v121x[*(x_DWORD*)(v155 + 4)];
-											ptrSpriteRenderDest_v75 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
-											v76 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);//to position
-											v77x = &m_str_F0E20x[v165[0]];//from position
-											HIWORD(v78) = 0;
-											v79 = v133 >> 1;
-											if (!(v133 & 1))
-											{
-												v76 = (x_DWORD*)(v155 + 8);
-												v77x = &v169x[1];
-												goto LABEL_227;
-											}
-											v79++;
-											while (1)
-											{
-												LOBYTE(v78) = ptrSpriteRenderSrc_v74x[0];
-												ptrSpriteRenderSrc_v74x += v76[2];
-
-												if ((x_BYTE)v78)
-												{
-													HIBYTE(v78) = *ptrSpriteRenderDest_v75;
-													*ptrSpriteRenderDest_v75 = x_BYTE_F6EE0_tablesx[16384 + v78];
-												}
-												ptrSpriteRenderDest_v75 += v77x[1].dword_0;
-
-												v76 += 4;
-												v77x += 2;
-												if (!--v79)
-													break;
-											LABEL_227:
-												LOBYTE(v78) = ptrSpriteRenderSrc_v74x[0];
-												ptrSpriteRenderSrc_v74x += *v76;
-
-												if ((x_BYTE)v78)
-												{
-													HIBYTE(v78) = *ptrSpriteRenderDest_v75;
-													*ptrSpriteRenderDest_v75 = x_BYTE_F6EE0_tablesx[16384 + v78];
-												}
-												ptrSpriteRenderDest_v75 += v77x->dword_0;
-											}
-											break;
-										case 4:
-											ptrSpriteRenderSrc_v80x = &v121x[*(x_DWORD*)(v155 + 4)];
-											HIWORD(v84) = HIWORD(str_F2C20ar.dword0x07);
-											ptrSpriteRenderDest_v81 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
-
-											v82 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
-											v83x = &m_str_F0E20x[*v165];
-											BYTE1(v84) = str_F2C20ar.dword0x07;
-											v85 = v133 >> 1;
-											if (!(v133 & 1))
-											{
-												v82 = (x_DWORD*)(v155 + 8);
-												v83x = &v169x[1];
-												goto LABEL_237;
-											}
-											v85++;
-											while (1)
-											{
-												LOBYTE(v84) = ptrSpriteRenderSrc_v80x[0];
-												ptrSpriteRenderSrc_v80x += v82[2];
-
-												if ((x_BYTE)v84)
-													*ptrSpriteRenderDest_v81 = x_BYTE_F6EE0_tablesx[16384 + v84];
-												ptrSpriteRenderDest_v81 += v83x[1].dword_0;
-
-												v82 += 4;
-												v83x += 2;
-												if (!--v85)
-													break;
-											LABEL_237:
-												LOBYTE(v84) = ptrSpriteRenderSrc_v80x[0];
-												ptrSpriteRenderSrc_v80x += *v82;
-
-												if ((x_BYTE)v84)
-													*ptrSpriteRenderDest_v81 = x_BYTE_F6EE0_tablesx[16384 + v84];
-												ptrSpriteRenderDest_v81 += v83x->dword_0;
-											}
-											break;
-										case 5:
-											ptrSpriteRenderSrc_v86x = &v121x[*(x_DWORD*)(v155 + 4)];
-											v87 = str_F2C20ar.dword0x07;
-											ptrSpriteRenderDest_v88 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
-											v89 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
-											v90x = &m_str_F0E20x[*v165];
-											v91 = v133 >> 1;
-											if (!(v133 & 1))
-											{
-												v89 = (x_DWORD*)(v155 + 8);
-												v90x = &m_str_F0E20x[1];
-												goto LABEL_247;
-											}
-											v91++;
-											while (1)
-											{
-												BYTE1(v87) = ptrSpriteRenderSrc_v86x[0];
-												ptrSpriteRenderSrc_v86x += v89[2];
-
-												if (BYTE1(v87))
-													*ptrSpriteRenderDest_v88 = x_BYTE_F6EE0_tablesx[16384 + v87];
-												ptrSpriteRenderDest_v88 += v90x[1].dword_0;
-
-												v89 += 4;
-												v90x += 2;
-												if (!--v91)
-													break;
-											LABEL_247:
-												BYTE1(v87) = ptrSpriteRenderSrc_v86x[0];
-												ptrSpriteRenderSrc_v86x += *v89;
-
-												if (BYTE1(v87))
-													*ptrSpriteRenderDest_v88 = x_BYTE_F6EE0_tablesx[16384 + v87];
-												ptrSpriteRenderDest_v88 += v90x->dword_0;
-											}
-											break;
-										case 6:
-											v92 = str_F2C20ar.dword0x00;
-											ptrSpriteRenderSrc_v93x = &v121x[*(x_DWORD*)(v155 + 4)];
-											ptrSpriteRenderDest_v94 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
-
-											HIWORD(v95) = 0;
-											v96 = (x_DWORD*)(v155 + 8);
-											v97x = &v169x[1];
-											do
-											{
-												BYTE1(v95) = ptrSpriteRenderSrc_v93x[0];
-												ptrSpriteRenderSrc_v93x += *v96;
-
-												if (BYTE1(v95))
-												{
-													LOBYTE(v95) = *ptrSpriteRenderDest_v94;
-													LOBYTE(v92) = x_BYTE_F6EE0_tablesx[16384 + v95];
-													*ptrSpriteRenderDest_v94 = x_BYTE_F6EE0_tablesx[v92];
-												}
-												ptrSpriteRenderDest_v94 += v97x->dword_0;
-												v96 += 2;
-												v97x++;
-												v133--;
-											} while (v133);
-											break;
-										case 7:
-											v98 = str_F2C20ar.dword0x00;
-											ptrSpriteRenderSrc_v99x = &v121x[*(x_DWORD*)(v155 + 4)];
-											ptrSpriteRenderDest_v100 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
-											HIWORD(v101) = 0;
-											v102 = (x_DWORD*)(v155 + 8);
-											v103x = &v169x[1];
-											do
-											{
-												LOBYTE(v101) = ptrSpriteRenderSrc_v99x[0];
-												ptrSpriteRenderSrc_v99x += *v102;
-
-												if ((x_BYTE)v101)
-												{
-													BYTE1(v101) = *ptrSpriteRenderDest_v100;
-													LOBYTE(v98) = x_BYTE_F6EE0_tablesx[16384 + v101];
-													*ptrSpriteRenderDest_v100 = x_BYTE_F6EE0_tablesx[v98];
-												}
-												ptrSpriteRenderDest_v100 += v103x->dword_0;
-												v102 += 2;
-												v103x++;
-												v133--;
-											} while (v133);
-											break;
-										case 8:
-											ptrSpriteRenderSrc_v104x = &v121x[*(x_DWORD*)(v155 + 4)];
-											v105 = str_F2C20ar.dword0x00;
-											ptrSpriteRenderDest_v106 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
-											v107 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
-											v108x = &m_str_F0E20x[*v165];
-											v109 = v133 >> 1;
-											if (!(v133 & 1))
-											{
-												v107 = (x_DWORD*)(v155 + 8);
-												v108x = &v169x[1];
-												goto LABEL_267;
-											}
-											v109++;
-											while (1)
-											{
-												v111 = ptrSpriteRenderSrc_v104x[0];
-												ptrSpriteRenderSrc_v104x += v107[2];
-
-												if (v111)
-												{
-													LOBYTE(v105) = *ptrSpriteRenderDest_v106;
-													*ptrSpriteRenderDest_v106 = x_BYTE_F6EE0_tablesx[v105];
-												}
-												ptrSpriteRenderDest_v106 += v108x[3].dword_0;
-												v107 += 4;
-												v108x += 2;
-												if (!--v109)
-													break;
-											LABEL_267:
-												v110 = ptrSpriteRenderSrc_v104x[0];
-												ptrSpriteRenderSrc_v104x += *v107;
-												if (v110)
-												{
-													LOBYTE(v105) = *ptrSpriteRenderDest_v106;
-													*ptrSpriteRenderDest_v106 = x_BYTE_F6EE0_tablesx[v105];
-												}
-												ptrSpriteRenderDest_v106 += v108x->dword_0;
-											}
-											break;
-										}
-									}
-								}
-								str_F2C20ar.dword0x0a_actIdx += v135;
-								ptrRenderBuffer += str_F2C20ar.dword0x23_stride;
-								v165 += 3;
-							}
-						}
-						break;
-					case 7:
-						// right rotation 0-45 deg roll
-						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_7); }
-
-						v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
-
-						if (v156 <= 0)
-							break;
-						scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
-						if (scaledHeight <= 0)
-							break;
-						if (str_F2C20ar.dword0x04_screenY >= str_F2C20ar.height0x26)
-							break;
-						v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-						if (a1 == 1)
-						{
-							str_F2C20ar.dword0x0a_actIdx = 0;
-						}
-						else
-						{
-							str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
-							v135 = -v135;
-						}
-						v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
-						v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-						v158 = str_F2C20ar.dword0x04_screenY << 16;
-						v114 = str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16;
-						v171 = str_F2C20ar.width0x25 - str_F2C20ar.dword0x03_screenX - v114;
-						if (v171 < str_F2C20ar.width0x25)
-						{
-							if (v171 < str_F2C20ar.dword0x21)
-								break;
-						}
-						else
-						{
-							v152 = v171 - str_F2C20ar.width0x25;
-							scaledHeight -= v171 - str_F2C20ar.width0x25;
-							if (scaledHeight <= 0)
-								break;
-							str_F2C20ar.dword0x0a_actIdx += v152 * v135;
-							v158 += v152 * v161;
-							v171 = str_F2C20ar.width0x25;
-						}
-						ptrRenderBuffer = iScreenWidth_DE560 * (str_F2C20ar.width0x25 - 1 - v171) + ViewPortRenderBufferStart_DE558;
-
-					LABEL_285:
-						v142 = str_F2C20ar.width0x25 - str_F2C20ar.dword0x21;
-						if (v171 < str_F2C20ar.width0x25)
-						{
-							if (scaledHeight > v142)
-								scaledHeight = str_F2C20ar.width0x25 - str_F2C20ar.dword0x21;
-						}
-						else if (v171 + scaledHeight - str_F2C20ar.width0x25 > v142)
-						{
-							scaledHeight = v142 - v171 + str_F2C20ar.width0x25;
-							if (scaledHeight <= 0)
-								break;
-						}
-						//adress 223d83
-						v116 = 9999999;
-						for (jy = scaledHeight; jy; jy--)
-						{
-							v174 = v158 >> 16;
-							if (v158 >> 16 < 0)
-							{
-								v175 = -v174;
-								v166[0] = 0;
-								v166[1] = v156 - v175;
-								v166[2] = v175;
-								if (v175 < v116)
-									v116 = v175;
-							}
-							else
-							{
-								v166[0] = v174;
-								v166[1] = v156;
-								v166[2] = 0;
-								v116 = 0;
-							}
-							if (v166[1] + v166[0] > str_F2C20ar.height0x26)
-								v166[1] = str_F2C20ar.height0x26 - v166[0];
-							v158 += v161;
-							v166 += 3;
-						}
-						v143 = v171 + str_F2C20ar.dword0x1d - str_F2C20ar.width0x25 + 1;
-						if (v143 > 0)
-						{
-							int addressOffset = 12 * v143;
-							v167 = (x_DWORD*)(addressOffset + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-							v119 = (int32_t*)str_F2C20ar.pbyte0x1a;
-							for (k = v171 + str_F2C20ar.dword0x1d - str_F2C20ar.width0x25 + 2; k; k--)
-							{
-								v167 -= 3;
-								if (&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2] > (uint8_t*)v167)
-									break;
-								v144 = v167[1] + v167[0] - v119[0];
-								if (v144 > 0)
-								{
-									v167[1] -= v144;
-									if (v167[1] < 0)
-										v167[1] = 0;
-								}
-								v119--;
-							}
-						}
-						if (v171 - scaledHeight < 0)
-						{
-							v129 = scaledHeight - v171;
-							v168 = (x_DWORD*)(12 * v171 + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
-							v120 = (x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_3);
-							v145 = v171 - scaledHeight - str_F2C20ar.dword0x21;
-							if (v145 < 0)
-							{
-								scaledHeight = v171 - str_F2C20ar.dword0x21;
-								if (v171 - str_F2C20ar.dword0x21 <= 0)
-									break;
-								v129 += v145;
-							}
-							v112 = v129;
-							v130 = v129 - 1;
-							if (v112 > 0)
-							{
-								while (v130)
-								{
-									v168 += 3;
-									if (&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2] <= (uint8_t*)v168)
-									{
-										v146 = *v120 - *v168;
-										if (v146 > 0)
-										{
-											v168[0] = *v120;
-											v168[1] -= v146;
-											if (v168[1] < 0)
-												v168[1] = 0;
-											v168[2] += v146;
-										}
-									}
-									v120++;
-									v130--;
-								}
-							}
-						}
-						goto LABEL_172;
-					}
-				}
-				if (a1 == 1)
-				{
-					if (!x_D41A0_BYTEARRAY_4_struct.byteindex_207
-						&& str_F2C20ar.dword0x14x->class_0x3F_63 == 3
-						&& (!str_F2C20ar.dword0x14x->model_0x40_64 || str_F2C20ar.dword0x14x->model_0x40_64 == 1))
-					{
-						DrawSorcererNameAndHealthBar_2CB30(
-                            str_F2C20ar.dword0x14x, str_F2C20ar.dword0x04_screenY, (int16_t)str_F2C20ar.dword0x03_screenX, str_F2C20ar.dword0x09_realWidth,
-	                        m_ptrColorPalette[0]
-                        );
-					}
-					if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
-						DrawSpriteHelp_sub_88740(
-							str_F2C20ar.dword0x14x,
-							(int16_t)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
-							(int16_t)(str_F2C20ar.dword0x03_screenX + (str_F2C20ar.dword0x0c_realHeight >> 1)));
-					if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] & 0x40)
-					{
-						str_F2C20ar.dword0x14x->word_0x2A_42 |= 0x40u;
-					}
-				}
-				return;
+				goto LABEL_126;
 			}
 		}
 		str_F2C20ar.dword0x04_screenY -= str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x09_realWidth >> 17;
 		str_F2C20ar.dword0x03_screenX -= -(str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x09_realWidth) >> 17;
-		goto LABEL_126;
+
+	LABEL_126:
+		if ((unsigned int)str_F2C20ar.dword0x1e_spriteSymmetry <= 7)
+		{
+			// probably only two cases are handled, because roll is between +45deg and -45deg
+			switch (str_F2C20ar.dword0x1e_spriteSymmetry)//mirroring
+			{
+			case 0:
+				// left rotation 0-45deg roll
+				if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_0); }
+
+				v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
+				if (v156 <= 0)
+					break;
+				scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
+				if (scaledHeight <= 0)
+					break;
+				v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
+				if (a1 == 1)
+				{
+					str_F2C20ar.dword0x0a_actIdx = 0;
+				}
+				else
+				{
+					str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
+					v135 = -v135;
+				}
+				v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+				v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+				v157 = str_F2C20ar.dword0x04_screenY << 16;
+				screenPosX = str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16);
+				if (str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16) >= str_F2C20ar.dword0x21)
+					goto LABEL_136;
+				v139 = str_F2C20ar.dword0x21 - screenPosX;
+				scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
+				if (scaledHeight > 0)
+				{
+					str_F2C20ar.dword0x0a_actIdx += v139 * v135;
+					v157 -= v139 * v160;
+					screenPosX = str_F2C20ar.dword0x21;
+				LABEL_136:
+					ptrRenderBuffer = iScreenWidth_DE560 * screenPosX + ViewPortRenderBufferStart_DE558;
+					goto LABEL_137;
+				}
+				break;
+			case 1:
+				// ?deg roll
+				if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_1); }
+
+				v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
+				if (v156 <= 0)
+					break;
+				scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
+				if (scaledHeight <= 0)
+					break;
+				v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
+				if (a1 == 1)
+				{
+					str_F2C20ar.dword0x0a_actIdx = 0;
+				}
+				else
+				{
+					str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
+					v135 = -v135;
+				}
+				v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+				v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+				v158 = str_F2C20ar.dword0x03_screenX << 16;
+				v171 = str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16);
+				if (str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16) < str_F2C20ar.width0x25)
+				{
+					if (v171 >= str_F2C20ar.dword0x21)
+						goto LABEL_284;
+				}
+				else
+				{
+					v141 = v171 - str_F2C20ar.width0x25;
+					scaledHeight -= v171 - str_F2C20ar.width0x25;
+					if (scaledHeight > 0)
+					{
+						str_F2C20ar.dword0x0a_actIdx += v141 * v135;
+						v158 += v141 * v161;
+						v171 = str_F2C20ar.width0x25;
+					LABEL_284:
+						ptrRenderBuffer = v171 + ViewPortRenderBufferStart_DE558;
+						goto LABEL_285;
+					}
+				}
+				break;
+			case 2:
+				// ?deg roll
+				if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_2); }
+
+				v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
+				if (v156 <= 0)
+					break;
+				scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
+				if (scaledHeight <= 0)
+					break;
+				v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
+				if (a1 == 1)
+				{
+					str_F2C20ar.dword0x0a_actIdx = 0;
+				}
+				else
+				{
+					str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
+					v135 = -v135;
+				}
+				v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+				v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+				v157 = str_F2C20ar.dword0x03_screenX << 16;
+				screenPosX = str_F2C20ar.width0x25 - str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16);
+				if (screenPosX >= str_F2C20ar.dword0x21)
+					goto LABEL_329;
+				v147 = str_F2C20ar.dword0x21 - screenPosX;
+				scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
+				if (scaledHeight <= 0)
+					break;
+				str_F2C20ar.dword0x0a_actIdx += v147 * v135;
+				v157 -= v147 * v160;
+				screenPosX = str_F2C20ar.dword0x21;
+			LABEL_329:
+				ptrRenderBuffer = str_F2C20ar.width0x25 + ViewPortRenderBufferStart_DE558 - 1 - screenPosX;
+				goto LABEL_137;
+			case 3:
+				// ?deg roll
+				if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_3); }
+
+				v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
+				if (v156 <= 0)
+					break;
+				scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
+				if (scaledHeight <= 0)
+					break;
+				v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
+				if (a1 == 1)
+				{
+					str_F2C20ar.dword0x0a_actIdx = 0;
+				}
+				else
+				{
+					str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
+					v135 = -v135;
+				}
+				v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+				v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+				v158 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) << 16;
+				v171 = str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) >> 16);
+				if (str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) >> 16) < str_F2C20ar.width0x25)
+				{
+					if (v171 < str_F2C20ar.dword0x21)
+						break;
+				}
+				else
+				{
+					v148 = v171 - str_F2C20ar.width0x25;
+					scaledHeight -= v171 - str_F2C20ar.width0x25;
+					if (scaledHeight <= 0)
+						break;
+					str_F2C20ar.dword0x0a_actIdx += v148 * v135;
+					v158 += v148 * v161;
+					v171 = str_F2C20ar.width0x25;
+				}
+				ptrRenderBuffer = str_F2C20ar.height0x26 + iScreenWidth_DE560 * v171 - 1 + ViewPortRenderBufferStart_DE558;
+				goto LABEL_285;
+			case 4:
+				// ?deg roll
+				if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_4); }
+
+				v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
+				if (v156 <= 0)
+					break;
+				scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
+				if (scaledHeight <= 0)
+					break;
+				v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
+				if (a1 == 1)
+				{
+					str_F2C20ar.dword0x0a_actIdx = 0;
+				}
+				else
+				{
+					str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
+					v135 = -v135;
+				}
+				v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+				v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+				v157 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) << 16;
+				screenPosX = str_F2C20ar.width0x25 - str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) >> 16);
+				if (screenPosX >= str_F2C20ar.dword0x21)
+					goto LABEL_348;
+				v149 = str_F2C20ar.dword0x21 - screenPosX;
+				scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
+				if (scaledHeight <= 0)
+					break;
+				str_F2C20ar.dword0x0a_actIdx += v149 * v135;
+				v157 -= v149 * v160;
+				screenPosX = str_F2C20ar.dword0x21;
+			LABEL_348:
+				ptrRenderBuffer = str_F2C20ar.height0x26 + ViewPortRenderBufferStart_DE558 + iScreenWidth_DE560 * (str_F2C20ar.width0x25 - screenPosX - 1) - 1;
+				goto LABEL_137;
+			case 5:
+				// ?deg roll
+				if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_5); }
+
+				v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
+				if (v156 <= 0)
+					break;
+				scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
+				if (scaledHeight <= 0)
+					break;
+				v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
+				if (a1 == 1)
+				{
+					str_F2C20ar.dword0x0a_actIdx = 0;
+				}
+				else
+				{
+					str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
+					v135 = -v135;
+				}
+				v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+				v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+				v158 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) << 16;
+				v113 = str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16;
+				v171 = str_F2C20ar.width0x25 - str_F2C20ar.dword0x04_screenY - v113;
+				if (v171 < str_F2C20ar.width0x25)
+				{
+					if (v171 < str_F2C20ar.dword0x21)
+						break;
+				}
+				else
+				{
+					v150 = v171 - str_F2C20ar.width0x25;
+					scaledHeight -= v171 - str_F2C20ar.width0x25;
+					if (scaledHeight <= 0)
+						break;
+					str_F2C20ar.dword0x0a_actIdx += v150 * v135;
+					v158 += v150 * v161;
+					v171 = str_F2C20ar.width0x25;
+				}
+				ptrRenderBuffer = (str_F2C20ar.height0x26 - 1) * iScreenWidth_DE560 + str_F2C20ar.width0x25 + ViewPortRenderBufferStart_DE558 - 1 - v171;
+				goto LABEL_285;
+			case 6:
+				// ?deg roll
+				if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_6); }
+
+				v156 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x09_realWidth >> 16;
+				if (v156 <= 0)
+					break;
+				scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x1b_cosRoll;
+				if (scaledHeight <= 0)
+					break;
+				v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
+				if (a1 == 1)
+				{
+					str_F2C20ar.dword0x0a_actIdx = 0;
+				}
+				else
+				{
+					str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
+					v135 = -v135;
+				}
+				v160 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+				v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+				v157 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) << 16;
+				screenPosX = str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16);
+				if (str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16) >= str_F2C20ar.dword0x21)
+					goto LABEL_367;
+				v151 = str_F2C20ar.dword0x21 - screenPosX;
+				scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
+				if (scaledHeight <= 0)
+					break;
+				str_F2C20ar.dword0x0a_actIdx += v151 * v135;
+				v157 -= v151 * v160;
+				screenPosX = str_F2C20ar.dword0x21;
+			LABEL_367:
+				ptrRenderBuffer = ViewPortRenderBufferStart_DE558 + iScreenWidth_DE560 * (str_F2C20ar.height0x26 - 1) + screenPosX;
+			LABEL_137:
+				v140 = str_F2C20ar.width0x25 - str_F2C20ar.dword0x21;
+				if (screenPosX <= 0)
+				{
+					if (scaledHeight > v140)
+						scaledHeight = str_F2C20ar.width0x25 - str_F2C20ar.dword0x21;
+				}
+				else if (screenPosX + scaledHeight > v140)
+				{
+					scaledHeight = v140 - screenPosX;
+					if (v140 - screenPosX <= 0)
+						break;
+				}
+				v116 = 9999999;
+				v124 = scaledHeight;
+				while (2)
+				{
+					if (!v124)
+						goto LABEL_154;
+					v172 = v157 >> 16;
+					if (v157 >> 16 >= 0)
+					{
+						v162[0] = v172;
+						v162[1] = v156;
+						v162[2] = 0;
+						v116 = 0;
+					LABEL_151:
+						if (v162[1] + *v162 > str_F2C20ar.height0x26)
+							v162[1] = str_F2C20ar.height0x26 - *v162;
+						v157 -= v160;
+						v162 += 3;
+						v124--;
+						continue;
+					}
+					break;
+				}
+				v173 = -v172;
+				v162[0] = 0;
+				v162[1] = v156 - v173;
+				if (v162[1] > 0)
+				{
+					v162[2] = v173;
+					if (v173 < v116)
+						v116 = v173;
+					goto LABEL_151;
+				}
+				scaledHeight -= v124;
+			LABEL_154:
+				if (screenPosX + scaledHeight > str_F2C20ar.Height_0x19)
+				{
+					if (str_F2C20ar.Height_0x19 - screenPosX <= 0)
+					{
+						v163 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+						v117 = (x_DWORD*)(4 * (str_F2C20ar.Height_0x19 - screenPosX) + str_F2C20ar.pbyte0x1a);
+						v125 = scaledHeight;
+					}
+					else
+					{
+						v163 = (x_DWORD*)(12 * (str_F2C20ar.Height_0x19 - screenPosX) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+						v117 = (x_DWORD*)str_F2C20ar.pbyte0x1a;
+						v125 = screenPosX + scaledHeight - str_F2C20ar.Height_0x19;
+					}
+					while (v125)
+					{
+						if (*v163 + v163[1] > *v117)
+						{
+							if (*v163 >= *v117)
+							{
+								scaledHeight -= v125;
+								break;
+							}
+							v163[1] = *v117 - *v163;
+						}
+						v163 += 3;
+						v117--;
+						v125--;
+					}
+				}
+				if (screenPosX < 0)
+				{
+					v118 = (x_DWORD*)(4 * (-1 - screenPosX) + m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_3);
+					v164 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+					while (screenPosX)
+					{
+						if (*v118 > *v164)
+						{
+							if (v164[1] + *v164 >= *v118)
+							{
+								v50 = *v118 - *v164;
+								v164[0] = *v118;
+								v164[2] += v50;
+								v164[1] -= v50;
+							}
+							else
+							{
+								v164[1] = 0;
+							}
+						}
+						v118--;
+						v164 += 3;
+						screenPosX++;
+					}
+				}
+			LABEL_172:
+				v137 = (str_F2C20ar.dword0x05 << 16) / v156;
+				str_F2C20ar.dword0x0b = 0;
+				if (str_F2C20ar.dword0x05 < 0)
+					str_F2C20ar.dword0x0b -= v137 * (v156 - 1);
+				v132 = v156 - v116;
+				if (v156 - v116 > 0)
+				{
+					if (v132 > str_F2C20ar.dword0x1c)
+						v132 = str_F2C20ar.dword0x1c;
+					str_F2C20ar.dword0x0b += v137 * v116;
+					v154 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
+					while (v132 >= 0)
+					{
+						v154[1] = str_F2C20ar.dword0x0b >> 16;
+						*v154 = v154[1] - *(v154 - 1);
+						str_F2C20ar.dword0x0b += v137;
+						v154 += 2;
+						v132--;
+					}
+					v165 = (x_DWORD*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+
+					//Draw Sprite to Render Buffer (rotated and scaled)
+					for (i = scaledHeight; i; i--)
+					{
+						v133 = v165[1];
+						if (v133 > 0)
+						{
+							//adress 2237d3
+							v169x = &m_str_F0E20x[*v165];
+							v155 = 8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1];
+							v121x = &str_F2C20ar.dword0x02_data[spriteWidth * (str_F2C20ar.dword0x0a_actIdx >> 16)];
+
+							if ((unsigned int)str_F2C20ar.dword0x01_rotIdx <= 8)
+							{
+								switch (str_F2C20ar.dword0x01_rotIdx)
+								{
+								case 0:
+									ptrSpriteRenderSrc_v51x = &v121x[*(x_DWORD*)(v155 + 4)];
+									ptrSpriteRenderDest_v52 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
+									v53 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
+									v54x = &m_str_F0E20x[*v165];
+									v55 = v133 >> 1;
+									if (!(v133 & 1))
+									{
+										v6 = v55 & 1;
+										v56 = v133 >> 2;
+										if (v6)
+										{
+											v56++;
+											v53 = (x_DWORD*)(v155 - 8);
+											v54x = &v169x[-1];
+											goto LABEL_197;
+										}
+										v53 = (x_DWORD*)(v155 + 8);
+										v54x = &v169x[1];
+										goto LABEL_191;
+									}
+									v57 = v55 + 2;
+									v6 = v57 & 1;
+									v56 = v57 >> 1;
+									if (!v6)
+									{
+										v53 = (x_DWORD*)(v155 - 16);
+										v54x = &v169x[-2];
+										goto LABEL_200;
+									}
+									while (1)
+									{
+										v59 = ptrSpriteRenderSrc_v51x[0];
+										ptrSpriteRenderSrc_v51x += v53[2];
+
+										if (v59)
+											*ptrSpriteRenderDest_v52 = v59;
+										ptrSpriteRenderDest_v52 += v54x[1].dword_0;
+
+									LABEL_197:
+
+										v60 = ptrSpriteRenderSrc_v51x[0];
+										ptrSpriteRenderSrc_v51x += v53[4];
+
+										if (v60)
+											*ptrSpriteRenderDest_v52 = v60;
+										ptrSpriteRenderDest_v52 += v54x[2].dword_0;
+
+									LABEL_200:
+
+										v61 = ptrSpriteRenderSrc_v51x[0];
+										ptrSpriteRenderSrc_v51x += v53[6];
+
+										if (v61)
+											*ptrSpriteRenderDest_v52 = v61;
+										ptrSpriteRenderDest_v52 += v54x[3].dword_0;
+
+										v53 += 8;
+										v54x += 4;
+										if (!--v56)
+											break;
+									LABEL_191:
+
+										v58 = ptrSpriteRenderSrc_v51x[0];
+										ptrSpriteRenderSrc_v51x += *v53;
+
+										if (v58)
+											*ptrSpriteRenderDest_v52 = v58;
+										ptrSpriteRenderDest_v52 += v54x[0].dword_0;
+									}
+									break;
+								case 1:
+									ptrSpriteRenderSrc_v62x = &v121x[*(x_DWORD*)(v155 + 4)];
+
+									v63 = str_F2C20ar.dword0x00;
+									ptrSpriteRenderDest_v64 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
+
+									v65 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
+									v66x = &m_str_F0E20x[*v165];
+									v67 = v133 >> 1;
+									if (!(v133 & 1))
+									{
+										v65 = (x_DWORD*)(v155 + 8);
+										v66x = &v169x[1];
+										goto LABEL_207;
+									}
+									v67++;
+									while (1)
+									{
+										LOBYTE(v63) = ptrSpriteRenderSrc_v62x[0];
+										ptrSpriteRenderSrc_v62x += v65[2];
+
+										if ((x_BYTE)v63)
+											*ptrSpriteRenderDest_v64 = x_BYTE_F6EE0_tablesx[v63];
+										ptrSpriteRenderDest_v64 += v66x[1].dword_0;
+
+										v65 += 4;
+										v66x += 2;
+										if (!--v67)
+											break;
+									LABEL_207:
+										LOBYTE(v63) = ptrSpriteRenderSrc_v62x[0];
+										ptrSpriteRenderSrc_v62x += *v65;
+
+										if ((x_BYTE)v63)
+											*ptrSpriteRenderDest_v64 = x_BYTE_F6EE0_tablesx[v63];
+										ptrSpriteRenderDest_v64 += v66x->dword_0;
+									}
+									break;
+								case 2:
+									ptrSpriteRenderSrc_v68x = &v121x[*(x_DWORD*)(v155 + 4)];
+									ptrSpriteRenderDest_v69 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
+									v70 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
+									v71x = &m_str_F0E20x[*v165];
+									HIWORD(v72) = 0;
+									v73 = v133 >> 1;
+									if (!(v133 & 1))
+									{
+										v70 = (x_DWORD*)(v155 + 8);
+										v71x = &v169x[1];
+										goto LABEL_217;
+									}
+									v73++;
+									while (1)
+									{
+										HIBYTE(v72) = ptrSpriteRenderSrc_v68x[0];
+										ptrSpriteRenderSrc_v68x += v70[2];
+
+										if (HIBYTE(v72))
+										{
+											LOBYTE(v72) = *ptrSpriteRenderDest_v69;
+											*ptrSpriteRenderDest_v69 = x_BYTE_F6EE0_tablesx[16384 + v72];
+										}
+										ptrSpriteRenderDest_v69 += v71x[1].dword_0;
+
+										v70 += 4;
+										v71x += 2;
+										if (!--v73)
+											break;
+									LABEL_217:
+										HIBYTE(v72) = ptrSpriteRenderSrc_v68x[0];
+										ptrSpriteRenderSrc_v68x += *v70;
+
+										if (HIBYTE(v72))
+										{
+											LOBYTE(v72) = *ptrSpriteRenderDest_v69;
+											*ptrSpriteRenderDest_v69 = x_BYTE_F6EE0_tablesx[16384 + v72];
+										}
+										ptrSpriteRenderDest_v69 += v71x->dword_0;
+									}
+									break;
+								case 3:
+									ptrSpriteRenderSrc_v74x = &v121x[*(x_DWORD*)(v155 + 4)];
+									ptrSpriteRenderDest_v75 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
+									v76 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);//to position
+									v77x = &m_str_F0E20x[v165[0]];//from position
+									HIWORD(v78) = 0;
+									v79 = v133 >> 1;
+									if (!(v133 & 1))
+									{
+										v76 = (x_DWORD*)(v155 + 8);
+										v77x = &v169x[1];
+										goto LABEL_227;
+									}
+									v79++;
+									while (1)
+									{
+										LOBYTE(v78) = ptrSpriteRenderSrc_v74x[0];
+										ptrSpriteRenderSrc_v74x += v76[2];
+
+										if ((x_BYTE)v78)
+										{
+											HIBYTE(v78) = *ptrSpriteRenderDest_v75;
+											*ptrSpriteRenderDest_v75 = x_BYTE_F6EE0_tablesx[16384 + v78];
+										}
+										ptrSpriteRenderDest_v75 += v77x[1].dword_0;
+
+										v76 += 4;
+										v77x += 2;
+										if (!--v79)
+											break;
+									LABEL_227:
+										LOBYTE(v78) = ptrSpriteRenderSrc_v74x[0];
+										ptrSpriteRenderSrc_v74x += *v76;
+
+										if ((x_BYTE)v78)
+										{
+											HIBYTE(v78) = *ptrSpriteRenderDest_v75;
+											*ptrSpriteRenderDest_v75 = x_BYTE_F6EE0_tablesx[16384 + v78];
+										}
+										ptrSpriteRenderDest_v75 += v77x->dword_0;
+									}
+									break;
+								case 4:
+									ptrSpriteRenderSrc_v80x = &v121x[*(x_DWORD*)(v155 + 4)];
+									HIWORD(v84) = HIWORD(str_F2C20ar.dword0x07);
+									ptrSpriteRenderDest_v81 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
+
+									v82 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
+									v83x = &m_str_F0E20x[*v165];
+									BYTE1(v84) = str_F2C20ar.dword0x07;
+									v85 = v133 >> 1;
+									if (!(v133 & 1))
+									{
+										v82 = (x_DWORD*)(v155 + 8);
+										v83x = &v169x[1];
+										goto LABEL_237;
+									}
+									v85++;
+									while (1)
+									{
+										LOBYTE(v84) = ptrSpriteRenderSrc_v80x[0];
+										ptrSpriteRenderSrc_v80x += v82[2];
+
+										if ((x_BYTE)v84)
+											*ptrSpriteRenderDest_v81 = x_BYTE_F6EE0_tablesx[16384 + v84];
+										ptrSpriteRenderDest_v81 += v83x[1].dword_0;
+
+										v82 += 4;
+										v83x += 2;
+										if (!--v85)
+											break;
+									LABEL_237:
+										LOBYTE(v84) = ptrSpriteRenderSrc_v80x[0];
+										ptrSpriteRenderSrc_v80x += *v82;
+
+										if ((x_BYTE)v84)
+											*ptrSpriteRenderDest_v81 = x_BYTE_F6EE0_tablesx[16384 + v84];
+										ptrSpriteRenderDest_v81 += v83x->dword_0;
+									}
+									break;
+								case 5:
+									ptrSpriteRenderSrc_v86x = &v121x[*(x_DWORD*)(v155 + 4)];
+									v87 = str_F2C20ar.dword0x07;
+									ptrSpriteRenderDest_v88 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
+									v89 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
+									v90x = &m_str_F0E20x[*v165];
+									v91 = v133 >> 1;
+									if (!(v133 & 1))
+									{
+										v89 = (x_DWORD*)(v155 + 8);
+										v90x = &m_str_F0E20x[1];
+										goto LABEL_247;
+									}
+									v91++;
+									while (1)
+									{
+										BYTE1(v87) = ptrSpriteRenderSrc_v86x[0];
+										ptrSpriteRenderSrc_v86x += v89[2];
+
+										if (BYTE1(v87))
+											*ptrSpriteRenderDest_v88 = x_BYTE_F6EE0_tablesx[16384 + v87];
+										ptrSpriteRenderDest_v88 += v90x[1].dword_0;
+
+										v89 += 4;
+										v90x += 2;
+										if (!--v91)
+											break;
+									LABEL_247:
+										BYTE1(v87) = ptrSpriteRenderSrc_v86x[0];
+										ptrSpriteRenderSrc_v86x += *v89;
+
+										if (BYTE1(v87))
+											*ptrSpriteRenderDest_v88 = x_BYTE_F6EE0_tablesx[16384 + v87];
+										ptrSpriteRenderDest_v88 += v90x->dword_0;
+									}
+									break;
+								case 6:
+									v92 = str_F2C20ar.dword0x00;
+									ptrSpriteRenderSrc_v93x = &v121x[*(x_DWORD*)(v155 + 4)];
+									ptrSpriteRenderDest_v94 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
+
+									HIWORD(v95) = 0;
+									v96 = (x_DWORD*)(v155 + 8);
+									v97x = &v169x[1];
+									do
+									{
+										BYTE1(v95) = ptrSpriteRenderSrc_v93x[0];
+										ptrSpriteRenderSrc_v93x += *v96;
+
+										if (BYTE1(v95))
+										{
+											LOBYTE(v95) = *ptrSpriteRenderDest_v94;
+											LOBYTE(v92) = x_BYTE_F6EE0_tablesx[16384 + v95];
+											*ptrSpriteRenderDest_v94 = x_BYTE_F6EE0_tablesx[v92];
+										}
+										ptrSpriteRenderDest_v94 += v97x->dword_0;
+										v96 += 2;
+										v97x++;
+										v133--;
+									} while (v133);
+									break;
+								case 7:
+									v98 = str_F2C20ar.dword0x00;
+									ptrSpriteRenderSrc_v99x = &v121x[*(x_DWORD*)(v155 + 4)];
+									ptrSpriteRenderDest_v100 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
+									HIWORD(v101) = 0;
+									v102 = (x_DWORD*)(v155 + 8);
+									v103x = &v169x[1];
+									do
+									{
+										LOBYTE(v101) = ptrSpriteRenderSrc_v99x[0];
+										ptrSpriteRenderSrc_v99x += *v102;
+
+										if ((x_BYTE)v101)
+										{
+											BYTE1(v101) = *ptrSpriteRenderDest_v100;
+											LOBYTE(v98) = x_BYTE_F6EE0_tablesx[16384 + v101];
+											*ptrSpriteRenderDest_v100 = x_BYTE_F6EE0_tablesx[v98];
+										}
+										ptrSpriteRenderDest_v100 += v103x->dword_0;
+										v102 += 2;
+										v103x++;
+										v133--;
+									} while (v133);
+									break;
+								case 8:
+									ptrSpriteRenderSrc_v104x = &v121x[*(x_DWORD*)(v155 + 4)];
+									v105 = str_F2C20ar.dword0x00;
+									ptrSpriteRenderDest_v106 = (uint8_t*)(v169x->dword_1 + ptrRenderBuffer);
+									v107 = (x_DWORD*)(8 * (v165[2] - v116) + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_1]);
+									v108x = &m_str_F0E20x[*v165];
+									v109 = v133 >> 1;
+									if (!(v133 & 1))
+									{
+										v107 = (x_DWORD*)(v155 + 8);
+										v108x = &v169x[1];
+										goto LABEL_267;
+									}
+									v109++;
+									while (1)
+									{
+										v111 = ptrSpriteRenderSrc_v104x[0];
+										ptrSpriteRenderSrc_v104x += v107[2];
+
+										if (v111)
+										{
+											LOBYTE(v105) = *ptrSpriteRenderDest_v106;
+											*ptrSpriteRenderDest_v106 = x_BYTE_F6EE0_tablesx[v105];
+										}
+										ptrSpriteRenderDest_v106 += v108x[3].dword_0;
+										v107 += 4;
+										v108x += 2;
+										if (!--v109)
+											break;
+									LABEL_267:
+										v110 = ptrSpriteRenderSrc_v104x[0];
+										ptrSpriteRenderSrc_v104x += *v107;
+										if (v110)
+										{
+											LOBYTE(v105) = *ptrSpriteRenderDest_v106;
+											*ptrSpriteRenderDest_v106 = x_BYTE_F6EE0_tablesx[v105];
+										}
+										ptrSpriteRenderDest_v106 += v108x->dword_0;
+									}
+									break;
+								}
+							}
+						}
+						str_F2C20ar.dword0x0a_actIdx += v135;
+						ptrRenderBuffer += str_F2C20ar.dword0x23_stride;
+						v165 += 3;
+					}
+				}
+				break;
+			case 7:
+				// right rotation 0-45 deg roll
+				if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_7); }
+
+				v156 = str_F2C20ar.dword0x27_sinRoll * str_F2C20ar.dword0x09_realWidth >> 16;
+
+				if (v156 <= 0)
+					break;
+				scaledHeight = (str_F2C20ar.dword0x0c_realHeight << 16) / str_F2C20ar.dword0x27_sinRoll;
+				if (scaledHeight <= 0)
+					break;
+				if (str_F2C20ar.dword0x04_screenY >= str_F2C20ar.height0x26)
+					break;
+				v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
+				if (a1 == 1)
+				{
+					str_F2C20ar.dword0x0a_actIdx = 0;
+				}
+				else
+				{
+					str_F2C20ar.dword0x0a_actIdx = (scaledHeight - 1) * v135;
+					v135 = -v135;
+				}
+				v161 = str_F2C20ar.dword0x1b_cosRoll * str_F2C20ar.dword0x0c_realHeight / scaledHeight;
+				v166 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+				v158 = str_F2C20ar.dword0x04_screenY << 16;
+				v114 = str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16;
+				v171 = str_F2C20ar.width0x25 - str_F2C20ar.dword0x03_screenX - v114;
+				if (v171 < str_F2C20ar.width0x25)
+				{
+					if (v171 < str_F2C20ar.dword0x21)
+						break;
+				}
+				else
+				{
+					v152 = v171 - str_F2C20ar.width0x25;
+					scaledHeight -= v171 - str_F2C20ar.width0x25;
+					if (scaledHeight <= 0)
+						break;
+					str_F2C20ar.dword0x0a_actIdx += v152 * v135;
+					v158 += v152 * v161;
+					v171 = str_F2C20ar.width0x25;
+				}
+				ptrRenderBuffer = iScreenWidth_DE560 * (str_F2C20ar.width0x25 - 1 - v171) + ViewPortRenderBufferStart_DE558;
+
+			LABEL_285:
+				v142 = str_F2C20ar.width0x25 - str_F2C20ar.dword0x21;
+				if (v171 < str_F2C20ar.width0x25)
+				{
+					if (scaledHeight > v142)
+						scaledHeight = str_F2C20ar.width0x25 - str_F2C20ar.dword0x21;
+				}
+				else if (v171 + scaledHeight - str_F2C20ar.width0x25 > v142)
+				{
+					scaledHeight = v142 - v171 + str_F2C20ar.width0x25;
+					if (scaledHeight <= 0)
+						break;
+				}
+				//adress 223d83
+				v116 = 9999999;
+				for (jy = scaledHeight; jy; jy--)
+				{
+					v174 = v158 >> 16;
+					if (v158 >> 16 < 0)
+					{
+						v175 = -v174;
+						v166[0] = 0;
+						v166[1] = v156 - v175;
+						v166[2] = v175;
+						if (v175 < v116)
+							v116 = v175;
+					}
+					else
+					{
+						v166[0] = v174;
+						v166[1] = v156;
+						v166[2] = 0;
+						v116 = 0;
+					}
+					if (v166[1] + v166[0] > str_F2C20ar.height0x26)
+						v166[1] = str_F2C20ar.height0x26 - v166[0];
+					v158 += v161;
+					v166 += 3;
+				}
+				v143 = v171 + str_F2C20ar.dword0x1d - str_F2C20ar.width0x25 + 1;
+				if (v143 > 0)
+				{
+					int addressOffset = 12 * v143;
+					v167 = (x_DWORD*)(addressOffset + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+					v119 = (int32_t*)str_F2C20ar.pbyte0x1a;
+					for (k = v171 + str_F2C20ar.dword0x1d - str_F2C20ar.width0x25 + 2; k; k--)
+					{
+						v167 -= 3;
+						if (&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2] > (uint8_t*)v167)
+							break;
+						v144 = v167[1] + v167[0] - v119[0];
+						if (v144 > 0)
+						{
+							v167[1] -= v144;
+							if (v167[1] < 0)
+								v167[1] = 0;
+						}
+						v119--;
+					}
+				}
+				if (v171 - scaledHeight < 0)
+				{
+					v129 = scaledHeight - v171;
+					v168 = (x_DWORD*)(12 * v171 + &m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
+					v120 = (x_DWORD*)(m_ptrDWORD_E9C38_smalltit + m_bufferOffset_E9C38_3);
+					v145 = v171 - scaledHeight - str_F2C20ar.dword0x21;
+					if (v145 < 0)
+					{
+						scaledHeight = v171 - str_F2C20ar.dword0x21;
+						if (v171 - str_F2C20ar.dword0x21 <= 0)
+							break;
+						v129 += v145;
+					}
+					v112 = v129;
+					v130 = v129 - 1;
+					if (v112 > 0)
+					{
+						while (v130)
+						{
+							v168 += 3;
+							if (&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2] <= (uint8_t*)v168)
+							{
+								v146 = *v120 - *v168;
+								if (v146 > 0)
+								{
+									v168[0] = *v120;
+									v168[1] -= v146;
+									if (v168[1] < 0)
+										v168[1] = 0;
+									v168[2] += v146;
+								}
+							}
+							v120++;
+							v130--;
+						}
+					}
+				}
+				goto LABEL_172;
+			}
+		}
+		if (a1 == 1)
+		{
+			if (!x_D41A0_BYTEARRAY_4_struct.byteindex_207
+				&& str_F2C20ar.dword0x14x->class_0x3F_63 == 3
+				&& (!str_F2C20ar.dword0x14x->model_0x40_64 || str_F2C20ar.dword0x14x->model_0x40_64 == 1))
+			{
+				DrawSorcererNameAndHealthBar_2CB30(
+					str_F2C20ar.dword0x14x, str_F2C20ar.dword0x04_screenY, (int16_t)str_F2C20ar.dword0x03_screenX, str_F2C20ar.dword0x09_realWidth,
+					m_ptrColorPalette[0]
+				);
+			}
+			if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
+				DrawSpriteHelp_sub_88740(
+					str_F2C20ar.dword0x14x,
+					(int16_t)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
+					(int16_t)(str_F2C20ar.dword0x03_screenX + (str_F2C20ar.dword0x0c_realHeight >> 1)));
+			if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] & 0x40)
+			{
+				str_F2C20ar.dword0x14x->word_0x2A_42 |= 0x40u;
+			}
+		}
+		return;
 	}
 
 	//Draw Sprite to Render buffer
