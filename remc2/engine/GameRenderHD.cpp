@@ -1985,7 +1985,7 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 						str_F2C20ar.dword0x0c_realHeight++;
 						if (x_BYTE_F2CC6) {
 							DrawSprite_41BD3_F2CC6set(
-								2u, str_F2C20ar.dword0x08_width,
+								SpriteRenderMode::reflection, str_F2C20ar.dword0x08_width,
 								str_F2C20ar,
 								m_ptrDWORD_E9C38_smalltit,
 								m_bufferOffset_E9C38_1,
@@ -1997,7 +1997,7 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 						}
 						else {
 							DrawSprite_41BD3_F2CC6zero(
-								2u, str_F2C20ar.dword0x08_width,
+								SpriteRenderMode::reflection, str_F2C20ar.dword0x08_width,
 								str_F2C20ar,
 								m_ptrDWORD_E9C38_smalltit,
 								m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
@@ -3222,7 +3222,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 
 									if (x_BYTE_F2CC6) {
 										DrawSprite_41BD3_F2CC6set(
-											0, str_F2C20ar.dword0x08_width,
+											SpriteRenderMode::shadow, str_F2C20ar.dword0x08_width,
 											str_F2C20ar,
 											m_ptrDWORD_E9C38_smalltit,
 											m_bufferOffset_E9C38_1,
@@ -3234,7 +3234,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 									}
 									else {
 										DrawSprite_41BD3_F2CC6zero(
-											0, str_F2C20ar.dword0x08_width,
+											SpriteRenderMode::shadow, str_F2C20ar.dword0x08_width,
 											str_F2C20ar,
 											m_ptrDWORD_E9C38_smalltit,
 											m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
@@ -3613,7 +3613,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					str_F2C20ar.dword0x0c_realHeight++;
 					if (x_BYTE_F2CC6) {
 						DrawSprite_41BD3_F2CC6set(
-							1u, str_F2C20ar.dword0x08_width,
+							SpriteRenderMode::normal, str_F2C20ar.dword0x08_width,
 							str_F2C20ar,
 							m_ptrDWORD_E9C38_smalltit,
 							m_bufferOffset_E9C38_1,
@@ -3625,7 +3625,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					}
 					else {
 						DrawSprite_41BD3_F2CC6zero(
-							1u, str_F2C20ar.dword0x08_width,
+							SpriteRenderMode::normal, str_F2C20ar.dword0x08_width,
 							str_F2C20ar,
 							m_ptrDWORD_E9C38_smalltit,
 							m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,

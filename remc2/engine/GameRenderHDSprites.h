@@ -8,8 +8,14 @@
 #include "Type_F2C20ar.h"
 #include "Type_Unk_F0E20x.h"
 
+enum class SpriteRenderMode {
+    shadow = 0,
+    normal = 1,
+    reflection = 2
+};
+
 void DrawSprite_41BD3_F2CC6zero(
-    uint32_t a1, 
+    SpriteRenderMode a1, 
     const int32_t spriteWidth,
     type_F2C20ar &str_F2C20ar,
 	uint8_t* m_ptrDWORD_E9C38_smalltit,
@@ -25,7 +31,7 @@ void DrawSprite_41BD3_F2CC6zero(
     );
 
 void DrawSprite_41BD3_F2CC6set(
-    uint32_t a1, 
+    SpriteRenderMode a1, 
     const int32_t spriteWidth,
     type_F2C20ar &str_F2C20ar,
 	uint8_t* m_ptrDWORD_E9C38_smalltit,

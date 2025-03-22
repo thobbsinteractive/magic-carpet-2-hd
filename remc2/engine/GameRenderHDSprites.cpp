@@ -9,7 +9,7 @@
 #include "GameUI.h"
 
 void DrawSprite_41BD3_F2CC6zero(
-    uint32_t a1, // 0, 1, 2
+    SpriteRenderMode a1, // 0 - shadow, 1 - normal, 2 - reflection
     const int32_t spriteWidth,
     type_F2C20ar &str_F2C20ar,
 	uint8_t* m_ptrDWORD_E9C38_smalltit,
@@ -146,7 +146,7 @@ void DrawSprite_41BD3_F2CC6zero(
 
 	int jy;
 
-	if (a1 == 1)
+	if (a1 == SpriteRenderMode::normal)
 	{
 		str_F2C20ar.dword0x04_screenY -= ((str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x09_realWidth >> 1) + str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x0c_realHeight) >> 16;
 		str_F2C20ar.dword0x03_screenX -= (str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x0c_realHeight - (str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x09_realWidth >> 1)) >> 16;
@@ -173,7 +173,7 @@ void DrawSprite_41BD3_F2CC6zero(
 			if (scaledHeight <= 0)
 				break;
 			v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-			if (a1 == 1)
+			if (a1 == SpriteRenderMode::normal)
 			{
 				str_F2C20ar.dword0x0a_actIdx = 0;
 			}
@@ -211,7 +211,7 @@ void DrawSprite_41BD3_F2CC6zero(
 			if (scaledHeight <= 0)
 				break;
 			v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-			if (a1 == 1)
+			if (a1 == SpriteRenderMode::normal)
 			{
 				str_F2C20ar.dword0x0a_actIdx = 0;
 			}
@@ -255,7 +255,7 @@ void DrawSprite_41BD3_F2CC6zero(
 			if (scaledHeight <= 0)
 				break;
 			v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-			if (a1 == 1)
+			if (a1 == SpriteRenderMode::normal)
 			{
 				str_F2C20ar.dword0x0a_actIdx = 0;
 			}
@@ -291,7 +291,7 @@ void DrawSprite_41BD3_F2CC6zero(
 			if (scaledHeight <= 0)
 				break;
 			v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-			if (a1 == 1)
+			if (a1 == SpriteRenderMode::normal)
 			{
 				str_F2C20ar.dword0x0a_actIdx = 0;
 			}
@@ -332,7 +332,7 @@ void DrawSprite_41BD3_F2CC6zero(
 			if (scaledHeight <= 0)
 				break;
 			v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-			if (a1 == 1)
+			if (a1 == SpriteRenderMode::normal)
 			{
 				str_F2C20ar.dword0x0a_actIdx = 0;
 			}
@@ -368,7 +368,7 @@ void DrawSprite_41BD3_F2CC6zero(
 			if (scaledHeight <= 0)
 				break;
 			v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-			if (a1 == 1)
+			if (a1 == SpriteRenderMode::normal)
 			{
 				str_F2C20ar.dword0x0a_actIdx = 0;
 			}
@@ -410,7 +410,7 @@ void DrawSprite_41BD3_F2CC6zero(
 			if (scaledHeight <= 0)
 				break;
 			v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-			if (a1 == 1)
+			if (a1 == SpriteRenderMode::normal)
 			{
 				str_F2C20ar.dword0x0a_actIdx = 0;
 			}
@@ -953,7 +953,7 @@ void DrawSprite_41BD3_F2CC6zero(
 			if (str_F2C20ar.dword0x04_screenY >= str_F2C20ar.height0x26)
 				break;
 			v135 = (str_F2C20ar.dword0x06_height << 16) / scaledHeight;
-			if (a1 == 1)
+			if (a1 == SpriteRenderMode::normal)
 			{
 				str_F2C20ar.dword0x0a_actIdx = 0;
 			}
@@ -1084,7 +1084,7 @@ void DrawSprite_41BD3_F2CC6zero(
 			goto LABEL_172;
 		}
 	}
-	if (a1 == 1)
+	if (a1 == SpriteRenderMode::normal)
 	{
 		if (!x_D41A0_BYTEARRAY_4_struct.byteindex_207
 			&& str_F2C20ar.dword0x14x->class_0x3F_63 == 3
@@ -1108,7 +1108,7 @@ void DrawSprite_41BD3_F2CC6zero(
 }
 
 void DrawSprite_41BD3_F2CC6set(
-    uint32_t a1, // 0, 1, 2
+    SpriteRenderMode a1, // 0 - shadow, 1 - normal, 2 - reflection
     const int32_t spriteWidth,
     type_F2C20ar &str_F2C20ar,
 	uint8_t* m_ptrDWORD_E9C38_smalltit,
@@ -1176,19 +1176,17 @@ void DrawSprite_41BD3_F2CC6set(
 
 	//Draw Sprite to Render buffer
 	v138 = (str_F2C20ar.dword0x0c_realHeight + str_F2C20ar.dword0x09_realWidth) >> 2;
-	if (a1 >= 1)
+	if (a1 == SpriteRenderMode::normal)
 	{
-		if (a1 <= 1)
-		{
-			str_F2C20ar.dword0x04_screenY += -(str_F2C20ar.sin_0x0d * v138 >> 16) - v138;
-			str_F2C20ar.dword0x03_screenX += -(str_F2C20ar.cos_0x11 * v138 >> 16) - v138;
-		}
-		else if (a1 == 2)
-		{
-			str_F2C20ar.dword0x04_screenY += (str_F2C20ar.sin_0x0d * v138 >> 16) - v138;
-			str_F2C20ar.dword0x03_screenX += (str_F2C20ar.cos_0x11 * v138 >> 16) - v138;
-		}
+		str_F2C20ar.dword0x04_screenY += -(str_F2C20ar.sin_0x0d * v138 >> 16) - v138;
+		str_F2C20ar.dword0x03_screenX += -(str_F2C20ar.cos_0x11 * v138 >> 16) - v138;
 	}
+	else if (a1 == SpriteRenderMode::reflection)
+	{
+		str_F2C20ar.dword0x04_screenY += (str_F2C20ar.sin_0x0d * v138 >> 16) - v138;
+		str_F2C20ar.dword0x03_screenX += (str_F2C20ar.cos_0x11 * v138 >> 16) - v138;
+	}
+
 	if ((uint16_t)viewPort.Width_DE564 > str_F2C20ar.dword0x04_screenY)
 	{
 		v136 = (str_F2C20ar.dword0x05 << 16) / str_F2C20ar.dword0x09_realWidth;
@@ -1238,7 +1236,7 @@ void DrawSprite_41BD3_F2CC6set(
 				str_F2C20ar.dword0x0b += v136;
 				v153 += 2;
 			}
-			if (a1 == 1 && x_D41A0_BYTEARRAY_4_struct.showHelp_10)
+			if (a1 == SpriteRenderMode::normal && x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 				DrawSpriteHelp_sub_88740(
 					str_F2C20ar.dword0x14x,
 					(int16_t)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
