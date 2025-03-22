@@ -1983,19 +1983,34 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 						str_F2C20ar.dword0x01_rotIdx = v39;
 						str_F2C20ar.dword0x09_realWidth++;
 						str_F2C20ar.dword0x0c_realHeight++;
-						DrawSprite_41BD3(
-							2u, str_F2C20ar.dword0x08_width,
-							x_BYTE_F2CC6,
-							str_F2C20ar,
-							m_ptrDWORD_E9C38_smalltit,
-							m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
-							iScreenWidth_DE560,
-							ViewPortRenderBufferStart_DE558,
-							m_str_F0E20x,
-							x_BYTE_F6EE0_tablesx,
-							x_D41A0_BYTEARRAY_4_struct,
-							m_ptrColorPalette
-						);
+						if (x_BYTE_F2CC6) {
+							DrawSprite_41BD3_F2CC6set(
+								2u, str_F2C20ar.dword0x08_width,
+								str_F2C20ar,
+								m_ptrDWORD_E9C38_smalltit,
+								m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
+								iScreenWidth_DE560,
+								ViewPortRenderBufferStart_DE558,
+								m_str_F0E20x,
+								x_BYTE_F6EE0_tablesx,
+								x_D41A0_BYTEARRAY_4_struct,
+								m_ptrColorPalette
+							);
+						}
+						else {
+							DrawSprite_41BD3_F2CC6zero(
+								2u, str_F2C20ar.dword0x08_width,
+								str_F2C20ar,
+								m_ptrDWORD_E9C38_smalltit,
+								m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
+								iScreenWidth_DE560,
+								ViewPortRenderBufferStart_DE558,
+								m_str_F0E20x,
+								x_BYTE_F6EE0_tablesx,
+								x_D41A0_BYTEARRAY_4_struct,
+								m_ptrColorPalette
+							);
+						}
 						break;
 					default:
 						goto LABEL_70;
@@ -3206,19 +3221,35 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 									else
 										str_F2C20ar.dword0x00 = v47 + 0x2000;
 									str_F2C20ar.dword0x01_rotIdx = 8;
-									DrawSprite_41BD3(
-										0, str_F2C20ar.dword0x08_width,
-										x_BYTE_F2CC6,
-										str_F2C20ar,
-										m_ptrDWORD_E9C38_smalltit,
-										m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
-										iScreenWidth_DE560,
-										ViewPortRenderBufferStart_DE558,
-										m_str_F0E20x,
-										x_BYTE_F6EE0_tablesx,
-										x_D41A0_BYTEARRAY_4_struct,
-										m_ptrColorPalette
-									);
+
+									if (x_BYTE_F2CC6) {
+										DrawSprite_41BD3_F2CC6set(
+											0, str_F2C20ar.dword0x08_width,
+											str_F2C20ar,
+											m_ptrDWORD_E9C38_smalltit,
+											m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
+											iScreenWidth_DE560,
+											ViewPortRenderBufferStart_DE558,
+											m_str_F0E20x,
+											x_BYTE_F6EE0_tablesx,
+											x_D41A0_BYTEARRAY_4_struct,
+											m_ptrColorPalette
+										);
+									}
+									else {
+										DrawSprite_41BD3_F2CC6zero(
+											0, str_F2C20ar.dword0x08_width,
+											str_F2C20ar,
+											m_ptrDWORD_E9C38_smalltit,
+											m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
+											iScreenWidth_DE560,
+											ViewPortRenderBufferStart_DE558,
+											m_str_F0E20x,
+											x_BYTE_F6EE0_tablesx,
+											x_D41A0_BYTEARRAY_4_struct,
+											m_ptrColorPalette
+										);
+									}
 								}
 								break;
 							default:
@@ -3584,19 +3615,34 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					}
 					str_F2C20ar.dword0x09_realWidth++;
 					str_F2C20ar.dword0x0c_realHeight++;
-					DrawSprite_41BD3(
-						1u, str_F2C20ar.dword0x08_width,
-						x_BYTE_F2CC6,
-						str_F2C20ar,
-						m_ptrDWORD_E9C38_smalltit,
-						m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
-						iScreenWidth_DE560,
-						ViewPortRenderBufferStart_DE558,
-						m_str_F0E20x,
-						x_BYTE_F6EE0_tablesx,
-						x_D41A0_BYTEARRAY_4_struct,
-						m_ptrColorPalette
-					);
+					if (x_BYTE_F2CC6) {
+						DrawSprite_41BD3_F2CC6set(
+							1u, str_F2C20ar.dword0x08_width,
+							str_F2C20ar,
+							m_ptrDWORD_E9C38_smalltit,
+							m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
+							iScreenWidth_DE560,
+							ViewPortRenderBufferStart_DE558,
+							m_str_F0E20x,
+							x_BYTE_F6EE0_tablesx,
+							x_D41A0_BYTEARRAY_4_struct,
+							m_ptrColorPalette
+						);
+					}
+					else {
+						DrawSprite_41BD3_F2CC6zero(
+							1u, str_F2C20ar.dword0x08_width,
+							str_F2C20ar,
+							m_ptrDWORD_E9C38_smalltit,
+							m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
+							iScreenWidth_DE560,
+							ViewPortRenderBufferStart_DE558,
+							m_str_F0E20x,
+							x_BYTE_F6EE0_tablesx,
+							x_D41A0_BYTEARRAY_4_struct,
+							m_ptrColorPalette
+						);
+					}
 					break;
 				default:
 					goto LABEL_164;
