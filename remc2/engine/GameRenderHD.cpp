@@ -1988,13 +1988,11 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 								2u, str_F2C20ar.dword0x08_width,
 								str_F2C20ar,
 								m_ptrDWORD_E9C38_smalltit,
-								m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
+								m_bufferOffset_E9C38_1,
 								iScreenWidth_DE560,
 								ViewPortRenderBufferStart_DE558,
-								m_str_F0E20x,
 								x_BYTE_F6EE0_tablesx,
-								x_D41A0_BYTEARRAY_4_struct,
-								m_ptrColorPalette
+								x_D41A0_BYTEARRAY_4_struct
 							);
 						}
 						else {
@@ -3227,13 +3225,11 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 											0, str_F2C20ar.dword0x08_width,
 											str_F2C20ar,
 											m_ptrDWORD_E9C38_smalltit,
-											m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
+											m_bufferOffset_E9C38_1,
 											iScreenWidth_DE560,
 											ViewPortRenderBufferStart_DE558,
-											m_str_F0E20x,
 											x_BYTE_F6EE0_tablesx,
-											x_D41A0_BYTEARRAY_4_struct,
-											m_ptrColorPalette
+											x_D41A0_BYTEARRAY_4_struct
 										);
 									}
 									else {
@@ -3620,13 +3616,11 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 							1u, str_F2C20ar.dword0x08_width,
 							str_F2C20ar,
 							m_ptrDWORD_E9C38_smalltit,
-							m_bufferOffset_E9C38_1, m_bufferOffset_E9C38_2, m_bufferOffset_E9C38_3,
+							m_bufferOffset_E9C38_1,
 							iScreenWidth_DE560,
 							ViewPortRenderBufferStart_DE558,
-							m_str_F0E20x,
 							x_BYTE_F6EE0_tablesx,
-							x_D41A0_BYTEARRAY_4_struct,
-							m_ptrColorPalette
+							x_D41A0_BYTEARRAY_4_struct
 						);
 					}
 					else {

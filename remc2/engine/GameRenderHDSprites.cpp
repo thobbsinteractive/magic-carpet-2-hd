@@ -24,54 +24,7 @@ void DrawSprite_41BD3_F2CC6zero(
 	const uint8_t* m_ptrColorPalette
     )
 {
-	int8_t* ptrSpriteRenderSrc_v2x; // ebx
-	x_DWORD* v3; // esi
-	uint8_t* v4; // edi
-	int v5; // ecx
 	char v6; // cf
-	int v7; // ecx
-	int v8; // ecx
-	char v9; // al
-	char v10; // al
-	char v11; // al
-	char v12; // al
-	int v13; // eax
-	x_BYTE* ptrSpriteRenderSrc_v14; // ebx
-	x_DWORD* v15; // esi
-	uint8_t* v16; // edi
-	int v17; // ecx
-	x_BYTE* ptrSpriteRenderSrc_v18; // ebx
-	x_DWORD* v19; // esi
-	uint8_t* v20; // edi
-	int v21; // eax
-	int v22; // ecx
-	x_BYTE* ptrSpriteRenderSrc_v23; // ebx
-	x_DWORD* v24; // esi
-	uint8_t* v25; // edi
-	int v26; // eax
-	int v27; // ecx
-	x_BYTE* ptrSpriteRenderSrc_v28; // ebx
-	x_DWORD* v29; // esi
-	uint8_t* v30; // edi
-	int v31; // eax
-	int v32; // ecx
-	int v33; // eax
-	x_BYTE* ptrSpriteRenderSrc_v34; // ebx
-	x_DWORD* v35; // esi
-	uint8_t* v36; // edi
-	int v37; // ecx
-	int v38; // edx
-	x_BYTE* ptrSpriteRenderSrc_v39; // ebx
-	x_DWORD* v40; // esi
-	uint8_t* v41; // edi
-	int v42; // eax
-	int v43; // ecx
-	int v44; // edx
-	x_BYTE* ptrSpriteRenderSrc_v45; // ebx
-	x_DWORD* v46; // esi
-	uint8_t* v47; // edi
-	int v48; // eax
-	int v49; // ecx
 	int v50; // ST4C_4
 	int8_t* ptrSpriteRenderSrc_v51x; // ebx
 	uint8_t* ptrSpriteRenderDest_v52; // edx
@@ -143,7 +96,6 @@ void DrawSprite_41BD3_F2CC6zero(
 	int32_t* v119; // [esp+14h] [ebp-50h]
 	x_DWORD* v120; // [esp+14h] [ebp-50h]
 	int8_t* v121x; // [esp+1Ch] [ebp-48h]
-	uint8_t* v122x; // [esp+20h] [ebp-44h]
 	uint8_t* ptrRenderBuffer; // [esp+20h] [ebp-44h]
 	int v124; // [esp+24h] [ebp-40h]
 	int v125; // [esp+24h] [ebp-40h]
@@ -151,14 +103,10 @@ void DrawSprite_41BD3_F2CC6zero(
 	int k; // [esp+24h] [ebp-40h]
 	int v129; // [esp+24h] [ebp-40h]
 	int v130; // [esp+24h] [ebp-40h]
-	int l; // [esp+28h] [ebp-3Ch]
 	int v132; // [esp+28h] [ebp-3Ch]
 	int v133; // [esp+28h] [ebp-3Ch]
-	int v134; // [esp+34h] [ebp-30h]
 	int v135; // [esp+34h] [ebp-30h]
-	int v136; // [esp+38h] [ebp-2Ch]
 	int v137; // [esp+38h] [ebp-2Ch]
-	int v138; // [esp+3Ch] [ebp-28h]
 	int v139; // [esp+3Ch] [ebp-28h]
 	int v140; // [esp+3Ch] [ebp-28h]
 	int v141; // [esp+3Ch] [ebp-28h]
@@ -173,7 +121,6 @@ void DrawSprite_41BD3_F2CC6zero(
 	int v150; // [esp+3Ch] [ebp-28h]
 	int v151; // [esp+3Ch] [ebp-28h]
 	int v152; // [esp+3Ch] [ebp-28h]
-	x_DWORD* v153; // [esp+40h] [ebp-24h]
 	x_DWORD* v154; // [esp+40h] [ebp-24h]
 	uint8_t* v155; // [esp+40h] [ebp-24h]
 	int v156; // [esp+44h] [ebp-20h]
@@ -1166,14 +1113,10 @@ void DrawSprite_41BD3_F2CC6set(
     type_F2C20ar &str_F2C20ar,
 	uint8_t* m_ptrDWORD_E9C38_smalltit,
 	const int m_bufferOffset_E9C38_1,
-	const int m_bufferOffset_E9C38_2,
-	const int m_bufferOffset_E9C38_3,
     const int iScreenWidth_DE560,
     uint8_t* ViewPortRenderBufferStart_DE558,
-	type_unk_F0E20x m_str_F0E20x[GAME_RES_MAX_WIDTH + 100],
     uint8_t x_BYTE_F6EE0_tablesx[83456],
-    type_x_D41A0_BYTEARRAY_4_struct x_D41A0_BYTEARRAY_4_struct,
-	const uint8_t* m_ptrColorPalette
+    type_x_D41A0_BYTEARRAY_4_struct x_D41A0_BYTEARRAY_4_struct
     )
 {
 	int8_t* ptrSpriteRenderSrc_v2x; // ebx
@@ -1224,132 +1167,12 @@ void DrawSprite_41BD3_F2CC6set(
 	uint8_t* v47; // edi
 	int v48; // eax
 	int v49; // ecx
-	int v50; // ST4C_4
-	int8_t* ptrSpriteRenderSrc_v51x; // ebx
-	uint8_t* ptrSpriteRenderDest_v52; // edx
-	x_DWORD* v53; // esi
-	type_unk_F0E20x* v54x; // edi
-	int v55; // ecx
-	int v56; // ecx
-	int v57; // ecx
-	char v58; // al
-	char v59; // al
-	char v60; // al
-	char v61; // al
-	int8_t* ptrSpriteRenderSrc_v62x; // ebx
-	int v63; // eax
-	uint8_t* ptrSpriteRenderDest_v64; // edx
-	x_DWORD* v65; // esi
-	type_unk_F0E20x* v66x; // edi
-	int v67; // ecx
-	int8_t* ptrSpriteRenderSrc_v68x; // ebx
-	uint8_t* ptrSpriteRenderDest_v69; // edx
-	x_DWORD* v70; // esi
-	type_unk_F0E20x* v71x; // edi
-	int v72; // eax
-	int v73; // ecx
-	int8_t* ptrSpriteRenderSrc_v74x; // ebx
-	uint8_t* ptrSpriteRenderDest_v75; // edx
-	x_DWORD* v76; // esi
-	type_unk_F0E20x* v77x; // edi
-	int v78; // eax
-	int v79; // ecx
-	int8_t* ptrSpriteRenderSrc_v80x; // ebx
-	uint8_t* ptrSpriteRenderDest_v81; // edx
-	x_DWORD* v82; // esi
-	type_unk_F0E20x* v83x; // edi
-	int v84; // eax
-	int v85; // ecx
-	int8_t* ptrSpriteRenderSrc_v86x; // ebx
-	int v87; // eax
-	uint8_t* ptrSpriteRenderDest_v88; // edx
-	x_DWORD* v89; // esi
-	type_unk_F0E20x* v90x; // edi
-	int v91; // ecx
-	int v92; // ecx
-	int8_t* ptrSpriteRenderSrc_v93x; // ebx
-	uint8_t* ptrSpriteRenderDest_v94; // edx
-	int v95; // eax
-	x_DWORD* v96; // esi
-	type_unk_F0E20x* v97x; // edi
-	int v98; // ecx
-	int8_t* ptrSpriteRenderSrc_v99x; // ebx
-	uint8_t* ptrSpriteRenderDest_v100; // edx
-	int v101; // eax
-	x_DWORD* v102; // esi
-	type_unk_F0E20x* v103x; // edi
-	int8_t* ptrSpriteRenderSrc_v104x; // ebx
-	int v105; // eax
-	uint8_t* ptrSpriteRenderDest_v106; // edx
-	x_DWORD* v107; // esi
-	type_unk_F0E20x* v108x; // edi
-	int v109; // ecx
-	char v110; // al
-	char v111; // al
-	int v112; // eax
-	int v113; // edx
-	int v114; // edx
-	signed int v116; // [esp+10h] [ebp-54h]
-	x_DWORD* v117; // [esp+14h] [ebp-50h]
-	x_DWORD* v118; // [esp+14h] [ebp-50h]
-	int32_t* v119; // [esp+14h] [ebp-50h]
-	x_DWORD* v120; // [esp+14h] [ebp-50h]
-	int8_t* v121x; // [esp+1Ch] [ebp-48h]
 	uint8_t* v122x; // [esp+20h] [ebp-44h]
-	uint8_t* ptrRenderBuffer; // [esp+20h] [ebp-44h]
-	int v124; // [esp+24h] [ebp-40h]
-	int v125; // [esp+24h] [ebp-40h]
-	int i; // [esp+24h] [ebp-40h]
-	int k; // [esp+24h] [ebp-40h]
-	int v129; // [esp+24h] [ebp-40h]
-	int v130; // [esp+24h] [ebp-40h]
 	int l; // [esp+28h] [ebp-3Ch]
-	int v132; // [esp+28h] [ebp-3Ch]
-	int v133; // [esp+28h] [ebp-3Ch]
 	int v134; // [esp+34h] [ebp-30h]
-	int v135; // [esp+34h] [ebp-30h]
 	int v136; // [esp+38h] [ebp-2Ch]
-	int v137; // [esp+38h] [ebp-2Ch]
 	int v138; // [esp+3Ch] [ebp-28h]
-	int v139; // [esp+3Ch] [ebp-28h]
-	int v140; // [esp+3Ch] [ebp-28h]
-	int v141; // [esp+3Ch] [ebp-28h]
-	int v142; // [esp+3Ch] [ebp-28h]
-	int v143; // [esp+3Ch] [ebp-28h]
-	int v144; // [esp+3Ch] [ebp-28h]
-	int v145; // [esp+3Ch] [ebp-28h]
-	int v146; // [esp+3Ch] [ebp-28h]
-	int v147; // [esp+3Ch] [ebp-28h]
-	int v148; // [esp+3Ch] [ebp-28h]
-	int v149; // [esp+3Ch] [ebp-28h]
-	int v150; // [esp+3Ch] [ebp-28h]
-	int v151; // [esp+3Ch] [ebp-28h]
-	int v152; // [esp+3Ch] [ebp-28h]
 	x_DWORD* v153; // [esp+40h] [ebp-24h]
-	x_DWORD* v154; // [esp+40h] [ebp-24h]
-	uint8_t* v155; // [esp+40h] [ebp-24h]
-	int v156; // [esp+44h] [ebp-20h]
-	int v157; // [esp+48h] [ebp-1Ch]
-	int v158; // [esp+48h] [ebp-1Ch]
-	int scaledHeight; // [esp+4Ch] [ebp-18h]
-	int v160; // [esp+50h] [ebp-14h]
-	int v161; // [esp+50h] [ebp-14h]
-	int* v162; // [esp+54h] [ebp-10h]
-	x_DWORD* v163; // [esp+54h] [ebp-10h]
-	x_DWORD* v164; // [esp+54h] [ebp-10h]
-	x_DWORD* v165; // [esp+54h] [ebp-10h]
-	int* v166; // [esp+54h] [ebp-10h]
-	x_DWORD* v167; // [esp+54h] [ebp-10h]
-	x_DWORD* v168; // [esp+54h] [ebp-10h]
-	type_unk_F0E20x* v169x; // [esp+58h] [ebp-Ch]
-	int screenPosX; // [esp+5Ch] [ebp-8h]
-	int v171; // [esp+5Ch] [ebp-8h]
-	int v172; // [esp+60h] [ebp-4h]
-	int v173; // [esp+60h] [ebp-4h]
-	int v174; // [esp+60h] [ebp-4h]
-	int v175; // [esp+60h] [ebp-4h]
-
-	int jy;
 
 	//Draw Sprite to Render buffer
 	v138 = (str_F2C20ar.dword0x0c_realHeight + str_F2C20ar.dword0x09_realWidth) >> 2;
