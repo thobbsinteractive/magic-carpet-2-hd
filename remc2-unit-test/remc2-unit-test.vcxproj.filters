@@ -23,6 +23,9 @@
     <ClCompile Include="GameRenderHD.cpp">
       <Filter>engine</Filter>
     </ClCompile>
+    <ClCompile Include="GameRenderHDSprites.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

@@ -36,10 +36,10 @@ typedef struct {
 	int32_t dword0x18;
 	int32_t Height_0x19;
 	uint8_t* pbyte0x1a;
-	int32_t dword0x1b;
+	int32_t dword0x1b_cosRoll;
 	int32_t dword0x1c;
 	int32_t dword0x1d;
-	int32_t dword0x1e;
+	int32_t dword0x1e_spriteSymmetry; // takes values 0..7 and determines how a sprite is rendered into the frame buffer
 	int32_t dword0x1f;
 	int32_t dword0x20;
 	int32_t dword0x21;
@@ -48,7 +48,7 @@ typedef struct {
 	int32_t dword0x24;
 	int32_t width0x25;
 	int32_t height0x26;
-	int32_t dword0x27;
+	int32_t dword0x27_sinRoll;
 }type_F2C20ar;
 #pragma pack (pop)
 

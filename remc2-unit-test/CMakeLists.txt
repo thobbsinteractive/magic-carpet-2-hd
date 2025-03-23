@@ -34,6 +34,8 @@ set(SOURCE_FILES_UNITTESTS_DEPENDENCIES
     "../remc2/engine/GameBitmapIndexes.h"
     "../remc2/engine/GameRenderHD.cpp"
     "../remc2/engine/GameRenderHD.h"
+    "../remc2/engine/GameRenderHDSprites.cpp"
+    "../remc2/engine/GameRenderHDSprites.h"
     "../remc2/engine/GameRenderInterface.h"
     "../remc2/engine/GameRenderNG.cpp"
     "../remc2/engine/GameRenderNG.h"

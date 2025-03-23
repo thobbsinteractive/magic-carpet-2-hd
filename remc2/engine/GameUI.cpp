@@ -5211,3 +5211,148 @@ void sub_30870()//211870
 	}
 	//	return v1;
 }
+
+void DrawSpriteHelp_sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t posY)
+{
+	int v3; // esi
+	type_event_0x6E8E* v4x; // edx
+	uint8_t v5; // al
+	uint8_t v6; // al
+	uint8_t v7; // al
+	uint8_t v8; // al
+	//char v9; // cl
+	signed int v10; // eax
+	uint8_t v11; // al
+	//unsigned int v12; // edi
+	signed int v13; // eax
+	//int v14; // esi
+	//char v15; // dl
+	//char v16; // dh
+	//char v17; // bl
+	char v18; // [esp+0h] [ebp-4h]
+
+	v3 = 0;
+	if (str_unk_1804B0ar.PopupStatusByte_0x9e & 1)
+		return;
+	v4x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v5 = a1x->class_0x3F_63;
+	if (v5 < 5u)
+	{
+		if (v5 >= 2u)
+		{
+			if (v5 <= 2u)
+			{
+				v6 = a1x->model_0x40_64;
+				if (v6 >= 1u)
+				{
+					if (v6 <= 1u)
+					{
+						v3 = 27;
+					}
+					else if (v6 == 2)
+					{
+						v3 = 22;
+					}
+				}
+			}
+			else if (v5 == 3)
+			{
+				v11 = a1x->model_0x40_64;
+				if (v11 < 2u)
+				{
+					if (v11 == 1)
+						v3 = 28;
+				}
+				else if (v11 <= 2u)
+				{
+					v3 = (a1x->id_0x1A_26 != v4x->id_0x1A_26) + 24;
+				}
+				else if (v11 == 3)
+				{
+					if (a1x->id_0x1A_26 == v4x->id_0x1A_26)
+						v3 = 23;
+					else
+						v3 = 26;
+				}
+			}
+		}
+		goto LABEL_48;
+	}
+	if (v5 > 5u)
+	{
+		if (v5 >= 0xAu)
+		{
+			if (v5 <= 0xAu)
+			{
+				if (a1x->model_0x40_64 == 39 && a1x->word_0x94_148 != v4x->id_0x1A_26)
+					v3 = 18;
+			}
+			else if (v5 == 15 && !(a1x->struct_byte_0xc_12_15.byte[0] & 1))
+			{
+				v3 = 20;
+			}
+		}
+		goto LABEL_48;
+	}
+	if (a1x->id_0x1A_26 != v4x->id_0x1A_26)
+	{
+		v7 = a1x->model_0x40_64;
+		if (v7 < 0xCu)
+			goto LABEL_30;
+		if (v7 > 0xEu)
+		{
+			if (v7 == 22)
+			{
+				if (((int8_t)a1x->state_0x45_69 != -76) && a1x->word_0x94_148 != v4x->id_0x1A_26)
+					v3 = 18;
+				goto LABEL_48;
+			}
+		LABEL_30:
+			v8 = a1x->state_0x45_69;
+			if (v8 < 0xE8u || v8 > 0xEAu)
+			{
+				v10 = 1;
+				if ((a1x->StageVar2_0x49_73 == 14 || a1x->StageVar2_0x49_73 == 13) && a1x->parentId_0x28_40 == v4x->id_0x1A_26)
+					v10 = 0;
+				if (v10)
+					v3 = 19;
+			}
+			goto LABEL_48;
+		}
+	}
+LABEL_48:
+	if (v3)
+	{
+		if (x_WORD_180660_VGA_type_resolution & 1)
+		{
+			posX *= 2;
+			posY *= 2;
+		}
+		if (str_E2A74[v3].axis_2[0] & 2)
+		{
+			if (a1x == str_E2A74[v3].dword_12)
+			{
+				if (!(str_unk_1804B0ar.byte_0x9f & 0x1))
+				{
+					str_E2A74[v3].axis_2[3] = posX;
+					str_E2A74[v3].axis_2[0] |= 8;
+					str_E2A74[v3].axis_2[4] = posY;
+					str_unk_1804B0ar.byte_0x9f |= 2;
+				}
+			}
+		}
+		else
+		{
+			v18 = 0;
+			v13 = Maths::sub_58490_radix_3d_2(&v4x->axis_0x4C_76, &a1x->axis_0x4C_76);
+			if (!str_E2A74[v3].dword_12 || v13 < str_E2A74[v3].dword_20 && v13 > 1024)
+				v18 = 1;
+			if (v18)
+			{
+				str_E2A74[v3].dword_20 = v13;
+				str_E2A74[v3].dword_12 = a1x;
+				str_E2A74[v3].axis_2[0] |= 8;
+			}
+		}
+	}
+}
