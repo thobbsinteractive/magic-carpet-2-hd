@@ -186,8 +186,10 @@ void DrawSprite_41BD3_F2CC6zero(
 			v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 			v157 = str_F2C20ar.dword0x04_screenY << 16;
 			screenPosX = str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16);
-			if (str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16) >= str_F2C20ar.dword0x21)
-				goto LABEL_136;
+			if (str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x04_screenY >> 16) >= str_F2C20ar.dword0x21) {
+				ptrRenderBuffer = iScreenWidth_DE560 * screenPosX + ViewPortRenderBufferStart_DE558;
+				goto LABEL_137;
+			}
 			v139 = str_F2C20ar.dword0x21 - screenPosX;
 			scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
 			if (scaledHeight > 0)
@@ -195,7 +197,6 @@ void DrawSprite_41BD3_F2CC6zero(
 				str_F2C20ar.dword0x0a_actIdx += v139 * v135;
 				v157 -= v139 * v160;
 				screenPosX = str_F2C20ar.dword0x21;
-			LABEL_136:
 				ptrRenderBuffer = iScreenWidth_DE560 * screenPosX + ViewPortRenderBufferStart_DE558;
 				goto LABEL_137;
 			}
@@ -226,8 +227,10 @@ void DrawSprite_41BD3_F2CC6zero(
 			v171 = str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16);
 			if (str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16) < str_F2C20ar.width0x25)
 			{
-				if (v171 >= str_F2C20ar.dword0x21)
-					goto LABEL_284;
+				if (v171 >= str_F2C20ar.dword0x21) {
+					ptrRenderBuffer = v171 + ViewPortRenderBufferStart_DE558;
+					goto LABEL_285;
+				}
 			}
 			else
 			{
@@ -238,7 +241,6 @@ void DrawSprite_41BD3_F2CC6zero(
 					str_F2C20ar.dword0x0a_actIdx += v141 * v135;
 					v158 += v141 * v161;
 					v171 = str_F2C20ar.width0x25;
-				LABEL_284:
 					ptrRenderBuffer = v171 + ViewPortRenderBufferStart_DE558;
 					goto LABEL_285;
 				}
@@ -268,8 +270,10 @@ void DrawSprite_41BD3_F2CC6zero(
 			v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 			v157 = str_F2C20ar.dword0x03_screenX << 16;
 			screenPosX = str_F2C20ar.width0x25 - str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * str_F2C20ar.dword0x03_screenX >> 16);
-			if (screenPosX >= str_F2C20ar.dword0x21)
-				goto LABEL_329;
+			if (screenPosX >= str_F2C20ar.dword0x21) {
+				ptrRenderBuffer = str_F2C20ar.width0x25 + ViewPortRenderBufferStart_DE558 - 1 - screenPosX;
+				goto LABEL_137;
+			}
 			v147 = str_F2C20ar.dword0x21 - screenPosX;
 			scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
 			if (scaledHeight <= 0)
@@ -277,7 +281,6 @@ void DrawSprite_41BD3_F2CC6zero(
 			str_F2C20ar.dword0x0a_actIdx += v147 * v135;
 			v157 -= v147 * v160;
 			screenPosX = str_F2C20ar.dword0x21;
-		LABEL_329:
 			ptrRenderBuffer = str_F2C20ar.width0x25 + ViewPortRenderBufferStart_DE558 - 1 - screenPosX;
 			goto LABEL_137;
 		case 3:
@@ -345,8 +348,10 @@ void DrawSprite_41BD3_F2CC6zero(
 			v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 			v157 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) << 16;
 			screenPosX = str_F2C20ar.width0x25 - str_F2C20ar.dword0x03_screenX - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x04_screenY) >> 16);
-			if (screenPosX >= str_F2C20ar.dword0x21)
-				goto LABEL_348;
+			if (screenPosX >= str_F2C20ar.dword0x21) {
+				ptrRenderBuffer = str_F2C20ar.height0x26 + ViewPortRenderBufferStart_DE558 + iScreenWidth_DE560 * (str_F2C20ar.width0x25 - screenPosX - 1) - 1;
+				goto LABEL_137;
+			}
 			v149 = str_F2C20ar.dword0x21 - screenPosX;
 			scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
 			if (scaledHeight <= 0)
@@ -354,7 +359,6 @@ void DrawSprite_41BD3_F2CC6zero(
 			str_F2C20ar.dword0x0a_actIdx += v149 * v135;
 			v157 -= v149 * v160;
 			screenPosX = str_F2C20ar.dword0x21;
-		LABEL_348:
 			ptrRenderBuffer = str_F2C20ar.height0x26 + ViewPortRenderBufferStart_DE558 + iScreenWidth_DE560 * (str_F2C20ar.width0x25 - screenPosX - 1) - 1;
 			goto LABEL_137;
 		case 5:
@@ -423,8 +427,10 @@ void DrawSprite_41BD3_F2CC6zero(
 			v162 = (int*)(&m_ptrDWORD_E9C38_smalltit[m_bufferOffset_E9C38_2]);
 			v157 = (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) << 16;
 			screenPosX = str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16);
-			if (str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16) >= str_F2C20ar.dword0x21)
-				goto LABEL_367;
+			if (str_F2C20ar.dword0x04_screenY - (str_F2C20ar.dword0x1f * (str_F2C20ar.height0x26 - str_F2C20ar.dword0x03_screenX) >> 16) >= str_F2C20ar.dword0x21) {
+				ptrRenderBuffer = ViewPortRenderBufferStart_DE558 + iScreenWidth_DE560 * (str_F2C20ar.height0x26 - 1) + screenPosX;
+				goto LABEL_137;
+			}
 			v151 = str_F2C20ar.dword0x21 - screenPosX;
 			scaledHeight -= str_F2C20ar.dword0x21 - screenPosX;
 			if (scaledHeight <= 0)
@@ -432,7 +438,6 @@ void DrawSprite_41BD3_F2CC6zero(
 			str_F2C20ar.dword0x0a_actIdx += v151 * v135;
 			v157 -= v151 * v160;
 			screenPosX = str_F2C20ar.dword0x21;
-		LABEL_367:
 			ptrRenderBuffer = ViewPortRenderBufferStart_DE558 + iScreenWidth_DE560 * (str_F2C20ar.height0x26 - 1) + screenPosX;
 		LABEL_137:
 			v140 = str_F2C20ar.width0x25 - str_F2C20ar.dword0x21;
