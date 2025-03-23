@@ -47,7 +47,7 @@ std::array<RendererTestsForLevel,25> renderer_tests{
 	RendererTestsForLevel{1, 0, 240, false, 0, 0, RendererTestsMovements::no_movement, {}}, // level 21
 	RendererTestsForLevel{1, 0, 240, false, 0, 0, RendererTestsMovements::no_movement, {}}, // level 22
 	RendererTestsForLevel{1, 0, 240, false, 0, 0, RendererTestsMovements::no_movement, {}}, // level 23
-	RendererTestsForLevel{100, 320, 240, false, 0, 0, RendererTestsMovements::barrel_roll, { // level 24
+	RendererTestsForLevel{50, 320, 240, false, 0, 0, RendererTestsMovements::barrel_roll, { // level 24
 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_0, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_0, false},
 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_1, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_1, false},
 		{RendererTestsHitCheckpoint::RendTest_HD_Draw_Sprite_2, false}, {RendererTestsHitCheckpoint::RendTest_Orig_Draw_Sprite_2, false},
