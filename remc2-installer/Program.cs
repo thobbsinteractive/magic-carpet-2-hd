@@ -127,7 +127,7 @@ namespace remc2_installer
             project.Platform = Platform.x64;
 #endif
             project.GUID = new Guid("d945f1c4-cbe4-445c-9674-07de64692857");
-			project.Version = new Version(0, 9, 7, 0);
+			project.Version = new Version(0, 9, 8, 0);
 
 			//project.ManagedUI = ManagedUI.Empty;    //no standard UI dialogs
 			//project.ManagedUI = ManagedUI.Default;  //all standard UI dialogs
