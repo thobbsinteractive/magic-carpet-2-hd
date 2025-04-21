@@ -12,13 +12,12 @@ using namespace std;
 #include "SDL2/SDL.h"
 
 #include "editor.h"
+#include "ReadConfig.h"
 
 int main(int argc, char* argv[])
 {	
 	int exitCode = 0;
 	spdlog::level::level_enum level = spdlog::level::info;
-	std::string gameFolder;
-	std::string cdFolder;
 	std::vector<std::string> params;
 	params.clear();
 	bool showHelp = false;
@@ -29,14 +28,6 @@ int main(int argc, char* argv[])
 	for (auto p = params.cbegin(); p != params.cend(); ++p) {
 		const auto param = *p;
 		
-		if ((param == "-g") || (param == "--game-folder"))
-		{
-			gameFolder = *(++p);
-		}
-		if ((param == "-c") || (param == "--cd-folder"))
-		{
-			cdFolder = *(++p);
-		}
 		if ((param == "-l") || (param == "--log-level"))
 		{
 			loggingLevel = *(++p);
@@ -48,8 +39,6 @@ int main(int argc, char* argv[])
 
 	if (showHelp)
 	{
-		printf("-g --game-folder: (Optional) Folder Location of MC2 Game Data. Defaults to ./NETHERW. \n");
-		printf("-c --cd-folder: (Optional) Folder Location of MC2 CD Data.  Defaults to ./CD_FILES. \n");
 		printf("-l --log-level: (Optional) Logging Level E.g. Debug, Trace or Info.  Defaults to Info \n");
 		return -1;
 	}
@@ -63,8 +52,10 @@ int main(int argc, char* argv[])
 	try
 	{
 		InitializeLogging(level, "log-editor.txt");
+		ReadConfig readConfig;
+		readConfig.ReadIni();
 		support_begin();
-		editor_run(gameFolder, cdFolder);
+		editor_run();
 	}
 	catch (const std::exception& e)
 	{

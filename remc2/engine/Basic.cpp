@@ -88,8 +88,8 @@ uint16_t x_WORD_18072C_cursor_sizex; // weak
 uint16_t x_WORD_18072E_cursor_sizey; // weak
 uint8_t* x_DWORD_180730_cursor_data; // weak//351730
 
-uint8_t* x_DWORD_180708; // weak
-uint8_t* x_DWORD_18070C; // weak
+uint8_t* ptrScreenPos_180708; // weak
+uint8_t* ptrCursorBitmapPos_18070C; // weak
 uint8_t* x_DWORD_180714; // weak
 uint8_t* x_DWORD_180718; // weak
 
@@ -149,22 +149,22 @@ int filearrayindex_ZERO4 = 9;
 uint8_t* SEARCH_BEGIN_BUFFER = 0;
 uint8_t* SEARCH_END_BUFFER = 0;
 uint8_t* FONTS0DAT_BEGIN_BUFFER = 0;
-posistruct2_t* FONTS0TAB_BEGIN_BUFFER = 0;
-posistruct2_t* FONTS0TAB_END_BUFFER = 0;
+bitmap_pos_struct2_t* FONTS0TAB_BEGIN_BUFFER = 0;
+bitmap_pos_struct2_t* FONTS0TAB_END_BUFFER = 0;
 uint8_t* FONTS1DAT_BEGIN_BUFFER = 0;//2baa94
-posistruct2_t* FONTS1TAB_BEGIN_BUFFER = 0;//2bab24
-posistruct2_t* FONTS1TAB_END_BUFFER = 0;//2bab04
+bitmap_pos_struct2_t* FONTS1TAB_BEGIN_BUFFER = 0;//2bab24
+bitmap_pos_struct2_t* FONTS1TAB_END_BUFFER = 0;//2bab04
 type_TMAPS00TAB_BEGIN_BUFFER* str_TMAPS00TAB_BEGIN_BUFFER;
 //uint8_t* TMAPS00TAB_BEGIN_BUFFER = 0;//2c7ed0
 TColor* str_PALDATA_BEGIN_BUFFER = 0;//2bb3c8
 TColor* str_PALMEM_BEGIN_BUFFER = 0;//6d654d
 uint8_t* POINTERSDAT_BEGIN_BUFFER = 0;//2bc390
-posistruct2_t* POINTERSTAB_BEGIN_BUFFER = 0;//2bc394
-posistruct2_t* POINTERSTAB_END_BUFFER = 0;//2bc388*/
+bitmap_pos_struct2_t* POINTERSTAB_BEGIN_BUFFER = 0;//2bc394
+bitmap_pos_struct2_t* POINTERSTAB_END_BUFFER = 0;//2bc388*/
 
 uint8_t* BUILD00DAT_BEGIN_BUFFER = 0;
-posistruct2_t* BUILD00TAB_BEGIN_BUFFER = 0;
-posistruct2_t* BUILD00TAB_END_BUFFER = 0;
+bitmap_pos_struct2_t* BUILD00TAB_BEGIN_BUFFER = 0;
+bitmap_pos_struct2_t* BUILD00TAB_END_BUFFER = 0;
 
 uint8_t* ETEXT_BEGIN_BUFFER = 0;
 uint8_t* FTEXT_BEGIN_BUFFER = 0;
@@ -187,35 +187,35 @@ uint8_t* WSCREEN_END_BUFFER = 0;
 uint8_t* BSCREEN2_END_BUFFER = 0;
 
 uint8_t* MSPRD00DAT_BEGIN_BUFFER = 0;
-posistruct2_t* MSPRD00TAB_BEGIN_BUFFER = 0;
-posistruct2_t* MSPRD00TAB_END_BUFFER = 0;
+bitmap_pos_struct2_t* MSPRD00TAB_BEGIN_BUFFER = 0;
+bitmap_pos_struct2_t* MSPRD00TAB_END_BUFFER = 0;
 
 uint8_t* HSPRD00DAT_BEGIN_BUFFER = 0;
-posistruct2_t* HSPRD00TAB_BEGIN_BUFFER = 0;
-posistruct2_t* HSPRD00TAB_END_BUFFER = 0;
+bitmap_pos_struct2_t* HSPRD00TAB_BEGIN_BUFFER = 0;
+bitmap_pos_struct2_t* HSPRD00TAB_END_BUFFER = 0;
 
 uint8_t* HFONT3DAT_BEGIN_BUFFER = 0;
-posistruct2_t* HFONT3TAB_BEGIN_BUFFER = 0;
-posistruct2_t* HFONT3TAB_END_BUFFER = 0;
+bitmap_pos_struct2_t* HFONT3TAB_BEGIN_BUFFER = 0;
+bitmap_pos_struct2_t* HFONT3TAB_END_BUFFER = 0;
 
 uint8_t* CLRD0DAT_BEGIN_BUFFER = 0;
 
-posistruct_t* posistruct1;//fix it
-posistruct_t* posistruct2;//fix it
-posistruct_t* posistruct3;//fix it
-posistruct_t* posistruct4;//fix it
-posistruct_t* posistruct5;//fix it
-posistruct_t* posistruct6;//fix it
-posistruct_t* posistruct7;//fix it
-posistruct_t* posistruct8;//fix it
-posistruct_t* posistruct9;//fix it
-posistruct_t* posistruct10;//fix it
-posistruct_t* posistruct11;//fix it
+bitmap_pos_struct_t* posistruct1;//fix it
+bitmap_pos_struct_t* posistruct2;//fix it
+bitmap_pos_struct_t* posistruct3;//fix it
+bitmap_pos_struct_t* posistruct4;//fix it
+bitmap_pos_struct_t* posistruct5;//fix it
+bitmap_pos_struct_t* posistruct6;//fix it
+bitmap_pos_struct_t* posistruct7;//fix it
+bitmap_pos_struct_t* posistruct8;//fix it
+bitmap_pos_struct_t* posistruct9;//fix it
+bitmap_pos_struct_t* posistruct10;//fix it
+bitmap_pos_struct_t* posistruct11;//fix it
 
 uint8_t* ZERO_BUFFER = 0;
-posistruct2_t* ZERO_BUFFER_PST2 = 0;
+bitmap_pos_struct2_t* ZERO_BUFFER_PST2 = 0;
 
-posistruct_t* x_DWORD_EA3D4; // weak
+bitmap_pos_struct_t* x_DWORD_EA3D4; // weak
 
 filearray_struct filearray_2aa18c[] = {
 	{ &POINTERSTAB_BEGIN_BUFFER,&POINTERSTAB_END_BUFFER,&POINTERSDAT_BEGIN_BUFFER,&posistruct1 },
@@ -1002,8 +1002,8 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 			{
 				if (a6 && a6 != 4 && a6 != 5)//adress 261091
 				{
-					DrawHelpText_6FC50(1/*v86*/);
-					v25 = sub_6FC10_letter_width();
+					GetFont_6FC50(1/*v86*/);
+					v25 = GetLetterWidth_6FC10();
 				}
 				else
 				{
@@ -1022,7 +1022,7 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 					{
 						if (a6 == 2)
 						{
-							DrawHelpText_6FC50(1/*v86*/);
+							GetFont_6FC50(1/*v86*/);
 							v31 = &pdwScreenBuffer_351628[v26 + 640 * a1];
 							for (v32 = 0; v32 < xy_DWORD_17DED4_spritestr[274].height_5; v32++)
 							{
@@ -1042,7 +1042,7 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 							a1 += v34;
 							v86 = a7;
 							v35 = v98;
-							v36 = a4 - 2 * sub_6FC10_letter_width();
+							v36 = a4 - 2 * GetLetterWidth_6FC10();
 							sub_6FC80_pre_draw_text(v87, v99 + xy_DWORD_17DED4_spritestr[275].width_4, v36, v35, a7);
 						}
 						else if (a6 == 5)
@@ -1102,7 +1102,7 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 					}
 					if (a6 && a6 != 4 && a6 != 5)
 					{
-						LOWORD(v44) = sub_6FC30_get34_height();
+						LOWORD(v44) = GetLetterHeight_6FC30();
 						v98 += v44 + 2;
 					}
 					else
@@ -1131,10 +1131,10 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 	{
 		if (a6 && a6 != 4)
 		{
-			DrawHelpText_6FC50(1/*v86*/);
+			GetFont_6FC50(1/*v86*/);
 			if (a6 == 2)
 			{
-				DrawHelpText_6FC50(1/*v86*/);
+				GetFont_6FC50(1/*v86*/);
 				v58x = &pdwScreenBuffer_351628[v99 + 640 * a1];
 				v59y = 0;
 				for (v57 = 0; v57 < xy_DWORD_17DED4_spritestr[274].height_5; v57++)
@@ -1156,7 +1156,7 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 				//HIWORD(v62) = HIWORD(xy_DWORD_17DED4_spritestr);
 				v62 = xy_DWORD_17DED4_spritestr[274].height_5;
 				v63 = v62 + a1;
-				DrawHelpText_6FC50(1/*v86*/);
+				GetFont_6FC50(1/*v86*/);
 				v64 = &pdwScreenBuffer_351628[640 * v63 + v61];
 				for (v65 = 0; v65 < xy_DWORD_17DED4_spritestr[274].height_5; v65++)
 				{
@@ -1185,7 +1185,7 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 				}
 				v86 = a7;
 				v69 = v98;
-				v70 = a4 - 2 * sub_6FC10_letter_width();
+				v70 = a4 - 2 * GetLetterWidth_6FC10();
 				sub_6FC80_pre_draw_text(v87, v99 + xy_DWORD_17DED4_spritestr[275].width_4, v70, v69, a7);
 			}
 			else if (a6 == 5)
@@ -1305,46 +1305,9 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 }
 
 //----- (0007C120) --------------------------------------------------------
-void sub_7C120_draw_bitmap_640(int16_t posx, int16_t posy, posistruct_t tempstr)//25d120
+void sub_7C120_draw_bitmap_640(int16_t posx, int16_t posy, bitmap_pos_struct_t tempstr)//25d120
 {
 	sub_2BB40_draw_bitmap(posx, posy, tempstr);//ebp
-}
-
-//----- (00076260) --------------------------------------------------------
-void sub_76260_read_intro_Palette(uint8_t  /*a1*/)
-{
-	TColor* v0x; // ebx
-	int v1; // esi
-	//unsigned int result; // eax
-	unsigned __int16 v3; // di
-	uint16_t v4; // [esp+0h] [ebp-Ch]
-	int32_t v5; // [esp+4h] [ebp-8h]
-	unsigned __int8 v6; // [esp+8h] [ebp-4h]
-
-	v0x = unk_17D838x;
-	v1 = 0;
-	sub_75D70((uint8_t*)&v4, 2u);
-	if (v4 > 0u)
-	{
-		do
-		{
-			sub_75D70((uint8_t*)&v6, 1u);
-			//v0 += 3 * v6;
-			v0x += v6;
-			v5 = 0;
-			sub_75D70((uint8_t*)&v5, 1u);
-			if (!v5)
-				v5 = 256;
-			for (v3 = 0; v3 < v5; v3++)//mybe read Palette
-			{
-				sub_75D70((uint8_t*)v0x, 3u);
-				//v0 += 3;
-				v0x++;
-			}
-			v1++;
-		} while (v1 < v4);
-	}
-	//return result;
 }
 
 //----- (0005BE80) --------------------------------------------------------
@@ -1419,10 +1382,10 @@ void sub_7C140_draw_text_background(int16_t x1, int16_t y1, int16_t x2, int16_t 
 }
 
 //----- (0006FC50) --------------------------------------------------------
-void DrawHelpText_6FC50(__int16 a1)//250c50 //font and graphics init
+void GetFont_6FC50(__int16 a1)//250c50 //font and graphics init
 {
 	//int result; // eax
-	posistruct_t* v2; // edx
+	bitmap_pos_struct_t* v2; // edx
 
 	//result = a1;
 	v2 = *x_DWORD_E9B20[a1].posistruct;
@@ -1435,7 +1398,7 @@ void DrawHelpText_6FC50(__int16 a1)//250c50 //font and graphics init
 // EA3D4: using guessed type int x_DWORD_EA3D4;
 
 //----- (0006FC10) --------------------------------------------------------
-uint8_t sub_6FC10_letter_width()//250c10
+uint8_t GetLetterWidth_6FC10()//250c10
 {
 	if (help_VGA_type_resolution != 8)//fixed
 		return x_DWORD_EA3D4[33].width_4;
@@ -1460,10 +1423,10 @@ unsigned int sub_6FC80_pre_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a
 	}
 	else
 	{
-		v6 = a2 + v9 / 2 - (v5 - 1) * sub_6FC10_letter_width() / 2;
+		v6 = a2 + v9 / 2 - (v5 - 1) * GetLetterWidth_6FC10() / 2;
 		DrawText_2BC10(a1, v6, a4, a5);
 	}
-	v7 = sub_6FC10_letter_width();
+	v7 = GetLetterWidth_6FC10();
 	return v6 + v7 * strlen(a1);
 }
 
@@ -1611,7 +1574,7 @@ void VGA_BlitAny(uint8_t maxFps)//256200
 }
 
 //----- (0006FC30) --------------------------------------------------------
-uint8_t sub_6FC30_get34_height()//250c30
+uint8_t GetLetterHeight_6FC30()//250c30
 {
 	if (help_VGA_type_resolution != 8)//fixed
 		return x_DWORD_EA3D4[34].height_5;
@@ -1621,7 +1584,7 @@ uint8_t sub_6FC30_get34_height()//250c30
 // EA3D4: using guessed type int x_DWORD_EA3D4;
 
 //----- (0002BB40) --------------------------------------------------------
-void sub_2BB40_draw_bitmap(int16_t posx, int16_t posy, posistruct_t tempposstr)//20cb40
+void sub_2BB40_draw_bitmap(int16_t posx, int16_t posy, bitmap_pos_struct_t tempposstr, uint8_t scale)//20cb40
 {
 	//a3=48c80f-> 48ae47002633
 
@@ -1642,7 +1605,7 @@ void sub_2BB40_draw_bitmap(int16_t posx, int16_t posy, posistruct_t tempposstr)/
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_8F8B0_draw_bitmap320(posx, posy, tempposstr);
 	else
-		sub_8F8E8_draw_bitmap640(posx, posy, tempposstr);
+		sub_8F8E8_draw_bitmap640(posx, posy, tempposstr, scale);
 	//v6 = v3;
 	//v3(a1, a2, a3);
 	//result = (int)x_D41A0_BYTEARRAY_0;
@@ -1653,7 +1616,7 @@ void sub_2BB40_draw_bitmap(int16_t posx, int16_t posy, posistruct_t tempposstr)/
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			sub_8F8B0_draw_bitmap320(posx, posy, tempposstr);
 		else
-			sub_8F8E8_draw_bitmap640(posx, posy, tempposstr);
+			sub_8F8E8_draw_bitmap640(posx, posy, tempposstr, scale);
 		pdwScreenBuffer_351628 = temp_screen_buffer;
 	}
 	//return result;
@@ -1707,14 +1670,14 @@ void DrawLine_2BC80(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16
 // 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (0002BC10) --------------------------------------------------------
-void DrawText_2BC10(const char* textbuffer, int16_t posx, int16_t posy, uint8_t color)//20cc10
+void DrawText_2BC10(const char* textbuffer, int16_t posx, int16_t posy, uint8_t color, uint8_t scale)//20cc10
 {
-	sub_6F940_sub_draw_text(textbuffer, posx, posy, color);
+	sub_6F940_sub_draw_text(textbuffer, posx, posy, color, scale);
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)//shifted graphics
 	{
 		uint8_t* temp_screen_buffer = pdwScreenBuffer_351628;
 		pdwScreenBuffer_351628 = x_DWORD_E9C3C;
-		sub_6F940_sub_draw_text(textbuffer, posx, posy, color);
+		sub_6F940_sub_draw_text(textbuffer, posx, posy, color, scale);
 		pdwScreenBuffer_351628 = temp_screen_buffer;
 	}	
 }
@@ -1971,7 +1934,7 @@ void sub_8CACD_draw_cursor2()//26dacd
 
 //----- (0008F8B0) --------------------------------------------------------
 //void sub_8F8B0_draw_bitmap320(__int16 a1, __int16 a2, Pathstruct a3)//2708B0
-void sub_8F8B0_draw_bitmap320(int16_t posx, int16_t posy, posistruct_t temppstr)//2708B0
+void sub_8F8B0_draw_bitmap320(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale)//2708B0
 {
 	//int v4; // [esp+4h] [ebp-4h]
 
@@ -1979,14 +1942,14 @@ void sub_8F8B0_draw_bitmap320(int16_t posx, int16_t posy, posistruct_t temppstr)
 	//v4 = 0;
 	//fix it
 
-	sub_8F935_bitmap_draw_final(temppstr.width_4, temppstr.height_5, posy, posx, temppstr.data, 0, 0);//270935 // a2 je 86
+	sub_8F935_bitmap_draw_final(temppstr.width_4, temppstr.height_5, posy, posx, temppstr.data, 0, 0, 1);//270935 // a2 je 86
 	//return v4;
 }
 // 180628: using guessed type int pdwScreenBuffer_351628;
 
 //----- (0008F8E8) --------------------------------------------------------
 //void sub_8F8E8_draw_bitmap640(__int16 a1, __int16 a2, uint8_t* a3)//2708e8
-void sub_8F8E8_draw_bitmap640(int16_t posx, int16_t posy, posistruct_t temppstr)//2708e8
+void sub_8F8E8_draw_bitmap640(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale)//2708e8
 {
 	//int v4; // [esp+4h] [ebp-4h]
 
@@ -2017,7 +1980,7 @@ void sub_8F8E8_draw_bitmap640(int16_t posx, int16_t posy, posistruct_t temppstr)
 	  //x_DWORD_180628b
 	  //xasearchd_2bac30.colorPalette_var28
 	  //sub_8F935_bitmap_draw_final(doublebyte_conv(xasearchd_2bac30.colorPalette_var28, a2, a1, a3, 0, 0);//270935
-	sub_8F935_bitmap_draw_final(temppstr.width_4, temppstr.height_5, posy, posx, temppstr.data, 0, 0);//270935
+	sub_8F935_bitmap_draw_final(temppstr.width_4, temppstr.height_5, posy, posx, temppstr.data, 0, 0, scale);//270935
   //return v4;
 }
 // 180628: using guessed type int pdwScreenBuffer_351628;
@@ -2118,7 +2081,7 @@ void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX
 // 180628: using guessed type int pdwScreenBuffer_351628;
 
 //----- (0006F940) --------------------------------------------------------
-void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t color)//250940
+void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t color, uint8_t scale)//250940
 {
 	uint8_t* v4; // esi
 	int v5; // ebx
@@ -2129,6 +2092,7 @@ void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t
 	//int result; // eax
 
 	int helpWidth = 640;
+
 	if (x_WORD_180660_VGA_type_resolution != 1)
 		if (!DefaultResolutions())
 			helpWidth = screenWidth_18062C;
@@ -2150,7 +2114,7 @@ void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t
 		{
 			if (v6 <= 0xAu)
 			{
-				LOWORD(v7) = sub_6FC30_get34_height();
+				LOWORD(v7) = GetLetterHeight_6FC30() * scale;
 				v5 = posx;
 				posy += v7;
 				goto LABEL_16;
@@ -2162,7 +2126,7 @@ void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t
 				if (v6 == 32)
 				{
 				LABEL_14:
-					LOWORD(v9) = sub_6FC10_letter_width();
+					LOWORD(v9) = GetLetterWidth_6FC10() * scale;
 					goto LABEL_15;
 				}
 			}
@@ -2171,7 +2135,7 @@ void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t
 			goto LABEL_14;
 		//v8 = 6 * (v4[0] + 1);
 		//similar as:sub_7C120_draw_bitmap_640(tempposx, tempposy, xy_DWORD_17DEC0_spritestr[temptextbuffer[0]]);
-		//posistruct_t tempposistruct;//fixed
+		//bitmap_pos_struct_t tempposistruct;//fixed
 		//tempposistruct.pointer = new uint8_t[1];//fixed
 		/*
 		19f990->59361a00 0407 70361a00 04 07 85361a00
@@ -2181,15 +2145,15 @@ void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t
 		tempposistruct.sizey = 0;*/
 		if (help_VGA_type_resolution != 8)//fixed
 		{
-			sub_72C40_draw_bitmap_640_setcolor(v5, posy, x_DWORD_EA3D4[v4[0] + 1], color);//fixed 2509d1
-			v9 = x_DWORD_EA3D4[v4[0] + 1].width_4;
+			sub_72C40_draw_bitmap_640_setcolor(v5, posy, x_DWORD_EA3D4[v4[0] + 1], color, scale);//fixed 2509d1
+			v9 = x_DWORD_EA3D4[v4[0] + 1].width_4 * scale;
 		}
 		else
 		{
-			sub_72C40_draw_bitmap_640_setcolor(v5, posy, posistruct7[v4[0] + 1], color);//fixed 2509d1
-			v9 = posistruct7[v4[0] + 1].width_4;
+			sub_72C40_draw_bitmap_640_setcolor(v5, posy, posistruct7[v4[0] + 1], color, scale);//fixed 2509d1
+			v9 = posistruct7[v4[0] + 1].width_4 * scale;
 		}
-		//sub_72C40_draw_bitmap_640_setcolor(v5, a3, *(new posistruct_t)/*(uint8_t*)(v8 + x_DWORD_EA3D4)*/, a4);
+		//sub_72C40_draw_bitmap_640_setcolor(v5, a3, *(new bitmap_pos_struct_t)/*(uint8_t*)(v8 + x_DWORD_EA3D4)*/, a4);
 
 	LABEL_15:
 		v5 += v9;
@@ -2203,7 +2167,7 @@ void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t
 // EA3D4: using guessed type int x_DWORD_EA3D4;
 
 //----- (00072C40) --------------------------------------------------------
-void sub_72C40_draw_bitmap_640_setcolor(int16_t posx, int16_t posy, posistruct_t a3, uint8_t color)//253c40
+void sub_72C40_draw_bitmap_640_setcolor(int16_t posx, int16_t posy, bitmap_pos_struct_t a3, uint8_t color, uint8_t scale)//253c40
 {
 	//uint16_t v4; // dx
 	//uint8_t* v5; // esi
@@ -2228,7 +2192,7 @@ void sub_72C40_draw_bitmap_640_setcolor(int16_t posx, int16_t posy, posistruct_t
 			/*doublebyte tempdblbyte;
 			tempdblbyte.byte1 = a3.sizex;
 			tempdblbyte.byte2 = a3.sizey;*/
-			sub_8F935_bitmap_draw_final(a3.width_4, a3.height_5, posy, posx, a3.data, color, 0);
+			sub_8F935_bitmap_draw_final(a3.width_4, a3.height_5, posy, posx, a3.data, color, 0, scale);
 		}
 		//result = v7;
 	}
@@ -2240,9 +2204,18 @@ void sub_72C40_draw_bitmap_640_setcolor(int16_t posx, int16_t posy, posistruct_t
 //----- (0008C635) --------------------------------------------------------
 void sub_8C635_draw_cursor()//26d635
 {
-	//int result; // eax
+	uint8_t scale = 1;
 	uint8_t* v1; // eax
 	uint8_t* v2; // edx
+
+
+	if (x_WORD_180660_VGA_type_resolution != 1)
+	{
+		if (!DefaultResolutions())
+		{
+			scale = gameUiScale;
+		}
+	}
 
 	x_DWORD_1806F8_mousex = x_WORD_E3760_mouse.x;
 	//x_DWORD_1806E8_mousex = x_WORD_E3760_mouse.x;
@@ -2265,23 +2238,49 @@ void sub_8C635_draw_cursor()//26d635
 	x_WORD_1806EE = x_DWORD_1806FC_mouse_invy;
 	x_DWORD_180714 = x_DWORD_180700;
 	x_DWORD_180718 = x_DWORD_1806F0;
-	x_DWORD_180708 = x_DWORD_180704_mouse_byte_index1 + pdwScreenBuffer_351628;
-	x_DWORD_18070C = x_DWORD_180730_cursor_data;
+	ptrScreenPos_180708 = x_DWORD_180704_mouse_byte_index1 + pdwScreenBuffer_351628;
+	ptrCursorBitmapPos_18070C = x_DWORD_180730_cursor_data;
+
+	int lineStartBytes = 0;
+	int countBytes = 0;
+	int scaledLinesDrawn = 0;
+
 	for (x_WORD_180738 = 0; x_WORD_180738 < x_DWORD_1806FC_mouse_invy; x_WORD_180738++)
 	{
 		for (x_DWORD_18073A = 0; x_DWORD_18073A < x_DWORD_1806FC_mouse_invx; x_DWORD_18073A++)
 		{
-			v1 = x_DWORD_180714++;//adresa1
-			v1[0] = x_DWORD_180708[0];//uloz na adresu
-			v2 = x_DWORD_180718++;//adresa2
-			v2[0] = x_DWORD_180708[0];//uloz na adresu
-			if (x_DWORD_18070C[0] != 0xfe)
-				x_DWORD_180708[0] = x_DWORD_18070C[0];
-			x_DWORD_180708++;//351708 - finalni obraz
-			x_DWORD_18070C++;//35170c - kurzor
+			v1 = x_DWORD_180714++;//address1
+			v1[0] = ptrScreenPos_180708[0];//save to address
+			v2 = x_DWORD_180718++;//address2
+			v2[0] = ptrScreenPos_180708[0];//save to address
+
+			for (int s = 0; s < scale; s++)
+			{
+				if (ptrCursorBitmapPos_18070C[0] != 0xfe)
+					ptrScreenPos_180708[0] = ptrCursorBitmapPos_18070C[0];
+
+				ptrScreenPos_180708++;
+			}
+
+			ptrCursorBitmapPos_18070C++;
+			countBytes++;
 		}
-		x_DWORD_180708 += screenWidth_18062C - x_DWORD_1806FC_mouse_invx;
-		x_DWORD_18070C += x_DWORD_180734 - x_DWORD_1806FC_mouse_invx;
+		//move row
+		if (scaledLinesDrawn < scale - 1)
+		{
+			int lineLengthBytes = countBytes - lineStartBytes;
+			countBytes -= lineLengthBytes;
+			scaledLinesDrawn++;
+			ptrCursorBitmapPos_18070C -= lineLengthBytes;
+			x_WORD_180738--;
+		}
+		else
+		{
+			scaledLinesDrawn = 0;
+			lineStartBytes = countBytes;
+			ptrCursorBitmapPos_18070C += x_DWORD_180734 - x_DWORD_1806FC_mouse_invx;
+		}
+		ptrScreenPos_180708 += screenWidth_18062C - (x_DWORD_1806FC_mouse_invx * scale);
 	}
 }
 // E3760: using guessed type int x_DWORD_E3760;
@@ -2298,7 +2297,7 @@ void sub_8C635_draw_cursor()//26d635
 // 180700: using guessed type int x_DWORD_180700;
 // 180704: using guessed type int x_DWORD_180704_mouse_byte_index1;
 // 180708: using guessed type int x_DWORD_180708;
-// 18070C: using guessed type int x_DWORD_18070C;
+// 18070C: using guessed type int ptrCursorBitmapPos_18070C;
 // 180714: using guessed type int x_DWORD_180714;
 // 180718: using guessed type int x_DWORD_180718;
 // 18072C: using guessed type __int16 x_WORD_18072C_cursor_sizex;
@@ -2308,44 +2307,28 @@ void sub_8C635_draw_cursor()//26d635
 // 18073A: using guessed type int x_DWORD_18073A;
 
 //----- (0008F935) --------------------------------------------------------
-void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tiley, int tilex, uint8_t* texture, uint8_t setbyte, char a6)//270935
+void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, int tilex, uint8_t* texture, uint8_t setbyte, char a6, uint8_t scale)//270935
 {
+	uint8_t* ptrScreenBuffer;
+	uint8_t* ptrScreenBufferLineStart;
 	uint8_t* pixel_buffer_index; // edi
-	x_BYTE* v7; // edi
-	int v8; // ecx
-	signed int v9; // eax
-	x_BYTE* v10; // ebx
-	char v11; // al
+	int32_t startOffsetX;
+	int32_t posWidth;
+	uint8_t pixel; // al
+
 	char v12; // al
 	char v13; // al
-	x_BYTE* v14; // edi
 	int v15; // ecx
-	signed int v16; // eax
-	x_BYTE* v17; // ebx
 	char v18; // al
 	char v19; // al
 	char v20; // al
-	uint8_t* v21_buffer_temp_index1; // edi
-	//unsigned int v22; // ecx
-	//signed int v23; // eax
-	//uint8_t* v24_buffer_temp_index2; // ebx
-	//uint8_t* v25_buffer_temp_index3; // edi
-	//char v26; // al
-	//uint8_t* v27; // esi
-	char* v28; // edi
 	unsigned int v29; // ecx
-	signed int v30; // eax
-	char* v31; // ebx
-	char* v32; // edi
+	uint8_t* v32; // edi
 	char v33; // al
 	char* v34; // esi
 	int v35; // ebp
-	x_BYTE* v36; // edi
 	int v37; // ecx
-	x_BYTE* v38; // ebx
-	unsigned __int8 v39; // al
 	int v40; // eax
-	x_BYTE* v41; // edi
 	int v42; // ecx
 	unsigned __int8 i; // dl
 	char v44; // al
@@ -2353,31 +2336,18 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 	unsigned __int8 v46; // of
 	char v47; // dl
 	unsigned __int8 v48; // al
-	char* v49; // edi
 	char v50; // al
 	char v51; // dl
 	char v52; // al
 	char v53; // dl
 	unsigned int v54; // ebx
 	const void* v55; // esi
-	//char *v56; // edi
-	//unsigned int v57; // ecx
-	//signed int v58; // eax
-	//char *v59; // ebx
-	//char *v60; // edi
-	char* v61; // edi
 	unsigned int v62; // ecx
-	signed int v63; // eax
-	char* v64; // ebx
-	char* v65; // edi
+	uint8_t* v65; // edi
 	char v66; // al
 	char* v67; // esi
-	//uint8_t* v68; // edi
-	//int v69; // ebx
 	uint8_t v69l;
 	uint8_t v69h;
-	int8_t* v70; // edi
-	int8_t* v71; // edx
 	int8_t v72l; // ecx
 	char v73; // al
 	char v74; // al
@@ -2386,42 +2356,17 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 	char v77; // al
 	char v78; // al
 	int v79; // ebx
-	x_BYTE* v80; // edi
-	int v81; // ecx
-	signed int v82; // eax
-	x_BYTE* v83; // ebx
-	char v84; // al
 	int v85; // ebx
 	x_BYTE* v86; // edi
 	int v87; // ecx
-	signed int v88; // eax
-	x_BYTE* v89; // ebx
-	char v90; // al
-	x_BYTE* v91; // edi
 	int v92; // ecx
 	int v93; // ebx
-	signed int v94; // eax
-	x_BYTE* v95; // ebx
 	char v96; // al
-	//unsigned int v97; // ebx
-	//x_BYTE *v98; // edi
-	//x_BYTE *v99; // edx
-	/*int v100; // ecx
-	char v101; // al
-	char v102; // al
-	char v103; // al
-	char v104; // al*/
-	x_BYTE* v105; // edi
 	int v106; // ecx
 	int v107; // ebx
-	x_BYTE* v108; // ebx
-	signed int v109; // eax
 	char v110; // al
-	x_BYTE* v111; // edi
 	int v112; // ecx
 	int v113; // ebx
-	x_BYTE* v114; // ebx
-	signed int v115; // eax
 	char v116; // al
 	unsigned int v117; // ebx
 	x_BYTE* v118; // edi
@@ -2433,7 +2378,6 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 	char v124; // al
 	int v125; // eax
 	int v126; // edi
-	int v127; // eax
 	int v128; // eax
 	int v129; // eax
 	int v130; // eax
@@ -2442,46 +2386,19 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 	unsigned __int8 v133; // [esp+2h] [ebp-6h]
 	unsigned __int8 v134; // [esp+2h] [ebp-6h]
 	unsigned __int8 v135; // [esp+2h] [ebp-6h]
-	//unsigned __int8 v136; // [esp+2h] [ebp-6h]
 	unsigned __int8 v137; // [esp+2h] [ebp-6h]
 	unsigned __int8 v138; // [esp+2h] [ebp-6h]
 	unsigned __int8 v139; // [esp+2h] [ebp-6h]
 	char v140; // [esp+3h] [ebp-5h]
 	char v141; // [esp+3h] [ebp-5h]
-	x_BYTE* v142; // [esp+4h] [ebp-4h]
-	x_BYTE* v143; // [esp+4h] [ebp-4h]
-	//debug
-	/*loadfromsnapshot((char*)"0160-00270935-2",texture,0x47be3a,0x400);
 
-	//a1 = 0x1513;
-	x_DWORD_180650_positiony = 0;//351650
-	screenWidth_18062C = 0x40;//35162c
-	x_DWORD_18063C_sprite_sizex = 0;//35163c
-	//pdwScreenBuffer_351628=82c714
-	x_WORD_180660_VGA_type_resolution = 0x30008;
-	tiley = 0;
-	a1.byte1 = 0x13;
-
-	a1.byte2 = 0x15;
-	//a1.byte2 = 0;
-
-	tilex = 0;
-	x_DWORD_180644_map_resolution2_y = 0x40;
-
-	//a4 = 03;*/
-	//debug
-
-	//x_DWORD_180650_positiony - 0 35162c
-	//screenWidth_18062C - 40 35162c
-	//47ae48+1
-	//0x47be3a - 03191919
-	if (!(a1byte2))//453558
+	if (!(height))//453558
 		return;
 	pixel_buffer_index = pdwScreenBuffer_351628 + x_DWORD_18063C_sprite_sizex + screenWidth_18062C * x_DWORD_180650_positiony;
 	if (x_WORD_180660_VGA_type_resolution & 1)//if 320x200 is resolved, the value is halved
 	{
-		a1byte1 /= 2;
-		a1byte2 /= 2;
+		width /= 2;
+		height /= 2;
 		tilex /= 2;
 		tiley /= 2;
 	}
@@ -2489,20 +2406,20 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 	{
 		if (x_WORD_E36D4 & 2)
 		{
-			v128 = tiley + a1byte2;
+			v128 = tiley + height;
 			v46 = __OFADD__(1, v128);
 			v129 = v128 + 1;
 			if (((v129 < 0) ^ v46) | (v129 == 0))
 				return;
 			tiley = -1;
-			a1byte2 = v129;
+			height = v129;
 		}
 		else
 		{
-			v130 = tiley + a1byte2;
-			if (((tiley + a1byte2 < 0) ^ __OFADD__(tiley, a1byte2)) | (tiley + a1byte2 == 0))
+			v130 = tiley + height;
+			if (((tiley + height < 0) ^ __OFADD__(tiley, height)) | (tiley + height == 0))
 				return;
-			a1byte2 += tiley;
+			height += tiley;
 			v130 = 0;
 			do
 			{
@@ -2518,25 +2435,25 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 			} while (tiley);
 		}
 	}
-	else if (tiley + a1byte2 >= x_DWORD_180644_map_resolution2_y)
+	else if (tiley + height >= x_DWORD_180644_map_resolution2_y)
 	{
 		if (x_WORD_E36D4 & 2)
 		{
 			if (tiley + 1 >= x_DWORD_180644_map_resolution2_y)
 				return;
-			v125 = a1byte2 + tiley + 1 - x_DWORD_180644_map_resolution2_y;
-			a1byte2 = x_DWORD_180644_map_resolution2_y - (tiley + 1);
+			v125 = height + tiley + 1 - x_DWORD_180644_map_resolution2_y;
+			height = x_DWORD_180644_map_resolution2_y - (tiley + 1);
 			v126 = v125;
-			v127 = 0;
+			startOffsetX = 0;
 			do
 			{
 				while (1)
 				{
-					v127 = *texture++;
-					if (!v127)
+					startOffsetX = *texture++;
+					if (!startOffsetX)
 						break;
-					if ((v127 & 0x80u) == 0)
-						texture += v127;
+					if ((startOffsetX & 0x80u) == 0)
+						texture += startOffsetX;
 				}
 				--v126;
 			} while (v126);
@@ -2546,12 +2463,12 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 		{
 			if (x_DWORD_180644_map_resolution2_y <= tiley)
 				return;
-			a1byte2 = x_DWORD_180644_map_resolution2_y - tiley;
+			height = x_DWORD_180644_map_resolution2_y - tiley;
 		}
 	}
 	if (tilex >= 0)
 	{
-		if (tilex + a1byte1 >= x_DWORD_180648_map_resolution2_x)
+		if (tilex + width >= x_DWORD_180648_map_resolution2_x)
 		{
 			if (x_WORD_E36D4)
 			{
@@ -2561,145 +2478,107 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 					{
 						if (x_DWORD_180634_screen_width - tilex >= 0)
 						{
-							v79 = a1byte1 + tilex;
-							v80 = (x_BYTE*)(screenWidth_18062C * (a1byte2 + tiley) + v79 + pixel_buffer_index);
-							v81 = 0;
+							v79 = width + tilex;
+							ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + v79 + pixel_buffer_index);
+							posWidth = 0;
 							v79 = x_DWORD_180634_screen_width - v79 - 2;
-							a1byte1 = v79;
+							width = v79;
 							v133 = v79;
-							v82 = -1;
-							v83 = v80;
+							startOffsetX = -1;
+							ptrScreenBufferLineStart = ptrScreenBuffer;
 							do
 							{
 								while (1)
 								{
 									while (1)
 									{
-										v82 = *texture++;
-										if ((v82 & 0x80u) == 0)
+										startOffsetX = *texture++;
+										if ((startOffsetX & 0x80u) == 0)
 											break;
-										v80 += v82;
-										a1byte1 = a1byte1 - v82;
+										ptrScreenBuffer += startOffsetX;
+										width = width - startOffsetX;
 									}
-									if (!v82)
+									if (!startOffsetX)
 										break;
-									v81 = v82;
+									posWidth = startOffsetX;
 									do
 									{
-										v84 = *texture++;
-										a1byte1 = a1byte1 + 1;
-										if ((a1byte1 & 0x80u) == 0)
-											*v80 = v84;
-										--v80;
-										--v81;
-									} while (v81);
+										pixel = *texture++;
+										width = width + 1;
+										if ((width & 0x80u) == 0)
+											*ptrScreenBuffer = pixel;
+										--ptrScreenBuffer;
+										--posWidth;
+									} while (posWidth);
 								}
-								v83 -= screenWidth_18062C;
-								v80 = v83;
-								a1byte1 = __PAIR__(a1byte2, v133) - 256;
-							} while (a1byte2);
+								ptrScreenBufferLineStart -= screenWidth_18062C;
+								ptrScreenBuffer = ptrScreenBufferLineStart;
+								width = __PAIR__(height, v133) - 256;
+							} while (height);
 						}
 					}
 					else if (x_DWORD_180634_screen_width - tilex >= 0)
 					{
-						v85 = a1byte1 + tilex;
+						v85 = width + tilex;
 						v86 = (x_BYTE*)(screenWidth_18062C * tiley + v85 + pixel_buffer_index);
 						v87 = 0;
 						v85 = x_DWORD_180634_screen_width - v85 - 2;
-						a1byte1 = v85;
+						width = v85;
 						v134 = v85;
-						v88 = -1;
-						v89 = v86;
-						do
-						{
-							while (1)
-							{
-								while (1)
-								{
-									v88 = *texture++;
-									if ((v88 & 0x80u) == 0)
-										break;
-									v86 += v88;
-									a1byte1 = a1byte1 - v88;
-								}
-								if (!v88)
-									break;
-								v87 = v88;
-								do
-								{
-									v90 = *texture++;
-									a1byte1 = a1byte1 + 1;
-									if ((a1byte1 & 0x80u) == 0)
-										*v86 = v90;
-									--v86;
-									--v87;
-								} while (v87);
-							}
-							v89 += screenWidth_18062C;
-							v86 = v89;
-							a1byte1 = __PAIR__(a1byte2, v134) - 256;
-						} while (a1byte2);
+						GameBitmap::DrawBitmap(texture, pixel_buffer_index, screenWidth_18062C, v85, tiley, width, height, v134);
 					}
 				}
 				else if (x_WORD_E36D4 & 2)
 				{
-					v91 = (x_BYTE*)(screenWidth_18062C * (a1byte2 + tiley) + tilex + pixel_buffer_index);
+					ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + tilex + pixel_buffer_index);
 					v92 = 0;
 					v93 = x_DWORD_180634_screen_width - tilex;
 					if (v93 >= 0)
 					{
-						a1byte1 = v93;
+						width = v93;
 						v135 = v93;
-						v94 = -1;
-						v95 = v91;
+						startOffsetX = -1;
+						ptrScreenBufferLineStart = ptrScreenBuffer;
 						do
 						{
 							while (1)
 							{
 								while (1)
 								{
-									v94 = *texture++;
-									if ((v94 & 0x80u) == 0)
+									startOffsetX = *texture++;
+									if ((startOffsetX & 0x80u) == 0)
 										break;
-									v91 -= v94;
-									a1byte1 = v94 + a1byte1;
+									ptrScreenBuffer -= startOffsetX;
+									width = startOffsetX + width;
 								}
-								if (!v94)
+								if (!startOffsetX)
 									break;
-								v92 = v94;
+								v92 = startOffsetX;
 								do
 								{
 									v96 = *texture++;
-									a1byte1 = a1byte1 - 1;
-									if ((a1byte1 & 0x80u) == 0)
-										*v91++ = v96;
+									width = width - 1;
+									if ((width & 0x80u) == 0)
+										*ptrScreenBuffer++ = v96;
 									--v92;
 								} while (v92);
 							}
-							v95 -= screenWidth_18062C;
-							v91 = v95;
-							a1byte1 = __PAIR__(a1byte2, v135) - 256;
-						} while (a1byte1);
+							ptrScreenBufferLineStart -= screenWidth_18062C;
+							ptrScreenBuffer = ptrScreenBufferLineStart;
+							width = __PAIR__(height, v135) - 256;
+						} while (width);
 					}
 				}
 			}
 			else
 			{
-				/*for (int ii = 0;ii < a1byte1;ii++)//debug
-					for (int jj = 0;jj < a1byte2;jj++)
-						pixel_buffer_index[screenWidth_18062C * (tiley + ii) + (tilex + jj)] = 128;
-				*/
-				//edi - 3c28b7
-
-				  //v68 = tilex + pixel_buffer_index;
-				  //v69 = x_DWORD_180634_screen_width - tilex;
 				if (x_DWORD_180634_screen_width - tilex >= 0)
 				{
-					v70 = (int8_t*)(screenWidth_18062C * tiley + tilex + pixel_buffer_index);
+					ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
 					v69l = x_DWORD_180634_screen_width - tilex;
-					v69h = a1byte2;//ebx
+					v69h = height;//ebx
 					v132 = v69l;//ebp-6
-					v71 = v70;//edx edi
+					ptrScreenBufferLineStart = ptrScreenBuffer;//edx edi
 					v72l = 0;//ecx
 					do
 					{
@@ -2716,7 +2595,7 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 								v69l = v73 + v69l;//fix
 								if (!((v76 ^ v46) | v75))
 								{
-									v70 -= v73;
+									ptrScreenBuffer -= v73;
 									v77 = *texture++;
 									v72l = v77;
 									do
@@ -2724,7 +2603,7 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 										v78 = *texture++;
 										v69l--;
 										if ((v69l & 0x80u) == 0)//fix
-											*v70++ = v78;
+											*ptrScreenBuffer++ = v78;
 										v72l--;
 									} while (v72l);
 								}
@@ -2737,12 +2616,12 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 								v74 = *texture++;
 								v69l--;
 								if ((v69l & 0x80u) == 0)//fix
-									*v70++ = v74;
+									*ptrScreenBuffer++ = v74;
 								v72l--;
 							} while (v72l);
 						}
-						v71 += screenWidth_18062C;
-						v70 = v71;
+						ptrScreenBufferLineStart += screenWidth_18062C;
+						ptrScreenBuffer = ptrScreenBufferLineStart;
 
 						v69l = /*(v69l&0xff00)+*/v132;//fix
 						v69h--;
@@ -2754,164 +2633,178 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 		{
 			if (x_WORD_E36D4 & 2)
 			{
-				v7 = (x_BYTE*)(screenWidth_18062C * (a1byte2 + tiley) + a1byte1 + tilex + pixel_buffer_index);
-				v8 = 0;
-				v9 = -1;
-				v10 = v7;
+				ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + width + tilex + pixel_buffer_index);
+				posWidth = 0;
+				startOffsetX = -1;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
 				do
 				{
 					while (1)
 					{
 						while (1)
 						{
-							v9 = *texture++;
-							if ((v9 & 0x80u) == 0)
+							startOffsetX = *texture++;
+
+							//Is width byte
+							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
 								break;
-							v7 += v9;
+							}
+							ptrScreenBuffer += startOffsetX;
 							v12 = *texture++;
-							v8 = v12;
+							posWidth = v12;
 							do
 							{
 								v13 = *texture++;
-								*v7-- = v13;
-								--v8;
-							} while (v8);
+								*ptrScreenBuffer-- = v13;
+								--posWidth;
+							} while (posWidth);
 						}
-						if (!v9)
+						if (!startOffsetX)
 							break;
-						v8 = v9;
+						posWidth = startOffsetX;
 						do
 						{
-							v11 = *texture++;
-							*v7-- = v11;
-							--v8;
-						} while (v8);
+							pixel = *texture++;
+							*ptrScreenBuffer-- = pixel;
+							--posWidth;
+						} while (posWidth);
 					}
-					v10 -= screenWidth_18062C;
-					v7 = v10;
-					--a1byte2;
-				} while (a1byte2);
+					ptrScreenBufferLineStart -= screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--height;
+				} while (height);
 			}
 			else
 			{
-				v14 = (x_BYTE*)(screenWidth_18062C * tiley + a1byte1 + tilex + pixel_buffer_index);
+				ptrScreenBuffer = (screenWidth_18062C * tiley + width + tilex + pixel_buffer_index);
 				v15 = 0;
-				v16 = -1;
-				v17 = v14;
+				startOffsetX = -1;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
 				do
 				{
 					while (1)
 					{
 						while (1)
 						{
-							v16 = *texture++;
-							if ((v16 & 0x80u) == 0)
+							startOffsetX = *texture++;
+							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
 								break;
-							v14 += v16;
+							}
+							ptrScreenBuffer += startOffsetX;
 							v19 = *texture++;
 							v15 = v19;
 							do
 							{
 								v20 = *texture++;
-								*v14-- = v20;
+								*ptrScreenBuffer-- = v20;
 								--v15;
 							} while (v15);
 						}
-						if (!v16)
+						if (!startOffsetX)
 							break;
-						v15 = v16;
+						v15 = startOffsetX;
 						do
 						{
 							v18 = *texture++;
-							*v14-- = v18;
+							*ptrScreenBuffer-- = v18;
 							--v15;
 						} while (v15);
 					}
-					v17 += screenWidth_18062C;
-					v14 = v17;
-					--a1byte2;
-				} while (a1byte2);
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--height;
+				} while (height);
 			}
 		}
 		else if (x_WORD_E36D4)
 		{
 			if (x_WORD_E36D4 & 2)
 			{
-				v28 = (char*)(screenWidth_18062C * (a1byte2 + tiley) + tilex + pixel_buffer_index);
+				ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + tilex + pixel_buffer_index);
 				v29 = 0;
-				v30 = -1;
-				v31 = v28;
+				startOffsetX = -1;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
 				do
 				{
 					while (1)
 					{
 						while (1)
 						{
-							v30 = *texture++;
-							if ((v30 & 0x80u) == 0)
+							startOffsetX = *texture++;
+							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
 								break;
-							v32 = &v28[-v30];
+							}
+							v32 = &ptrScreenBuffer[-startOffsetX];
 							v33 = *texture;
 							v34 = (char*)(texture + 1);
 							v29 = v33;
 							qmemcpy(v32, v34, v29);
 							texture = (uint8_t*)&v34[v29];
-							v28 = &v32[v29];
+							ptrScreenBuffer = &v32[v29];
 							v29 = 0;
 						}
-						if (!v30)
+						if (!startOffsetX)
 							break;
-						v29 = v30;
-						qmemcpy(v28, texture, v29);
+						v29 = startOffsetX;
+						qmemcpy(ptrScreenBuffer, texture, v29);
 						texture += v29;
-						v28 += v29;
+						ptrScreenBuffer += v29;
 						v29 = 0;
 					}
-					v31 -= screenWidth_18062C;
-					v28 = v31;
-					--a1byte2;
-				} while (a1byte2);
+					ptrScreenBufferLineStart -= screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--height;
+				} while (height);
 			}
 			else if (x_WORD_E36D4 & 4)
 			{
 				v35 = x_DWORD_E3890;
-				v36 = (x_BYTE*)(screenWidth_18062C * tiley + tilex + pixel_buffer_index);
+				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
 				v37 = 0;
-				v38 = v36;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
 				do
 				{
 					while (1)
 					{
 						while (1)
 						{
-							v39 = *texture++;
-							if ((v39 & 0x80u) == 0)
+							startOffsetX = *texture++;
+							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
 								break;
-							v36 -= (char)v39;
+							}
+							ptrScreenBuffer -= (char)startOffsetX;
 						}
-						if (!v39)
+						if (!startOffsetX)
 							break;
-						v37 = v39;
-						v40 = v39;
+						v37 = startOffsetX;
+						v40 = startOffsetX;
 						do
 						{
 							v40 = *texture++;
-							v40 = *v36;
-							*v36++ = *(x_BYTE*)(v40 + v35);
+							v40 = *ptrScreenBuffer;
+							*ptrScreenBuffer++ = *(x_BYTE*)(v40 + v35);
 							--v37;
 						} while (v37);
 					}
-					v38 += screenWidth_18062C;
-					v36 = v38;
-					--a1byte2;
-				} while (a1byte2);
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--height;
+				} while (height);
 			}
 			else if (x_WORD_E36D4 & 8)
 			{
-				v41 = (x_BYTE*)(screenWidth_18062C * tiley + tilex + pixel_buffer_index);
+				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
 				v42 = 0;
-				v142 = v41;
-				v140 = a1byte2;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
+				v140 = height;
 				for (i = setbyte; ; i = setbyte)
 				{
 					while (1)
@@ -2928,7 +2821,7 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 								if (((i & 0x80u) != 0) ^ v46)
 								{
 									i = setbyte;
-									++v41;
+									++ptrScreenBuffer;
 								}
 								--v42;
 							} while (v42);
@@ -2943,7 +2836,7 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 							if (((i & 0x80u) != 0) ^ v46)
 							{
 								i = setbyte;
-								*v41++ = v45;
+								*ptrScreenBuffer++ = v45;
 							}
 							--v42;
 						} while (v42);
@@ -2963,15 +2856,15 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 							texture += v48;
 						}
 					}
-					v142 += screenWidth_18062C;
-					v41 = v142;
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
 				}
 			}
 			else if (x_WORD_E36D4 & 0x20)
 			{
-				v49 = (char*)(screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-				v143 = v49;
-				v141 = a1byte2;
+				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
+				ptrScreenBufferLineStart = ptrScreenBuffer;
+				v141 = height;
 				do
 				{
 					while (1)
@@ -2981,7 +2874,7 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 							v50 = *texture++;
 							if (v50 >= 0)
 								break;
-							v49 += (setbyte * -v50);
+							ptrScreenBuffer += (setbyte * -v50);
 						}
 						if (!v50)
 							break;
@@ -2989,8 +2882,8 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 						do
 						{
 							v52 = *texture++;
-							memset(v49, v52, setbyte);
-							v49 += setbyte;
+							memset(ptrScreenBuffer, v52, setbyte);
+							ptrScreenBuffer += setbyte;
 							v46 = __OFSUB__(v51--, 1);
 						} while (!(((v51 < 0) ^ v46) | (v51 == 0)));
 					}
@@ -2998,400 +2891,81 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 					if (a6 > 1)
 					{
 						v131 = (char*)texture;
-						v54 = v49 - v143;
+						v54 = ptrScreenBuffer - ptrScreenBufferLineStart;
 						do
 						{
-							v55 = v143;
-							v143 += screenWidth_18062C;
-							qmemcpy(v143, (void*)v55, v54);
+							v55 = ptrScreenBufferLineStart;
+							ptrScreenBufferLineStart += screenWidth_18062C;
+							qmemcpy(ptrScreenBufferLineStart, (void*)v55, v54);
 							v46 = __OFSUB__(v53--, 1);
 						} while (!(((v53 < 0) ^ v46) | (v53 == 0)));
 						texture = (uint8_t*)v131;
 					}
-					v143 += screenWidth_18062C;
-					v49 = v143;
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
 					--v141;
 				} while (v141);
 			}
 			else if (x_WORD_E36D4 & 0x40)
 			{
-				//v56 = (char *)(dword_18062C * a2 + a3 + v6);
-				v21_buffer_temp_index1 = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-				int8_t v57_loc = 0;
-				int8_t v58_loc = -1;
-				int8_t* v59_loc = (int8_t*)v21_buffer_temp_index1;
-				int8_t* v60loc = 0;
-				do
-				{
-					while (1)
-					{
-						while (1)
-						{
-							v58_loc = texture[0];
-							texture++;
-							if ((v58_loc & 0x80u) == 0)
-								break;
-							v60loc = (int8_t*)&v21_buffer_temp_index1[-v58_loc];
-							v57_loc = texture[0];
-							texture += v57_loc + 1;
-							memset(v60loc, setbyte, v57_loc);
-							v21_buffer_temp_index1 = (uint8_t*)&v60loc[v57_loc];
-							v57_loc = 0;
-						}
-						if (!v58_loc)
-							break;
-						v57_loc = v58_loc;
-						texture += v57_loc;
-						memset(v21_buffer_temp_index1, setbyte, v57_loc);
-						v21_buffer_temp_index1 += v57_loc;
-						v57_loc = 0;
-					}
-					v59_loc += screenWidth_18062C;
-					v21_buffer_temp_index1 = (uint8_t*)v59_loc;
-					--a1byte2;
-				} while (a1byte2);
-				/*
-					v21_buffer_temp_index1 = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-					uint32_t inindex = 0;
-					uint32_t outindex = 0;
-					int8_t shift = 0;
-					int8_t end = 0;
-					int8_t count = texture[inindex++];
-					memset(&v21_buffer_temp_index1[outindex], setbyte, count);
-					//qmemcpy(&v21_buffer_temp_index1[outindex], &texture[inindex], count);
-					for (uint32_t y = 1;count != 0x7f;y++)
-					{
-						memset(&v21_buffer_temp_index1[outindex + shift], setbyte, count);
-						//qmemcpy(&v21_buffer_temp_index1[outindex + shift], &texture[inindex], count);
-						inindex += count;
-						end = texture[inindex++];
-						if (end == 0)
-						{
-							count = texture[inindex++];
-							if (count < 0) {
-								shift = -count;
-								count = texture[inindex++];
-							}
-							outindex += screenWidth_18062C;
-						}
-						else {
-							shift += count;
-							count = end;
-							if (count < 0) {
-								shift -= count;
-								count = texture[inindex++];
-							}
-						}
-					}
-					*/
-					/*v56 = (char *)(screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-					v57 = 0;
-					v58 = -1;
-					v59 = v56;
-					do
-					{
-					  while ( 1 )
-					  {
-						while ( 1 )
-						{
-						  v58 = *texture++;
-						  if ( (v58 & 0x80u) == 0 )
-							break;
-						  v60 = &v56[-v58];
-						  v57 = *texture;
-						  texture += v57 + 1;
-						  memset(v60, a5, v57);
-						  v56 = &v60[v57];
-						  v57 = 0;
-						}
-						if ( !v58 )
-						  break;
-						v57 = v58;
-						texture += v57;
-						memset(v56, a5, v57);
-						v56 += v57;
-						v57 = 0;
-					  }
-					  v59 += screenWidth_18062C;
-					  v56 = v59;
-					  --a1.byte2;
-					}
-					while ( a1.byte2 );*/
+				GameBitmap::DrawColourizedBitmap(texture, setbyte, pixel_buffer_index, screenWidth_18062C, tilex, tiley, height, scale);
 			}
 			else
 			{
-				v61 = (char*)(screenWidth_18062C * tiley + tilex + pixel_buffer_index);
+				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
 				v62 = 0;
-				v63 = -1;
-				v64 = v61;
+				startOffsetX = -1;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
 				do
 				{
 					while (1)
 					{
 						while (1)
 						{
-							v63 = *texture++;
-							if ((v63 & 0x80u) == 0)
+							startOffsetX = *texture++;
+							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
 								break;
-							v65 = &v61[-v63];
+							}
+							v65 = &ptrScreenBuffer[-startOffsetX];
 							v66 = *texture;
 							v67 = (char*)(texture + 1);
 							v62 = v66;
 							qmemcpy(v65, v67, v62);
 							texture = (uint8_t*)&v67[v62];
-							v61 = &v65[v62];
+							ptrScreenBuffer = &v65[v62];
 							v62 = 0;
 						}
-						if (!v63)
+						if (!startOffsetX)
 							break;
-						v62 = v63;
-						qmemcpy(v61, texture, v62);
+						v62 = startOffsetX;
+						qmemcpy(ptrScreenBuffer, texture, v62);
 						texture += v62;
-						v61 += v62;
+						ptrScreenBuffer += v62;
 						v62 = 0;
 					}
-					v64 += screenWidth_18062C;
-					v61 = v64;
-					--a1byte2;
-				} while (a1byte2);
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--height;
+				} while (height);
 			}
 		}
 		else
 		{
-			v21_buffer_temp_index1 = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-
-			//v21 = (char *)(dword_18062C * a2 + a3 + v6);
-			int8_t size = 0;
-			int8_t v23_loc = -1;
-			int8_t* v25_loc = 0;
-			int8_t v26_loc = 0;
-			int8_t* v27_loc = 0;
-			int8_t* v24_loc = (int8_t*)v21_buffer_temp_index1;
-			do
-			{
-				while (1)
-				{
-					while (1)
-					{
-						v23_loc = texture[0];
-						texture++;
-						if ((v23_loc & 0x80u) == 0)
-							break;
-						v25_loc = (int8_t*)&v21_buffer_temp_index1[-v23_loc];
-						v26_loc = texture[0];
-						v27_loc = (int8_t*)(texture + 1);
-						size = v26_loc;
-						if (size < 1)
-							break;
-						qmemcpy(v25_loc, v27_loc, size);
-						texture = (uint8_t*)&v27_loc[size];
-						v21_buffer_temp_index1 = (uint8_t*)&v25_loc[size];
-						size = 0;
-					}
-					if (v23_loc < 1)
-						break;
-					size = v23_loc;
-					qmemcpy(v21_buffer_temp_index1, texture, size);
-					texture += size;
-					v21_buffer_temp_index1 += size;
-					size = 0;
-				}
-				v24_loc += screenWidth_18062C;
-				v21_buffer_temp_index1 = (uint8_t*)v24_loc;
-				a1byte2--;
-			} while (a1byte2);
-			/*
-
-			  v21_buffer_temp_index1 = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-
-			  uint32_t inindex = 0;
-			  uint32_t outindex = 0;
-			  int8_t shift = 0;
-			  int8_t end = 0;
-			  int8_t count = 0;
-			  end = texture[inindex++];
-			  if (end == 0)
-			  {
-				  count = texture[inindex++];
-				  outindex ++;
-				  while (count == 0) {
-					  outindex += screenWidth_18062C+1;
-					  count = texture[inindex++];
-				  }
-				  if (count < 0) {
-					  shift = -count;
-					  count = texture[inindex++];
-				  }
-				  outindex += screenWidth_18062C;
-			  }
-			  else {
-				  shift += count;
-				  count = end;
-				  if (count < 0) {
-					  shift -= count;
-					  count = texture[inindex++];
-				  }
-			  }
-			  qmemcpy(&v21_buffer_temp_index1[outindex], &texture[inindex], count);
-			  for(uint32_t y=1;count!=0x7f;y++)
-				  {
-					qmemcpy(&v21_buffer_temp_index1[outindex + shift], &texture[inindex], count);
-					inindex += count;
-					end = texture[inindex++];
-					if (end == 0)
-					{
-						count = texture[inindex++];
-						while (count == 0) {
-							outindex += screenWidth_18062C+1;
-							count = texture[inindex++];
-						}
-						if (count < 0) {
-							shift = -count;
-							count = texture[inindex++];
-						}
-						outindex += screenWidth_18062C;
-					}
-					else {
-						shift += count;
-						count = end;
-						if (count < 0) {
-							shift -= count;
-							count = texture[inindex++];
-						}
-					}
-				  }
-				  */
-				  //v24_buffer_temp_index2 = v21_buffer_temp_index1;
-				  /*
-				  do
-				  {
-					while ( 1 )
-					{
-					  uint32_t index_tab=0;
-					  uint32_t index_tab_v23 = 0;
-					  uint32_t index_tab_v22 = 0;
-					  //v23 = texture[index_tab++];
-					  for (uint32_t index_tab = 0;texture[index_tab] != 0; index_tab++)
-					  {
-						  // 3 19 19
-						  v25_buffer_temp_index3 = &v21_buffer_temp_index1[-v23];
-						  //v27 = texture + 1;
-						  texture[index_tab_v22] = texture[index_tab];
-						  qmemcpy(v25_buffer_temp_index3, (void*)texture[index_tab+1], (int)texture[index_tab_v22]);
-						  //texture = (uint8_t*)&(texture + 1 + 3);
-						  v21_buffer_temp_index1 = &v25_buffer_temp_index3[texture[index_tab_v22]];
-						  texture[index_tab_v22] = 0;
-					  }
-					  if (!v23)
-						  break;
-					  texture[index_tab_v22] = texture[index_tab_v23];
-					  qmemcpy(v21_buffer_temp_index1, texture, texture[index_tab_v22]);
-					  texture += texture[index_tab_v22];
-					  v21_buffer_temp_index1 += texture[index_tab_v22];
-					  texture[index_tab_v22] = 0;
-
-					  v23 = *texture++;
-					  for ( ;v23!=0;v23 = *texture++)
-					  {
-						// 3 19 19
-						v25_buffer_temp_index3 = &v21_buffer_temp_index1[-v23];
-						//v27 = texture + 1;
-						v22 = *texture;
-						qmemcpy(v25_buffer_temp_index3, texture + 1, v22);
-						texture = (uint8_t*)&(*texture + 1+*v22);
-						v21_buffer_temp_index1 = &v25_buffer_temp_index3[v22];
-						v22 = 0;
-					  }
-					  if ( !v23 )
-						break;
-					  v22 = v23;
-					  qmemcpy(v21_buffer_temp_index1, texture, v22);
-					  texture += v22;
-					  v21_buffer_temp_index1 += v22;
-					  v22 = 0;
-					}
-					v24_buffer_temp_index2 += screenWidth_18062C;
-					v21_buffer_temp_index1 = v24_buffer_temp_index2;
-					--a1.byte2;
-				  }
-				  while ( a1.byte2 );*/
+			GameBitmap::DrawBitmap(texture, pixel_buffer_index, screenWidth_18062C, tilex, tiley, height, scale);
 		}
 		return;
 	}
-	/*if ( !x_WORD_E36D4 )
-	{
-	  v97 = -tilex;
-	  if (a1byte1 <= v97 )
-		return;
-	  v98 = (x_BYTE *)(screenWidth_18062C * tiley + pixel_buffer_index);
-	  v97 = a1byte2;
-	  v99 = v98;
-	  v136 = v97;
-	  v100 = 0;
-	  while ( 1 )
-	  {
-		while ( 1 )
-		{
-		  while ( 1 )
-		  {
-			v101 = *texture++;
-			if ( v101 < 0 )
-			  break;
-			if ( v101 )
-			{
-			  v100 = v101;
-			  do
-			  {
-				v102 = *texture++;
-				v97 = v97 - 1;
-				if ( (v97 & 0x80u) != 0 )
-				  *v98++ = v102;
-				--v100;
-			  }
-			  while ( v100 );
-			}
-			else
-			{
-			  v99 += screenWidth_18062C;
-			  v98 = v99;
-			  v97 = __PAIR__(v97, v136) - 256;
-			  if ( !v97 )
-				return;
-			}
-		  }
-		  if ( (char)v97 > 0 )
-			break;
-  LABEL_179:
-		  v98 -= v101;
-		  v103 = *texture++;
-		  v100 = v103;
-		  do
-		  {
-			v104 = *texture++;
-			v97 = v97 - 1;
-			if ( (v97 & 0x80u) != 0 )
-			  *v98++ = v104;
-			--v100;
-		  }
-		  while ( v100 );
-		}
-		v97 = v101 + v97;
-		if ( (v97 & 0x80u) != 0 )
-		{
-		  v101 = v97;
-		  goto LABEL_179;
-		}
-	  }
-	}*/
 	if (!(x_WORD_E36D4 & 1))
 	{
 		if (!(x_WORD_E36D4 & 2))
 			return;
 		v117 = -tilex;
-		if (a1byte1 <= v117)
+		if (width <= v117)
 			return;
-		v118 = (x_BYTE*)(screenWidth_18062C * (a1byte2 + tiley) + pixel_buffer_index);
-		v117 = a1byte2;
+		v118 = (x_BYTE*)(screenWidth_18062C * (height + tiley) + pixel_buffer_index);
+		v117 = height;
 		v119 = v118;
 		v139 = v117;
 		v120 = 0;
@@ -3450,89 +3024,96 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 	}
 	if (x_WORD_E36D4 & 2)
 	{
-		v105 = (x_BYTE*)(screenWidth_18062C * (a1byte2 + tiley) + a1byte1 + tilex + pixel_buffer_index);
+		ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + width + tilex + pixel_buffer_index);
 		v106 = 0;
-		v107 = a1byte1 + tilex + 1;
+		v107 = width + tilex + 1;
 		if (v107 >= 0)
 		{
-			a1byte1 = v107;
+			width = v107;
 			v137 = v107;
-			v108 = v105;
-			v109 = -1;
+			ptrScreenBufferLineStart = ptrScreenBuffer;
+			startOffsetX = -1;
 			do
 			{
 				while (1)
 				{
 					while (1)
 					{
-						v109 = *texture++;
-						if ((v109 & 0x80u) == 0)
+						startOffsetX = *texture++;
+						if ((startOffsetX & 0x80u) == 0)
+						{
+							//Start Drawing
 							break;
-						v105 += v109;
-						a1byte1 = v109 + a1byte1;
+						}
+						ptrScreenBuffer += startOffsetX;
+						width = startOffsetX + width;
 					}
-					if (!v109)
+					if (!startOffsetX)
 						break;
-					v106 = v109;
+					v106 = startOffsetX;
 					do
 					{
 						v110 = *texture++;
-						a1byte1 = a1byte1 - 1;
-						if ((a1byte1 & 0x80u) == 0)
-							*v105 = v110;
-						v105--;
+						width = width - 1;
+						if ((width & 0x80u) == 0)
+							*ptrScreenBuffer = v110;
+						ptrScreenBuffer--;
 						v106--;
 					} while (v106);
 				}
-				v108 -= screenWidth_18062C;
-				v105 = v108;
-				a1byte1 = __PAIR__(a1byte2, v137) - 256;
-			} while (a1byte2);
+				ptrScreenBufferLineStart -= screenWidth_18062C;
+				ptrScreenBuffer = ptrScreenBufferLineStart;
+				width = __PAIR__(height, v137) - 256;
+			} while (height);
 		}
 	}
 	else
 	{
-		v111 = (x_BYTE*)(screenWidth_18062C * tiley + a1byte1 + tilex + pixel_buffer_index);
+		ptrScreenBuffer = (screenWidth_18062C * tiley + width + tilex + pixel_buffer_index);
 		v112 = 0;
-		v113 = a1byte1 + tilex + 1;
+		v113 = width + tilex + 1;
 		if (v113 >= 0)
 		{
-			a1byte1 = v113;
+			width = v113;
 			v138 = v113;
-			v114 = v111;
-			v115 = -1;
+			ptrScreenBufferLineStart = ptrScreenBuffer;
+			startOffsetX = -1;
 			do
 			{
 				while (1)
 				{
 					while (1)
 					{
-						v115 = *texture++;
-						if ((v115 & 0x80u) == 0)
+						startOffsetX = *texture++;
+						if ((startOffsetX & 0x80u) == 0)
+						{
+							//Start Drawing
 							break;
-						v111 += v115;
-						a1byte1 = v115 + a1byte1;
+						}
+						ptrScreenBuffer += startOffsetX;
+						width = startOffsetX + width;
 					}
-					if (!v115)
+					if (!startOffsetX)
 						break;
-					v112 = v115;
+					posWidth = startOffsetX;
 					do
 					{
 						v116 = *texture++;
-						a1byte1 = a1byte1 - 1;
-						if ((a1byte1 & 0x80u) == 0)
-							*v111 = v116;
-						v111--;
-						v112--;
-					} while (v112);
+						width = width - 1;
+						if ((width & 0x80u) == 0)
+							*ptrScreenBuffer = v116;
+						ptrScreenBuffer--;
+						posWidth--;
+					} while (posWidth);
 				}
-				v114 += screenWidth_18062C;
-				v111 = v114;
-				a1byte1 = __PAIR__(a1byte1, v138) - 256;
-			} while (a1byte2);
+				ptrScreenBufferLineStart += screenWidth_18062C;
+				ptrScreenBuffer = ptrScreenBufferLineStart;
+				width = __PAIR__(width, v138) - 256;
+			} while (height);
 		}
 	}
 }
+
 // E36D4: using guessed type __int16 x_WORD_E36D4;
 // E3890: using guessed type int x_DWORD_E3890;
 // 180628: using guessed type int pdwScreenBuffer_351628;
@@ -3547,11 +3128,11 @@ void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tile
 //----- (0008F920) --------------------------------------------------------
 void sub_8F920(uint8_t a1byte1, uint8_t a1byte2, int16_t posx, int16_t posy, uint8_t* a4, unsigned __int8 a5, char a6)//270920
 {
-	sub_8F935_bitmap_draw_final(a1byte1, a1byte2, posx, posy, a4, a5, a6);//270935
+	sub_8F935_bitmap_draw_final(a1byte1, a1byte2, posx, posy, a4, a5, a6, 1);//270935
 }
 
 //----- (00098709) --------------------------------------------------------
-void sub_98709_create_index_dattab_power(posistruct2_t* tabbuffer, posistruct2_t* tabbufferend, uint8_t* datbuffer, posistruct_t* dattabindex)//279709
+void sub_98709_create_index_dattab_power(bitmap_pos_struct2_t* tabbuffer, bitmap_pos_struct2_t* tabbufferend, uint8_t* datbuffer, bitmap_pos_struct_t* dattabindex)//279709
 {
 	//int length = (tabbufferend - ((uint8_t*)tabbuffer)) / 6;
 	//int length = tabbufferend - tabbuffer;
@@ -3564,7 +3145,7 @@ void sub_98709_create_index_dattab_power(posistruct2_t* tabbuffer, posistruct2_t
 	}
 }
 
-void sub_98709_create_index_dattab_power_add(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t* datbuffer, posistruct_t* dattabindex, int add)//279709
+void sub_98709_create_index_dattab_power_add(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t* datbuffer, bitmap_pos_struct_t* dattabindex, int add)//279709
 {
 	for (uint32_t i = 0; i < (tabbufferend - (tabbuffer + add)) / 6; i++)
 	{
@@ -3580,7 +3161,7 @@ void sub_98709_create_index_dattab_power_add(uint8_t* tabbuffer, uint8_t* tabbuf
 }
 
 //----- (0009874D) --------------------------------------------------------
-void sub_9874D_create_index_dattab(posistruct2_t* tabbuffer, posistruct2_t* tabbufferend, uint8_t* datbuffer, posistruct_t* dattabindex)//27974d
+void sub_9874D_create_index_dattab(bitmap_pos_struct2_t* tabbuffer, bitmap_pos_struct2_t* tabbufferend, uint8_t* datbuffer, bitmap_pos_struct_t* dattabindex)//27974d
 {
 	//uint32_t testadr = *(uint32_t*)tabbuffer;
 	/*if (testadr == 0x9999)
@@ -3617,7 +3198,7 @@ void sub_9874D_create_index_dattab(posistruct2_t* tabbuffer, posistruct2_t* tabb
 	}
 }
 
-void sub_9874D_create_index_dattab_add(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t* datbuffer, posistruct_t* dattabindex, int add)//27974d
+void sub_9874D_create_index_dattab_add(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t* datbuffer, bitmap_pos_struct_t* dattabindex, int add)//27974d
 {
 	for (uint32_t i = 0; i < (tabbufferend - (tabbuffer + add)) / 6; i++)
 	{
@@ -3633,7 +3214,7 @@ void sub_9874D_create_index_dattab_add(uint8_t* tabbuffer, uint8_t* tabbufferend
 }
 
 //----- (00099A77) --------------------------------------------------------
-void sub_99A77_create_index_dattab_div(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t*  /*datbuffer*/, posistruct_t* dattabindex)//280a77
+void sub_99A77_create_index_dattab_div(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t*  /*datbuffer*/, bitmap_pos_struct_t* dattabindex)//280a77
 {
 	//uint32_t testadr = *(uint32_t*)tabbuffer;
 	/*if (testadr == 0x9999)
@@ -3659,7 +3240,7 @@ void sub_99A77_create_index_dattab_div(uint8_t* tabbuffer, uint8_t* tabbufferend
 }
 
 //----- (00099AEB) --------------------------------------------------------
-void sub_99AEB_create_index_dattab_minus(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t*  /*datbuffer*/, posistruct_t* dattabindex)//280aeb
+void sub_99AEB_create_index_dattab_minus(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t*  /*datbuffer*/, bitmap_pos_struct_t* dattabindex)//280aeb
 {
 	//uint32_t testadr = *(uint32_t*)tabbuffer;
 	/*if (testadr == 0x9999)
@@ -3951,7 +3532,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	to->stageIndex_0x36E01 = from->byte_0x36E01;
 	to->byte_0x36E02 = from->byte_0x36E02;
 	to->byte_0x36E03 = from->byte_0x36E03;
-	to->byte_0x36E04 = from->byte_0x36E04;
+	to->byte_counter_current_objective_box_0x36E04 = from->byte_counter_current_objective_box_0x36E04;
 	for (int i = 0; i < 6; i++)to->stub3k[i] = from->stub3k[i];
 	to->byte_0x36E0B = from->byte_0x36E0B;
 	for (int i = 0; i < 11; i++)to->stubend[i] = from->stubend[i];
@@ -4144,7 +3725,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 	to->byte_0x36E01 = from->stageIndex_0x36E01;
 	to->byte_0x36E02 = from->byte_0x36E02;
 	to->byte_0x36E03 = from->byte_0x36E03;
-	to->byte_0x36E04 = from->byte_0x36E04;
+	to->byte_counter_current_objective_box_0x36E04 = from->byte_counter_current_objective_box_0x36E04;
 	for (int i = 0; i < 6; i++)to->stub3k[i] = from->stub3k[i];
 	to->byte_0x36E0B = from->byte_0x36E0B;
 	for (int i = 0; i < 11; i++)to->stubend[i] = from->stubend[i];
@@ -4164,3 +3745,15 @@ void Convert_to_shadow_str_E2A74(const type_array_str_E2A74 &from, type_shadow_s
 		to[j].byte_29 = from[j].byte_29;
 	}
 }
+
+unsigned long clock_value()
+{
+	return mygethundredths();
+}
+unsigned long _clock()
+{
+	return clock_value();
+}
+unsigned long j___clock() {
+	return _clock();
+}; // weak

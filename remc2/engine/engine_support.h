@@ -1,11 +1,10 @@
 #pragma once
-#ifndef ENGINE_SUPPORT_H
-#define ENGINE_SUPPORT_H
 
 #include <stdio.h>
 #include <cstdint>
 #include <assert.h>
 #include <array>
+#include <map>
 #include <sstream>
 #include <stddef.h>
 #include <stdarg.h>     /* va_list, va_start, va_arg, va_end */
@@ -294,7 +293,7 @@ typedef struct {//lenght 2124=0x84C
 	}*/
 	//uint8_t stub2b[308];
 
-	char array_0x39f_2BFA_12157[64];//927//12157 - byte(11230+927) 100% name
+	char WizardName_0x39f_2BFA_12157[64];//927//12157 - byte(11230+927) 100% name
 	uint8_t byte_0x3DF_2BE4_12221;//991//12221 - byte
 	uint8_t byte_0x3E0_2BE4_12222;//992//12222 - byte
 	uint8_t byte_0x3E1_2BE4_12223;//993//12223 - byte - ok
@@ -395,7 +394,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	uint16_t langIndex_4;//x_D41A0_BYTEARRAY_4_struct.byteindex_4
 	uint16_t soundVolume_6;//x_D41A0_BYTEARRAY_4_struct.wordindex_6
 	uint16_t musicVolume_8;//x_D41A0_BYTEARRAY_4_struct.wordindex_8
-	uint8_t byteindex_10;//0xa//x_D41A0_BYTEARRAY_4_struct.byteindex_10//show help
+	uint8_t showHelp_10;//0xa//x_D41A0_BYTEARRAY_4_struct.byteindex_10//show help
 	int8_t brightness_11;//0xb//x_D41A0_BYTEARRAY_4_struct.byteindex_11
 	int8_t brightness_12;//0xc//x_D41A0_BYTEARRAY_4_struct.byteindex_12
 	int8_t brightness_13;//0xd//x_D41A0_BYTEARRAY_4_struct.byteindex_13
@@ -573,11 +572,11 @@ extern int16_t x_D41A0_WORDARRAY[];
 
 //xx extern uint8_t* dword_E9C30[]; // weak
 
-extern posistruct_t* xy_DWORD_17DED4_spritestr;
-extern posistruct_t* xy_DWORD_17DEC0_spritestr;
-extern posistruct_t* xy_DWORD_17DEC8_spritestr;
+extern bitmap_pos_struct_t* xy_DWORD_17DED4_spritestr;
+extern bitmap_pos_struct_t* xy_DWORD_17DEC0_spritestr;
+extern bitmap_pos_struct_t* xy_DWORD_17DEC8_spritestr;
 
-extern posistruct_t* x_DWORD_D4188t_spritestr;
+extern bitmap_pos_struct_t* x_DWORD_D4188t_spritestr;
 
 /*extern x_DWORD x_DWORD_355208;//3551CE+3A DWORD
 extern x_BYTE x_BYTE_355234_hardisknumber;//harddrive//3551CE+66 BYTE
@@ -899,46 +898,6 @@ typedef struct {
 }
 type_str_0x36442;
 
-typedef struct {//lenght 0x6604u
-	uint16_t word_2FECE;
-	uint16_t word_2FED0;
-	uint8_t byte_0x2FED2;//x_D41A0_BYTEARRAY_0[196306] // type of level graphics
-	uint8_t byte_0x2FED3;
-	MapType_t MapType;//x_D41A0_BYTEARRAY_0[196308]//GraphicsType
-	int16_t word_0x2FED5;
-	int16_t word_0x2FED7;
-	int8_t player_0x2FED9[8];
-	uint8_t stubb[4];
-	uint16_t seed_0x2FEE5;//2FEE5//23
-	uint8_t stubb2[2];
-	uint16_t offset_0x2FEE9;//2FEE9//27 //first seed position
-	uint8_t stubc[2];
-	uint16_t raise_0x2FEED;//2FEED//31 //first seed height
-	uint8_t stubc2[2];
-	uint16_t gnarl_0x2FEF1;//2FEF1//35 //random seed
-	uint8_t stubc3[2];
-	uint32_t river_0x2FEF5;//2FEF5//39
-	uint16_t lriver_0x2FEF9;//2FEF9//43
-	uint8_t stube[2];
-	uint16_t source_0x2FEFD;//2FEFD//47
-	uint8_t stubf[2];
-	uint16_t snLin_0x2FF01;//2FF01//51
-	uint8_t stubg[2];
-	uint16_t snFlt_0x2FF05;//2FF05//55
-	uint8_t stubh[2];
-	uint16_t bhLin_0x2FF09;//2FF09//59
-	uint8_t stubi[2];
-	uint16_t bhFlt_0x2FF0D;//2FF0D//63
-	uint8_t stubj[2];
-	uint16_t rkSte_0x2FF11;//2FF11//67
-	uint8_t stubk[1022];
-	type_entity_0x30311 entity_0x30311[1200];//end(next entity) - 0x360d1
-	uint8_t next_0x360D1;
-	type_str_0x360D2 next_0x360D2[8];//lenght 110  /spells?
-	type_str_0x36442 stages_0x36442[8];//stages(checkpoints)
-	type_str_0x3647Ac StageVars_0x3647A[11];//8x11
-} Type_Level_2FECE;//Uncompressed level
-
 typedef union {
 	axis_2du axis;
 }
@@ -1179,26 +1138,66 @@ typedef struct {
 }
 GameSettingsStruct_t;
 
+typedef struct {//lenght 0x6604u
+	uint16_t word_2FECE;
+	uint16_t word_2FED0;
+	uint8_t byte_0x2FED2;//x_D41A0_BYTEARRAY_0[196306] // type of level graphics
+	uint8_t byte_0x2FED3;
+	MapType_t MapType;//x_D41A0_BYTEARRAY_0[196308]//GraphicsType
+	int16_t word_0x2FED5;
+	int16_t word_0x2FED7;
+	int8_t player_0x2FED9[8];
+	uint8_t stubb[4];
+	uint16_t seed_0x2FEE5;//2FEE5//23
+	uint8_t stubb2[2];
+	uint16_t offset_0x2FEE9;//2FEE9//27 //first seed position
+	uint8_t stubc[2];
+	uint16_t raise_0x2FEED;//2FEED//31 //first seed height
+	uint8_t stubc2[2];
+	uint16_t gnarl_0x2FEF1;//2FEF1//35 //random seed
+	uint8_t stubc3[2];
+	uint32_t river_0x2FEF5;//2FEF5//39
+	uint16_t lriver_0x2FEF9;//2FEF9//43
+	uint8_t stube[2];
+	uint16_t source_0x2FEFD;//2FEFD//47
+	uint8_t stubf[2];
+	uint16_t snLin_0x2FF01;//2FF01//51
+	uint8_t stubg[2];
+	uint16_t snFlt_0x2FF05;//2FF05//55
+	uint8_t stubh[2];
+	uint16_t bhLin_0x2FF09;//2FF09//59
+	uint8_t stubi[2];
+	uint16_t bhFlt_0x2FF0D;//2FF0D//63
+	uint8_t stubj[2];
+	uint16_t rkSte_0x2FF11;//2FF11//67
+	uint8_t stubk[1022];
+	type_entity_0x30311 entity_0x30311[1200];//end(next entity) - 0x360d1
+	uint8_t next_0x360D1;
+	type_str_0x360D2 next_0x360D2[8];//lenght 110  /spells?
+	type_str_0x36442 stages_0x36442[8];//stages(checkpoints)
+	type_str_0x3647Ac StageVars_0x3647A[11];//8x11
+} Type_Level_2FECE;//Uncompressed level
+
 typedef struct {//lenght 224791
-	uint8_t stub0[4];
+	std::array<uint8_t, 4> stub0;
 	uint32_t dword_0x4;
 	uint32_t rand_0x8;
 	int16_t LevelIndex_0xc;//player_index?
 	int16_t word_0xe;
-	uint8_t array_0x10[29]; //0x10, next 0x2d(45)
+	std::array<uint8_t, 29> array_0x10; //0x10, next 0x2d(45)
 	int32_t dword_0x2d;//45
 	uint16_t word_0x31;//49
 	uint16_t word_0x33;//51
 	int32_t dword_0x35;//53//entity counter(max 1000 entity changes per step)
-	uint8_t array_0x39[508];//57
+	std::array<uint8_t, 508> array_0x39;//57
 	int32_t maptypeMusic_0x235;//act music
 	uint8_t byte_0x239;//569
 	int32_t dword_0x23a;
 	int32_t dword_0x23e;
 	int32_t dword_0x242;
-	type_event_0x6E8E* pointers_0x246[1000];//pointers
+	std::array<type_event_0x6E8E*, 1000> pointers_0x246;//pointers
 	int32_t dword_0x11e6;//second entity counter
-	type_event_0x6E8E* dword_0x11EA[1000];//??4586
+	std::array<type_event_0x6E8E*, 1000> dword_0x11EA;//??4586
 	GameSettingsStruct_t m_GameSettings;
 	uint32_t dword_0x219A;//8602
 	uint32_t dword_0x219E;//8606
@@ -1208,11 +1207,11 @@ typedef struct {//lenght 224791
 	type_str_0x21AE str_0x21AE;
 	type_str_0x21B2 str_0x21B2;
 	type_str_0x21B6 str_0x21B6;
-	uint8_t stub3b[424];
-	axis_3d array_0x2362[8];
-	uint8_t stub3c[333];
-	uint8_t stub3d[1791];
-	type_str_0x2BDE array_0x2BDE[8];
+	std::array<uint8_t, 424> stub3b;
+	std::array<axis_3d, 8> array_0x2362;
+	std::array<uint8_t, 333> stub3c;
+	std::array<uint8_t, 1791> stub3d;
+	std::array<type_str_0x2BDE, 8> array_0x2BDE;
 	type_str_0x6E3E array_0x6E3E[8];//28222	lenght 0xa size 0x8// game events
 	type_event_0x6E8E struct_0x6E8E[1000];//28302 a8*3e8
 	Type_Level_2FECE terrain_2FECE;// a1 = &x_D41A0_BYTEARRAY_0[0x2FECE/*196302*/];//fix - size 0x6604u//compress level
@@ -1242,7 +1241,7 @@ typedef struct {//lenght 224791
 	uint8_t stageIndex_0x36E01;//count objectives
 	int8_t byte_0x36E02;//temp objective
 	int8_t byte_0x36E03;
-	int8_t byte_0x36E04;
+	uint8_t byte_counter_current_objective_box_0x36E04;
 	uint8_t stub3k[6];
 	int8_t byte_0x36E0B;
 	uint8_t stubend[11];
@@ -1401,7 +1400,7 @@ typedef struct {//lenght 224791
 	uint8_t byte_0x36E01;
 	int8_t byte_0x36E02;
 	int8_t byte_0x36E03;
-	int8_t byte_0x36E04;
+	uint8_t byte_counter_current_objective_box_0x36E04;
 	uint8_t stub3k[6];
 	int8_t byte_0x36E0B;
 	uint8_t stubend[11];
@@ -1418,14 +1417,14 @@ struct {//lenght 0x33
 	int16_t maxTextboxHeight2_0xe;//e //7
 	int16_t charWidth_0x10;//10 //8
 	int16_t charHeight_0x12;//12 //9
-	int16_t minWidth_0x14;//14 //10
-	int16_t maxWidth_0x16;//16 //11
-	int16_t minHeight_0x18;//18 //12
-	int16_t maxHeight_0x1a;//1a //13
-	int16_t lineX1_0x1c;//1c-4f //14
-	int16_t lineY1_0x1e;//1e-51 //15
-	int16_t lineX2_0x20;//20 //16
-	int16_t lineY2_0x22;//22 //17
+	int16_t minPosX_0x14;//14 //10
+	int16_t maxPosX_0x16;//16 //11
+	int16_t minPosY_0x18;//18 //12
+	int16_t maxPosY_0x1a;//1a //13
+	int16_t lineSrcX_0x1c;//1c-4f //14
+	int16_t lineSrcY_0x1e;//1e-51 //15
+	int16_t lineDestX_0x20;//20 //16
+	int16_t lineDestY_0x22;//22 //17
 	int16_t framePosX_0x24;//24-57 //width 18
 	int16_t framePosY_0x26;//26-59 //19
 	int16_t frameWidth_0x28;//28-5b //20
@@ -1435,7 +1434,7 @@ struct {//lenght 0x33
 	int8_t color2_0x31;//31-64 - color2
 	int8_t color3_0x32;//32-65 - color2
 }
-typedef type_textbox_sub1804B0;
+typedef Type_TextBox_1804B0;
 
 typedef union {//lenght 12
 	int32_t dword[3];
@@ -1444,7 +1443,7 @@ typedef union {//lenght 12
 type_uni_0x8a;
 
 struct {//0xb0 nebo spis 171(0xab)
-	type_textbox_sub1804B0 type_sub_0[2];
+	Type_TextBox_1804B0 type_sub_0[2];
 	/*int16_t word_0xe;//e
 	int16_t word_0x10;//10
 	int16_t word_0x12;//12
@@ -1464,7 +1463,7 @@ struct {//0xb0 nebo spis 171(0xab)
 	int32_t dword_0x7a;//7a
 	int8_t stub[4];
 	int32_t dword_0x82;//82
-	int16_t word_0x86;//86
+	int16_t Index_0x86;//86
 	int16_t word_0x88;//88
 	type_uni_0x8a uni_0x8a;
 	//int32_t dword_0x8a;//8a
@@ -1473,7 +1472,7 @@ struct {//0xb0 nebo spis 171(0xab)
 	int16_t word_0x98;//98
 	int16_t word_0x9a;//9A
 	int16_t word_0x9c;//9C
-	int8_t byte_0x9e;//9e
+	int8_t PopupStatusByte_0x9e;//9e
 	int8_t byte_0x9f;//9f
 	int8_t byte_0xa0;//a0
 	int8_t byte_0xa1;//a1
@@ -1482,8 +1481,8 @@ struct {//0xb0 nebo spis 171(0xab)
 	int8_t byte_0xa4;//a4
 	int8_t byte_0xa5;//a5
 	int8_t byte_0xa6;//a6
-	int8_t byte_0xa7;//a7
-	int8_t byte_0xa8;//a8
+	int8_t showPlayerScores_0xa7;//a7
+	int8_t byte_0xa8;//a8 - wizard number
 	int8_t byte_0xa9;//a9
 	int8_t byte_0xaa;//aa
 	//int8_t stubb[1];
@@ -1691,9 +1690,7 @@ extern type_D41A0_BYTESTR_0 D41A0_0;
 
 /*void x_D41A0_BYTEARRAY_0_to_x_D41A0_BYTESTR_0();
 void x_D41A0_BYTESTR_0_to_x_D41A0_BYTEARRAY_0();*/
-void write_posistruct_to_png(uint8_t* buffer, int width, int height, const char* filename);
+void write_bitmap_pos_struct_to_png(uint8_t* buffer, int width, int height, const char* filename);
 
 int my_sign32(int32_t var);
 int my_sign16(int16_t var);
-
-#endif //ENGINE_SUPPORT_ACTIVE

@@ -6,6 +6,8 @@
 #include "../engine/engine_support.h"
 #include<vector>
 
+int sub_584D0_SQdistX_SQdistY(axis_3d* a1, axis_3d* a2);
+
 class Maths {
 
 private:

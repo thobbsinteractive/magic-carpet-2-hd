@@ -11,6 +11,7 @@ int windowResWidth = 640;
 int windowResHeight = 480;
 int gameResWidth = 640;
 int gameResHeight = 480;
+int gameUiScale = 1;
 bool maintainAspectRatio = false;
 bool forceWindow = false;
 bool bigTextures = false;
@@ -22,6 +23,8 @@ bool multiThreadedRender = false;
 int numberOfRenderThreads = 0;
 bool assignToSpecificCores = false;
 bool openGLRender = false;
+bool invertYAxis = true;
+bool invertXAxis = false;
 gamepad_config_t gpc;
 
 std::string findIniFile() {
@@ -182,6 +185,19 @@ bool readini() {
 		gameResHeight = 200;
 	}
 
+	gameUiScale = reader.GetInteger("graphics", "gameUiScale", 1);
+
+	if (gameUiScale < 1)
+		gameUiScale = 1;
+
+	if (gameUiScale > 8 || (640 * gameUiScale) > gameResWidth)
+	{
+		while (gameUiScale > 1 && (640 * gameUiScale) > gameResWidth)
+		{
+			gameUiScale--;
+		}
+	}
+
 	maintainAspectRatio = reader.GetBoolean("graphics", "maintainAspectRatio", true);
 	forceWindow = reader.GetBoolean("graphics", "forceWindow", false);
 	sky = reader.GetBoolean("graphics", "sky", true);
@@ -221,6 +237,8 @@ bool readini() {
 	maxGameFps = reader.GetInteger("game", "maxGameFps", 0);
 	fmvFps = reader.GetInteger("game", "fmvFps", 20);
 	loggingLevel = reader.GetString("game", "loggingLevel", "Info");
+	invertYAxis = reader.GetBoolean("game", "invertYAxis", true);
+	invertXAxis = reader.GetBoolean("game", "invertXAxis", false);
 
 	gpc.axis_yaw = reader.GetInteger("gamepad", "axis_yaw", GAMEPAD_ITEM_DISABLED);
 	gpc.axis_pitch = reader.GetInteger("gamepad", "axis_pitch", GAMEPAD_ITEM_DISABLED);

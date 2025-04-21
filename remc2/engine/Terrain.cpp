@@ -10,7 +10,7 @@ uint8_t mapShading_12B4E0[65536]; // 256x256 //map array3
 uint8_t mapAngle_13B4E0[65536]; // 256x256 //map array4 // water //!!! find all comparation, change to int8_t and test it !!!
 int16_t mapEntityIndex_15B4E0[65536]; // 256x256 //map array5
 
-char x_BYTE_F2CD0x[7 * 7 * 7 * 7][2]; // 233cd0//4802 //4816
+char x_BYTE_F2CD0x[2800][2]; // 233cd0//4802 //4816 // size has to be 2 * (7^4 + 7^3 + 7^2 + 7^1) = 2 * (2401 + 343 + 49 + 7) = 2*2800 as seen in sub_462A0_orig
 
 uint8_t x_BYTE_D41B7 = 44; // weak
 
@@ -2079,9 +2079,9 @@ void sub_462A0(uaxis_2d inAxis2dA, uaxis_2d inAxis2dB)//2272a0
 	uint8_t point4;
 
 	tempAxis.word = inAxis2dA.word;
-	for (int indexY = inAxis2dB._axis_2d.y - inAxis2dA._axis_2d.y + 1; indexY != 0; indexY--)
+	for (int indexY = inAxis2dB._axis_2d.y - inAxis2dA._axis_2d.y + 1; indexY > 0; indexY--)
 	{
-		for (int indexX = inAxis2dB._axis_2d.x - inAxis2dA._axis_2d.x + 1; indexX; indexX--)
+		for (int indexX = inAxis2dB._axis_2d.x - inAxis2dA._axis_2d.x + 1; indexX > 0; indexX--)
 		{
 			if ((int8_t)mapAngle_13B4E0[tempAxis.word] >= 0)
 				mapTerrainType_10B4E0[tempAxis.word] = 1;
@@ -2105,9 +2105,9 @@ void sub_462A0(uaxis_2d inAxis2dA, uaxis_2d inAxis2dB)//2272a0
 	inAxis2dA._axis_2d.x--;
 	inAxis2dA._axis_2d.y--;
 	tempAxis.word = inAxis2dA.word;
-	for (int indexY = yAdd; indexY; indexY--)
+	for (int indexY = yAdd; indexY > 0; indexY--)
 	{
-		for (int indexX = xAdd; indexX; indexX--)
+		for (int indexX = xAdd; indexX > 0; indexX--)
 		{
 			if (mapTerrainType_10B4E0[tempAxis.word] == 1)
 			{
@@ -2142,9 +2142,9 @@ void sub_462A0(uaxis_2d inAxis2dA, uaxis_2d inAxis2dB)//2272a0
 	tempAxis.word = inAxis2dA.word;
 	if (yAdd != 0)
 	{
-		for (int indexY = yAdd; indexY; indexY--)
+		for (int indexY = yAdd; indexY > 0; indexY--)
 		{
-			for (int indexX = xAdd; indexX; indexX--)
+			for (int indexX = xAdd; indexX > 0; indexX--)
 			{
 				tempAxis._axis_2d.x++;
 				tempAxis._axis_2d.y++;

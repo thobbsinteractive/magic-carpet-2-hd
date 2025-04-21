@@ -44,6 +44,7 @@ extern int windowResWidth;
 extern int windowResHeight;
 extern int gameResWidth;
 extern int gameResHeight;
+extern int gameUiScale;
 extern bool maintainAspectRatio;
 extern bool forceWindow;
 extern bool bigTextures;
@@ -55,6 +56,8 @@ extern bool openGLRender;
 extern bool multiThreadedRender;
 extern int numberOfRenderThreads;
 extern bool assignToSpecificCores;
+extern bool invertYAxis;
+extern bool invertXAxis;
 
 #define   GAMEPAD_ITEM_DISABLED  0x0
 #define    GAMEPAD_ITEM_ENABLED  0x1

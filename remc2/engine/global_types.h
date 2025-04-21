@@ -5,6 +5,7 @@
 
 const uint16_t GAME_RES_MAX_WIDTH = 3840;
 const uint16_t GAME_RES_MAX_HEIGHT = 2160;
+constexpr uint16_t NUMBER_OF_SPELLS = 26;
 
 typedef union {
 	uint8_t byte[4];
@@ -141,15 +142,39 @@ typedef struct {
 	//uint16_t word_2279;
 }
 type_32_1a;
-/*typedef struct {
-	int16_t x;
-	int16_t y;
-}
-type_str_164_pos;*/
+
+enum class spell_t {
+	fireball = 0,
+	possession = 1,
+	castle = 2,
+	speed_up = 3,
+	metamorph = 4,
+	heal = 5,
+	shield = 6,
+	lightning = 7,
+	rebound = 8,
+	meteor = 9,
+	teleport = 10,
+	invisible = 11,
+	beyond_sight = 12,
+	steal_mana = 13,
+	duel = 14,
+	tremor = 15,
+	crater = 16,
+	earthquake = 17,
+	volcano = 18,
+	summon_army = 19,
+	gravity_well = 20,
+	whirlwind = 21,
+	fools_mana = 22,
+	magic_mine = 23,
+	alliance = 24,
+	cave_in = 25
+};
 
 typedef struct {//begin 611//str_611
 	type_32_1a array_0x263_611x;//size??//dword_0x649_2BDE
-	type_32_1a array_0x2CB_715x;//104//size??
+	std::array<int32_t,NUMBER_OF_SPELLS> spells_experience_0x2CB_715x;//104//size?? spell experience, one dword per spell, 26*4=104 bytes
 	//array_0x2CB_715[2] 723
 	type_16_1a array_0x333_819x;//208//size?? spells//word_0x719_2BDE
 	//821//array_0x333_819[1]
@@ -367,6 +392,16 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	type_str_164* dword_0xA4_164x;//100 // adress of xx
 }
 type_event_0x6E8E;
+
+#pragma pack (1)
+typedef struct {
+	char path[512];
+	uint8_t** colorPalette_var28;//1C // Palette
+	uint8_t** var32_end_buffer;//20 // maybe buffer
+	uint32_t var36_size_buffer;//24 //maybe file size
+	uint32_t var40_alloc_type;//28
+} Pathstruct;
+#pragma pack (16)
 
 #pragma pack (pop)
 /*

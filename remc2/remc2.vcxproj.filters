@@ -144,7 +144,7 @@
     <ClInclude Include="portability\port_sdl_vga_mouse.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
-    <ClInclude Include="portability\mctypes.h">
+    <ClInclude Include="portability\bitmap_pos_struct.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
     <ClInclude Include="engine\defs.h">
@@ -172,6 +172,12 @@
       <Filter>Header Files\utilities</Filter>
     </ClInclude>
     <ClInclude Include="utilities\DataFileIO.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\RendererTests.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\StateMonitor.h">
       <Filter>Header Files\utilities</Filter>
     </ClInclude>
     <ClInclude Include="engine\Basic.h">
@@ -246,6 +252,9 @@
     <ClInclude Include="engine\GameRenderHD.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
+    <ClInclude Include="engine\Map.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
     <ClInclude Include="engine\MenusAndIntros.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
@@ -302,6 +311,36 @@
     </ClInclude>
     <ClInclude Include="portability\port_sdl_joystick.h">
       <Filter>Header Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\GameBitmap.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\GameBitmapIndexes.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\GameUiConstants.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\LangTextIndexes.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\GameUI.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Events.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\PlayerInput.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Player.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Level.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Graphics.h">
+      <Filter>Header Files\engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -398,6 +437,12 @@
     <ClCompile Include="utilities\DataFileIO.cpp">
       <Filter>Source Files\utilities</Filter>
     </ClCompile>
+    <ClCompile Include="utilities\RendererTests.cpp">
+      <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities\StateMonitor.cpp">
+      <Filter>Source Files\utilities</Filter>
+    </ClCompile>
     <ClCompile Include="engine\Animation.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
@@ -490,6 +535,27 @@
     </ClCompile>
     <ClCompile Include="portability\port_sdl_joystick.cpp">
       <Filter>Source Files\portability</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\GameBitmap.cpp">
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\GameUI.cpp">
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Events.cpp">
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Level.cpp">
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\PlayerInput.cpp">
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Player.cpp">
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Graphics.cpp">
+      <Filter>Source Files\engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

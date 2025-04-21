@@ -7,7 +7,7 @@
 #include <stdlib.h>  
 #include <string.h>
 #include <string>
-#include "mctypes.h"
+#include "bitmap_pos_struct.h"
 #include "fcaseopen.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/rotating_file_sink.h"

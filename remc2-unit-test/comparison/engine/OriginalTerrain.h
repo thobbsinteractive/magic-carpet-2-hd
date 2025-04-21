@@ -2,7 +2,7 @@
 
 #include <functional>
 #include "../../remc2/engine/defs.h"
-#include "../../remc2/portability/mctypes.h"
+#include "../../remc2/portability/bitmap_pos_struct.h"
 #include "../../remc2/engine/global_types.h"
 #include "../../remc2/engine/Unk_D4A30.h"
 #include "../../remc2/engine/Unk_D47E0.h"

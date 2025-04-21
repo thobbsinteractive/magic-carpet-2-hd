@@ -6,13 +6,14 @@ project(remc2 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_COLOR_DIAGNOSTICS ON)
 
 
 ################################################################################
 # Dependencies
 ################################################################################
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
+#list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
 if (GITHUB_CI_COMPATIBILITY_PATH)
     set(SDL2_DIR "${GITHUB_CI_COMPATIBILITY_PATH}/cmake/SDL2")
@@ -24,7 +25,7 @@ find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(PNG REQUIRED)
-find_package(Boost REQUIRED system)
+find_package(Boost REQUIRED system CONFIG)
 find_package(fmt REQUIRED)
 
 
@@ -113,9 +114,25 @@ if (FLATPAK)
     add_compile_definitions(FLATPAK)
 endif ()
 
+# sanitizer flags
+if (USE_SANITIZERS)
+    set(SANITIZER_OPTIONS
+        -fsanitize=address
+        -fsanitize=pointer-compare
+        -fsanitize=pointer-subtract
+        -fsanitize=leak
+        -fsanitize=undefined
+        -static-libasan
+        -static-liblsan
+        -static-libubsan
+    )
+endif ()
+
 # remc2 and tests
 add_subdirectory(remc2)
+add_subdirectory(remc2-editor)
 if (UNIT_TESTS)
+    find_package(GTest REQUIRED)
     add_subdirectory(remc2-unit-test)
     add_subdirectory(remc2-regression-test)
 endif ()

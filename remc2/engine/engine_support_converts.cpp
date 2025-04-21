@@ -1,5 +1,8 @@
 #include "engine_support_converts.h"
+
 #include <cstring>
+
+#include "Level.h"
 
 void convert_array_to_struct_D41A0_0(uint8_t* input, type_D41A0_BYTESTR_0* output){
 }
@@ -276,8 +279,8 @@ void convert_struct_to_array_0x2BDE(type_str_0x2BDE* input, uint8_t* output) {
 	//type_struct_0x1d1_2BDE_11695 struct_0x1d1_2BDE_11695[33];//465
 	for (int i = 0; i < 0x21; i++)
 		convert_struct_to_array_0x1d1_2BDE_11695(&input->struct_0x1d1_2BDE_11695[i], output + 0x1d1+i*14);
-	//char array_0x39f_2BFA_12157[64];//927//12157 - byte(11230+927) 100% name
-	memcpy(output + 0x39f, input->array_0x39f_2BFA_12157, 0x40);
+	//char WizardName_0x39f_2BFA_12157[64];//927//12157 - byte(11230+927) 100% name
+	memcpy(output + 0x39f, input->WizardName_0x39f_2BFA_12157, 0x40);
 	//uint8_t byte_0x3DF_2BE4_12221;//991//12221 - byte
 	memcpy(output + 0x3df, &input->byte_0x3DF_2BE4_12221, 1);
 	//uint8_t byte_0x3E0_2BE4_12222;//992//12222 - byte
@@ -674,7 +677,7 @@ void convert_struct_to_array_D41A0_0(type_D41A0_BYTESTR_0* input,uint8_t* output
 	//int16_t word_0xe;
 	memcpy(output + 0xe, &input->word_0xe, 2);
 	//uint8_t array_0x10[29]; //0x10, next 0x2d(45)
-	memcpy(output + 0x10, input->array_0x10, 0x1d);
+	memcpy(output + 0x10, &input->array_0x10[0], 0x1d);
 	//int32_t dword_0x2d;//45
 	memcpy(output + 0x2d, &input->dword_0x2d, 4);
 	//uint16_t word_0x31;//49
@@ -684,7 +687,7 @@ void convert_struct_to_array_D41A0_0(type_D41A0_BYTESTR_0* input,uint8_t* output
 	//int32_t dword_0x35;//53//entity counter(max 1000 entity changes per step)
 	memcpy(output + 0x35, &input->dword_0x35, 4);
 	//uint8_t array_0x39[508];//57
-	memcpy(output + 0x39, input->array_0x39, 508);
+	memcpy(output + 0x39, &input->array_0x39[0], 508);
 	//int32_t dword_0x235;//act music
 	memcpy(output + 0x235, &input->maptypeMusic_0x235, 4);
 	//uint8_t byte_0x239;//569
@@ -803,8 +806,8 @@ void convert_struct_to_array_D41A0_0(type_D41A0_BYTESTR_0* input,uint8_t* output
 	memcpy(output + 0x36E02, &input->byte_0x36E02, 1);
 	//int8_t byte_0x36E03;
 	memcpy(output + 0x36E03, &input->byte_0x36E03, 1);
-	//int8_t byte_0x36E04;
-	memcpy(output + 0x36E04, &input->byte_0x36E04, 1);
+	//uint8_t byte_counter_current_objective_box_0x36E04;
+	memcpy(output + 0x36E04, &input->byte_counter_current_objective_box_0x36E04, 1);
 	//uint8_t stub3k[6];
 	memset(output + 0x36E05, 0, 6);
 	//int8_t byte_0x36E0B;

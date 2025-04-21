@@ -1,5 +1,6 @@
 #include "GameRenderOriginal.h"
 #include "CommandLineParser.h"
+#include "../utilities/RendererTests.h"
 
 GameRenderOriginal::~GameRenderOriginal()
 {
@@ -2222,7 +2223,7 @@ uint16_t GameRenderOriginal::sub_3FD60(int a2x)
 	return result;
 }
 
-void GameRenderOriginal::sub_88740(type_event_0x6E8E* a1x, int a2, int a3)
+void GameRenderOriginal::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t posY)
 {
 	int v3; // esi
 	type_event_0x6E8E* v4x; // edx
@@ -2236,7 +2237,7 @@ void GameRenderOriginal::sub_88740(type_event_0x6E8E* a1x, int a2, int a3)
 	char v18; // [esp+0h] [ebp-4h]
 
 	v3 = 0;
-	if (str_unk_1804B0ar.byte_0x9e & 1)
+	if (str_unk_1804B0ar.PopupStatusByte_0x9e & 1)
 		return;
 	v4x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v5 = a1x->class_0x3F_63;
@@ -2329,8 +2330,8 @@ LABEL_48:
 	{
 		if (x_WORD_180660_VGA_type_resolution & 1)
 		{
-			a2 *= 2;
-			a3 *= 2;
+			posX *= 2;
+			posY *= 2;
 		}
 		if (str_E2A74[v3].axis_2[0] & 2)
 		{
@@ -2338,9 +2339,9 @@ LABEL_48:
 			{
 				if (!(str_unk_1804B0ar.byte_0x9f & 0x1))
 				{
-					str_E2A74[v3].axis_2[3] = a2;
+					str_E2A74[v3].axis_2[3] = posX;
 					str_E2A74[v3].axis_2[0] |= 8;
-					str_E2A74[v3].axis_2[4] = a3;
+					str_E2A74[v3].axis_2[4] = posY;
 					str_unk_1804B0ar.byte_0x9f |= 2;
 				}
 			}
@@ -2991,7 +2992,7 @@ void GameRenderOriginal::DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a
 	v31 = viewPort.PreWidth_EA3C4 + viewPort.PosX_EA3D0 - 4;
 	v29 = viewPort.PreHeight_EA3C0 + viewPort.PosY_EA3CC - 22;
 	v25 = a1x->dword_0xA4_164x->word_0x38_56;
-	v5 = D41A0_0.array_0x2BDE[v25].array_0x39f_2BFA_12157;//wizard name
+	v5 = D41A0_0.array_0x2BDE[v25].WizardName_0x39f_2BFA_12157;
 	strcpy(v24, v5);
 	v36 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v25)];//c
 	v35 = (*xadataclrd0dat.colorPalette_var28)[0];//10 //v19
@@ -4908,7 +4909,7 @@ void GameRenderOriginal::DrawSprite_41BD3(uint32 a1)
 					{
 						DrawSorcererNameAndHealthBar_2CB30(str_F2C20ar.dword0x14x, str_F2C20ar.dword0x04_screenY, (signed __int16)str_F2C20ar.dword0x03_screenX, str_F2C20ar.dword0x09_realWidth);
 					}
-					if (x_D41A0_BYTEARRAY_4_struct.byteindex_10)
+					if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 						sub_88740(
 							str_F2C20ar.dword0x14x,
 							(signed __int16)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
@@ -4988,7 +4989,7 @@ void GameRenderOriginal::DrawSprite_41BD3(uint32 a1)
 				str_F2C20ar.dword0x0b += v136;
 				v153 += 2;
 			}
-			if (a1 == 1 && x_D41A0_BYTEARRAY_4_struct.byteindex_10)
+			if (a1 == 1 && x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 				sub_88740(
 					str_F2C20ar.dword0x14x,
 					(signed __int16)(str_F2C20ar.dword0x04_screenY + (str_F2C20ar.dword0x09_realWidth >> 1)),
@@ -8187,6 +8188,7 @@ LABEL_129:
 						v170 = (char*)v1102;
 						v171 = x_BYTE_E126C;
 						HIWORD(v172) = 0;
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::Original_BYTE_E126D_case_0_v173); }
 						while (1)
 						{
 							LOWORD(v172) = v169[1];
@@ -8217,6 +8219,7 @@ LABEL_129:
 						goto LABEL_328;
 					case 1:
 						v175 = (unsigned __int16*)unk_DE56Cx[0];
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::Original_BYTE_E126D_case_1_v176); }
 						while (1)
 						{
 							LOWORD(v31) = v175[1];
@@ -8375,6 +8378,7 @@ LABEL_129:
 						v1165 = v1135 << 16;
 						HIWORD(v228) = 0;
 						HIWORD(v229) = 0;
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::Original_BYTE_E126D_case_2_v228); }
 						while (1)
 						{
 							LOWORD(v228) = v227[1];
@@ -8602,6 +8606,7 @@ LABEL_129:
 						v1166 = v1135 << 16;
 						HIWORD(v284) = 0;
 						HIWORD(v285) = 0;
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::Original_BYTE_E126D_case_3_v383); }
 						while (1)
 						{
 							LOWORD(v284) = v283[1];
@@ -8842,6 +8847,7 @@ LABEL_129:
 						goto LABEL_401;
 					case 4:
 						v339 = (unsigned __int16*)unk_DE56Cx[0];
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::Original_BYTE_E126D_case_4_v339); }
 						while (1)
 						{
 							LOWORD(v31) = v339[1];
@@ -9002,6 +9008,7 @@ LABEL_129:
 						v1183 = v1146 << 16;
 						HIWORD(v375) = 0;
 						HIWORD(v376) = 0;
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::Original_BYTE_E126D_case_5_v377); }
 						while (1)
 						{
 							v377 = v1276;
@@ -9293,6 +9300,7 @@ LABEL_129:
 						v1184 = v1146 << 16;
 						HIWORD(v390) = 0;
 						HIWORD(v391) = 0;
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::Original_BYTE_E126D_case_6_v392); }
 						while (1)
 						{
 							v392 = v1277;
@@ -9600,6 +9608,7 @@ LABEL_129:
 						v1169 = v1135 << 16;
 						HIWORD(v406) = 0;
 						HIWORD(v407) = 0;
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::Original_BYTE_E126D_case_7_v406); }
 						while (1)
 						{
 							LOWORD(v406) = v405[1];
@@ -9828,6 +9837,7 @@ LABEL_129:
 						v1170 = v1135 << 16;
 						HIWORD(v446) = 0;
 						HIWORD(v447) = 0;
+						if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::Original_BYTE_E126D_case_8_v445); }
 						while (1)
 						{
 							LOWORD(v446) = v445[1];

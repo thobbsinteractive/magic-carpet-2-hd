@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 class CommandLineParser {
     public:
@@ -49,6 +50,7 @@ class CommandLineParser {
         bool DoShowDebugMessages1() const { return m_show_debug_messages1;};
         bool DoShowDebugPerifery() const { return m_show_debug_perifery; };
         bool DoTextOutputToConsole() const { return m_text_output_to_console;};
+        bool DoStateMonitor() const { return m_state_monitor;};
 
         // settings
         std::string GetMemimagesPath() const {return m_memimages_path;};
@@ -99,10 +101,12 @@ class CommandLineParser {
         bool m_show_debug_messages1;
         bool m_show_debug_perifery;
         bool m_text_output_to_console;
+        bool m_state_monitor;
+
         std::string m_memimages_path;
         std::string m_config_file_path;
-		uint16_t m_set_level;
-		std::string m_custom_level_path;
+        uint16_t m_set_level;
+        std::string m_custom_level_path;
 };
 
 extern CommandLineParser CommandLineParams;

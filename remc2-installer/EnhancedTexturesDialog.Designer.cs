@@ -71,7 +71,7 @@
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(30, 31);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(300, 13);
+            this.label2.Size = new System.Drawing.Size(464, 21);
             this.label2.TabIndex = 1;
             this.label2.Text = "Would you like to install enhanced assets for Magic Carpet 2?";
             // 
@@ -82,7 +82,7 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(16, 8);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(152, 14);
+            this.label1.Size = new System.Drawing.Size(225, 22);
             this.label1.TabIndex = 1;
             this.label1.Text = "Install Enhanced Assets";
             // 
@@ -100,10 +100,11 @@
             // 
             // btnBack
             // 
+            this.btnBack.AutoSize = true;
             this.btnBack.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBack.Location = new System.Drawing.Point(227, 12);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(75, 23);
+            this.btnBack.Size = new System.Drawing.Size(75, 31);
             this.btnBack.TabIndex = 0;
             this.btnBack.Text = "Back";
             this.btnBack.UseVisualStyleBackColor = true;
@@ -111,10 +112,11 @@
             // 
             // btnNext
             // 
+            this.btnNext.AutoSize = true;
             this.btnNext.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNext.Location = new System.Drawing.Point(308, 12);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(75, 23);
+            this.btnNext.Size = new System.Drawing.Size(75, 31);
             this.btnNext.TabIndex = 0;
             this.btnNext.Text = "Next";
             this.btnNext.UseVisualStyleBackColor = true;
@@ -122,10 +124,12 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.AutoSize = true;
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.Location = new System.Drawing.Point(404, 12);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(75, 31);
             this.btnCancel.TabIndex = 0;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -138,14 +142,16 @@
             this.chkInstallTextures.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkInstallTextures.Location = new System.Drawing.Point(15, 63);
             this.chkInstallTextures.Name = "chkInstallTextures";
-            this.chkInstallTextures.Size = new System.Drawing.Size(151, 17);
+            this.chkInstallTextures.Size = new System.Drawing.Size(229, 25);
             this.chkInstallTextures.TabIndex = 11;
             this.chkInstallTextures.Text = "Install Enhanced Textures";
             this.chkInstallTextures.UseVisualStyleBackColor = true;
             // 
             // EnhancedDataDialog
             // 
-            this.ClientSize = new System.Drawing.Size(494, 361);
+            this.AcceptButton = this.btnNext;
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(488, 344);
             this.Controls.Add(this.chkInstallTextures);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -161,6 +167,7 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

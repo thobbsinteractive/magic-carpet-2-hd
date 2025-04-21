@@ -1,0 +1,81 @@
+name: Linux CI
+
+on:
+  push:
+    branches:
+      [ master, development ]
+  pull_request:
+      types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+env:
+  GITHUB_CI_COMPATIBILITY_PATH: /usr/lib/x86_64-linux-gnu
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        BUILD_CONFIGURATION: [Debug, Release]
+
+    steps:
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install \
+        cmake ninja-build \
+        libsdl2-dev libsdl2-mixer-dev \
+        libsdl2-ttf-dev libsdl2-image-dev \
+        libpng-dev libpng++-dev \
+        libz-dev libgtest-dev \
+        libboost-system-dev \
+        libspdlog-dev libfmt-dev \
+        rapidjson-dev \
+        clang-tidy \
+        -o APT::Immediate-Configure=0
+
+    - name: Check Out Sources
+      uses: actions/checkout@v4
+      with:
+          submodules: recursive
+          path: src
+        
+    - name: Generate Build System - ${{matrix.BUILD_CONFIGURATION}}
+      run: |
+        cd ${{ github.workspace }}
+        mkdir build_${{matrix.BUILD_CONFIGURATION}}
+        cd build_${{matrix.BUILD_CONFIGURATION}}
+        cmake -GNinja -DCMAKE_BUILD_TYPE=${{matrix.BUILD_CONFIGURATION}} -DUSE_64_BIT=True -DUNIT_TESTS=True -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DGITHUB_CI_COMPATIBILITY_PATH="${{env.GITHUB_CI_COMPATIBILITY_PATH}}" ${{ github.workspace }}/src
+        
+    - name: Build - ${{matrix.BUILD_CONFIGURATION}}
+      run: |
+        cd ${{ github.workspace }}
+        cd build_${{matrix.BUILD_CONFIGURATION}}
+        ninja
+        
+    - name: Run Unit Tests
+      run: |
+        cd ${{ github.workspace }}
+        cd build_${{matrix.BUILD_CONFIGURATION}}/remc2-unit-test
+        ./remc2-unit-test 
+
+    - name: Run Clang-Tidy
+      if: startsWith(matrix.BUILD_CONFIGURATION, 'Debug') == true
+      run: |
+        cd ${{ github.workspace }}
+        cd build_${{matrix.BUILD_CONFIGURATION}}
+        run-clang-tidy -p . -j 4 -export-fixes clang-tidy-fixes.yaml
+
+    - name: Run clang-tidy-pr-comments Action
+      if: startsWith(matrix.BUILD_CONFIGURATION, 'Debug') == true
+      uses: platisd/clang-tidy-pr-comments@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        clang_tidy_fixes: ${{ github.workspace }}/build_${{matrix.BUILD_CONFIGURATION}}/clang-tidy-fixes.yaml
+        # Optionally set to true if you want the Action to request
+        # changes in case warnings are found
+        request_changes: false
+        # Optionally set the number of comments per review
+        # to avoid GitHub API timeouts for heavily loaded
+        # pull requests
+        suggestions_per_comment: 10

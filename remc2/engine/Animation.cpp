@@ -282,7 +282,7 @@ void /*__fastcall*/ sub_75E70()//256e70
 			{
 			case 4:
 				v3 = (char*)"COLOUR256 ";
-				sub_76260_read_intro_Palette(0x100);
+				sub_76260_read_intro_Palette();
 				v4 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
 				strcpy(v4,v3);
 				v23 = 1;
@@ -294,7 +294,7 @@ void /*__fastcall*/ sub_75E70()//256e70
 				strcpy(v16, v7);
 				break;
 			case 0xB:
-				sub_76260_read_intro_Palette(0x40);
+				sub_76260_read_intro_Palette();
 				v8 = (char*)"COLOUR ";
 				v9 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
 				strcpy(v9, v8);
@@ -702,5 +702,40 @@ LABEL_28:
 // 1806E4: using guessed type char x_BYTE_1806E4;
 // 18074A: using guessed type __int16 x_WORD_18074A_mouse_right2_button;
 // 18074C: using guessed type __int16 x_WORD_18074C_mouse_left2_button;
+
+//----- (00076260) --------------------------------------------------------
+void sub_76260_read_intro_Palette()
+{
+	TColor* v0x; // ebx
+	int v1; // esi
+	unsigned __int16 v3; // di
+	uint16_t v4; // [esp+0h] [ebp-Ch]
+	int32_t v5; // [esp+4h] [ebp-8h]
+	unsigned __int8 v6; // [esp+8h] [ebp-4h]
+
+	v0x = unk_17D838x;
+	v1 = 0;
+	sub_75D70((uint8_t*)&v4, 2u);
+	if (v4 > 0u)
+	{
+		do
+		{
+			sub_75D70((uint8_t*)&v6, 1u);
+			//v0 += 3 * v6;
+			v0x += v6;
+			v5 = 0;
+			sub_75D70((uint8_t*)&v5, 1u);
+			if (!v5)
+				v5 = 256;
+			for (v3 = 0; v3 < v5; v3++)//mybe read Palette
+			{
+				sub_75D70((uint8_t*)v0x, 3u);
+				//v0 += 3;
+				v0x++;
+			}
+			v1++;
+		} while (v1 < v4);
+	}
+}
 
 

@@ -27,6 +27,9 @@
     <ClInclude Include="kiss_sdl.h">
       <Filter>Header Files\kiss-sdl</Filter>
     </ClInclude>
+    <ClInclude Include="ReadConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="editor.cpp">
@@ -46,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="kiss_widgets.cpp">
       <Filter>Source Files\kiss-sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadConfig.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,5 +114,10 @@
     <Font Include="Kiss\kiss_font.ttf">
       <Filter>Resource Files</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="editor-config.ini">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

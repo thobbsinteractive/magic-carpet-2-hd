@@ -492,9 +492,11 @@ std::string getExistingDataPath(std::filesystem::path path)
 
 	if (std::filesystem::exists(xdg_data_home_dir)) {
 		file_locations.emplace_back(xdg_data_home_dir / "remc2" / path);
+		file_locations.emplace_back(xdg_data_home_dir / "remc2" / "NETHERW" / path);
 	}
 	if (std::filesystem::exists(home_dir)) {
 		file_locations.emplace_back(home_dir / ".local" / "share" / "remc2" / path);
+		file_locations.emplace_back(home_dir / ".local" / "share" / "remc2" / "NETHERW" / path);
 	}
 #else //__linux__
 	auto home_drive = std::getenv("HOMEDRIVE");

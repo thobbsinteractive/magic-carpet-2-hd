@@ -1,5 +1,9 @@
 #include "Sound.h"
 
+#include "PlayerInput.h"
+
+#include "../utilities/Maths.h"
+
 //fix str2_E37A4_sound_buffer3 = str_E37A0_sound_buffer2->next_str + v8x[a2].dword_8;
 //fix x_DWORD_E380C = str_E3808_music_header->next_str + headerx[drivernumber].dword_8;
 //replace str2_E37A4_sound_buffer3 and x_DWORD_E380C with equvivalent index_E37A4_MaxSound and index_E380C_MaxMusic
@@ -13,6 +17,8 @@ bool soundActive_E3799 = true; // weak
 bool soundLoaded_E379A = true; // weak
 bool autoScanForSoundHardware_E379B = true; // weak
 char x_BYTE_E379C = 1; // weak
+char x_BYTE_E2A28_speek = 0; // weak
+type_F4FE0 str_F4FE0[70];
 
 type_E37A0_sound_buffer2* soundIndex_E37A0 = 0;
 //uint8_t* x_DWORD_E37A0_sound_buffer2 = 0; // weak
@@ -1956,9 +1962,8 @@ bool AilApiReadIni_9E3A0(AIL_INI* INI, char* filename)//27f3a0
 	{
 		strcpy(INI->device_name, "Creative Labs Sound Blaster 16 or AWE32");
 		strcpy(INI->driver_name, "SB16.DIG");
-		char workingDir[MAX_PATH];
-		GetDirectory(workingDir, filename);
-		sprintf(INI->driver_path, "%s/%s", workingDir, "SB16.DIG");
+		std::string driver_path = GetSubDirectoryFile(cdFolder, "SOUND", "SB16.DIG");
+		sprintf(INI->driver_path, "%s", driver_path.c_str());
 		INI->IO.IO = StrToInt("220h", 16);
 		INI->IO.IRQ = StrToInt("-1", 10);
 		INI->IO.DMA_8_bit = StrToInt("-1", 10);
@@ -1968,9 +1973,8 @@ bool AilApiReadIni_9E3A0(AIL_INI* INI, char* filename)//27f3a0
 	{
 		strcpy(INI->device_name, "Creative Labs Sound Blaster(TM) 16");
 		strcpy(INI->driver_name, "SBPRO2.MDI");
-			char workingDir[MAX_PATH];
-		GetDirectory(workingDir, filename);
-		sprintf(INI->driver_path, "%s/%s", workingDir, "SBPRO2.MDI");
+		std::string driver_path = GetSubDirectoryFile(cdFolder, "SOUND", "SBPRO2.MDI");
+		sprintf(INI->driver_path, "%s", driver_path.c_str());
 		INI->IO.IO = StrToInt((char*)"220h", 16);
 		INI->IO.IRQ = StrToInt((char*)"-1", 10);
 		INI->IO.DMA_8_bit = StrToInt((char*)"-1", 10);
@@ -5059,7 +5063,7 @@ bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber)//26fd00
 	GetMusicSequenceCount();
 
 	for (int i = 1; i <= m_iNumberOfTracks; i++)//2b4804
-		AilInitSequence_95C00(m_hSequence, musicHeader_E3808->str_8.track_10[i].xmiData_0, 0, i);
+		AilInitSequence_95C00(m_hSequence, musicHeader_E3808->str_8.track_10[i-1].xmiData_0, 0, i);
 	musicAble_E37FC = true;
 	return true;
 }
@@ -5518,4 +5522,368 @@ void WriteWaveToFile(wav_t* wav, const char* name)
 
 		fclose(wavFile);
 	}
+}
+
+//----- (0006E450) --------------------------------------------------------
+void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
+{
+	type_event_0x6E8E* v3x; // edx
+	axis_3d* v4x; // esi
+	unsigned int v5; // eax
+	__int16 v6; // ax
+	unsigned __int16 v7; // ax
+	int v8; // edx
+	int v9; // eax
+	int v10; // esi
+	int v11; // edx
+	int v12; // edi
+	unsigned int v13; // eax
+	unsigned int v14; // edx
+	__int16 v21; // [esp+0h] [ebp-24h]
+	type_event_0x6E8E* v22x; // [esp+4h] [ebp-20h]
+	signed int v23; // [esp+8h] [ebp-1Ch]
+	int v24; // [esp+Ch] [ebp-18h]
+	unsigned int v25; // [esp+10h] [ebp-14h]
+	type_event_0x6E8E* v26x; // [esp+14h] [ebp-10h]
+	unsigned __int16 v27; // [esp+18h] [ebp-Ch]
+	__int16 v28; // [esp+1Ch] [ebp-8h]
+	__int16 v29; // [esp+20h] [ebp-4h]
+
+	v29 = 0;
+	v21 = 0;
+	v24 = D41A0_0.rand_0x8;
+	if (!soundActive_E3799 || !soundAble_E3798)
+		return;
+	v3x = x_DWORD_EA3E4[a1];
+	v22x = v3x;
+	if (v3x <= x_DWORD_EA3E4[0])
+	{
+		v10 = 0x7FFF;
+		LOWORD(v12) = 0x7FFF;
+	}
+	else
+	{
+		if (v3x->struct_byte_0xc_12_15.byte[0] < 0)
+			return;
+		v4x = &v3x->axis_0x4C_76;
+		if ((unsigned int)sub_584D0_SQdistX_SQdistY(
+			&x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->axis_0x4C_76,
+			&v3x->axis_0x4C_76) > 0x9000000)
+			return;
+		v26x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+		v29 = v22x->id_0x1A_26;
+		v5 = Maths::sub_58490_radix_3d_2(&v26x->axis_0x4C_76, v4x);
+		v25 = v5;
+		v23 = v5;
+		v6 = Maths::sub_581E0_maybe_tan2(&v26x->axis_0x4C_76, v4x);
+		v28 = v6;
+		v7 = sub_582B0(v26x->word_0x1C_28, v6);
+		v27 = v7;
+		v8 = 12288 * (512 - v7 / 2 + 512);
+		v9 = (v8 - (__CFSHL__(v8 >> 31, 10) + (v8 >> 31 << 10))) >> 10;
+		v10 = v9 ? (signed int)(0x7FFF * (v9 - v25)) / v9 : 0x7FFF;
+		v11 = (signed __int16)sub_582F0(v26x->word_0x1C_28, v28);
+		if (v10 < 512)
+			return;
+		if (v10 > 0x7FFF)
+			v10 = 0x7FFF;
+		if (v23 > 320)
+		{
+			if (v27 > 0x200u)
+				v27 = 1024 - v27;
+			v12 = (((v27 << 15) * v11 - (__CFSHL__((v27 << 15) * v11 >> 31, 9) + ((v27 << 15) * v11 >> 31 << 9))) >> 9)
+				+ 0x7FFF;
+			if (v12 < 0)
+				v12 = 0;
+			if (v12 > 0xFFFF)
+				LOWORD(v12) = -1;
+		}
+		else
+		{
+			LOWORD(v12) = 0x7FFF;
+		}
+		if ((unsigned __int16)a3 >= 0x2Au)
+		{
+			v13 = 9377 * v24 + 9439;
+			if ((unsigned __int16)a3 <= 0x2Cu)
+			{
+				v14 = v13 % 0x1E - 15;
+			}
+			else
+			{
+				if (a3 != 46)
+					goto LABEL_29;
+				v14 = v13 % 0x14;
+				if (v22x->state_0x45_69 == 14)
+					LOWORD(v14) = v14 + 10;
+				else
+					LOWORD(v14) = v14 - 10;
+			}
+			v21 = v14;
+		}
+	}
+LABEL_29:
+	if ((unsigned __int16)a3 < 0x2Au)
+	{
+		if ((unsigned __int16)a3 < 0x20u)
+		{
+			if (a3 != 7)
+				goto LABEL_46;
+			goto LABEL_45;
+		}
+		if ((unsigned __int16)a3 <= 0x20u || a3 == 38)
+		{
+		LABEL_45:
+			v29 = 0;
+			goto LABEL_46;
+		}
+	}
+	else
+	{
+		if ((unsigned __int16)a3 <= 0x2Cu)
+			goto LABEL_45;
+		if ((unsigned __int16)a3 >= 0x31u)
+		{
+			if ((unsigned __int16)a3 > 0x35u && ((unsigned __int16)a3 < 0x3Au || (unsigned __int16)a3 > 0x3Bu && a3 != 62))
+				goto LABEL_46;
+			goto LABEL_45;
+		}
+		if ((unsigned __int16)a3 >= 0x2Eu && (unsigned __int16)a3 <= 0x2Fu)
+			goto LABEL_45;
+	}
+LABEL_46:
+	switch (a3)
+	{
+	case 1:
+	case 2:
+		if (a2 == D41A0_0.LevelIndex_0xc)
+		{
+			sub_8F100_sound_proc19(0, a3, 0, 64, 0x64u, -1, 2u);
+			sub_8F710_sound_proc21(0, a3, 70, 2u, 0);
+		}
+		break;
+	case 3:
+	case 4:
+	case 6:
+	case 9:
+	case 10:
+	case 11:
+	case 15:
+	case 18:
+	case 19:
+	case 20:
+	case 21:
+	case 22:
+	case 23:
+	case 24:
+	case 25:
+	case 26:
+	case 27:
+	case 28:
+	case 30:
+	case 38:
+	case 40:
+	case 41:
+	case 48:
+	case 50:
+	case 51:
+	case 52:
+	case 53:
+	case 60:
+	case 61:
+	case 63:
+	case 64:
+		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		{
+			str_F4FE0[a3].word_2 = v10;
+			str_F4FE0[a3].word_1 = v12;
+			str_F4FE0[a3].word_5 = v21;
+			str_F4FE0[a3].word_0 = 1;
+			str_F4FE0[a3].word_3 = v29;
+		}
+		break;
+	case 5:
+		if (a2 == D41A0_0.LevelIndex_0xc)
+		{
+			sub_8F100_sound_proc19(0, a3, 0, 64, 0x64u, -1, 2u);
+			sub_8F710_sound_proc21(0, a3, 120, 2u, 0);
+		}
+		break;
+	case 7:
+	case 8:
+	case 12:
+	case 13:
+	case 16:
+	case 17:
+	case 32:
+	case 33:
+	case 34:
+	case 37:
+	case 39:
+	case 42:
+	case 43:
+	case 44:
+	case 46:
+	case 58:
+	case 59:
+	case 62:
+		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		{
+			str_F4FE0[a3].word_2 = v10;
+			str_F4FE0[a3].word_1 = v12;
+			str_F4FE0[a3].word_5 = v21;
+			str_F4FE0[a3].word_0 = 3;
+			str_F4FE0[a3].word_3 = v29;
+		}
+		break;
+	case 14:
+	case 29:
+		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		{
+			if (a2 == D41A0_0.LevelIndex_0xc)
+			{
+				str_F4FE0[a3].word_2 = v10;
+				str_F4FE0[a3].word_1 = v12;
+				str_F4FE0[a3].word_5 = v21;
+				str_F4FE0[a3].word_3 = 0;
+				str_F4FE0[a3].word_0 = 1;
+			}
+			else if (a2 == -1)
+			{
+				str_F4FE0[a3].word_2 = v10;
+				str_F4FE0[a3].word_1 = v12;
+				str_F4FE0[a3].word_5 = v21;
+				str_F4FE0[a3].word_3 = v29;
+				str_F4FE0[a3].word_0 = 1;
+			}
+		}
+		break;
+	case 31:
+		if (a2 == D41A0_0.LevelIndex_0xc)
+		{
+			sub_8F100_sound_proc19(0, a3, 0, 64, 0x64u, -1, 2u);
+			sub_8F710_sound_proc21(0, a3, 85, 2u, 0);
+		}
+		break;
+	case 47:
+	case 49:
+		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		{
+			str_F4FE0[a3].word_2 = v10;
+			str_F4FE0[a3].word_1 = v12;
+			str_F4FE0[a3].word_5 = v21;
+			str_F4FE0[a3].word_3 = v29;
+			str_F4FE0[a3].word_0 = 4;
+		}
+		break;
+	case 54:
+	case 55:
+	case 56:
+	case 57:
+		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		{
+			if (a2 == D41A0_0.LevelIndex_0xc)
+			{
+				str_F4FE0[a3].word_2 = v10;
+				str_F4FE0[a3].word_1 = v12;
+				str_F4FE0[a3].word_5 = v21;
+				str_F4FE0[a3].word_3 = 0;
+				str_F4FE0[a3].word_0 = 3;
+			}
+			else if (a2 == -1)
+			{
+				str_F4FE0[a3].word_2 = v10;
+				str_F4FE0[a3].word_1 = v12;
+				str_F4FE0[a3].word_5 = v21;
+				str_F4FE0[a3].word_3 = v29;
+				str_F4FE0[a3].word_0 = 3;
+			}
+		}
+		break;
+	case 65:
+	case 66:
+	case 67:
+	case 68:
+	case 69:
+		str_F4FE0[a3].word_2 = v10;
+		str_F4FE0[a3].word_1 = v12;
+		str_F4FE0[a3].word_0 = 3;
+		str_F4FE0[a3].word_5 = v21;
+		str_F4FE0[a3].word_3 = v29;
+		break;
+	default:
+		return;
+	}
+}
+
+//----- (00019CA0) --------------------------------------------------------
+void ChangeSoundLevel_19CA0(uint8_t option)//1faca0
+{
+	if (option == 1u)
+	{
+		if (soundAble_E3798)
+		{
+			x_D41A0_BYTEARRAY_4_struct.byte_38591 = option;
+			soundActive_E3799 = true;
+		}
+	}
+	else if (option == 2 && musicAble_E37FC)
+	{
+		x_D41A0_BYTEARRAY_4_struct.byte_38591 = 2;
+		musicActive_E37FD = true;
+		StartMusic_8E160(D41A0_0.maptypeMusic_0x235, 0x7Fu);
+	}
+	if (x_D41A0_BYTEARRAY_4_struct.byte_38591)
+	{
+		D41A0_0.byte_counter_current_objective_box_0x36E04 = 0;
+		x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
+		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221 < 6u || D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221 > 8u)
+			HandleButtonClick_191B0(20, 10);
+		else
+			HandleButtonClick_191B0(20, 12);
+	}
+}
+
+//----- (000582B0) --------------------------------------------------------
+int sub_582B0(__int16 a1, __int16 a2)//2392b0
+{
+	int result; // eax
+
+	result = abs((a1 & 0x7FF) - (a2 & 0x7FF));
+	if ((unsigned __int16)result > 0x400u)
+		result = 2048 - result;
+	return result;
+}
+
+//----- (000582F0) --------------------------------------------------------
+int sub_582F0(int a1, __int16 a2)//2392f0
+{
+	int v2; // edx
+	int v3; // ebx
+
+	v2 = a1;
+	BYTE1(v2) &= 7u;
+	v3 = (a2 & 0x7FF) - (unsigned __int16)v2;
+	if ((a2 & 0x7FF) == (unsigned __int16)v2)
+		return v2 ^ (unsigned __int16)v2;
+	if (abs(v3) > 1024)
+	{
+		if (v3 >= 0)
+			v3 -= 2048;
+		else
+			v3 += 2048;
+	}
+	if (v3)
+	{
+		if (v3 > 0)
+			return 1;
+		v3 = -1;
+	}
+	return v3;
+}
+
+//----- (0006EA90) --------------------------------------------------------
+bool sub_6EA90(int a1, int a2)//24fa90
+{
+	return a1 - a2 >= -8;
 }

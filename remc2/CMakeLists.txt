@@ -1,10 +1,3 @@
-project(remc2 C CXX)
-
-if (USE_CLANG_TIDY)
-    #set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=*")
-    #set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=misc-unused-parameters;-fix")
-    set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=misc-unused-parameters")
-endif ()
 
 ################################################################################
 # Source groups
@@ -33,16 +26,57 @@ endif()
 source_group("Source Files" FILES ${SOURCE_FILES})
 
 set(SOURCE_FILES_ENGINE
-    "engine/ail_sound.h"
-    "engine/defs.h"
-    "engine/engine_support.cpp"
-    "engine/engine_support.h"
-    "utilities/Maths.cpp"
-    "utilities/Maths.h"
+    "engine/Animation.cpp"
+    "engine/Animation.h"
+    "engine/Basic.cpp"
+    "engine/Basic.h"
+    "engine/CommandLineParser.cpp"
+    "engine/CommandLineParser.h"
     "engine/Compare.cpp"
     "engine/Compare.h"
-    "engine/engine_support_converts.cpp"
-    "engine/engine_support_converts.h"
+    "engine/Events.cpp"
+    "engine/Events.h"
+    "engine/GameBitmap.cpp"
+    "engine/GameBitmap.h"
+    "engine/GameBitmapIndexes.h"
+    "engine/GameRenderGL.cpp"
+    "engine/GameRenderGL.h"
+    "engine/GameRenderHD.cpp"
+    "engine/GameRenderHD.h"
+    "engine/GameRenderInterface.h"
+    "engine/GameRenderNG.cpp"
+    "engine/GameRenderNG.h"
+    "engine/GameRenderOriginal.cpp"
+    "engine/GameRenderOriginal.h"
+    "engine/GameUI.cpp"
+    "engine/GameUI.h"
+    "engine/GameUiConstants.h"
+    "engine/Graphics.cpp"
+    "engine/Graphics.h"
+    "engine/LangTextIndexes.h"
+    "engine/Level.cpp"
+    "engine/Level.h"
+    "engine/Map.h"
+    "engine/MenusAndIntros.cpp"
+    "engine/MenusAndIntros.h"
+    "engine/Network.cpp"
+    "engine/Network.h"
+    "engine/Player.cpp"
+    "engine/Player.h"
+    "engine/PlayerInput.cpp"
+    "engine/PlayerInput.h"
+    "engine/ProjectionPolygon.cpp"
+    "engine/ProjectionPolygon.h"
+    "engine/RenderThread.cpp"
+    "engine/RenderThread.h"
+    "engine/Sound.cpp"
+    "engine/Sound.h"
+    "engine/Terrain.cpp"
+    "engine/Terrain.h"
+    "engine/TextureMaps.cpp"
+    "engine/TextureMaps.h"
+    "engine/Type_D404C.cpp"
+    "engine/Type_D404C.h"
     "engine/Type_D93C0_Bldgprmbuffer.cpp"
     "engine/Type_D93C0_Bldgprmbuffer.h"
     "engine/Type_D94F0_Bldgprmbuffer.cpp"
@@ -51,56 +85,37 @@ set(SOURCE_FILES_ENGINE
     "engine/Type_MapScreenPortals_E17CC.h"
     "engine/Type_SecretMapScreenPortals_E2970.cpp"
     "engine/Type_SecretMapScreenPortals_E2970.h"
-    "engine/Type_D404C.cpp"
-    "engine/Type_D404C.h"
     "engine/Type_WORD_D951C.cpp"
     "engine/Type_WORD_D951C.h"
-    "engine/XUnk_D4350.cpp"
-    "engine/XUnk_D4350.h"
-    "engine/Unk_D4A30.cpp"
-    "engine/Unk_D4A30.h"
     "engine/Unk_D47E0.cpp"
     "engine/Unk_D47E0.h"
-    "engine/RenderThread.cpp"
-    "engine/RenderThread.h"
+    "engine/Unk_D4A30.cpp"
+    "engine/Unk_D4A30.h"
+    "engine/ViewPort.cpp"
+    "engine/ViewPort.h"
+    "engine/XUnk_D4350.cpp"
+    "engine/XUnk_D4350.h"
+    "engine/ail_sound.h"
+    "engine/defs.h"
+    "engine/engine_support.cpp"
+    "engine/engine_support.h"
+    "engine/engine_support_converts.cpp"
+    "engine/engine_support_converts.h"
+    "engine/read_config.cpp"
+    "engine/read_config.h"
+    "engine/sub_main_mouse.h"
+    "sub_main.cpp"
+    "sub_main.h"
     "utilities/BitmapIO.cpp"
     "utilities/BitmapIO.h"
     "utilities/DataFileIO.cpp"
     "utilities/DataFileIO.h"
-    "engine/read_config.cpp"
-    "engine/read_config.h"
-    "engine/TextureMaps.cpp"
-    "engine/TextureMaps.h"
-    "engine/GameRenderOriginal.cpp"
-    "engine/GameRenderOriginal.h"
-    "engine/GameRenderNG.cpp"
-    "engine/GameRenderNG.h"
-    "engine/GameRenderHD.cpp"
-    "engine/GameRenderHD.h"
-    "engine/GameRenderGL.cpp"
-    "engine/GameRenderGL.h"
-    "engine/GameRenderInterface.h"
-    "sub_main.cpp"
-    "sub_main.h"
-    "engine/ProjectionPolygon.cpp"
-    "engine/ProjectionPolygon.h"
-    "engine/Sound.cpp"
-    "engine/Sound.h"
-    "engine/Network.cpp"
-    "engine/Network.h"
-    "engine/Basic.cpp"
-    "engine/Basic.h"
-    "engine/Animation.cpp"
-    "engine/Animation.h"
-    "engine/Terrain.cpp"
-    "engine/Terrain.h"
-    "engine/sub_main_mouse.h"
-    "engine/ViewPort.cpp"
-    "engine/ViewPort.h"
-    "engine/CommandLineParser.cpp"
-    "engine/CommandLineParser.h"
-    "engine/MenusAndIntros.cpp"
-    "engine/MenusAndIntros.h"
+    "utilities/Maths.cpp"
+    "utilities/Maths.h"
+    "utilities/RendererTests.cpp"
+    "utilities/RendererTests.h"
+    "utilities/StateMonitor.cpp"
+    "utilities/StateMonitor.h"
 )
 source_group("Source Files\\engine" FILES ${SOURCE_FILES_ENGINE})
 
@@ -121,7 +136,7 @@ set(SOURCE_FILES__libs__findfirst
 source_group("Source Files\\libs\\findfirst" FILES ${SOURCE_FILES__libs__findfirst})
 
 set(SOURCE_FILES__portability
-    "portability/mctypes.h"
+    "portability/bitmap_pos_struct.h"
     "portability/fcaseopen.cpp"
     "portability/fcaseopen.h"
     "portability/port_net.cpp"
@@ -172,6 +187,7 @@ install(
     FILES 
     ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/font/16x16-font.bmp
     ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/font/8x8-font.bmp
+    ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/font/UbuntuMono-B.ttf
     DESTINATION bin/font
 )
 install(
@@ -208,13 +224,14 @@ if (UNIX)
     #target_compile_options(${PROJECT_NAME} PRIVATE
     #)
     target_link_libraries(${PROJECT_NAME} PUBLIC 
-        SDL2::Main
-        SDL2::Mixer
+        SDL2::SDL2
+        SDL2_mixer::SDL2_mixer
+        SDL2_ttf::SDL2_ttf
         ${PNG_LIBRARY}
         findfirst
         ADLMIDI_static
         Boost::system
-		fmt::fmt
+        fmt::fmt
     )
     target_link_directories(${PROJECT_NAME} PUBLIC
     )
@@ -225,16 +242,6 @@ endif ()
 
 if (UNIX)
     if (USE_SANITIZERS)
-        set(SANITIZER_OPTIONS
-            -fsanitize=address
-            -fsanitize=pointer-compare
-            -fsanitize=pointer-subtract
-            -fsanitize=leak
-            -fsanitize=undefined
-            -static-libasan
-            -static-liblsan
-            -static-libubsan
-        )
-        target_link_options(remc2 PRIVATE ${SANITIZER_OPTIONS})
+        target_link_options(${PROJECT_NAME} PRIVATE ${SANITIZER_OPTIONS})
     endif ()
 endif ()

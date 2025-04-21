@@ -28,11 +28,11 @@ namespace WixSharpSetup
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("CD_Files");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("NETHERW");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("CD_Files");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("NETHERW");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD", new System.Windows.Forms.TreeNode[] {
+            treeNode10,
+            treeNode11});
             this.banner = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
@@ -83,7 +83,7 @@ namespace WixSharpSetup
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(30, 31);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(307, 13);
+            this.label2.Size = new System.Drawing.Size(475, 21);
             this.label2.TabIndex = 1;
             this.label2.Text = "Please select where to get the Magic Carpet 2 game data from";
             // 
@@ -94,7 +94,7 @@ namespace WixSharpSetup
             this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(16, 8);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(130, 14);
+            this.label1.Size = new System.Drawing.Size(192, 22);
             this.label1.TabIndex = 1;
             this.label1.Text = "Game Data Location";
             // 
@@ -103,6 +103,7 @@ namespace WixSharpSetup
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.btnNext);
+            this.panel1.Controls.Add(this.btnRun);
             this.panel1.Location = new System.Drawing.Point(-3, 308);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(503, 57);
@@ -110,10 +111,11 @@ namespace WixSharpSetup
             // 
             // btnNext
             // 
+            this.btnNext.AutoSize = true;
             this.btnNext.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNext.Location = new System.Drawing.Point(409, 17);
+            this.btnNext.Location = new System.Drawing.Point(409, 3);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(75, 23);
+            this.btnNext.Size = new System.Drawing.Size(75, 31);
             this.btnNext.TabIndex = 1;
             this.btnNext.Text = "Next";
             this.btnNext.UseVisualStyleBackColor = true;
@@ -121,10 +123,11 @@ namespace WixSharpSetup
             // 
             // btnRun
             // 
+            this.btnRun.AutoSize = true;
             this.btnRun.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRun.Location = new System.Drawing.Point(12, 62);
+            this.btnRun.Location = new System.Drawing.Point(241, 3);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(118, 23);
+            this.btnRun.Size = new System.Drawing.Size(162, 31);
             this.btnRun.TabIndex = 0;
             this.btnRun.Text = "Extract Game Data";
             this.btnRun.UseVisualStyleBackColor = true;
@@ -138,7 +141,7 @@ namespace WixSharpSetup
             "DOS Edition"});
             this.cboInstallLocation.Location = new System.Drawing.Point(100, 17);
             this.cboInstallLocation.Name = "cboInstallLocation";
-            this.cboInstallLocation.Size = new System.Drawing.Size(205, 21);
+            this.cboInstallLocation.Size = new System.Drawing.Size(205, 29);
             this.cboInstallLocation.TabIndex = 3;
             // 
             // lblInstallLocation
@@ -146,7 +149,7 @@ namespace WixSharpSetup
             this.lblInstallLocation.AutoSize = true;
             this.lblInstallLocation.Location = new System.Drawing.Point(11, 20);
             this.lblInstallLocation.Name = "lblInstallLocation";
-            this.lblInstallLocation.Size = new System.Drawing.Size(81, 13);
+            this.lblInstallLocation.Size = new System.Drawing.Size(126, 21);
             this.lblInstallLocation.TabIndex = 2;
             this.lblInstallLocation.Text = "Get Data From:";
             // 
@@ -155,15 +158,16 @@ namespace WixSharpSetup
             this.txtPath.Location = new System.Drawing.Point(10, 85);
             this.txtPath.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.txtPath.Name = "txtPath";
-            this.txtPath.Size = new System.Drawing.Size(381, 21);
+            this.txtPath.Size = new System.Drawing.Size(381, 27);
             this.txtPath.TabIndex = 5;
             this.txtPath.TextChanged += new System.EventHandler(this.Path_TextChanged);
             // 
             // btnBrowse
             // 
+            this.btnBrowse.AutoSize = true;
             this.btnBrowse.Location = new System.Drawing.Point(10, 49);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(68, 23);
+            this.btnBrowse.Size = new System.Drawing.Size(75, 31);
             this.btnBrowse.TabIndex = 4;
             this.btnBrowse.Text = "Browse";
             this.btnBrowse.UseVisualStyleBackColor = true;
@@ -174,7 +178,7 @@ namespace WixSharpSetup
             this.lblGameData.AutoSize = true;
             this.lblGameData.Location = new System.Drawing.Point(84, 54);
             this.lblGameData.Name = "lblGameData";
-            this.lblGameData.Size = new System.Drawing.Size(154, 13);
+            this.lblGameData.Size = new System.Drawing.Size(236, 21);
             this.lblGameData.TabIndex = 15;
             this.lblGameData.Text = "Magic Carpet 2 GOG directory:";
             // 
@@ -193,9 +197,10 @@ namespace WixSharpSetup
             // 
             // btnInfo
             // 
+            this.btnInfo.AutoSize = true;
             this.btnInfo.Location = new System.Drawing.Point(407, 62);
             this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(75, 23);
+            this.btnInfo.Size = new System.Drawing.Size(75, 31);
             this.btnInfo.TabIndex = 8;
             this.btnInfo.Text = "Help";
             this.btnInfo.UseVisualStyleBackColor = true;
@@ -208,15 +213,15 @@ namespace WixSharpSetup
             this.treeViewInstallProgress.Location = new System.Drawing.Point(12, 232);
             this.treeViewInstallProgress.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.treeViewInstallProgress.Name = "treeViewInstallProgress";
-            treeNode1.Name = "CDFiles";
-            treeNode1.Text = "CD_Files";
-            treeNode2.Name = "NETHERW";
-            treeNode2.Text = "NETHERW";
-            treeNode3.Checked = true;
-            treeNode3.Name = "InstallPath";
-            treeNode3.Text = "C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD";
+            treeNode10.Name = "CDFiles";
+            treeNode10.Text = "CD_Files";
+            treeNode11.Name = "NETHERW";
+            treeNode11.Text = "NETHERW";
+            treeNode12.Checked = true;
+            treeNode12.Name = "InstallPath";
+            treeNode12.Text = "C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD";
             this.treeViewInstallProgress.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3});
+            treeNode12});
             this.treeViewInstallProgress.ShowPlusMinus = false;
             this.treeViewInstallProgress.ShowRootLines = false;
             this.treeViewInstallProgress.Size = new System.Drawing.Size(391, 52);
@@ -225,11 +230,11 @@ namespace WixSharpSetup
             // 
             // GameDataDialog
             // 
-            this.ClientSize = new System.Drawing.Size(494, 361);
+            this.AcceptButton = this.btnRun;
+            this.ClientSize = new System.Drawing.Size(488, 344);
             this.Controls.Add(this.treeViewInstallProgress);
             this.Controls.Add(this.btnInfo);
             this.Controls.Add(this.grpBox);
-            this.Controls.Add(this.btnRun);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -245,9 +250,11 @@ namespace WixSharpSetup
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.grpBox.ResumeLayout(false);
             this.grpBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

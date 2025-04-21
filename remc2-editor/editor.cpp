@@ -1,5 +1,8 @@
 #include "editor.h"
 
+#include "../remc2/engine/Level.h"
+#include "../remc2/engine/Events.h"
+
 bool changed = false;
 
 int stage = 1000;
@@ -129,18 +132,11 @@ void loadlevel(int levelnumber) {
 }
 
 
-void editor_run(std::string gameFolderParam, std::string cdFolderParam)
+void editor_run()
 {	
 	*xadataclrd0dat.colorPalette_var28 = (uint8_t*)malloc(4096);//fix it 3x256 ?
 
 	initposistruct();
-
-	if (gameFolderParam != "")
-		strcpy(gameFolder, gameFolderParam.c_str());
-	
-
-	if (cdFolderParam != "")
-		strcpy(cdFolder, cdFolderParam.c_str());
 
 	gameDataPath = GetSubDirectoryPath(gameFolder);
 	cdDataPath = GetSubDirectoryPath(cdFolder);
@@ -151,7 +147,7 @@ void editor_run(std::string gameFolderParam, std::string cdFolderParam)
 	if (!std::filesystem::exists(cdDataPath))
 		throw std::invalid_argument("CD Data Path is not valid");
 
-	SetCDFilePaths(cdDataPath.c_str(), pstr);
+	DataFileIO::SetCDFilePaths(cdDataPath.c_str(), pstr);
 
 	//init
 	sub_5BCC0_set_any_variables1();//23C9F2 - 23CCC0

@@ -1,5 +1,5 @@
 # Magic Carpet 2 HD
-## Now actually in HD or 2K
+## Now actually in HD or 2K!
 Based off the Reverse engineering of game Magic Carpet 2 from assembler to c/c++ language by Tomas Versly <br />
 Forked from Tomas Vesely's repo here: https://github.com/turican0/remc2 <br /><br />
 Tomas has done amazing work, not only reverse engineering this code but updating it to use more modern memory allocation and use the SDL library for input and sound. He has even increased the sprite resolutions.
@@ -22,6 +22,9 @@ To jump to a selected Level use:</br>
 --set_level [0-25]</br>
 To run a level you have created using the editor:</br>
 --custom_level "[Path to .mc2 file]"</br>
+
+## FAQ ##
+https://github.com/thobbsinteractive/magic-carpet-2-hd/wiki/FAQ
 
 ## For more information on Magic Carpet 2 ##
 Moburma has been tirelessly working to document cut levels, level data structures and missing graphics at: https://tcrf.net/Magic_Carpet_2:_The_Netherworlds
@@ -71,7 +74,8 @@ There are two ways to build the Linux binary.
   - libpng
   - boost
   - boost-system
-    - To install them on Debian/Pi OS: `sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libpng-dev libpng++-dev libboost-system-dev` 
+  - spdlog
+    - To install them on Debian/Pi OS: `sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libpng-dev libpng++-dev libboost-system-dev libspdlog-dev` 
   4. Build the code
   ```bash
   export BUILDTYPE=Debug # or Release
@@ -83,7 +87,6 @@ There are two ways to build the Linux binary.
   ```
   5. Magic Carpet 2 is now built. you can find it in `build/Debug/inst/bin`
      - You can also run the code with sanitizers (leak, address, undefined behaviour, pointers) by passing `-DUSE_SANITIZERS=True` to CMake
-     - Additionally you can compile the code with clang-tidy analyzers by passing `-DUSE_CLANG_TIDY=True` to CMake
 
 - Building a [flatpak](https://flatpak.org/)
   1. Pull the development branch
@@ -97,6 +100,16 @@ There are two ways to build the Linux binary.
   flatpak run com.github.thobbsinteractive.magic-carpet-2-hd
   ```
 
+- Running clang-tidy for static code analysis
+  1. Run CMake with the flag `CMAKE_EXPORT_COMPILE_COMMANDS` for exporting the build commands like this
+  ```
+  cmake -GNinja -DUSE_SANITIZERS=True -DCMAKE_BUILD_TYPE=${BUILDTYPE} -DCMAKE_INSTALL_PREFIX=./inst -DUNIT_TESTS=True  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ../..
+  ```
+  2. Run clang-tidy
+  ```
+  run-clang-tidy -p . -j 4 -export-fixes clang-tidy-fixes.yaml
+  ```
+
 ### Providing the original game assets to `remc2` and running the game
 
 In order to run the game you need to own a copy of Magic Carpet 2. We provide a script to extract the assets from the GOG version. The following steps extract the required files from the original.
@@ -108,7 +121,7 @@ In order to run the game you need to own a copy of Magic Carpet 2. We provide a 
   ```
   bash check_install.sh -s [directory where GOG installed MC2] -d [destination directory]
   # for example :
-  bash check_install.sh -s "${HOME}/.wine/drive_c/games/Magic Carpet 2/" -d "build/${BUILDTYPE}/inst/bin/"
+  bash check_install.sh -s "${HOME}/.wine/drive_c/games/Magic Carpet 2/" -d "build/${BUILDTYPE}/inst/bin/NETHERW"
   ```
   Please note that if you have used any other method to get the assets, at least run a check to make sure that remc2 has access to every file it needs:
   ```

@@ -5,6 +5,6 @@
 #include "kiss_sdl.h"
 #include "../remc2/sub_main.h"
 
-void editor_run(std::string gameFolderParam, std::string cdFolderParam);
+void editor_run();
 
 #endif

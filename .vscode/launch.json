@@ -5,25 +5,76 @@
             "name": "Game",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Debug/inst/bin/remc2",
+            "program": "${workspaceFolder}/build_vscode/inst/bin/remc2",
             "args": [
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build/Debug/inst/bin",
+            "cwd": "${workspaceFolder}/build_vscode/inst/bin",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
             "miDebuggerPath": "/usr/bin/gdb"
         },
         {
-            "name": "Game Sanitizer",
+            "name": "Editor",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/buildsanitizers/Debug/inst/bin/remc2",
+            "program": "${workspaceFolder}/build_vscode/inst/bin/remc2-editor",
             "args": [
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/buildsanitizers/Debug/inst/bin",
+            "cwd": "${workspaceFolder}/build_vscode/inst/bin",
+            "environment": [
+                {
+                    "name": "ASAN_OPTIONS",
+                    "value": "detect_leaks=0"
+                }
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Game Statemonitor",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build_vscode/inst/bin/remc2",
+            "args": [
+                "--state_monitor"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build_vscode/inst/bin",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Unit Tests",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build_vscode/inst/bin/remc2-unit-test",
+            "args": [
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build_vscode/inst/bin",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Renderer Test",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build_vscode/inst/bin/remc2",
+            "args": [
+                "--set_level", "3",
+                "--test_renderers",
+                "--config_file_path", "./renderer-config.ini"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build_vscode/inst/bin",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
@@ -33,14 +84,11 @@
             "name": "Regression Tests",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Debug/inst/bin/remc2",
+            "program": "${workspaceFolder}/build_vscode/inst/bin/remc2-regression-test",
             "args": [
-                "reglevel", "0",
-                "--mode_test_regressions_game",
-                "--memimages_path", "${workspaceFolder}/build/Debug/inst/memimages/"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build/Debug/inst/bin",
+            "cwd": "${workspaceFolder}/build_vscode/inst/bin",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

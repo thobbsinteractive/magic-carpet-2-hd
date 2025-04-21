@@ -1,9 +1,9 @@
-#include "Regression-tests.h"
+#include "regression-tests.h"
 
 int run_regtest(int level)//236F70
 {
 	int exitCode = 0;
-	Logger->info("Testing Level{}", level);
+	Logger->info("Testing Level {}", level);
 
 	unitTests = true;
 	std::string locUnitTestsPath = get_exe_path() + "/memimages/regressions/level" + std::to_string(level);
@@ -59,10 +59,10 @@ int run_regtest(int level)//236F70
 
 	support_end();
 	if (locEndTestsCode == 20)
-		Logger->info("Test Level{} - OK", level);
+		Logger->info("Test Level {} - OK", level);
 	else
 	{
-		Logger->error("Test Level{} - FAILED", level);
+		Logger->error("Test Level {} - FAILED", level);
 		exitCode = -1;
 	}
 	return exitCode;

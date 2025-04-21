@@ -4,7 +4,7 @@
 
 //#define SOUND_OPENAL
 
-#include "mctypes.h"
+#include "bitmap_pos_struct.h"
 
 #define SOUND_SDLMIXER
 
