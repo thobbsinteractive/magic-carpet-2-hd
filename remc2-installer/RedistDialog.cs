@@ -27,10 +27,10 @@ namespace WixSharpSetup
             {
                 if (Directory.Exists(Path.Combine(Runtime.InstallDir, "Extract")))
                 {
-					string redistPath = Path.Combine(Runtime.InstallDir, @"Extract\\VC_redist.x86.exe\");
+					string redistPath = Path.Combine(Runtime.InstallDir, @"Extract\VC_redist.x86.exe");
 
-					if (System.IO.File.Exists(Path.Combine(Runtime.InstallDir, @"Extract\\VC_redist.x64.exe\")))
-						redistPath = Path.Combine(Runtime.InstallDir, @"Extract\\VC_redist.x64.exe\");
+					if (System.IO.File.Exists(Path.Combine(Runtime.InstallDir, @"Extract\VC_redist.x64.exe")))
+						redistPath = Path.Combine(Runtime.InstallDir, @"Extract\VC_redist.x64.exe");
 
 					ProcessStartInfo processStartInfo = new ProcessStartInfo(redistPath);
                     processStartInfo.WorkingDirectory = Runtime.InstallDir;
@@ -78,7 +78,7 @@ namespace WixSharpSetup
         {
 			if (!_runClicked)
 			{
-				if (MessageBox.Show("Are you sure you want to skip Extracting the Game Data? You cannot run Magic Carpet 2 HD without it!", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+				if (MessageBox.Show("Are you sure you want to skip installing the C++ Redistributable? You cannot run Magic Carpet 2 HD without it!", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 					Shell.GoNext();
 			}
 			else
