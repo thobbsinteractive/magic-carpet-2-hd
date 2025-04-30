@@ -38,6 +38,9 @@
     <Compile Update="EnhancedTexturesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="RedistDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <None Remove="wix\remc2-installer.g.wxs" />
     <None Remove="wix\remc2-installer.g.wxs" />
     <None Remove="wix\remc2-installer.g.wxs" />

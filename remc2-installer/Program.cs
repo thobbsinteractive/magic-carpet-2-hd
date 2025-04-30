@@ -119,8 +119,13 @@ namespace remc2_installer
                                  new Dir(new Id("EXTRACT_INSTALLDIR"), @"Extract",
                                     new File(new Id("DOSBOXEXTRACT_CONF"), @"Extract\dosboxExtract-GOG-CD.conf"),
                                     new File(new Id("XXCOPY16_EXE"), @"Extract\XXCOPY16.EXE"),
-									new File(new Id("MPXPLAY_EXE"), @"Extract\mpxplay.exe"))),
-                            new Property(new Id("HIGHTEX_PROPERTY"), "HIGHTEX", "yes"),
+									new File(new Id("MPXPLAY_EXE"), @"Extract\mpxplay.exe"),
+#if WIN64
+									new File(new Id("VC_Redist_EXE"), @"Extract\VC_redist.x64.exe"))),
+#else
+									new File(new Id("VC_Redist_EXE"), @"Extract\VC_redist.x86.exe"))),
+#endif
+							new Property(new Id("HIGHTEX_PROPERTY"), "HIGHTEX", "yes"),
                             new ManagedAction(new Id("MANAGED_ACTION"), CustomActions.SetEnhancedTextures, Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed));
 
 #if WIN64
@@ -140,12 +145,14 @@ namespace remc2_installer
                                             .Add<EnhancedDataDialog>()
                                             .Add(Dialogs.Progress)
                                             .Add<GameDataDialog>()
-                                            .Add(Dialogs.Exit);
+											.Add<RedistDialog>()
+											.Add(Dialogs.Exit);
 
             project.ManagedUI.ModifyDialogs.Add(Dialogs.MaintenanceType)
                                            .Add<EnhancedDataDialog>()
                                            .Add(Dialogs.Progress)
 										   .Add<GameDataDialog>()
+										   .Add<RedistDialog>()
 										   .Add(Dialogs.Exit);
 
             project.ControlPanelInfo.ProductIcon = @"Resources\app.ico";
