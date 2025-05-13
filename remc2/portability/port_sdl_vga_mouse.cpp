@@ -38,7 +38,7 @@ bool m_bMaintainAspectRatio = true;
 bool settingWindowGrabbed = true;
 bool settingWASD = false;
 
-const char* default_caption = "Magic Carpet 2 - Community Update";
+const char* default_caption = "Magic Carpet 2 HD - (Community Update)";
 
 bool inited = false;
 Uint8 tempPalettebuffer[768];
@@ -142,11 +142,9 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 				return;
 			}
 
-			SDL_WindowFlags test_fullscr = SDL_WINDOW_SHOWN;
-
 			if (forceWindow)//window
 			{
-				m_window = SDL_CreateWindow(default_caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth/*dm.w*/, windowHeight/*dm.h*/, test_fullscr);
+				m_window = SDL_CreateWindow(default_caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth/*dm.w*/, windowHeight/*dm.h*/, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 			}
 			else
 			{
@@ -155,7 +153,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 				{
 					display = FindDisplayByResolution(windowWidth, windowHeight);
 				}
-				m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, test_fullscr);
+				m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, SDL_WINDOW_FULLSCREEN_DESKTOP);
 			}
 			SDL_SetWindowGrab(m_window, settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
 
@@ -766,35 +764,25 @@ Right Ctrl (101-key)      *       *       *       *       *       *       *     
 */
 
 void ToggleFullscreen() {
-	Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;
-	bool IsFullscreen = SDL_GetWindowFlags(m_window) & FullscreenFlag;
+	bool IsFullscreen = SDL_GetWindowFlags(m_window) & SDL_WINDOW_FULLSCREEN_DESKTOP;
 
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0) {
 		SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
 		return;
 	}
-	//SDL_WindowFlags test_fullscr;
-	if (!(IsFullscreen ? 0 : FullscreenFlag))
-	{
-		dm.w = 640;
-		dm.h = 480;
-		//test_fullscr = SDL_WINDOW_SHOWN;
-	}
-	//else
-	//{
-		//test_fullscr = SDL_WINDOW_FULLSCREEN;
-	//}
 
-	if (!(IsFullscreen ? 0 : FullscreenFlag))
+	if (IsFullscreen)
 	{
-		SDL_SetWindowFullscreen(m_window, IsFullscreen ? 0 : FullscreenFlag);
-		SDL_SetWindowSize(m_window, dm.w, dm.h);
+		SDL_SetWindowFullscreen(m_window, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+		SDL_SetWindowDisplayMode(m_window, &dm);
 	}
 	else
 	{
-		SDL_SetWindowFullscreen(m_window, IsFullscreen ? 0 : FullscreenFlag);
-		SDL_SetWindowDisplayMode(m_window, &dm);
+		dm.w = windowResWidth;
+		dm.h = windowResHeight;
+		SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		SDL_SetWindowSize(m_window, dm.w, dm.h);
 	}
 }
 
