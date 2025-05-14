@@ -40,7 +40,7 @@ bool settingWASD = false;
 
 const char* default_caption = "Magic Carpet 2 HD - (Community Update)";
 
-bool inited = false;
+bool m_initiated = false;
 Uint8 tempPalettebuffer[768];
 
 int oldWidth;
@@ -111,12 +111,12 @@ SDL_Rect FindDisplayByResolution(uint32_t width, uint32_t height)
 
 void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResWidth, int gameResHeight, bool maintainAspectRatio, int displayIndex)
 {
-	m_bMaintainAspectRatio = maintainAspectRatio;
-	m_iWindowWidth = windowWidth;
-	m_iWindowHeight = windowHeight;
-
-	if (!inited)
+	if (!m_initiated)
 	{
+		m_bMaintainAspectRatio = maintainAspectRatio;
+		m_iWindowWidth = windowWidth;
+		m_iWindowHeight = windowHeight;
+
 		//Initialize SDL
 		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		{
@@ -208,7 +208,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 		Set_basic_Palette1();
 		//Draw_debug_matrix1();
 		Draw_black();
-		inited = true;
+		m_initiated = true;
 	}
 }
 
@@ -829,6 +829,18 @@ int events()
 	{
 		switch (event.type)
 		{
+		case SDL_WINDOWEVENT:
+		{
+			if (event.window.event == SDL_WINDOWEVENT_EXPOSED)
+			{
+				int newWidth = 0;
+				int newHeight = 0;
+				SDL_GetWindowSize(m_window, &newWidth, &newHeight);
+				m_iWindowWidth = newWidth;
+				m_iWindowHeight = newHeight;
+			}
+			break;
+		}
 		case SDL_KEYDOWN:
 			pressed = true;
 			lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
