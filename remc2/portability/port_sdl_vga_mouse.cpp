@@ -35,7 +35,7 @@ uint16_t m_iWindowHeight = 480;
 
 bool m_bMaintainAspectRatio = true;
 
-bool settingWindowGrabbed = true;
+bool m_settingWindowGrabbed = true;
 bool settingWASD = false;
 
 const char* default_caption = "Magic Carpet 2 HD - (Community Update)";
@@ -145,6 +145,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			if (forceWindow)//window
 			{
 				m_window = SDL_CreateWindow(default_caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth/*dm.w*/, windowHeight/*dm.h*/, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+				m_settingWindowGrabbed = false;
 			}
 			else
 			{
@@ -154,8 +155,9 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 					display = FindDisplayByResolution(windowWidth, windowHeight);
 				}
 				m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, SDL_WINDOW_FULLSCREEN_DESKTOP);
+				m_settingWindowGrabbed = true;
 			}
-			SDL_SetWindowGrab(m_window, settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
+			SDL_SetWindowGrab(m_window, m_settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
 
 			m_renderer =
 				SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED |
@@ -776,6 +778,7 @@ void ToggleFullscreen() {
 	{
 		SDL_SetWindowFullscreen(m_window, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 		SDL_SetWindowDisplayMode(m_window, &dm);
+		m_settingWindowGrabbed = false;
 	}
 	else
 	{
@@ -783,7 +786,14 @@ void ToggleFullscreen() {
 		dm.h = windowResHeight;
 		SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		SDL_SetWindowSize(m_window, dm.w, dm.h);
+		m_settingWindowGrabbed = true;
 	}
+	SDL_SetWindowGrab(m_window, m_settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
+}
+
+void ToggleMouseGrabbed() {
+	m_settingWindowGrabbed = !m_settingWindowGrabbed;
+	SDL_SetWindowGrab(m_window, m_settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
 }
 
 bool handleSpecialKeys(const SDL_Event &event) {
@@ -793,14 +803,11 @@ bool handleSpecialKeys(const SDL_Event &event) {
 		specialKey = true;
 	}
 	else if ((event.key.keysym.sym == SDLK_F10) && (event.key.keysym.mod & KMOD_CTRL)) {
-		settingWindowGrabbed = !settingWindowGrabbed;
-		SDL_SetWindowGrab(m_window, settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
-		std::cout << "Set window grab to " << (settingWindowGrabbed ? "true" : "false") << std::endl;
+		ToggleMouseGrabbed();
 		specialKey = true;
 	}
 	else if ((event.key.keysym.sym == SDLK_F11) && (event.key.keysym.mod & KMOD_CTRL)) {
 		settingWASD = !settingWASD;
-		std::cout << "Set WASD to " << (settingWindowGrabbed ? "true" : "false") << std::endl;
 		specialKey = true;
 	}
 
