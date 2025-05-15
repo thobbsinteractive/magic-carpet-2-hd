@@ -142,7 +142,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 				return;
 			}
 
-			if (forceWindow)//window
+			if (startWindowed)//window
 			{
 				m_window = SDL_CreateWindow(default_caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth/*dm.w*/, windowHeight/*dm.h*/, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 				m_settingWindowGrabbed = false;

@@ -38,7 +38,7 @@ int gameResWidth = 640;
 int gameResHeight = 480;
 int gameUiScale = 1;
 bool maintainAspectRatio = false;
-bool forceWindow = false;
+bool startWindowed = false;
 bool bigTextures = false;
 bool bigSprites = false;
 bool sky = true;
@@ -224,7 +224,7 @@ bool readini() {
 	}
 
 	maintainAspectRatio = reader.GetBoolean("graphics", "maintainAspectRatio", true);
-	forceWindow = reader.GetBoolean("graphics", "forceWindow", false);
+	startWindowed = reader.GetBoolean("graphics", "startWindowed", false);
 	sky = reader.GetBoolean("graphics", "sky", true);
 	reflections = reader.GetBoolean("graphics", "reflections", false);
 	dynamicLighting = reader.GetBoolean("graphics", "dynamicLighting", false);

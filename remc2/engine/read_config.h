@@ -22,7 +22,7 @@ extern int gameResWidth;
 extern int gameResHeight;
 extern int gameUiScale;
 extern bool maintainAspectRatio;
-extern bool forceWindow;
+extern bool startWindowed;
 extern bool bigTextures;
 extern bool bigSprites;
 extern bool sky;
