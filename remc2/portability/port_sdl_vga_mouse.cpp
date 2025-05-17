@@ -142,22 +142,18 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 				return;
 			}
 
+			SDL_Rect display = GetDisplayByIndex(displayIndex);
+			if (windowWidth > display.w || windowHeight > display.h)
+			{
+				display = FindDisplayByResolution(windowWidth, windowHeight);
+			}
+			m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			m_settingWindowGrabbed = true;
+
 			if (startWindowed)//window
 			{
-				m_window = SDL_CreateWindow(default_caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth/*dm.w*/, windowHeight/*dm.h*/, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-				m_settingWindowGrabbed = false;
+				ToggleFullscreen(true);
 			}
-			else
-			{
-				SDL_Rect display = GetDisplayByIndex(displayIndex);
-				if (windowWidth > display.w || windowHeight > display.h)
-				{
-					display = FindDisplayByResolution(windowWidth, windowHeight);
-				}
-				m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, SDL_WINDOW_FULLSCREEN_DESKTOP);
-				m_settingWindowGrabbed = true;
-			}
-			SDL_SetWindowGrab(m_window, m_settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
 
 			m_renderer =
 				SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED |
@@ -767,23 +763,41 @@ Right Ctrl (101-key)      *       *       *       *       *       *       *     
 
 void ToggleFullscreen() {
 	bool IsFullscreen = SDL_GetWindowFlags(m_window) & SDL_WINDOW_FULLSCREEN_DESKTOP;
+	ToggleFullscreen(IsFullscreen);
+}
 
+void ToggleFullscreen(bool fullScreen) {
+	
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0) {
 		SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
 		return;
 	}
 
-	if (IsFullscreen)
+	SDL_SetWindowMinimumSize(m_window, 640, 480);
+
+	if (fullScreen)
 	{
+		int top = 0;
+		int left = 0;
+		int bottom = 0;
+		int right = 0;
 		SDL_SetWindowFullscreen(m_window, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-		SDL_SetWindowDisplayMode(m_window, &dm);
+		SDL_SetWindowBordered(m_window, SDL_TRUE);
+		SDL_SetWindowResizable(m_window, SDL_TRUE);
+		SDL_GetWindowBordersSize(m_window, &top, &left, &bottom, &right);
+
+		SDL_SetWindowPosition(m_window, left, top);
+		if (windowResWidth >= dm.w || windowResHeight >= dm.h)
+			SDL_SetWindowSize(m_window, windowResWidth - left - right, windowResHeight - top - bottom);
+		else
+			SDL_SetWindowSize(m_window, windowResWidth, windowResHeight);
+
+		SDL_RestoreWindow(m_window);
 		m_settingWindowGrabbed = false;
 	}
 	else
 	{
-		dm.w = windowResWidth;
-		dm.h = windowResHeight;
 		SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		SDL_SetWindowSize(m_window, dm.w, dm.h);
 		m_settingWindowGrabbed = true;
