@@ -149,6 +149,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			}
 			m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, SDL_WINDOW_FULLSCREEN_DESKTOP);
 			m_settingWindowGrabbed = true;
+			SDL_SetWindowGrab(m_window, m_settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
 
 			if (startWindowed)//window
 			{
