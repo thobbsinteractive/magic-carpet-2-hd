@@ -136,25 +136,13 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			SDL_SetHint(SDL_HINT_FRAMEBUFFER_ACCELERATION, "1");
 			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
-			SDL_DisplayMode dm;
-			if (SDL_GetDesktopDisplayMode(0, &dm) != 0) {
-				SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
-				return;
-			}
-
 			SDL_Rect display = GetDisplayByIndex(displayIndex);
 			if (windowWidth > display.w || windowHeight > display.h)
 			{
 				display = FindDisplayByResolution(windowWidth, windowHeight);
 			}
 			m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, SDL_WINDOW_FULLSCREEN_DESKTOP);
-			m_settingWindowGrabbed = true;
-			SDL_SetWindowGrab(m_window, m_settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
-
-			if (startWindowed)//window
-			{
-				ToggleFullscreen(true);
-			}
+			ToggleFullscreen(!startWindowed);
 
 			m_renderer =
 				SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED |
@@ -764,7 +752,7 @@ Right Ctrl (101-key)      *       *       *       *       *       *       *     
 
 void ToggleFullscreen() {
 	bool IsFullscreen = SDL_GetWindowFlags(m_window) & SDL_WINDOW_FULLSCREEN_DESKTOP;
-	ToggleFullscreen(IsFullscreen);
+	ToggleFullscreen(!IsFullscreen);
 }
 
 void ToggleFullscreen(bool fullScreen) {
@@ -777,7 +765,7 @@ void ToggleFullscreen(bool fullScreen) {
 
 	SDL_SetWindowMinimumSize(m_window, 640, 480);
 
-	if (fullScreen)
+	if (!fullScreen)
 	{
 		int top = 0;
 		int left = 0;
