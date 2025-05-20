@@ -657,7 +657,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				HandleButtonClick_191B0(39, 1);
 				LastPressedKey_1806E4 = 0;
 			}
-			sub_1A8A0();
+			HandleArrowKeyPresses_1A8A0();
 			ComputeMousePlayerMovement_17060(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y);
 			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
 			goto LABEL_306;
@@ -1028,7 +1028,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				HandleButtonClick_191B0(39, 1);
 				LastPressedKey_1806E4 = 0;
 			}
-			sub_1A8A0();
+			HandleArrowKeyPresses_1A8A0();
 			ComputeMousePlayerMovement_17060(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y);
 			LastPressedKey_1806E4 = 0;
 			unk_18058Cstr.x_DWORD_18059C &= 0xFC;
@@ -2257,7 +2257,7 @@ void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
 // 1805C0: using guessed type __int16 x_WORD_1805C0_arrow_keys;
 
 //----- (0001A8A0) --------------------------------------------------------
-void sub_1A8A0()//1fb8a0
+void HandleArrowKeyPresses_1A8A0()//1fb8a0
 {
 	//char v0; // dh
 	//int result; // eax
