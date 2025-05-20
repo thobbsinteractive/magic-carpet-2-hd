@@ -29,7 +29,7 @@ char sub_18DA0(type_event_0x6E8E* a1, char a2, char a3);
 void sub_18B30();
 void sub_1A7A0_fly_asistant();
 void sub_18F80(type_event_0x6E8E* a1);
-void sub_1A8A0();
+void HandleArrowKeyPresses_1A8A0();
 void ComputeMousePlayerMovement_17060(int16_t x, int16_t y);
 int SelectSpellCategory_6D420(int16_t posX, int16_t posY);
 char sub_6D4C0(type_str_611* a1);
