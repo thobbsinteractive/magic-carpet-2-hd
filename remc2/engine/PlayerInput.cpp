@@ -2745,8 +2745,8 @@ void ChangeGameResolution_46B40()//227b40
 	unsigned __int8 v2; // al
 	unsigned __int8 v3; // al
 
-	int16_t v0_tempmousex = x_WORD_E3760_mouse.x;
-	int16_t v0_tempmousey = x_WORD_E3760_mouse.y;
+	int16_t v0_tempmousex = 320;
+	int16_t v0_tempmousey = 200;
 
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 	sub_417A0_install_pal_and_mouse_minmax();
@@ -2799,6 +2799,7 @@ void ChangeGameResolution_46B40()//227b40
 	}
 	memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
 	sub_41A90_VGA_Palette_install((TColor*)*xadatapald0dat2.colorPalette_var28);
+
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_90D6E_VGA_set_video_mode_320x200_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
 	else
@@ -2808,6 +2809,8 @@ void ChangeGameResolution_46B40()//227b40
 			screenWidth_18062C = gameResWidth;
 			screenHeight_180624 = gameResHeight;
 			sub_90E07_VGA_set_video_mode_alt_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
+			v0_tempmousex = screenWidth_18062C / 2;
+			v0_tempmousey = screenHeight_180624 / 2;
 		}
 		else
 			sub_90E07_VGA_set_video_mode_640x480_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
@@ -2828,6 +2831,7 @@ void ChangeGameResolution_46B40()//227b40
 		x_BYTE_D419D_fonttype = 1;
 	else
 		x_BYTE_D419D_fonttype = 3;
+
 	SetMousePositionInMemory_5BDC0(v0_tempmousex, v0_tempmousey);
 }
 
