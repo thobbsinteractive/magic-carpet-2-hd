@@ -817,10 +817,9 @@ bool handleSpecialKeys(const SDL_Event &event) {
 	return specialKey;
 }
 
-int mousex, mousey;
 bool pressed = false;
 uint16_t lastchar = 0;
-int events()
+int PollSdlEvents()
 {
 	SDL_Event event;
 	Uint8 buttonindex;
@@ -860,15 +859,10 @@ int events()
 			break;
 
 		case SDL_MOUSEMOTION:
-			mousex = event.motion.x;
-			mousey = event.motion.y;
 			MouseEvents(1, event.motion.x, event.motion.y);
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
-			mousex = event.motion.x;
-			mousey = event.motion.y;
-
 			buttonresult = 0;
 
 			buttonindex = event.button.button;
@@ -974,7 +968,7 @@ void VGA_Blit(Uint8* srcBuffer) {
 
 	oldWidth = m_gamePalletisedSurface->w;
 	if (CommandLineParams.DoHideGraphics()) return;
-	events();
+	PollSdlEvents();
 
 	if (m_iOrigh != m_gamePalletisedSurface->h)
 	{
