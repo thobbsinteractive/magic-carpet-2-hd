@@ -49,7 +49,7 @@ char sub_86930(unsigned __int16 a1);
 void HandleOptionsMenuButtonClick_19A70();
 void sub_18AA0();
 int SelectSpell_6D4F0(type_str_611* a1, int16_t mouseX);
-void sub_46B40();
+void ChangeGameResolution_46B40();
 void sub_75C50();
 int sub_906B4();
 signed int sub_90668(int a1);
@@ -1573,7 +1573,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		if (!D41A0_0.str_0x21B2.cresolution_0x21B4 || D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 			return;
 		sub_41BC0();
-		sub_46B40();
+		ChangeGameResolution_46B40();
 		return;
 	case 17:
 		//v25 = x_D41A0_BYTEARRAY_4_struct.byteindex_207 == 0;
@@ -2302,6 +2302,18 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 
 	if (!x_D41A0_BYTEARRAY_4_struct.speedIndex)
 	{
+		if (screenWidth_18062C > 640)
+		{
+			double scaleX = 640.0 / (double)screenWidth_18062C;
+			x = (int16_t)(double)x * scaleX;
+		}
+
+		if (screenHeight_180624 > 480)
+		{
+			double scaleY = 480.0 / (double)screenHeight_180624;
+			y = (int16_t)((double)y * scaleY);
+		}
+
 		if (x_WORD_180660_VGA_type_resolution == 1)
 		{
 			roll = ((x << 7) - 40960) / 320;
@@ -2727,7 +2739,7 @@ void sub_47650(int  /*a1*//*, int a2*/)//228650
 // EA3D8: using guessed type int *xadatapald0dat2.colorPalette_var28;
 
 //----- (00046B40) --------------------------------------------------------
-void sub_46B40()//227b40
+void ChangeGameResolution_46B40()//227b40
 {
 	char v1; // al
 	unsigned __int8 v2; // al
