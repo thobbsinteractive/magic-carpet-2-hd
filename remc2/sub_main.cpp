@@ -53821,11 +53821,6 @@ int x_WORD_180740;
 //----- (0008CB3A) --------------------------------------------------------
 void UpdateMouseEventData_8CB3A(uint32_t mouse_states, int32_t mouse_posx, int32_t mouse_posy)//26db3a
 {
-	//((void (*)(x_DWORD))_GETDS)((unsigned __int16)__DS__);
-	int16_t temp_mouse_x; // [esp+4h] [ebp-8h]
-	int16_t temp_mouse_y; // [esp+8h] [ebp-4h]
-	//void *retaddr[2]; // [esp+1Ch] [ebp+10h]
-
 	int helpWidth = 640;
 	int helpHeight = 480;
 	if (x_WORD_180660_VGA_type_resolution != 1)
@@ -53841,10 +53836,6 @@ void UpdateMouseEventData_8CB3A(uint32_t mouse_states, int32_t mouse_posx, int32
 		mouse_posx = 0x140;
 		mouse_posy = 0xc8;
 	}
-	//!!!!!!!! debug
-
-	temp_mouse_x = mouse_posx;
-	temp_mouse_y = mouse_posy;
 
 	if (x_DWORD_E3768)//2b4768 - 00000001
 	{
@@ -53856,12 +53847,24 @@ void UpdateMouseEventData_8CB3A(uint32_t mouse_states, int32_t mouse_posx, int32
 			temp_mouse_y = mouse_posy >> 3;//[ss:ebp-4] 0 - y
 			//only for text mode?
 		}*/
-		x_WORD_E3760_mouse.x = temp_mouse_x; //set x
-		x_WORD_E3760_mouse.y = temp_mouse_y; //set y
-		if (x_WORD_E3760_mouse.x > (helpWidth - 2))
-			x_WORD_E3760_mouse.x = (helpWidth - 2);
-		if (x_WORD_E3760_mouse.y > (helpHeight - 2))
-			x_WORD_E3760_mouse.y = (helpHeight - 2);
+
+		bool warpMouse = false;
+		if (mouse_posx > (helpWidth - 2))
+		{
+			mouse_posx = (helpWidth - 2);
+			warpMouse = true;
+		}
+		if (mouse_posy > (helpHeight - 2))
+		{
+			mouse_posy = (helpHeight - 2);
+			warpMouse = true;
+		}
+
+		x_WORD_E3760_mouse.x = mouse_posx; //set x
+		x_WORD_E3760_mouse.y = mouse_posy; //set y
+
+		if (warpMouse)
+			VGA_Set_mouse(mouse_posx, mouse_posy);
 
 		if (x_DWORD_180710_mouse_buttons_states & 2) // left button pressed
 		{
@@ -53880,9 +53883,9 @@ void UpdateMouseEventData_8CB3A(uint32_t mouse_states, int32_t mouse_posx, int32
 			if (!x_WORD_18074C_mouse_left2_button && !x_WORD_180746_mouse_left_button)//first cycle after press and ...
 			{
 				x_WORD_180746_mouse_left_button = 1;
-				x_WORD_E375C_mouse_position_x = temp_mouse_x;
+				x_WORD_E375C_mouse_position_x = mouse_posx;
 				//mouse_state = temp_mouse_y;
-				x_WORD_E375E_mouse_position_y = temp_mouse_y;
+				x_WORD_E375E_mouse_position_y = mouse_posy;
 			}
 			x_WORD_18074C_mouse_left2_button = 1;
 		}
@@ -53893,9 +53896,9 @@ void UpdateMouseEventData_8CB3A(uint32_t mouse_states, int32_t mouse_posx, int32
 			if (!x_WORD_18074A_mouse_right2_button && !x_WORD_180744_mouse_right_button)//first cycle after press and ...
 			{
 				x_WORD_180744_mouse_right_button = 1;
-				x_WORD_E375C_mouse_position_x = temp_mouse_x;
+				x_WORD_E375C_mouse_position_x = mouse_posx;
 				//mouse_state = temp_mouse_y;
-				x_WORD_E375E_mouse_position_y = temp_mouse_y;
+				x_WORD_E375E_mouse_position_y = mouse_posy;
 			}
 			x_WORD_18074A_mouse_right2_button = 1;
 		}
@@ -53906,9 +53909,9 @@ void UpdateMouseEventData_8CB3A(uint32_t mouse_states, int32_t mouse_posx, int32
 			if (!x_WORD_180748 && !x_WORD_180740)
 			{
 				x_WORD_180740 = 1;
-				x_WORD_E375C_mouse_position_x = temp_mouse_x;
+				x_WORD_E375C_mouse_position_x = mouse_posx;
 				//mouse_state = temp_mouse_y;
-				x_WORD_E375E_mouse_position_y = temp_mouse_y;
+				x_WORD_E375E_mouse_position_y = mouse_posy;
 			}
 			x_WORD_180748 = 1;
 		}
