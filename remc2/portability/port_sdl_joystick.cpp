@@ -118,8 +118,8 @@ void gamepad_sdl_init(void)
 				Logger->error("unable to initialize joystick/gamepad events. SDL Error: {}", SDL_GetError() );
 			} else {
 				gps.initialized = 1;
-
-				EventDisp->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, &set_scene));
+				std::function<void(Scene)> callBack = set_scene;
+				EventDisp->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBack));
 			}
 			if (gpc.haptic_enabled && (SDL_InitSubSystem(SDL_INIT_HAPTIC) == 0) && SDL_JoystickIsHaptic(m_gameController)) {
 				m_haptic = SDL_HapticOpenFromJoystick(m_gameController);
