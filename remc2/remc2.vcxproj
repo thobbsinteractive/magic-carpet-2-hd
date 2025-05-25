@@ -348,6 +348,9 @@
     <ClInclude Include="engine\Basic.h" />
     <ClInclude Include="engine\CommandLineParser.h" />
     <ClInclude Include="engine\Compare.h" />
+    <ClInclude Include="engine\Event.h" />
+    <ClInclude Include="engine\EventDispatcher.h" />
+    <ClInclude Include="engine\EventType.h" />
     <ClInclude Include="engine\GameBitmap.h" />
     <ClInclude Include="engine\GameUiConstants.h" />
     <ClInclude Include="engine\Graphics.h" />
@@ -358,6 +361,7 @@
     <ClInclude Include="engine\globals.h" />
     <ClInclude Include="engine\global_types.h" />
     <ClInclude Include="engine\GameBitmapIndexes.h" />
+    <ClInclude Include="engine\IEvent.h" />
     <ClInclude Include="engine\LangTextIndexes.h" />
     <ClInclude Include="engine\Map.h" />
     <ClInclude Include="engine\MapType.h" />
@@ -365,6 +369,7 @@
     <ClInclude Include="engine\GameRenderOriginal.h" />
     <ClInclude Include="engine\Network.h" />
     <ClInclude Include="engine\ProjectionPolygon.h" />
+    <ClInclude Include="engine\Scene.h" />
     <ClInclude Include="engine\TypeConfigDat.h" />
     <ClInclude Include="engine\Rectangle.h" />
     <ClInclude Include="engine\Type_BigSpritesBuffer.h" />
@@ -442,6 +447,7 @@
     <ClCompile Include="engine\Basic.cpp" />
     <ClCompile Include="engine\CommandLineParser.cpp" />
     <ClCompile Include="engine\Compare.cpp" />
+    <ClCompile Include="engine\EventDispatcher.cpp" />
     <ClCompile Include="engine\GameBitmap.cpp" />
     <ClCompile Include="engine\GameRenderGL.cpp" />
     <ClCompile Include="engine\GameRenderHD.cpp" />

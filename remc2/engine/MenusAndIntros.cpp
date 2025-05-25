@@ -5639,7 +5639,7 @@ void DrawEndGameTable_82C20(__int16 a1)//263c20
 
 	v42 = 50;
 	v48 = 50;
-	set_scene(SCENE_PREAMBLE_MENU);
+	EventDisp->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::PREAMBLE_MENU);
 	if (a1 > -1)
 	{
 		v24x[0] = (char*)LevelsNames_D9204[a1];
