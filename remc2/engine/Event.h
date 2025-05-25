@@ -2,8 +2,8 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include "IEvent.h"
 #include <functional>
+#include "IEvent.h"
 
 template <typename ..._args>
 class Event : public IEvent
@@ -14,7 +14,7 @@ public:
 
 	//Ctor & Dtor
 	//template< typename T_CB >
-	explicit Event(const EventType eventType, _callback & cb) : m_EventType(eventType), m_cbFunc(cb) {}
+	explicit Event(const EventType eventType, _callback& cb) : m_EventType(eventType), m_cbFunc(cb) {}
 	~Event() {}
 
 	//Accessors
