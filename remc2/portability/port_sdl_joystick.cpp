@@ -706,7 +706,7 @@ void set_scene(const Scene scene_id)
 			gps.max_y = gameResHeight;
 			break;
 	}
-	Logger->trace("set scene {}, nav_mode {}", scene_id, gps.nav_mode);
+	Logger->trace("set scene {}, nav_mode {}", (int)scene_id, gps.nav_mode);
 }
 
 /// \brief set the x,y simulated mouse pointer coordinates of the joystick rest position
@@ -714,7 +714,7 @@ void set_scene(const Scene scene_id)
 /// \param y coordinate
 void joystick_set_env(const int32_t x, const int32_t y)
 {
-	Logger->trace("pointer rest at {},{} scene {}, window size {},{}", x, y, gps.scene_id, gps.max_x, gps.max_y);
+	Logger->trace("pointer rest at {},{} scene {}, window size {},{}", x, y, (int)gps.scene_id, gps.max_x, gps.max_y);
 	gps.rest_x = x;
 	gps.rest_y = y;
 	gps.x = x;
