@@ -168,7 +168,7 @@ void gamepad_init(const int gameResWidth, const int gameResHeight)
 	gps.max_x = gameResWidth;
 	gps.max_y = gameResHeight;
 	joystick_set_env(gps.max_x >> 1, gps.max_y >> 1);
-	set_scene(Scene::PREAMBLE_MENU);
+	EventDisp->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::PREAMBLE_MENU);
 }
 
 void AdjustStickCoords(vec2d_t* stick, std::vector<Maths::Zone>* zonesX, std::vector<Maths::Zone>* zonesY)
@@ -691,8 +691,8 @@ void set_scene(const Scene scene_id)
 			gps.nav_mode = 1;
 			break;
 		case Scene::FLIGHT:
-			gps.max_x = gameResWidth;
-			gps.max_y = gameResHeight;
+			gps.max_x = 640;
+			gps.max_y = 480;
 			gps.nav_mode = 0;
 			break;
 		case Scene::FLIGHT_MENU:
