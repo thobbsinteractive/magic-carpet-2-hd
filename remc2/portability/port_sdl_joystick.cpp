@@ -57,7 +57,7 @@ struct gamepad_state {
 	uint8_t dead_zone_announced;    ///< slow infinite spin mitigation when joystick is in the resting position while in the flying window
 	uint8_t mov_key_announced;      ///< counter of consecutive setPress(false, KEY) requests 
 	uint8_t initialized;            ///< gamepad was initialized and it's ready to be queried
-	uint8_t scene_id;				///< current scene displayed by the recode. one of SCENE_PREAMBLE_MENU, SCENE_FLIGHT, SCENE_FLIGHT_MENU
+	Scene scene_id;				///< current scene displayed by the recode. one of SCENE_PREAMBLE_MENU, SCENE_FLIGHT, SCENE_FLIGHT_MENU
 	uint8_t nav_mode;               ///< true during menu navigation
 	uint8_t last_trig_fire_R;       ///< detection of movement based on the right trigger button's axis value
 	uint8_t last_trig_fire_L;       ///< detection of movement based on the left trigger button's axis value
@@ -118,6 +118,8 @@ void gamepad_sdl_init(void)
 				Logger->error("unable to initialize joystick/gamepad events. SDL Error: {}", SDL_GetError() );
 			} else {
 				gps.initialized = 1;
+
+				EventDisp->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, &set_scene));
 			}
 			if (gpc.haptic_enabled && (SDL_InitSubSystem(SDL_INIT_HAPTIC) == 0) && SDL_JoystickIsHaptic(m_gameController)) {
 				m_haptic = SDL_HapticOpenFromJoystick(m_gameController);
@@ -166,7 +168,7 @@ void gamepad_init(const int gameResWidth, const int gameResHeight)
 	gps.max_x = gameResWidth;
 	gps.max_y = gameResHeight;
 	joystick_set_env(gps.max_x >> 1, gps.max_y >> 1);
-	set_scene(SCENE_PREAMBLE_MENU);
+	set_scene(Scene::PREAMBLE_MENU);
 }
 
 void AdjustStickCoords(vec2d_t* stick, std::vector<Maths::Zone>* zonesX, std::vector<Maths::Zone>* zonesY)
@@ -489,7 +491,7 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 		gamepad_hat_mov_conv(&hat);
 	}
 
-	if (((gpc.axis_long_conf & GAMEPAD_ITEM_ENABLED) || (gpc.axis_trans_conf & GAMEPAD_ITEM_ENABLED)) && (gps.scene_id != SCENE_SPELL_MENU)) {
+	if (((gpc.axis_long_conf & GAMEPAD_ITEM_ENABLED) || (gpc.axis_trans_conf & GAMEPAD_ITEM_ENABLED)) && (gps.scene_id != Scene::SPELL_MENU)) {
 		// if movement is done via two axes
 		stick.x = gpe->axis_long;
 		stick.x_conf = gpc.axis_long_conf;
@@ -531,10 +533,10 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 			button_state |= 0x2;
 			//haptic_rumble_triggers_effect(0, 32000, 1000);
 		}
-		if (gps.scene_id != SCENE_FLIGHT && (gpe->btn_pressed & (1 << gpc.button_menu_select))) {
+		if (gps.scene_id != Scene::FLIGHT && (gpe->btn_pressed & (1 << gpc.button_menu_select))) {
 			button_state |= 0x2;
 		}
-		if (gps.scene_id != SCENE_FLIGHT_MENU && (gpe->btn_pressed & (1 << gpc.button_spell))) {
+		if (gps.scene_id != Scene::FLIGHT_MENU && (gpe->btn_pressed & (1 << gpc.button_spell))) {
 			setPress(true, GP_KEY_EMU_SPELL);
 			//haptic_rumble_triggers_effect(32000, 0, 1000);
 		}
@@ -555,7 +557,7 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 		if (gpe->btn_pressed & (1 << gpc.button_esc)) {
 			setPress(true, GP_KEY_EMU_ESC);
 		}
-		if (gps.scene_id == SCENE_DEAD) {
+		if (gps.scene_id == Scene::DEAD) {
 			setPress(true, GP_KEY_EMU_SPACE);
 		}
 	}
@@ -567,10 +569,10 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 		if (gpe->btn_released & (1 << gpc.button_fire_L)) {
 			button_state |= 0x4;
 		}
-		if (gps.scene_id != SCENE_FLIGHT && (gpe->btn_released & (1 << gpc.button_menu_select))) {
+		if (gps.scene_id != Scene::FLIGHT && (gpe->btn_released & (1 << gpc.button_menu_select))) {
 			button_state |= 0x4;
 		}
-		if (gps.scene_id != SCENE_FLIGHT_MENU && (gpe->btn_released & (1 << gpc.button_spell))) {
+		if (gps.scene_id != Scene::FLIGHT_MENU && (gpe->btn_released & (1 << gpc.button_spell))) {
 			setPress(false, GP_KEY_EMU_SPELL);
 		}
 		if (gpe->btn_released & (1 << gpc.button_minimap)) {
@@ -588,7 +590,7 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 		if (gpe->btn_released & (1 << gpc.button_esc)) {
 			setPress(false, GP_KEY_EMU_ESC);
 		}
-		if (gps.scene_id == SCENE_DEAD) {
+		if (gps.scene_id == Scene::DEAD) {
 			setPress(false, GP_KEY_EMU_SPACE);
 		}
 	}
@@ -679,22 +681,22 @@ void gamepad_poll_data(gamepad_event_t *gpe)
 
 /// \brief reconfigure gamepad maximum coverage and operating mode based on recode scene
 /// \param scene_id one of SCENE_PREAMBLE_MENU, SCENE_FLIGHT, SCENE_FLIGHT_MENU
-void set_scene(const uint8_t scene_id)
+void set_scene(const Scene scene_id)
 {
 	gps.scene_id = scene_id;
 	switch (scene_id) {
-		case SCENE_PREAMBLE_MENU:
+		case Scene::PREAMBLE_MENU:
 			gps.max_x = 640;
 			gps.max_y = 480;
 			gps.nav_mode = 1;
 			break;
-		case SCENE_FLIGHT:
+		case Scene::FLIGHT:
 			gps.max_x = gameResWidth;
 			gps.max_y = gameResHeight;
 			gps.nav_mode = 0;
 			break;
-		case SCENE_FLIGHT_MENU:
-		case SCENE_SPELL_MENU:
+		case Scene::FLIGHT_MENU:
+		case Scene::SPELL_MENU:
 			gps.max_x = gameResWidth;
 			gps.max_y = gameResHeight;
 			gps.nav_mode = 1;

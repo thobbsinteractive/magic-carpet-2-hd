@@ -23072,7 +23072,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 	{
 		sub_2BB40_draw_bitmap(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[x_BYTE_D419E]);
 	}
-	set_scene(SCENE_SPELL_MENU);
+	EventDisp->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::SPELL_MENU);
 }
 // D419E: using guessed type char x_BYTE_D419E;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
@@ -40410,6 +40410,8 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 #endif
 		InitializeLogging(level);
 
+		EventDispatcher* EventDisp = new EventDispatcher();
+
 		if (assignToSpecificCores)
 		{
 #ifdef _MSC_VER
@@ -40486,6 +40488,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 					EndLibNetServer();*/
 			}
 		}
+		delete EventDisp;
 	}
 	catch (const thread_exit_exception& e)
 	{
@@ -62663,7 +62666,7 @@ void AddPlayer03_00_5E010(type_event_0x6E8E* a1x)//23f010
 		a1x->state_0x45_69 = 2;
 		a1x->word_0x2C_44 = 0;
 		PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 16);
-		set_scene(SCENE_DEAD);
+		EventDisp->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::DEAD);
 	}
 }
 
