@@ -1,5 +1,8 @@
 #include "EventDispatcher.h"
 
+// Define the static member outside the class
+EventDispatcher* EventDispatcher::I = nullptr;
+
 EventDispatcher::~EventDispatcher()
 {
 	for (auto el : _eventList)

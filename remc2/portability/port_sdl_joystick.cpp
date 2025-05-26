@@ -14,6 +14,7 @@
 
 #include "SDL2/SDL.h"
 
+#include "../engine/EventDispatcher.h"
 #include "../engine/sub_main_mouse.h"
 #include "../engine/read_config.h"
 #include "../utilities/Maths.h"
@@ -119,7 +120,7 @@ void gamepad_sdl_init(void)
 			} else {
 				gps.initialized = 1;
 				std::function<void(Scene)> callBack = set_scene;
-				EventDisp->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBack));
+				EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBack));
 			}
 			if (gpc.haptic_enabled && (SDL_InitSubSystem(SDL_INIT_HAPTIC) == 0) && SDL_JoystickIsHaptic(m_gameController)) {
 				m_haptic = SDL_HapticOpenFromJoystick(m_gameController);
@@ -168,7 +169,7 @@ void gamepad_init(const int gameResWidth, const int gameResHeight)
 	gps.max_x = gameResWidth;
 	gps.max_y = gameResHeight;
 	joystick_set_env(gps.max_x >> 1, gps.max_y >> 1);
-	EventDisp->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::PREAMBLE_MENU);
+	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::PREAMBLE_MENU);
 }
 
 void AdjustStickCoords(vec2d_t* stick, std::vector<Maths::Zone>* zonesX, std::vector<Maths::Zone>* zonesY)

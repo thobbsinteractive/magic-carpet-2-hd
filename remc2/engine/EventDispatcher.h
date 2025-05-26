@@ -7,6 +7,8 @@
 class EventDispatcher
 {
 public:
+	static EventDispatcher* I;
+
 	~EventDispatcher();
 	void RegisterEvent(IEvent* event);
 	template <typename ..._args>
