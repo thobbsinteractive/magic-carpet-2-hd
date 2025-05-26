@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include "Type_F2C20ar.h"
-#include "EventDispatcher.h"
 
 extern uint8_t* pdwScreenBuffer_351628;
 extern int16_t x_WORD_180660_VGA_type_resolution;
