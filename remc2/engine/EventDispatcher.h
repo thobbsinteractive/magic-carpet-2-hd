@@ -1,8 +1,5 @@
 #pragma once
-#ifndef EVENT_DISPATCHER_H
-#define EVENT_DISPATCHER_H
 
-#include <string>
 #include <map>
 #include <vector>
 #include "Event.h"
@@ -18,5 +15,3 @@ public:
 private:
 	std::map<EventType, std::vector<IEvent*>> _eventList;
 };
-
-#endif //EVENT_DISPATCHER_H
