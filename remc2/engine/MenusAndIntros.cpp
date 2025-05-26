@@ -1,8 +1,8 @@
 #include "MenusAndIntros.h"
 
 #include <algorithm>
-
 #include "../utilities/StateMonitor.h"
+#include "EventDispatcher.h"
 #include "CommandLineParser.h"
 #include "GameUI.h"
 #include "Level.h"
@@ -5639,7 +5639,7 @@ void DrawEndGameTable_82C20(__int16 a1)//263c20
 
 	v42 = 50;
 	v48 = 50;
-	EventDisp->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::PREAMBLE_MENU);
+	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::PREAMBLE_MENU);
 	if (a1 > -1)
 	{
 		v24x[0] = (char*)LevelsNames_D9204[a1];
