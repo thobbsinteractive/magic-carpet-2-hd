@@ -1,6 +1,4 @@
 #pragma once
-#ifndef EVENT_H
-#define EVENT_H
 
 #include <functional>
 #include "IEvent.h"
@@ -29,5 +27,3 @@ private:
 	//Event callback - can't be changed inside event.
 	_callback  const m_cbFunc;
 };
-
-#endif //EVENT_H
