@@ -262,8 +262,9 @@ bool readini() {
 	maxGameFps = reader.GetInteger("game", "maxGameFps", 0);
 	fmvFps = reader.GetInteger("game", "fmvFps", 20);
 	loggingLevel = reader.GetString("game", "loggingLevel", "Info");
-	invertYAxis = reader.GetBoolean("game", "invertYAxis", true);
-	invertXAxis = reader.GetBoolean("game", "invertXAxis", false);
+
+	invertYAxis = reader.GetBoolean("controls", "invertYAxis", true);
+	invertXAxis = reader.GetBoolean("controls", "invertXAxis", false);
 
 	gpc.axis_yaw = reader.GetInteger("gamepad", "axis_yaw", GAMEPAD_ITEM_DISABLED);
 	gpc.axis_pitch = reader.GetInteger("gamepad", "axis_pitch", GAMEPAD_ITEM_DISABLED);
