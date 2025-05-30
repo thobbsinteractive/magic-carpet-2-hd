@@ -2302,18 +2302,6 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 
 	if (!x_D41A0_BYTEARRAY_4_struct.speedIndex)
 	{
-		if (screenWidth_18062C > 640)
-		{
-			double scaleX = 640.0 / (double)screenWidth_18062C;
-			x = (int16_t)(double)x * scaleX;
-		}
-
-		if (screenHeight_180624 > 480)
-		{
-			double scaleY = 480.0 / (double)screenHeight_180624;
-			y = (int16_t)((double)y * scaleY);
-		}
-
 		if (x_WORD_180660_VGA_type_resolution == 1)
 		{
 			roll = ((x << 7) - 40960) / 320;
@@ -2809,8 +2797,8 @@ void ChangeGameResolution_46B40()//227b40
 			screenWidth_18062C = gameResWidth;
 			screenHeight_180624 = gameResHeight;
 			sub_90E07_VGA_set_video_mode_alt_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
-			v0_tempmousex = screenWidth_18062C / 2;
-			v0_tempmousey = screenHeight_180624 / 2;
+			v0_tempmousex = 640 / 2;
+			v0_tempmousey = 480 / 2;
 		}
 		else
 			sub_90E07_VGA_set_video_mode_640x480_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);

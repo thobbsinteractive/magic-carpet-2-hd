@@ -753,6 +753,8 @@ void sub_1FA20(type_event_0x6E8E* a1);
 void sub_1FA50(type_event_0x6E8E* a1);
 void sub_1FA70(type_event_0x6E8E* a1);
 void sub_1FAA0(type_event_0x6E8E* a1);
+Scene GetCurrentScene();
+void SetCurrentScene(Scene scene);
 void AddArcher0504_1FF40(type_event_0x6E8E* a1);
 void sub_1FFE0(type_event_0x6E8E* a1);
 void HitArcher_20010(type_event_0x6E8E* a1);

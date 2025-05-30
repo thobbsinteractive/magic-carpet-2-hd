@@ -46,6 +46,9 @@ after NetworkCancel_748F7 not changed
 #endif //__linux__
 
 int test_regression_level = 1;
+
+Scene m_CurrentScene = Scene::PREAMBLE_MENU;
+
 //first multi is 50(51) 10
 //first hide level is 30(31) 5
 
@@ -12172,6 +12175,16 @@ LABEL_68:
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // EA3E4: using guessed type int x_DWORD_EA3E4[];
+
+Scene GetCurrentScene()
+{
+	return m_CurrentScene;
+}
+
+void SetCurrentScene(Scene scene)
+{
+	m_CurrentScene = scene;
+}
 
 //----- (0001FF40) --------------------------------------------------------
 void AddArcher0504_1FF40(type_event_0x6E8E* event)//200f40
@@ -40407,6 +40420,9 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		EventDispatcher::I = new EventDispatcher();
 
+		std::function<void(Scene)> callBack = SetCurrentScene;
+		EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBack));
+
 		if (assignToSpecificCores)
 		{
 #ifdef _MSC_VER
@@ -53832,8 +53848,13 @@ void UpdateMouseEventData_8CB3A(uint32_t mouse_states, int32_t mouse_posx, int32
 	if (x_WORD_180660_VGA_type_resolution != 1)
 		if (!DefaultResolutions())
 		{
-			helpWidth = screenWidth_18062C;
-			helpHeight = screenHeight_180624;
+			auto scene = GetCurrentScene();
+
+			if (scene != Scene::FLIGHT)
+			{
+				helpWidth = screenWidth_18062C;
+				helpHeight = screenHeight_180624;
+			}
 		}
 
 	//!!!!!!!! debug
