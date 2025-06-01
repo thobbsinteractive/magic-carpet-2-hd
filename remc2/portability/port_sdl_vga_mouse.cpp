@@ -973,7 +973,7 @@ void VGA_Blit(Uint8* srcBuffer) {
 	if (CommandLineParams.DoHideGraphics()) return;
 	PollSdlEvents();
 
-	if (m_iOrigh != m_gamePalletisedSurface->h)
+	if (m_iOrigh != m_gamePalletisedSurface->h || m_iOrigw != m_gamePalletisedSurface->w)
 	{
 		SDL_RenderClear(m_renderer);
 		SDL_FreeSurface(m_gamePalletisedSurface);
