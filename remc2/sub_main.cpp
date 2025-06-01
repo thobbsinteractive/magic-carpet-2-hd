@@ -40376,6 +40376,10 @@ void InitNetworkInfo() {
 //----- (00055F70) --------------------------------------------------------
 int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 {
+	std::function<void(Scene)> sceneChangeCallBack = SetCurrentScene;
+	std::function<void(int, int)> gameResCallBack = ChangeGameResolution;
+	std::function<void(int, int)> gameUiCallBack = ChangeUiResolution;
+
 	int exitCode = 0;
 	try
 	{
@@ -40420,8 +40424,9 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		EventDispatcher::I = new EventDispatcher();
 
-		std::function<void(Scene)> callBack = SetCurrentScene;
-		EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBack));
+		EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, sceneChangeCallBack));
+		EventDispatcher::I->RegisterEvent(new Event<int, int>(EventType::E_WINDOW_SIZE_CHANGE, gameResCallBack));
+		EventDispatcher::I->RegisterEvent(new Event<int, int>(EventType::E_WINDOW_SIZE_CHANGE, gameUiCallBack));
 
 		if (assignToSpecificCores)
 		{
@@ -47048,6 +47053,12 @@ void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint
 	BitmapIO::WritePaletteAsImageBMP(path.c_str(), 256, ptrPalette);
 	path = GetSubDirectoryFilePath("BufferOut", filename.c_str());
 	BitmapIO::WriteImageBufferAsImageBMP(path.c_str(), width, height, ptrPalette, ptrBuffer);
+}
+
+void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer)
+{
+	const std::string filename = "BufferOut.bmp";
+	WriteBufferToBMP(width, height, ptrPalette, ptrBuffer, filename);
 }
 
 void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8_t* ptrPalette, uint8_t* ptrBuffer)

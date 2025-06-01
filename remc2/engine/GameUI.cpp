@@ -3954,6 +3954,10 @@ int sub_1A4A0()//1fb4a0
 	return 6 * ((v0 - 11) / 6 + 1) + 16;
 }
 
+void ChangeUiResolution(int width, int height)
+{
+}
+
 //----- (0001A030) --------------------------------------------------------
 void SetOkayCancelButtonsCursorPosition_1A030()//1fb030
 {
