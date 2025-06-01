@@ -156,28 +156,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			// It has to do the conversion each time you update the texture manually. This slows everything down.
 			// Do it once, and don't have to worry about it again.
 
-			m_gamePalletisedSurface =
-				SDL_CreateRGBSurface(
-					SDL_SWSURFACE, gameResWidth, gameResHeight, 24,
-					redMask, greenMask, blueMask, alphaMask);
-
-			m_gamePalletisedSurface =
-				SDL_ConvertSurfaceFormat(
-					m_gamePalletisedSurface, SDL_PIXELFORMAT_INDEX8, 0);
-
-			m_gameRGBASurface =
-				SDL_CreateRGBSurface(
-					SDL_SWSURFACE, gameResWidth, gameResHeight, 24,
-					redMask, greenMask, blueMask, alphaMask);
-
-			m_gameRGBASurface =
-				SDL_ConvertSurfaceFormat(
-					m_gameRGBASurface, SDL_PIXELFORMAT_RGB888, 0);
-
-			m_texture = SDL_CreateTexture(m_renderer,
-				SDL_PIXELFORMAT_RGB888,
-				SDL_TEXTUREACCESS_STREAMING,
-				m_gameRGBASurface->w, m_gameRGBASurface->h);
+			CreateRenderSurfaces(gameResWidth, gameResHeight);
 
 			SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
 
@@ -196,6 +175,32 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 		Draw_black();
 		m_initiated = true;
 	}
+}
+
+void CreateRenderSurfaces(int width, int height)
+{
+	m_gamePalletisedSurface =
+		SDL_CreateRGBSurface(
+			SDL_SWSURFACE, width, height, 24,
+			redMask, greenMask, blueMask, alphaMask);
+
+	m_gamePalletisedSurface =
+		SDL_ConvertSurfaceFormat(
+			m_gamePalletisedSurface, SDL_PIXELFORMAT_INDEX8, 0);
+
+	m_gameRGBASurface =
+		SDL_CreateRGBSurface(
+			SDL_SWSURFACE, width, height, 24,
+			redMask, greenMask, blueMask, alphaMask);
+
+	m_gameRGBASurface =
+		SDL_ConvertSurfaceFormat(
+			m_gameRGBASurface, SDL_PIXELFORMAT_RGB888, 0);
+
+	m_texture = SDL_CreateTexture(m_renderer,
+		SDL_PIXELFORMAT_RGB888,
+		SDL_TEXTUREACCESS_STREAMING,
+		m_gameRGBASurface->w, m_gameRGBASurface->h);
 }
 
 Uint8* VGA_Get_Palette() {
@@ -976,17 +981,8 @@ void VGA_Blit(Uint8* srcBuffer) {
 	if (m_iOrigh != m_gamePalletisedSurface->h || m_iOrigw != m_gamePalletisedSurface->w)
 	{
 		SDL_RenderClear(m_renderer);
-		SDL_FreeSurface(m_gamePalletisedSurface);
-
-		m_gamePalletisedSurface =
-			SDL_CreateRGBSurface(
-				SDL_SWSURFACE, m_iOrigw, m_iOrigh, 24,
-				redMask, greenMask, blueMask, alphaMask);
-
-		m_gamePalletisedSurface =
-			SDL_ConvertSurfaceFormat(
-				m_gamePalletisedSurface, SDL_PIXELFORMAT_INDEX8, 0);
-
+		FreeRenderSurfaces();
+		CreateRenderSurfaces(m_iOrigw, m_iOrigh);
 		SDL_SetPaletteColors(m_gamePalletisedSurface->format->palette, m_currentPalletColours, 0, 256);
 
 		lastResHeight = m_iOrigh;
@@ -1118,18 +1114,23 @@ void VGA_close()
 	gamepad_sdl_close();
 	SDL_FreeSurface(m_surfaceFont);
 	m_surfaceFont = nullptr;
-	SDL_FreeSurface(m_gamePalletisedSurface);
-	m_gamePalletisedSurface = nullptr;
-	SDL_FreeSurface(m_gamePalletisedSurface);
-	m_gamePalletisedSurface = nullptr;
-	SDL_DestroyTexture(m_texture);
-	m_texture = nullptr;
+	FreeRenderSurfaces();
 	SDL_DestroyRenderer(m_renderer);
 	m_renderer = nullptr;
 	SDL_DestroyWindow(m_window);
 	m_window = nullptr;
 	SDL_Quit();
 	//free(m_currentPalletColours);
+}
+
+void FreeRenderSurfaces()
+{
+	SDL_FreeSurface(m_gamePalletisedSurface);
+	m_gamePalletisedSurface = nullptr;
+	SDL_FreeSurface(m_gameRGBASurface);
+	m_gameRGBASurface = nullptr;
+	SDL_DestroyTexture(m_texture);
+	m_texture = nullptr;
 }
 
 int16_t VGA_get_shift_status() {
