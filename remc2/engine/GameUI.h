@@ -112,6 +112,7 @@ void sub_548F0(type_str_0x2BDE* a1);
 void sub_1A280();
 int sub_1A4A0();
 void SetOkayCancelButtonsCursorPosition_1A030();
+void ChangeUiResolution(int width, int height);
 void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1);
 void SetMousePositionInMemory_5BDC0(int16_t posX, int16_t posY);
 void sub_1A5B0_getLangStrings(int a1, int* a2, int* a3);

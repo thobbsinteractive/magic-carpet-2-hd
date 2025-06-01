@@ -12,6 +12,7 @@
 #ifdef USE_DOSBOX
 extern DOS_Device* DOS_CON;
 #endif //USE_DOSBOX
+#include "../engine/EventDispatcher.h"
 
 SDL_Window* m_window = nullptr;
 SDL_Renderer* m_renderer = nullptr;
@@ -833,13 +834,15 @@ int PollSdlEvents()
 		{
 		case SDL_WINDOWEVENT:
 		{
-			if (event.window.event == SDL_WINDOWEVENT_EXPOSED)
+			if (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESIZED)
 			{
 				int newWidth = 0;
 				int newHeight = 0;
 				SDL_GetWindowSize(m_window, &newWidth, &newHeight);
 				m_iWindowWidth = newWidth;
 				m_iWindowHeight = newHeight;
+				if (EventDispatcher::I != nullptr)
+					EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
 			}
 			break;
 		}
