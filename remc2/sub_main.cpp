@@ -40377,8 +40377,6 @@ void InitNetworkInfo() {
 int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 {
 	std::function<void(Scene)> sceneChangeCallBack = SetCurrentScene;
-	std::function<void(int, int)> gameResCallBack = ChangeGameResolution;
-	std::function<void(int, int)> gameUiCallBack = ChangeUiResolution;
 
 	int exitCode = 0;
 	try
@@ -40425,8 +40423,6 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		EventDispatcher::I = new EventDispatcher();
 
 		EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, sceneChangeCallBack));
-		EventDispatcher::I->RegisterEvent(new Event<int, int>(EventType::E_WINDOW_SIZE_CHANGE, gameResCallBack));
-		EventDispatcher::I->RegisterEvent(new Event<int, int>(EventType::E_WINDOW_SIZE_CHANGE, gameUiCallBack));
 
 		if (assignToSpecificCores)
 		{

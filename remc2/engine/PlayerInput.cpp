@@ -2726,19 +2726,6 @@ void sub_47650(int  /*a1*//*, int a2*/)//228650
 // EA3B8: using guessed type int x_DWORD_EA3B8;
 // EA3D8: using guessed type int *xadatapald0dat2.colorPalette_var28;
 
-void ChangeGameResolution(int width, int height)
-{
-	if (m_ptrGameRender != nullptr && !(x_WORD_180660_VGA_type_resolution & 1) && 
-		(gameResWidth != width || gameResHeight != height))
-	{
-		gameResWidth = width;
-		gameResHeight = height;
-		screenWidth_18062C = width;
-		screenHeight_180624 = height;
-		sub_90E07_VGA_set_video_mode_alt_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
-	}
-}
-
 //----- (00046B40) --------------------------------------------------------
 void ChangeGameResolution_46B40()//227b40
 {
