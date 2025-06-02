@@ -58,7 +58,7 @@ struct gamepad_state {
 	uint8_t dead_zone_announced;    ///< slow infinite spin mitigation when joystick is in the resting position while in the flying window
 	uint8_t mov_key_announced;      ///< counter of consecutive setPress(false, KEY) requests 
 	uint8_t initialized;            ///< gamepad was initialized and it's ready to be queried
-	Scene scene_id;				///< current scene displayed by the recode. one of SCENE_PREAMBLE_MENU, SCENE_FLIGHT, SCENE_FLIGHT_MENU
+	Scene scene_id;                 ///< current scene displayed by the recode. one of SCENE_PREAMBLE_MENU, SCENE_FLIGHT, SCENE_FLIGHT_MENU
 	uint8_t nav_mode;               ///< true during menu navigation
 	uint8_t last_trig_fire_R;       ///< detection of movement based on the right trigger button's axis value
 	uint8_t last_trig_fire_L;       ///< detection of movement based on the left trigger button's axis value
