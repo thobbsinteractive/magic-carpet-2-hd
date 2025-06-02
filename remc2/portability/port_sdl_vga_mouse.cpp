@@ -867,7 +867,7 @@ int PollSdlEvents()
 			break;
 
 		case SDL_MOUSEMOTION:
-			MouseEvents(1, event.motion.x, event.motion.y);
+			SetMouseEvents(1, event.motion.x, event.motion.y);
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
@@ -923,7 +923,7 @@ int PollSdlEvents()
 			}
 			}
 
-			MouseEvents(buttonresult, event.motion.x, event.motion.y);
+			SetMouseEvents(buttonresult, event.motion.x, event.motion.y);
 			break;
 		case SDL_JOYAXISMOTION:
 			if (event.jaxis.which == gpc.controller_id) {
@@ -966,10 +966,48 @@ int PollSdlEvents()
 	return 1;
 }
 
-void VGA_Set_mouse(const int16_t x, const int16_t y) {
+void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) {
+
+	ScaleUpMouseCoords(x, y);
+	MouseEvents(buttons, x, y);
+}
+
+void VGA_Set_mouse(int16_t x, int16_t y) 
+{
+	ScaleDownMouseCoords(x, y);
 	SDL_WarpMouseInWindow(m_window, x, y);
 	joystick_set_env(x, y);
-};
+}
+
+void ScaleUpMouseCoords(int16_t& x, int16_t& y)
+{
+	if (m_iOrigw > m_iWindowWidth)
+	{
+		float fx = (float)m_iOrigw / (float)m_iWindowWidth;
+		x = x * fx;
+	}
+
+	if (m_iOrigh > m_iWindowHeight)
+	{
+		float fy = (float)m_iOrigh / (float)m_iWindowHeight;
+		y = y * fy;
+	}
+}
+
+void ScaleDownMouseCoords(int16_t& x, int16_t& y)
+{
+	if (m_iOrigw > m_iWindowWidth)
+	{
+		float fx = (float)m_iWindowWidth / (float)m_iOrigw;
+		x = x * fx;
+	}
+
+	if (m_iOrigh > m_iWindowHeight)
+	{
+		float fy = (float)m_iWindowHeight / (float)m_iOrigh;
+		y = y * fy;
+	}
+}
 
 void VGA_Blit(Uint8* srcBuffer) {
 	if (unitTests)return;
