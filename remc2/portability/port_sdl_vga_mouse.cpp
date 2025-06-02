@@ -981,13 +981,13 @@ void VGA_Set_mouse(int16_t x, int16_t y)
 
 void ScaleUpMouseCoords(int16_t& x, int16_t& y)
 {
-	if (m_iOrigw > m_iWindowWidth)
+	if (m_iOrigw > 640 && m_iOrigw != m_iWindowWidth)
 	{
 		float fx = (float)m_iOrigw / (float)m_iWindowWidth;
 		x = x * fx;
 	}
 
-	if (m_iOrigh > m_iWindowHeight)
+	if (m_iOrigh > 480 && m_iOrigh != m_iWindowHeight)
 	{
 		float fy = (float)m_iOrigh / (float)m_iWindowHeight;
 		y = y * fy;
@@ -996,13 +996,13 @@ void ScaleUpMouseCoords(int16_t& x, int16_t& y)
 
 void ScaleDownMouseCoords(int16_t& x, int16_t& y)
 {
-	if (m_iOrigw > m_iWindowWidth)
+	if (m_iOrigw > 640 && m_iOrigw != m_iWindowWidth)
 	{
 		float fx = (float)m_iWindowWidth / (float)m_iOrigw;
 		x = x * fx;
 	}
 
-	if (m_iOrigh > m_iWindowHeight)
+	if (m_iOrigh > 480 && m_iOrigh != m_iWindowHeight)
 	{
 		float fy = (float)m_iWindowHeight / (float)m_iOrigh;
 		y = y * fy;
