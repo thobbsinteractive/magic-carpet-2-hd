@@ -41,4 +41,3 @@ void GetPauseMenuCoordinates_2FFE0(int16_t* posX, int16_t* posY, int16_t* width,
 signed int sub_10130(int a1, x_DWORD* a2, x_DWORD* a3);
 void sub_19A50();
 void sub_47130();
-void ChangeGameResolution(int width, int height);
