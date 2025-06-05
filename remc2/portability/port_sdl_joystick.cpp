@@ -413,7 +413,7 @@ void gamepad_axis_bool_conv(const int16_t input, bool *ret)
 }
 
 /// \brief emulate a mouse based on data provided by a gamepad or joystick
-/// \param gpe  gamepad_event_t event strucure populated thru SDL_PollEvent()
+/// \param gpe  gamepad_event_t event structure populated thru SDL_PollEvent()
 void gamepad_event_mgr(gamepad_event_t *gpe)
 {
 	uint16_t button_state = 0;
@@ -425,7 +425,7 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 	vec1d hat;
 	bool trig_fire_R = 0, trig_fire_L = 0;
 
-	// decide if we are hadling flight mode or menu navigation mode
+	// decide if we are handling flight mode or menu navigation mode
 	// default mode, based on scene
 	if (gps.nav_mode) {
 		flight_mode = 0;
