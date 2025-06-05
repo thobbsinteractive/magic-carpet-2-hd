@@ -617,7 +617,8 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 
 announce:
 
-	MouseEvents(button_state & 0x7f, gps.x, gps.y);
+	//MouseEvents(button_state & 0x7f, gps.x, gps.y);
+	SetMouseEvents(button_state & 0x7f, gps.x, gps.y);
 
 	//Logger->info("gpc.axis_dead_zone not big enough fly ({},{}) nav ({},{}) conv_state {}", ge->axis_yaw, ge->axis_pitch, ge->axis_nav_ns, ge->axis_nav_ew, conv_state);
 }
@@ -684,6 +685,9 @@ void gamepad_poll_data(gamepad_event_t *gpe)
 /// \param scene_id one of SCENE_PREAMBLE_MENU, SCENE_FLIGHT, SCENE_FLIGHT_MENU
 void set_scene(const Scene scene_id)
 {
+	int16_t maxX = 640;
+	int16_t maxY = 480;
+
 	gps.scene_id = scene_id;
 	switch (scene_id) {
 		case Scene::PREAMBLE_MENU:
@@ -692,8 +696,12 @@ void set_scene(const Scene scene_id)
 			gps.nav_mode = 1;
 			break;
 		case Scene::FLIGHT:
-			gps.max_x = 640;
-			gps.max_y = 480;
+			ScaleDownMouseCoords(maxX, maxY);
+			gps.rest_x = maxX / 2;
+			gps.rest_y = maxY / 2;
+			gps.max_x = maxX;
+			gps.max_y = maxY;
+			VGA_Set_mouse(320, 240);
 			gps.nav_mode = 0;
 			break;
 		case Scene::FLIGHT_MENU:
@@ -716,8 +724,11 @@ void set_scene(const Scene scene_id)
 void joystick_set_env(const int32_t x, const int32_t y)
 {
 	Logger->trace("pointer rest at {},{} scene {}, window size {},{}", x, y, (int)gps.scene_id, gps.max_x, gps.max_y);
-	gps.rest_x = x;
-	gps.rest_y = y;
+	if (gps.scene_id != Scene::FLIGHT)
+	{
+		gps.rest_x = x;
+		gps.rest_y = y;
+	}
 	gps.x = x;
 	gps.y = y;
 }
