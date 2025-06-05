@@ -32311,6 +32311,9 @@ void sub_47320_in_game_loop(signed int a1)//228320
 	x_D41A0_BYTEARRAY_4_struct.byteindex_51 = 0;
 	v1 = 0;
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
+
+	EventDispatcher::I->DispatchEvent(EventType::E_GAMEPLAY_STATE_CHANGE, GameState::STARTED);
+
 	while (1)
 	{
 		g_state_monitor.Update();

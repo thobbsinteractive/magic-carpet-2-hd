@@ -32,6 +32,7 @@
 #include "engine/GameBitmapIndexes.h"
 #include "engine/GameUiConstants.h"
 #include "engine/LangTextIndexes.h"
+#include "engine/GameState.h"
 
 #include "engine/Terrain.h"
 

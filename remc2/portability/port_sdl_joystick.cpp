@@ -121,6 +121,9 @@ void gamepad_sdl_init(void)
 				gps.initialized = 1;
 				std::function<void(Scene)> callBack = set_scene;
 				EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBack));
+
+				std::function<void(uint32_t, uint32_t)> resCallBack = OnResolutionChanged;
+				EventDispatcher::I->RegisterEvent(new Event<uint32_t, uint32_t>(EventType::E_RESOLUTION_CHANGE, resCallBack));
 			}
 			if (gpc.haptic_enabled && (SDL_InitSubSystem(SDL_INIT_HAPTIC) == 0) && SDL_JoystickIsHaptic(m_gameController)) {
 				m_haptic = SDL_HapticOpenFromJoystick(m_gameController);
@@ -715,6 +718,22 @@ void set_scene(const Scene scene_id)
 			break;
 	}
 	Logger->trace("set scene {}, nav_mode {}", (int)scene_id, gps.nav_mode);
+}
+
+void OnResolutionChanged(uint32_t width, uint32_t height)
+{
+	int16_t maxX = 640;
+	int16_t maxY = 480;
+
+	if (gps.scene_id == Scene::FLIGHT)
+	{
+		ScaleDownMouseCoords(maxX, maxY);
+		gps.rest_x = maxX / 2;
+		gps.rest_y = maxY / 2;
+		gps.max_x = maxX;
+		gps.max_y = maxY;
+		VGA_Set_mouse(320, 240);
+	}
 }
 
 /// \brief set the x,y simulated mouse pointer coordinates of the joystick rest position

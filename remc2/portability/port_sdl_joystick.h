@@ -32,6 +32,7 @@ void gamepad_sdl_init(void);
 void gamepad_sdl_close(void);
 void gamepad_init(const int gameResWidth, const int gameResHeight);
 void gamepad_poll_data(gamepad_event_t *gpe);
+void OnResolutionChanged(uint32_t width, uint32_t height);
 
 void haptic_run_effect(const int effect_id);
 void haptic_rumble_effect(const float strength, const uint32_t length);

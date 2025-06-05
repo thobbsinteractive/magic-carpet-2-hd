@@ -10,6 +10,7 @@
 #include "MenusAndIntros.h"
 #include "Sound.h"
 #include "engine_support.h"
+#include "EventDispatcher.h"
 
 
 char x_BYTE_D419E = 0; // weak//2a519e
@@ -2821,6 +2822,9 @@ void ChangeGameResolution_46B40()//227b40
 		x_BYTE_D419D_fonttype = 3;
 
 	SetMousePositionInMemory_5BDC0(v0_tempmousex, v0_tempmousey);
+
+	if (EventDispatcher::I != nullptr)
+		EventDispatcher::I->DispatchEvent(EventType::E_RESOLUTION_CHANGE, screenWidth_18062C, screenHeight_180624);
 }
 
 //----- (00075C50) --------------------------------------------------------

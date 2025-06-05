@@ -352,6 +352,7 @@
     <ClInclude Include="engine\EventDispatcher.h" />
     <ClInclude Include="engine\EventType.h" />
     <ClInclude Include="engine\GameBitmap.h" />
+    <ClInclude Include="engine\GameState.h" />
     <ClInclude Include="engine\GameUiConstants.h" />
     <ClInclude Include="engine\Graphics.h" />
     <ClInclude Include="engine\GameRenderInterface.h" />
