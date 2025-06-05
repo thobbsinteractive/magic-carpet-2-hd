@@ -617,7 +617,6 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 
 announce:
 
-	//MouseEvents(button_state & 0x7f, gps.x, gps.y);
 	SetMouseEvents(button_state & 0x7f, gps.x, gps.y);
 
 	//Logger->info("gpc.axis_dead_zone not big enough fly ({},{}) nav ({},{}) conv_state {}", ge->axis_yaw, ge->axis_pitch, ge->axis_nav_ns, ge->axis_nav_ew, conv_state);
