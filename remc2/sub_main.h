@@ -33,6 +33,7 @@
 #include "engine/GameUiConstants.h"
 #include "engine/LangTextIndexes.h"
 #include "engine/GameState.h"
+#include "engine/MenuState.h"
 
 #include "engine/Terrain.h"
 

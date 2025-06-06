@@ -73,7 +73,7 @@ void sub_17190_process_keyboard()//1f8190
 			sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 			SetMenuCursorPosition_52E90(
 				&D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc],
-				D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].byte_0x3DF_2BE4_12221,
+				D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].MenuStatus_0x3DF_2BE4_12221,
 				1);
 			if (x_BYTE_E37FD)
 				sub_8E160_sound_proc15_startsequence(D41A0_BYTESTR_0.dword_0x235, 0x7Fu);
@@ -434,7 +434,7 @@ void sub_18BB0()//1f9bb0
 				sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[x_BYTE_D419E]);
 			SetMenuCursorPosition_52E90(
 				&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc],
-				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221,	true);
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221,	true);
 			if (soundActive_E3799)
 				EndSample_8D8F0();
 			if (musicActive_E37FD)
@@ -453,7 +453,7 @@ void sub_18BB0()//1f9bb0
 		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 		SetMenuCursorPosition_52E90(
 			&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc],
-			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221, true);
+			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221, true);
 		if (musicActive_E37FD)
 			StartMusic_8E160(D41A0_0.maptypeMusic_0x235, 0x7Fu);
 		sub_86930(x_WORD_1803EC);
@@ -505,7 +505,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 	//v4 = x_D41A0_BYTEARRAY_0[result];
 	if (!(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x20))
 	{
-		switch (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221)
+		switch (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221)
 		{
 		case 0:
 		case 4:
@@ -922,7 +922,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				v33 = 1;
 			if (v33)
 			{
-				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221 == 5)
+				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221 == 5)
 					HandleButtonClick_191B0(20, 0);
 				else
 					HandleButtonClick_191B0(20, 6);
@@ -986,7 +986,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 						sub_18DA0(v24x, 2, 1);
 						unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 					}
-					else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221 != 7)
+					else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221 != 7)
 					{
 						HandleButtonClick_191B0(20, 7);
 					}
@@ -1004,7 +1004,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 						unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 					}
 				}
-				else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221 != 6)
+				else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221 != 6)
 				{
 					HandleButtonClick_191B0(20, 6);
 				}
@@ -1893,7 +1893,7 @@ void ReadPauseMenuEvents_197F0()//1fa7f0
 		str_unk_1804B0ar.byte_0xaa = -1;
 		if (!v1 && !x_D41A0_BYTEARRAY_4_struct.byte_38591)
 		{
-			if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221 == 7)
+			if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221 == 7)
 			{
 				sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 			}
@@ -1932,7 +1932,7 @@ void ReadPauseMenuEvents_197F0()//1fa7f0
 							switch (v2)
 							{
 							case 0:
-								v4 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221;
+								v4 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221;
 								if (v4 < 6u || v4 > 8u)
 									HandleButtonClick_191B0(20, 13);
 								else
@@ -1943,7 +1943,7 @@ void ReadPauseMenuEvents_197F0()//1fa7f0
 							case 1:
 								if (!x_D41A0_BYTEARRAY_4_struct.byteindex_208)
 									break;
-								v5 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221;
+								v5 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221;
 								if (v5 < 6u || v5 > 8u)
 									HandleButtonClick_191B0(20, 13);
 								else
@@ -2089,7 +2089,7 @@ void sub_18B30()//1f9b30
 	//v0 = &x_D41A0_BYTEARRAY_0[2124 * D41A0_BYTESTR_0.word_0xc];
 	if (!(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x20))
 	{
-		v1 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221;
+		v1 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221;
 		if (v1 != 13 && v1 != 14)
 		{
 			if (v1 < 6u || v1 > 8u && (v1 < 0xBu || v1 > 0xCu))
@@ -2143,7 +2143,7 @@ void sub_1A7A0_fly_asistant()//1fb7a0 // fly asistant
 	if (D41A0_0.byte_0x36DEA_fly_asistant)
 	{
 		//v1 = D41A0_BYTESTR_0.word_0xc;
-		v2 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221;
+		v2 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221;
 		if (v2 != 5 && v2 != 8 && v2 != 3 && !x_D41A0_BYTEARRAY_4_struct.byteindex_225)
 		{
 			if (D41A0_0.word_0x36DEC_mousex != unk_18058Cstr.x_DWORD_1805B8_mouse_position_x
@@ -2181,7 +2181,7 @@ void sub_1A7A0_fly_asistant()//1fb7a0 // fly asistant
 //----- (00019A70) --------------------------------------------------------
 void HandleOptionsMenuButtonClick_19A70()//1faa70
 {
-	if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221 < 6u || D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221 > 8u)
+	if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221 < 6u || D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221 > 8u)
 		HandleButtonClick_191B0(20, 9);
 	else
 		HandleButtonClick_191B0(20, 11);
@@ -2525,7 +2525,7 @@ void ReadOptionMenuEvents_19AB0()//1faab0
 		|| LastPressedKey_1806E4 == 0x20)
 	{
 		x_D41A0_BYTEARRAY_4_struct.byteindex_225 = 0;
-		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221 == 9)
+		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuStatus_0x3DF_2BE4_12221 == 9)
 			HandleButtonClick_191B0(20, 0);
 		else
 			HandleButtonClick_191B0(20, 6);

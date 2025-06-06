@@ -368,6 +368,7 @@
     <ClInclude Include="engine\MapType.h" />
     <ClInclude Include="engine\MenusAndIntros.h" />
     <ClInclude Include="engine\GameRenderOriginal.h" />
+    <ClInclude Include="engine\MenuState.h" />
     <ClInclude Include="engine\Network.h" />
     <ClInclude Include="engine\ProjectionPolygon.h" />
     <ClInclude Include="engine\Scene.h" />

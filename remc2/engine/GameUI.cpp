@@ -673,8 +673,8 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 	// type == 0 -> hide in-game dialog
 	// type == 9 -> show in-game settings dialog
 	// type == 13 -> show in-game abandon game yes/no dialog
-	uint8_t temp_12221 = playStr->byte_0x3DF_2BE4_12221;
-	playStr->byte_0x3DF_2BE4_12221 = type;
+	uint8_t temp_12221 = playStr->MenuStatus_0x3DF_2BE4_12221;
+	playStr->MenuStatus_0x3DF_2BE4_12221 = type;
 	if (playStr->word_0x007_2BE4_11237 != D41A0_0.LevelIndex_0xc)
 	{
 		sub_53120();
@@ -4001,7 +4001,7 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 
 	if (a1x->word_0x007_2BE4_11237 == D41A0_0.LevelIndex_0xc)
 	{
-		if (a1x->byte_0x3DF_2BE4_12221 == 5 || a1x->byte_0x3DF_2BE4_12221 == 8)
+		if (a1x->MenuStatus_0x3DF_2BE4_12221 == 5 || a1x->MenuStatus_0x3DF_2BE4_12221 == 8)
 		{
 			selectedSpellIndex = a1x->dword_0x3E6_2BE4_12228.str_611.byte_0x458_1112;
 			if (selectedSpellIndex < 13)
