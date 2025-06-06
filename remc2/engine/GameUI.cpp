@@ -673,20 +673,20 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 	// type == 0 -> hide in-game dialog
 	// type == 9 -> show in-game settings dialog
 	// type == 13 -> show in-game abandon game yes/no dialog
-	uint8_t temp_12221 = playStr->MenuStatus_0x3DF_2BE4_12221;
+	uint8_t MenuStatus = playStr->MenuStatus_0x3DF_2BE4_12221;
 	playStr->MenuStatus_0x3DF_2BE4_12221 = type;
 	if (playStr->word_0x007_2BE4_11237 != D41A0_0.LevelIndex_0xc)
 	{
 		sub_53120();
 		return;
 	}
-	x_D41A0_BYTEARRAY_4_struct.byte_38544 = temp_12221;
+	x_D41A0_BYTEARRAY_4_struct.byte_38544 = MenuStatus;
 	sub_87C10();
 	if (type)
 	{
 		sub_41AF0();
 	}
-	else if (temp_12221)
+	else if (MenuStatus)
 	{
 		sub_41B60();
 	}
@@ -708,35 +708,35 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 	}
 	switch (type)
 	{
-	case 3:
-	case 7:
-	case 9:
-	case 0xA:
-	case 0xB:
-	case 0xC:
-	case 0xD:
-	case 0xE:
+	case (int)MenuState::SHOW_CHAT_MENU:
+	case (int)MenuState::SHOW_MAP_SORCERER_SCORES:
+	case (int)MenuState::SHOW_IN_GAME_OPTIONS:
+	case (int)MenuState::SHOW_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		D41A0_0.byte_counter_current_objective_box_0x36E04 = 0;  // hide objective message box
 		break;
 	default:
 		break;
 	}
-	switch (temp_12221)
+	switch (MenuStatus)
 	{
 	case 0u:
 	case 6u:
-		if (type == temp_12221 && !(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1))
+		if (type == MenuStatus && !(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1))
 			sub_548B0(playStr);
 		break;
-	case 3u:
-	case 5u:
-	case 8u:
-	case 9u:
-	case 0xAu:
-	case 0xBu:
-	case 0xCu:
-	case 0xDu:
-	case 0xEu:
+	case (int)MenuState::SHOW_CHAT_MENU:
+	case (int)MenuState::SHOW_BOTTOM_MENU:
+	case (int)MenuState::SHOW_MAP_BOTTOM_MENU:
+	case (int)MenuState::SHOW_IN_GAME_OPTIONS:
+	case (int)MenuState::SHOW_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		sub_548B0(playStr);
 		FlvInitSet_473B0();
 		break;
@@ -747,32 +747,32 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 	{
 	case 0:
 	case 6:
-		if (type == temp_12221 && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+		if (type == MenuStatus && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 		{
 			SetCenterScreenForFlyAssistant_6EDB0();
 			sub_548F0(playStr);
 			break;
 		}
 		break;
-	case 3:
-	case 5:
-	case 8:
+	case (int)MenuState::SHOW_CHAT_MENU:
+	case (int)MenuState::SHOW_BOTTOM_MENU:
+	case (int)MenuState::SHOW_MAP_BOTTOM_MENU:
 		sub_548F0(playStr);
 		break;
-	case 9:
-	case 0xB:
+	case (int)MenuState::SHOW_IN_GAME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
 		sub_1A280();
 		x_D41A0_BYTEARRAY_4_struct.byteindex_225 = 1;
 		x_D41A0_BYTEARRAY_4_struct.byteindex_186 = sub_1A4A0();
 		sub_548F0(playStr);
 		break;
-	case 0xA:
-	case 0xC:
+	case (int)MenuState::SHOW_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
 		sub_548F0(playStr);
 		SetSoundEffectAndMusicLevelCoordinates_19D60(type);
 		break;
-	case 0xD:
-	case 0xE:
+	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		sub_548F0(playStr);
 		SetOkayCancelButtonsCursorPosition_1A030();
 		break;
@@ -793,16 +793,16 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 			FlvInitSet_473B0();
 		}
 	}
-	if (temp_12221 >= 5u && (temp_12221 <= 5u || temp_12221 == 8))
+	if (MenuStatus >= 5u && (MenuStatus <= 5u || MenuStatus == 8))
 		useSound = 0;
 	switch (type)
 	{
 	case 6:
 	case 7:
-	case 8:
-	case 0xB:
-	case 0xC:
-	case 0xE:
+	case (int)MenuState::SHOW_MAP_BOTTOM_MENU:
+	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		if ((!DefaultResolutions())&&(x_WORD_180660_VGA_type_resolution != 1))
 			viewPort.SetViewPortScreenCoordinates_2CA60(384, 0, screenWidth_18062C - 384, screenHeight_180624 - 80);
 		else
