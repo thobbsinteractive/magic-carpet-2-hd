@@ -26,6 +26,7 @@ endif()
 source_group("Source Files" FILES ${SOURCE_FILES})
 
 set(SOURCE_FILES_ENGINE
+    "engine/MenuState.h"
     "engine/Animation.cpp"
     "engine/Animation.h"
     "engine/Basic.cpp"
