@@ -744,8 +744,6 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 		sub_548B0(playStr);
 		if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
 			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
-		else
-			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 		FlvInitSet_473B0();
 		break;
 	default:
