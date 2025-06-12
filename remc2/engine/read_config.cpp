@@ -13,7 +13,7 @@ int gameResWidth = 640;
 int gameResHeight = 480;
 int gameUiScale = 1;
 bool maintainAspectRatio = false;
-bool forceWindow = false;
+bool startWindowed = false;
 bool bigTextures = false;
 bool bigSprites = false;
 bool sky = true;
@@ -199,7 +199,7 @@ bool readini() {
 	}
 
 	maintainAspectRatio = reader.GetBoolean("graphics", "maintainAspectRatio", true);
-	forceWindow = reader.GetBoolean("graphics", "forceWindow", false);
+	startWindowed = reader.GetBoolean("graphics", "startWindowed", false);
 	sky = reader.GetBoolean("graphics", "sky", true);
 	reflections = reader.GetBoolean("graphics", "reflections", false);
 	dynamicLighting = reader.GetBoolean("graphics", "dynamicLighting", false);
@@ -237,8 +237,9 @@ bool readini() {
 	maxGameFps = reader.GetInteger("game", "maxGameFps", 0);
 	fmvFps = reader.GetInteger("game", "fmvFps", 20);
 	loggingLevel = reader.GetString("game", "loggingLevel", "Info");
-	invertYAxis = reader.GetBoolean("game", "invertYAxis", true);
-	invertXAxis = reader.GetBoolean("game", "invertXAxis", false);
+
+	invertYAxis = reader.GetBoolean("controls", "invertYAxis", true);
+	invertXAxis = reader.GetBoolean("controls", "invertXAxis", false);
 
 	gpc.axis_yaw = reader.GetInteger("gamepad", "axis_yaw", GAMEPAD_ITEM_DISABLED);
 	gpc.axis_pitch = reader.GetInteger("gamepad", "axis_pitch", GAMEPAD_ITEM_DISABLED);

@@ -36,8 +36,6 @@
 #include "Type_E9C38_Smalltit.h"
 #include "Type_F2C20ar.h"
 
-#include "globals.h"
-
 #if defined(__LP64__) || defined(_WIN64) || (defined(__x86_64__) &&     !defined(__ILP32__) ) || defined(_M_X64) || defined(__ia64) || defined (_M_IA64) || defined(__aarch64__) || defined(__powerpc64__) || defined(__x86_64__) || (UINT_MAX >= 0xffffffffffffffff) || defined (COMPILE_FOR_64BIT)
 #define x64_BIT_ENVIRONMENT 1
 #else
@@ -165,17 +163,11 @@ extern uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff
 extern uint8_t* x_BYTE_F6EE0_tablesx_pre;
 extern uint8_t* x_BYTE_FAEE0_tablesx_pre;
 
-extern int iScreenWidth_DE560; // weak //screen X // DE560
-
 extern std::array<uint8_t*, 256> x_DWORD_DDF50_texture_adresses; /*= { 0,32 }*/ // weak
 
 extern type_E9C38_smalltit Str_E9C38_smalltit[21 * 40];
 
 extern type_F2C20ar str_F2C20ar;
-
-extern uint8_t* ViewPortRenderBufferStart_DE558;
-
-extern uint8_t* ViewPortRenderBufferAltStart_DE554;
 
 extern std::string gameDataPath;
 extern std::string cdDataPath;
@@ -507,6 +499,7 @@ extern type_TMAPS00TAB_BEGIN_BUFFER* str_TMAPS00TAB_BEGIN_BUFFER;
 extern uint8_t* Zero_pointer;
 
 bool DefaultResolutions();
+bool IsDefaultResolution(int width, int height);
 
 void FreeMem_83E80(uint8_t* a1);
 int sub_84000(int a1);

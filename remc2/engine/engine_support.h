@@ -294,7 +294,7 @@ typedef struct {//lenght 2124=0x84C
 	//uint8_t stub2b[308];
 
 	char WizardName_0x39f_2BFA_12157[64];//927//12157 - byte(11230+927) 100% name
-	uint8_t byte_0x3DF_2BE4_12221;//991//12221 - byte
+	uint8_t MenuState_0x3DF_2BE4_12221;//991//12221 - byte
 	uint8_t byte_0x3E0_2BE4_12222;//992//12222 - byte
 	uint8_t byte_0x3E1_2BE4_12223;//993//12223 - byte - ok
 	uint8_t byte_0x3E2_2BE4_12224;//994//12224 - byte
@@ -403,7 +403,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	uint8_t stubb[2];
 	uint8_t setting_byte1_22;//x_D41A0_BYTEARRAY_4_struct.setting_byte1_22
 	int8_t setting_byte2_23;//0x17//x_D41A0_BYTEARRAY_4_struct.setting_byte2_23
-	uint8_t setting_byte3_24;//cheats? 0x20==free spell//x_D41A0_BYTEARRAY_4_struct.setting_byte3_24
+	uint8_t OptionsSettingFlag_24;//cheats? 0x20==free spell//x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24
 	//spell on - 0x20
 	uint8_t setting_byte4_25;//cheats? 0x1==Invincability 0x8==tester 0x40==music
 	//invincability - 1;

@@ -9,6 +9,9 @@ GameRenderHD::GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 	SetRenderThreads(renderThreads);
 	m_preBlurBuffer_E9C3C = new uint8_t[((GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT) * 3)]; // Allow x 3 padding for sprite rendering
 	m_ptrBlurBuffer_E9C3C = &m_preBlurBuffer_E9C3C[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
+
+	//std::function<void(int,int)> callBack = std::bind(&GameRenderHD::SetGameResolution, this, std::placeholders::_1, std::placeholders::_2);
+	//EventDispatcher::I->RegisterEvent(new Event<int, int>(EventType::E_WINDOW_SIZE_CHANGE, callBack));
 }
 
 GameRenderHD::~GameRenderHD()
@@ -143,7 +146,7 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 		v52 = D41A0_0.m_GameSettings.m_Display.xxxx_0x2191;
 		if (x_WORD_180660_VGA_type_resolution == 1)
 		{
-			if (!D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221)
+			if (!D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221)
 			{
 				if (x_D41A0_BYTEARRAY_4_struct.m_wHighSpeedSystem)
 				{

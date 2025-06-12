@@ -26,6 +26,7 @@ endif()
 source_group("Source Files" FILES ${SOURCE_FILES})
 
 set(SOURCE_FILES_ENGINE
+    "engine/MenuState.h"
     "engine/Animation.cpp"
     "engine/Animation.h"
     "engine/Basic.cpp"
@@ -36,6 +37,9 @@ set(SOURCE_FILES_ENGINE
     "engine/Compare.h"
     "engine/Events.cpp"
     "engine/Events.h"
+    "engine/Event.h"
+    "engine/EventDispatcher.cpp"
+    "engine/EventDispatcher.h"
     "engine/GameBitmap.cpp"
     "engine/GameBitmap.h"
     "engine/GameBitmapIndexes.h"

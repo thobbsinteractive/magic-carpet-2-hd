@@ -32,6 +32,8 @@
 #include "engine/GameBitmapIndexes.h"
 #include "engine/GameUiConstants.h"
 #include "engine/LangTextIndexes.h"
+#include "engine/GameState.h"
+#include "engine/MenuState.h"
 
 #include "engine/Terrain.h"
 
@@ -421,7 +423,8 @@ extern char x_BYTE_D4B80;
 
 void j___delay(x_DWORD); // weak
 
-void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const std::string &filename = "BufferOut.bmp");
+void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const std::string &filename);
+void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer);
 void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8_t* ptrPalette, uint8_t* ptrBuffer);
 
 void sub_43C60(unsigned __int8 a1, char a2, int a3, int a4);
@@ -753,6 +756,8 @@ void sub_1FA20(type_event_0x6E8E* a1);
 void sub_1FA50(type_event_0x6E8E* a1);
 void sub_1FA70(type_event_0x6E8E* a1);
 void sub_1FAA0(type_event_0x6E8E* a1);
+Scene GetCurrentScene();
+void SetCurrentScene(Scene scene);
 void AddArcher0504_1FF40(type_event_0x6E8E* a1);
 void sub_1FFE0(type_event_0x6E8E* a1);
 void HitArcher_20010(type_event_0x6E8E* a1);
