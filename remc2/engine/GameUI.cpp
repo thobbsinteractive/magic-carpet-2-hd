@@ -668,29 +668,29 @@ void sub_41B60()//222b60
 }
 
 //----- (00052E90) --------------------------------------------------------
-void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatus, bool useSound)//233e90
+void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState, bool useSound)//233e90
 {
 	// type == 0 -> hide in-game dialog
 	// type == 9 -> show in-game settings dialog
 	// type == 13 -> show in-game abandon game yes/no dialog
-	uint8_t currentMenuStatus = playStr->MenuState_0x3DF_2BE4_12221;
-	playStr->MenuState_0x3DF_2BE4_12221 = newMenuStatus;
+	uint8_t currentMenuState = playStr->MenuState_0x3DF_2BE4_12221;
+	playStr->MenuState_0x3DF_2BE4_12221 = newMenuState;
 	if (playStr->word_0x007_2BE4_11237 != D41A0_0.LevelIndex_0xc)
 	{
 		sub_53120();
 		return;
 	}
-	x_D41A0_BYTEARRAY_4_struct.byte_38544 = currentMenuStatus;
+	x_D41A0_BYTEARRAY_4_struct.byte_38544 = currentMenuState;
 	sub_87C10();
-	if (newMenuStatus)
+	if (newMenuState)
 	{
 		sub_41AF0();
 	}
-	else if (currentMenuStatus)
+	else if (currentMenuState)
 	{
 		sub_41B60();
 	}
-	if (newMenuStatus && (newMenuStatus < 6u || newMenuStatus > 7u))
+	if (newMenuState && (newMenuState < 6u || newMenuState > 7u))
 	{
 		if (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2)
 			sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[x_BYTE_D419E]); // fix it
@@ -706,7 +706,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatu
 	{
 		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 	}
-	switch (newMenuStatus)
+	switch (newMenuState)
 	{
 	case (int)MenuState::SHOW_CHAT_MENU:
 	case (int)MenuState::SHOW_MAP_SORCERER_SCORES:
@@ -721,11 +721,12 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatu
 	default:
 		break;
 	}
-	switch (currentMenuStatus)
+	//Close of menu
+	switch (currentMenuState)
 	{
 	case (int)MenuState::NONE:
 	case 6u:
-		if (newMenuStatus == currentMenuStatus && !(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1))
+		if (newMenuState == currentMenuState && !(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1))
 		{
 			sub_548B0(playStr);
 		}
@@ -745,11 +746,12 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatu
 	default:
 		break;
 	}
-	switch (newMenuStatus)
+	//Open of Menu
+	switch (newMenuState)
 	{
 	case (int)MenuState::NONE:
 	case 6:
-		if (newMenuStatus == currentMenuStatus && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+		if (newMenuState == currentMenuState && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 		{
 			SetCenterScreenForFlyAssistant_6EDB0();
 			sub_548F0(playStr);
@@ -771,7 +773,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatu
 	case (int)MenuState::SHOW_VOLUME_OPTIONS:
 	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
 		sub_548F0(playStr);
-		SetSoundEffectAndMusicLevelCoordinates_19D60(newMenuStatus);
+		SetSoundEffectAndMusicLevelCoordinates_19D60(newMenuState);
 		break;
 	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
 	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
@@ -781,11 +783,11 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatu
 	default:
 		break;
 	}
-	if (newMenuStatus >= 5u)
+	if (newMenuState >= 5u)
 	{
-		if (newMenuStatus > 5u)
+		if (newMenuState > 5u)
 		{
-			if (newMenuStatus == 8)
+			if (newMenuState == 8)
 				useSound = 0;
 		}
 		else
@@ -795,9 +797,9 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatu
 			FlvInitSet_473B0();
 		}
 	}
-	if (currentMenuStatus >= 5u && (currentMenuStatus <= 5u || currentMenuStatus == 8))
+	if (currentMenuState >= 5u && (currentMenuState <= 5u || currentMenuState == 8))
 		useSound = 0;
-	switch (newMenuStatus)
+	switch (newMenuState)
 	{
 	case 6:
 	case 7:

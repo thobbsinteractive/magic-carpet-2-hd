@@ -12181,7 +12181,7 @@ Scene GetCurrentScene()
 	return m_CurrentScene;
 }
 
-void SetCurrentScene(Scene scene)
+void SetCurrentScene(const Scene scene)
 {
 	m_CurrentScene = scene;
 }
@@ -23087,7 +23087,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 	{
 		sub_2BB40_draw_bitmap(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[x_BYTE_D419E]);
 	}
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::SPELL_MENU);
+	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::SPELL_MENU, MenuState::NONE);
 }
 // D419E: using guessed type char x_BYTE_D419E;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
