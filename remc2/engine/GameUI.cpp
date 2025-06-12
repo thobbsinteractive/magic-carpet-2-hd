@@ -695,7 +695,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 		if (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2)
 			sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[x_BYTE_D419E]); // fix it
 	}
-	else if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+	else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 	{
 		if (unk_18058Cstr.x_WORD_1805C2_joystick != 7 && unk_18058Cstr.x_WORD_1805C2_joystick != 1 && unk_18058Cstr.x_WORD_1805C2_joystick != 2)
 			sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
@@ -726,7 +726,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	{
 	case (int)MenuState::NONE:
 	case 6u:
-		if (newMenuState == currentMenuState && !(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1))
+		if (newMenuState == currentMenuState && !(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
 		{
 			sub_548B0(playStr);
 		}
@@ -751,7 +751,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	{
 	case (int)MenuState::NONE:
 	case 6:
-		if (newMenuState == currentMenuState && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+		if (newMenuState == currentMenuState && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 		{
 			SetCenterScreenForFlyAssistant_6EDB0();
 			sub_548F0(playStr);
@@ -3904,7 +3904,7 @@ void sub_1A280()//1fb280
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x02;//sound
 	if (musicActive_E37FD)
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x04;//music
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x40)
+	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40)
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x08;//speek
 	if (D41A0_0.byte_0x36DEA_fly_asistant)
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x10u;//fly
@@ -4859,7 +4859,7 @@ void DrawPauseMenu_2FD90(uint8_t scale)//210d90
 	uint8_t colour; // [esp+10h] [ebp-4h]
 
 	colour = (*xadataclrd0dat.colorPalette_var28)[0];
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 	{
 		if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206)
 		{

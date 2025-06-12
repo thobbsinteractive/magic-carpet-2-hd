@@ -403,7 +403,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	uint8_t stubb[2];
 	uint8_t setting_byte1_22;//x_D41A0_BYTEARRAY_4_struct.setting_byte1_22
 	int8_t setting_byte2_23;//0x17//x_D41A0_BYTEARRAY_4_struct.setting_byte2_23
-	uint8_t setting_byte3_24;//cheats? 0x20==free spell//x_D41A0_BYTEARRAY_4_struct.setting_byte3_24
+	uint8_t OptionsSettingFlag_24;//cheats? 0x20==free spell//x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24
 	//spell on - 0x20
 	uint8_t setting_byte4_25;//cheats? 0x1==Invincability 0x8==tester 0x40==music
 	//invincability - 1;

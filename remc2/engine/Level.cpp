@@ -992,7 +992,7 @@ void SetSpell_6D5E0(type_event_0x6E8E* entity, char spell)//24e5e0
 		if (entity->word_0x30_48)
 			v2y /= entity->word_0x30_48;
 		entity->mana_0x90_144 = v2y;		
-		if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x20)
+		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x20)
 		{
 			entity->dword_0x88_136 = 0;
 			entity->mana_0x90_144 = 1;

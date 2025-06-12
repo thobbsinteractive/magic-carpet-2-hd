@@ -3658,7 +3658,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 						{
 							x_DWORD_17DE28str.x_WORD_17DE30_posx = *posx;
 							x_DWORD_17DE28str.x_WORD_17DE32_posy = *posy;
-							x_DWORD_17DE28str.x_BYTE_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x40) != 0) + 1;
+							x_DWORD_17DE28str.x_BYTE_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40) != 0) + 1;
 							x_DWORD_17DE28str.x_DWORD_17DE28 = j___clock();
 						}
 					}
@@ -3681,7 +3681,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 					{
 						x_DWORD_17DE28str.x_WORD_17DE30_posx = *posx;
 						x_DWORD_17DE28str.x_WORD_17DE32_posy = *posy;
-						x_DWORD_17DE28str.x_BYTE_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x40) != 0) + 1;
+						x_DWORD_17DE28str.x_BYTE_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40) != 0) + 1;
 						x_DWORD_17DE28str.x_DWORD_17DE28 = j___clock();
 					}
 					break;
@@ -3702,7 +3702,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 			memset(&x_DWORD_17DE28str, 0, 13);
 			x_DWORD_17DE28str.x_WORD_17DE30_posx = *posx;
 			x_DWORD_17DE28str.x_WORD_17DE32_posy = *posy;
-			x_DWORD_17DE28str.x_BYTE_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x40) != 0) + 1;
+			x_DWORD_17DE28str.x_BYTE_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40) != 0) + 1;
 			x_DWORD_17DE28str.x_DWORD_17DE28 = j___clock();
 		}
 		goto LABEL_92;
@@ -4226,7 +4226,7 @@ void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3)//261c30
 		sub_7FCB0_draw_text_with_border(/*v3,*/ x_DWORD_E9C4C_langindexbuffer[23 + v3], (signed __int16)(posX + 4 * v9), v8, posY, 5, v7, 1);
 		//"You must explore the outer Netherworlds while you learn its magic. Your first destination is the ancient city of Jahwl."+
 	}
-	if (x_DWORD_17DE28str.x_BYTE_17DE34 != 3 && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x40 && !x_BYTE_17E09D)
+	if (x_DWORD_17DE28str.x_BYTE_17DE34 != 3 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40 && !x_BYTE_17E09D)
 	{
 		x_BYTE_17E09D = 1;
 		if ((signed __int16)v3 != -1)
