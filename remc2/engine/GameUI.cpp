@@ -729,6 +729,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 		if (newMenuState == currentMenuState && !(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
 		{
 			sub_548B0(playStr);
+			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
 		}
 		break;
 	case (int)MenuState::SHOW_CHAT_MENU:
@@ -741,6 +742,10 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
 	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		sub_548B0(playStr);
+		if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
+		else
+			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 		FlvInitSet_473B0();
 		break;
 	default:
@@ -3848,7 +3853,6 @@ void sub_548B0(type_str_0x2BDE* a1x)//2358b0
 		SetMousePositionInMemory_5BDC0(a1x->dword_0x3E6_2BE4_12228.position_backup_20.x, a1x->dword_0x3E6_2BE4_12228.position_backup_20.y);
 		// if a joystick is used, do not set that random resting point from above
 		//SetMousePositionInMemory_5BDC0(320, 240);
-		EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
 	}
 }
 
