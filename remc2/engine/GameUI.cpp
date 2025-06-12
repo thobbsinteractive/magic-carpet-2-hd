@@ -668,29 +668,29 @@ void sub_41B60()//222b60
 }
 
 //----- (00052E90) --------------------------------------------------------
-void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool useSound)//233e90
+void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatus, bool useSound)//233e90
 {
 	// type == 0 -> hide in-game dialog
 	// type == 9 -> show in-game settings dialog
 	// type == 13 -> show in-game abandon game yes/no dialog
-	uint8_t MenuStatus = playStr->MenuStatus_0x3DF_2BE4_12221;
-	playStr->MenuStatus_0x3DF_2BE4_12221 = type;
+	uint8_t currentMenuStatus = playStr->MenuState_0x3DF_2BE4_12221;
+	playStr->MenuState_0x3DF_2BE4_12221 = newMenuStatus;
 	if (playStr->word_0x007_2BE4_11237 != D41A0_0.LevelIndex_0xc)
 	{
 		sub_53120();
 		return;
 	}
-	x_D41A0_BYTEARRAY_4_struct.byte_38544 = MenuStatus;
+	x_D41A0_BYTEARRAY_4_struct.byte_38544 = currentMenuStatus;
 	sub_87C10();
-	if (type)
+	if (newMenuStatus)
 	{
 		sub_41AF0();
 	}
-	else if (MenuStatus)
+	else if (currentMenuStatus)
 	{
 		sub_41B60();
 	}
-	if (type && (type < 6u || type > 7u))
+	if (newMenuStatus && (newMenuStatus < 6u || newMenuStatus > 7u))
 	{
 		if (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2)
 			sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[x_BYTE_D419E]); // fix it
@@ -706,7 +706,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 	{
 		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 	}
-	switch (type)
+	switch (newMenuStatus)
 	{
 	case (int)MenuState::SHOW_CHAT_MENU:
 	case (int)MenuState::SHOW_MAP_SORCERER_SCORES:
@@ -721,12 +721,14 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 	default:
 		break;
 	}
-	switch (MenuStatus)
+	switch (currentMenuStatus)
 	{
-	case 0u:
+	case (int)MenuState::NONE:
 	case 6u:
-		if (type == MenuStatus && !(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1))
+		if (newMenuStatus == currentMenuStatus && !(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1))
+		{
 			sub_548B0(playStr);
+		}
 		break;
 	case (int)MenuState::SHOW_CHAT_MENU:
 	case (int)MenuState::SHOW_BOTTOM_MENU:
@@ -743,11 +745,11 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 	default:
 		break;
 	}
-	switch (type)
+	switch (newMenuStatus)
 	{
-	case 0:
+	case (int)MenuState::NONE:
 	case 6:
-		if (type == MenuStatus && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+		if (newMenuStatus == currentMenuStatus && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 		{
 			SetCenterScreenForFlyAssistant_6EDB0();
 			sub_548F0(playStr);
@@ -769,7 +771,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 	case (int)MenuState::SHOW_VOLUME_OPTIONS:
 	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
 		sub_548F0(playStr);
-		SetSoundEffectAndMusicLevelCoordinates_19D60(type);
+		SetSoundEffectAndMusicLevelCoordinates_19D60(newMenuStatus);
 		break;
 	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
 	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
@@ -779,11 +781,11 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 	default:
 		break;
 	}
-	if (type >= 5u)
+	if (newMenuStatus >= 5u)
 	{
-		if (type > 5u)
+		if (newMenuStatus > 5u)
 		{
-			if (type == 8)
+			if (newMenuStatus == 8)
 				useSound = 0;
 		}
 		else
@@ -793,9 +795,9 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 			FlvInitSet_473B0();
 		}
 	}
-	if (MenuStatus >= 5u && (MenuStatus <= 5u || MenuStatus == 8))
+	if (currentMenuStatus >= 5u && (currentMenuStatus <= 5u || currentMenuStatus == 8))
 		useSound = 0;
-	switch (type)
+	switch (newMenuStatus)
 	{
 	case 6:
 	case 7:
@@ -4001,7 +4003,7 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 
 	if (a1x->word_0x007_2BE4_11237 == D41A0_0.LevelIndex_0xc)
 	{
-		if (a1x->MenuStatus_0x3DF_2BE4_12221 == 5 || a1x->MenuStatus_0x3DF_2BE4_12221 == 8)
+		if (a1x->MenuState_0x3DF_2BE4_12221 == 5 || a1x->MenuState_0x3DF_2BE4_12221 == 8)
 		{
 			selectedSpellIndex = a1x->dword_0x3E6_2BE4_12228.str_611.byte_0x458_1112;
 			if (selectedSpellIndex < 13)

@@ -4,6 +4,7 @@
 
 enum class MenuState : int
 {
+	NONE = 0,
 	SHOW_CHAT_MENU = 3,
 	SHOW_BOTTOM_MENU = 5,
 	SHOW_MAP_SORCERER_SCORES = 7,
