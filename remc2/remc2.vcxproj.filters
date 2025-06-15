@@ -589,9 +589,6 @@
     <None Include="engine\bytearrays.x">
       <Filter>Source Files\engine</Filter>
     </None>
-    <None Include="..\config.ini">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="packages.config" />
     <None Include="..\config.json">
       <Filter>Source Files</Filter>

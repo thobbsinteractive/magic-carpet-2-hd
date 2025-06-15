@@ -509,10 +509,6 @@
     <ClCompile Include="utilities\Maths.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\config.ini">
-      <DeploymentContent>true</DeploymentContent>
-      <FileType>Text</FileType>
-    </None>
     <None Include="..\config.json">
       <DeploymentContent>true</DeploymentContent>
       <FileType>Document</FileType>

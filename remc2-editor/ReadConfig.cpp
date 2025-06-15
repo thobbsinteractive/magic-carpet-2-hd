@@ -1,7 +1,6 @@
 #include "ReadConfig.h"
-#include <iostream>
 
-std::string ReadConfig::FindIniFile() {
+std::string ReadConfig::FindConfigFile() {
 	// find location of inifile and read it
 	std::vector<std::string> inifile_locations;
 	if (CommandLineParams.GetConfigFilePath().length() > 0) {
@@ -45,28 +44,21 @@ std::string ReadConfig::FindIniFile() {
 	return inifile;
 }
 
-bool ReadConfig::ReadIni() {
+bool ReadConfig::SetConfig() {
 
-	std::string inifile = FindIniFile();
-	if (std::filesystem::exists(inifile)) {
-		Logger->info("Using inifile: {}", inifile);
+	std::string configFilePath = FindConfigFile();
+	if (std::filesystem::exists(configFilePath)) {
+		Logger->info("Using configFile: {}", configFilePath);
 	}
 	else {
-		Logger->error("Inifile cannot be found... Exiting");
+		Logger->error("configFile cannot be found... Exiting");
 		return false;
 	}
 
-	INIReader reader(inifile);
+	auto config = Config(configFilePath);
 
-	if (reader.ParseError() < 0) {
-		Logger->error("Can't load 'editor-config.ini'");
-		return false;
-	}
-
-	std::string readstr2 = reader.GetString("main", "gameFolder", "");
-	strcpy((char*)gameFolder, (char*)readstr2.c_str());
-	std::string readstr4 = reader.GetString("main", "cdFolder", "");
-	strcpy((char*)cdFolder, (char*)readstr4.c_str());
+	strcpy((char*)gameFolder, config.m_Paths.m_GameFolder.c_str());
+	strcpy((char*)cdFolder, config.m_Paths.m_CdFolder.c_str());
 
 	return true;
 };
