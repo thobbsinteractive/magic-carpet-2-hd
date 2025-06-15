@@ -320,8 +320,6 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\inih\ini.h" />
-    <ClInclude Include="..\inih\INIReader.h" />
     <ClInclude Include="..\libADLMIDI-master\src\adldata.hh" />
     <ClInclude Include="..\libADLMIDI-master\src\adlmidi_bankmap.h" />
     <ClInclude Include="..\libADLMIDI-master\src\adlmidi_cvt.hpp" />
@@ -348,6 +346,7 @@
     <ClInclude Include="engine\Basic.h" />
     <ClInclude Include="engine\CommandLineParser.h" />
     <ClInclude Include="engine\Compare.h" />
+    <ClInclude Include="engine\Config.h" />
     <ClInclude Include="engine\Event.h" />
     <ClInclude Include="engine\EventDispatcher.h" />
     <ClInclude Include="engine\EventType.h" />
@@ -429,8 +428,6 @@
     <ClInclude Include="utilities\Wave.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\inih\ini.c" />
-    <ClCompile Include="..\inih\INIReader.cpp" />
     <ClCompile Include="..\libADLMIDI-master\src\adldata.cpp" />
     <ClCompile Include="..\libADLMIDI-master\src\adlmidi.cpp" />
     <ClCompile Include="..\libADLMIDI-master\src\adlmidi_load.cpp" />
@@ -449,6 +446,7 @@
     <ClCompile Include="engine\Basic.cpp" />
     <ClCompile Include="engine\CommandLineParser.cpp" />
     <ClCompile Include="engine\Compare.cpp" />
+    <ClCompile Include="engine\Config.cpp" />
     <ClCompile Include="engine\EventDispatcher.cpp" />
     <ClCompile Include="engine\GameBitmap.cpp" />
     <ClCompile Include="engine\GameRenderGL.cpp" />
@@ -514,6 +512,10 @@
     <None Include="..\config.ini">
       <DeploymentContent>true</DeploymentContent>
       <FileType>Text</FileType>
+    </None>
+    <None Include="..\config.json">
+      <DeploymentContent>true</DeploymentContent>
+      <FileType>Document</FileType>
     </None>
     <None Include="..\libADLMIDI-master\src\adlmidi_bankmap.tcc" />
     <None Include="..\libADLMIDI-master\src\chips\opl_chip_base.tcc" />

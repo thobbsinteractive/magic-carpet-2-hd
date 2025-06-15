@@ -1,0 +1,209 @@
+{
+    "settings": [
+        {
+            "name": "Main",
+            "isActive": true,
+            "paths": {
+                "gameFolder": "NETHERW",
+                "cdFolder": "CD_Files"
+            },
+            "sound": {
+                "hqSound": true,
+                "oggMusic": true,
+                "oggFolder": "music-ogg",
+                "oggMusicAlternative": false,
+                "fixSpeedSound": false
+            },
+            "graphics": {
+                "displayIndex": 0,
+                "windowResWidth": 1920,
+                "windowResHeight": 1080,
+                "maintainAspectRatio": true,
+                "startWindowed": false,
+                "gameDetail": {
+                    "gameResWidth": 1920,
+                    "gameResHeight": 1080,
+                    "gameUiScale": 2,
+                    "useEnhancedGraphics": false,
+                    "bigGraphicsFolder": "biggraphics",
+                    "sky": true,
+                    "reflections": true,
+                    "dynamicLighting": true
+                },
+                "threading": {
+                    "isActive": true,
+                    "numberOfRenderThreads": 3,
+                    "assignToSpecificCores": false
+                }
+            },
+            "game": {
+                "loggingLevel": "Info",
+                "maxGameFps": 24,
+                "fmvFps": 20
+            },
+            "controls": {
+                "invertYAxis": true,
+                "invertXAxis": false,
+                "gamePad": [
+					{
+						"name": "XBox",
+						"isActive": true,
+						"controllerId": 0,
+						"buttonMiniMap": 3,
+						"buttonSpell": 1,
+						"buttonPauseMenu": 7,
+						"buttonEsc": 8,
+						"buttonFireL": 5,
+						"buttonFireR": 6,
+						"buttonMenuSelect": 1,
+						"triggerDeadZone": 3000,
+						"hapticEnabled": true,
+						"hapticMaxGain": 75,
+						"hatNav": 0,
+						"hatMov": 0,
+						"hatNavInv": false,
+						"hatMovInv": false,
+						"axisLong": 2,
+						"axisLongDeadZone": 12000,
+						"axisLongNavDeadZone": 6000,
+						"axisLongInv": true,
+						"axisTrans": 1,
+						"axisTransInv": false,
+						"axisTransDeadZone": 12000,
+						"axisTransNavDeadZone": 6000,
+						"axisNavNs": 2,
+						"axisNavNsInv": true,
+						"axisNavEw": 1,
+						"axisNavEwInv": false,
+						"axisFireR": 6,
+						"axisFireL": 3,
+						"axisYaw": 4,
+						"axisYawInv": false,
+						"axisYawDeadZone": 3000,
+						"axisYawSensitivity": {
+							"zones": [
+								{
+									"start": 0,
+									"end": 8000,
+									"factor": 0.1
+								},
+								{
+									"start": 8000,
+									"end": 15000,
+									"factor": 0.2
+								},
+								{
+									"start": 15000,
+									"end": 20000,
+									"factor": 0.3
+								},
+								{
+									"start": 20000,
+									"end": 25000,
+									"factor": 0.35
+								},
+								{
+									"start": 25000,
+									"end": 26000,
+									"factor": 0.4
+								},
+								{
+									"start": 26000,
+									"end": 27000,
+									"factor": 0.5
+								},
+								{
+									"start": 27000,
+									"end": 28000,
+									"factor": 0.6
+								},
+								{
+									"start": 28000,
+									"end": 29000,
+									"factor": 0.7
+								},
+								{
+									"start": 29000,
+									"end": 30000,
+									"factor": 0.8
+								},
+								{
+									"start": 30000,
+									"end": 31000,
+									"factor": 0.9
+								},
+								{
+									"start": 31000,
+									"end": 32767,
+									"factor": 1
+								}
+							]
+						},
+						"axisPitch": 5,
+						"axisPitchInv": false,
+						"axisPitchDeadZone": 3000,
+						"axisPitchSensitivity": {
+							"zones": [
+								{
+									"start": 0,
+									"end": 8000,
+									"factor": 0.1
+								},
+								{
+									"start": 8000,
+									"end": 15000,
+									"factor": 0.2
+								},
+								{
+									"start": 15000,
+									"end": 20000,
+									"factor": 0.3
+								},
+								{
+									"start": 20000,
+									"end": 25000,
+									"factor": 0.35
+								},
+								{
+									"start": 25000,
+									"end": 26000,
+									"factor": 0.4
+								},
+								{
+									"start": 26000,
+									"end": 27000,
+									"factor": 0.5
+								},
+								{
+									"start": 27000,
+									"end": 28000,
+									"factor": 0.6
+								},
+								{
+									"start": 28000,
+									"end": 29000,
+									"factor": 0.7
+								},
+								{
+									"start": 29000,
+									"end": 30000,
+									"factor": 0.8
+								},
+								{
+									"start": 30000,
+									"end": 31000,
+									"factor": 0.9
+								},
+								{
+									"start": 31000,
+									"end": 32767,
+									"factor": 1
+								}
+							]
+						}
+					}
+				]
+            }
+        }
+    ]
+}
