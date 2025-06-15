@@ -1,6 +1,12 @@
 {
-	"paths": {
-		"gameFolder": "NETHERW",
-		"cdFolder": "CD_Files"
-	}
+	"settings": [
+		{
+			"name": "Main",
+			"isActive": true,
+			"paths": {
+				"gameFolder": "NETHERW",
+				"cdFolder": "CD_Files"
+			}
+		}
+	]
 }

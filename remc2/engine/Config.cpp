@@ -5,8 +5,6 @@
 
 Config::Config(std::string fileName)
 {
-	std::string json = "";
-
 	if (std::filesystem::exists(fileName))
 	{
 		auto json = ReadFileToString(fileName);

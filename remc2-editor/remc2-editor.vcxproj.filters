@@ -30,9 +30,6 @@
     <ClInclude Include="ReadConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="editor.cpp">
@@ -54,9 +51,6 @@
       <Filter>Source Files\kiss-sdl</Filter>
     </ClCompile>
     <ClCompile Include="ReadConfig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
