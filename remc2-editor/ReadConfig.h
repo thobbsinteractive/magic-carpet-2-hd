@@ -4,9 +4,8 @@
 
 #include <filesystem>
 #include <iostream>
-#include "../remc2/engine/Config.h"
-
 #include "../remc2/engine/CommandLineParser.h"
+#include "../remc2/portability/Config.h"
 #include "../remc2/portability/port_filesystem.h"
 
 class ReadConfig

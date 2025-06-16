@@ -346,7 +346,6 @@
     <ClInclude Include="engine\Basic.h" />
     <ClInclude Include="engine\CommandLineParser.h" />
     <ClInclude Include="engine\Compare.h" />
-    <ClInclude Include="engine\Config.h" />
     <ClInclude Include="engine\Event.h" />
     <ClInclude Include="engine\EventDispatcher.h" />
     <ClInclude Include="engine\EventType.h" />
@@ -397,6 +396,7 @@
     <ClInclude Include="engine\Level.h" />
     <ClInclude Include="engine\Player.h" />
     <ClInclude Include="engine\PlayerInput.h" />
+    <ClInclude Include="portability\Config.h" />
     <ClInclude Include="portability\fcaseopen.h" />
     <ClInclude Include="portability\port_net.h" />
     <ClInclude Include="portability\port_sdl_joystick.h" />
@@ -446,7 +446,6 @@
     <ClCompile Include="engine\Basic.cpp" />
     <ClCompile Include="engine\CommandLineParser.cpp" />
     <ClCompile Include="engine\Compare.cpp" />
-    <ClCompile Include="engine\Config.cpp" />
     <ClCompile Include="engine\EventDispatcher.cpp" />
     <ClCompile Include="engine\GameBitmap.cpp" />
     <ClCompile Include="engine\GameRenderGL.cpp" />
@@ -476,6 +475,7 @@
     <ClCompile Include="engine\Level.cpp" />
     <ClCompile Include="engine\Player.cpp" />
     <ClCompile Include="engine\PlayerInput.cpp" />
+    <ClCompile Include="portability\Config.cpp" />
     <ClCompile Include="portability\dirent.c" />
     <ClCompile Include="portability\fcaseopen.cpp" />
     <ClCompile Include="portability\port_net.cpp" />

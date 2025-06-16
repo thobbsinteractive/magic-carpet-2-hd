@@ -1,4 +1,6 @@
 #pragma once
+#ifndef CONFIG_H
+#define CONFIG_H
 
 #include <string>
 #include <vector>
@@ -135,3 +137,5 @@ public:
 
 	Config(std::string fileName);
 };
+
+#endif //CONFIG_H

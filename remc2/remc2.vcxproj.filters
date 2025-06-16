@@ -354,8 +354,8 @@
     <ClInclude Include="engine\MenuState.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
-    <ClInclude Include="engine\Config.h">
-      <Filter>Header Files\engine</Filter>
+    <ClInclude Include="portability\Config.h">
+      <Filter>Header Files\portability</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -569,8 +569,8 @@
     <ClCompile Include="engine\EventDispatcher.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Config.cpp">
-      <Filter>Source Files\engine</Filter>
+    <ClCompile Include="portability\Config.cpp">
+      <Filter>Source Files\portability</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
