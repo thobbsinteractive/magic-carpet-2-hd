@@ -26,30 +26,11 @@ public class CustomActions
         {
             session.Log($"Updating config File: {configFilePath}");
 
-			var json = File.ReadAllText(path);
-			if (json != null) 
-			{
-				bool updated = false;
-				var config = JsonConvert.DeserializeObject<Config>(json);
+			if (Utils.SetEnhancedTextures(configFilePath, enhancedTextures))
+				return ActionResult.Success;
 
-				foreach (var setting in config.settings)
-				{
-					if (setting.isActive)
-					{
-						setting.graphics.gameDetail.useEnhancedGraphics = enhancedTextures;
-						updated = true;
-						break;
-					}
-				}
-
-				if (updated)
-				{
-					JsonConvert.SerializeObject(config);
-					File.WriteAllText(json, configFilePath);
-				}
-			}
-            return ActionResult.Success;
-        }
+			return ActionResult.Failure;
+		}
         else
         {
             return ActionResult.Failure;

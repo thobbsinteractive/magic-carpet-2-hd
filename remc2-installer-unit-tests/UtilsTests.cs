@@ -16,6 +16,14 @@ namespace remc2_installer_unit_tests
 
 			Assert.Pass();
 		}
+
+		[TestCase(@"C:\Temp\config.json")]
+		public void EditConfigFileTest(string testFilePath)
+		{
+			Utils.SetEnhancedTextures(testFilePath, true);
+
+			Assert.Pass();
+		}
 	}
 
 
