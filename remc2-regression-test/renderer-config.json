@@ -1,7 +1,7 @@
 {
 	"settings": [
 		{
-			"name": "RegressionTest",
+			"name": "RenderRegressionTest",
 			"isActive": true,
 			"paths": {
 				"gameFolder": "NETHERW",
@@ -16,16 +16,16 @@
 			},
 			"graphics": {
 				"displayIndex": 0,
-				"windowResWidth": 800,
-				"windowResHeight": 600,
+				"windowResWidth": 640,
+				"windowResHeight": 480,
 				"maintainAspectRatio": true,
 				"startWindowed": false,
 				"gameDetail": {
-					"gameResWidth": 320,
-					"gameResHeight": 320,
+					"gameResWidth": 640,
+					"gameResHeight": 480,
 					"useEnhancedGraphics": false,
 					"bigGraphicsFolder": "biggraphics",
-					"sky": true,
+					"sky": false,
 					"reflections": true,
 					"dynamicLighting": true
 				},
