@@ -35,6 +35,7 @@ void Config::LoadSettings(rapidjson::Document& document)
 		if (settings.HasMember("name") && settings.HasMember("isActive") && settings["isActive"].GetBool() == true)
 		{
 			m_Name = settings["name"].GetString();
+			m_Version = settings["version"].GetString();
 			LoadPaths(settings);
 			LoadSound(settings);
 			LoadGraphics(settings);

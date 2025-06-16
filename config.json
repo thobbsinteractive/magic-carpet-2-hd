@@ -1,52 +1,53 @@
 {
-    "settings": [
-        {
-            "name": "Main",
-            "isActive": true,
-            "paths": {
-                "gameFolder": "NETHERW",
-                "cdFolder": "CD_Files"
-            },
-            "sound": {
-                "hqSound": true,
-                "oggMusic": true,
-                "oggFolder": "music-ogg",
-                "oggMusicAlternative": false,
-                "fixSpeedSound": false
-            },
-            "graphics": {
-                "displayIndex": 0,
-                "windowResWidth": 1920,
-                "windowResHeight": 1080,
-                "maintainAspectRatio": true,
-                "startWindowed": false,
-                "gameDetail": {
-                    "gameResWidth": 1920,
-                    "gameResHeight": 1080,
-                    "gameUiScale": 2,
-                    "useEnhancedGraphics": false,
-                    "bigGraphicsFolder": "biggraphics",
-                    "sky": true,
-                    "reflections": true,
-                    "dynamicLighting": true
-                },
-                "threading": {
-                    "isActive": true,
-                    "numberOfRenderThreads": 3,
-                    "assignToSpecificCores": false
-                }
-            },
-            "game": {
-                "loggingLevel": "Info",
-                "maxGameFps": 25,
-                "fmvFps": 20
-            },
-            "controls": {
-                "invertYAxis": true,
-                "invertXAxis": false,
-                "gamePad": [
+	"settings": [
+		{
+			"name": "Main",
+			"version": "1.0",
+			"isActive": true,
+			"paths": {
+				"gameFolder": "NETHERW",
+				"cdFolder": "CD_Files"
+			},
+			"sound": {
+				"hqSound": true,
+				"oggMusic": true,
+				"oggFolder": "music-ogg",
+				"oggMusicAlternative": false,
+				"fixSpeedSound": false
+			},
+			"graphics": {
+				"displayIndex": 0,
+				"windowResWidth": 1920,
+				"windowResHeight": 1080,
+				"maintainAspectRatio": true,
+				"startWindowed": false,
+				"gameDetail": {
+					"gameResWidth": 1920,
+					"gameResHeight": 1080,
+					"gameUiScale": 2,
+					"useEnhancedGraphics": false,
+					"bigGraphicsFolder": "biggraphics",
+					"sky": true,
+					"reflections": true,
+					"dynamicLighting": true
+				},
+				"threading": {
+					"isActive": true,
+					"numberOfRenderThreads": 3,
+					"assignToSpecificCores": false
+				}
+			},
+			"game": {
+				"loggingLevel": "Info",
+				"maxGameFps": 25,
+				"fmvFps": 20
+			},
+			"controls": {
+				"invertYAxis": true,
+				"invertXAxis": false,
+				"gamePad": [
 					{
-						"name": "XBox",
+						"name": "XBox Controller",
 						"isActive": true,
 						"controllerId": 0,
 						"buttonMiniMap": 3,
@@ -203,7 +204,7 @@
 						}
 					}
 				]
-            }
-        }
-    ]
+			}
+		}
+	]
 }

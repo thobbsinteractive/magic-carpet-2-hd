@@ -129,6 +129,7 @@ private:
 
 public:
 	std::string m_Name;
+	std::string m_Version;
 	Paths m_Paths;
 	Sound m_Sound;
 	Graphics m_Graphics;
