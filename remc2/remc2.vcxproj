@@ -269,7 +269,7 @@
     </Link>
     <PostBuildEvent>
       <Command>
-        XCOPY "$(SolutionDir)config.ini" "$(TargetDir)" /Y
+        XCOPY "$(SolutionDir)config.json" "$(TargetDir)" /Y
         XCOPY "$(SolutionDir)Install Guide.txt" "$(TargetDir)" /Y
         XCOPY "$(SolutionDir)EXTRACT" "$(TargetDir)EXTRACT\" /S /Y
         XCOPY "$(SolutionDir)remc2\font" "$(TargetDir)font\" /S /Y
@@ -308,7 +308,7 @@
     </Link>
     <PostBuildEvent>
       <Command>
-        XCOPY "$(SolutionDir)config.ini" "$(TargetDir)" /Y
+        XCOPY "$(SolutionDir)config.json" "$(TargetDir)" /Y
         XCOPY "$(SolutionDir)Install Guide.txt" "$(TargetDir)" /Y
         XCOPY "$(SolutionDir)EXTRACT" "$(TargetDir)EXTRACT\" /S /Y
         XCOPY "$(SolutionDir)remc2\font" "$(TargetDir)font\" /S /Y
@@ -511,7 +511,7 @@
   <ItemGroup>
     <None Include="..\config.json">
       <DeploymentContent>true</DeploymentContent>
-      <FileType>Document</FileType>
+      <FileType>Text</FileType>
     </None>
     <None Include="..\libADLMIDI-master\src\adlmidi_bankmap.tcc" />
     <None Include="..\libADLMIDI-master\src\chips\opl_chip_base.tcc" />

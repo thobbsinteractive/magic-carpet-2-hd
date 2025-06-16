@@ -55,7 +55,7 @@ namespace remc2_installer
 										new FilePermission("CREATOR OWNER", GenericPermission.All)  { Execute = true },
 									}
 								 },
-								 new File(new Id("CONFIG_INI"), @"..\Release\config.ini")
+								 new File(new Id("CONFIG_INI"), @"..\Release\config.json")
 								 {
 									 Permissions = new[] {
 										new FilePermission("Everyone", GenericPermission.All) { ChangePermission = true },
@@ -64,7 +64,7 @@ namespace remc2_installer
 										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
 									}
 								 },
-								 new File(new Id("EDITOR_CONFIG_INI"), @"..\Release\editor-config.ini")
+								 new File(new Id("EDITOR_CONFIG_INI"), @"..\Release\editor-config.json")
 								 {
 									Permissions = new[] {
 										new FilePermission("Everyone", GenericPermission.All) { ChangePermission = true },

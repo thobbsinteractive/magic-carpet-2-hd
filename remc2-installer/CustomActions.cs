@@ -1,4 +1,6 @@
-﻿using Microsoft.Deployment.WindowsInstaller;
+using Microsoft.Deployment.WindowsInstaller;
+using Newtonsoft.Json;
+using remc2_installer;
 using System.IO;
 
 public class CustomActions
@@ -16,17 +18,36 @@ public class CustomActions
 
         session.Log($"Setting Enhanced Textures to: {enhancedTextures}");
         string path = session["INSTALLDIR"];
-        string configFilePath = Path.Combine(path, "config.ini");
+        string configFilePath = Path.Combine(path, "config.json");
 
-        session.Log($"Setting config.ini file: {configFilePath}");
+        session.Log($"Setting config.json file: {configFilePath}");
 
         if (System.IO.File.Exists(configFilePath))
         {
-            session.Log($"Updating Ini File: {configFilePath}");
-            IniFile iniFile = new IniFile();
-            iniFile.Load(configFilePath);
-            iniFile["graphics"]["useEnhancedGraphics"] = $"{enhancedTextures} ; if set to true, bigGraphicsFolder must be set as well";
-            iniFile.Save(configFilePath);
+            session.Log($"Updating config File: {configFilePath}");
+
+			var json = File.ReadAllText(path);
+			if (json != null) 
+			{
+				bool updated = false;
+				var config = JsonConvert.DeserializeObject<Config>(json);
+
+				foreach (var setting in config.settings)
+				{
+					if (setting.isActive)
+					{
+						setting.graphics.gameDetail.useEnhancedGraphics = enhancedTextures;
+						updated = true;
+						break;
+					}
+				}
+
+				if (updated)
+				{
+					JsonConvert.SerializeObject(config);
+					File.WriteAllText(json, configFilePath);
+				}
+			}
             return ActionResult.Success;
         }
         else
