@@ -38,7 +38,7 @@
             },
             "game": {
                 "loggingLevel": "Info",
-                "maxGameFps": 24,
+                "maxGameFps": 25,
                 "fmvFps": 20
             },
             "controls": {
