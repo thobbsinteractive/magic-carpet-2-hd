@@ -86,6 +86,7 @@ public static class Utils
 		if (json != null)
 		{
 			bool updated = false;
+
 			var config = JsonConvert.DeserializeObject<Config>(json);
 
 			foreach (var setting in config.settings)
