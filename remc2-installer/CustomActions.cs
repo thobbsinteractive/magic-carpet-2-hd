@@ -1,6 +1,5 @@
 using Microsoft.Deployment.WindowsInstaller;
 using Newtonsoft.Json;
-using remc2_installer;
 using System.IO;
 
 public class CustomActions
@@ -14,7 +13,6 @@ public class CustomActions
         {
             enhancedTextures = true;
         }
-
 
         session.Log($"Setting Enhanced Textures to: {enhancedTextures}");
         string path = session["INSTALLDIR"];
