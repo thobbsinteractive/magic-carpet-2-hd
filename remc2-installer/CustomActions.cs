@@ -1,40 +1,43 @@
-using Microsoft.Deployment.WindowsInstaller;
 using Newtonsoft.Json;
 using System.IO;
+using WixToolset.Dtf.WindowsInstaller;
 
-public class CustomActions
+namespace MagicCarpet2HDInstaller
 {
-    [CustomAction]
-    public static ActionResult SetEnhancedTextures(Session session)
+    public class CustomActions
     {
-        bool enhancedTextures = false;
-            
-        if (!string.IsNullOrWhiteSpace(session["HIGHTEX"]) && session["HIGHTEX"].Equals("yes", System.StringComparison.InvariantCultureIgnoreCase))
+        [CustomAction]
+        public static ActionResult SetEnhancedTextures(Session session)
         {
-            enhancedTextures = true;
-        }
+            bool enhancedTextures = false;
 
-        session.Log($"Setting Enhanced Textures to: {enhancedTextures}");
-        string path = session["INSTALLDIR"];
-        string configFilePath = Path.Combine(path, "config.json");
+            if (!string.IsNullOrWhiteSpace(session["HIGHTEX"]) && session["HIGHTEX"].Equals("yes", System.StringComparison.InvariantCultureIgnoreCase))
+            {
+                enhancedTextures = true;
+            }
 
-        session.Log($"Setting config.json file: {configFilePath}");
+            session.Log($"Setting Enhanced Textures to: {enhancedTextures}");
+            string path = session["INSTALLDIR"];
+            string configFilePath = Path.Combine(path, "config.json");
 
-        if (System.IO.File.Exists(configFilePath))
-        {
-            session.Log($"Updating config File: {configFilePath}");
+            session.Log($"Setting config.json file: {configFilePath}");
 
-			if (Utils.SetEnhancedTextures(configFilePath, enhancedTextures))
-			{
-				session.Log($"Success updating config File: {configFilePath}");
-				return ActionResult.Success;
-			}
+            if (System.IO.File.Exists(configFilePath))
+            {
+                session.Log($"Updating config File: {configFilePath}");
 
-			return ActionResult.Failure;
-		}
-        else
-        {
-            return ActionResult.Failure;
+                if (Utils.SetEnhancedTextures(configFilePath, enhancedTextures))
+                {
+                    session.Log($"Success updating config File: {configFilePath}");
+                    return ActionResult.Success;
+                }
+
+                return ActionResult.Failure;
+            }
+            else
+            {
+                return ActionResult.Failure;
+            }
         }
     }
 }

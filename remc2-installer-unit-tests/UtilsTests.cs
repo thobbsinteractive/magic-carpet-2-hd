@@ -1,6 +1,7 @@
+using MagicCarpet2HDInstaller;
 using NUnit.Framework;
 
-namespace remc2_installer_unit_tests
+namespace MagicCarpet2HDInstallerUnitTests
 {
 	public class Tests
 	{

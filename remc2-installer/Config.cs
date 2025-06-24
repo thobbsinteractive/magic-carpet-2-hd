@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace remc2_installer
+namespace MagicCarpet2HDInstaller
 {
 	public class Setting
 	{

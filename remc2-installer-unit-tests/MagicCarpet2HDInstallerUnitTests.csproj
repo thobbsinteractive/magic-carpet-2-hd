@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\remc2-installer\remc2-installer.csproj" />
+    <ProjectReference Include="..\remc2-installer\MagicCarpet2HDInstaller.csproj" />
   </ItemGroup>
 
 </Project>

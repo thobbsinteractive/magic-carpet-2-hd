@@ -2,7 +2,7 @@ using System;
 using WixSharp;
 using WixSharp.UI.Forms;
 
-namespace WixSharpSetup
+namespace MagicCarpet2HDInstaller
 {
     public partial class EnhancedDataDialog : ManagedForm, IManagedDialog
     {

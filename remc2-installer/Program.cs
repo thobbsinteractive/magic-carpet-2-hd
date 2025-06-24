@@ -2,11 +2,10 @@ using System;
 using System.Windows.Forms;
 using WixSharp;
 using WixSharp.Forms;
-using WixSharpSetup;
 
-namespace remc2_installer
+namespace MagicCarpet2HDInstaller
 {
-    internal class Program
+    public class Program
     {
         static void Main()
         {
@@ -23,7 +22,7 @@ namespace remc2_installer
                                      IconFile = "Resources/app.ico"
                                  })
 #else
-								 new WixSharp.File(new Id("PRODUCT_EXE"), @"..\Release\remc2.exe", new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", @"%ProgramMenu%\ReMC\Magic Carpet 2 HD")
+								 new File(new Id("PRODUCT_EXE"), @"..\Release\remc2.exe", new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", @"%ProgramMenu%\ReMC\Magic Carpet 2 HD")
                                  {
                                      IconFile = "Resources/app.ico"
                                  })
@@ -42,7 +41,7 @@ namespace remc2_installer
 									 IconFile = "Resources/editor.ico"
 								 })
 #else
-								 new WixSharp.File(new Id("EDITOR_EXE"), @"..\Release\remc2-editor.exe", new FileShortcut(new Id("EDITOR_EXE_SHORTCUT"), "Editor", @"%ProgramMenu%\ReMC\Magic Carpet 2 HD")
+								 new File(new Id("EDITOR_EXE"), @"..\Release\remc2-editor.exe", new FileShortcut(new Id("EDITOR_EXE_SHORTCUT"), "Editor", @"%ProgramMenu%\ReMC\Magic Carpet 2 HD")
                                  {
                                      IconFile = "Resources/editor.ico"
                                  })
@@ -165,7 +164,6 @@ namespace remc2_installer
             project.LicenceFile = @"Resources\MagicCarpet2HD.licence.rtf";
             project.BackgroundImage = @"Resources\MagicCarpet2HD.dialog_bmp.png";
             project.BannerImage = @"Resources\MagicCarpet2HD.dialog_banner.png";
-            project.InstallPrivileges = InstallPrivileges.elevated;
             ValidateAssemblyCompatibility();
             project.AfterInstall += OnAfterInstall;
             project.BuildMsi();

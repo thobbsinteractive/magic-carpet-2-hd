@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using WixSharp;
 using WixSharp.UI.Forms;
 
-namespace WixSharpSetup
+namespace MagicCarpet2HDInstaller
 {
     public partial class GameDataDialog : ManagedForm, IManagedDialog
     {
@@ -22,7 +22,7 @@ namespace WixSharpSetup
             this.FormClosing += GameDataDialog_FormClosing;
         }
 
-        private string GetGoGInstructions()
+		private string GetGoGInstructions()
         {
             string installPath = "INSTALL DIR";
             try
@@ -564,7 +564,7 @@ namespace WixSharpSetup
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            using (var fbd = new FolderBrowserDialog())
+            using (var fbd = new System.Windows.Forms.FolderBrowserDialog())
             {
                 fbd.SelectedPath = this.txtPath.Text;
                 DialogResult result = fbd.ShowDialog();

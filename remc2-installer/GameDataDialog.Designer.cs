@@ -1,4 +1,4 @@
-namespace WixSharpSetup
+namespace MagicCarpet2HDInstaller
 {
     partial class GameDataDialog
     {
