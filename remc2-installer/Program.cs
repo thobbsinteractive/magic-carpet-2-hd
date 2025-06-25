@@ -14,23 +14,24 @@ namespace MagicCarpet2HDInstaller
 #else
 			var project = new ManagedProject("Magic Carpet 2 HD x86",
 #endif
+				new Dir(new Id("SHORTCUTDIR"), @"%ProgramMenu%\ReMC\Magic Carpet 2 HD"),
 				new Dir(new Id("INSTALLDIR"), @"%ProgramFiles%\ReMC\Magic Carpet 2 HD",
 					new DirPermission("Everyone", GenericPermission.All),
 #if WIN64
 						new File(new Id("PRODUCT_EXE"), @"..\x64\Release\remc2.exe",
-							new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", @"%ProgramMenu%\ReMC\Magic Carpet 2 HD")
+							new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", "SHORTCUTDIR")
 							{
 								IconFile = "Resources/app.ico"
 							})
 #else
 						new File(new Id("PRODUCT_EXE"), @"..\Release\remc2.exe", 
-							new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", @"%ProgramMenu%\ReMC\Magic Carpet 2 HD")
+							new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", "SHORTCUTDIR")
 							{
 								 IconFile = "Resources/app.ico"
 							})
 #endif
-							{
-							    Permissions = new[] {
+						{
+							Permissions = new[] {
 							       new FilePermission("Everyone", GenericPermission.All) { Execute = true },
 							       new FilePermission("Users", GenericPermission.All) { Execute = true },
 							       new FilePermission("AuthenticatedUser", GenericPermission.All) { Execute = true },
@@ -39,19 +40,19 @@ namespace MagicCarpet2HDInstaller
 							},
 #if WIN64
 						new File(new Id("EDITOR_EXE"), @"..\x64\Release\remc2-editor.exe",
-							new FileShortcut(new Id("EDITOR_EXE_SHORTCUT"), "Editor", @"%ProgramMenu%\ReMC\Magic Carpet 2 HD")
+							new FileShortcut(new Id("EDITOR_EXE_SHORTCUT"), "Editor", "SHORTCUTDIR")
 							{
 								 IconFile = "Resources/editor.ico"
 							})
 #else
 						new File(new Id("EDITOR_EXE"), @"..\Release\remc2-editor.exe", 
-							new FileShortcut(new Id("EDITOR_EXE_SHORTCUT"), "Editor", @"%ProgramMenu%\ReMC\Magic Carpet 2 HD")
+							new FileShortcut(new Id("EDITOR_EXE_SHORTCUT"), "Editor", "SHORTCUTDIR")
 							{
 								IconFile = "Resources/editor.ico"
 							})
 #endif
-							{
-								Permissions = new[] {
+						{
+							Permissions = new[] {
 									new FilePermission("Everyone", GenericPermission.All) { Execute = true },
 									new FilePermission("Users", GenericPermission.All) { Execute = true },
 									new FilePermission("AuthenticatedUser", GenericPermission.All) { Execute = true },
