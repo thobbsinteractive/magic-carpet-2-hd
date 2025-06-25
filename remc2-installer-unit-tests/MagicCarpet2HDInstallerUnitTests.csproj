@@ -3,18 +3,26 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <RootNamespace>remc2_installer_unit_tests</RootNamespace>
-
     <IsPackable>false</IsPackable>
+    <Platforms>x86;x64</Platforms>
   </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+		<DefineConstants>$(DefineConstants)TRACE;WIN32</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+		<DefineConstants>$(DefineConstants)TRACE;WIN32</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<DefineConstants>$(DefineConstants)TRACE;WIN64</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<DefineConstants>$(DefineConstants)TRACE;WIN64</DefineConstants>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NUnit" Version="4.3.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\remc2-installer\MagicCarpet2HDInstaller.csproj" />
   </ItemGroup>
 
 </Project>
