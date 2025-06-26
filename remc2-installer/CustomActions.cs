@@ -1,6 +1,6 @@
-using Microsoft.Deployment.WindowsInstaller;
 using Newtonsoft.Json;
 using System.IO;
+using WixToolset.Dtf.WindowsInstaller;
 
 public class CustomActions
 {
