@@ -5,20 +5,6 @@ using WixToolset.Dtf.WindowsInstaller;
 
 public class CustomActions
 {
-	static CustomActions()
-	{
-		AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-		{
-			string baseDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			string targetAssembly = Path.Combine(baseDir, new AssemblyName(args.Name).Name + ".dll");
-
-			if (File.Exists(targetAssembly))
-				return Assembly.LoadFrom(targetAssembly);
-
-			return null;
-		};
-	}
-
 	[CustomAction]
     public static ActionResult SetEnhancedTextures(Session session)
     {
