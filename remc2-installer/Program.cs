@@ -15,109 +15,113 @@ namespace remc2_installer
 #else
 			var project = new ManagedProject("Magic Carpet 2 HD x86",
 #endif
-							 new Dir(new Id("SHORTCUTDIR"), @"%ProgramMenu%\ReMC\Magic Carpet 2 HD"),
-							 new Dir(new Id("INSTALLDIR"), @"%ProgramFiles%\ReMC\Magic Carpet 2 HD",
-                                 new DirPermission("Everyone", GenericPermission.All),
+				new Dir(new Id("SHORTCUTDIR"), @"%ProgramMenu%\ReMC\Magic Carpet 2 HD"),
+					new Dir(new Id("INSTALLDIR"), @"%ProgramFiles%\ReMC\Magic Carpet 2 HD",
+						new DirPermission("Everyone", GenericPermission.All),
 #if WIN64
-								 new WixSharp.File(new Id("PRODUCT_EXE"), @"..\x64\Release\remc2.exe", new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", "SHORTCUTDIR")
-                                 {
-                                     IconFile = "Resources/app.ico"
-                                 })
+							new WixSharp.File(new Id("PRODUCT_EXE"), @"..\x64\Release\remc2.exe", 
+								new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", "SHORTCUTDIR")
+                                {
+									IconFile = "Resources/app.ico"
+                                })
 #else
-								 new WixSharp.File(new Id("PRODUCT_EXE"), @"..\Release\remc2.exe", new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", "SHORTCUTDIR")
-                                 {
-                                     IconFile = "Resources/app.ico"
-                                 })
+							new WixSharp.File(new Id("PRODUCT_EXE"), @"..\Release\remc2.exe", 
+								new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", "SHORTCUTDIR")
+                                {
+									IconFile = "Resources/app.ico"
+                                })
 #endif
-								 {
-									 Permissions = new[] {
-                                        new FilePermission("Everyone", GenericPermission.All) { Execute = true },
-                                        new FilePermission("Users", GenericPermission.All) { Execute = true },
-                                        new FilePermission("AuthenticatedUser", GenericPermission.All) { Execute = true },
-                                        new FilePermission("CREATOR OWNER", GenericPermission.All)  { Execute = true },
-                                    }
-                                 },
-#if WIN64
-								 new WixSharp.File(new Id("EDITOR_EXE"), @"..\x64\Release\remc2-editor.exe", new FileShortcut(new Id("EDITOR_EXE_SHORTCUT"), "Editor", "SHORTCUTDIR")
-								 {
-									 IconFile = "Resources/editor.ico"
-								 })
-#else
-								 new WixSharp.File(new Id("EDITOR_EXE"), @"..\Release\remc2-editor.exe", new FileShortcut(new Id("EDITOR_EXE_SHORTCUT"), "Editor", "SHORTCUTDIR")
-                                 {
-                                     IconFile = "Resources/editor.ico"
-                                 })
-#endif
-								 {
-									 Permissions = new[] {
+								{
+									Permissions = new[] {
 										new FilePermission("Everyone", GenericPermission.All) { Execute = true },
 										new FilePermission("Users", GenericPermission.All) { Execute = true },
 										new FilePermission("AuthenticatedUser", GenericPermission.All) { Execute = true },
 										new FilePermission("CREATOR OWNER", GenericPermission.All)  { Execute = true },
 									}
-								 },
-								 new File(new Id("CONFIG_INI"), @"..\Release\config.json")
-								 {
-									 Permissions = new[] {
-										new FilePermission("Everyone", GenericPermission.All) { ChangePermission = true },
-										new FilePermission("Users", GenericPermission.All) { ChangePermission = true },
-										new FilePermission("AuthenticatedUser", GenericPermission.All) { ChangePermission = true },
-										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
+                                },
+#if WIN64
+							new WixSharp.File(new Id("EDITOR_EXE"), @"..\x64\Release\remc2-editor.exe", 
+								new FileShortcut(new Id("EDITOR_EXE_SHORTCUT"), "Editor", "SHORTCUTDIR")
+								{
+									IconFile = "Resources/editor.ico"
+								})
+#else
+							new WixSharp.File(new Id("EDITOR_EXE"), @"..\Release\remc2-editor.exe", 
+								new FileShortcut(new Id("EDITOR_EXE_SHORTCUT"), "Editor", "SHORTCUTDIR")
+								{
+									IconFile = "Resources/editor.ico"
+								})
+#endif
+								{
+									Permissions = new[] {
+										new FilePermission("Everyone", GenericPermission.All) { Execute = true },
+										new FilePermission("Users", GenericPermission.All) { Execute = true },
+										new FilePermission("AuthenticatedUser", GenericPermission.All) { Execute = true },
+										new FilePermission("CREATOR OWNER", GenericPermission.All)  { Execute = true },
 									}
-								 },
-								 new File(new Id("EDITOR_CONFIG_INI"), @"..\Release\editor-config.json")
-								 {
+								},
+								new File(new Id("CONFIG_INI"), @"..\Release\config.json")
+								{
 									Permissions = new[] {
 										new FilePermission("Everyone", GenericPermission.All) { ChangePermission = true },
 										new FilePermission("Users", GenericPermission.All) { ChangePermission = true },
 										new FilePermission("AuthenticatedUser", GenericPermission.All) { ChangePermission = true },
 										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
 									}
-								 },
+								},
+								new File(new Id("EDITOR_CONFIG_INI"), @"..\Release\editor-config.json")
+								{
+									Permissions = new[] {
+										new FilePermission("Everyone", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("Users", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("AuthenticatedUser", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
+									}
+								},
 #if WIN64
-								 new File(new Id("BROTLICOMMON_DLL"), @"..\x64\Release\brotlicommon.dll"),
-								 new File(new Id("BROTLIDEC_DLL"), @"..\x64\Release\brotlidec.dll"),
-								 new File(new Id("BZ2_DLL"), @"..\x64\Release\bz2.dll"),
-								 new File(new Id("FMT_DLL"),@"..\x64\Release\fmt.dll"),
-								 new File(new Id("FREETYPE_DLL"), @"..\x64\Release\freetype.dll"),
-								 new File(new Id("LIBPNG16_DLL"), @"..\x64\Release\libpng16.dll"),
-								 new File(new Id("OGG_DLL"), @"..\x64\Release\ogg.dll"),
-								 new File(new Id("SDL2_DLL"), @"..\x64\Release\SDL2.dll"),
-								 new File(new Id("SDL2_IMAGE_DLL"), @"..\x64\Release\SDL2_image.dll"),
-								 new File(new Id("SDL2_MIXER_DLL"), @"..\x64\Release\SDL2_mixer.dll"),
-								 new File(new Id("SDL2_TTF_DLL"), @"..\x64\Release\SDL2_ttf.dll"),
-								 new File(new Id("VORBIS_DLL"), @"..\x64\Release\vorbis.dll"),
-								 new File(new Id("VORBIXFILE_DLL"), @"..\x64\Release\vorbisfile.dll"),
-								 new File(new Id("ZLIB1_DLL"), @"..\x64\Release\zlib1.dll"),
+								new File(new Id("BROTLICOMMON_DLL"), @"..\x64\Release\brotlicommon.dll"),
+								new File(new Id("BROTLIDEC_DLL"), @"..\x64\Release\brotlidec.dll"),
+								new File(new Id("BZ2_DLL"), @"..\x64\Release\bz2.dll"),
+								new File(new Id("FMT_DLL"),@"..\x64\Release\fmt.dll"),
+								new File(new Id("FREETYPE_DLL"), @"..\x64\Release\freetype.dll"),
+								new File(new Id("LIBPNG16_DLL"), @"..\x64\Release\libpng16.dll"),
+								new File(new Id("OGG_DLL"), @"..\x64\Release\ogg.dll"),
+								new File(new Id("SDL2_DLL"), @"..\x64\Release\SDL2.dll"),
+								new File(new Id("SDL2_IMAGE_DLL"), @"..\x64\Release\SDL2_image.dll"),
+								new File(new Id("SDL2_MIXER_DLL"), @"..\x64\Release\SDL2_mixer.dll"),
+								new File(new Id("SDL2_TTF_DLL"), @"..\x64\Release\SDL2_ttf.dll"),
+								new File(new Id("VORBIS_DLL"), @"..\x64\Release\vorbis.dll"),
+								new File(new Id("VORBIXFILE_DLL"), @"..\x64\Release\vorbisfile.dll"),
+								new File(new Id("ZLIB1_DLL"), @"..\x64\Release\zlib1.dll"),
 #else
-								 new File(new Id("BROTLICOMMON_DLL"), @"..\Release\brotlicommon.dll"),
-								 new File(new Id("BROTLIDEC_DLL"), @"..\Release\brotlidec.dll"),
-								 new File(new Id("BZ2_DLL"), @"..\Release\bz2.dll"),
-								 new File(new Id("FMT_DLL"), @"..\Release\fmt.dll"),
-								 new File(new Id("FREETYPE_DLL"), @"..\Release\freetype.dll"),
-								 new File(new Id("LIBPNG16_DLL"), @"..\Release\libpng16.dll"),
-								 new File(new Id("OGG_DLL"), @"..\Release\ogg.dll"),
-								 new File(new Id("SDL2_DLL"), @"..\Release\SDL2.dll"),
-								 new File(new Id("SDL2_IMAGE_DLL"), @"..\Release\SDL2_image.dll"),
-								 new File(new Id("SDL2_MIXER_DLL"), @"..\Release\SDL2_mixer.dll"),
-								 new File(new Id("SDL2_TTF_DLL"), @"..\Release\SDL2_ttf.dll"),
-								 new File(new Id("VORBIS_DLL"), @"..\Release\vorbis.dll"),
-								 new File(new Id("VORBIXFILE_DLL"), @"..\Release\vorbisfile.dll"),
-								 new File(new Id("ZLIB1_DLL"), @"..\Release\zlib1.dll"),
+								new File(new Id("BROTLICOMMON_DLL"), @"..\Release\brotlicommon.dll"),
+								new File(new Id("BROTLIDEC_DLL"), @"..\Release\brotlidec.dll"),
+								new File(new Id("BZ2_DLL"), @"..\Release\bz2.dll"),
+								new File(new Id("FMT_DLL"), @"..\Release\fmt.dll"),
+								new File(new Id("FREETYPE_DLL"), @"..\Release\freetype.dll"),
+								new File(new Id("LIBPNG16_DLL"), @"..\Release\libpng16.dll"),
+								new File(new Id("OGG_DLL"), @"..\Release\ogg.dll"),
+								new File(new Id("SDL2_DLL"), @"..\Release\SDL2.dll"),
+								new File(new Id("SDL2_IMAGE_DLL"), @"..\Release\SDL2_image.dll"),
+								new File(new Id("SDL2_MIXER_DLL"), @"..\Release\SDL2_mixer.dll"),
+								new File(new Id("SDL2_TTF_DLL"), @"..\Release\SDL2_ttf.dll"),
+								new File(new Id("VORBIS_DLL"), @"..\Release\vorbis.dll"),
+								new File(new Id("VORBIXFILE_DLL"), @"..\Release\vorbisfile.dll"),
+								new File(new Id("ZLIB1_DLL"), @"..\Release\zlib1.dll"),
 #endif
-								 new File(new Id("EXTRACT_BAT"), @"Extract.bat"),
-								 new Dir(new Id("KISS_INSTALLDIR"), @"kiss",
+								new File(new Id("EXTRACT_BAT"), @"Extract.bat"),
+								new Dir(new Id("KISS_INSTALLDIR"), @"kiss",
 									new Files(@"..\Release\kiss\*.*")),
-								 new Dir(new Id("FONT_INSTALLDIR"), @"font",
-                                    new Files(@"..\Release\font\*.*")),
-                                 new Dir(new Id("BIGGRAPHICS_INSTALLDIR"), @"biggraphics",
-                                    new Files(@"..\enhancedassets\biggraphics\*.*")
+								new Dir(new Id("FONT_INSTALLDIR"), @"font",
+									new Files(@"..\Release\font\*.*")),
+								new Dir(new Id("BIGGRAPHICS_INSTALLDIR"), @"biggraphics",
+									new Files(@"..\enhancedassets\biggraphics\*.*")
                                     {
                                         ComponentCondition = "HIGHTEX=\"yes\""
                                     }),
-                                 new Dir(new Id("MUSICOGG_INSTALLDIR"), @"music-ogg",
+                                new Dir(new Id("MUSICOGG_INSTALLDIR"), @"music-ogg",
                                     new Files(@"..\enhancedassets\music-ogg\*.*")),
-                                 new Dir(new Id("EXTRACT_INSTALLDIR"), @"Extract",
+                                new Dir(new Id("EXTRACT_INSTALLDIR"), @"Extract",
                                     new File(new Id("DOSBOXEXTRACT_CONF"), @"Extract\dosboxExtract-GOG-CD.conf"),
                                     new File(new Id("XXCOPY16_EXE"), @"Extract\XXCOPY16.EXE"),
 									new File(new Id("MPXPLAY_EXE"), @"Extract\mpxplay.exe"),
