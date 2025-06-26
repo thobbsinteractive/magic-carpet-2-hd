@@ -18,7 +18,6 @@ namespace remc2_installer
 							 new Dir(new Id("SHORTCUTDIR"), @"%ProgramMenu%\ReMC\Magic Carpet 2 HD"),
 							 new Dir(new Id("INSTALLDIR"), @"%ProgramFiles%\ReMC\Magic Carpet 2 HD",
                                  new DirPermission("Everyone", GenericPermission.All),
-								 new File(new Id("NEWTONSOFTJSON"), @"Newtonsoft.Json.dll"),
 #if WIN64
 								 new WixSharp.File(new Id("PRODUCT_EXE"), @"..\x64\Release\remc2.exe", new FileShortcut(new Id("PRODUCT_EXE_SHORTCUT"), "Magic Carpet 2 HD", "SHORTCUTDIR")
                                  {
@@ -135,8 +134,11 @@ namespace remc2_installer
 #endif
             project.GUID = new Guid("d945f1c4-cbe4-445c-9674-07de64692857");
 			project.Version = new Version(0, 9, 9, 0);
-
-			project.DefaultRefAssemblies.Add("Newtonsoft.Json.dll");
+#if WIN64
+			project.DefaultRefAssemblies.Add(@"bin\x64\Release\net48\Newtonsoft.Json.dll");
+#else
+			project.DefaultRefAssemblies.Add(@"bin\x86\Release\net48\Newtonsoft.Json.dll");
+#endif
 
 			//project.ManagedUI = ManagedUI.Empty;    //no standard UI dialogs
 			//project.ManagedUI = ManagedUI.Default;  //all standard UI dialogs

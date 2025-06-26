@@ -1,6 +1,4 @@
-using Newtonsoft.Json;
 using System;
-using System.Configuration.Assemblies;
 using System.IO;
 using System.Reflection;
 using WixToolset.Dtf.WindowsInstaller;
