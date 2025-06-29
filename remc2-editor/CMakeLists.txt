@@ -6,10 +6,6 @@ set(SOURCE_FILES_EDITOR
     "editor.cpp"
     "editor_main.cpp"
     "editor.h"
-    "../inih/ini.c"
-    "../inih/ini.h"
-    "../inih/INIReader.cpp"
-    "../inih/INIReader.h"
     "../remc2/engine/Animation.cpp"
     "../remc2/engine/Animation.h"
     "../remc2/engine/Basic.cpp"
@@ -79,6 +75,8 @@ set(SOURCE_FILES_EDITOR
     "../remc2/engine/engine_support.h"
     "../remc2/engine/read_config.cpp"
     "../remc2/engine/read_config.h"
+    "../remc2/portability/Config.cpp"
+    "../remc2/portability/Config.h"
     "../remc2/portability/fcaseopen.cpp"
     "../remc2/portability/fcaseopen.h"
     "../remc2/portability/port_filesystem.cpp"
@@ -115,7 +113,7 @@ set(SOURCE_FILES_EDITOR
     "kiss_general.cpp"
     "kiss_draw.cpp"
 )
-#foreach(FILE_ENTRY ${SOURCE_FILES_ENGINE} ${SOURCE_FILES__portability} ${SOURCE_FILES__libs__inih})
+#foreach(FILE_ENTRY ${SOURCE_FILES_ENGINE} ${SOURCE_FILES__portability})
 #  list(APPEND SOURCE_FILES_EDITOR "../remc2/${FILE_ENTRY}")
 #endforeach()
 source_group("Source Files Editor" FILES ${SOURCE_FILES_EDITOR} )
@@ -137,8 +135,7 @@ target_link_libraries(${EDITOR_TARGET} PUBLIC
 target_include_directories(${EDITOR_TARGET} PUBLIC
     "../kiss_sdl-master"
     "../findfirst"
-	"../spdlog/include"
-    "../inih"
+    "../spdlog/include"
 )
 add_compile_definitions(COMPILE_FOR_64BIT)
 
@@ -151,7 +148,7 @@ install(
 )
 install(
     FILES 
-    ${CMAKE_SOURCE_DIR}/remc2-editor/editor-config.ini
+    ${CMAKE_SOURCE_DIR}/remc2-editor/editor-config.json
     DESTINATION bin
 )
 install(

@@ -17,10 +17,6 @@ set(SOURCE_FILES_UNITTESTS
 set(SOURCE_FILES_UNITTESTS_DEPENDENCIES
     "pch.cpp"
     "pch.h"
-    "../inih/ini.c"
-    "../inih/ini.h"
-    "../inih/INIReader.cpp"
-    "../inih/INIReader.h"
     "../remc2/engine/Animation.cpp"
     "../remc2/engine/Animation.h"
     "../remc2/engine/Basic.cpp"
@@ -91,6 +87,8 @@ set(SOURCE_FILES_UNITTESTS_DEPENDENCIES
     "../remc2/engine/engine_support.h"
     "../remc2/engine/read_config.cpp"
     "../remc2/engine/read_config.h"
+    "../remc2/portability/Config.cpp"
+    "../remc2/portability/Config.h"
     "../remc2/portability/fcaseopen.cpp"
     "../remc2/portability/fcaseopen.h"
     "../remc2/portability/port_filesystem.cpp"
@@ -138,9 +136,8 @@ target_include_directories(${UNIT_TEST_TARGET} PUBLIC
     "../remc2/engine"
     "../remc2/portability"
     "../findfirst"
-    "../inih"
-	"../spdlog/include"
-	"../rapidjson"
+    "../spdlog/include"
+    "../rapidjson"
     ${GTEST_INCLUDE_DIRS}
 )
 target_link_libraries(${UNIT_TEST_TARGET} PUBLIC 

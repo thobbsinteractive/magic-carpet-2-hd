@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;WINDOWS_IGNORE_PACKING_MISMATCH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;$(SolutionDir)inih;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -160,7 +160,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;$(SolutionDir)inih;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -187,7 +187,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;$(SolutionDir)inih;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OmitFramePointers>false</OmitFramePointers>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
@@ -220,7 +220,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;$(SolutionDir)inih;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OmitFramePointers>false</OmitFramePointers>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
@@ -253,7 +253,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;$(SolutionDir)inih;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -269,7 +269,7 @@
     </Link>
     <PostBuildEvent>
       <Command>
-        XCOPY "$(SolutionDir)config.ini" "$(TargetDir)" /Y
+        XCOPY "$(SolutionDir)config.json" "$(TargetDir)" /Y
         XCOPY "$(SolutionDir)Install Guide.txt" "$(TargetDir)" /Y
         XCOPY "$(SolutionDir)EXTRACT" "$(TargetDir)EXTRACT\" /S /Y
         XCOPY "$(SolutionDir)remc2\font" "$(TargetDir)font\" /S /Y
@@ -293,7 +293,7 @@
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;$(SolutionDir)inih;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
@@ -308,7 +308,7 @@
     </Link>
     <PostBuildEvent>
       <Command>
-        XCOPY "$(SolutionDir)config.ini" "$(TargetDir)" /Y
+        XCOPY "$(SolutionDir)config.json" "$(TargetDir)" /Y
         XCOPY "$(SolutionDir)Install Guide.txt" "$(TargetDir)" /Y
         XCOPY "$(SolutionDir)EXTRACT" "$(TargetDir)EXTRACT\" /S /Y
         XCOPY "$(SolutionDir)remc2\font" "$(TargetDir)font\" /S /Y
@@ -320,8 +320,6 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\inih\ini.h" />
-    <ClInclude Include="..\inih\INIReader.h" />
     <ClInclude Include="..\libADLMIDI-master\src\adldata.hh" />
     <ClInclude Include="..\libADLMIDI-master\src\adlmidi_bankmap.h" />
     <ClInclude Include="..\libADLMIDI-master\src\adlmidi_cvt.hpp" />
@@ -398,6 +396,7 @@
     <ClInclude Include="engine\Level.h" />
     <ClInclude Include="engine\Player.h" />
     <ClInclude Include="engine\PlayerInput.h" />
+    <ClInclude Include="portability\Config.h" />
     <ClInclude Include="portability\fcaseopen.h" />
     <ClInclude Include="portability\port_net.h" />
     <ClInclude Include="portability\port_sdl_joystick.h" />
@@ -429,8 +428,6 @@
     <ClInclude Include="utilities\Wave.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\inih\ini.c" />
-    <ClCompile Include="..\inih\INIReader.cpp" />
     <ClCompile Include="..\libADLMIDI-master\src\adldata.cpp" />
     <ClCompile Include="..\libADLMIDI-master\src\adlmidi.cpp" />
     <ClCompile Include="..\libADLMIDI-master\src\adlmidi_load.cpp" />
@@ -478,6 +475,7 @@
     <ClCompile Include="engine\Level.cpp" />
     <ClCompile Include="engine\Player.cpp" />
     <ClCompile Include="engine\PlayerInput.cpp" />
+    <ClCompile Include="portability\Config.cpp" />
     <ClCompile Include="portability\dirent.c" />
     <ClCompile Include="portability\fcaseopen.cpp" />
     <ClCompile Include="portability\port_net.cpp" />
@@ -511,7 +509,7 @@
     <ClCompile Include="utilities\Maths.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\config.ini">
+    <None Include="..\config.json">
       <DeploymentContent>true</DeploymentContent>
       <FileType>Text</FileType>
     </None>

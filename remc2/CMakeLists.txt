@@ -123,14 +123,6 @@ set(SOURCE_FILES_ENGINE
 )
 source_group("Source Files\\engine" FILES ${SOURCE_FILES_ENGINE})
 
-set(SOURCE_FILES__libs__inih
-    "../inih/ini.c"
-    "../inih/ini.h"
-    "../inih/INIReader.cpp"
-    "../inih/INIReader.h"
-)
-source_group("Source Files\\libs\\inih" FILES ${SOURCE_FILES__libs__inih})
-
 set(SOURCE_FILES__libs__findfirst
     "../findfirst/findfirst.c"
     "../findfirst/findfirst.h"
@@ -141,6 +133,8 @@ source_group("Source Files\\libs\\findfirst" FILES ${SOURCE_FILES__libs__findfir
 
 set(SOURCE_FILES__portability
     "portability/bitmap_pos_struct.h"
+    "portability/Config.cpp"
+    "portability/Config.h"
     "portability/fcaseopen.cpp"
     "portability/fcaseopen.h"
     "portability/port_net.cpp"
@@ -169,7 +163,6 @@ set(ALL_FILES
     ${HEADER_FILES}
     ${SOURCE_FILES}
     ${SOURCE_FILES_ENGINE}
-    ${SOURCE_FILES__libs__inih}
     ${SOURCE_FILES__portability}
     ${SOURCE_FILES__networklib}
 )
@@ -196,7 +189,7 @@ install(
 )
 install(
     FILES 
-    ${CMAKE_SOURCE_DIR}/config.ini
+    ${CMAKE_SOURCE_DIR}/config.json
     DESTINATION bin
 )
 install(
@@ -218,7 +211,6 @@ set(ROOT_NAMESPACE remc2)
 ################################################################################
 if (UNIX)
     target_include_directories(${PROJECT_NAME} PUBLIC
-		"${CMAKE_SOURCE_DIR}/inih"
         "${CMAKE_SOURCE_DIR}/findfirst"
         "${CMAKE_SOURCE_DIR}/spdlog/include"
 		"${CMAKE_SOURCE_DIR}/rapidjson"

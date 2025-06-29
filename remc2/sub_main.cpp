@@ -40413,7 +40413,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		//skip signal(6, 1);//236FC1 - 279DC0
 
 		printf("Reading Ini file\n");
-		if (!readini()) exit(1);
+		if (!SetConfig()) exit(1);
 
 		spdlog::level::level_enum level = spdlog::level::info;
 

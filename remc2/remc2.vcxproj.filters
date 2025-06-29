@@ -25,9 +25,6 @@
     <Filter Include="Source Files\libs\libADL">
       <UniqueIdentifier>{78883006-e8c8-4d4f-bd9e-96abcaacbd44}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\libs\inih">
-      <UniqueIdentifier>{88c3818e-fa9e-47cd-9191-d23071ee450d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\portability">
       <UniqueIdentifier>{d5e291bd-a3ae-41a5-a8f1-7b30c46a8bce}</UniqueIdentifier>
     </Filter>
@@ -113,12 +110,6 @@
     </ClInclude>
     <ClInclude Include="..\libADLMIDI-master\src\wopl\wopl_file.h">
       <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inih\ini.h">
-      <Filter>Source Files\libs\inih</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inih\INIReader.h">
-      <Filter>Source Files\libs\inih</Filter>
     </ClInclude>
     <ClInclude Include="portability\port_filesystem.h">
       <Filter>Header Files\portability</Filter>
@@ -363,6 +354,9 @@
     <ClInclude Include="engine\MenuState.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
+    <ClInclude Include="portability\Config.h">
+      <Filter>Header Files\portability</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -436,12 +430,6 @@
     </ClCompile>
     <ClCompile Include="..\libADLMIDI-master\src\wopl\wopl_file.c">
       <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\inih\ini.c">
-      <Filter>Source Files\libs\inih</Filter>
-    </ClCompile>
-    <ClCompile Include="..\inih\INIReader.cpp">
-      <Filter>Source Files\libs\inih</Filter>
     </ClCompile>
     <ClCompile Include="engine\read_config.cpp">
       <Filter>Source Files\engine</Filter>
@@ -581,6 +569,9 @@
     <ClCompile Include="engine\EventDispatcher.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
+    <ClCompile Include="portability\Config.cpp">
+      <Filter>Source Files\portability</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="engine\info.x">
@@ -598,10 +589,10 @@
     <None Include="engine\bytearrays.x">
       <Filter>Source Files\engine</Filter>
     </None>
-    <None Include="..\config.ini">
+    <None Include="packages.config" />
+    <None Include="..\config.json">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="font\8x8-font.bmp">

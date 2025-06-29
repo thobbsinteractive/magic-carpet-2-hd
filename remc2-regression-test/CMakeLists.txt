@@ -4,10 +4,6 @@ set(REGRESSION_TEST_TARGET remc2-regression-test)
 # Source groups
 ################################################################################
 set(SOURCE_FILES_REGRESSIONTESTS
-    "../inih/ini.c"
-    "../inih/ini.h"
-    "../inih/INIReader.cpp"
-    "../inih/INIReader.h"
     "../remc2/engine/Animation.cpp"
     "../remc2/engine/Animation.h"
     "../remc2/engine/Basic.cpp"
@@ -78,6 +74,8 @@ set(SOURCE_FILES_REGRESSIONTESTS
     "../remc2/engine/engine_support.h"
     "../remc2/engine/read_config.cpp"
     "../remc2/engine/read_config.h"
+    "../remc2/portability/Config.cpp"
+    "../remc2/portability/Config.h"
     "../remc2/portability/fcaseopen.cpp"
     "../remc2/portability/fcaseopen.h"
     "../remc2/portability/port_filesystem.cpp"
@@ -127,9 +125,8 @@ target_include_directories(${REGRESSION_TEST_TARGET} PUBLIC
     "../remc2/engine"
     "../remc2/portability"
     "../findfirst"
-    "../inih"
-	"../spdlog/include"
-	"../rapidjson"
+    "../spdlog/include"
+    "../rapidjson"
 )
 target_link_libraries(${REGRESSION_TEST_TARGET} PUBLIC 
     gtest
@@ -158,8 +155,8 @@ install(
 )
 install(
     FILES
-    ${CMAKE_SOURCE_DIR}/remc2-regression-test/regression-config.ini
-    ${CMAKE_SOURCE_DIR}/remc2-regression-test/renderer-config.ini
+    ${CMAKE_SOURCE_DIR}/remc2-regression-test/regression-config.json
+    ${CMAKE_SOURCE_DIR}/remc2-regression-test/renderer-config.json
     ${CMAKE_SOURCE_DIR}/remc2-regression-test/test_renderer.sh
     DESTINATION bin
 )

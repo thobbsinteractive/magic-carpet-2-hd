@@ -116,7 +116,7 @@
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <None Include="editor-config.ini">
+    <None Include="editor-config.json">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
