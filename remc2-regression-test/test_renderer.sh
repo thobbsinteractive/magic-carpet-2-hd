@@ -8,7 +8,7 @@ test_level() {
         ${REMC2_EXECUTABLE} \
             --test_renderers \
             --set_level $level \
-            --config_file_path ./renderer-config.ini\
+            --config_file_path ./renderer-config.json\
             2>/dev/null | grep "No differences between HD and Original renderer and all checkpoints hit"
     
     if [ ${PIPESTATUS[1]} -eq 0 ]; then

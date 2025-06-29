@@ -975,7 +975,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 		break;
 	}
 	case 0x1fb8a0: {
-		sub_1A8A0();
+		HandleArrowKeyPresses_1A8A0();
 		break;
 	}
 	case 0x1fb970: {

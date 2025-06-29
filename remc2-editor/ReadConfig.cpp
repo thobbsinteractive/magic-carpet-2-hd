@@ -1,11 +1,10 @@
 #include "ReadConfig.h"
-#include <iostream>
 
-std::string ReadConfig::FindIniFile() {
-	// find location of inifile and read it
-	std::vector<std::string> inifile_locations;
+std::string ReadConfig::FindConfigFile() {
+	// find location of configFile and read it
+	std::vector<std::string> configFile_locations;
 	if (CommandLineParams.GetConfigFilePath().length() > 0) {
-		inifile_locations.push_back(CommandLineParams.GetConfigFilePath());
+		configFile_locations.push_back(CommandLineParams.GetConfigFilePath());
 	}
 	else {
 #ifdef __linux__
@@ -17,56 +16,48 @@ std::string ReadConfig::FindIniFile() {
 		if (env_xdg_config_home_dir) xdg_config_home_dir = env_xdg_config_home_dir;
 
 		if (std::filesystem::exists(xdg_config_home_dir)) {
-			inifile_locations.emplace_back(xdg_config_home_dir / "remc2-editor" / "editor-config.ini");
+			configFile_locations.emplace_back(xdg_config_home_dir / "remc2-editor" / "editor-config.json");
 		}
 		if (std::filesystem::exists(home_dir)) {
-			inifile_locations.emplace_back(home_dir / ".config" / "remc2-editor" / "editor-config.ini");
+			configFile_locations.emplace_back(home_dir / ".config" / "remc2-editor" / "editor-config.json");
 		}
 #else //__linux__
 		auto home_drive = std::getenv("HOMEDRIVE");
 		auto home_path = std::getenv("HOMEPATH");
 		if (home_drive && home_path) {
 			std::string home_dir = std::string(home_drive) + "/" + std::string(home_path);
-			inifile_locations.push_back(home_dir + "/remc2-editor/editor-config.ini");
+			configFile_locations.push_back(home_dir + "/remc2-editor/editor-config.json");
 		}
 #endif //__linux__
-		inifile_locations.push_back(get_exe_path() + "/editor-config.ini");
+		configFile_locations.push_back(get_exe_path() + "/editor-config.json");
 	}
-	std::string inifile;
-	// first location at which an inifile can be found is chosen
-	for (auto inifile_location: inifile_locations) {
-		if (std::filesystem::exists(inifile_location)) {
-			inifile = inifile_location;
+	std::string configFile;
+	// first location at which an configFile can be found is chosen
+	for (auto configFile_location: configFile_locations) {
+		if (std::filesystem::exists(configFile_location)) {
+			configFile = configFile_location;
 			break;
 		}
 	}
 
-
-	return inifile;
+	return configFile;
 }
 
-bool ReadConfig::ReadIni() {
+bool ReadConfig::SetConfig() {
 
-	std::string inifile = FindIniFile();
-	if (std::filesystem::exists(inifile)) {
-		Logger->info("Using inifile: {}", inifile);
+	std::string configFilePath = FindConfigFile();
+	if (std::filesystem::exists(configFilePath)) {
+		Logger->info("Using configFile: {}", configFilePath);
 	}
 	else {
-		Logger->error("Inifile cannot be found... Exiting");
+		Logger->error("configFile cannot be found... Exiting");
 		return false;
 	}
 
-	INIReader reader(inifile);
+	auto config = Config(configFilePath);
 
-	if (reader.ParseError() < 0) {
-		Logger->error("Can't load 'editor-config.ini'");
-		return false;
-	}
-
-	std::string readstr2 = reader.GetString("main", "gameFolder", "");
-	strcpy((char*)gameFolder, (char*)readstr2.c_str());
-	std::string readstr4 = reader.GetString("main", "cdFolder", "");
-	strcpy((char*)cdFolder, (char*)readstr4.c_str());
+	strcpy((char*)gameFolder, config.m_Paths.m_GameFolder.c_str());
+	strcpy((char*)cdFolder, config.m_Paths.m_CdFolder.c_str());
 
 	return true;
 };

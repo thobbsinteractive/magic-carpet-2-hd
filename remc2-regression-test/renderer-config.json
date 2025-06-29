@@ -1,0 +1,46 @@
+{
+	"settings": [
+		{
+			"name": "RenderRegressionTest",
+			"isActive": true,
+			"paths": {
+				"gameFolder": "NETHERW",
+				"cdFolder": "CD_Files"
+			},
+			"sound": {
+				"hqSound": true,
+				"oggMusic": true,
+				"oggFolder": "music-ogg",
+				"oggMusicAlternative": false,
+				"fixSpeedSound": false
+			},
+			"graphics": {
+				"displayIndex": 0,
+				"windowResWidth": 640,
+				"windowResHeight": 480,
+				"maintainAspectRatio": true,
+				"startWindowed": false,
+				"gameDetail": {
+					"gameResWidth": 640,
+					"gameResHeight": 480,
+					"useEnhancedGraphics": false,
+					"bigGraphicsFolder": "biggraphics",
+					"sky": false,
+					"reflections": true,
+					"dynamicLighting": true
+				},
+				"threading": {
+					"isActive": false,
+					"numberOfRenderThreads": 0,
+					"assignToSpecificCores": false
+				}
+			},
+			"game": {
+				"loggingLevel": "Debug",
+				"maxGameFps": 30,
+				"fmvFps": 20,
+				"skipIntro": true
+			}
+		}
+	]
+}

@@ -21,7 +21,7 @@ int run_regtest(int level)//236F70
 	sprintf(arg5, "%d", level - 1);
 	char arg6[] = "--config_file_path";
 
-	std::string path = get_exe_path() + "/regression-config.ini";
+	std::string path = get_exe_path() + "/regression-config.json";
 	char* arg7 = &path[0];
 	char* envp[] = { nullptr };
 	argv[0] = arg1;

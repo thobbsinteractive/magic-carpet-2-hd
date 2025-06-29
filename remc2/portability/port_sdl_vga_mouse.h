@@ -14,12 +14,6 @@
 #include "port_sdl_sound.h"
 #include "port_filesystem.h"
 
-#define  SCENE_PREAMBLE_MENU  0x1
-#define         SCENE_FLIGHT  0x2
-#define    SCENE_FLIGHT_MENU  0x3
-#define     SCENE_SPELL_MENU  0x4
-#define           SCENE_DEAD  0x5
-
 typedef struct
 {
 	int32_t x;
@@ -30,8 +24,10 @@ typedef struct
 
 void VGA_Init(int windowWidth, int windowHeight, int gameResWidth, int gameResHeight, bool maintainAspectRatio, int displayIndex);
 void VGA_Init(Uint32 flags, int windowWidth, int windowHeight, int gameResWidth, int gameResHeight, bool maintainAspectRatio, int displayIndex);
+void CreateRenderSurfaces(int gameResWidth, int gameResHeight);
 bool VGA_LoadFont();
 void VGA_close();
+void FreeRenderSurfaces();
 void VGA_Resize(int width, int height);
 void VGA_Blit(Uint8* srcBuffer);
 void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight);
@@ -57,7 +53,10 @@ int16_t VGA_get_shift_status();
 bool VGA_check_standart_input_status();
 uint16_t VGA_read_char_from_buffer();
 void VGA_Set_mouse(int16_t a1, int16_t a2);
+void ScaleUpMouseCoords(int16_t& x, int16_t& y);
+void ScaleDownMouseCoords(int16_t& x, int16_t& y);
 void setPress(bool locpressed, uint16_t loclastchar);
+void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y);
 
 void VGA_mouse_clear_keys();
 void VGA_cleanKeyBuffer();
@@ -66,6 +65,8 @@ void Draw_black();
 std::vector<SDL_Rect> GetDisplays();
 SDL_Rect GetDisplayByIndex(uint8_t index);
 SDL_Rect FindDisplayByResolution(uint32_t width, uint32_t height);
+void ToggleFullscreen();
+void ToggleFullscreen(bool fullScreen);
 
 extern uint8_t LastPressedKey_1806E4; // weak//3516e4
 extern int8_t pressedKeys_180664[128]; // idb

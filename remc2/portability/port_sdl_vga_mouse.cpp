@@ -12,6 +12,7 @@
 #ifdef USE_DOSBOX
 extern DOS_Device* DOS_CON;
 #endif //USE_DOSBOX
+#include "../engine/EventDispatcher.h"
 
 SDL_Window* m_window = nullptr;
 SDL_Renderer* m_renderer = nullptr;
@@ -35,12 +36,12 @@ uint16_t m_iWindowHeight = 480;
 
 bool m_bMaintainAspectRatio = true;
 
-bool settingWindowGrabbed = true;
+bool m_settingWindowGrabbed = true;
 bool settingWASD = false;
 
-const char* default_caption = "Magic Carpet 2 - Community Update";
+const char* default_caption = "Magic Carpet 2 HD - (Community Update)";
 
-bool inited = false;
+bool m_initiated = false;
 Uint8 tempPalettebuffer[768];
 
 int oldWidth;
@@ -111,12 +112,12 @@ SDL_Rect FindDisplayByResolution(uint32_t width, uint32_t height)
 
 void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResWidth, int gameResHeight, bool maintainAspectRatio, int displayIndex)
 {
-	m_bMaintainAspectRatio = maintainAspectRatio;
-	m_iWindowWidth = windowWidth;
-	m_iWindowHeight = windowHeight;
-
-	if (!inited)
+	if (!m_initiated)
 	{
+		m_bMaintainAspectRatio = maintainAspectRatio;
+		m_iWindowWidth = windowWidth;
+		m_iWindowHeight = windowHeight;
+
 		//Initialize SDL
 		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		{
@@ -136,28 +137,13 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			SDL_SetHint(SDL_HINT_FRAMEBUFFER_ACCELERATION, "1");
 			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
-			SDL_DisplayMode dm;
-			if (SDL_GetDesktopDisplayMode(0, &dm) != 0) {
-				SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
-				return;
-			}
-
-			SDL_WindowFlags test_fullscr = SDL_WINDOW_SHOWN;
-
-			if (forceWindow)//window
+			SDL_Rect display = GetDisplayByIndex(displayIndex);
+			if (windowWidth > display.w || windowHeight > display.h)
 			{
-				m_window = SDL_CreateWindow(default_caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth/*dm.w*/, windowHeight/*dm.h*/, test_fullscr);
+				display = FindDisplayByResolution(windowWidth, windowHeight);
 			}
-			else
-			{
-				SDL_Rect display = GetDisplayByIndex(displayIndex);
-				if (windowWidth > display.w || windowHeight > display.h)
-				{
-					display = FindDisplayByResolution(windowWidth, windowHeight);
-				}
-				m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, test_fullscr);
-			}
-			SDL_SetWindowGrab(m_window, settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
+			m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			ToggleFullscreen(!startWindowed);
 
 			m_renderer =
 				SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED |
@@ -170,28 +156,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			// It has to do the conversion each time you update the texture manually. This slows everything down.
 			// Do it once, and don't have to worry about it again.
 
-			m_gamePalletisedSurface =
-				SDL_CreateRGBSurface(
-					SDL_SWSURFACE, gameResWidth, gameResHeight, 24,
-					redMask, greenMask, blueMask, alphaMask);
-
-			m_gamePalletisedSurface =
-				SDL_ConvertSurfaceFormat(
-					m_gamePalletisedSurface, SDL_PIXELFORMAT_INDEX8, 0);
-
-			m_gameRGBASurface =
-				SDL_CreateRGBSurface(
-					SDL_SWSURFACE, gameResWidth, gameResHeight, 24,
-					redMask, greenMask, blueMask, alphaMask);
-
-			m_gameRGBASurface =
-				SDL_ConvertSurfaceFormat(
-					m_gameRGBASurface, SDL_PIXELFORMAT_RGB888, 0);
-
-			m_texture = SDL_CreateTexture(m_renderer,
-				SDL_PIXELFORMAT_RGB888,
-				SDL_TEXTUREACCESS_STREAMING,
-				m_gameRGBASurface->w, m_gameRGBASurface->h);
+			CreateRenderSurfaces(gameResWidth, gameResHeight);
 
 			SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
 
@@ -208,8 +173,34 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 		Set_basic_Palette1();
 		//Draw_debug_matrix1();
 		Draw_black();
-		inited = true;
+		m_initiated = true;
 	}
+}
+
+void CreateRenderSurfaces(int width, int height)
+{
+	m_gamePalletisedSurface =
+		SDL_CreateRGBSurface(
+			SDL_SWSURFACE, width, height, 24,
+			redMask, greenMask, blueMask, alphaMask);
+
+	m_gamePalletisedSurface =
+		SDL_ConvertSurfaceFormat(
+			m_gamePalletisedSurface, SDL_PIXELFORMAT_INDEX8, 0);
+
+	m_gameRGBASurface =
+		SDL_CreateRGBSurface(
+			SDL_SWSURFACE, width, height, 24,
+			redMask, greenMask, blueMask, alphaMask);
+
+	m_gameRGBASurface =
+		SDL_ConvertSurfaceFormat(
+			m_gameRGBASurface, SDL_PIXELFORMAT_RGB888, 0);
+
+	m_texture = SDL_CreateTexture(m_renderer,
+		SDL_PIXELFORMAT_RGB888,
+		SDL_TEXTUREACCESS_STREAMING,
+		m_gameRGBASurface->w, m_gameRGBASurface->h);
 }
 
 Uint8* VGA_Get_Palette() {
@@ -766,36 +757,52 @@ Right Ctrl (101-key)      *       *       *       *       *       *       *     
 */
 
 void ToggleFullscreen() {
-	Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;
-	bool IsFullscreen = SDL_GetWindowFlags(m_window) & FullscreenFlag;
+	bool IsFullscreen = SDL_GetWindowFlags(m_window) & SDL_WINDOW_FULLSCREEN_DESKTOP;
+	ToggleFullscreen(!IsFullscreen);
+}
 
+void ToggleFullscreen(bool fullScreen) {
+	
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0) {
 		SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
 		return;
 	}
-	//SDL_WindowFlags test_fullscr;
-	if (!(IsFullscreen ? 0 : FullscreenFlag))
-	{
-		dm.w = 640;
-		dm.h = 480;
-		//test_fullscr = SDL_WINDOW_SHOWN;
-	}
-	//else
-	//{
-		//test_fullscr = SDL_WINDOW_FULLSCREEN;
-	//}
 
-	if (!(IsFullscreen ? 0 : FullscreenFlag))
+	SDL_SetWindowMinimumSize(m_window, 640, 480);
+
+	if (!fullScreen)
 	{
-		SDL_SetWindowFullscreen(m_window, IsFullscreen ? 0 : FullscreenFlag);
-		SDL_SetWindowSize(m_window, dm.w, dm.h);
+		int top = 0;
+		int left = 0;
+		int bottom = 0;
+		int right = 0;
+		SDL_SetWindowFullscreen(m_window, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+		SDL_SetWindowBordered(m_window, SDL_TRUE);
+		SDL_SetWindowResizable(m_window, SDL_TRUE);
+		SDL_GetWindowBordersSize(m_window, &top, &left, &bottom, &right);
+
+		SDL_SetWindowPosition(m_window, left, top);
+		if (windowResWidth >= dm.w || windowResHeight >= dm.h)
+			SDL_SetWindowSize(m_window, windowResWidth - left - right, windowResHeight - top - bottom);
+		else
+			SDL_SetWindowSize(m_window, windowResWidth, windowResHeight);
+
+		SDL_RestoreWindow(m_window);
+		m_settingWindowGrabbed = false;
 	}
 	else
 	{
-		SDL_SetWindowFullscreen(m_window, IsFullscreen ? 0 : FullscreenFlag);
-		SDL_SetWindowDisplayMode(m_window, &dm);
+		SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		SDL_SetWindowSize(m_window, dm.w, dm.h);
+		m_settingWindowGrabbed = true;
 	}
+	SDL_SetWindowGrab(m_window, m_settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
+}
+
+void ToggleMouseGrabbed() {
+	m_settingWindowGrabbed = !m_settingWindowGrabbed;
+	SDL_SetWindowGrab(m_window, m_settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
 }
 
 bool handleSpecialKeys(const SDL_Event &event) {
@@ -805,24 +812,20 @@ bool handleSpecialKeys(const SDL_Event &event) {
 		specialKey = true;
 	}
 	else if ((event.key.keysym.sym == SDLK_F10) && (event.key.keysym.mod & KMOD_CTRL)) {
-		settingWindowGrabbed = !settingWindowGrabbed;
-		SDL_SetWindowGrab(m_window, settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
-		std::cout << "Set window grab to " << (settingWindowGrabbed ? "true" : "false") << std::endl;
+		ToggleMouseGrabbed();
 		specialKey = true;
 	}
 	else if ((event.key.keysym.sym == SDLK_F11) && (event.key.keysym.mod & KMOD_CTRL)) {
 		settingWASD = !settingWASD;
-		std::cout << "Set WASD to " << (settingWindowGrabbed ? "true" : "false") << std::endl;
 		specialKey = true;
 	}
 
 	return specialKey;
 }
 
-int mousex, mousey;
 bool pressed = false;
 uint16_t lastchar = 0;
-int events()
+int PollSdlEvents()
 {
 	SDL_Event event;
 	Uint8 buttonindex;
@@ -834,38 +837,20 @@ int events()
 	{
 		switch (event.type)
 		{
-		case SDL_JOYAXISMOTION:
-			if (event.jaxis.which == gpc.controller_id) {
-				// motion on controller 0
-				//gps.initialized = 1;
-				// actual axis data is being read via gamepad_poll_data()
-				// to counteract jerkiness due to missing event triggers
-				Logger->trace("axis {} event detected", event.jaxis.axis + 1);
+		case SDL_WINDOWEVENT:
+		{
+			if (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESIZED)
+			{
+				int newWidth = 0;
+				int newHeight = 0;
+				SDL_GetWindowSize(m_window, &newWidth, &newHeight);
+				m_iWindowWidth = newWidth;
+				m_iWindowHeight = newHeight;
+				if (EventDispatcher::I != nullptr)
+					EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
 			}
 			break;
-		case SDL_JOYHATMOTION:
-			if (event.jhat.which == gpc.controller_id) {
-				//gps.initialized = 1;
-				// actual axis data is being read via gamepad_poll_data()
-				Logger->trace("hat {} event detected", event.jhat.hat + 1);
-			}
-			break;
-		case SDL_JOYBUTTONDOWN:
-			if (event.jbutton.which == gpc.controller_id) {
-				//gps.initialized = 1;
-				gpe.btn_pressed = 1 << (event.jbutton.button + 1);
-				Logger->trace("key {} press detected", event.jbutton.button + 1);
-				gpe.flag |= GP_BTN_PRESSED;
-			}
-			break;
-		case SDL_JOYBUTTONUP:
-			if (event.jbutton.which == gpc.controller_id) {
-				//gps.initialized = 1;
-				gpe.btn_released = 1 << (event.jbutton.button + 1);
-				Logger->trace("key {} release detected", event.jbutton.button + 1);
-				gpe.flag |= GP_BTN_RELEASED;
-			}
-			break;
+		}
 		case SDL_KEYDOWN:
 			pressed = true;
 			lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
@@ -882,15 +867,10 @@ int events()
 			break;
 
 		case SDL_MOUSEMOTION:
-			mousex = event.motion.x;
-			mousey = event.motion.y;
-			MouseEvents(1, event.motion.x, event.motion.y);
+			SetMouseEvents(1, event.motion.x, event.motion.y);
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
-			mousex = event.motion.x;
-			mousey = event.motion.y;
-
 			buttonresult = 0;
 
 			buttonindex = event.button.button;
@@ -943,9 +923,40 @@ int events()
 			}
 			}
 
-			MouseEvents(buttonresult, event.motion.x, event.motion.y);
+			SetMouseEvents(buttonresult, event.motion.x, event.motion.y);
 			break;
-
+		case SDL_JOYAXISMOTION:
+			if (event.jaxis.which == gpc.controller_id) {
+				// motion on controller 0
+				//gps.initialized = 1;
+				// actual axis data is being read via gamepad_poll_data()
+				// to counteract jerkiness due to missing event triggers
+				Logger->trace("axis {} event detected", event.jaxis.axis + 1);
+			}
+			break;
+		case SDL_JOYHATMOTION:
+			if (event.jhat.which == gpc.controller_id) {
+				//gps.initialized = 1;
+				// actual axis data is being read via gamepad_poll_data()
+				Logger->trace("hat {} event detected", event.jhat.hat + 1);
+			}
+			break;
+		case SDL_JOYBUTTONDOWN:
+			if (event.jbutton.which == gpc.controller_id) {
+				//gps.initialized = 1;
+				gpe.btn_pressed = 1 << (event.jbutton.button + 1);
+				Logger->trace("key {} press detected", event.jbutton.button + 1);
+				gpe.flag |= GP_BTN_PRESSED;
+			}
+			break;
+		case SDL_JOYBUTTONUP:
+			if (event.jbutton.which == gpc.controller_id) {
+				//gps.initialized = 1;
+				gpe.btn_released = 1 << (event.jbutton.button + 1);
+				Logger->trace("key {} release detected", event.jbutton.button + 1);
+				gpe.flag |= GP_BTN_RELEASED;
+			}
+			break;
 		case SDL_QUIT: return 0;
 		}
 	}
@@ -955,32 +966,61 @@ int events()
 	return 1;
 }
 
-void VGA_Set_mouse(const int16_t x, const int16_t y) {
+void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) {
+
+	ScaleUpMouseCoords(x, y);
+	MouseEvents(buttons, x, y);
+}
+
+void VGA_Set_mouse(int16_t x, int16_t y) 
+{
+	ScaleDownMouseCoords(x, y);
 	SDL_WarpMouseInWindow(m_window, x, y);
 	joystick_set_env(x, y);
-};
+}
+
+void ScaleUpMouseCoords(int16_t& x, int16_t& y)
+{
+	if (m_iOrigw > 640 && m_iOrigw != m_iWindowWidth)
+	{
+		float fx = (float)m_iOrigw / (float)m_iWindowWidth;
+		x = x * fx;
+	}
+
+	if (m_iOrigh > 480 && m_iOrigh != m_iWindowHeight)
+	{
+		float fy = (float)m_iOrigh / (float)m_iWindowHeight;
+		y = y * fy;
+	}
+}
+
+void ScaleDownMouseCoords(int16_t& x, int16_t& y)
+{
+	if (m_iOrigw > 640 && m_iOrigw != m_iWindowWidth)
+	{
+		float fx = (float)m_iWindowWidth / (float)m_iOrigw;
+		x = x * fx;
+	}
+
+	if (m_iOrigh > 480 && m_iOrigh != m_iWindowHeight)
+	{
+		float fy = (float)m_iWindowHeight / (float)m_iOrigh;
+		y = y * fy;
+	}
+}
 
 void VGA_Blit(Uint8* srcBuffer) {
 	if (unitTests)return;
 
 	oldWidth = m_gamePalletisedSurface->w;
 	if (CommandLineParams.DoHideGraphics()) return;
-	events();
+	PollSdlEvents();
 
-	if (m_iOrigh != m_gamePalletisedSurface->h)
+	if (m_iOrigh != m_gamePalletisedSurface->h || m_iOrigw != m_gamePalletisedSurface->w)
 	{
 		SDL_RenderClear(m_renderer);
-		SDL_FreeSurface(m_gamePalletisedSurface);
-
-		m_gamePalletisedSurface =
-			SDL_CreateRGBSurface(
-				SDL_SWSURFACE, m_iOrigw, m_iOrigh, 24,
-				redMask, greenMask, blueMask, alphaMask);
-
-		m_gamePalletisedSurface =
-			SDL_ConvertSurfaceFormat(
-				m_gamePalletisedSurface, SDL_PIXELFORMAT_INDEX8, 0);
-
+		FreeRenderSurfaces();
+		CreateRenderSurfaces(m_iOrigw, m_iOrigh);
 		SDL_SetPaletteColors(m_gamePalletisedSurface->format->palette, m_currentPalletColours, 0, 256);
 
 		lastResHeight = m_iOrigh;
@@ -1112,18 +1152,23 @@ void VGA_close()
 	gamepad_sdl_close();
 	SDL_FreeSurface(m_surfaceFont);
 	m_surfaceFont = nullptr;
-	SDL_FreeSurface(m_gamePalletisedSurface);
-	m_gamePalletisedSurface = nullptr;
-	SDL_FreeSurface(m_gamePalletisedSurface);
-	m_gamePalletisedSurface = nullptr;
-	SDL_DestroyTexture(m_texture);
-	m_texture = nullptr;
+	FreeRenderSurfaces();
 	SDL_DestroyRenderer(m_renderer);
 	m_renderer = nullptr;
 	SDL_DestroyWindow(m_window);
 	m_window = nullptr;
 	SDL_Quit();
 	//free(m_currentPalletColours);
+}
+
+void FreeRenderSurfaces()
+{
+	SDL_FreeSurface(m_gamePalletisedSurface);
+	m_gamePalletisedSurface = nullptr;
+	SDL_FreeSurface(m_gameRGBASurface);
+	m_gameRGBASurface = nullptr;
+	SDL_DestroyTexture(m_texture);
+	m_texture = nullptr;
 }
 
 int16_t VGA_get_shift_status() {
