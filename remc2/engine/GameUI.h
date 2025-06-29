@@ -55,7 +55,7 @@ int16_t GetHelpPopupIndex_88450();
 void GetHintText_89AC0(char* buffer, int helpIndex);
 
 void sub_41B60();
-void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool useSound);
+void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatus, bool useSound);
 void sub_53120();
 void SetHelpPopupTextAndCoords_884D0(int16_t helpIdx, int16_t a2, int16_t* popupSrcPos, char a4, char a5, uint8_t scale = 1);
 void SetHelpPopupCoords_87580();

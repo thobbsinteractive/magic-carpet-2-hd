@@ -1,5 +1,5 @@
 $REMC2_EXECUTABLE = "$PSScriptRoot/../Release/remc2.exe"
-$CONFIG_FILE_PATH = "$PSScriptRoot/renderer-config.ini"
+$CONFIG_FILE_PATH = "$PSScriptRoot/renderer-config.json"
 
 function Test-Level {
     param (

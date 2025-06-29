@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
 	{
 		InitializeLogging(level, "log-editor.txt");
 		ReadConfig readConfig;
-		readConfig.ReadIni();
+		readConfig.SetConfig();
 		support_begin();
 		editor_run();
 	}

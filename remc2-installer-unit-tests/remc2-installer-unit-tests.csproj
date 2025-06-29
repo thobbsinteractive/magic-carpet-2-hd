@@ -17,4 +17,13 @@
     <ProjectReference Include="..\remc2-installer\remc2-installer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\config-modified.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

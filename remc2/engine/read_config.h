@@ -1,14 +1,36 @@
-#pragma once
-
-#include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 #include <vector>
+#include <filesystem>
+#include <cstdlib>
 
+#ifdef _MSC_VER
+    #include <direct.h>  
+    #include <io.h>  
+    #include <windows.h>
+    #include "../portability/dirent-x.h"
+#else
+    #include "dirent.h"
+#endif
+
+#include "../portability/Config.h"
+#include "../portability/port_time.h"
+#include "../portability/port_filesystem.h"
+#include "../portability/port_sdl_sound.h"
 #include "../engine/CommandLineParser.h"
 #include "../utilities/Maths.h"
 #include "defs.h"
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 
-bool readini();
-std::vector<Maths::Zone> ReadZones(std::string zonesJson);
+#ifndef READ_CONFIG
+#define READ_CONFIG
+
+bool SetConfig();
+std::vector<Maths::Zone> ReadZones(std::vector<Maths::Zone> zonesArray);
 extern int config_skip_screen;
 extern int texturepixels;
 extern int maxGameFps;
@@ -22,7 +44,7 @@ extern int gameResWidth;
 extern int gameResHeight;
 extern int gameUiScale;
 extern bool maintainAspectRatio;
-extern bool forceWindow;
+extern bool startWindowed;
 extern bool bigTextures;
 extern bool bigSprites;
 extern bool sky;
@@ -86,3 +108,4 @@ struct gamepad_config {
 typedef struct gamepad_config gamepad_config_t;
 extern gamepad_config_t gpc;
 
+#endif //READ_CONFIG

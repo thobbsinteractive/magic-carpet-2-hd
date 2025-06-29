@@ -2,6 +2,7 @@
 
 #include <array>
 
+#include "EventDispatcher.h"
 #include "Basic.h"
 #include "GameBitmapIndexes.h"
 #include "LangTextIndexes.h"
@@ -667,34 +668,34 @@ void sub_41B60()//222b60
 }
 
 //----- (00052E90) --------------------------------------------------------
-void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool useSound)//233e90
+void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState, bool useSound)//233e90
 {
 	// type == 0 -> hide in-game dialog
 	// type == 9 -> show in-game settings dialog
 	// type == 13 -> show in-game abandon game yes/no dialog
-	uint8_t temp_12221 = playStr->byte_0x3DF_2BE4_12221;
-	playStr->byte_0x3DF_2BE4_12221 = type;
+	uint8_t currentMenuState = playStr->MenuState_0x3DF_2BE4_12221;
+	playStr->MenuState_0x3DF_2BE4_12221 = newMenuState;
 	if (playStr->word_0x007_2BE4_11237 != D41A0_0.LevelIndex_0xc)
 	{
 		sub_53120();
 		return;
 	}
-	x_D41A0_BYTEARRAY_4_struct.byte_38544 = temp_12221;
+	x_D41A0_BYTEARRAY_4_struct.byte_38544 = currentMenuState;
 	sub_87C10();
-	if (type)
+	if (newMenuState)
 	{
 		sub_41AF0();
 	}
-	else if (temp_12221)
+	else if (currentMenuState)
 	{
 		sub_41B60();
 	}
-	if (type && (type < 6u || type > 7u))
+	if (newMenuState && (newMenuState < 6u || newMenuState > 7u))
 	{
 		if (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2)
 			sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[x_BYTE_D419E]); // fix it
 	}
-	else if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+	else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 	{
 		if (unk_18058Cstr.x_WORD_1805C2_joystick != 7 && unk_18058Cstr.x_WORD_1805C2_joystick != 1 && unk_18058Cstr.x_WORD_1805C2_joystick != 2)
 			sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
@@ -705,84 +706,91 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 	{
 		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 	}
-	switch (type)
+	switch (newMenuState)
 	{
-	case 3:
-	case 7:
-	case 9:
-	case 0xA:
-	case 0xB:
-	case 0xC:
-	case 0xD:
-	case 0xE:
+	case (int)MenuState::SHOW_CHAT_MENU:
+	case (int)MenuState::SHOW_MAP_SORCERER_SCORES:
+	case (int)MenuState::SHOW_IN_GAME_OPTIONS:
+	case (int)MenuState::SHOW_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		D41A0_0.byte_counter_current_objective_box_0x36E04 = 0;  // hide objective message box
 		break;
 	default:
 		break;
 	}
-	switch (temp_12221)
+	//Close of menu
+	switch (currentMenuState)
 	{
-	case 0u:
+	case (int)MenuState::NONE:
 	case 6u:
-		if (type == temp_12221 && !(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1))
+		if (newMenuState == currentMenuState && !(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+		{
 			sub_548B0(playStr);
+			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
+		}
 		break;
-	case 3u:
-	case 5u:
-	case 8u:
-	case 9u:
-	case 0xAu:
-	case 0xBu:
-	case 0xCu:
-	case 0xDu:
-	case 0xEu:
+	case (int)MenuState::SHOW_CHAT_MENU:
+	case (int)MenuState::SHOW_BOTTOM_MENU:
+	case (int)MenuState::SHOW_MAP_BOTTOM_MENU:
+	case (int)MenuState::SHOW_IN_GAME_OPTIONS:
+	case (int)MenuState::SHOW_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		sub_548B0(playStr);
+		if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
 		FlvInitSet_473B0();
 		break;
 	default:
 		break;
 	}
-	switch (type)
+	//Open of Menu
+	switch (newMenuState)
 	{
-	case 0:
+	case (int)MenuState::NONE:
 	case 6:
-		if (type == temp_12221 && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+		if (newMenuState == currentMenuState && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 		{
 			SetCenterScreenForFlyAssistant_6EDB0();
 			sub_548F0(playStr);
 			break;
 		}
 		break;
-	case 3:
-	case 5:
-	case 8:
+	case (int)MenuState::SHOW_CHAT_MENU:
+	case (int)MenuState::SHOW_BOTTOM_MENU:
+	case (int)MenuState::SHOW_MAP_BOTTOM_MENU:
 		sub_548F0(playStr);
 		break;
-	case 9:
-	case 0xB:
+	case (int)MenuState::SHOW_IN_GAME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
 		sub_1A280();
 		x_D41A0_BYTEARRAY_4_struct.byteindex_225 = 1;
 		x_D41A0_BYTEARRAY_4_struct.byteindex_186 = sub_1A4A0();
 		sub_548F0(playStr);
 		break;
-	case 0xA:
-	case 0xC:
+	case (int)MenuState::SHOW_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
 		sub_548F0(playStr);
-		SetSoundEffectAndMusicLevelCoordinates_19D60(type);
+		SetSoundEffectAndMusicLevelCoordinates_19D60(newMenuState);
 		break;
-	case 0xD:
-	case 0xE:
+	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		sub_548F0(playStr);
 		SetOkayCancelButtonsCursorPosition_1A030();
 		break;
 	default:
 		break;
 	}
-	if (type >= 5u)
+	if (newMenuState >= 5u)
 	{
-		if (type > 5u)
+		if (newMenuState > 5u)
 		{
-			if (type == 8)
+			if (newMenuState == 8)
 				useSound = 0;
 		}
 		else
@@ -792,16 +800,16 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool u
 			FlvInitSet_473B0();
 		}
 	}
-	if (temp_12221 >= 5u && (temp_12221 <= 5u || temp_12221 == 8))
+	if (currentMenuState >= 5u && (currentMenuState <= 5u || currentMenuState == 8))
 		useSound = 0;
-	switch (type)
+	switch (newMenuState)
 	{
 	case 6:
 	case 7:
-	case 8:
-	case 0xB:
-	case 0xC:
-	case 0xE:
+	case (int)MenuState::SHOW_MAP_BOTTOM_MENU:
+	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		if ((!DefaultResolutions())&&(x_WORD_180660_VGA_type_resolution != 1))
 			viewPort.SetViewPortScreenCoordinates_2CA60(384, 0, screenWidth_18062C - 384, screenHeight_180624 - 80);
 		else
@@ -1137,7 +1145,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 			if (i > v75)
 				break;
 
-			if (v72 < 0 || v72 > 2560)
+			if (v72 < 0 || v72 >= 2560)
 				break;
 
 			v29 = v20 + (i * Maths::sin_DB750[v72] >> 16);
@@ -3843,7 +3851,6 @@ void sub_548B0(type_str_0x2BDE* a1x)//2358b0
 		SetMousePositionInMemory_5BDC0(a1x->dword_0x3E6_2BE4_12228.position_backup_20.x, a1x->dword_0x3E6_2BE4_12228.position_backup_20.y);
 		// if a joystick is used, do not set that random resting point from above
 		//SetMousePositionInMemory_5BDC0(320, 240);
-		set_scene(SCENE_FLIGHT);
 	}
 }
 
@@ -3899,7 +3906,7 @@ void sub_1A280()//1fb280
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x02;//sound
 	if (musicActive_E37FD)
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x04;//music
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x40)
+	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40)
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x08;//speek
 	if (D41A0_0.byte_0x36DEA_fly_asistant)
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x10u;//fly
@@ -4000,7 +4007,7 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 
 	if (a1x->word_0x007_2BE4_11237 == D41A0_0.LevelIndex_0xc)
 	{
-		if (a1x->byte_0x3DF_2BE4_12221 == 5 || a1x->byte_0x3DF_2BE4_12221 == 8)
+		if (a1x->MenuState_0x3DF_2BE4_12221 == 5 || a1x->MenuState_0x3DF_2BE4_12221 == 8)
 		{
 			selectedSpellIndex = a1x->dword_0x3E6_2BE4_12228.str_611.byte_0x458_1112;
 			if (selectedSpellIndex < 13)
@@ -4567,7 +4574,7 @@ void DrawOkCancelMenu_30A60(int16_t posTextX, int16_t posTextY, uint8_t scale)//
 			sub_2BB40_draw_bitmap(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[x_BYTE_D419E], scale);
 		}
 	}
-	set_scene(SCENE_FLIGHT_MENU);
+	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 }
 
 //----- (00052D70) --------------------------------------------------------
@@ -4824,7 +4831,7 @@ void DrawChatMenu_2F6B0()//2106b0
 		sub_2BB40_draw_bitmap(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[x_BYTE_D419E]);
 	}
 	//return result;
-	set_scene(SCENE_FLIGHT_MENU);
+	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 }
 // 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
 // D419E: using guessed type char x_BYTE_D419E;
@@ -4854,7 +4861,7 @@ void DrawPauseMenu_2FD90(uint8_t scale)//210d90
 	uint8_t colour; // [esp+10h] [ebp-4h]
 
 	colour = (*xadataclrd0dat.colorPalette_var28)[0];
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 	{
 		if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206)
 		{
@@ -4904,7 +4911,7 @@ void DrawPauseMenu_2FD90(uint8_t scale)//210d90
 			}
 			posY += heigth;
 			sub_2BB40_draw_bitmap(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[178], scale);//Settings button
-			set_scene(SCENE_FLIGHT_MENU);
+			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 		}
 		if (unk_18058Cstr.x_WORD_1805C2_joystick == 8
 			|| unk_18058Cstr.x_WORD_1805C2_joystick == 12
@@ -5069,7 +5076,7 @@ void DrawInGameOptionsMenu_30050(uint8_t scale)//211050
 	else
 		DrawText_2BC10((char*)"OK", (640 - x_D41A0_BYTEARRAY_4_struct.byteindex_186) / 2 + (x_D41A0_BYTEARRAY_4_struct.byteindex_186 - OPTIONS_MENU_BTN_WIDTH) / 2 + 33, 379, v12);	
 
-	set_scene(SCENE_FLIGHT_MENU);
+	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 
 	if (unk_18058Cstr.x_WORD_1805C2_joystick == 8
 		|| unk_18058Cstr.x_WORD_1805C2_joystick == 12
