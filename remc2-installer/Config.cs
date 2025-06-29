@@ -16,14 +16,14 @@ namespace remc2_installer
 
 	public class Paths
 	{
-		public string description { get; set; }
+		public string[] description { get; set; }
 		public string gameFolder { get; set; }
 		public string cdFolder { get; set; }
 	}
 
 	public class Sound
 	{
-		public string description { get; set; }
+		public string[] description { get; set; }
 		public bool hqSound { get; set; }
 		public bool oggMusic { get; set; }
 		public string oggFolder { get; set; }
@@ -33,7 +33,7 @@ namespace remc2_installer
 
 	public class Graphics
 	{
-		public string description { get; set; }
+		public string[] description { get; set; }
 		public int displayIndex { get; set; }
 		public int windowResWidth { get; set; }
 		public int windowResHeight { get; set; }
@@ -45,7 +45,7 @@ namespace remc2_installer
 
 	public class GameDetail
 	{
-		public string description { get; set; }
+		public string[] description { get; set; }
 		public int gameResWidth { get; set; }
 		public int gameResHeight { get; set; }
 		public int gameUiScale { get; set; }
@@ -58,7 +58,7 @@ namespace remc2_installer
 
 	public class Threading
 	{
-		public string description { get; set; }
+		public string[] description { get; set; }
 		public bool isActive { get; set; }
 		public int numberOfRenderThreads { get; set; }
 		public bool assignToSpecificCores { get; set; }
@@ -66,7 +66,7 @@ namespace remc2_installer
 
 	public class Game
 	{
-		public string description { get; set; }
+		public string[] description { get; set; }
 		public string loggingLevel { get; set; }
 		public int maxGameFps { get; set; }
 		public int fmvFps { get; set; }
@@ -74,7 +74,7 @@ namespace remc2_installer
 
 	public class Controls
 	{
-		public string description { get; set; }
+		public string[] description { get; set; }
 		public bool invertYAxis { get; set; }
 		public bool invertXAxis { get; set; }
 		public List<GamePad> gamePad { get; set; }
