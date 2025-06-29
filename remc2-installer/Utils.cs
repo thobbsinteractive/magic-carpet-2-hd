@@ -80,9 +80,9 @@ public static class Utils
 		return keepBaseDir;
 	}
 
-	public static bool SetEnhancedTextures(string configFilePath, bool enhancedTextures)
+	public static bool SetEnhancedTextures(string inputFile, string outputFilePath, bool enhancedTextures)
 	{
-		var json = File.ReadAllText(configFilePath);
+		var json = File.ReadAllText(inputFile);
 		if (json != null)
 		{
 			bool updated = false;
@@ -101,12 +101,28 @@ public static class Utils
 
 			if (updated)
 			{
-				json = JsonConvert.SerializeObject(config, Formatting.Indented);
-				File.WriteAllText(configFilePath, json);
+				json = SerializeObject<Config>(config);
+				File.WriteAllText(outputFilePath, json);
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public static string SerializeObject<t>(t arg)
+	{
+		var sw = new StringWriter();
+
+		using (var jsonWriter = new JsonTextWriter(sw))
+		{
+			jsonWriter.Formatting = Formatting.Indented;
+			jsonWriter.IndentChar = '\t';
+			jsonWriter.Indentation = 1;
+
+			var jsonSerializer = new JsonSerializer();
+			jsonSerializer.Serialize(jsonWriter, arg);
+		}
+		return sw.ToString();
 	}
 }
 

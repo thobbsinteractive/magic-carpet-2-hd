@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.IO;
 
 namespace remc2_installer_unit_tests
 {
@@ -17,10 +18,27 @@ namespace remc2_installer_unit_tests
 			Assert.Pass();
 		}
 
-		[TestCase(@"C:\Temp\config.json")]
-		public void EditConfigFileTest(string testFilePath)
+		[TestCase(@"Resources\config.json", @"Resources\config-modified.json")]
+		public void EditConfigFileTest(string beforePath, string afterPath)
 		{
-			Utils.SetEnhancedTextures(testFilePath, true);
+			if (!File.Exists(beforePath) || !File.Exists(afterPath))
+				Assert.Fail();
+
+			var expectedJson = File.ReadAllText(afterPath);
+
+			var testOutputPath = @"Resources\test-output.json";
+			Utils.SetEnhancedTextures(beforePath, testOutputPath, true);
+
+			var actualJson = File.ReadAllText(testOutputPath);
+
+			if (expectedJson.Length != actualJson.Length)
+				Assert.Fail();
+
+			for (int i = 0; i < actualJson.Length; i++)
+			{
+				if(expectedJson[i] != actualJson[i])
+					Assert.Fail();
+			}
 
 			Assert.Pass();
 		}

@@ -26,7 +26,7 @@ public class CustomActions
 			{
 				session.Log($"Updating config File: {configFilePath}");
 
-				if (Utils.SetEnhancedTextures(configFilePath, enhancedTextures))
+				if (Utils.SetEnhancedTextures(configFilePath, configFilePath, enhancedTextures))
 				{
 					session.Log($"Success updating config File: {configFilePath}");
 					return ActionResult.Success;
