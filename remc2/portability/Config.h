@@ -125,6 +125,9 @@ private:
 	void LoadPaths(rapidjson::GenericObject<false, rapidjson::Value>& settings);
 	void LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& settings);
 	void LoadGame(rapidjson::GenericObject<false, rapidjson::Value>& settings);
+	std::string ReadStringValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
+	int ReadIntValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
+	bool ReadBoolValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
 	std::string ReadFileToString(std::string fileName);
 
 public:

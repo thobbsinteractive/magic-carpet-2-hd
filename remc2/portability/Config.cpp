@@ -21,6 +21,33 @@ Config::Config(std::string fileName)
 	}
 }
 
+std::string Config::ReadStringValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
+{
+	if (settings.HasMember(name))
+	{
+		return settings[name].GetString();
+	}
+	return "";
+}
+
+int Config::ReadIntValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
+{
+	if (settings.HasMember(name))
+	{
+		return settings[name].GetInt();
+	}
+	return 0;
+}
+
+bool Config::ReadBoolValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
+{
+	if (settings.HasMember(name))
+	{
+		return settings[name].GetBool();
+	}
+	return false;
+}
+
 void Config::LoadSettings(rapidjson::Document& document)
 {
 	auto settingsArray = document["settings"].GetArray();
@@ -34,8 +61,8 @@ void Config::LoadSettings(rapidjson::Document& document)
 #endif
 		if (settings.HasMember("name") && settings.HasMember("isActive") && settings["isActive"].GetBool() == true)
 		{
-			m_Name = settings["name"].GetString();
-			m_Version = settings["version"].GetString();
+			m_Name = ReadStringValue(settings, "name");
+			m_Version = ReadStringValue(settings, "version");
 			LoadPaths(settings);
 			LoadSound(settings);
 			LoadGraphics(settings);
@@ -55,14 +82,9 @@ void Config::LoadGame(rapidjson::GenericObject<false, rapidjson::Value>& setting
 #else
 		auto game = settings["game"].GetObj();
 #endif
-		if (game.HasMember("loggingLevel"))
-			m_Game.m_LoggingLevel = game["loggingLevel"].GetString();
-
-		if (game.HasMember("maxGameFps"))
-			m_Game.m_MaxGameFps = game["maxGameFps"].GetInt();
-
-		if (game.HasMember("fmvFps"))
-			m_Game.m_FmvFps = game["fmvFps"].GetInt();
+		m_Game.m_LoggingLevel = ReadStringValue(game, "loggingLevel");
+		m_Game.m_MaxGameFps = ReadIntValue(game, "maxGameFps");
+		m_Game.m_FmvFps = ReadIntValue(game, "fmvFps");
 	}
 }
 
@@ -76,11 +98,8 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 		auto controls = settings["controls"].GetObj();
 #endif
 
-		if (controls.HasMember("invertYAxis"))
-			m_Controls.m_InvertYAxis = controls["invertYAxis"].GetBool();
-
-		if (controls.HasMember("invertXAxis"))
-			m_Controls.m_InvertXAxis = controls["invertXAxis"].GetBool();
+		m_Controls.m_InvertYAxis = ReadBoolValue(controls, "invertYAxis");
+		m_Controls.m_InvertXAxis = ReadBoolValue(controls, "invertXAxis");
 
 		if (controls.HasMember("gamePad"))
 		{
@@ -95,100 +114,38 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 #endif
 				if (gamePad.HasMember("isActive") && gamePad["isActive"].GetBool() == true)
 				{
-					m_Controls.m_GamePad.m_Name = settings["name"].GetString();
-
-					if (gamePad.HasMember("buttonMiniMap"))
-						m_Controls.m_GamePad.m_ButtonMiniMap = (uint16_t)gamePad["buttonMiniMap"].GetInt();
-
-					if (gamePad.HasMember("buttonSpell"))
-						m_Controls.m_GamePad.m_ButtonSpell = (uint16_t)gamePad["buttonSpell"].GetInt();
-
-					if (gamePad.HasMember("buttonPauseMenu"))
-						m_Controls.m_GamePad.m_ButtonPauseMenu = (uint16_t)gamePad["buttonPauseMenu"].GetInt();
-
-					if (gamePad.HasMember("buttonEsc"))
-						m_Controls.m_GamePad.m_ButtonEsc = (uint16_t)gamePad["buttonEsc"].GetInt();
-
-					if (gamePad.HasMember("buttonFireL"))
-						m_Controls.m_GamePad.m_ButtonFireL = (uint16_t)gamePad["buttonFireL"].GetInt();
-
-					if (gamePad.HasMember("buttonFireR"))
-						m_Controls.m_GamePad.m_ButtonFireR = (uint16_t)gamePad["buttonFireR"].GetInt();
-
-					if (gamePad.HasMember("buttonMenuSelect"))
-						m_Controls.m_GamePad.m_ButtonMenuSelect = (uint16_t)gamePad["buttonMenuSelect"].GetInt();
-
-					if (gamePad.HasMember("triggerDeadZone"))
-						m_Controls.m_GamePad.m_TriggerDeadZone = (uint16_t)gamePad["triggerDeadZone"].GetInt();
-
-					if (gamePad.HasMember("hapticEnabled"))
-						m_Controls.m_GamePad.m_HapticEnabled = gamePad["hapticEnabled"].GetBool();
-
-					if (gamePad.HasMember("hapticMaxGain"))
-						m_Controls.m_GamePad.m_HapticMaxGain = (uint16_t)gamePad["hapticMaxGain"].GetInt();
-
-					if (gamePad.HasMember("hatNav"))
-						m_Controls.m_GamePad.m_HatNav = (uint16_t)gamePad["hatNav"].GetInt();
-
-					if (gamePad.HasMember("hatMov"))
-						m_Controls.m_GamePad.m_HatMov = (uint16_t)gamePad["hatMov"].GetInt();
-
-					if (gamePad.HasMember("hatNavInv"))
-						m_Controls.m_GamePad.m_HatNavInv = gamePad["hatNavInv"].GetBool();
-
-					if (gamePad.HasMember("hatMovInv"))
-						m_Controls.m_GamePad.m_HatMovInv = gamePad["hatMovInv"].GetBool();
-
-					if (gamePad.HasMember("axisLong"))
-						m_Controls.m_GamePad.m_AxisLong = (uint16_t)gamePad["axisLong"].GetInt();
-
-					if (gamePad.HasMember("axisLongDeadZone"))
-						m_Controls.m_GamePad.m_AxisLongDeadZone = (uint16_t)gamePad["axisLongDeadZone"].GetInt();
-
-					if (gamePad.HasMember("axisLongNavDeadZone"))
-						m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)gamePad["axisLongNavDeadZone"].GetInt();
-	
-					if (gamePad.HasMember("axisLongNavDeadZone"))
-						m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)gamePad["axisLongNavDeadZone"].GetInt();
-
-					if (gamePad.HasMember("axisLongInv"))
-						m_Controls.m_GamePad.m_AxisLongInv = gamePad["axisLongInv"].GetBool();
-
-					if (gamePad.HasMember("axisTrans"))
-						m_Controls.m_GamePad.m_AxisTrans = (uint16_t)gamePad["axisTrans"].GetInt();
-
-					if (gamePad.HasMember("axisTransDeadZone"))
-						m_Controls.m_GamePad.m_AxisTransDeadZone = (uint16_t)gamePad["axisTransDeadZone"].GetInt();
-
-					if (gamePad.HasMember("axisTransNavDeadZone"))
-						m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)gamePad["axisTransNavDeadZone"].GetInt();
-
-					if (gamePad.HasMember("axisNavNs"))
-						m_Controls.m_GamePad.m_AxisNavNs = (uint16_t)gamePad["axisNavNs"].GetInt();
-
-					if (gamePad.HasMember("axisNavNsInv"))
-						m_Controls.m_GamePad.m_AxisNavNsInv = gamePad["axisNavNsInv"].GetBool();
-
-					if (gamePad.HasMember("axisNavEw"))
-						m_Controls.m_GamePad.m_AxisNavEw = (uint16_t)gamePad["axisNavEw"].GetInt();
-
-					if (gamePad.HasMember("axisNavEwInv"))
-						m_Controls.m_GamePad.m_AxisNavEwInv = gamePad["axisNavEwInv"].GetBool();
-
-					if (gamePad.HasMember("axisFireR"))
-						m_Controls.m_GamePad.m_AxisFireR = (uint16_t)gamePad["axisFireR"].GetInt();
-
-					if (gamePad.HasMember("axisFireL"))
-						m_Controls.m_GamePad.m_AxisFireL = (uint16_t)gamePad["axisFireL"].GetInt();
-
-					if (gamePad.HasMember("axisYaw"))
-						m_Controls.m_GamePad.m_AxisYaw = (uint16_t)gamePad["axisYaw"].GetInt();
-
-					if (gamePad.HasMember("axisYawInv"))
-						m_Controls.m_GamePad.m_AxisYawInv = gamePad["axisYawInv"].GetBool();
-
-					if (gamePad.HasMember("axisYawDeadZone"))
-						m_Controls.m_GamePad.m_AxisYawDeadZone = (uint16_t)gamePad["axisYawDeadZone"].GetInt();
+					m_Controls.m_GamePad.m_Name = ReadStringValue(gamePad, "name");
+					m_Controls.m_GamePad.m_ButtonMiniMap = (uint16_t)ReadIntValue(gamePad, "buttonMiniMap");
+					m_Controls.m_GamePad.m_ButtonSpell = (uint16_t)ReadIntValue(gamePad, "buttonSpell");
+					m_Controls.m_GamePad.m_ButtonPauseMenu = (uint16_t)ReadIntValue(gamePad, "buttonPauseMenu");
+					m_Controls.m_GamePad.m_ButtonEsc = (uint16_t)ReadIntValue(gamePad, "buttonEsc");
+					m_Controls.m_GamePad.m_ButtonFireL = (uint16_t)ReadIntValue(gamePad, "buttonFireL");
+					m_Controls.m_GamePad.m_ButtonFireR = (uint16_t)ReadIntValue(gamePad, "buttonFireR");
+					m_Controls.m_GamePad.m_ButtonMenuSelect = (uint16_t)ReadIntValue(gamePad, "buttonMenuSelect");
+					m_Controls.m_GamePad.m_TriggerDeadZone = (uint16_t)ReadIntValue(gamePad, "triggerDeadZone");
+					m_Controls.m_GamePad.m_HapticEnabled = ReadBoolValue(gamePad, "hapticEnabled");
+					m_Controls.m_GamePad.m_HapticMaxGain = (uint16_t)ReadIntValue(gamePad, "hapticMaxGain");
+					m_Controls.m_GamePad.m_HatNav = (uint16_t)ReadIntValue(gamePad, "hatNav");
+					m_Controls.m_GamePad.m_HatMov = (uint16_t)ReadIntValue(gamePad, "hatMov");
+					m_Controls.m_GamePad.m_HatNavInv = ReadBoolValue(gamePad, "hatNavInv");
+					m_Controls.m_GamePad.m_HatMovInv = ReadBoolValue(gamePad, "hatMovInv");
+					m_Controls.m_GamePad.m_AxisLong = (uint16_t)ReadIntValue(gamePad, "axisLong");
+					m_Controls.m_GamePad.m_AxisLongDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongDeadZone");
+					m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongNavDeadZone");
+					m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongNavDeadZone");
+					m_Controls.m_GamePad.m_AxisLongInv = ReadBoolValue(gamePad, "axisLongInv");
+					m_Controls.m_GamePad.m_AxisTrans = (uint16_t)ReadIntValue(gamePad, "axisTrans");
+					m_Controls.m_GamePad.m_AxisTransDeadZone = (uint16_t)ReadIntValue(gamePad, "axisTransDeadZone");
+					m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisTransNavDeadZone");
+					m_Controls.m_GamePad.m_AxisNavNs = (uint16_t)ReadIntValue(gamePad, "axisNavNs");
+					m_Controls.m_GamePad.m_AxisNavNsInv = ReadBoolValue(gamePad, "axisNavNsInv");
+					m_Controls.m_GamePad.m_AxisNavEw = (uint16_t)ReadIntValue(gamePad, "axisNavEw");
+					m_Controls.m_GamePad.m_AxisNavEwInv = ReadBoolValue(gamePad, "axisNavEwInv");
+					m_Controls.m_GamePad.m_AxisFireR = (uint16_t)ReadIntValue(gamePad, "axisFireR");
+					m_Controls.m_GamePad.m_AxisFireL = (uint16_t)ReadIntValue(gamePad, "axisFireL");
+					m_Controls.m_GamePad.m_AxisYaw = (uint16_t)ReadIntValue(gamePad, "axisYaw");
+					m_Controls.m_GamePad.m_AxisYawInv = ReadBoolValue(gamePad, "axisYawInv");
+					m_Controls.m_GamePad.m_AxisYawDeadZone = (uint16_t)ReadIntValue(gamePad, "axisYawDeadZone");
 
 					if (gamePad.HasMember("axisYawSensitivity"))
 					{
@@ -216,14 +173,9 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 						}
 					}
 
-					if (gamePad.HasMember("axisPitch"))
-						m_Controls.m_GamePad.m_AxisPitch = (uint16_t)gamePad["axisPitch"].GetInt();
-
-					if (gamePad.HasMember("axisPitchInv"))
-						m_Controls.m_GamePad.m_AxisPitchInv = gamePad["axisPitchInv"].GetBool();
-
-					if (gamePad.HasMember("axisPitchDeadZone"))
-						m_Controls.m_GamePad.m_AxisPitchDeadZone = (uint16_t)gamePad["axisPitchDeadZone"].GetInt();
+					m_Controls.m_GamePad.m_AxisPitch = (uint16_t)ReadIntValue(gamePad, "axisPitch");
+					m_Controls.m_GamePad.m_AxisPitchInv = ReadBoolValue(gamePad, "axisPitchInv");
+					m_Controls.m_GamePad.m_AxisPitchDeadZone = (uint16_t)ReadIntValue(gamePad, "axisPitchDeadZone");
 
 					if (gamePad.HasMember("axisPitchSensitivity"))
 					{
@@ -266,20 +218,11 @@ void Config::LoadGraphics(rapidjson::GenericObject<false, rapidjson::Value>& set
 #else
 		auto graphics = settings["graphics"].GetObj();
 #endif
-		if (graphics.HasMember("displayIndex"))
-			m_Graphics.m_DisplayIndex = graphics["displayIndex"].GetInt();
-
-		if (graphics.HasMember("windowResWidth"))
-			m_Graphics.m_WindowResWidth = graphics["windowResWidth"].GetInt();
-
-		if (graphics.HasMember("windowResHeight"))
-			m_Graphics.m_WindowResHeight = graphics["windowResHeight"].GetInt();
-
-		if (graphics.HasMember("maintainAspectRatio"))
-			m_Graphics.m_MaintainAspectRatio = graphics["maintainAspectRatio"].GetBool();
-
-		if (graphics.HasMember("startWindowed"))
-			m_Graphics.m_StartWindowed = graphics["startWindowed"].GetBool();
+		m_Graphics.m_DisplayIndex = ReadIntValue(graphics, "displayIndex");
+		m_Graphics.m_WindowResWidth = ReadIntValue(graphics, "windowResWidth");
+		m_Graphics.m_WindowResHeight = ReadIntValue(graphics, "windowResHeight");
+		m_Graphics.m_MaintainAspectRatio = ReadBoolValue(graphics, "maintainAspectRatio");
+		m_Graphics.m_StartWindowed = ReadBoolValue(graphics, "startWindowed");
 
 		LoadGameDetail(graphics);
 		LoadThreading(graphics);
@@ -295,29 +238,14 @@ void Config::LoadGameDetail(rapidjson::GenericObject<false, rapidjson::Value>& g
 #else
 		auto gameDetail = graphics["gameDetail"].GetObj();
 #endif
-		if (gameDetail.HasMember("gameResWidth"))
-			m_Graphics.m_GameDetail.m_GameResWidth = gameDetail["gameResWidth"].GetInt();
-
-		if (gameDetail.HasMember("gameResHeight"))
-			m_Graphics.m_GameDetail.m_GameResHeight = gameDetail["gameResHeight"].GetInt();
-
-		if (gameDetail.HasMember("gameUiScale"))
-			m_Graphics.m_GameDetail.m_GameUiScale = gameDetail["gameUiScale"].GetInt();
-
-		if (gameDetail.HasMember("useEnhancedGraphics"))
-			m_Graphics.m_GameDetail.m_UseEnhancedGraphics = gameDetail["useEnhancedGraphics"].GetBool();
-
-		if (gameDetail.HasMember("bigGraphicsFolder"))
-			m_Graphics.m_GameDetail.m_BigGraphicsFolder = gameDetail["bigGraphicsFolder"].GetString();
-
-		if (gameDetail.HasMember("sky"))
-			m_Graphics.m_GameDetail.m_Sky = gameDetail["sky"].GetBool();
-
-		if (gameDetail.HasMember("reflections"))
-			m_Graphics.m_GameDetail.m_Reflections = gameDetail["reflections"].GetBool();
-
-		if (gameDetail.HasMember("dynamicLighting"))
-			m_Graphics.m_GameDetail.m_DynamicLighting = gameDetail["dynamicLighting"].GetBool();
+		m_Graphics.m_GameDetail.m_GameResWidth = ReadIntValue(gameDetail, "gameResWidth");
+		m_Graphics.m_GameDetail.m_GameResHeight = ReadIntValue(gameDetail, "gameResHeight");
+		m_Graphics.m_GameDetail.m_GameUiScale = ReadIntValue(gameDetail, "gameUiScale");
+		m_Graphics.m_GameDetail.m_UseEnhancedGraphics = ReadBoolValue(gameDetail, "useEnhancedGraphics");
+		m_Graphics.m_GameDetail.m_BigGraphicsFolder = ReadStringValue(gameDetail, "bigGraphicsFolder");
+		m_Graphics.m_GameDetail.m_Sky = ReadBoolValue(gameDetail, "sky");
+		m_Graphics.m_GameDetail.m_Reflections = ReadBoolValue(gameDetail, "reflections");
+		m_Graphics.m_GameDetail.m_DynamicLighting = ReadBoolValue(gameDetail, "dynamicLighting");
 	}
 }
 
@@ -330,14 +258,12 @@ void Config::LoadThreading(rapidjson::GenericObject<false, rapidjson::Value>& gr
 #endif
 	if (graphics.HasMember("threading"))
 	{
-		if (threading.HasMember("isActive"))
-			m_Graphics.m_Threading.m_isActive = threading["isActive"].GetBool();
-
-		if (threading.HasMember("numberOfRenderThreads"))
-			m_Graphics.m_Threading.m_NumberOfRenderThreads = (uint8_t)threading["numberOfRenderThreads"].GetInt();
-
-		if (threading.HasMember("assignToSpecificCores"))
-			m_Graphics.m_Threading.m_AssignToSpecificCores = threading["assignToSpecificCores"].GetBool();
+		m_Graphics.m_Threading.m_isActive = threading["isActive"].GetBool();
+		if (m_Graphics.m_Threading.m_isActive)
+		{
+			m_Graphics.m_Threading.m_NumberOfRenderThreads = (uint8_t)ReadIntValue(threading,"numberOfRenderThreads");
+			m_Graphics.m_Threading.m_AssignToSpecificCores = ReadBoolValue(threading, "assignToSpecificCores");
+		}
 	}
 }
 
@@ -350,20 +276,11 @@ void Config::LoadSound(rapidjson::GenericObject<false, rapidjson::Value>& settin
 #else
 		auto sound = settings["sound"].GetObj();
 #endif
-		if (sound.HasMember("hqSound"))
-			m_Sound.m_HqSound = sound["hqSound"].GetBool();
-
-		if (sound.HasMember("oggMusic"))
-			m_Sound.m_OggMusic = sound["oggMusic"].GetBool();
-
-		if (sound.HasMember("oggFolder"))
-			m_Sound.m_OggFolder = sound["oggFolder"].GetString();
-
-		if (sound.HasMember("oggMusicAlternative"))
-			m_Sound.m_OggMusicAlternative = sound["oggMusicAlternative"].GetBool();
-
-		if (sound.HasMember("fixSpeedSound"))
-			m_Sound.m_FixSpeedSound = sound["fixSpeedSound"].GetBool();
+		m_Sound.m_HqSound = ReadBoolValue(sound, "hqSound");
+		m_Sound.m_OggMusic = ReadBoolValue(sound, "oggMusic");
+		m_Sound.m_OggFolder = ReadStringValue(sound, "oggFolder");
+		m_Sound.m_OggMusicAlternative = ReadBoolValue(sound, "oggMusicAlternative");
+		m_Sound.m_FixSpeedSound = ReadBoolValue(sound, "fixSpeedSound");
 	}
 }
 
@@ -376,11 +293,8 @@ void Config::LoadPaths(rapidjson::GenericObject<false, rapidjson::Value>& settin
 #else
 		auto paths = settings["paths"].GetObj();
 #endif
-		if (paths.HasMember("gameFolder"))
-			m_Paths.m_GameFolder = paths["gameFolder"].GetString();
-
-		if (paths.HasMember("cdFolder"))
-			m_Paths.m_CdFolder = paths["cdFolder"].GetString();
+		m_Paths.m_GameFolder = ReadStringValue(paths, "gameFolder");
+		m_Paths.m_CdFolder = ReadStringValue(paths, "cdFolder");
 	}
 }
 
