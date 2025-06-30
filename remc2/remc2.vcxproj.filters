@@ -19,12 +19,6 @@
     <Filter Include="Source Files\portability">
       <UniqueIdentifier>{01d93e33-43df-4fd3-8b70-5b751cd75b6f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\libs">
-      <UniqueIdentifier>{c389486e-08f9-4a9c-8d63-02861b70c8ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\libs\libADL">
-      <UniqueIdentifier>{78883006-e8c8-4d4f-bd9e-96abcaacbd44}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\portability">
       <UniqueIdentifier>{d5e291bd-a3ae-41a5-a8f1-7b30c46a8bce}</UniqueIdentifier>
     </Filter>
@@ -44,72 +38,6 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\adldata.hh">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\adlmidi_bankmap.h">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\adlmidi_cvt.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\adlmidi_midiplay.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\adlmidi_opl3.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\adlmidi_private.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\adlmidi_ptr.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\cvt_mus2mid.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\cvt_xmi2mid.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\file_reader.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\fraction.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\midi_sequencer.h">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\midi_sequencer.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\midi_sequencer_impl.hpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\chips\dosbox_opl3.h">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\chips\nuked_opl3.h">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\chips\nuked_opl3_v174.h">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\chips\opl_chip_base.h">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\chips\nuked\nukedopl3.h">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\chips\nuked\nukedopl3_174.h">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\chips\dosbox\dbopl.h">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libADLMIDI-master\src\wopl\wopl_file.h">
-      <Filter>Source Files\libs\libADL</Filter>
     </ClInclude>
     <ClInclude Include="portability\port_filesystem.h">
       <Filter>Header Files\portability</Filter>
@@ -389,48 +317,6 @@
     <ClCompile Include="portability\xmi2mid.cpp">
       <Filter>Source Files\portability</Filter>
     </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\adldata.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\adlmidi.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\adlmidi_load.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\adlmidi_midiplay.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\adlmidi_opl3.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\adlmidi_private.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\adlmidi_sequencer.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\chips\dosbox_opl3.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\chips\nuked_opl3.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\chips\nuked_opl3_v174.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\chips\nuked\nukedopl3.c">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\chips\nuked\nukedopl3_174.c">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\chips\dosbox\dbopl.cpp">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libADLMIDI-master\src\wopl\wopl_file.c">
-      <Filter>Source Files\libs\libADL</Filter>
-    </ClCompile>
     <ClCompile Include="engine\read_config.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
@@ -579,12 +465,6 @@
     </None>
     <None Include="engine\structures.x">
       <Filter>Source Files\engine</Filter>
-    </None>
-    <None Include="..\libADLMIDI-master\src\adlmidi_bankmap.tcc">
-      <Filter>Source Files\libs\libADL</Filter>
-    </None>
-    <None Include="..\libADLMIDI-master\src\chips\opl_chip_base.tcc">
-      <Filter>Source Files\libs\libADL</Filter>
     </None>
     <None Include="engine\bytearrays.x">
       <Filter>Source Files\engine</Filter>
