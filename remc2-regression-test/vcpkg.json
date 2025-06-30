@@ -4,9 +4,6 @@
     "dependencies": [
 		"rapidjson",
 		"spdlog",
-		"libvorbis",
-		"libogg",
-		"libpng",
 		"sdl2",
 		"sdl2-mixer",
 		"sdl2-ttf"
