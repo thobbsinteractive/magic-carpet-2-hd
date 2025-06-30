@@ -109,7 +109,7 @@
 						"axisTransDeadZone": 12000,
 						"axisTransNavDeadZone": 6000,
 						"axisNavNs": 2,
-						"axisNavNsInv": true,
+						"axisNavNsInv": false,
 						"axisNavEw": 1,
 						"axisNavEwInv": false,
 						"axisFireR": 6,
