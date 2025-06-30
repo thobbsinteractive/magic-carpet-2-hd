@@ -4,11 +4,12 @@
     "dependencies": [
 		"rapidjson",
 		"spdlog",
+		"sdl2",
 		"sdl2-mixer",
 		"sdl2-image",
 		"sdl2-ttf"
     ],
-	"builtin-baseline": "f6a5d4e8eb7476b8d7fc12a56dff300c1c986131",
+	"builtin-baseline": "ef7dbf94b9198bc58f45951adcf1f041fcbc5ea0",
 	"overrides": [
         {
             "name": "sdl2",
