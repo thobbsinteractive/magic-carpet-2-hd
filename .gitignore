@@ -249,3 +249,5 @@ tags
 /libvorbis/win32/VS2010/x64/Debug/libvorbisfile_static.lib
 /libvorbis/win32/VS2010/x64/Debug/libvorbis_static.lib
 remc2-editor/log-editor.txt
+
+!asan/*.pdb
