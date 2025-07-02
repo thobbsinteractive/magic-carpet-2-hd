@@ -27,6 +27,7 @@ find_package(SDL2_image REQUIRED)
 find_package(PNG REQUIRED)
 find_package(Boost REQUIRED system CONFIG)
 find_package(fmt REQUIRED)
+find_package(libadlmidi REQUIRED)
 
 
 ################################################################################

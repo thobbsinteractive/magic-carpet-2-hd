@@ -225,7 +225,7 @@ if (UNIX)
         SDL2_ttf::SDL2_ttf
         ${PNG_LIBRARY}
         findfirst
-        ADLMIDI_static
+        libadlmidi::libadlmidi
         Boost::system
         fmt::fmt
     )
