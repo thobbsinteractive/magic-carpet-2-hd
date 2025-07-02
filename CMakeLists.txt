@@ -104,8 +104,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 
 # dependencies
-set(libADLMIDI_STATIC TRUE)
-add_subdirectory(libADLMIDI-master)
 add_compile_definitions(COMPILE_FOR_64BIT)
 #add_definitions(-w)
 
