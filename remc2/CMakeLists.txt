@@ -227,7 +227,6 @@ if (UNIX)
         findfirst
         libadlmidi::libadlmidi
         Boost::system
-        fmt::fmt
     )
     target_link_directories(${PROJECT_NAME} PUBLIC
     )

@@ -51,9 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="comparison\engine\OriginalTerrain.cpp" />
+    <ClCompile Include="engine\GameRenderHD.cpp" />
     <ClCompile Include="engine\SetRenderViewPortSize_40C50UT.cpp" />
     <ClCompile Include="engine\TerrainUT.cpp" />
-    <ClCompile Include="GameRenderHD.cpp" />
     <ClCompile Include="portability\fcaseopenUT.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
