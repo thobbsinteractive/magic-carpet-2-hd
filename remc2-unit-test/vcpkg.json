@@ -6,7 +6,8 @@
 		"spdlog",
 		"sdl2",
 		"sdl2-mixer",
-		"sdl2-ttf"
+		"sdl2-ttf",
+		"libadlmidi"
     ],
 	"builtin-baseline": "f6a5d4e8eb7476b8d7fc12a56dff300c1c986131",
 	"overrides": [
