@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -487,10 +487,10 @@
     </None>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>15.0</VCProjectVersion>
+    <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{5a8f70a7-dfc4-4103-bfc2-c8e212918a73}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Unittests</RootNamespace>
+    <RootNamespace>remc2regressiontests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -566,16 +566,17 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;WINDOWS_IGNORE_PACKING_MISMATCH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;$(SolutionDir)remc2\Debug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)remc2\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2maind.lib;adldata;adlmidi;adlmidi_load;adlmidi_opl3;adlmidi_private;adlmidi_sequencer;adlmidi_midiplay;Config;XUnk_D4350;Unk_D4A30;Unk_D47E0;Type_WORD_D951C;Type_D404C;dbopl;dosbox_opl3;Compare;Type_D94F0_Bldgprmbuffer;Type_D93C0_Bldgprmbuffer;Type_SecretMapScreenPortals_E2970;Type_MapScreenPortals_E17CC;MenusAndIntros;ProjectionPolygon;Network;port_net;RenderThread;Graphics;GameRenderOriginal;GameRenderHD;GameRenderNG;GameBitmap;TextureMaps;Maths;Animation;Sound;CommandLineParser;RendererTests;PlayerInput;Player;Level;Events;EventDispatcher;GameUI;StateMonitor;read_config;Basic;BitmapIO;DataFileIO;port_outputs;sub_main;port_sdl_sound;port_sdl_vga_mouse;port_sdl_joystick;dirent;fcaseopen;port_filesystem;port_show_perifery;port_time;engine_support;Terrain;ViewPort;xmi2mid;wopl_file;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)remc2\Debug;$(SolutionDir)\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2maind.lib;Config;XUnk_D4350;Unk_D4A30;Unk_D47E0;Type_WORD_D951C;Type_D404C;Compare;Type_D94F0_Bldgprmbuffer;Type_D93C0_Bldgprmbuffer;Type_SecretMapScreenPortals_E2970;Type_MapScreenPortals_E17CC;MenusAndIntros;ProjectionPolygon;Network;port_net;RenderThread;Graphics;GameRenderOriginal;GameRenderHD;GameRenderNG;GameBitmap;TextureMaps;Maths;Animation;Sound;CommandLineParser;RendererTests;PlayerInput;Player;Level;Events;EventDispatcher;GameUI;StateMonitor;read_config;Basic;BitmapIO;DataFileIO;port_outputs;port_sdl_sound;port_sdl_vga_mouse;port_sdl_joystick;dirent;fcaseopen;port_filesystem;port_show_perifery;port_time;engine_support;Terrain;ViewPort;xmi2mid;sub_main;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -591,10 +592,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;$(SolutionDir)remc2\$(Platform)\Debug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OmitFramePointers>false</OmitFramePointers>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -604,8 +605,8 @@
       <TargetMachine>MachineX64</TargetMachine>
       <AdditionalIncludeDirectories>$(SolutionDir)\sdl2\include;$(SolutionDir)\fluidsynth\include;$(SolutionDir)\libADLMIDI-master\include;$(SolutionDir)\libOPNMIDI-master\include;$(SolutionDir)\SDL-Mixer-X-master\include\SDL_mixer_ext;$(SolutionDir)\SDL-Mixer-X-master\src;$(SolutionDir)\inih;$(SolutionDir)\libvorbis\include;$(SolutionDir)\libogg\include;C:\Program Files %28x86%29\Visual Leak Detector\include;$(SolutionDir)\libpng2\libpng-master;$(SolutionDir)\zlib\include;$(SolutionDir)\kiss_sdl-master;$(SolutionDir)\SDL2_image-2.0.5\include;$(SolutionDir)\SDL2_ttf-2.0.15\include;$(SolutionDir)\SDL-Mixer-X-master\include\;$(SolutionDir)\SDL-Mixer-X-master\src\codecs\;$(SolutionDir)\OpenAL 1.1 SDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalDependencies>SDL2maind.lib;adldata;adlmidi;adlmidi_load;adlmidi_opl3;adlmidi_private;adlmidi_sequencer;adlmidi_midiplay;Config;XUnk_D4350;Unk_D4A30;Unk_D47E0;Type_WORD_D951C;Type_D404C;dbopl;dosbox_opl3;Type_D94F0_Bldgprmbuffer;Type_D93C0_Bldgprmbuffer;Type_SecretMapScreenPortals_E2970;Type_MapScreenPortals_E17CC;MenusAndIntros;ProjectionPolygon;Network;port_net;RenderThread;Graphics;GameRenderOriginal;GameRenderHD;GameRenderNG;GameBitmap;TextureMaps;Maths;Animation;Sound;CommandLineParser;RendererTests;PlayerInput;Player;Level;Events;EventDispatcher;GameUI;StateMonitor;read_config;Basic;BitmapIO;DataFileIO;port_outputs;sub_main;port_sdl_sound;port_sdl_vga_mouse;port_sdl_joystick;dirent;fcaseopen;port_filesystem;port_show_perifery;port_time;engine_support;Terrain;ViewPort;xmi2mid;wopl_file;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)remc2\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2maind.lib;Config;XUnk_D4350;Unk_D4A30;Unk_D47E0;Type_WORD_D951C;Type_D404C;Compare;Type_D94F0_Bldgprmbuffer;Type_D93C0_Bldgprmbuffer;Type_SecretMapScreenPortals_E2970;Type_MapScreenPortals_E17CC;MenusAndIntros;ProjectionPolygon;Network;port_net;RenderThread;Graphics;GameRenderOriginal;GameRenderHD;GameRenderNG;GameBitmap;TextureMaps;Maths;Animation;Sound;CommandLineParser;RendererTests;PlayerInput;Player;Level;Events;EventDispatcher;GameUI;StateMonitor;read_config;Basic;BitmapIO;DataFileIO;port_outputs;sub_main;port_sdl_sound;port_sdl_vga_mouse;port_sdl_joystick;dirent;fcaseopen;port_filesystem;port_show_perifery;port_time;engine_support;Terrain;ViewPort;xmi2mid;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)remc2\x64\Debug;$(SolutionDir)x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -625,7 +626,7 @@
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -649,7 +650,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
