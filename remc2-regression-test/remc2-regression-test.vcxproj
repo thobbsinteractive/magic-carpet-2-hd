@@ -559,23 +559,19 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;WINDOWS_IGNORE_PACKING_MISMATCH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)libADLMIDI-master\include;$(SolutionDir)remc2\Debug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
-      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+	  <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)remc2\Debug;$(SolutionDir)\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)remc2\Debug;$(SolutionDir)Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2maind.lib;Config;XUnk_D4350;Unk_D4A30;Unk_D47E0;Type_WORD_D951C;Type_D404C;Compare;Type_D94F0_Bldgprmbuffer;Type_D93C0_Bldgprmbuffer;Type_SecretMapScreenPortals_E2970;Type_MapScreenPortals_E17CC;MenusAndIntros;ProjectionPolygon;Network;port_net;RenderThread;Graphics;GameRenderOriginal;GameRenderHD;GameRenderNG;GameBitmap;TextureMaps;Maths;Animation;Sound;CommandLineParser;RendererTests;PlayerInput;Player;Level;Events;EventDispatcher;GameUI;StateMonitor;read_config;Basic;BitmapIO;DataFileIO;port_outputs;port_sdl_sound;port_sdl_vga_mouse;port_sdl_joystick;dirent;fcaseopen;port_filesystem;port_show_perifery;port_time;engine_support;Terrain;ViewPort;xmi2mid;sub_main;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -586,27 +582,21 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OmitFramePointers>false</OmitFramePointers>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalIncludeDirectories>$(SolutionDir)\sdl2\include;$(SolutionDir)\fluidsynth\include;$(SolutionDir)\libADLMIDI-master\include;$(SolutionDir)\libOPNMIDI-master\include;$(SolutionDir)\SDL-Mixer-X-master\include\SDL_mixer_ext;$(SolutionDir)\SDL-Mixer-X-master\src;$(SolutionDir)\inih;$(SolutionDir)\libvorbis\include;$(SolutionDir)\libogg\include;C:\Program Files %28x86%29\Visual Leak Detector\include;$(SolutionDir)\libpng2\libpng-master;$(SolutionDir)\zlib\include;$(SolutionDir)\kiss_sdl-master;$(SolutionDir)\SDL2_image-2.0.5\include;$(SolutionDir)\SDL2_ttf-2.0.15\include;$(SolutionDir)\SDL-Mixer-X-master\include\;$(SolutionDir)\SDL-Mixer-X-master\src\codecs\;$(SolutionDir)\OpenAL 1.1 SDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+	  <AdditionalLibraryDirectories>$(SolutionDir)remc2\x64\Debug;$(SolutionDir)x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2maind.lib;Config;XUnk_D4350;Unk_D4A30;Unk_D47E0;Type_WORD_D951C;Type_D404C;Compare;Type_D94F0_Bldgprmbuffer;Type_D93C0_Bldgprmbuffer;Type_SecretMapScreenPortals_E2970;Type_MapScreenPortals_E17CC;MenusAndIntros;ProjectionPolygon;Network;port_net;RenderThread;Graphics;GameRenderOriginal;GameRenderHD;GameRenderNG;GameBitmap;TextureMaps;Maths;Animation;Sound;CommandLineParser;RendererTests;PlayerInput;Player;Level;Events;EventDispatcher;GameUI;StateMonitor;read_config;Basic;BitmapIO;DataFileIO;port_outputs;sub_main;port_sdl_sound;port_sdl_vga_mouse;port_sdl_joystick;dirent;fcaseopen;port_filesystem;port_show_perifery;port_time;engine_support;Terrain;ViewPort;xmi2mid;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)remc2\x64\Debug;$(SolutionDir)x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -616,19 +606,16 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>false</ConformanceMode>
+      <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+	  <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -642,9 +629,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
