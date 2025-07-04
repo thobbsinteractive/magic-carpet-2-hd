@@ -31,6 +31,7 @@ jobs:
         libboost-system-dev \
         libspdlog-dev libfmt-dev \
         rapidjson-dev \
+        libadlmidi-dev \
         clang-tidy \
         -o APT::Immediate-Configure=0
 
