@@ -480,7 +480,6 @@
     <None Include="engine\bytearrays.x" />
     <None Include="engine\info.x" />
     <None Include="engine\structures.x" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="font\16x16-font.bmp">
@@ -491,13 +490,5 @@
     </Image>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\boost.1.79.0\build\boost.targets" Condition="Exists('..\packages\boost.1.79.0\build\boost.targets')" />
-  </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet packages that are not available on this machine. When you want to download them, use the NuGet package restore feature. For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is file {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\boost.1.79.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.79.0\build\boost.targets'))" />
-  </Target>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>
