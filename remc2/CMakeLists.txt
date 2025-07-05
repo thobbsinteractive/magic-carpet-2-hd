@@ -225,7 +225,7 @@ if (UNIX)
         SDL2_ttf::SDL2_ttf
         ${PNG_LIBRARY}
         findfirst
-        libadlmidi::libadlmidi
+        ADLMIDI_static
         Boost::system
     )
     target_link_directories(${PROJECT_NAME} PUBLIC
