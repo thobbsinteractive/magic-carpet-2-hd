@@ -29,9 +29,12 @@
 bin/*
 obj/*
 
+# macOS garbage
+.DS_Store
+
 # Qt-Creator IDE
 build-*
-*.user
+*.user*
 
 # Cmake caches
 build/*
@@ -39,3 +42,14 @@ build/*
 # DoxyGen's output:
 docs
 
+# Ignore CLeon's files
+.idea/*
+cmake-build-*/*
+
+# Gen ADLDATA's deep-debug WAVs
+fm_banks/_deep_debug/*
+
+# MSVC Cmake integration
+.vs/
+/out/
+CMakeSettings.json

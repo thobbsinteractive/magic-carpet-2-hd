@@ -1,8 +1,8 @@
 /*
- * libADLMIDI is a free MIDI to WAV conversion library with OPL3 emulation
+ * libADLMIDI is a free Software MIDI synthesizer library with OPL3 emulation
  *
  * Original ADLMIDI code: Copyright (c) 2010-2014 Joel Yliluoma <bisqwit@iki.fi>
- * ADLMIDI Library API:   Copyright (c) 2015-2018 Vitaly Novichkov <admin@wohlnet.ru>
+ * ADLMIDI Library API:   Copyright (c) 2015-2025 Vitaly Novichkov <admin@wohlnet.ru>
  *
  * Library is based on the ADLMIDI, a MIDI player for Linux and Windows with OPL3 emulation:
  * http://iki.fi/bisqwit/source/adlmidi.html
@@ -103,6 +103,13 @@ static size_t rtCurrentDevice(void *userdata, size_t track)
     MIDIplay *context = reinterpret_cast<MIDIplay *>(userdata);
     return context->realTime_currentDevice(track);
 }
+
+static void rtSongBegin(void *userdata)
+{
+    MIDIplay *context = reinterpret_cast<MIDIplay *>(userdata);
+    return context->realTime_ResetState();
+}
+
 /* NonStandard calls End */
 
 
@@ -131,6 +138,14 @@ void MIDIplay::initSequencerInterface()
     seq->rt_rawOPL = rtRawOPL;
     seq->rt_deviceSwitch = rtDeviceSwitch;
     seq->rt_currentDevice = rtCurrentDevice;
+
+    seq->onSongStart = rtSongBegin;
+    seq->onSongStart_userData = this;
+
+    seq->onloopStart = hooks.onLoopStart;
+    seq->onloopStart_userData = hooks.onLoopStart_userData;
+    seq->onloopEnd = hooks.onLoopEnd;
+    seq->onloopEnd_userData = hooks.onLoopEnd_userData;
     /* NonStandard calls End */
 
     m_sequencer->setInterface(seq);
@@ -141,16 +156,8 @@ double MIDIplay::Tick(double s, double granularity)
     MidiSequencer &seqr = *m_sequencer;
     double ret = seqr.Tick(s, granularity);
 
-    Synth &synth = *m_synth;
-    s *= seqr.getTempoMultiplier();
-    for(uint16_t c = 0; c < synth.m_numChannels; ++c)
-        m_chipChannels[c].addAge(static_cast<int64_t>(s * 1e6));
-
-    updateVibrato(s);
-    updateArpeggio(s);
-#if !defined(ADLMIDI_AUDIO_TICK_HANDLER)
-    updateGlide(s);
-#endif
+    // s *= seqr.getTempoMultiplier();
+    // TickIterators(s);
 
     return ret;
 }

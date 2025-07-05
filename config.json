@@ -109,12 +109,12 @@
 						"axisTransDeadZone": 12000,
 						"axisTransNavDeadZone": 6000,
 						"axisNavNs": 2,
-						"axisNavNsInv": true,
+						"axisNavNsInv": false,
 						"axisNavEw": 1,
 						"axisNavEwInv": false,
 						"axisFireR": 6,
-						"axisFireL": 3,
-						"axisYaw": 4,
+						"axisFireL": 5,
+						"axisYaw": 3,
 						"axisYawInv": false,
 						"axisYawDeadZone": 3000,
 						"axisYawSensitivity": {
@@ -176,7 +176,7 @@
 								}
 							]
 						},
-						"axisPitch": 5,
+						"axisPitch": 4,
 						"axisPitchInv": false,
 						"axisPitchDeadZone": 3000,
 						"axisPitchSensitivity": {

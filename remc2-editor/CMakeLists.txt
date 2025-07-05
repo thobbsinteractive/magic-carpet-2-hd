@@ -124,8 +124,8 @@ add_executable(${EDITOR_TARGET} ${SOURCE_FILES_EDITOR})
 
 target_link_libraries(${EDITOR_TARGET} PUBLIC 
     SDL2::SDL2
-	SDL2_mixer::SDL2_mixer
-	SDL2_ttf::SDL2_ttf
+    SDL2_mixer::SDL2_mixer
+    SDL2_ttf::SDL2_ttf
     SDL2_image::SDL2_image
     ${PNG_LIBRARY}
     findfirst
