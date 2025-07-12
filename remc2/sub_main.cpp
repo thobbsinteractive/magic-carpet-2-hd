@@ -1049,7 +1049,7 @@ char sub_8C140(unsigned __int16 a1, uint8_t* a2);
 void sub_8C2CD();
 //void sub_8C2DE();
 int sub_8C329();
-//void sub_8C635_draw_cursor();
+//void DrawCursor_8C635();
 int sub_8C839();
 int sub_8CA16();
 //void sub_8CACD_draw_cursor2();
