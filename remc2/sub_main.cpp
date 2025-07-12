@@ -53859,13 +53859,8 @@ void UpdateMouseEventData_8CB3A(uint32_t mouse_states, int32_t mouse_posx, int32
 	if (x_WORD_180660_VGA_type_resolution != 1)
 		if (!DefaultResolutions())
 		{
-			auto scene = GetCurrentScene();
-
-			if (scene != Scene::FLIGHT)
-			{
-				helpWidth = screenWidth_18062C;
-				helpHeight = screenHeight_180624;
-			}
+			helpWidth = screenWidth_18062C;
+			helpHeight = screenHeight_180624;
 		}
 
 	//!!!!!!!! debug

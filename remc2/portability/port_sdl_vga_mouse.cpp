@@ -163,6 +163,8 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			// Sure clear the screen first.. always nice.
 			SDL_RenderClear(m_renderer);
 			SDL_RenderPresent(m_renderer);
+
+			SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0,0,640,480 });
 		}
 		if (!VGA_LoadFont())
 		{
@@ -969,12 +971,14 @@ int PollSdlEvents()
 void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) {
 
 	ScaleUpMouseCoordsToWindow(x, y);
+	ScaleUpMouseCoordsToVga(x, y);
 	MouseEvents(buttons, x, y);
 }
 
 void VGA_Set_mouse(int16_t x, int16_t y) 
 {
 	ScaleDownMouseCoordsToWindow(x, y);
+	ScaleDownMouseCoordsToVga(x, y);
 	SDL_WarpMouseInWindow(m_window, x, y);
 	joystick_set_env(x, y);
 }
@@ -1006,6 +1010,36 @@ void ScaleDownMouseCoordsToWindow(int16_t& x, int16_t& y)
 	{
 		float fy = (float)m_iWindowHeight / (float)m_iOrigh;
 		y = y * fy;
+	}
+}
+
+void ScaleUpMouseCoordsToVga(int16_t& x, int16_t& y)
+{
+	if (m_iOrigw > 640)
+	{
+		float fx = (float)m_iOrigw / 640.0f;
+		x = fx * x;
+	}
+
+	if (m_iOrigh > 480)
+	{
+		float fy = (float)m_iOrigh / 480.0f;
+		y = fy * y;
+	}
+}
+
+void ScaleDownMouseCoordsToVga(int16_t& x, int16_t& y)
+{
+	if (m_iOrigw > 640)
+	{
+		float fx = 640.0f / (float)m_iOrigw;
+		x = fx * x;
+	}
+
+	if (m_iOrigh > 480)
+	{
+		float fy = 480.0f / (float)m_iOrigh;
+		y = fy * y;
 	}
 }
 
