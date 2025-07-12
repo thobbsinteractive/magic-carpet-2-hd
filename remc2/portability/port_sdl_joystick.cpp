@@ -698,7 +698,7 @@ void set_scene(const Scene scene_id)
 			gps.nav_mode = 1;
 			break;
 		case Scene::FLIGHT:
-			ScaleDownMouseCoords(maxX, maxY);
+			ScaleDownMouseCoordsToWindow(maxX, maxY);
 			gps.rest_x = maxX / 2;
 			gps.rest_y = maxY / 2;
 			gps.max_x = maxX;
@@ -727,7 +727,7 @@ void OnResolutionChanged(uint32_t width, uint32_t height)
 
 	if (gps.scene_id == Scene::FLIGHT)
 	{
-		ScaleDownMouseCoords(maxX, maxY);
+		ScaleDownMouseCoordsToWindow(maxX, maxY);
 		gps.rest_x = maxX / 2;
 		gps.rest_y = maxY / 2;
 		gps.max_x = maxX;

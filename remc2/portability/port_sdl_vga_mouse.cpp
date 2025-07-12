@@ -968,18 +968,18 @@ int PollSdlEvents()
 
 void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) {
 
-	ScaleUpMouseCoords(x, y);
+	ScaleUpMouseCoordsToWindow(x, y);
 	MouseEvents(buttons, x, y);
 }
 
 void VGA_Set_mouse(int16_t x, int16_t y) 
 {
-	ScaleDownMouseCoords(x, y);
+	ScaleDownMouseCoordsToWindow(x, y);
 	SDL_WarpMouseInWindow(m_window, x, y);
 	joystick_set_env(x, y);
 }
 
-void ScaleUpMouseCoords(int16_t& x, int16_t& y)
+void ScaleUpMouseCoordsToWindow(int16_t& x, int16_t& y)
 {
 	if (m_iOrigw > 640 && m_iOrigw != m_iWindowWidth)
 	{
@@ -994,7 +994,7 @@ void ScaleUpMouseCoords(int16_t& x, int16_t& y)
 	}
 }
 
-void ScaleDownMouseCoords(int16_t& x, int16_t& y)
+void ScaleDownMouseCoordsToWindow(int16_t& x, int16_t& y)
 {
 	if (m_iOrigw > 640 && m_iOrigw != m_iWindowWidth)
 	{
