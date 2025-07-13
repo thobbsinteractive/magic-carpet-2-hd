@@ -6887,8 +6887,8 @@ char /*__fastcall*/ sub_77680()//258680
 		x_DWORD_17DE38str.x_WORD_17DEF6 = 5;
 		x_DWORD_17DE38str.x_WORD_17DEEC = 0;
 		SetCenterScreenForFlyAssistant_6EDB0();
-		x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx = 0x140;
-		x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony = 0xf0;//test and fix it
+		x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx = 320;
+		x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony = 240;//test and fix it
 
 		if (x_D41A0_BYTEARRAY_4_struct.levelnumber_43w >= 0x32u)
 			//x_DWORD_17DE38str.x_BYTE_17DE68x[0xa + 11 * x_DWORD_17DE38str.x_WORD_17DEFC] = *(x_BYTE*)(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w);

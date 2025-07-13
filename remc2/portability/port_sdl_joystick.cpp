@@ -732,7 +732,7 @@ void OnResolutionChanged(uint32_t width, uint32_t height)
 		gps.rest_y = maxY / 2;
 		gps.max_x = maxX;
 		gps.max_y = maxY;
-		VGA_Set_mouse(320, 240);
+		VGA_Set_mouse(maxX / 2, maxY / 2);
 	}
 }
 

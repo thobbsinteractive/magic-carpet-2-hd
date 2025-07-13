@@ -2798,8 +2798,8 @@ void ChangeGameResolution_46B40()//227b40
 			screenWidth_18062C = gameResWidth;
 			screenHeight_180624 = gameResHeight;
 			sub_90E07_VGA_set_video_mode_alt_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
-			v0_tempmousex = 640 / 2;
-			v0_tempmousey = 480 / 2;
+			v0_tempmousex = gameResWidth / 2;
+			v0_tempmousey = gameResHeight / 2;
 		}
 		else
 			sub_90E07_VGA_set_video_mode_640x480_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
