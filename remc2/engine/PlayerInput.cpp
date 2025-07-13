@@ -2310,8 +2310,8 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 		}
 		else
 		{
-			roll = ((x << 7) - 40960) / 320;
-			pitch = ((y << 7) - 30720) / -240;
+			roll = ((x << 7) - ((gameResWidth / 2) << 7)) / (gameResWidth / 2);
+			pitch = ((y << 7) - ((gameResHeight / 2) << 7)) / -(gameResHeight / 2);
 		}
 		if (roll < -127)
 			roll = -127;
