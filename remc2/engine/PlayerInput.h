@@ -22,7 +22,7 @@ void sub_18BB0();
 void HandleButtonClick_191B0(int16_t a1, char a2);
 void sub_1A970_change_game_settings(char a1, int a2, int a3);
 void sub_41AF0();
-void sub_8CD27_set_cursor(bitmap_pos_struct_t a2);
+void SetCursor_8CD27(bitmap_pos_struct_t a2);
 void sub_417D0_install_pal_and_mouse_minmax2();
 void ReadPauseMenuEvents_197F0();
 char sub_18DA0(type_event_0x6E8E* a1, char a2, char a3);
