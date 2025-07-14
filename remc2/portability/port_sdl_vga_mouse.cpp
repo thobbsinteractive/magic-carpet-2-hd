@@ -968,49 +968,17 @@ int PollSdlEvents()
 	return 1;
 }
 
-void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) {
-
-	ScaleUpMouseCoordsToWindow(x, y);
+void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) 
+{
 	ScaleUpMouseCoordsToVga(x, y);
 	MouseEvents(buttons, x, y);
 }
 
 void VGA_Set_mouse(int16_t x, int16_t y) 
 {
-	ScaleDownMouseCoordsToWindow(x, y);
 	ScaleDownMouseCoordsToVga(x, y);
 	SDL_WarpMouseInWindow(m_window, x, y);
 	joystick_set_env(x, y);
-}
-
-void ScaleUpMouseCoordsToWindow(int16_t& x, int16_t& y)
-{
-	if (m_iOrigw > 640 && m_iOrigw != m_iWindowWidth)
-	{
-		float fx = (float)m_iOrigw / (float)m_iWindowWidth;
-		x = x * fx;
-	}
-
-	if (m_iOrigh > 480 && m_iOrigh != m_iWindowHeight)
-	{
-		float fy = (float)m_iOrigh / (float)m_iWindowHeight;
-		y = y * fy;
-	}
-}
-
-void ScaleDownMouseCoordsToWindow(int16_t& x, int16_t& y)
-{
-	if (m_iOrigw > 640 && m_iOrigw != m_iWindowWidth)
-	{
-		float fx = (float)m_iWindowWidth / (float)m_iOrigw;
-		x = x * fx;
-	}
-
-	if (m_iOrigh > 480 && m_iOrigh != m_iWindowHeight)
-	{
-		float fy = (float)m_iWindowHeight / (float)m_iOrigh;
-		y = y * fy;
-	}
 }
 
 void ScaleUpMouseCoordsToVga(int16_t& x, int16_t& y)
