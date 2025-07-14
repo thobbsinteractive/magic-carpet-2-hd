@@ -32432,9 +32432,9 @@ void DrawAndEventsInGame_47560(/*uint8_t* a1, int a2, */uint32_t a3, signed int 
 	}
 	ReadGameUserInputs_89D10();//get keys
 
-	if (CommandLineParams.DoAutoChangeRes()) {
-		if ((windowResWidth >= 640)&&(windowResHeight >= 480))
-		//if (true)
+	if (CommandLineParams.DoAutoChangeRes()) 
+	{
+		if ((gameResWidth >= 640)&&(gameResHeight >= 480))
 		{
 			if (resindex_begin == 1)
 			{
