@@ -1064,8 +1064,8 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	uint8_t v90; // [esp+4Ch] [ebp-14h]
 	uint8_t v91; // [esp+50h] [ebp-10h]
 	uint8_t v92; // [esp+54h] [ebp-Ch]
-	uint8_t v93; // [esp+58h] [ebp-8h]
-	char v94; // [esp+5Ch] [ebp-4h]
+	uint8_t CentreCrossColour_v93; // [esp+58h] [ebp-8h]
+	char BlipColourIdx_v94; // [esp+5Ch] [ebp-4h]
 
 	if (debugcounter2 >= 8)
 	{
@@ -1080,21 +1080,21 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	if (v11 == MapType_t::Day)
 	{
 		v92 = (*xadataclrd0dat.colorPalette_var28)[0];
-		v93 = (*xadataclrd0dat.colorPalette_var28)[0];
+		CentreCrossColour_v93 = (*xadataclrd0dat.colorPalette_var28)[0];
 		v91 = 0xe8;
 		v90 = 0x1c;
 	}
 	else if (v11 == MapType_t::Night)
 	{
 		v92 = (*xadataclrd0dat.colorPalette_var28)[4095];
-		v93 = (*xadataclrd0dat.colorPalette_var28)[4095];
+		CentreCrossColour_v93 = (*xadataclrd0dat.colorPalette_var28)[4095];
 		v91 = 0xe8;//0xe8
 		v90 = 0x84;//0x84
 	}
 	else if (v11 == MapType_t::Cave)
 	{
 		v92 = (*xadataclrd0dat.colorPalette_var28)[4095];
-		v93 = (*xadataclrd0dat.colorPalette_var28)[4095];
+		CentreCrossColour_v93 = (*xadataclrd0dat.colorPalette_var28)[4095];
 		v91 = 0x1c;
 		v90 = (*xadataclrd0dat.colorPalette_var28)[240];
 	}
@@ -1194,13 +1194,13 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 				case 0u:
 					if (jy->state_0x45_69 != 2)
 						goto LABEL_78;
-					v94 = v90;
+					BlipColourIdx_v94 = v90;
 					v31 = 0;
 					break;
 				case 1u:
 					v31 = 1;
 					if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[3])
-						v94 = (*xadataclrd0dat.colorPalette_var28)[0x88];
+						BlipColourIdx_v94 = (*xadataclrd0dat.colorPalette_var28)[0x88];
 					else
 						v89 = 1;
 					v88 = 27;
@@ -1210,7 +1210,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 						v43 = (*xadataclrd0dat.colorPalette_var28)[0x888];
 					else
 						v43 = v90;
-					v94 = v43;
+					BlipColourIdx_v94 = v43;
 					v31 = 1;
 					v88 = 22;
 					break;
@@ -1269,7 +1269,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 					{
 						v47 = (*xadataclrd0dat.colorPalette_var28)[15];
 					LABEL_102:
-						v94 = v47;
+						BlipColourIdx_v94 = v47;
 						goto LABEL_122;
 					}
 					if (v46 == 22)
@@ -1281,7 +1281,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 					}
 				}
 				v48 = jy->StageVar2_0x49_73;
-				v94 = v92;
+				BlipColourIdx_v94 = v92;
 				v49 = 1;
 				if ((v48 == 14 || v48 == 13) && jy->parentId_0x28_40 == v80x->id_0x1A_26)
 					v49 = 0;
@@ -1331,7 +1331,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 					else
 						v38 = (*xadataclrd0dat.colorPalette_var28)[0xf0f];
 				LABEL_121:
-					v94 = v38;
+					BlipColourIdx_v94 = v38;
 					goto LABEL_122;
 				}
 				if (v34 <= 0x39u)
@@ -1344,11 +1344,11 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 							v37 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v36x->dword_0xA4_164x->word_0x38_56)];
 						else
 							v37 = x_BYTE_E88E0x[1 + 3 * GetTrueWizardNumber_61790(v36x->dword_0xA4_164x->word_0x38_56)];
-						v94 = v37;
+						BlipColourIdx_v94 = v37;
 					}
 					else
 					{
-						v94 = v91;
+						BlipColourIdx_v94 = v91;
 						v88 = 18;
 					}
 				LABEL_122:
@@ -1464,15 +1464,15 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 					{
 						if (v31 <= 1u)
 						{
-							v56[0] = v94;//here //adress 243429
+							v56[0] = BlipColourIdx_v94;//here //adress 243429
 							//VGA_Debug_Blit(640, 480, pdwScreenBuffer_351628);
 							if (v78 > 1)
 							{
 								v57 = screenWidth_18062C;
-								v56[1] = v94;
+								v56[1] = BlipColourIdx_v94;
 								v58 = &v56[v57];
-								v58[0] = v94;
-								v58[1] = v94;
+								v58[0] = BlipColourIdx_v94;
+								v58[1] = BlipColourIdx_v94;
 							}
 						}
 						else if (x_WORD_180660_VGA_type_resolution == 1)
@@ -1561,18 +1561,18 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	}
 	v67 = width / 12;
 	v68 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + v84 - 1);
-	index = (char*)&x_BYTE_F6EE0_tablesx[0x4000 + 256 * v93];
+	index = (char*)&x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93];
 	v70 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + v84 - 1);
 	v77 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + v84 - 1);
 	v81 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + v84 - 1);
-	for (*v68 = index[(uint8_t)*v68]; v67; *v68 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * v93 + v71])
+	for (*v68 = index[(uint8_t)*v68]; v67; *v68 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + v71])
 	{
 		v81 -= screenWidth_18062C;
 		v70 += screenWidth_18062C;
 		v77++;
-		*v81 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * v93 + (uint8_t)*v81];
-		*v77 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * v93 + (uint8_t)*v77];
-		*v70 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * v93 + (uint8_t)*v70];
+		*v81 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*v81];
+		*v77 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*v77];
+		*v70 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*v70];
 		v71 = (uint8_t)*(v68-- - 1);
 		v67--;
 	}
