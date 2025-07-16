@@ -53,8 +53,8 @@ int16_t VGA_get_shift_status();
 bool VGA_check_standart_input_status();
 uint16_t VGA_read_char_from_buffer();
 void VGA_Set_mouse(int16_t a1, int16_t a2);
-void ScaleUpMouseCoords(int16_t& x, int16_t& y);
-void ScaleDownMouseCoords(int16_t& x, int16_t& y);
+void ScaleUpMouseCoordsToVga(int16_t& x, int16_t& y);
+void ScaleDownMouseCoordsToVga(int16_t& x, int16_t& y);
 void setPress(bool locpressed, uint16_t loclastchar);
 void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y);
 

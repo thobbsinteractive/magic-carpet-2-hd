@@ -698,23 +698,26 @@ void set_scene(const Scene scene_id)
 			gps.nav_mode = 1;
 			break;
 		case Scene::FLIGHT:
-			ScaleDownMouseCoords(maxX, maxY);
 			gps.rest_x = maxX / 2;
 			gps.rest_y = maxY / 2;
 			gps.max_x = maxX;
 			gps.max_y = maxY;
-			VGA_Set_mouse(320, 240);
+			if (screenWidth_18062C > 640 && screenHeight_180624 > 480)
+				VGA_Set_mouse(screenWidth_18062C / 2, screenHeight_180624 / 2);
+			else
+				VGA_Set_mouse(320, 200);
+
 			gps.nav_mode = 0;
 			break;
 		case Scene::FLIGHT_MENU:
 		case Scene::SPELL_MENU:
-			gps.max_x = gameResWidth;
-			gps.max_y = gameResHeight;
+			gps.max_x = screenWidth_18062C;
+			gps.max_y = screenHeight_180624;
 			gps.nav_mode = 1;
 			break;
 		default:
-			gps.max_x = gameResWidth;
-			gps.max_y = gameResHeight;
+			gps.max_x = screenWidth_18062C;
+			gps.max_y = screenHeight_180624;
 			break;
 	}
 	Logger->trace("set scene {}, nav_mode {}", (int)scene_id, gps.nav_mode);
@@ -727,12 +730,14 @@ void OnResolutionChanged(uint32_t width, uint32_t height)
 
 	if (gps.scene_id == Scene::FLIGHT)
 	{
-		ScaleDownMouseCoords(maxX, maxY);
 		gps.rest_x = maxX / 2;
 		gps.rest_y = maxY / 2;
 		gps.max_x = maxX;
 		gps.max_y = maxY;
-		VGA_Set_mouse(320, 240);
+		if (screenWidth_18062C > 640 && screenHeight_180624 > 480)
+			VGA_Set_mouse(screenWidth_18062C / 2, screenHeight_180624 / 2);
+		else
+			VGA_Set_mouse(320, 200);
 	}
 }
 
