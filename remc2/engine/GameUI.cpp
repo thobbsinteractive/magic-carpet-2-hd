@@ -1056,7 +1056,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	x_BYTE* v81; // [esp+28h] [ebp-38h]
 	int v82; // [esp+2Ch] [ebp-34h]
 	int v83; // [esp+30h] [ebp-30h]
-	uint8_t* v84; // [esp+34h] [ebp-2Ch]
+	uint8_t* ptrMapBufferStart_v84; // [esp+34h] [ebp-2Ch]
 	int v85; // [esp+38h] [ebp-28h]
 	int v86; // [esp+3Ch] [ebp-24h]
 	uint16_t v87; // [esp+40h] [ebp-20h]
@@ -1108,7 +1108,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 		height >>= 1;
 	}
 
-	v84 = v9 * screenWidth_18062C + pdwScreenBuffer_351628 + v8;
+	ptrMapBufferStart_v84 = v9 * screenWidth_18062C + pdwScreenBuffer_351628 + v8;
 	LODWORD(v12) = 0x10000;
 	HIDWORD(v12) = 0x10000 >> 31;
 	v13 = v12 / scaling;
@@ -1140,8 +1140,8 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 		v72 = (uint16_t)Maths::sub_72633_maybe_tan(v25 - v20, v26 - v21);
 		for (i = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 & 3;
 			;
-			*(x_BYTE*)(v84 + v20 + (i * Maths::sin_DB750[v72] >> 16) + screenWidth_18062C * v85) = x_BYTE_F6EE0_tablesx[0x4000 + 256
-			* *(uint8_t*)(v84 + v20 + (i * Maths::sin_DB750[v72] >> 16) + screenWidth_18062C * v85)
+			*(x_BYTE*)(ptrMapBufferStart_v84 + v20 + (i * Maths::sin_DB750[v72] >> 16) + screenWidth_18062C * v85) = x_BYTE_F6EE0_tablesx[0x4000 + 256
+			* *(uint8_t*)(ptrMapBufferStart_v84 + v20 + (i * Maths::sin_DB750[v72] >> 16) + screenWidth_18062C * v85)
 			+ (uint8_t)(*xadataclrd0dat.colorPalette_var28)[4095]])//castle rope
 		{
 			i += 4;
@@ -1460,13 +1460,12 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 				v55 = ((v73 * v53 + v86 * v52) >> 16) + v76;
 				if (v55 >= 0 && v55 < height && v54 >= x_WORD_F4960[1 + 2 * v55] && v54 < x_WORD_F4960[2 * v55])
 				{//adress 24329e 0x1e xx 0x17
-					v56 = (char*)(v54 + v84 + v55 * screenWidth_18062C);
+					v56 = (char*)(v54 + ptrMapBufferStart_v84 + v55 * screenWidth_18062C);
 					if (!v89)
 					{
 						if (v31 <= 1u)
 						{
-							v56[0] = BlipColourIdx_v94;//here //adress 243429
-							//VGA_Debug_Blit(640, 480, pdwScreenBuffer_351628);
+							v56[0] = BlipColourIdx_v94;
 							if (v78 > 1)
 							{
 								v57 = screenWidth_18062C;
@@ -1545,7 +1544,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 							v64 = v76 + ((v86 * v61 + v73 * v62) >> 16);
 							if (v64 >= 0 && v64 < height && v63 >= x_WORD_F4960[1 + 2 * v64] && v63 < x_WORD_F4960[2 * v64])
 							{
-								v65 = (uint8_t*)(v64 * screenWidth_18062C + v63 + v84);
+								v65 = (uint8_t*)(v64 * screenWidth_18062C + v63 + ptrMapBufferStart_v84);
 								v66 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v60x->dword_0xA4_164x->word_0x38_56)];
 								*v65 = v66;
 								if (x_WORD_180660_VGA_type_resolution == 1)
@@ -1561,11 +1560,11 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 		}
 	}
 	v67 = width / 12;
-	v68 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + v84 - 1);
+	v68 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
 	index = (char*)&x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93];
-	v70 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + v84 - 1);
-	v77 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + v84 - 1);
-	v81 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + v84 - 1);
+	v70 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
+	v77 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
+	v81 = (x_BYTE*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
 	for (*v68 = index[(uint8_t)*v68]; v67; *v68 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + v71])
 	{
 		v81 -= screenWidth_18062C;
