@@ -1201,14 +1201,14 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 				case 1u:
 					v31 = 1;
 					if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[3])
-						BlipColourIdx_v94 = (*xadataclrd0dat.colorPalette_var28)[0x88];
+						BlipColourIdx_v94 = (*xadataclrd0dat.colorPalette_var28)[MapColourIndexs::MARKER_STONE];
 					else
 						v89 = 1;
 					v88 = 27;
 					break;
 				case 2u:
 					if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[2])
-						v43 = (*xadataclrd0dat.colorPalette_var28)[0x888];
+						v43 = (*xadataclrd0dat.colorPalette_var28)[MapColourIndexs::UNPOSSESSED_BUILDING];
 					else
 						v43 = v90;
 					BlipColourIdx_v94 = v43;
@@ -1268,7 +1268,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 				{
 					if (v46 <= 0xEu)
 					{
-						v47 = (*xadataclrd0dat.colorPalette_var28)[15];
+						v47 = (*xadataclrd0dat.colorPalette_var28)[MapColourIndexs::CIVILIANS];
 					LABEL_102:
 						BlipColourIdx_v94 = v47;
 						goto LABEL_122;
@@ -1330,7 +1330,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 					if (v39x->class_0x3F_63 == 3)
 						v38 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v39x->dword_0xA4_164x->word_0x38_56)];
 					else
-						v38 = (*xadataclrd0dat.colorPalette_var28)[0xf0f];
+						v38 = (*xadataclrd0dat.colorPalette_var28)[UNPOSSESSED_BUILDING2];
 				LABEL_121:
 					BlipColourIdx_v94 = v38;
 					goto LABEL_122;
@@ -1436,16 +1436,16 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 			case 0xDu:
 				if (jy->struct_byte_0xc_12_15.byte[0] & 1)
 					break;
-				v38 = (*xadataclrd0dat.colorPalette_var28)[3840];
+				v38 = (*xadataclrd0dat.colorPalette_var28)[MapColourIndexs::SPELLS];
 				v88 = 20;
 				goto LABEL_121;
 			case 0xCu:
 				if (jy->model_0x40_64 != 5)
 					break;
 				if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[3])
-					v38 = (*xadataclrd0dat.colorPalette_var28)[3840];
+					v38 = (*xadataclrd0dat.colorPalette_var28)[MapColourIndexs::SPELLS];
 				else
-					v38 = (*xadataclrd0dat.colorPalette_var28)[4095];
+					v38 = (*xadataclrd0dat.colorPalette_var28)[MapColourIndexs::CREATURE];
 				goto LABEL_121;
 			}
 		}
