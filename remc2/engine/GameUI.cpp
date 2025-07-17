@@ -1026,8 +1026,8 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	int16_t v51; // ax
 	int v52; // edx
 	int v53; // ecx
-	int v54; // esi
-	int v55; // edi
+	int posx; // esi
+	int posy; // edi
 	char* v56; // edx
 	int v57; // ecx
 	char* v58; // edx
@@ -1454,13 +1454,13 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 		{
 			v52 = (int16_t)(jy->axis_0x4C_76.x - posX);
 			v53 = (int16_t)(jy->axis_0x4C_76.y - posY);
-			v54 = v82 + ((v52 * v73 - v53 * v86) >> 16);
-			if (v54 >= 0 && v54 < width)
+			posx = v82 + ((v52 * v73 - v53 * v86) >> 16);
+			if (posx >= 0 && posx < width)
 			{//24324e
-				v55 = ((v73 * v53 + v86 * v52) >> 16) + v76;
-				if (v55 >= 0 && v55 < height && v54 >= x_WORD_F4960[1 + 2 * v55] && v54 < x_WORD_F4960[2 * v55])
+				posy = ((v73 * v53 + v86 * v52) >> 16) + v76;
+				if (posy >= 0 && posy < height && posx >= x_WORD_F4960[1 + 2 * posy] && posx < x_WORD_F4960[2 * posy])
 				{//adress 24329e 0x1e xx 0x17
-					v56 = (char*)(v54 + ptrMapBufferStart_v84 + v55 * screenWidth_18062C);
+					v56 = (char*)(posx + ptrMapBufferStart_v84 + posy * screenWidth_18062C);
 					if (!v89)
 					{
 						if (v31 <= 1u)
@@ -1483,39 +1483,39 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 								{
 									if (v31 == 83 || v31 == 84)
 										sub_2BB40_draw_bitmap(
-											2 * v54 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
-											2 * v55 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 / 2,
+											2 * posx - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
+											2 * posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 / 2,
 											(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
 								}
 								else
 								{
 									//sub_2BB40_draw_bitmap(2 * v54, 2 * v55 - *(uint8_t *)(6 * v31 + **filearray_2aa18c[6] + 5), (uint8_t**)(6 * v31 + **filearray_2aa18c[6]));
-									sub_2BB40_draw_bitmap(2 * v54, 2 * v55 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
+									sub_2BB40_draw_bitmap(2 * posx, 2 * posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
 								}
 							}
 							else
 							{
 								sub_2BB40_draw_bitmap(
-									2 * v54 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
-									2 * v55 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5,
+									2 * posx - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
+									2 * posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5,
 									(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
 							}
 						}
 						else if (v31 >= 0x3Cu)
 						{
 							sub_2BB40_draw_bitmap(
-								v54 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
-								v55 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5,
+								posx - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
+								posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5,
 								(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
 						}
 						else
 						{
 							//sub_2BB40_draw_bitmap(v54, v55 - *(uint8_t *)(6 * v31 + **filearray_2aa18c[6] + 5), (uint8_t**)(6 * v31 + **filearray_2aa18c[6]));
-							sub_2BB40_draw_bitmap(v54, v55 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
+							sub_2BB40_draw_bitmap(posx, posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
 						}
 					}
 					if (v88)
-						sub_885E0(jy, (int16_t)v54, (int16_t)v55, v88);
+						sub_885E0(jy, (int16_t)posx, (int16_t)posy, v88);
 				}
 			}
 		}
