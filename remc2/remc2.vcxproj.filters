@@ -285,6 +285,9 @@
     <ClInclude Include="portability\Config.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
+    <ClInclude Include="engine\MapColourIndexs.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

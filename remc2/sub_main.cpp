@@ -22062,7 +22062,8 @@ void DrawGameFrame_2BE30()//20CE30
 					128 * scale,
 					128 * scale,
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00e_2BDE_11244 + 1].rotation__2BDE_11701.yaw,
-					256 / scale);
+					256 / scale,
+					scale);
 				DrawMinimapMarks_644F0(
 					0,
 					0,
@@ -22188,7 +22189,8 @@ void DrawGameFrame_2BE30()//20CE30
 			locViewportPosx - 2,
 			locMinimapHeight,
 			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[v6 + 1].rotation__2BDE_11701.yaw,
-			204 / scale);
+			204 / scale,
+			scale);
 
 		viewPort.SetRenderViewPortSize_40BF0(locViewportPosx, 0, locViewportWidth, locViewportHeight);
 
@@ -65048,14 +65050,14 @@ signed int sub_61810(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//242810
 }
 
 //----- (00061880) --------------------------------------------------------
-void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling)//242880
+void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale)//242880
 {
 	//char *result; // eax
 	// 0 0 4d80 ffffde80 80 0 0 100 c0 0
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
-		sub_627F0_draw_minimap_entites_a(x, y, posX, posY, width, height, yaw, scaling);
+		sub_627F0_draw_minimap_entites_a(x, y, posX, posY, width, height, yaw, scaling, scale);
 	else
-		sub_61A00_draw_minimap_entites_b(x, y, posX, posY, width, height, yaw, scaling);
+		sub_61A00_draw_minimap_entites_b(x, y, posX, posY, width, height, yaw, scaling, scale);
 }
 
 //----- (00064E20) --------------------------------------------------------
