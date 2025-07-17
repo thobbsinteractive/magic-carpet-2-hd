@@ -61,6 +61,7 @@ set(SOURCE_FILES_ENGINE
     "engine/Level.cpp"
     "engine/Level.h"
     "engine/Map.h"
+    "engine/MapColourIndexs.h"
     "engine/MenusAndIntros.cpp"
     "engine/MenusAndIntros.h"
     "engine/Network.cpp"

@@ -11,6 +11,7 @@
 #include "Terrain.h"
 #include "MenusAndIntros.h"
 #include "Type_D93C0_Bldgprmbuffer.h"
+#include "MapColourIndexs.h"
 
 
 char x_BYTE_D419D_fonttype = 1; // weak
