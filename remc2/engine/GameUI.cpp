@@ -1028,7 +1028,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	int v53; // ecx
 	int posx; // esi
 	int posy; // edi
-	char* v56; // edx
+	char* ptrBlipBufferIdx_v56; // edx
 	int v57; // ecx
 	char* v58; // edx
 	int v59; // eax
@@ -1460,19 +1460,22 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 				posy = ((v73 * v53 + v86 * v52) >> 16) + v76;
 				if (posy >= 0 && posy < height && posx >= x_WORD_F4960[1 + 2 * posy] && posx < x_WORD_F4960[2 * posy])
 				{//adress 24329e 0x1e xx 0x17
-					v56 = (char*)(posx + ptrMapBufferStart_v84 + posy * screenWidth_18062C);
+					ptrBlipBufferIdx_v56 = (char*)(posx + ptrMapBufferStart_v84 + posy * screenWidth_18062C);
 					if (!v89)
 					{
 						if (v31 <= 1u)
 						{
-							v56[0] = BlipColourIdx_v94;
+							int blipSize = 1;
 							if (v78 > 1)
+								blipSize = 2;
+
+							for (int y = 0; y < (blipSize * scale); y++)
 							{
-								v57 = screenWidth_18062C;
-								v56[1] = BlipColourIdx_v94;
-								v58 = &v56[v57];
-								v58[0] = BlipColourIdx_v94;
-								v58[1] = BlipColourIdx_v94;
+								for (int x = 0; x < (blipSize * scale); x++)
+								{
+									ptrBlipBufferIdx_v56[x] = BlipColourIdx_v94;
+								}
+								ptrBlipBufferIdx_v56 += screenWidth_18062C;
 							}
 						}
 						else if (x_WORD_180660_VGA_type_resolution == 1)
