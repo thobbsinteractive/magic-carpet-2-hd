@@ -1,6 +1,6 @@
 #pragma once
 
-enum GameKeys
+enum GameKey
 {
 	ESC = 0x011b,
 	K1 = 0x011b,
