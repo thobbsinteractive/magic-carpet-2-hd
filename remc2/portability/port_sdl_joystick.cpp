@@ -309,35 +309,35 @@ void gamepad_hat_mov_conv(const vec1d_t *hat)
 	uint16_t ret = 0;
 
 	if (hat->x & SDL_HAT_UP) {
-		setPress(false, GP_KEY_EMU_DOWN);
-		setPress(true, GP_KEY_EMU_UP);
+		SetPress(false, GP_KEY_EMU_DOWN);
+		SetPress(true, GP_KEY_EMU_UP);
 		ret = GP_MOV_UPDATE;
 	}
 
 	if (hat->x & SDL_HAT_DOWN) {
-		setPress(false, GP_KEY_EMU_UP);
-		setPress(true, GP_KEY_EMU_DOWN);
+		SetPress(false, GP_KEY_EMU_UP);
+		SetPress(true, GP_KEY_EMU_DOWN);
 		ret = GP_MOV_UPDATE;
 	}
 
 	if (hat->x & SDL_HAT_RIGHT) {
-		setPress(false, GP_KEY_EMU_LEFT);
-		setPress(true, GP_KEY_EMU_RIGHT);
+		SetPress(false, GP_KEY_EMU_LEFT);
+		SetPress(true, GP_KEY_EMU_RIGHT);
 		ret = GP_MOV_UPDATE;
 	}
 
 	if (hat->x & SDL_HAT_LEFT) {
-		setPress(false, GP_KEY_EMU_RIGHT);
-		setPress(true, GP_KEY_EMU_LEFT);
+		SetPress(false, GP_KEY_EMU_RIGHT);
+		SetPress(true, GP_KEY_EMU_LEFT);
 		ret = GP_MOV_UPDATE;
 	}
 
 	if (hat->x == 0) {
 		if (gps.mov_key_announced < GP_MAX_KEY_RELEASE_ANN) {
-			setPress(false, GP_KEY_EMU_UP);
-			setPress(false, GP_KEY_EMU_DOWN);
-			setPress(false, GP_KEY_EMU_RIGHT);
-			setPress(false, GP_KEY_EMU_LEFT);
+			SetPress(false, GP_KEY_EMU_UP);
+			SetPress(false, GP_KEY_EMU_DOWN);
+			SetPress(false, GP_KEY_EMU_RIGHT);
+			SetPress(false, GP_KEY_EMU_LEFT);
 			gps.mov_key_announced++;
 		}
 	}
@@ -364,32 +364,32 @@ void gamepad_axis_mov_conv(vec2d_t *stick)
 		// player seems to always have some inertia, so the following wont't actually stop
 		// longitudinal movement
 		if (gps.mov_key_announced < GP_MAX_KEY_RELEASE_ANN) {
-			setPress(false, GP_KEY_EMU_UP);
-			setPress(false, GP_KEY_EMU_DOWN);
+			SetPress(false, GP_KEY_EMU_UP);
+			SetPress(false, GP_KEY_EMU_DOWN);
 		}
 	} else {
 		if (axis_long * axis_long_inv > 0) {
-			setPress(false, GP_KEY_EMU_DOWN);
-			setPress(true, GP_KEY_EMU_UP);
+			SetPress(false, GP_KEY_EMU_DOWN);
+			SetPress(true, GP_KEY_EMU_UP);
 		} else {
-			setPress(false, GP_KEY_EMU_UP);
-			setPress(true, GP_KEY_EMU_DOWN);
+			SetPress(false, GP_KEY_EMU_UP);
+			SetPress(true, GP_KEY_EMU_DOWN);
 		}
 		ret = GP_MOV_UPDATE;
 	}
 
 	if ((axis_trans < gpc.axis_trans_dead_zone) && (axis_trans > -gpc.axis_trans_dead_zone)) {
 		if (gps.mov_key_announced < GP_MAX_KEY_RELEASE_ANN) {
-			setPress(false, GP_KEY_EMU_RIGHT);
-			setPress(false, GP_KEY_EMU_LEFT);
+			SetPress(false, GP_KEY_EMU_RIGHT);
+			SetPress(false, GP_KEY_EMU_LEFT);
 		}
 	} else {
 		if (axis_trans > 0) {
-			setPress(false, GP_KEY_EMU_LEFT);
-			setPress(true, GP_KEY_EMU_RIGHT);
+			SetPress(false, GP_KEY_EMU_LEFT);
+			SetPress(true, GP_KEY_EMU_RIGHT);
 		} else {
-			setPress(false, GP_KEY_EMU_RIGHT);
-			setPress(true, GP_KEY_EMU_LEFT);
+			SetPress(false, GP_KEY_EMU_RIGHT);
+			SetPress(true, GP_KEY_EMU_LEFT);
 		}
 		ret = GP_MOV_UPDATE;
 	}
@@ -541,28 +541,28 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 			button_state |= 0x2;
 		}
 		if (gps.scene_id != Scene::FLIGHT_MENU && (gpe->btn_pressed & (1 << gpc.button_spell))) {
-			setPress(true, GP_KEY_EMU_SPELL);
+			SetPress(true, GP_KEY_EMU_SPELL);
 			//haptic_rumble_triggers_effect(32000, 0, 1000);
 		}
 		if (gpe->btn_pressed & (1 << gpc.button_minimap)) {
-			setPress(true, GP_KEY_EMU_MINIMAP);
+			SetPress(true, GP_KEY_EMU_MINIMAP);
 			//haptic_run_effect(hs.quake);
 			//haptic_rumble_effect(0.5, 2000);
 		}
 		if (gpe->btn_pressed & (1 << gpc.button_pause_menu)) {
-			setPress(true, GP_KEY_EMU_PAUSE);
+			SetPress(true, GP_KEY_EMU_PAUSE);
 		}
 		if (gpe->btn_pressed & (1 << gpc.button_fwd)) {
-			setPress(true, GP_KEY_EMU_UP);
+			SetPress(true, GP_KEY_EMU_UP);
 		}
 		if (gpe->btn_pressed & (1 << gpc.button_back)) {
-			setPress(true, GP_KEY_EMU_DOWN);
+			SetPress(true, GP_KEY_EMU_DOWN);
 		}
 		if (gpe->btn_pressed & (1 << gpc.button_esc)) {
-			setPress(true, GP_KEY_EMU_ESC);
+			SetPress(true, GP_KEY_EMU_ESC);
 		}
 		if (gps.scene_id == Scene::DEAD) {
-			setPress(true, GP_KEY_EMU_SPACE);
+			SetPress(true, GP_KEY_EMU_SPACE);
 		}
 	}
 
@@ -577,25 +577,25 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 			button_state |= 0x4;
 		}
 		if (gps.scene_id != Scene::FLIGHT_MENU && (gpe->btn_released & (1 << gpc.button_spell))) {
-			setPress(false, GP_KEY_EMU_SPELL);
+			SetPress(false, GP_KEY_EMU_SPELL);
 		}
 		if (gpe->btn_released & (1 << gpc.button_minimap)) {
-			setPress(false, GP_KEY_EMU_MINIMAP);
+			SetPress(false, GP_KEY_EMU_MINIMAP);
 		}
 		if (gpe->btn_released & (1 << gpc.button_pause_menu)) {
-			setPress(false, GP_KEY_EMU_PAUSE);
+			SetPress(false, GP_KEY_EMU_PAUSE);
 		}
 		if (gpe->btn_released & (1 << gpc.button_fwd)) {
-			setPress(false, GP_KEY_EMU_UP);
+			SetPress(false, GP_KEY_EMU_UP);
 		}
 		if (gpe->btn_released & (1 << gpc.button_back)) {
-			setPress(false, GP_KEY_EMU_DOWN);
+			SetPress(false, GP_KEY_EMU_DOWN);
 		}
 		if (gpe->btn_released & (1 << gpc.button_esc)) {
-			setPress(false, GP_KEY_EMU_ESC);
+			SetPress(false, GP_KEY_EMU_ESC);
 		}
 		if (gps.scene_id == Scene::DEAD) {
-			setPress(false, GP_KEY_EMU_SPACE);
+			SetPress(false, GP_KEY_EMU_SPACE);
 		}
 	}
 
