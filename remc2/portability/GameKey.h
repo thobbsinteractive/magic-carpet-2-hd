@@ -3,7 +3,7 @@
 enum GameKey
 {
 	ESC = 0x011b,
-	K1 = 0x011b,
+	K1 = 0x0231,
 	K2 = 0x0332,
 	K3 = 0x0433,
 	K4 = 0x0534,
