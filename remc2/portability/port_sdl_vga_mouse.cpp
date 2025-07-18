@@ -14,6 +14,7 @@ extern DOS_Device* DOS_CON;
 #endif //USE_DOSBOX
 #include "../engine/EventDispatcher.h"
 #include "GameKey.h"
+#include "InputMapping.h"
 
 SDL_Window* m_window = nullptr;
 SDL_Renderer* m_renderer = nullptr;
@@ -36,8 +37,11 @@ uint16_t m_iWindowWidth = 640;
 uint16_t m_iWindowHeight = 480;
 
 bool m_bMaintainAspectRatio = true;
-
 bool m_settingWindowGrabbed = true;
+
+InputMapping m_InputMapping;
+bool m_pressed = false;
+uint16_t m_lastchar = 0;
 
 const char* default_caption = "Magic Carpet 2 HD - (Community Update)";
 
@@ -807,7 +811,7 @@ void ToggleMouseGrabbed() {
 	SDL_SetWindowGrab(m_window, m_settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
 }
 
-bool handleSpecialKeys(const SDL_Event &event) {
+bool HandleSpecialKeys(const SDL_Event &event) {
 	bool specialKey = false;
 	if ((event.key.keysym.sym == SDLK_RETURN) && (event.key.keysym.mod & KMOD_ALT)) {
 		ToggleFullscreen();
@@ -820,8 +824,6 @@ bool handleSpecialKeys(const SDL_Event &event) {
 	return specialKey;
 }
 
-bool pressed = false;
-uint16_t lastchar = 0;
 int PollSdlEvents()
 {
 	SDL_Event event;
@@ -849,18 +851,18 @@ int PollSdlEvents()
 			break;
 		}
 		case SDL_KEYDOWN:
-			pressed = true;
-			lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
+			m_pressed = true;
+			m_lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
 
-			if (!handleSpecialKeys(event)) {
-				SetPress(true, lastchar);
+			if (!HandleSpecialKeys(event)) {
+				SetPress(true, m_lastchar);
 			}
-			Logger->trace("Key {} press detected", lastchar);
+			Logger->trace("Key {} press detected", m_lastchar);
 			break;
 		case SDL_KEYUP:
-			lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
-			SetPress(false, lastchar);
-			Logger->trace("Key {} release detected", lastchar);
+			m_lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
+			SetPress(false, m_lastchar);
+			Logger->trace("Key {} release detected", m_lastchar);
 			break;
 
 		case SDL_MOUSEMOTION:
@@ -1172,9 +1174,9 @@ int16_t VGA_get_shift_status() {
 	return 0;
 }
 bool VGA_check_standart_input_status() {
-	bool locpressed = pressed;
+	bool locpressed = m_pressed;
 	//uint16_t loclastchar = lastchar;
-	pressed = false;
+	m_pressed = false;
 	return locpressed;
 }
 
@@ -1182,14 +1184,11 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 {
 	auto sdl_char = (loclastchar & 0xff00) >> 8;
 
-
-
 	switch (sdl_char)
 	{
 	case SDL_SCANCODE_ESCAPE://esc
 		loclastchar = GameKey::ESC;
 		break;
-
 	case SDL_SCANCODE_1://1
 		loclastchar = GameKey::K1;
 		break;
@@ -1220,7 +1219,6 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 	case SDL_SCANCODE_0://0
 		loclastchar = GameKey::K0;
 		break;
-
 	case SDL_SCANCODE_MINUS://-
 	case SDL_SCANCODE_KP_MINUS:
 		loclastchar = GameKey::MINUS;
@@ -1266,14 +1264,12 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 	case SDL_SCANCODE_P://p
 		loclastchar = GameKey::P;
 		break;
-
 	case SDL_SCANCODE_LEFTBRACKET://[
 		loclastchar = GameKey::LEFTBRACKET;
 		break;
 	case SDL_SCANCODE_RIGHTBRACKET://]
 		loclastchar = GameKey::RIGHTBRACKET;
 		break;
-
 	case SDL_SCANCODE_RETURN://enter
 	case SDL_SCANCODE_RETURN2://enter
 		loclastchar = GameKey::RETURN;
@@ -1282,7 +1278,6 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 	case SDL_SCANCODE_RCTRL:
 		loclastchar = GameKey::CTRL;
 		break;
-
 	case SDL_SCANCODE_A://a
 		loclastchar = GameKey::A;
 		break;
@@ -1310,7 +1305,6 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 	case SDL_SCANCODE_L://l
 		loclastchar = GameKey::L;
 		break;
-
 	case SDL_SCANCODE_SEMICOLON://;
 		loclastchar = GameKey::SEMICOLON;
 		break;
@@ -1320,14 +1314,12 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 	case SDL_SCANCODE_GRAVE://`
 		loclastchar = GameKey::GRAVE;
 		break;
-
 	case SDL_SCANCODE_LSHIFT://left shift
 		loclastchar = GameKey::LSHIFT;
 		break;
 	case SDL_SCANCODE_BACKSLASH:// "\"
 		loclastchar = GameKey::BACKSLASH;
 		break;
-
 	case SDL_SCANCODE_Z://z
 		loclastchar = GameKey::Z;
 		break;
@@ -1358,20 +1350,16 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 	case SDL_SCANCODE_SLASH:// "/"
 		loclastchar = GameKey::SLASH;
 		break;
-
 	case SDL_SCANCODE_RSHIFT://right shift
 		loclastchar = GameKey::RSHIFT;
 		break;
-
 	case SDL_SCANCODE_LALT://alt
 	case SDL_SCANCODE_RALT:
 		loclastchar = GameKey::ALT;
 		break;
-
 	case SDL_SCANCODE_SPACE://space
 		loclastchar = GameKey::SPACE;
 		break;
-
 	case SDL_SCANCODE_F1://f1
 		loclastchar = GameKey::F1;
 		break;
@@ -1402,7 +1390,6 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 	case SDL_SCANCODE_F10://f10
 		loclastchar = GameKey::F10;
 		break;
-
 	case SDL_SCANCODE_HOME://home
 		loclastchar = GameKey::HOME;
 		break;
@@ -1415,7 +1402,6 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 	case SDL_SCANCODE_PAGEDOWN://pagedown
 		loclastchar = GameKey::PAGEDOWN;
 		break;
-
 	case SDL_SCANCODE_INSERT://ins
 		loclastchar = GameKey::INSERT;
 		break;
@@ -1424,25 +1410,34 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 		break;
 	}
 
+	if (sdl_char == m_InputMapping.Up)
+		loclastchar = GameKey::UP;
+	if (sdl_char == m_InputMapping.Down)
+		loclastchar = GameKey::DOWN;
+	if (sdl_char == m_InputMapping.Left)
+		loclastchar = GameKey::LEFT;
+	if (sdl_char == m_InputMapping.Right)
+		loclastchar = GameKey::RIGHT;
+
 	return loclastchar;
 }
 
 void VGA_cleanKeyBuffer() {
-	uint16_t loclastchar = lastchar;
-	lastchar = 0;
+	uint16_t loclastchar = m_lastchar;
+	m_lastchar = 0;
 	loclastchar = TranslateSdlKeysToGameKeys(loclastchar);
 	while (loclastchar != 0)
 	{
-		loclastchar = lastchar;
-		lastchar = 0;
+		loclastchar = m_lastchar;
+		m_lastchar = 0;
 		loclastchar = TranslateSdlKeysToGameKeys(loclastchar);
 	}
 }
 
 uint16_t VGA_read_char_from_buffer() {
 	//bool locpressed = pressed;
-	uint16_t loclastchar = lastchar;
-	lastchar = 0;
+	uint16_t loclastchar = m_lastchar;
+	m_lastchar = 0;
 	loclastchar = TranslateSdlKeysToGameKeys(loclastchar);
 	return loclastchar;
 }
