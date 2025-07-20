@@ -312,7 +312,7 @@ void sub_17190_process_keyboard()//1f8190
 					{
 					case 0x19: {//p
 						if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
-							sub_18BB0();
+							PauseUnpauseGame_18BB0();
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
@@ -403,7 +403,7 @@ void sub_17190_process_keyboard()//1f8190
 }
 
 //----- (00018BB0) --------------------------------------------------------
-void sub_18BB0()//1f9bb0
+void PauseUnpauseGame_18BB0()//1f9bb0
 {
 	//int v0; // eax
 	//char v1; // dl
@@ -1069,7 +1069,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			{
 				//LOBYTE(result) = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 				if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
-					sub_18BB0();
+					PauseUnpauseGame_18BB0();
 			}
 		}
 		LastPressedKey_1806E4 = 0;

@@ -18,7 +18,7 @@ extern int x_DWORD_17FF44; // weak
 
 void sub_17190_process_keyboard();
 void MouseAndKeysEvents_17A00(signed int a2, int16_t a3);
-void sub_18BB0();
+void PauseUnpauseGame_18BB0();
 void HandleButtonClick_191B0(int16_t a1, char a2);
 void sub_1A970_change_game_settings(char a1, int a2, int a3);
 void sub_41AF0();
