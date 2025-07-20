@@ -151,7 +151,7 @@ must revide if (str_E23E0[v6y].byte_23 && str_E23E0[v6y].byte_22 == str_E2516[un
 must revide sub_7E9D0(&str_WORD_E20A4[v7y].word_18, &str_WORD_E20A4[v7y].word_20, str_WORD_E20A4[v7y].array_word_45);
 must revide qmemcpy(x_BYTE_E1B9C, &x_DWORD_17DE38str.x_BYTE_17DE68x[11 * sub_74515() + 1], sizeof(x_BYTE_E1B9C));
 fix this (uint8_t*)&mapScreenPortals_E17CC[ix]
-fix sub_6FEC0 v45
+fix DrawGameDebugText_6FEC0 v45
 
 //bug hunting - find non click problem
 sub_7BF20_draw_scroll_dialog(signed __int16 *a1) - diference in a1
@@ -919,7 +919,7 @@ void sub_5DE30(type_event_0x6E8E* a1);
 //unsigned int sub_6FC80_pre_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
 void sub_6FDA0();
 void sub_6FE20();
-void sub_6FEC0();
+void DrawGameDebugText_6FEC0();
 void sub_70890_print_header();
 void PrintTextMessage_70910(char* a1);
 void sub_713A0();
@@ -32542,7 +32542,7 @@ void DrawAndEventsInGame_47560(/*uint8_t* a1, int a2, */uint32_t a3, signed int 
 	}
 
 	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = x_DWORD_17DB54_game_turn2 - x_D41A0_BYTEARRAY_4_struct.byteindex_196;
-	sub_6FEC0();
+	DrawGameDebugText_6FEC0();
 	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = x_DWORD_17DB54_game_turn2;
 
 	if (x_D41A0_BYTEARRAY_4_struct.byteindex_51 >= 3u)
@@ -38439,7 +38439,7 @@ void GameEvents_51BB0()//232bb0
 			SetMenuCursorPosition_52E90(&D41A0_0.array_0x2BDE[i], 0, false);
 			break;
 		case 4:
-			D41A0_0.array_0x2BDE[i].byte_0x005_2BE0_11235 ^= D41A0_0.array_0x2BDE[i].dw_w_b_0_2BDE_11230.byte[1];
+			D41A0_0.array_0x2BDE[i].ShowDebugTextFlag_0x005_2BE0_11235 ^= D41A0_0.array_0x2BDE[i].dw_w_b_0_2BDE_11230.byte[1];
 			break;
 		case 6:
 			if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte5 & 0x40)
@@ -46352,7 +46352,7 @@ void sub_6FE20()//fix//250e20
 // F5334: using guessed type __int16 x_WORD_F5334;
 
 //----- (0006FEC0) --------------------------------------------------------
-void sub_6FEC0()//250ec0
+void DrawGameDebugText_6FEC0()//250ec0
 {
 	//int v0; // edx
 	//int result; // eax
@@ -46425,7 +46425,7 @@ void sub_6FEC0()//250ec0
 	//result = v0 + (int)x_D41A0_BYTEARRAY_0;
 	//v2 = *(x_BYTE *)(v0 + x_D41A0_BYTEARRAY_0 + 11235);
 	//!!!!!!!!!!!!!!!
-	if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x005_2BE0_11235 & 8)
+	if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].ShowDebugTextFlag_0x005_2BE0_11235 & 8)
 	{
 		GetFont_6FC50(1);
 		DrawText_2BC10((char*)"Product name", 320, 0, (*xadataclrd0dat.colorPalette_var28)[3840]);
@@ -46545,7 +46545,7 @@ void sub_6FEC0()//250ec0
 		}
 		*/ //original allocations
 	}
-	if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x005_2BE0_11235 & 0x40)
+	if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].ShowDebugTextFlag_0x005_2BE0_11235 & 0x40)
 	{
 		v50 = 6 * GetLetterHeight_6FC30();
 		DrawText_2BC10((char*)"THING", 10, v50, (*xadataclrd0dat.colorPalette_var28)[3840]);
