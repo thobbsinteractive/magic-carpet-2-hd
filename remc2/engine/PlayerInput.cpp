@@ -332,13 +332,14 @@ void sub_17190_process_keyboard()//1f8190
 						break;
 					}
 
+#ifdef _DEBUG
 					case 0x24: {//j // switch debug info
 						sub_70940();
 						sub_1A970_change_game_settings(20, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
-
+#endif
 					case 0x3e: {//f4
 						sub_1A970_change_game_settings(4, 0, 0);
 						LastPressedKey_1806E4 = 0;
