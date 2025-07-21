@@ -3,8 +3,8 @@
 
 struct InputMapping
 {
-	int Up = SDL_SCANCODE_UP;
-	int Right = SDL_SCANCODE_RIGHT;
-	int Down = SDL_SCANCODE_DOWN;
-	int Left = SDL_SCANCODE_LEFT;
+	int Up = SDL_SCANCODE_W;
+	int Right = SDL_SCANCODE_D;
+	int Down = SDL_SCANCODE_S;
+	int Left = SDL_SCANCODE_A;
 };

@@ -42,6 +42,7 @@ bool m_settingWindowGrabbed = true;
 InputMapping m_InputMapping;
 bool m_pressed = false;
 uint16_t m_lastchar = 0;
+Scene m_Scene = Scene::PREAMBLE_MENU;
 
 const char* default_caption = "Magic Carpet 2 HD - (Community Update)";
 
@@ -169,6 +170,9 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			SDL_RenderPresent(m_renderer);
 
 			SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0,0,640,480 });
+
+			std::function<void(Scene)> callBack = SetMouseKeyboardScene;
+			EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBack));
 		}
 		if (!VGA_LoadFont())
 		{
@@ -181,6 +185,11 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 		Draw_black();
 		m_initiated = true;
 	}
+}
+
+void SetMouseKeyboardScene(const Scene sceneId)
+{
+	m_Scene = sceneId;
 }
 
 void CreateRenderSurfaces(int width, int height)
@@ -1410,14 +1419,18 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 		break;
 	}
 
-	if (sdl_char == m_InputMapping.Up)
-		loclastchar = GameKey::UP;
-	if (sdl_char == m_InputMapping.Down)
-		loclastchar = GameKey::DOWN;
-	if (sdl_char == m_InputMapping.Left)
-		loclastchar = GameKey::LEFT;
-	if (sdl_char == m_InputMapping.Right)
-		loclastchar = GameKey::RIGHT;
+	if (m_Scene == Scene::SPELL_MENU ||
+		m_Scene == Scene::FLIGHT)
+	{
+		if (sdl_char == m_InputMapping.Up)
+			loclastchar = GameKey::UP;
+		if (sdl_char == m_InputMapping.Down)
+			loclastchar = GameKey::DOWN;
+		if (sdl_char == m_InputMapping.Left)
+			loclastchar = GameKey::LEFT;
+		if (sdl_char == m_InputMapping.Right)
+			loclastchar = GameKey::RIGHT;
+	}
 
 	return loclastchar;
 }
