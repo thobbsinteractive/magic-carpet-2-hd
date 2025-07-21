@@ -86,8 +86,24 @@
 						"invertXAxis": false,
 						"spellLeft": 1,
 						"spellRight": 2,
-						"spellMenu": 3,
-						"markSpell": 4
+						"spellMenu": 4,
+						"markSpell": 3
+					}
+				],
+				"keyboard": [
+					{
+						"description": [
+							"spellMenu: Ctrl by default. Opens the Spell menu",
+							"markSpell: LShift By default, Marks a spell to the mouse button pressed"
+						],
+						"isActive": true,
+						"forward": "SDL_SCANCODE_W",
+						"backwards": "SDL_SCANCODE_S",
+						"left": "SDL_SCANCODE_A",
+						"right": "SDL_SCANCODE_D",
+						"map": "SDL_SCANCODE_TAB",
+						"spellMenu": "SDL_SCANCODE_LCTRL",
+						"markSpell": "SDL_SCANCODE_LSHIFT"
 					}
 				],
 				"gamePad": [

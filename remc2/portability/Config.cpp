@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <iostream>
 #include <fstream>
+#include "../utilities/magic_enum.hpp"
 
 Config::Config(std::string fileName)
 {
@@ -46,6 +47,15 @@ bool Config::ReadBoolValue(rapidjson::GenericObject<false, rapidjson::Value>& se
 		return settings[name].GetBool();
 	}
 	return false;
+}
+
+SDL_Scancode Config::ReadKeyScancode(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
+{
+	if (settings.HasMember(name))
+	{
+		return magic_enum::enum_cast<SDL_Scancode>(settings[name].GetString(), magic_enum::case_insensitive).value_or(SDL_Scancode::SDL_SCANCODE_UNKNOWN);
+	}
+	return SDL_Scancode::SDL_SCANCODE_UNKNOWN;
 }
 
 void Config::LoadSettings(rapidjson::Document& document)
@@ -114,6 +124,31 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 					m_Controls.m_Mouse.m_InvertXAxis = ReadBoolValue(mouse, "invertXAxis");
 					m_Controls.m_Mouse.m_InvertYAxis = ReadBoolValue(mouse, "invertYAxis");
 					break;
+				}
+			}
+		}
+
+		if (controls.HasMember("keyboard"))
+		{
+			auto keyboardArray = controls["keyboard"].GetArray();
+
+			for (int i = 0; i < keyboardArray.Size(); i++)
+			{
+#ifdef __linux__
+				auto keyboard = keyboardArray[i].GetObject();
+#else
+				auto keyboard = keyboardArray[i].GetObj();
+#endif
+				if (keyboard.HasMember("isActive") && keyboard["isActive"].GetBool() == true)
+				{
+					 m_Controls.m_Keyboard.m_forward = ReadKeyScancode(keyboard, "forward");
+					 m_Controls.m_Keyboard.m_backwards = ReadKeyScancode(keyboard, "backwards");
+					 m_Controls.m_Keyboard.m_left = ReadKeyScancode(keyboard, "left");
+					 m_Controls.m_Keyboard.m_right = ReadKeyScancode(keyboard, "right");
+					 m_Controls.m_Keyboard.m_map = ReadKeyScancode(keyboard, "map");
+					 m_Controls.m_Keyboard.m_spellMenu = ReadKeyScancode(keyboard, "spellMenu");
+					 m_Controls.m_Keyboard.m_markSpell = ReadKeyScancode(keyboard, "markSpell");
+					 break;
 				}
 			}
 		}

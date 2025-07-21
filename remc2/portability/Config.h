@@ -70,6 +70,21 @@ private:
 	{
 		bool m_InvertYAxis = true;
 		bool m_InvertXAxis = false;
+		uint16_t m_spellLeft = 1;
+		uint16_t m_spellRight = 2;
+		uint16_t m_spellMenu = 4;
+		uint16_t m_markSpell = 3;
+	};
+
+	struct Keyboard
+	{
+		uint16_t m_forward = 0;
+		uint16_t m_backwards = 0;
+		uint16_t m_left = 0;
+		uint16_t m_right = 0;
+		uint16_t m_map = 0;
+		uint16_t m_spellMenu = 0;
+		uint16_t m_markSpell = 0;
 	};
 
 	struct GamePad
@@ -119,6 +134,7 @@ private:
 	struct Controls
 	{
 		Mouse m_Mouse;
+		Keyboard m_Keyboard;
 		GamePad m_GamePad;
 	};
 
@@ -133,6 +149,7 @@ private:
 	std::string ReadStringValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
 	int ReadIntValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
 	bool ReadBoolValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
+	SDL_Scancode ReadKeyScancode(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
 	std::string ReadFileToString(std::string fileName);
 
 public:
