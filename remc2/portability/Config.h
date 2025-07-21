@@ -84,7 +84,7 @@ private:
 		uint16_t m_right = 0;
 		uint16_t m_map = 0;
 		uint16_t m_spellMenu = 0;
-		uint16_t m_markSpell = 0;
+		uint16_t m_spellMenuMark = 0;
 	};
 
 	struct GamePad

@@ -378,7 +378,7 @@
     <ClInclude Include="portability\Config.h" />
     <ClInclude Include="portability\fcaseopen.h" />
     <ClInclude Include="portability\GameKey.h" />
-    <ClInclude Include="portability\InputMapping.h" />
+    <ClInclude Include="portability\KeyboardInputMapping.h" />
     <ClInclude Include="portability\port_net.h" />
     <ClInclude Include="portability\port_sdl_joystick.h" />
     <ClInclude Include="portability\port_show_perifery.h" />

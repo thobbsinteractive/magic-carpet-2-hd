@@ -87,23 +87,23 @@
 						"spellLeft": 1,
 						"spellRight": 2,
 						"spellMenu": 4,
-						"markSpell": 3
+						"spellMenuMark": 3
 					}
 				],
 				"keyboard": [
 					{
 						"description": [
 							"spellMenu: Ctrl by default. Opens the Spell menu",
-							"markSpell: LShift By default, Marks a spell to the mouse button pressed"
+							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed"
 						],
 						"isActive": true,
-						"forward": "SDL_SCANCODE_W",
-						"backwards": "SDL_SCANCODE_S",
-						"left": "SDL_SCANCODE_A",
-						"right": "SDL_SCANCODE_D",
-						"map": "SDL_SCANCODE_TAB",
-						"spellMenu": "SDL_SCANCODE_LCTRL",
-						"markSpell": "SDL_SCANCODE_LSHIFT"
+						"forward": "W",
+						"backwards": "S",
+						"left": "A",
+						"right": "D",
+						"map": "TAB",
+						"spellMenu": "LCTRL",
+						"spellMenuMark": "LSHIFT"
 					}
 				],
 				"gamePad": [

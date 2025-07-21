@@ -14,7 +14,7 @@ extern DOS_Device* DOS_CON;
 #endif //USE_DOSBOX
 #include "../engine/EventDispatcher.h"
 #include "GameKey.h"
-#include "InputMapping.h"
+#include "KeyboardInputMapping.h"
 
 SDL_Window* m_window = nullptr;
 SDL_Renderer* m_renderer = nullptr;
@@ -39,7 +39,6 @@ uint16_t m_iWindowHeight = 480;
 bool m_bMaintainAspectRatio = true;
 bool m_settingWindowGrabbed = true;
 
-InputMapping m_InputMapping;
 bool m_pressed = false;
 uint16_t m_lastchar = 0;
 Scene m_Scene = Scene::PREAMBLE_MENU;
@@ -1200,19 +1199,19 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 	if (m_Scene == Scene::SPELL_MENU ||
 		m_Scene == Scene::FLIGHT)
 	{
-		if (sdl_char == m_InputMapping.Up)
+		if (sdl_char == inputMapping.Forward)
 			return GameKey::UP;
-		if (sdl_char == m_InputMapping.Down)
+		if (sdl_char == inputMapping.Backwards)
 			return GameKey::DOWN;
-		if (sdl_char == m_InputMapping.Left)
+		if (sdl_char == inputMapping.Left)
 			return GameKey::LEFT;
-		if (sdl_char == m_InputMapping.Right)
+		if (sdl_char == inputMapping.Right)
 			return GameKey::RIGHT;
-		if (sdl_char == m_InputMapping.SpellMenu)
+		if (sdl_char == inputMapping.SpellMenu)
 			return GameKey::CTRL;
-		if (sdl_char == m_InputMapping.Map)
+		if (sdl_char == inputMapping.Map)
 			return GameKey::RETURN;
-		if (sdl_char == m_InputMapping.SpellMenuMark)
+		if (sdl_char == inputMapping.SpellMenuMark)
 			return GameKey::LSHIFT;
 	}
 

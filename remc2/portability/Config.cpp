@@ -53,7 +53,9 @@ SDL_Scancode Config::ReadKeyScancode(rapidjson::GenericObject<false, rapidjson::
 {
 	if (settings.HasMember(name))
 	{
-		return magic_enum::enum_cast<SDL_Scancode>(settings[name].GetString(), magic_enum::case_insensitive).value_or(SDL_Scancode::SDL_SCANCODE_UNKNOWN);
+		std::string strCode = "SDL_SCANCODE_";
+		strCode = strCode.append(settings[name].GetString());
+		return magic_enum::enum_cast<SDL_Scancode>(strCode.c_str(), magic_enum::case_insensitive).value_or(SDL_Scancode::SDL_SCANCODE_UNKNOWN);
 	}
 	return SDL_Scancode::SDL_SCANCODE_UNKNOWN;
 }
@@ -147,7 +149,7 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 					 m_Controls.m_Keyboard.m_right = ReadKeyScancode(keyboard, "right");
 					 m_Controls.m_Keyboard.m_map = ReadKeyScancode(keyboard, "map");
 					 m_Controls.m_Keyboard.m_spellMenu = ReadKeyScancode(keyboard, "spellMenu");
-					 m_Controls.m_Keyboard.m_markSpell = ReadKeyScancode(keyboard, "markSpell");
+					 m_Controls.m_Keyboard.m_spellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
 					 break;
 				}
 			}
