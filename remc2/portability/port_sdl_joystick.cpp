@@ -710,6 +710,7 @@ void set_scene(const Scene scene_id)
 			gps.nav_mode = 0;
 			break;
 		case Scene::FLIGHT_MENU:
+		case Scene::CHAT_MENU:
 		case Scene::SPELL_MENU:
 			gps.max_x = screenWidth_18062C;
 			gps.max_y = screenHeight_180624;
