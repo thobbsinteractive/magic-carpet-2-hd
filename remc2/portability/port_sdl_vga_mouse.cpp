@@ -845,127 +845,131 @@ int PollSdlEvents()
 	{
 		switch (event.type)
 		{
-		case SDL_WINDOWEVENT:
-		{
-			if (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESIZED)
+			case SDL_WINDOWEVENT:
 			{
-				int newWidth = 0;
-				int newHeight = 0;
-				SDL_GetWindowSize(m_window, &newWidth, &newHeight);
-				m_iWindowWidth = newWidth;
-				m_iWindowHeight = newHeight;
-				if (EventDispatcher::I != nullptr)
-					EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
-			}
-			break;
-		}
-		case SDL_KEYDOWN:
-			m_pressed = true;
-			m_lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
-
-			if (!HandleSpecialKeys(event)) {
-				SetPress(true, m_lastchar);
-			}
-			Logger->trace("Key {} press detected", m_lastchar);
-			break;
-		case SDL_KEYUP:
-			m_lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
-			SetPress(false, m_lastchar);
-			Logger->trace("Key {} release detected", m_lastchar);
-			break;
-
-		case SDL_MOUSEMOTION:
-			SetMouseEvents(1, event.motion.x, event.motion.y);
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-		case SDL_MOUSEBUTTONUP:
-			buttonresult = 0;
-
-			buttonindex = event.button.button;
-			buttonstate = event.button.state;
-			switch (buttonindex) {
-			case SDL_BUTTON_LEFT:
-			{
-				switch (buttonstate) {
-				case SDL_PRESSED:
+				if (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESIZED)
 				{
-					buttonresult |= 2;
-					break;
-				}
-				case SDL_RELEASED:
-				{
-					buttonresult |= 4;
-					break; }
+					int newWidth = 0;
+					int newHeight = 0;
+					SDL_GetWindowSize(m_window, &newWidth, &newHeight);
+					m_iWindowWidth = newWidth;
+					m_iWindowHeight = newHeight;
+					if (EventDispatcher::I != nullptr)
+						EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
 				}
 				break;
 			}
-			case SDL_BUTTON_MIDDLE:
+			case SDL_KEYDOWN:
 			{
-				switch (buttonstate) {
-				case SDL_PRESSED:
-				{
-					buttonresult |= 0x20;
-					break;
-				}
-				case SDL_RELEASED:
-				{
-					buttonresult |= 0x40;
-					break; }
-				}
-				break;
-			}
-			case SDL_BUTTON_RIGHT:
-			{
-				switch (buttonstate) {
-				case SDL_PRESSED:
-				{
-					buttonresult |= 0x8;
-					break;
-				}
-				case SDL_RELEASED:
-				{
-					buttonresult |= 0x10;
-					break; }
-				}
-				break;
-			}
-			}
+				m_pressed = true;
+				m_lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
 
-			SetMouseEvents(buttonresult, event.motion.x, event.motion.y);
-			break;
-		case SDL_JOYAXISMOTION:
-			if (event.jaxis.which == gpc.controller_id) {
-				// motion on controller 0
-				//gps.initialized = 1;
-				// actual axis data is being read via gamepad_poll_data()
-				// to counteract jerkiness due to missing event triggers
-				Logger->trace("axis {} event detected", event.jaxis.axis + 1);
+				if (!HandleSpecialKeys(event)) {
+					SetPress(true, m_lastchar);
+				}
+				Logger->trace("Key {} press detected", m_lastchar);
+				break;
 			}
-			break;
-		case SDL_JOYHATMOTION:
-			if (event.jhat.which == gpc.controller_id) {
-				//gps.initialized = 1;
-				// actual axis data is being read via gamepad_poll_data()
-				Logger->trace("hat {} event detected", event.jhat.hat + 1);
+			case SDL_KEYUP:
+			{
+				m_lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
+				SetPress(false, m_lastchar);
+				Logger->trace("Key {} release detected", m_lastchar);
+				break;
 			}
-			break;
-		case SDL_JOYBUTTONDOWN:
-			if (event.jbutton.which == gpc.controller_id) {
-				//gps.initialized = 1;
-				gpe.btn_pressed = 1 << (event.jbutton.button + 1);
-				Logger->trace("key {} press detected", event.jbutton.button + 1);
-				gpe.flag |= GP_BTN_PRESSED;
+			case SDL_MOUSEMOTION:
+			{
+				SetMouseEvents(1, event.motion.x, event.motion.y);
+				break;
 			}
-			break;
-		case SDL_JOYBUTTONUP:
-			if (event.jbutton.which == gpc.controller_id) {
-				//gps.initialized = 1;
-				gpe.btn_released = 1 << (event.jbutton.button + 1);
-				Logger->trace("key {} release detected", event.jbutton.button + 1);
-				gpe.flag |= GP_BTN_RELEASED;
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+			{
+				buttonresult = 0;
+
+				buttonindex = event.button.button;
+				buttonstate = event.button.state;
+				switch (buttonindex)
+				{
+					case SDL_BUTTON_LEFT:
+					{
+						switch (buttonstate)
+						{
+							case SDL_PRESSED:
+							{
+								buttonresult |= 2;
+								break;
+							}
+							case SDL_RELEASED:
+							{
+								buttonresult |= 4;
+								break;
+							}
+						}
+						break;
+					}
+					case SDL_BUTTON_RIGHT:
+					{
+						switch (buttonstate)
+						{
+							case SDL_PRESSED:
+							{
+								buttonresult |= 0x8;
+								break;
+							}
+							case SDL_RELEASED:
+							{
+								buttonresult |= 0x10;
+								break;
+							}
+						}
+						break;
+					}
+				}
+				SetMouseEvents(buttonresult, event.motion.x, event.motion.y);
+				break;
 			}
-			break;
-		case SDL_QUIT: return 0;
+			case SDL_JOYAXISMOTION:
+			{
+				if (event.jaxis.which == gpc.controller_id) {
+					// motion on controller 0
+					//gps.initialized = 1;
+					// actual axis data is being read via gamepad_poll_data()
+					// to counteract jerkiness due to missing event triggers
+					Logger->trace("axis {} event detected", event.jaxis.axis + 1);
+				}
+				break;
+			}
+			case SDL_JOYHATMOTION:
+			{
+				if (event.jhat.which == gpc.controller_id) {
+					//gps.initialized = 1;
+					// actual axis data is being read via gamepad_poll_data()
+					Logger->trace("hat {} event detected", event.jhat.hat + 1);
+				}
+				break;
+			}
+			case SDL_JOYBUTTONDOWN:
+			{
+				if (event.jbutton.which == gpc.controller_id) {
+					//gps.initialized = 1;
+					gpe.btn_pressed = 1 << (event.jbutton.button + 1);
+					Logger->trace("key {} press detected", event.jbutton.button + 1);
+					gpe.flag |= GP_BTN_PRESSED;
+				}
+				break;
+			}
+			case SDL_JOYBUTTONUP:
+			{
+				if (event.jbutton.which == gpc.controller_id) {
+					//gps.initialized = 1;
+					gpe.btn_released = 1 << (event.jbutton.button + 1);
+					Logger->trace("key {} release detected", event.jbutton.button + 1);
+					gpe.flag |= GP_BTN_RELEASED;
+				}
+				break;
+			}
+			case SDL_QUIT: return 0;
 		}
 	}
 
