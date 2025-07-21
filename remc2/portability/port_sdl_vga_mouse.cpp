@@ -1193,6 +1193,25 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 {
 	auto sdl_char = (loclastchar & 0xff00) >> 8;
 
+	if (m_Scene == Scene::SPELL_MENU ||
+		m_Scene == Scene::FLIGHT)
+	{
+		if (sdl_char == m_InputMapping.Up)
+			return GameKey::UP;
+		if (sdl_char == m_InputMapping.Down)
+			return GameKey::DOWN;
+		if (sdl_char == m_InputMapping.Left)
+			return GameKey::LEFT;
+		if (sdl_char == m_InputMapping.Right)
+			return GameKey::RIGHT;
+		if (sdl_char == m_InputMapping.SpellMenu)
+			return GameKey::CTRL;
+		if (sdl_char == m_InputMapping.Map)
+			return GameKey::RETURN;
+		if (sdl_char == m_InputMapping.SpellMenuMark)
+			return GameKey::LSHIFT;
+	}
+
 	switch (sdl_char)
 	{
 	case SDL_SCANCODE_ESCAPE://esc
@@ -1402,8 +1421,20 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 	case SDL_SCANCODE_HOME://home
 		loclastchar = GameKey::HOME;
 		break;
+	case SDL_SCANCODE_UP://up
+		loclastchar = GameKey::UP;
+		break;
 	case SDL_SCANCODE_PAGEUP://pageup
 		loclastchar = GameKey::PAGEUP;
+		break;
+	case SDL_SCANCODE_RIGHT://right
+		loclastchar = GameKey::RIGHT;
+		break;
+	case SDL_SCANCODE_DOWN://down
+		loclastchar = GameKey::DOWN;
+		break;
+	case SDL_SCANCODE_LEFT://left
+		loclastchar = GameKey::LEFT;
 		break;
 	case SDL_SCANCODE_END://end
 		loclastchar = GameKey::END;
@@ -1418,20 +1449,6 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
 		loclastchar = GameKey::DEL;
 		break;
 	}
-
-	if (m_Scene == Scene::SPELL_MENU ||
-		m_Scene == Scene::FLIGHT)
-	{
-		if (sdl_char == m_InputMapping.Up)
-			loclastchar = GameKey::UP;
-		if (sdl_char == m_InputMapping.Down)
-			loclastchar = GameKey::DOWN;
-		if (sdl_char == m_InputMapping.Left)
-			loclastchar = GameKey::LEFT;
-		if (sdl_char == m_InputMapping.Right)
-			loclastchar = GameKey::RIGHT;
-	}
-
 	return loclastchar;
 }
 
