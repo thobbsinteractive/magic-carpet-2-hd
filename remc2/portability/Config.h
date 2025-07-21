@@ -66,6 +66,12 @@ private:
 		bool m_SkipIntro = false;
 	};
 
+	struct Mouse
+	{
+		bool m_InvertYAxis = true;
+		bool m_InvertXAxis = false;
+	};
+
 	struct GamePad
 	{
 		std::string m_Name = "";
@@ -112,8 +118,7 @@ private:
 
 	struct Controls
 	{
-		bool m_InvertYAxis = true;
-		bool m_InvertXAxis = false;
+		Mouse m_Mouse;
 		GamePad m_GamePad;
 	};
 

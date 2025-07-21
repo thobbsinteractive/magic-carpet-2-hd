@@ -75,12 +75,21 @@
 				"fmvFps": 20
 			},
 			"controls": {
-				"description": [
-					"invertYAxis: True By default, the Y axis is inverted in the original game",
-					"invertXAxis: By default, the X axis is not inverted"
+				"mouse": [
+					{
+						"description": [
+							"invertYAxis: True By default, the Y axis is inverted in the original game",
+							"invertXAxis: By default, the X axis is not inverted"
+						],
+						"isActive": true,
+						"invertYAxis": true,
+						"invertXAxis": false,
+						"spellLeft": 1,
+						"spellRight": 2,
+						"spellMenu": 3,
+						"markSpell": 4
+					}
 				],
-				"invertYAxis": true,
-				"invertXAxis": false,
 				"gamePad": [
 					{
 						"name": "XBox Controller",

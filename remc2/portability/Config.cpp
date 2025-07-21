@@ -98,8 +98,25 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 		auto controls = settings["controls"].GetObj();
 #endif
 
-		m_Controls.m_InvertYAxis = ReadBoolValue(controls, "invertYAxis");
-		m_Controls.m_InvertXAxis = ReadBoolValue(controls, "invertXAxis");
+		if (controls.HasMember("mouse"))
+		{
+			auto mouseArray = controls["mouse"].GetArray();
+
+			for (int i = 0; i < mouseArray.Size(); i++)
+			{
+#ifdef __linux__
+				auto mouse = mouseArray[i].GetObject();
+#else
+				auto mouse = mouseArray[i].GetObj();
+#endif
+				if (mouse.HasMember("isActive") && mouse["isActive"].GetBool() == true)
+				{
+					m_Controls.m_Mouse.m_InvertXAxis = ReadBoolValue(mouse, "invertXAxis");
+					m_Controls.m_Mouse.m_InvertYAxis = ReadBoolValue(mouse, "invertYAxis");
+					break;
+				}
+			}
+		}
 
 		if (controls.HasMember("gamePad"))
 		{

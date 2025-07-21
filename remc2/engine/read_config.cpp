@@ -182,8 +182,8 @@ bool SetConfig() {
 	}
 
 	//Controls
-	invertYAxis = config.m_Controls.m_InvertYAxis;
-	invertXAxis = config.m_Controls.m_InvertXAxis;
+	invertYAxis = config.m_Controls.m_Mouse.m_InvertYAxis;
+	invertXAxis = config.m_Controls.m_Mouse.m_InvertXAxis;
 
 	gpc.axis_yaw = config.m_Controls.m_GamePad.m_AxisYaw;
 	gpc.axis_pitch = config.m_Controls.m_GamePad.m_AxisPitch;
