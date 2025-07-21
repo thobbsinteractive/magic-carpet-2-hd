@@ -59,7 +59,7 @@ void sub_90E07_VGA_set_video_mode_alt_and_Palette(TColor* Palette);
 
 int debugcounter_47560 = 0;
 //----- (00017190) --------------------------------------------------------
-void sub_17190_process_keyboard()//1f8190
+void ProcessKeyboardPresses_17190()//1f8190
 {
 	type_event_0x6E8E* event; // edx
 
@@ -515,7 +515,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				goto LABEL_292;
 			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 				ReadPauseMenuEvents_197F0();
-			sub_17190_process_keyboard();//test FnX
+			ProcessKeyboardPresses_17190();//test FnX
 			//v5 = x_D41A0_BYTEARRAY_0;
 			//v6 = D41A0_BYTESTR_0.word_0xc;
 			//v7 = 5 * D41A0_BYTESTR_0.word_0xc;
@@ -664,7 +664,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 1:
-			sub_17190_process_keyboard();
+			ProcessKeyboardPresses_17190();
 			if ((!(unk_18058Cstr.x_DWORD_18059C & 1) || !(unk_18058Cstr.x_DWORD_18059C & 2)) && LastPressedKey_1806E4 != 0x1c)
 				goto LABEL_296;
 			LastPressedKey_1806E4 = 0;
@@ -830,7 +830,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			v33 = 0;
 			v34 = 0;
 			v12x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
-			sub_17190_process_keyboard();
+			ProcessKeyboardPresses_17190();
 			if (v12x->life_0x8 < 0)
 			{
 				v33 = 1;
@@ -959,7 +959,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			v24x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 				ReadPauseMenuEvents_197F0();
-			sub_17190_process_keyboard();
+			ProcessKeyboardPresses_17190();
 			if (unk_18058Cstr.x_DWORD_18059C & 1 && unk_18058Cstr.x_DWORD_18059C & 2 || LastPressedKey_1806E4 == x_BYTE_EB39E_keys[4] || v24x->life_0x8 < 0)
 			{
 				HandleButtonClick_191B0(20, 0);
