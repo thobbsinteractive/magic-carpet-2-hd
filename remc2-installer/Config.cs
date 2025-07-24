@@ -87,12 +87,9 @@ namespace remc2_installer
 		public bool invertYAxis { get; set; }
 		public bool invertXAxis { get; set; }
 		public int spellLeft { get; set; }
-		public int backwards { get; set; }
-		public string left { get; set; }
-		public string right { get; set; }
-		public string map { get; set; }
-		public string spellMenu { get; set; }
-		public string spellMenuMark { get; set; }
+		public int spellRight { get; set; }
+		public int spellMenu { get; set; }
+		public int spellMenuMark { get; set; }
 	}
 
 	public class Keyboard
