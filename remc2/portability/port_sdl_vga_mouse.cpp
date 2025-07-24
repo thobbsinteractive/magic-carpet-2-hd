@@ -835,8 +835,6 @@ bool HandleSpecialKeys(const SDL_Event &event) {
 int PollSdlEvents()
 {
 	SDL_Event event;
-	Uint8 buttonindex;
-	Uint8 buttonstate;
 	uint32_t buttonresult;
 	gamepad_event_t gpe = {};
 
@@ -884,47 +882,7 @@ int PollSdlEvents()
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 			{
-				buttonresult = 0;
-
-				buttonindex = event.button.button;
-				buttonstate = event.button.state;
-				switch (buttonindex)
-				{
-					case SDL_BUTTON_LEFT:
-					{
-						switch (buttonstate)
-						{
-							case SDL_PRESSED:
-							{
-								buttonresult |= 2;
-								break;
-							}
-							case SDL_RELEASED:
-							{
-								buttonresult |= 4;
-								break;
-							}
-						}
-						break;
-					}
-					case SDL_BUTTON_RIGHT:
-					{
-						switch (buttonstate)
-						{
-							case SDL_PRESSED:
-							{
-								buttonresult |= 0x8;
-								break;
-							}
-							case SDL_RELEASED:
-							{
-								buttonresult |= 0x10;
-								break;
-							}
-						}
-						break;
-					}
-				}
+				buttonresult = TranslateSdlMouseToGameMouse(event.button);
 				SetMouseEvents(buttonresult, event.motion.x, event.motion.y);
 				break;
 			}
@@ -1190,6 +1148,53 @@ bool VGA_check_standart_input_status() {
 	//uint16_t loclastchar = lastchar;
 	m_pressed = false;
 	return locpressed;
+}
+
+uint32_t TranslateSdlMouseToGameMouse(SDL_MouseButtonEvent button)
+{
+	uint32_t buttonresult = 0;
+
+	if (m_Scene == Scene::SPELL_MENU ||
+		m_Scene == Scene::FLIGHT)
+	{
+		if (button.button == mouseMapping.SpellLeft)
+		{
+			if (button.state == SDL_PRESSED)
+				buttonresult |= 2;
+			if (button.state == SDL_RELEASED)
+				buttonresult |= 4;
+		}
+		if (button.button == mouseMapping.SpellRight)
+		{
+			if (button.state == SDL_PRESSED)
+				buttonresult |= 0x8;
+			if (button.state == SDL_RELEASED)
+				buttonresult |= 0x10;
+		}
+		return buttonresult;
+	}
+
+	return TranslateButtonState(button);
+}
+
+uint32_t TranslateButtonState(SDL_MouseButtonEvent button)
+{
+	uint32_t buttonresult = 0;
+	if (button.button == SDL_BUTTON_LEFT)
+	{
+		if (button.state == SDL_PRESSED)
+			buttonresult |= 2;
+		if (button.state == SDL_RELEASED)
+			buttonresult |= 4;
+	}
+	if (button.button == SDL_BUTTON_RIGHT)
+	{
+		if (button.state == SDL_PRESSED)
+			buttonresult |= 0x8;
+		if (button.state == SDL_RELEASED)
+			buttonresult |= 0x10;
+	}
+	return buttonresult;
 }
 
 uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)

@@ -188,6 +188,11 @@ bool SetConfig() {
 	invertXAxis = config.m_Controls.m_Mouse.m_InvertXAxis;
 
 	//Mouse
+	mouseMapping.SpellLeft = config.m_Controls.m_Mouse.m_spellLeft;
+	mouseMapping.SpellRight = config.m_Controls.m_Mouse.m_spellRight;
+	mouseMapping.map = config.m_Controls.m_Mouse.m_map;
+	mouseMapping.SpellMenu = config.m_Controls.m_Mouse.m_spellMenu;
+	mouseMapping.SpellMenuMark = config.m_Controls.m_Mouse.m_spellMenuMark;
 
 	//Keyboard
 	inputMapping.Forward = config.m_Controls.m_Keyboard.m_forward;

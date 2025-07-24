@@ -56,6 +56,8 @@ uint16_t VGA_read_char_from_buffer();
 void VGA_Set_mouse(int16_t a1, int16_t a2);
 int PollSdlEvents();
 uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar);
+uint32_t TranslateSdlMouseToGameMouse(SDL_MouseButtonEvent event);
+uint32_t TranslateButtonState(SDL_MouseButtonEvent button);
 void ScaleUpMouseCoordsToVga(int16_t& x, int16_t& y);
 void ScaleDownMouseCoordsToVga(int16_t& x, int16_t& y);
 void SetPress(bool locpressed, uint16_t loclastchar);

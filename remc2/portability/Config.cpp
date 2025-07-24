@@ -145,8 +145,9 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 				{
 					m_Controls.m_Mouse.m_spellLeft = ReadIntValue(mouse, "spellLeft");
 					m_Controls.m_Mouse.m_spellRight = ReadIntValue(mouse, "spellRight");
+					m_Controls.m_Mouse.m_map = ReadIntValue(mouse, "map");
 					m_Controls.m_Mouse.m_spellMenu = ReadIntValue(mouse, "spellMenu");
-					m_Controls.m_Mouse.m_markSpell = ReadIntValue(mouse, "spellMenuMark");
+					m_Controls.m_Mouse.m_spellMenuMark = ReadIntValue(mouse, "spellMenuMark");
 					break;
 				}
 			}

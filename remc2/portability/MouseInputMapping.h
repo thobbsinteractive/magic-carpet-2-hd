@@ -5,6 +5,7 @@ struct MouseInputMapping
 {
 	int SpellLeft;
 	int SpellRight;
+	int map;
 	int SpellMenu;
 	int SpellMenuMark;
 };
