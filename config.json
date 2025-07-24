@@ -80,7 +80,7 @@
 						"description": [
 							"invertYAxis: True By default, the Y axis is inverted in the original game",
 							"invertXAxis: By default, the X axis is not inverted",
-							"Mouse Buttons: 1 = Left, 2 = Middle, 3 = Right"
+							"Mouse Buttons: 1 = Left, 2 = Middle, 3 = Right, 0 = Undefined"
 						],
 						"isActive": true,
 						"name": "Modern",
@@ -88,9 +88,9 @@
 						"invertXAxis": false,
 						"spellLeft": 1,
 						"spellRight": 3,
-						"map": 2,
-						"spellMenu": 4,
-						"spellMenuMark": 5
+						"map": 5,
+						"spellMenu": 2,
+						"spellMenuMark": 4
 					}
 				],
 				"keyboard": [

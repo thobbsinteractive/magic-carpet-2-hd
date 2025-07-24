@@ -1171,6 +1171,28 @@ uint32_t TranslateSdlMouseToGameMouse(SDL_MouseButtonEvent button)
 			if (button.state == SDL_RELEASED)
 				buttonresult |= 0x10;
 		}
+		if (button.button == mouseMapping.map)
+		{
+			if (button.state == SDL_PRESSED)
+				SetGameKeyPress_1806E4(true, GameKey::RETURN);
+			if (button.state == SDL_RELEASED)
+				SetGameKeyPress_1806E4(false, GameKey::RETURN);
+		}
+		if (button.button == mouseMapping.SpellMenu)
+		{
+			if (button.state == SDL_PRESSED)
+				SetGameKeyPress_1806E4(true, GameKey::CTRL);
+			if (button.state == SDL_RELEASED)
+				SetGameKeyPress_1806E4(false, GameKey::CTRL);
+		}
+		if (button.button == mouseMapping.SpellMenuMark)
+		{
+			if (button.state == SDL_PRESSED)
+				SetGameKeyPress_1806E4(true, GameKey::RSHIFT);
+			if (button.state == SDL_RELEASED)
+				SetGameKeyPress_1806E4(false, GameKey::RSHIFT);
+		}
+
 		return buttonresult;
 	}
 
@@ -1482,7 +1504,10 @@ uint16_t VGA_read_char_from_buffer() {
 
 void SetPress(bool locpressed, uint16_t loclastchar) {
 	loclastchar = TranslateSdlKeysToGameKeys(loclastchar);
+	SetGameKeyPress_1806E4(locpressed, loclastchar);
+}
 
+void SetGameKeyPress_1806E4(bool locpressed, uint16_t loclastchar) {
 	if (locpressed)
 	{
 		LastPressedKey_1806E4 = (loclastchar & 0xff00) >> 8;// VGA_read_char_from_buffer();
