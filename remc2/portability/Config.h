@@ -68,6 +68,7 @@ private:
 
 	struct Mouse
 	{
+		std::string m_Name = "";
 		bool m_InvertYAxis = true;
 		bool m_InvertXAxis = false;
 		uint16_t m_spellLeft = 1;
@@ -78,6 +79,7 @@ private:
 
 	struct Keyboard
 	{
+		std::string m_Name = "";
 		uint16_t m_forward = 0;
 		uint16_t m_backwards = 0;
 		uint16_t m_left = 0;

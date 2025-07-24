@@ -82,6 +82,7 @@
 							"invertXAxis: By default, the X axis is not inverted"
 						],
 						"isActive": true,
+						"name": "Modern",
 						"invertYAxis": true,
 						"invertXAxis": false,
 						"spellLeft": 1,
@@ -97,6 +98,7 @@
 							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed"
 						],
 						"isActive": true,
+						"name": "Modern",
 						"forward": "W",
 						"backwards": "S",
 						"left": "A",
@@ -104,6 +106,21 @@
 						"map": "TAB",
 						"spellMenu": "LCTRL",
 						"spellMenuMark": "LSHIFT"
+					},
+					{
+						"description": [
+							"spellMenu: Ctrl by default. Opens the Spell menu",
+							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed"
+						],
+						"isActive": false,
+						"name": "Classic",
+						"forward": "UP",
+						"backwards": "DOWN",
+						"left": "LEFT",
+						"right": "RIGHT",
+						"map": "RETURN",
+						"spellMenu": "RCTRL",
+						"spellMenuMark": "RSHIFT"
 					}
 				],
 				"gamePad": [

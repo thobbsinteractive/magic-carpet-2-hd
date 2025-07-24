@@ -74,10 +74,39 @@ namespace remc2_installer
 
 	public class Controls
 	{
+		public List<Mouse> mouse { get; set; }
+		public List<Keyboard> keyboard { get; set; }
+		public List<GamePad> gamePad { get; set; }
+	}
+
+	public class Mouse
+	{
 		public string[] description { get; set; }
+		public string name { get; set; }
+		public bool isActive { get; set; }
 		public bool invertYAxis { get; set; }
 		public bool invertXAxis { get; set; }
-		public List<GamePad> gamePad { get; set; }
+		public int spellLeft { get; set; }
+		public int backwards { get; set; }
+		public string left { get; set; }
+		public string right { get; set; }
+		public string map { get; set; }
+		public string spellMenu { get; set; }
+		public string spellMenuMark { get; set; }
+	}
+
+	public class Keyboard
+	{
+		public string[] description { get; set; }
+		public string name { get; set; }
+		public bool isActive { get; set; }
+		public string forward { get; set; }
+		public string backwards { get; set; }
+		public string left { get; set; }
+		public string right { get; set; }
+		public string map { get; set; }
+		public string spellMenu { get; set; }
+		public string spellMenuMark { get; set; }
 	}
 
 	public class GamePad
