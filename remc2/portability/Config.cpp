@@ -130,6 +130,28 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 			}
 		}
 
+		if (controls.HasMember("mouse"))
+		{
+			auto mouseArray = controls["mouse"].GetArray();
+
+			for (int i = 0; i < mouseArray.Size(); i++)
+			{
+#ifdef __linux__
+				auto mouse = mouseArray[i].GetObject();
+#else
+				auto mouse = mouseArray[i].GetObj();
+#endif
+				if (mouse.HasMember("isActive") && mouse["isActive"].GetBool() == true)
+				{
+					m_Controls.m_Mouse.m_spellLeft = ReadIntValue(mouse, "spellLeft");
+					m_Controls.m_Mouse.m_spellRight = ReadIntValue(mouse, "spellRight");
+					m_Controls.m_Mouse.m_spellMenu = ReadIntValue(mouse, "spellMenu");
+					m_Controls.m_Mouse.m_markSpell = ReadIntValue(mouse, "spellMenuMark");
+					break;
+				}
+			}
+		}
+
 		if (controls.HasMember("keyboard"))
 		{
 			auto keyboardArray = controls["keyboard"].GetArray();

@@ -19,6 +19,7 @@
 #include "../portability/port_time.h"
 #include "../portability/port_filesystem.h"
 #include "../portability/port_sdl_sound.h"
+#include "../portability/MouseInputMapping.h"
 #include "../portability/KeyboardInputMapping.h"
 #include "../engine/CommandLineParser.h"
 #include "../utilities/Maths.h"

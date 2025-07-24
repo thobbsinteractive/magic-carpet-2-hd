@@ -73,8 +73,8 @@ private:
 		bool m_InvertXAxis = false;
 		uint16_t m_spellLeft = 1;
 		uint16_t m_spellRight = 2;
-		uint16_t m_spellMenu = 4;
-		uint16_t m_markSpell = 3;
+		uint16_t m_spellMenu = 0;
+		uint16_t m_markSpell = 0;
 	};
 
 	struct Keyboard

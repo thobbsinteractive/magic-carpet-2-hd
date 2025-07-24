@@ -26,6 +26,7 @@ bool openGLRender = false;
 bool invertYAxis = true;
 bool invertXAxis = false;
 gamepad_config_t gpc;
+MouseInputMapping_t mouseMapping;
 KeyboardInputMapping_t inputMapping;
 
 std::string findConfigFile() {
