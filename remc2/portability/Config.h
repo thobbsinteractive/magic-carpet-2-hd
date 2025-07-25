@@ -8,10 +8,13 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "../utilities/Maths.h"
+#include "ConfigToSdlScancodeMapping.h"
 
 class Config
 {
 private:
+	ConfigToSdlScancode m_ConfigToSdlScancode;
+
 	struct Paths
 	{
 		std::string m_GameFolder = "";

@@ -88,9 +88,9 @@
 						"invertXAxis": false,
 						"spellLeft": 1,
 						"spellRight": 3,
-						"map": 5,
-						"spellMenu": 2,
-						"spellMenuMark": 4
+						"map": 2,
+						"spellMenu": 4,
+						"spellMenuMark": 5
 					}
 				],
 				"keyboard": [

@@ -1,8 +1,7 @@
-#include "Config.h"
 #include <filesystem>
 #include <iostream>
 #include <fstream>
-#include "../utilities/magic_enum.hpp"
+#include "Config.h"
 
 Config::Config(std::string fileName)
 {
@@ -53,9 +52,7 @@ SDL_Scancode Config::ReadKeyScancode(rapidjson::GenericObject<false, rapidjson::
 {
 	if (settings.HasMember(name))
 	{
-		std::string strCode = "SDL_SCANCODE_";
-		strCode = strCode.append(settings[name].GetString());
-		return magic_enum::enum_cast<SDL_Scancode>(strCode.c_str(), magic_enum::case_insensitive).value_or(SDL_Scancode::SDL_SCANCODE_UNKNOWN);
+		return m_ConfigToSdlScancode.GetScancode(settings[name].GetString());
 	}
 	return SDL_Scancode::SDL_SCANCODE_UNKNOWN;
 }
