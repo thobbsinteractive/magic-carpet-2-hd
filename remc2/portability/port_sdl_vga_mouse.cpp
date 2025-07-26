@@ -1240,7 +1240,8 @@ uint32_t TranslateButtonState(SDL_MouseButtonEvent button)
 uint16_t TranslateSdlKeysToGameKeys(uint16_t scancode)
 {
 	if (m_Scene == Scene::SPELL_MENU ||
-		m_Scene == Scene::FLIGHT)
+		m_Scene == Scene::FLIGHT ||
+		m_Scene == Scene::DEAD)
 	{
 		if (scancode == inputMapping.Forward)
 			return GameKey::UP;
