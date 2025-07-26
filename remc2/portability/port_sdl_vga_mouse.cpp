@@ -40,7 +40,7 @@ bool m_bMaintainAspectRatio = true;
 bool m_settingWindowGrabbed = true;
 
 bool m_pressed = false;
-uint16_t m_lastchar = 0;
+uint16_t m_lastScancode = 0;
 Scene m_Scene = Scene::PREAMBLE_MENU;
 
 const char* default_caption = "Magic Carpet 2 HD - (Community Update)";
@@ -859,19 +859,19 @@ int PollSdlEvents()
 			case SDL_KEYDOWN:
 			{
 				m_pressed = true;
-				m_lastchar = event.key.keysym.scancode;
+				m_lastScancode = event.key.keysym.scancode;
 
 				if (!HandleSpecialKeys(event)) {
-					SetPress(true, m_lastchar);
+					SetPress(true, m_lastScancode);
 				}
-				Logger->trace("Key {} press detected", m_lastchar);
+				Logger->trace("Key {} press detected", m_lastScancode);
 				break;
 			}
 			case SDL_KEYUP:
 			{
-				m_lastchar = event.key.keysym.scancode;
-				SetPress(false, m_lastchar);
-				Logger->trace("Key {} release detected", m_lastchar);
+				m_lastScancode = event.key.keysym.scancode;
+				SetPress(false, m_lastScancode);
+				Logger->trace("Key {} release detected", m_lastScancode);
 				break;
 			}
 			case SDL_MOUSEMOTION:
@@ -1481,21 +1481,21 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t scancode)
 }
 
 void VGA_cleanKeyBuffer() {
-	uint16_t lastChar = m_lastchar;
-	m_lastchar = 0;
+	uint16_t lastChar = m_lastScancode;
+	m_lastScancode = 0;
 	lastChar = TranslateSdlKeysToGameKeys(lastChar);
 	while (lastChar != 0)
 	{
-		lastChar = m_lastchar;
-		m_lastchar = 0;
+		lastChar = m_lastScancode;
+		m_lastScancode = 0;
 		lastChar = TranslateSdlKeysToGameKeys(lastChar);
 	}
 }
 
 uint16_t VGA_read_char_from_buffer() {
 	//bool locpressed = pressed;
-	uint16_t loclastchar = m_lastchar;
-	m_lastchar = 0;
+	uint16_t loclastchar = m_lastScancode;
+	m_lastScancode = 0;
 	loclastchar = TranslateSdlKeysToGameKeys(loclastchar);
 	return loclastchar;
 }
