@@ -168,7 +168,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			SDL_RenderClear(m_renderer);
 			SDL_RenderPresent(m_renderer);
 
-			SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0,0,640,480 });
+			SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, 640, 480 });
 
 			std::function<void(Scene)> callBack = SetMouseKeyboardScene;
 			EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBack));

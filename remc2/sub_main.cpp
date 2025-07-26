@@ -974,7 +974,7 @@ int sub_7677C();
 __int16 sub_7678D();
 int sub_76840();
 //char sub_7A060_get_mouse_and_keyboard_events();
-signed int /*__fastcall*/ sub_7C050_get_keyboard_keys1();
+signed int /*__fastcall*/ ReadKeyboardKeysInMenu_7C050();
 //void sub_7C120_draw_bitmap_640(int16_t posx, int16_t posy, bitmap_pos_struct_t tempstr);
 //void sub_7C140_draw_text_background(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5);
 //int32_t sub_A7C20_AIL_API_init_sequence(HSEQUENCE hSequence, void* start, int32_t sequence_num, uint32_t track);
@@ -47878,7 +47878,7 @@ void sub_7A060_get_mouse_and_keyboard_events()//25B060
 		x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons |= 2;
 	x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx = x_WORD_E3760_mouse.x;//2b4760
 	x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony = x_WORD_E3760_mouse.y;//2b4762
-	sub_7C050_get_keyboard_keys1();
+	ReadKeyboardKeysInMenu_7C050();
 	//result = x_BYTE_17DF10_get_key_scancode;
 	x_WORD_180744_mouse_right_button = 0;
 	x_WORD_180746_mouse_left_button = 0;
@@ -48179,7 +48179,7 @@ void ClearScrollDialogVars_7C020(type_str_word_26* a1x)//25d020
 }
 
 //----- (0007C050) --------------------------------------------------------
-signed int /*__fastcall*/ sub_7C050_get_keyboard_keys1()//25d050
+signed int ReadKeyboardKeysInMenu_7C050()
 {
 	uint8_t v2; // bl
 	long v3; // eax
