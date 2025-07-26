@@ -1174,23 +1174,41 @@ uint32_t TranslateSdlMouseToGameMouse(SDL_MouseButtonEvent button)
 		if (button.button == mouseMapping.map)
 		{
 			if (button.state == SDL_PRESSED)
+			{
+				m_lastScancode = inputMapping.Map;
 				SetGameKeyPress_1806E4(true, GameKey::RETURN);
+			}
 			if (button.state == SDL_RELEASED)
+			{
+				m_lastScancode = inputMapping.Map;
 				SetGameKeyPress_1806E4(false, GameKey::RETURN);
+			}
 		}
 		if (button.button == mouseMapping.SpellMenu)
 		{
 			if (button.state == SDL_PRESSED)
+			{
+				m_lastScancode = inputMapping.SpellMenu;
 				SetGameKeyPress_1806E4(true, GameKey::CTRL);
+			}
 			if (button.state == SDL_RELEASED)
+			{
+				m_lastScancode = inputMapping.SpellMenu;
 				SetGameKeyPress_1806E4(false, GameKey::CTRL);
+			}
 		}
 		if (button.button == mouseMapping.SpellMenuMark)
 		{
 			if (button.state == SDL_PRESSED)
+			{
+				m_lastScancode = inputMapping.SpellMenuMark;
 				SetGameKeyPress_1806E4(true, GameKey::RSHIFT);
+			}
 			if (button.state == SDL_RELEASED)
+			{
+				m_lastScancode = inputMapping.SpellMenuMark;
 				SetGameKeyPress_1806E4(false, GameKey::RSHIFT);
+			}
 		}
 
 		return buttonresult;
