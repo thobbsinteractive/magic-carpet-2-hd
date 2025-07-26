@@ -859,7 +859,7 @@ int PollSdlEvents()
 			case SDL_KEYDOWN:
 			{
 				m_pressed = true;
-				m_lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
+				m_lastchar = event.key.keysym.scancode;
 
 				if (!HandleSpecialKeys(event)) {
 					SetPress(true, m_lastchar);
@@ -869,7 +869,7 @@ int PollSdlEvents()
 			}
 			case SDL_KEYUP:
 			{
-				m_lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
+				m_lastchar = event.key.keysym.scancode;
 				SetPress(false, m_lastchar);
 				Logger->trace("Key {} release detected", m_lastchar);
 				break;
@@ -1219,278 +1219,276 @@ uint32_t TranslateButtonState(SDL_MouseButtonEvent button)
 	return buttonresult;
 }
 
-uint16_t TranslateSdlKeysToGameKeys(uint16_t loclastchar)
+uint16_t TranslateSdlKeysToGameKeys(uint16_t scancode)
 {
-	auto sdl_char = (loclastchar & 0xff00) >> 8;
-
 	if (m_Scene == Scene::SPELL_MENU ||
 		m_Scene == Scene::FLIGHT)
 	{
-		if (sdl_char == inputMapping.Forward)
+		if (scancode == inputMapping.Forward)
 			return GameKey::UP;
-		if (sdl_char == inputMapping.Backwards)
+		if (scancode == inputMapping.Backwards)
 			return GameKey::DOWN;
-		if (sdl_char == inputMapping.Left)
+		if (scancode == inputMapping.Left)
 			return GameKey::LEFT;
-		if (sdl_char == inputMapping.Right)
+		if (scancode == inputMapping.Right)
 			return GameKey::RIGHT;
-		if (sdl_char == inputMapping.SpellMenu)
+		if (scancode == inputMapping.SpellMenu)
 			return GameKey::CTRL;
-		if (sdl_char == inputMapping.Map)
+		if (scancode == inputMapping.Map)
 			return GameKey::RETURN;
-		if (sdl_char == inputMapping.SpellMenuMark)
+		if (scancode == inputMapping.SpellMenuMark)
 			return GameKey::LSHIFT;
 	}
 
-	switch (sdl_char)
+	switch (scancode)
 	{
 	case SDL_SCANCODE_ESCAPE://esc
-		loclastchar = GameKey::ESC;
+		return GameKey::ESC;
 		break;
 	case SDL_SCANCODE_1://1
-		loclastchar = GameKey::K1;
+		return GameKey::K1;
 		break;
 	case SDL_SCANCODE_2://2
-		loclastchar = GameKey::K2;
+		return GameKey::K2;
 		break;
 	case SDL_SCANCODE_3://3
-		loclastchar = GameKey::K3;
+		return GameKey::K3;
 		break;
 	case SDL_SCANCODE_4://4
-		loclastchar = GameKey::K4;
+		return GameKey::K4;
 		break;
 	case SDL_SCANCODE_5://5
-		loclastchar = GameKey::K5;
+		return GameKey::K5;
 		break;
 	case SDL_SCANCODE_6://6
-		loclastchar = GameKey::K6;
+		return GameKey::K6;
 		break;
 	case SDL_SCANCODE_7://7
-		loclastchar = GameKey::K7;
+		return GameKey::K7;
 		break;
 	case SDL_SCANCODE_8://8
-		loclastchar = GameKey::K8;
+		return GameKey::K8;
 		break;
 	case SDL_SCANCODE_9://9
-		loclastchar = GameKey::K9;
+		return GameKey::K9;
 		break;
 	case SDL_SCANCODE_0://0
-		loclastchar = GameKey::K0;
+		return GameKey::K0;
 		break;
 	case SDL_SCANCODE_MINUS://-
 	case SDL_SCANCODE_KP_MINUS:
-		loclastchar = GameKey::MINUS;
+		return GameKey::MINUS;
 		break;
 	case SDL_SCANCODE_EQUALS://=
 	case SDL_SCANCODE_KP_PLUS:
-		loclastchar = GameKey::EQUALS;
+		return GameKey::EQUALS;
 		break;
 	case SDL_SCANCODE_BACKSPACE://backspace
-		loclastchar = GameKey::BACKSPACE;
+		return GameKey::BACKSPACE;
 		break;
 	case SDL_SCANCODE_TAB://tab
 	case SDL_SCANCODE_KP_TAB:
-		loclastchar = GameKey::TAB;
+		return GameKey::TAB;
 		break;
 	case SDL_SCANCODE_Q://q
-		loclastchar = GameKey::Q;
+		return GameKey::Q;
 		break;
 	case SDL_SCANCODE_W://w
-		loclastchar = GameKey::W;
+		return GameKey::W;
 		break;
 	case SDL_SCANCODE_E://e
-		loclastchar = GameKey::E;
+		return GameKey::E;
 		break;
 	case SDL_SCANCODE_R://r
-		loclastchar = GameKey::R;
+		return GameKey::R;
 		break;
 	case SDL_SCANCODE_T://t
-		loclastchar = GameKey::T;
+		return GameKey::T;
 		break;
 	case SDL_SCANCODE_Y://y
-		loclastchar = GameKey::Y;
+		return GameKey::Y;
 		break;
 	case SDL_SCANCODE_U://u
-		loclastchar = GameKey::U;
+		return GameKey::U;
 		break;
 	case SDL_SCANCODE_I://i
-		loclastchar = GameKey::I;
+		return GameKey::I;
 		break;
 	case SDL_SCANCODE_O://o
-		loclastchar = GameKey::O;
+		return GameKey::O;
 		break;
 	case SDL_SCANCODE_P://p
-		loclastchar = GameKey::P;
+		return GameKey::P;
 		break;
 	case SDL_SCANCODE_LEFTBRACKET://[
-		loclastchar = GameKey::LEFTBRACKET;
+		return GameKey::LEFTBRACKET;
 		break;
 	case SDL_SCANCODE_RIGHTBRACKET://]
-		loclastchar = GameKey::RIGHTBRACKET;
+		return GameKey::RIGHTBRACKET;
 		break;
 	case SDL_SCANCODE_RETURN://enter
 	case SDL_SCANCODE_RETURN2://enter
-		loclastchar = GameKey::RETURN;
+		return GameKey::RETURN;
 		break;
 	case SDL_SCANCODE_LCTRL://ctrl
 	case SDL_SCANCODE_RCTRL:
-		loclastchar = GameKey::CTRL;
+		return GameKey::CTRL;
 		break;
 	case SDL_SCANCODE_A://a
-		loclastchar = GameKey::A;
+		return GameKey::A;
 		break;
 	case SDL_SCANCODE_S://s
-		loclastchar = GameKey::S;
+		return GameKey::S;
 		break;
 	case SDL_SCANCODE_D://d
-		loclastchar = GameKey::D;
+		return GameKey::D;
 		break;
 	case SDL_SCANCODE_F://f
-		loclastchar = GameKey::F;
+		return GameKey::F;
 		break;
 	case SDL_SCANCODE_G://g
-		loclastchar = GameKey::G;
+		return GameKey::G;
 		break;
 	case SDL_SCANCODE_H://h
-		loclastchar = GameKey::H;
+		return GameKey::H;
 		break;
 	case SDL_SCANCODE_J://j
-		loclastchar = GameKey::J;
+		return GameKey::J;
 		break;
 	case SDL_SCANCODE_K://k
-		loclastchar = GameKey::K;
+		return GameKey::K;
 		break;
 	case SDL_SCANCODE_L://l
-		loclastchar = GameKey::L;
+		return GameKey::L;
 		break;
 	case SDL_SCANCODE_SEMICOLON://;
-		loclastchar = GameKey::SEMICOLON;
+		return GameKey::SEMICOLON;
 		break;
 	case SDL_SCANCODE_APOSTROPHE://'
-		loclastchar = GameKey::APOSTROPHE;
+		return GameKey::APOSTROPHE;
 		break;
 	case SDL_SCANCODE_GRAVE://`
-		loclastchar = GameKey::GRAVE;
+		return GameKey::GRAVE;
 		break;
 	case SDL_SCANCODE_LSHIFT://left shift
-		loclastchar = GameKey::LSHIFT;
+		return GameKey::LSHIFT;
 		break;
 	case SDL_SCANCODE_BACKSLASH:// "\"
-		loclastchar = GameKey::BACKSLASH;
+		return GameKey::BACKSLASH;
 		break;
 	case SDL_SCANCODE_Z://z
-		loclastchar = GameKey::Z;
+		return GameKey::Z;
 		break;
 	case SDL_SCANCODE_X://x
-		loclastchar = GameKey::X;
+		return GameKey::X;
 		break;
 	case SDL_SCANCODE_C://c
-		loclastchar = GameKey::C;
+		return GameKey::C;
 		break;
 	case SDL_SCANCODE_V://v
-		loclastchar = GameKey::V;
+		return GameKey::V;
 		break;
 	case SDL_SCANCODE_B://b
-		loclastchar = GameKey::B;
+		return GameKey::B;
 		break;
 	case SDL_SCANCODE_N://n
-		loclastchar = GameKey::N;
+		return GameKey::N;
 		break;
 	case SDL_SCANCODE_M://m
-		loclastchar = GameKey::M;
+		return GameKey::M;
 		break;
 	case SDL_SCANCODE_COMMA://,
-		loclastchar = GameKey::COMMA;
+		return GameKey::COMMA;
 		break;
 	case SDL_SCANCODE_PERIOD://.
-		loclastchar = GameKey::PERIOD;
+		return GameKey::PERIOD;
 		break;
 	case SDL_SCANCODE_SLASH:// "/"
-		loclastchar = GameKey::SLASH;
+		return GameKey::SLASH;
 		break;
 	case SDL_SCANCODE_RSHIFT://right shift
-		loclastchar = GameKey::RSHIFT;
+		return GameKey::RSHIFT;
 		break;
 	case SDL_SCANCODE_LALT://alt
 	case SDL_SCANCODE_RALT:
-		loclastchar = GameKey::ALT;
+		return GameKey::ALT;
 		break;
 	case SDL_SCANCODE_SPACE://space
-		loclastchar = GameKey::SPACE;
+		return GameKey::SPACE;
 		break;
 	case SDL_SCANCODE_F1://f1
-		loclastchar = GameKey::F1;
+		return GameKey::F1;
 		break;
 	case SDL_SCANCODE_F2://f2
-		loclastchar = GameKey::F2;
+		return GameKey::F2;
 		break;
 	case SDL_SCANCODE_F3://f3
-		loclastchar = GameKey::F3;
+		return GameKey::F3;
 		break;
 	case SDL_SCANCODE_F4://f4
-		loclastchar = GameKey::F4;
+		return GameKey::F4;
 		break;
 	case SDL_SCANCODE_F5://f5
-		loclastchar = GameKey::F5;
+		return GameKey::F5;
 		break;
 	case SDL_SCANCODE_F6://f6
-		loclastchar = GameKey::F6;
+		return GameKey::F6;
 		break;
 	case SDL_SCANCODE_F7://f7
-		loclastchar = GameKey::F7;
+		return GameKey::F7;
 		break;
 	case SDL_SCANCODE_F8://f8
-		loclastchar = GameKey::F8;
+		return GameKey::F8;
 		break;
 	case SDL_SCANCODE_F9://f9
-		loclastchar = GameKey::F9;
+		return GameKey::F9;
 		break;
 	case SDL_SCANCODE_F10://f10
-		loclastchar = GameKey::F10;
+		return GameKey::F10;
 		break;
 	case SDL_SCANCODE_HOME://home
-		loclastchar = GameKey::HOME;
+		return GameKey::HOME;
 		break;
 	case SDL_SCANCODE_UP://up
-		loclastchar = GameKey::UP;
+		return GameKey::UP;
 		break;
 	case SDL_SCANCODE_PAGEUP://pageup
-		loclastchar = GameKey::PAGEUP;
+		return GameKey::PAGEUP;
 		break;
 	case SDL_SCANCODE_RIGHT://right
-		loclastchar = GameKey::RIGHT;
+		return GameKey::RIGHT;
 		break;
 	case SDL_SCANCODE_DOWN://down
-		loclastchar = GameKey::DOWN;
+		return GameKey::DOWN;
 		break;
 	case SDL_SCANCODE_LEFT://left
-		loclastchar = GameKey::LEFT;
+		return GameKey::LEFT;
 		break;
 	case SDL_SCANCODE_END://end
-		loclastchar = GameKey::END;
+		return GameKey::END;
 		break;
 	case SDL_SCANCODE_PAGEDOWN://pagedown
-		loclastchar = GameKey::PAGEDOWN;
+		return GameKey::PAGEDOWN;
 		break;
 	case SDL_SCANCODE_INSERT://ins
-		loclastchar = GameKey::INSERT;
+		return GameKey::INSERT;
 		break;
 	case SDL_SCANCODE_DELETE://del
-		loclastchar = GameKey::DEL;
+		return GameKey::DEL;
 		break;
 	}
-	return loclastchar;
+	return scancode;
 }
 
 void VGA_cleanKeyBuffer() {
-	uint16_t loclastchar = m_lastchar;
+	uint16_t lastChar = m_lastchar;
 	m_lastchar = 0;
-	loclastchar = TranslateSdlKeysToGameKeys(loclastchar);
-	while (loclastchar != 0)
+	lastChar = TranslateSdlKeysToGameKeys(lastChar);
+	while (lastChar != 0)
 	{
-		loclastchar = m_lastchar;
+		lastChar = m_lastchar;
 		m_lastchar = 0;
-		loclastchar = TranslateSdlKeysToGameKeys(loclastchar);
+		lastChar = TranslateSdlKeysToGameKeys(lastChar);
 	}
 }
 
@@ -1502,20 +1500,20 @@ uint16_t VGA_read_char_from_buffer() {
 	return loclastchar;
 }
 
-void SetPress(bool locpressed, uint16_t loclastchar) {
-	loclastchar = TranslateSdlKeysToGameKeys(loclastchar);
-	SetGameKeyPress_1806E4(locpressed, loclastchar);
+void SetPress(bool pressed, uint16_t scanCodeChar) {
+	auto gameKeyChar = TranslateSdlKeysToGameKeys(scanCodeChar);
+	SetGameKeyPress_1806E4(pressed, gameKeyChar);
 }
 
-void SetGameKeyPress_1806E4(bool locpressed, uint16_t loclastchar) {
-	if (locpressed)
+void SetGameKeyPress_1806E4(bool pressed, uint16_t gameKeyChar) {
+	if (pressed)
 	{
-		LastPressedKey_1806E4 = (loclastchar & 0xff00) >> 8;// VGA_read_char_from_buffer();
+		LastPressedKey_1806E4 = (gameKeyChar & 0xff00) >> 8;// VGA_read_char_from_buffer();
 		pressedKeys_180664[LastPressedKey_1806E4 & 0x7F] = LastPressedKey_1806E4;
 	}
 	else
 	{
-		pressedKeys_180664[((loclastchar & 0xff00) >> 8) & 0x7F] = 0;
+		pressedKeys_180664[((gameKeyChar & 0xff00) >> 8) & 0x7F] = 0;
 	}
 }
 
