@@ -75,6 +75,7 @@ void ToggleFullscreen();
 void ToggleFullscreen(bool fullScreen);
 bool HandleSpecialKeys(const SDL_Event& event);
 void SetMouseKeyboardScene(const Scene sceneId);
+void OnMouseResolutionChanged(uint32_t width, uint32_t height);
 
 extern uint8_t LastPressedKey_1806E4; // weak//3516e4
 extern int8_t pressedKeys_180664[128]; // idb

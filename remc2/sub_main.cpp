@@ -32388,6 +32388,8 @@ void sub_47320_in_game_loop(signed int a1)//228320
 		}
 	}
 
+	EventDispatcher::I->DispatchEvent(EventType::E_GAMEPLAY_STATE_CHANGE, GameState::ENDED);
+
 	sub_90E07_VGA_set_video_mode_640x480_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
 }
 
