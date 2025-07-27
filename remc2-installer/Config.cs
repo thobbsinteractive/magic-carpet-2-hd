@@ -86,6 +86,8 @@ namespace remc2_installer
 		public bool isActive { get; set; }
 		public bool invertYAxis { get; set; }
 		public bool invertXAxis { get; set; }
+		public float mouseScaleX { get; set; }
+		public float mouseScaleY { get; set; }
 		public int spellLeft { get; set; }
 		public int spellRight { get; set; }
 		public int map { get; set; }
