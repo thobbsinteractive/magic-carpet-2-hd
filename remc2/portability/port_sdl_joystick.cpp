@@ -24,6 +24,9 @@
 SDL_Joystick *m_gameController = NULL;
 SDL_Haptic *m_haptic = NULL;
 
+float m_joystickScaleX = 1.0f;
+float m_joystickScaleY = 1.0f;
+
 #define              JOY_MIN_X  0   ///< minimum bounds for mouse position value for x axis
 #define              JOY_MIN_Y  0   ///< minimum bounds for mouse position value for y axis
 #define            JOY_NAV_INC  4   ///< coefficient that defines how many pixels to skip while navigating a menu
@@ -685,10 +688,10 @@ void set_scene(const Scene scene_id)
 			gps.nav_mode = 1;
 			break;
 		case Scene::FLIGHT:
-			gps.rest_x = maxX / 2;
-			gps.rest_y = maxY / 2;
-			gps.max_x = maxX;
-			gps.max_y = maxY;
+			gps.rest_x = (maxX * m_joystickScaleX) / 2;
+			gps.rest_y = (maxY * m_joystickScaleY) / 2;
+			gps.max_x = maxX * m_joystickScaleX;
+			gps.max_y = maxY * m_joystickScaleY;
 			if (screenWidth_18062C > 640 && screenHeight_180624 > 480)
 				VGA_Set_mouse(screenWidth_18062C / 2, screenHeight_180624 / 2);
 			else
@@ -718,10 +721,10 @@ void OnResolutionChanged(uint32_t width, uint32_t height)
 
 	if (gps.scene_id == Scene::FLIGHT)
 	{
-		gps.rest_x = maxX / 2;
-		gps.rest_y = maxY / 2;
-		gps.max_x = maxX;
-		gps.max_y = maxY;
+		gps.rest_x = (maxX * m_joystickScaleX) / 2;
+		gps.rest_y = (maxY * m_joystickScaleY) / 2;
+		gps.max_x = maxX * m_joystickScaleX;
+		gps.max_y = maxY * m_joystickScaleY;
 		if (screenWidth_18062C > 640 && screenHeight_180624 > 480)
 			VGA_Set_mouse(screenWidth_18062C / 2, screenHeight_180624 / 2);
 		else
