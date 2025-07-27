@@ -58,6 +58,8 @@ extern int numberOfRenderThreads;
 extern bool assignToSpecificCores;
 extern bool invertYAxis;
 extern bool invertXAxis;
+extern float mouseScaleX;
+extern float mouseScaleY;
 
 #define   GAMEPAD_ITEM_DISABLED  0x0
 #define    GAMEPAD_ITEM_ENABLED  0x1

@@ -14,6 +14,7 @@
 #include "port_sdl_sound.h"
 #include "port_filesystem.h"
 #include "../engine/Scene.h"
+#include "../engine/GameState.h"
 
 typedef struct
 {
@@ -75,6 +76,7 @@ void ToggleFullscreen();
 void ToggleFullscreen(bool fullScreen);
 bool HandleSpecialKeys(const SDL_Event& event);
 void SetMouseKeyboardScene(const Scene sceneId);
+void SetMouseKeyboardGameState(const GameState state);
 void OnMouseResolutionChanged(uint32_t width, uint32_t height);
 
 extern uint8_t LastPressedKey_1806E4; // weak//3516e4

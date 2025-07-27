@@ -33,9 +33,6 @@ int8_t pressedKeys_180664[128]; // idb
 uint16_t m_iOrigw = 640;
 uint16_t m_iOrigh = 480;
 
-float m_mouseScaleX = 1.0f;
-float m_mouseScaleY = 1.0f;
-
 uint16_t m_iWindowWidth = 640;
 uint16_t m_iWindowHeight = 480;
 
@@ -176,6 +173,9 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			std::function<void(Scene)> callBackScene = SetMouseKeyboardScene;
 			EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBackScene));
 
+			std::function<void(GameState)> callBackGameState = SetMouseKeyboardGameState;
+			EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAMEPLAY_STATE_CHANGE, callBackGameState));
+
 			std::function<void(uint32_t, uint32_t)> resCallBack = OnMouseResolutionChanged;
 			EventDispatcher::I->RegisterEvent(new Event<uint32_t, uint32_t>(EventType::E_RESOLUTION_CHANGE, resCallBack));
 		}
@@ -197,15 +197,23 @@ void SetMouseKeyboardScene(const Scene sceneId)
 	m_Scene = sceneId;
 }
 
+void SetMouseKeyboardGameState(const GameState state)
+{
+	if (state == GameState::ENDED)
+	{
+		SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, 640, 480 });
+	}
+}
+
 void OnMouseResolutionChanged(uint32_t width, uint32_t height)
 {
 	if (screenWidth_18062C > 640 && screenHeight_180624 > 480)
 	{
-		auto x = int(640.0f * m_mouseScaleX);
+		auto x = int(640.0f * mouseScaleX);
 		if (x > screenWidth_18062C)
 			x = screenWidth_18062C;
 
-		auto y = int(640.0f * m_mouseScaleY);
+		auto y = int(480.0f * mouseScaleY);
 		if (y > screenHeight_180624)
 			y = screenHeight_180624;
 
@@ -976,13 +984,13 @@ void ScaleUpMouseCoordsToVga(int16_t& x, int16_t& y)
 {
 	if (m_iOrigw > 640)
 	{
-		float fx = (float)m_iOrigw / (640.0f * m_mouseScaleX);
+		float fx = (float)m_iOrigw / (640.0f * mouseScaleX);
 		x = fx * x;
 	}
 
 	if (m_iOrigh > 480)
 	{
-		float fy = (float)m_iOrigh / (480.0f * m_mouseScaleY);
+		float fy = (float)m_iOrigh / (480.0f * mouseScaleY);
 		y = fy * y;
 	}
 }
@@ -991,13 +999,13 @@ void ScaleDownMouseCoordsToVga(int16_t& x, int16_t& y)
 {
 	if (m_iOrigw > 640)
 	{
-		float fx = (640.0f * m_mouseScaleX) / (float)m_iOrigw;
+		float fx = (640.0f * mouseScaleX) / (float)m_iOrigw;
 		x = fx * x;
 	}
 
 	if (m_iOrigh > 480)
 	{
-		float fy = (480.0f * m_mouseScaleY) / (float)m_iOrigh;
+		float fy = (480.0f * mouseScaleY) / (float)m_iOrigh;
 		y = fy * y;
 	}
 }

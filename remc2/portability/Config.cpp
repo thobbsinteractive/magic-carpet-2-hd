@@ -39,6 +39,15 @@ int Config::ReadIntValue(rapidjson::GenericObject<false, rapidjson::Value>& sett
 	return 0;
 }
 
+float Config::ReadFloatValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
+{
+	if (settings.HasMember(name))
+	{
+		return settings[name].GetFloat();
+	}
+	return 0.0f;
+}
+
 bool Config::ReadBoolValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
 {
 	if (settings.HasMember(name))
@@ -122,24 +131,8 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 				{
 					m_Controls.m_Mouse.m_InvertXAxis = ReadBoolValue(mouse, "invertXAxis");
 					m_Controls.m_Mouse.m_InvertYAxis = ReadBoolValue(mouse, "invertYAxis");
-					break;
-				}
-			}
-		}
-
-		if (controls.HasMember("mouse"))
-		{
-			auto mouseArray = controls["mouse"].GetArray();
-
-			for (int i = 0; i < mouseArray.Size(); i++)
-			{
-#ifdef __linux__
-				auto mouse = mouseArray[i].GetObject();
-#else
-				auto mouse = mouseArray[i].GetObj();
-#endif
-				if (mouse.HasMember("isActive") && mouse["isActive"].GetBool() == true)
-				{
+					m_Controls.m_Mouse.m_mouseScaleX = ReadFloatValue(mouse, "mouseScaleX");
+					m_Controls.m_Mouse.m_mouseScaleY = ReadFloatValue(mouse, "mouseScaleY");
 					m_Controls.m_Mouse.m_spellLeft = ReadIntValue(mouse, "spellLeft");
 					m_Controls.m_Mouse.m_spellRight = ReadIntValue(mouse, "spellRight");
 					m_Controls.m_Mouse.m_map = ReadIntValue(mouse, "map");
