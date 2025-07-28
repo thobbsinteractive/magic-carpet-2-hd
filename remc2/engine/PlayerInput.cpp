@@ -621,13 +621,13 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				if (unk_18058Cstr.x_DWORD_18059C & 1 && unk_18058Cstr.x_DWORD_18059C & 2)
 				{
 					if (v8x->life_0x8 >= 0)
-						HandleButtonClick_191B0(20, 6);
+						HandleButtonClick_191B0(20, 6); //Mouse Open Map
 					unk_18058Cstr.x_DWORD_18059C &= 0xFC;
 				}
 				if (LastPressedKey_1806E4 == x_BYTE_EB39E_keys[4])
 				{
 					if (v8x->life_0x8 >= 0)
-						HandleButtonClick_191B0(20, 6);
+						HandleButtonClick_191B0(20, 6); //Keyboard Open Map
 					LastPressedKey_1806E4 = 0;
 				}
 				if ((unsigned __int8)LastPressedKey_1806E4 >= 2u)//2-9
@@ -962,7 +962,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			ProcessKeyboardPresses_17190();
 			if (unk_18058Cstr.x_DWORD_18059C & 1 && unk_18058Cstr.x_DWORD_18059C & 2 || LastPressedKey_1806E4 == x_BYTE_EB39E_keys[4] || v24x->life_0x8 < 0)
 			{
-				HandleButtonClick_191B0(20, 0);
+				HandleButtonClick_191B0(20, 0); // Close Map
 			}
 			else if (LastPressedKey_1806E4 == 1)
 			{
