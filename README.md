@@ -16,6 +16,16 @@ https://github.com/thobbsinteractive/magic-carpet-2-hd/releases/latest
 - 5: Click the Start menu shortcut "Magic Carpet 2 HD" to run the game.
 - 6: Any errors will be output to "log.txt"
 
+#### Basic Controls ####
+Controls can be redefined in the Config.json file, however here are the defaults:
+</br>
+Forward = W</br>
+Backwards = S</br>
+Move Left = A</br>
+Move Right = D</br>
+Open Spell Menu = LCtrl / Mouse 4</br>
+Open Map = Tab / Middle Mouse</br>
+
 #### Command Line Args ####
 You can use the following arguments:</br>
 To jump to a selected Level use:</br>
