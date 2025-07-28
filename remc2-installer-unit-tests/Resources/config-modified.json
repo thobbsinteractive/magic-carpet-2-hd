@@ -83,8 +83,8 @@
 							"Mouse Buttons: 1 = Left, 2 = Middle, 3 = Right, 0 = Undefined",
 							"mouseScaleX: 1.0 = normal, 1.5 = slower, 0.5 faster etc... (Note: Effects joystick steering too)"
 						],
-						"isActive": true,
 						"name": "Modern",
+						"isActive": true,
 						"invertYAxis": true,
 						"invertXAxis": false,
 						"mouseScaleX": 1.0,
@@ -102,8 +102,8 @@
 							"spellMenu: Ctrl by default. Opens the Spell menu",
 							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed"
 						],
-						"isActive": true,
 						"name": "Modern",
+						"isActive": true,
 						"forward": "W",
 						"backwards": "S",
 						"left": "A",
@@ -117,8 +117,8 @@
 							"spellMenu: Ctrl by default. Opens the Spell menu",
 							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed"
 						],
-						"isActive": false,
 						"name": "Classic",
+						"isActive": false,
 						"forward": "UP",
 						"backwards": "DOWN",
 						"left": "LEFT",
