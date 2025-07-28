@@ -60,6 +60,17 @@ namespace remc2_installer
 										new FilePermission("CREATOR OWNER", GenericPermission.All)  { Execute = true },
 									}
 								},
+#if WIN64
+								new File(new Id("CONFIG_INI"), @"..\x64\Release\config.json")
+								{
+									Permissions = new[] {
+										new FilePermission("Everyone", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("Users", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("AuthenticatedUser", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
+									}
+								},
+#else
 								new File(new Id("CONFIG_INI"), @"..\Release\config.json")
 								{
 									Permissions = new[] {
@@ -69,6 +80,18 @@ namespace remc2_installer
 										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
 									}
 								},
+#endif
+#if WIN64
+								new File(new Id("EDITOR_CONFIG_INI"), @"..\x64\Release\editor-config.json")
+								{
+									Permissions = new[] {
+										new FilePermission("Everyone", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("Users", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("AuthenticatedUser", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
+									}
+								},
+#else
 								new File(new Id("EDITOR_CONFIG_INI"), @"..\Release\editor-config.json")
 								{
 									Permissions = new[] {
@@ -78,6 +101,7 @@ namespace remc2_installer
 										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
 									}
 								},
+#endif
 #if WIN64
 								new File(new Id("BROTLICOMMON_DLL"), @"..\x64\Release\brotlicommon.dll"),
 								new File(new Id("BROTLIDEC_DLL"), @"..\x64\Release\brotlidec.dll"),
