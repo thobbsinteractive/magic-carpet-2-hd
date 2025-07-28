@@ -76,6 +76,7 @@ private:
 		bool m_InvertXAxis = false;
 		float m_mouseScaleX = 1.0f;
 		float m_mouseScaleY = 1.0f;
+		bool m_disableLRButtonsMenuOpen = false;
 		uint16_t m_spellLeft = 1;
 		uint16_t m_spellRight = 2;
 		uint16_t m_map = 0;

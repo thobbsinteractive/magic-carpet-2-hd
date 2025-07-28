@@ -60,6 +60,7 @@ extern bool invertYAxis;
 extern bool invertXAxis;
 extern float mouseScaleX;
 extern float mouseScaleY;
+extern bool disableLRButtonsMenuOpen;
 
 #define   GAMEPAD_ITEM_DISABLED  0x0
 #define    GAMEPAD_ITEM_ENABLED  0x1

@@ -27,6 +27,7 @@ bool invertYAxis = true;
 bool invertXAxis = false;
 float mouseScaleX = 1.0f;
 float mouseScaleY = 1.0f;
+bool disableLRButtonsMenuOpen = false;
 
 gamepad_config_t gpc;
 MouseInputMapping_t mouseMapping;
@@ -193,6 +194,7 @@ bool SetConfig() {
 	//Mouse
 	mouseScaleX = config.m_Controls.m_Mouse.m_mouseScaleX;
 	mouseScaleY = config.m_Controls.m_Mouse.m_mouseScaleY;
+	disableLRButtonsMenuOpen = config.m_Controls.m_Mouse.m_disableLRButtonsMenuOpen;
 	mouseMapping.SpellLeft = config.m_Controls.m_Mouse.m_spellLeft;
 	mouseMapping.SpellRight = config.m_Controls.m_Mouse.m_spellRight;
 	mouseMapping.map = config.m_Controls.m_Mouse.m_map;
