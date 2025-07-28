@@ -133,6 +133,7 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 					m_Controls.m_Mouse.m_InvertYAxis = ReadBoolValue(mouse, "invertYAxis");
 					m_Controls.m_Mouse.m_mouseScaleX = ReadFloatValue(mouse, "mouseScaleX");
 					m_Controls.m_Mouse.m_mouseScaleY = ReadFloatValue(mouse, "mouseScaleY");
+					m_Controls.m_Mouse.m_disableLRButtonsMenuOpen = ReadBoolValue(mouse, "disableLRButtonsMenuOpen");
 					m_Controls.m_Mouse.m_spellLeft = ReadIntValue(mouse, "spellLeft");
 					m_Controls.m_Mouse.m_spellRight = ReadIntValue(mouse, "spellRight");
 					m_Controls.m_Mouse.m_map = ReadIntValue(mouse, "map");
