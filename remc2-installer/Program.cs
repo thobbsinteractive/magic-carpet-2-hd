@@ -60,6 +60,17 @@ namespace remc2_installer
 										new FilePermission("CREATOR OWNER", GenericPermission.All)  { Execute = true },
 									}
 								},
+#if WIN64
+								new File(new Id("CONFIG_INI"), @"..\x64\Release\config.json")
+								{
+									Permissions = new[] {
+										new FilePermission("Everyone", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("Users", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("AuthenticatedUser", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
+									}
+								},
+#else
 								new File(new Id("CONFIG_INI"), @"..\Release\config.json")
 								{
 									Permissions = new[] {
@@ -69,6 +80,18 @@ namespace remc2_installer
 										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
 									}
 								},
+#endif
+#if WIN64
+								new File(new Id("EDITOR_CONFIG_INI"), @"..\x64\Release\editor-config.json")
+								{
+									Permissions = new[] {
+										new FilePermission("Everyone", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("Users", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("AuthenticatedUser", GenericPermission.All) { ChangePermission = true },
+										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
+									}
+								},
+#else
 								new File(new Id("EDITOR_CONFIG_INI"), @"..\Release\editor-config.json")
 								{
 									Permissions = new[] {
@@ -78,11 +101,11 @@ namespace remc2_installer
 										new FilePermission("CREATOR OWNER", GenericPermission.All)  { ChangePermission = true },
 									}
 								},
+#endif
 #if WIN64
 								new File(new Id("BROTLICOMMON_DLL"), @"..\x64\Release\brotlicommon.dll"),
 								new File(new Id("BROTLIDEC_DLL"), @"..\x64\Release\brotlidec.dll"),
 								new File(new Id("BZ2_DLL"), @"..\x64\Release\bz2.dll"),
-								new File(new Id("FMT_DLL"),@"..\x64\Release\fmt.dll"),
 								new File(new Id("FREETYPE_DLL"), @"..\x64\Release\freetype.dll"),
 								new File(new Id("LIBPNG16_DLL"), @"..\x64\Release\libpng16.dll"),
 								new File(new Id("OGG_DLL"), @"..\x64\Release\ogg.dll"),
@@ -92,12 +115,12 @@ namespace remc2_installer
 								new File(new Id("SDL2_TTF_DLL"), @"..\x64\Release\SDL2_ttf.dll"),
 								new File(new Id("VORBIS_DLL"), @"..\x64\Release\vorbis.dll"),
 								new File(new Id("VORBIXFILE_DLL"), @"..\x64\Release\vorbisfile.dll"),
+								new File(new Id("WAVPACKDLL_DLL"), @"..\x64\Release\wavpackdll.dll"),
 								new File(new Id("ZLIB1_DLL"), @"..\x64\Release\zlib1.dll"),
 #else
 								new File(new Id("BROTLICOMMON_DLL"), @"..\Release\brotlicommon.dll"),
 								new File(new Id("BROTLIDEC_DLL"), @"..\Release\brotlidec.dll"),
 								new File(new Id("BZ2_DLL"), @"..\Release\bz2.dll"),
-								new File(new Id("FMT_DLL"), @"..\Release\fmt.dll"),
 								new File(new Id("FREETYPE_DLL"), @"..\Release\freetype.dll"),
 								new File(new Id("LIBPNG16_DLL"), @"..\Release\libpng16.dll"),
 								new File(new Id("OGG_DLL"), @"..\Release\ogg.dll"),
@@ -107,6 +130,7 @@ namespace remc2_installer
 								new File(new Id("SDL2_TTF_DLL"), @"..\Release\SDL2_ttf.dll"),
 								new File(new Id("VORBIS_DLL"), @"..\Release\vorbis.dll"),
 								new File(new Id("VORBIXFILE_DLL"), @"..\Release\vorbisfile.dll"),
+								new File(new Id("WAVPACKDLL_DLL"), @"..\Release\wavpackdll.dll"),
 								new File(new Id("ZLIB1_DLL"), @"..\Release\zlib1.dll"),
 #endif
 								new File(new Id("EXTRACT_BAT"), @"Extract.bat"),

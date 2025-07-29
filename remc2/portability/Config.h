@@ -8,10 +8,13 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "../utilities/Maths.h"
+#include "ConfigToSdlScancodeMapping.h"
 
 class Config
 {
 private:
+	ConfigToSdlScancode m_ConfigToSdlScancode;
+
 	struct Paths
 	{
 		std::string m_GameFolder = "";
@@ -66,6 +69,33 @@ private:
 		bool m_SkipIntro = false;
 	};
 
+	struct Mouse
+	{
+		std::string m_Name = "";
+		bool m_InvertYAxis = true;
+		bool m_InvertXAxis = false;
+		float m_mouseScaleX = 1.0f;
+		float m_mouseScaleY = 1.0f;
+		bool m_disableLRButtonsMenuOpen = false;
+		uint16_t m_spellLeft = 1;
+		uint16_t m_spellRight = 2;
+		uint16_t m_map = 0;
+		uint16_t m_spellMenu = 0;
+		uint16_t m_spellMenuMark = 0;
+	};
+
+	struct Keyboard
+	{
+		std::string m_Name = "";
+		uint16_t m_forward = 0;
+		uint16_t m_backwards = 0;
+		uint16_t m_left = 0;
+		uint16_t m_right = 0;
+		uint16_t m_map = 0;
+		uint16_t m_spellMenu = 0;
+		uint16_t m_spellMenuMark = 0;
+	};
+
 	struct GamePad
 	{
 		std::string m_Name = "";
@@ -112,8 +142,8 @@ private:
 
 	struct Controls
 	{
-		bool m_InvertYAxis = true;
-		bool m_InvertXAxis = false;
+		Mouse m_Mouse;
+		Keyboard m_Keyboard;
 		GamePad m_GamePad;
 	};
 
@@ -127,7 +157,9 @@ private:
 	void LoadGame(rapidjson::GenericObject<false, rapidjson::Value>& settings);
 	std::string ReadStringValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
 	int ReadIntValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
+	float ReadFloatValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
 	bool ReadBoolValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
+	SDL_Scancode ReadKeyScancode(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
 	std::string ReadFileToString(std::string fileName);
 
 public:

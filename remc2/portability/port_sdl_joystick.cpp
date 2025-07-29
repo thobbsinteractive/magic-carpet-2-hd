@@ -34,19 +34,6 @@ SDL_Haptic *m_haptic = NULL;
 
 #define GP_MAX_KEY_RELEASE_ANN  4   ///< maximum number of key release announcements
 
-///< simulated key presses
-// to be modified once fully customized 
-// keyboard control is implemented
-#define          GP_KEY_EMU_UP  0x5252
-#define        GP_KEY_EMU_DOWN  0x5151
-#define       GP_KEY_EMU_RIGHT  0x4f4f
-#define        GP_KEY_EMU_LEFT  0x5050
-#define     GP_KEY_EMU_MINIMAP  0x280d
-#define         GP_KEY_EMU_ESC  0x291b
-#define       GP_KEY_EMU_SPELL  0xe0e0
-#define		  GP_KEY_EMU_PAUSE  0x1370
-#define		  GP_KEY_EMU_SPACE  0x2C20
-
 ///< structure that defines the current gamepad state ad it's simulated output
 struct gamepad_state {
 	int32_t x;                      ///< currently simulated x mouse position
@@ -309,35 +296,35 @@ void gamepad_hat_mov_conv(const vec1d_t *hat)
 	uint16_t ret = 0;
 
 	if (hat->x & SDL_HAT_UP) {
-		setPress(false, GP_KEY_EMU_DOWN);
-		setPress(true, GP_KEY_EMU_UP);
+		SetPress(false, inputMapping.Backwards);
+		SetPress(true, inputMapping.Forward);
 		ret = GP_MOV_UPDATE;
 	}
 
 	if (hat->x & SDL_HAT_DOWN) {
-		setPress(false, GP_KEY_EMU_UP);
-		setPress(true, GP_KEY_EMU_DOWN);
+		SetPress(false, inputMapping.Forward);
+		SetPress(true, inputMapping.Backwards);
 		ret = GP_MOV_UPDATE;
 	}
 
 	if (hat->x & SDL_HAT_RIGHT) {
-		setPress(false, GP_KEY_EMU_LEFT);
-		setPress(true, GP_KEY_EMU_RIGHT);
+		SetPress(false, inputMapping.Left);
+		SetPress(true, inputMapping.Right);
 		ret = GP_MOV_UPDATE;
 	}
 
 	if (hat->x & SDL_HAT_LEFT) {
-		setPress(false, GP_KEY_EMU_RIGHT);
-		setPress(true, GP_KEY_EMU_LEFT);
+		SetPress(false, inputMapping.Right);
+		SetPress(true, inputMapping.Left);
 		ret = GP_MOV_UPDATE;
 	}
 
 	if (hat->x == 0) {
 		if (gps.mov_key_announced < GP_MAX_KEY_RELEASE_ANN) {
-			setPress(false, GP_KEY_EMU_UP);
-			setPress(false, GP_KEY_EMU_DOWN);
-			setPress(false, GP_KEY_EMU_RIGHT);
-			setPress(false, GP_KEY_EMU_LEFT);
+			SetPress(false, inputMapping.Forward);
+			SetPress(false, inputMapping.Backwards);
+			SetPress(false, inputMapping.Right);
+			SetPress(false, inputMapping.Left);
 			gps.mov_key_announced++;
 		}
 	}
@@ -364,32 +351,32 @@ void gamepad_axis_mov_conv(vec2d_t *stick)
 		// player seems to always have some inertia, so the following wont't actually stop
 		// longitudinal movement
 		if (gps.mov_key_announced < GP_MAX_KEY_RELEASE_ANN) {
-			setPress(false, GP_KEY_EMU_UP);
-			setPress(false, GP_KEY_EMU_DOWN);
+			SetPress(false, inputMapping.Forward);
+			SetPress(false, inputMapping.Backwards);
 		}
 	} else {
 		if (axis_long * axis_long_inv > 0) {
-			setPress(false, GP_KEY_EMU_DOWN);
-			setPress(true, GP_KEY_EMU_UP);
+			SetPress(false, inputMapping.Backwards);
+			SetPress(true, inputMapping.Forward);
 		} else {
-			setPress(false, GP_KEY_EMU_UP);
-			setPress(true, GP_KEY_EMU_DOWN);
+			SetPress(false, inputMapping.Forward);
+			SetPress(true, inputMapping.Backwards);
 		}
 		ret = GP_MOV_UPDATE;
 	}
 
 	if ((axis_trans < gpc.axis_trans_dead_zone) && (axis_trans > -gpc.axis_trans_dead_zone)) {
 		if (gps.mov_key_announced < GP_MAX_KEY_RELEASE_ANN) {
-			setPress(false, GP_KEY_EMU_RIGHT);
-			setPress(false, GP_KEY_EMU_LEFT);
+			SetPress(false, inputMapping.Right);
+			SetPress(false, inputMapping.Left);
 		}
 	} else {
 		if (axis_trans > 0) {
-			setPress(false, GP_KEY_EMU_LEFT);
-			setPress(true, GP_KEY_EMU_RIGHT);
+			SetPress(false, inputMapping.Left);
+			SetPress(true, inputMapping.Right);
 		} else {
-			setPress(false, GP_KEY_EMU_RIGHT);
-			setPress(true, GP_KEY_EMU_LEFT);
+			SetPress(false, inputMapping.Right);
+			SetPress(true, inputMapping.Left);
 		}
 		ret = GP_MOV_UPDATE;
 	}
@@ -541,28 +528,28 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 			button_state |= 0x2;
 		}
 		if (gps.scene_id != Scene::FLIGHT_MENU && (gpe->btn_pressed & (1 << gpc.button_spell))) {
-			setPress(true, GP_KEY_EMU_SPELL);
+			SetPress(true, inputMapping.SpellMenu);
 			//haptic_rumble_triggers_effect(32000, 0, 1000);
 		}
 		if (gpe->btn_pressed & (1 << gpc.button_minimap)) {
-			setPress(true, GP_KEY_EMU_MINIMAP);
+			SetPress(true, inputMapping.Map);
 			//haptic_run_effect(hs.quake);
 			//haptic_rumble_effect(0.5, 2000);
 		}
 		if (gpe->btn_pressed & (1 << gpc.button_pause_menu)) {
-			setPress(true, GP_KEY_EMU_PAUSE);
+			SetPress(true, SDL_SCANCODE_P);
 		}
 		if (gpe->btn_pressed & (1 << gpc.button_fwd)) {
-			setPress(true, GP_KEY_EMU_UP);
+			SetPress(true, inputMapping.Forward);
 		}
 		if (gpe->btn_pressed & (1 << gpc.button_back)) {
-			setPress(true, GP_KEY_EMU_DOWN);
+			SetPress(true, inputMapping.Backwards);
 		}
 		if (gpe->btn_pressed & (1 << gpc.button_esc)) {
-			setPress(true, GP_KEY_EMU_ESC);
+			SetPress(true, SDL_SCANCODE_ESCAPE);
 		}
 		if (gps.scene_id == Scene::DEAD) {
-			setPress(true, GP_KEY_EMU_SPACE);
+			SetPress(true, SDL_SCANCODE_SPACE);
 		}
 	}
 
@@ -577,25 +564,25 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 			button_state |= 0x4;
 		}
 		if (gps.scene_id != Scene::FLIGHT_MENU && (gpe->btn_released & (1 << gpc.button_spell))) {
-			setPress(false, GP_KEY_EMU_SPELL);
+			SetPress(false, inputMapping.SpellMenu);
 		}
 		if (gpe->btn_released & (1 << gpc.button_minimap)) {
-			setPress(false, GP_KEY_EMU_MINIMAP);
+			SetPress(false, inputMapping.Map);
 		}
 		if (gpe->btn_released & (1 << gpc.button_pause_menu)) {
-			setPress(false, GP_KEY_EMU_PAUSE);
+			SetPress(false, SDL_SCANCODE_P);
 		}
 		if (gpe->btn_released & (1 << gpc.button_fwd)) {
-			setPress(false, GP_KEY_EMU_UP);
+			SetPress(false, inputMapping.Forward);
 		}
 		if (gpe->btn_released & (1 << gpc.button_back)) {
-			setPress(false, GP_KEY_EMU_DOWN);
+			SetPress(false, inputMapping.Backwards);
 		}
 		if (gpe->btn_released & (1 << gpc.button_esc)) {
-			setPress(false, GP_KEY_EMU_ESC);
+			SetPress(false, SDL_SCANCODE_ESCAPE);
 		}
 		if (gps.scene_id == Scene::DEAD) {
-			setPress(false, GP_KEY_EMU_SPACE);
+			SetPress(false, SDL_SCANCODE_SPACE);
 		}
 	}
 
@@ -698,23 +685,27 @@ void set_scene(const Scene scene_id)
 			gps.nav_mode = 1;
 			break;
 		case Scene::FLIGHT:
-			ScaleDownMouseCoords(maxX, maxY);
-			gps.rest_x = maxX / 2;
-			gps.rest_y = maxY / 2;
-			gps.max_x = maxX;
-			gps.max_y = maxY;
-			VGA_Set_mouse(320, 240);
+			gps.rest_x = (maxX * mouseScaleX) / 2;
+			gps.rest_y = (maxY * mouseScaleY) / 2;
+			gps.max_x = maxX * mouseScaleX;
+			gps.max_y = maxY * mouseScaleY;
+			if (screenWidth_18062C > 640 && screenHeight_180624 > 480)
+				VGA_Set_mouse(screenWidth_18062C / 2, screenHeight_180624 / 2);
+			else
+				VGA_Set_mouse(320, 200);
+
 			gps.nav_mode = 0;
 			break;
 		case Scene::FLIGHT_MENU:
+		case Scene::CHAT_MENU:
 		case Scene::SPELL_MENU:
-			gps.max_x = gameResWidth;
-			gps.max_y = gameResHeight;
+			gps.max_x = screenWidth_18062C;
+			gps.max_y = screenHeight_180624;
 			gps.nav_mode = 1;
 			break;
 		default:
-			gps.max_x = gameResWidth;
-			gps.max_y = gameResHeight;
+			gps.max_x = screenWidth_18062C;
+			gps.max_y = screenHeight_180624;
 			break;
 	}
 	Logger->trace("set scene {}, nav_mode {}", (int)scene_id, gps.nav_mode);
@@ -727,12 +718,14 @@ void OnResolutionChanged(uint32_t width, uint32_t height)
 
 	if (gps.scene_id == Scene::FLIGHT)
 	{
-		ScaleDownMouseCoords(maxX, maxY);
-		gps.rest_x = maxX / 2;
-		gps.rest_y = maxY / 2;
-		gps.max_x = maxX;
-		gps.max_y = maxY;
-		VGA_Set_mouse(320, 240);
+		gps.rest_x = (maxX * mouseScaleX) / 2;
+		gps.rest_y = (maxY * mouseScaleY) / 2;
+		gps.max_x = maxX * mouseScaleX;
+		gps.max_y = maxY * mouseScaleY;
+		if (screenWidth_18062C > 640 && screenHeight_180624 > 480)
+			VGA_Set_mouse(screenWidth_18062C / 2, screenHeight_180624 / 2);
+		else
+			VGA_Set_mouse(320, 200);
 	}
 }
 

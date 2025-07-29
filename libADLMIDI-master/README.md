@@ -1,16 +1,17 @@
 # libADLMIDI
-libADLMIDI is a free MIDI to WAV conversion library with OPL3 emulation
+libADLMIDI is a free Software MIDI synthesizer library with OPL3 emulation
 
 Original ADLMIDI code: Copyright (c) 2010-2014 Joel Yliluoma <bisqwit@iki.fi>
 
-ADLMIDI Library API:   Copyright (c) 2015-2018 Vitaly Novichkov <admin@wohlnet.ru>
+ADLMIDI Library API:   Copyright (c) 2015-2025 Vitaly Novichkov <admin@wohlnet.ru>
 
 Library is based on the ADLMIDI, a MIDI player for Linux and Windows with OPL3 emulation:
 
-[http://iki.fi/bisqwit/source/adlmidi.html](http://iki.fi/bisqwit/source/adlmidi.html)
+[https://bisqwit.iki.fi/source/adlmidi.html](https://bisqwit.iki.fi/source/adlmidi.html)
 
-* Semaphore-CI: [![Build Status](https://semaphoreci.com/api/v1/wohlstand/libadlmidi/branches/master/shields_badge.svg)](https://semaphoreci.com/wohlstand/libadlmidi)
-* AppVeyor CI: [![Build status](https://ci.appveyor.com/api/projects/status/bfhwdsm13s17rn49?svg=true)](https://ci.appveyor.com/project/Wohlstand/libadlmidi)
+* Semaphore-CI: [![Build Status](https://wohlsoft.semaphoreci.com/badges/libADLMIDI/branches/master.svg?style=shields)](https://wohlsoft.semaphoreci.com/projects/libADLMIDI)
+* AppVeyor CI: [![Build Status](https://ci.appveyor.com/api/projects/status/bfhwdsm13s17rn49?svg=true)](https://ci.appveyor.com/project/Wohlstand/libadlmidi)
+* GitHub Actions: [![Windows Build](https://github.com/Wohlstand/libADLMIDI/actions/workflows/windows-ci.yml/badge.svg)](https://github.com/Wohlstand/libADLMIDI/actions/workflows/windows-ci.yml) [![Ubuntu Build](https://github.com/Wohlstand/libADLMIDI/actions/workflows/ubuntu-ci.yml/badge.svg)](https://github.com/Wohlstand/libADLMIDI/actions/workflows/ubuntu-ci.yml)  [![macOS Build](https://github.com/Wohlstand/libADLMIDI/actions/workflows/macos-ci.yml/badge.svg)](https://github.com/Wohlstand/libADLMIDI/actions/workflows/macos-ci.yml)
 
 # Differences with original tool
 * Reverb code has been removed.
@@ -23,6 +24,9 @@ Library is based on the ADLMIDI, a MIDI player for Linux and Windows with OPL3 e
 * Windows MinGW 4.9.x, 5.2
 * Android NDK 12b/13
 * DJGPP GCC 7.2 cross compiler from Linux to MS-DOS 32-bit
+* OpenBSD
+* Haiku
+* Emscripten
 
 # Key features
 * OPL3 emulation with four-operator mode support
@@ -72,14 +76,13 @@ The library is licensed under in it's parts LGPL 2.1+, GPL v2+, GPL v3+, and MIT
 ## Available CMake options
 
 ### Library options
-* **CMAKE_PREFIX_PATH** - destinition folder where libADLMIDI will be installed. On Linux it is /usr/local/ by default.
-* **CMAKE_BUILD_TYPE** - Build types: **Debug** or **Release**
+* **CMAKE_INSTALL_PREFIX** - destination directory where libADLMIDI will be installed. On Linux it is /usr/local/ by default.
+* **CMAKE_BUILD_TYPE** - Build types: **Debug** or **Release**. Also **MinSizeRel** or **RelWithDebInfo**.
 
 * **libADLMIDI_STATIC** - (ON/OFF, default ON) Build static library
 * **libADLMIDI_SHARED** - (ON/OFF, default OFF) Build shared library
 * **WITH_UNIT_TESTS** - (ON/OFF, default OFF) Enable unit testing
 
-* **WITH_CPP_EXTRAS** - (ON/OFF, default OFF) Build libADLMIDI with some extra public features for C++ language (for example, instrument testing API is available for C++ only).
 * **WITH_MIDI_SEQUENCER** - (ON/OFF, default ON) Build with embedded MIDI sequencer. Disable this if you want use library in real-time MIDI drivers or plugins.)
 * **WITH_EMBEDDED_BANKS** - (ON/OFF, default ON) Enable or disable embedded banks (Original ADLMIDI and older versions of libADLMIDI are had embedded-only banks with no ability to load custom banks in runtime).
 * **WITH_HQ_RESAMPLER** - (ON/OFF, default OFF) Build with support for high quality resampling (requires zita-resampler to be installed)
@@ -87,16 +90,22 @@ The library is licensed under in it's parts LGPL 2.1+, GPL v2+, GPL v3+, and MIT
 * **WITH_XMI_SUPPORT** - (ON/OFF, default ON) Build with support for AIL XMI files)
 * **USE_DOSBOX_EMULATOR** - (ON/OFF, default ON) Enable support for DosBox 0.74 emulator. (Well-accurate and fast)
 * **USE_NUKED_EMULATOR** - (ON/OFF, default ON) Enable support for Nuked OPL3 emulator. (Very-accurate, needs more CPU power)
+* **USE_OPAL_EMULATOR** - (ON/OFF, default ON) Enable support for Opal emulator by Reality (Taken from RAD v2 release package). (Inaccurate)
+* **USE_JAVA_EMULATOR** - (ON/OFF, default ON) Enable support for JavaOPL emulator (Taken from GZDoom). (Semi-accurate)
 
 
 ### Utils and extras
 * **WITH_GENADLDATA**  - (ON/OFF, default OFF) Build and execute the utility which will rebuild the embedded banks database (which is an adldata.cpp file).
 * **WITH_GENADLDATA_COMMENTS** - (ON/OFF, default OFF) Enable comments in generated ADLDATA cache file
+* **GENADLDATA_CUSTOM_BANKLIST** - (Path) Set the absolute path to the custom INI file that declares a list of embedded banks. If not specified, the banks.ini at the repository root will be used.
 
 * **WITH_MIDIPLAY** - (ON/OFF, default OFF) Build demo MIDI player (Requires SDL2 and also pthread on Windows with MinGW)
 * **MIDIPLAY_WAVE_ONLY** - (ON/OFF, default OFF) Build Demo MIDI player without support of real time playing. It will output into WAV only.
-* **WITH_ADLMIDI2** - (ON/OFF, default OFF) Build Classic ADLMIDI MIDI player (Requires SDL2 on Linux and macOS, requires pthread on Windows with MinGW, SDL doesn't required on Windows. Also, the **WITH_CPP_EXTRAS** flag must be enabled)
+* **WITH_ADLMIDI2** - (ON/OFF, default OFF) Build Classic ADLMIDI MIDI player (Requires SDL2 on Linux and macOS, requires pthread on Windows with MinGW, SDL doesn't required on Windows).
 * **WITH_VLC_PLUGIN** - (ON/OFF, default OFF) Compile VLC plugin. For now, works on Linux and VLC. Support for other platforms comming soon!
+* **WITH_WINMMDRV** - (ON/OFF, default OFF) (Windows platform only) Compile the WinMM MIDI driver to use libOPNMIDI as a system MIDI device.
+  * **WITH_WINMMDRV_PTHREADS** - (ON/OFF, default ON) Link libwinpthreads statically (when using pthread-based builds).
+  * **WITH_WINMMDRV_MINGWEX** - (ON/OFF, default OFF) Link libmingwex statically (when using vanilla MinGW builds). Useful for targetting to pre-XP Windows versions.
 * **WITH_OLD_UTILS** - (ON/OFF, default OFF) Build old utilities to dump some bank formats, made by original creator of ADLMIDI
 * **EXAMPLE_SDL2_AUDIO** - (ON/OFF, default OFF) Build also a simple SDL2 demo MIDI player
 
@@ -111,16 +120,21 @@ You need to make in the any IDE a library project and put into it next files
 * `ADLMIDI_DISABLE_MIDI_SEQUENCER` - Completely disables built-in MIDI sequencer.
 * `ADLMIDI_DISABLE_DOSBOX_EMULATOR` - Disables DosBox 0.74 OPL3 emulator.
 * `ADLMIDI_DISABLE_NUKED_EMULATOR` - Disables Nuked OPL3 emulator.
+* `ADLMIDI_DISABLE_JAVA_EMULATOR` - Disable JavaOPL3 emulator.
+* `ADLMIDI_DISABLE_OPAL_EMULATOR` - Disable Opal OPL3-only emulator.
+* `ADLMIDI_DISABLE_ESFMU_EMULATOR` - Disable ESFMu ESFM/OPL3 emulator.
+* `ENABLE_HW_OPL_SERIAL_PORT` and `ADLMIDI_ENABLE_HW_SERIAL` - Enable support of the Serial Port support for hardware OPL3 chip interfaces.
 * `DISABLE_EMBEDDED_BANKS` - Disables usage of embedded banks. Use it to use custom-only banks.
+* `ADLMIDI_ENABLE_HQ_RESAMPLER` - Enable high-quality resampler (requires `zipa-resampler` external dependency).
 
 ### Public header (include)
 * adlmidi.h     - Library Public API header, use it to control library
-* adlmidi.hpp   - Public additional C++ API header, optional
 
 ### Internal code (src)
 * chips/*       - Various OPL3 chip emulators and commonized interface over them
 * wopl/*        - WOPL bank format library
 * adldata.hh    - bank structures definition
+* adldata_db.h  - Embedded banks database structures and containers definitions
 * adlmidi_private.hpp - header of internal private APIs
 * adlmidi_bankmap.h - MIDI bank hash table
 * adlmidi_bankmap.tcc - MIDI bank hash table (Implementation)
@@ -128,15 +142,15 @@ You need to make in the any IDE a library project and put into it next files
 * adlmidi_ptr.hpp - Custom implementations of smart pointers for C++98
 * file_reader.hpp - Generic file and memory reader
 
-* adldata.cpp	 - Automatically generated database of FM banks from "fm_banks" directory via "gen_adldata" tool. **Don't build it if you have defined `DISABLE_EMBEDDED_BANKS` macro!**
-* adlmidi.cpp   - code of library
+* adldata.cpp	  - Automatically generated database of FM banks from "fm_banks" directory via "gen_adldata" tool. **Don't build it if you defined the `DISABLE_EMBEDDED_BANKS` macro!**
+* adlmidi.cpp     - code of library
 * adlmidi_load.cpp	- Source of file loading and parsing processing
 * adlmidi_midiplay.cpp	- MIDI event sequencer
 * adlmidi_opl3.cpp	- OPL3 chips manager
 * adlmidi_private.cpp	- some internal functions sources
 
 #### MIDI Sequencer
-To remove MIDI Sequecer, define `ADLMIDI_DISABLE_MIDI_SEQUENCER` macro and remove all those files
+To remove MIDI Sequencer, define `ADLMIDI_DISABLE_MIDI_SEQUENCER` macro and remove all those files
 * adlmidi_sequencer.cpp	- MIDI Sequencer related source
 * cvt_mus2mid.hpp - MUS2MID converter source (define `BWMIDI_DISABLE_MUS_SUPPORT` macro to remove MUS support)
 * cvt_xmi2mid.hpp - XMI2MID converter source (define `BWMIDI_DISABLE_XMI_SUPPORT` macro to remove XMI support)
@@ -161,14 +175,64 @@ To build that example you will need to have installed SDL2 library.
 
 # Working demos
 
-* [PGE MusPlay for Win32](http://wohlsoft.ru/docs/_laboratory/_Builds/win32/bin-w32/_packed/pge-musplay-dev-win32.zip) and [Win64](http://wohlsoft.ru/docs/_laboratory/_Builds/win32/bin-w64/_packed/pge-musplay-dev-win64.zip) (also available for other platforms as part of [PGE Project](https://github.com/WohlSoft/PGE-Project)) - a little music player which uses SDL Mixer X library (fork of the SDL Mixer 2.0) which has embedded libADLMIDI to play MIDI files independently from operating system's settings and drivers. <br>(source code of player can be find [here](https://github.com/WohlSoft/PGE-Project/tree/master/MusicPlayer) and source code of SDL Mixer X [here](https://github.com/WohlSoft/SDL-Mixer-X/))
+* [Moondust MusPlay for Win32](https://builds.wohlsoft.ru/win32/bin-w32/_packed/pge-musplay-master-win32.zip) and [Win64](https://builds.wohlsoft.ru/win32/bin-w64/_packed/pge-musplay-master-win64.zip) (also available for other platforms as part of [Moondust Project](https://github.com/WohlSoft/Moondust-Project)) - a little music player which uses SDL Mixer X library (fork of the SDL Mixer 2.0) which has embedded libADLMIDI to play MIDI files independently from operating system's settings and drivers. <br>(source code of player can be find [here](https://github.com/WohlSoft/PGE-Project/tree/master/MusicPlayer) and source code of SDL Mixer X [here](https://github.com/WohlSoft/SDL-Mixer-X/))
 * [ADLMIDI Player for Android](https://github.com/Wohlstand/ADLMIDI-Player-Java/releases) - a little MIDI-player for Android which uses libADLMIDI to play MIDI files and provides flexible GUI with ability to change bank, flags, number of emulated chips, etc.
+* [ADLMIDI Player for DOS32](https://builds.wohlsoft.ru/dos/adlmidi-dos32.zip) - a little MIDI-player built with DJGPP toolchain for DOS operating system for old computers to play music on the real OPL3 hardware. Archive contains two variants: `adlmidi.exe` is the main variant; `adlmidi2.exe` is the reincarnation of original ADLMIDI player by Joel Yliluoma made over modern libADLMIDI backend.
 
 # Todo
 * Check out for XG/GS standards to provide a support to use any channels as percussion and also check some of SysEx commands.
 * Add support of MIDI Format 2 files
 
 # Changelog
+## 1.6.0   2025-07-05
+ * Fixed the work on big endian processors
+ * Fixed ARM64 build on some platforms
+ * Improved support of the EA-MUS files (Thanks to [dashodanger](https://github.com/dashodanger))
+ * Fixed crash on attempt to change the volume of a blank note
+ * Added an ability to supply the custom list of embedded banks using `-DGENADLDATA_CUSTOM_BANKLIST=/path/to/ini/file.ini` argument
+ * Improved support of the CMF files: added support for previously missing transpose, depth control, and song marker controllers
+ * Added ESFMu emulator for the future ESFM support (Currently used as one another OPL3 emulator and without panned stereo support yet).
+ * Added YMFM emulator support (OPL3 and OPL2).
+ * Added support for OPL2 mode when some emulators enabled.
+ * Added ability to change the hardware address at the DOS version of MIDI player.
+ * Added an ability to manually specify the chip type (OPL2 or OPL3) at the DOS version of MIDI player.
+ * Added an automatical detection of OPL2 or OPL3 chip depending on the BLASTER environment variable's value at the DOS version of MIDI player.
+ * Added Nuked OPL2 and OPL3 Low-Level emulators (Kept disabled by default because they are too heavy for ordinary processors).
+ * Fixed a dead loop that might happen when final tone gets lower than zero.
+ * Added possibility to play the same note multiple times at the same MIDI channel (Resolved playback of some music, like Heretic's E1M6).
+ * Dual-voice 2-op instruments will be squashed to single 2-op voice when available chip channels are overflow (The stability of DMX-oriented music has been improved).
+
+## 1.5.1   2022-10-31
+ * Added an ability to disable the automatical arpeggio
+ * Added an ability to set the count of loops (how many times to play the song)
+ * Added an ability to disable/enable playing of selected MIDI channels
+ * Fixed memory damages and crashes while playing XMI files
+ * Added bank-specific MT32 defaults (to don't confuse XMI playback between different games, works for AIL and IBK only, and for WOPL if set at the header)
+ * Added the chip channels allocation mode option
+ * Fixed the playback of multi-song XMI files
+ * Added an ability to switch the XMI song on the fly
+
+## 1.5.0.1 2020-10-11
+ * Fixed an incorrect timer processing when using a real-time interface
+
+## 1.5.0   2020-09-28
+ * Drum note length expanding is now supported in real-time mode (Thanks to [Jean Pierre Cimalando](https://github.com/jpcima) for a work!)
+ * Channels manager has been improved (Thanks to [Jean Pierre Cimalando](https://github.com/jpcima) for a work!)
+ * Nuked OPL3 1.8 emulator got some optimizations ported from 1.7 where they are was applied previously (Thanks to [Jean Pierre Cimalando](https://github.com/jpcima) for a work!)
+ * Reworked rhythm-mode percussions system, WOPL banks with rhythm-mode percussions
+ * Added Public Domain Opal OPL3 emulator made by Reality (a team who originally made the Reality Adlib Tracker) (Thanks to [Jean Pierre Cimalando](https://github.com/jpcima) for a work!)
+ * Added LGPL licensed JavaOPL3 emulator made by Robson Cozendey in Java and later rewritten into C++ for GZDoom (Thanks to [Jean Pierre Cimalando](https://github.com/jpcima) for a work!)
+ * Fully rewritten an embedded bank database format, embedded banks now supports a wider set (more than 127:127 instruments in one bank)
+ * Improved accuracy of the DMX volume model, include the buggy AM interpretation
+ * Improved accuracy of Apogee volume model, include the bug of AM instruments
+ * Improved accuracy of the Win9X volume model
+ * Removed C++ extras. C++-bounded instruments tester is useless since a real-time MIDI API can completely replace it
+ * Added AIL volume model
+ * Added Generic FM variant of Win9X volume model
+ * Fixed an incorrect work of CC-121 (See https://github.com/Wohlstand/libADLMIDI/issues/227 for details)
+ * Added HMI volume model (Thanks to [Alexey Khokholov](https://github.com/nukeykt) for help with research!)
+ * Added frequency models, assigned to every volume model: AIL, HMI, DMX, Apogee, 9X, and the Generic formula
+
 ## 1.4.0   2018-10-01
  * Implemented a full support for Portamento! (Thanks to [Jean Pierre Cimalando](https://github.com/jpcima) for a work!)
  * Added support for SysEx event handling! (Thanks to [Jean Pierre Cimalando](https://github.com/jpcima) for a work!)
@@ -274,4 +338,3 @@ To build that example you will need to have installed SDL2 library.
 
 ## 1.0.0	2015-10-10
  * First release of library
-

@@ -1,7 +1,7 @@
 /*
  * Wohlstand's OPL3 Bank File - a bank format to store OPL3 timbre data and setup
  *
- * Copyright (c) 2015-2018 Vitaly Novichkov <admin@wohlnet.ru>
+ * Copyright (c) 2015-2025 Vitaly Novichkov <admin@wohlnet.ru>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -74,30 +74,33 @@ static void fromSint16BE(int16_t in, uint8_t *arr)
     arr[0] = ((uint16_t)in >> 8) & 0x00FF;
 }
 
-void strncpy_switch(char* dest, size_t destsz, const char* src, size_t count)
-{
-#if  defined(_MSC_VER)
-    return strncpy_s(dest, destsz, src, count);
-#else 
-    strncpy(dest, src, (count < destsz) ? count : destsz);
-#endif
-}
-
 
 WOPLFile *WOPL_Init(uint16_t melodic_banks, uint16_t percussive_banks)
 {
-    WOPLFile *file = NULL;
-    if(melodic_banks == 0)
-        return NULL;
-    if(percussive_banks == 0)
-        return NULL;
-    file = (WOPLFile*)calloc(1, sizeof(WOPLFile));
+    WOPLFile *file = (WOPLFile*)calloc(1, sizeof(WOPLFile));
     if(!file)
         return NULL;
-    file->banks_count_melodic = melodic_banks;
-    file->banks_count_percussion = percussive_banks;
-    file->banks_melodic = (WOPLBank*)calloc(1, sizeof(WOPLBank) * melodic_banks );
-    file->banks_percussive = (WOPLBank*)calloc(1, sizeof(WOPLBank) * percussive_banks );
+
+    file->banks_count_melodic = (melodic_banks != 0) ? melodic_banks : 1;
+    file->banks_melodic = (WOPLBank*)calloc(file->banks_count_melodic, sizeof(WOPLBank));
+
+    if(melodic_banks == 0)
+    {
+        unsigned i;
+        for(i = 0; i < 128; ++i)
+            file->banks_melodic[0].ins[i].inst_flags = WOPL_Ins_IsBlank;
+    }
+
+    file->banks_count_percussion = (percussive_banks != 0) ? percussive_banks : 1;
+    file->banks_percussive = (WOPLBank*)calloc(file->banks_count_percussion, sizeof(WOPLBank));
+
+    if(percussive_banks == 0)
+    {
+        unsigned i;
+        for(i = 0; i < 128; ++i)
+            file->banks_percussive[0].ins[i].inst_flags = WOPL_Ins_IsBlank;
+    }
+
     return file;
 }
 
@@ -141,7 +144,7 @@ int WOPL_BanksCmp(const WOPLFile *bank1, const WOPLFile *bank2)
 static void WOPL_parseInstrument(WOPLInstrument *ins, uint8_t *cursor, uint16_t version, uint8_t has_sounding_delays)
 {
     int l;
-    strncpy_switch(ins->inst_name,34, (const char*)cursor, 32);
+    strncpy(ins->inst_name, (const char*)cursor, 32);
     ins->inst_name[32] = '\0';
     ins->note_offset1 = toSint16BE(cursor + 32);
     ins->note_offset2 = toSint16BE(cursor + 34);
@@ -170,7 +173,8 @@ static void WOPL_parseInstrument(WOPLInstrument *ins, uint8_t *cursor, uint16_t 
 static void WOPL_writeInstrument(WOPLInstrument *ins, uint8_t *cursor, uint16_t version, uint8_t has_sounding_delays)
 {
     int l;
-    strncpy_switch((char*)cursor,33, ins->inst_name, 32);
+    memcpy((char*)cursor, ins->inst_name, 32);
+    cursor[32] = '\0';
     fromSint16BE(ins->note_offset1, cursor + 32);
     fromSint16BE(ins->note_offset2, cursor + 34);
     cursor[36] = (uint8_t)ins->midi_velocity_offset;
@@ -275,7 +279,7 @@ WOPLFile *WOPL_LoadBankFromMem(void *mem, size_t length, int *error)
         outFile->version        = version;
         outFile->opl_flags      = head[4];
         outFile->volume_model   = head[5];
-    }    
+    }
 
     bankslots_sizes[0] = count_melodic_banks;
     bankslots[0] = outFile->banks_melodic;
@@ -293,7 +297,7 @@ WOPLFile *WOPL_LoadBankFromMem(void *mem, size_t length, int *error)
                     SET_ERROR(WOPL_ERR_UNEXPECTED_ENDING);
                     return NULL;
                 }
-                strncpy_switch(bankslots[i][j].bank_name,33, (const char*)cursor, 32);
+                strncpy(bankslots[i][j].bank_name, (const char*)cursor, 32);
                 bankslots[i][j].bank_name[32] = '\0';
                 bankslots[i][j].bank_midi_lsb = cursor[32];
                 bankslots[i][j].bank_midi_msb = cursor[33];
@@ -511,7 +515,7 @@ int WOPL_SaveBankToMem(WOPLFile *file, void *dest_mem, size_t length, uint16_t v
             {
                 if(length < 34)
                     return WOPL_ERR_UNEXPECTED_ENDING;
-                strncpy_switch((char*)cursor,33, bankslots[i][j].bank_name, 32);
+                strncpy((char*)cursor, bankslots[i][j].bank_name, 32);
                 cursor[32] = bankslots[i][j].bank_midi_lsb;
                 cursor[33] = bankslots[i][j].bank_midi_msb;
                 GO_FORWARD(34);

@@ -1,7 +1,7 @@
 /*
  * Interfaces over Yamaha OPL3 (YMF262) chip emulators
  *
- * Copyright (C) 2017-2018 Vitaly Novichkov (Wohlstand)
+ * Copyright (c) 2017-2025 Vitaly Novichkov (Wohlstand)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,7 @@ NukedOPL3::NukedOPL3() :
     OPLChipBaseT()
 {
     m_chip = new opl3_chip;
-    setRate(m_rate);
+    NukedOPL3::setRate(m_rate);
 }
 
 NukedOPL3::~NukedOPL3()
@@ -72,4 +72,14 @@ void NukedOPL3::nativeGenerate(int16_t *frame)
 const char *NukedOPL3::emulatorName()
 {
     return "Nuked OPL3 (v 1.8)";
+}
+
+bool NukedOPL3::hasFullPanning()
+{
+    return true;
+}
+
+OPLChipBase::ChipType NukedOPL3::chipType()
+{
+    return CHIPTYPE_OPL3;
 }

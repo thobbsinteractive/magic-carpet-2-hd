@@ -13,6 +13,8 @@
 extern DOS_Device* DOS_CON;
 #endif //USE_DOSBOX
 #include "../engine/EventDispatcher.h"
+#include "GameKey.h"
+#include "KeyboardInputMapping.h"
 
 SDL_Window* m_window = nullptr;
 SDL_Renderer* m_renderer = nullptr;
@@ -35,9 +37,11 @@ uint16_t m_iWindowWidth = 640;
 uint16_t m_iWindowHeight = 480;
 
 bool m_bMaintainAspectRatio = true;
-
 bool m_settingWindowGrabbed = true;
-bool settingWASD = false;
+
+bool m_pressed = false;
+uint16_t m_lastScancode = 0;
+Scene m_Scene = Scene::PREAMBLE_MENU;
 
 const char* default_caption = "Magic Carpet 2 HD - (Community Update)";
 
@@ -163,6 +167,17 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			// Sure clear the screen first.. always nice.
 			SDL_RenderClear(m_renderer);
 			SDL_RenderPresent(m_renderer);
+
+			SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, 640, 480 });
+
+			std::function<void(Scene)> callBackScene = SetMouseKeyboardScene;
+			EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBackScene));
+
+			std::function<void(GameState)> callBackGameState = SetMouseKeyboardGameState;
+			EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAMEPLAY_STATE_CHANGE, callBackGameState));
+
+			std::function<void(uint32_t, uint32_t)> resCallBack = OnMouseResolutionChanged;
+			EventDispatcher::I->RegisterEvent(new Event<uint32_t, uint32_t>(EventType::E_RESOLUTION_CHANGE, resCallBack));
 		}
 		if (!VGA_LoadFont())
 		{
@@ -175,6 +190,37 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 		Draw_black();
 		m_initiated = true;
 	}
+}
+
+void SetMouseKeyboardScene(const Scene sceneId)
+{
+	m_Scene = sceneId;
+}
+
+void SetMouseKeyboardGameState(const GameState state)
+{
+	if (state == GameState::ENDED)
+	{
+		SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, 640, 480 });
+	}
+}
+
+void OnMouseResolutionChanged(uint32_t width, uint32_t height)
+{
+	if (screenWidth_18062C > 640 && screenHeight_180624 > 480)
+	{
+		auto x = int(640.0f * mouseScaleX);
+		if (x > screenWidth_18062C)
+			x = screenWidth_18062C;
+
+		auto y = int(480.0f * mouseScaleY);
+		if (y > screenHeight_180624)
+			y = screenHeight_180624;
+
+		SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, x, y });
+	}
+	else
+		SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, 640, 480 });
 }
 
 void CreateRenderSurfaces(int width, int height)
@@ -805,7 +851,7 @@ void ToggleMouseGrabbed() {
 	SDL_SetWindowGrab(m_window, m_settingWindowGrabbed ? SDL_TRUE : SDL_FALSE);
 }
 
-bool handleSpecialKeys(const SDL_Event &event) {
+bool HandleSpecialKeys(const SDL_Event &event) {
 	bool specialKey = false;
 	if ((event.key.keysym.sym == SDLK_RETURN) && (event.key.keysym.mod & KMOD_ALT)) {
 		ToggleFullscreen();
@@ -815,21 +861,12 @@ bool handleSpecialKeys(const SDL_Event &event) {
 		ToggleMouseGrabbed();
 		specialKey = true;
 	}
-	else if ((event.key.keysym.sym == SDLK_F11) && (event.key.keysym.mod & KMOD_CTRL)) {
-		settingWASD = !settingWASD;
-		specialKey = true;
-	}
-
 	return specialKey;
 }
 
-bool pressed = false;
-uint16_t lastchar = 0;
 int PollSdlEvents()
 {
 	SDL_Event event;
-	Uint8 buttonindex;
-	Uint8 buttonstate;
 	uint32_t buttonresult;
 	gamepad_event_t gpe = {};
 
@@ -837,127 +874,91 @@ int PollSdlEvents()
 	{
 		switch (event.type)
 		{
-		case SDL_WINDOWEVENT:
-		{
-			if (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESIZED)
+			case SDL_WINDOWEVENT:
 			{
-				int newWidth = 0;
-				int newHeight = 0;
-				SDL_GetWindowSize(m_window, &newWidth, &newHeight);
-				m_iWindowWidth = newWidth;
-				m_iWindowHeight = newHeight;
-				if (EventDispatcher::I != nullptr)
-					EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
-			}
-			break;
-		}
-		case SDL_KEYDOWN:
-			pressed = true;
-			lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
-
-			if (!handleSpecialKeys(event)) {
-				setPress(true, lastchar);
-			}
-			Logger->trace("Key {} press detected", lastchar);
-			break;
-		case SDL_KEYUP:
-			lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
-			setPress(false, lastchar);
-			Logger->trace("Key {} release detected", lastchar);
-			break;
-
-		case SDL_MOUSEMOTION:
-			SetMouseEvents(1, event.motion.x, event.motion.y);
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-		case SDL_MOUSEBUTTONUP:
-			buttonresult = 0;
-
-			buttonindex = event.button.button;
-			buttonstate = event.button.state;
-			switch (buttonindex) {
-			case SDL_BUTTON_LEFT:
-			{
-				switch (buttonstate) {
-				case SDL_PRESSED:
+				if (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESIZED)
 				{
-					buttonresult |= 2;
-					break;
-				}
-				case SDL_RELEASED:
-				{
-					buttonresult |= 4;
-					break; }
+					int newWidth = 0;
+					int newHeight = 0;
+					SDL_GetWindowSize(m_window, &newWidth, &newHeight);
+					m_iWindowWidth = newWidth;
+					m_iWindowHeight = newHeight;
+					if (EventDispatcher::I != nullptr)
+						EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
 				}
 				break;
 			}
-			case SDL_BUTTON_MIDDLE:
+			case SDL_KEYDOWN:
 			{
-				switch (buttonstate) {
-				case SDL_PRESSED:
-				{
-					buttonresult |= 0x20;
-					break;
-				}
-				case SDL_RELEASED:
-				{
-					buttonresult |= 0x40;
-					break; }
-				}
-				break;
-			}
-			case SDL_BUTTON_RIGHT:
-			{
-				switch (buttonstate) {
-				case SDL_PRESSED:
-				{
-					buttonresult |= 0x8;
-					break;
-				}
-				case SDL_RELEASED:
-				{
-					buttonresult |= 0x10;
-					break; }
-				}
-				break;
-			}
-			}
+				m_pressed = true;
+				m_lastScancode = event.key.keysym.scancode;
 
-			SetMouseEvents(buttonresult, event.motion.x, event.motion.y);
-			break;
-		case SDL_JOYAXISMOTION:
-			if (event.jaxis.which == gpc.controller_id) {
-				// motion on controller 0
-				//gps.initialized = 1;
-				// actual axis data is being read via gamepad_poll_data()
-				// to counteract jerkiness due to missing event triggers
-				Logger->trace("axis {} event detected", event.jaxis.axis + 1);
+				if (!HandleSpecialKeys(event)) {
+					SetPress(true, m_lastScancode);
+				}
+				Logger->trace("Key {} press detected", m_lastScancode);
+				break;
 			}
-			break;
-		case SDL_JOYHATMOTION:
-			if (event.jhat.which == gpc.controller_id) {
-				//gps.initialized = 1;
-				// actual axis data is being read via gamepad_poll_data()
-				Logger->trace("hat {} event detected", event.jhat.hat + 1);
+			case SDL_KEYUP:
+			{
+				m_lastScancode = event.key.keysym.scancode;
+				SetPress(false, m_lastScancode);
+				Logger->trace("Key {} release detected", m_lastScancode);
+				break;
 			}
-			break;
-		case SDL_JOYBUTTONDOWN:
-			if (event.jbutton.which == gpc.controller_id) {
-				//gps.initialized = 1;
-				gpe.btn_pressed = 1 << (event.jbutton.button + 1);
-				Logger->trace("key {} press detected", event.jbutton.button + 1);
-				gpe.flag |= GP_BTN_PRESSED;
+			case SDL_MOUSEMOTION:
+			{
+				SetMouseEvents(1, event.motion.x, event.motion.y);
+				break;
 			}
-			break;
-		case SDL_JOYBUTTONUP:
-			if (event.jbutton.which == gpc.controller_id) {
-				//gps.initialized = 1;
-				gpe.btn_released = 1 << (event.jbutton.button + 1);
-				Logger->trace("key {} release detected", event.jbutton.button + 1);
-				gpe.flag |= GP_BTN_RELEASED;
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+			{
+				buttonresult = TranslateSdlMouseToGameMouse(event.button);
+				SetMouseEvents(buttonresult, event.motion.x, event.motion.y);
+				break;
 			}
-			break;
-		case SDL_QUIT: return 0;
+			case SDL_JOYAXISMOTION:
+			{
+				if (event.jaxis.which == gpc.controller_id) {
+					// motion on controller 0
+					//gps.initialized = 1;
+					// actual axis data is being read via gamepad_poll_data()
+					// to counteract jerkiness due to missing event triggers
+					Logger->trace("axis {} event detected", event.jaxis.axis + 1);
+				}
+				break;
+			}
+			case SDL_JOYHATMOTION:
+			{
+				if (event.jhat.which == gpc.controller_id) {
+					//gps.initialized = 1;
+					// actual axis data is being read via gamepad_poll_data()
+					Logger->trace("hat {} event detected", event.jhat.hat + 1);
+				}
+				break;
+			}
+			case SDL_JOYBUTTONDOWN:
+			{
+				if (event.jbutton.which == gpc.controller_id) {
+					//gps.initialized = 1;
+					gpe.btn_pressed = 1 << (event.jbutton.button + 1);
+					Logger->trace("key {} press detected", event.jbutton.button + 1);
+					gpe.flag |= GP_BTN_PRESSED;
+				}
+				break;
+			}
+			case SDL_JOYBUTTONUP:
+			{
+				if (event.jbutton.which == gpc.controller_id) {
+					//gps.initialized = 1;
+					gpe.btn_released = 1 << (event.jbutton.button + 1);
+					Logger->trace("key {} release detected", event.jbutton.button + 1);
+					gpe.flag |= GP_BTN_RELEASED;
+				}
+				break;
+			}
+			case SDL_QUIT: return 0;
 		}
 	}
 
@@ -966,46 +967,46 @@ int PollSdlEvents()
 	return 1;
 }
 
-void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) {
-
-	ScaleUpMouseCoords(x, y);
+void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) 
+{
+	ScaleUpMouseCoordsToVga(x, y);
 	MouseEvents(buttons, x, y);
 }
 
 void VGA_Set_mouse(int16_t x, int16_t y) 
 {
-	ScaleDownMouseCoords(x, y);
+	ScaleDownMouseCoordsToVga(x, y);
 	SDL_WarpMouseInWindow(m_window, x, y);
 	joystick_set_env(x, y);
 }
 
-void ScaleUpMouseCoords(int16_t& x, int16_t& y)
+void ScaleUpMouseCoordsToVga(int16_t& x, int16_t& y)
 {
-	if (m_iOrigw > 640 && m_iOrigw != m_iWindowWidth)
+	if (m_iOrigw > 640)
 	{
-		float fx = (float)m_iOrigw / (float)m_iWindowWidth;
-		x = x * fx;
+		float fx = (float)m_iOrigw / (640.0f * mouseScaleX);
+		x = fx * x;
 	}
 
-	if (m_iOrigh > 480 && m_iOrigh != m_iWindowHeight)
+	if (m_iOrigh > 480)
 	{
-		float fy = (float)m_iOrigh / (float)m_iWindowHeight;
-		y = y * fy;
+		float fy = (float)m_iOrigh / (480.0f * mouseScaleY);
+		y = fy * y;
 	}
 }
 
-void ScaleDownMouseCoords(int16_t& x, int16_t& y)
+void ScaleDownMouseCoordsToVga(int16_t& x, int16_t& y)
 {
-	if (m_iOrigw > 640 && m_iOrigw != m_iWindowWidth)
+	if (m_iOrigw > 640)
 	{
-		float fx = (float)m_iWindowWidth / (float)m_iOrigw;
-		x = x * fx;
+		float fx = (640.0f * mouseScaleX) / (float)m_iOrigw;
+		x = fx * x;
 	}
 
-	if (m_iOrigh > 480 && m_iOrigh != m_iWindowHeight)
+	if (m_iOrigh > 480)
 	{
-		float fy = (float)m_iWindowHeight / (float)m_iOrigh;
-		y = y * fy;
+		float fy = (480.0f * mouseScaleY) / (float)m_iOrigh;
+		y = fy * y;
 	}
 }
 
@@ -1175,321 +1176,395 @@ int16_t VGA_get_shift_status() {
 	return 0;
 }
 bool VGA_check_standart_input_status() {
-	bool locpressed = pressed;
+	bool locpressed = m_pressed;
 	//uint16_t loclastchar = lastchar;
-	pressed = false;
+	m_pressed = false;
 	return locpressed;
 }
 
-uint16_t fixchar(uint16_t loclastchar) {
-	auto sdl_char = (loclastchar & 0xff00) >> 8;
-	if (settingWASD) {
-		switch (sdl_char) {
-        case SDL_SCANCODE_W:
-			sdl_char = SDL_SCANCODE_UP;
-			break;
-        case SDL_SCANCODE_A:
-			sdl_char = SDL_SCANCODE_LEFT;
-			break;
-        case SDL_SCANCODE_S:
-			sdl_char = SDL_SCANCODE_DOWN;
-			break;
-        case SDL_SCANCODE_D:
-			sdl_char = SDL_SCANCODE_RIGHT;
-			break;
-        case SDL_SCANCODE_LSHIFT:
-			sdl_char = SDL_SCANCODE_RCTRL;
-			break;
+uint32_t TranslateSdlMouseToGameMouse(SDL_MouseButtonEvent button)
+{
+	uint32_t buttonresult = 0;
+
+	if (m_Scene == Scene::SPELL_MENU ||
+		m_Scene == Scene::FLIGHT)
+	{
+		if (button.button == mouseMapping.SpellLeft)
+		{
+			if (button.state == SDL_PRESSED)
+				buttonresult |= 2;
+			if (button.state == SDL_RELEASED)
+				buttonresult |= 4;
 		}
+		if (button.button == mouseMapping.SpellRight)
+		{
+			if (button.state == SDL_PRESSED)
+				buttonresult |= 0x8;
+			if (button.state == SDL_RELEASED)
+				buttonresult |= 0x10;
+		}
+		if (button.button == mouseMapping.map)
+		{
+			if (button.state == SDL_PRESSED)
+			{
+				m_lastScancode = inputMapping.Map;
+				SetGameKeyPress_1806E4(true, GameKey::RETURN);
+			}
+			if (button.state == SDL_RELEASED)
+			{
+				m_lastScancode = inputMapping.Map;
+				SetGameKeyPress_1806E4(false, GameKey::RETURN);
+			}
+		}
+		if (button.button == mouseMapping.SpellMenu)
+		{
+			if (button.state == SDL_PRESSED)
+			{
+				m_lastScancode = inputMapping.SpellMenu;
+				SetGameKeyPress_1806E4(true, GameKey::CTRL);
+			}
+			if (button.state == SDL_RELEASED)
+			{
+				m_lastScancode = inputMapping.SpellMenu;
+				SetGameKeyPress_1806E4(false, GameKey::CTRL);
+			}
+		}
+		if (button.button == mouseMapping.SpellMenuMark)
+		{
+			if (button.state == SDL_PRESSED)
+			{
+				m_lastScancode = inputMapping.SpellMenuMark;
+				SetGameKeyPress_1806E4(true, GameKey::RSHIFT);
+			}
+			if (button.state == SDL_RELEASED)
+			{
+				m_lastScancode = inputMapping.SpellMenuMark;
+				SetGameKeyPress_1806E4(false, GameKey::RSHIFT);
+			}
+		}
+
+		return buttonresult;
 	}
 
-	switch (sdl_char)
+	return TranslateButtonState(button);
+}
+
+uint32_t TranslateButtonState(SDL_MouseButtonEvent button)
+{
+	uint32_t buttonresult = 0;
+	if (button.button == SDL_BUTTON_LEFT)
+	{
+		if (button.state == SDL_PRESSED)
+			buttonresult |= 2;
+		if (button.state == SDL_RELEASED)
+			buttonresult |= 4;
+	}
+	if (button.button == SDL_BUTTON_RIGHT)
+	{
+		if (button.state == SDL_PRESSED)
+			buttonresult |= 0x8;
+		if (button.state == SDL_RELEASED)
+			buttonresult |= 0x10;
+	}
+	return buttonresult;
+}
+
+uint16_t TranslateSdlKeysToGameKeys(uint16_t scancode)
+{
+	if (m_Scene == Scene::SPELL_MENU ||
+		m_Scene == Scene::FLIGHT ||
+		m_Scene == Scene::DEAD)
+	{
+		if (scancode == inputMapping.Forward)
+			return GameKey::UP;
+		if (scancode == inputMapping.Backwards)
+			return GameKey::DOWN;
+		if (scancode == inputMapping.Left)
+			return GameKey::LEFT;
+		if (scancode == inputMapping.Right)
+			return GameKey::RIGHT;
+		if (scancode == inputMapping.SpellMenu)
+			return GameKey::CTRL;
+		if (scancode == inputMapping.Map)
+			return GameKey::RETURN;
+		if (scancode == inputMapping.SpellMenuMark)
+			return GameKey::LSHIFT;
+	}
+
+	switch (scancode)
 	{
 	case SDL_SCANCODE_ESCAPE://esc
-		loclastchar = 0x011b;
+		return GameKey::ESC;
 		break;
-
 	case SDL_SCANCODE_1://1
-		loclastchar = 0x0231;
+		return GameKey::K1;
 		break;
 	case SDL_SCANCODE_2://2
-		loclastchar = 0x0332;
+		return GameKey::K2;
 		break;
 	case SDL_SCANCODE_3://3
-		loclastchar = 0x0433;
+		return GameKey::K3;
 		break;
 	case SDL_SCANCODE_4://4
-		loclastchar = 0x0534;
+		return GameKey::K4;
 		break;
 	case SDL_SCANCODE_5://5
-		loclastchar = 0x0635;
+		return GameKey::K5;
 		break;
 	case SDL_SCANCODE_6://6
-		loclastchar = 0x0736;
+		return GameKey::K6;
 		break;
 	case SDL_SCANCODE_7://7
-		loclastchar = 0x0837;
+		return GameKey::K7;
 		break;
 	case SDL_SCANCODE_8://8
-		loclastchar = 0x0938;
+		return GameKey::K8;
 		break;
 	case SDL_SCANCODE_9://9
-		loclastchar = 0x0a39;
+		return GameKey::K9;
 		break;
 	case SDL_SCANCODE_0://0
-		loclastchar = 0x0b30;
+		return GameKey::K0;
 		break;
-
 	case SDL_SCANCODE_MINUS://-
 	case SDL_SCANCODE_KP_MINUS:
-		loclastchar = 0x0c2d;
+		return GameKey::MINUS;
 		break;
 	case SDL_SCANCODE_EQUALS://=
 	case SDL_SCANCODE_KP_PLUS:
-		loclastchar = 0x0d3d;
+		return GameKey::EQUALS;
 		break;
 	case SDL_SCANCODE_BACKSPACE://backspace
-		loclastchar = 0x0E08;
+		return GameKey::BACKSPACE;
 		break;
 	case SDL_SCANCODE_TAB://tab
 	case SDL_SCANCODE_KP_TAB:
-		loclastchar = 0x0F09;
+		return GameKey::TAB;
 		break;
 	case SDL_SCANCODE_Q://q
-		loclastchar = 0x1071;
+		return GameKey::Q;
 		break;
 	case SDL_SCANCODE_W://w
-		loclastchar = 0x1177;
+		return GameKey::W;
 		break;
 	case SDL_SCANCODE_E://e
-		loclastchar = 0x1265;
+		return GameKey::E;
 		break;
 	case SDL_SCANCODE_R://r
-		loclastchar = 0x1372;
+		return GameKey::R;
 		break;
 	case SDL_SCANCODE_T://t
-		loclastchar = 0x1474;
+		return GameKey::T;
 		break;
 	case SDL_SCANCODE_Y://y
-		loclastchar = 0x1579;
+		return GameKey::Y;
 		break;
 	case SDL_SCANCODE_U://u
-		loclastchar = 0x1675;
+		return GameKey::U;
 		break;
 	case SDL_SCANCODE_I://i
-		loclastchar = 0x1769;
+		return GameKey::I;
 		break;
 	case SDL_SCANCODE_O://o
-		loclastchar = 0x186f;
+		return GameKey::O;
 		break;
 	case SDL_SCANCODE_P://p
-		loclastchar = 0x1970;
+		return GameKey::P;
 		break;
-
 	case SDL_SCANCODE_LEFTBRACKET://[
-		loclastchar = 0x1a5b;
+		return GameKey::LEFTBRACKET;
 		break;
 	case SDL_SCANCODE_RIGHTBRACKET://]
-		loclastchar = 0x1b5d;
+		return GameKey::RIGHTBRACKET;
 		break;
-
 	case SDL_SCANCODE_RETURN://enter
 	case SDL_SCANCODE_RETURN2://enter
-		loclastchar = 0x1c0d;
+		return GameKey::RETURN;
 		break;
 	case SDL_SCANCODE_LCTRL://ctrl
 	case SDL_SCANCODE_RCTRL:
-		loclastchar = 0x1d00;
+		return GameKey::CTRL;
 		break;
-
 	case SDL_SCANCODE_A://a
-		loclastchar = 0x1e61;
+		return GameKey::A;
 		break;
 	case SDL_SCANCODE_S://s
-		loclastchar = 0x1f73;
+		return GameKey::S;
 		break;
 	case SDL_SCANCODE_D://d
-		loclastchar = 0x2064;
+		return GameKey::D;
 		break;
 	case SDL_SCANCODE_F://f
-		loclastchar = 0x2166;
+		return GameKey::F;
 		break;
 	case SDL_SCANCODE_G://g
-		loclastchar = 0x2267;
+		return GameKey::G;
 		break;
 	case SDL_SCANCODE_H://h
-		loclastchar = 0x2368;
+		return GameKey::H;
 		break;
 	case SDL_SCANCODE_J://j
-		loclastchar = 0x246a;
+		return GameKey::J;
 		break;
 	case SDL_SCANCODE_K://k
-		loclastchar = 0x256b;
+		return GameKey::K;
 		break;
 	case SDL_SCANCODE_L://l
-		loclastchar = 0x266c;
+		return GameKey::L;
 		break;
-
 	case SDL_SCANCODE_SEMICOLON://;
-		loclastchar = 0x273b;
+		return GameKey::SEMICOLON;
 		break;
 	case SDL_SCANCODE_APOSTROPHE://'
-		loclastchar = 0x2827;
+		return GameKey::APOSTROPHE;
 		break;
 	case SDL_SCANCODE_GRAVE://`
-		loclastchar = 0x2960;
+		return GameKey::GRAVE;
 		break;
-
 	case SDL_SCANCODE_LSHIFT://left shift
-		loclastchar = 0x2a00;
+		return GameKey::LSHIFT;
 		break;
 	case SDL_SCANCODE_BACKSLASH:// "\"
-		loclastchar = 0x2b5c;
+		return GameKey::BACKSLASH;
 		break;
-
 	case SDL_SCANCODE_Z://z
-		loclastchar = 0x2c7a;
+		return GameKey::Z;
 		break;
 	case SDL_SCANCODE_X://x
-		loclastchar = 0x2d78;
+		return GameKey::X;
 		break;
 	case SDL_SCANCODE_C://c
-		loclastchar = 0x2e63;
+		return GameKey::C;
 		break;
 	case SDL_SCANCODE_V://v
-		loclastchar = 0x2f76;
+		return GameKey::V;
 		break;
 	case SDL_SCANCODE_B://b
-		loclastchar = 0x3062;
+		return GameKey::B;
 		break;
 	case SDL_SCANCODE_N://n
-		loclastchar = 0x316e;
+		return GameKey::N;
 		break;
 	case SDL_SCANCODE_M://m
-		loclastchar = 0x326d;
+		return GameKey::M;
 		break;
 	case SDL_SCANCODE_COMMA://,
-		loclastchar = 0x332c;
+		return GameKey::COMMA;
 		break;
 	case SDL_SCANCODE_PERIOD://.
-		loclastchar = 0x342e;
+		return GameKey::PERIOD;
 		break;
 	case SDL_SCANCODE_SLASH:// "/"
-		loclastchar = 0x352f;
+		return GameKey::SLASH;
 		break;
-
 	case SDL_SCANCODE_RSHIFT://right shift
-		loclastchar = 0x3600;
+		return GameKey::RSHIFT;
 		break;
-
 	case SDL_SCANCODE_LALT://alt
 	case SDL_SCANCODE_RALT:
-		loclastchar = 0x3800;
+		return GameKey::ALT;
 		break;
-
 	case SDL_SCANCODE_SPACE://space
-		loclastchar = 0x3920;
+		return GameKey::SPACE;
 		break;
-
 	case SDL_SCANCODE_F1://f1
-		loclastchar = 0x3b00;
+		return GameKey::F1;
 		break;
 	case SDL_SCANCODE_F2://f2
-		loclastchar = 0x3c00;
+		return GameKey::F2;
 		break;
 	case SDL_SCANCODE_F3://f3
-		loclastchar = 0x3d00;
+		return GameKey::F3;
 		break;
 	case SDL_SCANCODE_F4://f4
-		loclastchar = 0x3e00;
+		return GameKey::F4;
 		break;
 	case SDL_SCANCODE_F5://f5
-		loclastchar = 0x3f00;
+		return GameKey::F5;
 		break;
 	case SDL_SCANCODE_F6://f6
-		loclastchar = 0x4000;
+		return GameKey::F6;
 		break;
 	case SDL_SCANCODE_F7://f7
-		loclastchar = 0x4100;
+		return GameKey::F7;
 		break;
 	case SDL_SCANCODE_F8://f8
-		loclastchar = 0x4200;
+		return GameKey::F8;
 		break;
 	case SDL_SCANCODE_F9://f9
-		loclastchar = 0x4300;
+		return GameKey::F9;
 		break;
 	case SDL_SCANCODE_F10://f10
-		loclastchar = 0x4400;
+		return GameKey::F10;
 		break;
-
 	case SDL_SCANCODE_HOME://home
-		loclastchar = 0x4700;
+		return GameKey::HOME;
 		break;
-
 	case SDL_SCANCODE_UP://up
-		loclastchar = 0x4800;
+		return GameKey::UP;
 		break;
 	case SDL_SCANCODE_PAGEUP://pageup
-		loclastchar = 0x4900;
+		return GameKey::PAGEUP;
 		break;
 	case SDL_SCANCODE_RIGHT://right
-		loclastchar = 0x4d00;
+		return GameKey::RIGHT;
 		break;
 	case SDL_SCANCODE_DOWN://down
-		loclastchar = 0x5000;
+		return GameKey::DOWN;
 		break;
 	case SDL_SCANCODE_LEFT://left
-		loclastchar = 0x4b00;
+		return GameKey::LEFT;
 		break;
 	case SDL_SCANCODE_END://end
-		loclastchar = 0x4f00;
+		return GameKey::END;
 		break;
 	case SDL_SCANCODE_PAGEDOWN://pagedown
-		loclastchar = 0x5000;
+		return GameKey::PAGEDOWN;
 		break;
-
 	case SDL_SCANCODE_INSERT://ins
-		loclastchar = 0x5200;
+		return GameKey::INSERT;
 		break;
 	case SDL_SCANCODE_DELETE://del
-		loclastchar = 0x5300;
+		return GameKey::DEL;
 		break;
 	}
-
-	return loclastchar;
+	return scancode;
 }
 
 void VGA_cleanKeyBuffer() {
-	uint16_t loclastchar = lastchar;
-	lastchar = 0;
-	loclastchar = fixchar(loclastchar);
-	while (loclastchar != 0)
+	uint16_t lastChar = m_lastScancode;
+	m_lastScancode = 0;
+	lastChar = TranslateSdlKeysToGameKeys(lastChar);
+	while (lastChar != 0)
 	{
-		loclastchar = lastchar;
-		lastchar = 0;
-		loclastchar = fixchar(loclastchar);
+		lastChar = m_lastScancode;
+		m_lastScancode = 0;
+		lastChar = TranslateSdlKeysToGameKeys(lastChar);
 	}
 }
 
 uint16_t VGA_read_char_from_buffer() {
 	//bool locpressed = pressed;
-	uint16_t loclastchar = lastchar;
-	lastchar = 0;
-	loclastchar = fixchar(loclastchar);
+	uint16_t loclastchar = m_lastScancode;
+	m_lastScancode = 0;
+	loclastchar = TranslateSdlKeysToGameKeys(loclastchar);
 	return loclastchar;
 }
 
-void setPress(bool locpressed, uint16_t loclastchar) {
-	loclastchar = fixchar(loclastchar);
+void SetPress(bool pressed, uint16_t scanCodeChar) {
+	auto gameKeyChar = TranslateSdlKeysToGameKeys(scanCodeChar);
+	SetGameKeyPress_1806E4(pressed, gameKeyChar);
+}
 
-	if (locpressed)
+void SetGameKeyPress_1806E4(bool pressed, uint16_t gameKeyChar) {
+	if (pressed)
 	{
-		LastPressedKey_1806E4 = (loclastchar & 0xff00) >> 8;// VGA_read_char_from_buffer();
+		LastPressedKey_1806E4 = (gameKeyChar & 0xff00) >> 8;// VGA_read_char_from_buffer();
 		pressedKeys_180664[LastPressedKey_1806E4 & 0x7F] = LastPressedKey_1806E4;
 	}
 	else
 	{
-		pressedKeys_180664[((loclastchar & 0xff00) >> 8) & 0x7F] = 0;
+		pressedKeys_180664[((gameKeyChar & 0xff00) >> 8) & 0x7F] = 0;
 	}
 }
 

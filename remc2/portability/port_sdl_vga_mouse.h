@@ -13,6 +13,8 @@
 
 #include "port_sdl_sound.h"
 #include "port_filesystem.h"
+#include "../engine/Scene.h"
+#include "../engine/GameState.h"
 
 typedef struct
 {
@@ -53,9 +55,14 @@ int16_t VGA_get_shift_status();
 bool VGA_check_standart_input_status();
 uint16_t VGA_read_char_from_buffer();
 void VGA_Set_mouse(int16_t a1, int16_t a2);
-void ScaleUpMouseCoords(int16_t& x, int16_t& y);
-void ScaleDownMouseCoords(int16_t& x, int16_t& y);
-void setPress(bool locpressed, uint16_t loclastchar);
+int PollSdlEvents();
+uint16_t TranslateSdlKeysToGameKeys(uint16_t scancode);
+uint32_t TranslateSdlMouseToGameMouse(SDL_MouseButtonEvent event);
+uint32_t TranslateButtonState(SDL_MouseButtonEvent button);
+void ScaleUpMouseCoordsToVga(int16_t& x, int16_t& y);
+void ScaleDownMouseCoordsToVga(int16_t& x, int16_t& y);
+void SetPress(bool pressed, uint16_t scancode);
+void SetGameKeyPress_1806E4(bool pressed, uint16_t gameKeyChar);
 void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y);
 
 void VGA_mouse_clear_keys();
@@ -67,6 +74,10 @@ SDL_Rect GetDisplayByIndex(uint8_t index);
 SDL_Rect FindDisplayByResolution(uint32_t width, uint32_t height);
 void ToggleFullscreen();
 void ToggleFullscreen(bool fullScreen);
+bool HandleSpecialKeys(const SDL_Event& event);
+void SetMouseKeyboardScene(const Scene sceneId);
+void SetMouseKeyboardGameState(const GameState state);
+void OnMouseResolutionChanged(uint32_t width, uint32_t height);
 
 extern uint8_t LastPressedKey_1806E4; // weak//3516e4
 extern int8_t pressedKeys_180664[128]; // idb
