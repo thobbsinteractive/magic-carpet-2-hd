@@ -1908,7 +1908,7 @@ void sub_8CACD_draw_cursor2()//26dacd
 	if (x_DWORD_E3768)
 	{
 		x_DWORD_E3758 = 1;
-		sub_8C635_draw_cursor();
+		DrawCursor_8C635();
 	}
 }
 // E3758: using guessed type int x_DWORD_E3758;
@@ -2184,7 +2184,7 @@ void sub_72C40_draw_bitmap_640_setcolor(int16_t posx, int16_t posy, bitmap_pos_s
 // 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (0008C635) --------------------------------------------------------
-void sub_8C635_draw_cursor()//26d635
+void DrawCursor_8C635()//26d635
 {
 	uint8_t scale = 1;
 	uint8_t* v1; // eax

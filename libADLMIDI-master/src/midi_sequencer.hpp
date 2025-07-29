@@ -1,7 +1,7 @@
 /*
  * BW_Midi_Sequencer - MIDI Sequencer for C++
  *
- * Copyright (c) 2015-2018 Vitaly Novichkov <admin@wohlnet.ru>
+ * Copyright (c) 2015-2025 Vitaly Novichkov <admin@wohlnet.ru>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -23,8 +23,8 @@
  */
 
 #pragma once
-#ifndef BISQUIT_AND_WOHLSTANDS_MIDI_SEQUENCER_HHHHPPP
-#define BISQUIT_AND_WOHLSTANDS_MIDI_SEQUENCER_HHHHPPP
+#ifndef BW_MIDI_SEQUENCER_HHHHPPP
+#define BW_MIDI_SEQUENCER_HHHHPPP
 
 #include <list>
 #include <vector>
@@ -132,18 +132,21 @@ class BW_MidiSequencer
             //! [Non-Standard] Loop End point with support of multi-loops
             ST_LOOPSTACK_BREAK = 0xE6,//size == 0 <CUSTOM>
             //! [Non-Standard] Callback Trigger
-            ST_CALLBACK_TRIGGER = 0xE7//size == 1 <CUSTOM>
+            ST_CALLBACK_TRIGGER = 0xE7,//size == 1 <CUSTOM>
+
+            // Built-in hooks
+            ST_SONG_BEGIN_HOOK    = 0x101
         };
         //! Main type of event
-        uint8_t type;
+        uint_fast16_t type;
         //! Sub-type of the event
-        uint8_t subtype;
+        uint_fast16_t subtype;
         //! Targeted MIDI channel
-        uint8_t channel;
+        uint_fast16_t channel;
         //! Is valid event
-        uint8_t isValid;
+        uint_fast16_t isValid;
         //! Reserved 5 bytes padding
-        uint8_t __padding[4];
+        uint_fast16_t __padding[4];
         //! Absolute tick position (Used for the tempo calculation only)
         uint64_t absPosition;
         //! Raw data of this event
@@ -222,8 +225,15 @@ class BW_MidiSequencer
             {}
         };
         std::vector<TrackInfo> track;
-        Position(): began(false), wait(0.0), absTimePosition(0.0), track()
-        {}
+        Position():
+            began(false),
+            wait(0.0),
+            absTimePosition(0.0),
+            track()
+        {
+            for(size_t i = 0; i < 7; ++i)
+                __padding[i] = 0;
+        }
     };
 
     //! MIDI Output interface context
@@ -343,6 +353,8 @@ private:
 
     //! Is looping enabled or not
     bool    m_loopEnabled;
+    //! Don't process loop: trigger hooks only if they are set
+    bool    m_loopHooksOnly;
 
     //! Full song length in seconds
     double m_fullSongTimeLength;
@@ -379,11 +391,27 @@ private:
     //! Is song at end
     bool    m_atEnd;
 
+    //! Set the number of loops limit. Lesser than 0 - loop infinite
+    int     m_loopCount;
+
+    //! The number of track of multi-track file (for exmaple, XMI) to load
+    int     m_loadTrackNumber;
+
+    //! The XMI-specific list of raw songs, converted into SMF format
+    std::vector<std::vector<uint8_t > > m_rawSongsData;
+
     /**
      * @brief Loop stack entry
      */
     struct LoopStackEntry
     {
+        LoopStackEntry() :
+            infinity(false),
+            loops(0),
+            start(0),
+            end(0)
+        {}
+
         //! is infinite loop
         bool infinity;
         //! Count of loops left to break. <0 - infinite loop
@@ -415,11 +443,27 @@ private:
         //! Are loop points invalid?
         bool    invalidLoop; /*Loop points are invalid (loopStart after loopEnd or loopStart and loopEnd are on same place)*/
 
+        //! Is look got temporarily broken because of post-end seek?
+        bool    temporaryBroken;
+
+        //! How much times the loop should start repeat? For example, if you want to loop song twice, set value 1
+        int     loopsCount;
+
+        //! how many loops left until finish the song
+        int     loopsLeft;
+
         //! Stack of nested loops
         std::vector<LoopStackEntry> stack;
         //! Current level on the loop stack (<0 - out of loop, 0++ - the index in the loop stack)
         int                         stackLevel;
 
+        //! Constructor to initialize member variables
+        LoopState()
+                : caughtStart(false), caughtEnd(false), caughtStackStart(false),
+                caughtStackEnd(false), caughtStackBreak(false), skipStackStart(false),
+                invalidLoop(false), temporaryBroken(false), loopsCount(-1), loopsLeft(0),
+                stackLevel(-1)
+                {}
         /**
          * @brief Reset loop state to initial
          */
@@ -431,12 +475,15 @@ private:
             caughtStackEnd = false;
             caughtStackBreak = false;
             skipStackStart = false;
+            loopsLeft = loopsCount;
         }
 
         void fullReset()
         {
+            loopsCount = -1;
             reset();
             invalidLoop = false;
+            temporaryBroken = false;
             stack.clear();
             stackLevel = -1;
         }
@@ -445,7 +492,7 @@ private:
         {
             if(caughtStackEnd && (stackLevel >= 0) && (stackLevel < static_cast<int>(stack.size())))
             {
-                const LoopStackEntry &e = stack[stackLevel];
+                const LoopStackEntry &e = stack[static_cast<size_t>(stackLevel)];
                 if(e.infinity || (!e.infinity && e.loops > 0))
                     return true;
             }
@@ -465,7 +512,7 @@ private:
         LoopStackEntry &getCurStack()
         {
             if((stackLevel >= 0) && (stackLevel < static_cast<int>(stack.size())))
-                return stack[stackLevel];
+                return stack[static_cast<size_t>(stackLevel)];
             if(stack.empty())
             {
                 LoopStackEntry d;
@@ -483,6 +530,8 @@ private:
     std::vector<bool> m_trackDisable;
     //! Index of solo track, or max for disabled
     size_t m_trackSolo;
+    //! MIDI channel disable (exception for extra port-prefix-based channels)
+    bool m_channelDisable[16];
 
     /**
      * @brief Handler of callback trigger events
@@ -502,6 +551,34 @@ private:
     //! Common error string
     std::string m_errorString;
 
+    struct SequencerTime
+    {
+        //! Time buffer
+        double   timeRest;
+        //! Sample rate
+        uint32_t sampleRate;
+        //! Size of one frame in bytes
+        uint32_t frameSize;
+        //! Minimum possible delay, granuality
+        double minDelay;
+        //! Last delay
+        double delay;
+
+        void init()
+        {
+            sampleRate = 44100;
+            frameSize = 2;
+            reset();
+        }
+
+        void reset()
+        {
+            timeRest = 0.0;
+            minDelay = 1.0 / static_cast<double>(sampleRate);
+            delay = 0.0;
+        }
+    } m_time;
+
 public:
     BW_MidiSequencer();
     virtual ~BW_MidiSequencer();
@@ -511,6 +588,14 @@ public:
      * @param intrf Pre-Initialized interface structure (pointer will be taken)
      */
     void setInterface(const BW_MidiRtInterface *intrf);
+
+    /**
+     * @brief Runs ticking in a sync with audio streaming. Use this together with onPcmRender hook to easily play MIDI.
+     * @param stream pointer to the output PCM stream
+     * @param length length of the buffer in bytes
+     * @return Count of recorded data in bytes
+     */
+    int playStream(uint8_t *stream, size_t length);
 
     /**
      * @brief Returns file format type of currently loaded file
@@ -533,10 +618,30 @@ public:
     bool setTrackEnabled(size_t track, bool enable);
 
     /**
+     * @brief Disable/enable a channel is sounding
+     * @param channel Channel number from 0 to 15
+     * @param enable Enable the channel playback
+     * @return true on success, false if there was no such channel
+     */
+    bool setChannelEnabled(size_t channel, bool enable);
+
+    /**
      * @brief Enables or disables solo on a track
      * @param track Identifier of solo track, or max to disable
      */
     void setSoloTrack(size_t track);
+
+    /**
+     * @brief Set the song number of a multi-song file (such as XMI)
+     * @param trackNumber Identifier of the song to load (or -1 to mix all songs as one song)
+     */
+    void setSongNum(int track);
+
+    /**
+     * @brief Retrive the number of songs in a currently opened file
+     * @return Number of songs in the file. If 1 or less, means, the file has only one song inside.
+     */
+    int getSongsCount();
 
     /**
      * @brief Defines a handler for callback trigger events
@@ -568,6 +673,24 @@ public:
      * @param enabled Enable loop
      */
     void setLoopEnabled(bool enabled);
+
+    /**
+     * @brief Get the number of loops set
+     * @return number of loops or -1 if loop infinite
+     */
+    int getLoopsCount();
+
+    /**
+     * @brief How many times song should loop
+     * @param loops count or -1 to loop infinite
+     */
+    void setLoopsCount(int loops);
+
+    /**
+     * @brief Switch loop hooks-only mode on/off
+     * @param enabled Don't loop: trigger hooks only without loop
+     */
+    void setLoopHooksOnly(bool enabled);
 
     /**
      * @brief Get music title
@@ -741,4 +864,4 @@ private:
 
 };
 
-#endif /* BISQUIT_AND_WOHLSTANDS_MIDI_SEQUENCER_HHHHPPP */
+#endif /* BW_MIDI_SEQUENCER_HHHHPPP */

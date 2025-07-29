@@ -342,7 +342,3 @@ template<class T, class U> int8 __CFADD__(T x, U y)
 // for example a char:
 
 #define _UNKNOWN char
-
-#ifdef _MSC_VER
-#define snprintf _snprintf
-#endif

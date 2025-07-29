@@ -251,7 +251,7 @@ typedef struct {//lenght 2124=0x84C
 	//uint8_t byte_0x002_2BE0_11232;//2	//11232 - byte //2, maybe word
 	//uint8_t byte_0x003_2BE0_11233_xx;
 	uint8_t byte_0x004_2BE0_11234;//2	//11234 - byte //4
-	uint8_t byte_0x005_2BE0_11235;//5
+	uint8_t ShowDebugTextFlag_0x005_2BE0_11235;//5
 	uint8_t byte_0x006_2BE4_11236;//6	//11236 - byte //6
 	int16_t word_0x007_2BE4_11237;//index of player
 	int8_t byte_0x009_2BE4_11239;

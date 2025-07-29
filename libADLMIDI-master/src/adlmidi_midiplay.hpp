@@ -1,8 +1,8 @@
 /*
- * libADLMIDI is a free MIDI to WAV conversion library with OPL3 emulation
+ * libADLMIDI is a free Software MIDI synthesizer library with OPL3 emulation
  *
  * Original ADLMIDI code: Copyright (c) 2010-2014 Joel Yliluoma <bisqwit@iki.fi>
- * ADLMIDI Library API:   Copyright (c) 2015-2018 Vitaly Novichkov <admin@wohlnet.ru>
+ * ADLMIDI Library API:   Copyright (c) 2015-2025 Vitaly Novichkov <admin@wohlnet.ru>
  *
  * Library is based on the ADLMIDI, a MIDI player for Linux and Windows with OPL3 emulation:
  * http://iki.fi/bisqwit/source/adlmidi.html
@@ -24,9 +24,10 @@
 #ifndef ADLMIDI_MIDIPLAY_HPP
 #define ADLMIDI_MIDIPLAY_HPP
 
-#include "adldata.hh"
+#include "oplinst.h"
 #include "adlmidi_private.hpp"
 #include "adlmidi_ptr.hpp"
+#include "structures/pl_list.hpp"
 
 /**
  * @brief Hooks of the internal events
@@ -36,6 +37,10 @@ struct MIDIEventHooks
     MIDIEventHooks() :
         onNote(NULL),
         onNote_userData(NULL),
+        onLoopStart(NULL),
+        onLoopStart_userData(NULL),
+        onLoopEnd(NULL),
+        onLoopEnd_userData(NULL),
         onDebugMessage(NULL),
         onDebugMessage_userData(NULL)
     {}
@@ -44,6 +49,13 @@ struct MIDIEventHooks
     typedef void (*NoteHook)(void *userdata, int adlchn, int note, int ins, int pressure, double bend);
     NoteHook     onNote;
     void         *onNote_userData;
+
+    // Loop start/end hooks
+    ADL_LoopPointHook onLoopStart;
+    void              *onLoopStart_userData;
+    ADL_LoopPointHook onLoopEnd;
+    void              *onLoopEnd_userData;
+
 
     //! Library internal debug messages
     typedef void (*DebugMessageHook)(void *userdata, const char *fmt, ...);
@@ -63,6 +75,11 @@ public:
     void partialReset();
     void resetMIDI();
 
+private:
+    void chipReset();
+    void resetMIDIDefaults(int offset = 0);
+
+public:
     /**********************Internal structures and classes**********************/
 
     /**
@@ -70,6 +87,13 @@ public:
      */
     struct MIDIchannel
     {
+        //! Default MIDI volume
+        uint8_t def_volume;
+        //! Default LSB of a bend sensitivity
+        int     def_bendsense_lsb;
+        //! Default MSB of a bend sensitivity
+        int     def_bendsense_msb;
+
         //! LSB Bank number
         uint8_t bank_lsb,
         //! MSB Bank number
@@ -139,8 +163,6 @@ public:
         {
             //! Note number
             uint8_t note;
-            //! Is note active
-            bool active;
             //! Current pressure
             uint8_t vol;
             //! Note vibrato (a part of Note Aftertouch feature)
@@ -157,12 +179,25 @@ public:
             bool    isPercussion;
             //! Note that plays missing instrument. Doesn't using any chip channels
             bool    isBlank;
+            //! Whether releasing and on extended life time defined by TTL
+            bool    isOnExtendedLifeTime;
+            //! Time-to-live until release (short percussion note fix)
+            double  ttl;
             //! Patch selected
-            const adlinsdata2 *ains;
+            const OplInstMeta *ains;
             enum
             {
                 MaxNumPhysChans = 2,
                 MaxNumPhysItemCount = MaxNumPhysChans
+            };
+
+            struct FindPredicate
+            {
+                explicit FindPredicate(unsigned note)
+                    : note(note) {}
+                bool operator()(const NoteInfo &ni) const
+                    { return ni.note == note; }
+                unsigned note;
             };
 
             /**
@@ -173,18 +208,18 @@ public:
                 //! Destination chip channel
                 uint16_t chip_chan;
                 //! ins, inde to adl[]
-                adldata ains;
+                OplTimbre op;
                 //! Is this voice must be detunable?
                 bool    pseudo4op;
 
                 void assign(const Phys &oth)
                 {
-                    ains = oth.ains;
+                    op = oth.op;
                     pseudo4op = oth.pseudo4op;
                 }
                 bool operator==(const Phys &oth) const
                 {
-                    return (ains == oth.ains) && (pseudo4op == oth.pseudo4op);
+                    return (op == oth.op) && (pseudo4op == oth.pseudo4op);
                 }
                 bool operator!=(const Phys &oth) const
                 {
@@ -200,11 +235,16 @@ public:
             Phys *phys_find(unsigned chip_chan)
             {
                 Phys *ph = NULL;
+
                 for(unsigned i = 0; i < chip_channels_count && !ph; ++i)
+                {
                     if(chip_channels[i].chip_chan == chip_chan)
                         ph = &chip_channels[i];
+                }
+
                 return ph;
             }
+
             Phys *phys_find_or_create(uint16_t chip_chan)
             {
                 Phys *ph = phys_find(chip_chan);
@@ -216,20 +256,23 @@ public:
                 }
                 return ph;
             }
+
             Phys *phys_ensure_find_or_create(uint16_t chip_chan)
             {
                 Phys *ph = phys_find_or_create(chip_chan);
                 assert(ph);
                 return ph;
             }
+
             void phys_erase_at(const Phys *ph)
             {
                 intptr_t pos = ph - chip_channels;
-                assert(pos < static_cast<intptr_t>(chip_channels_count));
+                assert(pos >= 0 && pos < static_cast<intptr_t>(chip_channels_count));
                 for(intptr_t i = pos + 1; i < static_cast<intptr_t>(chip_channels_count); ++i)
                     chip_channels[i - 1] = chip_channels[i];
                 --chip_channels_count;
             }
+
             void phys_erase(unsigned chip_chan)
             {
                 Phys *ph = phys_find(chip_chan);
@@ -242,89 +285,78 @@ public:
         char _padding2[5];
         //! Count of gliding notes in this channel
         unsigned gliding_note_count;
+        //! Count of notes having a TTL countdown in this channel
+        unsigned extended_note_count;
 
         //! Active notes in the channel
-        NoteInfo activenotes[128];
+        pl_list<NoteInfo> activenotes;
+        typedef pl_list<NoteInfo>::iterator notes_iterator;
+        typedef pl_list<NoteInfo>::const_iterator const_notes_iterator;
 
-        struct activenoteiterator
+        void clear_all_phys_users(unsigned chip_chan)
         {
-            explicit activenoteiterator(NoteInfo *info = NULL)
-                : ptr(info) {}
-            activenoteiterator &operator++()
+            for(pl_list<NoteInfo>::iterator it = activenotes.begin(); it != activenotes.end(); )
             {
-                if(ptr->note == 127)
-                    ptr = NULL;
+                NoteInfo::Phys *p = it->value.phys_find(chip_chan);
+                if(p)
+                {
+                    it->value.phys_erase_at(p);
+                    if(it->value.chip_channels_count == 0)
+                        it = activenotes.erase(it);
+                    else
+                        ++it;
+                }
                 else
-                    for(++ptr; ptr && !ptr->active;)
-                        ptr = (ptr->note == 127) ? NULL : (ptr + 1);
-                return *this;
+                    ++it;
             }
-            activenoteiterator operator++(int)
-            {
-                activenoteiterator pos = *this;
-                ++*this;
-                return pos;
-            }
-            NoteInfo &operator*() const
-                { return *ptr; }
-            NoteInfo *operator->() const
-                { return ptr; }
-            bool operator==(activenoteiterator other) const
-                { return ptr == other.ptr; }
-            bool operator!=(activenoteiterator other) const
-                { return ptr != other.ptr; }
-            operator NoteInfo *() const
-                { return ptr; }
-        private:
-            NoteInfo *ptr;
-        };
-
-        activenoteiterator activenotes_begin()
-        {
-            activenoteiterator it(activenotes);
-            return (it->active) ? it : ++it;
         }
 
-        activenoteiterator activenotes_find(uint8_t note)
+        notes_iterator find_activenote(unsigned note)
         {
-            assert(note < 128);
-            return activenoteiterator(
-                activenotes[note].active ? &activenotes[note] : NULL);
+            return activenotes.find_if(NoteInfo::FindPredicate(note));
         }
 
-        activenoteiterator activenotes_ensure_find(uint8_t note)
+        notes_iterator ensure_find_activenote(unsigned note)
         {
-            activenoteiterator it = activenotes_find(note);
-            assert(it);
+            notes_iterator it = find_activenote(note);
+            assert(!it.is_end());
             return it;
         }
 
-        std::pair<activenoteiterator, bool> activenotes_insert(uint8_t note)
+        notes_iterator find_or_create_activenote(unsigned note)
         {
-            assert(note < 128);
-            NoteInfo &info = activenotes[note];
-            bool inserted = !info.active;
-            if(inserted) info.active = true;
-            return std::pair<activenoteiterator, bool>(activenoteiterator(&info), inserted);
-        }
-
-        void activenotes_erase(activenoteiterator pos)
-        {
-            if(pos)
-                pos->active = false;
-        }
-
-        bool activenotes_empty()
-        {
-            return !activenotes_begin();
-        }
-
-        void activenotes_clear()
-        {
-            for(uint8_t i = 0; i < 128; ++i) {
-                activenotes[i].note = i;
-                activenotes[i].active = false;
+            notes_iterator it = find_activenote(note);
+            if(!it.is_end())
+                cleanupNote(it);
+            else
+            {
+                NoteInfo ni;
+                ni.note = note;
+                it = activenotes.insert(activenotes.end(), ni);
             }
+            return it;
+        }
+
+        notes_iterator create_activenote(unsigned note)
+        {
+            NoteInfo ni;
+            ni.note = note;
+            notes_iterator it = activenotes.insert(activenotes.end(), ni);
+            return it;
+        }
+
+        notes_iterator ensure_find_or_create_activenote(unsigned note)
+        {
+            notes_iterator it = find_or_create_activenote(note);
+            assert(!it.is_end());
+            return it;
+        }
+
+        notes_iterator ensure_create_activenote(unsigned note)
+        {
+            notes_iterator it = create_activenote(note);
+            assert(!it.is_end());
+            return it;
         }
 
         /**
@@ -348,11 +380,22 @@ public:
          */
         void resetAllControllers()
         {
+            volume  = def_volume;
+            brightness = 127;
+            panning = 64;
+
+            resetAllControllers121();
+        }
+
+        /**
+         * @brief Reset all MIDI controllers into initial state (CC121)
+         */
+        void resetAllControllers121()
+        {
             bend = 0;
-            bendsense_msb = 2;
-            bendsense_lsb = 0;
+            bendsense_msb = def_bendsense_msb;
+            bendsense_lsb = def_bendsense_lsb;
             updateBendSensitivity();
-            volume  = 100;
             expression = 127;
             sustain = false;
             softPedal = false;
@@ -363,12 +406,10 @@ public:
             vibspeed = 2 * 3.141592653 * 5.0;
             vibdepth = 0.5 / 127;
             vibdelay_us = 0;
-            panning = 64;
             portamento = 0;
             portamentoEnable = false;
             portamentoSource = -1;
             portamentoRate = HUGE_VAL;
-            brightness = 127;
         }
 
         /**
@@ -389,10 +430,26 @@ public:
             bendsense = cent * (1.0 / (128 * 8192));
         }
 
-        MIDIchannel()
+        /**
+         * @brief Clean up the state of the active note before removal
+         */
+        void cleanupNote(notes_iterator i)
         {
-            activenotes_clear();
+            NoteInfo &info = i->value;
+            if(info.glideRate != HUGE_VAL)
+                --gliding_note_count;
+            if(info.ttl > 0)
+                --extended_note_count;
+        }
+
+        MIDIchannel() :
+            def_volume(100),
+            def_bendsense_lsb(0),
+            def_bendsense_msb(2),
+            activenotes(128)
+        {
             gliding_note_count = 0;
+            extended_note_count = 0;
             reset();
         }
     };
@@ -413,7 +470,6 @@ public:
         };
         struct LocationData
         {
-            LocationData *prev, *next;
             Location loc;
             enum {
                 Sustain_None        = 0x00,
@@ -429,6 +485,15 @@ public:
             //! Timeout until note will be allowed to be killed by channel manager while it is on
             int64_t kon_time_until_neglible_us;
             int64_t vibdelay_us;
+
+            struct FindPredicate
+            {
+                explicit FindPredicate(Location loc)
+                    : loc(loc) {}
+                bool operator()(const LocationData &ld) const
+                    { return ld.loc == loc; }
+                Location loc;
+            };
         };
 
         //! Time left until sounding will be muted after key off
@@ -437,42 +502,41 @@ public:
         //! Recently passed instrument, improves a goodness of released but busy channel when matching
         MIDIchannel::NoteInfo::Phys recent_ins;
 
-        enum { users_max = 128 };
-        LocationData *users_first, *users_free_cells;
-        LocationData users_cells[users_max];
-        unsigned users_size;
+        pl_list<LocationData> users;
+        typedef pl_list<LocationData>::iterator users_iterator;
+        typedef pl_list<LocationData>::const_iterator const_users_iterator;
 
-        bool users_empty() const;
-        LocationData *users_find(Location loc);
-        LocationData *users_allocate();
-        LocationData *users_find_or_create(Location loc);
-        LocationData *users_insert(const LocationData &x);
-        void users_erase(LocationData *user);
-        void users_clear();
-        void users_assign(const LocationData *users, size_t count);
+        users_iterator find_user(const Location &loc)
+        {
+            return users.find_if(LocationData::FindPredicate(loc));
+        }
+
+        users_iterator find_or_create_user(const Location &loc)
+        {
+            users_iterator it = find_user(loc);
+            if(it.is_end() && users.size() != users.capacity())
+            {
+                LocationData ld;
+                ld.loc = loc;
+                it = users.insert(users.end(), ld);
+            }
+            return it;
+        }
 
         // For channel allocation:
-        AdlChannel(): koff_time_until_neglible_us(0)
+        AdlChannel(): koff_time_until_neglible_us(0), users(128)
         {
-            users_clear();
             std::memset(&recent_ins, 0, sizeof(MIDIchannel::NoteInfo::Phys));
         }
 
-        AdlChannel(const AdlChannel &oth): koff_time_until_neglible_us(oth.koff_time_until_neglible_us)
+        AdlChannel(const AdlChannel &oth): koff_time_until_neglible_us(oth.koff_time_until_neglible_us), users(oth.users)
         {
-            if(oth.users_first)
-            {
-                users_first = NULL;
-                users_assign(oth.users_first, oth.users_size);
-            }
-            else
-                users_clear();
         }
 
         AdlChannel &operator=(const AdlChannel &oth)
         {
             koff_time_until_neglible_us = oth.koff_time_until_neglible_us;
-            users_assign(oth.users_first, oth.users_size);
+            users = oth.users;
             return *this;
         }
 
@@ -504,6 +568,14 @@ public:
     {
         int          emulator;
         bool         runAtPcmRate;
+
+#ifdef ADLMIDI_ENABLE_HW_SERIAL
+        bool         serial;
+        std::string  serialName;
+        unsigned int serialBaud;
+        unsigned int serialProtocol;
+#endif
+
         unsigned int bankId;
         int          numFourOps;
         unsigned int numChips;
@@ -515,6 +587,7 @@ public:
         //unsigned int SkipForward;
         int     scaleModulators;
         bool    fullRangeBrightnessCC74;
+        bool    enableAutoArpeggio;
 
         double delay;
         double carry;
@@ -549,9 +622,6 @@ public:
 
     //! CMF Rhythm mode
     bool    m_cmfPercussionMode;
-
-    //! Master volume, controlled via SysEx
-    uint8_t m_masterVolume;
 
     //! SysEx device ID
     uint8_t m_sysExDeviceId;
@@ -899,7 +969,7 @@ private:
      * @param select_adlchn Specify chip channel, or -1 - all chip channels used by the note
      */
     void noteUpdate(size_t midCh,
-                    MIDIchannel::activenoteiterator i,
+                    MIDIchannel::notes_iterator i,
                     unsigned props_mask,
                     int32_t select_adlchn = -1);
 
@@ -919,6 +989,13 @@ private:
     int64_t calculateChipChannelGoodness(size_t c, const MIDIchannel::NoteInfo::Phys &ins) const;
 
     /**
+     * @brief If no free chip channels, try to kill at least one second voice of pseudo-4-op instruments and steal the released channel
+     * @param new_chan Value of released chip channel to reuse
+     * @return true if any channel was been stolen, or false when nothing happen
+     */
+    bool killSecondVoicesIfOverflow(int32_t &new_chan);
+
+    /**
      * @brief A new note will be played on this channel using this instrument.
      * @param c Wanted chip channel
      * @param ins Instrument wanted to be used in this channel
@@ -934,8 +1011,8 @@ private:
      */
     void killOrEvacuate(
         size_t  from_channel,
-        AdlChannel::LocationData *j,
-        MIDIchannel::activenoteiterator i);
+        AdlChannel::users_iterator j,
+        MIDIchannel::notes_iterator i);
 
     /**
      * @brief Off all notes and silence sound
@@ -975,8 +1052,9 @@ private:
      * @brief Off the note
      * @param midCh MIDI channel
      * @param note Note to off
+     * @param forceNow Do not delay the key-off to a later time
      */
-    void noteOff(size_t midCh, uint8_t note);
+    void noteOff(size_t midCh, uint8_t note, bool forceNow = false);
 
     /**
      * @brief Update processing of vibrato to amount of seconds

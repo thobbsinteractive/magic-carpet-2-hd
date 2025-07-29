@@ -61,6 +61,7 @@ set(SOURCE_FILES_ENGINE
     "engine/Level.cpp"
     "engine/Level.h"
     "engine/Map.h"
+    "engine/MapColourIndexs.h"
     "engine/MenusAndIntros.cpp"
     "engine/MenusAndIntros.h"
     "engine/Network.cpp"
@@ -137,6 +138,9 @@ set(SOURCE_FILES__portability
     "portability/Config.h"
     "portability/fcaseopen.cpp"
     "portability/fcaseopen.h"
+    "portability/GameKey.h"
+    "portability/KeyboardInputMapping.h"
+    "portability/MouseInputMapping.h"
     "portability/port_net.cpp"
     "portability/port_net.h"
     "portability/port_filesystem.cpp"
@@ -213,7 +217,7 @@ if (UNIX)
     target_include_directories(${PROJECT_NAME} PUBLIC
         "${CMAKE_SOURCE_DIR}/findfirst"
         "${CMAKE_SOURCE_DIR}/spdlog/include"
-		"${CMAKE_SOURCE_DIR}/rapidjson"
+        "${CMAKE_SOURCE_DIR}/rapidjson"
     )
     #target_compile_definitions(${PROJECT_NAME} PRIVATE
     #)
@@ -227,7 +231,6 @@ if (UNIX)
         findfirst
         ADLMIDI_static
         Boost::system
-        fmt::fmt
     )
     target_link_directories(${PROJECT_NAME} PUBLIC
     )

@@ -2228,7 +2228,7 @@ void clean_x_D41A0_BYTEARRAY_0_0x2BDE(int number) {
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x002_2BE0_11232 = 0;//2	//11232 - byte //2
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x003_2BE0_11233_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x004_2BE0_11234 = 0;//2	//11234 - byte //4
-		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x005_2BE0_11235_xx = 0;
+		D41A0_BYTESTR_0.array_0x2BDE[i].ShowDebugTextFlag_0x005_2BE0_11235_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x006_2BE4_11236 = 0;//6	//11236 - byte //6
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x007_2BE4_11237_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x008_2BE4_11238_xx = 0;

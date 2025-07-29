@@ -8,7 +8,8 @@ enum class Scene
 	FLIGHT,
 	FLIGHT_MENU,
 	SPELL_MENU,
-	DEAD
+	DEAD,
+	CHAT_MENU,
 };
 
 #endif //SCENE_H

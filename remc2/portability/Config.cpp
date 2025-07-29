@@ -1,7 +1,7 @@
-#include "Config.h"
 #include <filesystem>
 #include <iostream>
 #include <fstream>
+#include "Config.h"
 
 Config::Config(std::string fileName)
 {
@@ -39,6 +39,15 @@ int Config::ReadIntValue(rapidjson::GenericObject<false, rapidjson::Value>& sett
 	return 0;
 }
 
+float Config::ReadFloatValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
+{
+	if (settings.HasMember(name))
+	{
+		return settings[name].GetFloat();
+	}
+	return 0.0f;
+}
+
 bool Config::ReadBoolValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
 {
 	if (settings.HasMember(name))
@@ -46,6 +55,15 @@ bool Config::ReadBoolValue(rapidjson::GenericObject<false, rapidjson::Value>& se
 		return settings[name].GetBool();
 	}
 	return false;
+}
+
+SDL_Scancode Config::ReadKeyScancode(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
+{
+	if (settings.HasMember(name))
+	{
+		return m_ConfigToSdlScancode.GetScancode(settings[name].GetString());
+	}
+	return SDL_Scancode::SDL_SCANCODE_UNKNOWN;
 }
 
 void Config::LoadSettings(rapidjson::Document& document)
@@ -98,8 +116,58 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 		auto controls = settings["controls"].GetObj();
 #endif
 
-		m_Controls.m_InvertYAxis = ReadBoolValue(controls, "invertYAxis");
-		m_Controls.m_InvertXAxis = ReadBoolValue(controls, "invertXAxis");
+		if (controls.HasMember("mouse"))
+		{
+			auto mouseArray = controls["mouse"].GetArray();
+
+			for (int i = 0; i < mouseArray.Size(); i++)
+			{
+#ifdef __linux__
+				auto mouse = mouseArray[i].GetObject();
+#else
+				auto mouse = mouseArray[i].GetObj();
+#endif
+				if (mouse.HasMember("isActive") && mouse["isActive"].GetBool() == true)
+				{
+					m_Controls.m_Mouse.m_InvertXAxis = ReadBoolValue(mouse, "invertXAxis");
+					m_Controls.m_Mouse.m_InvertYAxis = ReadBoolValue(mouse, "invertYAxis");
+					m_Controls.m_Mouse.m_mouseScaleX = ReadFloatValue(mouse, "mouseScaleX");
+					m_Controls.m_Mouse.m_mouseScaleY = ReadFloatValue(mouse, "mouseScaleY");
+					m_Controls.m_Mouse.m_disableLRButtonsMenuOpen = ReadBoolValue(mouse, "disableLRButtonsMenuOpen");
+					m_Controls.m_Mouse.m_spellLeft = ReadIntValue(mouse, "spellLeft");
+					m_Controls.m_Mouse.m_spellRight = ReadIntValue(mouse, "spellRight");
+					m_Controls.m_Mouse.m_map = ReadIntValue(mouse, "map");
+					m_Controls.m_Mouse.m_spellMenu = ReadIntValue(mouse, "spellMenu");
+					m_Controls.m_Mouse.m_spellMenuMark = ReadIntValue(mouse, "spellMenuMark");
+					break;
+				}
+			}
+		}
+
+		if (controls.HasMember("keyboard"))
+		{
+			auto keyboardArray = controls["keyboard"].GetArray();
+
+			for (int i = 0; i < keyboardArray.Size(); i++)
+			{
+#ifdef __linux__
+				auto keyboard = keyboardArray[i].GetObject();
+#else
+				auto keyboard = keyboardArray[i].GetObj();
+#endif
+				if (keyboard.HasMember("isActive") && keyboard["isActive"].GetBool() == true)
+				{
+					 m_Controls.m_Keyboard.m_forward = ReadKeyScancode(keyboard, "forward");
+					 m_Controls.m_Keyboard.m_backwards = ReadKeyScancode(keyboard, "backwards");
+					 m_Controls.m_Keyboard.m_left = ReadKeyScancode(keyboard, "left");
+					 m_Controls.m_Keyboard.m_right = ReadKeyScancode(keyboard, "right");
+					 m_Controls.m_Keyboard.m_map = ReadKeyScancode(keyboard, "map");
+					 m_Controls.m_Keyboard.m_spellMenu = ReadKeyScancode(keyboard, "spellMenu");
+					 m_Controls.m_Keyboard.m_spellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
+					 break;
+				}
+			}
+		}
 
 		if (controls.HasMember("gamePad"))
 		{

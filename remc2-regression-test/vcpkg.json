@@ -1,21 +1,19 @@
 {
     "name": "remc2-regression-test",
-    "version": "0.9.4",
+    "version": "0.9.9",
     "dependencies": [
 		"rapidjson",
 		"spdlog",
-		"libvorbis",
-		"libogg",
-		"libpng",
 		"sdl2",
 		"sdl2-mixer",
-		"sdl2-ttf"
+		"sdl2-ttf",
+		"libadlmidi"
     ],
 	"builtin-baseline": "f6a5d4e8eb7476b8d7fc12a56dff300c1c986131",
 	"overrides": [
         {
             "name": "sdl2",
-            "version": "2.0.14#4"
+            "version": "2.32.8"
         }
     ]
 }

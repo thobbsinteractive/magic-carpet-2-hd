@@ -3,7 +3,7 @@
 #include "global_types.h"
 #include "../portability/bitmap_pos_struct.h"
 
-extern char x_BYTE_D419E; // weak//2a519e
+extern char CURSOR_SPRITE_INDEX_D419E; // weak//2a519e
 extern char x_BYTE_D47D9; // weak
 extern int debugcounter_47560;
 extern int x_DWORD_17FF10; // weak
@@ -16,13 +16,13 @@ extern int x_DWORD_17FF38; // weak
 extern int x_DWORD_17FF40; // weak
 extern int x_DWORD_17FF44; // weak
 
-void sub_17190_process_keyboard();
+void ProcessKeyboardPresses_17190();
 void MouseAndKeysEvents_17A00(signed int a2, int16_t a3);
-void sub_18BB0();
+void PauseUnpauseGame_18BB0();
 void HandleButtonClick_191B0(int16_t a1, char a2);
 void sub_1A970_change_game_settings(char a1, int a2, int a3);
 void sub_41AF0();
-void sub_8CD27_set_cursor(bitmap_pos_struct_t a2);
+void SetCursor_8CD27(bitmap_pos_struct_t a2);
 void sub_417D0_install_pal_and_mouse_minmax2();
 void ReadPauseMenuEvents_197F0();
 char sub_18DA0(type_event_0x6E8E* a1, char a2, char a3);
