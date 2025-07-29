@@ -870,7 +870,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	}
 
 	case 0x1f9bb0: {
-		sub_18BB0();
+		PauseUnpauseGame_18BB0();
 		break;
 	}
 	case 0x1f9da0: {

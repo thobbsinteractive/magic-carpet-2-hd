@@ -288,6 +288,18 @@
     <ClInclude Include="engine\MapColourIndexs.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
+    <ClInclude Include="portability\KeyboardInputMapping.h">
+      <Filter>Header Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="portability\GameKey.h">
+      <Filter>Header Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="portability\MouseInputMapping.h">
+      <Filter>Header Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="portability\ConfigToSdlScancodeMapping.h">
+      <Filter>Header Files\portability</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

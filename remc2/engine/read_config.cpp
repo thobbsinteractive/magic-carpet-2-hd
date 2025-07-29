@@ -25,7 +25,13 @@ bool assignToSpecificCores = false;
 bool openGLRender = false;
 bool invertYAxis = true;
 bool invertXAxis = false;
+float mouseScaleX = 1.0f;
+float mouseScaleY = 1.0f;
+bool disableLRButtonsMenuOpen = false;
+
 gamepad_config_t gpc;
+MouseInputMapping_t mouseMapping;
+KeyboardInputMapping_t inputMapping;
 
 std::string findConfigFile() {
 	// find location of Config and read it
@@ -182,8 +188,27 @@ bool SetConfig() {
 	}
 
 	//Controls
-	invertYAxis = config.m_Controls.m_InvertYAxis;
-	invertXAxis = config.m_Controls.m_InvertXAxis;
+	invertYAxis = config.m_Controls.m_Mouse.m_InvertYAxis;
+	invertXAxis = config.m_Controls.m_Mouse.m_InvertXAxis;
+
+	//Mouse
+	mouseScaleX = config.m_Controls.m_Mouse.m_mouseScaleX;
+	mouseScaleY = config.m_Controls.m_Mouse.m_mouseScaleY;
+	disableLRButtonsMenuOpen = config.m_Controls.m_Mouse.m_disableLRButtonsMenuOpen;
+	mouseMapping.SpellLeft = config.m_Controls.m_Mouse.m_spellLeft;
+	mouseMapping.SpellRight = config.m_Controls.m_Mouse.m_spellRight;
+	mouseMapping.map = config.m_Controls.m_Mouse.m_map;
+	mouseMapping.SpellMenu = config.m_Controls.m_Mouse.m_spellMenu;
+	mouseMapping.SpellMenuMark = config.m_Controls.m_Mouse.m_spellMenuMark;
+
+	//Keyboard
+	inputMapping.Forward = config.m_Controls.m_Keyboard.m_forward;
+	inputMapping.Backwards = config.m_Controls.m_Keyboard.m_backwards;
+	inputMapping.Left = config.m_Controls.m_Keyboard.m_left;
+	inputMapping.Right = config.m_Controls.m_Keyboard.m_right;
+	inputMapping.Map = config.m_Controls.m_Keyboard.m_map;
+	inputMapping.SpellMenu = config.m_Controls.m_Keyboard.m_spellMenu;
+	inputMapping.SpellMenuMark = config.m_Controls.m_Keyboard.m_spellMenuMark;
 
 	gpc.axis_yaw = config.m_Controls.m_GamePad.m_AxisYaw;
 	gpc.axis_pitch = config.m_Controls.m_GamePad.m_AxisPitch;

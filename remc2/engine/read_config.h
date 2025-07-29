@@ -19,6 +19,8 @@
 #include "../portability/port_time.h"
 #include "../portability/port_filesystem.h"
 #include "../portability/port_sdl_sound.h"
+#include "../portability/MouseInputMapping.h"
+#include "../portability/KeyboardInputMapping.h"
 #include "../engine/CommandLineParser.h"
 #include "../utilities/Maths.h"
 #include "defs.h"
@@ -56,6 +58,9 @@ extern int numberOfRenderThreads;
 extern bool assignToSpecificCores;
 extern bool invertYAxis;
 extern bool invertXAxis;
+extern float mouseScaleX;
+extern float mouseScaleY;
+extern bool disableLRButtonsMenuOpen;
 
 #define   GAMEPAD_ITEM_DISABLED  0x0
 #define    GAMEPAD_ITEM_ENABLED  0x1

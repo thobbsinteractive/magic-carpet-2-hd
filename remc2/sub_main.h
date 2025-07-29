@@ -303,7 +303,7 @@ typedef struct {
 	int32_t x_DWORD_180590; // [4]//unk_18058Cstr.x_DWORD_180590//1
 	int32_t x_DWORD_180594; // [8]//unk_18058Cstr.x_DWORD_180594//2
 	int32_t x_DWORD_180598; // [12]//unk_18058Cstr.x_DWORD_180598//3
-	int32_t x_DWORD_18059C; // [16]//unk_18058Cstr.x_DWORD_18059C//4
+	int32_t MouseButtonState_18059C; // [16]//unk_18058Cstr.MouseButtonState_18059C//4
 	int32_t x_DWORD_1805A0; // weak//unk_18058Car[20]//5
 	int32_t x_DWORD_1805A4; // weak//unk_18058Car[0x18]//6
 	int32_t x_DWORD_1805A8; // weak//unk_18058Car[28]//7
