@@ -51,7 +51,7 @@ class CommandLineParser {
         bool DoShowDebugPerifery() const { return m_show_debug_perifery; };
         bool DoTextOutputToConsole() const { return m_text_output_to_console;};
         bool DoStateMonitor() const { return m_state_monitor;};
-		bool DoShowInGameDebug() const { return m_enable_in_game_debug; };
+        bool DoShowInGameDebug() const { return m_enable_in_game_debug; };
 
         // settings
         std::string GetMemimagesPath() const {return m_memimages_path;};
@@ -103,7 +103,7 @@ class CommandLineParser {
         bool m_show_debug_perifery;
         bool m_text_output_to_console;
         bool m_state_monitor;
-		bool m_enable_in_game_debug;
+        bool m_enable_in_game_debug;
 
         std::string m_memimages_path;
         std::string m_config_file_path;
