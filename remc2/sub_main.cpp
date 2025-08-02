@@ -38555,7 +38555,7 @@ void GameEvents_51BB0()//232bb0
 					break;
 				}
 			}
-			SetMenuCursorPosition_52E90(&D41A0_0.array_0x2BDE[i], D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1, true);
+			SetMenuCursorPosition_52E90(&D41A0_0.array_0x2BDE[i], D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1, true, gameUiScale);
 			break;
 		case 0x17:
 			if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2 != -1)

@@ -669,7 +669,7 @@ void sub_41B60()//222b60
 }
 
 //----- (00052E90) --------------------------------------------------------
-void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState, bool useSound)//233e90
+void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState, bool useSound, uint8_t scale)//233e90
 {
 	// type == 0 -> hide in-game dialog
 	// type == 9 -> show in-game settings dialog
@@ -814,7 +814,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
 	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		if ((!DefaultResolutions())&&(x_WORD_180660_VGA_type_resolution != 1))
-			viewPort.SetViewPortScreenCoordinates_2CA60(384, 0, screenWidth_18062C - 384, screenHeight_180624 - 80);
+			viewPort.SetViewPortScreenCoordinates_2CA60(384 * scale, 0, screenWidth_18062C - 384, screenHeight_180624 - 80);
 		else
 			viewPort.SetViewPortScreenCoordinates_2CA60(384, 0, 256, 400);
 		break;

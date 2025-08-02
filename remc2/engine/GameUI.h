@@ -55,7 +55,7 @@ int16_t GetHelpPopupIndex_88450();
 void GetHintText_89AC0(char* buffer, int helpIndex);
 
 void sub_41B60();
-void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatus, bool useSound);
+void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatus, bool useSound, uint8_t scale = 1);
 void sub_53120();
 void SetHelpPopupTextAndCoords_884D0(int16_t helpIdx, int16_t a2, int16_t* popupSrcPos, char a4, char a5, uint8_t scale = 1);
 void SetHelpPopupCoords_87580();
@@ -68,7 +68,6 @@ void SetSoundEffectAndMusicLevelCoordinates_19D60(signed int volume);
 
 void DrawPauseMenuPopUps_87860();
 void sub_87C10();
-void DrawAndEventsInGame_47560(uint32_t a3, signed int a4, int16_t a5);
 void DrawBottomMenu_2ECC0();
 void ColorizeScreen_2E790(int posX, int posY, int width, int height, uint8_t color);
 void DrawChatMenu_2F6B0();
