@@ -32,6 +32,8 @@ To jump to a selected Level use:</br>
 --set_level [0-25]</br>
 To run a level you have created using the editor:</br>
 --custom_level "[Path to .mc2 file]"</br>
+To run the game with option to show in game debug info (press "J" to show):</br>
+--enable_in_game_debug</br>
 
 ## FAQ ##
 https://github.com/thobbsinteractive/magic-carpet-2-hd/wiki/FAQ
