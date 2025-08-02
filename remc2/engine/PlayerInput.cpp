@@ -435,7 +435,7 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 				SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]);
 			SetMenuCursorPosition_52E90(
 				&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc],
-				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221,	true);
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221, true, gameUiScale);
 			if (soundActive_E3799)
 				EndSample_8D8F0();
 			if (musicActive_E37FD)
@@ -454,7 +454,7 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 		SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
 		SetMenuCursorPosition_52E90(
 			&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc],
-			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221, true);
+			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221, true, gameUiScale);
 		if (musicActive_E37FD)
 			StartMusic_8E160(D41A0_0.maptypeMusic_0x235, 0x7Fu);
 		sub_86930(x_WORD_1803EC);
