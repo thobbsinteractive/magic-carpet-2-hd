@@ -5358,25 +5358,25 @@ void DrawPolygonRasterLine_single_color_subB6253(
 	char v171 = local_x_BYTE_E126C;
 
 	uint8_t v18;
-	int v172;
+	int startX_v172;
 	signed int v173;
 
 	uint8_t* v174;
 
 	uint8_t line1 = startLine;
 
-	HIWORD(v172) = 0;
+	HIWORD(startX_v172) = 0;
 	if (CommandLineParams.DoTestRenderers()) { renderer_tests_register_hit(RendererTestsHitCheckpoint::RendTest_HD_Draw_Rasterline_SingleColor); }
 	while (1)
 	{
-		LOWORD(v172) = HIWORD(next_raster_line->startX);
+		LOWORD(startX_v172) = HIWORD(next_raster_line->startX);
 		v173 = HIWORD(next_raster_line->endX);
 		v170 += iScreenWidth_DE560;
 		line1++;
 		if (line1 >= drawEveryNthLine)
 		{
 			line1 = startLine;
-			if ((v172 & 0x8000u) == 0)
+			if ((startX_v172 & 0x8000u) == 0)
 				break;
 			if ((signed __int16)v173 > 0)
 			{
@@ -5394,11 +5394,11 @@ void DrawPolygonRasterLine_single_color_subB6253(
 	}
 	if (v173 > viewPort.Width_DE564)
 		v173 = viewPort.Width_DE564;
-	v18 = __OFSUB__((x_WORD)v173, (x_WORD)v172);
-	LOWORD(v173) = v173 - v172;
+	v18 = __OFSUB__((x_WORD)v173, (x_WORD)startX_v172);
+	LOWORD(v173) = v173 - startX_v172;
 	if ((uint8_t)(((v173 & 0x8000u) != 0) ^ v18) | ((x_WORD)v173 == 0))
 		goto LABEL_329;
-	v174 = &v170[v172];
+	v174 = &v170[startX_v172];
 	goto LABEL_328;
 }
 
