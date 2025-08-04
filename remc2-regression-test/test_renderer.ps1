@@ -15,7 +15,6 @@ function Test-Level {
         Write-Output "test level $level ok"
     } else {
         Write-Output "test level $level failed"
-		Read-Host -Prompt "Press Enter to exit"
     }
 }
 
