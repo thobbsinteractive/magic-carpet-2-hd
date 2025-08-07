@@ -119,6 +119,7 @@ bool SetConfig() {
 	else {
 		if (CommandLineParams.DoShowDebugMessages1())
 			std::cout << "Config File cannot be found... Exiting\n";
+		throw std::invalid_argument("Config.json not found at:" + configFilePath);
 		return false;
 	}
 
