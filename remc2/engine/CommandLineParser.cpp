@@ -49,6 +49,7 @@ void CommandLineParser::Init(int argc, char **argv) {
     m_text_output_to_console = false;
     m_state_monitor = false;
     m_enable_in_game_debug = false;
+	m_log_level_str = "Info";
 
     m_memimages_path = "../remc2/memimages/";
     m_config_file_path = "";
@@ -208,6 +209,9 @@ void CommandLineParser::InterpretParams() {
 		}
 		else if (param == "--custom_level") {
 			m_custom_level_path = *(++p);
+		}
+		else if (param == "--log_level") {
+			m_log_level_str = *(++p);
 		}
     }
 #ifdef _DEBUG

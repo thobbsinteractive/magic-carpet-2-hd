@@ -40424,7 +40424,19 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		//skip signal(4, 1);//236FB5 - 279DC0
 		//skip signal(6, 1);//236FC1 - 279DC0
 
-		std::cout << "Reading config.json file\n";
+		std::cout << "Initializing logger...\n";
+
+		spdlog::level::level_enum level = GetLoggingLevelFromString(CommandLineParams.GetLogLevelStr().c_str());
+
+#ifdef _DEBUG
+		level = GetLoggingLevelFromString("Debug");
+#else
+		level = GetLoggingLevelFromString(loggingLevel.c_str());
+#endif
+
+		InitializeLogging(level);
+
+		Logger->info("Reading config.json file");
 
 		try
 		{
@@ -40432,18 +40444,9 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		}
 		catch (const std::exception& e)
 		{
-			std::cout << "Error reading config.json file\n";
+			Logger->critical("Error reading config.json file: {}", e.what());
 			return -1;
 		}
-
-		spdlog::level::level_enum level = spdlog::level::info;
-
-#ifdef _DEBUG
-		level = GetLoggingLevelFromString("Debug");
-#else
-		level = GetLoggingLevelFromString(loggingLevel.c_str());
-#endif
-		InitializeLogging(level);
 
 		EventDispatcher::I = new EventDispatcher();
 

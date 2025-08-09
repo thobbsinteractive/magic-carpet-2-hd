@@ -27,7 +27,6 @@ int texturepixels = 32;
 int maxGameFps = 30;
 int fmvFps = 20;
 int menuFps = 30;
-std::string loggingLevel = "Info";
 int displayIndex = 0;
 int windowResWidth = 640;
 int windowResHeight = 480;
@@ -119,14 +118,13 @@ bool SetConfig() {
 	else {
 		if (CommandLineParams.DoShowDebugMessages1())
 			std::cout << "Config File cannot be found... Exiting\n";
-		throw std::invalid_argument("Config.json not found at:" + configFilePath);
+		throw std::invalid_argument("Config.json not found!");
 		return false;
 	}
 
 	auto config = Config(configFilePath);
 
 	//Game
-	loggingLevel = config.m_Game.m_LoggingLevel;
 	maxGameFps = config.m_Game.m_MaxGameFps;
 	fmvFps = config.m_Game.m_FmvFps;
 	if (config.m_Game.m_SkipIntro)
