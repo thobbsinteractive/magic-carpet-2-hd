@@ -67,7 +67,6 @@ namespace remc2_installer
 	public class Game
 	{
 		public string[] description { get; set; }
-		public string loggingLevel { get; set; }
 		public int maxGameFps { get; set; }
 		public int fmvFps { get; set; }
 	}
