@@ -71,7 +71,7 @@
 					"fmvFps: frames per second (20 seems to match original)"
 				],
 				"loggingLevel": "Info",
-				"maxGameFps": 25,
+				"maxGameFps": 24,
 				"fmvFps": 20
 			},
 			"controls": {
