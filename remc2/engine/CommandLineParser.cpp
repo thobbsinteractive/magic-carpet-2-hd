@@ -210,7 +210,7 @@ void CommandLineParser::InterpretParams() {
 		else if (param == "--custom_level") {
 			m_custom_level_path = *(++p);
 		}
-		else if (param == "--log_level") {
+		else if (param == "-l" || param == "--log_level") {
 			m_log_level_str = *(++p);
 		}
     }

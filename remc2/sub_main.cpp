@@ -40430,8 +40430,6 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 #ifdef _DEBUG
 		level = GetLoggingLevelFromString("Debug");
-#else
-		level = GetLoggingLevelFromString(loggingLevel.c_str());
 #endif
 
 		InitializeLogging(level);
