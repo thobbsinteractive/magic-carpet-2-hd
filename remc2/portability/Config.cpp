@@ -100,7 +100,6 @@ void Config::LoadGame(rapidjson::GenericObject<false, rapidjson::Value>& setting
 #else
 		auto game = settings["game"].GetObj();
 #endif
-		m_Game.m_LoggingLevel = ReadStringValue(game, "loggingLevel");
 		m_Game.m_MaxGameFps = ReadIntValue(game, "maxGameFps");
 		m_Game.m_FmvFps = ReadIntValue(game, "fmvFps");
 	}
