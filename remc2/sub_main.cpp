@@ -40416,17 +40416,27 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		//skip signal(4, 1);//236FB5 - 279DC0
 		//skip signal(6, 1);//236FC1 - 279DC0
 
-		printf("Reading Ini file\n");
-		if (!SetConfig()) exit(1);
+		std::cout << "Initializing logger...\n";
 
-		spdlog::level::level_enum level = spdlog::level::info;
+		spdlog::level::level_enum level = GetLoggingLevelFromString(CommandLineParams.GetLogLevelStr().c_str());
 
 #ifdef _DEBUG
 		level = GetLoggingLevelFromString("Debug");
-#else
-		level = GetLoggingLevelFromString(loggingLevel.c_str());
 #endif
+
 		InitializeLogging(level);
+
+		Logger->info("Reading config.json file");
+
+		try
+		{
+			SetConfig();
+		}
+		catch (const std::exception& e)
+		{
+			Logger->critical("Error reading config.json file: {}", e.what());
+			return -1;
+		}
 
 		EventDispatcher::I = new EventDispatcher();
 

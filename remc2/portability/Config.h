@@ -63,7 +63,6 @@ private:
 
 	struct Game
 	{
-		std::string m_LoggingLevel = "Info";
 		int m_MaxGameFps = 0;
 		int m_FmvFps = 20;
 		bool m_SkipIntro = false;

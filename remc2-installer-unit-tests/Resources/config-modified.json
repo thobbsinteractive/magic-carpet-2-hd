@@ -66,11 +66,9 @@
 			},
 			"game": {
 				"description": [
-					"loggingLevel: Set to Debug (for detailed) or Trace (very detailed) logging. May impact performance. Writes to log.txt in exe directory",
 					"maxGameFps: max frames per second in game. Locks the frame rate.  Delete or set to 0 to unlock",
 					"fmvFps: frames per second (20 seems to match original)"
 				],
-				"loggingLevel": "Info",
 				"maxGameFps": 25,
 				"fmvFps": 20
 			},
@@ -89,6 +87,7 @@
 						"invertXAxis": false,
 						"mouseScaleX": 1.0,
 						"mouseScaleY": 1.0,
+						"disableLRButtonsMenuOpen": true,
 						"spellLeft": 1,
 						"spellRight": 3,
 						"map": 2,
