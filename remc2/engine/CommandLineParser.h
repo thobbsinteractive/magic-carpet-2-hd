@@ -58,6 +58,7 @@ class CommandLineParser {
         std::string GetConfigFilePath() const { return m_config_file_path; };
 		int16_t GetSetLevel() const { return m_set_level; };
 		std::string GetCustomLevelPath() const { return m_custom_level_path; };
+		std::string GetLogLevelStr() const { return m_log_level_str; };
 
     private:
         void InterpretParams();
@@ -109,6 +110,7 @@ class CommandLineParser {
         std::string m_config_file_path;
         uint16_t m_set_level;
         std::string m_custom_level_path;
+		std::string m_log_level_str;
 };
 
 extern CommandLineParser CommandLineParams;
