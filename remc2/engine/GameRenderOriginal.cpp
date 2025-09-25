@@ -270,7 +270,7 @@ void GameRenderOriginal::DrawSky_40950(int16_t roll)
 	int v12; // eax
 	char* v13; // esi
 	uint32_t* v14; // edi
-	uint8_t* v15; // edx
+	uint8_t* ptrSkyTex; // edx
 	int v16; // ecx
 	int v17; // ebx
 	int v18; // eax
@@ -331,7 +331,7 @@ void GameRenderOriginal::DrawSky_40950(int16_t roll)
 			//v20 = v27 >> 16;
 			v14 = (uint32_t*)viewPortRenderBufferStart;
 			//v21 = v23 >> 16;
-			v15 = off_D41A8_sky;
+			ptrSkyTex = off_D41A8_sky;
 			BYTE1(v17) = BYTE2(v27);
 
 			v16 = ((unsigned __int16)viewPort.Width_DE564
@@ -342,17 +342,17 @@ void GameRenderOriginal::DrawSky_40950(int16_t roll)
 			v17 = (unsigned __int16)v17;
 			do
 			{
-				LOBYTE(v12) = v15[v17];
+				LOBYTE(v12) = ptrSkyTex[v17];
 				LOBYTE(v17) = *v13 + v17;
 				BYTE1(v17) += v13[1];
-				BYTE1(v12) = v15[v17];
+				BYTE1(v12) = ptrSkyTex[v17];
 				LOBYTE(v17) = v13[2] + v17;
 				BYTE1(v17) += v13[3];
 				v18 = v12 << 16;
-				LOBYTE(v18) = v15[v17];
+				LOBYTE(v18) = ptrSkyTex[v17];
 				LOBYTE(v17) = v13[4] + v17;
 				BYTE1(v17) += v13[5];
-				BYTE1(v18) = v15[v17];
+				BYTE1(v18) = ptrSkyTex[v17];
 				LOBYTE(v17) = v13[6] + v17;
 				BYTE1(v17) += v13[7];
 				v12 = __SWAP_HILOWORD__(v18);
