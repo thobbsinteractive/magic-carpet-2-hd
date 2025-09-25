@@ -395,10 +395,10 @@ void GameRenderHD::DrawSky_40950(int16_t roll, uint8_t startLine, uint8_t drawEv
 	// prepare sky texture lookup table
 	for (uint16_t width = 0; width < viewPort.Width_DE564; width++)
 	{
-		errLine[width].x = (errorX >> 16) - oldErrorX;
-		errLine[width].y = (errorY >> 16) - oldErrorY;
-		oldErrorX = (errorX >> 16);
-		oldErrorY = (errorY >> 16);
+		errLine[width].x = BYTE2(errorX) - oldErrorX;
+		errLine[width].y = BYTE2(errorY) - oldErrorY;
+		oldErrorX = BYTE2(errorX);
+		oldErrorY = BYTE2(errorY);
 		errorY += sinRoll;
 		errorX += cosRoll;
 	}

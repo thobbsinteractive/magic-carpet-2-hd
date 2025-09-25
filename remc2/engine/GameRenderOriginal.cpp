@@ -259,8 +259,8 @@ void GameRenderOriginal::DrawSky_40950(int16_t roll)
 {
 	int roundRoll; // ebx
 	int cosRoll; // edx
-	int v3; // esi
-	int v4; // ebx
+	int errorX; // esi
+	int errorY; // ebx
 	char* v5; // edx
 	int v7; // edx
 	int v8; // eax
@@ -289,8 +289,8 @@ void GameRenderOriginal::DrawSky_40950(int16_t roll)
 	roundRoll = roll & 0x7FF;
 	cosRoll = ((x_DWORD)Maths::sin_DB750[512 + roundRoll] << 8) / viewPort.Width_DE564;
 	sinRoll = (Maths::sin_DB750[roundRoll] << 8) / viewPort.Width_DE564;
-	v3 = 0;
-	v4 = 0;
+	errorX = 0;
+	errorY = 0;
 	v29 = 0;
 	v5 = v19ar;
 	v30 = 0;
@@ -299,17 +299,17 @@ void GameRenderOriginal::DrawSky_40950(int16_t roll)
 	uint16_t width = viewPort.Width_DE564;
 	while (width)
 	{
-		v28 = BYTE2(v3);
-		*v5 = BYTE2(v3) - v29;
+		v28 = BYTE2(errorX);
+		*v5 = BYTE2(errorX) - v29;
 		//v21 = BYTE2(v4);
 		//v20 = BYTE2(v4) - v30;
 		v5 += 2;
 		width--;
-		*(v5 - 1) = BYTE2(v4) - v30;
+		*(v5 - 1) = BYTE2(errorY) - v30;
 		v29 = v28;
-		v30 = BYTE2(v4);
-		v4 += sinRoll;
-		v3 += cosRoll;
+		v30 = BYTE2(errorY);
+		errorY += sinRoll;
+		errorX += cosRoll;
 	}
 	v7 = (-(str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x22) >> 16) + str_F2C20ar.dword0x24;
 	v8 = str_F2C20ar.dword0x10 - (str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x22 >> 16);
