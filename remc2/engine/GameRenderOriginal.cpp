@@ -257,8 +257,8 @@ GameRenderOriginal::~GameRenderOriginal()
 
 void GameRenderOriginal::DrawSky_40950(int16_t roll)
 {
-	int v1; // ebx
-	int v2; // edx
+	int roundRoll; // ebx
+	int cosRoll; // edx
 	int v3; // esi
 	int v4; // ebx
 	char* v5; // edx
@@ -280,18 +280,16 @@ void GameRenderOriginal::DrawSky_40950(int16_t roll)
 	//int* viewPortRenderBufferStart; // [esp+508h] [ebp-24h]
 	int v23; // [esp+50Ch] [ebp-20h]
 	int v24; // [esp+510h] [ebp-1Ch]
-	int v25; // [esp+514h] [ebp-18h]
-	int v26; // [esp+518h] [ebp-14h]
+	int sinRoll; // [esp+518h] [ebp-14h]
 	int v27; // [esp+51Ch] [ebp-10h]
 	char v28; // [esp+520h] [ebp-Ch]
 	char v29; // [esp+524h] [ebp-8h]
 	unsigned __int8 v30; // [esp+528h] [ebp-4h]
 
-	v1 = roll & 0x7FF;
-	v2 = (x_DWORD)Maths::sin_DB750[512 + v1] << 8;
-	v26 = (Maths::sin_DB750[v1] << 8) / viewPort.Width_DE564;
+	roundRoll = roll & 0x7FF;
+	cosRoll = ((x_DWORD)Maths::sin_DB750[512 + roundRoll] << 8) / viewPort.Width_DE564;
+	sinRoll = (Maths::sin_DB750[roundRoll] << 8) / viewPort.Width_DE564;
 	v3 = 0;
-	v25 = v2 / viewPort.Width_DE564;
 	v4 = 0;
 	v29 = 0;
 	v5 = v19ar;
@@ -310,13 +308,13 @@ void GameRenderOriginal::DrawSky_40950(int16_t roll)
 		*(v5 - 1) = BYTE2(v4) - v30;
 		v29 = v28;
 		v30 = BYTE2(v4);
-		v4 += v26;
-		v3 += v25;
+		v4 += sinRoll;
+		v3 += cosRoll;
 	}
 	v7 = (-(str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x22) >> 16) + str_F2C20ar.dword0x24;
 	v8 = str_F2C20ar.dword0x10 - (str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x22 >> 16);
-	v9 = v7 * v25 - v8 * v26;
-	v10 = v25 * v8 + v26 * v7;
+	v9 = v7 * cosRoll - v8 * sinRoll;
+	v10 = cosRoll * v8 + sinRoll * v7;
 	v23 = ((unsigned __int16)yaw_F2CC0 << 15) - v9;
 	uint8_t* viewPortRenderBufferStart = ViewPortRenderBufferStart_DE558;
 	//result = viewPort.Height_DE568;
@@ -335,9 +333,11 @@ void GameRenderOriginal::DrawSky_40950(int16_t roll)
 			//v21 = v23 >> 16;
 			v15 = off_D41A8_sky;
 			BYTE1(v17) = BYTE2(v27);
+
 			v16 = ((unsigned __int16)viewPort.Width_DE564
 				- (__CFSHL__((signed int)(unsigned __int16)viewPort.Width_DE564 >> 31, 2)
 					+ 4 * ((signed int)(unsigned __int16)viewPort.Width_DE564 >> 31))) >> 2;
+
 			LOBYTE(v17) = BYTE2(v23);
 			v17 = (unsigned __int16)v17;
 			do
@@ -364,8 +364,8 @@ void GameRenderOriginal::DrawSky_40950(int16_t roll)
 			viewPortRenderBufferStart += iScreenWidth_DE560;
 			//result = v25;
 			v24--;
-			v23 -= v26;
-			v27 += v25;
+			v23 -= sinRoll;
+			v27 += cosRoll;
 		} while (v24);
 	}
 }
