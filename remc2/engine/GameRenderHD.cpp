@@ -5432,7 +5432,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 	int32_t v384tmp;
 	int16_t pixelCount_v384lo;
 	int16_t BrightnessFractionalPart_v384hi;
-	int16_t v385;
+	int16_t endX_v385;
 	uint8_t* currentPixel;
 
 	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
@@ -5457,8 +5457,8 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 					endX_v378 = viewPort.Width_DE564;
 
 				v18 = __OFSUB__(endX_v378, startX_v375);
-				v385 = endX_v378 - startX_v375;
-				if ((uint8_t)((v385 < 0) ^ v18) | (v385 == 0)) {
+				endX_v385 = endX_v378 - startX_v375;
+				if ((uint8_t)((endX_v385 < 0) ^ v18) | (endX_v385 == 0)) {
 					continue;
 				}
 				ptrViewPortRenderLine_v379 += startX_v375;
@@ -5470,7 +5470,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 				v384tmp = __SWAP_HILOWORD__(current_raster_line->brightness);
 				BrightnessFractionalPart_v384hi = HIWORD(v384tmp);
 				BYTE1(paletteMapping) = LOWORD(v384tmp);
-				pixelCount_v384lo = v385;
+				pixelCount_v384lo = endX_v385;
 			}
 			else if (endX_v378 > 0)
 			{
