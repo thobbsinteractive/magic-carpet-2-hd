@@ -5529,7 +5529,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 	Rasterline_t *pRasterLines,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
-	uint8_t **pv1102,
+	uint8_t **ptrViewPortRenderLineStart_v1102,
 	uint32_t Vincrement, int Uincrement,
 	uint8_t *pTexture, char local_x_BYTE_E126C) 
 {
@@ -5565,8 +5565,8 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 
 		startX_v406 = HIWORD(current_raster_line->startX);
 		endX_v408 = HIWORD(current_raster_line->endX);
-		currentPixel = iScreenWidth_DE560 + *pv1102;
-		*pv1102 += iScreenWidth_DE560;
+		currentPixel = iScreenWidth_DE560 + *ptrViewPortRenderLineStart_v1102;
+		*ptrViewPortRenderLineStart_v1102 += iScreenWidth_DE560;
 		line8++;
 
 		if (line8 >= drawEveryNthLine)
