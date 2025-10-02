@@ -5457,7 +5457,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 
 				v18 = __OFSUB__(endX_v378, startX_v375);
 				endX_v385 = endX_v378 - startX_v375;
-				if ((uint8_t)((endX_v385 < 0) ^ v18) | (endX_v385 == 0)) {
+				if ((uint8_t)(((endX_v385 & 0x8000u) != 0) ^ v18) | (endX_v385 == 0)) {
 					continue;
 				}
 				ptrViewPortRenderPixel_v379 += startX_v375;
