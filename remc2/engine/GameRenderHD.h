@@ -92,10 +92,10 @@ private:
 		uint8_t** pv1102, uint32_t Vincrement, int Uincrement, uint8_t* pTexture, char local_x_BYTE_E126C);
 	void DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t x_BYTE_E88E0x[], int32_t x_DWORD_F5730[], type_event_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth);
 	void DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* vertex1, const ProjectionPolygon* vertex2, const ProjectionPolygon* vertex3, uint8_t startLine, uint8_t drawEveryNthLine);
-	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int s0, int s1, int* line);
-	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v4, int s0, int s1, int s4, int* line);
-	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line);
-	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v2, int* v3, int* v4, int s0, int s1, int s2, int s3, int s4, int* line);
+	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* startX, int* endX, int startX_inc, int endX_inc, int* numLines);
+	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* startX, int* endX, int* brightness, int startX_inc, int endX_inc, int brightness_inc, int* numLines);
+	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* startX, int* endX, int* U, int* V, int startX_inc, int endX_inc, int U_inc, int V_inc, int* numLines);
+	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* startX, int* endX, int* U, int* V, int* brightness, int startX_inc, int endX_inc, int U_inc, int V_inc, int brightness_inc, int* numLines);
 	uint16_t sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth);
 	void sub_88740(type_event_0x6E8E* a1, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);

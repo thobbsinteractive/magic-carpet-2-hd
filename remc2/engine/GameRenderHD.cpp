@@ -6250,7 +6250,7 @@ LABEL_129_DrawTriangle:
 				BrightnessIncrement = v69;
 				int v1127 = (vert_y_high_v5->U - vert_y_low_v3->U) / v1114;
 				int v1138 = (vert_y_high_v5->V - vert_y_low_v3->V) / v1114;
-				int v1149 = (vert_y_high_v5->Brightness - vert_y_low_v3->Brightness) / v1114;
+				int brightness_inc_v1149 = (vert_y_high_v5->Brightness - vert_y_low_v3->Brightness) / v1114;
 				int v1133 = (vert_y_middle_v4->U - vert_y_high_v5->U) / v1120;
 				int v1144 = (vert_y_middle_v4->V - vert_y_high_v5->V) / v1120;
 				int v1155 = (vert_y_middle_v4->Brightness - vert_y_high_v5->Brightness) / v1120;
@@ -6280,7 +6280,7 @@ LABEL_129_DrawTriangle:
 						fpRasterEndX += v79 * v1108 + v1114 * v1108;         // FIXME: overflow here
 						rasterU += v79 * v1133 + v1114 * v1127;
 						rasterV += v79 * v1144 + v1114 * v1138;
-						rasterBrighness += v79 * v1155 + v1114 * v1149;
+						rasterBrighness += v79 * v1155 + v1114 * brightness_inc_v1149;
 						if (v1301)
 						{
 							v1120 = viewPort.Height_DE568;
@@ -6302,7 +6302,7 @@ LABEL_129_DrawTriangle:
 					fpRasterEndX += v1161 * v1108;                  // FIXME: overflow here
 					rasterU += v1161 * v1127;
 					rasterV += v1161 * v1138;
-					rasterBrighness += v1161 * v1149;
+					rasterBrighness += v1161 * brightness_inc_v1149;
 					if (v1301)
 					{
 						linesToDraw_v1123 = viewPort.Height_DE568;
@@ -6333,7 +6333,7 @@ LABEL_129_DrawTriangle:
 						v1120 = v83;
 					}
 				}
-				v81 = RasterizePolygon(&rasterlines_DE56Cx[startLine][0], &fpRasterStartX, &fpRasterEndX, &rasterU, &rasterV, &rasterBrighness, fp_slope_HighLowVert, v1108, v1127, v1138, v1149, &v1114);
+				v81 = RasterizePolygon(&rasterlines_DE56Cx[startLine][0], &fpRasterStartX, &fpRasterEndX, &rasterU, &rasterV, &rasterBrighness, fp_slope_HighLowVert, v1108, v1127, v1138, brightness_inc_v1149, &v1114);
 				v80 = fp_vertHighX;
 				goto LABEL_156_DrawTriangle;
 			}
@@ -7162,53 +7162,55 @@ LABEL_DrawRasterLines:
 	}
 }
 
-Rasterline_t* GameRenderHD::RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int s0, int s1, int* line)
+Rasterline_t* GameRenderHD::RasterizePolygon(Rasterline_t* ptrPolys, int* startX, int* endX, int startX_inc, int endX_inc, int* numLines)
 {
 	do
 	{
-		ptrPolys->startX = *v0;
-		*v0 += s0;
-		ptrPolys->endX = *v1;
-		*v1 += s1;
+		ptrPolys->startX = *startX;
+		*startX += startX_inc;
+		ptrPolys->endX = *endX;
+		*endX += endX_inc;
 		ptrPolys++;
-		*line = *line - 1;
-	} while (*line);
+		*numLines = *numLines - 1;
+	} while (*numLines);
 
 	return ptrPolys;
 }
 
-Rasterline_t* GameRenderHD::RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v4, int s0, int s1, int s4, int* line)
+Rasterline_t* GameRenderHD::RasterizePolygon(Rasterline_t* ptrPolys, 
+	int* startX, int* endX, int* brightness, int startX_inc, int endX_inc, int brightness_inc, int* numLines)
 {
 	do
 	{
-		ptrPolys->startX = *v0;
-		*v0 += s0;
-		ptrPolys->endX = *v1;
-		*v1 += s1;
-		ptrPolys->brightness = *v4;
-		*v4 += s4;
+		ptrPolys->startX = *startX;
+		*startX += startX_inc;
+		ptrPolys->endX = *endX;
+		*endX += endX_inc;
+		ptrPolys->brightness = *brightness;
+		*brightness += brightness_inc;
 		ptrPolys++;
-		*line = *line - 1;
-	} while (*line);
+		*numLines = *numLines - 1;
+	} while (*numLines);
 
 	return ptrPolys;
 }
 
-Rasterline_t* GameRenderHD::RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line)
+Rasterline_t* GameRenderHD::RasterizePolygon(Rasterline_t* ptrPolys, 
+	int* startX, int* endX, int* U, int* V, int startX_inc, int endX_inc, int U_inc, int V_inc, int* numLines)
 {
 	do
 	{
-		ptrPolys->startX = *v0;
-		*v0 += s0;
-		ptrPolys->endX = *v1;
-		*v1 += s1;
-		ptrPolys->U = *v2;
-		*v2 += s2;
-		ptrPolys->V = *v3;
-		*v3 += s3;
+		ptrPolys->startX = *startX;
+		*startX += startX_inc;
+		ptrPolys->endX = *endX;
+		*endX += endX_inc;
+		ptrPolys->U = *U;
+		*U += U_inc;
+		ptrPolys->V = *V;
+		*V += V_inc;
 		ptrPolys++;
-		*line = *line - 1;
-	} while (*line);
+		*numLines = *numLines - 1;
+	} while (*numLines);
 
 	return ptrPolys;
 }
