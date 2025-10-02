@@ -5471,7 +5471,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 				BYTE1(paletteMapping) = LOWORD(v384tmp);
 				pixelCount_v384lo = endX_v385;
 			}
-			else if (endX_v378 > 0)
+			else if ((int16_t)endX_v378 > 0)
 			{
 				// startX_v375 is negative here, but endX is positive -> skip pixels by updating v,u,brightness
 				v380 = -startX_v375;
