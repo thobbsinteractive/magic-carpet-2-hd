@@ -5425,7 +5425,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 	int16_t textureIndexU = 0;
 	int16_t textureIndexV = 0;
 	uint16_t endX_v378;
-	uint8_t* ptrViewPortRenderLine_v379; // pixel position in screen buffer
+	uint8_t* ptrViewPortRenderPixel_v379; // pixel position in screen buffer
 	uint16_t v380;
 	unsigned int v382;
 	int v383;
@@ -5433,7 +5433,6 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 	int16_t pixelCount_v384lo;
 	int16_t BrightnessFractionalPart_v384hi;
 	int16_t endX_v385;
-	uint8_t* currentPixel;
 
 	const int16_t MAX_TEXTURE_INDEX = x_BYTE_D41B5_texture_size-1;
 
@@ -5444,7 +5443,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 		next_raster_line++;
 		startX_v375 = HIWORD(current_raster_line->startX);
 		endX_v378 = HIWORD(current_raster_line->endX);
-		ptrViewPortRenderLine_v379 = iScreenWidth_DE560 + *ptrViewPortRenderLineStart_v1102;
+		ptrViewPortRenderPixel_v379 = iScreenWidth_DE560 + *ptrViewPortRenderLineStart_v1102;
 		*ptrViewPortRenderLineStart_v1102 += iScreenWidth_DE560;
 		line6++;
 
@@ -5461,7 +5460,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 				if ((uint8_t)((endX_v385 < 0) ^ v18) | (endX_v385 == 0)) {
 					continue;
 				}
-				ptrViewPortRenderLine_v379 += startX_v375;
+				ptrViewPortRenderPixel_v379 += startX_v375;
 				textureIndexU = BYTE2(current_raster_line->U);
 				v383 = __SWAP_HILOWORD__(current_raster_line->V);
 				textureIndexV = (uint8_t)v383;
@@ -5478,6 +5477,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 				v380 = -startX_v375;
 				v383 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v380);
 				textureIndexV = (uint8_t)v383;
+
 				v382 = current_raster_line->U + Uincrement * v380;
 				LOWORD(v383) = v382;
 				startX_v375 = v382 >> 8;
@@ -5497,7 +5497,6 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 				continue;
 			}
 
-			currentPixel = &ptrViewPortRenderLine_v379[0];
 			do {
 				if (textureIndexV > MAX_TEXTURE_INDEX)
 					break;
@@ -5513,13 +5512,13 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 				v383 += fixedpointVincrement;
 				textureIndexV = (int8_t)BYTE2(Vincrement) + textureIndexV + v180;
 
-				currentPixel[0] = x_BYTE_F6EE0_tablesx[paletteMapping];
+				*ptrViewPortRenderPixel_v379 = x_BYTE_F6EE0_tablesx[paletteMapping];
 
 				v180 = __CFADD__(LOWORD(BrightnessIncrement_v1146), BrightnessFractionalPart_v384hi);
 				BrightnessFractionalPart_v384hi += BrightnessIncrement_v1146;
 				paletteMapping = GameRenderHD::SumByte1WithByte2(paletteMapping, BrightnessIncrement_v1146, v180);
 
-				currentPixel += 1;
+				ptrViewPortRenderPixel_v379 += 1;
 			} while (--pixelCount_v384lo > 0);
 		}
 	} while(--linesToDraw);
