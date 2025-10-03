@@ -30,6 +30,6 @@ int main(int argc, char** argv)
 	int retval = sub_main(argc, argv, envp);
 	support_end();
 	//saveactstate();
-    return 0;
+    return retval;
 }
 
