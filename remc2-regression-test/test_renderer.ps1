@@ -23,7 +23,6 @@ for ($i = 0; $i -le 3; $i++) {
 	{
 		Test-Level -level $i
 	}
-}}
 }
 
 Read-Host -Prompt "Press ENTER or CTRL+C to exit" | Out-Null
