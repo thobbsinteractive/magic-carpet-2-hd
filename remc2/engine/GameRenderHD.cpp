@@ -422,8 +422,6 @@ void GameRenderHD::DrawSky_40950(int16_t roll, uint8_t startLine, uint8_t drawEv
 		{
 			texturePixelIndexX = BYTE2(beginX);
 			texturePixelIndexY = BYTE2(beginY);
-			texturePixelIndexX %= (skyTextSize - 1);
-			texturePixelIndexY %= (skyTextSize - 1);
 		}
 
 		//Scales sky texture to viewport
