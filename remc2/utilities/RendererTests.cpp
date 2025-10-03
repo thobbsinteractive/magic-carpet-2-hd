@@ -82,7 +82,7 @@ void renderer_tests_eval_findings() {
 	}
 
 	if (!renderer_tests_success) {
-		throw std::exception("Render tests failed, Exiting!");
+		throw std::runtime_error("Render tests failed, Exiting!");
 	}
 	else {
 		Logger->info("No differences between HD and Original renderer and all checkpoints hit");
