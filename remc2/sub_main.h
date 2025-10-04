@@ -1572,5 +1572,6 @@ type_event_0x6E8E* AddSpell24_72_514A0(axis_3d* a1);
 type_event_0x6E8E* AddSpell25_75_514C0(axis_3d* a1);
 x_WORD* sub_60400(__int16 a1, x_WORD* a2, x_WORD* a3);
 void sub_6D8B0(unsigned __int16 a1, unsigned __int16 a2, __int16 a3);
+void CollectLevelStats_5C530();
 
 #endif //SUB_MAIN_ACTIVE

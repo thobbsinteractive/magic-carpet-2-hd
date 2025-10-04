@@ -903,7 +903,6 @@ signed int sub_5C3D0_file_decompress(uint8_t* a1, uint8_t* a2);
 void NetworkAllocation2_5C430();
 void NetworkDisallocation2_5C450();
 void sub_5C490_testers_info();
-void sub_5C530();
 void sub_5C800(type_event_0x6E8E* a1, char a2);
 void sub_5C830(type_event_0x6E8E* a1, char a2, __int16 a3);
 void sub_5C870(type_event_0x6E8E* a1);
@@ -32145,7 +32144,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 				}
 				else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
 				{
-					sub_5C530();
+					CollectLevelStats_5C530();
 					if (x_D41A0_BYTEARRAY_4_struct.setting_38545 & 0x20)
 						sub_6E0D0();
 				}
@@ -32161,7 +32160,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 					if (a3 >= 0x18u)
 					{
 						if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
-							sub_5C530();
+							CollectLevelStats_5C530();
 						break;
 					}
 					if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
@@ -45140,7 +45139,7 @@ void sub_5C490_testers_info()//23d490
 }
 
 //----- (0005C530) --------------------------------------------------------
-void sub_5C530()//23d530
+void CollectLevelStats_5C530()//23d530
 {
 	int v0x; // edx
 	int v1; // ecx
@@ -45246,7 +45245,7 @@ void sub_5C530()//23d530
 		v2x->dword_0xA4_164x->dword_0x181_385 = 0;
 	//v2x->dword_0xA4_164x->dword_0x181_385 = v16y;//? or (uint8_t*)(v18 / v17)
 LABEL_29:
-	//v19 = v2x->dword_0xA4_164;
+	//Get Level Time
 	v2x->dword_0xA4_164x->levelTime_393 = (j___clock() - v2x->dword_0xA4_164x->levelTime_393) / 0x64u;
 	//v20 = v2x->dword_0xA4_164;
 	if (v2x->dword_0xA4_164x->dword_0x179_377 < 0)
