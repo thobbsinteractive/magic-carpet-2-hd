@@ -45247,7 +45247,7 @@ void sub_5C530()//23d530
 	//v2x->dword_0xA4_164x->dword_0x181_385 = v16y;//? or (uint8_t*)(v18 / v17)
 LABEL_29:
 	//v19 = v2x->dword_0xA4_164;
-	v2x->dword_0xA4_164x->dword_0x189_393 = (j___clock() - v2x->dword_0xA4_164x->dword_0x189_393) / 0x64u;
+	v2x->dword_0xA4_164x->levelTime_393 = (j___clock() - v2x->dword_0xA4_164x->levelTime_393) / 0x64u;
 	//v20 = v2x->dword_0xA4_164;
 	if (v2x->dword_0xA4_164x->dword_0x179_377 < 0)
 		v2x->dword_0xA4_164x->dword_0x179_377 = 0;
@@ -45443,7 +45443,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//23d950
 		for (i = 0; i < 26; i++)
 			//*(x_DWORD *)(v2x->dword_0xA4_164 + 4 * i + 711) = 0;
 			v2x->dword_0xA4_164x->str_611.spells_experience_0x2CB_715x.at(i) = 0;
-		v2x->dword_0xA4_164x->dword_0x189_393 = j___clock();
+		v2x->dword_0xA4_164x->levelTime_393 = j___clock();
 		switch (sub_616D0(v2x->dword_0xA4_164x->word_0x38_56))
 		{
 		case 0:
@@ -48936,7 +48936,7 @@ void sub_82AB0(unsigned __int8 a1)//263ab0
 				x_DWORD_17DDBCx[2 + v7] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.dword_0x175_373;
 				x_DWORD_17DDBCx[3 + v7] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.dword_0x181_385;
 				//result = *(x_DWORD *)(2124 * *(signed __int16 *)(x_D41A0_BYTEARRAY_0 + 12) + x_D41A0_BYTEARRAY_0 + 12621);
-				x_DWORD_17DDBCx[4 + v7] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.dword_0x189_393;
+				x_DWORD_17DDBCx[4 + v7] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.levelTime_393;
 			}
 			v4i++;
 			//v4 = (x_WORD *)((char *)v4 + 17);
@@ -48951,7 +48951,7 @@ void sub_82AB0(unsigned __int8 a1)//263ab0
 		x_DWORD_17DBC8x[2 + v2] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.dword_0x175_373;
 		x_DWORD_17DBC8x[3 + v2] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.dword_0x181_385;
 		//result = *(x_DWORD *)(2124 * *(signed __int16 *)(x_D41A0_BYTEARRAY_0 + 12) + x_D41A0_BYTEARRAY_0 + 12621);
-		x_DWORD_17DBC8x[4 + v2] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.dword_0x189_393;
+		x_DWORD_17DBC8x[4 + v2] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.levelTime_393;
 	}
 	//return result;
 }

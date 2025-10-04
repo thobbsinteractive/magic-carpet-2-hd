@@ -133,7 +133,7 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int32_t dword_0x185_389;
 	memcpy(output + 0x185, &input->dword_0x185_389, 4);
 	//int32_t dword_0x189_393;
-	memcpy(output + 0x189, &input->dword_0x189_393, 4);
+	memcpy(output + 0x189, &input->levelTime_393, 4);
 	//int32_t dword_0x18D_397;
 	memcpy(output + 0x18d, &input->dword_0x18D_397, 4);
 	//uint8_t stubi[4];
