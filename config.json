@@ -67,10 +67,10 @@
 			"game": {
 				"description": [
 					"maxGameFps: max frames per second in game. Locks the frame rate.  Delete or set to 0 to unlock",
-					"fmvFps: frames per second (20 seems to match original)"
+					"fmvFps: frames per second (18 seems to match original)"
 				],
 				"maxGameFps": 24,
-				"fmvFps": 20
+				"fmvFps": 18
 			},
 			"controls": {
 				"mouse": [
