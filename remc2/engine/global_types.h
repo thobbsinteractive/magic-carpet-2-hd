@@ -265,12 +265,12 @@ typedef struct Type_str_164 {//size 1136
 	int32_t dword_0x169_361;
 	int32_t dword_0x16D_365;
 	uint8_t stubg[4];
-	int32_t dword_0x175_373;
-	int32_t dword_0x179_377;
-	int32_t dword_0x17D_381;
-	int32_t dword_0x181_385;
+	int32_t creaturesKilledPercent_373;
+	int32_t spellsCollectedPercent_377;
+	int32_t hitAccuracyPercent_381;
+	int32_t manaCollectedPercent_385;
 	int32_t dword_0x185_389;
-	int32_t dword_0x189_393;//clock
+	int32_t time_393;//clock
 	int32_t dword_0x18D_397;
 	uint8_t stubi[4];
 	int8_t byte_0x195_405;

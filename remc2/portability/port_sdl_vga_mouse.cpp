@@ -52,6 +52,8 @@ int oldWidth;
 
 bool subBlitLock = false;
 
+int m_frameNumber = 0;
+
 // Initalize Color Masks.
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 Uint32 redMask = 0xff000000;
@@ -1084,11 +1086,7 @@ void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight) {
 
 	SDL_BlitSurface(m_gamePalletisedSurface, NULL, m_gameRGBASurface, NULL);
 
-	//if (SDL_SaveBMP(m_gameRGBASurface, "m_gameRGBASurface.bmp") != 0)
-	//{
-	//	// Error saving bitmap
-	//	printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
-	//}
+	//WriteSurfaceToFile(m_gamePalletisedSurface);
 
 	SDL_UpdateTexture(m_texture, NULL, m_gameRGBASurface->pixels, m_gameRGBASurface->pitch);
 	SDL_RenderCopy(m_renderer, m_texture, &rectSrc, &dscrect);
@@ -1571,4 +1569,26 @@ void SetGameKeyPress_1806E4(bool pressed, uint16_t gameKeyChar) {
 void VGA_mouse_clear_keys() {
 	for (int i = 0; i < 128; i++)
 		pressedKeys_180664[i] = 0;
+}
+
+void WriteSurfaceToFile(SDL_Surface* surface)
+{
+	std::string fileName = "c:\\temp\\Frame_000000";
+	std::string frameNumber = std::to_string(m_frameNumber);
+
+	fileName.resize(fileName.length() - frameNumber.length(), 0);
+	fileName += std::to_string(m_frameNumber);
+	fileName += ".bmp";
+	m_frameNumber++;
+
+	WriteSurfaceToFile(surface, fileName.c_str());
+}
+
+void WriteSurfaceToFile(SDL_Surface* surface, const char* filename)
+{
+	if (SDL_SaveBMP(surface, filename) != 0)
+	{
+		// Error saving bitmap
+		printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
+	}
 }
