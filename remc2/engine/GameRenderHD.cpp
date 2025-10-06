@@ -5418,11 +5418,11 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 
 	uint8_t v18;
 	uint8_t v180;
-	uint16_t startX_v375;
+	int16_t startX_v375;
 	uint16_t paletteMapping;
-	int16_t textureIndexU = 0;
-	int16_t textureIndexV = 0;
-	uint16_t endX_v378;
+	uint16_t textureIndexU = 0;
+	uint16_t textureIndexV = 0;
+	int16_t endX_v378;
 	uint8_t* ptrViewPortRenderPixel_v379; // pixel position in screen buffer
 	uint16_t v380;
 	unsigned int v382;
@@ -5469,7 +5469,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 				BYTE1(paletteMapping) = LOWORD(v384tmp);
 				pixelCount_v384lo = endX_v385;
 			}
-			else if ((int16_t)endX_v378 > 0)
+			else if (endX_v378 > 0)
 			{
 				// startX_v375 is negative here, but endX is positive -> skip pixels by updating v,u,brightness
 				v380 = -startX_v375;
