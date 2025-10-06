@@ -5422,7 +5422,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 	uint16_t paletteMapping;
 	uint16_t textureIndexU = 0;
 	uint16_t textureIndexV = 0;
-	uint16_t endX_v378;
+	int16_t endX_v378;
 	uint8_t* ptrViewPortRenderPixel_v379; // pixel position in screen buffer
 	uint16_t v380;
 	unsigned int v382;
