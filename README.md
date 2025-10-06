@@ -138,6 +138,8 @@ In order to run the game you need to own a copy of Magic Carpet 2. We provide a 
   bash check_install.sh -s [directory where GOG installed MC2] -d [destination directory]
   # for example :
   bash check_install.sh -s "${HOME}/.wine/drive_c/games/Magic Carpet 2/" -d "build/${BUILDTYPE}/inst/bin/NETHERW"
+  # or :
+  bash check_install.sh -s "/mnt/c/Program Files (x86)/GOG Galaxy/Games/Magic Carpet 2/" -d "build/${BUILDTYPE}/inst/bin/NETHRW"
   ```
   Please note that if you have used any other method to get the assets, at least run a check to make sure that remc2 has access to every file it needs:
   ```
@@ -161,7 +163,7 @@ In order to run the game you need to own a copy of Magic Carpet 2. We provide a 
 
 #### Configuring `remc2`
 
-Some settings can be configured via the file `config.ini`. An example for this file can be found in the root directory of the `remc2` repository.
+Some settings can be configured via the file `config.json`. An example for this file can be found in the root directory of the `remc2` repository.
 The game will search for this file in the following locations and this particular order. For the flatpak only the first two locations can be used.
 1. `$XDG_CONFIG_HOME/remc2`
 2. `$HOME/.config/remc2`
