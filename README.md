@@ -78,9 +78,10 @@ Moburma has been tirelessly working to document cut levels, level data structure
 There are two ways to build the Linux binary.
 - Building a native binary
   1. Pull the development branch using GitHub (this is much easier if you install Visual Studio Code and install C++ Extension, cmake, cmake tools). When pulling the branch either do a recursive clone of the repository or ensure that after the pull you run: `git submodule init` and `git submodule update`
-  2. Make sure that you have `CMake`, `make` and a recent `GCC` installed
+  2. Once pulled, within the `magic-carpet-2-hd/` directory pull the `findfirst` repo.
+  3. Make sure that you have `CMake`, `make` and a recent `GCC` installed
      - To install them on Debian/Pi OS: `sudo apt install -y cmake`  
-  3. Make sure that you have the following dependencies as development packages (the exact names depend on your distro)
+  4. Make sure that you have the following dependencies as development packages (the exact names depend on your distro)
   - SDL2
   - SDL2_mixer
   - SDL2_image
@@ -89,7 +90,8 @@ There are two ways to build the Linux binary.
   - boost
   - boost-system
   - spdlog
-    - To install them on Debian/Pi OS: `sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libpng-dev libpng++-dev libboost-system-dev libspdlog-dev` 
+  - rapidjson-dev
+    - To install them on Debian/Pi OS: `sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libpng-dev libpng++-dev libboost-system-dev libspdlog-dev rapidjson-dev` 
   4. Build the code
   ```bash
   export BUILDTYPE=Debug # or Release
