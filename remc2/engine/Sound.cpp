@@ -5079,7 +5079,7 @@ int sub_8F0AB(FILE* a1, /*int a2,*/ int a3)//26f0ab
 }
 
 //----- (0008F100) --------------------------------------------------------
-void sub_8F100_sound_proc19(uint32_t flags, __int16 index, int volume, int volumePan, unsigned __int16 playRate, char loopCount, unsigned __int8 playType)//270100
+void PlaySample_8F100(uint32_t flags, __int16 index, int volume, int volumePan, unsigned __int16 playRate, char loopCount, unsigned __int8 playType)//270100
 {
 	bool bool1; // [esp+0h] [ebp-18h]
 
@@ -5171,7 +5171,7 @@ void sub_8F100_sound_proc19(uint32_t flags, __int16 index, int volume, int volum
 		AilInitSample_93830(*soundBuffer1);
 		if (debug_first_sound) {
 			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[index].wavData_0;
-			Logger->trace("sub_8F100_sound_proc19:buff:");
+			Logger->trace("PlaySample_8F100:buff:");
 			for (int i = 0; i < 100; i++)
 				Logger->trace("{}", debug_sound_buff[i]);
 		}
@@ -5183,8 +5183,8 @@ void sub_8F100_sound_proc19(uint32_t flags, __int16 index, int volume, int volum
 	AilSetSampleLoopCount_93F70(*soundBuffer1, loopCount + 1);
 
 	if (debug_first_sound) {
-		Logger->trace("sub_8F100_sound_proc19:44mhz:");
-		Logger->trace("sub_8F100_sound_proc19:rate:{}", (*soundBuffer1)->playback_rate_15);
+		Logger->trace("PlaySample_8F100:44mhz:");
+		Logger->trace("PlaySample_8F100:rate:{}", (*soundBuffer1)->playback_rate_15);
 	}
 
 	AilStartSample_93B50(*soundBuffer1);
@@ -5658,7 +5658,7 @@ LABEL_46:
 	case 2:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			sub_8F100_sound_proc19(0, a3, 0, 64, 0x64u, -1, 2u);
+			PlaySample_8F100(0, a3, 0, 64, 0x64u, -1, 2u);
 			sub_8F710_sound_proc21(0, a3, 70, 2u, 0);
 		}
 		break;
@@ -5705,7 +5705,7 @@ LABEL_46:
 	case 5:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			sub_8F100_sound_proc19(0, a3, 0, 64, 0x64u, -1, 2u);
+			PlaySample_8F100(0, a3, 0, 64, 0x64u, -1, 2u);
 			sub_8F710_sound_proc21(0, a3, 120, 2u, 0);
 		}
 		break;
@@ -5761,7 +5761,7 @@ LABEL_46:
 	case 31:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			sub_8F100_sound_proc19(0, a3, 0, 64, 0x64u, -1, 2u);
+			PlaySample_8F100(0, a3, 0, 64, 0x64u, -1, 2u);
 			sub_8F710_sound_proc21(0, a3, 85, 2u, 0);
 		}
 		break;

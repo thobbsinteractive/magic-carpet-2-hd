@@ -46084,7 +46084,7 @@ void sub_6E150()//24f150
 				if (str_F4FE0[v0].word_2 == 512)
 					sub_8F420_sound_proc20(0, v0);
 				else
-					sub_8F100_sound_proc19(0, v0, (signed int)str_F4FE0[v0].word_2 >> 8, 64, 0x64u, -1, 2u);
+					PlaySample_8F100(0, v0, (signed int)str_F4FE0[v0].word_2 >> 8, 64, 0x64u, -1, 2u);
 				//v3 = 3 * v0;
 				str_F4FE0[v0].word_5 = 2;
 				str_F4FE0[v0].word_0 = 0;
@@ -47118,19 +47118,19 @@ void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8
 //----- (00075110) --------------------------------------------------------
 void sub_75110(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5)
 {
-	sub_8F100_sound_proc19(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 3u);
+	PlaySample_8F100(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 3u);
 }
 
 //----- (00075160) --------------------------------------------------------
 void sub_75160(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5)
 {
-	sub_8F100_sound_proc19(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 2u);
+	PlaySample_8F100(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 2u);
 }
 
 //----- (000751B0) --------------------------------------------------------
 void sub_751B0(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5)
 {
-	sub_8F100_sound_proc19(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 1u);
+	PlaySample_8F100(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 1u);
 }
 
 //----- (000753D0) --------------------------------------------------------
@@ -48882,7 +48882,7 @@ void sub_81CA0(int  /*a1*/, int  /*a2*/, __int16 a3, __int16 a4, type_x_BYTE_E25
 			vclock = a5x->word_22;
 			a5x->byte_20 = 1;
 			if (vclock != -1)
-				sub_8F100_sound_proc19(
+				PlaySample_8F100(
 					0,
 					a5x->word_24,
 					(unsigned __int8)x_BYTE_E1324,
