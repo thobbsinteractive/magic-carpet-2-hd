@@ -5774,7 +5774,7 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	uint8_t* renderBufferStartOfCurrentLine; // [esp+0h] [ebp-88h]
 	int linesToDraw_v1123; // [esp+20h] [ebp-68h]
 	int Uincrement; // [esp+24h] [ebp-64h]
-	uint32_t Vincrement; // [esp+30h] [ebp-58h]
+	int Vincrement; // [esp+30h] [ebp-58h]
 	uint32_t BrightnessIncrement = 0xAAAAAAAA; // [esp+3Ch] [ebp-4Ch]
 
 	Uincrement = 0;

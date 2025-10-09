@@ -939,10 +939,6 @@ void sub_727F0(unsigned __int8 a1, unsigned __int8 a2, unsigned __int8 a3, unsig
 // void /*__spoils<ecx>*/ ClearGraphicsBuffer640(int a1, void *a2, unsigned __int16 a3, char a4);
 //void sub_72C40_draw_bitmap_640_setcolor(__int16 a1, __int16 a2, bitmap_pos_struct_t a3, unsigned __int8 a4);
 //int sub_72CB0(unsigned __int8* a1, int a2);//not used
-
-void sub_75110(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5);
-void sub_75160(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5);
-void sub_751B0(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5);
 //void sub_75200_VGA_Blit640(uint16_t height);
 //int sub_75420();
 int sub_75440();
@@ -8895,7 +8891,7 @@ LABEL_12:
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240,
 					D41A0_0.LevelIndex_0xc,
 					8);
-				sub_6E150();
+				UpdateSounds_6E150();
 				if (x_D41A0_BYTEARRAY_4_struct.soundVolume_6 != v9)
 				{
 					x_D41A0_BYTEARRAY_4_struct.soundVolume_6 = v9;
@@ -32511,7 +32507,7 @@ void DrawAndEventsInGame_47560(/*uint8_t* a1, int a2, */uint32_t a3, signed int 
 	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
 		sub_57570();//nothing draw
 	sub_575C0();//nothing draw
-	sub_6E150();//nothing draw
+	UpdateSounds_6E150();//nothing draw
 	DrawGameFrame_2BE30();
 	//adress 2285ff
 	//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
@@ -46048,7 +46044,7 @@ void sub_6E0D0()//24f0d0
 // EA3E4: using guessed type int x_DWORD_EA3E4[];
 
 //----- (0006E150) --------------------------------------------------------
-void sub_6E150()//24f150
+void UpdateSounds_6E150()//24f150
 {
 	__int16 v0; // si
 	//int v1; // ebx
@@ -47116,21 +47112,21 @@ void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8
 }*/
 
 //----- (00075110) --------------------------------------------------------
-void sub_75110(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5)
+void sub_75110(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 3u);
+	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 3u);
 }
 
 //----- (00075160) --------------------------------------------------------
-void sub_75160(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5)
+void sub_75160(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 2u);
+	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 2u);
 }
 
 //----- (000751B0) --------------------------------------------------------
-void sub_751B0(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5)
+void sub_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 1u);
+	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 1u);
 }
 
 //----- (000753D0) --------------------------------------------------------
