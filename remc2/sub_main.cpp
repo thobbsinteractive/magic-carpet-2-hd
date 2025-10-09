@@ -46046,52 +46046,42 @@ void sub_6E0D0()//24f0d0
 //----- (0006E150) --------------------------------------------------------
 void UpdateSounds_6E150()//24f150
 {
-	__int16 v0; // si
-	//int v1; // ebx
-	//unsigned __int16 v2; // di
-	//int v3; // ebx
-	//int v4; // ebx
-
 	if (soundActive_E3799 && soundAble_E3798 && (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1) || x_D41A0_BYTEARRAY_4_struct.byte_38591))
 	{
-		v0 = 0;
-		do
+		for(int i = 0; i < 70; i++)
 		{
-			//v1 = 6 * v0;
-			switch (str_F4FE0[v0].word_0)
+			switch (str_F4FE0[i].word_0)
 			{
 			case 1:
-				PlaySampleType3_75110(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
-				str_F4FE0[v0].word_0 = 0;
-				str_F4FE0[v0].word_4 = 2;
+					PlaySampleType3_75110(str_F4FE0[i].word_3, i, str_F4FE0[i].word_2, str_F4FE0[i].word_1, str_F4FE0[i].word_5);
+					str_F4FE0[i].word_0 = 0;
+					str_F4FE0[i].word_4 = 2;
 				break;
 			case 2:
-				PlaySampleType1_751B0(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
-				str_F4FE0[v0].word_0 = 0;
-				str_F4FE0[v0].word_4 = 2;
+					PlaySampleType1_751B0(str_F4FE0[i].word_3, i, str_F4FE0[i].word_2, str_F4FE0[i].word_1, str_F4FE0[i].word_5);
+					str_F4FE0[i].word_0 = 0;
+					str_F4FE0[i].word_4 = 2;
 				break;
 			case 3:
-				PlaySampleType2_75160(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
-				str_F4FE0[v0].word_0 = 0;
-				str_F4FE0[v0].word_4 = 2;
+					PlaySampleType2_75160(str_F4FE0[i].word_3, i, str_F4FE0[i].word_2, str_F4FE0[i].word_1, str_F4FE0[i].word_5);
+					str_F4FE0[i].word_0 = 0;
+					str_F4FE0[i].word_4 = 2;
 				break;
 			case 4:
-				//v2 = str_F4FE0[v0].word_2;
-				if (str_F4FE0[v0].word_2 == 512)
-					sub_8F420_sound_proc20(0, v0);
+
+					if (str_F4FE0[i].word_2 == 512)
+						sub_8F420_sound_proc20(0, i);
 				else
-					PlaySample_8F100(0, v0, (signed int)str_F4FE0[v0].word_2 >> 8, 64, 0x64u, -1, 2u);
-				//v3 = 3 * v0;
-				str_F4FE0[v0].word_5 = 2;
-				str_F4FE0[v0].word_0 = 0;
+						PlaySample_8F100(0, i, (signed int)str_F4FE0[i].word_2 >> 8, 64, 0x64u, -1, 2u);
+
+					str_F4FE0[i].word_5 = 2;
+					str_F4FE0[i].word_0 = 0;
 				break;
 			default:
 				break;
 			}
-			//v4 = 3 * v0++;
-			str_F4FE0[v0].word_2 = 0;
-			v0++;
-		} while (v0 < 70);
+			str_F4FE0[i].word_2 = 0;
+		}
 	}
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
