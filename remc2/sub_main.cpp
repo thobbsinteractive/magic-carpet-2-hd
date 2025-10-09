@@ -46061,17 +46061,17 @@ void UpdateSounds_6E150()//24f150
 			switch (str_F4FE0[v0].word_0)
 			{
 			case 1:
-				sub_75110(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
+				PlaySampleType3_75110(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
 				str_F4FE0[v0].word_0 = 0;
 				str_F4FE0[v0].word_4 = 2;
 				break;
 			case 2:
-				sub_751B0(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
+				PlaySampleType1_751B0(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
 				str_F4FE0[v0].word_0 = 0;
 				str_F4FE0[v0].word_4 = 2;
 				break;
 			case 3:
-				sub_75160(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
+				PlaySampleType2_75160(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
 				str_F4FE0[v0].word_0 = 0;
 				str_F4FE0[v0].word_4 = 2;
 				break;
@@ -47112,19 +47112,19 @@ void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8
 }*/
 
 //----- (00075110) --------------------------------------------------------
-void sub_75110(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void PlaySampleType3_75110(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
 	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 3u);
 }
 
 //----- (00075160) --------------------------------------------------------
-void sub_75160(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void PlaySampleType2_75160(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
 	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 2u);
 }
 
 //----- (000751B0) --------------------------------------------------------
-void sub_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void PlaySampleType1_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
 	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 1u);
 }
