@@ -5525,7 +5525,7 @@ void WriteWaveToFile(wav_t* wav, const char* name)
 }
 
 //----- (0006E450) --------------------------------------------------------
-void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
+void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 {
 	type_event_0x6E8E* v3x; // edx
 	axis_3d* v4x; // esi
@@ -5602,16 +5602,16 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
 		{
 			LOWORD(v12) = 0x7FFF;
 		}
-		if ((unsigned __int16)a3 >= 0x2Au)
+		if ((unsigned __int16)index >= 0x2Au)
 		{
 			v13 = 9377 * v24 + 9439;
-			if ((unsigned __int16)a3 <= 0x2Cu)
+			if ((unsigned __int16)index <= 0x2Cu)
 			{
 				v14 = v13 % 0x1E - 15;
 			}
 			else
 			{
-				if (a3 != 46)
+				if (index != 46)
 					goto LABEL_29;
 				v14 = v13 % 0x14;
 				if (v22x->state_0x45_69 == 14)
@@ -5623,15 +5623,15 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
 		}
 	}
 LABEL_29:
-	if ((unsigned __int16)a3 < 0x2Au)
+	if ((unsigned __int16)index < 0x2Au)
 	{
-		if ((unsigned __int16)a3 < 0x20u)
+		if ((unsigned __int16)index < 0x20u)
 		{
-			if (a3 != 7)
+			if (index != 7)
 				goto LABEL_46;
 			goto LABEL_45;
 		}
-		if ((unsigned __int16)a3 <= 0x20u || a3 == 38)
+		if ((unsigned __int16)index <= 0x20u || index == 38)
 		{
 		LABEL_45:
 			v29 = 0;
@@ -5640,26 +5640,27 @@ LABEL_29:
 	}
 	else
 	{
-		if ((unsigned __int16)a3 <= 0x2Cu)
+		if ((unsigned __int16)index <= 0x2Cu)
 			goto LABEL_45;
-		if ((unsigned __int16)a3 >= 0x31u)
+		if ((unsigned __int16)index >= 0x31u)
 		{
-			if ((unsigned __int16)a3 > 0x35u && ((unsigned __int16)a3 < 0x3Au || (unsigned __int16)a3 > 0x3Bu && a3 != 62))
+			if ((unsigned __int16)index > 0x35u && ((unsigned __int16)index < 0x3Au || (unsigned __int16)index > 0x3Bu && index != 62))
 				goto LABEL_46;
 			goto LABEL_45;
 		}
-		if ((unsigned __int16)a3 >= 0x2Eu && (unsigned __int16)a3 <= 0x2Fu)
+		if ((unsigned __int16)index >= 0x2Eu && (unsigned __int16)index <= 0x2Fu)
 			goto LABEL_45;
 	}
 LABEL_46:
-	switch (a3)
+	switch (index)
 	{
 	case 1:
 	case 2:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			PlaySample_8F100(0, a3, 0, 64, 0x64u, -1, 2u);
-			sub_8F710_sound_proc21(0, a3, 70, 2u, 0);
+			//Terrain background sound
+			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
+			sub_8F710_sound_proc21(10, index, 70, 2u, 0);
 		}
 		break;
 	case 3:
@@ -5693,20 +5694,21 @@ LABEL_46:
 	case 61:
 	case 63:
 	case 64:
-		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		if (sub_6EA90(v10, str_F4FE0[index].word_2))
 		{
-			str_F4FE0[a3].word_2 = v10;
-			str_F4FE0[a3].word_1 = v12;
-			str_F4FE0[a3].word_5 = v21;
-			str_F4FE0[a3].word_0 = 1;
-			str_F4FE0[a3].word_3 = v29;
+			str_F4FE0[index].word_2 = v10;
+			str_F4FE0[index].word_1 = v12;
+			str_F4FE0[index].word_5 = v21;
+			str_F4FE0[index].word_0 = 1;
+			str_F4FE0[index].word_3 = v29;
 		}
 		break;
 	case 5:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			PlaySample_8F100(0, a3, 0, 64, 0x64u, -1, 2u);
-			sub_8F710_sound_proc21(0, a3, 120, 2u, 0);
+			//Terrain background sound
+			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
+			sub_8F710_sound_proc21(0, index, 120, 2u, 0);
 		}
 		break;
 	case 7:
@@ -5727,76 +5729,77 @@ LABEL_46:
 	case 58:
 	case 59:
 	case 62:
-		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		if (sub_6EA90(v10, str_F4FE0[index].word_2))
 		{
-			str_F4FE0[a3].word_2 = v10;
-			str_F4FE0[a3].word_1 = v12;
-			str_F4FE0[a3].word_5 = v21;
-			str_F4FE0[a3].word_0 = 3;
-			str_F4FE0[a3].word_3 = v29;
+			str_F4FE0[index].word_2 = v10;
+			str_F4FE0[index].word_1 = v12;
+			str_F4FE0[index].word_5 = v21;
+			str_F4FE0[index].word_0 = 3;
+			str_F4FE0[index].word_3 = v29;
 		}
 		break;
 	case 14:
 	case 29:
-		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		if (sub_6EA90(v10, str_F4FE0[index].word_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
-				str_F4FE0[a3].word_2 = v10;
-				str_F4FE0[a3].word_1 = v12;
-				str_F4FE0[a3].word_5 = v21;
-				str_F4FE0[a3].word_3 = 0;
-				str_F4FE0[a3].word_0 = 1;
+				str_F4FE0[index].word_2 = v10;
+				str_F4FE0[index].word_1 = v12;
+				str_F4FE0[index].word_5 = v21;
+				str_F4FE0[index].word_3 = 0;
+				str_F4FE0[index].word_0 = 1;
 			}
 			else if (a2 == -1)
 			{
-				str_F4FE0[a3].word_2 = v10;
-				str_F4FE0[a3].word_1 = v12;
-				str_F4FE0[a3].word_5 = v21;
-				str_F4FE0[a3].word_3 = v29;
-				str_F4FE0[a3].word_0 = 1;
+				str_F4FE0[index].word_2 = v10;
+				str_F4FE0[index].word_1 = v12;
+				str_F4FE0[index].word_5 = v21;
+				str_F4FE0[index].word_3 = v29;
+				str_F4FE0[index].word_0 = 1;
 			}
 		}
 		break;
 	case 31:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			PlaySample_8F100(0, a3, 0, 64, 0x64u, -1, 2u);
-			sub_8F710_sound_proc21(0, a3, 85, 2u, 0);
+			//Terrain background sound
+			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
+			sub_8F710_sound_proc21(0, index, 85, 2u, 0);
 		}
 		break;
 	case 47:
 	case 49:
-		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		if (sub_6EA90(v10, str_F4FE0[index].word_2))
 		{
-			str_F4FE0[a3].word_2 = v10;
-			str_F4FE0[a3].word_1 = v12;
-			str_F4FE0[a3].word_5 = v21;
-			str_F4FE0[a3].word_3 = v29;
-			str_F4FE0[a3].word_0 = 4;
+			str_F4FE0[index].word_2 = v10;
+			str_F4FE0[index].word_1 = v12;
+			str_F4FE0[index].word_5 = v21;
+			str_F4FE0[index].word_3 = v29;
+			str_F4FE0[index].word_0 = 4;
 		}
 		break;
 	case 54:
 	case 55:
 	case 56:
 	case 57:
-		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		if (sub_6EA90(v10, str_F4FE0[index].word_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
-				str_F4FE0[a3].word_2 = v10;
-				str_F4FE0[a3].word_1 = v12;
-				str_F4FE0[a3].word_5 = v21;
-				str_F4FE0[a3].word_3 = 0;
-				str_F4FE0[a3].word_0 = 3;
+				str_F4FE0[index].word_2 = v10;
+				str_F4FE0[index].word_1 = v12;
+				str_F4FE0[index].word_5 = v21;
+				str_F4FE0[index].word_3 = 0;
+				str_F4FE0[index].word_0 = 3;
 			}
 			else if (a2 == -1)
 			{
-				str_F4FE0[a3].word_2 = v10;
-				str_F4FE0[a3].word_1 = v12;
-				str_F4FE0[a3].word_5 = v21;
-				str_F4FE0[a3].word_3 = v29;
-				str_F4FE0[a3].word_0 = 3;
+				str_F4FE0[index].word_2 = v10;
+				str_F4FE0[index].word_1 = v12;
+				str_F4FE0[index].word_5 = v21;
+				str_F4FE0[index].word_3 = v29;
+				str_F4FE0[index].word_0 = 3;
 			}
 		}
 		break;
@@ -5805,11 +5808,11 @@ LABEL_46:
 	case 67:
 	case 68:
 	case 69:
-		str_F4FE0[a3].word_2 = v10;
-		str_F4FE0[a3].word_1 = v12;
-		str_F4FE0[a3].word_0 = 3;
-		str_F4FE0[a3].word_5 = v21;
-		str_F4FE0[a3].word_3 = v29;
+		str_F4FE0[index].word_2 = v10;
+		str_F4FE0[index].word_1 = v12;
+		str_F4FE0[index].word_0 = 3;
+		str_F4FE0[index].word_5 = v21;
+		str_F4FE0[index].word_3 = v29;
 		break;
 	default:
 		return;
