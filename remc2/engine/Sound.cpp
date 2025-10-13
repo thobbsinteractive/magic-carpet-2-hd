@@ -3296,7 +3296,7 @@ void SetSampleVolumePan_A3BB0(HSAMPLE S, int32_t volume)//284bb0
 		if (volume != S->pan_17)
 		{
 			S->pan_17 = volume;
-			InitSampleVolume_A2110(S);
+			SOUND_set_sample_volume_panning(S, volume);
 		}
 	}
 }

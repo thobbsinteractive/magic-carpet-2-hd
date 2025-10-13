@@ -482,6 +482,14 @@ void SOUND_set_sample_volume(HSAMPLE S, int32_t volume) {
 #endif//SOUND_SDLMIXER
 }
 
+void SOUND_set_sample_volume_panning(HSAMPLE S, int32_t panning) {
+	
+	auto left = uint8_t(255.0f * ((float)(127 - panning) / 127));// * masterPercent);
+	auto right = uint8_t(255.0f * ((float)panning / 127));// * masterPercent);
+
+	Mix_SetPanning(S->index_sample, left, right);
+}
+
 void SOUND_start_sample(HSAMPLE S) {
 	if (unitTests)return;
 #ifdef SOUND_SDLMIXER
