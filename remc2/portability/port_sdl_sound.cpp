@@ -563,7 +563,7 @@ void SOUND_start_sample(HSAMPLE S) {
 uint32_t SOUND_sample_status(HSAMPLE S) {
 	if (unitTests)return 0;
 #ifdef SOUND_SDLMIXER
-	if (Mix_Playing(S->index_sample)==0)return 2;
+	if (Mix_Playing(S->index_sample)==0) return 2;
 #endif//SOUND_SDLMIXER
 #ifdef SOUND_OPENAL
 	return 2;
