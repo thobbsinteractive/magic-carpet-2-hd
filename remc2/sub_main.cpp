@@ -46053,34 +46053,32 @@ void UpdateSounds_6E150()//24f150
 			switch (str_F4FE0[i].word_0)
 			{
 			case 1:
-					PlaySampleType3_75110(str_F4FE0[i].word_3, i, str_F4FE0[i].word_2, str_F4FE0[i].word_1, str_F4FE0[i].word_5);
+					PlaySampleType3_75110(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
 					str_F4FE0[i].word_0 = 0;
 					str_F4FE0[i].word_4 = 2;
 				break;
 			case 2:
-					PlaySampleType1_751B0(str_F4FE0[i].word_3, i, str_F4FE0[i].word_2, str_F4FE0[i].word_1, str_F4FE0[i].word_5);
+					PlaySampleType1_751B0(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
 					str_F4FE0[i].word_0 = 0;
 					str_F4FE0[i].word_4 = 2;
 				break;
 			case 3:
-					PlaySampleType2_75160(str_F4FE0[i].word_3, i, str_F4FE0[i].word_2, str_F4FE0[i].word_1, str_F4FE0[i].word_5);
+					PlaySampleType2_75160(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
 					str_F4FE0[i].word_0 = 0;
 					str_F4FE0[i].word_4 = 2;
 				break;
 			case 4:
-
-					if (str_F4FE0[i].word_2 == 512)
+					if (str_F4FE0[i].volume_2 == 512)
 						sub_8F420_sound_proc20(0, i);
 				else
-						PlaySample_8F100(0, i, (signed int)str_F4FE0[i].word_2 >> 8, 64, 0x64u, -1, 2u);
-
+						PlaySample_8F100(0, i, (signed int)str_F4FE0[i].volume_2 >> 8, 64, 0x64u, -1, 2u);
 					str_F4FE0[i].word_5 = 2;
 					str_F4FE0[i].word_0 = 0;
 				break;
 			default:
 				break;
 			}
-			str_F4FE0[i].word_2 = 0;
+			str_F4FE0[i].volume_2 = 0;
 		}
 	}
 }
@@ -47102,9 +47100,9 @@ void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8
 }*/
 
 //----- (00075110) --------------------------------------------------------
-void PlaySampleType3_75110(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void PlaySampleType3_75110(int16_t entityIdx, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 3u);
+	PlaySample_8F100(entityIdx, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 3u);
 }
 
 //----- (00075160) --------------------------------------------------------
@@ -47114,9 +47112,9 @@ void PlaySampleType2_75160(int16_t flags, int16_t index, int16_t volume, uint16_
 }
 
 //----- (000751B0) --------------------------------------------------------
-void PlaySampleType1_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void PlaySampleType1_751B0(int16_t entityIdx, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 1u);
+	PlaySample_8F100(entityIdx, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 1u);
 }
 
 //----- (000753D0) --------------------------------------------------------

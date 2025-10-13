@@ -5536,9 +5536,9 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 	unsigned __int16 v7; // ax
 	int v8; // edx
 	int v9; // eax
-	int v10; // esi
+	int volume_v10; // esi
 	int v11; // edx
-	int v12; // edi
+	int volumePan_v12; // edi
 	unsigned int v13; // eax
 	unsigned int v14; // edx
 	__int16 v21; // [esp+0h] [ebp-24h]
@@ -5549,9 +5549,9 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 	type_event_0x6E8E* v26x; // [esp+14h] [ebp-10h]
 	unsigned __int16 v27; // [esp+18h] [ebp-Ch]
 	__int16 v28; // [esp+1Ch] [ebp-8h]
-	__int16 v29; // [esp+20h] [ebp-4h]
+	__int16 flags_v29; // [esp+20h] [ebp-4h]
 
-	v29 = 0;
+	flags_v29 = 0;
 	v21 = 0;
 	v24 = D41A0_0.rand_0x8;
 	if (!soundActive_E3799 || !soundAble_E3798)
@@ -5560,8 +5560,8 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 	v22x = v3x;
 	if (v3x <= x_DWORD_EA3E4[0])
 	{
-		v10 = 0x7FFF;
-		LOWORD(v12) = 0x7FFF;
+		volume_v10 = 0x7FFF;
+		LOWORD(volumePan_v12) = 0x7FFF;
 	}
 	else
 	{
@@ -5573,7 +5573,7 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 			&v3x->axis_0x4C_76) > 0x9000000)
 			return;
 		v26x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
-		v29 = v22x->id_0x1A_26;
+		flags_v29 = v22x->id_0x1A_26;
 		v5 = Maths::sub_58490_radix_3d_2(&v26x->axis_0x4C_76, v4x);
 		v25 = v5;
 		v23 = v5;
@@ -5583,26 +5583,26 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 		v27 = v7;
 		v8 = 12288 * (512 - v7 / 2 + 512);
 		v9 = (v8 - (__CFSHL__(v8 >> 31, 10) + (v8 >> 31 << 10))) >> 10;
-		v10 = v9 ? (signed int)(0x7FFF * (v9 - v25)) / v9 : 0x7FFF;
+		volume_v10 = v9 ? (signed int)(0x7FFF * (v9 - v25)) / v9 : 0x7FFF;
 		v11 = (signed __int16)sub_582F0(v26x->word_0x1C_28, v28);
-		if (v10 < 512)
+		if (volume_v10 < 512)
 			return;
-		if (v10 > 0x7FFF)
-			v10 = 0x7FFF;
+		if (volume_v10 > 0x7FFF)
+			volume_v10 = 0x7FFF;
 		if (v23 > 320)
 		{
 			if (v27 > 0x200u)
 				v27 = 1024 - v27;
-			v12 = (((v27 << 15) * v11 - (__CFSHL__((v27 << 15) * v11 >> 31, 9) + ((v27 << 15) * v11 >> 31 << 9))) >> 9)
+			volumePan_v12 = (((v27 << 15) * v11 - (__CFSHL__((v27 << 15) * v11 >> 31, 9) + ((v27 << 15) * v11 >> 31 << 9))) >> 9)
 				+ 0x7FFF;
-			if (v12 < 0)
-				v12 = 0;
-			if (v12 > 0xFFFF)
-				LOWORD(v12) = -1;
+			if (volumePan_v12 < 0)
+				volumePan_v12 = 0;
+			if (volumePan_v12 > 0xFFFF)
+				LOWORD(volumePan_v12) = -1;
 		}
 		else
 		{
-			LOWORD(v12) = 0x7FFF;
+			LOWORD(volumePan_v12) = 0x7FFF;
 		}
 		if ((unsigned __int16)index >= 0x2Au)
 		{
@@ -5636,7 +5636,7 @@ LABEL_29:
 		if ((unsigned __int16)index <= 0x20u || index == 38)
 		{
 		LABEL_45:
-			v29 = 0;
+			flags_v29 = 0;
 			goto LABEL_46;
 		}
 	}
@@ -5696,13 +5696,13 @@ LABEL_46:
 	case 61:
 	case 63:
 	case 64:
-		if (sub_6EA90(v10, str_F4FE0[index].word_2))
+		if (sub_6EA90(volume_v10, str_F4FE0[index].volume_2))
 		{
-			str_F4FE0[index].word_2 = v10;
-			str_F4FE0[index].word_1 = v12;
+			str_F4FE0[index].volume_2 = volume_v10;
+			str_F4FE0[index].volumePan_1 = volumePan_v12;
 			str_F4FE0[index].word_5 = v21;
 			str_F4FE0[index].word_0 = 1;
-			str_F4FE0[index].word_3 = v29;
+			str_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
 	case 5:
@@ -5731,33 +5731,33 @@ LABEL_46:
 	case 58:
 	case 59:
 	case 62:
-		if (sub_6EA90(v10, str_F4FE0[index].word_2))
+		if (sub_6EA90(volume_v10, str_F4FE0[index].volume_2))
 		{
-			str_F4FE0[index].word_2 = v10;
-			str_F4FE0[index].word_1 = v12;
+			str_F4FE0[index].volume_2 = volume_v10;
+			str_F4FE0[index].volumePan_1 = volumePan_v12;
 			str_F4FE0[index].word_5 = v21;
 			str_F4FE0[index].word_0 = 3;
-			str_F4FE0[index].word_3 = v29;
+			str_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
 	case 14:
 	case 29:
-		if (sub_6EA90(v10, str_F4FE0[index].word_2))
+		if (sub_6EA90(volume_v10, str_F4FE0[index].volume_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
-				str_F4FE0[index].word_2 = v10;
-				str_F4FE0[index].word_1 = v12;
+				str_F4FE0[index].volume_2 = volume_v10;
+				str_F4FE0[index].volumePan_1 = volumePan_v12;
 				str_F4FE0[index].word_5 = v21;
-				str_F4FE0[index].word_3 = 0;
+				str_F4FE0[index].flags_3 = 0;
 				str_F4FE0[index].word_0 = 1;
 			}
 			else if (a2 == -1)
 			{
-				str_F4FE0[index].word_2 = v10;
-				str_F4FE0[index].word_1 = v12;
+				str_F4FE0[index].volume_2 = volume_v10;
+				str_F4FE0[index].volumePan_1 = volumePan_v12;
 				str_F4FE0[index].word_5 = v21;
-				str_F4FE0[index].word_3 = v29;
+				str_F4FE0[index].flags_3 = flags_v29;
 				str_F4FE0[index].word_0 = 1;
 			}
 		}
@@ -5772,12 +5772,12 @@ LABEL_46:
 		break;
 	case 47:
 	case 49:
-		if (sub_6EA90(v10, str_F4FE0[index].word_2))
+		if (sub_6EA90(volume_v10, str_F4FE0[index].volume_2))
 		{
-			str_F4FE0[index].word_2 = v10;
-			str_F4FE0[index].word_1 = v12;
+			str_F4FE0[index].volume_2 = volume_v10;
+			str_F4FE0[index].volumePan_1 = volumePan_v12;
 			str_F4FE0[index].word_5 = v21;
-			str_F4FE0[index].word_3 = v29;
+			str_F4FE0[index].flags_3 = flags_v29;
 			str_F4FE0[index].word_0 = 4;
 		}
 		break;
@@ -5785,22 +5785,22 @@ LABEL_46:
 	case 55:
 	case 56:
 	case 57:
-		if (sub_6EA90(v10, str_F4FE0[index].word_2))
+		if (sub_6EA90(volume_v10, str_F4FE0[index].volume_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
-				str_F4FE0[index].word_2 = v10;
-				str_F4FE0[index].word_1 = v12;
+				str_F4FE0[index].volume_2 = volume_v10;
+				str_F4FE0[index].volumePan_1 = volumePan_v12;
 				str_F4FE0[index].word_5 = v21;
-				str_F4FE0[index].word_3 = 0;
+				str_F4FE0[index].flags_3 = 0;
 				str_F4FE0[index].word_0 = 3;
 			}
 			else if (a2 == -1)
 			{
-				str_F4FE0[index].word_2 = v10;
-				str_F4FE0[index].word_1 = v12;
+				str_F4FE0[index].volume_2 = volume_v10;
+				str_F4FE0[index].volumePan_1 = volumePan_v12;
 				str_F4FE0[index].word_5 = v21;
-				str_F4FE0[index].word_3 = v29;
+				str_F4FE0[index].flags_3 = flags_v29;
 				str_F4FE0[index].word_0 = 3;
 			}
 		}
@@ -5810,11 +5810,11 @@ LABEL_46:
 	case 67:
 	case 68:
 	case 69:
-		str_F4FE0[index].word_2 = v10;
-		str_F4FE0[index].word_1 = v12;
+		str_F4FE0[index].volume_2 = volume_v10;
+		str_F4FE0[index].volumePan_1 = volumePan_v12;
 		str_F4FE0[index].word_0 = 3;
 		str_F4FE0[index].word_5 = v21;
-		str_F4FE0[index].word_3 = v29;
+		str_F4FE0[index].flags_3 = flags_v29;
 		break;
 	default:
 		return;
