@@ -5659,8 +5659,8 @@ LABEL_46:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Terrain background sound
-			PlaySample_8F100(0, index, 64, 64, 0x64u, -1, 2u);
-			Update_Sample_Status_8F710(10, index, 70, 2u, 0);
+			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
+			Update_Sample_Status_8F710(10, index, 70, 2u, 64);
 		}
 		break;
 	case 3:
@@ -5707,8 +5707,8 @@ LABEL_46:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Terrain background sound
-			PlaySample_8F100(0, index, 64, 64, 0x64u, -1, 2u);
-			Update_Sample_Status_8F710(0, index, 120, 2u, 0);
+			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
+			Update_Sample_Status_8F710(0, index, 120, 2u, 64);
 		}
 		break;
 	case 7:
@@ -5763,9 +5763,9 @@ LABEL_46:
 	case 31:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			//Terrain background sound
-			PlaySample_8F100(0, index, 64, 64, 0x64u, -1, 2u);
-			Update_Sample_Status_8F710(0, index, 85, 2u, 0);
+			//Building Sound
+			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
+			Update_Sample_Status_8F710(0, index, 85, 2u, 64);
 		}
 		break;
 	case 47:
