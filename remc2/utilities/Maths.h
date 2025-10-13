@@ -6,8 +6,6 @@
 #include "../engine/engine_support.h"
 #include <vector>
 
-int sub_584D0_SQdistX_SQdistY(axis_3d* a1, axis_3d* a2);
-
 class Maths {
 
 private:
@@ -34,6 +32,7 @@ public:
 	static void x_BitScanReverse(uint32_t* Destination, uint32_t Source);
 	static int SubtrackUntilZero(int x, int y);
 	static uint16_t CurveCoords(uint16_t x, uint16_t y, std::vector<Maths::Zone>& zones);
+	static uint32_t EuclideanDistXY_584D0(axis_3d* a1, axis_3d* a2);
 };
 
 #endif //MATHS_H

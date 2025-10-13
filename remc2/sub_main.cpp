@@ -6041,7 +6041,7 @@ signed int sub_133B0(type_event_0x6E8E* a1x)//1f43b0
 	}
 	else
 	{
-		if ((unsigned int)sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &v2x->axis_0x4C_76) > 0x6400000)
+		if ((unsigned int)Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v2x->axis_0x4C_76) > 0x6400000)
 		{
 			for (k = a1x->dword_0xA4_164x->str_611.array_0x41D_1053z.byte[1]; k >= 0; k--)
 			{
@@ -6456,14 +6456,14 @@ signed int sub_13E40(type_event_0x6E8E* a1x)//1f4e40
 		{
 			if ((v3x = x_DWORD_EA3E4[ix->id_0x1A_26],
 				50000 - a1x->dword_0xA4_164x->word_0x242_578 * (v3x->maxMana_0x8C_140 / 10) / 255 < a1x->dword_0xA4_164x->array_0x1FC_508[4 * v3x->dword_0xA4_164x->word_0x38_56 + 4])
-				&& (unsigned int)sub_584D0_SQdistX_SQdistY(&v3x->axis_0x4C_76, &ix->axis_0x4C_76) > 0x3840000
+				&& (unsigned int)Maths::EuclideanDistXY_584D0(&v3x->axis_0x4C_76, &ix->axis_0x4C_76) > 0x3840000
 				&& !sub_106C0(x_DWORD_EA3E4[ix->id_0x1A_26], ix)
 				|| x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144 > 640
 				* (255
 					- a1x->dword_0xA4_164x->word_0x242_578)
 				+ ix->mana_0x90_144)
 			{
-				v4 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
+				v4 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
 				if (v4 < v8)
 				{
 					v1x = ix;
@@ -6475,7 +6475,7 @@ signed int sub_13E40(type_event_0x6E8E* a1x)//1f4e40
 	if (!v1x)
 		return 0;
 	v5 = a1x->dword_0xA0_160x->word_160_0x1c_28;
-	if (sub_584D0_SQdistX_SQdistY(&v1x->axis_0x4C_76, &a1x->axis_0x4C_76) >= (unsigned int)(v5 * v5))
+	if (Maths::EuclideanDistXY_584D0(&v1x->axis_0x4C_76, &a1x->axis_0x4C_76) >= (unsigned int)(v5 * v5))
 		return 0;
 	result = 1;
 	a1x->word_0x96_150 = v1x - D41A0_0.struct_0x6E8E;
@@ -6522,7 +6522,7 @@ signed int sub_14030(type_event_0x6E8E* a1x)//1f5030
 					&& sub_146C0(ix, 2u)
 					&& ix->mana_0x90_144 + 32 * (255 - a1x->dword_0xA4_164x->word_0x242_578) < a1x->mana_0x90_144)
 				{
-					v7 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
+					v7 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
 					if (v7 < v9)
 					{
 						v1x = ix;
@@ -6535,7 +6535,7 @@ signed int sub_14030(type_event_0x6E8E* a1x)//1f5030
 	if (!v1x)
 		return 0;
 	v8 = a1x->dword_0xA0_160x->word_160_0x1c_28 + 10;
-	if (sub_584D0_SQdistX_SQdistY(&v1x->axis_0x4C_76, &a1x->axis_0x4C_76) >= (unsigned int)(v8 * v8))
+	if (Maths::EuclideanDistXY_584D0(&v1x->axis_0x4C_76, &a1x->axis_0x4C_76) >= (unsigned int)(v8 * v8))
 		return 0;
 	a1x->word_0x96_150 = v1x - D41A0_0.struct_0x6E8E;
 	a1x->word_0x98_152 = sub_14C40(v1x);
@@ -6572,7 +6572,7 @@ signed int sub_14250(type_event_0x6E8E* a1x)//1f5250
 				&& 10 * (275 - v7) < ix->mana_0x90_144
 				&& !sub_106C0(ix, x_DWORD_EA3E4[v3x->dword_0xA4_164x->word_0x3A_58]))
 			{
-				v4 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
+				v4 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
 				if (v4 < v9)
 				{
 					v1x = ix;
@@ -6584,7 +6584,7 @@ signed int sub_14250(type_event_0x6E8E* a1x)//1f5250
 	if (!v1x)
 		return 0;
 	v5 = a1x->dword_0xA0_160x->word_160_0x1c_28;
-	if (sub_584D0_SQdistX_SQdistY(&v1x->axis_0x4C_76, &a1x->axis_0x4C_76) >= (unsigned int)(v5 * v5))
+	if (Maths::EuclideanDistXY_584D0(&v1x->axis_0x4C_76, &a1x->axis_0x4C_76) >= (unsigned int)(v5 * v5))
 		return 0;
 	a1x->word_0x96_150 = v1x - D41A0_0.struct_0x6E8E;
 	a1x->word_0x98_152 = sub_14C40(v1x);
@@ -6617,7 +6617,7 @@ signed int sub_14530(type_event_0x6E8E* a1x)//1f5530
 		{
 			if (jx->id_0x1A_26 != a1x->id_0x1A_26 && jx->mana_0x90_144 > 0)
 			{
-				v4 = sub_584D0_SQdistX_SQdistY(&v7x->axis_0x4C_76, &jx->axis_0x4C_76);
+				v4 = Maths::EuclideanDistXY_584D0(&v7x->axis_0x4C_76, &jx->axis_0x4C_76);
 				if (v4 < v6)
 				{
 					v1x = jx;
@@ -6820,24 +6820,24 @@ type_event_0x6E8E* sub_148E0(type_event_0x6E8E* a1x)//1f58e0
 				v8x = (v15x <= x_DWORD_EA3E4[0] ? sub_14B10(v2x, 2u) : sub_14BD0(v2x, v15x));//fix uint8_t*
 				v14x = v8x;
 				if (a1x->id_0x1A_26 != v12x->id_0x1A_26
-					&& (unsigned int)sub_584D0_SQdistX_SQdistY(&v2x->axis_0x4C_76, &v12x->axis_0x4C_76) <= 0x1900000)
+					&& (unsigned int)Maths::EuclideanDistXY_584D0(&v2x->axis_0x4C_76, &v12x->axis_0x4C_76) <= 0x1900000)
 				{
 					goto LABEL_22;
 				}
 				if (v14x && sub_106C0(v2x, v14x))
 					goto LABEL_22;
-				v7 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &v2x->axis_0x4C_76);
+				v7 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v2x->axis_0x4C_76);
 			}
 			else
 			{
-				v7 = sub_584D0_SQdistX_SQdistY(&v15x->axis_0x4C_76, v13);
+				v7 = Maths::EuclideanDistXY_584D0(&v15x->axis_0x4C_76, v13);
 			}
 		}
 		else
 		{
 			if (v6 == 3)
 				goto LABEL_22;
-			v7 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, v13);
+			v7 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, v13);
 		}
 		if (v7 < v1)
 		{
@@ -6853,7 +6853,7 @@ type_event_0x6E8E* sub_148E0(type_event_0x6E8E* a1x)//1f58e0
 		{
 			if (ix->model_0x40_64 != 57 && ix->word_0x94_148 != a1x->id_0x1A_26)
 			{
-				v10 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
+				v10 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
 				if (v10 < v1)
 				{
 					resultx = ix;
@@ -6893,7 +6893,7 @@ type_event_0x6E8E* sub_14B10(type_event_0x6E8E* a1x, unsigned __int8 a2)//1f5b10
 			{
 				if (ix->id_0x1A_26 != a1x->id_0x1A_26)
 				{
-					v5 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
+					v5 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
 					if (v5 < v2)
 					{
 						resultx = ix;
@@ -6908,7 +6908,7 @@ type_event_0x6E8E* sub_14B10(type_event_0x6E8E* a1x, unsigned __int8 a2)//1f5b10
 	{
 		if (jx->id_0x1A_26 != a1x->id_0x1A_26 && jx->model_0x40_64 == a2)
 		{
-			v7 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &jx->axis_0x4C_76);
+			v7 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &jx->axis_0x4C_76);
 			if (v7 < v2)
 			{
 				resultx = jx;
@@ -6940,7 +6940,7 @@ type_event_0x6E8E* sub_14BD0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//1f
 		v6 = v4x->id_0x1A_26;
 		if (v6 != a1x->id_0x1A_26 && v6 != a2x->id_0x1A_26 && v4x->model_0x40_64 == 2)
 		{
-			v7 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &v4x->axis_0x4C_76);
+			v7 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v4x->axis_0x4C_76);
 			if (v7 < v2)
 			{
 				resultx = v4x;
@@ -7705,7 +7705,7 @@ type_event_0x6E8E* sub_15CB0(/*type_str_0x6E8E* a1,*/ type_event_0x6E8E* a2x)//1
 	{
 		if (ix->word_0x96_150 == a2x->id_0x1A_26)
 		{
-			v4 = sub_584D0_SQdistX_SQdistY(&a2x->axis_0x4C_76, &ix->axis_0x4C_76);
+			v4 = Maths::EuclideanDistXY_584D0(&a2x->axis_0x4C_76, &ix->axis_0x4C_76);
 			if (v4 < v2)
 			{
 				v2 = v4;
@@ -7741,7 +7741,7 @@ char sub_15D40(__int16 a1, type_event_0x6E8E* a2x, type_event_0x6E8E* a3)//1f6d4
 	signed __int16 v5; // si
 	signed __int16 v6; // si
 
-	result = sub_584D0_SQdistX_SQdistY(&a2x->axis_0x4C_76, &a3->axis_0x4C_76);
+	result = Maths::EuclideanDistXY_584D0(&a2x->axis_0x4C_76, &a3->axis_0x4C_76);
 	if (result >= 0x100000)
 		return result;
 	result = a3->model_0x40_64;
@@ -8001,7 +8001,7 @@ signed int sub_161A0(type_event_0x6E8E* a1x)//1f71a0
 	if (sub_14C60(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]))
 	{
 		sub_14E10(a1x, 4u);
-		sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &v1x->axis_0x4C_76);
+		Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v1x->axis_0x4C_76);
 		a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v1x->axis_0x4C_76);
 		v2 = a1x->axis_0x4C_76.z - (int16_t)(v1x->axis_0x4C_76.z + 512);
 		if (a1x->axis_0x4C_76.z != v1x->axis_0x4C_76.z + 512)
@@ -8776,7 +8776,7 @@ type_event_0x6E8E* sub_16FC0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//1f
 			v7 = v4x->model_0x40_64;
 			if (!v7 || v7 == 1)
 			{
-				v8 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &v4x->axis_0x4C_76);
+				v8 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v4x->axis_0x4C_76);
 				if (v8 < v2)
 				{
 					v3x = v4x;
@@ -10923,7 +10923,7 @@ int sub_1E3E0(type_event_0x6E8E* a1x)//1ff3e0
 	{
 		for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
 		{
-			v6 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &jx->axis_0x4C_76);
+			v6 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &jx->axis_0x4C_76);
 			if (v6 < v8)
 			{
 				v8 = v6;
@@ -18699,7 +18699,7 @@ type_event_0x6E8E* sub_28000(type_event_0x6E8E* a1x)//209000
 	{
 		if (v3x->model_0x40_64 == 39)
 		{
-			v5 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &v3x->axis_0x4C_76);
+			v5 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v3x->axis_0x4C_76);
 			if (v5 < v1)
 			{
 				v2x = v3x;
@@ -18864,7 +18864,7 @@ type_event_0x6E8E* sub_282D0(type_event_0x6E8E* a1x)//2092d0
 		{
 			if (!CompareAxisWithShift_10750(ix, v7x))
 			{
-				v8 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
+				v8 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
 				if (v8 < v1)
 				{
 					v1 = v8;
@@ -20769,7 +20769,7 @@ type_event_0x6E8E* sub_2A6F0(type_event_0x6E8E* a1x)//20b6f0
 	v8 = v1 * v1;
 	while (v3x > x_DWORD_EA3E4[0])
 	{
-		v4 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &v3x->axis_0x4C_76);
+		v4 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v3x->axis_0x4C_76);
 		if (v4 < v8)
 		{
 			v5 = a1x->dword_0xA0_160x->word_160_0x1e_30;
@@ -21406,7 +21406,7 @@ void sub_2B260(type_event_0x6E8E* a1x)//20c260
 			}
 			else if (!(a1x->byte_0x3E_62 & 3) && a1x->dword_0x10_16 < 14)
 			{
-				v1 = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &v23x);
+				v1 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v23x);
 				if (v1 < 2768896)
 				{
 					LOBYTE(v1) = sub_2B7E0(a1x);
@@ -21453,7 +21453,7 @@ void sub_2B260(type_event_0x6E8E* a1x)//20c260
 				}
 				if (v10)
 				{
-					if (!(a1x->byte_0x3E_62 & 7) && sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &v25x->axis_0x4C_76) > 802816)
+					if (!(a1x->byte_0x3E_62 & 7) && Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v25x->axis_0x4C_76) > 802816)
 						a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v25x->axis_0x4C_76);
 					v12 = a1x->dword_0x10_16;
 					if (a1x->word_0x2C_44 - 3 > v12 && v12 > 3 && sub_1CED0(a1x, v25x))
@@ -24759,7 +24759,7 @@ void sub_33340(type_event_0x6E8E* a1x)//214340
 					else
 						v4 = 768;
 					v34 = v4;
-					v5 = sub_584D0_SQdistX_SQdistY(&a1x->word_0x9A_154x, &ix->axis_0x4C_76);
+					v5 = Maths::EuclideanDistXY_584D0(&a1x->word_0x9A_154x, &ix->axis_0x4C_76);
 					v33 = v5;
 					if (v5 >= 3211264)
 					{
@@ -28903,7 +28903,7 @@ unsigned int sub_38D80(type_event_0x6E8E* a1x)//219d80
 	{
 		if (!ix->str_0x5E_94.word_0x7A_122)
 		{
-			result = sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
+			result = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
 			if (result < a1x->dword_0x10_16)
 			{
 				v3 = Maths::sub_7277A_radix_3d(result);
@@ -29590,7 +29590,7 @@ void sub_39B60(type_event_0x6E8E* a1x)//21ab60
 		{
 			v12x.x = (unsigned __int8)v16 << 8;
 			v12x.y = HIBYTE(v16) << 8;
-			if ((unsigned int)sub_584D0_SQdistX_SQdistY(&a1x->axis_0x4C_76, &v12x) < 0xA90000)
+			if ((unsigned int)Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v12x) < 0xA90000)
 			{
 				for (i = mapEntityIndex_15B4E0[v16]; ; i = v10x->oldMapEntity_0x16_22)
 				{
@@ -58000,7 +58000,7 @@ int sub_68C70(type_event_0x6E8E* a1x)//249c70
 	}
 	else
 	{
-		if (sub_584D0_SQdistX_SQdistY(
+		if (Maths::EuclideanDistXY_584D0(
 			&a1x->axis_0x4C_76, &x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->axis_0x4C_76) < 0x2400000)
 		{
 			v2 = a1x->word_0x34_52;
