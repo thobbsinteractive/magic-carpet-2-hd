@@ -5566,7 +5566,7 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
 		if (v3x->struct_byte_0xc_12_15.byte[0] < 0)
 			return;
 		v4x = &v3x->axis_0x4C_76;
-		if ((unsigned int)sub_584D0_SQdistX_SQdistY(
+		if ((unsigned int)Maths::EuclideanDistXY_584D0(
 			&x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->axis_0x4C_76,
 			&v3x->axis_0x4C_76) > 0x9000000)
 			return;
