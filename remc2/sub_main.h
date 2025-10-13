@@ -1297,7 +1297,7 @@ void PlaySampleType3_75110(int16_t flags, int16_t index, int16_t volume, uint16_
 void PlaySampleType2_75160(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate);
 void PlaySampleType1_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate);
 void UpdateSounds_6E150();
-void sub_6EAB0(int a1, __int16 a2, __int16 a3);
+void sub_6EAB0(int a1, __int16 a2, __int16 index);
 void SetMousePosition_6EDE0(int16_t posX, int16_t posY);
 type_event_0x6E8E* AddSwitch0B_00_6F030(type_event_0x6E8E* a1);
 type_event_0x6E8E* CheckpointArrived_6F070(type_event_0x6E8E* a1);

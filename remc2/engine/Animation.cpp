@@ -127,12 +127,12 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 'F':
 		case 'f':
 			if (soundAble_E3798)
-				sub_8F710_sound_proc21(0, pSoundEvent[x_WORD_D4004].index, 0, 4u, 1);
+				Update_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0, 4u, 1);
 			break;
 		case 'H':
 		case 'h':
 			if (soundAble_E3798)
-				PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 0, 64, 0x64u, -1, 2u);
+				PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 64, 64, 0x64u, -1, 2u);
 			break;
 		case 'K':
 		case 'W':
@@ -153,12 +153,12 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 'O':
 		case 'o':
 			if (soundAble_E3798)
-				sub_8F710_sound_proc21(0, pSoundEvent[x_WORD_D4004].index, 0x7Fu, 2u, 0);
+				Update_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x7Fu, 2u, 0);
 			break;
 		case 'P':
 		case 'p':
 			if (soundAble_E3798)
-				sub_8F710_sound_proc21(0, pSoundEvent[x_WORD_D4004].index, 0x50u, 2u, 0);
+				Update_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x50u, 2u, 0);
 			break;
 		case 'Q':
 			sub_2EBB0_draw_text_with_border_630x340(x_DWORD_E9C4C_langindexbuffer[pSoundEvent[x_WORD_D4004].index]);

@@ -5213,7 +5213,7 @@ void sub_8F420_sound_proc20(int a1, __int16 a2)//270420
 }
 
 //----- (0008F710) --------------------------------------------------------
-void sub_8F710_sound_proc21(int flags, __int16 index, int loopCount, unsigned __int8 initTimers, char volScale)//270710
+void Update_Sample_Status_8F710(int flags, __int16 index, int loopCount, unsigned __int8 initTimers, char volScale)//270710
 {
 	if (soundAble_E3798 && soundActive_E3799 && index <= indexLoadedSound_180B50)
 	{
@@ -5659,8 +5659,8 @@ LABEL_46:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Terrain background sound
-			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
-			sub_8F710_sound_proc21(10, index, 70, 2u, 0);
+			PlaySample_8F100(0, index, 64, 64, 0x64u, -1, 2u);
+			Update_Sample_Status_8F710(10, index, 70, 2u, 0);
 		}
 		break;
 	case 3:
@@ -5707,8 +5707,8 @@ LABEL_46:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Terrain background sound
-			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
-			sub_8F710_sound_proc21(0, index, 120, 2u, 0);
+			PlaySample_8F100(0, index, 64, 64, 0x64u, -1, 2u);
+			Update_Sample_Status_8F710(0, index, 120, 2u, 0);
 		}
 		break;
 	case 7:
@@ -5764,8 +5764,8 @@ LABEL_46:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Terrain background sound
-			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
-			sub_8F710_sound_proc21(0, index, 85, 2u, 0);
+			PlaySample_8F100(0, index, 64, 64, 0x64u, -1, 2u);
+			Update_Sample_Status_8F710(0, index, 85, 2u, 0);
 		}
 		break;
 	case 47:

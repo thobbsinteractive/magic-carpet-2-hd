@@ -46094,23 +46094,23 @@ void UpdateSounds_6E150()//24f150
 // F4FE8: using guessed type __int16 x_WORD_F4FE8[];
 
 //----- (0006EAB0) --------------------------------------------------------
-void sub_6EAB0(int  /*a1*/, __int16 a2, __int16 a3)//24fab0
+void sub_6EAB0(int  /*a1*/, __int16 a2, __int16 index)//24fab0
 {
 	if (!soundActive_E3799 || !soundAble_E3798)
 		return;
-	if ((unsigned __int16)a3 < 0x1Fu)
+	if ((unsigned __int16)index < 0x1Fu)
 	{
-		if ((unsigned __int16)a3 < 1u || (unsigned __int16)a3 > 2u && a3 != 5)
+		if ((unsigned __int16)index < 1u || (unsigned __int16)index > 2u && index != 5)
 			return;
 	}
-	else if ((unsigned __int16)a3 > 0x1Fu)
+	else if ((unsigned __int16)index > 0x1Fu)
 	{
-		if ((unsigned __int16)a3 >= 0x2Fu && ((unsigned __int16)a3 <= 0x2Fu || a3 == 49))
-			sub_8F710_sound_proc21(0, a3, 0, 4u, 1);
+		if ((unsigned __int16)index >= 0x2Fu && ((unsigned __int16)index <= 0x2Fu || index == 49))
+			Update_Sample_Status_8F710(0, index, 0, 4u, 1);
 		return;
 	}
 	if (a2 == D41A0_0.LevelIndex_0xc)
-		sub_8F710_sound_proc21(0, a3, 0, 2u, 1);
+		Update_Sample_Status_8F710(0, index, 0, 2u, 1);
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // E3798: using guessed type char x_BYTE_E3798_sound_active2;
