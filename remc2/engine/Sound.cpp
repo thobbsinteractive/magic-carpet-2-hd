@@ -5529,7 +5529,7 @@ void WriteWaveToFile(wav_t* wav, const char* name)
 //----- (0006E450) --------------------------------------------------------
 void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 {
-	type_event_0x6E8E* v3x; // edx
+	type_entity_0x6E8E* v3x; // edx
 	axis_3d* v4x; // esi
 	unsigned int v5; // eax
 	__int16 v6; // ax
@@ -5542,11 +5542,11 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 	unsigned int v13; // eax
 	unsigned int v14; // edx
 	__int16 v21; // [esp+0h] [ebp-24h]
-	type_event_0x6E8E* v22x; // [esp+4h] [ebp-20h]
+	type_entity_0x6E8E* v22x; // [esp+4h] [ebp-20h]
 	signed int v23; // [esp+8h] [ebp-1Ch]
 	int v24; // [esp+Ch] [ebp-18h]
 	unsigned int v25; // [esp+10h] [ebp-14h]
-	type_event_0x6E8E* v26x; // [esp+14h] [ebp-10h]
+	type_entity_0x6E8E* v26x; // [esp+14h] [ebp-10h]
 	unsigned __int16 v27; // [esp+18h] [ebp-Ch]
 	__int16 v28; // [esp+1Ch] [ebp-8h]
 	__int16 flags_v29; // [esp+20h] [ebp-4h]

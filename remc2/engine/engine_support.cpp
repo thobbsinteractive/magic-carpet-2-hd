@@ -1013,7 +1013,7 @@ uint32_t compare_0x6E8E(const char* filename, uint8_t* adress, uint32_t count, u
 	return(i);
 };
 
-uint32_t compare_with_sequence_EA3E4(const char* filename, type_event_0x6E8E** adress, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte) {
+uint32_t compare_with_sequence_EA3E4(const char* filename, type_entity_0x6E8E** adress, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte) {
 	std::string finddir;
 	uint8_t* buffer = (uint8_t*)malloc(size * 0x3E9);
 	FILE* fptestepc;
@@ -1960,11 +1960,11 @@ void set_x_D41A0_BYTEARRAY_0_242(int32_t value) {
 	D41A0_BYTESTR_0.dword_0x242 = value;
 };
 
-type_str_0x6E8E* get_x_D41A0_BYTEARRAY_0_0x246(int number) {
+type_entity_0x6E8E* get_x_D41A0_BYTEARRAY_0_0x246(int number) {
 	testdword((int32_t*)&x_D41A0_BYTEARRAY_0[4*number + 0x246], (int32_t*)&D41A0_BYTESTR_0.pointers_0x246[number]);
 	return D41A0_BYTESTR_0.pointers_0x246[number];
 };
-void set_x_D41A0_BYTEARRAY_0_0x246(int number, type_str_0x6E8E* value) {
+void set_x_D41A0_BYTEARRAY_0_0x246(int number, type_entity_0x6E8E* value) {
 	*(uint8_t**)&x_D41A0_BYTEARRAY_0[4*number + 0x246] = (uint8_t*)value;
 	D41A0_BYTESTR_0.pointers_0x246[number] = value;
 };
@@ -2444,7 +2444,7 @@ void set_x_D41A0_BYTEARRAY_0_0x6E3E(int index, int subindex, int8_t value) {
 	D41A0_BYTESTR_0.array_0x6E3E[index][subindex] = value;
 };
 
-type_str_0x6E8E* get_x_D41A0_BYTEARRAY_0_0x6E8E_adr() {
+type_entity_0x6E8E* get_x_D41A0_BYTEARRAY_0_0x6E8E_adr() {
 	return D41A0_BYTESTR_0.struct_0x6E8E;
 };
 */

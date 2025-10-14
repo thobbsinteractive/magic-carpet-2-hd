@@ -120,23 +120,23 @@ void DrawBar_2D190(int16_t posStartX, int16_t posStartY, int16_t maxPosEndX, int
 }
 
 //----- (0002D710) --------------------------------------------------------
-void DrawTopStatusBar_2D710(type_event_0x6E8E* a1x, uint8_t scale)//20e710
+void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 {
     int16_t posX; // bx
-	type_event_0x6E8E* v2x; // ecx
+	type_entity_0x6E8E* v2x; // ecx
 	int v3; // ecx
 	//int v4; // edx
 	int v5; // eax
 	//__int64 v6; // rtt
-	type_event_0x6E8E* v9x; // eax
+	type_entity_0x6E8E* v9x; // eax
 	uint8_t v16; // [esp-4h] [ebp-4Ch]
 	int v17; // [esp+0h] [ebp-48h]
 	int v18; // [esp+8h] [ebp-40h]
-	//type_str_0x6E8E* v19x; // [esp+Ch] [ebp-3Ch]
+	//type_entity_0x6E8E* v19x; // [esp+Ch] [ebp-3Ch]
 	//int v20; // [esp+10h] [ebp-38h]
 	int16_t v21; // [esp+1Ch] [ebp-2Ch]
 	int16_t barStartXPos; // [esp+24h] [ebp-24h]
-	type_event_0x6E8E* v23x; // [esp+28h] [ebp-20h]
+	type_entity_0x6E8E* v23x; // [esp+28h] [ebp-20h]
 	int16_t v24; // [esp+2Ch] [ebp-1Ch]
 	int16_t v25; // [esp+30h] [ebp-18h]
 	uint8_t v26; // [esp+34h] [ebp-14h]
@@ -335,9 +335,9 @@ void DrawTopStatusBar_2D710(type_event_0x6E8E* a1x, uint8_t scale)//20e710
 // 180660: using guessed type int16_t x_WORD_180660_VGA_type_resolution;
 
 //----- (0002E260) --------------------------------------------------------
-void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* a3x, char a4, uint8_t scale)//20f260
+void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_entity_0x6E8E* a3x, char a4, uint8_t scale)//20f260
 {
-	type_event_0x6E8E* v4x; // eax
+	type_entity_0x6E8E* v4x; // eax
 	signed int v5; // eax
 	//int16_t v6; // t1
 	int16_t v7; // cx
@@ -348,7 +348,7 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* a3x, cha
 	uint8_t v12; // al
 	signed int i; // [esp+0h] [ebp-14h]
 	signed int j; // [esp+4h] [ebp-10h]
-	type_event_0x6E8E* v15x; // [esp+8h] [ebp-Ch]
+	type_entity_0x6E8E* v15x; // [esp+8h] [ebp-Ch]
 	uint8_t v16; // [esp+Ch] [ebp-8h]
 	uint8_t v17; // [esp+10h] [ebp-4h]
 
@@ -854,7 +854,7 @@ char sub_595C0(int16_t a1)//23a5c0
 }
 
 //----- (00059610) --------------------------------------------------------
-char sub_59610(type_event_0x6E8E** a1y, int16_t a2)//23a610
+char sub_59610(type_entity_0x6E8E** a1y, int16_t a2)//23a610
 {
 	char v5; // dl
 	*a1y = 0;
@@ -994,7 +994,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	int v19; // edx
 	int v20; // esi
 	int v21; // edi
-	type_event_0x6E8E* v22x; // edx
+	type_entity_0x6E8E* v22x; // edx
 	int v23; // eax
 	int v24; // edx
 	int v25; // ebx
@@ -1002,18 +1002,18 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	int v27; // edx
 	int i; // eax
 	int v29; // ebx
-	type_event_0x6E8E* jy; // ebx
+	type_entity_0x6E8E* jy; // ebx
 	uint8_t v31; // al
 	uint8_t v32; // ah
 	uint8_t v33; // ah
 	uint8_t v34; // ah
 	uint16_t v35; // si
-	type_event_0x6E8E* v36x; // eax
+	type_entity_0x6E8E* v36x; // eax
 	char v37; // al
 	char v38; // al
-	type_event_0x6E8E* v39x; // eax
+	type_entity_0x6E8E* v39x; // eax
 	uint16_t v40; // si
-	type_event_0x6E8E* v41x; // eax
+	type_entity_0x6E8E* v41x; // eax
 	uint8_t v42; // ah
 	char v43; // alv39x
 	uint8_t v44; // ah
@@ -1032,7 +1032,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	int v57; // ecx
 	char* v58; // edx
 	int v59; // eax
-	type_event_0x6E8E* v60x; // ebx
+	type_entity_0x6E8E* v60x; // ebx
 	int v61; // edx
 	int v62; // eax
 	int v63; // esi
@@ -1046,13 +1046,13 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	int v71; // ecx
 	int v72; // [esp+0h] [ebp-60h]
 	int v73; // [esp+8h] [ebp-58h]
-	type_event_0x6E8E* v74x; // [esp+Ch] [ebp-54h]
+	type_entity_0x6E8E* v74x; // [esp+Ch] [ebp-54h]
 	signed int v75; // [esp+10h] [ebp-50h]
 	int v76; // [esp+14h] [ebp-4Ch]
 	x_BYTE* v77; // [esp+18h] [ebp-48h]
 	signed int v78; // [esp+1Ch] [ebp-44h]
 	//int v79; // [esp+20h] [ebp-40h]
-	type_event_0x6E8E* v80x; // [esp+24h] [ebp-3Ch]
+	type_entity_0x6E8E* v80x; // [esp+24h] [ebp-3Ch]
 	x_BYTE* v81; // [esp+28h] [ebp-38h]
 	int v82; // [esp+2Ch] [ebp-34h]
 	int v83; // [esp+30h] [ebp-30h]
@@ -1168,7 +1168,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	}
 	//for all entites
 	//VGA_Debug_Blit(640, 480, pdwScreenBuffer_351628);
-	//for (jy = &D41A0_BYTESTR_0.struct_0x6E8E[1]; jy <= &D41A0_BYTESTR_0.struct_0x6E8E[0x3e8-1]; jy += sizeof(type_str_0x6E8E))
+	//for (jy = &D41A0_BYTESTR_0.struct_0x6E8E[1]; jy <= &D41A0_BYTESTR_0.struct_0x6E8E[0x3e8-1]; jy += sizeof(type_entity_0x6E8E))
 	for (jy = &D41A0_0.struct_0x6E8E[1]; jy <= &D41A0_0.struct_0x6E8E[0x3e8 - 1]; jy++)
 	{
 		//a3 //adress 242cf9 20-ok 80-ok e0-ok e1-ok e2-ok
@@ -1599,7 +1599,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	int v20; // eax
 	int v21; // esi
 	int v22; // edx
-	type_event_0x6E8E* v23x; // eax
+	type_entity_0x6E8E* v23x; // eax
 	int v24; // edi
 	int v25; // edx
 	int v26; // eax
@@ -1611,18 +1611,18 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	uint8_t* v32x; // edx
 	uint8_t* v33x; // ST44_4
 	char v34; // bl
-	type_event_0x6E8E* iy; // ebx
+	type_entity_0x6E8E* iy; // ebx
 	uint8_t v36; // al
 	uint8_t v37; // ah
 	uint8_t v38; // ah
 	uint8_t v39; // ah
 	uint16_t v40; // si
-	type_event_0x6E8E* v41x; // eax
+	type_entity_0x6E8E* v41x; // eax
 	char v42; // al
 	char v43; // al
-	type_event_0x6E8E* v44x; // eax
+	type_entity_0x6E8E* v44x; // eax
 	uint16_t v45; // si
-	type_event_0x6E8E* v46x; // eax
+	type_entity_0x6E8E* v46x; // eax
 	//bool v47; // zf
 	uint8_t v48; // ah
 	uint8_t v49; // ah
@@ -1642,7 +1642,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	uint8_t* v63; // edx
 	uint8_t* v64; // ecx
 	int v65; // eax
-	type_event_0x6E8E* v66x; // ebx
+	type_entity_0x6E8E* v66x; // ebx
 	int v67; // edx
 	int v68; // eax
 	int v69; // esi
@@ -1666,7 +1666,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	int v87; // [esp+10h] [ebp-Eh]
 	uint8_t* v88; // [esp+14h] [ebp-Ah]
 	int v89; // [esp+20h] [ebp+2h]
-	type_event_0x6E8E* v90x; // [esp+24h] [ebp+6h]
+	type_entity_0x6E8E* v90x; // [esp+24h] [ebp+6h]
 	signed int v91; // [esp+28h] [ebp+Ah]
 	signed int v92; // [esp+2Ch] [ebp+Eh]
 	int v93; // [esp+30h] [ebp+12h]
@@ -1678,7 +1678,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	uint8_t* v99x=0; // [esp+4Ch] [ebp+2Eh]
 	uint8_t* v100x=0; // [esp+50h] [ebp+32h]
 	uint8_t* v101; // [esp+54h] [ebp+36h]
-	type_event_0x6E8E* v102x; // [esp+58h] [ebp+3Ah]
+	type_entity_0x6E8E* v102x; // [esp+58h] [ebp+3Ah]
 	uint16_t j; // [esp+5Ch] [ebp+3Eh]
 	uint16_t v104; // [esp+60h] [ebp+42h]
 	char v105; // [esp+68h] [ebp+4Ah]
@@ -2212,11 +2212,11 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 }
 
 //----- (00063570) --------------------------------------------------------
-char sub_63570(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//244570
+char sub_63570(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//244570
 {
-	type_event_0x6E8E* v2x; // ecx
+	type_entity_0x6E8E* v2x; // ecx
 	char v3; // ah
-	type_event_0x6E8E* v4x; // ebx
+	type_entity_0x6E8E* v4x; // ebx
 	char v5; // dl
 	uint8_t v6; // al
 
@@ -2907,7 +2907,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 	int v12; // eax
 	int16_t v13; // ST10_2
 	char v14; // dl
-	type_event_0x6E8E* ix; // eax
+	type_entity_0x6E8E* ix; // eax
 	axis_3d* v16x; // eax
 	axis_3d* v17x; // esi
 	int v18; // edx
@@ -2999,10 +2999,10 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 	int v69; // [esp+E8h] [ebp+2Eh]//+14
 	int v70; // [esp+ECh] [ebp+32h]//+18
 	int v71; // [esp+F0h] [ebp+36h]//+22
-	type_event_0x6E8E* v72x; // [esp+F4h] [ebp+3Ah]//+26
+	type_entity_0x6E8E* v72x; // [esp+F4h] [ebp+3Ah]//+26
 	//int v73; // [esp+F8h] [ebp+3Eh]//+30
 	//int v74; // [esp+FCh] [ebp+42h]//34
-	type_event_0x6E8E* v75x; // [esp+100h] [ebp+46h]//38
+	type_entity_0x6E8E* v75x; // [esp+100h] [ebp+46h]//38
 	int v76; // [esp+104h] [ebp+4Ah]//+40
 	int v77; // [esp+108h] [ebp+4Eh]
 	int v78; // [esp+10Ch] [ebp+52h]
@@ -3345,7 +3345,7 @@ void sub_87C10()//268c10
 int debugcounter_2695e0 = 0;
 
 //----- (000885E0) --------------------------------------------------------
-void sub_885E0(type_event_0x6E8E* a1x, int16_t posX, int16_t posY, uint16_t a4)//2695e0
+void sub_885E0(type_entity_0x6E8E* a1x, int16_t posX, int16_t posY, uint16_t a4)//2695e0
 {
 	signed int v4; // eax
 	int v5; // edx

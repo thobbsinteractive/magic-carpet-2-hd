@@ -1653,10 +1653,10 @@ void GameRenderHD::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexB
 	} while (v282);
 }
 
-uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth)
+uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_entity_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth)
 {
 	uint16_t result; // ax
-	type_event_0x6E8E* v3x; // eax
+	type_entity_0x6E8E* v3x; // eax
 	int v4; // edx
 	int v5; // eax
 	int v6; // ecx
@@ -1690,7 +1690,7 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 	int v38; // eax
 	uint8_t v39; // al
 	int v40; // [esp+0h] [ebp-Ch]
-	type_event_0x6E8E* v41x; // [esp+4h] [ebp-8h]
+	type_entity_0x6E8E* v41x; // [esp+4h] [ebp-8h]
 	int v42; // [esp+8h] [ebp-4h]
 
 	//fix
@@ -1998,10 +1998,10 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 	return result;
 }
 
-void GameRenderHD::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t posY)
+void GameRenderHD::sub_88740(type_entity_0x6E8E* a1x, int16_t posX, int16_t posY)
 {
 	int v3; // esi
-	type_event_0x6E8E* v4x; // edx
+	type_entity_0x6E8E* v4x; // edx
 	uint8_t v5; // al
 	uint8_t v6; // al
 	uint8_t v7; // al
@@ -2736,7 +2736,7 @@ void GameRenderHD::SetBillboards_3B560(int16_t roll)
 	}
 }
 
-void GameRenderHD::DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1x, __int16 a2, int a3, __int16 a4)
+void GameRenderHD::DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1x, __int16 a2, int a3, __int16 a4)
 {
 	char* v5; // esi
 	int v9x; // eax
@@ -3041,10 +3041,10 @@ void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index, u
 	}
 }
 
-void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t x_BYTE_E88E0x[], int32_t x_DWORD_F5730[], type_event_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth)
+void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t x_BYTE_E88E0x[], int32_t x_DWORD_F5730[], type_entity_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth)
 {
 	uint16_t result; // ax
-	type_event_0x6E8E* v3x; // eax
+	type_entity_0x6E8E* v3x; // eax
 	__int16 v4; // cx
 	int v5; // ecx
 	int v6; // edx
@@ -3113,7 +3113,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 	int v86; // eax
 	uint16_t v88; // ax
 	int v89; // eax
-	type_event_0x6E8E* v90x; // ebx
+	type_entity_0x6E8E* v90x; // ebx
 	__int16 v91; // cx
 	uint8_t v92; // al
 	char v93; // cl
