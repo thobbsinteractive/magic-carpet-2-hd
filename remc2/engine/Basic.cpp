@@ -116,7 +116,7 @@ uint8_t unk_F0A20x[1024];
 char isCaveLevel_D41B6 = 1;
 uint8_t keyColor1_D4B7C = 0xfe; // some key color?
 uint8_t keyColor2_D4B7E = 0x00; // some key color?
-type_event_0x6E8E* x_DWORD_EA3E4[1001];//2bb3e4
+type_entity_0x6E8E* x_DWORD_EA3E4[1001];//2bb3e4
 
 uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
 uint8_t* x_BYTE_F6EE0_tablesx_pre = (uint8_t*)x_BYTE_F6EE0_tablesx;
@@ -3371,9 +3371,9 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	to->dword_0x23a = from->dword_0x23a;
 	to->dword_0x23e = from->dword_0x23e;
 	to->dword_0x242 = from->dword_0x242;
-	for (int i = 0; i < 0x3e8; i++)to->pointers_0x246[i] = (type_event_0x6E8E*)from->pointers_0x246[i];
+	for (int i = 0; i < 0x3e8; i++)to->pointers_0x246[i] = (type_entity_0x6E8E*)from->pointers_0x246[i];
 	to->dword_0x11e6 = from->dword_0x11e6;
-	for (int i = 0; i < 0x3e8; i++)to->dword_0x11EA[i] = (type_event_0x6E8E*)from->dword_0x11EA[i];
+	for (int i = 0; i < 0x3e8; i++)to->dword_0x11EA[i] = (type_entity_0x6E8E*)from->dword_0x11EA[i];
 	to->m_GameSettings = from->m_GameSettings;
 	to->dword_0x219A = from->dword_0x219A;
 	to->dword_0x219E = from->dword_0x219E;
@@ -3390,7 +3390,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	for (int i = 0; i < 8; i++)to->array_0x2BDE[i] = from->array_0x2BDE[i];
 	for (int i = 0; i < 8; i++)to->array_0x6E3E[i] = from->array_0x6E3E[i];
 	for (int i = 0; i < 0x3e8; i++) {
-		to->struct_0x6E8E[i].next_0 = (_str_0x6E8E*)from->struct_0x6E8E[i].next_0;
+		to->struct_0x6E8E[i].next_0 = (_entity_0x6E8E*)from->struct_0x6E8E[i].next_0;
 		to->struct_0x6E8E[i].maxLife_0x4 = from->struct_0x6E8E[i].dword_0x4;
 		to->struct_0x6E8E[i].life_0x8 = from->struct_0x6E8E[i].dword_0x8;
 		to->struct_0x6E8E[i].struct_byte_0xc_12_15 = from->struct_0x6E8E[i].struct_byte_0xc_12_15;
@@ -3522,7 +3522,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 		to->str_0x3664C[i].byte_2 = from->str_0x3664C[i].byte_2;
 		to->str_0x3664C[i].byte_3 = from->str_0x3664C[i].byte_3;
 		to->str_0x3664C[i].axis3d_4 = from->str_0x3664C[i].axis3d_4;
-		to->str_0x3664C[i].event_A.pointer_0x6E8E = (type_event_0x6E8E*)from->str_0x3664C[i].dword_A;
+		to->str_0x3664C[i].event_A.pointer_0x6E8E = (type_entity_0x6E8E*)from->str_0x3664C[i].dword_A;
 		for (int j = 0; j < 25; j++)to->str_0x3664C[i].array_E[j] = from->str_0x3664C[i].array_E[j];
 	}
 	to->byte_0x36DEA_fly_asistant = from->byte_0x36DEA_fly_asistant;

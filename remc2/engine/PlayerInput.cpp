@@ -61,7 +61,7 @@ int debugcounter_47560 = 0;
 //----- (00017190) --------------------------------------------------------
 void ProcessKeyboardPresses_17190()//1f8190
 {
-	type_event_0x6E8E* event; // edx
+	type_entity_0x6E8E* event; // edx
 
 	if (CommandLineParams.DoOffPause5()) {
 		if (debugcounter_47560 == 5)
@@ -478,16 +478,16 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 //----- (00017A00) --------------------------------------------------------
 void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 {
-	type_event_0x6E8E* v8x; // ebx
+	type_entity_0x6E8E* v8x; // ebx
 	char v11; // dh
-	type_event_0x6E8E* v12x; // edi
+	type_entity_0x6E8E* v12x; // edi
 	unsigned __int8 v16; // al
 	char v17; // al
 	int v18; // esi
 	char v19; // al
 	char v21; // dl
 	char v23; // al
-	type_event_0x6E8E* v24x; // ebx
+	type_entity_0x6E8E* v24x; // ebx
 	char v27; // al
 	signed int v28; // eax
 	int v29; // eax
@@ -1109,7 +1109,7 @@ LABEL_306:
 //----- (000191B0) --------------------------------------------------------
 void HandleButtonClick_191B0(int16_t a1, char a2)//1fa1b0 //set spell, destroy castle sub_191B0(0x2a, 0x00)
 {
-	type_event_0x6E8E* v10x; // ebx
+	type_entity_0x6E8E* v10x; // ebx
 
 	switch (a1)
 	{
@@ -1243,7 +1243,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 	//char v10; // bl
 	//char v11; // ch
 	//bool v12; // al
-	type_event_0x6E8E* v13x; // ebx
+	type_entity_0x6E8E* v13x; // ebx
 	unsigned __int8 v14; // al
 	__int16 v15; // ST04_2
 	//char v16; // dl
@@ -1687,13 +1687,13 @@ char sub_5BF10()//23cf10
 //----- (00070940) --------------------------------------------------------
 void sub_70940()//251940
 {
-	type_event_0x6E8E* v0x; // ebx
+	type_entity_0x6E8E* v0x; // ebx
 	int v1; // edi
 	unsigned int result; // eax
 	int v3; // esi
 	int i; // eax
 	char v5; // dl
-	type_event_0x6E8E* v6x; // eax
+	type_entity_0x6E8E* v6x; // eax
 	int v7; // [esp+0h] [ebp-10h]
 	int v8; // [esp+4h] [ebp-Ch]
 	int v9; // [esp+8h] [ebp-8h]
@@ -1976,7 +1976,7 @@ void ReadPauseMenuEvents_197F0()//1fa7f0
 }
 
 //----- (00018DA0) --------------------------------------------------------
-char sub_18DA0(type_event_0x6E8E* a1x, char a2, char a3)//1f9da0
+char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 {
 	type_str_611* v3x; // edx
 	signed int v4; // esi
@@ -2189,13 +2189,13 @@ void HandleOptionsMenuButtonClick_19A70()//1faa70
 }
 
 //----- (00018F80) --------------------------------------------------------
-void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
+void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 {
 	//int v1; // eax
 	int v2; // edx
-	type_event_0x6E8E* v3x; // eax
+	type_entity_0x6E8E* v3x; // eax
 	//uint8_t* v4; // eax
-	type_event_0x6E8E* v4x; // eax
+	type_entity_0x6E8E* v4x; // eax
 	int v5; // edx
 
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 1)

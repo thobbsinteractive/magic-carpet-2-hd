@@ -23,7 +23,7 @@ int CountFailedRegressionTests() {
 	//      buffer[32187] = 120   adress[32187] = 189
 	//      buffer[32194] = 18   adress[32194] = 0
 	//      buffer[32195] = 4   adress[32195] = 0
-	//   in type_event_0x6E8E struct_0x6E8E[1000];
+	//   in type_entity_0x6E8E struct_0x6E8E[1000];
 	//   size of struct_0x6E8E[1000] is 0x29040 = 168000
 	//   168 byte per element
 	//   -> diff in the 23rd element struct_0x6E8E[22] at position 140

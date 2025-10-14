@@ -536,7 +536,7 @@ void sub_55100(char a1)//236100
 	unsigned __int8 v7; // cl
 	signed int i; // ebx
 	unsigned __int8 v9; // al
-	//type_event_0x6E8E* v11; // ecx
+	//type_entity_0x6E8E* v11; // ecx
 	signed int j; // ebx
 
 	if (a1 == 1)
@@ -586,24 +586,24 @@ void sub_55100(char a1)//236100
 				}
 				else
 				{
-					type_event_0x6E8E* temp_0x6E8E = D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E;
+					type_entity_0x6E8E* temp_0x6E8E = D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E;
 					if (v2 == -1)
 					{
 						int diff = D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E - D41A0_0.struct_0x6E8E;
-						int sizediff = diff * sizeof(type_shadow_str_0x6E8E);
-						if (((char*)D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_event_0x6E8E) > 0)
+						int sizediff = diff * sizeof(type_shadow_entity_0x6E8E);
+						if (((char*)D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_entity_0x6E8E) > 0)
 							allert_error();
 						D41A0_0.stages_0x3654C[v4].str_36552_un.dword = sizediff;
 					}
 					else
 					{
-						int count = D41A0_0.stages_0x3654C[v4].str_36552_un.dword / sizeof(type_shadow_str_0x6E8E);
-						int countadd = D41A0_0.stages_0x3654C[v4].str_36552_un.dword % sizeof(type_shadow_str_0x6E8E);
+						int count = D41A0_0.stages_0x3654C[v4].str_36552_un.dword / sizeof(type_shadow_entity_0x6E8E);
+						int countadd = D41A0_0.stages_0x3654C[v4].str_36552_un.dword % sizeof(type_shadow_entity_0x6E8E);
 						if (countadd > 0)allert_error();
 						D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E = &D41A0_0.struct_0x6E8E[count];
 					}
 #ifdef x32_BIT_ENVIRONMENT
-					if (D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E != (type_event_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
+					if (D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E != (type_entity_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
 						allert_error();  // only for x86
 #endif
 				}
@@ -621,26 +621,26 @@ void sub_55100(char a1)//236100
 		{
 			if (!(D41A0_0.StageVars2_0x365F4[i].stage_0x3647A_1 & 2))
 			{
-				type_event_0x6E8E* temp_0x6E8E = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E;
+				type_entity_0x6E8E* temp_0x6E8E = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E;
 				if (temp_0x6E8E >= x_DWORD_EA3E4[0] && temp_0x6E8E < x_DWORD_EA3E4[1000])
 				{
 					if (v2 == -1)
 					{
 						int diff = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E - D41A0_0.struct_0x6E8E;
-						int sizediff = diff * sizeof(type_shadow_str_0x6E8E);
-						if (((char*)D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_event_0x6E8E) > 0)
+						int sizediff = diff * sizeof(type_shadow_entity_0x6E8E);
+						if (((char*)D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_entity_0x6E8E) > 0)
 							allert_error();
 						D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword = sizediff;
 					}
 					else
 					{
-						int count = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword / sizeof(type_shadow_str_0x6E8E);
-						int countadd = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword % sizeof(type_shadow_str_0x6E8E);
+						int count = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword / sizeof(type_shadow_entity_0x6E8E);
+						int countadd = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword % sizeof(type_shadow_entity_0x6E8E);
 						if (countadd > 0)allert_error();
 						D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E = &D41A0_0.struct_0x6E8E[count];
 					}
 #ifdef x32_BIT_ENVIRONMENT
-					if (D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E != (type_event_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
+					if (D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E != (type_entity_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
 						allert_error();  // only for x86
 #endif
 				}
@@ -653,24 +653,24 @@ void sub_55100(char a1)//236100
 	{
 		if (D41A0_0.str_0x3664C[j].byte_0)
 		{
-			type_event_0x6E8E* temp_0x6E8E = D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E;
+			type_entity_0x6E8E* temp_0x6E8E = D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E;
 			if (v2 == -1)
 			{
 				int diff = D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E - D41A0_0.struct_0x6E8E;
-				int sizediff = diff * sizeof(type_shadow_str_0x6E8E);
-				if (((char*)D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_event_0x6E8E) > 0)
+				int sizediff = diff * sizeof(type_shadow_entity_0x6E8E);
+				if (((char*)D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_entity_0x6E8E) > 0)
 					allert_error();
 				D41A0_0.str_0x3664C[j].event_A.dword = sizediff;//0x36656
 			}
 			else
 			{
-				int count = D41A0_0.str_0x3664C[j].event_A.dword / sizeof(type_shadow_str_0x6E8E);
-				int countadd = D41A0_0.str_0x3664C[j].event_A.dword % sizeof(type_shadow_str_0x6E8E);
+				int count = D41A0_0.str_0x3664C[j].event_A.dword / sizeof(type_shadow_entity_0x6E8E);
+				int countadd = D41A0_0.str_0x3664C[j].event_A.dword % sizeof(type_shadow_entity_0x6E8E);
 				if (countadd > 0)allert_error();
 				D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E = &D41A0_0.struct_0x6E8E[count];//0x36656
 			}
 #ifdef x32_BIT_ENVIRONMENT
-			if (D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E != (type_event_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
+			if (D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E != (type_entity_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
 				allert_error();  // only for x86
 #endif
 		}
@@ -717,7 +717,7 @@ void sub_49F90()//22af90
 {
 	int iy;
 	signed int v2; // ebx
-	type_event_0x6E8E* indexx; // eax
+	type_entity_0x6E8E* indexx; // eax
 	for (iy = 1; iy < 0x3e8; iy++)
 	{
 		if (x_DWORD_EA3E4[iy]->class_0x3F_63 && x_DWORD_EA3E4[iy]->struct_byte_0xc_12_15.byte[1] & 4)
@@ -755,7 +755,7 @@ void sub_55AB0(type_str_0x2BDE* playStr)//236ab0
 		{
 			if (!playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]])
 			{
-				type_event_0x6E8E* tempEvent = IfSubtypeCallAxisEvent_4A190(&x_DWORD_EA3E4[playStr->PlayerEntityIdx_2BE4_11240]->axis_0x4C_76, 15, x_BYTE_D94FF_spell_index[i]);
+				type_entity_0x6E8E* tempEvent = IfSubtypeCallAxisEvent_4A190(&x_DWORD_EA3E4[playStr->PlayerEntityIdx_2BE4_11240]->axis_0x4C_76, 15, x_BYTE_D94FF_spell_index[i]);
 				if (tempEvent)
 				{
 					playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]] = tempEvent - D41A0_0.struct_0x6E8E;
@@ -964,7 +964,7 @@ void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* text
 }
 
 //----- (0006D5E0) --------------------------------------------------------
-void SetSpell_6D5E0(type_event_0x6E8E* entity, char spell)//24e5e0
+void SetSpell_6D5E0(type_entity_0x6E8E* entity, char spell)//24e5e0
 {
 	int v2y; // eax
 	int8_t actspell;
@@ -1186,12 +1186,12 @@ type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C2
 }
 
 //----- (0006D710) --------------------------------------------------------
-int sub_6D710(type_event_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//24e710
+int sub_6D710(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//24e710
 {
 	signed int v3; // ecx
 	int result; // eax
 	//int v5; // edx
-	type_event_0x6E8E* v6x; // ebx
+	type_entity_0x6E8E* v6x; // ebx
 	int v7; // edx
 	int v8; // eax
 
