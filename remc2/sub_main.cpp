@@ -81,7 +81,7 @@ test void sub_71F20(type_x_DWORD_E9C28_str* a1y, subtype_x_DWORD_E9C28_str* a2x)
 arrays for fix:
 fix memcpy,memset, malloc
 add regressions tests
-find changes x_DWORD_EA3E4[48]->word_0x1A_26
+find changes Entities_EA3E4[48]->word_0x1A_26
 
 fix x_WORD_F4FE0 lenght 6 - ok
 fix sub_4A050_new_event
@@ -3930,8 +3930,8 @@ type_entity_0x6E8E* sub_10780(type_entity_0x6E8E* a1x)//1f1780
 				;
 				i = v5x->oldMapEntity_0x16_22)
 			{
-				v5x = x_DWORD_EA3E4[i];
-				if (v5x == x_DWORD_EA3E4[0])
+				v5x = Entities_EA3E4[i];
+				if (v5x == Entities_EA3E4[0])
 					break;
 				if (v5x->struct_byte_0xc_12_15.byte[0] & 8
 					&& (a1x->xtype_0x41_65 == -1
@@ -3983,8 +3983,8 @@ type_entity_0x6E8E* sub_108B0(type_entity_0x6E8E* a1x)//1f18b0
 			;
 			i = v8x->oldMapEntity_0x16_22)
 		{
-			v8x = x_DWORD_EA3E4[i];
-			if (v8x == x_DWORD_EA3E4[0])
+			v8x = Entities_EA3E4[i];
+			if (v8x == Entities_EA3E4[0])
 				goto LABEL_29;
 			if (v8x->struct_byte_0xc_12_15.byte[0] & 8)
 				break;
@@ -4041,7 +4041,7 @@ type_entity_0x6E8E* sub_108B0(type_entity_0x6E8E* a1x)//1f18b0
 	}
 	return 0;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00010A50) --------------------------------------------------------
 type_entity_0x6E8E* sub_10A50(type_entity_0x6E8E* a1x)//1f1a50
@@ -4068,8 +4068,8 @@ type_entity_0x6E8E* sub_10A50(type_entity_0x6E8E* a1x)//1f1a50
 				;
 				i = v5x->oldMapEntity_0x16_22)
 			{
-				v5x = x_DWORD_EA3E4[i];
-				if (v5x == x_DWORD_EA3E4[0])
+				v5x = Entities_EA3E4[i];
+				if (v5x == Entities_EA3E4[0])
 					break;
 				if ((a1x->xtype_0x41_65 == -1
 					|| a1x->xtype_0x41_65 == v5x->class_0x3F_63 && a1x->xsubtype_0x42_66 == -1
@@ -4086,7 +4086,7 @@ type_entity_0x6E8E* sub_10A50(type_entity_0x6E8E* a1x)//1f1a50
 	}
 	return 0;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00010B70) --------------------------------------------------------
 signed int sub_10B70(axis_3d* a1x, char a2, char a3)//1f1b70
@@ -4104,9 +4104,9 @@ signed int sub_10B70(axis_3d* a1x, char a2, char a3)//1f1b70
 	{
 		for (i = 0; i < 2; i++)
 		{
-			for (jx = x_DWORD_EA3E4[mapEntityIndex_15B4E0[((unsigned __int8)(v8 + v3) << 8) + (unsigned __int8)(v9 + i)]];
-				jx > x_DWORD_EA3E4[0];
-				jx = x_DWORD_EA3E4[jx->oldMapEntity_0x16_22])
+			for (jx = Entities_EA3E4[mapEntityIndex_15B4E0[((unsigned __int8)(v8 + v3) << 8) + (unsigned __int8)(v9 + i)]];
+				jx > Entities_EA3E4[0];
+				jx = Entities_EA3E4[jx->oldMapEntity_0x16_22])
 			{
 				if (jx->class_0x3F_63 == a2 && a3 == jx->model_0x40_64 && sub_583F0_distance_3d(a1x, &jx->axis_0x4C_76) <= 0x80)
 					return 1;
@@ -4116,7 +4116,7 @@ signed int sub_10B70(axis_3d* a1x, char a2, char a3)//1f1b70
 	}
 	return 0;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 int debugcounter_10c80 = 0;
 int debugcounter_10c80_2 = 0;
@@ -4174,9 +4174,9 @@ int sub_10C80(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int16 a3)/
 			{
 				for (j = -v27; j <= v27; j++)
 				{
-					for (kx = x_DWORD_EA3E4[mapEntityIndex_15B4E0[(unsigned __int8)(j + v17) + ((unsigned __int8)(i + v14) << 8)]];
-						kx != x_DWORD_EA3E4[0];
-						kx = x_DWORD_EA3E4[kx->oldMapEntity_0x16_22])
+					for (kx = Entities_EA3E4[mapEntityIndex_15B4E0[(unsigned __int8)(j + v17) + ((unsigned __int8)(i + v14) << 8)]];
+						kx != Entities_EA3E4[0];
+						kx = Entities_EA3E4[kx->oldMapEntity_0x16_22])
 					{
 						if (a1x->id_0x1A_26 != kx->id_0x1A_26
 							&& kx->class_0x3F_63
@@ -4210,9 +4210,9 @@ int sub_10C80(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int16 a3)/
 		{
 			for (m = -v28; m <= v28; m++)
 			{
-				for (nx = x_DWORD_EA3E4[mapEntityIndex_15B4E0[((unsigned __int8)(l + v15) << 8) + (unsigned __int8)(m + v18)]];
-					nx != x_DWORD_EA3E4[0];
-					nx = x_DWORD_EA3E4[nx->oldMapEntity_0x16_22])
+				for (nx = Entities_EA3E4[mapEntityIndex_15B4E0[((unsigned __int8)(l + v15) << 8) + (unsigned __int8)(m + v18)]];
+					nx != Entities_EA3E4[0];
+					nx = Entities_EA3E4[nx->oldMapEntity_0x16_22])
 				{
 					if (a1x->id_0x1A_26 != nx->id_0x1A_26 && nx->class_0x3F_63 == 3 && sub_106C0(a1x, nx))
 					{
@@ -4232,7 +4232,7 @@ int sub_10C80(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int16 a3)/
 	}
 	else
 	{
-		for (iix = x_D41A0_BYTEARRAY_4_struct.dword_38519; iix > x_DWORD_EA3E4[0]; iix = iix->next_0)
+		for (iix = x_D41A0_BYTEARRAY_4_struct.dword_38519; iix > Entities_EA3E4[0]; iix = iix->next_0)
 		{
 			if (iix->model_0x40_64 == 2 && iix->id_0x1A_26 != a1x->id_0x1A_26 && sub_106C0(a1x, iix))
 			{
@@ -4244,7 +4244,7 @@ int sub_10C80(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int16 a3)/
 				iix->str_0x5E_94.word_0x62_98 = a1x->id_0x1A_26;
 			}
 		}
-		for (jjx = x_D41A0_BYTEARRAY_4_struct.dword_38527; jjx > x_DWORD_EA3E4[0]; jjx = jjx->next_0)
+		for (jjx = x_D41A0_BYTEARRAY_4_struct.dword_38527; jjx > Entities_EA3E4[0]; jjx = jjx->next_0)
 		{
 			/*if (debugcounter_10c80_2 >= 0x144a)
 				comp20 = compare_with_sequence_D41A0((char*)"001F1D54-00356038", (uint8_t*)& D41A0_BYTESTR_0, 0x356038, debugcounter_10c80_2, 224790, &origbyte20, &remakebyte20);
@@ -4296,8 +4296,8 @@ int sub_10C80(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int16 a3)/
 					;
 					ll = v8x->oldMapEntity_0x16_22)
 				{
-					v8x = x_DWORD_EA3E4[ll];
-					if (v8x == x_DWORD_EA3E4[0])
+					v8x = Entities_EA3E4[ll];
+					if (v8x == Entities_EA3E4[0])
 						break;
 					if (a1x->id_0x1A_26 != v8x->id_0x1A_26
 						&& (v8x->class_0x3F_63 != 3 || v8x->model_0x40_64 != 2)
@@ -4326,7 +4326,7 @@ int sub_10C80(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int16 a3)/
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
 // EA3BC: using guessed type int x_DWORD_EA3BC;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (000112D0) --------------------------------------------------------
@@ -4356,8 +4356,8 @@ void sub_112D0(type_entity_0x6E8E* a1x, unsigned __int16 a2)//1f22d0
 				;
 				result = v5x->oldMapEntity_0x16_22)
 			{
-				v5x = x_DWORD_EA3E4[result];
-				if (v5x == x_DWORD_EA3E4[0])
+				v5x = Entities_EA3E4[result];
+				if (v5x == Entities_EA3E4[0])
 					break;
 				if (a1x->id_0x1A_26 != v5x->id_0x1A_26
 					&& v5x->class_0x3F_63
@@ -4376,7 +4376,7 @@ void sub_112D0(type_entity_0x6E8E* a1x, unsigned __int16 a2)//1f22d0
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00011400) --------------------------------------------------------
 void sub_11400(type_entity_0x6E8E* a1x, char a2, unsigned __int16 a3)//1f2400
@@ -4398,7 +4398,7 @@ void sub_11400(type_entity_0x6E8E* a1x, char a2, unsigned __int16 a3)//1f2400
 	if (!a2)
 	{
 		//v4 = (a1x->struct_byte_0xc_12_15.byte[2] & 1) == 0;
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (ix->model_0x40_64 == 2 && ix->id_0x1A_26 != a1x->id_0x1A_26 && sub_106C0(a1x, ix))
 			{
@@ -4425,8 +4425,8 @@ void sub_11400(type_entity_0x6E8E* a1x, char a2, unsigned __int16 a3)//1f2400
 				v3x = ((unsigned __int8)(v12 + j) << 8) + (unsigned __int8)(k + v11);
 				for (l = mapEntityIndex_15B4E0[v3x]; ; l = v9x->oldMapEntity_0x16_22)
 				{
-					v9x = x_DWORD_EA3E4[l];
-					if (v9x == x_DWORD_EA3E4[0])
+					v9x = Entities_EA3E4[l];
+					if (v9x == Entities_EA3E4[0])
 						break;
 					//LOWORD(v3) = a1x->word_0x1A_26;
 					if (a1x->id_0x1A_26 != v9x->id_0x1A_26)
@@ -4473,7 +4473,7 @@ void sub_11400(type_entity_0x6E8E* a1x, char a2, unsigned __int16 a3)//1f2400
 	//return v3;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000116A0) --------------------------------------------------------
 int sub_116A0(type_entity_0x6E8E* a1x, char a2, unsigned __int16 a3)//1f26a0
@@ -4490,7 +4490,7 @@ int sub_116A0(type_entity_0x6E8E* a1x, char a2, unsigned __int16 a3)//1f26a0
 	v3 = 0;
 	if (!a2)
 	{
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (ix->model_0x40_64 == 2 && sub_106C0(a1x, ix))
 			{
@@ -4516,9 +4516,9 @@ int sub_116A0(type_entity_0x6E8E* a1x, char a2, unsigned __int16 a3)//1f26a0
 		{
 			for (k = -v10; k <= v10; k++)
 			{
-				for (lx = x_DWORD_EA3E4[mapEntityIndex_15B4E0[((unsigned __int8)(v8 + j) << 8) + (unsigned __int8)(k + v7)]];
-					lx != x_DWORD_EA3E4[0];
-					lx = x_DWORD_EA3E4[lx->oldMapEntity_0x16_22])
+				for (lx = Entities_EA3E4[mapEntityIndex_15B4E0[((unsigned __int8)(v8 + j) << 8) + (unsigned __int8)(k + v7)]];
+					lx != Entities_EA3E4[0];
+					lx = Entities_EA3E4[lx->oldMapEntity_0x16_22])
 				{
 					if (a1x->id_0x1A_26 != lx->id_0x1A_26
 						&& sub_106C0(a1x, lx)
@@ -4543,7 +4543,7 @@ int sub_116A0(type_entity_0x6E8E* a1x, char a2, unsigned __int16 a3)//1f26a0
 	return v3;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00011900) --------------------------------------------------------
 int sub_11900(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, unsigned __int8 a3, unsigned __int16 a4)//1f2900
@@ -4576,7 +4576,7 @@ void sub_11960(type_entity_0x6E8E* a1)//1f2960
 	v5 = a1->array_0x52_82.roll;
 	v2x = x_D41A0_BYTEARRAY_4_struct.dword_38527;
 	v4 = a1->axis_0x4C_76.y;
-	while (v2x > x_DWORD_EA3E4[0])
+	while (v2x > Entities_EA3E4[0])
 	{
 		if (abs((signed __int16)(v2x->axis_0x4C_76.x - v1)) <= v2x->array_0x52_82.pitch + v6
 			&& abs((signed __int16)(v2x->axis_0x4C_76.y - v4)) <= v2x->array_0x52_82.roll + v5)
@@ -4589,7 +4589,7 @@ void sub_11960(type_entity_0x6E8E* a1)//1f2960
 	SetShiftByCastle_49EC0(a1, a1->dword_0x10_16);
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00011A10) --------------------------------------------------------
 char sub_11A10(type_entity_0x6E8E* a1)//1f2a10
@@ -4620,7 +4620,7 @@ char sub_11A10(type_entity_0x6E8E* a1)//1f2a10
 	v18 = a1->array_0x52_82.pitch >> 8;
 	v21 = a1->array_0x52_82.roll >> 8;
 	SetShiftByCastle_49EC0(a1, a1->dword_0x10_16 + 1);
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (ix->model_0x40_64 == 2 && ix != a1 && sub_106C0(ix, a1))
 		{
@@ -4711,7 +4711,7 @@ char sub_11A10(type_entity_0x6E8E* a1)//1f2a10
 	return 1;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00011C80) --------------------------------------------------------
 char sub_11C80(uaxis_2d a1)//1f2c80
@@ -4744,7 +4744,7 @@ bool sub_11CB0(axis_3d* a1x)//1f2cb0
 	v10 = 0;
 	v2x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
 	v8 = a1x->x;
-	while (!v10 && v2x > x_DWORD_EA3E4[0])
+	while (!v10 && v2x > Entities_EA3E4[0])
 	{
 		if (v2x->model_0x40_64 == 2
 			&& abs((signed __int16)(v2x->axis_0x4C_76.x - v8)) <= v2x->array_0x52_82.pitch + 2560
@@ -4756,7 +4756,7 @@ bool sub_11CB0(axis_3d* a1x)//1f2cb0
 	}
 	if (!v10)
 	{
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38527; !v10 && ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38527; !v10 && ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (abs((signed __int16)(ix->axis_0x4C_76.x - v8)) <= ix->array_0x52_82.pitch + 2560
 				&& abs((signed __int16)(ix->axis_0x4C_76.y - v1)) <= ix->array_0x52_82.roll + 2560)
@@ -4788,7 +4788,7 @@ bool sub_11CB0(axis_3d* a1x)//1f2cb0
 	return v10 == 0;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00011E20) --------------------------------------------------------
 bool sub_11E20(type_entity_0x6E8E* a1x, axis_3d* a2x)//1f2e20
@@ -5313,7 +5313,7 @@ void sub_12500(type_entity_0x6E8E* a1x)//1f3500
 					v9 = a1x->word_0x4A_74;
 					if (v9)
 					{
-						v1y = x_DWORD_EA3E4[v9];
+						v1y = Entities_EA3E4[v9];
 						if (v1y->life_0x8 < 0 || v1y->struct_byte_0xc_12_15.byte[1] & 4)
 							a1x->word_0x4A_74 = 0;
 					}
@@ -5350,7 +5350,7 @@ void sub_12500(type_entity_0x6E8E* a1x)//1f3500
 					if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 < 4u
 						|| D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 > 5u
 						|| (v7 = a1x->word_0x4A_74) == 0
-						|| (v1y = x_DWORD_EA3E4[v7], v1y->life_0x8 >= 0) && !(v1y->struct_byte_0xc_12_15.byte[1] & 4))
+						|| (v1y = Entities_EA3E4[v7], v1y->life_0x8 >= 0) && !(v1y->struct_byte_0xc_12_15.byte[1] & 4))
 					{
 					LABEL_45:
 						if (v2)
@@ -5431,7 +5431,7 @@ void sub_12780()//1f3780
 			else
 			{
 				v4x = D41A0_0.StageVars2_0x365F4[v0].str_0x3647C_4.pointer_0x6E8E;
-				if (v4x >= x_DWORD_EA3E4[0] && v4x < x_DWORD_EA3E4[1000])//fix
+				if (v4x >= Entities_EA3E4[0] && v4x < Entities_EA3E4[1000])//fix
 				{
 					if (v4x && (v4x->life_0x8 < 0 || v4x->struct_byte_0xc_12_15.byte[1] & 4))
 						v2 = 1;
@@ -5650,7 +5650,7 @@ signed int sub_12A70(type_entity_0x6E8E* a1x)//1f3a70
 		}
 	}
 	v16 = a1x->dword_0xA4_164x->word_0x3A_58;
-	if (v16 && sub_106C0(a1x, x_DWORD_EA3E4[v16]))
+	if (v16 && sub_106C0(a1x, Entities_EA3E4[v16]))
 		v2 = 1;
 	if (v2)
 		a1x->dword_0xA4_164x->word_0x159_345 = 2;
@@ -5745,7 +5745,7 @@ signed int sub_12A70(type_entity_0x6E8E* a1x)//1f3a70
 }
 // 5E000: using guessed type int _wcpp_1_unwind_leave__99(x_DWORD);
 // 8C250: using guessed type x_DWORD memset(x_DWORD, x_DWORD, x_DWORD);
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 int debug_counter_1f3e70 = 0;
 //----- (00012E70) --------------------------------------------------------
@@ -5839,8 +5839,8 @@ signed int sub_12FF0(type_entity_0x6E8E* a1x)//1f3ff0
 	signed __int16 i; // di
 	int v3; // eax
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
-	if (!sub_14C60(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]))
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
+	if (!sub_14C60(a1x, Entities_EA3E4[a1x->word_0x96_150]))
 		goto LABEL_14;
 	a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v1x->axis_0x4C_76);
 	if (sub_14C90(a1x, v1x, 512, 2048))
@@ -5871,7 +5871,7 @@ LABEL_13:
 	sub_16580(a1x);
 	return 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00013100) --------------------------------------------------------
 signed int sub_13100(type_entity_0x6E8E* a1x)//1f4100
@@ -5917,8 +5917,8 @@ signed int sub_131F0(type_entity_0x6E8E* a1x)//1f41f0
 	type_entity_0x6E8E* v1x; // esi
 	signed int result; // ebx
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
-	if (!sub_14C60(a1x, x_DWORD_EA3E4[a1x->word_0x96_150])
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
+	if (!sub_14C60(a1x, Entities_EA3E4[a1x->word_0x96_150])
 		|| (a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &a1x->axis_0x4C_76), sub_14C90(a1x, v1x, 256, 2048)))
 	{
 		sub_16580(a1x);
@@ -5931,7 +5931,7 @@ signed int sub_131F0(type_entity_0x6E8E* a1x)//1f41f0
 	}
 	return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00013270) --------------------------------------------------------
 signed int sub_13270(type_entity_0x6E8E* a1x)//1f4270
@@ -5953,7 +5953,7 @@ signed int sub_13270(type_entity_0x6E8E* a1x)//1f4270
 		//v3 = a1x->dword_0xA4_164;
 		v4 = a1x->dword_0xA4_164x->word_0x3A_58;
 		v5 = a1x->dword_0xA4_164x->str_611.array_0x41D_1053z.byte[2];
-		if (v4 && sub_106C0(a1x, x_DWORD_EA3E4[v4]))
+		if (v4 && sub_106C0(a1x, Entities_EA3E4[v4]))
 			v2 = 1;
 		if (!v2)
 		{
@@ -5996,7 +5996,7 @@ signed int sub_13270(type_entity_0x6E8E* a1x)//1f4270
 	return result;
 }
 // 8C278: using guessed type int rand(void);
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000133B0) --------------------------------------------------------
 signed int sub_133B0(type_entity_0x6E8E* a1x)//1f43b0
@@ -6010,8 +6010,8 @@ signed int sub_133B0(type_entity_0x6E8E* a1x)//1f43b0
 	type_entity_0x6E8E* v9x; // eax
 
 	//v1 = a1x->dword_0xA4_164;
-	v2x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
-	if (v2x <= x_DWORD_EA3E4[0])
+	v2x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+	if (v2x <= Entities_EA3E4[0])
 	{
 		for (i = a1x->dword_0xA4_164x->str_611.array_0x41D_1053z.byte[11]; i >= 0; i--)
 		{
@@ -6073,7 +6073,7 @@ signed int sub_133B0(type_entity_0x6E8E* a1x)//1f43b0
 	sub_16580(a1x);
 	return 0;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000135C0) --------------------------------------------------------
 signed int sub_135C0(type_entity_0x6E8E* a1x)//1f45c0
@@ -6084,8 +6084,8 @@ signed int sub_135C0(type_entity_0x6E8E* a1x)//1f45c0
 	int v4; // esi
 	__int16 v7; // [esp+0h] [ebp-4h]
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
-	if (!sub_14C60(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]))
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
+	if (!sub_14C60(a1x, Entities_EA3E4[a1x->word_0x96_150]))
 	{
 	LABEL_17:
 		sub_16580(a1x);
@@ -6123,7 +6123,7 @@ signed int sub_135C0(type_entity_0x6E8E* a1x)//1f45c0
 	sub_16580(a1x);
 	return 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00013710) --------------------------------------------------------
 signed int sub_13710(type_entity_0x6E8E* a1x)//1f4710
@@ -6133,7 +6133,7 @@ signed int sub_13710(type_entity_0x6E8E* a1x)//1f4710
 	signed __int8 v3; // al
 	int v4; // edx
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	if (!sub_14C60(a1x, v1x))
 		goto LABEL_12;
 	a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v1x->axis_0x4C_76);
@@ -6168,7 +6168,7 @@ LABEL_11:
 	sub_16580(a1x);
 	return 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00013830) --------------------------------------------------------
 signed int sub_13830(type_entity_0x6E8E* event)//1f4830
@@ -6206,7 +6206,7 @@ signed int sub_13890(type_entity_0x6E8E* a1x)//1f4890
 	//char v11; // dh
 	int v12; // eax
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	if (sub_14C60(a1x, v1x))
 	{
 		a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v1x->axis_0x4C_76);
@@ -6307,7 +6307,7 @@ signed int sub_13890(type_entity_0x6E8E* a1x)//1f4890
 	sub_16580(a1x);
 	return 0;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00013B00) --------------------------------------------------------
 signed int sub_13B00(type_entity_0x6E8E* a1x)//1f4b00
@@ -6324,7 +6324,7 @@ signed int sub_13B00(type_entity_0x6E8E* a1x)//1f4b00
 	__int16 i; // [esp+8h] [ebp-8h]
 	int v13; // [esp+Ch] [ebp-4h]
 
-	v1x = x_DWORD_EA3E4[0];
+	v1x = Entities_EA3E4[0];
 	if (!a1x->dword_0xA4_164x->word_0x3A_58 && sub_146C0(a1x, 2u) && sub_15730(a1x, 2u))
 	{
 		v1x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -6358,22 +6358,22 @@ signed int sub_13B00(type_entity_0x6E8E* a1x)//1f4b00
 	}
 	return 0;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00013C50) --------------------------------------------------------
 signed int sub_13C50(type_entity_0x6E8E* a1x)//1f4c50
 {
 	type_entity_0x6E8E* v1x; // ebx
 
-	v1x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
-	if (v1x <= x_DWORD_EA3E4[0] || v1x->state_0x45_69 != 4 || v1x->word_0x30_48 || !sub_155E0(a1x))
+	v1x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+	if (v1x <= Entities_EA3E4[0] || v1x->state_0x45_69 != 4 || v1x->word_0x30_48 || !sub_155E0(a1x))
 		return 0;
 	a1x->word_0x96_150 = v1x - D41A0_0.struct_0x6E8E;
 	a1x->word_0x98_152 = sub_14C40(v1x);
 	return 1;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00013CE0) --------------------------------------------------------
 type_entity_0x6E8E* sub_13CE0(type_entity_0x6E8E* a1x)//1f4ce0
@@ -6424,16 +6424,16 @@ signed int sub_13DC0(type_entity_0x6E8E* a1x)//1f4dc0
 
 	if (a1x->maxLife_0x4 / 2 <= a1x->life_0x8)
 		return 0;
-	v1x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
-	if (v1x <= x_DWORD_EA3E4[0])
+	v1x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+	if (v1x <= Entities_EA3E4[0])
 		return 0;
-	v2x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+	v2x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
 	a1x->word_0x96_150 = v1x - D41A0_0.struct_0x6E8E;
 	a1x->word_0x98_152 = sub_14C40(v2x);
 	return 1;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00013E40) --------------------------------------------------------
 signed int sub_13E40(type_entity_0x6E8E* a1x)//1f4e40
@@ -6450,15 +6450,15 @@ signed int sub_13E40(type_entity_0x6E8E* a1x)//1f4e40
 	if (!sub_164B0(a1x) || !a1x->dword_0xA4_164x->word_0x3A_58 && sub_146C0(a1x, 2u))
 		return 0;
 	v1x = 0;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (ix->id_0x1A_26 != a1x->id_0x1A_26 && ix->model_0x40_64 == 2)
 		{
-			if ((v3x = x_DWORD_EA3E4[ix->id_0x1A_26],
+			if ((v3x = Entities_EA3E4[ix->id_0x1A_26],
 				50000 - a1x->dword_0xA4_164x->word_0x242_578 * (v3x->maxMana_0x8C_140 / 10) / 255 < a1x->dword_0xA4_164x->array_0x1FC_508[4 * v3x->dword_0xA4_164x->word_0x38_56 + 4])
 				&& (unsigned int)Maths::EuclideanDistXY_584D0(&v3x->axis_0x4C_76, &ix->axis_0x4C_76) > 0x3840000
-				&& !sub_106C0(x_DWORD_EA3E4[ix->id_0x1A_26], ix)
-				|| x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144 > 640
+				&& !sub_106C0(Entities_EA3E4[ix->id_0x1A_26], ix)
+				|| Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144 > 640
 				* (255
 					- a1x->dword_0xA4_164x->word_0x242_578)
 				+ ix->mana_0x90_144)
@@ -6484,7 +6484,7 @@ signed int sub_13E40(type_entity_0x6E8E* a1x)//1f4e40
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00014030) --------------------------------------------------------
 signed int sub_14030(type_entity_0x6E8E* a1x)//1f5030
@@ -6502,7 +6502,7 @@ signed int sub_14030(type_entity_0x6E8E* a1x)//1f5030
 	if (!sub_15E60(a1x) || !a1x->dword_0xA4_164x->word_0x3A_58 && sub_146C0(a1x, 2u))
 		return 0;
 	v1x = 0;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (ix->id_0x1A_26 != a1x->id_0x1A_26)
 		{
@@ -6543,7 +6543,7 @@ signed int sub_14030(type_entity_0x6E8E* a1x)//1f5030
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00014250) --------------------------------------------------------
 signed int sub_14250(type_entity_0x6E8E* a1x)//1f5250
@@ -6561,16 +6561,16 @@ signed int sub_14250(type_entity_0x6E8E* a1x)//1f5250
 	if (!sub_15E60(a1x))
 		return 0;
 	v1x = 0;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (ix->id_0x1A_26 != a1x->id_0x1A_26 && ix->model_0x40_64 == 3)
 		{
-			v3x = x_DWORD_EA3E4[ix->id_0x1A_26];
+			v3x = Entities_EA3E4[ix->id_0x1A_26];
 			//v8 = v3x->dword_0xA4_164;
 			v7 = a1x->dword_0xA4_164x->word_0x242_578;
 			if (50000 - v3x->maxMana_0x8C_140 / 10 * v7 / 255 < a1x->dword_0xA4_164x->array_0x1FC_508[4 * v3x->dword_0xA4_164x->word_0x38_56 + 4]
 				&& 10 * (275 - v7) < ix->mana_0x90_144
-				&& !sub_106C0(ix, x_DWORD_EA3E4[v3x->dword_0xA4_164x->word_0x3A_58]))
+				&& !sub_106C0(ix, Entities_EA3E4[v3x->dword_0xA4_164x->word_0x3A_58]))
 			{
 				v4 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &ix->axis_0x4C_76);
 				if (v4 < v9)
@@ -6592,7 +6592,7 @@ signed int sub_14250(type_entity_0x6E8E* a1x)//1f5250
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00014530) --------------------------------------------------------
 signed int sub_14530(type_entity_0x6E8E* a1x)//1f5530
@@ -6608,12 +6608,12 @@ signed int sub_14530(type_entity_0x6E8E* a1x)//1f5530
 	v6 = -1;
 	if (!sub_15E60(a1x))
 		return 0;
-	v7x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
-	if (v7x == x_DWORD_EA3E4[0])
+	v7x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+	if (v7x == Entities_EA3E4[0])
 		v7x = a1x;
 	for (i = 0; i < 29; i++)
 	{
-		for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+		for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 		{
 			if (jx->id_0x1A_26 != a1x->id_0x1A_26 && jx->mana_0x90_144 > 0)
 			{
@@ -6634,7 +6634,7 @@ signed int sub_14530(type_entity_0x6E8E* a1x)//1f5530
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00014630) --------------------------------------------------------
 signed int sub_14630(type_entity_0x6E8E* a1x)//1f5630
@@ -6642,7 +6642,7 @@ signed int sub_14630(type_entity_0x6E8E* a1x)//1f5630
 	type_entity_0x6E8E* v1x; // ecx
 
 	if (a1x->life_0x8 >= a1x->maxLife_0x4
-		|| (v1x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58], v1x <= x_DWORD_EA3E4[0]))
+		|| (v1x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58], v1x <= Entities_EA3E4[0]))
 	{
 		a1x->dword_0xA4_164x->byte_0x1C1_449 = 12;
 	}
@@ -6655,19 +6655,19 @@ signed int sub_14630(type_entity_0x6E8E* a1x)//1f5630
 	return 1;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000146C0) --------------------------------------------------------
 type_entity_0x6E8E* sub_146C0(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f56c0
 {
 	type_entity_0x6E8E* resultx; // eax
 
-	resultx = x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a2]];
-	if (resultx <= x_DWORD_EA3E4[0])
+	resultx = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a2]];
+	if (resultx <= Entities_EA3E4[0])
 		resultx = 0;
 	return resultx;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000146F0) --------------------------------------------------------
 void sub_146F0(type_entity_0x6E8E* a1x)//1f56f0
@@ -6793,10 +6793,10 @@ type_entity_0x6E8E* sub_148E0(type_entity_0x6E8E* a1x)//1f58e0
 	v1 = -1;
 	resultx = 0;
 	v2x = x_D41A0_BYTEARRAY_4_struct.dword_38523;
-	v15x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
-	while (v2x > x_DWORD_EA3E4[0])
+	v15x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+	while (v2x > Entities_EA3E4[0])
 	{
-		if (a1x == x_DWORD_EA3E4[v2x->word_0x94_148])
+		if (a1x == Entities_EA3E4[v2x->word_0x94_148])
 			goto LABEL_22;
 		if (v2x->model_0x40_64 == 57)
 		{
@@ -6805,7 +6805,7 @@ type_entity_0x6E8E* sub_148E0(type_entity_0x6E8E* a1x)//1f58e0
 				break;
 		}
 		v4 = v2x->word_0x94_148;
-		v5x = x_DWORD_EA3E4[(unsigned __int16)v4];
+		v5x = Entities_EA3E4[(unsigned __int16)v4];
 		v13 = &v2x->axis_0x4C_76;
 		v6 = v5x->class_0x3F_63;
 		if (v6 == 3)
@@ -6817,7 +6817,7 @@ type_entity_0x6E8E* sub_148E0(type_entity_0x6E8E* a1x)//1f58e0
 				v12x = sub_16FC0(v2x, a1x);
 				if (!v12x)
 					goto LABEL_22;
-				v8x = (v15x <= x_DWORD_EA3E4[0] ? sub_14B10(v2x, 2u) : sub_14BD0(v2x, v15x));//fix uint8_t*
+				v8x = (v15x <= Entities_EA3E4[0] ? sub_14B10(v2x, 2u) : sub_14BD0(v2x, v15x));//fix uint8_t*
 				v14x = v8x;
 				if (a1x->id_0x1A_26 != v12x->id_0x1A_26
 					&& (unsigned int)Maths::EuclideanDistXY_584D0(&v2x->axis_0x4C_76, &v12x->axis_0x4C_76) <= 0x1900000)
@@ -6849,7 +6849,7 @@ type_entity_0x6E8E* sub_148E0(type_entity_0x6E8E* a1x)//1f58e0
 	}
 	if (!resultx)
 	{
-		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[88 / 4]; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[88 / 4]; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (ix->model_0x40_64 != 57 && ix->word_0x94_148 != a1x->id_0x1A_26)
 			{
@@ -6866,7 +6866,7 @@ type_entity_0x6E8E* sub_148E0(type_entity_0x6E8E* a1x)//1f58e0
 }
 // 8C278: using guessed type int rand(void);
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00014B10) --------------------------------------------------------
 type_entity_0x6E8E* sub_14B10(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f5b10
@@ -6889,7 +6889,7 @@ type_entity_0x6E8E* sub_14B10(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f5b
 	{
 		if (a2 == 0xff)
 		{
-			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 			{
 				if (ix->id_0x1A_26 != a1x->id_0x1A_26)
 				{
@@ -6904,7 +6904,7 @@ type_entity_0x6E8E* sub_14B10(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f5b
 		}
 		return resultx;
 	}
-	for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+	for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > Entities_EA3E4[0]; jx = jx->next_0)
 	{
 		if (jx->id_0x1A_26 != a1x->id_0x1A_26 && jx->model_0x40_64 == a2)
 		{
@@ -6919,7 +6919,7 @@ type_entity_0x6E8E* sub_14B10(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f5b
 	return resultx;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00014BD0) --------------------------------------------------------
 type_entity_0x6E8E* sub_14BD0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//1f5bd0
@@ -6933,7 +6933,7 @@ type_entity_0x6E8E* sub_14BD0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)/
 	v2 = -1;
 	resultx = 0;
 	v4x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
-	if (v4x <= x_DWORD_EA3E4[0])
+	if (v4x <= Entities_EA3E4[0])
 		return 0;
 	do
 	{
@@ -6948,11 +6948,11 @@ type_entity_0x6E8E* sub_14BD0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)/
 			}
 		}
 		v4x = v4x->next_0;
-	} while (v4x > x_DWORD_EA3E4[0]);
+	} while (v4x > Entities_EA3E4[0]);
 	return resultx;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00014C40) --------------------------------------------------------
 __int16 sub_14C40(type_entity_0x6E8E* a1)//1f5c40
@@ -7064,7 +7064,7 @@ signed int sub_14E10(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f5e10
 		{
 			return 0;
 		}
-		a1x->word_0x1E_30 = Maths::sub_58210_radix_tan(&a1x->axis_0x4C_76, &x_DWORD_EA3E4[a1x->word_0x96_150]->axis_0x4C_76);
+		a1x->word_0x1E_30 = Maths::sub_58210_radix_tan(&a1x->axis_0x4C_76, &Entities_EA3E4[a1x->word_0x96_150]->axis_0x4C_76);
 		a1x->dword_0xA4_164x->word_0x1A2_418++;
 		//v7 = a1x->dword_0xA4_164;
 		if (a1x->dword_0xA4_164x->word_0x1A2_418 >= 8)
@@ -7114,7 +7114,7 @@ signed int sub_14E10(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f5e10
 			return 0;
 		if ((unsigned __int16)sub_582B0(a1x->word_0x1C_28, a1x->word_0x20_32) >= 0xE3u)
 			return 0;
-		a1x->word_0x1E_30 = Maths::sub_58210_radix_tan(&a1x->axis_0x4C_76, &x_DWORD_EA3E4[a1x->word_0x96_150]->axis_0x4C_76);
+		a1x->word_0x1E_30 = Maths::sub_58210_radix_tan(&a1x->axis_0x4C_76, &Entities_EA3E4[a1x->word_0x96_150]->axis_0x4C_76);
 		if (sub_5F660(a1x, v8x, 0) != 1)
 			return 0;
 		a1x->dword_0xA4_164x->str_611.array_0x367_871x.word[a2] = x_WORD_D3F4C[a2];
@@ -7139,7 +7139,7 @@ signed int sub_14E10(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f5e10
 	return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00015170) --------------------------------------------------------
 type_entity_0x6E8E* sub_15170(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f6170
@@ -7287,7 +7287,7 @@ type_entity_0x6E8E* sub_15170(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f61
 			{
 				if (!v16x->word_0x2E_46 && !a1x->dword_0xA4_164x->str_611.array_0x367_871x.word[a2])
 				{
-					if (sub_11A10(x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]))
+					if (sub_11A10(Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]))
 					{
 						if (a1x->mana_0x90_144 >= v16x->maxMana_0x8C_140)
 						{
@@ -7352,7 +7352,7 @@ type_entity_0x6E8E* sub_15170(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f61
 }
 // DA81E: using guessed type int x_DWORD_DA81E;
 // DA822: using guessed type int x_DWORD_DA822;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000155E0) --------------------------------------------------------
 signed int sub_155E0(type_entity_0x6E8E* a1x)//1f65e0
@@ -7369,7 +7369,7 @@ signed int sub_155E0(type_entity_0x6E8E* a1x)//1f65e0
 		{
 			if (!a1x->word_0x2E_46 && !a1x->dword_0xA4_164x->str_611.array_0x367_871x.word[2])
 			{
-				if (sub_11A10(x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]))
+				if (sub_11A10(Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]))
 				{
 					if (a1x->maxMana_0x8C_140 >= v1x->maxMana_0x8C_140)
 					{
@@ -7389,7 +7389,7 @@ signed int sub_155E0(type_entity_0x6E8E* a1x)//1f65e0
 	}
 	return 0;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000156F0) --------------------------------------------------------
 bool sub_156F0(type_entity_0x6E8E* a1x, unsigned __int8 a2)//1f66f0
@@ -7443,7 +7443,7 @@ char sub_15790(type_entity_0x6E8E* a1x)//1f6790
 	int v11; // edi
 	type_entity_0x6E8E* v12x; // [esp+0h] [ebp-4h]
 
-	v12x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v12x = Entities_EA3E4[a1x->word_0x96_150];
 	v1 = (a1x->maxMana_0x8C_140 - (my_sign32(a1x->maxMana_0x8C_140) << 2) + my_sign32(a1x->maxMana_0x8C_140)) >> 2;
 	if (v1 <= a1x->mana_0x90_144)
 	{
@@ -7463,7 +7463,7 @@ char sub_15790(type_entity_0x6E8E* a1x)//1f6790
 	}
 	if (!a1x->dword_0xA4_164x->word_0x1A4_420)
 	{
-		if (sub_15760(x_DWORD_EA3E4[a1x->word_0x96_150], 8u))
+		if (sub_15760(Entities_EA3E4[a1x->word_0x96_150], 8u))
 		{
 			v5 = a1x->dword_0xA4_164x->word_0x244_580;
 			if (watcomrand() % 255 < v5)
@@ -7587,19 +7587,19 @@ void sub_159E0()//1f69e0
 	uint16_t* v89;
 
 	v0x = x_D41A0_BYTEARRAY_4_struct.dword_38531;
-	if (v0x > x_DWORD_EA3E4[0])
+	if (v0x > Entities_EA3E4[0])
 	{
 		while (1)
 		{
 			if (v0x->struct_byte_0xc_12_15.byte[1] & 0x20)
 				goto LABEL_48;
-			v1x = x_DWORD_EA3E4[v0x->id_0x1A_26];
-			if (v1x <= x_DWORD_EA3E4[0])
+			v1x = Entities_EA3E4[v0x->id_0x1A_26];
+			if (v1x <= Entities_EA3E4[0])
 				goto LABEL_48;
 			if (v1x->class_0x3F_63 != 3)
 				goto LABEL_48;
-			v2x = x_DWORD_EA3E4[v0x->word_0x96_150];
-			if (v2x <= x_DWORD_EA3E4[0])
+			v2x = Entities_EA3E4[v0x->word_0x96_150];
+			if (v2x <= Entities_EA3E4[0])
 				goto LABEL_48;
 			v0x->struct_byte_0xc_12_15.byte[1] |= 0x20u;
 			v3 = v2x->class_0x3F_63;
@@ -7613,8 +7613,8 @@ void sub_159E0()//1f69e0
 				goto LABEL_48;
 			if (v2x->model_0x40_64 != 39)
 				goto LABEL_48;
-			v10x = x_DWORD_EA3E4[v2x->word_0x94_148];
-			if (v10x <= x_DWORD_EA3E4[0] || v10x->class_0x3F_63 != 3)
+			v10x = Entities_EA3E4[v2x->word_0x94_148];
+			if (v10x <= Entities_EA3E4[0] || v10x->class_0x3F_63 != 3)
 				goto LABEL_48;
 			v6 = ((v2x->mana_0x90_144 - (__CFSHL__(v2x->mana_0x90_144 >> 31, 2) + 4 * (v2x->mana_0x90_144 >> 31))) >> 2)
 				+ v10x->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 4];
@@ -7627,12 +7627,12 @@ void sub_159E0()//1f69e0
 			*v89 = v6;
 		LABEL_48:
 			v0x = v0x->next_0;
-			if (v0x <= x_DWORD_EA3E4[0])
+			if (v0x <= Entities_EA3E4[0])
 				return;
 		}
 		if (v2x->model_0x40_64 == 2)
 		{
-			v4 = x_DWORD_EA3E4[v2x->id_0x1A_26]->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 4];
+			v4 = Entities_EA3E4[v2x->id_0x1A_26]->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 4];
 			if (v0x->model_0x40_64 < 0xAu)
 			{
 				if (v0x->model_0x40_64 >= 3u && v0x->model_0x40_64 <= 4u)
@@ -7651,13 +7651,13 @@ void sub_159E0()//1f69e0
 				v4 = 0;
 			if (v4 > 0xFFFF)
 				v4 = 0xFFFF;
-			x_DWORD_EA3E4[v2x->id_0x1A_26]->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 4] = v4;
+			Entities_EA3E4[v2x->id_0x1A_26]->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 4] = v4;
 
 			if (v4 > 50000 - v1x->maxMana_0x8C_140 / 10 * v2x->dword_0xA4_164x->word_0x242_578 / 255)
-				x_DWORD_EA3E4[v2x->id_0x1A_26]->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 5] = 1;
+				Entities_EA3E4[v2x->id_0x1A_26]->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 5] = 1;
 			goto LABEL_48;
 		}
-		v6 = x_DWORD_EA3E4[v2x->id_0x1A_26]->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 4];
+		v6 = Entities_EA3E4[v2x->id_0x1A_26]->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 4];
 		v7 = v0x->model_0x40_64;
 		if (v7 < 0xAu)
 		{
@@ -7673,7 +7673,7 @@ void sub_159E0()//1f69e0
 					v6 = 0;
 				if (v6 > 0xFFFF)
 					v6 = 0xFFFF;
-				v89 = &x_DWORD_EA3E4[v2x->id_0x1A_26]->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 4];
+				v89 = &Entities_EA3E4[v2x->id_0x1A_26]->dword_0xA4_164x->array_0x1FC_508[4 * v1x->dword_0xA4_164x->word_0x38_56 + 4];
 				goto LABEL_47;
 			}
 			if (v7 != 11)
@@ -7701,7 +7701,7 @@ type_entity_0x6E8E* sub_15CB0(/*type_entity_0x6E8E* a1,*/ type_entity_0x6E8E* a2
 	a1 = 0;
 	//fix
 	v2 = -1;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38531; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38531; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (ix->word_0x96_150 == a2x->id_0x1A_26)
 		{
@@ -7720,7 +7720,7 @@ type_entity_0x6E8E* sub_15CB0(/*type_entity_0x6E8E* a1,*/ type_entity_0x6E8E* a2
 	return result;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00015D20) --------------------------------------------------------
 void sub_15D20(type_entity_0x6E8E* a1x)//1f6d20
@@ -7820,19 +7820,19 @@ char sub_15EE0()//1f6ee0
 	type_entity_0x6E8E* v0x; // eax
 
 	v0x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
-	if (v0x <= x_DWORD_EA3E4[0])
+	if (v0x <= Entities_EA3E4[0])
 		return 1;
 	do
 	{
 		if (!v0x->model_0x40_64)
 			x_DWORD_E8840 = v0x;
 		v0x = v0x->next_0;
-	} while (v0x > x_DWORD_EA3E4[0]);
+	} while (v0x > Entities_EA3E4[0]);
 	return 1;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
 // E8840: using guessed type int x_DWORD_E8840;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00015F20) --------------------------------------------------------
 signed int sub_15F20(type_entity_0x6E8E* a1x, signed __int16 a2, signed int a3)//1f6f20
@@ -7892,13 +7892,13 @@ signed int sub_15FC0(type_entity_0x6E8E* a1x)//1f6fc0
 	v13 = -1;
 	v14 = -1;
 	v1 = 0;
-	v2x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v2x = Entities_EA3E4[a1x->word_0x96_150];
 	if (!sub_156F0(a1x, 4u) || !sub_14C60(a1x, v2x))
 	{
 		v12x = sub_146C0(a1x, 4u);
 		if (!v12x)
 			return 0;
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (ix->id_0x1A_26 != a1x->id_0x1A_26)
 			{
@@ -7923,7 +7923,7 @@ signed int sub_15FC0(type_entity_0x6E8E* a1x)//1f6fc0
 			v9 = *j;
 			if (v9 == -1)
 				break;
-			for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[v9]; kx > x_DWORD_EA3E4[0]; kx = kx->next_0)
+			for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[v9]; kx > Entities_EA3E4[0]; kx = kx->next_0)
 			{
 				if (kx->id_0x1A_26 != a1x->id_0x1A_26)
 				{
@@ -7975,7 +7975,7 @@ signed int sub_15FC0(type_entity_0x6E8E* a1x)//1f6fc0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000161A0) --------------------------------------------------------
 signed int sub_161A0(type_entity_0x6E8E* a1x)//1f71a0
@@ -7996,9 +7996,9 @@ signed int sub_161A0(type_entity_0x6E8E* a1x)//1f71a0
 	type_entity_0x6E8E* v14x; // [esp+4h] [ebp-8h]
 	unsigned int v15; // [esp+8h] [ebp-4h]
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v15 = -1;
-	if (sub_14C60(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]))
+	if (sub_14C60(a1x, Entities_EA3E4[a1x->word_0x96_150]))
 	{
 		sub_14E10(a1x, 4u);
 		Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v1x->axis_0x4C_76);
@@ -8037,7 +8037,7 @@ signed int sub_161A0(type_entity_0x6E8E* a1x)//1f71a0
 			a1x->word_0x20_32 &= 0x7ff;
 		}
 		v6x = 0;
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (ix->id_0x1A_26 != a1x->id_0x1A_26)
 			{
@@ -8116,7 +8116,7 @@ signed int sub_161A0(type_entity_0x6E8E* a1x)//1f71a0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000164B0) --------------------------------------------------------
 bool sub_164B0(type_entity_0x6E8E* a1x)//1f74b0
@@ -8401,7 +8401,7 @@ char sub_169C0(type_entity_0x6E8E* a1x)//1f79c0
 	v12.x = a1x->axis_0x4C_76.x >> 8;
 	v12.y = a1x->axis_0x4C_76.y >> 8;
 	v11 = v12;
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v13.x = 0;
 	v13.y = 0;
 	v16.x = 0;
@@ -8496,7 +8496,7 @@ char sub_169C0(type_entity_0x6E8E* a1x)//1f79c0
 	}
 	return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00016CA0) --------------------------------------------------------
 int16_t sub_16CA0(baxis_2d* a2x, __int16 a3, char a4)//1f7ca0
@@ -8766,7 +8766,7 @@ type_entity_0x6E8E* sub_16FC0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)/
 	v2 = -1;
 	v3x = 0;
 	v4x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
-	if (v4x <= x_DWORD_EA3E4[0])
+	if (v4x <= Entities_EA3E4[0])
 		return 0;
 	do
 	{
@@ -8785,11 +8785,11 @@ type_entity_0x6E8E* sub_16FC0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)/
 			}
 		}
 		v4x = v4x->next_0;
-	} while (v4x > x_DWORD_EA3E4[0]);
+	} while (v4x > Entities_EA3E4[0]);
 	return v3x;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00019D60) --------------------------------------------------------
 void SetSoundEffectAndMusicLevelCoordinates_19D60(signed int volume)//1fad60
@@ -8939,7 +8939,7 @@ int sub_1B5F0()//1fc5f0
 		if (v0 != 27)
 		{
 		LABEL_16:
-			for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[(signed __int16)v0]; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+			for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[(signed __int16)v0]; ix > Entities_EA3E4[0]; ix = ix->next_0)
 			{
 				//v4 = *(x_WORD *)(2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0 + 11240);
 				ix->life_0x8 = -1;
@@ -8948,7 +8948,7 @@ int sub_1B5F0()//1fc5f0
 		}
 		else
 		{
-			for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[108 / 4]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+			for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[108 / 4]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 			{
 				//v2 = *(x_WORD *)(2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0 + 11240);
 				jx->state_0x45_69 = 221;
@@ -8962,7 +8962,7 @@ int sub_1B5F0()//1fc5f0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001B6B0) --------------------------------------------------------
 void sub_1B6B0(type_entity_0x6E8E* a1x)//1fc6b0
@@ -8973,7 +8973,7 @@ void sub_1B6B0(type_entity_0x6E8E* a1x)//1fc6b0
 	int v4; // edi
 	__int16 v5; // ax
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x32_50];
+	v1x = Entities_EA3E4[a1x->word_0x32_50];
 	if (v1x->class_0x3F_63 != 5)
 		SetEntity04_57F10(a1x);
 	if (a1x->byte_0x39_57)
@@ -9004,7 +9004,7 @@ void sub_1B6B0(type_entity_0x6E8E* a1x)//1fc6b0
 		a1x->word_0x1C_28 = v1x->word_0x1C_28;
 	}
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 int debugcount_1fc8c0 = 0;
@@ -9249,8 +9249,8 @@ void sub_1BD90(type_entity_0x6E8E* a1x, char a2)//1fcd90
 	{
 		for (i = a1x->word_0x34_52; ; i = v6x->word_0x34_52)
 		{
-			v6x = x_DWORD_EA3E4[i];
-			if (v6x == x_DWORD_EA3E4[0])
+			v6x = Entities_EA3E4[i];
+			if (v6x == Entities_EA3E4[0])
 				break;
 			v5 = v6x->life_0x8;
 			if (v5 < a1x->life_0x8)
@@ -9296,7 +9296,7 @@ void sub_1BD90(type_entity_0x6E8E* a1x, char a2)//1fcd90
 			v16 = -1;
 			v15 = a1x->dword_0xA0_160x->word_160_0x1c_28 * a1x->dword_0xA0_160x->word_160_0x1c_28;
 			v17x = 0;
-			for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+			for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 			{
 				if (!jx->word_0x32_50 && jx != a1x)
 				{
@@ -9330,7 +9330,7 @@ void sub_1BD90(type_entity_0x6E8E* a1x, char a2)//1fcd90
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001BF90) --------------------------------------------------------
 void sub_1BF90(type_entity_0x6E8E* a1x, char a2)//1fcf90
@@ -9380,8 +9380,8 @@ void sub_1BF90(type_entity_0x6E8E* a1x, char a2)//1fcf90
 	{
 		for (i = a1x->word_0x34_52; ; i = v6x->word_0x34_52)
 		{
-			v6x = x_DWORD_EA3E4[i];
-			if (v6x == x_DWORD_EA3E4[0])
+			v6x = Entities_EA3E4[i];
+			if (v6x == Entities_EA3E4[0])
 				break;
 			v5 = v6x->life_0x8;
 			if (v5 < a1x->life_0x8)
@@ -9418,7 +9418,7 @@ void sub_1BF90(type_entity_0x6E8E* a1x, char a2)//1fcf90
 					v24x = 0;
 					v12x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
 					v27 = v11 * v11;
-					while (v12x > x_DWORD_EA3E4[0])
+					while (v12x > Entities_EA3E4[0])
 					{
 						v13 = (signed __int16)(v12x->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 						v14 = (signed __int16)(v12x->axis_0x4C_76.y - a1x->axis_0x4C_76.y)
@@ -9452,7 +9452,7 @@ void sub_1BF90(type_entity_0x6E8E* a1x, char a2)//1fcf90
 							v28 = -1;
 							v26 = a1x->dword_0xA0_160x->word_160_0x1c_28 * a1x->dword_0xA0_160x->word_160_0x1c_28;
 							v25x = 0;
-							for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+							for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 							{
 								if (!jx->word_0x32_50 && jx != a1x)
 								{
@@ -9506,7 +9506,7 @@ void sub_1BF90(type_entity_0x6E8E* a1x, char a2)//1fcf90
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;lo
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001C310) --------------------------------------------------------
 signed int sub_1C310(type_entity_0x6E8E* a1x, char a2, unsigned __int16(*a3)(type_entity_0x6E8E*, type_entity_0x6E8E*))//1fd310
@@ -9541,8 +9541,8 @@ signed int sub_1C310(type_entity_0x6E8E* a1x, char a2, unsigned __int16(*a3)(typ
 	{
 		for (i = a1x->word_0x34_52; ; i = v8x->word_0x34_52)
 		{
-			v8x = x_DWORD_EA3E4[i];
-			if (v8x == x_DWORD_EA3E4[0])
+			v8x = Entities_EA3E4[i];
+			if (v8x == Entities_EA3E4[0])
 				break;
 			v7 = v8x->life_0x8;
 			if (v7 < a1x->life_0x8)
@@ -9564,9 +9564,9 @@ signed int sub_1C310(type_entity_0x6E8E* a1x, char a2, unsigned __int16(*a3)(typ
 		if (!v4)
 		{
 			sub_1B8C0(a1x);
-			v10x = sub_1ED30(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]);
+			v10x = sub_1ED30(a1x, Entities_EA3E4[a1x->word_0x96_150]);
 			v11x = v10x;
-			if (v10x == x_DWORD_EA3E4[0] || v10x->life_0x8 < 0 || v10x->struct_byte_0xc_12_15.byte[1] & 4)
+			if (v10x == Entities_EA3E4[0] || v10x->life_0x8 < 0 || v10x->struct_byte_0xc_12_15.byte[1] & 4)
 			{
 				a1x->state_0x45_69 = a2 + 1;
 				return 0;
@@ -9575,7 +9575,7 @@ signed int sub_1C310(type_entity_0x6E8E* a1x, char a2, unsigned __int16(*a3)(typ
 			{
 				v12 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v10x->axis_0x4C_76);
 				a1x->word_0x20_32 = v12;
-				for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+				for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 				{
 					if (jx->id_0x1A_26 != a1x->id_0x1A_26
 						&& abs(a1x->axis_0x4C_76.x - jx->axis_0x4C_76.x) < a1x->array_0x52_82.pitch
@@ -9651,7 +9651,7 @@ void sub_1C560(type_entity_0x6E8E* a1x, unsigned __int16 a2)//1fd560
 		return;// v3y;
 	}
 	//LOWORD(v3) = a1x->word_0x32_50;
-	v4x = x_DWORD_EA3E4[a1x->word_0x32_50];
+	v4x = Entities_EA3E4[a1x->word_0x32_50];
 	v16 = v4x->life_0x8 >= 0
 		&& !(v4x->struct_byte_0xc_12_15.byte[1] & 4)
 		&& v4x->class_0x3F_63 == a1x->class_0x3F_63//(LOBYTE(v3) = v4x->byte_0x3F_63, (x_BYTE)v3 == a1x->byte_0x3F_63)
@@ -9674,8 +9674,8 @@ void sub_1C560(type_entity_0x6E8E* a1x, unsigned __int16 a2)//1fd560
 	{
 		for (i = a1x->word_0x34_52; ; i = v3x->word_0x34_52)
 		{
-			v3x = x_DWORD_EA3E4[i];
-			if (v3x == x_DWORD_EA3E4[0])
+			v3x = Entities_EA3E4[i];
+			if (v3x == Entities_EA3E4[0])
 				break;
 			v7 = v3x->life_0x8;
 			if (v7 < a1x->life_0x8)
@@ -9724,7 +9724,7 @@ void sub_1C560(type_entity_0x6E8E* a1x, unsigned __int16 a2)//1fd560
 			LABEL_45:
 				a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(
 					&a1x->axis_0x4C_76,
-					&x_DWORD_EA3E4[a1x->word_0x32_50]->axis_0x4C_76);
+					&Entities_EA3E4[a1x->word_0x32_50]->axis_0x4C_76);
 				v14x = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64];
 				break;
 			case 6:
@@ -9739,7 +9739,7 @@ void sub_1C560(type_entity_0x6E8E* a1x, unsigned __int16 a2)//1fd560
 				a1x->state_0x45_69 = a2 + 1;
 				return;// (int8_t)v3;
 			}
-			while (v14x > x_DWORD_EA3E4[0])
+			while (v14x > Entities_EA3E4[0])
 			{
 				if (v14x->id_0x1A_26 != a1x->id_0x1A_26
 					&& abs((int16_t)a1x->axis_0x4C_76.x - (int16_t)v14x->axis_0x4C_76.x) < 256
@@ -9799,7 +9799,7 @@ void sub_1C560(type_entity_0x6E8E* a1x, unsigned __int16 a2)//1fd560
 	//return (int8_t)v3;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001C890) --------------------------------------------------------
 void sub_1C890(type_entity_0x6E8E* a1x, char a2)//1fd890
@@ -9815,18 +9815,18 @@ void sub_1C890(type_entity_0x6E8E* a1x, char a2)//1fd890
 	//result = a1;
 	for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 	{
-		v5x = x_DWORD_EA3E4[i];
-		if (v5x == x_DWORD_EA3E4[0])
+		v5x = Entities_EA3E4[i];
+		if (v5x == Entities_EA3E4[0])
 			break;
 		v5x->state_0x45_69 = a2 + 5;
 		v4 = v5x->word_0x24_36;
 		if (v4)
 			a1x->word_0x24_36 = v4;
 	}
-	HIWORD(v6) = HIWORD(x_DWORD_EA3E4[0]) ^ HIWORD(v5x);
+	HIWORD(v6) = HIWORD(Entities_EA3E4[0]) ^ HIWORD(v5x);
 	LOWORD(v6) = a1x->word_0x24_36;
-	v7x = x_DWORD_EA3E4[v6];
-	if (v7x > x_DWORD_EA3E4[0]
+	v7x = Entities_EA3E4[v6];
+	if (v7x > Entities_EA3E4[0]
 		&& v7x->class_0x3F_63 == 3
 		&& !v7x->model_0x40_64
 		&& a1x->id_0x1A_26 != v7x->id_0x1A_26)
@@ -9838,7 +9838,7 @@ void sub_1C890(type_entity_0x6E8E* a1x, char a2)//1fd890
 	a1x->state_0x45_69 = a2 + 5;
 	//return a1x;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001C930) --------------------------------------------------------
 void sub_1C930(type_entity_0x6E8E* a1x)//1fd930
@@ -9893,8 +9893,8 @@ void sub_1C980(type_entity_0x6E8E* a1x, char a2)//1fd980
 	{
 		for (i = a1x->word_0x34_52; ; i = v6x->word_0x34_52)
 		{
-			v6x = x_DWORD_EA3E4[i];
-			if (v6x == x_DWORD_EA3E4[0])
+			v6x = Entities_EA3E4[i];
+			if (v6x == Entities_EA3E4[0])
 				break;
 			v5 = v6x->life_0x8;
 			if (v5 < a1x->life_0x8)
@@ -9916,9 +9916,9 @@ void sub_1C980(type_entity_0x6E8E* a1x, char a2)//1fd980
 		if (v2)
 			return;// 0;
 		sub_1B8C0(a1x);
-		v9x = sub_1ED30(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]);
+		v9x = sub_1ED30(a1x, Entities_EA3E4[a1x->word_0x96_150]);
 		v10x = v9x;
-		if (v9x > x_DWORD_EA3E4[0] && v9x->life_0x8 >= 0 && !(v9x->struct_byte_0xc_12_15.byte[1] & 4))
+		if (v9x > Entities_EA3E4[0] && v9x->life_0x8 >= 0 && !(v9x->struct_byte_0xc_12_15.byte[1] & 4))
 		{
 			if (!(a1x->byte_0x3E_62 & 3))
 			{
@@ -9928,7 +9928,7 @@ void sub_1C980(type_entity_0x6E8E* a1x, char a2)//1fd980
 				//v12 = 4 * *(char *)(a1 + 64);
 				//v13 = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 				a1x->word_0x20_32 &= 0x7ff;
-				for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+				for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 				{
 					if (jx->id_0x1A_26 != a1x->id_0x1A_26
 						&& abs(a1x->axis_0x4C_76.x - jx->axis_0x4C_76.x) < a1x->array_0x52_82.pitch
@@ -9964,7 +9964,7 @@ void sub_1C980(type_entity_0x6E8E* a1x, char a2)//1fd980
 	//return 0;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001CC20) --------------------------------------------------------
 signed int sub_1CC20(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//1fdc20
@@ -10329,19 +10329,19 @@ void sub_1D700(type_entity_0x6E8E* a1x, __int16 a2)//1fe700
 	{
 		v2x = &D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72];
 		if (v2x->stage_0x3647A_1 & 2)
-			v3x = x_DWORD_EA3E4[a1x->word_0x4A_74];
+			v3x = Entities_EA3E4[a1x->word_0x4A_74];
 		else
 			v3x = v2x->str_0x3647C_4.pointer_0x6E8E;
 		if (v3x)
 		{
-			if (v3x > x_DWORD_EA3E4[0])
+			if (v3x > Entities_EA3E4[0])
 			{
 				v4 = v3x->word_0x96_150;
 				if (v4 == 0xae02)return;//fix
 				if (v4)
 				{
 					v5 = a1x->dword_0xA0_160x->word_160_0x1c_28;
-					if (sub_583F0_distance_3d(&a1x->axis_0x4C_76, &x_DWORD_EA3E4[v4]->axis_0x4C_76) <= v5)
+					if (sub_583F0_distance_3d(&a1x->axis_0x4C_76, &Entities_EA3E4[v4]->axis_0x4C_76) <= v5)
 					{
 						a1x->word_0x96_150 = v3x->word_0x96_150;
 						a1x->StageVar2_0x49_73 = 10;
@@ -10353,7 +10353,7 @@ void sub_1D700(type_entity_0x6E8E* a1x, __int16 a2)//1fe700
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001D7C0) --------------------------------------------------------
 void sub_1D7C0(type_entity_0x6E8E* a1x, __int16 a2)//1fe7c0
@@ -10367,10 +10367,10 @@ void sub_1D7C0(type_entity_0x6E8E* a1x, __int16 a2)//1fe7c0
 	{
 		v2x = &D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72];
 		if (v2x->stage_0x3647A_1 & 2)
-			v3x = x_DWORD_EA3E4[a1x->word_0x4A_74];
+			v3x = Entities_EA3E4[a1x->word_0x4A_74];
 		else
 			v3x = v2x->str_0x3647C_4.pointer_0x6E8E;
-		if (v3x && v3x > x_DWORD_EA3E4[0])
+		if (v3x && v3x > Entities_EA3E4[0])
 		{
 			v4 = a1x->dword_0xA0_160x->word_160_0x1c_28;
 			if (sub_583F0_distance_3d(&a1x->axis_0x4C_76, &v3x->axis_0x4C_76) <= v4)
@@ -10383,7 +10383,7 @@ void sub_1D7C0(type_entity_0x6E8E* a1x, __int16 a2)//1fe7c0
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001D880) --------------------------------------------------------
 void sub_1D880(type_entity_0x6E8E* a1x, __int16 a2)//1fe880
@@ -10436,8 +10436,8 @@ void sub_1D8C0(type_entity_0x6E8E* a1x, __int16 a2)//1fe8c0
 	{
 		for (i = a1x->word_0x34_52; ; i = v6x->word_0x34_52)
 		{
-			v6x = x_DWORD_EA3E4[i];
-			if (v6x == x_DWORD_EA3E4[0])
+			v6x = Entities_EA3E4[i];
+			if (v6x == Entities_EA3E4[0])
 				break;
 			v5 = v6x->life_0x8;
 			if (v5 < a1x->life_0x8)
@@ -10465,13 +10465,13 @@ void sub_1D8C0(type_entity_0x6E8E* a1x, __int16 a2)//1fe8c0
 				{
 					if (!a1x->word_0x4A_74)
 						a1x->word_0x4A_74 = sub_1E3E0(a1x);
-					v12x = x_DWORD_EA3E4[a1x->word_0x4A_74];
+					v12x = Entities_EA3E4[a1x->word_0x4A_74];
 				}
 				else
 				{
 					v12x = D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.pointer_0x6E8E;
 				}
-				if (v12x && v12x > x_DWORD_EA3E4[0])
+				if (v12x && v12x > Entities_EA3E4[0])
 				{
 					if (!(a1x->struct_byte_0xc_12_15.byte[2] & 4))
 					{
@@ -10487,7 +10487,7 @@ void sub_1D8C0(type_entity_0x6E8E* a1x, __int16 a2)//1fe8c0
 							a1x->word_0x20_32 &= 0x7ff;
 						}
 					}
-					for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+					for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 					{
 						if (jx->id_0x1A_26 != a1x->id_0x1A_26
 							&& abs(a1x->axis_0x4C_76.x - jx->axis_0x4C_76.x) < a1x->array_0x52_82.pitch
@@ -10516,7 +10516,7 @@ void sub_1D8C0(type_entity_0x6E8E* a1x, __int16 a2)//1fe8c0
 	}
 	else if (v2 <= 1)
 	{
-		v7x = x_DWORD_EA3E4[a1x->word_0x26_38];
+		v7x = Entities_EA3E4[a1x->word_0x26_38];
 		if (v7x->class_0x3F_63 != a1x->class_0x3F_63 || (v8 = v7x->model_0x40_64, v9 = a1x->model_0x40_64, v8 != v9))
 			v10 = 1;
 		else
@@ -10575,7 +10575,7 @@ void sub_1DBF0(type_entity_0x6E8E* a1x, unsigned __int16 a2)//1febf0
 				v12 = -1;
 				v6x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
 				v11 = a1x->dword_0xA0_160x->word_160_0x1c_28 * a1x->dword_0xA0_160x->word_160_0x1c_28;
-				while (v6x > x_DWORD_EA3E4[0])
+				while (v6x > Entities_EA3E4[0])
 				{
 					v7 = v6x->axis_0x4C_76.x - a1x->axis_0x4C_76.x;
 					v8 = v6x->axis_0x4C_76.y - a1x->axis_0x4C_76.y;
@@ -10611,7 +10611,7 @@ void sub_1DBF0(type_entity_0x6E8E* a1x, unsigned __int16 a2)//1febf0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001DDA0) --------------------------------------------------------
 void sub_1DDA0(type_entity_0x6E8E* a1x, __int16 a2)//1feda0
@@ -10650,8 +10650,8 @@ void sub_1DDA0(type_entity_0x6E8E* a1x, __int16 a2)//1feda0
 	{
 		for (i = a1x->word_0x34_52; ; i = v6x->word_0x34_52)
 		{
-			v6x = x_DWORD_EA3E4[i];
-			if (v6x == x_DWORD_EA3E4[0])
+			v6x = Entities_EA3E4[i];
+			if (v6x == Entities_EA3E4[0])
 				break;
 			v5 = v6x->life_0x8;
 			if (v5 < a1x->life_0x8)
@@ -10690,7 +10690,7 @@ void sub_1DDA0(type_entity_0x6E8E* a1x, __int16 a2)//1feda0
 				}
 			}
 			//v16 = 0;
-			for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+			for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 			{
 				if (jx->id_0x1A_26 != a1x->id_0x1A_26)
 				{
@@ -10710,7 +10710,7 @@ void sub_1DDA0(type_entity_0x6E8E* a1x, __int16 a2)//1feda0
 	}
 	case 1:
 	{
-		v7x = x_DWORD_EA3E4[a1x->word_0x26_38];
+		v7x = Entities_EA3E4[a1x->word_0x26_38];
 		if (v7x->class_0x3F_63 != a1x->class_0x3F_63 || (v8 = v7x->model_0x40_64, v9 = a1x->model_0x40_64, v8 != v9))
 			v10 = 1;
 		else
@@ -10791,8 +10791,8 @@ void sub_1E1C0(type_entity_0x6E8E* a1x, __int16 a2)//1ff1c0
 	{
 		for (i = a1x->word_0x34_52; ; i = v6x->word_0x34_52)
 		{
-			v6x = x_DWORD_EA3E4[i];
-			if (v6x == x_DWORD_EA3E4[0])
+			v6x = Entities_EA3E4[i];
+			if (v6x == Entities_EA3E4[0])
 				break;
 			v5 = v6x->life_0x8;
 			if (v5 < a1x->life_0x8)
@@ -10830,7 +10830,7 @@ void sub_1E1C0(type_entity_0x6E8E* a1x, __int16 a2)//1ff1c0
 	}
 	else if (v2x <= 1)
 	{
-		v7x = x_DWORD_EA3E4[a1x->word_0x26_38];
+		v7x = Entities_EA3E4[a1x->word_0x26_38];
 		if (v7x->class_0x3F_63 != a1x->class_0x3F_63 || (v8 = v7x->model_0x40_64, v9 = a1x->model_0x40_64, v8 != v9))
 			v10 = 1;
 		else
@@ -10850,7 +10850,7 @@ void sub_1E1C0(type_entity_0x6E8E* a1x, __int16 a2)//1ff1c0
 	}
 	//return v2;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001E320) --------------------------------------------------------
 void sub_1E320(type_entity_0x6E8E* a1x)//1ff320
@@ -10865,8 +10865,8 @@ void sub_1E320(type_entity_0x6E8E* a1x)//1ff320
 		SetEntity04_57F10(a1x);
 		return;
 	}
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
-	if (v1x <= x_DWORD_EA3E4[0] || v1x->life_0x8 < 0 || v1x->struct_byte_0xc_12_15.byte[1] & 4)
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
+	if (v1x <= Entities_EA3E4[0] || v1x->life_0x8 < 0 || v1x->struct_byte_0xc_12_15.byte[1] & 4)
 		goto LABEL_14;
 	//LOWORD(v1) = Maths::sub_581E0_maybe_tan2((uint16_t*)(a1 + 76), (uint16_t*)(v1 + 76));
 	v2 = a1x->actSpeed_0x82_130;
@@ -10893,7 +10893,7 @@ void sub_1E320(type_entity_0x6E8E* a1x)//1ff320
 		a1x->StageVar2_0x49_73 = 16;
 	}
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001E3E0) --------------------------------------------------------
 int sub_1E3E0(type_entity_0x6E8E* a1x)//1ff3e0
@@ -10910,7 +10910,7 @@ int sub_1E3E0(type_entity_0x6E8E* a1x)//1ff3e0
 	v2x = 0;
 	if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].stage_0x3647A_1 & 1)
 	{
-		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; ix > x_DWORD_EA3E4[0] && !v2x; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; ix > Entities_EA3E4[0] && !v2x; ix = ix->next_0)
 		{
 			if (ix->StageVar1_0x48_72 == a1x->StageVar1_0x48_72)
 			{
@@ -10921,7 +10921,7 @@ int sub_1E3E0(type_entity_0x6E8E* a1x)//1ff3e0
 	}
 	if (!v2x)
 	{
-		for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+		for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 		{
 			v6 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &jx->axis_0x4C_76);
 			if (v6 < v8)
@@ -10944,8 +10944,8 @@ void sub_1E4D0(type_entity_0x6E8E* a1x)//1ff4d0
 	int v3; // edx
 	//int result; // eax
 
-	v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-	if (v1x <= x_DWORD_EA3E4[0] || v1x->life_0x8 < 0)
+	v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+	if (v1x <= Entities_EA3E4[0] || v1x->life_0x8 < 0)
 		SetEntity04_57F10(a1x);
 	x_WORD_EB398ar.x = v1x->axis_0x4C_76.x;
 	v2 = a1x->model_0x40_64;
@@ -10970,7 +10970,7 @@ void sub_1E4D0(type_entity_0x6E8E* a1x)//1ff4d0
 	a1x->word_0x1C_28 = v1x->word_0x1C_28;
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
@@ -10985,8 +10985,8 @@ void sub_1E580(type_entity_0x6E8E* a1x, __int16 a2)//1ff580
 	char v6; // [esp+0h] [ebp-4h]
 
 	v6 = 0;
-	v2x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-	if (v2x <= x_DWORD_EA3E4[0] || v2x->life_0x8 < 0 || v2x->struct_byte_0xc_12_15.byte[1] & 4)
+	v2x = Entities_EA3E4[a1x->parentId_0x28_40];
+	if (v2x <= Entities_EA3E4[0] || v2x->life_0x8 < 0 || v2x->struct_byte_0xc_12_15.byte[1] & 4)
 	{
 		a1x->word_0x2E_46 = 0;
 	}
@@ -11000,18 +11000,18 @@ void sub_1E580(type_entity_0x6E8E* a1x, __int16 a2)//1ff580
 	}
 	else
 	{
-		v3x = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (v3x > x_DWORD_EA3E4[0] && (v3x->life_0x8 <= 0 || v3x->struct_byte_0xc_12_15.byte[1] & 4))
+		v3x = Entities_EA3E4[a1x->word_0x96_150];
+		if (v3x > Entities_EA3E4[0] && (v3x->life_0x8 <= 0 || v3x->struct_byte_0xc_12_15.byte[1] & 4))
 		{
 			a1x->word_0x96_150 = 0;
-			v3x = x_DWORD_EA3E4[0];
+			v3x = Entities_EA3E4[0];
 		}
-		if (v3x <= x_DWORD_EA3E4[0] && !(a1x->byte_0x3E_62 & 7))
+		if (v3x <= Entities_EA3E4[0] && !(a1x->byte_0x3E_62 & 7))
 		{
 			v3x = sub_16FC0(v2x, v2x);
 			a1x->word_0x96_150 = v3x - D41A0_0.struct_0x6E8E;
 		}
-		if (v3x <= x_DWORD_EA3E4[0])
+		if (v3x <= Entities_EA3E4[0])
 		{
 			a1x->word_0x96_150 = a1x->parentId_0x28_40;
 			sub_1E700(a1x, a2);
@@ -11039,7 +11039,7 @@ void sub_1E580(type_entity_0x6E8E* a1x, __int16 a2)//1ff580
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001E700) --------------------------------------------------------
 void sub_1E700(type_entity_0x6E8E* a1x, char a2)//1ff700
@@ -11075,8 +11075,8 @@ void sub_1E700(type_entity_0x6E8E* a1x, char a2)//1ff700
 	{
 		for (i = a1x->word_0x34_52; ; i = v6x->word_0x34_52)
 		{
-			v6x = x_DWORD_EA3E4[i];
-			if (v6x == x_DWORD_EA3E4[0])
+			v6x = Entities_EA3E4[i];
+			if (v6x == Entities_EA3E4[0])
 				break;
 			v5 = v6x->life_0x8;
 			if (v5 < a1x->life_0x8)
@@ -11100,8 +11100,8 @@ void sub_1E700(type_entity_0x6E8E* a1x, char a2)//1ff700
 			sub_1B8C0(a1x);
 			if (!(a1x->byte_0x3E_62 & 7))
 			{
-				v10x = x_DWORD_EA3E4[a1x->word_0x96_150];
-				if (v10x > x_DWORD_EA3E4[0])
+				v10x = Entities_EA3E4[a1x->word_0x96_150];
+				if (v10x > Entities_EA3E4[0])
 				{
 					if (!(a1x->struct_byte_0xc_12_15.byte[2] & 4))
 					{
@@ -11117,7 +11117,7 @@ void sub_1E700(type_entity_0x6E8E* a1x, char a2)//1ff700
 							a1x->word_0x20_32 &= 0x7ff;
 						}
 					}
-					for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+					for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 					{
 						if (jx->id_0x1A_26 != a1x->id_0x1A_26
 							&& abs(a1x->axis_0x4C_76.x - jx->axis_0x4C_76.x) < a1x->array_0x52_82.pitch
@@ -11134,7 +11134,7 @@ void sub_1E700(type_entity_0x6E8E* a1x, char a2)//1ff700
 	else if (v2 <= 1)
 	{
 		sub_1B8C0(a1x);
-		v7x = x_DWORD_EA3E4[a1x->word_0x26_38];
+		v7x = Entities_EA3E4[a1x->word_0x26_38];
 		v8 = 1;
 		if (v7x->class_0x3F_63 == a1x->class_0x3F_63 && v7x->model_0x40_64 == a1x->model_0x40_64)
 			v8 = 0;
@@ -11157,7 +11157,7 @@ void sub_1E700(type_entity_0x6E8E* a1x, char a2)//1ff700
 	}
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001E9C0) --------------------------------------------------------
 void sub_1E9C0(type_entity_0x6E8E* a1x, __int16 a2)//1ff9c0
@@ -11187,7 +11187,7 @@ void sub_1E9C0(type_entity_0x6E8E* a1x, __int16 a2)//1ff9c0
 	a1x->word_0x2E_46 = v2;
 	if (v2 <= 0)
 		goto LABEL_66;
-	v3x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
+	v3x = Entities_EA3E4[a1x->parentId_0x28_40];
 	v4 = 0;
 	if (v2 <= a1x->word_0x30_48 - 16 && a1x->word_0x2E_46 >= 16)
 	{
@@ -11217,8 +11217,8 @@ void sub_1E9C0(type_entity_0x6E8E* a1x, __int16 a2)//1ff9c0
 	{
 		for (i = a1x->word_0x34_52; ; i = v7x->word_0x34_52)
 		{
-			v7x = x_DWORD_EA3E4[i];
-			if (v7x == x_DWORD_EA3E4[0])
+			v7x = Entities_EA3E4[i];
+			if (v7x == Entities_EA3E4[0])
 				break;
 			v6 = 0;
 			if (a1x->word_0x2E_46 <= a1x->word_0x30_48 - 16 && a1x->word_0x2E_46 >= 16)
@@ -11251,7 +11251,7 @@ void sub_1E9C0(type_entity_0x6E8E* a1x, __int16 a2)//1ff9c0
 			}
 		}
 	}
-	if (v3x <= x_DWORD_EA3E4[0] || v3x->life_0x8 <= 0)
+	if (v3x <= Entities_EA3E4[0] || v3x->life_0x8 <= 0)
 	{
 	LABEL_66:
 		v16 = 1;
@@ -11269,16 +11269,16 @@ void sub_1E9C0(type_entity_0x6E8E* a1x, __int16 a2)//1ff9c0
 		a1x->word_0x96_150 = v8;
 		if (v8)
 		{
-			v10x = x_DWORD_EA3E4[v8];
-			if (v10x > x_DWORD_EA3E4[0]
+			v10x = Entities_EA3E4[v8];
+			if (v10x > Entities_EA3E4[0]
 				&& (v10x->parentId_0x28_40 == a1x->parentId_0x28_40 && v10x->StageVar2_0x49_73 == 14
 					|| v10x->life_0x8 <= 0
 					|| v10x->struct_byte_0xc_12_15.byte[1] & 4))
 			{
 				a1x->word_0x96_150 = 0;
-				v10x = x_DWORD_EA3E4[0];
+				v10x = Entities_EA3E4[0];
 			}
-			if (v10x > x_DWORD_EA3E4[0])
+			if (v10x > Entities_EA3E4[0])
 			{
 				v11 = a1x->dword_0xA0_160x->word_160_0x1c_28;
 				if (sub_583F0_distance_3d(&a1x->axis_0x4C_76, &v10x->axis_0x4C_76) < v11)
@@ -11319,8 +11319,8 @@ void sub_1E9C0(type_entity_0x6E8E* a1x, __int16 a2)//1ff9c0
 		{
 			for (j = a1x->word_0x34_52; ; j = v15x->word_0x34_52)
 			{
-				v15x = x_DWORD_EA3E4[j];
-				if (v15x == x_DWORD_EA3E4[0])
+				v15x = Entities_EA3E4[j];
+				if (v15x == Entities_EA3E4[0])
 					break;
 				// if (a1x->word_0x2E_46 <= a1x->word_0x30_48 - 16)
 				// 	a1x->word_0x2E_46;
@@ -11344,7 +11344,7 @@ void sub_1E9C0(type_entity_0x6E8E* a1x, __int16 a2)//1ff9c0
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001ED30) --------------------------------------------------------
 type_entity_0x6E8E* sub_1ED30(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//1ffd30
@@ -11395,8 +11395,8 @@ type_entity_0x6E8E* sub_1ED30(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)/
 		{
 			for (i = a1x->word_0x34_52; ; i = v7x->word_0x34_52)
 			{
-				v7x = x_DWORD_EA3E4[i];
-				if (v7x == x_DWORD_EA3E4[0])
+				v7x = Entities_EA3E4[i];
+				if (v7x == Entities_EA3E4[0])
 					break;
 				v5 = 0;
 				if (a1x->word_0x2E_46 <= a1x->word_0x30_48 - 16 && a1x->word_0x2E_46 >= 16)
@@ -11434,12 +11434,12 @@ type_entity_0x6E8E* sub_1ED30(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)/
 		v8 = a1x->word_0x2E_46 - 1;
 		a1x->word_0x2E_46 = v8;
 		if (v8 <= 0)
-			return x_DWORD_EA3E4[0];
-		v9x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v9x > x_DWORD_EA3E4[0])
+			return Entities_EA3E4[0];
+		v9x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v9x > Entities_EA3E4[0])
 		{
 			if (a2x == v9x)
-				return x_DWORD_EA3E4[0];
+				return Entities_EA3E4[0];
 			if (v9x->word_0x96_150)
 			{
 				v10 = v9x->word_0x96_150;
@@ -11450,13 +11450,13 @@ type_entity_0x6E8E* sub_1ED30(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)/
 					return v2x;
 				v10 = v9x->word_0x26_38;
 			}
-			if (x_DWORD_EA3E4[v10] != a2x)
-				return x_DWORD_EA3E4[0];
+			if (Entities_EA3E4[v10] != a2x)
+				return Entities_EA3E4[0];
 		}
 	}
 	return v2x;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001EEE0) --------------------------------------------------------
 void sub_1EEE0(type_entity_0x6E8E* a1x)//1ffee0
@@ -11572,8 +11572,8 @@ void sub_1F0C0(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x)//2000c0
 		{
 			if (a2x->word_0x2C_44)
 			{
-				v7x = x_DWORD_EA3E4[a2x->word_0x24_36];
-				if (v7x <= x_DWORD_EA3E4[0] || v7x->life_0x8 < 0 || v7x->struct_byte_0xc_12_15.byte[1] & 4)
+				v7x = Entities_EA3E4[a2x->word_0x24_36];
+				if (v7x <= Entities_EA3E4[0] || v7x->life_0x8 < 0 || v7x->struct_byte_0xc_12_15.byte[1] & 4)
 				{
 					a2x->byte_0x46_70 = 0;
 					a2x->word_0x24_36 = 0;
@@ -11611,8 +11611,8 @@ void sub_1F0C0(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x)//2000c0
 						;
 						i = a1x->oldMapEntity_0x16_22)
 					{
-						a1x = x_DWORD_EA3E4[i];
-						if (a1x == x_DWORD_EA3E4[0])
+						a1x = Entities_EA3E4[i];
+						if (a1x == Entities_EA3E4[0])
 							break;
 						if (a1x->class_0x3F_63 == 9 && a1x->word_0x96_150 == a2x->id_0x1A_26)
 						{
@@ -11635,7 +11635,7 @@ void sub_1F0C0(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x)//2000c0
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (0001F300) --------------------------------------------------------
@@ -11799,10 +11799,10 @@ void sub_1F6D0(type_entity_0x6E8E* a1x)//2006d0
 	if (v3)
 	{
 		v4x = a1x->axis_0x4C_76.z
-			- (x_DWORD_EA3E4[v3]->array_0x52_82.yaw
-				+ x_DWORD_EA3E4[v3]->axis_0x4C_76.z);
-		if (a1x->axis_0x4C_76.z != x_DWORD_EA3E4[v3]->array_0x52_82.yaw
-			+ x_DWORD_EA3E4[v3]->axis_0x4C_76.z)
+			- (Entities_EA3E4[v3]->array_0x52_82.yaw
+				+ Entities_EA3E4[v3]->axis_0x4C_76.z);
+		if (a1x->axis_0x4C_76.z != Entities_EA3E4[v3]->array_0x52_82.yaw
+			+ Entities_EA3E4[v3]->axis_0x4C_76.z)
 		{
 			if (v4x <= 0)
 				v4x = -1;
@@ -11826,7 +11826,7 @@ void sub_1F6D0(type_entity_0x6E8E* a1x)//2006d0
 		a1x->actSpeed_0x82_130 = a1x->minSpeed_0x84_132;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001F800) --------------------------------------------------------
 void sub_1F800(type_entity_0x6E8E* a1x)//200800
@@ -11984,8 +11984,8 @@ void sub_1FAA0(type_entity_0x6E8E* a1x)//200aa0
 	{
 		for (i = a1x->word_0x34_52; ; i = v6x->word_0x34_52)
 		{
-			v6x = x_DWORD_EA3E4[i];
-			if (v6x == x_DWORD_EA3E4[0])
+			v6x = Entities_EA3E4[i];
+			if (v6x == Entities_EA3E4[0])
 				break;
 			v5 = v6x->life_0x8;
 			if (v5 < a1x->life_0x8)
@@ -12026,7 +12026,7 @@ void sub_1FAA0(type_entity_0x6E8E* a1x)//200aa0
 			if (a1x->word_0x96_150)
 			{
 				//LOWORD(jx) = a1x->word_0x96_150;
-				v28x = x_DWORD_EA3E4[a1x->word_0x96_150];
+				v28x = Entities_EA3E4[a1x->word_0x96_150];
 				if (v28x->class_0x3F_63 != 10 || v28x->model_0x40_64 != 45)
 				{
 					a1x->word_0x96_150 = 0;
@@ -12060,7 +12060,7 @@ void sub_1FAA0(type_entity_0x6E8E* a1x)//200aa0
 				v10x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
 				v11x = 0;
 				v31 = a1x->dword_0xA0_160x->word_160_0x1c_28 * a1x->dword_0xA0_160x->word_160_0x1c_28;
-				while (v10x > x_DWORD_EA3E4[0])
+				while (v10x > Entities_EA3E4[0])
 				{
 					v12 = (signed __int16)(v10x->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 					v35 = (signed __int16)(v10x->axis_0x4C_76.y - a1x->axis_0x4C_76.y)
@@ -12087,7 +12087,7 @@ void sub_1FAA0(type_entity_0x6E8E* a1x)//200aa0
 				v15x = v11x;
 				if (v11x)
 				{
-					if (v11x <= x_DWORD_EA3E4[0]
+					if (v11x <= Entities_EA3E4[0]
 						|| (v16 = v11x->model_0x40_64) != 0 && v16 != 1
 						|| /*(jx = v11x->dword_0xA4_164x, */!v11x->dword_0xA4_164x->word_0x248_584)
 					{
@@ -12100,7 +12100,7 @@ void sub_1FAA0(type_entity_0x6E8E* a1x)//200aa0
 					v33 = v17 * v17;
 					v18 = -1;
 					v19x = 0;
-					for (jz = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[36 / 4]; jz > x_DWORD_EA3E4[0]; jz = jz->next_0)
+					for (jz = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[36 / 4]; jz > Entities_EA3E4[0]; jz = jz->next_0)
 					{
 						v20 = (signed __int16)(jz->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 						v21 = v20 * v20
@@ -12129,7 +12129,7 @@ void sub_1FAA0(type_entity_0x6E8E* a1x)//200aa0
 				v30 = v22 * v22;
 				//jx = a1x->byte_0x40_64;
 				v34 = -1;
-				for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; kx > x_DWORD_EA3E4[0]; kx = kx->next_0)
+				for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; kx > Entities_EA3E4[0]; kx = kx->next_0)
 				{
 					if (!kx->word_0x32_50 && kx != a1x)
 					{
@@ -12171,7 +12171,7 @@ LABEL_68:
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 Scene GetCurrentScene()
 {
@@ -12194,12 +12194,12 @@ void AddArcher0504_1FF40(type_entity_0x6E8E* event)//200f40
 	}
 	if (!(event->byte_0x3E_62 % event->dword_0xA0_160x->word_160_0x1a_26))
 	{
-		type_entity_0x6E8E* event2 = x_DWORD_EA3E4[event->word_0x96_150];
-		if (event2 > x_DWORD_EA3E4[0])
+		type_entity_0x6E8E* event2 = Entities_EA3E4[event->word_0x96_150];
+		if (event2 > Entities_EA3E4[0])
 		{
 			if (!event2->model_0x40_64 || event2->model_0x40_64 == 1)
 			{
-				x_DWORD_EA3E4[event->word_0x96_150]->dword_0xA4_164x->word_0x248_584 = 200;
+				Entities_EA3E4[event->word_0x96_150]->dword_0xA4_164x->word_0x248_584 = 200;
 			}
 		}
 	}
@@ -12244,8 +12244,8 @@ void sub_20060(type_entity_0x6E8E* entity)//201060
 	else
 		SetEntityIndexAndRot_49CD0(entity, 1);
 	SetEntityShiftRot_49EA0(entity, 128, 256);
-	entity->xtype_0x41_65 = x_DWORD_EA3E4[entity->word_0x96_150]->class_0x3F_63;
-	entity->xsubtype_0x42_66 = x_DWORD_EA3E4[entity->word_0x96_150]->model_0x40_64;
+	entity->xtype_0x41_65 = Entities_EA3E4[entity->word_0x96_150]->class_0x3F_63;
+	entity->xsubtype_0x42_66 = Entities_EA3E4[entity->word_0x96_150]->model_0x40_64;
 }
 
 //----- (000200F0) --------------------------------------------------------
@@ -12380,8 +12380,8 @@ void sub_203D0(type_entity_0x6E8E* a1x)//2013d0
 	{
 		for (i = a1x->word_0x34_52; ; i = v7x->word_0x34_52)
 		{
-			v7x = x_DWORD_EA3E4[i];
-			if (v7x == x_DWORD_EA3E4[0])
+			v7x = Entities_EA3E4[i];
+			if (v7x == Entities_EA3E4[0])
 				break;
 			v6 = v7x->life_0x8;
 			if (v6 < a1x->life_0x8)
@@ -12418,7 +12418,7 @@ void sub_203D0(type_entity_0x6E8E* a1x)//2013d0
 		{
 			v8 = -1;
 			v9x = 0;
-			for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+			for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > Entities_EA3E4[0]; jx = jx->next_0)
 			{
 				if (jx->model_0x40_64 == 2 && jx->id_0x1A_26 != a1x->id_0x1A_26)
 				{
@@ -12465,7 +12465,7 @@ void sub_203D0(type_entity_0x6E8E* a1x)//2013d0
 					v44 = -1;
 					v17x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
 					v42 = v15 * v15;
-					while (v17x > x_DWORD_EA3E4[0])
+					while (v17x > Entities_EA3E4[0])
 					{
 						if (v17x->id_0x1A_26 != a1x->id_0x1A_26)
 						{
@@ -12514,7 +12514,7 @@ void sub_203D0(type_entity_0x6E8E* a1x)//2013d0
 									v39x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 9);
 									if (v39x)
 									{
-										if (x_DWORD_EA3E4[a1x->id_0x1A_26]->class_0x3F_63 == 3)
+										if (Entities_EA3E4[a1x->id_0x1A_26]->class_0x3F_63 == 3)
 											v39x->id_0x1A_26 = a1x->id_0x1A_26;
 									}
 								}
@@ -12524,7 +12524,7 @@ void sub_203D0(type_entity_0x6E8E* a1x)//2013d0
 						v45 = a1x->dword_0xA0_160x->word_160_0x1c_28 * a1x->dword_0xA0_160x->word_160_0x1c_28;
 						v26 = -1;
 						v27x = 0;
-						for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[16 / 4]; kx > x_DWORD_EA3E4[0]; kx = kx->next_0)
+						for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[16 / 4]; kx > Entities_EA3E4[0]; kx = kx->next_0)
 						{
 							v29 = (signed __int16)(kx->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 							v30 = v29 * v29
@@ -12542,7 +12542,7 @@ void sub_203D0(type_entity_0x6E8E* a1x)//2013d0
 						v46 = a1x->dword_0xA0_160x->word_160_0x1c_28 * a1x->dword_0xA0_160x->word_160_0x1c_28;
 						v31 = -1;
 						v27x = 0;
-						for (lx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[48 / 4]; lx > x_DWORD_EA3E4[0]; lx = lx->next_0)
+						for (lx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[48 / 4]; lx > Entities_EA3E4[0]; lx = lx->next_0)
 						{
 							v33 = (signed __int16)(lx->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 							v34 = v33 * v33
@@ -12562,7 +12562,7 @@ void sub_203D0(type_entity_0x6E8E* a1x)//2013d0
 						v40 = a1x->dword_0xA0_160x->word_160_0x1c_28 * a1x->dword_0xA0_160x->word_160_0x1c_28;
 						v35 = -1;
 						v27x = 0;
-						for (mx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[52 / 4]; mx > x_DWORD_EA3E4[0]; mx = mx->next_0)
+						for (mx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[52 / 4]; mx > Entities_EA3E4[0]; mx = mx->next_0)
 						{
 							v37 = (signed __int16)(mx->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 							v38 = v37 * v37
@@ -12587,7 +12587,7 @@ LABEL_85:
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (00020940) --------------------------------------------------------
@@ -12642,8 +12642,8 @@ void sub_20940(type_entity_0x6E8E* a1x)//201940
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -12717,7 +12717,7 @@ void sub_20940(type_entity_0x6E8E* a1x)//201940
 				return;
 			}
 			v10 = -1;
-			for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[16 / 4]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+			for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[16 / 4]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 			{
 				v12 = (jx->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 				v13 = v12 * v12
@@ -12734,7 +12734,7 @@ void sub_20940(type_entity_0x6E8E* a1x)//201940
 		{
 			v14 = -1;
 			v9 = 0;
-			for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[48 / 4]; kx > x_DWORD_EA3E4[0]; kx = kx->next_0)
+			for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[48 / 4]; kx > Entities_EA3E4[0]; kx = kx->next_0)
 			{
 				v16 = (kx->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 				v17 = v16 * v16
@@ -12753,7 +12753,7 @@ void sub_20940(type_entity_0x6E8E* a1x)//201940
 				goto LABEL_50;
 			v18 = -1;
 			v9 = 0;
-			for (lx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[52 / 4]; lx > x_DWORD_EA3E4[0]; lx = lx->next_0)
+			for (lx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[52 / 4]; lx > Entities_EA3E4[0]; lx = lx->next_0)
 			{
 				v20 = (lx->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 				v21 = v20 * v20
@@ -12771,7 +12771,7 @@ void sub_20940(type_entity_0x6E8E* a1x)//201940
 	}
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (00020C50) --------------------------------------------------------
@@ -12804,8 +12804,8 @@ void sub_20C50(type_entity_0x6E8E* a1x)//201c50
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -12837,9 +12837,9 @@ void sub_20C50(type_entity_0x6E8E* a1x)//201c50
 	if (v1)
 		goto LABEL_32;
 	sub_1B8C0(a1x);
-	v6x = sub_1ED30(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]);
+	v6x = sub_1ED30(a1x, Entities_EA3E4[a1x->word_0x96_150]);
 	v7x = v6x;
-	if (v6x <= x_DWORD_EA3E4[0] || v6x->life_0x8 < 0 || v6x->struct_byte_0xc_12_15.byte[1] & 4)
+	if (v6x <= Entities_EA3E4[0] || v6x->life_0x8 < 0 || v6x->struct_byte_0xc_12_15.byte[1] & 4)
 	{
 	LABEL_31:
 		a1x->state_0x45_69 = 73;
@@ -12864,7 +12864,7 @@ LABEL_32:
 	if (a1x->state_0x45_69 != 74)
 		sub_20F20(a1x);
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00020E50) --------------------------------------------------------
 void sub_20E50(type_entity_0x6E8E* a1x)//201e50
@@ -12895,7 +12895,7 @@ void sub_20EC0(type_entity_0x6E8E* a1x)//201ec0
 	type_entity_0x6E8E* v1x; // esi
 	//char result; // al
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	if (a1x->id_0x1A_26 == v1x->id_0x1A_26)
 	{
 		a1x->state_0x45_69 = 73;
@@ -12910,7 +12910,7 @@ void sub_20EC0(type_entity_0x6E8E* a1x)//201ec0
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00020F20) --------------------------------------------------------
 void sub_20F20(type_entity_0x6E8E* a1x)//201f20
@@ -12981,7 +12981,7 @@ void sub_21030(type_entity_0x6E8E* a1x)//202030
 
 	v24 = 0;
 	sub_223E0();
-	v1x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v1x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	if (sub_21F60(a1x))
 		a1x->word_0x2A_42 |= 1u;
 	v2 = a1x->byte_0x46_70;
@@ -13147,7 +13147,7 @@ void sub_21030(type_entity_0x6E8E* a1x)//202030
 			a1x->life_0x8 = -1;
 			a1x->struct_byte_0xc_12_15.byte[0] = v17 | 1;
 			sub_1B5F0();
-			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38523; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38523; ix > Entities_EA3E4[0]; ix = ix->next_0)
 			{
 				v19 = ix->struct_byte_0xc_12_15.byte[1];
 				ix->maxLife_0x4 = 140;
@@ -13183,7 +13183,7 @@ void sub_21030(type_entity_0x6E8E* a1x)//202030
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // DA7CA: using guessed type __int16 x_WORD_DA7CA;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00021490) --------------------------------------------------------
 char sub_21490(type_entity_0x6E8E* a1x)//202490
@@ -13311,7 +13311,7 @@ char sub_21490(type_entity_0x6E8E* a1x)//202490
 		}
 		else if (v1 & 0x40)
 		{
-			if (Maths::sub_58490_radix_3d_2(&x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->axis_0x4C_76,
+			if (Maths::sub_58490_radix_3d_2(&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->axis_0x4C_76,
 				&a1x->axis_0x4C_76) >= 0xA00)
 			{
 				a1x->word_0x2A_42 &= 0xBFu;
@@ -13348,7 +13348,7 @@ char sub_21490(type_entity_0x6E8E* a1x)//202490
 	}
 	if (v29)
 	{
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38523; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38523; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (v29 < 2u)
 			{
@@ -13397,7 +13397,7 @@ char sub_21490(type_entity_0x6E8E* a1x)//202490
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // DA7CA: using guessed type __int16 x_WORD_DA7CA;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00021850) --------------------------------------------------------
 void sub_21850(type_entity_0x6E8E* a1x)//202850
@@ -13612,9 +13612,9 @@ void sub_21AB0(type_entity_0x6E8E* a1x)//202ab0
 	v35x = 0;
 	//v1 = 2124 * D41A0_0.LevelIndex_0xc;
 	v34 = -1;
-	v2x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v2x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v31x = v2x;
-	if (v2x > x_DWORD_EA3E4[0] && v2x->life_0x8 >= 0 && !(v2x->struct_byte_0xc_12_15.byte[1] & 4))
+	if (v2x > Entities_EA3E4[0] && v2x->life_0x8 >= 0 && !(v2x->struct_byte_0xc_12_15.byte[1] & 4))
 	{
 		v3 = a1x->word_0x24_36;
 		if (v3)
@@ -13813,7 +13813,7 @@ void sub_21AB0(type_entity_0x6E8E* a1x)//202ab0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D8412: using guessed type void *off_D8412;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -13840,9 +13840,9 @@ char sub_21F60(type_entity_0x6E8E* a1x)//202f60
 	char v19; // [esp+24h] [ebp-4h]
 
 	v19 = 0;
-	v16x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v16x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v17 = a1x->class_0x3F_63 != 5 || a1x->model_0x40_64 != 10;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38531; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38531; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		v2 = ix->model_0x40_64;
 		v18 = 0;
@@ -13886,7 +13886,7 @@ char sub_21F60(type_entity_0x6E8E* a1x)//202f60
 		v4 = v16x->dword_0xA4_164x->word_0x3A_58;
 		if (v4)
 		{
-			v5x = x_DWORD_EA3E4[v4];
+			v5x = Entities_EA3E4[v4];
 			v14x = v5x->axis_0x4C_76;
 
 			v9x = v5x->array_0x52_82;
@@ -13908,7 +13908,7 @@ char sub_21F60(type_entity_0x6E8E* a1x)//202f60
 		if (v18)
 		{
 			if (ix->model_0x40_64 == 10)
-				x_DWORD_EA3E4[v16x->dword_0xA4_164x->str_611.array_0x333_819x.word[2]]->word_0x2E_46 = 0;
+				Entities_EA3E4[v16x->dword_0xA4_164x->str_611.array_0x333_819x.word[2]]->word_0x2E_46 = 0;
 			v6x = IfSubtypeCallAxisEvent_4A190(&ix->axis_0x4C_76, 10, 0);
 			if (v6x)
 				v6x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -13916,13 +13916,13 @@ char sub_21F60(type_entity_0x6E8E* a1x)//202f60
 		}
 	}
 	v7 = v16x->dword_0xA4_164x->str_611.array_0x333_819x.word[8];
-	if (v7 && x_DWORD_EA3E4[v7]->word_0x2E_46 > 0)
+	if (v7 && Entities_EA3E4[v7]->word_0x2E_46 > 0)
 		v19 = 1;
 	return v19;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00022190) --------------------------------------------------------
 char sub_22190(type_entity_0x6E8E* a1x)//203190
@@ -14006,7 +14006,7 @@ void sub_222B0(type_entity_0x6E8E* a1x)//2032b0
 	__int16 v5; // ax
 	//char v6; // ch
 
-	v1x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v1x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v2 = (((a1x->word_0x1C_28 - v1x->word_0x1C_28) >> 3) & 0xF0) >> 4;
 	v3 = 0;
 	if (v2 <= 2)
@@ -14076,7 +14076,7 @@ void sub_222B0(type_entity_0x6E8E* a1x)//2032b0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000223E0) --------------------------------------------------------
 void sub_223E0()//2033e0
@@ -14091,16 +14091,16 @@ void sub_223E0()//2033e0
 	//v0 = x_D41A0_BYTEARRAY_0;
 	//v1 = x_D41A0_BYTEARRAY_4;
 	D41A0_0.word_0x3653E = 0;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[0]; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[0]; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		D41A0_0.word_0x3653E++;
 	D41A0_0.word_0x36540 = 0;
-	for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[0]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+	for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[0]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 		D41A0_0.word_0x36540++;
 	D41A0_0.word_0x36544 = 0;
-	for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[0]; kx > x_DWORD_EA3E4[0]; kx = kx->next_0)
+	for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[0]; kx > Entities_EA3E4[0]; kx = kx->next_0)
 		D41A0_0.word_0x36544++;
 	D41A0_0.word_0x36542 = 0;
-	for (indexx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[100 / 4]; indexx > x_DWORD_EA3E4[0]; indexx = indexx->next_0)
+	for (indexx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[100 / 4]; indexx > Entities_EA3E4[0]; indexx = indexx->next_0)
 	{
 		if (indexx->state_0x45_69 != 200)
 			D41A0_0.word_0x36542++;
@@ -14111,7 +14111,7 @@ void sub_223E0()//2033e0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00022490) --------------------------------------------------------
 void sub_22490(type_entity_0x6E8E* a1x)//203490
@@ -14266,7 +14266,7 @@ void sub_22760(type_entity_0x6E8E* a1x)//203760
 	int v21; // [esp+14h] [ebp-8h]
 	unsigned __int8 v22; // [esp+18h] [ebp-4h]
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v20 = 96;
 	v17x = v1x;
 	if (!v1x->class_0x3F_63 || v1x->model_0x40_64 != 45)
@@ -14343,7 +14343,7 @@ void sub_22760(type_entity_0x6E8E* a1x)//203760
 	if ((x_BYTE)v8z)
 	{
 		v9 = 0;
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38527; !v9 && ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38527; !v9 && ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			v8z = abs((signed __int16)(ix->axis_0x4C_76.x - v21));
 			if (v8z <= ix->array_0x52_82.pitch + exwidth)
@@ -14355,7 +14355,7 @@ void sub_22760(type_entity_0x6E8E* a1x)//203760
 		}
 		if (!v9)
 		{
-			for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; !v9 && jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+			for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; !v9 && jx > Entities_EA3E4[0]; jx = jx->next_0)
 			{
 				if (jx->model_0x40_64 == 2)
 				{
@@ -14371,7 +14371,7 @@ void sub_22760(type_entity_0x6E8E* a1x)//203760
 		}
 		if (!v9)
 		{
-			for (kx = x_D41A0_BYTEARRAY_4_struct.dword_38519; !v9 && kx > x_DWORD_EA3E4[0]; kx = kx->next_0)
+			for (kx = x_D41A0_BYTEARRAY_4_struct.dword_38519; !v9 && kx > Entities_EA3E4[0]; kx = kx->next_0)
 			{
 				if (kx->model_0x40_64 == 67)
 				{
@@ -14387,7 +14387,7 @@ void sub_22760(type_entity_0x6E8E* a1x)//203760
 		}
 		if (!v9)
 		{
-			for (lx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[48 / 4]; !v9 && lx > x_DWORD_EA3E4[0]; lx = lx->next_0)
+			for (lx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[48 / 4]; !v9 && lx > Entities_EA3E4[0]; lx = lx->next_0)
 			{
 				if (lx->byte_0x3D_61)
 					v9 = 1;
@@ -14412,7 +14412,7 @@ void sub_22760(type_entity_0x6E8E* a1x)//203760
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 
@@ -14445,8 +14445,8 @@ void sub_22C80(type_entity_0x6E8E* a1x)//203c80
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -14467,9 +14467,9 @@ void sub_22C80(type_entity_0x6E8E* a1x)//203c80
 	{
 		if (v1 <= 1)
 		{
-			v6x = x_DWORD_EA3E4[a1x->word_0x26_38];
-			if (v6x > x_DWORD_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
-				x_DWORD_EA3E4[a1x->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
+			v6x = Entities_EA3E4[a1x->word_0x26_38];
+			if (v6x > Entities_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
+				Entities_EA3E4[a1x->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
 			a1x->word_0x96_150 = a1x->word_0x26_38;
 			LOBYTE(v1) = 102;
 		}
@@ -14512,7 +14512,7 @@ LABEL_28:
 	}
 	//return v1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00022E60) --------------------------------------------------------
 void sub_22E60(type_entity_0x6E8E* a1x)//203e60
@@ -14548,8 +14548,8 @@ void sub_22E60(type_entity_0x6E8E* a1x)//203e60
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -14570,9 +14570,9 @@ void sub_22E60(type_entity_0x6E8E* a1x)//203e60
 	{
 		if (v1 <= 1)
 		{
-			v6x = x_DWORD_EA3E4[a1x->word_0x26_38];
-			if (v6x > x_DWORD_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
-				x_DWORD_EA3E4[a1x->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
+			v6x = Entities_EA3E4[a1x->word_0x26_38];
+			if (v6x > Entities_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
+				Entities_EA3E4[a1x->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
 			a1x->word_0x96_150 = a1x->word_0x26_38;
 			LOBYTE(v1) = 102;
 		}
@@ -14593,7 +14593,7 @@ void sub_22E60(type_entity_0x6E8E* a1x)//203e60
 		if (!v1)
 		{
 			v7 = a1x->dword_0x10_16;
-			v8x = x_DWORD_EA3E4[a1x->word_0x96_150];
+			v8x = Entities_EA3E4[a1x->word_0x96_150];
 			a1x->dword_0x10_16 = v7 - 1;
 			if (!v7 || !v8x->class_0x3F_63)
 			{
@@ -14619,7 +14619,7 @@ LABEL_31:
 	}
 	//return v1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00023020) --------------------------------------------------------
 void sub_23020(type_entity_0x6E8E* a1x)//204020
@@ -14653,8 +14653,8 @@ void sub_23020(type_entity_0x6E8E* a1x)//204020
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -14675,9 +14675,9 @@ void sub_23020(type_entity_0x6E8E* a1x)//204020
 	{
 		if (v1 <= 1)
 		{
-			v6x = x_DWORD_EA3E4[a1x->word_0x26_38];
-			if (v6x > x_DWORD_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
-				x_DWORD_EA3E4[a1x->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
+			v6x = Entities_EA3E4[a1x->word_0x26_38];
+			if (v6x > Entities_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
+				Entities_EA3E4[a1x->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
 			a1x->word_0x96_150 = a1x->word_0x26_38;
 			LOBYTE(v1) = 102;
 		}
@@ -14694,7 +14694,7 @@ void sub_23020(type_entity_0x6E8E* a1x)//204020
 	if (!v1)
 	{
 		v7x = 0;
-		for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38527; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+		for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38527; jx > Entities_EA3E4[0]; jx = jx->next_0)
 		{
 			v9 = sub_583F0_distance_3d(&a1x->axis_0x4C_76, &jx->axis_0x4C_76);
 			if (v9 && v9 < v11)
@@ -14726,7 +14726,7 @@ LABEL_34:
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000231E0) --------------------------------------------------------
 void sub_231E0(type_entity_0x6E8E* a1x)//2041e0
@@ -14739,12 +14739,12 @@ void sub_23200(type_entity_0x6E8E* a1x)//204200
 {
 	type_entity_0x6E8E* v1x; // edx
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x24_36];
-	if (v1x > x_DWORD_EA3E4[0] && (!v1x->model_0x40_64 || v1x->model_0x40_64 == 1))
-		x_DWORD_EA3E4[a1x->word_0x24_36]->dword_0xA4_164x->word_0x248_584 = 200;
+	v1x = Entities_EA3E4[a1x->word_0x24_36];
+	if (v1x > Entities_EA3E4[0] && (!v1x->model_0x40_64 || v1x->model_0x40_64 == 1))
+		Entities_EA3E4[a1x->word_0x24_36]->dword_0xA4_164x->word_0x248_584 = 200;
 	sub_1C930(a1x);
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00023260) --------------------------------------------------------
 void sub_23260(type_entity_0x6E8E* a1x)//204260
@@ -14838,8 +14838,8 @@ void sub_23340(type_entity_0x6E8E* a1x)//204340
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -14860,9 +14860,9 @@ void sub_23340(type_entity_0x6E8E* a1x)//204340
 	{
 		if (jy <= 1)
 		{
-			v6x = x_DWORD_EA3E4[a1x->word_0x26_38];
-			if (v6x > x_DWORD_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
-				x_DWORD_EA3E4[a1x->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
+			v6x = Entities_EA3E4[a1x->word_0x26_38];
+			if (v6x > Entities_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
+				Entities_EA3E4[a1x->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
 			a1x->word_0x96_150 = a1x->word_0x26_38;
 			//jy = 110;
 			a1x->state_0x45_69 = 110;
@@ -14882,7 +14882,7 @@ void sub_23340(type_entity_0x6E8E* a1x)//204340
 		goto LABEL_43;
 	if (a1x->word_0x96_150)
 	{
-		v12x = x_DWORD_EA3E4[a1x->word_0x96_150];
+		v12x = Entities_EA3E4[a1x->word_0x96_150];
 		if (v12x->class_0x3F_63 == 10 && v12x->model_0x40_64 == 45)
 		{
 			if (sub_583F0_distance_3d(&a1x->axis_0x4C_76, &v12x->axis_0x4C_76) > 0x800)
@@ -14916,7 +14916,7 @@ void sub_23340(type_entity_0x6E8E* a1x)//204340
 	{
 		v8 = -1;
 		v9x = 0;
-		for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38527; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+		for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38527; jx > Entities_EA3E4[0]; jx = jx->next_0)
 		{
 			if (str_D93C0_bldgprmbuffer[jx->byte_0x46_70].byte_2 & 1)
 			{
@@ -14950,7 +14950,7 @@ LABEL_43:
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00023640) --------------------------------------------------------
 void sub_23640(type_entity_0x6E8E* a1x)//204640
@@ -14976,12 +14976,12 @@ void KillTownie_23680(type_entity_0x6E8E* a1x)//204680
 		SetEntity04_57F10(a1x);
 		return;
 	}
-	v2x = x_DWORD_EA3E4[a1x->word_0x24_36];
-	if (v2x > x_DWORD_EA3E4[0] && (!v2x->model_0x40_64 || v2x->model_0x40_64 == 1))
-		x_DWORD_EA3E4[a1x->word_0x24_36]->dword_0xA4_164x->word_0x248_584 = 200;
+	v2x = Entities_EA3E4[a1x->word_0x24_36];
+	if (v2x > Entities_EA3E4[0] && (!v2x->model_0x40_64 || v2x->model_0x40_64 == 1))
+		Entities_EA3E4[a1x->word_0x24_36]->dword_0xA4_164x->word_0x248_584 = 200;
 	sub_1C890(a1x, 104);
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000236F0) --------------------------------------------------------
 void sub_236F0(type_entity_0x6E8E* a1x)//2046f0
@@ -15065,8 +15065,8 @@ void sub_237B0(type_entity_0x6E8E* a1x)//2047b0
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -15087,9 +15087,9 @@ void sub_237B0(type_entity_0x6E8E* a1x)//2047b0
 	{
 		if (v1y <= 1)
 		{
-			v6x = x_DWORD_EA3E4[a1x->word_0x26_38];
-			if (v6x > x_DWORD_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
-				x_DWORD_EA3E4[a1x->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
+			v6x = Entities_EA3E4[a1x->word_0x26_38];
+			if (v6x > Entities_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
+				Entities_EA3E4[a1x->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
 			a1x->word_0x96_150 = a1x->word_0x26_38;
 			//LOBYTE(v1) = 118;
 			a1x->state_0x45_69 = 118;
@@ -15110,7 +15110,7 @@ void sub_237B0(type_entity_0x6E8E* a1x)//2047b0
 	v7 = a1x->word_0x96_150;
 	if (v7)
 	{
-		v13x = x_DWORD_EA3E4[v7];
+		v13x = Entities_EA3E4[v7];
 		if (v13x->class_0x3F_63 == 10 && v13x->model_0x40_64 == 45)
 		{
 			if (sub_583F0_distance_3d(&a1x->axis_0x4C_76, &v13x->axis_0x4C_76) > 0x800)
@@ -15145,7 +15145,7 @@ void sub_237B0(type_entity_0x6E8E* a1x)//2047b0
 		v9 = -1;
 		v1x = x_D41A0_BYTEARRAY_4_struct.dword_38527;
 		v10x = 0;
-		while (v1x > x_DWORD_EA3E4[0])
+		while (v1x > Entities_EA3E4[0])
 		{			
 			if (str_D93C0_bldgprmbuffer[v1x->byte_0x46_70].byte_2 & 1)
 			{
@@ -15180,7 +15180,7 @@ LABEL_44:
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00023AC0) --------------------------------------------------------
 void sub_23AC0(type_entity_0x6E8E* a1x)//204ac0
@@ -15213,12 +15213,12 @@ void sub_23B30(type_entity_0x6E8E* a1x)//204b30
 {
 	type_entity_0x6E8E* v1x; // edx
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x24_36];
-	if (v1x > x_DWORD_EA3E4[0] && (!v1x->model_0x40_64 || v1x->model_0x40_64 == 1))
-		x_DWORD_EA3E4[a1x->word_0x24_36]->dword_0xA4_164x->word_0x248_584 = 200;
+	v1x = Entities_EA3E4[a1x->word_0x24_36];
+	if (v1x > Entities_EA3E4[0] && (!v1x->model_0x40_64 || v1x->model_0x40_64 == 1))
+		Entities_EA3E4[a1x->word_0x24_36]->dword_0xA4_164x->word_0x248_584 = 200;
 	sub_1C930(a1x);
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00023B90) --------------------------------------------------------
 void sub_23B90(type_entity_0x6E8E* a1x)//204b90
@@ -15295,8 +15295,8 @@ void sub_23C40(type_entity_0x6E8E* a1x)//204c40
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -15328,7 +15328,7 @@ void sub_23C40(type_entity_0x6E8E* a1x)//204c40
 					v18x = 0;
 					v10x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
 					v17 = v9;
-					while (v10x > x_DWORD_EA3E4[0])
+					while (v10x > Entities_EA3E4[0])
 					{
 						if (v10x->id_0x1A_26 != a1x->id_0x1A_26)
 						{
@@ -15361,7 +15361,7 @@ void sub_23C40(type_entity_0x6E8E* a1x)//204c40
 	}
 	else if (v1 <= 1)
 	{
-		v6x = x_DWORD_EA3E4[a1x->word_0x26_38];
+		v6x = Entities_EA3E4[a1x->word_0x26_38];
 		if (v6x->class_0x3F_63 == 3 && v6x->id_0x1A_26 != a1x->id_0x1A_26)
 		{
 			v7 = a1x->word_0x26_38;
@@ -15379,7 +15379,7 @@ void sub_23C40(type_entity_0x6E8E* a1x)//204c40
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00023E60) --------------------------------------------------------
 void sub_23E60(type_entity_0x6E8E* a1x)//204e60
@@ -15414,8 +15414,8 @@ void sub_23E60(type_entity_0x6E8E* a1x)//204e60
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -15434,7 +15434,7 @@ void sub_23E60(type_entity_0x6E8E* a1x)//204e60
 	}
 	if (v1 <= 1)
 	{
-		v6x = x_DWORD_EA3E4[a1x->word_0x96_150];
+		v6x = Entities_EA3E4[a1x->word_0x96_150];
 		if (!(a1x->byte_0x3E_62 & 3))
 			a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v6x->axis_0x4C_76);
 		if (v6x->life_0x8 < 0 || v6x->struct_byte_0xc_12_15.byte[1] & 4)
@@ -15477,7 +15477,7 @@ LABEL_26:
 	if (a1x->state_0x45_69 != 122)
 		sub_24150(a1x);
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000240A0) --------------------------------------------------------
 void sub_240A0(type_entity_0x6E8E* a1x)//2050a0
@@ -15600,7 +15600,7 @@ void sub_24190(type_entity_0x6E8E* a1x)//205190
 		}
 	}
 	//v13 = 0;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (ix->id_0x1A_26 != a1x->id_0x1A_26
 			&& abs(a1x->axis_0x4C_76.x - ix->axis_0x4C_76.x) < 256
@@ -15621,7 +15621,7 @@ void sub_24190(type_entity_0x6E8E* a1x)//205190
 	sub_1EEE0(a1x);
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 
@@ -15662,7 +15662,7 @@ void sub_24440(type_entity_0x6E8E* a1x)//205440
 		{
 			v8 = a1x->dword_0xA0_160x->word_160_0x1c_28 * a1x->dword_0xA0_160x->word_160_0x1c_28;
 			v3 = -1;
-			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38527; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38527; ix > Entities_EA3E4[0]; ix = ix->next_0)
 			{
 				v5 = (signed __int16)(ix->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 				v6 = v5 * v5
@@ -15685,7 +15685,7 @@ void sub_24440(type_entity_0x6E8E* a1x)//205440
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00024510) --------------------------------------------------------
 void sub_24510(type_entity_0x6E8E* a1x)//205510
@@ -15725,8 +15725,8 @@ void sub_24510(type_entity_0x6E8E* a1x)//205510
 	{
 		for (iy = a1x->word_0x34_52; ; iy = v4x->word_0x34_52)
 		{
-			v4x = x_DWORD_EA3E4[iy];
-			if (v4x == x_DWORD_EA3E4[0])
+			v4x = Entities_EA3E4[iy];
+			if (v4x == Entities_EA3E4[0])
 				break;
 			iy = v4x->life_0x8;
 			if ((signed int)iy < a1x->life_0x8)
@@ -15750,9 +15750,9 @@ void sub_24510(type_entity_0x6E8E* a1x)//205510
 		if (!v3)
 		{
 			sub_1B8C0(a1x);
-			iz = sub_1ED30(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]);
+			iz = sub_1ED30(a1x, Entities_EA3E4[a1x->word_0x96_150]);
 			v5x = iz;
-			if (iz > x_DWORD_EA3E4[0])
+			if (iz > Entities_EA3E4[0])
 			{
 				if (!(a1x->byte_0x3E_62 & 7))
 				{
@@ -15832,7 +15832,7 @@ void sub_24510(type_entity_0x6E8E* a1x)//205510
 	//return iy;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000247D0) --------------------------------------------------------
 void sub_247D0(type_entity_0x6E8E* a1x)//2057d0
@@ -15868,14 +15868,14 @@ void sub_24860(type_entity_0x6E8E* a1x)//205860
 	//BYTE1(result) = *(x_BYTE *)(a1 + 69);
 	if (a1x->state_0x45_69 == 138)
 	{
-		resultx = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (resultx <= x_DWORD_EA3E4[0] || resultx->class_0x3F_63 != 3 || (v2 = resultx->model_0x40_64) != 0 && v2 != 1)
+		resultx = Entities_EA3E4[a1x->word_0x96_150];
+		if (resultx <= Entities_EA3E4[0] || resultx->class_0x3F_63 != 3 || (v2 = resultx->model_0x40_64) != 0 && v2 != 1)
 			a1x->word_0x96_150 = 0;
 		a1x->byte_0x46_70 = 0;
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000248C0) --------------------------------------------------------
 void sub_248C0(type_entity_0x6E8E* a1x)//2058c0
@@ -15886,13 +15886,13 @@ void sub_248C0(type_entity_0x6E8E* a1x)//2058c0
 	sub_1BF90(a1x, 136);
 	if (a1x->state_0x45_69 == 138)
 	{
-		v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (v1x <= x_DWORD_EA3E4[0] || v1x->class_0x3F_63 != 3 || (v2 = v1x->model_0x40_64) != 0 && v2 != 1)
+		v1x = Entities_EA3E4[a1x->word_0x96_150];
+		if (v1x <= Entities_EA3E4[0] || v1x->class_0x3F_63 != 3 || (v2 = v1x->model_0x40_64) != 0 && v2 != 1)
 			a1x->word_0x96_150 = 0;
 		a1x->byte_0x46_70 = 0;
 	}
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00024930) --------------------------------------------------------
 void sub_24930(type_entity_0x6E8E* a1x)//205930
@@ -15928,9 +15928,9 @@ void sub_24930(type_entity_0x6E8E* a1x)//205930
 	}
 	if (a1x->word_0x34_52)
 	{
-		for (ix = x_DWORD_EA3E4[a1x->word_0x34_52];
-			ix != x_DWORD_EA3E4[0];
-			ix = x_DWORD_EA3E4[ix->word_0x34_52])
+		for (ix = Entities_EA3E4[a1x->word_0x34_52];
+			ix != Entities_EA3E4[0];
+			ix = Entities_EA3E4[ix->word_0x34_52])
 		{
 			v4 = ix->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -15963,9 +15963,9 @@ void sub_24930(type_entity_0x6E8E* a1x)//205930
 		a1x->word_0x96_150 = a1x->word_0x26_38;
 	}
 	v13 = sub_1B8C0(a1x);
-	v5x = sub_1ED30(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]);
+	v5x = sub_1ED30(a1x, Entities_EA3E4[a1x->word_0x96_150]);
 	v15x = v5x;
-	if (v5x <= x_DWORD_EA3E4[0] || v5x->life_0x8 < 0 || v5x->struct_byte_0xc_12_15.byte[1] & 4)
+	if (v5x <= Entities_EA3E4[0] || v5x->life_0x8 < 0 || v5x->struct_byte_0xc_12_15.byte[1] & 4)
 	{
 		a1x->dword_0xA0_160x = &str_D7BD6[85]; //(type_str_160*)&unk_D7BD6[0xb4a];
 		a1x->word_0x96_150 = 0;
@@ -15981,7 +15981,7 @@ void sub_24930(type_entity_0x6E8E* a1x)//205930
 			if (!v6 || v6 == 4)
 			{
 				a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v15x->axis_0x4C_76);
-				for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+				for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 				{
 					if (jx->id_0x1A_26 != a1x->id_0x1A_26
 						&& abs(a1x->axis_0x4C_76.x - jx->axis_0x4C_76.x) < a1x->array_0x52_82.pitch
@@ -16097,7 +16097,7 @@ void sub_24930(type_entity_0x6E8E* a1x)//205930
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -16110,14 +16110,14 @@ void sub_24D40(type_entity_0x6E8E* a1x)//205d40
 	/*LOBYTE(v1x) = */sub_1C560(a1x, 0x88u);
 	if (a1x->state_0x45_69 == 138)
 	{
-		//v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (x_DWORD_EA3E4[a1x->word_0x96_150] <= x_DWORD_EA3E4[0] || x_DWORD_EA3E4[a1x->word_0x96_150]->class_0x3F_63 != 3 /*|| (v2 = v1x->byte_0x40_64) != 0*/ && x_DWORD_EA3E4[a1x->word_0x96_150]->model_0x40_64 != 1)
+		//v1x = Entities_EA3E4[a1x->word_0x96_150];
+		if (Entities_EA3E4[a1x->word_0x96_150] <= Entities_EA3E4[0] || Entities_EA3E4[a1x->word_0x96_150]->class_0x3F_63 != 3 /*|| (v2 = v1x->byte_0x40_64) != 0*/ && Entities_EA3E4[a1x->word_0x96_150]->model_0x40_64 != 1)
 			a1x->word_0x96_150 = 0;
 		a1x->byte_0x46_70 = 0;
 	}
 	//return v1x;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00024DA0) --------------------------------------------------------
 void sub_24DA0(type_entity_0x6E8E* a1x)//205da0
@@ -16170,7 +16170,7 @@ void sub_24E20(type_entity_0x6E8E* a1x)//205e20
 		{
 			if ((x_BYTE)result == 1 && a1x->word_0x96_150)
 			{
-				v10x = x_DWORD_EA3E4[a1x->word_0x96_150];
+				v10x = Entities_EA3E4[a1x->word_0x96_150];
 				v11 = Maths::sub_58490_radix_3d_2(&a1x->axis_0x4C_76, &v10x->axis_0x4C_76);
 				if (v11 < a1x->dword_0xA0_160x->word_160_0x1c_28)
 				{
@@ -16205,7 +16205,7 @@ void sub_24E20(type_entity_0x6E8E* a1x)//205e20
 						v4x = 0;
 						v5x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
 						v12 = result;
-						while (v5x > x_DWORD_EA3E4[0])
+						while (v5x > Entities_EA3E4[0])
 						{
 							v6 = (signed __int16)(v5x->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 							result = (signed __int16)(v5x->axis_0x4C_76.y - a1x->axis_0x4C_76.y)
@@ -16248,7 +16248,7 @@ void sub_24E20(type_entity_0x6E8E* a1x)//205e20
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00025050) --------------------------------------------------------
 void sub_25050(type_entity_0x6E8E* a1x)//206050
@@ -16294,7 +16294,7 @@ void sub_250B0(type_entity_0x6E8E* a1x)//2060b0
 		switch ((x_BYTE)v1)
 		{
 		case 0:
-			/*v1 = */sub_254E0(a1x, x_DWORD_EA3E4[a1x->word_0x96_150], 4u);
+			/*v1 = */sub_254E0(a1x, Entities_EA3E4[a1x->word_0x96_150], 4u);
 			if (v2 == 1)
 			{
 				v3 = a1x->dword_0x10_16 - 47;
@@ -16327,9 +16327,9 @@ void sub_250B0(type_entity_0x6E8E* a1x)//2060b0
 			//LOWORD(v1) = a1x->byte_0x3E_62 / *(x_WORD *)(a1x->dword_0xA0_160 + 26);
 			if (!(a1x->byte_0x3E_62 % a1x->dword_0xA0_160x->word_160_0x1a_26))
 			{
-				v5x = sub_1ED30(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]);
+				v5x = sub_1ED30(a1x, Entities_EA3E4[a1x->word_0x96_150]);
 				v6x = v5x;
-				if (v5x <= x_DWORD_EA3E4[0] || v5x->life_0x8 < 0 || v5x->struct_byte_0xc_12_15.byte[1] & 4)
+				if (v5x <= Entities_EA3E4[0] || v5x->life_0x8 < 0 || v5x->struct_byte_0xc_12_15.byte[1] & 4)
 				{
 				LABEL_17:
 					/*LOWORD(v1) = */sub_253B0(/*v5x, */a1x, 2u, 2u);
@@ -16370,7 +16370,7 @@ void sub_250B0(type_entity_0x6E8E* a1x)//2060b0
 	}
 	//return v1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00025280) --------------------------------------------------------
 void sub_25280(/*int a1, */type_entity_0x6E8E* a2x)//206280
@@ -16421,8 +16421,8 @@ unsigned int sub_252E0(type_entity_0x6E8E* a1x)//2062e0
 	{
 		for (i = a1x->word_0x34_52; ; i = v7x->word_0x34_52)
 		{
-			v7x = x_DWORD_EA3E4[i];
-			if (v7x == x_DWORD_EA3E4[0])
+			v7x = Entities_EA3E4[i];
+			if (v7x == Entities_EA3E4[0])
 				break;
 			v6 = v7x->life_0x8;
 			if (v6 < a1x->life_0x8)
@@ -16452,7 +16452,7 @@ unsigned int sub_252E0(type_entity_0x6E8E* a1x)//2062e0
 	}
 	return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000253B0) --------------------------------------------------------
 void sub_253B0(/*int result, */type_entity_0x6E8E* a2x, unsigned __int8 a3, unsigned __int8 a4)//2063b0
@@ -16634,8 +16634,8 @@ void HitFirebug_25610(type_entity_0x6E8E* a1x)//206610
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -16657,9 +16657,9 @@ void HitFirebug_25610(type_entity_0x6E8E* a1x)//206610
 		if (!v1)
 		{
 			sub_1B8C0(a1x);
-			v7x = sub_1ED30(a1x, x_DWORD_EA3E4[a1x->word_0x96_150]);
+			v7x = sub_1ED30(a1x, Entities_EA3E4[a1x->word_0x96_150]);
 			v34x = v7x;
-			if (v7x <= x_DWORD_EA3E4[0] || v7x->life_0x8 < 0 || v7x->struct_byte_0xc_12_15.byte[1] & 4)
+			if (v7x <= Entities_EA3E4[0] || v7x->life_0x8 < 0 || v7x->struct_byte_0xc_12_15.byte[1] & 4)
 			{
 			LABEL_92:
 				v33 = a1x->minSpeed_0x84_132;
@@ -16695,7 +16695,7 @@ void HitFirebug_25610(type_entity_0x6E8E* a1x)//206610
 						a1x->word_0x20_32 = v9;
 						if (v10 & 3)
 							return;
-						for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+						for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 						{
 							if (jx->id_0x1A_26 != a1x->id_0x1A_26
 								&& abs(a1x->axis_0x4C_76.x - jx->axis_0x4C_76.x) < a1x->array_0x52_82.pitch
@@ -16724,7 +16724,7 @@ void HitFirebug_25610(type_entity_0x6E8E* a1x)//206610
 					v15x = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64];
 					while (2)
 					{
-						if (v15x > x_DWORD_EA3E4[0])
+						if (v15x > Entities_EA3E4[0])
 						{
 							if (v15x->id_0x1A_26 == a1x->id_0x1A_26
 								|| abs(a1x->axis_0x4C_76.x - v15x->axis_0x4C_76.x) >= a1x->array_0x52_82.pitch
@@ -16779,7 +16779,7 @@ void HitFirebug_25610(type_entity_0x6E8E* a1x)//206610
 					v30x = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64];
 					while (2)
 					{
-						if (v30x > x_DWORD_EA3E4[0])
+						if (v30x > Entities_EA3E4[0])
 						{
 							if (v30x->id_0x1A_26 == a1x->id_0x1A_26
 								|| abs(a1x->axis_0x4C_76.x - v30x->axis_0x4C_76.x) >= a1x->array_0x52_82.pitch
@@ -16829,7 +16829,7 @@ void HitFirebug_25610(type_entity_0x6E8E* a1x)//206610
 				default:
 					return;
 				}
-				while (v22x > x_DWORD_EA3E4[0])
+				while (v22x > Entities_EA3E4[0])
 				{
 					if (v22x->id_0x1A_26 != a1x->id_0x1A_26
 						&& abs(a1x->axis_0x4C_76.x - v22x->axis_0x4C_76.x) < a1x->array_0x52_82.pitch
@@ -16877,7 +16877,7 @@ void HitFirebug_25610(type_entity_0x6E8E* a1x)//206610
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (00025CD0) --------------------------------------------------------
@@ -16921,14 +16921,14 @@ void sub_25D80(type_entity_0x6E8E* a1x)//206d80
 	//BYTE1(result) = *(x_BYTE *)(a1 + 69);
 	if (a1x->state_0x45_69 == 162)
 	{
-		resultx = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (resultx <= x_DWORD_EA3E4[0] || resultx->class_0x3F_63 != 3 || (v2 = resultx->model_0x40_64) != 0 && v2 != 1)
+		resultx = Entities_EA3E4[a1x->word_0x96_150];
+		if (resultx <= Entities_EA3E4[0] || resultx->class_0x3F_63 != 3 || (v2 = resultx->model_0x40_64) != 0 && v2 != 1)
 			a1x->word_0x96_150 = 0;
 		a1x->byte_0x46_70 = 0;
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00025DE0) --------------------------------------------------------
 void sub_25DE0(type_entity_0x6E8E* a1x)//206de0
@@ -16939,13 +16939,13 @@ void sub_25DE0(type_entity_0x6E8E* a1x)//206de0
 	sub_1BF90(a1x, 160);
 	if (a1x->state_0x45_69 == 162)
 	{
-		v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (v1x <= x_DWORD_EA3E4[0] || v1x->class_0x3F_63 != 3 || (v2 = v1x->model_0x40_64) != 0 && v2 != 1)
+		v1x = Entities_EA3E4[a1x->word_0x96_150];
+		if (v1x <= Entities_EA3E4[0] || v1x->class_0x3F_63 != 3 || (v2 = v1x->model_0x40_64) != 0 && v2 != 1)
 			a1x->word_0x96_150 = 0;
 		a1x->byte_0x46_70 = 0;
 	}
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00025E40) --------------------------------------------------------
 void sub_25E40(type_entity_0x6E8E* a1x)//206e40
@@ -16959,9 +16959,9 @@ void sub_25E40(type_entity_0x6E8E* a1x)//206e40
 	//__int16 v7; // ax
 	char v8; // [esp+0h] [ebp-4h]
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v8 = 0;
-	if (v1x <= x_DWORD_EA3E4[0])
+	if (v1x <= Entities_EA3E4[0])
 	{
 		a1x->state_0x45_69 = 161;
 		goto LABEL_21;
@@ -17012,7 +17012,7 @@ LABEL_21:
 		a1x->actSpeed_0x82_130 = a1x->minSpeed_0x84_132;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00025F70) --------------------------------------------------------
 void sub_25F70(type_entity_0x6E8E* a1x)//206f70
@@ -17023,14 +17023,14 @@ void sub_25F70(type_entity_0x6E8E* a1x)//206f70
 	/*LOBYTE(v1) = */sub_1C560(a1x, 0xA0u);
 	if (a1x->state_0x45_69 == 162)
 	{
-		v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (v1x <= x_DWORD_EA3E4[0] || v1x->class_0x3F_63 != 3 || (v2 = v1x->model_0x40_64) != 0 && v2 != 1)
+		v1x = Entities_EA3E4[a1x->word_0x96_150];
+		if (v1x <= Entities_EA3E4[0] || v1x->class_0x3F_63 != 3 || (v2 = v1x->model_0x40_64) != 0 && v2 != 1)
 			a1x->word_0x96_150 = 0;
 		a1x->byte_0x46_70 = 0;
 	}
 	//return v1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00025FD0) --------------------------------------------------------
 void sub_25FD0(type_entity_0x6E8E* a1x)//206fd0
@@ -17099,7 +17099,7 @@ char sub_26070(type_entity_0x6E8E* a1x)//207070
 			v13 = -1;
 			v5x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
 			v12 = v1;
-			while (v5x > x_DWORD_EA3E4[0])
+			while (v5x > Entities_EA3E4[0])
 			{
 				v6 = (signed __int16)(v5x->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 				v7 = v6 * v6;
@@ -17134,7 +17134,7 @@ char sub_26070(type_entity_0x6E8E* a1x)//207070
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00026220) --------------------------------------------------------
 void sub_26220(/*type_entity_0x6E8E* a1x, */type_entity_0x6E8E* a2x)//207220
@@ -17157,9 +17157,9 @@ void sub_26220(/*type_entity_0x6E8E* a1x, */type_entity_0x6E8E* a2x)//207220
 		v3 = a2x->word_0x96_150;
 		if (v3)
 		{
-			v4x = sub_1ED30(a2x, x_DWORD_EA3E4[v3]);
+			v4x = sub_1ED30(a2x, Entities_EA3E4[v3]);
 			//a1x = v4x;
-			if (v4x <= x_DWORD_EA3E4[0] || v4x->life_0x8 < 0 || v4x->struct_byte_0xc_12_15.byte[1] & 4)
+			if (v4x <= Entities_EA3E4[0] || v4x->life_0x8 < 0 || v4x->struct_byte_0xc_12_15.byte[1] & 4)
 				v7 = 0;
 		}
 		else
@@ -17173,7 +17173,7 @@ void sub_26220(/*type_entity_0x6E8E* a1x, */type_entity_0x6E8E* a2x)//207220
 			a2x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a2x->axis_0x4C_76, &v4x->axis_0x4C_76);
 			if (!(a2x->byte_0x3E_62 & 3))
 			{
-				for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a2x->model_0x40_64]; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+				for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a2x->model_0x40_64]; ix > Entities_EA3E4[0]; ix = ix->next_0)
 				{
 					if (ix->id_0x1A_26 != a2x->id_0x1A_26
 						&& abs(a2x->axis_0x4C_76.x - ix->axis_0x4C_76.x) < a2x->array_0x52_82.pitch
@@ -17202,7 +17202,7 @@ void sub_26220(/*type_entity_0x6E8E* a1x, */type_entity_0x6E8E* a2x)//207220
 	//return result;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000263C0) --------------------------------------------------------
 type_entity_0x6E8E* sub_263C0(type_entity_0x6E8E* a1x)//2073c0
@@ -17475,8 +17475,8 @@ signed int sub_26830(type_entity_0x6E8E* a1x)//207830
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -17508,7 +17508,7 @@ signed int sub_26830(type_entity_0x6E8E* a1x)//207830
 	}
 	return v2;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000268F0) --------------------------------------------------------
 type_entity_0x6E8E* sub_268F0(type_entity_0x6E8E* a1x, unsigned __int8 a2)//2078f0
@@ -17634,7 +17634,7 @@ void sub_26AA0(type_entity_0x6E8E* a1x)//207aa0
 			goto LABEL_17;
 		if (a1x->actSpeed_0x82_130 > a1x->maxSpeed_0x86_134)
 			goto LABEL_13;
-		v2x = x_DWORD_EA3E4[v1];
+		v2x = Entities_EA3E4[v1];
 		if (v2x->class_0x3F_63 != 3)
 			goto LABEL_17;
 		if (v2x->life_0x8 < 0)
@@ -17644,7 +17644,7 @@ void sub_26AA0(type_entity_0x6E8E* a1x)//207aa0
 		v3 = v2x->dword_0xA4_164x->word_0x3A_58;
 		if (!v3)
 			goto LABEL_17;
-		v4x = x_DWORD_EA3E4[v3];
+		v4x = Entities_EA3E4[v3];
 		v5 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v4x->axis_0x4C_76);
 		v6 = a1x->byte_0x3E_62;
 		a1x->word_0x20_32 = v5;
@@ -17669,7 +17669,7 @@ void sub_26AA0(type_entity_0x6E8E* a1x)//207aa0
 		}
 	}
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00026BD0) --------------------------------------------------------
 void sub_26BD0(type_entity_0x6E8E* a1x)//207bd0
@@ -17697,13 +17697,13 @@ void sub_26BD0(type_entity_0x6E8E* a1x)//207bd0
 		}
 		else
 		{
-			v3x = x_DWORD_EA3E4[a1x->word_0x94_148];
+			v3x = Entities_EA3E4[a1x->word_0x94_148];
 			if (v3x->class_0x3F_63 == 3 && v3x->life_0x8 >= 0 && !(v3x->struct_byte_0xc_12_15.byte[1] & 4))
 			{
 				v4 = v3x->dword_0xA4_164x->word_0x3A_58;
 				if (v4)
 				{
-					v5x = x_DWORD_EA3E4[v4];
+					v5x = Entities_EA3E4[v4];
 					v6 = v5x->maxMana_0x8C_140;
 					v7 = a1x->mana_0x90_144 + v5x->mana_0x90_144;
 					if (v7 >= v6)
@@ -17716,7 +17716,7 @@ void sub_26BD0(type_entity_0x6E8E* a1x)//207bd0
 		}
 	}
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00026CA0) --------------------------------------------------------
 void sub_26CA0(type_entity_0x6E8E* a1x)//207ca0
@@ -17733,8 +17733,8 @@ void sub_26CC0(type_entity_0x6E8E* a1x)//207cc0
 
 	for (i = a1x->word_0x34_52; ; i = v2x->word_0x34_52)
 	{
-		v2x = x_DWORD_EA3E4[i];
-		if (v2x == x_DWORD_EA3E4[0])
+		v2x = Entities_EA3E4[i];
+		if (v2x == Entities_EA3E4[0])
 			break;
 		sub_36BA0(v2x, 0);
 		SetEntity04_57F10(v2x);
@@ -17743,7 +17743,7 @@ void sub_26CC0(type_entity_0x6E8E* a1x)//207cc0
 	SetEntity04_57F10(a1x);
 	//return 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00026D20) --------------------------------------------------------
 void sub_26D20(type_entity_0x6E8E* a1x)//207d20
@@ -17763,7 +17763,7 @@ void sub_26D20(type_entity_0x6E8E* a1x)//207d20
 
 	if (a1x->byte_0x39_57)
 	{
-		v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+		v1x = Entities_EA3E4[a1x->word_0x96_150];
 		v2 = v1x->state_0x45_69;
 		if (v2 >= 0xB0u && (v2 <= 0xB0u || v2 == 178))
 		{
@@ -17771,7 +17771,7 @@ void sub_26D20(type_entity_0x6E8E* a1x)//207d20
 			{
 				v1x->actSpeed_0x82_130 = ((v1x->minSpeed_0x84_132 - v1x->maxSpeed_0x86_134) >> 2)
 					+ v1x->maxSpeed_0x86_134;
-				v3 = Maths::sub_581E0_maybe_tan2(&x_DWORD_EA3E4[a1x->str_0x5E_94.word_0x62_98]->axis_0x4C_76, &a1x->axis_0x4C_76);
+				v3 = Maths::sub_581E0_maybe_tan2(&Entities_EA3E4[a1x->str_0x5E_94.word_0x62_98]->axis_0x4C_76, &a1x->axis_0x4C_76);
 				v1x->word_0x1C_28 = v3;
 				v1x->word_0x20_32 = v3;
 				v4 = 56 * abs(a1x->byte_0x46_70) / (v1x->byte_0x46_70 >> 1);
@@ -17796,8 +17796,8 @@ void sub_26D20(type_entity_0x6E8E* a1x)//207d20
 				v1x->word_0x2C_44 = v5;
 				while (1)
 				{
-					v7x = x_DWORD_EA3E4[v6];
-					if (v7x == x_DWORD_EA3E4[0])
+					v7x = Entities_EA3E4[v6];
+					if (v7x == Entities_EA3E4[0])
 						break;
 					v7x->str_0x5E_94.word_0x62_98 = 0;
 					v6 = v7x->word_0x34_52;
@@ -17828,8 +17828,8 @@ void sub_26D20(type_entity_0x6E8E* a1x)//207d20
 				}
 				for (i = v1x->word_0x34_52; ; i = v12x->word_0x34_52)
 				{
-					v12x = x_DWORD_EA3E4[i];
-					if (v12x == x_DWORD_EA3E4[0])
+					v12x = Entities_EA3E4[i];
+					if (v12x == Entities_EA3E4[0])
 						break;
 					v12x->str_0x5E_94.word_0x68_104 = 0;
 				}
@@ -17838,7 +17838,7 @@ void sub_26D20(type_entity_0x6E8E* a1x)//207d20
 	}
 	//return 0;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00026F10) --------------------------------------------------------
 void sub_26F10(type_entity_0x6E8E* a1x)//207f10
@@ -17862,7 +17862,7 @@ void sub_26F10(type_entity_0x6E8E* a1x)//207f10
 			v3 = a1x->minSpeed_0x84_132;
 			if (a1x->actSpeed_0x82_130 > v3)
 				a1x->actSpeed_0x82_130 = v3;
-			v4 = Maths::sub_581E0_maybe_tan2(&x_DWORD_EA3E4[a1x->str_0x5E_94.word_0x62_98]->axis_0x4C_76, &a1x->axis_0x4C_76);
+			v4 = Maths::sub_581E0_maybe_tan2(&Entities_EA3E4[a1x->str_0x5E_94.word_0x62_98]->axis_0x4C_76, &a1x->axis_0x4C_76);
 			a1x->str_0x5E_94.word_0x62_98 = 0;
 			a1x->word_0x1C_28 = v4;
 			a1x->word_0x20_32 = v4;
@@ -17885,7 +17885,7 @@ void sub_26F10(type_entity_0x6E8E* a1x)//207f10
 		a1x->state_0x45_69 = 181;
 	//return 0;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00026FF0) --------------------------------------------------------
 void sub_26FF0(type_entity_0x6E8E* a1x)//207ff0
@@ -17914,7 +17914,7 @@ void sub_26FF0(type_entity_0x6E8E* a1x)//207ff0
 	v11x = a1x;
 	v12 = 0;
 	SetEntityShiftRot_49EA0(a1x, v3, v2);
-	while (v11x != x_DWORD_EA3E4[0])
+	while (v11x != Entities_EA3E4[0])
 	{
 		v4 = getTerrainAlt_10C40(&v11x->axis_0x4C_76);
 		if ((signed __int16)v4 > (signed __int16)v12)
@@ -17922,7 +17922,7 @@ void sub_26FF0(type_entity_0x6E8E* a1x)//207ff0
 			v12 = v4;
 			v9x = v11x->axis_0x4C_76;
 		}
-		v11x = x_DWORD_EA3E4[v11x->word_0x34_52];
+		v11x = Entities_EA3E4[v11x->word_0x34_52];
 	}
 	v12 += 384;
 	v5x = a1x->axis_0x4C_76.z;
@@ -17951,7 +17951,7 @@ void sub_26FF0(type_entity_0x6E8E* a1x)//207ff0
 	}
 	//return v5;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00027120) --------------------------------------------------------
 void sub_27120(type_entity_0x6E8E* a1x)//208120
@@ -17964,7 +17964,7 @@ void sub_27120(type_entity_0x6E8E* a1x)//208120
 	v1 = 2 * a1x->array_0x52_82.fov + 32;
 	v2 = 2 * a1x->array_0x52_82.pitch;
 	v3x = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64];
-	if (v3x <= x_DWORD_EA3E4[0])
+	if (v3x <= Entities_EA3E4[0])
 		return;
 	do
 	{
@@ -17978,10 +17978,10 @@ void sub_27120(type_entity_0x6E8E* a1x)//208120
 				a1x->axis_0x4C_76.z = v5 + 64;
 		}
 		v3x = v3x->next_0;
-	} while (v3x > x_DWORD_EA3E4[0]);
+	} while (v3x > Entities_EA3E4[0]);
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000271D0) --------------------------------------------------------
 void sub_271D0(type_entity_0x6E8E* a1x)//2081d0
@@ -17996,16 +17996,16 @@ void sub_271D0(type_entity_0x6E8E* a1x)//2081d0
 	//result = a1;
 	if (a1x->word_0x96_150)
 	{
-		v2x = x_DWORD_EA3E4[a1x->word_0x96_150];
+		v2x = Entities_EA3E4[a1x->word_0x96_150];
 		v3 = v2x->word_0x2A_42;
 		v4 = (v3 + sub_273C0(v2x->byte_0x5C_92, v2x->word_0x36_54, a1x->byte_0x46_70, v2x->byte_0x46_70)) & 0x7FF;
 		a1x->word_0x2C_44 = v4;
-		v5x = x_DWORD_EA3E4[a1x->word_0x32_50];
+		v5x = Entities_EA3E4[a1x->word_0x32_50];
 		if (v5x)
 		{
 			v6 = v5x->word_0x32_50;
 			if (v6)
-				v5x = x_DWORD_EA3E4[v6];
+				v5x = Entities_EA3E4[v6];
 		}
 		x_WORD_EB398ar = v5x->axis_0x4C_76;
 		MovePlayer_57FA0(&x_WORD_EB398ar, v4, 0, a1x->array_0x52_82.pitch + v5x->array_0x52_82.pitch);
@@ -18014,7 +18014,7 @@ void sub_271D0(type_entity_0x6E8E* a1x)//2081d0
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -18131,8 +18131,8 @@ type_entity_0x6E8E* sub_27470(type_entity_0x6E8E* a1x, __int16 a2)//208470
 	{
 		while (1)
 		{
-			resultx = x_DWORD_EA3E4[resultx->word_0x34_52];
-			if (resultx == x_DWORD_EA3E4[0])
+			resultx = Entities_EA3E4[resultx->word_0x34_52];
+			if (resultx == Entities_EA3E4[0])
 				break;
 			if (resultx->byte_0x46_70 == a2)
 				return resultx;
@@ -18141,7 +18141,7 @@ type_entity_0x6E8E* sub_27470(type_entity_0x6E8E* a1x, __int16 a2)//208470
 	}
 	return resultx;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000274C0) --------------------------------------------------------
 void sub_274C0(type_entity_0x6E8E* event1, type_entity_0x6E8E* event2, type_entity_0x6E8E* event3, int16_t a4)//2084c0
@@ -18181,15 +18181,15 @@ void sub_27590(/*signed int a1, */type_entity_0x6E8E* a2x)//208590
 	sub_49D50(a2x, v4);
 	for (result = a2x->word_0x34_52; ; result = v7x->word_0x34_52)
 	{
-		v7x = x_DWORD_EA3E4[result];
-		if (v7x == x_DWORD_EA3E4[0])
+		v7x = Entities_EA3E4[result];
+		if (v7x == Entities_EA3E4[0])
 			break;
 		v6 = sub_278F0(v3, a2x->byte_0x46_70, v7x->byte_0x46_70);
 		sub_49D50(v7x, v6);
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00027610) --------------------------------------------------------
 void sub_27610(/*signed int a1, */type_entity_0x6E8E* a2x)//208610
@@ -18206,8 +18206,8 @@ void sub_27610(/*signed int a1, */type_entity_0x6E8E* a2x)//208610
 	SetEntityShiftRot_49EA0(a2x, v3 / 1000, v3 / 1000);
 	for (result = a2x->word_0x34_52; ; result = v6x->word_0x34_52)
 	{
-		v6x = x_DWORD_EA3E4[result];
-		if (v6x == x_DWORD_EA3E4[0])
+		v6x = Entities_EA3E4[result];
+		if (v6x == Entities_EA3E4[0])
 			break;
 		//v5 = 550 * (unsigned __int16)x_WORD_D951C[4 + 7 * (signed __int16)sub_278F0(v2, a2x->byte_0x46_70, v6x->byte_0x46_70)];
 		v5 = 550 * str_WORD_D951C[(signed __int16)sub_278F0(v2, a2x->byte_0x46_70, v6x->byte_0x46_70)].rotSpeed_8;
@@ -18216,7 +18216,7 @@ void sub_27610(/*signed int a1, */type_entity_0x6E8E* a2x)//208610
 	//return result;
 }
 // D9524: using guessed type __int16 x_WORD_D9524[];
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000276E0) --------------------------------------------------------
 void sub_276E0(type_entity_0x6E8E* a1x)//2086e0
@@ -18228,14 +18228,14 @@ void sub_276E0(type_entity_0x6E8E* a1x)//2086e0
 	//result = a1;
 	for (i = a1x->word_0x34_52; ; i = v3x->word_0x34_52)
 	{
-		v3x = x_DWORD_EA3E4[i];
-		if (v3x == x_DWORD_EA3E4[0])
+		v3x = Entities_EA3E4[i];
+		if (v3x == Entities_EA3E4[0])
 			break;
 		/*result = */sub_271D0(v3x);
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00027720) --------------------------------------------------------
 void sub_27720(type_entity_0x6E8E* a1x, signed __int16 a2)//208720
@@ -18255,7 +18255,7 @@ void sub_27720(type_entity_0x6E8E* a1x, signed __int16 a2)//208720
 	v11 = 0;
 	if (a2 >= 1 && a2 <= 15 && a1x->byte_0x46_70 != a2)
 	{
-		for (ix = a1x; ; ix = x_DWORD_EA3E4[ix->word_0x34_52])
+		for (ix = a1x; ; ix = Entities_EA3E4[ix->word_0x34_52])
 		{
 			v3 = ix->word_0x34_52;
 			if (!v3)
@@ -18266,11 +18266,11 @@ void sub_27720(type_entity_0x6E8E* a1x, signed __int16 a2)//208720
 			//v10 = (a1x->byte_0x46_70 - a2) / 2;
 			while (v3 < (a1x->byte_0x46_70 - a2) / 2)
 			{
-				v6x = x_DWORD_EA3E4[ix->word_0x32_50];
+				v6x = Entities_EA3E4[ix->word_0x32_50];
 				v7x = v6x;
-				ix = x_DWORD_EA3E4[v6x->word_0x32_50];
+				ix = Entities_EA3E4[v6x->word_0x32_50];
 				ix->word_0x34_52 = 0;
-				v8x = x_DWORD_EA3E4[v7x->word_0x34_52];
+				v8x = Entities_EA3E4[v7x->word_0x34_52];
 				SetEntity04_57F10(v7x);
 				v3++;
 				SetEntity04_57F10(v8x);
@@ -18308,7 +18308,7 @@ void sub_27720(type_entity_0x6E8E* a1x, signed __int16 a2)//208720
 		}
 	}
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00027880) --------------------------------------------------------
 void sub_27880(type_entity_0x6E8E* a1x)//208880
@@ -18372,7 +18372,7 @@ void sub_27950(type_entity_0x6E8E* event)//208950
 	//fix
 
 	sub_1B8C0(event);
-	for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[event->model_0x40_64]; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[event->model_0x40_64]; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (ix->id_0x1A_26 != event->id_0x1A_26
 			&& abs(event->axis_0x4C_76.x - ix->axis_0x4C_76.x) < event->array_0x52_82.pitch
@@ -18458,7 +18458,7 @@ void sub_27950(type_entity_0x6E8E* event)//208950
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00027B20) --------------------------------------------------------
 void sub_27B20(type_entity_0x6E8E* a1x)//208b20
@@ -18612,9 +18612,9 @@ void sub_27E00(type_entity_0x6E8E* a1x)//208e00
 	PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 59);
 	v1x->actSpeed_0x82_130 = v1x->minSpeed_0x84_132;
 	sub_1B8C0(a1x);
-	v2x = sub_1ED30(v1x, x_DWORD_EA3E4[v1x->word_0x96_150]);
+	v2x = sub_1ED30(v1x, Entities_EA3E4[v1x->word_0x96_150]);
 	v3x = v2x;
-	if (v2x <= x_DWORD_EA3E4[0] || v2x->life_0x8 < 0 || v2x->struct_byte_0xc_12_15.byte[1] & 4)
+	if (v2x <= Entities_EA3E4[0] || v2x->life_0x8 < 0 || v2x->struct_byte_0xc_12_15.byte[1] & 4)
 	{
 	LABEL_15:
 		v8 = 1;
@@ -18623,7 +18623,7 @@ void sub_27E00(type_entity_0x6E8E* a1x)//208e00
 	if (!(a1x->byte_0x3E_62 & 3))
 	{
 		a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v2x->axis_0x4C_76);
-		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (ix->id_0x1A_26 != a1x->id_0x1A_26
 				&& abs(a1x->axis_0x4C_76.x - ix->axis_0x4C_76.x) < a1x->array_0x52_82.pitch
@@ -18656,7 +18656,7 @@ LABEL_16:
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00027FA0) --------------------------------------------------------
 void sub_27FA0(type_entity_0x6E8E* a1x)//208fa0
@@ -18693,7 +18693,7 @@ type_entity_0x6E8E* sub_28000(type_entity_0x6E8E* a1x)//209000
 	v1 = -1;
 	v2x = 0;
 	v3x = x_D41A0_BYTEARRAY_4_struct.dword_38523;
-	if (v3x <= x_DWORD_EA3E4[0])
+	if (v3x <= Entities_EA3E4[0])
 		return 0;
 	do
 	{
@@ -18707,11 +18707,11 @@ type_entity_0x6E8E* sub_28000(type_entity_0x6E8E* a1x)//209000
 			}
 		}
 		v3x = v3x->next_0;
-	} while (v3x > x_DWORD_EA3E4[0]);
+	} while (v3x > Entities_EA3E4[0]);
 	return v2x;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00028060) --------------------------------------------------------
 char sub_28060(type_entity_0x6E8E* a1x)//209060
@@ -18723,7 +18723,7 @@ char sub_28060(type_entity_0x6E8E* a1x)//209060
 
 	v5 = 0;
 	v1 = 2 * a1x->array_0x52_82.pitch;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (ix->id_0x1A_26 != a1x->id_0x1A_26
 			&& abs(a1x->axis_0x4C_76.x - ix->axis_0x4C_76.x) < v1
@@ -18742,7 +18742,7 @@ char sub_28060(type_entity_0x6E8E* a1x)//209060
 	return v5;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00028110) --------------------------------------------------------
 void sub_28110(type_entity_0x6E8E* a1x)//209110
@@ -18773,7 +18773,7 @@ void sub_28110(type_entity_0x6E8E* a1x)//209110
 			a1x->word_0x26_38 = v2;
 			//a1x->word_0x26_38;
 			a1x->str_0x5E_94.word_0x62_98 = 0;
-			if (x_DWORD_EA3E4[v3]->class_0x3F_63 == 3)
+			if (Entities_EA3E4[v3]->class_0x3F_63 == 3)
 			{
 				v1 = 1;
 				v4x = sub_28420(a1x);
@@ -18825,7 +18825,7 @@ void sub_28110(type_entity_0x6E8E* a1x)//209110
 	//return 0;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000282D0) --------------------------------------------------------
 type_entity_0x6E8E* sub_282D0(type_entity_0x6E8E* a1x)//2092d0
@@ -18841,7 +18841,7 @@ type_entity_0x6E8E* sub_282D0(type_entity_0x6E8E* a1x)//2092d0
 
 	v1 = -1;
 	v2x = 0;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		v4 = ix->model_0x40_64;
 		if (v4 <= 1u)
@@ -18854,12 +18854,12 @@ type_entity_0x6E8E* sub_282D0(type_entity_0x6E8E* a1x)//2092d0
 				continue;
 			if (ix->mana_0x90_144 <= 0)
 				continue;
-			v6x = x_DWORD_EA3E4[ix->id_0x1A_26];
+			v6x = Entities_EA3E4[ix->id_0x1A_26];
 			if (!v6x)
 				continue;
 			v5x = v6x->dword_0xA4_164x;
 		}
-		v7x = x_DWORD_EA3E4[v5x->word_0x3A_58];
+		v7x = Entities_EA3E4[v5x->word_0x3A_58];
 		if (v7x)
 		{
 			if (!CompareAxisWithShift_10750(ix, v7x))
@@ -18876,7 +18876,7 @@ type_entity_0x6E8E* sub_282D0(type_entity_0x6E8E* a1x)//2092d0
 	return v2x;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00028390) --------------------------------------------------------
 char sub_28390(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//209390
@@ -18912,7 +18912,7 @@ type_entity_0x6E8E* sub_28420(type_entity_0x6E8E* a1x)//209420
 	if (a1x->word_0x96_150)
 	{
 		LOWORD(resultx) = a1x->word_0x96_150;
-		resulty = x_DWORD_EA3E4[resultx];
+		resulty = Entities_EA3E4[resultx];
 		if (resulty)
 		{
 			if (resulty->life_0x8 < 0
@@ -18926,7 +18926,7 @@ type_entity_0x6E8E* sub_28420(type_entity_0x6E8E* a1x)//209420
 	}
 	return resulty;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00028470) --------------------------------------------------------
 void sub_28470(type_entity_0x6E8E* a1x)//209470
@@ -19044,7 +19044,7 @@ void sub_28690(type_entity_0x6E8E* a1x)//209690
 		v10x = 0;
 		v2x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
 		v9 = v1 * v1;
-		while (v2x > x_DWORD_EA3E4[0])
+		while (v2x > Entities_EA3E4[0])
 		{
 			v3 = (signed __int16)(v2x->axis_0x4C_76.x - a1x->axis_0x4C_76.x);
 			v4 = (signed __int16)(v2x->axis_0x4C_76.y - a1x->axis_0x4C_76.y)
@@ -19065,7 +19065,7 @@ void sub_28690(type_entity_0x6E8E* a1x)//209690
 		if (v10x)
 		{
 			v7x = sub_1ED30(a1x, v10x);
-			if (v7x > x_DWORD_EA3E4[0] && v7x->life_0x8 >= 0 && !(v7x->struct_byte_0xc_12_15.byte[1] & 4))
+			if (v7x > Entities_EA3E4[0] && v7x->life_0x8 >= 0 && !(v7x->struct_byte_0xc_12_15.byte[1] & 4))
 			{
 				a1x->state_0x45_69 = 194;
 				a1x->word_0x96_150 = v7x - D41A0_0.struct_0x6E8E;
@@ -19075,7 +19075,7 @@ void sub_28690(type_entity_0x6E8E* a1x)//209690
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000287B0) --------------------------------------------------------
 void sub_287B0(type_entity_0x6E8E* a1x)//2097b0
@@ -19176,8 +19176,8 @@ __int16 sub_28860(type_entity_0x6E8E* a1x)//209860
 		{
 			for (i = a1x->word_0x34_52; ; i = v6x->word_0x34_52)
 			{
-				v6x = x_DWORD_EA3E4[i];
-				if (v6x == x_DWORD_EA3E4[0])
+				v6x = Entities_EA3E4[i];
+				if (v6x == Entities_EA3E4[0])
 					break;
 				v5 = v6x->life_0x8;
 				if (v5 < a1x->life_0x8)
@@ -19231,7 +19231,7 @@ __int16 sub_28860(type_entity_0x6E8E* a1x)//209860
 		case 3:
 			v12 = 0;
 			if (!a1x->word_0x24_36
-				|| (v13x = x_DWORD_EA3E4[a1x->word_0x24_36], v13x->class_0x3F_63 != 3)
+				|| (v13x = Entities_EA3E4[a1x->word_0x24_36], v13x->class_0x3F_63 != 3)
 				|| (v14 = v13x->model_0x40_64) != 0 && v14 != 1)
 			{
 				v12 = 1;
@@ -19262,12 +19262,12 @@ __int16 sub_28860(type_entity_0x6E8E* a1x)//209860
 				goto LABEL_35;
 			break;
 		case 5:
-			v18 = x_DWORD_EA3E4[a1x->word_0x96_150]->dword_0xA4_164x->word_0x3A_58;
+			v18 = Entities_EA3E4[a1x->word_0x96_150]->dword_0xA4_164x->word_0x3A_58;
 			if (v18)
 			{
 				if (!(a1x->byte_0x3E_62 & 7))
 				{
-					v19x = x_DWORD_EA3E4[v18];
+					v19x = Entities_EA3E4[v18];
 					a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v19x->axis_0x4C_76);
 					if (CompareAxisWithShift_10750(a1x, v19x))
 						a1x->byte_0x46_70 = 6;
@@ -19285,11 +19285,11 @@ __int16 sub_28860(type_entity_0x6E8E* a1x)//209860
 			goto LABEL_41;
 		case 7:
 		LABEL_41:
-			v20 = x_DWORD_EA3E4[a1x->word_0x96_150]->dword_0xA4_164x->word_0x3A_58;
+			v20 = Entities_EA3E4[a1x->word_0x96_150]->dword_0xA4_164x->word_0x3A_58;
 			if (v20)
 			{
-				v21x = x_DWORD_EA3E4[v20];
-				if (CompareAxisWithShift_10750(a1x, x_DWORD_EA3E4[v20]))
+				v21x = Entities_EA3E4[v20];
+				if (CompareAxisWithShift_10750(a1x, Entities_EA3E4[v20]))
 				{
 					sub_11900(a1x, v21x, 0, 0x3Cu);
 				}
@@ -19358,7 +19358,7 @@ __int16 sub_28860(type_entity_0x6E8E* a1x)//209860
 	}
 	return (signed __int16)v2;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00028C30) --------------------------------------------------------
 int sub_28C30(type_entity_0x6E8E* a1x)//209c30
@@ -19572,8 +19572,8 @@ void sub_28FF0(type_entity_0x6E8E* a1x)//209ff0
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -19610,8 +19610,8 @@ void sub_28FF0(type_entity_0x6E8E* a1x)//209ff0
 		a1x->word_0x96_150 = a1x->word_0x26_38;
 	}
 	sub_1B8C0(a1x);
-	v6x = x_DWORD_EA3E4[a1x->word_0x96_150];
-	if (v6x > x_DWORD_EA3E4[0] && v6x->class_0x3F_63 == 3)
+	v6x = Entities_EA3E4[a1x->word_0x96_150];
+	if (v6x > Entities_EA3E4[0] && v6x->class_0x3F_63 == 3)
 	{
 		v7 = v6x->model_0x40_64;
 		if ((!v7 || v7 == 1) && v6x->life_0x8 >= 0 && !(v6x->struct_byte_0xc_12_15.byte[1] & 4))
@@ -19619,7 +19619,7 @@ void sub_28FF0(type_entity_0x6E8E* a1x)//209ff0
 			if (!(a1x->byte_0x3E_62 & 3))
 			{
 				a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v6x->axis_0x4C_76);
-				for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+				for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 				{
 					if (jx->id_0x1A_26 != a1x->id_0x1A_26
 						&& abs(a1x->axis_0x4C_76.x - jx->axis_0x4C_76.x) < a1x->array_0x52_82.pitch
@@ -19658,7 +19658,7 @@ void sub_28FF0(type_entity_0x6E8E* a1x)//209ff0
 					v19 = v6x->dword_0xA4_164x->str_611.array_0x333_819x.word[v18];
 					if (!v19)
 						return sub_293D0(a1x);
-					sub_69300(x_DWORD_EA3E4[v19], a1x);
+					sub_69300(Entities_EA3E4[v19], a1x);
 				}
 				else
 				{
@@ -19671,7 +19671,7 @@ void sub_28FF0(type_entity_0x6E8E* a1x)//209ff0
 					v16 = v6x->dword_0xA4_164x->str_611.array_0x333_819x.word[v15];
 					if (!v16)
 						return sub_293D0(a1x);
-					sub_69300(x_DWORD_EA3E4[v16], a1x);
+					sub_69300(Entities_EA3E4[v16], a1x);
 				}
 				return sub_293D0(a1x);
 			}
@@ -19682,7 +19682,7 @@ void sub_28FF0(type_entity_0x6E8E* a1x)//209ff0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00029300) --------------------------------------------------------
 void sub_29300(type_entity_0x6E8E* a1x)//20a300
@@ -19827,7 +19827,7 @@ void sub_29400(type_entity_0x6E8E* a1x)//20a400
 	}
 	v7 = 2;
 LABEL_35:
-	for (ix = a1x; ix > x_DWORD_EA3E4[0]; ix = x_DWORD_EA3E4[ix->word_0x34_52])
+	for (ix = a1x; ix > Entities_EA3E4[0]; ix = Entities_EA3E4[ix->word_0x34_52])
 	{
 		//ix->byte_0xe_14 &= 0x7Fu;
 		//ix->byte_0xf_15 &= 0xFEu;
@@ -19849,7 +19849,7 @@ LABEL_36:
 	sub_29A90(a1x);
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
@@ -19926,8 +19926,8 @@ void sub_29710(type_entity_0x6E8E* a1x)//20a710
 	}
 	else
 	{
-		v3x = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (v3x <= x_DWORD_EA3E4[0] || v3x->life_0x8 < 0 || v3x->struct_byte_0xc_12_15.byte[1] & 4)
+		v3x = Entities_EA3E4[a1x->word_0x96_150];
+		if (v3x <= Entities_EA3E4[0] || v3x->life_0x8 < 0 || v3x->struct_byte_0xc_12_15.byte[1] & 4)
 			goto LABEL_24;
 		if (!(a1x->byte_0x3E_62 & 3) && v2 != 3 && !a1x->byte_0x46_70)
 			a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v3x->axis_0x4C_76);
@@ -19961,7 +19961,7 @@ LABEL_19:
 	}
 	sub_29A90(a1x);
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00029890) --------------------------------------------------------
 void sub_29890(type_entity_0x6E8E* a1x)//20a890
@@ -20016,8 +20016,8 @@ void sub_29930(type_entity_0x6E8E* a1x)//20a930
 		a1x->StageVar2_0x49_73 = 10;
 		while (1)
 		{
-			v4x = x_DWORD_EA3E4[v3];
-			if (v4x <= x_DWORD_EA3E4[0])
+			v4x = Entities_EA3E4[v3];
+			if (v4x <= Entities_EA3E4[0])
 				break;
 			if (v4x->state_0x45_69 == 233 && v4x->byte_0x46_70 == 1)
 			{
@@ -20033,7 +20033,7 @@ void sub_29930(type_entity_0x6E8E* a1x)//20a930
 	}
 	sub_29A90(a1x);
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00029A90) --------------------------------------------------------
 void sub_29A90(type_entity_0x6E8E* a1x)//20aa90
@@ -20089,7 +20089,7 @@ void sub_29A90(type_entity_0x6E8E* a1x)//20aa90
 
 	//HIWORD(v1) = HIWORD(a1);
 	//LOWORD(v2) = a1x->word_0x34_52;
-	for (ix = x_DWORD_EA3E4[a1x->word_0x34_52]; ix > x_DWORD_EA3E4[0]; ix = x_DWORD_EA3E4[ix->word_0x34_52])
+	for (ix = Entities_EA3E4[a1x->word_0x34_52]; ix > Entities_EA3E4[0]; ix = Entities_EA3E4[ix->word_0x34_52])
 	{
 		if (CommandLineParams.DoDebugSequences()) {
 			//add_compare(0x20aab8, CommandLineParams.DoDebugafterload());
@@ -20355,20 +20355,20 @@ void sub_29A90(type_entity_0x6E8E* a1x)//20aa90
 					{
 						if (v18)
 						{
-							v19x = x_DWORD_EA3E4[ix->word_0x34_52];
+							v19x = Entities_EA3E4[ix->word_0x34_52];
 							for (j = 0; ; j++)
 							{
 								v35x = v19x;
 								if (j >= 9 - ix->dword_0x10_16)
 									break;
-								v19x = x_DWORD_EA3E4[v19x->word_0x34_52];
+								v19x = Entities_EA3E4[v19x->word_0x34_52];
 							}
 						}
 						else
 						{
 							v35x = ix;
 						}
-						if (v35x > x_DWORD_EA3E4[0])
+						if (v35x > Entities_EA3E4[0])
 							v35x->struct_byte_0xc_12_15.byte[0] = (v35x->struct_byte_0xc_12_15.byte[0] | 1) & 0xF7;
 						//v21 = ix->dword_0x10_16 + 1;
 						v22 = ix->byte_0x43_67 + 1;
@@ -20438,7 +20438,7 @@ void sub_29A90(type_entity_0x6E8E* a1x)//20aa90
 					v1x = ix->word_0x34_52;
 					for (k = 0; ; k++)
 					{
-						v4x = x_DWORD_EA3E4[v1x];
+						v4x = Entities_EA3E4[v1x];
 						if (k >= ix->dword_0x10_16)
 							break;
 						v1x = (unsigned __int16)v4x->word_0x34_52;
@@ -20477,9 +20477,9 @@ void sub_29A90(type_entity_0x6E8E* a1x)//20aa90
 				do
 				{
 					v35x->struct_byte_0xc_12_15.byte[0] = (v35x->struct_byte_0xc_12_15.byte[0] | 1) & 0xF7;
-					//v1y = x_DWORD_EA3E4[v35x->word_0x34_52];
+					//v1y = Entities_EA3E4[v35x->word_0x34_52];
 					v24++;
-					v35x = x_DWORD_EA3E4[v35x->word_0x34_52];
+					v35x = Entities_EA3E4[v35x->word_0x34_52];
 				} while (v24 < 10);
 				break;
 			default:
@@ -20513,7 +20513,7 @@ void sub_29A90(type_entity_0x6E8E* a1x)//20aa90
 				sub_2A5B0(a1x, ix, 672);
 				sub_2A940(a1x, ix);
 				sub_2AA90(/*ix,*/ a1x, ix);
-				v35x = x_DWORD_EA3E4[ix->word_0x96_150];
+				v35x = Entities_EA3E4[ix->word_0x96_150];
 				x_WORD_EB398ar = v35x->axis_0x4C_76;
 				sub_57CF0(ix, &x_WORD_EB398ar);
 			LABEL_99:
@@ -20528,7 +20528,7 @@ void sub_29A90(type_entity_0x6E8E* a1x)//20aa90
 }
 // D404C: using guessed type void *off_D404C;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (0002A340) --------------------------------------------------------
@@ -20767,7 +20767,7 @@ type_entity_0x6E8E* sub_2A6F0(type_entity_0x6E8E* a1x)//20b6f0
 	v9 = 0x10000000;
 	v3x = x_D41A0_BYTEARRAY_4_struct.dword_38519;
 	v8 = v1 * v1;
-	while (v3x > x_DWORD_EA3E4[0])
+	while (v3x > Entities_EA3E4[0])
 	{
 		v4 = Maths::EuclideanDistXY_584D0(&a1x->axis_0x4C_76, &v3x->axis_0x4C_76);
 		if (v4 < v8)
@@ -20785,7 +20785,7 @@ type_entity_0x6E8E* sub_2A6F0(type_entity_0x6E8E* a1x)//20b6f0
 	return v2x;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0002A7B0) --------------------------------------------------------
 type_entity_0x6E8E* sub_2A7B0(type_entity_0x6E8E* a1x)//20b7b0
@@ -20798,13 +20798,13 @@ type_entity_0x6E8E* sub_2A7B0(type_entity_0x6E8E* a1x)//20b7b0
 	resultx = 0;
 	if (v1)
 	{
-		v3x = x_DWORD_EA3E4[v1];
+		v3x = Entities_EA3E4[v1];
 		if (v3x->life_0x8 >= 0 && !(v3x->struct_byte_0xc_12_15.byte[1] & 4))
-			resultx = x_DWORD_EA3E4[v1];
+			resultx = Entities_EA3E4[v1];
 	}
 	return resultx;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0002A7F0) --------------------------------------------------------
 void sub_2A7F0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, char a3)//20b7f0
@@ -20978,7 +20978,7 @@ void sub_2AA90(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x, type_entity
 	//LOWORD(v17) = Maths::sub_58210_radix_tan(&v12x, &v14x);
 	v17 = Maths::sub_58210_radix_tan(&v12x, &v14x);
 	v6 = 0;
-	v7x = x_DWORD_EA3E4[a3x->word_0x34_52];
+	v7x = Entities_EA3E4[a3x->word_0x34_52];
 	do
 	{
 		//v8 = 3 * v18;
@@ -21019,14 +21019,14 @@ void sub_2AA90(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x, type_entity
 		}
 		result = v7x->word_0x34_52;
 		v6++;
-		v7x = x_DWORD_EA3E4[result];
+		v7x = Entities_EA3E4[result];
 	} while (v6 < 9);
 	//return result;
 }
 // D404C: using guessed type void *off_D404C;
 // D40BC: using guessed type int x_DWORD_D40BC[];
 // D40C0: using guessed type int x_DWORD_D40C0[];
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0002AC50) --------------------------------------------------------
 void sub_2AC50(type_entity_0x6E8E* a1x)//20bc50
@@ -21079,7 +21079,7 @@ void sub_2AD40(type_entity_0x6E8E* a1x)//20bd40
 
 	result = a1x->word_0x34_52;
 	v2 = 1;
-	for (ix = x_DWORD_EA3E4[result]; ix > x_DWORD_EA3E4[0]; ix = x_DWORD_EA3E4[ix->word_0x34_52])
+	for (ix = Entities_EA3E4[result]; ix > Entities_EA3E4[0]; ix = Entities_EA3E4[ix->word_0x34_52])
 	{
 		if (ix->state_0x45_69 == 233)
 		{
@@ -21104,7 +21104,7 @@ void sub_2AD40(type_entity_0x6E8E* a1x)//20bd40
 	//return result;
 }
 // D8984: using guessed type void *off_D8984;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0002AE30) --------------------------------------------------------
 void sub_2AE30(type_entity_0x6E8E* a1x)//20be30
@@ -21116,8 +21116,8 @@ void sub_2AE30(type_entity_0x6E8E* a1x)//20be30
 	//result = a1;
 	for (ix = a1x->word_0x34_52; ; ix = v3x->word_0x34_52)
 	{
-		v3x = x_DWORD_EA3E4[ix];
-		if (v3x <= x_DWORD_EA3E4[0])
+		v3x = Entities_EA3E4[ix];
+		if (v3x <= Entities_EA3E4[0])
 			break;
 		if (v3x->state_0x45_69 == 234)
 		{
@@ -21127,7 +21127,7 @@ void sub_2AE30(type_entity_0x6E8E* a1x)//20be30
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0002AE80) --------------------------------------------------------
 void sub_2AE80(type_entity_0x6E8E* a1x)//20be80
@@ -21136,12 +21136,12 @@ void sub_2AE80(type_entity_0x6E8E* a1x)//20be80
 	type_entity_0x6E8E* v2x; // ebx
 	//int result; // eax
 
-	if (a1x && a1x > x_DWORD_EA3E4[0])
+	if (a1x && a1x > Entities_EA3E4[0])
 	{
 		for (ix = a1x->word_0x34_52; ; ix = v2x->word_0x34_52)
 		{
-			v2x = x_DWORD_EA3E4[ix];
-			if (v2x <= x_DWORD_EA3E4[0])
+			v2x = Entities_EA3E4[ix];
+			if (v2x <= Entities_EA3E4[0])
 				break;
 			SetEntity04_57F10(v2x);
 		}
@@ -21149,7 +21149,7 @@ void sub_2AE80(type_entity_0x6E8E* a1x)//20be80
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0002AED0) --------------------------------------------------------
 void sub_2AED0(type_entity_0x6E8E* a1x, int a2)//20bed0
@@ -21364,9 +21364,9 @@ void sub_2B260(type_entity_0x6E8E* a1x)//20c260
 			v29 = 0;
 			if (v2)
 			{
-				v3x = x_DWORD_EA3E4[a1x->word_0x96_150];
+				v3x = Entities_EA3E4[a1x->word_0x96_150];
 				v25x = v3x;
-				if (v3x > x_DWORD_EA3E4[0] && v3x->life_0x8 >= 0 && !(v3x->struct_byte_0xc_12_15.byte[1] & 4))
+				if (v3x > Entities_EA3E4[0] && v3x->life_0x8 >= 0 && !(v3x->struct_byte_0xc_12_15.byte[1] & 4))
 					LOBYTE(v1) = 1;
 			}
 			if (!(x_BYTE)v1 || (v4 = a1x->dword_0x10_16 - 1, a1x->dword_0x10_16 = v4, v4 <= 0))
@@ -21384,7 +21384,7 @@ void sub_2B260(type_entity_0x6E8E* a1x)//20c260
 			v5x = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[a1x->model_0x40_64];
 			while (2)
 			{
-				if (v5x > x_DWORD_EA3E4[0])
+				if (v5x > Entities_EA3E4[0])
 				{
 					if (v5x->id_0x1A_26 == a1x->id_0x1A_26
 						|| abs(a1x->axis_0x4C_76.x - v5x->axis_0x4C_76.x) >= a1x->array_0x52_82.pitch
@@ -21446,9 +21446,9 @@ void sub_2B260(type_entity_0x6E8E* a1x)//20c260
 				v10 = 0;
 				if (v9)
 				{
-					v11x = x_DWORD_EA3E4[v9];
+					v11x = Entities_EA3E4[v9];
 					v25x = v11x;
-					if (v11x > x_DWORD_EA3E4[0] && v11x->life_0x8 >= 0 && !(v11x->struct_byte_0xc_12_15.byte[1] & 4))
+					if (v11x > Entities_EA3E4[0] && v11x->life_0x8 >= 0 && !(v11x->struct_byte_0xc_12_15.byte[1] & 4))
 						v10 = 1;
 				}
 				if (v10)
@@ -21475,9 +21475,9 @@ void sub_2B260(type_entity_0x6E8E* a1x)//20c260
 			v26 = 0;
 			if (v18)
 			{
-				v19x = x_DWORD_EA3E4[v18];
+				v19x = Entities_EA3E4[v18];
 				v25x = v19x;
-				if (v19x > x_DWORD_EA3E4[0] && v19x->life_0x8 >= 0 && !(v19x->struct_byte_0xc_12_15.byte[1] & 4))
+				if (v19x > Entities_EA3E4[0] && v19x->life_0x8 >= 0 && !(v19x->struct_byte_0xc_12_15.byte[1] & 4))
 					v17 = 1;
 			}
 			if (v17)
@@ -21512,7 +21512,7 @@ void sub_2B260(type_entity_0x6E8E* a1x)//20c260
 		default:
 			return;// v1;
 		}
-		while (v14x > x_DWORD_EA3E4[0])
+		while (v14x > Entities_EA3E4[0])
 		{
 			if (v14x->id_0x1A_26 != a1x->id_0x1A_26
 				&& abs(a1x->axis_0x4C_76.x - v14x->axis_0x4C_76.x) < a1x->array_0x52_82.pitch
@@ -21540,7 +21540,7 @@ void sub_2B260(type_entity_0x6E8E* a1x)//20c260
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0002B750) --------------------------------------------------------
 void sub_2B750(type_entity_0x6E8E* a1x)//20c750
@@ -21579,7 +21579,7 @@ char sub_2B7E0(type_entity_0x6E8E* a1x)//20c7e0
 	char v3; // bl
 
 	v1x = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[112 / 4];
-	if (v1x <= x_DWORD_EA3E4[0])
+	if (v1x <= Entities_EA3E4[0])
 		return 0;
 	do
 	{
@@ -21590,11 +21590,11 @@ char sub_2B7E0(type_entity_0x6E8E* a1x)//20c7e0
 				return 1;
 		}
 		v1x = v1x->next_0;
-	} while (v1x > x_DWORD_EA3E4[0]);
+	} while (v1x > Entities_EA3E4[0]);
 	return 0;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0002B840) --------------------------------------------------------
 void sub_2B840(type_entity_0x6E8E* a1x)//20c840
@@ -21689,8 +21689,8 @@ signed int sub_2B9A0(type_entity_0x6E8E* a1x)//20c9a0
 	{
 		for (i = a1x->word_0x34_52; ; i = v5x->word_0x34_52)
 		{
-			v5x = x_DWORD_EA3E4[i];
-			if (v5x == x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[i];
+			if (v5x == Entities_EA3E4[0])
 				break;
 			v4 = v5x->life_0x8;
 			if (v4 < a1x->life_0x8)
@@ -21721,7 +21721,7 @@ signed int sub_2B9A0(type_entity_0x6E8E* a1x)//20c9a0
 	}
 	return v1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0002BA50) --------------------------------------------------------
 void sub_2BA50(type_entity_0x6E8E* a1x, unsigned __int8 a2)//20ca50
@@ -21874,7 +21874,7 @@ void DrawGameFrame_2BE30()//20CE30
 	case 9:
 	case 0xA:
 	case 0xD:
-		v3x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+		v3x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 		if (x_BYTE_D41C4 || D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize != x_BYTE_D41C6_old_graphics_mode)
 		{
 			x_BYTE_D41C4 = 0;
@@ -22080,7 +22080,7 @@ void DrawGameFrame_2BE30()//20CE30
 				DrawSpellIcon_2E260(
 					spellLeftPosX,
 					2 * scale,
-					x_DWORD_EA3E4[v3x->dword_0xA4_164x->str_611.array_0x333_819x.word[v3x->dword_0xA4_164x->str_611.word_0x451_1105]],
+					Entities_EA3E4[v3x->dword_0xA4_164x->str_611.array_0x333_819x.word[v3x->dword_0xA4_164x->str_611.word_0x451_1105]],
 					0,
 					scale);
 
@@ -22088,7 +22088,7 @@ void DrawGameFrame_2BE30()//20CE30
 				DrawSpellIcon_2E260(
 					spellRightPosX,
 					2 * scale,
-					x_DWORD_EA3E4[v3x->dword_0xA4_164x->str_611.array_0x333_819x.word[v3x->dword_0xA4_164x->str_611.word_0x453_1107]],
+					Entities_EA3E4[v3x->dword_0xA4_164x->str_611.array_0x333_819x.word[v3x->dword_0xA4_164x->str_611.word_0x453_1107]],
 					0,
 					scale);
 
@@ -22124,7 +22124,7 @@ void DrawGameFrame_2BE30()//20CE30
 	case 0xB:
 	case 0xC:
 	case 0xE:
-		v14x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+		v14x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, uiBackGroundColorIdx_EB3A8);
 		else
@@ -22308,14 +22308,14 @@ void DrawGameFrame_2BE30()//20CE30
 			DrawSpellIcon_2E260(
 				spellLeftPosX,
 				2,
-				x_DWORD_EA3E4[v14x->dword_0xA4_164x->str_611.array_0x333_819x.word[v14x->dword_0xA4_164x->str_611.word_0x451_1105]],
+				Entities_EA3E4[v14x->dword_0xA4_164x->str_611.array_0x333_819x.word[v14x->dword_0xA4_164x->str_611.word_0x451_1105]],
 				0, 
 				scale);
 		if (x_D41A0_BYTEARRAY_4_struct.byteindex_38401)
 			DrawSpellIcon_2E260(
 				spellRightPosX,
 				2,
-				x_DWORD_EA3E4[v14x->dword_0xA4_164x->str_611.array_0x333_819x.word[v14x->dword_0xA4_164x->str_611.word_0x453_1107]],
+				Entities_EA3E4[v14x->dword_0xA4_164x->str_611.array_0x333_819x.word[v14x->dword_0xA4_164x->str_611.word_0x453_1107]],
 				0,
 				scale);
 		break;
@@ -22603,7 +22603,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 		if (result <= v25)
 			break;
 		v6 = D41A0_0.array_0x2BDE[ix].byte_0x006_2BE4_11236;
-		v23x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[ix].word_0x00a_2BE4_11240];
+		v23x = Entities_EA3E4[D41A0_0.array_0x2BDE[ix].word_0x00a_2BE4_11240];
 		if (v6 == 1)
 		{
 			textColourIdx = x_BYTE_E88E0x[1 + 3 * GetTrueWizardNumber_61790(v25)];
@@ -22695,7 +22695,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // EA3DC: using guessed type int **filearray_2aa18c[6];
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // 180532: using guessed type int x_DWORD_180532;
 // 180546: using guessed type __int16 x_WORD_180546;
 // 180548: using guessed type __int16 x_WORD_180548;
@@ -22790,7 +22790,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 	unsigned __int8 v57; // [esp+68h] [ebp-8h]
 	char v58; // [esp+6Ch] [ebp-4h]
 
-	v37x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v37x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v57 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v37x->dword_0xA4_164x->word_0x38_56)];
 	v56 = x_BYTE_E88E0x[1 + 3 * GetTrueWizardNumber_61790(v37x->dword_0xA4_164x->word_0x38_56)];
 	x_D41A0_BYTEARRAY_4_struct.byteindex_50 = -1;
@@ -22847,9 +22847,9 @@ void DrawBottomMenu_2ECC0()//20fcc0
 				ptrDrawBitmap_F01E8(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL], scale);
 				goto LABEL_54;
 			}
-			v9x = x_DWORD_EA3E4[v37x->dword_0xA4_164x->str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[spellIconIndex]]];
+			v9x = Entities_EA3E4[v37x->dword_0xA4_164x->str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[spellIconIndex]]];
 
-			if (v9x > x_DWORD_EA3E4[0])
+			if (v9x > Entities_EA3E4[0])
 			{
 				if (spellIconIndex == v37x->dword_0xA4_164x->str_611.byte_0x458_1112)
 				{
@@ -22871,7 +22871,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 				v55 = 0;
 				if (!SPELLS_BEGIN_BUFFER_str[v44].subspell[v10].dword_A
 					|| (v12 = v37x->dword_0xA4_164x->word_0x3A_58) != 0
-					&& SPELLS_BEGIN_BUFFER_str[v44].subspell[v10].dword_A <= x_DWORD_EA3E4[v12]->mana_0x90_144)
+					&& SPELLS_BEGIN_BUFFER_str[v44].subspell[v10].dword_A <= Entities_EA3E4[v12]->mana_0x90_144)
 				{
 					v55 = 1;
 				}
@@ -22988,7 +22988,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 			v58 = 0;
 			if (!SPELLS_BEGIN_BUFFER_str[v43].subspell[v20].dword_A
 				|| (v23 = v37x->dword_0xA4_164x->word_0x3A_58) != 0
-				&& SPELLS_BEGIN_BUFFER_str[v43].subspell[v20].dword_A <= x_DWORD_EA3E4[v23]->mana_0x90_144)
+				&& SPELLS_BEGIN_BUFFER_str[v43].subspell[v20].dword_A <= Entities_EA3E4[v23]->mana_0x90_144)
 			{
 				v58 = 1;
 				v22 = v37x->mana_0x90_144 / sub_6D710(v37x, v43, v20);
@@ -23094,7 +23094,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 // D41B6: using guessed type char x_BYTE_D41B6;
 // E9800: using guessed type char x_BYTE_E9800;
 // EA3DC: using guessed type int **filearray_2aa18c[6];
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB394: using guessed type int **filearray_2aa18c[0];
 // F01E8: using guessed type int (*ptrDrawBitmap_F01E8)(x_DWORD, x_DWORD, x_DWORD);
 // 1805B0: using guessed type int x_DWORD_1805B0_mouse.x;
@@ -23415,7 +23415,7 @@ LABEL_8:
 							v45 = 0;
 						if (v13 > v45)
 							x_BYTE_14B4E0_second_heightmap[ix] = v45;
-						for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+						for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > Entities_EA3E4[0]; jx = jx->next_0)
 						{
 							if (!jx->model_0x40_64)
 							{
@@ -23506,7 +23506,7 @@ LABEL_8:
 // 10000: using guessed type void /*__noreturn*/ sub_10000();
 // D41A4: using guessed type int x_DWORD_D41A4;
 // DBF50: using guessed type void (/*__noreturn*/ *off_DBF50[2])();
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -24408,8 +24408,8 @@ void sub_32A70(type_entity_0x6E8E* a1x)//213a70
 		}
 		if (!a1x->dword_0x10_16)
 		{
-			v5x = x_DWORD_EA3E4[D41A0_0.word_0x31];
-			if (v5x > x_DWORD_EA3E4[0])
+			v5x = Entities_EA3E4[D41A0_0.word_0x31];
+			if (v5x > Entities_EA3E4[0])
 				v5x->dword_0x10_16 = 250;
 			D41A0_0.word_0x31 = a1x - D41A0_0.struct_0x6E8E;
 			v6x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 19);
@@ -24417,8 +24417,8 @@ void sub_32A70(type_entity_0x6E8E* a1x)//213a70
 			if (v6x)
 			{
 				v6x->id_0x1A_26 = a1x->id_0x1A_26;
-				if (x_DWORD_EA3E4[D41A0_0.word_0x33] > x_DWORD_EA3E4[0])
-					SetEntity04_57F10(x_DWORD_EA3E4[D41A0_0.word_0x33]);
+				if (Entities_EA3E4[D41A0_0.word_0x33] > Entities_EA3E4[0])
+					SetEntity04_57F10(Entities_EA3E4[D41A0_0.word_0x33]);
 				D41A0_0.word_0x33 = v6x - D41A0_0.struct_0x6E8E;
 			}
 		}
@@ -24459,7 +24459,7 @@ void sub_32A70(type_entity_0x6E8E* a1x)//213a70
 	a1x->dword_0x10_16++;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00032CF0) --------------------------------------------------------
 void sub_32CF0(type_entity_0x6E8E* a1x)//213cf0
@@ -24661,9 +24661,9 @@ void sub_331A0(type_entity_0x6E8E* a1x)//2141a0
 	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, 120);
 	x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
 	sub_57CF0(a1x, &x_WORD_EB398ar);
-	v7x = x_DWORD_EA3E4[a1x->word_0x34_52];
+	v7x = Entities_EA3E4[a1x->word_0x34_52];
 	resultx = a1x;
-	while (v7x > x_DWORD_EA3E4[0])
+	while (v7x > Entities_EA3E4[0])
 	{
 		x_WORD_EB398ar = v7x->axis_0x4C_76;
 		v4 = &resultx->axis_0x4C_76;
@@ -24675,11 +24675,11 @@ void sub_331A0(type_entity_0x6E8E* a1x)//2141a0
 		x_WORD_EB398ar.z = v7x->word_0x36_54 + a1x->axis_0x4C_76.z;
 		sub_57CF0(v7x, &x_WORD_EB398ar);
 		resultx = v7x;
-		v7x = x_DWORD_EA3E4[v7x->word_0x34_52];
+		v7x = Entities_EA3E4[v7x->word_0x34_52];
 	}
 	//return resultx;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -24738,9 +24738,9 @@ void sub_33340(type_entity_0x6E8E* a1x)//214340
 			v27 = v35;
 			if (sub_10130(v35, &v29, &v28) != 1)
 				break;
-			for (ix = x_DWORD_EA3E4[mapEntityIndex_15B4E0[(unsigned __int8)(v29 + v32) + ((unsigned __int8)(v28 + v36) << 8)]];
-				ix != x_DWORD_EA3E4[0];
-				ix = x_DWORD_EA3E4[ix->oldMapEntity_0x16_22])
+			for (ix = Entities_EA3E4[mapEntityIndex_15B4E0[(unsigned __int8)(v29 + v32) + ((unsigned __int8)(v28 + v36) << 8)]];
+				ix != Entities_EA3E4[0];
+				ix = Entities_EA3E4[ix->oldMapEntity_0x16_22])
 			{
 				if (sub_33810(a1x, ix))
 				{
@@ -24866,7 +24866,7 @@ void sub_33340(type_entity_0x6E8E* a1x)//214340
 	}
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -24881,12 +24881,12 @@ void sub_33710(type_entity_0x6E8E* a1x)//214710
 	v1 = 0;
 	if (!(a1x->byte_0x3E_62 & 7))
 	{
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38527; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38527; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (CompareAxisWithShift_10750(a1x, ix))
 				sub_11900(a1x, ix, 0, a1x->word_0x2A_42);
 		}
-		for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+		for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > Entities_EA3E4[0]; jx = jx->next_0)
 		{
 			if (jx->model_0x40_64 == 2 && CompareAxisWithShift_10750(a1x, jx))
 			{
@@ -24904,7 +24904,7 @@ void sub_33710(type_entity_0x6E8E* a1x)//214710
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00033810) --------------------------------------------------------
 char sub_33810(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//214810
@@ -24999,8 +24999,8 @@ void sub_338D0(type_entity_0x6E8E* a1x)//2148d0
 				;
 				ix = v7x->oldMapEntity_0x16_22)
 			{
-				v7x = x_DWORD_EA3E4[ix];
-				if (v7x == x_DWORD_EA3E4[0])
+				v7x = Entities_EA3E4[ix];
+				if (v7x == Entities_EA3E4[0])
 					break;
 				//v7x->byte_0xc_12 &= 0xEFFFF7FF;
 				v7x->struct_byte_0xc_12_15.dword &= 0xEFFFF7FF;
@@ -25010,11 +25010,11 @@ void sub_338D0(type_entity_0x6E8E* a1x)//2148d0
 		}
 		ResetEvent08_10100(v5);
 	}
-	for (jx = a1x; jx > x_DWORD_EA3E4[0]; jx = x_DWORD_EA3E4[jx->word_0x34_52])
+	for (jx = a1x; jx > Entities_EA3E4[0]; jx = Entities_EA3E4[jx->word_0x34_52])
 		SetEntity04_57F10(jx);
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000339B0) --------------------------------------------------------
 void sub_339B0(type_entity_0x6E8E* a1x)//2149b0
@@ -25035,7 +25035,7 @@ void sub_339B0(type_entity_0x6E8E* a1x)//2149b0
 		v2 = a1x->word_0x96_150;
 		if (v2)
 		{
-			v3x = x_DWORD_EA3E4[v2];
+			v3x = Entities_EA3E4[v2];
 			a1x->maxSpeed_0x86_134 = v3x->array_0x52_82.pitch >> 1;
 			v4 = a1x->maxSpeed_0x86_134;
 			a1x->minSpeed_0x84_132 = 6 * v3x->array_0x52_82.pitch >> 2;
@@ -25075,7 +25075,7 @@ void sub_339B0(type_entity_0x6E8E* a1x)//2149b0
 		a1x->byte_0x46_70 = 2;
 	return;// v1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00033AD0) --------------------------------------------------------
 void sub_33AD0(type_entity_0x6E8E* a1x)//214ad0
@@ -25131,8 +25131,8 @@ void sub_33B20(type_entity_0x6E8E* a1x)//214b20
 	a1x->word_0x1E_30 = v2;
 	for (i = a1x->word_0x34_52; ; i = v9x->word_0x34_52)
 	{
-		v9x = x_DWORD_EA3E4[i];
-		if (v9x <= x_DWORD_EA3E4[0])
+		v9x = Entities_EA3E4[i];
+		if (v9x <= Entities_EA3E4[0])
 			break;
 		v4 = v9x->word_0x20_32 + v9x->word_0x1C_28;
 		HIBYTE(v4) &= 7u;
@@ -25151,7 +25151,7 @@ void sub_33B20(type_entity_0x6E8E* a1x)//214b20
 	}
 	//return i;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (00033C00) --------------------------------------------------------
@@ -25162,8 +25162,8 @@ void sub_33C00(type_entity_0x6E8E* a1x)//214c00
 
 	for (result = a1x->word_0x34_52; ; result = v2x->word_0x34_52)
 	{
-		v2x = x_DWORD_EA3E4[result];
-		if (v2x <= x_DWORD_EA3E4[0])
+		v2x = Entities_EA3E4[result];
+		if (v2x <= Entities_EA3E4[0])
 			break;
 		if (!v2x->byte_0x44_68)
 		{
@@ -25174,7 +25174,7 @@ void sub_33C00(type_entity_0x6E8E* a1x)//214c00
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00033C70) --------------------------------------------------------
 void sub_33C70(type_entity_0x6E8E* a1x)//214c70
@@ -25193,7 +25193,7 @@ void sub_33C70(type_entity_0x6E8E* a1x)//214c70
 	v9 = 0;
 	if (v1)
 	{
-		v2x = x_DWORD_EA3E4[v1];
+		v2x = Entities_EA3E4[v1];
 		x_WORD_EB398ar = v2x->axis_0x4C_76;
 		//v3 = v2;
 		x_WORD_EB398ar.z += v2x->array_0x52_82.yaw;
@@ -25219,7 +25219,7 @@ void sub_33C70(type_entity_0x6E8E* a1x)//214c70
 	//return result;
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -25231,15 +25231,15 @@ void sub_33D40(type_entity_0x6E8E* a1x)//214d40
 
 	for (i = a1x->word_0x34_52; ; i = v2x->word_0x34_52)
 	{
-		v2x = x_DWORD_EA3E4[i];
-		if (v2x <= x_DWORD_EA3E4[0])
+		v2x = Entities_EA3E4[i];
+		if (v2x <= Entities_EA3E4[0])
 			break;
 		SetEntity04_57F10(v2x);
 	}
 	SetEntity04_57F10(a1x);
 	//return 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00033D80) --------------------------------------------------------
 void sub_33D80(type_entity_0x6E8E* a1x)//214d80
@@ -26246,8 +26246,8 @@ void sub_35390(type_entity_0x6E8E* a1x)//216390
 			v9 = &a1x->axis_0x4C_76;
 			if (D41A0_0.word_0xe <= i)
 				break;
-			v4x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[v3x].word_0x00a_2BE4_11240];
-			if (sub_106C0(a1x, x_DWORD_EA3E4[D41A0_0.array_0x2BDE[v3x].word_0x00a_2BE4_11240]))
+			v4x = Entities_EA3E4[D41A0_0.array_0x2BDE[v3x].word_0x00a_2BE4_11240];
+			if (sub_106C0(a1x, Entities_EA3E4[D41A0_0.array_0x2BDE[v3x].word_0x00a_2BE4_11240]))
 			{
 				v5 = Maths::sub_581E0_maybe_tan2(&v4x->axis_0x4C_76, v9);
 				if ((unsigned __int16)sub_582B0(v4x->word_0x1C_28, v5) < 0xAAu)
@@ -26273,7 +26273,7 @@ void sub_35390(type_entity_0x6E8E* a1x)//216390
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00035530) --------------------------------------------------------
 void sub_35530(type_entity_0x6E8E* a1x)//216530
@@ -26282,8 +26282,8 @@ void sub_35530(type_entity_0x6E8E* a1x)//216530
 	__int16 v2; // ax
 	__int16 v3; // ax
 
-	resultx = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-	if (resultx > x_DWORD_EA3E4[0])
+	resultx = Entities_EA3E4[a1x->parentId_0x28_40];
+	if (resultx > Entities_EA3E4[0])
 	{
 		if (resultx->life_0x8 == 1)
 		{
@@ -26304,7 +26304,7 @@ void sub_35530(type_entity_0x6E8E* a1x)//216530
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -26428,7 +26428,7 @@ void sub_357C0(type_entity_0x6E8E* a1x)//2167c0
 		if (v1 > 8)
 			v1 = 8;
 		v2 = 0;
-		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[36 / 4]; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[36 / 4]; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (ix->word_0x94_148 == a1x->id_0x1A_26)
 				v2++;
@@ -26555,7 +26555,7 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 		if (a1x->str_0x5E_94.word_0x7A_122)
 		{
 			v35 = 1;
-			a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &x_DWORD_EA3E4[a1x->str_0x5E_94.word_0x7A_122]->axis_0x4C_76);
+			a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &Entities_EA3E4[a1x->str_0x5E_94.word_0x7A_122]->axis_0x4C_76);
 			//v6 = a1x->str_0x5E_94.word_0x76_118;
 			//v7 = a1x->word_0x1C_28;
 			x_WORD_EB398ar.x = 0;
@@ -26568,7 +26568,7 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 		}
 		if (a1x->struct_byte_0xc_12_15.byte[0] & 0x40)
 		{
-			v8x = x_DWORD_EA3E4[a1x->word_0x96_150];
+			v8x = Entities_EA3E4[a1x->word_0x96_150];
 			v9 = 1;
 			if (v8x->class_0x3F_63 != 3 || 3 != v8x->model_0x40_64)
 			{
@@ -26591,8 +26591,8 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 			{
 				v10 = a1x->word_0x96_150;
 				a1x->word_0x2C_44 = 128;
-				a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &x_DWORD_EA3E4[v10]->axis_0x4C_76);
-				v11 = Maths::sub_58490_radix_3d_2(&a1x->axis_0x4C_76, &x_DWORD_EA3E4[a1x->word_0x96_150]->axis_0x4C_76);
+				a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &Entities_EA3E4[v10]->axis_0x4C_76);
+				v11 = Maths::sub_58490_radix_3d_2(&a1x->axis_0x4C_76, &Entities_EA3E4[a1x->word_0x96_150]->axis_0x4C_76);
 				if (v11 <= 1024)
 				{
 					if (v11 >= 16)
@@ -26603,7 +26603,7 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 					else
 					{
 						x_WORD_EB398ar = a1x->axis_0x4C_76;
-						v12x = x_DWORD_EA3E4[a1x->word_0x96_150];
+						v12x = Entities_EA3E4[a1x->word_0x96_150];
 						x_WORD_EB398ar.x = v12x->axis_0x4C_76.x;
 						//v13 = v12x->array_0x4C_76.z;
 						x_WORD_EB398ar.y = v12x->axis_0x4C_76.y;
@@ -26768,7 +26768,7 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 	debugcounter_216940++;
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
@@ -26829,7 +26829,7 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 			v2 = a1x->str_0x5E_94.word_0x7A_122;
 			a1x->actSpeed_0x82_130 = 0;
 			v31 = 1;
-			a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &x_DWORD_EA3E4[v2]->axis_0x4C_76);
+			a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &Entities_EA3E4[v2]->axis_0x4C_76);
 			//v3 = a1x->str_0x5E_94.word_0x76_118;
 			//v4 = a1x->word_0x1C_28;
 			x_WORD_EB398ar.x = 0;
@@ -26844,7 +26844,7 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 		{
 			v5 = a1x->word_0x96_150;
 			a1x->actSpeed_0x82_130 = 0;
-			v6x = x_DWORD_EA3E4[v5];
+			v6x = Entities_EA3E4[v5];
 			v7 = 1;
 			if (v6x->class_0x3F_63 != 3 || 3 != v6x->model_0x40_64)
 			{
@@ -26867,8 +26867,8 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 			{
 				v8 = a1x->word_0x96_150;
 				a1x->word_0x2C_44 = 128;
-				a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &x_DWORD_EA3E4[v8]->axis_0x4C_76);
-				v9 = Maths::sub_58490_radix_3d_2(&a1x->axis_0x4C_76, &x_DWORD_EA3E4[a1x->word_0x96_150]->axis_0x4C_76);
+				a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &Entities_EA3E4[v8]->axis_0x4C_76);
+				v9 = Maths::sub_58490_radix_3d_2(&a1x->axis_0x4C_76, &Entities_EA3E4[a1x->word_0x96_150]->axis_0x4C_76);
 				if (v9 <= 1024)
 				{
 					if (v9 >= 16)
@@ -26883,7 +26883,7 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 						x_WORD_EB398ar = a1x->axis_0x4C_76;
 						//*(_DWORD*)& word_EB398 = *(_DWORD*)(a1 + 76);
 						//*(&word_EB398 + 2) = *(_WORD*)(a1 + 80);
-						v10x = x_DWORD_EA3E4[a1x->word_0x96_150];
+						v10x = Entities_EA3E4[a1x->word_0x96_150];
 						//word_EB398 = v10[38];
 						//v11 = v10[40];
 						//word_EB39A = v10[39];
@@ -27136,7 +27136,7 @@ void sub_36770(type_entity_0x6E8E* a1x)//217770
 	v1x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 0);
 	if (v1x)
 	{
-		v2x = x_DWORD_EA3E4[a1x->str_0x5E_94.word_0x68_104];
+		v2x = Entities_EA3E4[a1x->str_0x5E_94.word_0x68_104];
 		v1x->word_0x96_150 = a1x->str_0x5E_94.word_0x68_104;
 		sub_655C0(v1x, v2x);
 		v1x->word_0x1C_28 = v1x->word_0x20_32;
@@ -27153,7 +27153,7 @@ void sub_36770(type_entity_0x6E8E* a1x)//217770
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00036850) --------------------------------------------------------
 void sub_36850(type_entity_0x6E8E* a1x)//217850
@@ -27167,7 +27167,7 @@ void sub_36850(type_entity_0x6E8E* a1x)//217850
 	v2x = v1x;
 	if (v1x)
 	{
-		v3x = x_DWORD_EA3E4[a1x->str_0x5E_94.word_0x68_104];
+		v3x = Entities_EA3E4[a1x->str_0x5E_94.word_0x68_104];
 		v1x->byte_0x43_67 = 10;
 		v1x->byte_0x44_68 = 23;
 		v1x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -27186,7 +27186,7 @@ void sub_36850(type_entity_0x6E8E* a1x)//217850
 	//return v1;
 }
 // D8456: using guessed type void *off_D8456;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (00036920) --------------------------------------------------------
@@ -27246,14 +27246,14 @@ signed int sub_369F0(/*signed int a1, */__int16 a2)//2179f0
 	type_entity_0x6E8E* v2x; // eax
 	signed int result; // eax
 
-	v2x = x_DWORD_EA3E4[a2];
-	if (v2x <= x_DWORD_EA3E4[0] || v2x->class_0x3F_63 != 3)
+	v2x = Entities_EA3E4[a2];
+	if (v2x <= Entities_EA3E4[0] || v2x->class_0x3F_63 != 3)
 		result = 52;
 	else
 		result = sub_36A50(/*a1, */v2x->dword_0xA4_164x->word_0x38_56);
 	return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00036A50) --------------------------------------------------------
 signed int sub_36A50(/*signed int a1, */char a2)//217a50
@@ -27316,10 +27316,10 @@ void sub_36AE0(type_entity_0x6E8E* a1x)//217ae0
 	a1x->axis_0x4C_76.z = result;
 	if (v2)
 	{
-		v3x = x_DWORD_EA3E4[v2];
+		v3x = Entities_EA3E4[v2];
 		if (v3x->class_0x3F_63 == 3 && !a1x->word_0x94_148)
 		{
-			for (ix = x_DWORD_EA3E4[1]; ix < x_DWORD_EA3E4[1000]; ix++)
+			for (ix = Entities_EA3E4[1]; ix < Entities_EA3E4[1000]; ix++)
 			{
 				if (a1x - D41A0_0.struct_0x6E8E == ix->word_0x94_148)
 					ix->word_0x94_148 = v3x - D41A0_0.struct_0x6E8E;
@@ -27331,7 +27331,7 @@ void sub_36AE0(type_entity_0x6E8E* a1x)//217ae0
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EA3E8: using guessed type int x_DWORD_EA3E8;
 // EB384: using guessed type int x_DWORD_EB384;
 
@@ -27433,8 +27433,8 @@ void sub_36D50(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//217d50
 			a1x->mana_0x90_144 += a2x->mana_0x90_144;
 			return sub_57F20(a2x);
 		}
-		v3x = x_DWORD_EA3E4[a1x->word_0x94_148];
-		v4x = x_DWORD_EA3E4[a2x->word_0x94_148];
+		v3x = Entities_EA3E4[a1x->word_0x94_148];
+		v4x = Entities_EA3E4[a2x->word_0x94_148];
 		if (v3x->class_0x3F_63 == 10 && v4x->class_0x3F_63 == 10)
 		{
 			a1x->mana_0x90_144 += a2x->mana_0x90_144;
@@ -27483,7 +27483,7 @@ void sub_36D50(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//217d50
 	return sub_57F20(a2x);
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00036F30) --------------------------------------------------------
 void sub_36F30(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//217f30
@@ -27769,7 +27769,7 @@ void ApplyTerrainModification_37240(type_entity_0x6E8E* event)//218240
 			{
 				if (v17 <= 0x30u)
 				{
-					x_DWORD_EA3E4[event->parentId_0x28_40]->word_0x2E_46 = 2;
+					Entities_EA3E4[event->parentId_0x28_40]->word_0x2E_46 = 2;
 					sub_377A0(event);
 					SetEntity04_57F10(event);
 				}
@@ -27917,19 +27917,19 @@ void ApplyTerrainModification_37240(type_entity_0x6E8E* event)//218240
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3BC: using guessed type int **filearray_2aa18c[24];
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00037740) --------------------------------------------------------
 bool IsNextEvent0A_2A_37740(type_entity_0x6E8E* event)//218740
 {
 	type_entity_0x6E8E* event2 = x_D41A0_BYTEARRAY_4_struct.dword_38535;
-	if (event2 <= x_DWORD_EA3E4[0])
+	if (event2 <= Entities_EA3E4[0])
 		return false;
 	while (event2->class_0x3F_63 != 0xA || event2->model_0x40_64 != 0x2A || !CompareAxisWithShift_10750(event, event2))
 	{
 		event2 = event2->next_0;//fix it
-		if (event2 <= x_DWORD_EA3E4[0])
+		if (event2 <= Entities_EA3E4[0])
 			return false;
 	}
 	return true;
@@ -27940,14 +27940,14 @@ void sub_377A0(type_entity_0x6E8E* a1x)//2187a0
 {
 	type_entity_0x6E8E* ix; // ebx
 
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (CompareAxisWithShift_10750(a1x, ix))
 			sub_5FBD0(ix);
 	}
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000377F0) --------------------------------------------------------
 void sub_377F0(type_entity_0x6E8E* a1x)//2187f0
@@ -28009,7 +28009,7 @@ void sub_377F0(type_entity_0x6E8E* a1x)//2187f0
 	HIBYTE(v25) = HIBYTE(v1) - (v5 >> 1);
 	if (v6 & 2)
 	{
-		if (!x_DWORD_EA3E4[a1x->parentId_0x28_40]->word_0x30_48 && a1x->dword_0x10_16)
+		if (!Entities_EA3E4[a1x->parentId_0x28_40]->word_0x30_48 && a1x->dword_0x10_16)
 		{
 			v9 = a1x->word_0x2A_42 - a1x->word_0x2E_46;
 			v10 = a1x->dword_0x10_16;
@@ -28110,8 +28110,8 @@ void sub_377F0(type_entity_0x6E8E* a1x)//2187f0
 		}
 		else
 		{
-			x_DWORD_EA3E4[a1x->parentId_0x28_40]->word_0x2E_46 = 2;
-			x_DWORD_EA3E4[a1x->parentId_0x28_40]->word_0x9A_154x.z = 32 * a1x->word_0x2E_46;
+			Entities_EA3E4[a1x->parentId_0x28_40]->word_0x2E_46 = 2;
+			Entities_EA3E4[a1x->parentId_0x28_40]->word_0x9A_154x.z = 32 * a1x->word_0x2E_46;
 			sub_48A20(v5 >> 1, v1, SHIBYTE(v1), (unsigned __int16)(v5 >> 1), (v3 >> 1) & 0xFFFF, 3u);
 			SetEntity04_57F10(a1x);
 		}
@@ -28237,7 +28237,7 @@ void AddTerrainMod0A_2A_37BC0(type_entity_0x6E8E* a1x)//218bc0 // groove castle
 					v44x._axis_2d.y++;
 				}
 			}
-			x_DWORD_EA3E4[a1x->parentId_0x28_40]->word_0x2E_46 = 2;
+			Entities_EA3E4[a1x->parentId_0x28_40]->word_0x2E_46 = 2;
 			SetEntity04_57F10(a1x);
 		}
 	}
@@ -28253,7 +28253,7 @@ void AddTerrainMod0A_2A_37BC0(type_entity_0x6E8E* a1x)//218bc0 // groove castle
 		}
 		else
 		{
-			if (!x_DWORD_EA3E4[a1x->parentId_0x28_40]->word_0x30_48)
+			if (!Entities_EA3E4[a1x->parentId_0x28_40]->word_0x30_48)
 			{
 				v49 = (unsigned __int16)(a1x->axis_0x4C_76.x + 128) >> 8;
 				v47 = (unsigned __int16)(a1x->axis_0x4C_76.y + 128) >> 8;
@@ -28508,9 +28508,9 @@ int AddHouse0A_2D_38330(type_entity_0x6E8E* event)//219330
 					v4x->str_0x5E_94.word_0x62_98 = v5;
 				}
 			}
-			v6x = x_DWORD_EA3E4[event->word_0x26_38];
-			if (v6x > x_DWORD_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
-				x_DWORD_EA3E4[event->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
+			v6x = Entities_EA3E4[event->word_0x26_38];
+			if (v6x > Entities_EA3E4[0] && (!v6x->model_0x40_64 || v6x->model_0x40_64 == 1))
+				Entities_EA3E4[event->word_0x26_38]->dword_0xA4_164x->word_0x248_584 = 200;
 		}
 	}
 	v7 = event->str_0x5E_94.word_0x68_104;
@@ -28525,7 +28525,7 @@ int AddHouse0A_2D_38330(type_entity_0x6E8E* event)//219330
 				event->struct_byte_0xc_12_15.dword &= 0xFFDFFFFE;
 				event->struct_byte_0xc_12_15.byte[2] |= 0x20u;
 				SetEntityIndexAndRot_49CD0(event, 177);
-				event->word_0x5A_90 += x_DWORD_EA3E4[event->str_0x5E_94.word_0x68_104]->dword_0xA4_164x->word_0x38_56;
+				event->word_0x5A_90 += Entities_EA3E4[event->str_0x5E_94.word_0x68_104]->dword_0xA4_164x->word_0x38_56;
 			}
 			else if (!(event->struct_byte_0xc_12_15.byte[2] & 0x20))
 			{
@@ -28534,7 +28534,7 @@ int AddHouse0A_2D_38330(type_entity_0x6E8E* event)//219330
 				PrepareEventSound_6E450(v8, -1, 4);
 				event->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
 				SetEntityIndexAndRot_49CD0(event, 177);
-				event->word_0x5A_90 += x_DWORD_EA3E4[event->str_0x5E_94.word_0x68_104]->dword_0xA4_164x->word_0x38_56;
+				event->word_0x5A_90 += Entities_EA3E4[event->str_0x5E_94.word_0x68_104]->dword_0xA4_164x->word_0x38_56;
 			}
 		}
 		event->str_0x5E_94.word_0x68_104 = 0;
@@ -28774,11 +28774,11 @@ int sub_389F0(type_entity_0x6E8E* a1x)//2199f0
 				sub_5F890(a1x, 0);
 			if (sub_106C0(
 				a1x,
-				x_DWORD_EA3E4[x_DWORD_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->word_0x3A_58]))
+				Entities_EA3E4[Entities_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->word_0x3A_58]))
 			{
 				//v2 =a1x->word_0x1A_26;
-				x_DWORD_EA3E4[x_DWORD_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->word_0x3A_58]->str_0x5E_94.word_0x80_128 = a1x->id_0x1A_26;
-				x_DWORD_EA3E4[x_DWORD_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->word_0x3A_58]->str_0x5E_94.word_0x7C_124 = 10;
+				Entities_EA3E4[Entities_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->word_0x3A_58]->str_0x5E_94.word_0x80_128 = a1x->id_0x1A_26;
+				Entities_EA3E4[Entities_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->word_0x3A_58]->str_0x5E_94.word_0x7C_124 = 10;
 			}
 			else
 			{
@@ -28789,7 +28789,7 @@ int sub_389F0(type_entity_0x6E8E* a1x)//2199f0
 	SetEntity04_57F10(a1x);
 	return 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00038B00) --------------------------------------------------------
 signed int CompareEvent08_38B00(type_entity_0x6E8E* event)//219b00
@@ -28899,7 +28899,7 @@ unsigned int sub_38D80(type_entity_0x6E8E* a1x)//219d80
 		SetEntity04_57F10(a1x);
 		return 0;
 	}
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38523; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38523; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (!ix->str_0x5E_94.word_0x7A_122)
 		{
@@ -28920,7 +28920,7 @@ unsigned int sub_38D80(type_entity_0x6E8E* a1x)//219d80
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00038E20) --------------------------------------------------------
 int sub_38E20(type_entity_0x6E8E* a1x)//219e20
@@ -28945,7 +28945,7 @@ int sub_38E70(type_entity_0x6E8E* a1x)//219e70
 
 	if (a1x->word_0x96_150)
 	{
-		v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+		v1x = Entities_EA3E4[a1x->word_0x96_150];
 		if (v1x->class_0x3F_63 == 3 && !v1x->model_0x40_64)
 		{
 			//v2 = v1x->dword_0xA4_164;
@@ -28966,7 +28966,7 @@ int sub_38E70(type_entity_0x6E8E* a1x)//219e70
 	SetEntity04_57F10(a1x);
 	return 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00038F70) --------------------------------------------------------
 int sub_38F70(type_entity_0x6E8E* a1x)//219f70
@@ -28976,7 +28976,7 @@ int sub_38F70(type_entity_0x6E8E* a1x)//219f70
 
 	if (a1x->word_0x96_150)
 	{
-		v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+		v1x = Entities_EA3E4[a1x->word_0x96_150];
 		if (v1x->class_0x3F_63 == 3 && !v1x->model_0x40_64)
 		{
 			//v2 = v1x->dword_0xA4_164;
@@ -28994,7 +28994,7 @@ int sub_38F70(type_entity_0x6E8E* a1x)//219f70
 	SetEntity04_57F10(a1x);
 	return 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00039040) --------------------------------------------------------
 void sub_39040(type_entity_0x6E8E* a1x)//21a040
@@ -29443,7 +29443,7 @@ unsigned __int8 sub_396D0(type_entity_0x6E8E* a1x)//21a6d0
 				v22++;
 				HIBYTE(v21)++;
 			}
-			for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+			for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > Entities_EA3E4[0]; jx = jx->next_0)
 			{
 				if (jx->model_0x40_64 == 2
 					&& jx->struct_byte_0xc_12_15.byte[2] & 0x10
@@ -29553,7 +29553,7 @@ unsigned __int8 sub_396D0(type_entity_0x6E8E* a1x)//21a6d0
 // D41A4: using guessed type int x_DWORD_D41A4;
 // D41B6: using guessed type char x_BYTE_D41B6;
 // DBF50: using guessed type void (/*__noreturn*/ *off_DBF50[2])();
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00039B60) --------------------------------------------------------
 void sub_39B60(type_entity_0x6E8E* a1x)//21ab60
@@ -29594,10 +29594,10 @@ void sub_39B60(type_entity_0x6E8E* a1x)//21ab60
 			{
 				for (i = mapEntityIndex_15B4E0[v16]; ; i = v10x->oldMapEntity_0x16_22)
 				{
-					v10x = x_DWORD_EA3E4[i];
-					if (v10x == x_DWORD_EA3E4[0])
+					v10x = Entities_EA3E4[i];
+					if (v10x == Entities_EA3E4[0])
 						goto LABEL_35;
-					if (sub_39FA0(a1x, x_DWORD_EA3E4[i]))
+					if (sub_39FA0(a1x, Entities_EA3E4[i]))
 					{
 						v3 = Maths::sub_58490_radix_3d_2(&v10x->axis_0x4C_76, &a1x->axis_0x4C_76);
 						v4 = a1x->word_0x2C_44;
@@ -29673,7 +29673,7 @@ void sub_39B60(type_entity_0x6E8E* a1x)//21ab60
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -29728,8 +29728,8 @@ char sub_39E40(type_entity_0x6E8E* a1x)//21ae40
 				break;
 			for (i = mapEntityIndex_15B4E0[v8]; ; i = v13x->oldMapEntity_0x16_22)
 			{
-				v13x = x_DWORD_EA3E4[i];
-				if (v13x == x_DWORD_EA3E4[0])
+				v13x = Entities_EA3E4[i];
+				if (v13x == Entities_EA3E4[0])
 					break;
 				if (v13x != a1x && v13x->class_0x3F_63 == 10)
 				{
@@ -29756,7 +29756,7 @@ char sub_39E40(type_entity_0x6E8E* a1x)//21ae40
 	} while (v7 < 54);
 	return 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00039FA0) --------------------------------------------------------
 char sub_39FA0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//21afa0
@@ -29876,7 +29876,7 @@ void sub_3A090(type_entity_0x6E8E* a1x)//21b909
 	char v11; // [esp+Ch] [ebp-4h]
 
 	v8 = 0;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38527; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38527; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (CompareAxisWithShift_10750(a1x, ix))
 		{
@@ -29884,7 +29884,7 @@ void sub_3A090(type_entity_0x6E8E* a1x)//21b909
 			ix->byte_0x3D_61 = 0;
 		}
 	}
-	for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+	for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38519; jx > Entities_EA3E4[0]; jx = jx->next_0)
 	{
 		if (jx->model_0x40_64 == 2 && CompareAxisWithShift_10750(a1x, jx))
 		{
@@ -29924,7 +29924,7 @@ void sub_3A090(type_entity_0x6E8E* a1x)//21b909
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // E9B90: using guessed type int x_DWORD_E9B90;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0003A200) --------------------------------------------------------
 void sub_3A200(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//21b200
@@ -30198,8 +30198,8 @@ int sub_3A650(type_entity_0x6E8E* a1x)//21b650
 
 	if (a1x->word_0x96_150)
 	{
-		v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->word_0x96_150];
+		if (v1x > Entities_EA3E4[0])
 		{
 			v2 = a1x->byte_0x46_70;
 			v10 = ((unsigned __int16)(v1x->axis_0x4C_76.x + 128) >> 8) - v2;
@@ -30213,8 +30213,8 @@ int sub_3A650(type_entity_0x6E8E* a1x)//21b650
 						;
 						k = v6x->oldMapEntity_0x16_22)
 					{
-						v6x = x_DWORD_EA3E4[k];
-						if (v6x <= x_DWORD_EA3E4[0])
+						v6x = Entities_EA3E4[k];
+						if (v6x <= Entities_EA3E4[0])
 							break;
 						if (v6x->class_0x3F_63 == v1x->class_0x3F_63
 							&& v6x->model_0x40_64 == v1x->model_0x40_64
@@ -30243,7 +30243,7 @@ int sub_3A650(type_entity_0x6E8E* a1x)//21b650
 	return 1;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0003A7F0) --------------------------------------------------------
 char sub_3A7F0(type_entity_0x6E8E* a1x)//21b7f0
@@ -30338,10 +30338,10 @@ void sub_3A8B0(type_entity_0x6E8E* a1x)//21b8b0
 		add_compare(0x21b8b4, CommandLineParams.DoDebugafterload());
 	}
 
-	v2x = x_DWORD_EA3E4[a1x->word_0x32_50];
+	v2x = Entities_EA3E4[a1x->word_0x32_50];
 	v31x = 0;
 	v29 = 0x10000;
-	v33x = x_DWORD_EA3E4[a1x->word_0x32_50];
+	v33x = Entities_EA3E4[a1x->word_0x32_50];
 	if (v2x->life_0x8 < 0 || v2x->struct_byte_0xc_12_15.byte[1] & 4)
 	{
 	LABEL_99:
@@ -30401,8 +30401,8 @@ void sub_3A8B0(type_entity_0x6E8E* a1x)//21b8b0
 			}
 			else if (!(a1x->byte_0x3E_62 & 7))
 			{
-				v9x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[12]];
-				if (v9x > x_DWORD_EA3E4[0] && v9x->word_0x2E_46 && v9x->byte_0x46_70 >= 2)
+				v9x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[12]];
+				if (v9x > Entities_EA3E4[0] && v9x->word_0x2E_46 && v9x->byte_0x46_70 >= 2)
 					a1x->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
 				else
 					a1x->struct_byte_0xc_12_15.byte[0] |= 1u;
@@ -30487,7 +30487,7 @@ void sub_3A8B0(type_entity_0x6E8E* a1x)//21b8b0
 		case 4:
 			if (!(a1x->byte_0x3E_62 & 0xF))
 			{
-				for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+				for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 				{
 					//LOBYTE(v12) = ix->byte_0x40_64;
 					if (ix->model_0x40_64 <= 1u && ix != v33x)
@@ -30517,8 +30517,8 @@ void sub_3A8B0(type_entity_0x6E8E* a1x)//21b8b0
 			v17 = a1x->word_0x96_150;
 			v37 = 0;
 			if (!v17
-				|| x_DWORD_EA3E4[v17]->life_0x8 < 0
-				|| x_DWORD_EA3E4[v17]->struct_byte_0xc_12_15.byte[1] & 4)
+				|| Entities_EA3E4[v17]->life_0x8 < 0
+				|| Entities_EA3E4[v17]->struct_byte_0xc_12_15.byte[1] & 4)
 			{
 				v37 = 1;
 			}
@@ -30542,7 +30542,7 @@ void sub_3A8B0(type_entity_0x6E8E* a1x)//21b8b0
 					{
 						v19x->id_0x1A_26 = a1x->word_0x32_50;
 						v19x->word_0x96_150 = a1x->word_0x96_150;
-						sub_655C0(v19x, x_DWORD_EA3E4[v17]);
+						sub_655C0(v19x, Entities_EA3E4[v17]);
 						v20x->word_0x1C_28 = v20x->word_0x20_32;
 						v20x->word_0x1E_30 = v20x->word_0x22_34;
 						v21 = v20x->word_0x1C_28;
@@ -30641,7 +30641,7 @@ void sub_3A8B0(type_entity_0x6E8E* a1x)//21b8b0
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -30713,8 +30713,8 @@ void sub_3AF00_castle_defend_event(type_entity_0x6E8E* a1x)//21bf00
 		SetEntity04_57F10(a1x);
 		return;
 	}
-	v38x = x_DWORD_EA3E4[v2];
-	v3.un_0x6E8E = x_DWORD_EA3E4[v38x->dword_0xA4_164x->word_0x3A_58];
+	v38x = Entities_EA3E4[v2];
+	v3.un_0x6E8E = Entities_EA3E4[v38x->dword_0xA4_164x->word_0x3A_58];
 	if (a1x->word_0x4A_74 <= 1)
 		v37 = 384;
 	else
@@ -30800,7 +30800,7 @@ void sub_3AF00_castle_defend_event(type_entity_0x6E8E* a1x)//21bf00
 		v43 = 0;
 		if (!a1x->word_0x96_150)
 			goto LABEL_104;
-		v16x = x_DWORD_EA3E4[a1x->word_0x96_150];
+		v16x = Entities_EA3E4[a1x->word_0x96_150];
 		if (v16x->life_0x8 < 0 || v16x->struct_byte_0xc_12_15.byte[1] & 4)
 			goto LABEL_104;
 		switch (a1x->word_0x2C_44)
@@ -30893,16 +30893,16 @@ LABEL_33:
 		int previndex = -1;
 		//fix*/
 
-		for (ix = x_DWORD_EA3E4[mapEntityIndex_15B4E0[(unsigned __int8)(v33 + v36) + ((unsigned __int8)(v32 + v35) << 8)]];
+		for (ix = Entities_EA3E4[mapEntityIndex_15B4E0[(unsigned __int8)(v33 + v36) + ((unsigned __int8)(v32 + v35) << 8)]];
 			;
-			ix = x_DWORD_EA3E4[ix->oldMapEntity_0x16_22])
+			ix = Entities_EA3E4[ix->oldMapEntity_0x16_22])
 		{
 			//fix
-			/*if (ix->word_0x16_22 == x_DWORD_EA3E4[ix->word_0x16_22]->word_0x16_22)
+			/*if (ix->word_0x16_22 == Entities_EA3E4[ix->word_0x16_22]->word_0x16_22)
 				return;*/
 				//fix
 
-			if (ix == x_DWORD_EA3E4[0] || v39)
+			if (ix == Entities_EA3E4[0] || v39)
 				goto LABEL_33;
 			v7 = ix->class_0x3F_63;
 			if (v7 >= 3u)
@@ -31021,7 +31021,7 @@ LABEL_74:
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (0003B4D0) --------------------------------------------------------
@@ -32048,7 +32048,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 			testa1[1] = 0xd480;
 			testa1[2] = 0x1320;
 			sub_50A90((int)testa1, 17, 17);*/
-			//sub_692A0(x_DWORD_EA3E4[0xc4e0 / 168]);
+			//sub_692A0(Entities_EA3E4[0xc4e0 / 168]);
 			//!!!!!!!!!!! debug fix it
 
 			sub_47160();
@@ -32400,7 +32400,7 @@ type_entity_0x6E8E OldTestEntity[256];
 
 void analyzeEntites() {
 	int lastTempEntity=0;
-	for (type_entity_0x6E8E* mx = x_DWORD_EA3E4[1]; mx < x_DWORD_EA3E4[1000]; mx++)
+	for (type_entity_0x6E8E* mx = Entities_EA3E4[1]; mx < Entities_EA3E4[1000]; mx++)
 	{
 		if ((mx->class_0x3F_63 == 0xB) && (mx->model_0x40_64 == 0x20))
 		{
@@ -32536,7 +32536,7 @@ void DrawAndEventsInGame_47560(/*uint8_t* a1, int a2, */uint32_t a3, signed int 
 
 	if (CommandLineParams.DoDetectDwordA()) {
 		for (int iii = 1; iii < 0x3E9; iii++)
-			if (x_DWORD_EA3E4[iii]->oldMapEntity_0x16_22 == iii)
+			if (Entities_EA3E4[iii]->oldMapEntity_0x16_22 == iii)
 				allert_error();
 		for (int jx = 1; jx < 50; jx++)
 		{
@@ -33704,7 +33704,7 @@ void sub_49F30()//22af30
 	do
 	{
 		D41A0_0.dword_0x35++;
-		D41A0_0.pointers_0x246[D41A0_0.dword_0x35] = x_DWORD_EA3E4[index];
+		D41A0_0.pointers_0x246[D41A0_0.dword_0x35] = Entities_EA3E4[index];
 		index--;
 	} while (index > 0);
 }
@@ -36734,7 +36734,7 @@ unsigned __int16 sub_4F1C0(type_entity_0x6E8E* a1x)//230c10
 	v1x = a1x;
 	v2 = 0;
 	result = getTerrainAlt_10C40(&a1x->axis_0x4C_76);
-	for (i = result; v1x > x_DWORD_EA3E4[0]; v1x = x_DWORD_EA3E4[result])
+	for (i = result; v1x > Entities_EA3E4[0]; v1x = Entities_EA3E4[result])
 	{
 		v4 = v1x->word_0x2C_44 + 293;
 		v5 = str_WORD_D951C[v4].rotSpeed_8;
@@ -36750,7 +36750,7 @@ unsigned __int16 sub_4F1C0(type_entity_0x6E8E* a1x)//230c10
 	return result;
 }
 // D9524: using guessed type __int16 x_WORD_D9524[];
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0004F2A0) --------------------------------------------------------
 type_entity_0x6E8E* sub_4F2A0(axis_3d* a1x)//2302a0
@@ -36851,8 +36851,8 @@ __int16 sub_4F440(type_entity_0x6E8E* a1x)//230440
 	a1x->word_0x1E_30 = 0;
 	while (1)
 	{
-		v13x = x_DWORD_EA3E4[v2];
-		if (v13x <= x_DWORD_EA3E4[0])
+		v13x = Entities_EA3E4[v2];
+		if (v13x <= Entities_EA3E4[0])
 			return v2;
 		//v3 = v13x->struct_byte_0xc_12_15.byte[0] & 0xFE;
 		v4 = v13x->byte_0x44_68;
@@ -36920,7 +36920,7 @@ __int16 sub_4F440(type_entity_0x6E8E* a1x)//230440
 		v2 = v13x->word_0x34_52;
 	}
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (0004F5F0) --------------------------------------------------------
@@ -38407,7 +38407,7 @@ void GameEvents_51BB0()//232bb0
 	for (int i = 0; i < D41A0_0.word_0xe; i++)
 	{
 		//adress 233d56
-		actEvent = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[i].word_0x00a_2BE4_11240];
+		actEvent = Entities_EA3E4[D41A0_0.array_0x2BDE[i].word_0x00a_2BE4_11240];
 		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x20)
 		{
 			sub_53A40(&D41A0_0.array_0x6E3E[i]);
@@ -38633,7 +38633,7 @@ void GameEvents_51BB0()//232bb0
 						}
 					}
 				}
-				for (type_entity_0x6E8E* evIndex = x_DWORD_EA3E4[1]; evIndex < x_DWORD_EA3E4[1000]; evIndex++)
+				for (type_entity_0x6E8E* evIndex = Entities_EA3E4[1]; evIndex < Entities_EA3E4[1000]; evIndex++)
 				{
 					if (evIndex->class_0x3F_63 == 11)
 						evIndex->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
@@ -38651,7 +38651,7 @@ void GameEvents_51BB0()//232bb0
 				sub_52D70(i, (char*)".. CHEAT: more mana");
 				break;
 			case 3:
-				for (type_entity_0x6E8E* evLoop = x_D41A0_BYTEARRAY_4_struct.dword_38519; evLoop > x_DWORD_EA3E4[0]; evLoop = evLoop->next_0)
+				for (type_entity_0x6E8E* evLoop = x_D41A0_BYTEARRAY_4_struct.dword_38519; evLoop > Entities_EA3E4[0]; evLoop = evLoop->next_0)
 				{
 					if (evLoop->id_0x1A_26 != actEvent->id_0x1A_26)
 					{
@@ -38662,7 +38662,7 @@ void GameEvents_51BB0()//232bb0
 				sub_52D70(i, (char*)".. CHEAT: destroy all players");
 				break;
 			case 4:
-				for (type_entity_0x6E8E* evLoop = x_D41A0_BYTEARRAY_4_struct.dword_38519; evLoop > x_DWORD_EA3E4[0]; evLoop = evLoop->next_0)
+				for (type_entity_0x6E8E* evLoop = x_D41A0_BYTEARRAY_4_struct.dword_38519; evLoop > Entities_EA3E4[0]; evLoop = evLoop->next_0)
 				{
 					if (evLoop->id_0x1A_26 != actEvent->id_0x1A_26 && evLoop->model_0x40_64 == 2)
 						evLoop->life_0x8 = -1;
@@ -38670,7 +38670,7 @@ void GameEvents_51BB0()//232bb0
 				sub_52D70(i, (char*)".. CHEAT: destroy all castles");
 				break;
 			case 5:
-				for (type_entity_0x6E8E* evLoop = x_D41A0_BYTEARRAY_4_struct.dword_38519; evLoop > x_DWORD_EA3E4[0]; evLoop = evLoop->next_0)
+				for (type_entity_0x6E8E* evLoop = x_D41A0_BYTEARRAY_4_struct.dword_38519; evLoop > Entities_EA3E4[0]; evLoop = evLoop->next_0)
 				{
 					if (evLoop->id_0x1A_26 != actEvent->id_0x1A_26 && evLoop->model_0x40_64 == 3)
 						evLoop->life_0x8 = -1;
@@ -38742,8 +38742,8 @@ void GameEvents_51BB0()//232bb0
 						x_D41A0_BYTEARRAY_4_struct.byteindex_38401 = 8;
 					}
 				}
-				SetSpell_6D5E0(x_DWORD_EA3E4[actEvent->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex]], D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2);
-				sub_6D830(x_DWORD_EA3E4[actEvent->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex]], D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2);
+				SetSpell_6D5E0(Entities_EA3E4[actEvent->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex]], D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2);
+				sub_6D830(Entities_EA3E4[actEvent->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex]], D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2);
 				if (i == D41A0_0.LevelIndex_0xc)
 				{
 					strcpy(D41A0_0.array_0x2BDE[i].array_0x01c_2BFA_11258, x_DWORD_E9C4C_langindexbuffer[SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2].word_0x16x]);
@@ -38783,7 +38783,7 @@ void GameEvents_51BB0()//232bb0
 				actEvent->actSpeed_0x82_130 = 0;
 				actEvent->dword_0xA4_164x->word_0xc_12 = 0;
 				if (actEvent->dword_0xA4_164x->str_611.array_0x333_819x.word[3])
-					x_DWORD_EA3E4[actEvent->dword_0xA4_164x->str_611.array_0x333_819x.word[3]]->word_0x2E_46 = 0;
+					Entities_EA3E4[actEvent->dword_0xA4_164x->str_611.array_0x333_819x.word[3]]->word_0x2E_46 = 0;
 			}
 			if (D41A0_0.array_0x2BDE[i].word_0x007_2BE4_11237 == D41A0_0.LevelIndex_0xc)
 				SetCenterScreenForFlyAssistant_6EDB0();
@@ -38813,11 +38813,11 @@ void GameEvents_51BB0()//232bb0
 			}
 			break;
 		case 0x2A:
-			if (x_DWORD_EA3E4[actEvent->dword_0xA4_164x->word_0x3A_58] > x_DWORD_EA3E4[0])
+			if (Entities_EA3E4[actEvent->dword_0xA4_164x->word_0x3A_58] > Entities_EA3E4[0])
 			{
-				if (x_DWORD_EA3E4[actEvent->dword_0xA4_164x->word_0x3A_58]->dword_0x10_16 == 1)
+				if (Entities_EA3E4[actEvent->dword_0xA4_164x->word_0x3A_58]->dword_0x10_16 == 1)
 					actEvent->dword_0xA4_164x->byte_0x1BE_446 = 1;
-				x_DWORD_EA3E4[actEvent->dword_0xA4_164x->word_0x3A_58]->life_0x8 = -1;
+				Entities_EA3E4[actEvent->dword_0xA4_164x->word_0x3A_58]->life_0x8 = -1;
 			}
 			break;
 		case 0x2B:
@@ -38845,10 +38845,10 @@ void GameEvents_51BB0()//232bb0
 						switch (D41A0_0.array_0x2BDE[i].byte_0x3E1_2BE4_12223)
 						{
 						case 0:
-							if (!(sub_61810(actEvent, x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]) == 0))
+							if (!(sub_61810(actEvent, Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]) == 0))
 								bool1 = true;
 						case 1:
-							if (!(sub_61620(actEvent, x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]) == 0))
+							if (!(sub_61620(actEvent, Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]) == 0))
 								bool1 = true;
 							break;
 						case 2:
@@ -38887,7 +38887,7 @@ void GameEvents_51BB0()//232bb0
 		actEvent->dword_0xA4_164x->dword_0x0_0 = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte5;
 		actEvent->dword_0xA4_164x->word_0x18_24_next_entity = D41A0_0.array_0x6E3E[i].str_0x6E3E_word6;
 		actEvent->dword_0xA4_164x->word_0x1A_26 = D41A0_0.array_0x6E3E[i].str_0x6E3E_word8;
-		sub_57B20(&D41A0_0.array_0x2BDE[i], x_DWORD_EA3E4[D41A0_0.array_0x2BDE[i].word_0x00a_2BE4_11240]);
+		sub_57B20(&D41A0_0.array_0x2BDE[i], Entities_EA3E4[D41A0_0.array_0x2BDE[i].word_0x00a_2BE4_11240]);
 		if (D41A0_0.array_0x2BDE[i].byte_0x846_2BDE)
 			sub_55C60(&D41A0_0.array_0x2BDE[i]);
 		memset(&D41A0_0.array_0x6E3E[i], 0, 10);
@@ -40087,7 +40087,7 @@ void sub_55EB0(__int16 a1)//236eb0
 		{
 			goto LABEL_13;
 		}
-		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[index]; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[index]; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (ix->word_0x96_150 == a1)
 				ix->word_0x96_150 = 0;
@@ -40098,7 +40098,7 @@ void sub_55EB0(__int16 a1)//236eb0
 	//return result;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 void (*null_vector)() {
 };
@@ -41114,7 +41114,7 @@ void sub_56D60(unsigned int a1, char a2)//237d60
 	sub_4A1E0(0, 1);
 	soundActive_E3799 = v2;
 	sub_53160();
-	//v5x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	//v5x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	sub_60F00();
 }
 // 8C250: using guessed type x_DWORD memset(x_DWORD, x_DWORD, x_DWORD);
@@ -41122,7 +41122,7 @@ void sub_56D60(unsigned int a1, char a2)//237d60
 // D41A4: using guessed type int x_DWORD_D41A4;
 // D41B5: using guessed type char x_BYTE_D41B5;
 // E3799: using guessed type char x_BYTE_E3799_sound_card;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (00056EE0) --------------------------------------------------------
@@ -41391,56 +41391,56 @@ void sub_57390(uaxis_2d a1x, uint16_t a2)//238390
 	//uint8_t* v5; // ebx
 
 	//index = a1;
-	for (i = mapEntityIndex_15B4E0[a1x.word]; x_DWORD_EA3E4[i] != x_DWORD_EA3E4[0]; i = x_DWORD_EA3E4[i]->oldMapEntity_0x16_22)
+	for (i = mapEntityIndex_15B4E0[a1x.word]; Entities_EA3E4[i] != Entities_EA3E4[0]; i = Entities_EA3E4[i]->oldMapEntity_0x16_22)
 	{
-		//v5 = x_DWORD_EA3E4[i];
-		/*if (v5 == x_DWORD_EA3E4[0])
+		//v5 = Entities_EA3E4[i];
+		/*if (v5 == Entities_EA3E4[0])
 			break;*/
 			//index = a2;
-		if (x_DWORD_EA3E4[i]->id_0x1A_26 != a2)
+		if (Entities_EA3E4[i]->id_0x1A_26 != a2)
 		{
-			//index = x_DWORD_EA3E4[i][63];
-			if (x_DWORD_EA3E4[i]->class_0x3F_63 == 2)
+			//index = Entities_EA3E4[i][63];
+			if (Entities_EA3E4[i]->class_0x3F_63 == 2)
 			{
-				SetEntity04_57F10(x_DWORD_EA3E4[i]);
+				SetEntity04_57F10(Entities_EA3E4[i]);
 				continue;
 			}
-			if (x_DWORD_EA3E4[i]->class_0x3F_63 == 5)
+			if (Entities_EA3E4[i]->class_0x3F_63 == 5)
 			{
 				v4 = 1;
-				//index = x_DWORD_EA3E4[i][64];
-				if (x_DWORD_EA3E4[i]->model_0x40_64 < 0x10u)
+				//index = Entities_EA3E4[i][64];
+				if (Entities_EA3E4[i]->model_0x40_64 < 0x10u)
 				{
-					if (x_DWORD_EA3E4[i]->model_0x40_64 < 8u)
+					if (Entities_EA3E4[i]->model_0x40_64 < 8u)
 					{
-						if (x_DWORD_EA3E4[i]->model_0x40_64 != 6)
+						if (Entities_EA3E4[i]->model_0x40_64 != 6)
 							goto LABEL_25;
 					}
-					else if (x_DWORD_EA3E4[i]->model_0x40_64 > 8u && x_DWORD_EA3E4[i]->model_0x40_64 != 10)
+					else if (Entities_EA3E4[i]->model_0x40_64 > 8u && Entities_EA3E4[i]->model_0x40_64 != 10)
 					{
 						goto LABEL_25;
 					}
 				}
-				else if (x_DWORD_EA3E4[i]->model_0x40_64 > 0x10u)
+				else if (Entities_EA3E4[i]->model_0x40_64 > 0x10u)
 				{
-					if (x_DWORD_EA3E4[i]->model_0x40_64 < 0x19u)
+					if (Entities_EA3E4[i]->model_0x40_64 < 0x19u)
 					{
-						if (x_DWORD_EA3E4[i]->model_0x40_64 < 0x16u || x_DWORD_EA3E4[i]->model_0x40_64 > 0x17u)
+						if (Entities_EA3E4[i]->model_0x40_64 < 0x16u || Entities_EA3E4[i]->model_0x40_64 > 0x17u)
 							goto LABEL_25;
 					}
-					else if (x_DWORD_EA3E4[i]->model_0x40_64 <= 0x19u)
+					else if (Entities_EA3E4[i]->model_0x40_64 <= 0x19u)
 					{
-						if (x_DWORD_EA3E4[i]->state_0x45_69 != -56)
+						if (Entities_EA3E4[i]->state_0x45_69 != -56)
 							goto LABEL_25;
 					}
-					else if (x_DWORD_EA3E4[i]->model_0x40_64 != 27)
+					else if (Entities_EA3E4[i]->model_0x40_64 != 27)
 					{
 					LABEL_25:
 						if (v4)
 						{
-							x_DWORD_EA3E4[i]->life_0x8 = -1;
-							x_DWORD_EA3E4[i]->word_0x24_36 = a2;
-							x_DWORD_EA3E4[i]->word_0x26_38 = a2;
+							Entities_EA3E4[i]->life_0x8 = -1;
+							Entities_EA3E4[i]->word_0x24_36 = a2;
+							Entities_EA3E4[i]->word_0x26_38 = a2;
 						}
 						continue;
 					}
@@ -41452,7 +41452,7 @@ void sub_57390(uaxis_2d a1x, uint16_t a2)//238390
 	}
 	//return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00057450) --------------------------------------------------------
 char sub_57450(uint8_t a1)//238450
@@ -41505,7 +41505,7 @@ void sub_574A0()//2384a0
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
 	{
 		memset(D41A0_0.str_0x364D2.dword_0x364D6, 0, 104);
-		type_str_611* tempStr611 = &x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x->str_611;
+		type_str_611* tempStr611 = &Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x->str_611;
 		for (int index = 1; index < 0x4b0; index++)
 		{
 			if (D41A0_0.terrain_2FECE.entity_0x30311[index].type_0x30311 == 0x0F)
@@ -41585,7 +41585,7 @@ void UpdateEntities_57730()//238730
 	}
 
 	D41A0_0.rand_0x8 = 9377 * D41A0_0.rand_0x8 + 9439;
-	for (ix = x_DWORD_EA3E4[1]; ix < x_DWORD_EA3E4[1000]; ix++)
+	for (ix = Entities_EA3E4[1]; ix < Entities_EA3E4[1000]; ix++)
 	{
 		//adress 238756
 		if (CommandLineParams.DoDebugSequences2()) {
@@ -41606,7 +41606,7 @@ void UpdateEntities_57730()//238730
 	v3x = 0;
 	x_D41A0_BYTEARRAY_4_struct.dword_38535 = 0;
 	v4x = 0;
-	for (jx = x_DWORD_EA3E4[1]; jx < x_DWORD_EA3E4[1000]; jx++)
+	for (jx = Entities_EA3E4[1]; jx < Entities_EA3E4[1000]; jx++)
 	{
 		if (jx->class_0x3F_63)
 		{
@@ -41620,7 +41620,7 @@ void UpdateEntities_57730()//238730
 					else
 						x_D41A0_BYTEARRAY_4_struct.dword_38519 = jx;
 					v3x = jx;
-					jx->next_0 = x_DWORD_EA3E4[0];
+					jx->next_0 = Entities_EA3E4[0];
 					continue;
 				}
 				continue;
@@ -41643,7 +41643,7 @@ void UpdateEntities_57730()//238730
 						v22x[jx->model_0x40_64]->next_0 = jx;
 					else
 						x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[jx->model_0x40_64] = jx;
-					jx->next_0 = x_DWORD_EA3E4[0];
+					jx->next_0 = Entities_EA3E4[0];
 					v22x[jx->model_0x40_64] = jx;
 				}
 				continue;
@@ -41653,7 +41653,7 @@ void UpdateEntities_57730()//238730
 				else
 					x_D41A0_BYTEARRAY_4_struct.dword_38531 = jx;
 				v23x = jx;
-				jx->next_0 = x_DWORD_EA3E4[0];
+				jx->next_0 = Entities_EA3E4[0];
 				continue;
 			case 0x0A:
 				if (jx->model_0x40_64 < 0x2D)
@@ -41667,7 +41667,7 @@ void UpdateEntities_57730()//238730
 						else
 							x_D41A0_BYTEARRAY_4_struct.dword_38523 = jx;
 						v2x = jx;
-						jx->next_0 = x_DWORD_EA3E4[0];
+						jx->next_0 = Entities_EA3E4[0];
 						continue;
 					}
 					if (jx->model_0x40_64 != 0x2A)
@@ -41676,7 +41676,7 @@ void UpdateEntities_57730()//238730
 						v4x->next_0 = jx;
 					else
 						x_D41A0_BYTEARRAY_4_struct.dword_38535 = jx;
-					jx->next_0 = x_DWORD_EA3E4[0];
+					jx->next_0 = Entities_EA3E4[0];
 					v4x = jx;
 					continue;
 				}
@@ -41687,7 +41687,7 @@ void UpdateEntities_57730()//238730
 					else
 						x_D41A0_BYTEARRAY_4_struct.dword_38527 = jx;
 					v24x = jx;
-					jx->next_0 = x_DWORD_EA3E4[0];
+					jx->next_0 = Entities_EA3E4[0];
 					continue;
 				}
 				if (jx->model_0x40_64 < 0x43)
@@ -41699,7 +41699,7 @@ void UpdateEntities_57730()//238730
 					else
 						x_D41A0_BYTEARRAY_4_struct.dword_38523 = jx;
 					v2x = jx;
-					jx->next_0 = x_DWORD_EA3E4[0];
+					jx->next_0 = Entities_EA3E4[0];
 					continue;
 				}
 				if (jx->model_0x40_64 <= 0x43 || jx->model_0x40_64 == 0x4E)
@@ -41708,7 +41708,7 @@ void UpdateEntities_57730()//238730
 						v4x->next_0 = jx;
 					else
 						x_D41A0_BYTEARRAY_4_struct.dword_38535 = jx;
-					jx->next_0 = x_DWORD_EA3E4[0];
+					jx->next_0 = Entities_EA3E4[0];
 					v4x = jx;
 					continue;
 				}
@@ -41720,7 +41720,7 @@ void UpdateEntities_57730()//238730
 						v4x->next_0 = jx;
 					else
 						x_D41A0_BYTEARRAY_4_struct.dword_38535 = jx;
-					jx->next_0 = x_DWORD_EA3E4[0];
+					jx->next_0 = Entities_EA3E4[0];
 					v4x = jx;
 				}
 				continue;
@@ -41735,7 +41735,7 @@ void UpdateEntities_57730()//238730
 		sub_12780();
 		for (k = 0; k < 29; k++)
 		{
-			for (lx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[k]; lx > x_DWORD_EA3E4[0]; lx = lx->next_0)
+			for (lx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[k]; lx > Entities_EA3E4[0]; lx = lx->next_0)
 			{
 				if (lx->StageVar1_0x48_72 || lx->StageVar2_0x49_73)
 					sub_12500(lx);
@@ -41753,7 +41753,7 @@ void UpdateEntities_57730()//238730
 		if (isCaveLevel_D41B6)
 			sub_58630();
 		sub_60F00();
-		for (mx = x_DWORD_EA3E4[1]; mx < x_DWORD_EA3E4[1000]; mx++)
+		for (mx = Entities_EA3E4[1]; mx < Entities_EA3E4[1000]; mx++)
 		{
 			//adress 238a3d
 			if (CommandLineParams.DoDebugSequences2()) {
@@ -41805,7 +41805,7 @@ void UpdateEntities_57730()//238730
 		}
 		sub_585D0();
 		if (D41A0_0.word_0x3654A)
-			sub_21F60(x_DWORD_EA3E4[D41A0_0.word_0x3654A]);
+			sub_21F60(Entities_EA3E4[D41A0_0.word_0x3654A]);
 	}
 }
 
@@ -42080,7 +42080,7 @@ void sub_585D0()//2395d0
 
 	//v0 = *(uint16_t*)&(unk_D7BD6[0x8d0]);  8C4 +0xc
 	v0 = str_D7BD6[66].word_160_0xc_12;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (!ix->model_0x40_64)
 		{
@@ -42092,7 +42092,7 @@ void sub_585D0()//2395d0
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
 // D84A6: using guessed type __int16 x_WORD_D84A6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00058630) --------------------------------------------------------
 void sub_58630()//239630
@@ -42138,7 +42138,7 @@ LABEL_5:
 		v0 = 0;
 	if (v0)
 	{
-		v4x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[v1].word_0x00a_2BE4_11240];
+		v4x = Entities_EA3E4[D41A0_0.array_0x2BDE[v1].word_0x00a_2BE4_11240];
 		v15x = v4x->axis_0x4C_76;
 		MovePlayer_57FA0(&v15x, v4x->word_0x1C_28, 0, 2560);
 		//LOBYTE(v5) = (unsigned __int16)(v15x.x + 128) >> 8;
@@ -42191,7 +42191,7 @@ LABEL_5:
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00058940) --------------------------------------------------------
 void InitStages_58940()//239940 //init games objectives
@@ -42360,7 +42360,7 @@ void sub_58F00_game_objectives()//239f00
 				v3 = 0;
 				achievedGoal = false;
 				v23 = 0;
-				v17x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+				v17x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 				while (v3 < D41A0_0.stageIndex_0x36E01)
 				{
 					if (D41A0_0.stages_0x3654C[v3].str_3654D_byte1 & 2)
@@ -42378,7 +42378,7 @@ void sub_58F00_game_objectives()//239f00
 							{//adress 239Ffc
 								if (x_D41A0_BYTEARRAY_4_struct.str_index_242ar.dword_4 > 0)
 								{//23a02d
-									if ((100 * (v17x->dword_0xA4_164x->dword_0x13C_316 + x_DWORD_EA3E4[v17x->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144) / x_D41A0_BYTEARRAY_4_struct.str_index_242ar.dword_4)
+									if ((100 * (v17x->dword_0xA4_164x->dword_0x13C_316 + Entities_EA3E4[v17x->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144) / x_D41A0_BYTEARRAY_4_struct.str_index_242ar.dword_4)
 										>= D41A0_0.stages_0x3654C[v3].str_36552_un.dword)
 									{
 										D41A0_0.struct_0x3659C[v0x].substr_3659C.stage_0x3659F[v3] = 2;
@@ -42418,7 +42418,7 @@ void sub_58F00_game_objectives()//239f00
 							if (D41A0_0.stages_0x3654C[v3].str_3654D_byte1 & 1)
 							{
 								v20 = D41A0_0.stages_0x3654C[v3].str_36552_un.dword;
-								if (v17x == x_DWORD_EA3E4[*(unsigned __int16*)(v20 + 40)])
+								if (v17x == Entities_EA3E4[*(unsigned __int16*)(v20 + 40)])
 								{
 									v11 = D41A0_0.stages_0x3654C[v3].str_3654E_axis.x - (signed int)*(signed __int16*)(v20 + 76);
 									if ((signed int)((HIDWORD(v11) ^ v11) - HIDWORD(v11)) <= 768
@@ -42483,7 +42483,7 @@ void sub_58F00_game_objectives()//239f00
 							{
 								v8x = x_D41A0_BYTEARRAY_4_struct.dword_38527;
 								v25 = 0;
-								while (v8x > x_DWORD_EA3E4[0] && !v25)
+								while (v8x > Entities_EA3E4[0] && !v25)
 								{
 									v26 = 0;
 									for (j = D41A0_0.stages_0x3654C[v3].str_36552_un.dword;
@@ -42815,7 +42815,7 @@ int sub_59C80(type_entity_0x6E8E* a1x)//23ac80
 		a1x->axis_0x4C_76.z = getTerrainAlt_10C40(&a1x->axis_0x4C_76);
 		//v2 = (int)x_D41A0_BYTEARRAY_4;
 		//*(x_WORD *)(a1 + 80) = result;
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (!ix->model_0x40_64 && ix->life_0x8 >= 0)
 			{
@@ -42846,7 +42846,7 @@ int sub_59C80(type_entity_0x6E8E* a1x)//23ac80
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00059DC0) --------------------------------------------------------
 char sub_59DC0(type_entity_0x6E8E* a1x)//23adc0
@@ -42862,7 +42862,7 @@ char sub_59DC0(type_entity_0x6E8E* a1x)//23adc0
 	axis_3d v10x; // [esp+0h] [ebp-Ch]
 	char v12; // [esp+8h] [ebp-4h]
 	v12 = 0;
-	v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
+	v1x = Entities_EA3E4[a1x->parentId_0x28_40];
 	if (v1x->life_0x8 < 0 || v1x->struct_byte_0xc_12_15.byte[1] & 4)
 		return 1;
 	if (a1x->dword_0x10_16 <= 5)
@@ -42877,7 +42877,7 @@ char sub_59DC0(type_entity_0x6E8E* a1x)//23adc0
 		a1x->dword_0x10_16++;
 		return v12;
 	}
-	v4x = x_DWORD_EA3E4[a1x->word_0x26_38];
+	v4x = Entities_EA3E4[a1x->word_0x26_38];
 	if (v4x->life_0x8 < 0 || v4x->struct_byte_0xc_12_15.byte[1] & 4)
 	{
 		v12 = 1;
@@ -44159,8 +44159,8 @@ type_entity_0x6E8E* sub_5B070(type_entity_0x6E8E* a1x)//23c070
 	v2 = 0;
 	while (1)
 	{
-		resultx = x_DWORD_EA3E4[v1];
-		if (resultx <= x_DWORD_EA3E4[0])
+		resultx = Entities_EA3E4[v1];
+		if (resultx <= Entities_EA3E4[0])
 			break;
 		if (resultx->class_0x3F_63 == 14)
 		{
@@ -44177,7 +44177,7 @@ type_entity_0x6E8E* sub_5B070(type_entity_0x6E8E* a1x)//23c070
 		resultx = 0;
 	return resultx;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005B100) --------------------------------------------------------
 void sub_5B100(type_entity_0x6E8E* locEvent)//23c100
@@ -45061,7 +45061,7 @@ void sub_5C330()//23D330
 		for (int i = 0; i < 0x3E9; i++)
 		{
 			//uint8_t* x=&x_D41A0_BYTEARRAY_0[0x6e8e + (168 * i)];
-			x_DWORD_EA3E4[i] = &D41A0_0.struct_0x6E8E[i];// (type_entity_0x6E8E*)& x_D41A0_BYTEARRAY_0[0x6e8e + (168 * i)];
+			Entities_EA3E4[i] = &D41A0_0.struct_0x6E8E[i];// (type_entity_0x6E8E*)& x_D41A0_BYTEARRAY_0[0x6e8e + (168 * i)];
 			//int32_t x = *x_D41A0_BYTEARRAY_0 + 0x6e8e + 168 * i;//fix
 			//var_2BB3E0_x_DWORD_EA3D4_14.pointer
 		}
@@ -45174,7 +45174,7 @@ void CollectLevelStats_5C530()//23d530
 
 	v0x = 0;
 	v1 = 0;
-	v2x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v2x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	for (i = 0; i < 26; i++)
 	{
 		v4x = v2x->dword_0xA4_164x;
@@ -45229,7 +45229,7 @@ void CollectLevelStats_5C530()//23d530
 		v2x->dword_0xA4_164x->hitAccuracyPercent_381 = 100;
 	}
 	//v15 = v2x->dword_0xA4_164;
-	v16x = x_DWORD_EA3E4[v2x->dword_0xA4_164x->word_0x3A_58];
+	v16x = Entities_EA3E4[v2x->dword_0xA4_164x->word_0x3A_58];
 	if (v16x)
 	{
 		v17 = x_D41A0_BYTEARRAY_4_struct.str_index_242ar.dword_4 - 1;
@@ -45277,7 +45277,7 @@ LABEL_29:
 // 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005C800) --------------------------------------------------------
 void sub_5C800(type_entity_0x6E8E* a1x, char a2)//23d800
@@ -45319,7 +45319,7 @@ void sub_5C870(type_entity_0x6E8E* a1x)//23d870
 	//type_str_164* v2x; // esi
 	uint32_t index; // eax
 
-	v1x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v1x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	//v2x = v1x->dword_0xA4_164x;
 	index = sub_583F0_distance_3d(&a1x->axis_0x4C_76, &v1x->axis_0x4C_76);
 	if (index <= v1x->dword_0xA4_164x->dword_0x19A_410)
@@ -45327,13 +45327,13 @@ void sub_5C870(type_entity_0x6E8E* a1x)//23d870
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005C8D0) --------------------------------------------------------
 void SetMaxDistance_5C8D0(type_entity_0x6E8E* event)//23d8d0
 {	
 	uint32_t distance; // eax
-	type_entity_0x6E8E* event2 = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	type_entity_0x6E8E* event2 = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	distance = sub_583F0_distance_3d(&event->axis_0x4C_76, &event2->axis_0x4C_76);
 	if (distance <= event2->dword_0xA4_164x->maxDistance_0x19E_414)
 		event2->dword_0xA4_164x->maxDistance_0x19E_414 = distance;
@@ -45400,7 +45400,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//23d950
 	v3 = getTerrainAlt_10C40(&v35x);
 	v3 += 0x100;
 	v35x.z = v3;
-	if (a2x == x_DWORD_EA3E4[0])
+	if (a2x == Entities_EA3E4[0])
 	{
 		v2x = IfSubtypeCallAxisEvent_4A190(&v35x, 3, a1x->byte_0x009_2BE4_11239 == 1);
 		v37 = 1;
@@ -45413,7 +45413,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//23d950
 		//v5 = a2x->dword_0xA4_164x->word_0x3A_58;
 		if (a2x->dword_0xA4_164x->word_0x3A_58)
 		{
-			v6x = &x_DWORD_EA3E4[a2x->dword_0xA4_164x->word_0x3A_58]->axis_0x4C_76;
+			v6x = &Entities_EA3E4[a2x->dword_0xA4_164x->word_0x3A_58]->axis_0x4C_76;
 			v35x = *v6x;
 		}
 		sub_57CF0(a2x, &v35x);
@@ -45504,12 +45504,12 @@ void sub_5C950(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//23d950
 							v23 = D41A0_0.terrain_2FECE.player_0x2FED9[v2x->dword_0xA4_164x->word_0x38_56];
 							if (v23 <= j)
 								break;
-							v18x = &x_DWORD_EA3E4[0]->axis_0x4C_76;
+							v18x = &Entities_EA3E4[0]->axis_0x4C_76;
 							//v19 = v39x->word_0x9A_154x;
 							*v18x = v39x->word_0x9A_154x;
-							v20x = x_DWORD_EA3E4[0];
+							v20x = Entities_EA3E4[0];
 							v21 = v39x->id_0x1A_26;
-							x_DWORD_EA3E4[0]->model_0x40_64 = 0;
+							Entities_EA3E4[0]->model_0x40_64 = 0;
 							v22 = j;
 							v20x->dword_0x10_16 = 0;
 							v20x->id_0x1A_26 = v21;
@@ -45545,7 +45545,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//23d950
 	//v30 = v2x->dword_0xA4_164x;
 	v2x->mana_0x90_144 = v29;
 	v2x->dword_0xA4_164x->byte_0x150_336 = v29;
-	for (kx = x_D41A0_BYTEARRAY_4_struct.dword_38519; kx > x_DWORD_EA3E4[0]; kx = kx->next_0)
+	for (kx = x_D41A0_BYTEARRAY_4_struct.dword_38519; kx > Entities_EA3E4[0]; kx = kx->next_0)
 	{
 		if (kx->id_0x1A_26 != v2x->id_0x1A_26)
 		{
@@ -45582,7 +45582,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//23d950
 // 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006D9C0) --------------------------------------------------------
 void sub_6D9C0(type_str_611* a1x, type_SPELLS_BEGIN_BUFFER_str* a2x, __int16 a3, char a4, char a5)//24e9c0
@@ -45683,9 +45683,9 @@ void sub_6DB50(char a1, char a2)//24eb50
 	{
 		//v3 = (unsigned __int8 *)*xadataspellsdat.colorPalette_var28;
 		v3x = 0;
-		//result = x_DWORD_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x;
+		//result = Entities_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x;
 		v4 = 0;
-		v5 = &x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x->str_611;
+		v5 = &Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x->str_611;
 		while (v4 < 26)
 		{
 			v6 = v4++;
@@ -45698,7 +45698,7 @@ void sub_6DB50(char a1, char a2)//24eb50
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006DBD0) --------------------------------------------------------
 void sub_6DBD0()//24ebd0
@@ -45714,7 +45714,7 @@ void sub_6DBD0()//24ebd0
 		//v0 = (unsigned __int8 *)*xadataspellsdat.colorPalette_var28;
 		v0x = 0;
 		v1 = 0;
-		v2 = &x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x->str_611;
+		v2 = &Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x->str_611;
 		while (v1 < 26)
 		{
 			v3 = v1++;
@@ -45726,7 +45726,7 @@ void sub_6DBD0()//24ebd0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006DC40) --------------------------------------------------------
 void sub_6DC40_improve_ability(uint8_t ability)//24ec40
@@ -46029,7 +46029,7 @@ void sub_6E0D0()//24f0d0
 	int v2; // ebx
 
 	v0 = 0;
-	v1x = &x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x->str_611;
+	v1x = &Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x->str_611;
 	while (v0 < 26)
 	{
 		v1x->array_0x3E9_1001x.byte[v0] = 1;
@@ -46041,7 +46041,7 @@ void sub_6E0D0()//24f0d0
 	sub_6DB50(1, 0);
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006E150) --------------------------------------------------------
 void UpdateSounds_6E150()//24f150
@@ -46284,7 +46284,7 @@ type_entity_0x6E8E* InitSwitchChainZaxisAndSound_6F850(type_entity_0x6E8E* event
 		return 0;
 	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ; ix = ix->next_0)
 	{
-		if (ix <= x_DWORD_EA3E4[0])
+		if (ix <= Entities_EA3E4[0])
 		{
 			event->axis_0x4C_76.z = getTerrainAlt_10C40(&event->axis_0x4C_76);
 			return 0;
@@ -50627,7 +50627,7 @@ void sub_872A0()//2682a0
 	}
 
 	v1 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221;
-	v2x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v2x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	if (v1 < 6u || v1 > 8u)
 		str_unk_1804B0ar.PopupStatusByte_0x9e &= 0xFA;
 	else
@@ -51018,10 +51018,10 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 	v34 = 0;
 	v37 = -1;
 	v0 = -1;
-	v1x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v1x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v3 = v1x->dword_0xA4_164x->word_0x3A_58;
 	if (v3)
-		v5x = x_DWORD_EA3E4[v3];
+		v5x = Entities_EA3E4[v3];
 	else
 		v5x = 0;
 	v36x = v5x;
@@ -51233,7 +51233,7 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 	}
 	if (v36x)
 	{
-		if (v1x->mana_0x90_144 >= x_DWORD_EA3E4[v1x->dword_0xA4_164x->str_611.array_0x333_819x.word[2]]->maxMana_0x8C_140 && v36x->dword_0x10_16 < 6)
+		if (v1x->mana_0x90_144 >= Entities_EA3E4[v1x->dword_0xA4_164x->str_611.array_0x333_819x.word[2]]->maxMana_0x8C_140 && v36x->dword_0x10_16 < 6)
 			str_E2A74[14].axis_2[0] |= 1u;
 		if (v1x->dword_0xA4_164x->byte_0x195_405)
 			str_E2A74[17].dword_20 = 100;
@@ -51267,7 +51267,7 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 		v16 = 0;
 		if (v0 > -1)
 		{
-			v17x = x_DWORD_EA3E4[v1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v0]];
+			v17x = Entities_EA3E4[v1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v0]];
 			if (v0 == 2)
 			{
 				if (v1x->mana_0x90_144 < v17x->maxMana_0x8C_140)
@@ -51291,7 +51291,7 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 		}
 		if (v37 > -1 && !v16)
 		{
-			v18x = x_DWORD_EA3E4[v1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v37]];
+			v18x = Entities_EA3E4[v1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v37]];
 			v19 = v37 == 2 ? v1x->mana_0x90_144 < v18x->maxMana_0x8C_140 : sub_68D50(v18x, v1x) == 0;
 			if (v19)
 			{
@@ -51684,9 +51684,9 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 	char typeB = 0;
 	int hintIndex = 0;
 	int typeC = 0;
-	type_entity_0x6E8E* locEvent1 = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	type_entity_0x6E8E* locEvent1 = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	if (locEvent1->dword_0xA4_164x->word_0x3A_58)
-		locEvent2 = x_DWORD_EA3E4[locEvent1->dword_0xA4_164x->word_0x3A_58];
+		locEvent2 = Entities_EA3E4[locEvent1->dword_0xA4_164x->word_0x3A_58];
 	int countHints = 0;
 	for (int i = 0; i < 26; i++)
 	{
@@ -51816,16 +51816,16 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 			case 6:
 				if (isStandardSpell)
 				{
-					if (x_DWORD_EA3E4[locEvent1->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex]] > x_DWORD_EA3E4[0])
+					if (Entities_EA3E4[locEvent1->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex]] > Entities_EA3E4[0])
 					{
 						if (spellIndex == 2)
 						{
-							if (locEvent1->mana_0x90_144 < x_DWORD_EA3E4[locEvent1->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex]]->maxMana_0x8C_140)
+							if (locEvent1->mana_0x90_144 < Entities_EA3E4[locEvent1->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex]]->maxMana_0x8C_140)
 								endLoop = true;
 						}
 						else
 						{
-							endLoop = !sub_68D50(x_DWORD_EA3E4[locEvent1->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex]], locEvent1);
+							endLoop = !sub_68D50(Entities_EA3E4[locEvent1->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex]], locEvent1);
 						}
 						if (endLoop)
 						{
@@ -56791,13 +56791,13 @@ type_entity_0x6E8E* AddSwitch0B_04_6F150(type_entity_0x6E8E* a1x)//250150
 	type_entity_0x6E8E* resultx; // eax
 
 	resultx = x_D41A0_BYTEARRAY_4_struct.dword_38519;
-	if (resultx > x_DWORD_EA3E4[0])
+	if (resultx > Entities_EA3E4[0])
 	{
 		while (resultx->model_0x40_64
 			|| !D41A0_0.struct_0x3659C[resultx->dword_0xA4_164x->word_0x38_56].substr_3659C.IsLevelEnd_0)
 		{
 			resultx = resultx->next_0;
-			if (resultx <= x_DWORD_EA3E4[0])
+			if (resultx <= Entities_EA3E4[0])
 				return resultx;
 		}
 		sub_4A1E0(a1x->id_0x1A_26, 1);
@@ -56807,7 +56807,7 @@ type_entity_0x6E8E* AddSwitch0B_04_6F150(type_entity_0x6E8E* a1x)//250150
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006F1C0) --------------------------------------------------------
 void AddSwitch0B_20_6F1C0(type_entity_0x6E8E* a1x)//2501c0
@@ -56852,7 +56852,7 @@ type_entity_0x6E8E* sub_6F8E0(type_entity_0x6E8E* a1x, int a2)////2508e0
 	v3x = 0;
 	while (v2 < D41A0_0.word_0xe)
 	{
-		v4x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[v3x].word_0x00a_2BE4_11240];
+		v4x = Entities_EA3E4[D41A0_0.array_0x2BDE[v3x].word_0x00a_2BE4_11240];
 		if (CompareAxisWithShift_10750(a1x, v4x) == a2)
 			return v4x;
 		//v3 += 2124;
@@ -56862,7 +56862,7 @@ type_entity_0x6E8E* sub_6F8E0(type_entity_0x6E8E* a1x, int a2)////2508e0
 	return 0;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006F0B0) --------------------------------------------------------
 void sub_6F0B0(type_entity_0x6E8E* a1x)//2500b0
@@ -56903,15 +56903,15 @@ void sub_6F2B0(type_entity_0x6E8E* a1x)//2502b0
 		//v2 = D41A0_BYTESTR_0.word_0x36DFE;
 		if (D41A0_0.word_0x36DFE)
 		{
-			//result = x_DWORD_EA3E4[v2];
+			//result = Entities_EA3E4[v2];
 			//result[12] &= 0xFEu;
-			x_DWORD_EA3E4[D41A0_0.word_0x36DFE]->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
+			Entities_EA3E4[D41A0_0.word_0x36DFE]->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
 		}
 	}
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006F300) --------------------------------------------------------
 unsigned int sub_6F300(type_entity_0x6E8E* a1x, signed int a2)//250300
@@ -57164,14 +57164,14 @@ x_BYTE* sub_6F7E0(type_entity_0x6E8E* a1x)//2507e0
 		//v2 = *(x_WORD *)(0x36DFC + x_D41A0_BYTEARRAY_0);
 		if (D41A0_0.word_0x36DFC)
 		{
-			x_DWORD_EA3E4[D41A0_0.word_0x36DFC]->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
+			Entities_EA3E4[D41A0_0.word_0x36DFC]->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
 		}
 	}
 	return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 int debugcounter_249226 = 0;
 
@@ -57247,9 +57247,9 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 	case 0x1C:
 	case 0x1E:
 		v57 = -1;
-		v43x = x_DWORD_EA3E4[a1x->id_0x1A_26];
+		v43x = Entities_EA3E4[a1x->id_0x1A_26];
 		v8x = 0;
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 		{
 			if (ix->id_0x1A_26 != a1x->id_0x1A_26 && !(ix->struct_byte_0xc_12_15.byte[0] & 0x20))
 			{
@@ -57273,7 +57273,7 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 		{
 			if (j != 22)
 			{
-				for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[j]; kx > x_DWORD_EA3E4[0]; kx = kx->next_0)
+				for (kx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[j]; kx > Entities_EA3E4[0]; kx = kx->next_0)
 				{
 					v13 = a1x->id_0x1A_26;
 					if (kx->id_0x1A_26 != v13
@@ -57292,14 +57292,14 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 		}
 		if (!v8x)
 		{
-			for (lx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[88 / 4]; lx > x_DWORD_EA3E4[0]; lx = lx->next_0)
+			for (lx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[88 / 4]; lx > Entities_EA3E4[0]; lx = lx->next_0)
 			{
 				if (lx->byte_0x39_57)
 				{
 					for (m = lx->word_0x34_52; ; m = v53x->word_0x34_52)
 					{
-						v53x = x_DWORD_EA3E4[m];
-						if (v53x == x_DWORD_EA3E4[0])
+						v53x = Entities_EA3E4[m];
+						if (v53x == Entities_EA3E4[0])
 							break;
 						v17 = sub_68490(a1x, v53x, 0x71u, 0x71u);
 						if (v17 < v57)
@@ -57331,8 +57331,8 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 	case 0xC:
 		v48 = -1;
 		v36x = 0;
-		v44x = x_DWORD_EA3E4[a1x->id_0x1A_26];
-		for (nx = x_D41A0_BYTEARRAY_4_struct.dword_38519; nx > x_DWORD_EA3E4[0]; nx = nx->next_0)
+		v44x = Entities_EA3E4[a1x->id_0x1A_26];
+		for (nx = x_D41A0_BYTEARRAY_4_struct.dword_38519; nx > Entities_EA3E4[0]; nx = nx->next_0)
 		{
 			if (nx->id_0x1A_26 != a1x->id_0x1A_26 && !(nx->struct_byte_0xc_12_15.byte[0] & 0x20))
 			{
@@ -57358,7 +57358,7 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 	case 9:
 		v1 = -1;
 		v54x = 0;
-		for (iix = x_D41A0_BYTEARRAY_4_struct.dword_38519; iix > x_DWORD_EA3E4[0]; iix = iix->next_0)
+		for (iix = x_D41A0_BYTEARRAY_4_struct.dword_38519; iix > Entities_EA3E4[0]; iix = iix->next_0)
 		{
 			if (iix->id_0x1A_26 != a1x->id_0x1A_26 && !(iix->struct_byte_0xc_12_15.byte[0] & 0x20))
 			{
@@ -57380,7 +57380,7 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 		}
 		for (jj = 0; jj < 29; ++jj)
 		{
-			for (kkx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[jj]; kkx > x_DWORD_EA3E4[0]; kkx = kkx->next_0)
+			for (kkx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[jj]; kkx > Entities_EA3E4[0]; kkx = kkx->next_0)
 			{
 				if (kkx->id_0x1A_26 != a1x->id_0x1A_26
 					&& kkx->byte_0x39_57
@@ -57402,9 +57402,9 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 		return 1;
 	case 0x10:
 		v55 = -1;
-		v45x = x_DWORD_EA3E4[a1x->id_0x1A_26];
+		v45x = Entities_EA3E4[a1x->id_0x1A_26];
 		v18x = 0;
-		for (llx = x_D41A0_BYTEARRAY_4_struct.dword_38519; llx > x_DWORD_EA3E4[0]; llx = llx->next_0)
+		for (llx = x_D41A0_BYTEARRAY_4_struct.dword_38519; llx > Entities_EA3E4[0]; llx = llx->next_0)
 		{
 			if (llx->id_0x1A_26 != a1x->id_0x1A_26 && !(llx->struct_byte_0xc_12_15.byte[0] & 0x20))
 			{
@@ -57426,7 +57426,7 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 		}
 		for (mm = 0; mm < 29; ++mm)
 		{
-			for (nnx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[mm]; nnx > x_DWORD_EA3E4[0]; nnx = nnx->next_0)
+			for (nnx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[mm]; nnx > Entities_EA3E4[0]; nnx = nnx->next_0)
 			{
 				v23 = a1x->id_0x1A_26;
 				if (nnx->id_0x1A_26 != v23
@@ -57454,7 +57454,7 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 		v47 = -1;
 		for (i1 = 0; i1 < 29; ++i1)
 		{
-			for (i2x = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i1]; i2x > x_DWORD_EA3E4[0]; i2x = i2x->next_0)
+			for (i2x = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i1]; i2x > Entities_EA3E4[0]; i2x = i2x->next_0)
 			{
 				if (i2x->id_0x1A_26 != a1x->id_0x1A_26)
 				{
@@ -57481,7 +57481,7 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 	default:
 		return 0;
 	}
-	while (v26x > x_DWORD_EA3E4[0])//adress 2481e6
+	while (v26x > Entities_EA3E4[0])//adress 2481e6
 	{
 		v27 = v26x->model_0x40_64;
 		if (v27 < 0x27u)
@@ -57513,7 +57513,7 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 	LABEL_105:
 		v26x = v26x->next_0;
 	}//adress 2481ee
-	for (i3x = x_D41A0_BYTEARRAY_4_struct.dword_38527; i3x > x_DWORD_EA3E4[0]; i3x = i3x->next_0)
+	for (i3x = x_D41A0_BYTEARRAY_4_struct.dword_38527; i3x > Entities_EA3E4[0]; i3x = i3x->next_0)
 	{
 		if (i3x->word_0x94_148 != a1x->id_0x1A_26)
 		{
@@ -57538,14 +57538,14 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 			}
 		}
 	}
-	for (i4x = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[88 / 4]; i4x > x_DWORD_EA3E4[0]; i4x = i4x->next_0)
+	for (i4x = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[88 / 4]; i4x > Entities_EA3E4[0]; i4x = i4x->next_0)
 	{
 		if (i4x->byte_0x39_57)
 		{
 			for (i5 = i4x->word_0x34_52; ; i5 = v52x->word_0x34_52)
 			{
-				v52x = x_DWORD_EA3E4[i5];
-				if (v52x == x_DWORD_EA3E4[0])
+				v52x = Entities_EA3E4[i5];
+				if (v52x == Entities_EA3E4[0])
 					break;
 				v35 = sub_68490(a1x, v52x, 0x71u, 0x71u);
 				if (v35 < v25)
@@ -57564,7 +57564,7 @@ signed int sub_67CB0(type_entity_0x6E8E* a1x)//248cb0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00068490) --------------------------------------------------------
 int sub_68490(type_entity_0x6E8E* a1y, type_entity_0x6E8E* a2x, unsigned __int16 a3, unsigned __int16 a4)//249490
@@ -57666,15 +57666,15 @@ void sub_686D0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//2496d0
 	char v4; // dh
 
 	//result = a2;
-	v3x = x_DWORD_EA3E4[a1x->id_0x1A_26];
-	if (v3x > x_DWORD_EA3E4[0] && v3x->class_0x3F_63 == 3)
+	v3x = Entities_EA3E4[a1x->id_0x1A_26];
+	if (v3x > Entities_EA3E4[0] && v3x->class_0x3F_63 == 3)
 	{
 		v4 = v3x->model_0x40_64;
 		if (!v4 || v4 == 1)
 		{
 			if (a2x)
 			{
-				if (a2x > x_DWORD_EA3E4[0])
+				if (a2x > Entities_EA3E4[0])
 				{
 					v3x->word_0x96_150 = a2x - D41A0_0.struct_0x6E8E;
 				}
@@ -57684,7 +57684,7 @@ void sub_686D0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//2496d0
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00068740) --------------------------------------------------------
 char sub_68740(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, unsigned __int16 a3, __int16 a4)//249740
@@ -57765,7 +57765,7 @@ LABEL_23:
 		a1x->word_0x96_150 = a1x->id_0x1A_26;
 		a1x->id_0x1A_26 = a2x->id_0x1A_26;
 		a1x->life_0x8 = a1x->maxLife_0x4;
-		v11x = x_DWORD_EA3E4[a1x->word_0x96_150];
+		v11x = Entities_EA3E4[a1x->word_0x96_150];
 		a1x->xtype_0x41_65 = v11x->class_0x3F_63;
 		a1x->xsubtype_0x42_66 = v11x->model_0x40_64;
 		x_WORD_EB398ar = a2x->axis_0x4C_76;
@@ -57776,7 +57776,7 @@ LABEL_23:
 	return v4;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -57825,10 +57825,10 @@ char sub_68940(type_entity_0x6E8E* a1x)//249940
 	v2 = a1x->id_0x1A_26;
 	if (v2)
 	{
-		v9x = x_DWORD_EA3E4[v2];
+		v9x = Entities_EA3E4[v2];
 		if (v9x->class_0x3F_63 == 3)
 		{
-			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38535; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38535; ix > Entities_EA3E4[0]; ix = ix->next_0)
 			{
 				if (ix->model_0x40_64 == 78
 					&& ix->word_0x32_50 == a1x->id_0x1A_26
@@ -57860,7 +57860,7 @@ char sub_68940(type_entity_0x6E8E* a1x)//249940
 // 10000: using guessed type void /*__noreturn*/ sub_10000();
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00068AC0) --------------------------------------------------------
 char sub_68AC0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//249ac0
@@ -57907,7 +57907,7 @@ char sub_68AC0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//249ac0
 		v4 = a1x->word_0x26_38;
 		if (v4)
 		{
-			v5x = x_DWORD_EA3E4[v4];
+			v5x = Entities_EA3E4[v4];
 			a2x->word_0x36_54 = v5x->model_0x40_64;
 			a2x->word_0x34_52 = v5x->byte_0x46_70;
 			v5x->word_0x2E_46 = 1;
@@ -57917,7 +57917,7 @@ char sub_68AC0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//249ac0
 	return v3;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00068BD0) --------------------------------------------------------
 char sub_68BD0(type_entity_0x6E8E*  /*a1x*/, type_entity_0x6E8E* a2x)//249bd0
@@ -57945,7 +57945,7 @@ void sub_68BF0()//249bf0
 	for (i = 0; i < 29; i++)
 	{
 		//result = (int)x_D41A0_BYTEARRAY_4;
-		for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i]; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+		for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 		{
 			if (jx->life_0x8 >= 0)
 			{
@@ -57961,12 +57961,12 @@ void sub_68BF0()//249bf0
 			}
 		}
 	}
-	for (kx = x_D41A0_BYTEARRAY_4_struct.dword_38523; kx > x_DWORD_EA3E4[0]; kx = kx->next_0)
+	for (kx = x_D41A0_BYTEARRAY_4_struct.dword_38523; kx > Entities_EA3E4[0]; kx = kx->next_0)
 		/*result = */sub_68C70(kx);
 	//return result;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00068C70) --------------------------------------------------------
 int sub_68C70(type_entity_0x6E8E* a1x)//249c70
@@ -57982,8 +57982,8 @@ int sub_68C70(type_entity_0x6E8E* a1x)//249c70
 	{
 		for (i = a1x->word_0x34_52; ; i = v6x->word_0x34_52)
 		{
-			v6x = x_DWORD_EA3E4[i];
-			if (v6x <= x_DWORD_EA3E4[0])
+			v6x = Entities_EA3E4[i];
+			if (v6x <= Entities_EA3E4[0])
 				break;
 			v6x->byte_0x39_57 = a1x->byte_0x39_57;
 		}
@@ -58001,14 +58001,14 @@ int sub_68C70(type_entity_0x6E8E* a1x)//249c70
 	else
 	{
 		if (Maths::EuclideanDistXY_584D0(
-			&a1x->axis_0x4C_76, &x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->axis_0x4C_76) < 0x2400000)
+			&a1x->axis_0x4C_76, &Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->axis_0x4C_76) < 0x2400000)
 		{
 			v2 = a1x->word_0x34_52;
 			a1x->byte_0x39_57 = 16;
 			while (1)
 			{
-				v3x = x_DWORD_EA3E4[v2];
-				if (v3x <= x_DWORD_EA3E4[0])
+				v3x = Entities_EA3E4[v2];
+				if (v3x <= Entities_EA3E4[0])
 					break;
 				v3x->byte_0x39_57 = a1x->byte_0x39_57 + 2;
 				v2 = v3x->word_0x34_52;
@@ -58020,7 +58020,7 @@ int sub_68C70(type_entity_0x6E8E* a1x)//249c70
 	return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00068D50) --------------------------------------------------------
 bool sub_68D50(type_entity_0x6E8E* locEvent1, type_entity_0x6E8E* locEvent2)//249d50
@@ -58031,7 +58031,7 @@ bool sub_68D50(type_entity_0x6E8E* locEvent1, type_entity_0x6E8E* locEvent2)//24
 		return false;
 	if (locEvent1->dword_0x88_136)
 	{
-		if (!locEvent2->dword_0xA4_164x->word_0x3A_58 || locEvent1->dword_0x88_136 > x_DWORD_EA3E4[locEvent2->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144)
+		if (!locEvent2->dword_0xA4_164x->word_0x3A_58 || locEvent1->dword_0x88_136 > Entities_EA3E4[locEvent2->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144)
 			return false;
 	}
 	if (locEvent2->mana_0x90_144 >= locEvent1->maxMana_0x8C_140 && locEvent1->word_0x2E_46 == locEvent1->word_0x30_48)
@@ -58096,7 +58096,7 @@ signed int sub_68E50(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, type_enti
 	{
 		if (a3x->model_0x40_64 == 4 && (v4 = a3x->word_0x96_150) != 0)
 		{
-			v14x.z = x_DWORD_EA3E4[v4]->array_0x52_82.yaw + x_DWORD_EA3E4[v4]->axis_0x4C_76.z;
+			v14x.z = Entities_EA3E4[v4]->array_0x52_82.yaw + Entities_EA3E4[v4]->axis_0x4C_76.z;
 		}
 		else
 		{
@@ -58111,8 +58111,8 @@ signed int sub_68E50(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, type_enti
 		}
 		for (i = a2x->word_0x34_52; ; i = v8x->word_0x34_52)
 		{
-			v8x = x_DWORD_EA3E4[i];
-			if (v8x == x_DWORD_EA3E4[0])
+			v8x = Entities_EA3E4[i];
+			if (v8x == Entities_EA3E4[0])
 				break;
 			sub_57CF0(v8x, &v14x);
 		}
@@ -58124,7 +58124,7 @@ signed int sub_68E50(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, type_enti
 		{
 			if (a3x->model_0x40_64 == 4 && (v10 = a3x->word_0x96_150) != 0)
 			{
-				v14x.z = x_DWORD_EA3E4[v10]->array_0x52_82.yaw + x_DWORD_EA3E4[v10]->axis_0x4C_76.z;
+				v14x.z = Entities_EA3E4[v10]->array_0x52_82.yaw + Entities_EA3E4[v10]->axis_0x4C_76.z;
 			}
 			else
 			{
@@ -58137,9 +58137,9 @@ signed int sub_68E50(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, type_enti
 			{
 				v14x = a2x->axis_0x4C_76;
 			}
-			for (jx = x_DWORD_EA3E4[a2x->word_0x34_52];
-				jx != x_DWORD_EA3E4[0];
-				jx = x_DWORD_EA3E4[jx->word_0x34_52])
+			for (jx = Entities_EA3E4[a2x->word_0x34_52];
+				jx != Entities_EA3E4[0];
+				jx = Entities_EA3E4[jx->word_0x34_52])
 			{
 				sub_57CF0(jx, &v14x);
 			}
@@ -58148,7 +58148,7 @@ signed int sub_68E50(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, type_enti
 	}
 	return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00068FF0) --------------------------------------------------------
 signed int sub_68FF0(type_entity_0x6E8E* a1x, char a2, char a3)//249f00
@@ -58175,7 +58175,7 @@ signed int sub_68FF0(type_entity_0x6E8E* a1x, char a2, char a3)//249f00
 		sub_580E0(&a1x->axis_0x4C_76, v4, 0, 0x2000, -128);
 		if (!(a1x->byte_0x3E_62 & 3))
 		{
-			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 			{
 				if (!ix->model_0x40_64 && ix->life_0x8 >= 0)
 				{
@@ -58238,7 +58238,7 @@ signed int sub_68FF0(type_entity_0x6E8E* a1x, char a2, char a3)//249f00
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //type_entity_0x6E8E* sub_2a881e(axis_3d*)[20] = { sub_511A0 };
 //void (*functptr[])() = { test1, test2, test3 };
@@ -58283,7 +58283,7 @@ void sub_69300(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//24a300
 		a1x->struct_byte_0xc_12_15.byte[0] = v2 & 0xFE;
 		v3 = a1x->parentId_0x28_40;
 		a1x->dword_0x10_16 = 0;
-		v6x = x_DWORD_EA3E4[v3];
+		v6x = Entities_EA3E4[v3];
 		x_WORD_EB398ar = v6x->axis_0x4C_76;
 		sub_57CF0(a1x, &x_WORD_EB398ar);
 		v6x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->model_0x40_64] = 0;
@@ -58303,7 +58303,7 @@ void sub_69300(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//24a300
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (000693F0) --------------------------------------------------------
@@ -58318,8 +58318,8 @@ void sub_693F0(type_entity_0x6E8E* a1x)//24a3f0//spell fire
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -58375,7 +58375,7 @@ void sub_693F0(type_entity_0x6E8E* a1x)//24a3f0//spell fire
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00069600) --------------------------------------------------------
 signed int sub_69600(type_entity_0x6E8E* a1)//24a600
@@ -58409,9 +58409,9 @@ void sub_69640(type_entity_0x6E8E* a1x)//24a640//spell posses
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
 		//v10 = (uint8_t*)v1;
-		if (v1x > x_DWORD_EA3E4[0])
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -58511,7 +58511,7 @@ void sub_69640(type_entity_0x6E8E* a1x)//24a640//spell posses
 		a1x->word_0x36_54--;// = v9 - 1;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00069900) --------------------------------------------------------
 void sub_69900(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//24a900
@@ -58582,8 +58582,8 @@ type_entity_0x6E8E* sub_69AB0(type_entity_0x6E8E* a1x)//24aab0
 	}
 	else
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -58594,7 +58594,7 @@ type_entity_0x6E8E* sub_69AB0(type_entity_0x6E8E* a1x)//24aab0
 					//SPELLS_BEGIN_BUFFER_str[a1x->byte_0x40_64].subspell[a1x->byte_0x46_70].dword_2
 					v4 = 1;
 					if (v2)
-						v4 = x_DWORD_EA3E4[v2]->dword_0x10_16 + 1;
+						v4 = Entities_EA3E4[v2]->dword_0x10_16 + 1;
 					v1x->dword_0xA4_164x->array_0x24E_590.at(v4) = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].dword_2;
 					v1x->dword_0xA4_164x->array_0x24E_590.at(v4 + 9) = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 					sub_68DE0(a1x, v1x);
@@ -58612,8 +58612,8 @@ type_entity_0x6E8E* sub_69AB0(type_entity_0x6E8E* a1x)//24aab0
 						v12x->id_0x1A_26 = v1x->id_0x1A_26;
 						v12x->axis_0x4C_76.z += v1x->array_0x52_82.fov;
 						v12x->mana_0x90_144 = a1x->mana_0x90_144;
-						v7x = x_DWORD_EA3E4[v1x->dword_0xA4_164x->word_0x3A_58];
-						if (v7x <= x_DWORD_EA3E4[0])
+						v7x = Entities_EA3E4[v1x->dword_0xA4_164x->word_0x3A_58];
+						if (v7x <= Entities_EA3E4[0])
 						{
 							v12x->word_0x9A_154x = v1x->axis_0x4C_76;
 							MovePlayer_57FA0(&v12x->word_0x9A_154x, v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->word_0x1C_28, 0, 4096);
@@ -58649,7 +58649,7 @@ type_entity_0x6E8E* sub_69AB0(type_entity_0x6E8E* a1x)//24aab0
 	return resultx;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00069D70) --------------------------------------------------------
 signed int sub_69D70(type_entity_0x6E8E* a1)//24ad70
@@ -58680,8 +58680,8 @@ void GetScroll_69DB0(type_entity_0x6E8E* a1x)//24adb0
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (v1x->model_0x40_64 == 1)
 				v10 = 64;
@@ -58754,7 +58754,7 @@ void GetScroll_69DB0(type_entity_0x6E8E* a1x)//24adb0
 		a1x->word_0x36_54 = v9 - 1;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00069FF0) --------------------------------------------------------
 signed int AllCreaturesKilled_69FF0(type_entity_0x6E8E* a1)//24aff0
@@ -58788,9 +58788,9 @@ void sub_6A030(type_entity_0x6E8E* a1x)//24b030
 	int v16; // [esp+4h] [ebp-8h]
 
 	v1 = a1x->parentId_0x28_40;
-	v2x = x_DWORD_EA3E4[v1];
+	v2x = Entities_EA3E4[v1];
 	v3 = -1;
-	if (v2x > x_DWORD_EA3E4[0] && a1x->word_0x2E_46 > 0)
+	if (v2x > Entities_EA3E4[0] && a1x->word_0x2E_46 > 0)
 	{
 		if (sub_68D50(a1x, v2x))
 		{
@@ -58830,8 +58830,8 @@ void sub_6A030(type_entity_0x6E8E* a1x)//24b030
 		if (v1 != D41A0_0.LevelIndex_0xc)
 		{
 			v1 = a1x->word_0x96_150;
-			v9x = x_DWORD_EA3E4[v1];
-			if (v9x > x_DWORD_EA3E4[0])
+			v9x = Entities_EA3E4[v1];
+			if (v9x > Entities_EA3E4[0])
 			{
 				v10 = a1x->word_0x30_48;
 				v16 = a1x->word_0x2E_46;
@@ -58874,7 +58874,7 @@ void sub_6A030(type_entity_0x6E8E* a1x)//24b030
 			v12 = a1x->word_0x96_150;
 			if (v12)
 			{
-				SetEntity04_57F10(x_DWORD_EA3E4[v12]);
+				SetEntity04_57F10(Entities_EA3E4[v12]);
 				a1x->word_0x96_150 = 0;
 			}
 			//v13 = v2x->dword_0xA4_164;
@@ -58892,7 +58892,7 @@ void sub_6A030(type_entity_0x6E8E* a1x)//24b030
 	//return v1;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006A2C0) --------------------------------------------------------
 signed int sub_6A2C0(type_entity_0x6E8E* a1)//24b2c0
@@ -58918,8 +58918,8 @@ void sub_6A300(type_entity_0x6E8E* a1x)//24b300
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x) && v1x->mana_0x90_144 >= a1x->maxMana_0x8C_140)
 			{
@@ -58956,7 +58956,7 @@ void sub_6A300(type_entity_0x6E8E* a1x)//24b300
 		a1x->word_0x36_54 = v6 - 1;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006A440) --------------------------------------------------------
 signed int sub_6A440(type_entity_0x6E8E* a1)//24b440
@@ -58978,8 +58978,8 @@ void sub_6A480(type_entity_0x6E8E* a1x)//24b480
 	__int16 v3; // cx
 
 	//LOWORD(v1) = a1x->word_0x28_40;
-	v2x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-	if (v2x <= x_DWORD_EA3E4[0] || a1x->word_0x2E_46 <= 0)
+	v2x = Entities_EA3E4[a1x->parentId_0x28_40];
+	if (v2x <= Entities_EA3E4[0] || a1x->word_0x2E_46 <= 0)
 		goto LABEL_15;
 	//LOBYTE(v1) = (*xadataspellsdat.colorPalette_var28)[80 * a1x->byte_0x40_64 + 26 + 26 * a1x->byte_0x46_70];
 	LOBYTE(v1) = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
@@ -59021,7 +59021,7 @@ LABEL_15:
 		a1x->word_0x36_54 = v3 - 1;
 	//return v1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006A580) --------------------------------------------------------
 signed int sub_6A580(type_entity_0x6E8E* a1)//24b580
@@ -59065,8 +59065,8 @@ void sub_6A5C0(type_entity_0x6E8E* a1x)//24b5c0
 	v13x = 0;
 	if (a1x->word_0x2E_46 <= 0)
 		goto LABEL_29;
-	v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-	if (v1x > x_DWORD_EA3E4[0])
+	v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+	if (v1x > Entities_EA3E4[0])
 	{
 		if (sub_68D50(a1x, v1x))
 		{
@@ -59181,7 +59181,7 @@ LABEL_29:
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006A9C0) --------------------------------------------------------
 signed int sub_6A9C0(type_entity_0x6E8E* a1)//24b9c0
@@ -59204,8 +59204,8 @@ __int16 sub_6AA00(type_entity_0x6E8E* a1x)//24ba00
 	__int16 v4; // cx
 	__int16 result; // ax
 
-	v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-	if (v1x > x_DWORD_EA3E4[0])
+	v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+	if (v1x > Entities_EA3E4[0])
 	{
 		if (a1x->word_0x2E_46 <= 0)
 		{
@@ -59244,7 +59244,7 @@ __int16 sub_6AA00(type_entity_0x6E8E* a1x)//24ba00
 		a1x->word_0x36_54 = result - 1;
 	return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006AAC0) --------------------------------------------------------
 signed int sub_6AAC0(type_entity_0x6E8E* a1)//24bac0
@@ -59270,8 +59270,8 @@ void sub_6AB00(type_entity_0x6E8E* a1x)//24bb00
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -59320,7 +59320,7 @@ void sub_6AB00(type_entity_0x6E8E* a1x)//24bb00
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006AD00) --------------------------------------------------------
 signed int sub_6AD00(type_entity_0x6E8E* a1)//24bd00
@@ -59374,9 +59374,9 @@ void sub_6AD60(type_entity_0x6E8E* a1x)//24bd60
 	v28 = 1;
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
 		v29x = v1x;
-		if (v1x > x_DWORD_EA3E4[0])
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -59392,8 +59392,8 @@ void sub_6AD60(type_entity_0x6E8E* a1x)//24bd60
 						{
 							v4x = v29x;
 							a1x->word_0x96_150 = 0;
-							v5x = x_DWORD_EA3E4[v4x->dword_0xA4_164x->word_0x3A_58];
-							if (v5x <= x_DWORD_EA3E4[0])
+							v5x = Entities_EA3E4[v4x->dword_0xA4_164x->word_0x3A_58];
+							if (v5x <= Entities_EA3E4[0])
 							{
 								v28 = 0;
 							}
@@ -59410,8 +59410,8 @@ void sub_6AD60(type_entity_0x6E8E* a1x)//24bd60
 					}
 					else if ((unsigned __int8)v3 <= 1u)
 					{
-						v8x = x_DWORD_EA3E4[v29x->dword_0xA4_164x->word_0x3A_58];
-						if (v8x <= x_DWORD_EA3E4[0])
+						v8x = Entities_EA3E4[v29x->dword_0xA4_164x->word_0x3A_58];
+						if (v8x <= Entities_EA3E4[0])
 						{
 							v28 = 0;
 						}
@@ -59459,20 +59459,20 @@ void sub_6AD60(type_entity_0x6E8E* a1x)//24bd60
 								v15 = a1x->word_0x96_150 - 2;
 								if (v15 != v29x->dword_0xA4_164x->word_0x38_56 && v15 < D41A0_0.word_0xe)
 								{
-									v16x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[v15].word_0x00a_2BE4_11240];
-									if (v16x > x_DWORD_EA3E4[0])
+									v16x = Entities_EA3E4[D41A0_0.array_0x2BDE[v15].word_0x00a_2BE4_11240];
+									if (v16x > Entities_EA3E4[0])
 									{
-										v12x = x_DWORD_EA3E4[v16x->dword_0xA4_164x->word_0x3A_58];
-										v13 = v12x < x_DWORD_EA3E4[0];
-										v14 = v12x == x_DWORD_EA3E4[0];
+										v12x = Entities_EA3E4[v16x->dword_0xA4_164x->word_0x3A_58];
+										v13 = v12x < Entities_EA3E4[0];
+										v14 = v12x == Entities_EA3E4[0];
 										goto LABEL_26;
 									}
 								}
 								break;
 							default:
-								v12x = x_DWORD_EA3E4[v16x->dword_0xA4_164x->word_0x3A_58];
-								v13 = v12x < x_DWORD_EA3E4[0];
-								v14 = v12x == x_DWORD_EA3E4[0];
+								v12x = Entities_EA3E4[v16x->dword_0xA4_164x->word_0x3A_58];
+								v13 = v12x < Entities_EA3E4[0];
+								v14 = v12x == Entities_EA3E4[0];
 							LABEL_26:
 								if (!((unsigned __int8)v13 | (unsigned __int8)v14))
 								{
@@ -59528,7 +59528,7 @@ void sub_6AD60(type_entity_0x6E8E* a1x)//24bd60
 		a1x->word_0x36_54 = v24 - 1;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006B180) --------------------------------------------------------
 signed int sub_6B180(type_entity_0x6E8E* a1)//24c180
@@ -59553,8 +59553,8 @@ void sub_6B1C0(type_entity_0x6E8E* a1x)//24c1c0
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -59592,7 +59592,7 @@ void sub_6B1C0(type_entity_0x6E8E* a1x)//24c1c0
 	if (v5)
 		a1x->word_0x36_54 = v5 - 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006B2D0) --------------------------------------------------------
 signed int sub_6B2D0(type_entity_0x6E8E* a1)//24c2d0
@@ -59617,8 +59617,8 @@ __int16 sub_6B310(type_entity_0x6E8E* a1x)//24c310
 	if (a1x->word_0x2E_46 > 0)
 	{
 		v1 = a1x->parentId_0x28_40;
-		v2x = x_DWORD_EA3E4[v1];
-		if (v2x > x_DWORD_EA3E4[0])
+		v2x = Entities_EA3E4[v1];
+		if (v2x > Entities_EA3E4[0])
 		{
 			if (a1x->word_0x2E_46 == a1x->word_0x30_48)
 				sub_6D8B0(v1, 0xCu, 1);
@@ -59637,7 +59637,7 @@ __int16 sub_6B310(type_entity_0x6E8E* a1x)//24c310
 		a1x->word_0x36_54--;
 	return a1x->word_0x36_54;//fix -remove it ?
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006B3A0) --------------------------------------------------------
 signed int sub_6B3A0(type_entity_0x6E8E* a1)//24c3a0
@@ -59663,8 +59663,8 @@ void sub_6B3E0(type_entity_0x6E8E* a1x)//24c3e0
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -59718,7 +59718,7 @@ void sub_6B3E0(type_entity_0x6E8E* a1x)//24c3e0
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006B5D0) --------------------------------------------------------
 signed int sub_6B5D0(type_entity_0x6E8E* a1)//24c5d0
@@ -59749,9 +59749,9 @@ __int16 sub_6B610(type_entity_0x6E8E* a1x)//24c610
 	v9 = 0;
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
 		v8x = v1x;
-		if (v1x > x_DWORD_EA3E4[0])
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (!sub_68D50(a1x, v1x))
 				goto LABEL_19;
@@ -59808,7 +59808,7 @@ __int16 sub_6B610(type_entity_0x6E8E* a1x)//24c610
 	return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006B830) --------------------------------------------------------
 signed int sub_6B830(type_entity_0x6E8E* a1)//24c830
@@ -59834,8 +59834,8 @@ void sub_6B870(type_entity_0x6E8E* a1x)//24c870
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -59881,7 +59881,7 @@ void sub_6B870(type_entity_0x6E8E* a1x)//24c870
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006BA70) --------------------------------------------------------
 signed int sub_6BA70(type_entity_0x6E8E* a1)//24ca70
@@ -59907,8 +59907,8 @@ void sub_6BAB0(type_entity_0x6E8E* a1x)//24cab0
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -59954,7 +59954,7 @@ void sub_6BAB0(type_entity_0x6E8E* a1x)//24cab0
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006BCB0) --------------------------------------------------------
 signed int sub_6BCB0(type_entity_0x6E8E* a1)//24ccb0
@@ -59980,8 +59980,8 @@ void sub_6BCF0(type_entity_0x6E8E* a1x)//24ccf0
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -60026,7 +60026,7 @@ void sub_6BCF0(type_entity_0x6E8E* a1x)//24ccf0
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006BEF0) --------------------------------------------------------
 signed int sub_6BEF0(type_entity_0x6E8E* a1)//24cef0
@@ -60052,8 +60052,8 @@ void sub_6BF30(type_entity_0x6E8E* a1x)//24cf30
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -60098,7 +60098,7 @@ void sub_6BF30(type_entity_0x6E8E* a1x)//24cf30
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006C130) --------------------------------------------------------
 signed int sub_6C130(type_entity_0x6E8E* a1)//24d130
@@ -60125,9 +60125,9 @@ void sub_6C170(type_entity_0x6E8E* a1x)//24d170
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
 		v7x = v1x;
-		if (v1x > x_DWORD_EA3E4[0])
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -60177,7 +60177,7 @@ void sub_6C170(type_entity_0x6E8E* a1x)//24d170
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006C3A0) --------------------------------------------------------
 signed int sub_6C3A0(type_entity_0x6E8E* a1)//24d3a0
@@ -60203,8 +60203,8 @@ void sub_6C3E0(type_entity_0x6E8E* a1x)//24d3e0
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -60249,7 +60249,7 @@ void sub_6C3E0(type_entity_0x6E8E* a1x)//24d3e0
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006C5E0) --------------------------------------------------------
 signed int sub_6C5E0(type_entity_0x6E8E* a1)//24d5e0
@@ -60277,8 +60277,8 @@ void sub_6C620(type_entity_0x6E8E* a1x)//24d620
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -60328,7 +60328,7 @@ void sub_6C620(type_entity_0x6E8E* a1x)//24d620
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006C830) --------------------------------------------------------
 signed int sub_6C830(type_entity_0x6E8E* a1)//24d830
@@ -60356,8 +60356,8 @@ void sub_6C870(type_entity_0x6E8E* a1x)//24d870
 	v1x = 0;
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v2x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v2x > x_DWORD_EA3E4[0])
+		v2x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v2x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v2x))
 			{
@@ -60420,7 +60420,7 @@ void sub_6C870(type_entity_0x6E8E* a1x)//24d870
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006CA80) --------------------------------------------------------
 signed int sub_6CA80(type_entity_0x6E8E* a1)//24da80
@@ -60448,9 +60448,9 @@ void sub_6CAC0(type_entity_0x6E8E* a1x)//24dac0
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
 		v8x = v1x;
-		if (v1x > x_DWORD_EA3E4[0])
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -60499,7 +60499,7 @@ void sub_6CAC0(type_entity_0x6E8E* a1x)//24dac0
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006CCE0) --------------------------------------------------------
 signed int sub_6CCE0(type_entity_0x6E8E* a1)//24dce0
@@ -60528,9 +60528,9 @@ void sub_6CD20(type_entity_0x6E8E* a1x)//24dd20
 
 	if (a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
 		v9x = v1x;
-		if (v1x > x_DWORD_EA3E4[0])
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -60583,7 +60583,7 @@ void sub_6CD20(type_entity_0x6E8E* a1x)//24dd20
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006CF60) --------------------------------------------------------
 signed int sub_6CF60(type_entity_0x6E8E* a1)//24df60
@@ -60611,8 +60611,8 @@ void sub_6CFA0(type_entity_0x6E8E* a1x)//24dfa0
 
 	if (isCaveLevel_D41B6 && a1x->word_0x2E_46 > 0)
 	{
-		v1x = x_DWORD_EA3E4[a1x->parentId_0x28_40];
-		if (v1x > x_DWORD_EA3E4[0])
+		v1x = Entities_EA3E4[a1x->parentId_0x28_40];
+		if (v1x > Entities_EA3E4[0])
 		{
 			if (sub_68D50(a1x, v1x))
 			{
@@ -60663,7 +60663,7 @@ void sub_6CFA0(type_entity_0x6E8E* a1x)//24dfa0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006D1C0) --------------------------------------------------------
 signed int sub_6D1C0(type_entity_0x6E8E* a1)//24e1c0
@@ -60688,18 +60688,18 @@ void sub_6D830(type_entity_0x6E8E* a1x, char a2)//24e830
 	if (a1x->model_0x40_64 == 10)
 	{
 		//v2 = (char *)& SPELLS_BEGIN_BUFFER_DA818[0x322] + 26 * a2;
-		//v3x = x_DWORD_EA3E4[a1x->word_0x28_40];
+		//v3x = Entities_EA3E4[a1x->word_0x28_40];
 		//SPELLS_BEGIN_BUFFER_str[10].subspell[a2].byte_0x1A
-		if (x_DWORD_EA3E4[a1x->parentId_0x28_40] > x_DWORD_EA3E4[0] && SPELLS_BEGIN_BUFFER_str[10].subspell[a2].byte_0x1A == 1)
+		if (Entities_EA3E4[a1x->parentId_0x28_40] > Entities_EA3E4[0] && SPELLS_BEGIN_BUFFER_str[10].subspell[a2].byte_0x1A == 1)
 		{
 			//v4 = v3 + 76;
-			a1x->word_0x9A_154x = x_DWORD_EA3E4[a1x->parentId_0x28_40]->axis_0x4C_76;
+			a1x->word_0x9A_154x = Entities_EA3E4[a1x->parentId_0x28_40]->axis_0x4C_76;
 			//*(x_WORD *)(a1 + 158) = *(x_WORD *)(v4 + 4);
 		}
 	}
 	//return (char)v2;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006D880) --------------------------------------------------------
 void sub_6D880(type_entity_0x6E8E* a1x)//24e880
@@ -60726,7 +60726,7 @@ void sub_6D8B0(unsigned __int16 a1, unsigned __int16 a2, __int16 a3)//24e8b0
 	{
 		if (a1)
 		{
-			v3x = x_DWORD_EA3E4[a1];
+			v3x = Entities_EA3E4[a1];
 			if (v3x->class_0x3F_63 == 3 && !v3x->model_0x40_64)
 			{
 				//v4 = v3x->dword_0xA4_164;
@@ -60734,7 +60734,7 @@ void sub_6D8B0(unsigned __int16 a1, unsigned __int16 a2, __int16 a3)//24e8b0
 				//v6 = v4 + 611;
 				v3x->dword_0xA4_164x->str_611.spells_experience_0x2CB_715x.at(a2) = a3 + v5;
 				if (a2 == 2)
-					SetSpell_6D5E0(x_DWORD_EA3E4[v3x->dword_0xA4_164x->str_611.array_0x333_819x.word[2]], v3x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[2]);
+					SetSpell_6D5E0(Entities_EA3E4[v3x->dword_0xA4_164x->str_611.array_0x333_819x.word[2]], v3x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[2]);
 				if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
 				{
 					if (a1 == D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240)
@@ -60752,7 +60752,7 @@ void sub_6D8B0(unsigned __int16 a1, unsigned __int16 a2, __int16 a3)//24e8b0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00066750) --------------------------------------------------------
 void sub_66750(type_entity_0x6E8E* a1x)//247750
@@ -60889,7 +60889,7 @@ void sub_66750(type_entity_0x6E8E* a1x)//247750
 		v27--;
 	}
 	v13x = sub_10780(a1x);
-	v24x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v24x = Entities_EA3E4[a1x->word_0x96_150];
 	v14x = IfSubtypeCallAxisEvent_4A190(&v20x, a1x->byte_0x43_67, a1x->byte_0x44_68);
 	v15x = v14x;
 	if (!v14x)
@@ -60897,7 +60897,7 @@ void sub_66750(type_entity_0x6E8E* a1x)//247750
 	sub_65780(a1x, v13x, v24x);
 	sub_686D0(a1x, v13x);
 	sub_68AC0(a1x, v13x);
-	if (v13x > x_DWORD_EA3E4[0])
+	if (v13x > Entities_EA3E4[0])
 		sub_6D8B0(a1x->id_0x1A_26, 7u, 1);
 	v15x->id_0x1A_26 = a1x->id_0x1A_26;
 	v15x->word_0x1C_28 = a1x->word_0x1C_28;
@@ -60942,7 +60942,7 @@ LABEL_36:
 	//return v14b;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
@@ -60966,9 +60966,9 @@ void CastCastleProjectile_66B30(type_entity_0x6E8E* a1x)//247b30
 	//fix
 
 	v11 = 0;
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v10x = v1x;
-	if (v1x > x_DWORD_EA3E4[0])
+	if (v1x > Entities_EA3E4[0])
 	{
 		sub_656D0(a1x, v1x);
 		v3 = a1x->minSpeed_0x84_132 - a1x->actSpeed_0x82_130;
@@ -61015,7 +61015,7 @@ void CastCastleProjectile_66B30(type_entity_0x6E8E* a1x)//247b30
 		}
 		if (v11)
 		{
-			if (a1x->byte_0x43_67 == 3 && x_DWORD_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->word_0x3A_58)
+			if (a1x->byte_0x43_67 == 3 && Entities_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->word_0x3A_58)
 			{
 				SetEntity04_57F10(a1x);
 			}
@@ -61029,7 +61029,7 @@ void CastCastleProjectile_66B30(type_entity_0x6E8E* a1x)//247b30
 				}
 				else
 				{
-					/*LOBYTE(v2) = */sub_5F890(x_DWORD_EA3E4[a1x->id_0x1A_26], 0);
+					/*LOBYTE(v2) = */sub_5F890(Entities_EA3E4[a1x->id_0x1A_26], 0);
 				}
 			}
 		}
@@ -61041,7 +61041,7 @@ void CastCastleProjectile_66B30(type_entity_0x6E8E* a1x)//247b30
 	//return v2;
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -61112,8 +61112,8 @@ void sub_66D00(type_entity_0x6E8E* a1x)//247d00
 	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
 	sub_57CF0(a1x, &x_WORD_EB398ar);
 	v6 = a1x->word_0x96_150;
-	v7x = x_DWORD_EA3E4[v6];
-	if (v7x > x_DWORD_EA3E4[0] && sub_106C0(a1x, x_DWORD_EA3E4[v6]))
+	v7x = Entities_EA3E4[v6];
+	if (v7x > Entities_EA3E4[0] && sub_106C0(a1x, Entities_EA3E4[v6]))
 	{
 		sub_65580(v7x);
 		/*LOBYTE(v2) = */sub_57CF0(a1x, &v7x->axis_0x4C_76);
@@ -61167,7 +61167,7 @@ LABEL_18:
 //	return (char)v2x;
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -61200,9 +61200,9 @@ void sub_66FD0(type_entity_0x6E8E* a1x)//247fd0
 	//fix
 
 	v15 = 0;
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v14x = v1x;
-	if (v1x <= x_DWORD_EA3E4[0])
+	if (v1x <= Entities_EA3E4[0])
 	{
 		v2 = a1x->struct_byte_0xc_12_15.byte[0];
 		if (!(v2 & 2))
@@ -61218,7 +61218,7 @@ void sub_66FD0(type_entity_0x6E8E* a1x)//247fd0
 				a1x->word_0x1E_30 = a1x->word_0x22_34;
 				if (v4)
 				{
-					sub_57F20(x_DWORD_EA3E4[v4]);
+					sub_57F20(Entities_EA3E4[v4]);
 					a1x->word_0x34_52 = 0;
 				}
 			}
@@ -61312,7 +61312,7 @@ LABEL_28:
 			if (v12x)
 			{
 				sub_65780(a1x, v7x, v14x);
-				if (v7x > x_DWORD_EA3E4[0])
+				if (v7x > Entities_EA3E4[0])
 					sub_6D8B0(a1x->id_0x1A_26, 7u, 1);
 				v12x->id_0x1A_26 = a1x->id_0x1A_26;
 				v12x->word_0x1C_28 = a1x->word_0x1C_28;
@@ -61334,7 +61334,7 @@ LABEL_28:
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -61459,9 +61459,9 @@ void sub_674C0(type_entity_0x6E8E* a1x)//2484c0
 	char v16; // [esp+4h] [ebp-4h]
 
 	v16 = 0;
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v15x = v1x;
-	if (v1x <= x_DWORD_EA3E4[0])
+	if (v1x <= Entities_EA3E4[0])
 	{
 		v2 = a1x->struct_byte_0xc_12_15.byte[0];
 		if (!(v2 & 2))
@@ -61551,7 +61551,7 @@ LABEL_16:
 	//return result;
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -61654,18 +61654,18 @@ LABEL_11:
 	resultx = sub_65820(a1x);
 	if (resultx)
 	{
-		while (resultx != x_DWORD_EA3E4[0])
+		while (resultx != Entities_EA3E4[0])
 		{
 			resultx->byte_0x46_70 = a1x->byte_0x46_70;
 			resultx->parentId_0x28_40 = a1x->parentId_0x28_40;
 			resultx->id_0x1A_26 = a1x->id_0x1A_26;
-			resultx = x_DWORD_EA3E4[resultx->word_0x34_52];
+			resultx = Entities_EA3E4[resultx->word_0x34_52];
 		}
 	}
 	return resultx;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00067890) --------------------------------------------------------
 type_entity_0x6E8E* sub_67890(type_entity_0x6E8E* a1x)//248890
@@ -61676,8 +61676,8 @@ type_entity_0x6E8E* sub_67890(type_entity_0x6E8E* a1x)//248890
 	resultx = sub_65820(a1x);
 	if (resultx)
 	{
-		resultx = x_DWORD_EA3E4[a1x->id_0x1A_26];
-		if (resultx > x_DWORD_EA3E4[0] && resultx->class_0x3F_63 == 3)
+		resultx = Entities_EA3E4[a1x->id_0x1A_26];
+		if (resultx > Entities_EA3E4[0] && resultx->class_0x3F_63 == 3)
 		{
 			v2 = resultx->model_0x40_64;
 			if (!v2 || v2 == 1)
@@ -61686,7 +61686,7 @@ type_entity_0x6E8E* sub_67890(type_entity_0x6E8E* a1x)//248890
 	}
 	return resultx;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000678E0) --------------------------------------------------------
 type_entity_0x6E8E* sub_678E0(type_entity_0x6E8E* a1x)//2488e0
@@ -61759,11 +61759,11 @@ void sub_67960(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x)//248960
 	{
 		v2 = a2x->id_0x1A_26;
 		a2x->word_0x96_150 = 0;
-		v3x = x_DWORD_EA3E4[v2];
+		v3x = Entities_EA3E4[v2];
 		v16x = v3x;
-		if (v3x > x_DWORD_EA3E4[0] && v3x->class_0x3F_63 == 3)
+		if (v3x > Entities_EA3E4[0] && v3x->class_0x3F_63 == 3)
 		{
-			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38535; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38535; ix > Entities_EA3E4[0]; ix = ix->next_0)
 			{
 				if (ix->model_0x40_64 == 78
 					&& ix->word_0x32_50 != a2x->id_0x1A_26
@@ -61799,25 +61799,25 @@ void sub_67960(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x)//248960
 	if (a2x->word_0x96_150)
 	{
 		//v8 = a2x->word_0x96_150;
-		//a1x = x_DWORD_EA3E4[a2x->word_0x96_150];
-		if (x_DWORD_EA3E4[a2x->word_0x96_150] <= x_DWORD_EA3E4[0] || x_DWORD_EA3E4[a2x->word_0x96_150]->life_0x8 < 0 || x_DWORD_EA3E4[a2x->word_0x96_150]->struct_byte_0xc_12_15.byte[1] & 4)
+		//a1x = Entities_EA3E4[a2x->word_0x96_150];
+		if (Entities_EA3E4[a2x->word_0x96_150] <= Entities_EA3E4[0] || Entities_EA3E4[a2x->word_0x96_150]->life_0x8 < 0 || Entities_EA3E4[a2x->word_0x96_150]->struct_byte_0xc_12_15.byte[1] & 4)
 		{
 			a2x->word_0x96_150 = 0;
 		}
 		else
 		{
-			sub_65610(a2x, x_DWORD_EA3E4[a2x->word_0x96_150]);
-			if (sub_106C0(a2x, x_DWORD_EA3E4[a2x->word_0x96_150]))
+			sub_65610(a2x, Entities_EA3E4[a2x->word_0x96_150]);
+			if (sub_106C0(a2x, Entities_EA3E4[a2x->word_0x96_150]))
 				v17 = 1;
 		}
 	}
 	v13x = &a2x->axis_0x4C_76;
 	if (v17)
 	{
-		sub_65580(x_DWORD_EA3E4[a2x->word_0x96_150]);
-		sub_57CF0(a2x, &x_DWORD_EA3E4[a2x->word_0x96_150]->axis_0x4C_76);
-		sub_655A0(x_DWORD_EA3E4[a2x->word_0x96_150]);
-		x_DWORD_EA3E4[a2x->word_0x96_150]->byte_0x46_70 = 8;
+		sub_65580(Entities_EA3E4[a2x->word_0x96_150]);
+		sub_57CF0(a2x, &Entities_EA3E4[a2x->word_0x96_150]->axis_0x4C_76);
+		sub_655A0(Entities_EA3E4[a2x->word_0x96_150]);
+		Entities_EA3E4[a2x->word_0x96_150]->byte_0x46_70 = 8;
 		IfSubtypeCallAxisEvent_4A190(v13x, 10, 0);
 		SetEntity04_57F10(a2x);
 	}
@@ -61856,7 +61856,7 @@ void sub_67960(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x)//248960
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -61906,14 +61906,14 @@ void sub_5CF40(type_entity_0x6E8E* a1x, char a2)//23df40
 		//v8 = a1x->dword_0xA4_164;
 		//v9 = *(x_WORD *)(v8 + 2 * v7 + 819);
 		if (a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v7])
-			SetSpell_6D5E0(x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v7]], a1x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[v7]);
+			SetSpell_6D5E0(Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v7]], a1x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[v7]);
 	}
 	a1x->dword_0xA4_164x->str_611.byte_0x455_1109 = a1x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[a1x->dword_0xA4_164x->str_611.word_0x451_1105];
 	a1x->dword_0xA4_164x->str_611.byte_0x456_1110 = a1x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[a1x->dword_0xA4_164x->str_611.word_0x453_1107];
 	sub_574A0();
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005D0A0) --------------------------------------------------------
 int sub_5D0A0(type_entity_0x6E8E* a1x)//23e0a0
@@ -62102,12 +62102,12 @@ LABEL_30:
 		a1x->dword_0xA4_164x->word_0xc_12 = 0;
 		v25 = a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[3];
 		if (v25)
-			x_DWORD_EA3E4[v25]->word_0x2E_46 = 0;
+			Entities_EA3E4[v25]->word_0x2E_46 = 0;
 	}
 	return v46;
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
@@ -62392,8 +62392,8 @@ LABEL_27:
 	}
 	if (!(a1x->byte_0x3E_62 & 0x3F))
 	{
-		v44x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[4]];
-		if (v44x > x_DWORD_EA3E4[0])
+		v44x = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[4]];
+		if (v44x > Entities_EA3E4[0])
 		{
 			if (v44x->word_0x2E_46)
 			{
@@ -62486,7 +62486,7 @@ LABEL_27:
 // D41B6: using guessed type char x_BYTE_D41B6;
 // D4B84: using guessed type int x_DWORD_D4B84;
 // D4B90: using guessed type int x_DWORD_D4B90;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
@@ -62544,15 +62544,15 @@ void sub_5DE30(type_entity_0x6E8E* a1x)//23ee30
 	//char *v13; // [esp+8h] [ebp-8h]
 
 	//v1 = a1x->dword_0xA4_164;
-	v2x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x146_326];
+	v2x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x146_326];
 	v3x = 0;
-	if (v2x > x_DWORD_EA3E4[0])
+	if (v2x > Entities_EA3E4[0])
 	{
 		//v13 = (char *)& SPELLS_BEGIN_BUFFER_DA818[0x15a +0x308] + 26 * a1x->dword_0xA4_164x->word_0x14A_330;
 		//v13 = SPELLS_BEGIN_BUFFER_str[14].subspell[a1x->dword_0xA4_164x->word_0x14A_330].dword_2
 		v4 = a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[14];
 		if (v4)
-			v3x = x_DWORD_EA3E4[v4];
+			v3x = Entities_EA3E4[v4];
 		v5 = sub_583F0_distance_3d(&a1x->axis_0x4C_76, &v2x->axis_0x4C_76);
 		if (v3x && v3x->word_0x2E_46 && v5 < SPELLS_BEGIN_BUFFER_str[14].subspell[a1x->dword_0xA4_164x->word_0x14A_330].dword_2 && v2x->life_0x8 >= 0)
 		{
@@ -62589,7 +62589,7 @@ void sub_5DE30(type_entity_0x6E8E* a1x)//23ee30
 		}
 	}
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (0005E010) --------------------------------------------------------
@@ -62613,7 +62613,7 @@ void AddPlayer03_00_5E010(type_entity_0x6E8E* a1x)//23f010
 		v1 = a1x->dword_0xA4_164x->word_0x3A_58;
 		if (v1)
 		{
-			if (sub_106C0(a1x, x_DWORD_EA3E4[v1]))
+			if (sub_106C0(a1x, Entities_EA3E4[v1]))
 				v16 = 1;
 		}
 	}
@@ -62622,7 +62622,7 @@ void AddPlayer03_00_5E010(type_entity_0x6E8E* a1x)//23f010
 	{
 		if (a1x->str_0x5E_94.word_0x62_98)
 		{
-			v2x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+			v2x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
 			if (v2x->str_0x5E_94.word_0x62_98)
 				v2x->str_0x5E_94.dword_0x5E_94 += a1x->str_0x5E_94.dword_0x5E_94;
 			else
@@ -62763,15 +62763,15 @@ void sub_5E310_multiplayer_test_die(type_entity_0x6E8E* a1x)//23f310
 		v8 = a1x->word_0x24_36;
 		if (v8)
 		{
-			v9x = x_DWORD_EA3E4[v8];
+			v9x = Entities_EA3E4[v8];
 			if (v9x->class_0x3F_63 == 3)
 			{
 				v10 = v9x->model_0x40_64;
 				if (!v10 || v10 == 1)
 				{
-					//v11 = x_DWORD_EA3E4[a1x->word_0x24_36]->dword_0xA4_164;
+					//v11 = Entities_EA3E4[a1x->word_0x24_36]->dword_0xA4_164;
 					v12 = a1x->dword_0xA4_164x->word_0x38_56;
-					x_DWORD_EA3E4[a1x->word_0x24_36]->dword_0xA4_164x->word_0x26_38[v12]++;
+					Entities_EA3E4[a1x->word_0x24_36]->dword_0xA4_164x->word_0x26_38[v12]++;
 					//++*(x_WORD *)(v11 + 2 * v12 + 38);
 				}
 			}
@@ -62798,10 +62798,10 @@ void sub_5E310_multiplayer_test_die(type_entity_0x6E8E* a1x)//23f310
 		for (i = 0; i < 26; i++)
 		{
 			//v18 = a1x->dword_0xA4_164 + 2 * i;
-			//v19x = x_DWORD_EA3E4[*(signed __int16 *)(v18 + 819)];
-			v19x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[i]];
+			//v19x = Entities_EA3E4[*(signed __int16 *)(v18 + 819)];
+			v19x = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[i]];
 			v26x = v19x;
-			if (v19x <= x_DWORD_EA3E4[0])
+			if (v19x <= Entities_EA3E4[0])
 			{
 				a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[i] = 0;
 			}
@@ -62829,7 +62829,7 @@ void sub_5E310_multiplayer_test_die(type_entity_0x6E8E* a1x)//23f310
 			//v22 = (int)x_D41A0_BYTEARRAY_4;
 			//v22 = (int)x_D41A0_BYTEARRAY_4;
 			a1x->dword_0x10_16 = 1200;
-			for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38523; jx > x_DWORD_EA3E4[0]; jx = jx->next_0)
+			for (jx = x_D41A0_BYTEARRAY_4_struct.dword_38523; jx > Entities_EA3E4[0]; jx = jx->next_0)
 			{
 				if (jx->model_0x40_64 == 39 && jx->word_0x94_148 == a1x - D41A0_0.struct_0x6E8E)
 					jx->word_0x94_148 = v24x - D41A0_0.struct_0x6E8E;
@@ -62845,7 +62845,7 @@ void sub_5E310_multiplayer_test_die(type_entity_0x6E8E* a1x)//23f310
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // EA224: using guessed type int x_DWORD_EA224;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 
@@ -62861,14 +62861,14 @@ int sub_5E660(type_entity_0x6E8E* a1x)//23f660
 	a1x->struct_byte_0xc_12_15.byte[0] = v1 | 0x20;
 	while (v2 < 26)
 	{
-		if (x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v2]] > x_DWORD_EA3E4[0])
-			SetEntity04_57F10(x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v2]]);
+		if (Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v2]] > Entities_EA3E4[0])
+			SetEntity04_57F10(Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v2]]);
 		v2++;
 	}
 	SetEntity04_57F10(a1x);
 	return 1;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005E6C0) --------------------------------------------------------
 __int16 sub_5E6C0(type_entity_0x6E8E* a1x)//23f6c0
@@ -62895,7 +62895,7 @@ __int16 sub_5E6C0(type_entity_0x6E8E* a1x)//23f6c0
 	}
 	else
 	{
-		v2x = &x_DWORD_EA3E4[a1x->word_0x24_36]->axis_0x4C_76;
+		v2x = &Entities_EA3E4[a1x->word_0x24_36]->axis_0x4C_76;
 		a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, v2x);
 		v3 = Maths::sub_58210_radix_tan(&a1x->axis_0x4C_76, v2x);
 		v4 = a1x->word_0x20_32;
@@ -62917,7 +62917,7 @@ __int16 sub_5E6C0(type_entity_0x6E8E* a1x)//23f6c0
 	a1x->dword_0xA4_164x->word_0x155_341 = 0;
 	return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005E7C0) --------------------------------------------------------
 void sub_5E7C0_multiplayer_test_banished(type_entity_0x6E8E* a1x)//23f7c0
@@ -63028,7 +63028,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 		a1x->dword_0xA4_164x->word_0x10_16 = 0;
 		v1 = a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[3];
 		if (v1)
-			x_DWORD_EA3E4[v1]->word_0x2E_46 = 0;
+			Entities_EA3E4[v1]->word_0x2E_46 = 0;
 		//v2 = (int)x_D41A0_BYTEARRAY_0;
 		D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 0x20u;
 		v3 = a1x->state_0x45_69;
@@ -63048,8 +63048,8 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 					a1x->word_0x96_150 = v4;
 			}
 		}
-		v6x = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (v6x > x_DWORD_EA3E4[0])
+		v6x = Entities_EA3E4[a1x->word_0x96_150];
+		if (v6x > Entities_EA3E4[0])
 		{
 			if (v6x->class_0x3F_63 != 14 || (v7 = v6x->model_0x40_64, v7 != 4) && v7 != 3)
 				a1x->word_0x96_150 = 0;
@@ -63080,7 +63080,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 			a1x->byte_0x46_70 = (a1x->word_0x96_150 == 0) + 3;
 		break;
 	case 3://change rotation
-		v10 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &x_DWORD_EA3E4[a1x->word_0x96_150]->axis_0x4C_76);
+		v10 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &Entities_EA3E4[a1x->word_0x96_150]->axis_0x4C_76);
 		if ((unsigned __int16)sub_582B0(a1x->word_0x1C_28, v10) <= 0xBu)
 		{
 			a1x->byte_0x46_70 = 4;
@@ -63136,7 +63136,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 		if (!a1x->dword_0x10_16)
 			goto LABEL_51;
 		x_WORD_EB398ar = a1x->axis_0x4C_76;
-		v14x = x_DWORD_EA3E4[a1x->word_0x96_150];
+		v14x = Entities_EA3E4[a1x->word_0x96_150];
 		a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &v14x->axis_0x4C_76);
 		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
 		//v15 = a1x->word_0x82_130 + 8;
@@ -63259,7 +63259,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // E9C3C: using guessed type int x_DWORD_E9C3C;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // 1803EC: using guessed type __int16 x_WORD_1803EC;
 
@@ -63269,14 +63269,14 @@ type_entity_0x6E8E* sub_5EF70(type_entity_0x6E8E* a1x)//23ff70
 	type_entity_0x6E8E* resultx; // eax
 
 	resultx = a1x;
-	if (a1x > x_DWORD_EA3E4[0] && a1x->class_0x3F_63 == 3 && !a1x->model_0x40_64)
+	if (a1x > Entities_EA3E4[0] && a1x->class_0x3F_63 == 3 && !a1x->model_0x40_64)
 	{
 		//resultx = (uint8_t*)a1x->dword_0xA4_164;
 		a1x->dword_0xA4_164x->word_0x36_54 = 100;
 	}
 	return resultx;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005EFA0) --------------------------------------------------------
 signed int sub_5EFA0(type_entity_0x6E8E* a1x)//23ffa0
@@ -63303,15 +63303,15 @@ signed int sub_5EFA0(type_entity_0x6E8E* a1x)//23ffa0
 	v1 = 0;
 	if (a1x->word_0x96_150)
 	{
-		v2x = x_DWORD_EA3E4[a1x->word_0x96_150];
-		if (v2x > x_DWORD_EA3E4[0] && (v2x->life_0x8 <= 0 || v2x->struct_byte_0xc_12_15.byte[1] & 4))
+		v2x = Entities_EA3E4[a1x->word_0x96_150];
+		if (v2x > Entities_EA3E4[0] && (v2x->life_0x8 <= 0 || v2x->struct_byte_0xc_12_15.byte[1] & 4))
 			a1x->word_0x96_150 = 0;
 	}
 	if (a1x->life_0x8 >= 0)
 	{
 		if (a1x->str_0x5E_94.word_0x7A_122)
 		{
-			v3x = x_DWORD_EA3E4[a1x->str_0x5E_94.word_0x7A_122];
+			v3x = Entities_EA3E4[a1x->str_0x5E_94.word_0x7A_122];
 			if (v3x)
 			{
 				v3x->dword_0xA4_164x->word_0x146_326 = a1x - D41A0_0.struct_0x6E8E;
@@ -63364,7 +63364,7 @@ signed int sub_5EFA0(type_entity_0x6E8E* a1x)//23ffa0
 			}
 			v14 = a1x->str_0x5E_94.word_0x62_98;
 			a1x->life_0x8 -= a1x->str_0x5E_94.dword_0x5E_94;
-			v15x = x_DWORD_EA3E4[v14];
+			v15x = Entities_EA3E4[v14];
 			a1x->dword_0xA4_164x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&v15x->axis_0x4C_76, &a1x->axis_0x4C_76);
 			a1x->dword_0xA4_164x->word_0x22_34 = Maths::sub_58210_radix_tan(&v15x->axis_0x4C_76, &a1x->axis_0x4C_76);
 			a1x->dword_0xA4_164x->word_0x1E_30 = a1x->str_0x5E_94.dword_0x5E_94 / 10;
@@ -63411,7 +63411,7 @@ signed int sub_5EFA0(type_entity_0x6E8E* a1x)//23ffa0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005F380) --------------------------------------------------------
 void sub_5F380(type_entity_0x6E8E* a1x)//240380
@@ -63518,16 +63518,16 @@ void sub_5F380(type_entity_0x6E8E* a1x)//240380
 		a1x->dword_0xA4_164x->word_0x10_16 = x_DWORD_D4BAC;
 	//v20 = a1x->dword_0xA4_164;
 	if (a1x->dword_0xA4_164x->dword_0x0_0 & 0x10)
-		sub_5F660(a1x, x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x451_1105]], 256);
+		sub_5F660(a1x, Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x451_1105]], 256);
 	//v21 = a1x->dword_0xA4_164;
 	if (a1x->dword_0xA4_164x->dword_0x0_0 & 0x20)
-		sub_5F660(a1x, x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x453_1107]], 512);
+		sub_5F660(a1x, Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x453_1107]], 512);
 	//v22 = *(x_BYTE**)&a1x->dword_0xA4_164;
 	if (a1x->dword_0xA4_164x->dword_0x0_0 & 0x40)
 		/*LOBYTE(v22) = */
 		sub_5F660(
 			a1x,
-			x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[a1x->dword_0xA4_164x->str_611.byte_0x458_1112]]],
+			Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[a1x->dword_0xA4_164x->str_611.byte_0x458_1112]]],
 			256);
 	//return (char)v22;
 }
@@ -63538,7 +63538,7 @@ void sub_5F380(type_entity_0x6E8E* a1x)//240380
 // D4BA8: using guessed type int x_DWORD_D4BA8;
 // D4BAC: using guessed type int x_DWORD_D4BAC;
 // D4BB0: using guessed type __int16 x_WORD_D4BB0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005F660) --------------------------------------------------------
 char sub_5F660(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, int a3)//240660
@@ -63552,7 +63552,7 @@ char sub_5F660(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, int a3)//240660
 	v5 = 0;
 	v7 = 0;
 	v6 = 0;
-	if (a2x > x_DWORD_EA3E4[0])
+	if (a2x > Entities_EA3E4[0])
 	{
 		if (a1x->model_0x40_64 == 1)
 		{
@@ -63637,7 +63637,7 @@ LABEL_23:
 	}
 	return v7;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005F7B0) --------------------------------------------------------
 void sub_5F7B0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, int a3)//2407b0
@@ -63670,7 +63670,7 @@ type_entity_0x6E8E* sub_5F810(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, 
 	v3 = -1;
 	v4x = 0;
 	v5x = x_D41A0_BYTEARRAY_4_struct.dword_38523;
-	if (v5x <= x_DWORD_EA3E4[0])
+	if (v5x <= Entities_EA3E4[0])
 		return 0;
 	do
 	{
@@ -63688,11 +63688,11 @@ type_entity_0x6E8E* sub_5F810(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, 
 			}
 		}
 		v5x = v5x->next_0;
-	} while (v5x > x_DWORD_EA3E4[0]);
+	} while (v5x > Entities_EA3E4[0]);
 	return v4x;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005F890) --------------------------------------------------------
 void sub_5F890(type_entity_0x6E8E* a1x, __int16 a2)//240890
@@ -63701,24 +63701,24 @@ void sub_5F890(type_entity_0x6E8E* a1x, __int16 a2)//240890
 	type_entity_0x6E8E* v2x;
 	__int16 v3; // bx
 
-	//v2 = *(x_WORD **)&x_DWORD_EA3E4[a1x->word_0x1A_26]->dword_0xA4_164;
-	v3 = x_DWORD_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->str_611.array_0x333_819x.word[2];
+	//v2 = *(x_WORD **)&Entities_EA3E4[a1x->word_0x1A_26]->dword_0xA4_164;
+	v3 = Entities_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->str_611.array_0x333_819x.word[2];
 	if (v3)
 	{
 		if (a2)
 		{
-			v2x = x_DWORD_EA3E4[v3];
+			v2x = Entities_EA3E4[v3];
 			v2x->word_0x2E_46 = v2x->word_0x30_48 - 1;
 		}
 		else
 		{
-			x_DWORD_EA3E4[v3]->word_0x2E_46 = 0;
+			Entities_EA3E4[v3]->word_0x2E_46 = 0;
 			/*LOBYTE(v2) = */sub_6D880(a1x);
 		}
 	}
 	//return (char)v2;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0005F8F0) --------------------------------------------------------
 void EndOfCastleProjectile_5F8F0(type_entity_0x6E8E* a1x)//2408f0
@@ -63770,14 +63770,14 @@ void EndOfCastleProjectile_5F8F0(type_entity_0x6E8E* a1x)//2408f0
 			if (a1x->mana_0x90_144 < a1x->maxMana_0x8C_140)
 			{
 				v3x = x_D41A0_BYTEARRAY_4_struct.dword_38523;
-				if (v3x > x_DWORD_EA3E4[0])
+				if (v3x > Entities_EA3E4[0])
 				{
 					while (v3x->model_0x40_64 != 39
 						|| v3x->word_0x94_148 != a1x->id_0x1A_26
 						|| !CompareAxisWithShift_10750(a1x, v3x))
 					{
 						v3x = v3x->next_0;
-						if (v3x <= x_DWORD_EA3E4[0])
+						if (v3x <= Entities_EA3E4[0])
 							return;
 					}
 					a1x->mana_0x90_144 += v3x->mana_0x90_144;
@@ -63799,7 +63799,7 @@ void BeginOfCastleCreation_5FA70(type_entity_0x6E8E* locEvent)//240a70
 		{
 			if ((locEvent->struct_byte_0xc_12_15.byte[0] & 2) == 0)
 			{
-				locEvent->word_0x5A_90 += sub_616D0(x_DWORD_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->word_0x38_56);
+				locEvent->word_0x5A_90 += sub_616D0(Entities_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->word_0x38_56);
 				locEvent->struct_byte_0xc_12_15.byte[0] |= 2u;
 			}
 			sub_60480(locEvent);
@@ -63829,7 +63829,7 @@ void BeginOfCastleCreation_5FA70(type_entity_0x6E8E* locEvent)//240a70
 		if ((locEvent->byte_0x3E_62 & 0x1F) == 0)
 		{
 			bool is10_42Type = false;
-			for (type_entity_0x6E8E* i = x_D41A0_BYTEARRAY_4_struct.dword_38535; i > x_DWORD_EA3E4[0] && !is10_42Type; i = i->next_0)
+			for (type_entity_0x6E8E* i = x_D41A0_BYTEARRAY_4_struct.dword_38535; i > Entities_EA3E4[0] && !is10_42Type; i = i->next_0)
 			{
 				if (i->class_0x3F_63 == 10 && i->model_0x40_64 == 42)
 					is10_42Type = true;
@@ -63926,10 +63926,10 @@ void sub_5FD00(type_entity_0x6E8E* a1x)//240d00
 	int v15; // [esp+8h] [ebp-8h]
 	__int16 v16; // [esp+Ch] [ebp-4h]
 
-	//result = x_DWORD_EA3E4[a1x->word_0x1A_26]->dword_0xA4_164;
+	//result = Entities_EA3E4[a1x->word_0x1A_26]->dword_0xA4_164;
 	v14 = 0;
 	//v2 = a1x->dword_0x8C_140;
-	if (x_DWORD_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->dword_0x13C_316 + a1x->mana_0x90_144 > a1x->maxMana_0x8C_140)
+	if (Entities_EA3E4[a1x->id_0x1A_26]->dword_0xA4_164x->dword_0x13C_316 + a1x->mana_0x90_144 > a1x->maxMana_0x8C_140)
 		v14 = a1x->mana_0x90_144 - a1x->maxMana_0x8C_140;
 	if (!a1x->dword_0x10_16)
 	{
@@ -64003,7 +64003,7 @@ void sub_5FD00(type_entity_0x6E8E* a1x)//240d00
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 int debugcounter_240f50 = 0;
@@ -64033,7 +64033,7 @@ void sub_5FF50(type_entity_0x6E8E* a1x)//240f50
 	int v20; // [esp+18h] [ebp-8h]
 	__int16 v21; // [esp+1Ch] [ebp-4h]
 
-	v18x = x_DWORD_EA3E4[a1x->id_0x1A_26];
+	v18x = Entities_EA3E4[a1x->id_0x1A_26];
 	v1 = 0;
 	sub_60400(a1x->dword_0x10_16, &v21, &v19);
 	if (v21 > 0)
@@ -64045,8 +64045,8 @@ void sub_5FF50(type_entity_0x6E8E* a1x)//240f50
 				v18x->dword_0xA4_164x->dword_0x12E_302 = 0;
 				//v2 = v18x->dword_0xA4_164;
 				//v16 = 2 * (signed __int16)v1;
-				v3x = x_DWORD_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[v1]];
-				if (v3x <= x_DWORD_EA3E4[0])
+				v3x = Entities_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[v1]];
+				if (v3x <= Entities_EA3E4[0])
 				{
 					v8x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 3, 3);
 					v9x = v8x;
@@ -64082,11 +64082,11 @@ void sub_5FF50(type_entity_0x6E8E* a1x)//240f50
 				v3x->word_0x96_150 = a1x - D41A0_0.struct_0x6E8E;
 				if (v3x->maxMana_0x8C_140 <= v3x->mana_0x90_144)
 					goto LABEL_13;
-				x_DWORD_EA3E4[0]->word_0x96_150 = 0;
+				Entities_EA3E4[0]->word_0x96_150 = 0;
 				v4x = sub_5F810(
 					v3x,
-					x_DWORD_EA3E4[x_DWORD_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[((signed __int16)v1 + 1) % 3]]->word_0x96_150],
-					x_DWORD_EA3E4[x_DWORD_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[((signed __int16)v1 + 2) % 3]]->word_0x96_150]);
+					Entities_EA3E4[Entities_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[((signed __int16)v1 + 1) % 3]]->word_0x96_150],
+					Entities_EA3E4[Entities_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[((signed __int16)v1 + 2) % 3]]->word_0x96_150]);
 				if (!v4x)
 					goto LABEL_13;
 				v3x->word_0x96_150 = v4x - D41A0_0.struct_0x6E8E;
@@ -64103,8 +64103,8 @@ void sub_5FF50(type_entity_0x6E8E* a1x)//240f50
 LABEL_22:
 	while ((signed __int16)v1 < 3)
 	{
-		v10x = x_DWORD_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[v1]];
-		if (v10x > x_DWORD_EA3E4[0])
+		v10x = Entities_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[v1]];
+		if (v10x > Entities_EA3E4[0])
 		{
 			sub_36BA0(v10x, 0);
 			SetEntity04_57F10(v10x);
@@ -64149,8 +64149,8 @@ LABEL_22:
 			}
 
 			//v13 = 2 * (signed __int16)v20;
-			v14x = x_DWORD_EA3E4[v18x->dword_0xA4_164x->array_0x5C_92[v20]];
-			if (v14x <= x_DWORD_EA3E4[0])
+			v14x = Entities_EA3E4[v18x->dword_0xA4_164x->array_0x5C_92[v20]];
+			if (v14x <= Entities_EA3E4[0])
 			{
 				if (!a1x->word_0x2C_44)
 				{
@@ -64183,7 +64183,7 @@ LABEL_22:
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
@@ -64256,7 +64256,7 @@ void sub_60480(type_entity_0x6E8E* a1x)//241480
 		a1x->array_0x52_82.yaw = 0xe000;
 		a1x->array_0x52_82.fov = 0x4000;
 		SetShiftByCastle_49EC0(v2x, a1x->dword_0x10_16);
-		v6x = x_DWORD_EA3E4[a1x->id_0x1A_26];
+		v6x = Entities_EA3E4[a1x->id_0x1A_26];
 		v6x->dword_0xA4_164x->word_0x3A_58 = a1x - D41A0_0.struct_0x6E8E;
 		v6x->dword_0xA4_164x->word_0x1C2_450 = a1x->dword_0x10_16;
 		v6x->dword_0xA4_164x->byte_0x1BE_446 = 0;
@@ -64274,7 +64274,7 @@ void sub_60480(type_entity_0x6E8E* a1x)//241480
 	//	return v1;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000605E0) --------------------------------------------------------
 void sub_605E0(type_entity_0x6E8E* a1x)//2415e0
@@ -64294,12 +64294,12 @@ void sub_605E0(type_entity_0x6E8E* a1x)//2415e0
 		v2 = a1x - D41A0_0.struct_0x6E8E;
 		a1x->maxMana_0x8C_140 += v1;
 		PrepareEventSound_6E450(v2, -1, 30);
-		x_DWORD_EA3E4[0]->axis_0x4C_76 = a1x->word_0x9A_154x;
-		x_DWORD_EA3E4[0]->byte_0x46_70 = a1x->dword_0x10_16;
-		x_DWORD_EA3E4[0]->id_0x1A_26 = a1x->id_0x1A_26;
+		Entities_EA3E4[0]->axis_0x4C_76 = a1x->word_0x9A_154x;
+		Entities_EA3E4[0]->byte_0x46_70 = a1x->dword_0x10_16;
+		Entities_EA3E4[0]->id_0x1A_26 = a1x->id_0x1A_26;
 		v5 = a1x - D41A0_0.struct_0x6E8E;
-		v6x = x_DWORD_EA3E4[0];
-		x_DWORD_EA3E4[0]->model_0x40_64 = 0;
+		v6x = Entities_EA3E4[0];
+		Entities_EA3E4[0]->model_0x40_64 = 0;
 		v6x->dword_0x10_16 = 0;
 		v6x->parentId_0x28_40 = v5;
 		sub_385C0_remove_castle_stage(v6x);
@@ -64313,7 +64313,7 @@ void sub_605E0(type_entity_0x6E8E* a1x)//2415e0
 	}
 	if (!a1x->dword_0x10_16)
 	{
-		v8x = x_DWORD_EA3E4[a1x->id_0x1A_26];
+		v8x = Entities_EA3E4[a1x->id_0x1A_26];
 		if (v8x->model_0x40_64 == 1)
 		{
 			if (D41A0_0.terrain_2FECE.byte_0x2FED2 & 4)
@@ -64321,7 +64321,7 @@ void sub_605E0(type_entity_0x6E8E* a1x)//2415e0
 				v9 = v8x->dword_0xA4_164x->str_611.array_0x333_819x.word[2];
 				if (v9)
 				{
-					SetEntity04_57F10(x_DWORD_EA3E4[v9]);
+					SetEntity04_57F10(Entities_EA3E4[v9]);
 					v8x->dword_0xA4_164x->str_611.array_0x333_819x.word[2] = 0;
 				}
 			}
@@ -64364,12 +64364,12 @@ void sub_60810(type_entity_0x6E8E* locEvent)//241810
 {
 	type_entity_0x6E8E* locEvent2 = nullptr;
 
-	if ((x_DWORD_EA3E4[locEvent->id_0x1A_26]->state_0x45_69 <= 1u) && 
-		(x_DWORD_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->str_611.array_0x333_819x.word[2]))
+	if ((Entities_EA3E4[locEvent->id_0x1A_26]->state_0x45_69 <= 1u) && 
+		(Entities_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->str_611.array_0x333_819x.word[2]))
 	{
-			locEvent2 = x_DWORD_EA3E4[x_DWORD_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->str_611.array_0x333_819x.word[2]];
+			locEvent2 = Entities_EA3E4[Entities_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->str_611.array_0x333_819x.word[2]];
 	}
-	int number1 = (x_DWORD_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->word_0x24A_586 * ((x_DWORD_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->array_0x24E_590[locEvent->dword_0x10_16] << 8) + 256)) >> 8;
+	int number1 = (Entities_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->word_0x24A_586 * ((Entities_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->array_0x24E_590[locEvent->dword_0x10_16] << 8) + 256)) >> 8;
 	switch (locEvent->dword_0x10_16) {
 	case 0:
 		sub_60780(locEvent, locEvent2, 0, 5000);
@@ -64416,7 +64416,7 @@ int sub_609E0(type_entity_0x6E8E* locEvent)//2419e0
 		locEvent->str_0x5E_94.word_0x62_98 = 0;
 		locEvent->str_0x5E_94.dword_0x5E_94 = 0;
 		result = 1;
-		x_DWORD_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->byte_0x195_405 = 4;
+		Entities_EA3E4[locEvent->id_0x1A_26]->dword_0xA4_164x->byte_0x195_405 = 4;
 	}
 	if (locEvent->str_0x5E_94.word_0x80_128 == locEvent->id_0x1A_26)
 	{
@@ -64446,9 +64446,9 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 	__int16 v14; // ax
 	type_entity_0x6E8E* v16x; // [esp+0h] [ebp-4h]
 
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v16x = v1x;
-	if (v1x > x_DWORD_EA3E4[0])
+	if (v1x > Entities_EA3E4[0])
 	{
 		x_WORD_EB398ar = a1x->axis_0x4C_76;
 		v2 = &v1x->axis_0x4C_76;
@@ -64532,7 +64532,7 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
@@ -64652,7 +64652,7 @@ void sub_60F00()//241f00
 	int v1index = 0;
 	while (v0 < D41A0_0.word_0xe)
 	{
-		v2x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[v1index].word_0x00a_2BE4_11240];
+		v2x = Entities_EA3E4[D41A0_0.array_0x2BDE[v1index].word_0x00a_2BE4_11240];
 		v2x->maxMana_0x8C_140 = v2x->dword_0xA4_164x->byte_0x150_336;
 		//v1 += 2124;
 		v1index++;
@@ -64661,14 +64661,14 @@ void sub_60F00()//241f00
 	}
 	//v3 = (int32_t*)x_D41A0_BYTEARRAY_4;
 	//adress 241f53
-	v4x = x_DWORD_EA3E4[1];
+	v4x = Entities_EA3E4[1];
 	x_D41A0_BYTEARRAY_4_struct.str_index_242ar.dword_4 = 1;
 	x_D41A0_BYTEARRAY_4_struct.str_index_242ar.dword_8 = 0;
 
 	/**(_DWORD *)(dword_D41A4 + 246) = 1;
 	*(_DWORD *)(dword_D41A4 + 250) = 0;*/
 
-	if (v4x < x_DWORD_EA3E4[1000])
+	if (v4x < Entities_EA3E4[1000])
 	{
 		while (1)
 		{
@@ -64704,7 +64704,7 @@ void sub_60F00()//241f00
 			}
 		LABEL_24:
 			v4x++;
-			if (v4x >= x_DWORD_EA3E4[1000])
+			if (v4x >= Entities_EA3E4[1000])
 				return/* (char)v3*/;
 		}
 		if (v3a != 3)
@@ -64721,7 +64721,7 @@ void sub_60F00()//241f00
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EA3E8: using guessed type int x_DWORD_EA3E8;
 // EB384: using guessed type int x_DWORD_EB384;
 
@@ -64731,14 +64731,14 @@ type_entity_0x6E8E* sub_61000(type_entity_0x6E8E* a1x)//242000
 	if (a1x->word_0x94_148)
 	{
 		//LOWORD(v1) = *(x_WORD *)(a1 + 148);
-		//v1x = x_DWORD_EA3E4[a1x->word_0x94_148];
-		x_DWORD_EA3E4[a1x->word_0x94_148]->maxMana_0x8C_140 += a1x->mana_0x90_144;
+		//v1x = Entities_EA3E4[a1x->word_0x94_148];
+		Entities_EA3E4[a1x->word_0x94_148]->maxMana_0x8C_140 += a1x->mana_0x90_144;
 	}
 	x_D41A0_BYTEARRAY_4_struct.str_index_242ar.dword_4 += a1x->mana_0x90_144;
-	return x_DWORD_EA3E4[a1x->word_0x94_148];
+	return Entities_EA3E4[a1x->word_0x94_148];
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00061050) --------------------------------------------------------
 type_entity_0x6E8E* sub_61050(type_entity_0x6E8E* a1x)//242050
@@ -64782,9 +64782,9 @@ type_entity_0x6E8E* sub_61050(type_entity_0x6E8E* a1x)//242050
 	v33 = 0;
 	v35 = 0;
 	v1 = a1x->str_0x5E_94.word_0x74_116;
-	v2x = x_DWORD_EA3E4[v1];
+	v2x = Entities_EA3E4[v1];
 	v34x = v2x;
-	if (v2x < x_DWORD_EA3E4[0])
+	if (v2x < Entities_EA3E4[0])
 		goto LABEL_35;
 	if (v2x->class_0x3F_63 == 3)
 	{
@@ -64800,10 +64800,10 @@ type_entity_0x6E8E* sub_61050(type_entity_0x6E8E* a1x)//242050
 		{
 			if (v4 > 2u)
 				goto LABEL_23;
-			v6x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
-			v7x = x_DWORD_EA3E4[v34x->dword_0xA4_164x->word_0x3A_58];
-			v31x = x_DWORD_EA3E4[v34x->dword_0xA4_164x->word_0x3A_58];
-			if (v6x <= x_DWORD_EA3E4[0] || v7x <= x_DWORD_EA3E4[0] || (v8 = v6x->mana_0x90_144, v8 <= 0))
+			v6x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+			v7x = Entities_EA3E4[v34x->dword_0xA4_164x->word_0x3A_58];
+			v31x = Entities_EA3E4[v34x->dword_0xA4_164x->word_0x3A_58];
+			if (v6x <= Entities_EA3E4[0] || v7x <= Entities_EA3E4[0] || (v8 = v6x->mana_0x90_144, v8 <= 0))
 			{
 				v35 = 1;
 			}
@@ -64896,7 +64896,7 @@ LABEL_35:
 	return resultx;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (000613D0) --------------------------------------------------------
 void sub_613D0(type_entity_0x6E8E* a1x)//2423d0
@@ -64924,10 +64924,10 @@ void sub_613D0(type_entity_0x6E8E* a1x)//2423d0
 
 	for (i1 = a1x->word_0x34_52; ; i1 = v2x->word_0x34_52)
 	{
-		v2x = x_DWORD_EA3E4[i1];
-		if (v2x == x_DWORD_EA3E4[0])
+		v2x = Entities_EA3E4[i1];
+		if (v2x == Entities_EA3E4[0])
 			break;
-		sub_57F20(x_DWORD_EA3E4[i1]);
+		sub_57F20(Entities_EA3E4[i1]);
 	}
 	v3 = a1x->id_0x1A_26;
 	a1x->word_0x34_52 = 0;
@@ -64935,7 +64935,7 @@ void sub_613D0(type_entity_0x6E8E* a1x)//2423d0
 	{
 		//LOWORD(i) = v3;
 		v4 = a1x->dword_0x10_16;
-		v5x = x_DWORD_EA3E4[v3];
+		v5x = Entities_EA3E4[v3];
 		while (v4 > 0)
 		{
 			//LOWORD(i) = *(char *)(v4 + *(x_DWORD *)(v5 + 164) + 599);
@@ -64994,7 +64994,7 @@ void sub_613D0(type_entity_0x6E8E* a1x)//2423d0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // EA3BC: using guessed type int **filearray_2aa18c[24];
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39A: using guessed type __int16 x_WORD_EB398ar[1];
 // 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
@@ -65011,7 +65011,7 @@ char sub_61620(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//242620
 	v2x = 0x10000;
 	v3x = 0;
 	v7 = 0;
-	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > x_DWORD_EA3E4[0]; ix = ix->next_0)
+	for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
 	{
 		if (!ix->model_0x40_64 && ix != a1x)
 		{
@@ -65032,7 +65032,7 @@ char sub_61620(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//242620
 }
 // 10000: using guessed type void /*__noreturn*/ sub_10000();
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00061810) --------------------------------------------------------
 signed int sub_61810(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//242810
@@ -65091,7 +65091,7 @@ uint32_t AddTree02_00_64E20(type_entity_0x6E8E* a1x)//245e20
 			v5x = v3x;
 			if (v3x)
 			{
-				v3x->id_0x1A_26 = x_DWORD_EA3E4[a1x->str_0x5E_94.word_0x62_98]->id_0x1A_26;
+				v3x->id_0x1A_26 = Entities_EA3E4[a1x->str_0x5E_94.word_0x62_98]->id_0x1A_26;
 				v6 = 3 * a1x->array_0x52_82.fov;
 				v7 = v4x->axis_0x4C_76.z;
 				v4x->word_0x2C_44 = (signed int)(v6 - (__CFSHL__(HIDWORD(v6), 2) + 4 * HIDWORD(v6))) >> 2;
@@ -65124,7 +65124,7 @@ uint32_t AddTree02_00_64E20(type_entity_0x6E8E* a1x)//245e20
 	}
 	return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00064F60) --------------------------------------------------------
 uint32_t sub_64F60(type_entity_0x6E8E* a1x)//245f60
@@ -65194,7 +65194,7 @@ void AddDolmen02_02_65080(type_entity_0x6E8E* event)//246080
 {
 	for (int v2x = 0;v2x < D41A0_0.word_0xe; v2x++)
 	{
-		type_entity_0x6E8E* event2 = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[v2x].word_0x00a_2BE4_11240];
+		type_entity_0x6E8E* event2 = Entities_EA3E4[D41A0_0.array_0x2BDE[v2x].word_0x00a_2BE4_11240];
 		if (event2->life_0x8 >= 0 && sub_106C0(event2, event))
 			event2->struct_byte_0xc_12_15.byte[1] |= 0x10u;
 	}
@@ -65531,11 +65531,11 @@ void sub_65780(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, type_entity_0x6
 			return;
 		}
 	}
-	v3x = x_DWORD_EA3E4[a1x->id_0x1A_26];
+	v3x = Entities_EA3E4[a1x->id_0x1A_26];
 	if (v3x->class_0x3F_63 == 3 && !v3x->model_0x40_64)
 	{
 		v3x->dword_0xA4_164x->dword_0x165_357++;
-		if (a2x > x_DWORD_EA3E4[0] && a3x > x_DWORD_EA3E4[0] && a2x->id_0x1A_26 == a3x->id_0x1A_26)
+		if (a2x > Entities_EA3E4[0] && a3x > Entities_EA3E4[0] && a2x->id_0x1A_26 == a3x->id_0x1A_26)
 		{
 			//v4 = v3x->dword_0xA4_164;
 			if (v3x->dword_0xA4_164x)
@@ -65544,7 +65544,7 @@ void sub_65780(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, type_entity_0x6
 	}
 	//return v3;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00065820) --------------------------------------------------------
 type_entity_0x6E8E* sub_65820(type_entity_0x6E8E* a1x)//246820
@@ -65564,9 +65564,9 @@ type_entity_0x6E8E* sub_65820(type_entity_0x6E8E* a1x)//246820
 	char v14; // [esp+4h] [ebp-4h]
 
 	v14 = 0;
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v13x = v1x;
-	if (v1x <= x_DWORD_EA3E4[0])
+	if (v1x <= Entities_EA3E4[0])
 	{
 		v2 = a1x->struct_byte_0xc_12_15.byte[0];
 		if (!(v2 & 2))
@@ -65649,8 +65649,8 @@ LABEL_29:
 		return 0;
 	sub_65780(a1x, v5x, v13x);
 	sub_686D0(a1x, v5x);
-	if (v5x > x_DWORD_EA3E4[0] && a1x->word_0x26_38)
-		sub_6D8B0(a1x->id_0x1A_26, x_DWORD_EA3E4[a1x->word_0x26_38]->model_0x40_64, 1);
+	if (v5x > Entities_EA3E4[0] && a1x->word_0x26_38)
+		sub_6D8B0(a1x->id_0x1A_26, Entities_EA3E4[a1x->word_0x26_38]->model_0x40_64, 1);
 	if (a1x->byte_0x44_68 == 34)
 		v11x->life_0x8 = a1x->word_0x2A_42;
 	v11x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -65665,7 +65665,7 @@ LABEL_29:
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -65699,7 +65699,7 @@ void sub_65B50(type_entity_0x6E8E* a1x)//246b50
 		v2x->life_0x8 = v2x->maxLife_0x4;
 		if (v4)
 		{
-			v5x = x_DWORD_EA3E4[v4];
+			v5x = Entities_EA3E4[v4];
 			if (v5x->class_0x3F_63 == 3
 				&& !v5x->model_0x40_64
 				&& v5x->dword_0xA4_164x->word_0x38_56 == D41A0_0.LevelIndex_0xc)
@@ -65707,9 +65707,9 @@ void sub_65B50(type_entity_0x6E8E* a1x)//246b50
 				v7 = 1;
 			}
 		}
-		for (ix = x_DWORD_EA3E4[v2x->word_0x34_52];
-			ix > x_DWORD_EA3E4[0];
-			ix = x_DWORD_EA3E4[ix->word_0x34_52])
+		for (ix = Entities_EA3E4[v2x->word_0x34_52];
+			ix > Entities_EA3E4[0];
+			ix = Entities_EA3E4[ix->word_0x34_52])
 		{
 			ix->id_0x1A_26 = v2x->id_0x1A_26;
 			if (v7)
@@ -65720,7 +65720,7 @@ void sub_65B50(type_entity_0x6E8E* a1x)//246b50
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00065C20) --------------------------------------------------------
 type_entity_0x6E8E* sub_65C20(type_entity_0x6E8E* a1x)//246c20
@@ -65746,10 +65746,10 @@ type_entity_0x6E8E* sub_65C20(type_entity_0x6E8E* a1x)//246c20
 	char v20; // [esp+10h] [ebp-4h]
 
 	v20 = 0;
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v18x = 0;
 	v19x = v1x;
-	if (v1x > x_DWORD_EA3E4[0])
+	if (v1x > Entities_EA3E4[0])
 	{
 		sub_65610(a1x, v1x);
 		goto LABEL_18;
@@ -65853,7 +65853,7 @@ LABEL_35:
 			{
 				sub_65780(a1x, v9x, v19x);
 				sub_686D0(a1x, v9x);
-				if (v9x > x_DWORD_EA3E4[0])
+				if (v9x > Entities_EA3E4[0])
 					sub_6D8B0(a1x->id_0x1A_26, 0, 1);
 				v15x = v18x;
 				v18x->word_0x2A_42 = a1x->word_0x2A_42;
@@ -65868,7 +65868,7 @@ LABEL_35:
 	return v18x;
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -65906,9 +65906,9 @@ void CastPosses_65F60(type_entity_0x6E8E* a1x)//246f60
 	debugcounter_sub_65F60++;
 
 	v15 = 0;
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v14x = v1x;
-	if (v1x <= x_DWORD_EA3E4[0])
+	if (v1x <= Entities_EA3E4[0])
 	{
 		//v2 = *(x_BYTE *)(a1 + 12);
 		if (!(a1x->struct_byte_0xc_12_15.byte[0] & 2))
@@ -65978,7 +65978,7 @@ LABEL_19:
 		if (v12x)
 		{
 			sub_65780(a1x, v7x, v14x);
-			if (v7x > x_DWORD_EA3E4[0])
+			if (v7x > Entities_EA3E4[0])
 				sub_6D8B0(a1x->id_0x1A_26, 1u, 1);
 			v12x->id_0x1A_26 = a1x->id_0x1A_26;
 			v12x->word_0x1C_28 = a1x->word_0x1C_28;
@@ -65989,7 +65989,7 @@ LABEL_19:
 	return;
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -66107,9 +66107,9 @@ void sub_662E0(type_entity_0x6E8E* a1x)//2472e0
 	//fix
 
 	v15 = 0;
-	v1x = x_DWORD_EA3E4[a1x->word_0x96_150];
+	v1x = Entities_EA3E4[a1x->word_0x96_150];
 	v14x = v1x;
-	if (v1x <= x_DWORD_EA3E4[0])
+	if (v1x <= Entities_EA3E4[0])
 	{
 		v2 = a1x->struct_byte_0xc_12_15.byte[0];
 		if (!(v2 & 2))
@@ -66215,8 +66215,8 @@ LABEL_26:
 			{
 				sub_65780(a1x, v5x, v14x);
 				sub_686D0(a1x, v5x);
-				if (v5x > x_DWORD_EA3E4[0] && a1x->word_0x26_38)
-					sub_6D8B0(a1x->id_0x1A_26, *(char*)(x_DWORD_EA3E4[a1x->word_0x26_38] + 64), 1);
+				if (v5x > Entities_EA3E4[0] && a1x->word_0x26_38)
+					sub_6D8B0(a1x->id_0x1A_26, *(char*)(Entities_EA3E4[a1x->word_0x26_38] + 64), 1);
 				if (a1x->byte_0x44_68 == 34)
 					v12x->life_0x8 = a1x->word_0x2A_42;
 				v12x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -66233,7 +66233,7 @@ LABEL_26:
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
@@ -66248,7 +66248,7 @@ void sub_66610(type_entity_0x6E8E* a1x)//247610
 	char v7; // [esp+0h] [ebp-4h]
 
 	v7 = 0;
-	if (x_DWORD_EA3E4[0] >= x_DWORD_EA3E4[a1x->word_0x96_150])
+	if (Entities_EA3E4[0] >= Entities_EA3E4[a1x->word_0x96_150])
 	{
 		v1 = a1x->struct_byte_0xc_12_15.byte[0];
 		if (!(v1 & 2))
@@ -66297,7 +66297,7 @@ void sub_66610(type_entity_0x6E8E* a1x)//247610
 	//return v2;
 }
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 

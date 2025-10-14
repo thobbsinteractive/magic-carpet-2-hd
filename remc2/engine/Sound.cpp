@@ -5527,9 +5527,9 @@ void WriteWaveToFile(wav_t* wav, const char* name)
 }
 
 //----- (0006E450) --------------------------------------------------------
-void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
+void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t index)//24f450
 {
-	type_entity_0x6E8E* v3x; // edx
+	type_entity_0x6E8E* ptrEntity_v3x; // edx
 	axis_3d* v4x; // esi
 	unsigned int v5; // eax
 	__int16 v6; // ax
@@ -5542,11 +5542,11 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 	unsigned int v13; // eax
 	unsigned int v14; // edx
 	__int16 v21; // [esp+0h] [ebp-24h]
-	type_entity_0x6E8E* v22x; // [esp+4h] [ebp-20h]
+	type_entity_0x6E8E* ptrEntity_v22x; // [esp+4h] [ebp-20h]
 	signed int v23; // [esp+8h] [ebp-1Ch]
 	int v24; // [esp+Ch] [ebp-18h]
 	unsigned int v25; // [esp+10h] [ebp-14h]
-	type_entity_0x6E8E* v26x; // [esp+14h] [ebp-10h]
+	type_entity_0x6E8E* ptrEntity_v26x; // [esp+14h] [ebp-10h]
 	unsigned __int16 v27; // [esp+18h] [ebp-Ch]
 	__int16 v28; // [esp+1Ch] [ebp-8h]
 	__int16 flags_v29; // [esp+20h] [ebp-4h]
@@ -5556,35 +5556,35 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 	v24 = D41A0_0.rand_0x8;
 	if (!soundActive_E3799 || !soundAble_E3798)
 		return;
-	v3x = x_DWORD_EA3E4[a1];
-	v22x = v3x;
-	if (v3x <= x_DWORD_EA3E4[0])
+	ptrEntity_v3x = Entities_EA3E4[entityIdx];
+	ptrEntity_v22x = ptrEntity_v3x;
+	if (ptrEntity_v3x <= Entities_EA3E4[0])
 	{
 		volume_v10 = 0x7FFF;
 		LOWORD(volumePan_v12) = 0x7FFF;
 	}
 	else
 	{
-		if (v3x->struct_byte_0xc_12_15.byte[0] < 0)
+		if (ptrEntity_v3x->struct_byte_0xc_12_15.byte[0] < 0)
 			return;
-		v4x = &v3x->axis_0x4C_76;
+		v4x = &ptrEntity_v3x->axis_0x4C_76;
 		if ((unsigned int)Maths::EuclideanDistXY_584D0(
-			&x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->axis_0x4C_76,
-			&v3x->axis_0x4C_76) > 0x9000000)
+			&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->axis_0x4C_76,
+			&ptrEntity_v3x->axis_0x4C_76) > 0x9000000)
 			return;
-		v26x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
-		flags_v29 = v22x->id_0x1A_26;
-		v5 = Maths::sub_58490_radix_3d_2(&v26x->axis_0x4C_76, v4x);
+		ptrEntity_v26x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+		flags_v29 = ptrEntity_v22x->id_0x1A_26;
+		v5 = Maths::sub_58490_radix_3d_2(&ptrEntity_v26x->axis_0x4C_76, v4x);
 		v25 = v5;
 		v23 = v5;
-		v6 = Maths::sub_581E0_maybe_tan2(&v26x->axis_0x4C_76, v4x);
+		v6 = Maths::sub_581E0_maybe_tan2(&ptrEntity_v26x->axis_0x4C_76, v4x);
 		v28 = v6;
-		v7 = sub_582B0(v26x->word_0x1C_28, v6);
+		v7 = sub_582B0(ptrEntity_v26x->word_0x1C_28, v6);
 		v27 = v7;
 		v8 = 12288 * (512 - v7 / 2 + 512);
 		v9 = (v8 - (__CFSHL__(v8 >> 31, 10) + (v8 >> 31 << 10))) >> 10;
 		volume_v10 = v9 ? (signed int)(0x7FFF * (v9 - v25)) / v9 : 0x7FFF;
-		v11 = (signed __int16)sub_582F0(v26x->word_0x1C_28, v28);
+		v11 = (signed __int16)sub_582F0(ptrEntity_v26x->word_0x1C_28, v28);
 		if (volume_v10 < 512)
 			return;
 		if (volume_v10 > 0x7FFF)
@@ -5616,7 +5616,7 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 index)//24f450
 				if (index != 46)
 					goto LABEL_29;
 				v14 = v13 % 0x14;
-				if (v22x->state_0x45_69 == 14)
+				if (ptrEntity_v22x->state_0x45_69 == 14)
 					LOWORD(v14) = v14 + 10;
 				else
 					LOWORD(v14) = v14 - 10;
