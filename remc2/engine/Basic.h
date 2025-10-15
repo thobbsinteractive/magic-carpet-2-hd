@@ -157,7 +157,7 @@ extern uint8_t unk_F0A20x[1024];//2c1a20
 extern char isCaveLevel_D41B6;
 extern uint8_t keyColor1_D4B7C; // weak
 extern uint8_t keyColor2_D4B7E; // weak
-extern type_event_0x6E8E* x_DWORD_EA3E4[1001];//2bb3e4
+extern type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
 
 extern uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
 extern uint8_t* x_BYTE_F6EE0_tablesx_pre;
@@ -590,3 +590,5 @@ void Convert_to_shadow_str_E2A74(const type_array_str_E2A74 &from, type_shadow_s
 
 void sub_417A0_install_pal_and_mouse_minmax();
 unsigned long j___clock();
+
+void SetPlayerLocation(uint16_t x, uint16_t y, int16_t z, int16_t pitch, int16_t roll, int16_t yaw);

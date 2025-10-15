@@ -2286,7 +2286,7 @@ int getTerrainAlt_10C40(axis_3d* axis3d)//1f1c40
 }
 
 //----- (00011E70) --------------------------------------------------------
-bool sub_11E70(type_event_0x6E8E* event, axis_3d* axis3d)//1f2e70
+bool sub_11E70(type_entity_0x6E8E* event, axis_3d* axis3d)//1f2e70
 {
 	return event->array_0x52_82.fov + getTerrainAlt_10C40(axis3d) + event->dword_0xA0_160x->word_160_0xc_12 > sub_10C60(axis3d);
 }
