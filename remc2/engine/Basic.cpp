@@ -1724,7 +1724,7 @@ void VGA_CalculateAndPrintFps(int x, int y, float timeDelta)
 
 void VGA_DrawPlayerCoordData(int x, int y)
 {
-	if (x_DWORD_EA3E4 != nullptr && x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240] != nullptr) {
+	if (x_DWORD_EA3E4 != nullptr && x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240] != nullptr) {
 
 		int16_t index = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00e_2BDE_11244 + 1;
 		axis_3d axisData = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[index].axis_2BDE_11695;

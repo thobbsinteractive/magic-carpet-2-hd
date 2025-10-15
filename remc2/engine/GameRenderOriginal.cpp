@@ -135,7 +135,7 @@ GameRenderOriginal::~GameRenderOriginal()
 					{
 						if (D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize == 40)
 						{
-							v34 = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->actSpeed_0x82_130;
+							v34 = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->actSpeed_0x82_130;
 							if ((signed int)((HIDWORD(v34) ^ v34) - HIDWORD(v34)) > 80)
 								D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 = 1;
 						}
@@ -2239,7 +2239,7 @@ void GameRenderOriginal::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t
 	v3 = 0;
 	if (str_unk_1804B0ar.PopupStatusByte_0x9e & 1)
 		return;
-	v4x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v4x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 	v5 = a1x->class_0x3F_63;
 	if (v5 < 5u)
 	{

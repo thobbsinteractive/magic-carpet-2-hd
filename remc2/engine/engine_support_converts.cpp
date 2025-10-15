@@ -249,8 +249,8 @@ void convert_struct_to_array_0x2BDE(type_str_0x2BDE* input, uint8_t* output) {
 	memcpy(output + 0x7, &input->word_0x007_2BE4_11237, 2);
 	//int8_t byte_0x009_2BE4_11239;
 	memcpy(output + 0x9, &input->byte_0x009_2BE4_11239, 1);
-	//uint16_t word_0x00a_2BE4_11240;//10 //11240 - word - index z EA3E4 //0xa
-	memcpy(output + 0xa, &input->word_0x00a_2BE4_11240, 2);
+	//uint16_t PlayerEntityIdx_2BE4_11240;//10 //11240 - word - index z EA3E4 //0xa
+	memcpy(output + 0xa, &input->PlayerEntityIdx_2BE4_11240, 2);
 	//uint8_t byte_0x00c_2BE0_11242_xx;
 	memcpy(output + 0xc, &input->byte_0x00c_2BE0_11242_xx, 1);
 	//uint8_t byte_0x00d_2BE0_11243_xx;
