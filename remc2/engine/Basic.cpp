@@ -3764,3 +3764,18 @@ unsigned long _clock()
 unsigned long j___clock() {
 	return _clock();
 }; // weak
+
+void SetPlayerLocation(uint16_t x, uint16_t y, int16_t z, int16_t pitch, int16_t roll, int16_t yaw)
+{
+	if (x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240] != nullptr)
+	{
+		auto ptrPlayerEntity = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
+		ptrPlayerEntity->axis_0x4C_76.x = x;
+		ptrPlayerEntity->axis_0x4C_76.y = y;
+		ptrPlayerEntity->axis_0x4C_76.z = z;
+
+		ptrPlayerEntity->array_0x52_82.pitch = pitch;
+		ptrPlayerEntity->array_0x52_82.roll = roll;
+		ptrPlayerEntity->array_0x52_82.yaw = yaw;
+	}
+}
