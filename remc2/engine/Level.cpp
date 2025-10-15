@@ -695,7 +695,7 @@ void sub_57680_FixPointersAfterLoad()//238680
 
 	for (int v0 = 0; v0 < D41A0_0.word_0xe; v0++)
 	{
-		Entities_EA3E4[D41A0_0.array_0x2BDE[v0].word_0x00a_2BE4_11240]->dword_0xA4_164x = &D41A0_0.array_0x2BDE[v0].dword_0x3E6_2BE4_12228;
+		Entities_EA3E4[D41A0_0.array_0x2BDE[v0].PlayerEntityIdx_2BE4_11240]->dword_0xA4_164x = &D41A0_0.array_0x2BDE[v0].dword_0x3E6_2BE4_12228;
 	}
 	for (int indexx = 1; Entities_EA3E4[indexx] < Entities_EA3E4[1000]; indexx++)
 		if (Entities_EA3E4[indexx]->class_0x3F_63)
