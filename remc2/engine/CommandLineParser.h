@@ -51,12 +51,14 @@ class CommandLineParser {
         bool DoShowDebugPerifery() const { return m_show_debug_perifery; };
         bool DoTextOutputToConsole() const { return m_text_output_to_console;};
         bool DoStateMonitor() const { return m_state_monitor;};
+        bool DoShowInGameDebug() const { return m_enable_in_game_debug; };
 
         // settings
         std::string GetMemimagesPath() const {return m_memimages_path;};
         std::string GetConfigFilePath() const { return m_config_file_path; };
 		int16_t GetSetLevel() const { return m_set_level; };
 		std::string GetCustomLevelPath() const { return m_custom_level_path; };
+		std::string GetLogLevelStr() const { return m_log_level_str; };
 
     private:
         void InterpretParams();
@@ -102,11 +104,13 @@ class CommandLineParser {
         bool m_show_debug_perifery;
         bool m_text_output_to_console;
         bool m_state_monitor;
+        bool m_enable_in_game_debug;
 
         std::string m_memimages_path;
         std::string m_config_file_path;
         uint16_t m_set_level;
         std::string m_custom_level_path;
+		std::string m_log_level_str;
 };
 
 extern CommandLineParser CommandLineParams;

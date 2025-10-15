@@ -21,6 +21,7 @@ int main(int argc, char* argv[])
 	std::vector<std::string> params;
 	params.clear();
 	bool showHelp = false;
+	std::string loggingLevel = "Info";
 
 	for (int i = 1; i < argc; ++i) {
 		params.emplace_back(argv[i]);
@@ -28,7 +29,7 @@ int main(int argc, char* argv[])
 	for (auto p = params.cbegin(); p != params.cend(); ++p) {
 		const auto param = *p;
 		
-		if ((param == "-l") || (param == "--log-level"))
+		if ((param == "-l") || (param == "--log_level"))
 		{
 			loggingLevel = *(++p);
 		}
@@ -39,7 +40,7 @@ int main(int argc, char* argv[])
 
 	if (showHelp)
 	{
-		printf("-l --log-level: (Optional) Logging Level E.g. Debug, Trace or Info.  Defaults to Info \n");
+		printf("-l --log_level: (Optional) Logging Level E.g. Debug, Trace or Info.  Defaults to Info \n");
 		return -1;
 	}
 

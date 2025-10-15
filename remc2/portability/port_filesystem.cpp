@@ -36,17 +36,17 @@ spdlog::level::level_enum GetLoggingLevelFromString(const char* levelStr)
 {
 	spdlog::level::level_enum level = spdlog::level::info;
 
-	if (strcmp(levelStr, "Info") == 0)
+	if (strcmp(levelStr, "Info") == 0 || strcmp(levelStr, "info") == 0)
 		level = level = spdlog::level::info;
-	else if (strcmp(levelStr, "Warn") == 0)
+	else if (strcmp(levelStr, "Warn") == 0 || strcmp(levelStr, "warn") == 0)
 		level = spdlog::level::warn;
-	else if (strcmp(levelStr, "Debug") == 0)
+	else if (strcmp(levelStr, "Debug") == 0 || strcmp(levelStr, "debug") == 0)
 		level = spdlog::level::debug;
-	else if (strcmp(levelStr, "Trace") == 0)
+	else if (strcmp(levelStr, "Trace") == 0 || strcmp(levelStr, "trace") == 0)
 		level = spdlog::level::trace;
-	else if (strcmp(levelStr, "Error") == 0)
+	else if (strcmp(levelStr, "Error") == 0 || strcmp(levelStr, "error") == 0)
 		level = spdlog::level::err;
-	else if (strcmp(levelStr, "Critcal") == 0)
+	else if (strcmp(levelStr, "Critcal") == 0 || strcmp(levelStr, "critcal") == 0)
 		level = spdlog::level::critical;
 
 	return level;

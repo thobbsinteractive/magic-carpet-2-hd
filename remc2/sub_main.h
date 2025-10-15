@@ -476,6 +476,8 @@ int16_t GetIndexNetwork2_74515();
 void sub_7A060_get_mouse_and_keyboard_events();
 void sub_7AA70_load_and_decompres_dat_file(const char* a1, uint8_t* a2, int a3, int a4);
 void GameEvents_51BB0();
+void DrawAndEventsInGame_47560(uint32_t a3, signed int a4, int16_t a5);
+
 //x_DWORD /*__cdecl*/ toupper(x_DWORD); //weak
 void sub_55C60(type_str_0x2BDE* loc0x2BDE);
 int32_t /*__cdecl*/ fix_filelength(int32_t);// weak
@@ -1570,5 +1572,6 @@ type_event_0x6E8E* AddSpell24_72_514A0(axis_3d* a1);
 type_event_0x6E8E* AddSpell25_75_514C0(axis_3d* a1);
 x_WORD* sub_60400(__int16 a1, x_WORD* a2, x_WORD* a3);
 void sub_6D8B0(unsigned __int16 a1, unsigned __int16 a2, __int16 a3);
+void CollectLevelStats_5C530();
 
 #endif //SUB_MAIN_ACTIVE

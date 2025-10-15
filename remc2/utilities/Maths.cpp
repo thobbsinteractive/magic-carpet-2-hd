@@ -1040,7 +1040,7 @@ uint16_t Maths::CurveCoords(uint16_t x, uint16_t y, std::vector<Maths::Zone>& zo
 }
 
 //----- (000584D0) --------------------------------------------------------
-int sub_584D0_SQdistX_SQdistY(axis_3d* a1, axis_3d* a2)//2394d0
+uint32_t Maths::EuclideanDistXY_584D0(axis_3d* a1, axis_3d* a2)//2394d0
 {
 	return (int16_t)(a2->x - a1->x) * (int16_t)(a2->x - a1->x)
 		+ (int16_t)(a2->y - a1->y) * (int16_t)(a2->y - a1->y);

@@ -213,8 +213,8 @@ void DrawTopStatusBar_2D710(type_event_0x6E8E* a1x, uint8_t scale)//20e710
 		//Draw Mana Goal Lines
 		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10) && D41A0_0.terrain_2FECE.word_0x2FED5)
 		{
-			DrawLine_2BC80(barStartXPos + (D41A0_0.terrain_2FECE.word_0x2FED5 << 6) / 100, 26 * scale, 2 * scale, 2 * scale, v26);
-			DrawLine_2BC80(barStartXPos + (D41A0_0.terrain_2FECE.word_0x2FED5 << 6) / 100, 38 * scale, 2 * scale, 2 * scale, v26);
+			DrawLine_2BC80(barStartXPos + ((D41A0_0.terrain_2FECE.word_0x2FED5 << 6) / 100) * scale, 26 * scale, 2 * scale, 2 * scale, v26);
+			DrawLine_2BC80(barStartXPos + ((D41A0_0.terrain_2FECE.word_0x2FED5 << 6) / 100) * scale, 38 * scale, 2 * scale, 2 * scale, v26);
 		}
 	}
 	else
@@ -669,7 +669,7 @@ void sub_41B60()//222b60
 }
 
 //----- (00052E90) --------------------------------------------------------
-void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState, bool useSound)//233e90
+void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState, bool useSound, uint8_t scale)//233e90
 {
 	// type == 0 -> hide in-game dialog
 	// type == 9 -> show in-game settings dialog
@@ -814,7 +814,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
 	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		if ((!DefaultResolutions())&&(x_WORD_180660_VGA_type_resolution != 1))
-			viewPort.SetViewPortScreenCoordinates_2CA60(384, 0, screenWidth_18062C - 384, screenHeight_180624 - 80);
+			viewPort.SetViewPortScreenCoordinates_2CA60(384 * scale, 0, screenWidth_18062C - 384, screenHeight_180624 - 80);
 		else
 			viewPort.SetViewPortScreenCoordinates_2CA60(384, 0, 256, 400);
 		break;
@@ -1119,7 +1119,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	v86 = -v14 >> 16;
 	GetFont_6FC50(x_BYTE_D419D_fonttype);
 	v73 = v15 >> 16;
-	v80x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v80x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 	v16 = v80x->dword_0xA4_164x->str_611.array_0x333_819x.word[12];
 	if (v16)
 		v83 = x_DWORD_EA3E4[v16]->word_0x2E_46;
@@ -1361,7 +1361,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 						goto LABEL_56;
 					if (v34 <= 0x4Eu)
 					{
-						if (jy->word_0x32_50 != D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240)
+						if (jy->word_0x32_50 != D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240)
 							break;
 						v38 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v80x->dword_0xA4_164x->word_0x38_56)
 							+ x_D41A0_BYTEARRAY_4_struct.byteindex_121[3]];
@@ -1527,13 +1527,13 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	if (v83)//player cross or other
 	{
 		v87 = 0;
-		v74x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+		v74x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 		while (v87 < D41A0_0.word_0xe)
 		{
 			if (v87 != D41A0_0.LevelIndex_0xc)
 			{
 				//v79 = 2124 * v87;
-				v59 = D41A0_0.array_0x2BDE[v87].word_0x00a_2BE4_11240;
+				v59 = D41A0_0.array_0x2BDE[v87].PlayerEntityIdx_2BE4_11240;
 				v60x = x_DWORD_EA3E4[v59];
 				if (v60x->life_0x8 >= 0)
 				{
@@ -1738,7 +1738,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	v86 = -v15 >> 16;
 	GetFont_6FC50(x_BYTE_D419D_fonttype);
 	v87 = v16 >> 16;
-	v102x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v102x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 	v17 = v102x->dword_0xA4_164x->str_611.array_0x333_819x.word[12];
 	if (v17)
 		v93 = x_DWORD_EA3E4[v17]->word_0x2E_46;
@@ -1956,7 +1956,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 						goto LABEL_57;
 					if (v39 <= 0x4Eu)
 					{
-						if (iy->word_0x32_50 != D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240)
+						if (iy->word_0x32_50 != D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240)
 							break;
 						v43 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v102x->dword_0xA4_164x->word_0x38_56)
 							+ x_D41A0_BYTEARRAY_4_struct.byteindex_121[3]];
@@ -2137,13 +2137,13 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	}
 	if (v93)
 	{
-		v90x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+		v90x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 		for (j = 0; j < D41A0_0.word_0xe; j++)
 		{
 			if (j != D41A0_0.LevelIndex_0xc)
 			{
 				//v96 = 2124 * j;
-				v65 = D41A0_0.array_0x2BDE[j].word_0x00a_2BE4_11240;
+				v65 = D41A0_0.array_0x2BDE[j].PlayerEntityIdx_2BE4_11240;
 				v66x = x_DWORD_EA3E4[v65];
 				if (v66x->life_0x8 >= 0)
 				{
@@ -3048,7 +3048,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 	v51x.v54xdw_10 = v12;
 	v82 = yaw & 0x7FF;
 	v13 = D41A0_0.LevelIndex_0xc;
-	v75x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v75x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 	v14 = sub_595C0(v13);
 	switch (v14 + 3)
 	{
@@ -3394,7 +3394,7 @@ void sub_885E0(type_event_0x6E8E* a1x, int16_t posX, int16_t posY, uint16_t a4)/
 				v12 = 0;
 				if (!a1x
 					|| (v4 = Maths::sub_58490_radix_3d_2(
-						&x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->axis_0x4C_76,
+						&x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->axis_0x4C_76,
 						&a1x->axis_0x4C_76),
 						v5 = v4,
 						!str_E2A74[a4].dword_12)
@@ -4203,7 +4203,7 @@ void sub_889F0(uint16_t a1)//2699f0
 	}
 	if (a1 != 93)
 		goto LABEL_22;
-	if (x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x->word_0x3A_58)
+	if (x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->dword_0xA4_164x->word_0x3A_58)
 		str_unk_1804B0ar.word_0x88 = 94;
 }
 

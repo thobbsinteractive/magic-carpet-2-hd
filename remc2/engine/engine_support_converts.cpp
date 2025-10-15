@@ -123,17 +123,17 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//uint8_t stubg[4];
 	memset(output + 0x171, 0, 4);
 	//int32_t dword_0x175_373;
-	memcpy(output + 0x175, &input->dword_0x175_373, 4);
+	memcpy(output + 0x175, &input->creaturesKilledPercent_373, 4);
 	//int32_t dword_0x179_377;
-	memcpy(output + 0x179, &input->dword_0x179_377, 4);
+	memcpy(output + 0x179, &input->spellsCollectedPercent_377, 4);
 	//int32_t dword_0x17D_381;
-	memcpy(output + 0x17d, &input->dword_0x17D_381, 4);
+	memcpy(output + 0x17d, &input->hitAccuracyPercent_381, 4);
 	//int32_t dword_0x181_385;
-	memcpy(output + 0x181, &input->dword_0x181_385, 4);
+	memcpy(output + 0x181, &input->manaCollectedPercent_385, 4);
 	//int32_t dword_0x185_389;
 	memcpy(output + 0x185, &input->dword_0x185_389, 4);
 	//int32_t dword_0x189_393;
-	memcpy(output + 0x189, &input->dword_0x189_393, 4);
+	memcpy(output + 0x189, &input->time_393, 4);
 	//int32_t dword_0x18D_397;
 	memcpy(output + 0x18d, &input->dword_0x18D_397, 4);
 	//uint8_t stubi[4];
@@ -249,8 +249,8 @@ void convert_struct_to_array_0x2BDE(type_str_0x2BDE* input, uint8_t* output) {
 	memcpy(output + 0x7, &input->word_0x007_2BE4_11237, 2);
 	//int8_t byte_0x009_2BE4_11239;
 	memcpy(output + 0x9, &input->byte_0x009_2BE4_11239, 1);
-	//uint16_t word_0x00a_2BE4_11240;//10 //11240 - word - index z EA3E4 //0xa
-	memcpy(output + 0xa, &input->word_0x00a_2BE4_11240, 2);
+	//uint16_t PlayerEntityIdx_2BE4_11240;//10 //11240 - word - index z EA3E4 //0xa
+	memcpy(output + 0xa, &input->PlayerEntityIdx_2BE4_11240, 2);
 	//uint8_t byte_0x00c_2BE0_11242_xx;
 	memcpy(output + 0xc, &input->byte_0x00c_2BE0_11242_xx, 1);
 	//uint8_t byte_0x00d_2BE0_11243_xx;

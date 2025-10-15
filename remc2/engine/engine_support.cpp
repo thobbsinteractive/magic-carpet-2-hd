@@ -2233,7 +2233,7 @@ void clean_x_D41A0_BYTEARRAY_0_0x2BDE(int number) {
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x007_2BE4_11237_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x008_2BE4_11238_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x009_2BE4_11239_xx = 0;
-		D41A0_BYTESTR_0.array_0x2BDE[i].word_0x00a_2BE4_11240 = 0;//10 //11240 - word - index z EA3E4 //0xa
+		D41A0_BYTESTR_0.array_0x2BDE[i].PlayerEntityIdx_2BE4_11240 = 0;//10 //11240 - word - index z EA3E4 //0xa
 		for (int j = 0; j < 16; j++)
 			D41A0_BYTESTR_0.array_0x2BDE[i].stub[j]=0;
 		for (int j = 0; j < 49; j++)

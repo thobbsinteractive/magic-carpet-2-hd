@@ -1,7 +1,7 @@
 -- Install Guide for GOG Edition --
 1. Purchase a copy of Magic Carpet 2 from GOG here: https://www.gog.com/game/magic_carpet_2_the_netherworlds
 2. Install the Game
-3. Install the latest C++ Redistributable Here (need for the logger):
+3. Install the latest C++ Redistributable Here (needed for the logger):
 - x86: https://aka.ms/vs/17/release/vc_redist.x86.exe
 - x64: https://aka.ms/vs/17/release/vc_redist.x64.exe
 4. Extract the contents of this Zip Archive to your Game Directory E.g. "C:\Program Files (x86)\GOG Galaxy\Games\Magic Carpet 2"
