@@ -43,8 +43,8 @@ constexpr std::array WizardsNames_D93A0 {
 
 void sub_2BD10_draw_line(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5);
 
-void DrawTopStatusBar_2D710(type_event_0x6E8E* a1, uint8_t scale = 1);
-void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* a3, char a4, uint8_t scale = 1);
+void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1, uint8_t scale = 1);
+void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_entity_0x6E8E* a3, char a4, uint8_t scale = 1);
 
 void ComputeTextboxSizes_89830(Type_TextBox_1804B0* textbox, uint8_t scale = 1);
 void ComputeTextboxLine_898A0(Type_TextBox_1804B0* textbox);
@@ -78,9 +78,9 @@ void DrawCurrentObjectiveTextbox_30630(uint8_t scale = 1);
 void GetFont_6FC50(int16_t a1);
 void DrawInGameOptionsMenu_30050(uint8_t scale = 1);
 char sub_595C0(int16_t a1);
-char sub_59610(type_event_0x6E8E** a1, int16_t a2);
+char sub_59610(type_entity_0x6E8E** a1, int16_t a2);
 bool sub_596C0(axis_3d* a1, int16_t a2);
-char sub_63570(type_event_0x6E8E* a1, type_event_0x6E8E* a2);
+char sub_63570(type_entity_0x6E8E* a1, type_entity_0x6E8E* a2);
 void DrawMinimap_63600(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10);
 void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
 signed int sub_616D0(signed int a1);
@@ -97,7 +97,7 @@ void sub_63C90_draw_minimap_b(int16_t x, int16_t y, int16_t posX, int16_t posY, 
 void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
 void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
 
-void sub_885E0(type_event_0x6E8E* a1, int16_t posX, int16_t posY, uint16_t a4);
+void sub_885E0(type_entity_0x6E8E* a1, int16_t posX, int16_t posY, uint16_t a4);
 
 void ComputeTextboxSizesFromTextWords_89420(Type_TextBox_1804B0* textbox, const char* text, uint8_t scale = 1);
 void ConstrainTextboxSizes_89520(Type_TextBox_1804B0* textbox, uint8_t scale = 1);
