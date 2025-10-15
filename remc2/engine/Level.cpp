@@ -695,7 +695,7 @@ void sub_57680_FixPointersAfterLoad()//238680
 
 	for (int v0 = 0; v0 < D41A0_0.word_0xe; v0++)
 	{
-		Entities_EA3E4[D41A0_0.array_0x2BDE[v0].word_0x00a_2BE4_11240]->dword_0xA4_164x = &D41A0_0.array_0x2BDE[v0].dword_0x3E6_2BE4_12228;
+		Entities_EA3E4[D41A0_0.array_0x2BDE[v0].PlayerEntityIdx_2BE4_11240]->dword_0xA4_164x = &D41A0_0.array_0x2BDE[v0].dword_0x3E6_2BE4_12228;
 	}
 	for (int indexx = 1; Entities_EA3E4[indexx] < Entities_EA3E4[1000]; indexx++)
 		if (Entities_EA3E4[indexx]->class_0x3F_63)
@@ -755,11 +755,11 @@ void sub_55AB0(type_str_0x2BDE* playStr)//236ab0
 		{
 			if (!playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]])
 			{
-				type_entity_0x6E8E* tempEvent = IfSubtypeCallAxisEvent_4A190(&Entities_EA3E4[playStr->word_0x00a_2BE4_11240]->axis_0x4C_76, 15, x_BYTE_D94FF_spell_index[i]);
+				type_entity_0x6E8E* tempEvent = IfSubtypeCallAxisEvent_4A190(&Entities_EA3E4[playStr->PlayerEntityIdx_2BE4_11240]->axis_0x4C_76, 15, x_BYTE_D94FF_spell_index[i]);
 				if (tempEvent)
 				{
 					playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]] = tempEvent - D41A0_0.struct_0x6E8E;
-					tempEvent->parentId_0x28_40 = Entities_EA3E4[playStr->word_0x00a_2BE4_11240] - D41A0_0.struct_0x6E8E;
+					tempEvent->parentId_0x28_40 = Entities_EA3E4[playStr->PlayerEntityIdx_2BE4_11240] - D41A0_0.struct_0x6E8E;
 					tempEvent->struct_byte_0xc_12_15.byte[0] |= 1u;
 					SetSpell_6D5E0(tempEvent, playStr->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[i]]);
 				}
