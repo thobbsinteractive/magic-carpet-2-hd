@@ -563,6 +563,16 @@ uint32_t SOUND_sample_status(HSAMPLE S) {
 	return 0;
 }
 
+int32_t SOUND_StartTimer(uint32_t intervalMs, int32_t (*callback_fn)(uint32_t))
+{
+	return SDL_AddTimer(intervalMs, (SDL_TimerCallback)callback_fn, nullptr);
+}
+
+void SOUND_StopTimer(int32_t timerId)
+{
+	SDL_RemoveTimer(timerId);
+}
+
 void SOUND_end_sample(HSAMPLE  /*S*/) {
 #ifdef SOUND_SDLMIXER
 	Mix_HaltChannel(-1);

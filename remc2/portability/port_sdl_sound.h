@@ -5,19 +5,12 @@
 //#define SOUND_OPENAL
 
 #include "bitmap_pos_struct.h"
+#include "SDL2/SDL.h"
 
 #define SOUND_SDLMIXER
 
-#ifdef _MSC_VER
-	#include "SDL2/SDL.h"
 #ifdef SOUND_SDLMIXER
 	#include "SDL2/SDL_mixer.h"
-#endif
-#else
-    #include "SDL2/SDL.h"
-#ifdef SOUND_SDLMIXER
-	#include "SDL2/SDL_mixer.h"
-#endif
 #endif
 
 #ifdef SOUND_OPENAL
@@ -233,6 +226,9 @@ void SOUND_set_sample_volume(HSAMPLE S, int32_t volume);
 void SOUND_set_sequence_volume(int32_t volume, int32_t  milliseconds);
 void SOUND_set_master_volume(int32_t volume);
 void SOUND_UPDATE();
+int32_t SOUND_StartTimer(uint32_t intervalMs, int32_t(*callback_fn)(uint32_t));
+void SOUND_StopTimer(int32_t timerId);
+
 //void test_midi_play(uint8_t* data, uint8_t* header, int32_t track_number);
 #ifdef SOUND_OPENAL
 //void ALSOUND_load_wav(char* alBuffer, long alBufferLen);

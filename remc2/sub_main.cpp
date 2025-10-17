@@ -884,7 +884,7 @@ void sub_59760(type_entity_0x6E8E* a1, type_entity_0x6E8E* a2);
 void sub_59820();
 int sub_59A50_sound_proc8();
 void sub_59AF0_sound_proc9();
-void sub_59B50_sound_proc10(HMDIDRIVER user);
+int FadeUpSound_59B50(uint32_t interval);
 void sub_59BF0_sound_proc11_volume();
 void sub_5B7A0_prepare_textures();
 void sub_5B840_load_Palette_and_help_Palette();
@@ -2886,6 +2886,7 @@ __int16 x_WORD_E1316 = 0; // weak
 uint8_t x_BYTE_E131C[8] = { 0, 0, 0, 0, 0, 0, 0, 0 }; // idb
 char x_BYTE_E1324 = 50; // weak
 
+HTIMER Timer_F4940 = -1;
 /*
 char array_E1328[0x3b8] = {
 0x00,0x00,0x45,0x05,0x00,0x00,0x00,//2b2328
@@ -32232,9 +32233,9 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 		}
 		if (soundAble_E3798 || musicAble_E37FC)
 		{
-			//x_DWORD_F42A4_sound_timer = sub_92600_AIL_register_timer(sub_46820_simple_timer);
+			//x_DWORD_F42A4_sound_timer = AilRegisterTimer_92600(sub_46820_simple_timer);
 			//AilSetTimerFrequency_92930(x_DWORD_F42A4_sound_timer, 0x78u);
-			//sub_92BA0_AIL_start_timer(x_DWORD_F42A4_sound_timer);
+			//AilStartTimer_92BA0(x_DWORD_F42A4_sound_timer);
 			x_BYTE_D4B51 = 1;
 		}
 		else
@@ -42717,9 +42718,10 @@ void sub_59AF0_sound_proc9()//23aaf0
 	//int result; // eax
 
 	sub_86860_speak_Sound(x_WORD_1803EC);
-	//x_DWORD_F4940 = sub_92600_AIL_register_timer(sub_59B50_sound_proc10);
-	//AilSetTimerFrequency_92930(x_DWORD_F4940, 0x78u);
-	//sub_92BA0_AIL_start_timer(x_DWORD_F4940);
+	Timer_F4940 = SOUND_StartTimer(120, FadeUpSound_59B50);
+	//Timer_F4940 = AilRegisterTimer_92600(FadeUpSound_59B50);
+	//AilSetTimerFrequency_92930(Timer_F4940, 120);
+	//AilStartTimer_92BA0(Timer_F4940);
 	x_BYTE_D4B7A = 1;
 	//result = (int)x_D41A0_BYTEARRAY_4;
 	x_D41A0_BYTEARRAY_4_struct.setting_38545 &= 0xBFu;
@@ -42731,7 +42733,7 @@ void sub_59AF0_sound_proc9()//23aaf0
 // 1803EC: using guessed type __int16 x_WORD_1803EC;
 
 //----- (00059B50) --------------------------------------------------------
-void sub_59B50_sound_proc10(HMDIDRIVER  /*user*/)//23ab50
+int32_t FadeUpSound_59B50(uint32_t interval)//23ab50
 {
 	__int16 v0; // bx
 	__int16 v1; // dx
@@ -42750,6 +42752,7 @@ void sub_59B50_sound_proc10(HMDIDRIVER  /*user*/)//23ab50
 		x_BYTE_D4B7A = 0;
 		//sub_92DC0_AIL_release_timer_handle(x_DWORD_F4940);
 	}
+	return interval;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
 // D4B78: using guessed type char x_BYTE_D4B78;
@@ -50453,9 +50456,9 @@ void sub_86F70_sound_proc12(unsigned __int8 a1, __int16 a2, __int16 a3)//267f70
 {
 	if (x_BYTE_E2A28_speek && (musicAble_E37FC || soundAble_E3798))
 	{
-		//x_DWORD_180078 = sub_92600_AIL_register_timer(sub_86EA0);
+		//x_DWORD_180078 = AilRegisterTimer_92600(sub_86EA0);
 		//AilSetTimerFrequency_92930(x_DWORD_180078, 0x32u);
-		//sub_92BA0_AIL_start_timer(x_DWORD_180078);
+		//AilStartTimer_92BA0(x_DWORD_180078);
 		sub_86FF0(a1, a2, a3);
 		//sub_92DC0_AIL_release_timer_handle(x_DWORD_180078);
 	}
