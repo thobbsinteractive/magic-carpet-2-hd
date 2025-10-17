@@ -2820,7 +2820,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 
 				 int sub_59A50_sound_proc8()//23aa50
 				 void sub_59AF0_sound_proc9()//23aaf0
-				 void sub_59B50_sound_proc10(HMDIDRIVER user)//23ab50
+				 void FadeUpSound_59B50(HMDIDRIVER user)//23ab50
 				 void sub_59BF0_sound_proc11_volume()//23abf0
 				 */
 
