@@ -32231,7 +32231,7 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 		if (soundAble_E3798 || musicAble_E37FC)
 		{
 			//x_DWORD_F42A4_sound_timer = sub_92600_AIL_register_timer(sub_46820_simple_timer);
-			//sub_92930_AIL_set_timer_frequency(x_DWORD_F42A4_sound_timer, 0x78u);
+			//AilSetTimerFrequency_92930(x_DWORD_F42A4_sound_timer, 0x78u);
 			//sub_92BA0_AIL_start_timer(x_DWORD_F42A4_sound_timer);
 			x_BYTE_D4B51 = 1;
 		}
@@ -42722,7 +42722,7 @@ void sub_59AF0_sound_proc9()//23aaf0
 
 	sub_86860_speak_Sound(x_WORD_1803EC);
 	//x_DWORD_F4940 = sub_92600_AIL_register_timer(sub_59B50_sound_proc10);
-	//sub_92930_AIL_set_timer_frequency(x_DWORD_F4940, 0x78u);
+	//AilSetTimerFrequency_92930(x_DWORD_F4940, 0x78u);
 	//sub_92BA0_AIL_start_timer(x_DWORD_F4940);
 	x_BYTE_D4B7A = 1;
 	//result = (int)x_D41A0_BYTEARRAY_4;
@@ -50441,7 +50441,7 @@ void sub_86F70_sound_proc12(unsigned __int8 a1, __int16 a2, __int16 a3)//267f70
 	if (x_BYTE_E2A28_speek && (musicAble_E37FC || soundAble_E3798))
 	{
 		//x_DWORD_180078 = sub_92600_AIL_register_timer(sub_86EA0);
-		//sub_92930_AIL_set_timer_frequency(x_DWORD_180078, 0x32u);
+		//AilSetTimerFrequency_92930(x_DWORD_180078, 0x32u);
 		//sub_92BA0_AIL_start_timer(x_DWORD_180078);
 		sub_86FF0(a1, a2, a3);
 		//sub_92DC0_AIL_release_timer_handle(x_DWORD_180078);
