@@ -57,7 +57,7 @@ signed int sub_104A0(axis_3d* a1);
 uint32_t sub_104D0_terrain_tile_is_water(axis_3d* a1);
 uint32_t sub_10590_terrain_tile_type(char a1);
 int getTerrainAlt_10C40(axis_3d* a1);
-bool sub_11E70(type_event_0x6E8E* a1, axis_3d* a2);
+bool sub_11E70(type_entity_0x6E8E* a1, axis_3d* a2);
 int sub_10C60(axis_3d* a1);
 int sub_B5D68(uint16_t a1, uint16_t a2);
 

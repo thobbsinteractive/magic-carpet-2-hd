@@ -180,7 +180,7 @@ void StateMonitor::MonitorD41A0() {
     MONITOR_STRUCT_VARIABLE_HEX(D41A0_0, dword_0x242);
     //MONITOR_STRUCT_ARRAY_POINTERS(D41A0_0, pointers_0x246);
     MONITOR_STRUCT_VARIABLE_HEX(D41A0_0, dword_0x11e6); // second entity counter
-	// type_event_0x6E8E* dword_0x11EA[1000];//??4586
+	// type_entity_0x6E8E* dword_0x11EA[1000];//??4586
 	// GameSettingsStruct_t m_GameSettings;
     MONITOR_STRUCT_VARIABLE_HEX(D41A0_0, dword_0x219A);
     MONITOR_STRUCT_VARIABLE_HEX(D41A0_0, dword_0x219E);
@@ -196,7 +196,7 @@ void StateMonitor::MonitorD41A0() {
 	// uint8_t stub3d[1791];
 	// type_str_0x2BDE array_0x2BDE[8];
 	// type_str_0x6E3E array_0x6E3E[8];//28222	lenght 0xa size 0x8// game events
-	// type_event_0x6E8E struct_0x6E8E[1000];//28302 a8*3e8
+	// type_entity_0x6E8E struct_0x6E8E[1000];//28302 a8*3e8
 	// Type_Level_2FECE terrain_2FECE;// a1 = &x_D41A0_BYTEARRAY_0[0x2FECE/*196302*/];//fix - size 0x6604u//compress level
 	// type_str_0x364D2 str_0x364D2;//lenght 108
     MONITOR_STRUCT_VARIABLE_HEX(D41A0_0, word_0x3653E);

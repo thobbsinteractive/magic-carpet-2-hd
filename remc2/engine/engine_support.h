@@ -255,7 +255,7 @@ typedef struct {//lenght 2124=0x84C
 	uint8_t byte_0x006_2BE4_11236;//6	//11236 - byte //6
 	int16_t word_0x007_2BE4_11237;//index of player
 	int8_t byte_0x009_2BE4_11239;
-	uint16_t word_0x00a_2BE4_11240;//10 //11240 - word - index z EA3E4 //0xa
+	uint16_t PlayerEntityIdx_2BE4_11240;//10 //11240 - word - index z EA3E4 //0xa
 	uint8_t byte_0x00c_2BE0_11242_xx;
 	uint8_t byte_0x00d_2BE0_11243_xx;
 	int16_t word_0x00e_2BDE_11244; //14
@@ -510,13 +510,13 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	//uint8_t byteindex_8618;//0x21aa//x_D41A0_BYTEARRAY_4_struct.byteindex_8618
 	//uint8_t setting_38545;
 	uint8_t stubu[36000];
-	type_event_0x6E8E* dwordindex_38396;//0x95FC//x_D41A0_BYTEARRAY_4_struct.dwordindex_38396
+	type_entity_0x6E8E* dwordindex_38396;//0x95FC//x_D41A0_BYTEARRAY_4_struct.dwordindex_38396
 	uint8_t byteindex_38400;//0x9600//x_D41A0_BYTEARRAY_4_struct.byteindex_38400
 	uint8_t byteindex_38401;//0x9601//x_D41A0_BYTEARRAY_4_struct.byteindex_38401
 
 	uint8_t setting_38402;//0x9602//x_D41A0_BYTEARRAY_4_struct.setting_38402
 
-	type_event_0x6E8E* bytearray_38403x[30];//array 116//0x9603//x_D41A0_BYTEARRAY_4_struct.bytearray_38403
+	type_entity_0x6E8E* bytearray_38403x[30];//array 116//0x9603//x_D41A0_BYTEARRAY_4_struct.bytearray_38403
 	/*
 	creatures
 		8-dead
@@ -535,7 +535,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	//bytearray_38535=bytearray_38403[132]//0x965b//x_D41A0_BYTEARRAY_4_struct.bytearray_38403[132]
 
 	//endarray - dword_38519
-	type_event_0x6E8E* dword_38519;//0x9677//x_D41A0_BYTEARRAY_4_struct.dword_38519
+	type_entity_0x6E8E* dword_38519;//0x9677//x_D41A0_BYTEARRAY_4_struct.dword_38519
 	/*
 	entite
 	8-dead
@@ -546,10 +546,10 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 		3-ballon
 	144-mana
 	*/
-	type_event_0x6E8E* dword_38523;//0x967b//x_D41A0_BYTEARRAY_4_struct.dword_38523
-	type_event_0x6E8E* dword_38527;//0x967F//x_D41A0_BYTEARRAY_4_struct.dword_38527
-	type_event_0x6E8E* dword_38531;//0x9683//x_D41A0_BYTEARRAY_4_struct.dword_38531
-	type_event_0x6E8E* dword_38535;//x_D41A0_BYTEARRAY_4_struct.dword_38535
+	type_entity_0x6E8E* dword_38523;//0x967b//x_D41A0_BYTEARRAY_4_struct.dword_38523
+	type_entity_0x6E8E* dword_38527;//0x967F//x_D41A0_BYTEARRAY_4_struct.dword_38527
+	type_entity_0x6E8E* dword_38531;//0x9683//x_D41A0_BYTEARRAY_4_struct.dword_38531
+	type_entity_0x6E8E* dword_38535;//x_D41A0_BYTEARRAY_4_struct.dword_38535
 	uint8_t stubv[5];
 	uint8_t byte_38544;//x_D41A0_BYTEARRAY_4_struct.byte_38544
 	uint8_t setting_38545;//0x9691//x_D41A0_BYTEARRAY_4_struct.setting_38545
@@ -600,7 +600,7 @@ typedef struct {//lenght 30
 	std::array<int16_t, 5> axis_2; // 1=textIndex 3=lineX1, 4=lineY1
 	//int16_t axis_4[3];//?? str_E2A74[].axis_2[0]
 	//int16_t stuba;
-	type_event_0x6E8E* dword_12;//str_E2A74[].dword_12
+	type_entity_0x6E8E* dword_12;//str_E2A74[].dword_12
 	int32_t dword_16;
 	int32_t dword_20;//str_E2A74[].dword_20
 	int32_t dword_24;//str_E2A74[].dword_24
@@ -652,7 +652,7 @@ uint32_t compare_with_sequence_array_E2A74(const char* filename, uint8_t* adress
 uint32_t compare_with_sequence_x_DWORD_F2C20ar(const char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, int* posdiff);
 uint32_t compare_with_sequence_array_222BD3(const char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, int* posdiff);
 uint32_t compare_with_sequence_D41A0_4(const char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, long offset = 0);
-uint32_t compare_with_sequence_EA3E4(const char* filename, type_event_0x6E8E** adress, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte);
+uint32_t compare_with_sequence_EA3E4(const char* filename, type_entity_0x6E8E** adress, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte);
 uint32_t compare_0x6E8E(const char* filename, uint8_t* adress, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, long offset = 0);
 void add_compare(uint32_t adress, bool debugafterload, int stopstep = -1, bool skip = false,int exitindex=1000000,int skip2=0);
 void add_compare2(uint32_t adress, uint8_t* memadress, uint32_t dosmemadress, uint32_t size, bool debugafterload, int stopstep = -1, bool skip = false, int exitindex = 1000000);
@@ -692,7 +692,7 @@ typedef struct {//lenght 8
 typedef union {
 	uint32_t dword;
 	axis_2du axis;
-	type_event_0x6E8E* pointer_0x6E8E;
+	type_entity_0x6E8E* pointer_0x6E8E;
 }
 un1;
 
@@ -954,7 +954,7 @@ typedef union {
 	uint32_t dword;
 	uint16_t* ptr16u;
 	type_entity_0x30311* ptr0x30311;
-	type_event_0x6E8E* ptr0x6E8E;
+	type_entity_0x6E8E* ptr0x6E8E;
 }
 un_str_36552;
 typedef struct {//size 10 count 8
@@ -1195,9 +1195,9 @@ typedef struct {//lenght 224791
 	int32_t dword_0x23a;
 	int32_t dword_0x23e;
 	int32_t dword_0x242;
-	std::array<type_event_0x6E8E*, 1000> pointers_0x246;//pointers
+	std::array<type_entity_0x6E8E*, 1000> pointers_0x246;//pointers
 	int32_t dword_0x11e6;//second entity counter
-	std::array<type_event_0x6E8E*, 1000> dword_0x11EA;//??4586
+	std::array<type_entity_0x6E8E*, 1000> dword_0x11EA;//??4586
 	GameSettingsStruct_t m_GameSettings;
 	uint32_t dword_0x219A;//8602
 	uint32_t dword_0x219E;//8606
@@ -1213,7 +1213,7 @@ typedef struct {//lenght 224791
 	std::array<uint8_t, 1791> stub3d;
 	std::array<type_str_0x2BDE, 8> array_0x2BDE;
 	type_str_0x6E3E array_0x6E3E[8];//28222	lenght 0xa size 0x8// game events
-	type_event_0x6E8E struct_0x6E8E[1000];//28302 a8*3e8
+	type_entity_0x6E8E struct_0x6E8E[1000];//28302 a8*3e8
 	Type_Level_2FECE terrain_2FECE;// a1 = &x_D41A0_BYTEARRAY_0[0x2FECE/*196302*/];//fix - size 0x6604u//compress level
 	type_str_0x364D2 str_0x364D2;//lenght 108
 	int16_t word_0x3653E;//
@@ -1309,7 +1309,7 @@ typedef struct {//lenght a8//THING
 	uint32_t dword_0xA0_160x;//160 //special settings
 	uint32_t dword_0xA4_164x;//100 // adress of xx
 }
-type_shadow_str_0x6E8E;
+type_shadow_entity_0x6E8E;
 
 typedef union {
 	int32_t dword;
@@ -1372,7 +1372,7 @@ typedef struct {//lenght 224791
 	uint8_t stub3d[1791];
 	type_str_0x2BDE array_0x2BDE[8];
 	type_str_0x6E3E array_0x6E3E[8];
-	type_shadow_str_0x6E8E struct_0x6E8E[1000];
+	type_shadow_entity_0x6E8E struct_0x6E8E[1000];
 	Type_CompressedLevel_2FECE str_2FECE;
 	type_str_0x364D2 str_0x364D2;
 	int16_t word_0x3653E;
@@ -1547,8 +1547,8 @@ void set_x_D41A0_BYTEARRAY_0_23e(int32_t value);
 int32_t get_x_D41A0_BYTEARRAY_0_242();
 void set_x_D41A0_BYTEARRAY_0_242(int32_t value);
 
-type_str_0x6E8E* get_x_D41A0_BYTEARRAY_0_0x246(int number);
-void set_x_D41A0_BYTEARRAY_0_0x246(int number, type_str_0x6E8E* value);
+type_entity_0x6E8E* get_x_D41A0_BYTEARRAY_0_0x246(int number);
+void set_x_D41A0_BYTEARRAY_0_0x246(int number, type_entity_0x6E8E* value);
 
 int32_t get_x_D41A0_BYTEARRAY_0_0x11e6();
 void set_x_D41A0_BYTEARRAY_0_0x11e6(int32_t value);
@@ -1670,7 +1670,7 @@ void set_x_D41A0_BYTEARRAY_0_0x2BDE(int number,uint8_t value);
 int8_t get_x_D41A0_BYTEARRAY_0_0x6E3E(int index,int subindex);
 void set_x_D41A0_BYTEARRAY_0_0x6E3E(int index, int subindex, int8_t value);
 
-type_str_0x6E8E* get_x_D41A0_BYTEARRAY_0_0x6E8E_adr();
+type_entity_0x6E8E* get_x_D41A0_BYTEARRAY_0_0x6E8E_adr();
 //28302
 //((uint8_t*)v1x - (x_D41A0_BYTEARRAY_0 + 28302)) / 168
 //ix-get_x_D41A0_BYTEARRAY_0_0x6E8E_adr()

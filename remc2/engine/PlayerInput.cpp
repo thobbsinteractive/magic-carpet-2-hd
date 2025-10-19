@@ -61,7 +61,7 @@ int debugcounter_47560 = 0;
 //----- (00017190) --------------------------------------------------------
 void ProcessKeyboardPresses_17190()//1f8190
 {
-	type_event_0x6E8E* event; // edx
+	type_entity_0x6E8E* ptrCastleEntity; // edx
 
 	if (CommandLineParams.DoOffPause5()) {
 		if (debugcounter_47560 == 5)
@@ -90,7 +90,7 @@ void ProcessKeyboardPresses_17190()//1f8190
 		{
 			if (!(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x20))
 			{
-				event = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+				ptrCastleEntity = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 				if (pressedKeys_180664[56])
 				{
 					switch (LastPressedKey_1806E4)
@@ -240,12 +240,12 @@ void ProcessKeyboardPresses_17190()//1f8190
 					}
 					case 0x25: {//k
 						if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x8010))
-							event->life_0x8 = -1;
+							ptrCastleEntity->life_0x8 = -1;
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x26: {//l remove castle stage
-						if (event->dword_0xA4_164x->word_0x3A_58)
+						if (ptrCastleEntity->dword_0xA4_164x->word_0x3A_58)
 							HandleButtonClick_191B0(42, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
@@ -478,16 +478,16 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 //----- (00017A00) --------------------------------------------------------
 void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 {
-	type_event_0x6E8E* v8x; // ebx
+	type_entity_0x6E8E* v8x; // ebx
 	char v11; // dh
-	type_event_0x6E8E* v12x; // edi
+	type_entity_0x6E8E* v12x; // edi
 	unsigned __int8 v16; // al
 	char v17; // al
 	int v18; // esi
 	char v19; // al
 	char v21; // dl
 	char v23; // al
-	type_event_0x6E8E* v24x; // ebx
+	type_entity_0x6E8E* v24x; // ebx
 	char v27; // al
 	signed int v28; // eax
 	int v29; // eax
@@ -520,7 +520,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			//v6 = D41A0_BYTESTR_0.word_0xc;
 			//v7 = 5 * D41A0_BYTESTR_0.word_0xc;
 
-			v8x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+			v8x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 			//LOBYTE(v6) = unk_18058Cstr.MouseButtonState_18059C;
 
 			D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte5 = 0;
@@ -829,7 +829,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 		case 8:
 			v33 = 0;
 			v34 = 0;
-			v12x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+			v12x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 			ProcessKeyboardPresses_17190();
 			if (v12x->life_0x8 < 0)
 			{
@@ -956,7 +956,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			goto LABEL_306;
 		case 6:
 		case 7:
-			v24x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+			v24x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 				ReadPauseMenuEvents_197F0();
 			ProcessKeyboardPresses_17190();
@@ -1085,7 +1085,7 @@ LABEL_306:
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // EB3A2: using guessed type char x_BYTE_EB3A2;
 // EB3A4: using guessed type char x_BYTE_EB3A4;
 // EB3A5: using guessed type char x_BYTE_EB3A5;
@@ -1109,7 +1109,7 @@ LABEL_306:
 //----- (000191B0) --------------------------------------------------------
 void HandleButtonClick_191B0(int16_t a1, char a2)//1fa1b0 //set spell, destroy castle sub_191B0(0x2a, 0x00)
 {
-	type_event_0x6E8E* v10x; // ebx
+	type_entity_0x6E8E* v10x; // ebx
 
 	switch (a1)
 	{
@@ -1167,7 +1167,7 @@ void HandleButtonClick_191B0(int16_t a1, char a2)//1fa1b0 //set spell, destroy c
 		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 != a1 && D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 			return;
 		//v9 = D41A0_BYTESTR_0.word_0xc;
-		v10x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+		v10x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 		if (v10x->life_0x8 >= 0 || v10x->state_0x45_69 != 3)
 			return;
 		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = a1;
@@ -1228,7 +1228,7 @@ void HandleButtonClick_191B0(int16_t a1, char a2)//1fa1b0 //set spell, destroy c
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001A970) --------------------------------------------------------
 void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
@@ -1243,7 +1243,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 	//char v10; // bl
 	//char v11; // ch
 	//bool v12; // al
-	type_event_0x6E8E* v13x; // ebx
+	type_entity_0x6E8E* v13x; // ebx
 	unsigned __int8 v14; // al
 	__int16 v15; // ST04_2
 	//char v16; // dl
@@ -1435,8 +1435,8 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 	case 7:
 		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
 			return;
-		v13x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
-		if (v13x <= x_DWORD_EA3E4[0] || v13x->life_0x8 < 0)
+		v13x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
+		if (v13x <= Entities_EA3E4[0] || v13x->life_0x8 < 0)
 			return;
 		if (CommandLineParams.DoAlternativeGamespeedControl()) {
 			if (x_D41A0_BYTEARRAY_4_struct.speedIndex == 2)
@@ -1646,7 +1646,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 // EA248: using guessed type int x_DWORD_EA248;
 // EA26C: using guessed type int x_DWORD_EA26C;
 // EA270: using guessed type int x_DWORD_EA270;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // 1803EC: using guessed type __int16 x_WORD_1803EC;
 
 //----- (00041AF0) --------------------------------------------------------
@@ -1687,19 +1687,19 @@ char sub_5BF10()//23cf10
 //----- (00070940) --------------------------------------------------------
 void sub_70940()//251940
 {
-	type_event_0x6E8E* v0x; // ebx
+	type_entity_0x6E8E* v0x; // ebx
 	int v1; // edi
 	unsigned int result; // eax
 	int v3; // esi
 	int i; // eax
 	char v5; // dl
-	type_event_0x6E8E* v6x; // eax
+	type_entity_0x6E8E* v6x; // eax
 	int v7; // [esp+0h] [ebp-10h]
 	int v8; // [esp+4h] [ebp-Ch]
 	int v9; // [esp+8h] [ebp-8h]
 	char v10; // [esp+Ch] [ebp-4h]
 
-	v0x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v0x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 	v1 = (v0x->axis_0x4C_76.x + 128) >> 8;
 	v9 = (v0x->axis_0x4C_76.y + 128) >> 8;
 	result = AddE7EE0x_10080(0, 128);
@@ -1713,8 +1713,8 @@ void sub_70940()//251940
 				;
 				i = v6x->oldMapEntity_0x16_22)
 			{
-				v6x = x_DWORD_EA3E4[i];
-				if (v6x == x_DWORD_EA3E4[0] || v10)
+				v6x = Entities_EA3E4[i];
+				if (v6x == Entities_EA3E4[0] || v10)
 					break;
 				v5 = 1;
 				if (v6x == v0x || v6x->class_0x3F_63 == 15 && v6x->id_0x1A_26 == v0x->id_0x1A_26 || v6x->struct_byte_0xc_12_15.byte[0] & 1)
@@ -1976,7 +1976,7 @@ void ReadPauseMenuEvents_197F0()//1fa7f0
 }
 
 //----- (00018DA0) --------------------------------------------------------
-char sub_18DA0(type_event_0x6E8E* a1x, char a2, char a3)//1f9da0
+char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 {
 	type_str_611* v3x; // edx
 	signed int v4; // esi
@@ -2189,13 +2189,13 @@ void HandleOptionsMenuButtonClick_19A70()//1faa70
 }
 
 //----- (00018F80) --------------------------------------------------------
-void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
+void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 {
 	//int v1; // eax
 	int v2; // edx
-	type_event_0x6E8E* v3x; // eax
+	type_entity_0x6E8E* v3x; // eax
 	//uint8_t* v4; // eax
-	type_event_0x6E8E* v4x; // eax
+	type_entity_0x6E8E* v4x; // eax
 	int v5; // edx
 
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 1)
@@ -2214,7 +2214,7 @@ void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
 	}
 	else
 	{
-		v3x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v2]];
+		v3x = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v2]];
 		if (v3x->byte_0x3B_59 == 1)
 		{
 			if (unk_18058Cstr.MouseButtonState_18059C & 1)
@@ -2237,7 +2237,7 @@ void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
 	}
 	else
 	{
-		v4x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v5]];
+		v4x = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v5]];
 		if (v4x->byte_0x3B_59 == 1)
 		{
 			if (unk_18058Cstr.MouseButtonState_18059C & 2)
@@ -2254,7 +2254,7 @@ void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
 	}
 	//return v4;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 // 18059C: using guessed type int MouseButtonState_18059C;
 // 1805C0: using guessed type __int16 x_WORD_1805C0_arrow_keys;
 

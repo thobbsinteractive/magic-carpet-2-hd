@@ -187,11 +187,11 @@ bool SaveLevelSLEV_55250(uint8_t savefileindex, char* savefileindex2)//236250 //
 	long acttime; // eax
 
 	//fix for saving
-	for (int indexx = 1; x_DWORD_EA3E4[indexx] < x_DWORD_EA3E4[1000]; indexx++)
-		//if (memory_readable(x_DWORD_EA3E4[indexx]->dword_0xA4_164x,4))
+	for (int indexx = 1; Entities_EA3E4[indexx] < Entities_EA3E4[1000]; indexx++)
+		//if (memory_readable(Entities_EA3E4[indexx]->dword_0xA4_164x,4))
 	{
-		if (x_DWORD_EA3E4[indexx]->dword_0xA4_164x == unk_F42B0x)//0x014F82E8//0x2c75e28-(uint32_t)&D41A0_BYTESTR_0
-			x_DWORD_EA3E4[indexx]->dword_0xA4_164x = (type_str_164*)0x2c75e28;
+		if (Entities_EA3E4[indexx]->dword_0xA4_164x == unk_F42B0x)//0x014F82E8//0x2c75e28-(uint32_t)&D41A0_BYTESTR_0
+			Entities_EA3E4[indexx]->dword_0xA4_164x = (type_str_164*)0x2c75e28;
 	}
 	//fix for saving
 
@@ -212,11 +212,11 @@ bool SaveLevelSLEV_55250(uint8_t savefileindex, char* savefileindex2)//236250 //
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.time_393 = temptime;
 
 	//fix for saving
-	for (int indexx = 1; x_DWORD_EA3E4[indexx] < x_DWORD_EA3E4[1000]; indexx++)
+	for (int indexx = 1; Entities_EA3E4[indexx] < Entities_EA3E4[1000]; indexx++)
 	{
 		type_str_164* Zerotype_str_164 = 0;
-		if (x_DWORD_EA3E4[indexx]->dword_0xA4_164x == (type_str_164*)&((int8_t*)Zerotype_str_164)[0x2c75e28])//0x014F82E8//0x2c75e28-(uint32_t)&D41A0_BYTESTR_0
-			x_DWORD_EA3E4[indexx]->dword_0xA4_164x = unk_F42B0x;
+		if (Entities_EA3E4[indexx]->dword_0xA4_164x == (type_str_164*)&((int8_t*)Zerotype_str_164)[0x2c75e28])//0x014F82E8//0x2c75e28-(uint32_t)&D41A0_BYTESTR_0
+			Entities_EA3E4[indexx]->dword_0xA4_164x = unk_F42B0x;
 	}
 	//fix for saving
 
@@ -344,7 +344,7 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex)//2368e0
 	Logger->debug("InGameLoad-begin\n");
 
 	//fix
-	x_D41A0_BYTEARRAY_4_struct.dword_38519 = x_DWORD_EA3E4[1];
+	x_D41A0_BYTEARRAY_4_struct.dword_38519 = Entities_EA3E4[1];
 	//fix
 
 	// FIXME: cannot set this here.
@@ -388,9 +388,9 @@ bool LoadLevelSLEV_55A10(uint8_t savefileindex)//236a10
 		D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.time_393 = j___clock() - D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.time_393;
 		success = true;
 	}
-	type_str_164* tempx_DWORD_EA3E4_0 = x_DWORD_EA3E4[0]->dword_0xA4_164x;//fix for x64
+	type_str_164* tempEntities_EA3E4_0 = Entities_EA3E4[0]->dword_0xA4_164x;//fix for x64
 	Convert_from_shadow_D41A0_BYTESTR_0(&shadow_D41A0_BYTESTR_0, &D41A0_0);
-	x_DWORD_EA3E4[0]->dword_0xA4_164x =tempx_DWORD_EA3E4_0;//fix for x64
+	Entities_EA3E4[0]->dword_0xA4_164x =tempEntities_EA3E4_0;//fix for x64
 	return success;
 }
 
@@ -536,7 +536,7 @@ void sub_55100(char a1)//236100
 	unsigned __int8 v7; // cl
 	signed int i; // ebx
 	unsigned __int8 v9; // al
-	//type_event_0x6E8E* v11; // ecx
+	//type_entity_0x6E8E* v11; // ecx
 	signed int j; // ebx
 
 	if (a1 == 1)
@@ -586,24 +586,24 @@ void sub_55100(char a1)//236100
 				}
 				else
 				{
-					type_event_0x6E8E* temp_0x6E8E = D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E;
+					type_entity_0x6E8E* temp_0x6E8E = D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E;
 					if (v2 == -1)
 					{
 						int diff = D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E - D41A0_0.struct_0x6E8E;
-						int sizediff = diff * sizeof(type_shadow_str_0x6E8E);
-						if (((char*)D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_event_0x6E8E) > 0)
+						int sizediff = diff * sizeof(type_shadow_entity_0x6E8E);
+						if (((char*)D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_entity_0x6E8E) > 0)
 							allert_error();
 						D41A0_0.stages_0x3654C[v4].str_36552_un.dword = sizediff;
 					}
 					else
 					{
-						int count = D41A0_0.stages_0x3654C[v4].str_36552_un.dword / sizeof(type_shadow_str_0x6E8E);
-						int countadd = D41A0_0.stages_0x3654C[v4].str_36552_un.dword % sizeof(type_shadow_str_0x6E8E);
+						int count = D41A0_0.stages_0x3654C[v4].str_36552_un.dword / sizeof(type_shadow_entity_0x6E8E);
+						int countadd = D41A0_0.stages_0x3654C[v4].str_36552_un.dword % sizeof(type_shadow_entity_0x6E8E);
 						if (countadd > 0)allert_error();
 						D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E = &D41A0_0.struct_0x6E8E[count];
 					}
 #ifdef x32_BIT_ENVIRONMENT
-					if (D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E != (type_event_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
+					if (D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E != (type_entity_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
 						allert_error();  // only for x86
 #endif
 				}
@@ -621,26 +621,26 @@ void sub_55100(char a1)//236100
 		{
 			if (!(D41A0_0.StageVars2_0x365F4[i].stage_0x3647A_1 & 2))
 			{
-				type_event_0x6E8E* temp_0x6E8E = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E;
-				if (temp_0x6E8E >= x_DWORD_EA3E4[0] && temp_0x6E8E < x_DWORD_EA3E4[1000])
+				type_entity_0x6E8E* temp_0x6E8E = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E;
+				if (temp_0x6E8E >= Entities_EA3E4[0] && temp_0x6E8E < Entities_EA3E4[1000])
 				{
 					if (v2 == -1)
 					{
 						int diff = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E - D41A0_0.struct_0x6E8E;
-						int sizediff = diff * sizeof(type_shadow_str_0x6E8E);
-						if (((char*)D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_event_0x6E8E) > 0)
+						int sizediff = diff * sizeof(type_shadow_entity_0x6E8E);
+						if (((char*)D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_entity_0x6E8E) > 0)
 							allert_error();
 						D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword = sizediff;
 					}
 					else
 					{
-						int count = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword / sizeof(type_shadow_str_0x6E8E);
-						int countadd = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword % sizeof(type_shadow_str_0x6E8E);
+						int count = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword / sizeof(type_shadow_entity_0x6E8E);
+						int countadd = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword % sizeof(type_shadow_entity_0x6E8E);
 						if (countadd > 0)allert_error();
 						D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E = &D41A0_0.struct_0x6E8E[count];
 					}
 #ifdef x32_BIT_ENVIRONMENT
-					if (D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E != (type_event_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
+					if (D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E != (type_entity_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
 						allert_error();  // only for x86
 #endif
 				}
@@ -653,24 +653,24 @@ void sub_55100(char a1)//236100
 	{
 		if (D41A0_0.str_0x3664C[j].byte_0)
 		{
-			type_event_0x6E8E* temp_0x6E8E = D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E;
+			type_entity_0x6E8E* temp_0x6E8E = D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E;
 			if (v2 == -1)
 			{
 				int diff = D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E - D41A0_0.struct_0x6E8E;
-				int sizediff = diff * sizeof(type_shadow_str_0x6E8E);
-				if (((char*)D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_event_0x6E8E) > 0)
+				int sizediff = diff * sizeof(type_shadow_entity_0x6E8E);
+				if (((char*)D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_entity_0x6E8E) > 0)
 					allert_error();
 				D41A0_0.str_0x3664C[j].event_A.dword = sizediff;//0x36656
 			}
 			else
 			{
-				int count = D41A0_0.str_0x3664C[j].event_A.dword / sizeof(type_shadow_str_0x6E8E);
-				int countadd = D41A0_0.str_0x3664C[j].event_A.dword % sizeof(type_shadow_str_0x6E8E);
+				int count = D41A0_0.str_0x3664C[j].event_A.dword / sizeof(type_shadow_entity_0x6E8E);
+				int countadd = D41A0_0.str_0x3664C[j].event_A.dword % sizeof(type_shadow_entity_0x6E8E);
 				if (countadd > 0)allert_error();
 				D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E = &D41A0_0.struct_0x6E8E[count];//0x36656
 			}
 #ifdef x32_BIT_ENVIRONMENT
-			if (D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E != (type_event_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
+			if (D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E != (type_entity_0x6E8E*)((uint8_t*)temp_0x6E8E + (xBITINT)v3))
 				allert_error();  // only for x86
 #endif
 		}
@@ -682,24 +682,24 @@ void sub_57680_FixPointersAfterLoad()//238680
 {
 	D41A0_0.str_0x3664C[0].event_A.pointer_0x6E8E = nullptr;
 
-	for (int indexx = 1; x_DWORD_EA3E4[indexx] < x_DWORD_EA3E4[1000]; indexx++)
+	for (int indexx = 1; Entities_EA3E4[indexx] < Entities_EA3E4[1000]; indexx++)
 	{
 		#if defined(x32_BIT_ENVIRONMENT)
-			if ((uint32_t)x_DWORD_EA3E4[indexx]->dword_0xA4_164x == 0x2c75e28)
-				x_DWORD_EA3E4[indexx]->dword_0xA4_164x = unk_F42B0x;
+			if ((uint32_t)Entities_EA3E4[indexx]->dword_0xA4_164x == 0x2c75e28)
+				Entities_EA3E4[indexx]->dword_0xA4_164x = unk_F42B0x;
 		#else
-			if ((uint64_t)x_DWORD_EA3E4[indexx]->dword_0xA4_164x == 0x2c75e28)//0x014F82E8//0x2c75e28-(uint32_t)&D41A0_BYTESTR_0
-				x_DWORD_EA3E4[indexx]->dword_0xA4_164x = unk_F42B0x;
+			if ((uint64_t)Entities_EA3E4[indexx]->dword_0xA4_164x == 0x2c75e28)//0x014F82E8//0x2c75e28-(uint32_t)&D41A0_BYTESTR_0
+				Entities_EA3E4[indexx]->dword_0xA4_164x = unk_F42B0x;
 		#endif
 	}
 
 	for (int v0 = 0; v0 < D41A0_0.word_0xe; v0++)
 	{
-		x_DWORD_EA3E4[D41A0_0.array_0x2BDE[v0].word_0x00a_2BE4_11240]->dword_0xA4_164x = &D41A0_0.array_0x2BDE[v0].dword_0x3E6_2BE4_12228;
+		Entities_EA3E4[D41A0_0.array_0x2BDE[v0].PlayerEntityIdx_2BE4_11240]->dword_0xA4_164x = &D41A0_0.array_0x2BDE[v0].dword_0x3E6_2BE4_12228;
 	}
-	for (int indexx = 1; x_DWORD_EA3E4[indexx] < x_DWORD_EA3E4[1000]; indexx++)
-		if (x_DWORD_EA3E4[indexx]->class_0x3F_63)
-			x_DWORD_EA3E4[indexx]->dword_0xA0_160x = &str_D7BD6[(x_DWORD_EA3E4[indexx]->dword_0xA0_160x - D41A0_0.dword_0x36DF6)+ 59];
+	for (int indexx = 1; Entities_EA3E4[indexx] < Entities_EA3E4[1000]; indexx++)
+		if (Entities_EA3E4[indexx]->class_0x3F_63)
+			Entities_EA3E4[indexx]->dword_0xA0_160x = &str_D7BD6[(Entities_EA3E4[indexx]->dword_0xA0_160x - D41A0_0.dword_0x36DF6)+ 59];
 }
 
 //----- (000549A0) --------------------------------------------------------
@@ -717,30 +717,30 @@ void sub_49F90()//22af90
 {
 	int iy;
 	signed int v2; // ebx
-	type_event_0x6E8E* indexx; // eax
+	type_entity_0x6E8E* indexx; // eax
 	for (iy = 1; iy < 0x3e8; iy++)
 	{
-		if (x_DWORD_EA3E4[iy]->class_0x3F_63 && x_DWORD_EA3E4[iy]->struct_byte_0xc_12_15.byte[1] & 4)
-			sub_57F20(x_DWORD_EA3E4[iy]);
+		if (Entities_EA3E4[iy]->class_0x3F_63 && Entities_EA3E4[iy]->struct_byte_0xc_12_15.byte[1] & 4)
+			sub_57F20(Entities_EA3E4[iy]);
 	}
 	D41A0_0.dword_0x35 = -1;
 	v2 = 999;
 	D41A0_0.dword_0x11e6 = -1;
 	do
 	{
-		indexx = x_DWORD_EA3E4[v2];
+		indexx = Entities_EA3E4[v2];
 		if (indexx->class_0x3F_63)
 		{
 			if (indexx->struct_byte_0xc_12_15.byte[2] & 2)
 			{
 				D41A0_0.dword_0x11e6++;
-				D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6] = x_DWORD_EA3E4[v2];
+				D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6] = Entities_EA3E4[v2];
 			}
 		}
 		else
 		{
 			D41A0_0.dword_0x35++;
-			D41A0_0.pointers_0x246[D41A0_0.dword_0x35] = x_DWORD_EA3E4[v2];
+			D41A0_0.pointers_0x246[D41A0_0.dword_0x35] = Entities_EA3E4[v2];
 		}
 		v2--;
 	} while (v2 > 0);
@@ -755,11 +755,11 @@ void sub_55AB0(type_str_0x2BDE* playStr)//236ab0
 		{
 			if (!playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]])
 			{
-				type_event_0x6E8E* tempEvent = IfSubtypeCallAxisEvent_4A190(&x_DWORD_EA3E4[playStr->word_0x00a_2BE4_11240]->axis_0x4C_76, 15, x_BYTE_D94FF_spell_index[i]);
+				type_entity_0x6E8E* tempEvent = IfSubtypeCallAxisEvent_4A190(&Entities_EA3E4[playStr->PlayerEntityIdx_2BE4_11240]->axis_0x4C_76, 15, x_BYTE_D94FF_spell_index[i]);
 				if (tempEvent)
 				{
 					playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]] = tempEvent - D41A0_0.struct_0x6E8E;
-					tempEvent->parentId_0x28_40 = x_DWORD_EA3E4[playStr->word_0x00a_2BE4_11240] - D41A0_0.struct_0x6E8E;
+					tempEvent->parentId_0x28_40 = Entities_EA3E4[playStr->PlayerEntityIdx_2BE4_11240] - D41A0_0.struct_0x6E8E;
 					tempEvent->struct_byte_0xc_12_15.byte[0] |= 1u;
 					SetSpell_6D5E0(tempEvent, playStr->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[i]]);
 				}
@@ -770,7 +770,7 @@ void sub_55AB0(type_str_0x2BDE* playStr)//236ab0
 			if (playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]])
 			{
 				playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]] = 0;
-				sub_57F20(x_DWORD_EA3E4[playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]]]);
+				sub_57F20(Entities_EA3E4[playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]]]);
 			}
 		}
 	}
@@ -964,7 +964,7 @@ void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* text
 }
 
 //----- (0006D5E0) --------------------------------------------------------
-void SetSpell_6D5E0(type_event_0x6E8E* entity, char spell)//24e5e0
+void SetSpell_6D5E0(type_entity_0x6E8E* entity, char spell)//24e5e0
 {
 	int v2y; // eax
 	int8_t actspell;
@@ -987,7 +987,7 @@ void SetSpell_6D5E0(type_event_0x6E8E* entity, char spell)//24e5e0
 		//fix
 		entity->dword_0x88_136 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].dword_A;
 		//fix
-		v2y = sub_6D710(x_DWORD_EA3E4[entity->parentId_0x28_40], entity->model_0x40_64, actspell);
+		v2y = sub_6D710(Entities_EA3E4[entity->parentId_0x28_40], entity->model_0x40_64, actspell);
 		entity->maxMana_0x8C_140 = v2y;
 		if (entity->word_0x30_48)
 			v2y /= entity->word_0x30_48;
@@ -1186,23 +1186,23 @@ type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C2
 }
 
 //----- (0006D710) --------------------------------------------------------
-int sub_6D710(type_event_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//24e710
+int sub_6D710(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//24e710
 {
 	signed int v3; // ecx
 	int result; // eax
 	//int v5; // edx
-	type_event_0x6E8E* v6x; // ebx
+	type_entity_0x6E8E* v6x; // ebx
 	int v7; // edx
 	int v8; // eax
 
 	v3 = 0;
 	//result = *(x_DWORD *)&(*xadataspellsdat.colorPalette_var28)[80 * a2 + 6 + 26 * a3];
 	result = SPELLS_BEGIN_BUFFER_str[a2].subspell[a3].dword_6;
-	if (a2 == 2 && a1x > x_DWORD_EA3E4[0])
+	if (a2 == 2 && a1x > Entities_EA3E4[0])
 	{
 		//v5 = a1x->dword_0xA4_164;
-		v6x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
-		if (v6x <= x_DWORD_EA3E4[0])
+		v6x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+		if (v6x <= Entities_EA3E4[0])
 			goto LABEL_23;
 		switch (v6x->dword_0x10_16)
 		{
@@ -1267,7 +1267,7 @@ int sub_6D710(type_event_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//2
 	return result;
 }
 // 13880: using guessed type int /*__fastcall*/ nullsub_1(x_DWORD);
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
+// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00083CC0) --------------------------------------------------------
 void sub_83CC0(char a1)//264cc0

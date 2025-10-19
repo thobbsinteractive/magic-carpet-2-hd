@@ -318,8 +318,8 @@ typedef struct Type_str_164 {//size 1136
 }
 
 type_str_164;
-typedef struct _str_0x6E8E {//lenght a8//THING
-	struct _str_0x6E8E* next_0;
+typedef struct _entity_0x6E8E {//lenght a8//THING
+	struct _entity_0x6E8E* next_0;
 	int32_t maxLife_0x4;//4 //?bitmap//LIVE
 	int32_t life_0x8;//8 // this is int32_t ?bitmap//MAX LIVE
 	dw_w_b struct_byte_0xc_12_15;//12
@@ -391,7 +391,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	//uint16_t word_0xA2_162;//162
 	type_str_164* dword_0xA4_164x;//100 // adress of xx
 }
-type_event_0x6E8E;
+type_entity_0x6E8E;
 
 #pragma pack (1)
 typedef struct {
