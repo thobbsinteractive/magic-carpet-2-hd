@@ -2886,7 +2886,9 @@ __int16 x_WORD_E1316 = 0; // weak
 uint8_t x_BYTE_E131C[8] = { 0, 0, 0, 0, 0, 0, 0, 0 }; // idb
 char x_BYTE_E1324 = 50; // weak
 
-HTIMER Timer_F4940 = -1;
+int TimerIdx_F4940 = -1;
+int TimerIdx_180078 = -1;
+int TimerIdx_F42A4 = -1;
 /*
 char array_E1328[0x3b8] = {
 0x00,0x00,0x45,0x05,0x00,0x00,0x00,//2b2328
@@ -31887,12 +31889,12 @@ void sub_46570(uaxis_2d a1x, uaxis_2d a2x)//227570
 // 17B4E0: using guessed type __int16 x_WORD_17B4E0;
 
 //----- (00046820) --------------------------------------------------------
-void sub_46820_simple_timer(HMDIDRIVER  /*user*/)//227820
+void sub_46820_simple_timer()//227820
 {
-	x_DWORD_17DB54_game_turn2++;
+	GameTick_17DB54++;
 	//return 0;
 }
-// 17DB54: using guessed type int x_DWORD_17DB54_game_turn2;
+// 17DB54: using guessed type int GameTick_17DB54;
 
 void write_pngs2()
 {
@@ -32233,9 +32235,9 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 		}
 		if (soundAble_E3798 || musicAble_E37FC)
 		{
-			//x_DWORD_F42A4_sound_timer = AilRegisterTimer_92600(sub_46820_simple_timer);
-			//AilSetTimerFrequency_92930(x_DWORD_F42A4_sound_timer, 0x78u);
-			//AilStartTimer_92BA0(x_DWORD_F42A4_sound_timer);
+			TimerIdx_F42A4 = AilRegisterTimer_92600(sub_46820_simple_timer);
+			AilSetTimerFrequency_92930(TimerIdx_F42A4, 0x78u);
+			AilStartTimer_92BA0(TimerIdx_F42A4);
 			x_BYTE_D4B51 = 1;
 		}
 		else
@@ -32271,7 +32273,7 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 void sub_46F50_sound_proc7()//227f50
 {
 	if (x_BYTE_D4B51)
-		;// sub_92DC0_AIL_release_timer_handle(x_DWORD_F42A4_sound_timer);
+		AilReleaseTimer_92DC0(x_DWORD_F42A4_sound_timer);
 	else
 		sub_6FE20();
 	sub_986E0();
@@ -32348,7 +32350,7 @@ void sub_47320_in_game_loop(signed int a1)//228320
 		//index = 2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0;
 		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 || D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 8)
 			break;
-		v2 = x_DWORD_17DB54_game_turn2;//0xded
+		v2 = GameTick_17DB54;//0xded
 
 		/*
 		//savetext
@@ -32360,9 +32362,9 @@ void sub_47320_in_game_loop(signed int a1)//228320
 		//savetext
 		*/
 
-		DrawAndEventsInGame_47560(/*2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0, 2124 * D41A0_BYTESTR_0.word_0xc,*/ v1, a1, x_DWORD_17DB54_game_turn2);
+		DrawAndEventsInGame_47560(/*2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0, 2124 * D41A0_BYTESTR_0.word_0xc,*/ v1, a1, GameTick_17DB54);
 		v3 = v2 + 5;
-		/*while (v3 > x_DWORD_17DB54_game_turn2)
+		/*while (v3 > GameTick_17DB54)
 			;*/ // timer only for origin sound
 		if (v1 < 2)
 		{
@@ -32543,9 +32545,9 @@ void DrawAndEventsInGame_47560(/*uint8_t* a1, int a2, */uint32_t a3, signed int 
 		}
 	}
 
-	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = x_DWORD_17DB54_game_turn2 - x_D41A0_BYTEARRAY_4_struct.byteindex_196;
+	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTick_17DB54 - x_D41A0_BYTEARRAY_4_struct.byteindex_196;
 	DrawGameDebugText_6FEC0();
-	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = x_DWORD_17DB54_game_turn2;
+	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTick_17DB54;
 
 	if (x_D41A0_BYTEARRAY_4_struct.byteindex_51 >= 3u)
 		sub_40F80();
@@ -42695,7 +42697,7 @@ int sub_59A50_sound_proc8()//23aa50
 
 	if (x_BYTE_D4B7A == 1)
 	{
-		//sub_92DC0_AIL_release_timer_handle(x_DWORD_F4940);
+		AilReleaseTimer_92DC0(TimerIdx_F4940);
 		x_BYTE_D4B7A = 0;
 	}
 	sub_8E470_sound_proc17_volume(x_D41A0_BYTEARRAY_4_struct.soundVolume_6 / 3);
@@ -42718,10 +42720,9 @@ void sub_59AF0_sound_proc9()//23aaf0
 	//int result; // eax
 
 	sub_86860_speak_Sound(x_WORD_1803EC);
-	Timer_F4940 = SOUND_StartTimer(120, FadeUpSound_59B50);
-	//Timer_F4940 = AilRegisterTimer_92600(FadeUpSound_59B50);
-	//AilSetTimerFrequency_92930(Timer_F4940, 120);
-	//AilStartTimer_92BA0(Timer_F4940);
+	TimerIdx_F4940 = AilRegisterTimer_92600(FadeUpSound_59B50);
+	AilSetTimerFrequency_92930(TimerIdx_F4940, 120);
+	AilStartTimer_92BA0(TimerIdx_F4940);
 	x_BYTE_D4B7A = 1;
 	//result = (int)x_D41A0_BYTEARRAY_4;
 	x_D41A0_BYTEARRAY_4_struct.setting_38545 &= 0xBFu;
@@ -42750,7 +42751,7 @@ int32_t FadeUpSound_59B50(uint32_t interval)//23ab50
 	else
 	{
 		x_BYTE_D4B7A = 0;
-		//sub_92DC0_AIL_release_timer_handle(x_DWORD_F4940);
+		AilReleaseTimer_92DC0(TimerIdx_F4940);
 	}
 	return interval;
 }
@@ -42765,7 +42766,7 @@ void sub_59BF0_sound_proc11_volume()//23abf0
 {
 	if (x_BYTE_D4B7A == 1)
 	{
-		//sub_92DC0_AIL_release_timer_handle(x_DWORD_F4940);
+		AilReleaseTimer_92DC0(TimerIdx_F4940);
 		x_BYTE_D4B7A = 0;
 	}
 	sub_8E470_sound_proc17_volume(x_D41A0_BYTEARRAY_4_struct.soundVolume_6);
@@ -46517,7 +46518,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 		v35 = GetLetterHeight_6FC30() + v34;
 		DrawText_2BC10((char*)"Game turn", 320, v35, (*xadataclrd0dat.colorPalette_var28)[3840]);
 		v36 = GetLetterHeight_6FC30() + v35;
-		sprintf(printbuffer, "%d %d", D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248, x_DWORD_17DB54_game_turn2);
+		sprintf(printbuffer, "%d %d", D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248, GameTick_17DB54);
 		DrawText_2BC10(printbuffer, 320, v36, (*xadataclrd0dat.colorPalette_var28)[15]);
 		v37 = GetLetterHeight_6FC30() + v36;
 		DrawText_2BC10((char*)"Thing", 320, v37, (*xadataclrd0dat.colorPalette_var28)[3840]);
@@ -46651,7 +46652,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 // E9C1C: using guessed type int x_DWORD_E9C1C;
 // E9C20: using guessed type int x_DWORD_E9C20;
 // E9C24: using guessed type int x_DWORD_E9C24_fps;
-// 17DB54: using guessed type int x_DWORD_17DB54_game_turn2;
+// 17DB54: using guessed type int GameTick_17DB54;
 // 17E0A4: using guessed type int x_DWORD_17E0A4[];
 // 17ECA0: using guessed type int x_DWORD_17ECA0;
 // 17FEA4: using guessed type int x_DWORD_17FEA4_mem_free;
@@ -50456,11 +50457,11 @@ void sub_86F70_sound_proc12(unsigned __int8 a1, __int16 a2, __int16 a3)//267f70
 {
 	if (x_BYTE_E2A28_speek && (musicAble_E37FC || soundAble_E3798))
 	{
-		//x_DWORD_180078 = AilRegisterTimer_92600(sub_86EA0);
-		//AilSetTimerFrequency_92930(x_DWORD_180078, 0x32u);
-		//AilStartTimer_92BA0(x_DWORD_180078);
+		TimerIdx_180078 = AilRegisterTimer_92600(sub_86EA0);
+		AilSetTimerFrequency_92930(TimerIdx_180078, 0x32u);
+		AilStartTimer_92BA0(TimerIdx_180078);
 		sub_86FF0(a1, a2, a3);
-		//sub_92DC0_AIL_release_timer_handle(x_DWORD_180078);
+		AilReleaseTimer_92DC0(TimerIdx_180078);
 	}
 }
 // E2A28: using guessed type char x_BYTE_E2A28;
@@ -62488,12 +62489,12 @@ LABEL_27:
 		v50 = a1x->dword_0xA4_164x->word_0x36_54;
 		if (v50 <= 0)
 		{
-			sub_99970(1, 3u);
+			UpdateMusic_99970(1, 3u);
 		}
 		else
 		{
 			a1x->dword_0xA4_164x->word_0x36_54 = v50 - 1;
-			sub_99970(2, 3u);
+			UpdateMusic_99970(2, 3u);
 		}
 	}
 }
