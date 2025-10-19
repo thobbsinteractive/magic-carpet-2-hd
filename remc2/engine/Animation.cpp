@@ -33,8 +33,6 @@ uint32_t x_DWORD_17D720[4]; // weak 0
 uint16_t x_WORD_17D724; // weak 4
 uint16_t x_WORD_17D726; // weak 6
 
-int GameTick_17DB54; // weak
-
 char x_BYTE_17D738[256]; // idb
 
 __int16 x_WORD_E12FE = 0; // weak
@@ -254,7 +252,7 @@ void /*__fastcall*/ sub_75E70()//256e70
 
 	//fix it
 	//v21 = 0;
-	GameTick_17DB54 = 0x40;
+	GameTimerTick_17DB54 = 0x40;
 	//fix it
 
 	//HIBYTE(a1) = 0;
@@ -597,7 +595,7 @@ void sub_75CB0()//256cb0
 	}
 	else
 	{
-		while (GameTick_17DB54 < x_DWORD_E3844)
+		while (GameTimerTick_17DB54 < x_DWORD_E3844)
 		{
 			if (x_WORD_E12FE && sub_473E0())
 			{
@@ -610,12 +608,12 @@ void sub_75CB0()//256cb0
 				return;
 			}
 		}
-		GameTick_17DB54 = 0;
+		GameTimerTick_17DB54 = 0;
 	}
 }
 // E12FE: using guessed type __int16 x_WORD_E12FE;
 // E3844: using guessed type int x_DWORD_E3844;
-// 17DB54: using guessed type int GameTick_17DB54;
+// 17DB54: using guessed type int GameTimerTick_17DB54;
 // 17DB5A: using guessed type __int16 x_WORD_17DB5A;
 // 17DB5C: using guessed type __int16 x_WORD_17DB5C;
 // 1806E4: using guessed type char x_BYTE_1806E4;
