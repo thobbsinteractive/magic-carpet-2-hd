@@ -168,6 +168,15 @@ typedef struct {//lenght 224
 	shadow_sub1type_E3808_music_header str_8;//216 lenght
 }
 shadow_type_E3808_music_header;
+
+typedef struct
+{
+	int Id;
+	SDL_TimerID SdlId;
+	uint32_t IntervalMs;
+	SDL_TimerCallback Callback;
+} Mix_Timer;
+
 //shadow shadow_type_E3808_music_header
 #pragma pack (16)
 
@@ -227,8 +236,11 @@ void SOUND_set_sample_volume_panning(HSAMPLE S, int32_t panning);
 void SOUND_set_sequence_volume(int32_t volume, int32_t  milliseconds);
 void SOUND_set_master_volume(int32_t volume);
 void SOUND_UPDATE();
-int32_t SOUND_StartTimer(uint32_t intervalMs, int32_t(*callback_fn)(uint32_t));
-void SOUND_StopTimer(int32_t timerId);
+
+void SOUND_RegisterTimer(int timerIdx, int32_t(*callback_fn)(uint32_t));
+void SOUND_SetTimerFrequency(int timerIdx, uint32_t intervalMs);
+void SOUND_StartTimer(int timerIdx);
+void SOUND_StopTimer(int timerIdx);
 
 //void test_midi_play(uint8_t* data, uint8_t* header, int32_t track_number);
 #ifdef SOUND_OPENAL

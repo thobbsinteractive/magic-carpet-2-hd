@@ -184,10 +184,9 @@ int x_DWORD_E3FEA = 0; // weak
 int x_DWORD_E3FEE = 0; // weak
 int x_DWORD_E3FF2 = 0; // weak
 
-int x_DWORD_E3E9C[16]; // weak//sound anything
-//int x_DWORD_E3ED8 = 0; // weak//x_DWORD_E3E9C[0xf]
-int x_DWORD_E3EDC[16]; // weak
-int x_DWORD_E3F1C[16]; // weak
+int Timers_E3E9C[16];
+int TimerPeriods_E3EDC[16]; // weak
+int TimerPeriodsMicroSeconds_E3F1C[16]; // weak
 int x_DWORD_E3F5C[16]; // weak
 
 int isr_E3FF8 = 0; // weak
@@ -236,8 +235,8 @@ char x_BYTE_E4B2B = -1; // weak
 int x_DWORD_E4C90 = 0; // weak
 int x_DWORD_E4C94 = 0; // weak
 
-HTIMER Timer_180CA0 = -1;
-HTIMER Timer_180C80 = -1;
+int TimerIdx_180CA0 = -1;
+int TimerIdx_180C80 = -1;
 
 int x_DWORD_A9390[128] = {
 0x00000008,0x00000011,0x00000012,0x00000013,
@@ -825,7 +824,7 @@ void StopMusic_8E020()//26f020
 	if (musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802)
 	{
 		if (x_BYTE_E3818)
-			AilReleaseTimer_92DC0(Timer_180C80);
+			AilReleaseTimer_92DC0(TimerIdx_180C80);
 		pcSpeakerSoundDev_E3819 = 0;
 		x_BYTE_E3818 = 0;
 		x_BYTE_E3817 = 1;
@@ -846,7 +845,7 @@ void StartMusic_8E160(int track, int volume)//26f160
 	if (musicAble_E37FC && musicActive_E37FD && track <= m_iNumberOfTracks && songCurrentlyPlaying_E3802 != track)
 	{
 		if (x_BYTE_E3818)
-			AilReleaseTimer_92DC0(Timer_180C80);
+			AilReleaseTimer_92DC0(TimerIdx_180C80);
 		pcSpeakerSoundDev_E3819 = 0;
 		x_BYTE_E3818 = 0;
 		x_BYTE_E3817 = 1;
@@ -1303,7 +1302,7 @@ void AilStartSample_93B50(HSAMPLE S)//274b50
 	ailIndent_181C04--;
 }
 
-HTIMER AilRegisterTimer_92600(void (far cdecl* callback_fn)())
+int AilRegisterTimer_92600(void (far cdecl* callback_fn)())
 {
 	unsigned int i; // [esp+0h] [ebp-10h]
 	unsigned int j; // [esp+0h] [ebp-10h]
@@ -1315,7 +1314,6 @@ HTIMER AilRegisterTimer_92600(void (far cdecl* callback_fn)())
 	if (v4)
 		dbgfprintf(ailDebufFile_181BF0, "AIL_register_timer(0x%X)\n", callback_fn);
 	v5 = RegisterTimer_A16AE(callback_fn);
-
 
 	if (x_DWORD_181BF4 && (ailIndent_181C04 == 1 || x_DWORD_181BF8) && !GetE3FFE_A16A2())
 	{
@@ -1329,14 +1327,14 @@ HTIMER AilRegisterTimer_92600(void (far cdecl* callback_fn)())
 	return v5;
 }
 
-HTIMER RegisterTimer_A16AE(void (far cdecl* callback_fn)())
+int RegisterTimer_A16AE(void (far cdecl* callback_fn)())
 {
 	unsigned int v1; // eax
 	unsigned int v2; // ST00_4
 
 	PlusE3FF2_91BD0();
 	v1 = 0;
-	while (*(int*)((char*)x_DWORD_E3E9C + v1))
+	while (*(int*)((char*)Timers_E3E9C + v1))
 	{
 		v1 += 4;
 		if (v1 >= 60)
@@ -1345,92 +1343,95 @@ HTIMER RegisterTimer_A16AE(void (far cdecl* callback_fn)())
 			goto LABEL_6;
 		}
 	}
-	*(int*)((char*)x_DWORD_E3E9C + v1) = 1;
-//	*(int*)((char*)x_DWORD_E3E9C + v1) = &callback_fn;
+	*(int*)((char*)Timers_E3E9C + v1) = 1;
+	//*(int*)((char*)Timers_E3E9C + v1) = callback_fn;
+	SOUND_RegisterTimer(v1, callback_fn);
 LABEL_6:
 	v2 = v1;
 	MinusE3FF2_91BF0();
 	return v2;
 }
 
-void AilSetTimerFrequency_92930(HTIMER timer, unsigned long hertz)
+void AilSetTimerFrequency_92930(int timerIdx, unsigned long hertz)
 {
 	bool v2; // [esp+0h] [ebp-4h]
 
 	++ailIndent_181C04;
 	v2 = x_DWORD_181BF4 && (ailIndent_181C04 == 1 || x_DWORD_181BF8) && !GetE3FFE_A16A2() && DebugSoundTimer_916F0();
 	if (v2)
-		dbgfprintf(ailDebufFile_181BF0, "AIL_set_timer_frequency(%u,%u)\n", timer, hertz);
-	AilSetTimerPeriod_A1840(timer, hertz);
+		dbgfprintf(ailDebufFile_181BF0, "AIL_set_timer_frequency(%u,%u)\n", timerIdx, hertz);
+	AilSetTimerPeriod_A1840(timerIdx, hertz);
 	--ailIndent_181C04;
 }
 
-void AilSetTimerPeriod_A1840(HTIMER timer, unsigned long hertz)
+void AilSetTimerPeriod_A1840(int timerIdx, unsigned long hertz)
 {
 	PlusE3FF2_91BD0();
-	AilSetTimerPeriod_92890(timer, 1000000 / hertz);
+	AilSetTimerPeriod_92890(timerIdx, 1000000 / hertz);
 	MinusE3FF2_91BF0();
 }
 
-void AilSetTimerPeriod_92890(HTIMER timer, unsigned long microseconds)
+void AilSetTimerPeriod_92890(int timerIdx, unsigned long microseconds)
 {
 	bool v2; // [esp+0h] [ebp-4h]
 
 	++ailIndent_181C04;
 	v2 = x_DWORD_181BF4 && (ailIndent_181C04 == 1 || x_DWORD_181BF8) && !GetE3FFE_A16A2() && DebugSoundTimer_916F0();
 	if (v2)
-		dbgfprintf(ailDebufFile_181BF0, "AIL_set_timer_period(0x%X)\n", timer, microseconds);
-	AilSetTimerPeriod_A1810(timer, microseconds);
+		dbgfprintf(ailDebufFile_181BF0, "AIL_set_timer_period(0x%X)\n", timerIdx, microseconds);
+	SetTimerPeriod_A1810(timerIdx, microseconds);
 	--ailIndent_181C04;
 }
 
-void AilSetTimerPeriod_A1810(HTIMER timer, unsigned long microseconds)
+void SetTimerPeriod_A1810(int timerIdx, unsigned long microseconds)
 {
 	PlusE3FF2_91BD0();
-	*(int*)((char*)x_DWORD_E3F1C + timer) = microseconds;
-	*(int*)((char*)x_DWORD_E3EDC + timer) = 0;
+	*(int*)((char*)TimerPeriodsMicroSeconds_E3F1C + timerIdx) = microseconds;
+	*(int*)((char*)TimerPeriods_E3EDC + timerIdx) = 0;
 	sub_A108F();
+	SOUND_SetTimerFrequency(timerIdx, microseconds);
 	MinusE3FF2_91BF0();
 }
 
-void AilStartTimer_92BA0(HTIMER timer)
+void AilStartTimer_92BA0(int timerIdx)
 {
 	bool v1; // [esp+0h] [ebp-4h]
 
 	++ailIndent_181C04;
 	v1 = x_DWORD_181BF4 && (ailIndent_181C04 == 1 || x_DWORD_181BF8) && !GetE3FFE_A16A2() && DebugSoundTimer_916F0();
 	if (v1)
-		dbgfprintf(ailDebufFile_181BF0, "AIL_start_timer(0x%X)\n", timer);
-	StartTimer_A1768(timer);
+		dbgfprintf(ailDebufFile_181BF0, "AIL_start_timer(0x%X)\n", timerIdx);
+	StartTimer_A1768(timerIdx);
 	--ailIndent_181C04;
 }
 
-void StartTimer_A1768(HTIMER timer)
+void StartTimer_A1768(int timerIdx)
 {
 	PlusE3FF2_91BD0();
-	if (timer != -1 && *(int*)((char*)x_DWORD_E3E9C + timer) == 1)
-		*(int*)((char*)x_DWORD_E3E9C + timer) = 2;
+	if (timerIdx != -1 && *(int*)((char*)Timers_E3E9C + timerIdx) == 1)
+		*(int*)((char*)Timers_E3E9C + timerIdx) = 2;
+	SOUND_StartTimer(timerIdx);
 	MinusE3FF2_91BF0();
 }
 
-void AilReleaseTimer_92DC0(HTIMER timer)
+void AilReleaseTimer_92DC0(int timerIdx)
 {
 	bool v1; // [esp+0h] [ebp-4h]
 
 	++ailIndent_181C04;
 	v1 = x_DWORD_181BF4 && (ailIndent_181C04 == 1 || x_DWORD_181BF8) && !GetE3FFE_A16A2() && DebugSoundTimer_916F0();
 	if (v1)
-		dbgfprintf(ailDebufFile_181BF0, "AIL_release_timer_handle(%u)\n", timer);
-	ReleaseTimer_A171D(timer);
-	SOUND_StopTimer(timer);
+		dbgfprintf(ailDebufFile_181BF0, "AIL_release_timer_handle(%u)\n", timerIdx);
+	ReleaseTimer_A171D(timerIdx);
 	--ailIndent_181C04;
 }
 
-void ReleaseTimer_A171D(HTIMER timer)
+void ReleaseTimer_A171D(int timerIdx)
 {
 	PlusE3FF2_91BD0();
-	if (timer != -1)
-		*(int*)((char*)x_DWORD_E3E9C + timer) = 0;
+	if (timerIdx != -1)
+		*(int*)((char*)Timers_E3E9C + timerIdx) = 0;	
+	SOUND_StopTimer(timerIdx);
 	MinusE3FF2_91BF0();
 }
 
@@ -2645,7 +2646,7 @@ char sub_A105C(unsigned int a1)//28205c
 	if (a1 < 0xD68D)
 		v1 = 10000 * (unsigned __int64)a1 / 0x20BC;
 
-	//return sub_A102C(v1); //FIX IT
+	return sub_A102C(v1); //FIX IT
 	return 0;
 }
 
@@ -2660,15 +2661,15 @@ void sub_A108F()//28208f
 	v1 = 0;
 	do
 	{
-		if (x_DWORD_E3E9C[v1] && x_DWORD_E3F1C[v1] < v0)
-			v0 = x_DWORD_E3F1C[v1];
+		if (Timers_E3E9C[v1] && TimerPeriodsMicroSeconds_E3F1C[v1] < v0)
+			v0 = TimerPeriodsMicroSeconds_E3F1C[v1];
 		v1++;
 	} while (v1 < 16);
 	if (v0 != x_DWORD_E3FEA)
 	{
 		x_DWORD_E3FEA = v0;
 		sub_A105C(v0);
-		memset(x_DWORD_E3EDC, 0, 64);
+		memset(TimerPeriods_E3EDC, 0, 64);
 	}
 	MinusE3FF2_91BF0();
 }
@@ -2684,14 +2685,14 @@ void sub_A10F4_sound_proc_irq()//2820f4
 	x_DWORD_E3FF2 = 0;
 	x_DWORD_E3FEA = -1;
 	isr_E3FF8 = -1;
-	memset(x_DWORD_E3E9C, 0, 64);
-	memset(x_DWORD_E3EDC, 0, 64);
-	memset(x_DWORD_E3F1C, 0, 64);
+	memset(Timers_E3E9C, 0, 64);
+	memset(TimerPeriods_E3EDC, 0, 64);
+	memset(TimerPeriodsMicroSeconds_E3F1C, 0, 64);
 	memset(x_DWORD_E3F5C, 0, 64);
 
 	x_DWORD_E3FDC = 8;
 	x_DWORD_E3FE2 = v1;
-	x_DWORD_E3E9C[15] = 2;
+	Timers_E3E9C[15] = 2;
 }
 
 //----- (000A11E2) --------------------------------------------------------
@@ -5368,10 +5369,9 @@ void Update_Sample_Status_8F710(int flags, __int16 index, int loopCount, unsigne
 						TimerRun_E388D = true;
 						if (initTimers <= 4u)
 						{
-							Timer_180CA0 = SOUND_StartTimer(30 * initTimers, StopTimer_8F850);
-							//Timer_180CA0 = AilRegisterTimer_92600(StopTimer_8F850);
-							//AilSetTimerFrequency_92930(Timer_180CA0, 30 * initTimers);
-							//AilStartTimer_92BA0(Timer_180CA0);
+							TimerIdx_180CA0 = AilRegisterTimer_92600(StopTimer_8F850);
+							AilSetTimerFrequency_92930(TimerIdx_180CA0, 30 * initTimers);
+							AilStartTimer_92BA0(TimerIdx_180CA0);
 						}
 					}
 				}
@@ -5386,7 +5386,7 @@ int32_t StopTimer_8F850(uint32_t interval)
 {
 	if (TimerRun_E388D)
 	{
-		AilReleaseTimer_92DC0(Timer_180CA0);
+		AilReleaseTimer_92DC0(TimerIdx_180CA0);
 		TimerRun_E388D = false;
 		for (uint32_t i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
@@ -5482,29 +5482,26 @@ bool AilReadIniFile_92190(AIL_INI* INI, char* filename)//273190
 }
 
 //----- (00099970) --------------------------------------------------------
-void sub_99970(char a1, unsigned __int8 a2)//27a970
+void UpdateMusic_99970(char a1, unsigned __int8 a2)//27a970
 {
 	if (pcSpeakerSoundDev_E3819 && musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && AilSequenceStatus_96170(m_hSequence) != 2 && x_BYTE_E3817 != a1)
 	{
 		if (x_BYTE_E3818)
-			AilReleaseTimer_92DC0(Timer_180C80);
+			AilReleaseTimer_92DC0(TimerIdx_180C80);
 		x_BYTE_E3817 = a1;
 		x_BYTE_E381A = -x_BYTE_E381A;
 		x_BYTE_E3818 = 1;
 		if (a2 <= 4u && a2 >= 1u)
 		{
-			Timer_180C80 = SOUND_StartTimer(30 * a2, StopTimer_8F850);
-			//Timer_180C80 = AilRegisterTimer_92600(StopTimer_8F850);
-			//AilSetTimerFrequency_92930(Timer_180C80, 30 * a2);
-			//AilStartTimer_92BA0(Timer_180C80);
-			
+			TimerIdx_180C80 = AilRegisterTimer_92600(StopTimer_8F850);
+			AilSetTimerFrequency_92930(TimerIdx_180C80, 30 * a2);
+			AilStartTimer_92BA0(TimerIdx_180C80);
 		}
 		else
 		{
-			Timer_180C80 = SOUND_StartTimer(30, StopTimer_8F850);
-			//Timer_180C80 = AilRegisterTimer_92600(StopTimer_8F850);
-			//AilSetTimerFrequency_92930(Timer_180C80, 0x1Eu);
-			//AilStartTimer_92BA0(Timer_180C80);
+			TimerIdx_180C80 = AilRegisterTimer_92600(StopTimer_8F850);
+			AilSetTimerFrequency_92930(TimerIdx_180C80, 0x1Eu);
+			AilStartTimer_92BA0(TimerIdx_180C80);
 		}
 	}
 }

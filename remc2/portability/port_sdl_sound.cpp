@@ -43,6 +43,8 @@ Mix_Chunk gamechunk[32];
 HSAMPLE gamechunkHSAMPLE[32];
 
 uint8_t sound_buffer[4][20000];
+
+std::vector<Mix_Timer> Timers = std::vector<Mix_Timer>();
 /*
 10
 29
@@ -571,14 +573,46 @@ uint32_t SOUND_sample_status(HSAMPLE S) {
 	return 0;
 }
 
-int32_t SOUND_StartTimer(uint32_t intervalMs, int32_t (*callback_fn)(uint32_t))
+void SOUND_RegisterTimer(int timerIdx, int32_t(*callback_fn)(uint32_t))
 {
-	return SDL_AddTimer(intervalMs, (SDL_TimerCallback)callback_fn, nullptr);
+	auto timer = Mix_Timer(timerIdx,(SDL_TimerCallback) callback_fn);
+	Timers.push_back(timer);
 }
 
-void SOUND_StopTimer(int32_t timerId)
+void SOUND_SetTimerFrequency(int timerIdx, uint32_t intervalMs)
 {
-	SDL_RemoveTimer(timerId);
+	for (int i = 0; i < Timers.size(); i++)
+	{
+		if (Timers[i].Id == timerIdx)
+		{
+			Timers[i].IntervalMs = intervalMs;
+			break;
+		}
+	}
+}
+
+void SOUND_StartTimer(int timerIdx)
+{
+	for (int i = 0; i < Timers.size(); i++)
+	{
+		if (Timers[i].Id == timerIdx)
+		{
+			Timers[i].SdlId = SDL_AddTimer(Timers[i].IntervalMs, Timers[i].Callback, nullptr);
+			break;
+		}
+	}
+}
+
+void SOUND_StopTimer(int timerIdx)
+{
+	for (int i = 0; i < Timers.size(); i++)
+	{
+		if (Timers[i].Id == timerIdx)
+		{
+			SDL_RemoveTimer(Timers[i].SdlId);
+			break;
+		}
+	}
 }
 
 void SOUND_end_sample(HSAMPLE  /*S*/) {
