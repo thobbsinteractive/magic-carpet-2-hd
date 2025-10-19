@@ -565,9 +565,11 @@ uint32_t SOUND_sample_status(HSAMPLE S) {
 	return 0;
 }
 
-void SOUND_RegisterTimer(int timerIdx, int32_t(*callback_fn)(uint32_t))
+void SOUND_RegisterTimer(int timerIdx, uint32_t(*callback)(uint32_t))
 {
-	auto timer = Mix_Timer(timerIdx,(SDL_TimerCallback) callback_fn);
+	auto timer = Mix_Timer();
+	timer.Id = timerIdx;
+	timer.Callback = (SDL_TimerCallback)callback;
 	Timers.push_back(timer);
 }
 

@@ -105,8 +105,8 @@ int32_t AilSetSampleFile_938C0(HSAMPLE S, uint8_t* pWaveData, int32_t block);
 void AilSetSampleAddress_93A10(HSAMPLE S, uint8_t* start, uint32_t len);
 void AilStartSample_93B50(HSAMPLE S);
 
-int AilRegisterTimer_92600(void (far cdecl* callback_fn)());
-int RegisterTimer_A16AE(void (far cdecl* callback_fn)());
+int AilRegisterTimer_92600(uint32_t(*callback)(uint32_t));
+int RegisterTimer_A16AE(uint32_t(*callback)(uint32_t));
 void AilSetTimerFrequency_92930(int timerIdx, unsigned long hertz);
 void AilSetTimerPeriod_A1840(int timerIdx, unsigned long hertz);
 void AilSetTimerPeriod_92890(int timerIdx, unsigned long microseconds);
@@ -115,6 +115,7 @@ void AilStartTimer_92BA0(int timerIdx);
 void StartTimer_A1768(int timerIdx);
 void AilReleaseTimer_92DC0(int timerIdx);
 void ReleaseTimer_A171D(int timerIdx);
+uint32_t SimpleTimer_46820(uint32_t interval);
 
 void AilEndSample_93D00(HSAMPLE S);
 void AilSetSamplePlaybackRate_93D90(HSAMPLE S, int32_t playback_rate);
@@ -167,7 +168,7 @@ VDI_CALL sub_9F5E0(HMDIDRIVER hMdiDriver, int a2, unsigned __int16 a3, unsigned 
 VDI_CALL sub_9F6D0(HMDIDRIVER hMdiDriver, __int16 a2);
 void PlusE3FF2_A0EEC();
 void MinusE3FF2_A0EF9();
-char sub_A102C(int a1);
+char SetProgramIntervalTimer_A102C(int a1);
 char sub_A105C(unsigned int a1);
 void sub_A108F();
 void sub_A10F4_sound_proc_irq();

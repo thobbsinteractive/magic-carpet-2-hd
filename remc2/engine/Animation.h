@@ -17,7 +17,7 @@ typedef struct {//lenght 7
 Type_SoundEvent_E17CC;
 #pragma pack (16)
 
-extern int GameTick_17DB54; // weak
+
 extern int x_DWORD_EA3B4; // weak?x_DWORD_E9C4C_langindexbuffer[474]
 extern __int16 x_WORD_F42AE; // weak
 extern __int16 x_WORD_F42A8; // weak

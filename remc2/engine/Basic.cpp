@@ -444,6 +444,8 @@ Pathstruct xadatatables = { "",(uint8_t**)&x_DWORD_D41BC_langbuffer,&LANG_BEGIN_
 //zero
 //#define psxazero14 47
 
+int GameTimerTick_17DB54; // weak
+
 bool IsDefaultResolution(int width, int height)
 {
 	if ((width <= 640) && (height <= 480))

@@ -784,7 +784,7 @@ void sub_45600(unsigned __int8 a1);*/
 // char sub_45DC0(char a1, char a2, unsigned __int16 a3, unsigned __int8 a4);
 unsigned __int16 sub_46180(unsigned __int16 a1, char a2);
 void sub_46570(uaxis_2d a1, uaxis_2d a2);
-void sub_46820_simple_timer(uint32_t user);
+uint32_t SimpleTimer_46820(uint32_t interval);
 // int sub_46830_main_loop(signed __int16 *a1, signed int a2, unsigned __int16 a3);
 void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/);
 void sub_46F50_sound_proc7();
@@ -884,7 +884,7 @@ void sub_59760(type_entity_0x6E8E* a1, type_entity_0x6E8E* a2);
 void sub_59820();
 int sub_59A50_sound_proc8();
 void sub_59AF0_sound_proc9();
-int FadeUpSound_59B50(uint32_t interval);
+uint32_t FadeUpSound_59B50(uint32_t interval);
 void sub_59BF0_sound_proc11_volume();
 void sub_5B7A0_prepare_textures();
 void sub_5B840_load_Palette_and_help_Palette();
@@ -1011,7 +1011,7 @@ void sub_86460(uint16_t a1);
 char sub_86780(unsigned __int16 a1, int a2, int a3);
 void sub_86A00_some_allocs();
 void sub_86BD0_freemem1();
-void sub_86EA0(/*int a1, int a2, int a3*/uint32_t user);
+uint32_t sub_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
 void sub_86F20(char a1);
 void sub_86F70_sound_proc12(unsigned __int8 a1, __int16 a2, __int16 a3);
 void sub_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3);
@@ -31888,14 +31888,6 @@ void sub_46570(uaxis_2d a1x, uaxis_2d a2x)//227570
 // D41B6: using guessed type char x_BYTE_D41B6;
 // 17B4E0: using guessed type __int16 x_WORD_17B4E0;
 
-//----- (00046820) --------------------------------------------------------
-void sub_46820_simple_timer()//227820
-{
-	GameTick_17DB54++;
-	//return 0;
-}
-// 17DB54: using guessed type int GameTick_17DB54;
-
 void write_pngs2()
 {
 	//uint8_t buffer[10000];
@@ -32235,8 +32227,8 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 		}
 		if (soundAble_E3798 || musicAble_E37FC)
 		{
-			TimerIdx_F42A4 = AilRegisterTimer_92600(sub_46820_simple_timer);
-			AilSetTimerFrequency_92930(TimerIdx_F42A4, 0x78u);
+			TimerIdx_F42A4 = AilRegisterTimer_92600(sub_8F4B0);
+			AilSetTimerFrequency_92930(TimerIdx_F42A4, 120);
 			AilStartTimer_92BA0(TimerIdx_F42A4);
 			x_BYTE_D4B51 = 1;
 		}
@@ -32273,13 +32265,11 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 void sub_46F50_sound_proc7()//227f50
 {
 	if (x_BYTE_D4B51)
-		AilReleaseTimer_92DC0(x_DWORD_F42A4_sound_timer);
+		AilReleaseTimer_92DC0(TimerIdx_F42A4);
 	else
 		sub_6FE20();
 	sub_986E0();
 }
-// D4B51: using guessed type char x_BYTE_D4B51;
-// F42A4: using guessed type int x_DWORD_F42A4_sound_timer;
 
 int debug_first_run = 0;
 int debugcounter_228320 = 0;
@@ -32350,7 +32340,7 @@ void sub_47320_in_game_loop(signed int a1)//228320
 		//index = 2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0;
 		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 || D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 8)
 			break;
-		v2 = GameTick_17DB54;//0xded
+		v2 = GameTimerTick_17DB54;//0xded
 
 		/*
 		//savetext
@@ -32362,9 +32352,9 @@ void sub_47320_in_game_loop(signed int a1)//228320
 		//savetext
 		*/
 
-		DrawAndEventsInGame_47560(/*2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0, 2124 * D41A0_BYTESTR_0.word_0xc,*/ v1, a1, GameTick_17DB54);
+		DrawAndEventsInGame_47560(/*2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0, 2124 * D41A0_BYTESTR_0.word_0xc,*/ v1, a1, GameTimerTick_17DB54);
 		v3 = v2 + 5;
-		/*while (v3 > GameTick_17DB54)
+		/*while (v3 > GameTimerTick_17DB54)
 			;*/ // timer only for origin sound
 		if (v1 < 2)
 		{
@@ -32545,9 +32535,9 @@ void DrawAndEventsInGame_47560(/*uint8_t* a1, int a2, */uint32_t a3, signed int 
 		}
 	}
 
-	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTick_17DB54 - x_D41A0_BYTEARRAY_4_struct.byteindex_196;
+	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTimerTick_17DB54 - x_D41A0_BYTEARRAY_4_struct.byteindex_196;
 	DrawGameDebugText_6FEC0();
-	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTick_17DB54;
+	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTimerTick_17DB54;
 
 	if (x_D41A0_BYTEARRAY_4_struct.byteindex_51 >= 3u)
 		sub_40F80();
@@ -42734,7 +42724,7 @@ void sub_59AF0_sound_proc9()//23aaf0
 // 1803EC: using guessed type __int16 x_WORD_1803EC;
 
 //----- (00059B50) --------------------------------------------------------
-int32_t FadeUpSound_59B50(uint32_t interval)//23ab50
+uint32_t FadeUpSound_59B50(uint32_t interval)//23ab50
 {
 	__int16 v0; // bx
 	__int16 v1; // dx
@@ -46518,7 +46508,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 		v35 = GetLetterHeight_6FC30() + v34;
 		DrawText_2BC10((char*)"Game turn", 320, v35, (*xadataclrd0dat.colorPalette_var28)[3840]);
 		v36 = GetLetterHeight_6FC30() + v35;
-		sprintf(printbuffer, "%d %d", D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248, GameTick_17DB54);
+		sprintf(printbuffer, "%d %d", D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248, GameTimerTick_17DB54);
 		DrawText_2BC10(printbuffer, 320, v36, (*xadataclrd0dat.colorPalette_var28)[15]);
 		v37 = GetLetterHeight_6FC30() + v36;
 		DrawText_2BC10((char*)"Thing", 320, v37, (*xadataclrd0dat.colorPalette_var28)[3840]);
@@ -46652,7 +46642,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 // E9C1C: using guessed type int x_DWORD_E9C1C;
 // E9C20: using guessed type int x_DWORD_E9C20;
 // E9C24: using guessed type int x_DWORD_E9C24_fps;
-// 17DB54: using guessed type int GameTick_17DB54;
+// 17DB54: using guessed type int GameTimerTick_17DB54;
 // 17E0A4: using guessed type int x_DWORD_17E0A4[];
 // 17ECA0: using guessed type int x_DWORD_17ECA0;
 // 17FEA4: using guessed type int x_DWORD_17FEA4_mem_free;
@@ -50394,9 +50384,10 @@ void sub_86BD0_freemem1()//267bd0
 // E2A70: using guessed type int x_DWORD_E2A70;
 
 //----- (00086EA0) --------------------------------------------------------
-void sub_86EA0(/*int a1, int a2, int a3*/ uint32_t user)//267ea0
+uint32_t sub_86EA0(/*int a1, int a2, int a3*/ uint32_t interval)//267ea0
 {
-	PaletteChanges_47760(/*a1, */user/*, a3*/);
+	PaletteChanges_47760(/*a1, */interval/*, a3*/);
+	return interval;
 }
 
 //----- (00086EB0) --------------------------------------------------------
@@ -50458,7 +50449,7 @@ void sub_86F70_sound_proc12(unsigned __int8 a1, __int16 a2, __int16 a3)//267f70
 	if (x_BYTE_E2A28_speek && (musicAble_E37FC || soundAble_E3798))
 	{
 		TimerIdx_180078 = AilRegisterTimer_92600(sub_86EA0);
-		AilSetTimerFrequency_92930(TimerIdx_180078, 0x32u);
+		AilSetTimerFrequency_92930(TimerIdx_180078, 50);
 		AilStartTimer_92BA0(TimerIdx_180078);
 		sub_86FF0(a1, a2, a3);
 		AilReleaseTimer_92DC0(TimerIdx_180078);

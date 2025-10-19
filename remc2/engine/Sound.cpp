@@ -1302,7 +1302,7 @@ void AilStartSample_93B50(HSAMPLE S)//274b50
 	ailIndent_181C04--;
 }
 
-int AilRegisterTimer_92600(void (far cdecl* callback_fn)())
+int AilRegisterTimer_92600(uint32_t(*callback)(uint32_t))
 {
 	unsigned int i; // [esp+0h] [ebp-10h]
 	unsigned int j; // [esp+0h] [ebp-10h]
@@ -1312,8 +1312,8 @@ int AilRegisterTimer_92600(void (far cdecl* callback_fn)())
 	++ailIndent_181C04;
 	v4 = x_DWORD_181BF4 && (ailIndent_181C04 == 1 || x_DWORD_181BF8) && !GetE3FFE_A16A2() && DebugSoundTimer_916F0();
 	if (v4)
-		dbgfprintf(ailDebufFile_181BF0, "AIL_register_timer(0x%X)\n", callback_fn);
-	v5 = RegisterTimer_A16AE(callback_fn);
+		dbgfprintf(ailDebufFile_181BF0, "AIL_register_timer(0x%X)\n", callback);
+	v5 = RegisterTimer_A16AE(callback);
 
 	if (x_DWORD_181BF4 && (ailIndent_181C04 == 1 || x_DWORD_181BF8) && !GetE3FFE_A16A2())
 	{
@@ -1327,27 +1327,27 @@ int AilRegisterTimer_92600(void (far cdecl* callback_fn)())
 	return v5;
 }
 
-int RegisterTimer_A16AE(void (far cdecl* callback_fn)())
+int RegisterTimer_A16AE(uint32_t(*callback)(uint32_t))
 {
-	unsigned int v1; // eax
+	unsigned int timerIdx; // eax
 	unsigned int v2; // ST00_4
 
 	PlusE3FF2_91BD0();
-	v1 = 0;
-	while (*(int*)((char*)Timers_E3E9C + v1))
+	timerIdx = 0;
+	while (*(int*)((char*)Timers_E3E9C + timerIdx))
 	{
-		v1 += 4;
-		if (v1 >= 60)
+		timerIdx += 4;
+		if (timerIdx >= 60)
 		{
-			v1 = -1;
+			timerIdx = -1;
 			goto LABEL_6;
 		}
 	}
-	*(int*)((char*)Timers_E3E9C + v1) = 1;
-	//*(int*)((char*)Timers_E3E9C + v1) = callback_fn;
-	SOUND_RegisterTimer(v1, callback_fn);
+	*(int*)((char*)Timers_E3E9C + timerIdx) = 1;
+	//*(int*)((char*)Timers_E3E9C + timerIdx) = callback;
+	SOUND_RegisterTimer(timerIdx, callback);
 LABEL_6:
-	v2 = v1;
+	v2 = timerIdx;
 	MinusE3FF2_91BF0();
 	return v2;
 }
@@ -2183,7 +2183,7 @@ AIL_DRIVER* AilApiInstallDriver_9E720(uint8_t* driver_image, int32_t n_bytes)//2
 				AilCallDriver_91F70(ailDriver, 768, nullptr, nullptr);
 				if (ailDriver->VHDR_4->VDI_HDR_var46 > 0)
 				{
-					ailDriver->server_8 = 1;//fix;
+					ailDriver->server_8 = AilRegisterTimer_92600(sub_9E250);
 					if (ailDriver->server_8 == -1)
 					{
 						qmemcpy(textBuffer_181C90, (void*)"Out of timer handles\n", 22);
@@ -2608,35 +2608,6 @@ void MinusE3FF2_A0EF9()//281ef9
 	x_DWORD_E3FF2--;
 }
 
-//----- (000A102C) --------------------------------------------------------
-char sub_A102C(int a1)//28202c //fix
-{
-	if (CommandLineParams.DoShowDebugPerifery())ShowPerifery();
-
-	unsigned int v1; // et0
-	char result; // al
-	unsigned int v3; // [esp-4h] [ebp-10h]
-	void* retaddr; // [esp+10h] [ebp+4h]
-
-	//fix it
-	retaddr = 0;
-	//fix it
-
-	v1 = x__readeflags();
-	v3 = v1;
-	//_disable();
-	//__outx_BYTE(0x43u, 0x36u);
-	x_DWORD_E3FE6 = a1;
-	//__outx_BYTE(0x40u, a1);
-	result = BYTE1(a1);
-	//__outx_BYTE(0x40u, BYTE1(a1));
-	//_disable();
-	if (BYTE1(retaddr) & 2)
-		;//_enable();
-	x__writeeflags(v3);
-	return result;
-}
-
 //----- (000A105C) --------------------------------------------------------
 char sub_A105C(unsigned int a1)//28205c
 {
@@ -2646,9 +2617,34 @@ char sub_A105C(unsigned int a1)//28205c
 	if (a1 < 0xD68D)
 		v1 = 10000 * (unsigned __int64)a1 / 0x20BC;
 
-	return sub_A102C(v1); //FIX IT
-	return 0;
+	return SetProgramIntervalTimer_A102C(v1); //FIX IT
 }
+
+//----- (000A102C) --------------------------------------------------------
+char SetProgramIntervalTimer_A102C(int a1)
+{
+	if (CommandLineParams.DoShowDebugPerifery())ShowPerifery();
+
+	uint32_t eflags; // et0
+	char result; // al
+	unsigned int v3; // [esp-4h] [ebp-10h]
+	void* retaddr = nullptr; // [esp+10h] [ebp+4h]
+
+	eflags = __readeflags();
+	v3 = eflags;
+	//_disable();
+	__outbyte(0x43u, 0x36u);
+	x_DWORD_E3FE6 = a1;
+	__outbyte(0x40u, a1);
+	result = BYTE1(a1);
+	__outbyte(0x40u, BYTE1(a1));
+	//_disable();
+	if (BYTE1(retaddr) & 2)
+		//_enable();
+	__writeeflags(v3);
+	return result;
+}
+
 
 //----- (000A108F) --------------------------------------------------------
 void sub_A108F()//28208f
@@ -2685,10 +2681,12 @@ void sub_A10F4_sound_proc_irq()//2820f4
 	x_DWORD_E3FF2 = 0;
 	x_DWORD_E3FEA = -1;
 	isr_E3FF8 = -1;
-	memset(Timers_E3E9C, 0, 64);
-	memset(TimerPeriods_E3EDC, 0, 64);
-	memset(TimerPeriodsMicroSeconds_E3F1C, 0, 64);
-	memset(x_DWORD_E3F5C, 0, 64);
+
+	//Clear all arrays
+	memset(Timers_E3E9C, 0, sizeof(int) * 16);
+	memset(TimerPeriods_E3EDC, 0, sizeof(int) * 16);
+	memset(TimerPeriodsMicroSeconds_E3F1C, 0, sizeof(int) * 16);
+	memset(x_DWORD_E3F5C, 0, sizeof(int) * 16);
 
 	x_DWORD_E3FDC = 8;
 	x_DWORD_E3FE2 = v1;
@@ -3088,6 +3086,7 @@ HDIGDRIVER sub_A2EA0(AIL_DRIVER* ailDriver, IO_PARMS IO)//283ea0
 								digDriver->samples_23[i].driver_0 = digDriver;
 								digDriver->samples_23[i].index_sample = i;//fixed
 							}
+							//digDriver->timer_3 = AilRegisterTimer_92600(sub_A2450);
 							digDriver->timer_3 = 1;
 							if (digDriver->timer_3 == -1)
 							{
@@ -5369,7 +5368,7 @@ void Update_Sample_Status_8F710(int flags, __int16 index, int loopCount, unsigne
 						TimerRun_E388D = true;
 						if (initTimers <= 4u)
 						{
-							TimerIdx_180CA0 = AilRegisterTimer_92600(StopTimer_8F850);
+							TimerIdx_180CA0 = AilRegisterTimer_92600(SimpleTimer_46820);
 							AilSetTimerFrequency_92930(TimerIdx_180CA0, 30 * initTimers);
 							AilStartTimer_92BA0(TimerIdx_180CA0);
 						}
@@ -5379,6 +5378,12 @@ void Update_Sample_Status_8F710(int flags, __int16 index, int loopCount, unsigne
 			}
 		}
 	}
+}
+
+uint32_t SimpleTimer_46820(uint32_t interval)//227820
+{
+	GameTimerTick_17DB54++;
+	return interval;
 }
 
 //----- (0008F850) --------------------------------------------------------
@@ -5493,13 +5498,13 @@ void UpdateMusic_99970(char a1, unsigned __int8 a2)//27a970
 		x_BYTE_E3818 = 1;
 		if (a2 <= 4u && a2 >= 1u)
 		{
-			TimerIdx_180C80 = AilRegisterTimer_92600(StopTimer_8F850);
+			TimerIdx_180C80 = AilRegisterTimer_92600((int)sub_99830);
 			AilSetTimerFrequency_92930(TimerIdx_180C80, 30 * a2);
 			AilStartTimer_92BA0(TimerIdx_180C80);
 		}
 		else
 		{
-			TimerIdx_180C80 = AilRegisterTimer_92600(StopTimer_8F850);
+			TimerIdx_180C80 = AilRegisterTimer_92600((int)sub_99830);
 			AilSetTimerFrequency_92930(TimerIdx_180C80, 0x1Eu);
 			AilStartTimer_92BA0(TimerIdx_180C80);
 		}
