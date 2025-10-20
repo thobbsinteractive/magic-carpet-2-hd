@@ -916,8 +916,8 @@ void sub_5DE30(type_entity_0x6E8E* a1);
 //uint8_t GetLetterHeight_6FC30();
 //void sub_6FC50(__int16 a1);
 //unsigned int sub_6FC80_pre_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
-void sub_6FDA0();
-void sub_6FE20();
+void SetProgrammableIntervalTimer_6FDA0();
+void ClearProgrammableIntervalTimer_6FE20();
 void DrawGameDebugText_6FEC0();
 void sub_70890_print_header();
 void PrintTextMessage_70910(char* a1);
@@ -32234,7 +32234,7 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 		}
 		else
 		{
-			sub_6FDA0();
+			SetProgrammableIntervalTimer_6FDA0();
 		}
 		//v5 = x_BYTE_E3798_sound_active2;
 		if (!soundAble_E3798 && !musicAble_E37FC && x_BYTE_E2A28_speek)
@@ -32267,7 +32267,7 @@ void sub_46F50_sound_proc7()//227f50
 	if (x_BYTE_D4B51)
 		AilReleaseTimer_92DC0(TimerIdx_F42A4);
 	else
-		sub_6FE20();
+		ClearProgrammableIntervalTimer_6FE20();
 	sub_986E0();
 }
 
@@ -44665,7 +44665,7 @@ void sub_5BC20()//23cc20
 		sub_46F50_sound_proc7();
 //removed sub_8C21F_any_graphics_command(); // end of graphics?
 		NetworkDisallocation_72D04();
-		sub_6FE20();
+		ClearProgrammableIntervalTimer_6FE20();
 		sub_5C060();
 	}
 //removed sub_83E80_freemem4(x_DWORD_D4198);
@@ -46306,7 +46306,7 @@ type_entity_0x6E8E* InitSwitchChainZaxisAndSound_6F850(type_entity_0x6E8E* event
 
 
 //----- (0006FDA0) --------------------------------------------------------
-void sub_6FDA0()//fix//250da0
+void SetProgrammableIntervalTimer_6FDA0()//fix//250da0
 {
 	//int v0; // eax
 	//void(*v1)(); // eax
@@ -46338,7 +46338,7 @@ void sub_6FDA0()//fix//250da0
 // F5334: using guessed type __int16 x_WORD_F5334;
 
 //----- (0006FE20) --------------------------------------------------------
-void sub_6FE20()//fix//250e20
+void ClearProgrammableIntervalTimer_6FE20()//fix//250e20
 {
 	if (CommandLineParams.DoShowDebugPerifery())ShowPerifery();
 
@@ -46349,6 +46349,8 @@ void sub_6FE20()//fix//250e20
 	{
 		//v0 = x_D41A0_BYTEARRAY_4_struct.dwordindex_2380;
 		/*__outx_BYTE(0x43u, 0x36u);
+		
+		//Clear reload values
 		__outx_BYTE(0x40u, 0);
 		__outx_BYTE(0x40u, 0);
 		v1 = dos_setvect(8, x_DWORD_F5330, (unsigned __int16)x_WORD_F5334);*/

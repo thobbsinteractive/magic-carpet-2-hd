@@ -2641,6 +2641,8 @@ char SetProgrammableIntervalTimer_A102C(int a1)
 	// 00 = Channel 0
 	//__outbyte(0x43u, 0x36u);
 	x_DWORD_E3FE6 = a1;
+
+	//Set Channel 0 (IRQ0) Reload Value:
 	// Channel 0 data port (read/write) low byte
 	//__outbyte(0x40u, a1);
 	result = BYTE1(a1);
