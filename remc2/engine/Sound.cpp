@@ -2630,26 +2630,26 @@ char SetProgrammableIntervalTimer_A102C(int a1)
 	unsigned int v3; // [esp-4h] [ebp-10h]
 	void* retaddr = nullptr; // [esp+10h] [ebp+4h]
 
-	eflags = __readeflags();
-	v3 = eflags;
-	_disable();
+	//eflags = __readeflags();
+	//v3 = eflags;
+	//_disable();
 	// Port 0x43u Mode/Command register (write only, a read is ignored)
 	// 0x36: 0011 0110
 	// 0 = Binary mode
 	// 011 = Mode 3 (square wave generator)
 	// 11 = Access mode: lobyte/hibyte
 	// 00 = Channel 0
-	__outbyte(0x43u, 0x36u);
+	//__outbyte(0x43u, 0x36u);
 	x_DWORD_E3FE6 = a1;
 	// Channel 0 data port (read/write) low byte
-	__outbyte(0x40u, a1);
+	//__outbyte(0x40u, a1);
 	result = BYTE1(a1);
 	// Channel 0 data port (read/write) High byte
-	__outbyte(0x40u, BYTE1(a1));
-	_disable();
-	if (BYTE1(retaddr) & 2)
-		_enable();
-	__writeeflags(v3);
+	//__outbyte(0x40u, BYTE1(a1));
+	//_disable();
+	//if (BYTE1(retaddr) & 2)
+		//_enable();
+	//__writeeflags(v3);
 	return result;
 }
 
