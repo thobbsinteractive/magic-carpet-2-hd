@@ -1574,4 +1574,7 @@ x_WORD* sub_60400(__int16 a1, x_WORD* a2, x_WORD* a3);
 void sub_6D8B0(unsigned __int16 a1, unsigned __int16 a2, __int16 a3);
 void CollectLevelStats_5C530();
 
+void SetProgrammableIntervalTimer_6FDA0();
+void ClearProgrammableIntervalTimer_6FE20();
+
 #endif //SUB_MAIN_ACTIVE
