@@ -1389,7 +1389,7 @@ void SetTimerPeriod_A1810(int timerIdx, unsigned long microseconds)
 	*(int*)((char*)TimerPeriodsMicroSeconds_E3F1C + timerIdx) = microseconds;
 	*(int*)((char*)TimerPeriods_E3EDC + timerIdx) = 0;
 	sub_A108F();
-	SOUND_SetTimerFrequency(timerIdx, microseconds);
+	SOUND_SetTimerPeriod(timerIdx, microseconds / 1000);
 	MinusE3FF2_91BF0();
 }
 
