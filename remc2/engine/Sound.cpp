@@ -2617,11 +2617,11 @@ char sub_A105C(unsigned int a1)//28205c
 	if (a1 < 0xD68D)
 		v1 = 10000 * (unsigned __int64)a1 / 0x20BC;
 
-	return SetProgramIntervalTimer_A102C(v1); //FIX IT
+	return SetProgrammableIntervalTimer_A102C(v1); //FIX IT
 }
 
-//----- (000A102C) --------------------------------------------------------
-char SetProgramIntervalTimer_A102C(int a1)
+//Generates a tick on IRQ 0
+char SetProgrammableIntervalTimer_A102C(int a1)
 {
 	if (CommandLineParams.DoShowDebugPerifery())ShowPerifery();
 
@@ -2632,15 +2632,23 @@ char SetProgramIntervalTimer_A102C(int a1)
 
 	eflags = __readeflags();
 	v3 = eflags;
-	//_disable();
+	_disable();
+	// Port 0x43u Mode/Command register (write only, a read is ignored)
+	// 0x36: 0011 0110
+	// 0 = Binary mode
+	// 011 = Mode 3 (square wave generator)
+	// 11 = Access mode: lobyte/hibyte
+	// 00 = Channel 0
 	__outbyte(0x43u, 0x36u);
 	x_DWORD_E3FE6 = a1;
+	// Channel 0 data port (read/write) low byte
 	__outbyte(0x40u, a1);
 	result = BYTE1(a1);
+	// Channel 0 data port (read/write) High byte
 	__outbyte(0x40u, BYTE1(a1));
-	//_disable();
+	_disable();
 	if (BYTE1(retaddr) & 2)
-		//_enable();
+		_enable();
 	__writeeflags(v3);
 	return result;
 }
