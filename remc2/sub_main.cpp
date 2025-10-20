@@ -918,8 +918,6 @@ void sub_5DE30(type_entity_0x6E8E* a1);
 //uint8_t GetLetterHeight_6FC30();
 //void sub_6FC50(__int16 a1);
 //unsigned int sub_6FC80_pre_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
-void SetProgrammableIntervalTimer_6FDA0();
-void ClearProgrammableIntervalTimer_6FE20();
 void DrawGameDebugText_6FEC0();
 void sub_70890_print_header();
 void PrintTextMessage_70910(char* a1);
