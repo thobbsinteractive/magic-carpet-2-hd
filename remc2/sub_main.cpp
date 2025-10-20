@@ -32223,7 +32223,7 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 		}
 		if (soundAble_E3798 || musicAble_E37FC)
 		{
-			TimerIdx_F42A4 = AilRegisterTimer_92600(sub_8F4B0);
+			TimerIdx_F42A4 = AilRegisterTimer_92600(SimpleTimer_46820);
 			AilSetTimerFrequency_92930(TimerIdx_F42A4, 120);
 			AilStartTimer_92BA0(TimerIdx_F42A4);
 			x_BYTE_D4B51 = 1;
