@@ -156,6 +156,8 @@ int AilApiUninstallDriver_9EA60(AIL_DRIVER* ailDriver);
 IO_PARMS* AilApiGetIoEnvironment_9EB60(AIL_DRIVER* drvr);
 void sub_9EC30();
 void UninstallDrivers_9ED70();
+void AilReleaseAllTimers_92E50();
+void ReleaseAllTimers_A1744();
 int sub_9EE70();
 void sub_9F040();
 void sub_9FA80();

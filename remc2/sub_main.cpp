@@ -46324,6 +46324,8 @@ void SetProgrammableIntervalTimer_6FDA0()//fix//250da0
 	/* __outx_BYTE(0x43u, 0x36u);
 	 __outx_BYTE(0x40u, x_D41A0_BYTEARRAY_4[0x954]);
 	 __outx_BYTE(0x40u, x_D41A0_BYTEARRAY_4[0x954] >> 8);*/
+	//Set vector method to call
+	//result = dos_setvect(8, (DWORD)sub_6FD30, (unsigned __int16)__CS__);
 	//BYTE1(result) = 1;
 	x_BYTE_DB734 = 1;
 	//return result;
