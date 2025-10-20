@@ -536,7 +536,7 @@ void  sub_841CE(__int16 a1);//ShowPerifery
 //sub_B5128 ShowPerifery
 //sub_B51B3 ShowPerifery
 //sub_B522B ShowPerifery
-//sub_6FDA0 ShowPerifery
+//SetProgrammableIntervalTimer_6FDA0 ShowPerifery
 //sub_90530 ShowPerifery
 //sub_B5015 ShowPerifery
 //sub_840B8 ShowPerifery
