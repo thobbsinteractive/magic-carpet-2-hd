@@ -238,7 +238,7 @@ void SOUND_set_master_volume(int32_t volume);
 void SOUND_UPDATE();
 
 void SOUND_RegisterTimer(int timerIdx, uint32_t(*callback)(uint32_t));
-void SOUND_SetTimerFrequency(int timerIdx, uint32_t intervalMs);
+void SOUND_SetTimerPeriod(int timerIdx, uint32_t intervalMs);
 void SOUND_StartTimer(int timerIdx);
 void SOUND_StopTimer(int timerIdx);
 

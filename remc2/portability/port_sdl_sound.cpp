@@ -581,7 +581,7 @@ void SOUND_RegisterTimer(int timerIdx, uint32_t(*callback)(uint32_t))
 	Timers.push_back(timer);
 }
 
-void SOUND_SetTimerFrequency(int timerIdx, uint32_t intervalMs)
+void SOUND_SetTimerPeriod(int timerIdx, uint32_t intervalMs)
 {
 	for (int i = 0; i < Timers.size(); i++)
 	{
