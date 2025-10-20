@@ -168,7 +168,7 @@ VDI_CALL sub_9F5E0(HMDIDRIVER hMdiDriver, int a2, unsigned __int16 a3, unsigned 
 VDI_CALL sub_9F6D0(HMDIDRIVER hMdiDriver, __int16 a2);
 void PlusE3FF2_A0EEC();
 void MinusE3FF2_A0EF9();
-char SetProgramIntervalTimer_A102C(int a1);
+char SetProgrammableIntervalTimer_A102C(int a1);
 char sub_A105C(unsigned int a1);
 void sub_A108F();
 void sub_A10F4_sound_proc_irq();
