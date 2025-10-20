@@ -30,7 +30,7 @@ int x_DWORD_17D730; // weak
 
 uint32_t x_DWORD_17D720[4]; // weak 0
 
-uint16_t x_WORD_17D724; // weak 4
+int16_t x_WORD_17D724; // weak 4
 uint16_t x_WORD_17D726; // weak 6
 
 char x_BYTE_17D738[256]; // idb
@@ -214,7 +214,7 @@ void sub_75DB0()//256db0
 	DataFileIO::Read(x_DWORD_17DB38_intro_file_handle, (uint8_t*)x_DWORD_17D720, 16);
 	x_WORD_17D724 = x_DWORD_17D720[1] & 0xffff;
 	x_WORD_17D726 = (x_DWORD_17D720[1] & 0xffff0000) >> 16;
-	while (x_WORD_17D724 != 0xf1fa/*-3590*/)
+	while (x_WORD_17D724 != -3590)
 		Logger->error("ERROR UNKNOWN FRAME TYPE");
 	DataFileIO::Read(x_DWORD_17DB38_intro_file_handle, x_DWORD_E9C38_smalltit, x_DWORD_17D720[0] - 16);
 	x_DWORD_E1300 += x_DWORD_17D720[0];
@@ -250,22 +250,17 @@ void /*__fastcall*/ sub_75E70()//256e70
 	uint8_t* v22; // [esp+8h] [ebp-8h]
 	char v23; // [esp+Ch] [ebp-4h]
 
-	//fix it
-	//v21 = 0;
-	GameTimerTick_17DB54 = 0x40;
-	//fix it
-
 	//HIBYTE(a1) = 0;
 	v23 = 0;
 	x_DWORD_17DB50 = x_DWORD_E9C38_smalltit;
 	x_BYTE_17D738[0] = 0;
-	if (x_WORD_17D724 == 0xf100)
+	if (x_WORD_17D724 == -3840)
 	{
 		sub_75D70(0, x_DWORD_17D720[0] - 16);
 		/*v1 = */sub_75DB0();
 		/*a1 = 0;*/sub_75E70(/*v1*/);
 	}
-	else if (x_WORD_17D724 == 0xF1FA)
+	else if (x_WORD_17D724 == -3590)
 	{
 		v2 = 0;
 		while (1)

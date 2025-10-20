@@ -599,14 +599,18 @@ void SOUND_StartTimer(int timerIdx)
 
 void SOUND_StopTimer(int timerIdx)
 {
+	int idxToDelete = -1;
 	for (int i = 0; i < Timers.size(); i++)
 	{
 		if (Timers[i].Id == timerIdx)
 		{
 			SDL_RemoveTimer(Timers[i].SdlId);
+			idxToDelete = i;
 			break;
 		}
 	}
+	if (idxToDelete > -1)
+		Timers.erase(Timers.begin() + idxToDelete);
 }
 
 void SOUND_end_sample(HSAMPLE  /*S*/) {
