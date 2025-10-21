@@ -237,6 +237,7 @@ int x_DWORD_E4C94 = 0; // weak
 
 int TimerIdx_180CA0 = -1;
 int TimerIdx_180C80 = -1;
+int TimerIdx_181C00 = -1;
 
 int x_DWORD_A9390[128] = {
 0x00000008,0x00000011,0x00000012,0x00000013,
@@ -1367,7 +1368,7 @@ void AilSetTimerFrequency_92930(int timerIdx, unsigned long hertz)
 void AilSetTimerPeriod_A1840(int timerIdx, unsigned long hertz)
 {
 	PlusE3FF2_91BD0();
-	AilSetTimerPeriod_92890(timerIdx, 1000000 / hertz);
+	AilSetTimerPeriod_92890(timerIdx, Unk_F4240 / hertz);
 	MinusE3FF2_91BF0();
 }
 
@@ -4313,7 +4314,7 @@ HMDIDRIVER InitAilDriver_A6FB0(AIL_DRIVER* ailDriver, IO_PARMS* io)//287fb0
 						hMdiDriver->var105_aildrv = 0;
 						hMdiDriver->var106_aildrv = 0;
 						hMdiDriver->var107_aildrv = 0;
-						hMdiDriver->interval_time_4 = 1000000 / preference_181DAC[11];
+						hMdiDriver->interval_time_4 = Unk_F4240 / preference_181DAC[11];
 						hMdiDriver->disable_5 = 0;
 						hMdiDriver->var108_aildrv = 127;
 						hMdiDriver->timer_3 = 1;

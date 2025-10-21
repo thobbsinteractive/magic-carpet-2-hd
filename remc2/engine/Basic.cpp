@@ -445,6 +445,7 @@ Pathstruct xadatatables = { "",(uint8_t**)&x_DWORD_D41BC_langbuffer,&LANG_BEGIN_
 //#define psxazero14 47
 
 int GameTimerTick_17DB54; // weak
+uint32_t Unk_F4240 = 1000000; //CPU Frequency?
 
 bool IsDefaultResolution(int width, int height)
 {
