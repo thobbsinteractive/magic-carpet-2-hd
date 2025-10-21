@@ -882,10 +882,10 @@ void sub_58DA0(type_entity_0x30311* a1, type_entity_0x6E8E* a2);
 void sub_58F00_game_objectives();
 void sub_59760(type_entity_0x6E8E* a1, type_entity_0x6E8E* a2);
 void sub_59820();
-int sub_59A50_sound_proc8();
+int FadeSoundVolume_59A50();
 void sub_59AF0_sound_proc9();
 uint32_t FadeUpSound_59B50(uint32_t interval);
-void sub_59BF0_sound_proc11_volume();
+void RestoreSoundVolume_59BF0();
 void sub_5B7A0_prepare_textures();
 void sub_5B840_load_Palette_and_help_Palette();
 //char sub_5B8D0_initialize();
@@ -1247,9 +1247,9 @@ int x_DWORD_D4794 = 0; // weak
 bool lowDiffHeightmap_D47DC = true;
 char x_BYTE_D4B50 = 0; // weak
 char x_BYTE_D4B51 = 0; // weak
-char x_BYTE_D4B78 = 0; // weak
+char FadeVolume_D4B78 = 0; // weak
 char x_BYTE_D4B79 = 0; // weak
-char x_BYTE_D4B7A = 0; // weak
+char IsVolumeFaded_D4B7A = 0; // weak
 char x_BYTE_D4B80 = 0; // weak
 int x_DWORD_D4B84 = 16; // weak
 int x_DWORD_D4B88 = 4294967216; // weak
@@ -32102,7 +32102,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 				EndSample_8D8F0();
 				StopMusic_8E020();
 				sub_86860_speak_Sound(x_WORD_1803EC);//get graphics parametres?
-				sub_59BF0_sound_proc11_volume();
+				RestoreSoundVolume_59BF0();
 				sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 				if (x_WORD_180660_VGA_type_resolution & 1)
 				{
@@ -42627,7 +42627,7 @@ void sub_59820()//23a820
 					{
 						x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 8;
 						sub_86F20(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E4_2BE4_12226);
-						sub_59A50_sound_proc8();
+						FadeSoundVolume_59A50();
 						return;
 					}
 					if (D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.ObjectiveText_1)
@@ -42651,7 +42651,7 @@ void sub_59820()//23a820
 						LABEL_30:
 							x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 8;
 							sub_86EB0(v8, v9, 1);
-							sub_59A50_sound_proc8();
+							FadeSoundVolume_59A50();
 							return;
 						}
 					}
@@ -42678,28 +42678,10 @@ void sub_59820()//23a820
 	}
 }
 
-//----- (00059A50) --------------------------------------------------------
-int sub_59A50_sound_proc8()//23aa50
-{
-	int result; // eax
-
-	if (x_BYTE_D4B7A == 1)
-	{
-		AilReleaseTimer_92DC0(TimerIdx_F4940);
-		x_BYTE_D4B7A = 0;
-	}
-	sub_8E470_sound_proc17_volume(x_D41A0_BYTEARRAY_4_struct.soundVolume_6 / 3);
-	x_BYTE_D4B78 = x_D41A0_BYTEARRAY_4_struct.soundVolume_6 / 3;
-	sub_8E410_sound_proc16_xmidivolume((x_D41A0_BYTEARRAY_4_struct.musicVolume_8 / 3));
-	result = x_D41A0_BYTEARRAY_4_struct.musicVolume_8 / 3;
-	x_BYTE_D4B79 = x_D41A0_BYTEARRAY_4_struct.musicVolume_8 / 3;
-	x_D41A0_BYTEARRAY_4_struct.setting_38545 |= 0x40u;
-	return result;
-}
 // D41A4: using guessed type int x_DWORD_D41A4;
-// D4B78: using guessed type char x_BYTE_D4B78;
+// D4B78: using guessed type char FadeVolume_D4B78;
 // D4B79: using guessed type char x_BYTE_D4B79;
-// D4B7A: using guessed type char x_BYTE_D4B7A;
+// D4B7A: using guessed type char IsVolumeFaded_D4B7A;
 // F4940: using guessed type int x_DWORD_F4940;
 
 //----- (00059AF0) --------------------------------------------------------
@@ -42711,15 +42693,34 @@ void sub_59AF0_sound_proc9()//23aaf0
 	TimerIdx_F4940 = AilRegisterTimer_92600(FadeUpSound_59B50);
 	AilSetTimerFrequency_92930(TimerIdx_F4940, 120);
 	AilStartTimer_92BA0(TimerIdx_F4940);
-	x_BYTE_D4B7A = 1;
+	IsVolumeFaded_D4B7A = 1;
 	//result = (int)x_D41A0_BYTEARRAY_4;
 	x_D41A0_BYTEARRAY_4_struct.setting_38545 &= 0xBFu;
 	//return result;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// D4B7A: using guessed type char x_BYTE_D4B7A;
+// D4B7A: using guessed type char IsVolumeFaded_D4B7A;
 // F4940: using guessed type int x_DWORD_F4940;
 // 1803EC: using guessed type __int16 x_WORD_1803EC;
+
+//----- (00059A50) --------------------------------------------------------
+int FadeSoundVolume_59A50()//23aa50
+{
+	int result; // eax
+
+	if (IsVolumeFaded_D4B7A == 1)
+	{
+		AilReleaseTimer_92DC0(TimerIdx_F4940);
+		IsVolumeFaded_D4B7A = 0;
+	}
+	sub_8E470_sound_proc17_volume(x_D41A0_BYTEARRAY_4_struct.soundVolume_6 / 3);
+	FadeVolume_D4B78 = x_D41A0_BYTEARRAY_4_struct.soundVolume_6 / 3;
+	sub_8E410_sound_proc16_xmidivolume((x_D41A0_BYTEARRAY_4_struct.musicVolume_8 / 3));
+	result = x_D41A0_BYTEARRAY_4_struct.musicVolume_8 / 3;
+	x_BYTE_D4B79 = x_D41A0_BYTEARRAY_4_struct.musicVolume_8 / 3;
+	x_D41A0_BYTEARRAY_4_struct.setting_38545 |= 0x40u;
+	return result;
+}
 
 //----- (00059B50) --------------------------------------------------------
 uint32_t FadeUpSound_59B50(uint32_t interval)//23ab50
@@ -42728,40 +42729,40 @@ uint32_t FadeUpSound_59B50(uint32_t interval)//23ab50
 	__int16 v1; // dx
 
 	v0 = x_D41A0_BYTEARRAY_4_struct.soundVolume_6;
-	if ((unsigned __int8)x_BYTE_D4B78 != v0
+	if ((unsigned __int8)FadeVolume_D4B78 != v0
 		|| (HIBYTE(v1) = HIBYTE(v0), LOBYTE(v1) = x_BYTE_D4B79, v1 != x_D41A0_BYTEARRAY_4_struct.musicVolume_8))
 	{
-		if ((signed __int16)(unsigned __int8)x_BYTE_D4B78 < x_D41A0_BYTEARRAY_4_struct.soundVolume_6)
-			sub_8E470_sound_proc17_volume((unsigned __int8)++x_BYTE_D4B78);
+		if ((signed __int16)(unsigned __int8)FadeVolume_D4B78 < x_D41A0_BYTEARRAY_4_struct.soundVolume_6)
+			sub_8E470_sound_proc17_volume((unsigned __int8)++FadeVolume_D4B78);
 		if ((signed __int16)(unsigned __int8)x_BYTE_D4B79 < x_D41A0_BYTEARRAY_4_struct.musicVolume_8)
 			sub_8E410_sound_proc16_xmidivolume(++x_BYTE_D4B79);
 	}
 	else
 	{
-		x_BYTE_D4B7A = 0;
+		IsVolumeFaded_D4B7A = 0;
 		AilReleaseTimer_92DC0(TimerIdx_F4940);
 	}
 	return interval;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// D4B78: using guessed type char x_BYTE_D4B78;
+// D4B78: using guessed type char FadeVolume_D4B78;
 // D4B79: using guessed type char x_BYTE_D4B79;
-// D4B7A: using guessed type char x_BYTE_D4B7A;
+// D4B7A: using guessed type char IsVolumeFaded_D4B7A;
 // F4940: using guessed type int x_DWORD_F4940;
 
 //----- (00059BF0) --------------------------------------------------------
-void sub_59BF0_sound_proc11_volume()//23abf0
+void RestoreSoundVolume_59BF0()//23abf0
 {
-	if (x_BYTE_D4B7A == 1)
+	if (IsVolumeFaded_D4B7A == 1)
 	{
 		AilReleaseTimer_92DC0(TimerIdx_F4940);
-		x_BYTE_D4B7A = 0;
+		IsVolumeFaded_D4B7A = 0;
 	}
 	sub_8E470_sound_proc17_volume(x_D41A0_BYTEARRAY_4_struct.soundVolume_6);
 	sub_8E410_sound_proc16_xmidivolume(x_D41A0_BYTEARRAY_4_struct.musicVolume_8);
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// D4B7A: using guessed type char x_BYTE_D4B7A;
+// D4B7A: using guessed type char IsVolumeFaded_D4B7A;
 // F4940: using guessed type int x_DWORD_F4940;
 
 //----- (00059C40) --------------------------------------------------------

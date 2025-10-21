@@ -1161,9 +1161,9 @@ void sub_917D0()
 	x_DWORD_181C0C = 0;
 	x_DWORD_181C08 = nullptr;
 	x_DWORD_181C10 = 0;
-	//x_DWORD_181C00 = sub_A16AE_register_timer(sub_91660);
-	//sub_A1840_AIL_API_set_timer_frequency(x_DWORD_181C00, 100);
-	//sub_A1768_start_timer(x_DWORD_181C00);
+	//TimerIdx_181C00 = RegisterTimer_A16AE(sub_91660);
+	//AilSetTimerPeriod_A1840(TimerIdx_181C00, 100);
+	//StartTimer_A1768(TimerIdx_181C00);
 	x_DWORD_181BF4 = 1;
 	ailIndent_181C04 = 1;
 	DebugSoundTimer_916F0();
