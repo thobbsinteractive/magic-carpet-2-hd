@@ -19874,7 +19874,7 @@ void sub_29670(type_entity_0x6E8E* a1x)//20a670
 		}
 		a1x->state_0x45_69 = 218;
 		v2 = a1x->word_0x26_38;
-		a1x->life_0x8 = 1000000;
+		a1x->life_0x8 = Unk_F4240;
 		a1x->word_0x96_150 = v2;
 	}
 	v3 = sub_2AF10(a1x, 1);
@@ -19918,7 +19918,7 @@ void sub_29710(type_entity_0x6E8E* a1x)//20a710
 	{
 		if (v1 != 1)
 			goto LABEL_19;
-		a1x->life_0x8 = 1000000;
+		a1x->life_0x8 = Unk_F4240;
 		a1x->word_0x96_150 = a1x->word_0x26_38;
 	}
 	v2 = sub_2AF10(a1x, a1x->byte_0x46_70 == 0);
@@ -20012,7 +20012,7 @@ void sub_29930(type_entity_0x6E8E* a1x)//20a930
 	else
 		sub_2AED0(a1x, 337);
 	v2 = a1x->state_0x45_69;
-	a1x->life_0x8 = 1000000;
+	a1x->life_0x8 = Unk_F4240;
 	if (v2 == -38)
 	{
 		v3 = a1x->word_0x34_52;
