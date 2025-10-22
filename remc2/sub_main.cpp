@@ -38379,7 +38379,7 @@ void GameEvents_51BB0()//232bb0
 		if (playerFound)
 			ReceiveSendAll_7438A((uint8_t*)&D41A0_0.array_0x2BDE[0], sizeof(type_str_0x2BDE));
 	}
-	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248++;
+	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248++;
 	x_D41A0_BYTEARRAY_4_struct.byteindex_26++;//232c9e
 	x_D41A0_BYTEARRAY_4_struct.setting_30++;
 	if (x_D41A0_BYTEARRAY_4_struct.byteindex_38400)
@@ -38389,7 +38389,7 @@ void GameEvents_51BB0()//232bb0
 	//adress 232cd2
 	for (int i = 1; i < 16; i++)
 	{
-		x_D41A0_BYTEARRAY_4_struct.byteindex_121[i] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 / i & 1;
+		x_D41A0_BYTEARRAY_4_struct.byteindex_121[i] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 / i & 1;
 	}
 	for (int i = 0; i < D41A0_0.word_0xe; i++)
 	{
@@ -42113,7 +42113,7 @@ void sub_58630()//239630
 		D41A0_0.rand_0x8 = 9377 * D41A0_0.rand_0x8 + 9439;
 		v1 = D41A0_0.rand_0x8 % D41A0_0.word_0xe;
 	}
-	else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 & 7)
+	else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 & 7)
 		//D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc]+18
 	{
 		goto LABEL_5;
@@ -46055,26 +46055,26 @@ void sub_6E150()//24f150
 			switch (str_F4FE0[v0].word_0)
 			{
 			case 1:
-				sub_75110(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
+				sub_75110(str_F4FE0[v0].flags_3, v0, str_F4FE0[v0].volume_2, str_F4FE0[v0].volumePan_1, str_F4FE0[v0].word_5);
 				str_F4FE0[v0].word_0 = 0;
 				str_F4FE0[v0].word_4 = 2;
 				break;
 			case 2:
-				sub_751B0(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
+				sub_751B0(str_F4FE0[v0].flags_3, v0, str_F4FE0[v0].volume_2, str_F4FE0[v0].volumePan_1, str_F4FE0[v0].word_5);
 				str_F4FE0[v0].word_0 = 0;
 				str_F4FE0[v0].word_4 = 2;
 				break;
 			case 3:
-				sub_75160(str_F4FE0[v0].word_3, v0, str_F4FE0[v0].word_2, str_F4FE0[v0].word_1, str_F4FE0[v0].word_5);
+				sub_75160(str_F4FE0[v0].flags_3, v0, str_F4FE0[v0].volume_2, str_F4FE0[v0].volumePan_1, str_F4FE0[v0].word_5);
 				str_F4FE0[v0].word_0 = 0;
 				str_F4FE0[v0].word_4 = 2;
 				break;
 			case 4:
 				//v2 = str_F4FE0[v0].word_2;
-				if (str_F4FE0[v0].word_2 == 512)
+				if (str_F4FE0[v0].volume_2 == 512)
 					sub_8F420_sound_proc20(0, v0);
 				else
-					sub_8F100_sound_proc19(0, v0, (signed int)str_F4FE0[v0].word_2 >> 8, 64, 0x64u, -1, 2u);
+					PlaySample_8F100(0, v0, (signed int)str_F4FE0[v0].volume_2 >> 8, 64, 0x64u, -1, 2u);
 				//v3 = 3 * v0;
 				str_F4FE0[v0].word_5 = 2;
 				str_F4FE0[v0].word_0 = 0;
@@ -46083,7 +46083,7 @@ void sub_6E150()//24f150
 				break;
 			}
 			//v4 = 3 * v0++;
-			str_F4FE0[v0].word_2 = 0;
+			str_F4FE0[v0].volume_2 = 0;
 			v0++;
 		} while (v0 < 70);
 	}
@@ -46110,11 +46110,11 @@ void sub_6EAB0(int  /*a1*/, __int16 a2, __int16 a3)//24fab0
 	else if ((unsigned __int16)a3 > 0x1Fu)
 	{
 		if ((unsigned __int16)a3 >= 0x2Fu && ((unsigned __int16)a3 <= 0x2Fu || a3 == 49))
-			sub_8F710_sound_proc21(0, a3, 0, 4u, 1);
+			Update_Sample_Status_8F710(0, a3, 0, 4u, 1);
 		return;
 	}
 	if (a2 == D41A0_0.LevelIndex_0xc)
-		sub_8F710_sound_proc21(0, a3, 0, 2u, 1);
+		Update_Sample_Status_8F710(0, a3, 0, 2u, 1);
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // E3798: using guessed type char x_BYTE_E3798_sound_active2;
@@ -46490,7 +46490,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 			v26 = v29 + v28;
 		}
 		//v30 = 2124 * D41A0_BYTESTR_0.word_0xc;
-		x_DWORD_E9C14 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248;
+		x_DWORD_E9C14 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248;
 		v31 = j___clock() / 0x64u;
 		x_DWORD_E9C1C = v31;
 		if (v31 != x_DWORD_E9C20)
@@ -46511,7 +46511,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 		v35 = GetLetterHeight_6FC30() + v34;
 		DrawText_2BC10((char*)"Game turn", 320, v35, (*xadataclrd0dat.colorPalette_var28)[3840]);
 		v36 = GetLetterHeight_6FC30() + v35;
-		sprintf(printbuffer, "%d %d", D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248, GameTimerTick_17DB54);
+		sprintf(printbuffer, "%d %d", D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248, GameTimerTick_17DB54);
 		DrawText_2BC10(printbuffer, 320, v36, (*xadataclrd0dat.colorPalette_var28)[15]);
 		v37 = GetLetterHeight_6FC30() + v36;
 		DrawText_2BC10((char*)"Thing", 320, v37, (*xadataclrd0dat.colorPalette_var28)[3840]);
@@ -47112,19 +47112,19 @@ void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8
 //----- (00075110) --------------------------------------------------------
 void sub_75110(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5)
 {
-	sub_8F100_sound_proc19(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 3u);
+	PlaySample_8F100(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 3u);
 }
 
 //----- (00075160) --------------------------------------------------------
 void sub_75160(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5)
 {
-	sub_8F100_sound_proc19(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 2u);
+	PlaySample_8F100(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 2u);
 }
 
 //----- (000751B0) --------------------------------------------------------
 void sub_751B0(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4, __int16 a5)
 {
-	sub_8F100_sound_proc19(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 1u);
+	PlaySample_8F100(a1, a2, a3 >> 8, 127 * a4 / 0xFFFF, a5 + 100, 0, 1u);
 }
 
 //----- (000753D0) --------------------------------------------------------
@@ -48876,7 +48876,7 @@ void sub_81CA0(int  /*a1*/, int  /*a2*/, __int16 a3, __int16 a4, type_x_BYTE_E25
 			vclock = a5x->word_22;
 			a5x->byte_20 = 1;
 			if (vclock != -1)
-				sub_8F100_sound_proc19(
+				PlaySample_8F100(
 					0,
 					a5x->word_24,
 					(unsigned __int8)x_BYTE_E1324,
