@@ -236,7 +236,7 @@ int x_DWORD_E4C90 = 0; // weak
 int x_DWORD_E4C94 = 0; // weak
 
 int TimerIdx_180CA0 = -1;
-int TimerIdx_180C80 = -1;
+int MusicTimerIdx_180C80 = -1;
 int TimerIdx_181C00 = -1;
 
 int x_DWORD_A9390[128] = {
@@ -825,7 +825,7 @@ void StopMusic_8E020()//26f020
 	if (musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802)
 	{
 		if (x_BYTE_E3818)
-			AilReleaseTimer_92DC0(TimerIdx_180C80);
+			AilReleaseTimer_92DC0(MusicTimerIdx_180C80);
 		pcSpeakerSoundDev_E3819 = 0;
 		x_BYTE_E3818 = 0;
 		x_BYTE_E3817 = 1;
@@ -846,7 +846,7 @@ void StartMusic_8E160(int track, int volume)//26f160
 	if (musicAble_E37FC && musicActive_E37FD && track <= m_iNumberOfTracks && songCurrentlyPlaying_E3802 != track)
 	{
 		if (x_BYTE_E3818)
-			AilReleaseTimer_92DC0(TimerIdx_180C80);
+			AilReleaseTimer_92DC0(MusicTimerIdx_180C80);
 		pcSpeakerSoundDev_E3819 = 0;
 		x_BYTE_E3818 = 0;
 		x_BYTE_E3817 = 1;
@@ -1368,7 +1368,7 @@ void AilSetTimerFrequency_92930(int timerIdx, unsigned long hertz)
 void AilSetTimerPeriod_A1840(int timerIdx, unsigned long hertz)
 {
 	PlusE3FF2_91BD0();
-	AilSetTimerPeriod_92890(timerIdx, Unk_F4240 / hertz);
+	AilSetTimerPeriod_92890(timerIdx, PitFrequency_F4240 / hertz);
 	MinusE3FF2_91BF0();
 }
 
@@ -4314,7 +4314,7 @@ HMDIDRIVER InitAilDriver_A6FB0(AIL_DRIVER* ailDriver, IO_PARMS* io)//287fb0
 						hMdiDriver->var105_aildrv = 0;
 						hMdiDriver->var106_aildrv = 0;
 						hMdiDriver->var107_aildrv = 0;
-						hMdiDriver->interval_time_4 = Unk_F4240 / preference_181DAC[11];
+						hMdiDriver->interval_time_4 = PitFrequency_F4240 / preference_181DAC[11];
 						hMdiDriver->disable_5 = 0;
 						hMdiDriver->var108_aildrv = 127;
 						hMdiDriver->timer_3 = 1;
@@ -5529,21 +5529,21 @@ void UpdateMusic_99970(char a1, unsigned __int8 a2)//27a970
 	if (pcSpeakerSoundDev_E3819 && musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && AilSequenceStatus_96170(m_hSequence) != 2 && x_BYTE_E3817 != a1)
 	{
 		if (x_BYTE_E3818)
-			AilReleaseTimer_92DC0(TimerIdx_180C80);
+			AilReleaseTimer_92DC0(MusicTimerIdx_180C80);
 		x_BYTE_E3817 = a1;
 		x_BYTE_E381A = -x_BYTE_E381A;
 		x_BYTE_E3818 = 1;
 		if (a2 <= 4u && a2 >= 1u)
 		{
-			TimerIdx_180C80 = AilRegisterTimer_92600((int)sub_99830);
-			AilSetTimerFrequency_92930(TimerIdx_180C80, 30 * a2);
-			AilStartTimer_92BA0(TimerIdx_180C80);
+			//MusicTimerIdx_180C80 = AilRegisterTimer_92600(sub_99830);
+			//AilSetTimerFrequency_92930(MusicTimerIdx_180C80, 30 * a2);
+			//AilStartTimer_92BA0(MusicTimerIdx_180C80);
 		}
 		else
 		{
-			TimerIdx_180C80 = AilRegisterTimer_92600((int)sub_99830);
-			AilSetTimerFrequency_92930(TimerIdx_180C80, 0x1Eu);
-			AilStartTimer_92BA0(TimerIdx_180C80);
+			//MusicTimerIdx_180C80 = AilRegisterTimer_92600(sub_99830);
+			//AilSetTimerFrequency_92930(MusicTimerIdx_180C80, 30);
+			//AilStartTimer_92BA0(MusicTimerIdx_180C80);
 		}
 	}
 }

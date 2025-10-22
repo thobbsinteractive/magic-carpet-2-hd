@@ -495,7 +495,7 @@ extern uint8_t* Zero_pointer;
 
 extern int GameTimerTick_17DB54; // weak
 
-extern uint32_t Unk_F4240;
+extern uint32_t PitFrequency_F4240;
 
 bool DefaultResolutions();
 bool IsDefaultResolution(int width, int height);

@@ -884,7 +884,7 @@ void sub_58DA0(type_entity_0x30311* a1, type_entity_0x6E8E* a2);
 void sub_58F00_game_objectives();
 void sub_59760(type_entity_0x6E8E* a1, type_entity_0x6E8E* a2);
 void sub_59820();
-int FadeSoundVolume_59A50();
+int FadeDownSoundVolume_59A50();
 void sub_59AF0_sound_proc9();
 uint32_t FadeUpSound_59B50(uint32_t interval);
 void RestoreSoundVolume_59BF0();
@@ -19872,7 +19872,7 @@ void sub_29670(type_entity_0x6E8E* a1x)//20a670
 		}
 		a1x->state_0x45_69 = 218;
 		v2 = a1x->word_0x26_38;
-		a1x->life_0x8 = Unk_F4240;
+		a1x->life_0x8 = PitFrequency_F4240;
 		a1x->word_0x96_150 = v2;
 	}
 	v3 = sub_2AF10(a1x, 1);
@@ -19916,7 +19916,7 @@ void sub_29710(type_entity_0x6E8E* a1x)//20a710
 	{
 		if (v1 != 1)
 			goto LABEL_19;
-		a1x->life_0x8 = Unk_F4240;
+		a1x->life_0x8 = PitFrequency_F4240;
 		a1x->word_0x96_150 = a1x->word_0x26_38;
 	}
 	v2 = sub_2AF10(a1x, a1x->byte_0x46_70 == 0);
@@ -20010,7 +20010,7 @@ void sub_29930(type_entity_0x6E8E* a1x)//20a930
 	else
 		sub_2AED0(a1x, 337);
 	v2 = a1x->state_0x45_69;
-	a1x->life_0x8 = Unk_F4240;
+	a1x->life_0x8 = PitFrequency_F4240;
 	if (v2 == -38)
 	{
 		v3 = a1x->word_0x34_52;
@@ -42631,7 +42631,7 @@ void sub_59820()//23a820
 					{
 						x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 8;
 						sub_86F20(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E4_2BE4_12226);
-						FadeSoundVolume_59A50();
+						FadeDownSoundVolume_59A50();
 						return;
 					}
 					if (D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.ObjectiveText_1)
@@ -42655,7 +42655,7 @@ void sub_59820()//23a820
 						LABEL_30:
 							x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 8;
 							sub_86EB0(v8, v9, 1);
-							FadeSoundVolume_59A50();
+							FadeDownSoundVolume_59A50();
 							return;
 						}
 					}
@@ -42708,7 +42708,7 @@ void sub_59AF0_sound_proc9()//23aaf0
 // 1803EC: using guessed type __int16 x_WORD_1803EC;
 
 //----- (00059A50) --------------------------------------------------------
-int FadeSoundVolume_59A50()//23aa50
+int FadeDownSoundVolume_59A50()//23aa50
 {
 	int result; // eax
 
