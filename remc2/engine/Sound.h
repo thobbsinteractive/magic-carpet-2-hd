@@ -235,7 +235,7 @@ int32_t sub_A7990_AIL_API_MDI_driver_type(HMDIDRIVER mdi);
 void AilApiSetGTLFilenamePrefix_A7AA0(char* samplePath);
 HSEQUENCE AilApiAllocateSequenceHandle_A7B30(HMDIDRIVER mdi);
 void sub_A7BF0_sound_proc33(HSEQUENCE hSequence);
-int32_t AilApiInitSequence_A7C20(HSEQUENCE hSequence, void* start, int32_t sequence_num, uint32_t track);
+int32_t AilApiInitMusicSequence_A7C20(HSEQUENCE hSequence, void* start, int32_t sequence_num, uint32_t track);
 void AilApiStartSequence_A8010(HSEQUENCE hSequence, uint32_t track);
 void sub_A8050_AIL_API_stop_sequence(HSEQUENCE hSequence);
 void sub_A8180_AIL_API_resume_sequence(HSEQUENCE hSequence);

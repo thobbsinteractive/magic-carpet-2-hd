@@ -1625,7 +1625,7 @@ int32_t AilInitSequence_95C00(HSEQUENCE hSequence, uint8_t* start, int32_t seque
 	++ailIndent_181C04;
 	if (x_DWORD_181BF4 && (ailIndent_181C04 == 1 || x_DWORD_181BF8) && !GetE3FFE_A16A2() && DebugSoundTimer_916F0())
 		dbgfprintf(ailDebufFile_181BF0, "AIL_init_sequence(0x%X,0x%X,%d)\n", hSequence, start, sequence_num);
-	int result = AilApiInitSequence_A7C20(hSequence, start, sequence_num, track);
+	int result = AilApiInitMusicSequence_A7C20(hSequence, start, sequence_num, track);
 	if (x_DWORD_181BF4 && (ailIndent_181C04 == 1 || x_DWORD_181BF8) && !GetE3FFE_A16A2())
 	{
 		for (int i = 0; i < 14; i++)
@@ -4509,7 +4509,7 @@ void sub_A7BF0_sound_proc33(HSEQUENCE hSequence)//288bf0
 }
 
 //----- (000A7C20) --------------------------------------------------------
-int32_t AilApiInitSequence_A7C20(HSEQUENCE hSequence, void*  /*start*/, int32_t sequence_num, uint32_t track) {
+int32_t AilApiInitMusicSequence_A7C20(HSEQUENCE hSequence, void*  /*start*/, int32_t sequence_num, uint32_t track) {
 	hSequence->loop_count_11 = 1;
 	hSequence->volume_14 = preference_181DAC[13];
 	hSequence->volume_target_15 = preference_181DAC[13];
