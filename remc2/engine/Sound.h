@@ -33,7 +33,7 @@ extern __int16 m_iNumberOfTracks;
 extern int x_DWORD_E387C;
 extern int8_t soundActiveL_E2A14;
 extern int8_t soundActiveH_E2A14;
-extern __int16 soundFreqType_E37B6;
+extern __int16 SoundNumber_E37B6;
 extern bool autoScanForSoundHardware_E379B;
 extern __int16 x_WORD_E3828;
 extern int x_DWORD_E3824;

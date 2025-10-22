@@ -31,7 +31,7 @@ int8_t actualSound_E37AD = -1; // weak
 char x_BYTE_E37AE = 0; // weak
 int defaultVolume_E37B0 = 127; // weak
 __int16 soundFreqType2_E37B4 = 1644; // weak
-__int16 soundFreqType_E37B6 = 0; // weak
+__int16 SoundNumber_E37B6 = 0; // weak
 char soundInitialized_E37B8 = 0; // weak
 int soundFrequence_E37BC = 0; // weak
 int musicVolume_E37F8 = 127; // weak
@@ -345,7 +345,7 @@ void InitSound_8D290()//26e290
 	soundCardOk = false;
 	if (!soundAble_E3798)
 		return;
-	soundFreqType_E37B6 = soundFreqType2_E37B4;
+	SoundNumber_E37B6 = soundFreqType2_E37B4;
 	if (!soundFreqType2_E37B4)
 	{
 		if (!musicAble_E37FC)
@@ -465,9 +465,9 @@ void InitSound_8D290()//26e290
 
 	//sub_90F20 //set directory
 	sub_8D800_sound_proc2();
-	if (soundFreqType_E37B6)
+	if (SoundNumber_E37B6)
 	{
-		switch (soundFreqType_E37B6) {
+		switch (SoundNumber_E37B6) {
 			case 0:
 				soundAble_E3798 = false;
 				soundActive_E3799 = false;
@@ -569,25 +569,25 @@ void sub_8D800_sound_proc2()//26E800
 		runAgain = LoadSound_84300(defaultSoundIndex_E37AC);
 		if (runAgain)
 		{
-			switch (soundFreqType_E37B6)
+			switch (SoundNumber_E37B6)
 			{
 				case 800:
-					soundFreqType_E37B6 = 0;//800
+					SoundNumber_E37B6 = 0;//800
 					return;
 				case 811:
-					soundFreqType_E37B6 = 800;//811
+					SoundNumber_E37B6 = 800;//811
 					break;
 				case 822:
-					soundFreqType_E37B6 = 1611;//822
+					SoundNumber_E37B6 = 1611;//822
 					break;
 				case 1611:
-					soundFreqType_E37B6 = 811;//1611
+					SoundNumber_E37B6 = 811;//1611
 					break;
 				case 1622:
-					soundFreqType_E37B6 = 822;//1622
+					SoundNumber_E37B6 = 822;//1622
 					break;
 				case 1644:
-					soundFreqType_E37B6 = 1622;//1644
+					SoundNumber_E37B6 = 1622;//1644
 					break;
 			}
 		}
@@ -1920,7 +1920,7 @@ bool LoadSound_84300(uint8_t soundIndex)//265300
 			DataFileIO::Read(file, (uint8_t*)&lastSoundBankPos, 4);
 			DataFileIO::Seek(file, lastSoundBankPos, 0);
 			DataFileIO::Read(file, (uint8_t*)lastSoundBank, 12);
-			switch (soundFreqType_E37B6)
+			switch (SoundNumber_E37B6)
 			{
 				case 800:
 					soundIndex2 = 5;//800
