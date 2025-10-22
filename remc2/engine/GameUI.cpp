@@ -1138,7 +1138,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 		v27 = v82 + ((v23 * v73 - v24 * v86) >> 16) - v20;
 		v75 = Maths::sub_7277A_radix_3d(v27 * v27 + (v26 - v21) * (v26 - v21));
 		v72 = (uint16_t)Maths::sub_72633_maybe_tan(v25 - v20, v26 - v21);
-		for (i = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 & 3;
+		for (i = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 & 3;
 			;
 			*(x_BYTE*)(ptrMapBufferStart_v84 + v20 + (i * Maths::sin_DB750[v72] >> 16) + screenWidth_18062C * v85) = x_BYTE_F6EE0_tablesx[0x4000 + 256
 			* *(uint8_t*)(ptrMapBufferStart_v84 + v20 + (i * Maths::sin_DB750[v72] >> 16) + screenWidth_18062C * v85)
@@ -1758,7 +1758,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 		v29 = v98 + ((v25 * v87 - v26 * v86) >> 16) - v21;
 		v91 = Maths::sub_7277A_radix_3d(v29 * v29 + (v28 - v24) * (v28 - v24));
 		v89 = (uint16_t)Maths::sub_72633_maybe_tan(v27 - v21, v28 - v24);
-		v30 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 & 3;
+		v30 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 & 3;
 		while (1)
 		{
 			v30 += 4;

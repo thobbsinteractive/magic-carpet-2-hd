@@ -38383,7 +38383,7 @@ void GameEvents_51BB0()//232bb0
 		if (playerFound)
 			ReceiveSendAll_7438A((uint8_t*)&D41A0_0.array_0x2BDE[0], sizeof(type_str_0x2BDE));
 	}
-	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248++;
+	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248++;
 	x_D41A0_BYTEARRAY_4_struct.byteindex_26++;//232c9e
 	x_D41A0_BYTEARRAY_4_struct.setting_30++;
 	if (x_D41A0_BYTEARRAY_4_struct.byteindex_38400)
@@ -38393,7 +38393,7 @@ void GameEvents_51BB0()//232bb0
 	//adress 232cd2
 	for (int i = 1; i < 16; i++)
 	{
-		x_D41A0_BYTEARRAY_4_struct.byteindex_121[i] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 / i & 1;
+		x_D41A0_BYTEARRAY_4_struct.byteindex_121[i] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 / i & 1;
 	}
 	for (int i = 0; i < D41A0_0.word_0xe; i++)
 	{
@@ -42117,7 +42117,7 @@ void sub_58630()//239630
 		D41A0_0.rand_0x8 = 9377 * D41A0_0.rand_0x8 + 9439;
 		v1 = D41A0_0.rand_0x8 % D41A0_0.word_0xe;
 	}
-	else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 & 7)
+	else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 & 7)
 		//D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc]+18
 	{
 		goto LABEL_5;
@@ -46477,7 +46477,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 			v26 = v29 + v28;
 		}
 		//v30 = 2124 * D41A0_BYTESTR_0.word_0xc;
-		x_DWORD_E9C14 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248;
+		x_DWORD_E9C14 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248;
 		v31 = j___clock() / 0x64u;
 		x_DWORD_E9C1C = v31;
 		if (v31 != x_DWORD_E9C20)
@@ -46498,7 +46498,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 		v35 = GetLetterHeight_6FC30() + v34;
 		DrawText_2BC10((char*)"Game turn", 320, v35, (*xadataclrd0dat.colorPalette_var28)[3840]);
 		v36 = GetLetterHeight_6FC30() + v35;
-		sprintf(printbuffer, "%d %d", D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248, GameTimerTick_17DB54);
+		sprintf(printbuffer, "%d %d", D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248, GameTimerTick_17DB54);
 		DrawText_2BC10(printbuffer, 320, v36, (*xadataclrd0dat.colorPalette_var28)[15]);
 		v37 = GetLetterHeight_6FC30() + v36;
 		DrawText_2BC10((char*)"Thing", 320, v37, (*xadataclrd0dat.colorPalette_var28)[3840]);

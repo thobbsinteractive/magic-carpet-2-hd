@@ -260,7 +260,7 @@ typedef struct {//lenght 2124=0x84C
 	uint8_t byte_0x00d_2BE0_11243_xx;
 	int16_t word_0x00e_2BDE_11244; //14
 	int16_t word_0x010_2BDE_11246; //16
-	int32_t dword_0x012_2BE0_11248;//18 ??
+	int32_t Turn_2BE0_11248;//18 ??
 	//uint8_t byte_0x013_2BE0_11249_xx;
 	//uint8_t byte_0x014_2BE0_11250_xx;
 	//uint8_t byte_0x015_2BE0_11251_xx;

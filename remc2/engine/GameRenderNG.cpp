@@ -819,8 +819,8 @@ void GameRenderNG::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					tempSinXSin = 0;
 					if (!mapTerrainType_10B4E0[yawXY.word])
 					{
-						//v38 = 32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248;
-						tempSinXSin = pow((Maths::sin_DB750[(32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 + (yawXY._axis_2d.y << 7)) & 0x7FF] >> 8), 2);
+						//v38 = 32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248;
+						tempSinXSin = pow((Maths::sin_DB750[(32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 + (yawXY._axis_2d.y << 7)) & 0x7FF] >> 8), 2);
 						Str_E9C38_smalltit[index2].alt_4 -= tempSinXSin >> 13;
 						if (tempMapShading >= 14464)
 							tempSinXSin = 0;
@@ -1260,8 +1260,8 @@ void GameRenderNG::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 						tempY = 128;
 					Str_E9C38_smalltit[index2].pnt1_16 = str_F2C20ar.dword0x18 * Str_E9C38_smalltit[index2].x_0 / tempY;
 					Str_E9C38_smalltit[index2].alt_4 = 32 * mapHeightmap_11B4E0[yawXY.word] - posZ;
-					//v112 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6;
-					tempSinXSin = pow((Maths::sin_DB750[((D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6)+(yawXY._axis_2d.y << 7)) & 0x7FF] >> 8), 2);
+					//v112 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 << 6;
+					tempSinXSin = pow((Maths::sin_DB750[((D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 << 6)+(yawXY._axis_2d.y << 7)) & 0x7FF] >> 8), 2);
 					Str_E9C38_smalltit[index2].inverse_alt_8 = -(mapHeightmap_11B4E0[yawXY.word] * ((tempSinXSin >> 4) + 0x8000) >> 10) - posZ;
 					tempSinXSin = 0;
 					allert_error();//test  next ifs
@@ -1334,8 +1334,8 @@ void GameRenderNG::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					//v200 = yawXY.word;
 					Str_E9C38_smalltit[index2].pnt1_16 = str_F2C20ar.dword0x18 * Str_E9C38_smalltit[index2].x_0 / tempY;
 					Str_E9C38_smalltit[index2].alt_4 = 32 * mapHeightmap_11B4E0[yawXY.word] - posZ;
-					//v201 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6;
-					tempSinXSin = pow(Maths::sin_DB750[((D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6) + (yawXY._axis_2d.y << 7)) & 0x7FF] >> 8,2);
+					//v201 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 << 6;
+					tempSinXSin = pow(Maths::sin_DB750[((D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 << 6) + (yawXY._axis_2d.y << 7)) & 0x7FF] >> 8,2);
 					allert_error();//test next if
 					if (!(mapAngle_13B4E0[yawXY.word] & 8))
 					{
