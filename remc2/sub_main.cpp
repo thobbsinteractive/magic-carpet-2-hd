@@ -46506,7 +46506,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 		v33 = GetLetterHeight_6FC30() + v32;
 		DrawText_2BC10((char*)"Sound Number", 320, v33, (*xadataclrd0dat.colorPalette_var28)[3840]);
 		v34 = GetLetterHeight_6FC30() + v33;
-		sprintf(printbuffer, "%d", soundFreqType_E37B6);
+		sprintf(printbuffer, "%d", SoundNumber_E37B6);
 		DrawText_2BC10(printbuffer, 320, v34, (*xadataclrd0dat.colorPalette_var28)[15]);
 		v35 = GetLetterHeight_6FC30() + v34;
 		DrawText_2BC10((char*)"Game turn", 320, v35, (*xadataclrd0dat.colorPalette_var28)[3840]);
