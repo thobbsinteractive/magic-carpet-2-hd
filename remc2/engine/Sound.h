@@ -71,7 +71,7 @@ void GetMusicSequenceCount();
 bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber);
 int sub_8F0AB(FILE* a1, int a3);
 void PlaySample_8F100(uint32_t a1, int16_t index, int volume, int volumePan, uint16_t playRate, uint8_t loopCount, uint8_t playType);
-void sub_8F420_sound_proc20(int a1, __int16 a2);
+void sub_8F420_sound_proc20(int flags, __int16 index);
 void Update_Sample_Status_8F710(int flags, __int16 index, int loopCount, unsigned __int8 initTimers, char volScale);
 int32_t StopTimer_8F850(uint32_t interval);
 void InitSoundAndMusic_90FD0();

@@ -5365,13 +5365,13 @@ void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, 
 }
 
 //----- (0008F420) --------------------------------------------------------
-void sub_8F420_sound_proc20(int a1, __int16 a2)//270420
+void sub_8F420_sound_proc20(int flags, __int16 index)//270420
 {
 	if (soundAble_E3798 && soundActive_E3799)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == a1 && SoundBuffer3_180750[i]->vol_scale_18[0][0] == a2 && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->vol_scale_18[0][0] == index && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				AilEndSample_93D00(SoundBuffer3_180750[i]);
 				return;

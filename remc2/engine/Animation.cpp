@@ -124,6 +124,7 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 			break;
 		case 'F':
 		case 'f':
+			//Stop loop
 			if (soundAble_E3798)
 				Update_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0, 4u, 1);
 			break;
@@ -150,11 +151,13 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 			break;
 		case 'O':
 		case 'o':
+			//Materialisation Sound
 			if (soundAble_E3798)
 				Update_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x7Fu, 2u, 0);
 			break;
 		case 'P':
 		case 'p':
+			//People Sound
 			if (soundAble_E3798)
 				Update_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x50u, 2u, 0);
 			break;

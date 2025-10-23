@@ -3910,7 +3910,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_6EAB0((int)a1_6E8E, 0, 0);
+		EndLoop_6EAB0((int)a1_6E8E, 0, 0);
 		allert_error();
 #endif
 		break;
