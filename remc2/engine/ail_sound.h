@@ -114,7 +114,7 @@ int32_t vol_scale_18[2][256];
 EOS_callback_type sam_var532_EOS_ptr;
 int32_t sam_var[1000];
    uint8_t* sam_var542;
-   int index_sample = -1;
+   int channel = -1;
 
    void* start_44mhz;//8
    uint8_t mark44mark[sample_mark];

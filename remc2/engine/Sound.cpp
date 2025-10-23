@@ -3121,7 +3121,7 @@ HDIGDRIVER sub_A2EA0(AIL_DRIVER* ailDriver, IO_PARMS IO)//283ea0
 							{
 								digDriver->samples_23[i].status_1 = 1;
 								digDriver->samples_23[i].driver_0 = digDriver;
-								digDriver->samples_23[i].index_sample = i;//fixed
+								digDriver->samples_23[i].channel = i;//fixed
 							}
 							//digDriver->timer_3 = AilRegisterTimer_92600(sub_A2450);
 							digDriver->timer_3 = 1;
@@ -5836,7 +5836,7 @@ LABEL_46:
 		{
 			//Terrain background sound
 			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
-			Update_Sample_Status_8F710(0, index, 70, 2u, 64);
+			Update_Sample_Status_8F710(0, index, 70, 2u, 0);
 		}
 		break;
 	case 3:
