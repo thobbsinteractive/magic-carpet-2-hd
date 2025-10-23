@@ -5269,7 +5269,7 @@ void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, 
 			soundBuffer1 = NULL;
 			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 			{
-				if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == 2)
+				if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
 				{
 					soundBuffer1 = &SoundBuffer3_180750[i];
 					soundBuffer2 = nullptr;
@@ -5283,7 +5283,7 @@ void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, 
 			soundBuffer2 = nullptr;
 			for (int j = 0; j < SoundBuffer3EndIdx_180B4C; j++)
 			{
-				if (SoundBuffer3_180750[j]->flags_14 == flags && SoundBuffer3_180750[j]->vol_scale_18[0][0] == index && AilSampleStatus_94010(SoundBuffer3_180750[j]) != 2)
+				if (SoundBuffer3_180750[j]->flags_14 == flags && SoundBuffer3_180750[j]->vol_scale_18[0][0] == index && AilSampleStatus_94010(SoundBuffer3_180750[j]) != AilSampleStopped)
 				{
 					soundBuffer2 = &SoundBuffer3_180750[j];
 					break;
@@ -5294,7 +5294,7 @@ void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, 
 				soundBuffer1 = nullptr;
 				for (int k = 0; k < SoundBuffer3EndIdx_180B4C; k++)
 				{
-					if (AilSampleStatus_94010(SoundBuffer3_180750[k]) == 2)
+					if (AilSampleStatus_94010(SoundBuffer3_180750[k]) == AilSampleStopped)
 					{
 						soundBuffer1 = &SoundBuffer3_180750[k];
 						break;
@@ -5365,13 +5365,13 @@ void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, 
 }
 
 //----- (0008F420) --------------------------------------------------------
-void sub_8F420_sound_proc20(int a1, __int16 a2)//270420
+void sub_8F420_sound_proc20(int flags, __int16 index)//270420
 {
 	if (soundAble_E3798 && soundActive_E3799)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == a1 && SoundBuffer3_180750[i]->vol_scale_18[0][0] == a2 && AilSampleStatus_94010(SoundBuffer3_180750[i]) != 2)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->vol_scale_18[0][0] == index && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				AilEndSample_93D00(SoundBuffer3_180750[i]);
 				return;
@@ -5387,7 +5387,7 @@ void Update_Sample_Status_8F710(int flags, __int16 index, int loopCount, unsigne
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->vol_scale_18[0][0] == index && AilSampleStatus_94010(SoundBuffer3_180750[i]) != 2)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->vol_scale_18[0][0] == index && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				if (loopCount > 127)
 					loopCount = 127;
