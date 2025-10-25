@@ -69,7 +69,7 @@ int x_DWORD_E387C = 0; // weak
 int x_DWORD_E3880 = 0; // weak
 int x_DWORD_E3884 = 0; // weak
 int x_DWORD_E3888 = 0; // weak
-bool TimerRun_E388D = false; // weak
+bool TimerFadeSamples_E388D = false; // weak
 //int x_DWORD_E3890 = 0; // weak
 
 int preference_181DAC[19]; // fix it -  weak
@@ -326,8 +326,6 @@ int sub_A4920() { stub_fix_it(); return 0; }; // weak
 int sub_A9C00() { stub_fix_it(); return 0; }; // weak
 int sub_A9C50() { stub_fix_it(); return 0; }; // weak
 void sub_A6F30(void*  /*a*/) { stub_fix_it(); }; // weak
-
-const uint32_t AilSampleStopped = 2;
 
 //----- (0008D290) --------------------------------------------------------
 void InitSound_8D290()//26e290
@@ -604,6 +602,7 @@ void EndSample_8D8F0()//26e8f0
 		{
 			AilEndSample_93D00(SoundBuffer3_180750[i]);//274d00
 			SoundBuffer3_180750[i]->vol_scale_18[0][0] = 0;
+			SoundBuffer3_180750[i]->id_9 = 0;
 			SoundBuffer3_180750[i]->flags_14 = 0;
 			SoundBuffer3_180750[i]->vol_scale_18[0][2] = 0;
 			SoundBuffer3_180750[i]->vol_scale_18[0][3] = 0;
@@ -3292,8 +3291,8 @@ void InitSample_A38E0(HSAMPLE S)//2848e0
 		S->len_4_5[1] = 0;
 		S->pos_6_7[0] = 0;
 		S->pos_6_7[1] = 0;
-		S->done_8_9[0] = 0;
-		S->done_8_9[1] = 1;
+		S->done_8 = 0;
+		S->id_9 = 0;
 		S->current_buffer_10 = 0;
 		S->last_buffer_11 = -2;
 		S->loop_count_12 = 1;
@@ -5357,8 +5356,10 @@ void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, 
 
 	AilStartSample_93B50(*soundBuffer1);
 	(*soundBuffer1)->flags_14 = flags;
+	(*soundBuffer1)->id_9 = index;
 	(*soundBuffer1)->vol_scale_18[0][0] = index;
 	(*soundBuffer1)->status_1 = volume;
+	(*soundBuffer1)->volume_16 = volume;
 	(*soundBuffer1)->len_4_5[1] = volumePan;
 	(*soundBuffer1)->vol_scale_18[0][2] = 0;
 	(*soundBuffer1)->vol_scale_18[0][3] = 0;
@@ -5371,7 +5372,7 @@ void sub_8F420_sound_proc20(int flags, __int16 index)//270420
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->vol_scale_18[0][0] == index && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == index && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				AilEndSample_93D00(SoundBuffer3_180750[i]);
 				return;
@@ -5381,32 +5382,32 @@ void sub_8F420_sound_proc20(int flags, __int16 index)//270420
 }
 
 //----- (0008F710) --------------------------------------------------------
-void Update_Sample_Status_8F710(int flags, __int16 index, int loopCount, unsigned __int8 initTimers, char volScale)//270710
+void Update_Playing_Sample_Status_8F710(int flags, __int16 index, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale)//270710
 {
 	if (soundAble_E3798 && soundActive_E3799 && index <= indexLoadedSound_180B50)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->vol_scale_18[0][0] == index && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == index && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
-				if (loopCount > 127)
-					loopCount = 127;
-				if (loopCount != SoundBuffer3_180750[i]->status_1)
+				if (targetVolume > 127)
+					targetVolume = 127;
+				if (targetVolume != SoundBuffer3_180750[i]->status_1)
 				{
 					SoundBuffer3_180750[i]->vol_scale_18[0][2] = 0;
-					SoundBuffer3_180750[i]->loop_count_12 = loopCount;
+					SoundBuffer3_180750[i]->pos_6_7[0] = targetVolume;
 					SoundBuffer3_180750[i]->vol_scale_18[0][3] = volScale;
-					if (loopCount > SoundBuffer3_180750[i]->status_1)
+					if (targetVolume > SoundBuffer3_180750[i]->status_1)
 						SoundBuffer3_180750[i]->vol_scale_18[0][2] = 1;
 					else
 						SoundBuffer3_180750[i]->vol_scale_18[0][2] = 2;
-					if (!TimerRun_E388D)
+					if (!TimerFadeSamples_E388D)
 					{
-						TimerRun_E388D = true;
-						if (initTimers <= 4u)
+						TimerFadeSamples_E388D = true;
+						if (timerDurationMultiplier <= 4u)
 						{
-							TimerIdx_180CA0 = AilRegisterTimer_92600(SimpleTimer_46820);
-							AilSetTimerFrequency_92930(TimerIdx_180CA0, 30 * initTimers);
+							TimerIdx_180CA0 = AilRegisterTimer_92600(FadeSamples_8F4B0);
+							AilSetTimerFrequency_92930(TimerIdx_180CA0, 30 * timerDurationMultiplier);
 							AilStartTimer_92BA0(TimerIdx_180CA0);
 						}
 					}
@@ -5415,6 +5416,15 @@ void Update_Sample_Status_8F710(int flags, __int16 index, int loopCount, unsigne
 			}
 		}
 	}
+}
+
+uint32_t FadeSamples_8F4B0(uint32_t interval)
+{
+	if (TimerFadeSamples_E388D)
+	{
+		return interval;
+	}
+	return interval;
 }
 
 uint32_t SimpleTimer_46820(uint32_t interval)//227820
@@ -5426,10 +5436,10 @@ uint32_t SimpleTimer_46820(uint32_t interval)//227820
 //----- (0008F850) --------------------------------------------------------
 int32_t StopTimer_8F850(uint32_t interval)
 {
-	if (TimerRun_E388D)
+	if (TimerFadeSamples_E388D)
 	{
 		AilReleaseTimer_92DC0(TimerIdx_180CA0);
-		TimerRun_E388D = false;
+		TimerFadeSamples_E388D = false;
 		for (uint32_t i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
 			SoundBuffer3_180750[i]->vol_scale_18[0][2] = 0;
@@ -5836,7 +5846,7 @@ LABEL_46:
 		{
 			//Terrain background sound
 			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
-			Update_Sample_Status_8F710(0, index, 70, 2u, 0);
+			Update_Playing_Sample_Status_8F710(0, index, 70, 2u, 0);
 		}
 		break;
 	case 3:
@@ -5882,9 +5892,9 @@ LABEL_46:
 	case 5:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			//Terrain background sound
+			//Fire sound
 			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
-			Update_Sample_Status_8F710(0, index, 120, 2u, 0);
+			Update_Playing_Sample_Status_8F710(0, index, 120, 2u, 0);
 		}
 		break;
 	case 7:
@@ -5941,7 +5951,7 @@ LABEL_46:
 		{
 			//Building Sound
 			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
-			Update_Sample_Status_8F710(0, index, 85, 2u, 0);
+			Update_Playing_Sample_Status_8F710(0, index, 85, 2u, 0);
 		}
 		break;
 	case 47:

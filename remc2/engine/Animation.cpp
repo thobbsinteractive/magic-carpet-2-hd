@@ -126,7 +126,7 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 'f':
 			//Stop loop
 			if (soundAble_E3798)
-				Update_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0, 4u, 1);
+				Update_Playing_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0, 4u, 1);
 			break;
 		case 'H':
 		case 'h':
@@ -153,13 +153,13 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 'o':
 			//Materialisation Sound
 			if (soundAble_E3798)
-				Update_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x7Fu, 2u, 0);
+				Update_Playing_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x7Fu, 2u, 0);
 			break;
 		case 'P':
 		case 'p':
 			//People Sound
 			if (soundAble_E3798)
-				Update_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x50u, 2u, 0);
+				Update_Playing_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x50u, 2u, 0);
 			break;
 		case 'Q':
 			sub_2EBB0_draw_text_with_border_630x340(x_DWORD_E9C4C_langindexbuffer[pSoundEvent[x_WORD_D4004].index]);

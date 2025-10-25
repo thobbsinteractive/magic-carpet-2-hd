@@ -57,6 +57,8 @@ extern uint8_t* x_DWORD_1821B8[];
 extern uint8_t* x_DWORD_1821D0[];
 extern uint8_t* x_DWORD_1821E8[];
 
+const uint32_t AilSampleStopped = 2;
+
 void InitSound_8D290();
 void sub_8D800_sound_proc2();
 void EndSample_8D8F0();
@@ -72,7 +74,7 @@ bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber);
 int sub_8F0AB(FILE* a1, int a3);
 void PlaySample_8F100(uint32_t a1, int16_t index, int volume, int volumePan, uint16_t playRate, uint8_t loopCount, uint8_t playType);
 void sub_8F420_sound_proc20(int flags, __int16 index);
-void Update_Sample_Status_8F710(int flags, __int16 index, int loopCount, unsigned __int8 initTimers, char volScale);
+void Update_Playing_Sample_Status_8F710(int flags, __int16 index, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale);
 int32_t StopTimer_8F850(uint32_t interval);
 void InitSoundAndMusic_90FD0();
 void InitAWE32orMPU401_91010();
@@ -115,6 +117,7 @@ void AilStartTimer_92BA0(int timerIdx);
 void StartTimer_A1768(int timerIdx);
 void AilReleaseTimer_92DC0(int timerIdx);
 void ReleaseTimer_A171D(int timerIdx);
+uint32_t FadeSamples_8F4B0(uint32_t interval);
 uint32_t SimpleTimer_46820(uint32_t interval);
 
 void AilEndSample_93D00(HSAMPLE S);

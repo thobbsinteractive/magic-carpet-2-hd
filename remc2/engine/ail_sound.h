@@ -93,7 +93,9 @@ uint32_t status_1=0;//4
 void* start_2_3[2];//8
 uint32_t len_4_5[2];
 uint32_t pos_6_7[2];            // Index to next byte (R/W)
-uint32_t done_8_9[2];            // Nonzero if buffer with len=0 sent by app
+//uint32_t done_8_9[2];            // Nonzero if buffer with len=0 sent by app
+uint32_t done_8;
+int32_t id_9; // Games index for sample
 
 int32_t current_buffer_10;      // Buffer # active (0/1)
 int32_t last_buffer_11;         // Last active buffer (for double-buffering)

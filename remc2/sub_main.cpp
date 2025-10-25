@@ -46089,11 +46089,11 @@ void EndLoop_6EAB0(int  /*a1*/, __int16 a2, __int16 index)//24fab0
 	else if ((unsigned __int16)index > 31)
 	{
 		if ((unsigned __int16)index >= 47 && ((unsigned __int16)index <= 0x2Fu || index == 49))
-			Update_Sample_Status_8F710(0, index, 0, 4u, 1);
+			Update_Playing_Sample_Status_8F710(0, index, 0, 4u, 1);
 		return;
 	}
 	if (a2 == D41A0_0.LevelIndex_0xc)
-		Update_Sample_Status_8F710(0, index, 0, 2u, 1);
+		Update_Playing_Sample_Status_8F710(0, index, 0, 2u, 1);
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // E3798: using guessed type char x_BYTE_E3798_sound_active2;
@@ -62449,6 +62449,7 @@ LABEL_27:
 	}
 	if (a1x->dword_0xA4_164x->maxDistance_0x19E_414 >= 1536)
 	{
+		//End building sound
 		EndLoop_6EAB0(0, D41A0_0.LevelIndex_0xc, 31);
 	}
 	else
