@@ -639,6 +639,7 @@ void SOUND_finalize(int channel) {
 			}
 		}
 		S->vol_scale_18[0][0] = 0;
+		S->id_9 = 0;
 		S->flags_14 = 0;
 		S->vol_scale_18[0][2] = 0;
 		S->vol_scale_18[0][3] = 0;
