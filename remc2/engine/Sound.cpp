@@ -3284,13 +3284,13 @@ void InitSample_A38E0(HSAMPLE S)//2848e0
 {
 	if (S)
 	{
-		S->status_1 = 2;
+		S->status_1 = AilSampleStopped;
 		S->start_2_3[0] = 0;
 		S->start_2_3[1] = 0;
 		S->len_4_5[0] = 0;
 		S->len_4_5[1] = 0;
-		S->pos_6_7[0] = 0;
-		S->pos_6_7[1] = 0;
+		S->target_volume_6 = 0;
+		S->pos_7 = 0;
 		S->done_8 = 0;
 		S->id_9 = 0;
 		S->current_buffer_10 = 0;
@@ -3483,7 +3483,7 @@ void ApiAilStartSample_A3CB0(HSAMPLE S)//284cb0
 	{
 		if (S->status_1 != 1)
 		{
-			S->status_1 = 4;
+			S->status_1 = AilSampleStarted;
 			SOUND_start_sample(S);
 		}
 	}
@@ -3495,9 +3495,9 @@ void ApiAilEndSample_A3DA0(HSAMPLE S)//284da0
 	{
 		if (S->status_1 != 1)
 		{
-			if (S->status_1 != 2)
+			if (S->status_1 != AilSampleStopped)
 			{
-				S->status_1 = 2;
+				S->status_1 = AilSampleStopped;
 				SOUND_end_sample(S);
 			}
 		}
@@ -5358,7 +5358,7 @@ void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, 
 	(*soundBuffer1)->flags_14 = flags;
 	(*soundBuffer1)->id_9 = index;
 	(*soundBuffer1)->vol_scale_18[0][0] = index;
-	(*soundBuffer1)->status_1 = volume;
+	(*soundBuffer1)->status_1 = AilSampleStarted;
 	(*soundBuffer1)->volume_16 = volume;
 	(*soundBuffer1)->len_4_5[1] = volumePan;
 	(*soundBuffer1)->vol_scale_18[0][2] = 0;
@@ -5422,7 +5422,36 @@ uint32_t FadeSamples_8F4B0(uint32_t interval)
 {
 	if (TimerFadeSamples_E388D)
 	{
-		return interval;
+		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
+		{
+			if (SoundBuffer3_180750[i]->id_9 < 31)
+			{
+				if (SoundBuffer3_180750[i]->id_9 < 1u || SoundBuffer3_180750[i]->id_9 > 2u && SoundBuffer3_180750[i]->id_9 != 5)
+					continue;
+			}
+			else if (SoundBuffer3_180750[i]->id_9 > 31)
+			{
+				//if (SoundBuffer3_180750[i]->id_9 >= 47 && (SoundBuffer3_180750[i]->id_9 <= 47 || SoundBuffer3_180750[i]->id_9 == 49))
+				continue;
+			}
+
+			if (SoundBuffer3_180750[i]->volume_16 != SoundBuffer3_180750[i]->pos_6_7[0])
+			{
+				int change = 1;
+
+				if (SoundBuffer3_180750[i]->volume_16 > SoundBuffer3_180750[i]->pos_6_7[0])
+					change = - 1;
+
+				if (SoundBuffer3_180750[i]->volume_16 + change > 127)
+					SetSampleVolume_A3B40(SoundBuffer3_180750[i], 127);
+				if (SoundBuffer3_180750[i]->volume_16 + change < 0)
+					SetSampleVolume_A3B40(SoundBuffer3_180750[i], 0);
+				else
+					SetSampleVolume_A3B40(SoundBuffer3_180750[i], SoundBuffer3_180750[i]->volume_16 + change);
+
+				AilSetSampleVolume_93E30(SoundBuffer3_180750[i], SoundBuffer3_180750[i]->volume_16);
+			}
+		}
 	}
 	return interval;
 }

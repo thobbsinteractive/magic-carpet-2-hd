@@ -58,6 +58,7 @@ extern uint8_t* x_DWORD_1821D0[];
 extern uint8_t* x_DWORD_1821E8[];
 
 const uint32_t AilSampleStopped = 2;
+const uint32_t AilSampleStarted = 4;
 
 void InitSound_8D290();
 void sub_8D800_sound_proc2();
