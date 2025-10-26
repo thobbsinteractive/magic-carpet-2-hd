@@ -184,7 +184,7 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 			if (soundAble_E3798)
 			{
 				if (pSoundEvent[x_WORD_D4004].index)
-					sub_8F420_sound_proc20(0, pSoundEvent[x_WORD_D4004].index);
+					AilEndAllSamples_8F420(0, pSoundEvent[x_WORD_D4004].index);
 				else
 					EndSample_8D8F0();
 			}

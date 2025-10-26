@@ -46062,8 +46062,8 @@ void UpdateSounds_6E150()//24f150
 				break;
 			case 4:
 					if (str_F4FE0[i].volume_2 == 512)
-						sub_8F420_sound_proc20(0, i);
-				else
+						AilEndAllSamples_8F420(0, i);
+				    else
 						PlaySample_8F100(0, i, (signed int)str_F4FE0[i].volume_2 >> 8, 64, 0x64u, -1, 2u);
 					str_F4FE0[i].word_5 = 2;
 					str_F4FE0[i].word_0 = 0;
