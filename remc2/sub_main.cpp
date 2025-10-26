@@ -47097,9 +47097,9 @@ void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8
 }*/
 
 //----- (00075110) --------------------------------------------------------
-void PlaySampleType3_75110(int16_t entityIdx, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void PlaySampleType3_75110(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(entityIdx, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 3u);
+	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 3u);
 }
 
 //----- (00075160) --------------------------------------------------------
@@ -47109,9 +47109,9 @@ void PlaySampleType2_75160(int16_t flags, int16_t index, int16_t volume, uint16_
 }
 
 //----- (000751B0) --------------------------------------------------------
-void PlaySampleType1_751B0(int16_t entityIdx, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void PlaySampleType1_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(entityIdx, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 1u);
+	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 1u);
 }
 
 //----- (000753D0) --------------------------------------------------------
