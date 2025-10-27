@@ -46046,12 +46046,12 @@ void UpdateSounds_6E150()//24f150
 			switch (str_F4FE0[i].word_0)
 			{
 			case 1:
-					PlaySampleType3_75110(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
+					IfNotExistingPlaySample_75110(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
 					str_F4FE0[i].word_0 = 0;
 					str_F4FE0[i].word_4 = 2;
 				break;
 			case 2:
-					PlaySampleType1_751B0(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
+					AlwaysPlaySample_751B0(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
 					str_F4FE0[i].word_0 = 0;
 					str_F4FE0[i].word_4 = 2;
 				break;
@@ -47097,9 +47097,9 @@ void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8
 }*/
 
 //----- (00075110) --------------------------------------------------------
-void PlaySampleType3_75110(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void IfNotExistingPlaySample_75110(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 3u);
+	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, IfNotExistingPlaySample);
 }
 
 //----- (00075160) --------------------------------------------------------
@@ -47109,9 +47109,9 @@ void IfNotPlayingPlaySample_75160(int16_t flags, int16_t index, int16_t volume, 
 }
 
 //----- (000751B0) --------------------------------------------------------
-void PlaySampleType1_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void AlwaysPlaySample_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 1u);
+	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, AlwaysPlaySample);
 }
 
 //----- (000753D0) --------------------------------------------------------
