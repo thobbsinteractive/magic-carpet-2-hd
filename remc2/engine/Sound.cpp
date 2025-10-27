@@ -5265,9 +5265,9 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 
 	switch (playType)
 	{
-	case 1:
+		case AlwaysPlaySample:
 		{
-		    //Get first stopped from buffer (if available), otherwise create new
+		    //Get first stopped buffer place (if available)
 			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 			{
 				if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
@@ -5279,7 +5279,7 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 			}
 			break;
 		}
-	case 2:
+		case IfNotPlayingPlaySample:
 		{
 		    //Look for existing playing sound using flags, id and not stopped
 			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
@@ -5292,7 +5292,7 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 			}
 			if (!ptrExistingPlayingSample)
 			{
-				//Nothing found, get first stopped from buffer (if available)
+				//Nothing found, get first stopped buffer place (if available)
 				for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 				{
 					if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
@@ -5304,7 +5304,7 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 			}
 			break;
 		}
-	case 3:
+		case IfNotExistingPlaySample:
 		{
 			//Get by flag and Id, regardless of status
 			foundExisting = false;
@@ -5318,7 +5318,7 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 					break;
 				}
 			}
-			//Nothing found, get stopped from buffer (if available)
+			//Nothing found, get first stopped buffer place (if available)
 			if (!foundExisting)
 			{
 				for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
@@ -5881,7 +5881,7 @@ LABEL_46:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Terrain background sound
-			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
+			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			Update_Playing_Sample_Status_8F710(0, index, 70, 2u, 0);
 		}
 		break;
@@ -5929,7 +5929,7 @@ LABEL_46:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Fire sound
-			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
+			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			Update_Playing_Sample_Status_8F710(0, index, 120, 2u, 0);
 		}
 		break;
@@ -5986,7 +5986,7 @@ LABEL_46:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Building Sound
-			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, 2u);
+			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			Update_Playing_Sample_Status_8F710(0, index, 85, 2u, 0);
 		}
 		break;

@@ -1294,7 +1294,7 @@ type_entity_0x6E8E* sub_6DCA0(type_entity_0x6E8E* a1, axis_3d* a2, unsigned __in
 void sub_6E090(type_str_611* a1, int a2);
 void sub_6E0D0();
 void PlaySampleType3_75110(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate);
-void PlaySampleType2_75160(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate);
+void IfNotPlayingPlaySample_75160(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate);
 void PlaySampleType1_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate);
 void UpdateSounds_6E150();
 void EndLoop_6EAB0(int a1, __int16 a2, __int16 index);

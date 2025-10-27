@@ -46056,7 +46056,7 @@ void UpdateSounds_6E150()//24f150
 					str_F4FE0[i].word_4 = 2;
 				break;
 			case 3:
-					PlaySampleType2_75160(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
+					IfNotPlayingPlaySample_75160(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
 					str_F4FE0[i].word_0 = 0;
 					str_F4FE0[i].word_4 = 2;
 				break;
@@ -46064,7 +46064,7 @@ void UpdateSounds_6E150()//24f150
 					if (str_F4FE0[i].volume_2 == 512)
 						AilEndAllSamples_8F420(0, i);
 				    else
-						PlaySample_8F100(0, i, (signed int)str_F4FE0[i].volume_2 >> 8, 64, 0x64u, -1, 2u);
+						PlaySample_8F100(0, i, (signed int)str_F4FE0[i].volume_2 >> 8, 64, 0x64u, -1, IfNotPlayingPlaySample);
 					str_F4FE0[i].word_5 = 2;
 					str_F4FE0[i].word_0 = 0;
 				break;
@@ -47103,9 +47103,9 @@ void PlaySampleType3_75110(int16_t flags, int16_t index, int16_t volume, uint16_
 }
 
 //----- (00075160) --------------------------------------------------------
-void PlaySampleType2_75160(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void IfNotPlayingPlaySample_75160(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, 2u);
+	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, IfNotPlayingPlaySample);
 }
 
 //----- (000751B0) --------------------------------------------------------
