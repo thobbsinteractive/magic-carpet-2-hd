@@ -482,9 +482,6 @@ void SOUND_set_sample_volume(HSAMPLE S, int32_t volume) {
 	if (master_volume == -1)
 		master_volume = 127;
 
-	if (S->channel > 64)
-		return;
-
 	if (GameChunks.count(S->channel) == 0)
 		return;
 
@@ -501,30 +498,9 @@ void SOUND_set_sample_volume_panning(HSAMPLE S, int32_t panning) {
 	Mix_SetPanning(S->channel, left, right);
 }
 
-int GetNextFreeChannel()
-{
-	int channel = -1;
-
-	if (GameChunks.size() == 0)
-		return 0;
-
-	for (int i = 0; i < MaxChannels; i++)
-	{
-		if (GameChunks.count(i) == 0)
-			return i;
-	}
-	return channel;
-}
-
 void SOUND_start_sample(HSAMPLE S) {
 	if (unitTests)return;
 #ifdef SOUND_SDLMIXER
-
-	int newFreeChannel = GetNextFreeChannel();
-	if (newFreeChannel < 0)
-		return;
-
-	S->channel = newFreeChannel;
 
 	if (hqsound)
 	{
@@ -572,8 +548,9 @@ void SOUND_start_sample(HSAMPLE S) {
 	GameChunks[S->channel].volume = S->volume_16;
 	GameChunkHSamples[S->channel] = S;
 
-	Mix_PlayChannel(S->channel, &GameChunks[S->channel], 0);
+	Mix_PlayChannel(S->channel, &GameChunks[S->channel], S->loop_count_12);
 	Mix_ChannelFinished(ChannelFinished);
+
 #endif//SOUND_SDLMIXER
 #ifdef SOUND_OPENAL
 	//sound_load_wav((char*)S->start_44mhz, sizeof(S->start_44mhz));
@@ -605,6 +582,7 @@ void ChannelFinished(int channel)
 
 uint32_t SOUND_sample_status(HSAMPLE S) {
 	if (unitTests)return 0;
+	
 #ifdef SOUND_SDLMIXER
 	if (Mix_Playing(S->channel)==0) return 2;
 #endif//SOUND_SDLMIXER

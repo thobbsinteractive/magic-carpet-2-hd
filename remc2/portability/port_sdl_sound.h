@@ -200,8 +200,6 @@ extern char oggmusicFolder[512];
 extern bool oggmusicalternative;
 extern bool fixspeedsound;
 
-const int MaxChannels = 32;
-
 bool init_sound();
 //bool load_sound_files();
 void clean_up_sound();
@@ -238,7 +236,6 @@ void SOUND_set_sequence_volume(int32_t volume, int32_t  milliseconds);
 void SOUND_set_master_volume(int32_t volume);
 void SOUND_set_sample_volume_panning(HSAMPLE S, int32_t panning);
 void SOUND_UPDATE();
-int GetNextFreeChannel();
 void ChannelFinished(int channel);
 
 void SOUND_RegisterTimer(int timerIdx, uint32_t(*callback)(uint32_t));
