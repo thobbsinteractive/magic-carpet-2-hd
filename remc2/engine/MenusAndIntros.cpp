@@ -1274,7 +1274,7 @@ signed int sub_7E0E0_mouse_events()//25f0e0
 		}
 		else if (InRegion_7B200(&str_WORD_E1F84[ix], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))//change language
 		{
-			PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, IfNotExistingPlaySample);
+			PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, RestartOrIfNotExistingPlaySample);
 			sub_2BB40_draw_bitmap(str_WORD_E1F84[ix].xmin_10, str_WORD_E1F84[ix].ymin_12, xy_DWORD_17DED4_spritestr[str_WORD_E1F84[ix].xmin_10 & 0xff]);//asi vykresleni stisknuteho tlacitka
 			v0 = str_WORD_E1F84[ix].byte_22;
 		}
@@ -1316,7 +1316,7 @@ int16_t TestMouseRegions_7E1F0()//25f1f0
 		}
 		if (InRegion_7B200(&str_WORD_E2008[v0y], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))
 		{
-			PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, IfNotExistingPlaySample);
+			PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, RestartOrIfNotExistingPlaySample);
 			sub_2BB40_draw_bitmap(str_WORD_E2008[v0y].xmin_10, str_WORD_E2008[v0y].ymin_12, xy_DWORD_17DED4_spritestr[str_WORD_E2008[v0y].byte_21]);
 			v1 = str_WORD_E2008[v0y].byte_22;
 			if (str_WORD_E2008[v0y].byte_22)
@@ -2815,7 +2815,7 @@ signed int sub_7E320_draw_bitmaps_and_play_sounds(/*__int16 a1, int a2*/)//25f32
 	{
 		str_E23E0[ky].selected_8 = 1;
 		ResetMouse_7B5A0();
-		PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, IfNotExistingPlaySample);
+		PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, RestartOrIfNotExistingPlaySample);
 		goto LABEL_33;
 	}
 	str_E23E0[ky].gold_color_24 = 1;
@@ -6823,7 +6823,7 @@ int DrawScrollDialog2_7B660(int a1, int a2, __int16 a3, type_str_word_26* a4x, c
 	}
 LABEL_31:
 	if (v44)
-		PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, IfNotExistingPlaySample);
+		PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, RestartOrIfNotExistingPlaySample);
 	return v44;
 }
 // 17DE38: using guessed type int x_DWORD_17DE38;
@@ -7048,7 +7048,7 @@ char DrawAndServe_7B250(/*int a1, int a2*//*, __int16 a3*/)//25c250
 			}
 			if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)
 			{
-				PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, IfNotExistingPlaySample);
+				PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, RestartOrIfNotExistingPlaySample);
 				str_E1BAC[jx].selected_8 = 1;
 				ResetMouse_7B5A0();
 			}
@@ -7337,7 +7337,7 @@ int sub_7CB10()//25db10
 	{
 		str_E1BAC_0x1b8[v3x].selected_8 = 1;
 		ResetMouse_7B5A0();
-		PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, IfNotExistingPlaySample);
+		PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, RestartOrIfNotExistingPlaySample);
 	}
 	else
 	{

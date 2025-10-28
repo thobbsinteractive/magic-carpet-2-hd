@@ -10,8 +10,7 @@
 //tabbuffer rewrite tostruct
 //remove index functions
 
-
-int x_DWORD_E3794_sound_buffer3_lenght = 10; // weak
+int MaxSoundBufferChannels_E3794 = 10;
 bool soundAble_E3798 = true; // weak
 bool soundActive_E3799 = true; // weak
 bool soundLoaded_E379A = true; // weak
@@ -500,7 +499,7 @@ void InitSound_8D290()//26e290
 		AilSetPreference_91A80(0, 200);
 		AilSetPreference_91A80(1, soundFrequence_E37BC);
 		AilSetPreference_91A80(3, 100);
-		AilSetPreference_91A80(4, x_DWORD_E3794_sound_buffer3_lenght + 1);
+		AilSetPreference_91A80(4, MaxSoundBufferChannels_E3794 + 1);
 		AilSetPreference_91A80(5, 127);
 		AilSetPreference_91A80(6, 655);
 		if (x_BYTE_E379C)
@@ -525,12 +524,14 @@ void InitSound_8D290()//26e290
 		{
 			if (soundAble_E3798)
 			{
-				SoundBuffer3EndIdx_180B4C = x_DWORD_E3794_sound_buffer3_lenght;
+				SoundBuffer3EndIdx_180B4C = MaxSoundBufferChannels_E3794;
 				for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 				{
 					SoundBuffer3_180750[i] = AilAllocateSampleHandle_93510(hDigSoundEffectsDriver_180B48);
 					SoundBuffer3_180750[i]->len_4_5[1] = 0;
 					SoundBuffer3_180750[i]->start_44mhz = nullptr;
+					SoundBuffer3_180750[i]->channel = i;
+					SoundBuffer3_180750[i]->id_9 = 0;
 				}
 				soundLoaded_E379A = true;
 				sub_8E470_sound_proc17_volume(defaultVolume_E37B0);
@@ -5304,7 +5305,7 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 			}
 			break;
 		}
-		case IfNotExistingPlaySample:
+		case RestartOrIfNotExistingPlaySample:
 		{
 			//Get by flag and Id, regardless of status
 			foundExisting = false;
