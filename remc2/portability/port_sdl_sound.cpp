@@ -482,9 +482,6 @@ void SOUND_set_sample_volume(HSAMPLE S, int32_t volume) {
 	if (master_volume == -1)
 		master_volume = 127;
 
-	if (GameChunks.count(S->channel) == 0)
-		return;
-
 	GameChunks[S->channel].volume = volume;
 	Mix_Volume(S->channel, (int)((GameChunks[S->channel].volume * master_volume) / 127));
 #endif//SOUND_SDLMIXER
@@ -573,10 +570,9 @@ void SOUND_start_sample(HSAMPLE S) {
 
 void ChannelFinished(int channel)
 {
-	if (GameChunks.count(channel) > 0)
+	if (GameChunkHSamples.count(channel) > 0)
 	{
-		GameChunks.erase(channel);
-		GameChunkHSamples.erase(channel);
+		GameChunkHSamples[channel]->status_1 = 2;
 	}
 }
 
