@@ -17,7 +17,7 @@ bool soundLoaded_E379A = true; // weak
 bool autoScanForSoundHardware_E379B = true; // weak
 char x_BYTE_E379C = 1; // weak
 char x_BYTE_E2A28_speek = 0; // weak
-type_F4FE0 str_F4FE0[70];
+type_F4FE0 EntitySounds_F4FE0[70];
 
 type_E37A0_sound_buffer2* soundIndex_E37A0 = 0;
 //uint8_t* x_DWORD_E37A0_sound_buffer2 = 0; // weak
@@ -5917,13 +5917,13 @@ LABEL_46:
 	case 61:
 	case 63:
 	case 64:
-		if (sub_6EA90(volume_v10, str_F4FE0[index].volume_2))
+		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
 		{
-			str_F4FE0[index].volume_2 = volume_v10;
-			str_F4FE0[index].volumePan_1 = volumePan_v12;
-			str_F4FE0[index].word_5 = v21;
-			str_F4FE0[index].word_0 = 1;
-			str_F4FE0[index].flags_3 = flags_v29;
+			EntitySounds_F4FE0[index].volume_2 = volume_v10;
+			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
+			EntitySounds_F4FE0[index].word_5 = v21;
+			EntitySounds_F4FE0[index].word_0 = 1;
+			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
 	case 5:
@@ -5952,34 +5952,34 @@ LABEL_46:
 	case 58:
 	case 59:
 	case 62:
-		if (sub_6EA90(volume_v10, str_F4FE0[index].volume_2))
+		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
 		{
-			str_F4FE0[index].volume_2 = volume_v10;
-			str_F4FE0[index].volumePan_1 = volumePan_v12;
-			str_F4FE0[index].word_5 = v21;
-			str_F4FE0[index].word_0 = 3;
-			str_F4FE0[index].flags_3 = flags_v29;
+			EntitySounds_F4FE0[index].volume_2 = volume_v10;
+			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
+			EntitySounds_F4FE0[index].word_5 = v21;
+			EntitySounds_F4FE0[index].word_0 = 3;
+			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
 	case 14:
 	case 29:
-		if (sub_6EA90(volume_v10, str_F4FE0[index].volume_2))
+		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
-				str_F4FE0[index].volume_2 = volume_v10;
-				str_F4FE0[index].volumePan_1 = volumePan_v12;
-				str_F4FE0[index].word_5 = v21;
-				str_F4FE0[index].flags_3 = 0;
-				str_F4FE0[index].word_0 = 1;
+				EntitySounds_F4FE0[index].volume_2 = volume_v10;
+				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
+				EntitySounds_F4FE0[index].word_5 = v21;
+				EntitySounds_F4FE0[index].flags_3 = 0;
+				EntitySounds_F4FE0[index].word_0 = 1;
 			}
 			else if (a2 == -1)
 			{
-				str_F4FE0[index].volume_2 = volume_v10;
-				str_F4FE0[index].volumePan_1 = volumePan_v12;
-				str_F4FE0[index].word_5 = v21;
-				str_F4FE0[index].flags_3 = flags_v29;
-				str_F4FE0[index].word_0 = 1;
+				EntitySounds_F4FE0[index].volume_2 = volume_v10;
+				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
+				EntitySounds_F4FE0[index].word_5 = v21;
+				EntitySounds_F4FE0[index].flags_3 = flags_v29;
+				EntitySounds_F4FE0[index].word_0 = 1;
 			}
 		}
 		break;
@@ -5993,36 +5993,36 @@ LABEL_46:
 		break;
 	case 47:
 	case 49:
-		if (sub_6EA90(volume_v10, str_F4FE0[index].volume_2))
+		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
 		{
-			str_F4FE0[index].volume_2 = volume_v10;
-			str_F4FE0[index].volumePan_1 = volumePan_v12;
-			str_F4FE0[index].word_5 = v21;
-			str_F4FE0[index].flags_3 = flags_v29;
-			str_F4FE0[index].word_0 = 4;
+			EntitySounds_F4FE0[index].volume_2 = volume_v10;
+			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
+			EntitySounds_F4FE0[index].word_5 = v21;
+			EntitySounds_F4FE0[index].flags_3 = flags_v29;
+			EntitySounds_F4FE0[index].word_0 = 4;
 		}
 		break;
 	case 54:
 	case 55:
 	case 56:
 	case 57:
-		if (sub_6EA90(volume_v10, str_F4FE0[index].volume_2))
+		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
-				str_F4FE0[index].volume_2 = volume_v10;
-				str_F4FE0[index].volumePan_1 = volumePan_v12;
-				str_F4FE0[index].word_5 = v21;
-				str_F4FE0[index].flags_3 = 0;
-				str_F4FE0[index].word_0 = 3;
+				EntitySounds_F4FE0[index].volume_2 = volume_v10;
+				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
+				EntitySounds_F4FE0[index].word_5 = v21;
+				EntitySounds_F4FE0[index].flags_3 = 0;
+				EntitySounds_F4FE0[index].word_0 = 3;
 			}
 			else if (a2 == -1)
 			{
-				str_F4FE0[index].volume_2 = volume_v10;
-				str_F4FE0[index].volumePan_1 = volumePan_v12;
-				str_F4FE0[index].word_5 = v21;
-				str_F4FE0[index].flags_3 = flags_v29;
-				str_F4FE0[index].word_0 = 3;
+				EntitySounds_F4FE0[index].volume_2 = volume_v10;
+				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
+				EntitySounds_F4FE0[index].word_5 = v21;
+				EntitySounds_F4FE0[index].flags_3 = flags_v29;
+				EntitySounds_F4FE0[index].word_0 = 3;
 			}
 		}
 		break;
@@ -6031,11 +6031,11 @@ LABEL_46:
 	case 67:
 	case 68:
 	case 69:
-		str_F4FE0[index].volume_2 = volume_v10;
-		str_F4FE0[index].volumePan_1 = volumePan_v12;
-		str_F4FE0[index].word_0 = 3;
-		str_F4FE0[index].word_5 = v21;
-		str_F4FE0[index].flags_3 = flags_v29;
+		EntitySounds_F4FE0[index].volume_2 = volume_v10;
+		EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
+		EntitySounds_F4FE0[index].word_0 = 3;
+		EntitySounds_F4FE0[index].word_5 = v21;
+		EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		break;
 	default:
 		return;

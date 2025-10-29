@@ -3879,7 +3879,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 	}
 
 	case 0x24f150: {
-		UpdateSounds_6E150();
+		PlayEntitySounds_6E150();
 		break;
 	}
 	case 0x24f450: {
