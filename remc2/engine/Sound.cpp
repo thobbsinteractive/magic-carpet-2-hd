@@ -11,6 +11,7 @@
 //remove index functions
 
 int MaxSoundBufferChannels_E3794 = 10;
+
 bool soundAble_E3798 = true; // weak
 bool soundActive_E3799 = true; // weak
 bool soundLoaded_E379A = true; // weak
@@ -329,6 +330,8 @@ void sub_A6F30(void*  /*a*/) { stub_fix_it(); }; // weak
 //----- (0008D290) --------------------------------------------------------
 void InitSound_8D290()//26e290
 {
+	MaxSoundBufferChannels_E3794 = maxSimultaniousSounds;
+
 	IO_PARMS ioParms = {}; // [esp+4h] [ebp-3Ch]
 	const char* mdSound;
 	bool soundCardOk;
@@ -2184,7 +2187,8 @@ AIL_DRIVER* AilApiInstallDriver_9E720(uint8_t* driver_image, int32_t n_bytes)//2
 				AilCallDriver_91F70(ailDriver, 768, nullptr, nullptr);
 				if (ailDriver->VHDR_4->VDI_HDR_var46 > 0)
 				{
-					ailDriver->server_8 = AilRegisterTimer_92600(sub_9E250);
+					//ailDriver->server_8 = AilRegisterTimer_92600(sub_9E250);
+					ailDriver->server_8 = 1;
 					if (ailDriver->server_8 == -1)
 					{
 						qmemcpy(textBuffer_181C90, (void*)"Out of timer handles\n", 22);
@@ -5400,7 +5404,7 @@ void Update_Playing_Sample_Status_8F710(int flags, __int16 sampleId, int targetV
 			{
 				if (targetVolume > 127)
 					targetVolume = 127;
-				if (targetVolume != SoundBuffer3_180750[i]->status_1)
+				if (targetVolume != SoundBuffer3_180750[i]->volume_16)
 				{
 					SoundBuffer3_180750[i]->vol_scale_18[0][2] = 0;
 					SoundBuffer3_180750[i]->target_volume_6 = targetVolume;
@@ -5762,7 +5766,7 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t index)//24f4
 	int volumePan_v12; // edi
 	unsigned int v13; // eax
 	unsigned int v14; // edx
-	__int16 v21; // [esp+0h] [ebp-24h]
+	__int16 playRate_v21; // [esp+0h] [ebp-24h]
 	type_entity_0x6E8E* ptrEntity_v22x; // [esp+4h] [ebp-20h]
 	signed int v23; // [esp+8h] [ebp-1Ch]
 	int v24; // [esp+Ch] [ebp-18h]
@@ -5773,7 +5777,7 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t index)//24f4
 	__int16 flags_v29; // [esp+20h] [ebp-4h]
 
 	flags_v29 = 0;
-	v21 = 0;
+	playRate_v21 = 0;
 	v24 = D41A0_0.rand_0x8;
 	if (!soundActive_E3799 || !soundAble_E3798)
 		return;
@@ -5842,7 +5846,7 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t index)//24f4
 				else
 					LOWORD(v14) = v14 - 10;
 			}
-			v21 = v14;
+			playRate_v21 = v14;
 		}
 	}
 LABEL_29:
@@ -5921,7 +5925,7 @@ LABEL_46:
 		{
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
 			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-			EntitySounds_F4FE0[index].word_5 = v21;
+			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 			EntitySounds_F4FE0[index].word_0 = 1;
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
@@ -5956,7 +5960,7 @@ LABEL_46:
 		{
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
 			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-			EntitySounds_F4FE0[index].word_5 = v21;
+			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 			EntitySounds_F4FE0[index].word_0 = 3;
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
@@ -5969,7 +5973,7 @@ LABEL_46:
 			{
 				EntitySounds_F4FE0[index].volume_2 = volume_v10;
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[index].word_5 = v21;
+				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = 0;
 				EntitySounds_F4FE0[index].word_0 = 1;
 			}
@@ -5977,7 +5981,7 @@ LABEL_46:
 			{
 				EntitySounds_F4FE0[index].volume_2 = volume_v10;
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[index].word_5 = v21;
+				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = flags_v29;
 				EntitySounds_F4FE0[index].word_0 = 1;
 			}
@@ -5997,7 +6001,7 @@ LABEL_46:
 		{
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
 			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-			EntitySounds_F4FE0[index].word_5 = v21;
+			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 			EntitySounds_F4FE0[index].word_0 = 4;
 		}
@@ -6012,7 +6016,7 @@ LABEL_46:
 			{
 				EntitySounds_F4FE0[index].volume_2 = volume_v10;
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[index].word_5 = v21;
+				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = 0;
 				EntitySounds_F4FE0[index].word_0 = 3;
 			}
@@ -6020,7 +6024,7 @@ LABEL_46:
 			{
 				EntitySounds_F4FE0[index].volume_2 = volume_v10;
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[index].word_5 = v21;
+				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = flags_v29;
 				EntitySounds_F4FE0[index].word_0 = 3;
 			}
@@ -6034,7 +6038,7 @@ LABEL_46:
 		EntitySounds_F4FE0[index].volume_2 = volume_v10;
 		EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 		EntitySounds_F4FE0[index].word_0 = 3;
-		EntitySounds_F4FE0[index].word_5 = v21;
+		EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 		EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		break;
 	default:

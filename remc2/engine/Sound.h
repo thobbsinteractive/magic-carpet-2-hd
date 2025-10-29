@@ -13,7 +13,7 @@ typedef struct {//lenght 12
 	int16_t volume_2;
 	int16_t flags_3;
 	int16_t word_4;
-	int16_t word_5;
+	int16_t playRate_5;
 }type_F4FE0;
 
 typedef struct {
