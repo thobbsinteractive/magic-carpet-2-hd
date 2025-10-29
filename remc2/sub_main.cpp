@@ -46046,17 +46046,17 @@ void PlayEntitySounds_6E150()//24f150
 			switch (EntitySounds_F4FE0[i].word_0)
 			{
 			case 1:
-					RestartOrIfNotExistingPlaySample_75110(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].word_5);
+					RestartOrIfNotExistingPlaySample_75110(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].playRate_5);
 					EntitySounds_F4FE0[i].word_0 = 0;
 					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 2:
-					AlwaysPlaySample_751B0(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].word_5);
+					AlwaysPlaySample_751B0(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].playRate_5);
 					EntitySounds_F4FE0[i].word_0 = 0;
 					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 3:
-					IfNotPlayingPlaySample_75160(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].word_5);
+					IfNotPlayingPlaySample_75160(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].playRate_5);
 					EntitySounds_F4FE0[i].word_0 = 0;
 					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
@@ -46065,7 +46065,7 @@ void PlayEntitySounds_6E150()//24f150
 						AilEndAllSamples_8F420(0, i);
 				    else
 						PlaySample_8F100(0, i, (signed int)EntitySounds_F4FE0[i].volume_2 >> 8, 64, 0x64u, -1, IfNotPlayingPlaySample);
-					EntitySounds_F4FE0[i].word_5 = 2;
+					EntitySounds_F4FE0[i].playRate_5 = 2;
 					EntitySounds_F4FE0[i].word_0 = 0;
 				break;
 			default:
@@ -47097,21 +47097,21 @@ void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8
 }*/
 
 //----- (00075110) --------------------------------------------------------
-void RestartOrIfNotExistingPlaySample_75110(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void RestartOrIfNotExistingPlaySample_75110(int16_t flags, int16_t sampleId, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, RestartOrIfNotExistingPlaySample);
+	PlaySample_8F100(flags, sampleId, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, RestartOrIfNotExistingPlaySample);
 }
 
 //----- (00075160) --------------------------------------------------------
-void IfNotPlayingPlaySample_75160(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void IfNotPlayingPlaySample_75160(int16_t flags, int16_t sampleId, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, IfNotPlayingPlaySample);
+	PlaySample_8F100(flags, sampleId, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, IfNotPlayingPlaySample);
 }
 
 //----- (000751B0) --------------------------------------------------------
-void AlwaysPlaySample_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate)
+void AlwaysPlaySample_751B0(int16_t flags, int16_t sampleId, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
-	PlaySample_8F100(flags, index, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, AlwaysPlaySample);
+	PlaySample_8F100(flags, sampleId, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, AlwaysPlaySample);
 }
 
 //----- (000753D0) --------------------------------------------------------
