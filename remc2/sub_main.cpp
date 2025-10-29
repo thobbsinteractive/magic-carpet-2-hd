@@ -8890,7 +8890,7 @@ LABEL_12:
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240,
 					D41A0_0.LevelIndex_0xc,
 					8);
-				UpdateSounds_6E150();
+				PlayEntitySounds_6E150();
 				if (x_D41A0_BYTEARRAY_4_struct.soundVolume_6 != v9)
 				{
 					x_D41A0_BYTEARRAY_4_struct.soundVolume_6 = v9;
@@ -32490,7 +32490,7 @@ void DrawAndEventsInGame_47560(/*uint8_t* a1, int a2, */uint32_t a3, signed int 
 	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
 		sub_57570();//nothing draw
 	sub_575C0();//nothing draw
-	UpdateSounds_6E150();//nothing draw
+	PlayEntitySounds_6E150();//nothing draw
 	DrawGameFrame_2BE30();
 	//adress 2285ff
 	//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
@@ -46029,41 +46029,41 @@ void sub_6E0D0()//24f0d0
 // EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0006E150) --------------------------------------------------------
-void UpdateSounds_6E150()//24f150
+void PlayEntitySounds_6E150()//24f150
 {
 	if (soundActive_E3799 && soundAble_E3798 && (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1) || x_D41A0_BYTEARRAY_4_struct.byte_38591))
 	{
 		for(int i = 0; i < 70; i++)
 		{
-			switch (str_F4FE0[i].word_0)
+			switch (EntitySounds_F4FE0[i].word_0)
 			{
 			case 1:
-					RestartOrIfNotExistingPlaySample_75110(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
-					str_F4FE0[i].word_0 = 0;
-					str_F4FE0[i].word_4 = 2;
+					RestartOrIfNotExistingPlaySample_75110(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].word_5);
+					EntitySounds_F4FE0[i].word_0 = 0;
+					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 2:
-					AlwaysPlaySample_751B0(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
-					str_F4FE0[i].word_0 = 0;
-					str_F4FE0[i].word_4 = 2;
+					AlwaysPlaySample_751B0(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].word_5);
+					EntitySounds_F4FE0[i].word_0 = 0;
+					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 3:
-					IfNotPlayingPlaySample_75160(str_F4FE0[i].flags_3, i, str_F4FE0[i].volume_2, str_F4FE0[i].volumePan_1, str_F4FE0[i].word_5);
-					str_F4FE0[i].word_0 = 0;
-					str_F4FE0[i].word_4 = 2;
+					IfNotPlayingPlaySample_75160(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].word_5);
+					EntitySounds_F4FE0[i].word_0 = 0;
+					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 4:
-					if (str_F4FE0[i].volume_2 == 512)
+					if (EntitySounds_F4FE0[i].volume_2 == 512)
 						AilEndAllSamples_8F420(0, i);
 				    else
-						PlaySample_8F100(0, i, (signed int)str_F4FE0[i].volume_2 >> 8, 64, 0x64u, -1, IfNotPlayingPlaySample);
-					str_F4FE0[i].word_5 = 2;
-					str_F4FE0[i].word_0 = 0;
+						PlaySample_8F100(0, i, (signed int)EntitySounds_F4FE0[i].volume_2 >> 8, 64, 0x64u, -1, IfNotPlayingPlaySample);
+					EntitySounds_F4FE0[i].word_5 = 2;
+					EntitySounds_F4FE0[i].word_0 = 0;
 				break;
 			default:
 				break;
 			}
-			str_F4FE0[i].volume_2 = 0;
+			EntitySounds_F4FE0[i].volume_2 = 0;
 		}
 	}
 }

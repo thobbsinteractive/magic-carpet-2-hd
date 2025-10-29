@@ -1296,7 +1296,7 @@ void sub_6E0D0();
 void RestartOrIfNotExistingPlaySample_75110(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate);
 void IfNotPlayingPlaySample_75160(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate);
 void AlwaysPlaySample_751B0(int16_t flags, int16_t index, int16_t volume, uint16_t volumePan, int16_t playRate);
-void UpdateSounds_6E150();
+void PlayEntitySounds_6E150();
 void EndLoop_6EAB0(int a1, __int16 a2, __int16 index);
 void SetMousePosition_6EDE0(int16_t posX, int16_t posY);
 type_entity_0x6E8E* AddSwitch0B_00_6F030(type_entity_0x6E8E* a1);
