@@ -8,7 +8,7 @@
 
 #pragma pack (1)
 typedef struct {//lenght 12
-	int16_t word_0;
+	int16_t playType_0;
 	int16_t volumePan_1;
 	int16_t volume_2;
 	int16_t flags_3;
@@ -61,6 +61,7 @@ const uint32_t AilSampleLoaded = 1;
 const uint32_t AilSampleStopped = 2;
 const uint32_t AilSampleStarted = 4;
 
+const uint8_t SkipPlayingSample = 0;
 const uint8_t AlwaysPlaySample = 1;
 const uint8_t IfNotPlayingPlaySample = 2;
 const uint8_t RestartOrIfNotExistingPlaySample = 3;

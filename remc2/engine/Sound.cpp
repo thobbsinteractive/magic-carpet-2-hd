@@ -2187,8 +2187,7 @@ AIL_DRIVER* AilApiInstallDriver_9E720(uint8_t* driver_image, int32_t n_bytes)//2
 				AilCallDriver_91F70(ailDriver, 768, nullptr, nullptr);
 				if (ailDriver->VHDR_4->VDI_HDR_var46 > 0)
 				{
-					//ailDriver->server_8 = AilRegisterTimer_92600(sub_9E250);
-					ailDriver->server_8 = 1;
+					ailDriver->server_8 = AilRegisterTimer_92600(sub_9E250);
 					if (ailDriver->server_8 == -1)
 					{
 						qmemcpy(textBuffer_181C90, (void*)"Out of timer handles\n", 22);
@@ -5404,7 +5403,7 @@ void Update_Playing_Sample_Status_8F710(int flags, __int16 sampleId, int targetV
 			{
 				if (targetVolume > 127)
 					targetVolume = 127;
-				if (targetVolume != SoundBuffer3_180750[i]->volume_16)
+				if (targetVolume != SoundBuffer3_180750[i]->status_1)
 				{
 					SoundBuffer3_180750[i]->vol_scale_18[0][2] = 0;
 					SoundBuffer3_180750[i]->target_volume_6 = targetVolume;
@@ -5926,7 +5925,7 @@ LABEL_46:
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
 			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-			EntitySounds_F4FE0[index].word_0 = 1;
+			EntitySounds_F4FE0[index].playType_0 = AlwaysPlaySample;
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
@@ -5961,7 +5960,7 @@ LABEL_46:
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
 			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-			EntitySounds_F4FE0[index].word_0 = 3;
+			EntitySounds_F4FE0[index].playType_0 = RestartOrIfNotExistingPlaySample;
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
@@ -5975,7 +5974,7 @@ LABEL_46:
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = 0;
-				EntitySounds_F4FE0[index].word_0 = 1;
+				EntitySounds_F4FE0[index].playType_0 = AlwaysPlaySample;
 			}
 			else if (a2 == -1)
 			{
@@ -5983,7 +5982,7 @@ LABEL_46:
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = flags_v29;
-				EntitySounds_F4FE0[index].word_0 = 1;
+				EntitySounds_F4FE0[index].playType_0 = AlwaysPlaySample;
 			}
 		}
 		break;
@@ -6003,7 +6002,7 @@ LABEL_46:
 			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
-			EntitySounds_F4FE0[index].word_0 = 4;
+			EntitySounds_F4FE0[index].playType_0 = 4;
 		}
 		break;
 	case 54:
@@ -6018,7 +6017,7 @@ LABEL_46:
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = 0;
-				EntitySounds_F4FE0[index].word_0 = 3;
+				EntitySounds_F4FE0[index].playType_0 = RestartOrIfNotExistingPlaySample;
 			}
 			else if (a2 == -1)
 			{
@@ -6026,7 +6025,7 @@ LABEL_46:
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = flags_v29;
-				EntitySounds_F4FE0[index].word_0 = 3;
+				EntitySounds_F4FE0[index].playType_0 = RestartOrIfNotExistingPlaySample;
 			}
 		}
 		break;
@@ -6037,7 +6036,7 @@ LABEL_46:
 	case 69:
 		EntitySounds_F4FE0[index].volume_2 = volume_v10;
 		EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-		EntitySounds_F4FE0[index].word_0 = 3;
+		EntitySounds_F4FE0[index].playType_0 = RestartOrIfNotExistingPlaySample;
 		EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 		EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		break;
