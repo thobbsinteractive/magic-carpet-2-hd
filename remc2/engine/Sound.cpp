@@ -5911,10 +5911,10 @@ LABEL_46:
 	case ManaShot_40:
 	case Switch_41:
 	case MWorm3_48:
-	case Null_50:
-	case Null_51:
-	case Null_52:
-	case Null_53:
+	case Gloop1_50:
+	case Gloop2_51:
+	case Gloop3_52:
+	case Gloop4_53:
 	case Morph_60:
 	case Success2_61:
 	case SpellUp_63:
@@ -5936,9 +5936,9 @@ LABEL_46:
 			Update_Playing_Sample_Status_8F710(0, index, 120, 2u, 0);
 		}
 		break;
-	case Null_7:
+	case Caveman_7:
 	case DragonRoar_8:
-	case Null_12:
+	case Bee1_12:
 	case Null_13:
 	case Die_16:
 	case Hydra_17:
@@ -6031,11 +6031,11 @@ LABEL_46:
 			}
 		}
 		break;
-	case 65:
-	case 66:
-	case 67:
-	case 68:
-	case 69:
+	case Drip1_65:
+	case Drip2_66:
+	case Drip3_67:
+	case Drip4_68:
+	case Drip5_69:
 		EntitySounds_F4FE0[index].volume_2 = volume_v10;
 		EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 		EntitySounds_F4FE0[index].playType_0 = 3;
