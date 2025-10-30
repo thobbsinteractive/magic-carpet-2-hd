@@ -5950,7 +5950,7 @@ LABEL_46:
 	case 42:
 	case 43:
 	case 44:
-	case 46:
+	case Goat:
 	case 58:
 	case 59:
 	case 62:
@@ -5959,7 +5959,10 @@ LABEL_46:
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
 			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-			EntitySounds_F4FE0[index].playType_0 = 3;
+			if (MaxSoundBufferChannels_E3794 > 10)
+				EntitySounds_F4FE0[index].playType_0 = 2;
+			else
+				EntitySounds_F4FE0[index].playType_0 = 3;
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
