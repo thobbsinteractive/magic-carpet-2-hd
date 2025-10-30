@@ -61,7 +61,6 @@ const uint32_t AilSampleLoaded = 1;
 const uint32_t AilSampleStopped = 2;
 const uint32_t AilSampleStarted = 4;
 
-const uint8_t SkipPlayingSample = 0;
 const uint8_t AlwaysPlaySample = 1;
 const uint8_t IfNotPlayingPlaySample = 2;
 const uint8_t RestartOrIfNotExistingPlaySample = 3;
