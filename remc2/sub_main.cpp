@@ -46039,17 +46039,17 @@ void PlayEntitySounds_6E150()//24f150
 			{
 			case 1:
 					RestartOrIfNotExistingPlaySample_75110(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].playRate_5);
-					EntitySounds_F4FE0[i].playType_0 = SkipPlayingSample;
+					EntitySounds_F4FE0[i].playType_0 = 0;
 					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 2:
 					AlwaysPlaySample_751B0(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].playRate_5);
-					EntitySounds_F4FE0[i].playType_0 = SkipPlayingSample;
+					EntitySounds_F4FE0[i].playType_0 = 0;
 					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 3:
 					IfNotPlayingPlaySample_75160(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].playRate_5);
-					EntitySounds_F4FE0[i].playType_0 = SkipPlayingSample;
+					EntitySounds_F4FE0[i].playType_0 = 0;
 					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 4:
@@ -46058,7 +46058,7 @@ void PlayEntitySounds_6E150()//24f150
 				    else
 						PlaySample_8F100(0, i, (signed int)EntitySounds_F4FE0[i].volume_2 >> 8, 64, 0x64u, -1, IfNotPlayingPlaySample);
 					EntitySounds_F4FE0[i].playRate_5 = 2;
-					EntitySounds_F4FE0[i].playType_0 = SkipPlayingSample;
+					EntitySounds_F4FE0[i].playType_0 = 0;
 				break;
 			default:
 				break;

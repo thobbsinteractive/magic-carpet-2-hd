@@ -5925,7 +5925,7 @@ LABEL_46:
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
 			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-			EntitySounds_F4FE0[index].playType_0 = AlwaysPlaySample;
+			EntitySounds_F4FE0[index].playType_0 = 1;
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
@@ -5960,7 +5960,7 @@ LABEL_46:
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
 			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-			EntitySounds_F4FE0[index].playType_0 = RestartOrIfNotExistingPlaySample;
+			EntitySounds_F4FE0[index].playType_0 = 3;
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
@@ -5974,7 +5974,7 @@ LABEL_46:
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = 0;
-				EntitySounds_F4FE0[index].playType_0 = AlwaysPlaySample;
+				EntitySounds_F4FE0[index].playType_0 = 1;
 			}
 			else if (a2 == -1)
 			{
@@ -5982,7 +5982,7 @@ LABEL_46:
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = flags_v29;
-				EntitySounds_F4FE0[index].playType_0 = AlwaysPlaySample;
+				EntitySounds_F4FE0[index].playType_0 = 1;
 			}
 		}
 		break;
@@ -6017,7 +6017,7 @@ LABEL_46:
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = 0;
-				EntitySounds_F4FE0[index].playType_0 = RestartOrIfNotExistingPlaySample;
+				EntitySounds_F4FE0[index].playType_0 = 3;
 			}
 			else if (a2 == -1)
 			{
@@ -6025,7 +6025,7 @@ LABEL_46:
 				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
 				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[index].flags_3 = flags_v29;
-				EntitySounds_F4FE0[index].playType_0 = RestartOrIfNotExistingPlaySample;
+				EntitySounds_F4FE0[index].playType_0 = 3;
 			}
 		}
 		break;
@@ -6036,7 +6036,7 @@ LABEL_46:
 	case 69:
 		EntitySounds_F4FE0[index].volume_2 = volume_v10;
 		EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-		EntitySounds_F4FE0[index].playType_0 = RestartOrIfNotExistingPlaySample;
+		EntitySounds_F4FE0[index].playType_0 = 3;
 		EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
 		EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		break;
