@@ -2,6 +2,7 @@
 
 #include "ail_sound.h"
 #include "Basic.h"
+#include "SoundIndexes.h"
 #include "../utilities/Wave.h"
 #include "../engine/CommandLineParser.h"
 #include "../portability/port_show_perifery.h"

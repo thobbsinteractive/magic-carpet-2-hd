@@ -349,6 +349,7 @@
     <ClInclude Include="engine\Network.h" />
     <ClInclude Include="engine\ProjectionPolygon.h" />
     <ClInclude Include="engine\Scene.h" />
+    <ClInclude Include="engine\SoundIndexes.h" />
     <ClInclude Include="engine\TypeConfigDat.h" />
     <ClInclude Include="engine\Rectangle.h" />
     <ClInclude Include="engine\Type_BigSpritesBuffer.h" />

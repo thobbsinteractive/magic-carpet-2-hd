@@ -300,6 +300,9 @@
     <ClInclude Include="portability\ConfigToSdlScancodeMapping.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
+    <ClInclude Include="engine\SoundIndexes.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
