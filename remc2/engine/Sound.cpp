@@ -5880,8 +5880,8 @@ LABEL_29:
 LABEL_46:
 	switch (index)
 	{
-	case 1:
-	case 2:
+	case Ocean_1:
+	case Crickets_2:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Terrain background sound
@@ -5889,37 +5889,37 @@ LABEL_46:
 			Update_Playing_Sample_Status_8F710(0, index, 70, 2u, 0);
 		}
 		break;
-	case 3:
-	case 4:
-	case 6:
-	case 9:
-	case 10:
-	case 11:
-	case 15:
-	case 18:
-	case 19:
-	case 20:
-	case 21:
-	case 22:
-	case 23:
-	case 24:
-	case 25:
-	case 26:
-	case 27:
-	case 28:
-	case 30:
-	case 38:
-	case 40:
-	case 41:
-	case 48:
-	case 50:
-	case 51:
-	case 52:
-	case 53:
-	case 60:
-	case 61:
-	case 63:
-	case 64:
+	case Explode3_3:
+	case GainMana_4:
+	case Ally_6:
+	case FireBall_9:
+	case Quake_10:
+	case FoolMana_11:
+	case FireBall2_15:
+	case GetSpell_18:
+	case SpeedUp_19:
+	case Null_20:
+	case PortMake_21:
+	case PortUse_22:
+	case Lighting_23:
+	case Explode3_24:
+	case Heal_25:
+	case Clang_26:
+	case Splash2_27:
+	case Rebound_28:
+	case MeteorEx_30:
+	case DeepOne_38:
+	case ManaShot_40:
+	case Switch_41:
+	case MWorm3_48:
+	case Null_50:
+	case Null_51:
+	case Null_52:
+	case Null_53:
+	case Morph_60:
+	case Success2_61:
+	case SpellUp_63:
+	case GWell_64:
 		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
 		{
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
@@ -5929,7 +5929,7 @@ LABEL_46:
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
-	case 5:
+	case Fire_5:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Fire sound
@@ -5937,24 +5937,24 @@ LABEL_46:
 			Update_Playing_Sample_Status_8F710(0, index, 120, 2u, 0);
 		}
 		break;
-	case 7:
-	case 8:
-	case 12:
-	case 13:
-	case 16:
-	case 17:
-	case 32:
-	case 33:
-	case 34:
-	case 37:
-	case 39:
-	case 42:
-	case 43:
-	case 44:
-	case Goat:
-	case 58:
-	case 59:
-	case 62:
+	case Null_7:
+	case DragonRoar_8:
+	case Null_12:
+	case Null_13:
+	case Die_16:
+	case Hydra_17:
+	case Spider_32:
+	case Arrow1_33:
+	case Arrow2_34:
+	case Cymerian_37:
+	case Wyvern_39:
+	case Devil_42:
+	case FireFly1_43:
+	case FireFly2_44:
+	case Goat_46:
+	case MadDog_58:
+	case MdWeller_59:
+	case Zombie_62:
 		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
 		{
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
@@ -5967,8 +5967,8 @@ LABEL_46:
 			EntitySounds_F4FE0[index].flags_3 = flags_v29;
 		}
 		break;
-	case 14:
-	case 29:
+	case Select_14:
+	case CantUse_29:
 		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
@@ -5989,7 +5989,7 @@ LABEL_46:
 			}
 		}
 		break;
-	case 31:
+	case Market_31:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Building Sound
@@ -5997,8 +5997,8 @@ LABEL_46:
 			Update_Playing_Sample_Status_8F710(0, index, 85, 2u, 0);
 		}
 		break;
-	case 47:
-	case 49:
+	case DoorC2_47:
+	case Tornado_49:
 		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
 		{
 			EntitySounds_F4FE0[index].volume_2 = volume_v10;
@@ -6008,10 +6008,10 @@ LABEL_46:
 			EntitySounds_F4FE0[index].playType_0 = 4;
 		}
 		break;
-	case 54:
-	case 55:
-	case 56:
-	case 57:
+	case Hit1_54:
+	case Hit2_55:
+	case Hit3_56:
+	case Hit4_57:
 		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
