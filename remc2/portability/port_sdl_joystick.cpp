@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <stdio.h>
 
-#include "SDL2/SDL.h"
+#include <SDL2/SDL.h>"
 
 #include "../engine/EventDispatcher.h"
 #include "../engine/sub_main_mouse.h"

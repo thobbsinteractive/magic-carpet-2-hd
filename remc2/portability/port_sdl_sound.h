@@ -5,7 +5,7 @@
 //#define SOUND_OPENAL
 
 #include "bitmap_pos_struct.h"
-#include "SDL2/SDL.h"
+#include <SDL2/SDL.h>
 
 #define SOUND_SDLMIXER
 
