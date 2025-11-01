@@ -243,6 +243,10 @@ void SOUND_init_MIDI_sequence(uint8_t*  /*datax*/, type_E3808_music_header* head
 			sprintf(selectedTrackPath, "%s/music%d.ogg", oggmusicPath.c_str(), track_number);
 #ifdef SOUND_SDLMIXER
 		GAME_music[track_number] = Mix_LoadMUS(selectedTrackPath);
+		if (!GAME_music[track_number]) {
+			Logger->error("Mix_LoadMUS() error: {}", Mix_GetError());
+			// this might be a critical error...
+		}
 #endif//SOUND_SDLMIXER
 	}
 	else
