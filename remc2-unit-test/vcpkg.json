@@ -5,7 +5,7 @@
 		"rapidjson",
 		"spdlog",
 		"sdl2",
-		"sdl2-mixer",
+		"sdl2-mixer-ext",
 		"sdl2-ttf",
 		"libadlmidi"
     ],
