@@ -245,7 +245,6 @@ void SOUND_init_MIDI_sequence(uint8_t*  /*datax*/, type_E3808_music_header* head
 		GAME_music[track_number] = Mix_LoadMUS(selectedTrackPath);
 		if (!GAME_music[track_number]) {
 			Logger->error("Mix_LoadMUS() error: {}", Mix_GetError());
-			// this might be a critical error...
 		}
 #endif//SOUND_SDLMIXER
 	}
@@ -257,6 +256,9 @@ void SOUND_init_MIDI_sequence(uint8_t*  /*datax*/, type_E3808_music_header* head
 		//Timidity_Init();
 #ifdef SOUND_SDLMIXER
 		GAME_music[track_number] = Mix_LoadMUSType_RW(rwmidi, MUS_MID, SDL_TRUE);
+		if (!GAME_music[track_number]) {
+			Logger->error("Mix_LoadMUSType_RW() error: {}", Mix_GetError());
+		}
 #endif//SOUND_SDLMIXER
 		//music2 = Mix_LoadMUSType_RW(rwmidi, MIX_MUSIC_TIMIDITY, SDL_TRUE);
 
@@ -790,7 +792,7 @@ int run()
 	spec.userdata = midi_player;
 
 	/* Open the audio device */
-	if (SDL_OpenAudio(&spec, NULL) < 0)
+	if (Mix_OpenAudio(spec.freq, spec.format, spec.channels, spec.samples) < 0)
 	{
 		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
 		return 1;
@@ -808,14 +810,14 @@ int run()
 	if (adl_openFile(midi_player, music_path) < 0)
 	{
 		fprintf(stderr, "Couldn't open music file: %s\n", adl_errorInfo(midi_player));
-		SDL_CloseAudio();
+		Mix_CloseAudio();
 		adl_close(midi_player);
 		return 1;
 	}
 
 	is_playing = 1;
 	/* Start playing */
-	SDL_PauseAudio(0);
+	Mix_PauseAudio(0);
 
 	Logger->info("Playing... Hit Ctrl+C to quit!");
 

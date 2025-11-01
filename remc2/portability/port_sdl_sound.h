@@ -10,7 +10,7 @@
 #define SOUND_SDLMIXER
 
 #ifdef SOUND_SDLMIXER
-	#include "SDL2/SDL_mixer.h"
+	#include <SDL2/SDL_mixer.h>
 #endif
 
 #ifdef SOUND_OPENAL
@@ -18,7 +18,6 @@
 	#include <alc.h>
 #endif//SOUND_OPENAL
 
-//#include "music_timidity.h"
 #include "xmi2mid.h"
 #include <time.h>       /* time */
 #include <string>
