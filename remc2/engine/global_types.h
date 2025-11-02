@@ -274,7 +274,7 @@ typedef struct Type_str_164 {//size 1136
 	int32_t dword_0x18D_397;
 	uint8_t stubi[4];
 	int8_t byte_0x195_405;
-	int8_t byte_0x196_406;
+	int8_t PlayerHitFrameTime_406;
 	int8_t byte_0x197_407;
 	uint8_t stubj[2];
 	int32_t dword_0x19A_410;

@@ -140,8 +140,8 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	memset(output + 0x191, 0, 4);
 	//int8_t byte_0x195_405;
 	memcpy(output + 0x195, &input->byte_0x195_405, 1);
-	//int8_t byte_0x196_406;
-	memcpy(output + 0x196, &input->byte_0x196_406, 1);
+	//int8_t PlayerHitFrameTime_406;
+	memcpy(output + 0x196, &input->PlayerHitFrameTime_406, 1);
 	//int8_t byte_0x197_407;
 	memcpy(output + 0x197, &input->byte_0x197_407, 1);
 	//uint8_t stubj[2];

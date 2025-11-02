@@ -289,11 +289,11 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 	}
 	posX = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL].width_4 * scale + posX;
 
-	if (a1x->dword_0xA4_164x->byte_0x196_406 > 0 && x_D41A0_BYTEARRAY_4_struct.byteindex_121[1])
+	if (a1x->dword_0xA4_164x->PlayerHitFrameTime_406 > 0 && x_D41A0_BYTEARRAY_4_struct.byteindex_121[1])
 	{
 		//Player Health Panel on Hit
 		ptrDrawBitmap_F01E8(posX, 2 * scale, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL_HIT], scale);
-		a1x->dword_0xA4_164x->byte_0x196_406--;
+		a1x->dword_0xA4_164x->PlayerHitFrameTime_406--;
 	}
 	else
 	{//adress 20ed35

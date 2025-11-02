@@ -63326,7 +63326,7 @@ signed int sub_5EFA0(type_entity_0x6E8E* a1x)//23ffa0
 			}
 			//v6 = a1x->dword_0xA4_164;
 			a1x->str_0x5E_94.word_0x7A_122 = 0;
-			a1x->dword_0xA4_164x->byte_0x196_406 = 4;
+			a1x->dword_0xA4_164x->PlayerHitFrameTime_406 = 4;
 			a1x->dword_0xA4_164x->dword_0x18D_397 = 16;
 			a1x->dword_0xA4_164x->word_0x24C_588 = 64;
 			sub_5EF70(a1x);
@@ -63374,7 +63374,7 @@ signed int sub_5EFA0(type_entity_0x6E8E* a1x)//23ffa0
 			if (a1x->dword_0xA4_164x->word_0x1E_30 > 80)
 				a1x->dword_0xA4_164x->word_0x1E_30 = 80;
 			sub_5C800(a1x, 2);
-			a1x->dword_0xA4_164x->byte_0x196_406 = 4;
+			a1x->dword_0xA4_164x->PlayerHitFrameTime_406 = 4;
 			a1x->dword_0xA4_164x->dword_0x18D_397 = 16;
 			a1x->dword_0xA4_164x->word_0x24C_588 = 64;
 			a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
@@ -64885,7 +64885,7 @@ LABEL_23:
 	v24 = a1x->maxMana_0x8C_140;
 	if (a1x->mana_0x90_144 > v24)
 		a1x->mana_0x90_144 = v24;
-	a1x->dword_0xA4_164x->byte_0x196_406 = 4;
+	a1x->dword_0xA4_164x->PlayerHitFrameTime_406 = 4;
 	a1x->dword_0xA4_164x->dword_0x18D_397 = 16;
 	a1x->dword_0xA4_164x->word_0x24C_588 = 64;
 LABEL_35:
