@@ -303,6 +303,9 @@
     <ClInclude Include="engine\WavIndexes.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
+    <ClInclude Include="portability\SfxEffectWrapper.h">
+      <Filter>Header Files\portability</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
