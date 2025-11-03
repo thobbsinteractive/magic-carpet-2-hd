@@ -28,7 +28,7 @@ struct SfxEffectWrapper
 		frequency(frequency),
 		channels(channels),
 		format(format),
-		duration(ComputeChunkLengthMillisec(chunk->alen, frequency)),
+		duration(ComputeChunkLengthMilliSec(chunk->alen, frequency)),
 		chunkSize(chunk->alen / FormatSampleSize(format)),
 		position(0)
 	{
@@ -44,7 +44,7 @@ struct SfxEffectWrapper
 		return (format & 0xFF) / 8; 
 	}
 
-	int ComputeChunkLengthMillisec(int chunkSize, int frequency)
+	int ComputeChunkLengthMilliSec(int chunkSize, int frequency)
 	{
 		const uint32_t points = chunkSize / FormatSampleSize(format);
 		const uint32_t frames = (points / 2);
@@ -92,6 +92,7 @@ struct SfxEffectWrapper
 		}
 		else
 		{
+			//Clear buffer and finish
 			for (int i = 0; i < bufferSize; i++) { buffer[i] = 0; }
 			ActiveAudioEffects[mixChannel].finished = true;
 		}
