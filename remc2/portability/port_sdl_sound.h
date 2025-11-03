@@ -243,6 +243,7 @@ void SOUND_RegisterTimer(int timerIdx, uint32_t(*callback)(uint32_t));
 void SOUND_SetTimerPeriod(int timerIdx, uint32_t intervalMs);
 void SOUND_StartTimer(int timerIdx);
 void SOUND_StopTimer(int timerIdx);
+void SOUND_ChangeSamplePlaybackRate(HSAMPLE S, float percent);
 
 void RegisterEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);
 template <typename T> void LoadAudioEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);

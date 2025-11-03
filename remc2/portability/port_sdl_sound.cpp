@@ -552,7 +552,6 @@ void SOUND_start_sample(HSAMPLE S) {
 	GameChunks[S->channel].volume = S->volume_16;
 	GameChunkHSamples[S->channel] = S;
 
-	RegisterEffect(S->channel, &GameChunks[S->channel], 0.5f);
 	Mix_PlayChannel(S->channel, &GameChunks[S->channel], S->loop_count_12);
 	Mix_ChannelFinished(ChannelFinished);
 
@@ -730,6 +729,14 @@ Mix_HookMusicFinished(void (SDLCALL *music_finished)(void));
 
 #endif//SOUND_OPENAL
 	return true;
+}
+
+void SOUND_ChangeSamplePlaybackRate(HSAMPLE S, float percent)
+{
+	if (hqsound)
+		RegisterEffect(S->channel, &GameChunks[S->channel], percent, 44100, 2, AUDIO_S16);
+	else
+		RegisterEffect(S->channel, &GameChunks[S->channel], percent, 22050, 2, AUDIO_U8);
 }
 
 void RegisterEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format)
