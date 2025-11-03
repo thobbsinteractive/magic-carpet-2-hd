@@ -28,7 +28,7 @@ struct SfxEffectWrapper
 		frequency(frequency),
 		channels(channels),
 		format(format),
-		duration(ComputeChunkLengthMilliSec(chunk->alen, frequency)),
+		duration(ComputeChunkLengthMilliSec(chunk->alen, frequency, format, channels)),
 		chunkSize(chunk->alen / FormatSampleSize(format)),
 		position(0)
 	{
@@ -44,10 +44,10 @@ struct SfxEffectWrapper
 		return (format & 0xFF) / 8; 
 	}
 
-	int ComputeChunkLengthMilliSec(int chunkSize, int frequency)
+	int ComputeChunkLengthMilliSec(int chunkSize, int frequency, uint16_t format, int channels)
 	{
 		const uint32_t points = chunkSize / FormatSampleSize(format);
-		const uint32_t frames = (points / 2);
+		const uint32_t frames = (points / channels);
 		return ((frames * 1000) / frequency);
 	}
 

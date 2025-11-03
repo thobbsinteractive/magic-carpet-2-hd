@@ -552,6 +552,10 @@ void SOUND_start_sample(HSAMPLE S) {
 	GameChunks[S->channel].volume = S->volume_16;
 	GameChunkHSamples[S->channel] = S;
 
+	float percentage = (float)S->playback_rate_15 / (float)22050;
+	if (percentage != 1.0f)
+		SOUND_ChangeSamplePlaybackRate(S, percentage);
+
 	Mix_PlayChannel(S->channel, &GameChunks[S->channel], S->loop_count_12);
 	Mix_ChannelFinished(ChannelFinished);
 
