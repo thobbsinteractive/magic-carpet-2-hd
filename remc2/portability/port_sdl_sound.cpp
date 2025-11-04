@@ -18,6 +18,7 @@ bool hqsound=false;
 bool oggmusic=false;
 bool oggmusicalternative = false;
 char oggmusicFolder[512];
+char speechFolder[512];
 
 bool fixspeedsound = false;
 int maxSimultaniousSounds = 10;

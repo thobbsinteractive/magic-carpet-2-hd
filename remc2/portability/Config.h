@@ -29,6 +29,7 @@ private:
 		bool m_OggMusicAlternative = false;
 		bool m_FixSpeedSound = true;
 		int m_MaxSimultaniousSounds = 10;
+		std::string m_SpeechFolder;
 	};
 
 	struct GameDetail

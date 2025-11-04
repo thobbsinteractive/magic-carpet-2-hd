@@ -152,6 +152,7 @@ bool SetConfig() {
 
 	oggmusicalternative = config.m_Sound.m_OggMusicAlternative;
 	strcpy(oggmusicFolder, config.m_Sound.m_OggFolder.c_str());
+	strcpy(speechFolder, config.m_Sound.m_SpeechFolder.c_str());
 
 	//Graphics
 	displayIndex = config.m_Graphics.m_DisplayIndex;

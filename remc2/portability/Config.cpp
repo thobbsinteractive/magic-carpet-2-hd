@@ -349,6 +349,7 @@ void Config::LoadSound(rapidjson::GenericObject<false, rapidjson::Value>& settin
 		m_Sound.m_OggMusicAlternative = ReadBoolValue(sound, "oggMusicAlternative");
 		m_Sound.m_FixSpeedSound = ReadBoolValue(sound, "fixSpeedSound");
 		m_Sound.m_MaxSimultaniousSounds = ReadIntValue(sound, "maxSimultaniousSounds");
+		m_Sound.m_SpeechFolder = ReadStringValue(sound, "speechFolder");
 	}
 }
 

@@ -200,6 +200,7 @@ extern char oggmusicFolder[512];
 extern bool oggmusicalternative;
 extern bool fixspeedsound;
 extern int maxSimultaniousSounds;
+extern char speechFolder[512];
 
 bool init_sound();
 //bool load_sound_files();
