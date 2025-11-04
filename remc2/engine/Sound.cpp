@@ -399,7 +399,7 @@ void InitSound_8D290()//26e290
 		soundActive_E3799 = false;
 		if (musicAble_E37FC && musicLoaded_E37FE)
 		{
-			sub_99C90();
+			EndMusic_99C90();
 		}
 		else
 		{
@@ -1101,7 +1101,7 @@ void EndSounds_99C10()//27ac10
 }
 
 //----- (00099C90) --------------------------------------------------------
-void sub_99C90()//27ac90
+void EndMusic_99C90()//27ac90
 {
 	if (musicLoaded_E37FE)
 	{
@@ -1841,7 +1841,7 @@ void AilSendChannelVoiceMessage_98360(HMDIDRIVER mdi, HSEQUENCE hSequence, int32
 //----- (000986E0) --------------------------------------------------------
 void sub_986E0()//2796e0
 {
-	sub_99C90();
+	EndMusic_99C90();
 	EndSounds_99C10();
 	if (x_BYTE_E39B8)
 		sub_91420();

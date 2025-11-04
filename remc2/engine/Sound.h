@@ -95,7 +95,7 @@ uint16_t AilApiGetRealVect_A121D(uint32_t vectnum);
 void AilSetRealVect_91D50(uint32_t vectnum, uint16_t real_ptr);
 void AilRestoreUSE16ISR_91E90(int32_t isr);
 void EndSounds_99C10();
-void sub_99C90();
+void EndMusic_99C90();
 HDIGDRIVER AilInstallDigDriverFile_93330(char* filename, IO_PARMS* IO);
 char sub_9AE90(int eax0, int edx0, char* ebx0, int* a1, int8_t* a2, int a3, int a4);
 int AilInstallDigIni_931F0(HDIGDRIVER* a2, char* digPath);
