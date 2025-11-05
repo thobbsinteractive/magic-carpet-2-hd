@@ -5,9 +5,15 @@
 		"rapidjson",
 		"spdlog",
 		"sdl2",
-		"sdl2-mixer-ext",
+		"sdl2-mixer",
 		"sdl2-ttf",
 		"libadlmidi"
     ],
-	"builtin-baseline": "4334d8b4c8916018600212ab4dd4bbdc343065d1"
+    "builtin-baseline": "ef7dbf94b9198bc58f45951adcf1f041fcbc5ea0",
+    "overrides": [
+        {
+            "name": "sdl2",
+            "version": "2.32.8"
+        }
+    ]
 }

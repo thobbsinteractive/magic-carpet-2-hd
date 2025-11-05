@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL2/SDL_mixer_ext.h>
+#include <SDL2/SDL_mixer.h>
 #include <vector>
 
 struct AudioBundle

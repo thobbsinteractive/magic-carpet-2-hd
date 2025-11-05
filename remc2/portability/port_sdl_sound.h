@@ -11,7 +11,7 @@
 #define SOUND_SDLMIXER
 
 #ifdef SOUND_SDLMIXER
-	#include <SDL2/SDL_mixer_ext.h>
+	#include <SDL2/SDL_mixer.h>
 #endif
 
 #ifdef SOUND_OPENAL
