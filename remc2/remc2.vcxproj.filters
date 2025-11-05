@@ -306,6 +306,9 @@
     <ClInclude Include="portability\SfxEffectWrapper.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
+    <ClInclude Include="engine\Type_DB080_CdTrack.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

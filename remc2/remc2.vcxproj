@@ -360,6 +360,7 @@
     <ClInclude Include="engine\Type_D404C.h" />
     <ClInclude Include="engine\Type_D93C0_Bldgprmbuffer.h" />
     <ClInclude Include="engine\Type_D94F0_Bldgprmbuffer.h" />
+    <ClInclude Include="engine\Type_DB080_CdTrack.h" />
     <ClInclude Include="engine\Type_E9C38_Smalltit.h" />
     <ClInclude Include="engine\Type_F2C20ar.h" />
     <ClInclude Include="engine\Type_MapScreenPortals_E17CC.h" />
