@@ -50336,7 +50336,7 @@ uint32_t sub_86EA0(/*int a1, int a2, int a3*/ uint32_t interval)//267ea0
 }
 
 //----- (00086EB0) --------------------------------------------------------
-void sub_86EB0(unsigned __int8 a1, unsigned __int8 a2, char a3)//267eb0
+void sub_86EB0(uint8_t trackIdx, unsigned __int8 a2, char a3)//267eb0
 {
 	//int v3; // eax
 	unsigned __int8 v4; // dl
@@ -50346,12 +50346,12 @@ void sub_86EB0(unsigned __int8 a1, unsigned __int8 a2, char a3)//267eb0
 
 	//v3 = 42 * a1;
 	//v4 = x_BYTE_DB080[v3];
-	v4 = CdTracks_DB080[a1].TrackIdx_0;
+	v4 = CdTracks_DB080[trackIdx].TrackIdx_0;
 	/*v5 = 4 * a2 + v3;
 	v6 = *(__int16*)((char*)&x_BYTE_DB080[2] + v5);
 	v7 = *(__int16*)((char*)&x_BYTE_DB080[4] + v5);*/
-	v6 = CdTracks_DB080[a1].str_sub_BYTE_DB080[a2].word_0;
-	v7 = CdTracks_DB080[a1].str_sub_BYTE_DB080[a2].word_2;
+	v6 = CdTracks_DB080[trackIdx].TrackIndexes_DB080[a2].word_0;
+	v7 = CdTracks_DB080[trackIdx].TrackIndexes_DB080[a2].word_2;
 	if (v4 && v7)
 	{
 		if (a3)
@@ -50366,7 +50366,7 @@ void sub_86EB0(unsigned __int8 a1, unsigned __int8 a2, char a3)//267eb0
 //----- (00086F20) --------------------------------------------------------
 void sub_86F20(char a1)//267f20
 {
-	int v1; // eax
+	int trackIdx; // eax
 	unsigned __int8 v2; // dl
 	__int16 v3; // bx
 	__int16 v4; // ax
@@ -50375,10 +50375,10 @@ void sub_86F20(char a1)//267f20
 	//v2 = x_BYTE_DB080[v1 * 2];
 	/*v3 = *(int16_t*)&x_BYTE_DB080[2 + v1 * 2];
 	v4 = *(int16_t*)&x_BYTE_DB080[4 + v1 * 2];*/
-	v1 = ((a1 != 0) + 25);
-	v2 = CdTracks_DB080[v1].TrackIdx_0;
-	v3 = CdTracks_DB080[v1].str_sub_BYTE_DB080[0].word_0;
-	v4 = CdTracks_DB080[v1].str_sub_BYTE_DB080[0].word_2;
+	trackIdx = ((a1 != 0) + 25);
+	v2 = CdTracks_DB080[trackIdx].TrackIdx_0;
+	v3 = CdTracks_DB080[trackIdx].TrackIndexes_DB080[0].word_0;
+	v4 = CdTracks_DB080[trackIdx].TrackIndexes_DB080[0].word_2;
 	if (v2)
 	{
 		if (v4)

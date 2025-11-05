@@ -11,7 +11,7 @@ Type_DB080_TrackIndexes;
 typedef struct {//lenght 42
 	int8_t TrackIdx_0;
 	//int8_t stub;
-	Type_DB080_TrackIndexes str_sub_BYTE_DB080[10];
+	Type_DB080_TrackIndexes TrackIndexes_DB080[10];
 }
 Type_DB080_CdTrack;
 #pragma pack (16)
