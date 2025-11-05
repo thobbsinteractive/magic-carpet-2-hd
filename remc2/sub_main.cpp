@@ -50339,25 +50339,25 @@ uint32_t sub_86EA0(/*int a1, int a2, int a3*/ uint32_t interval)//267ea0
 void sub_86EB0(uint8_t trackIdx, unsigned __int8 a2, char a3)//267eb0
 {
 	//int v3; // eax
-	unsigned __int8 v4; // dl
+	uint8_t trackId_v4; // dl
 	//int v5; // eax
 	__int16 v6; // bx
 	__int16 v7; // ax
 
 	//v3 = 42 * a1;
 	//v4 = x_BYTE_DB080[v3];
-	v4 = CdTracks_DB080[trackIdx].TrackIdx_0;
+	trackId_v4 = CdTracks_DB080[trackIdx].TrackIdx_0;
 	/*v5 = 4 * a2 + v3;
 	v6 = *(__int16*)((char*)&x_BYTE_DB080[2] + v5);
 	v7 = *(__int16*)((char*)&x_BYTE_DB080[4] + v5);*/
 	v6 = CdTracks_DB080[trackIdx].TrackIndexes_DB080[a2].word_0;
 	v7 = CdTracks_DB080[trackIdx].TrackIndexes_DB080[a2].word_2;
-	if (v4 && v7)
+	if (trackId_v4 && v7)
 	{
 		if (a3)
-			sub_86F70_sound_proc12(v4, v6, v7);
+			sub_86F70_sound_proc12(trackId_v4, v6, v7);
 		else
-			sub_86FF0(v4, v6, v7);
+			sub_86FF0(trackId_v4, v6, v7);
 	}
 }
 // DB082: using guessed type __int16 x_WORD_DB082[];
