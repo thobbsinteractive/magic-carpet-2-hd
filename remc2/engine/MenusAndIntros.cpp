@@ -3299,7 +3299,7 @@ void sub_7D400_draw_texts_and_play_sounds(int  /*a1*/, __int16 a2, __int16 a3, c
 					else
 					{
 						//Play Level Portal Opening Sound
-						PlaySample_8F100(0, 41, 127, 64, 0x64u, 0, 2u);
+						PlaySample_8F100(0, 41, 127, 64, 0x64u, 0, IfNotPlayingPlaySample);
 						mapScreenPortals_E17CC[ix].byte_19 = 1;
 					}
 				}
@@ -3333,7 +3333,7 @@ void sub_7D400_draw_texts_and_play_sounds(int  /*a1*/, __int16 a2, __int16 a3, c
 			v13 = secretMapScreenPortals_E2970[jjx].byte_16;
 			if (!v13)
 			{
-				PlaySample_8F100(0, 41, 127, 64, 0x64u, 0, 2u);
+				PlaySample_8F100(0, 41, 127, 64, 0x64u, 0, IfNotPlayingPlaySample);
 				secretMapScreenPortals_E2970[jjx].byte_16 = 1;
 				continue;
 			}
@@ -4428,7 +4428,7 @@ bool sub_80D40_move_graphics_and_play_sounds(__int16 a2, __int16 a3, __int16 a4,
 		v6 = false;
 		if (abs(x_DWORD_17DE38str.x_WORD_17E074 - x_DWORD_17DE38str.x_WORD_17E06C) > 5 && abs(x_DWORD_17DE38str.x_WORD_17E076 - x_DWORD_17DE38str.x_WORD_17E06E) > 6)
 		{
-			PlaySample_8F100(0, 19, (unsigned __int8)x_BYTE_E1324, 64, 0x64u, 0, 2u);
+			PlaySample_8F100(0, 19, (unsigned __int8)x_BYTE_E1324, 64, 0x64u, 0, IfNotPlayingPlaySample);
 			return 0;
 		}
 	}

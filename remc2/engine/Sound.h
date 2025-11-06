@@ -61,6 +61,10 @@ const uint32_t AilSampleLoaded = 1;
 const uint32_t AilSampleStopped = 2;
 const uint32_t AilSampleStarted = 4;
 
+const uint8_t AlwaysPlaySample = 1;
+const uint8_t IfNotPlayingPlaySample = 2;
+const uint8_t IfNotExistingPlaySample = 3;
+
 void InitSound_8D290();
 void sub_8D800_sound_proc2();
 void EndSample_8D8F0();

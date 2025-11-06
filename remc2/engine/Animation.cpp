@@ -131,7 +131,7 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 'H':
 		case 'h':
 			if (soundAble_E3798)
-				PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 0, 64, 0x64u, -1, 2u);
+				PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			break;
 		case 'K':
 		case 'W':
@@ -167,14 +167,14 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 'R':
 		case 'r':
 			if (soundAble_E3798)
-				PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 127, 64, 0x64u, -1, 2u);
+				PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 127, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			break;
 		case 'S':
 		case 's':
 			if (soundAble_E3798)
 			{
 				if (pSoundEvent[x_WORD_D4004].index)
-					PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 127, 64, 0x64u, 0, 2u);
+					PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 127, 64, 0x64u, 0, IfNotPlayingPlaySample);
 				else
 					EndSample_8D8F0();
 			}
