@@ -87,7 +87,7 @@ int soundBufferLen_E2A18 = 0; // weak
 HDIGDRIVER hDigSoundEffectsDriver_180B48; // weak
 //uint8_t* x_DWORD_180B4C_end_sound_buffer3; // weak
 uint32_t SoundBuffer3EndIdx_180B4C;
-__int16 indexLoadedSound_180B50; // weak
+__int16 MaxLoadedSampleId_180B50; // weak
 AIL_INI musicAILSettings; // weak
 char textBuffer_180BE0[512]; // weak
 HSEQUENCE m_hSequence; // weak
@@ -1961,20 +1961,20 @@ bool LoadSound_84300(uint8_t soundIndex)//265300
 //----- (000844A0) --------------------------------------------------------
 void LoadSoundDataFromBuffer_844A0(uint16_t count)//2654a0
 {
-	int index = indexLoadedSound_180B50;
+	int sampleId = MaxLoadedSampleId_180B50;
 	if (soundIndex_E37A0 && soundBuffer1_E37A8)
 	{
-		for (index = 0; index < count; index++)
+		for (sampleId = 0; sampleId < count; sampleId++)
 		{
 #ifdef x32_BIT_ENVIRONMENT
-			soundIndex_E37A0->str_8.wavs_10[index].wavData_0 = reinterpret_cast<uint32_t>(soundIndex_E37A0->str_8.wavs_10[index].wavData_0) + soundBuffer1_E37A8;
+			soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0 = reinterpret_cast<uint32_t>(soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0) + soundBuffer1_E37A8;
 #endif //x32_BIT_ENVIRONMENT
 #ifdef x64_BIT_ENVIRONMENT
-			soundIndex_E37A0->str_8.wavs_10[index].wavData_0 = reinterpret_cast<uint64_t>(soundIndex_E37A0->str_8.wavs_10[index].wavData_0) + soundBuffer1_E37A8;
+			soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0 = reinterpret_cast<uint64_t>(soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0) + soundBuffer1_E37A8;
 #endif //x64_BIT_ENVIRONMENT
 		}
 	}
-	indexLoadedSound_180B50 = index;
+	MaxLoadedSampleId_180B50 = sampleId;
 }
 
 //----- (000844F0) --------------------------------------------------------
@@ -3038,7 +3038,7 @@ int InitEnvs_A2C80(HDIGDRIVER hDigDriver, IO_PARMS*  /*a2*/)//283c80
 }
 
 //----- (000A2EA0) --------------------------------------------------------
-HDIGDRIVER sub_A2EA0(AIL_DRIVER* ailDriver, IO_PARMS IO)//283ea0
+HDIGDRIVER CreateDigDriver_A2EA0(AIL_DRIVER* ailDriver, IO_PARMS IO)//283ea0
 {
 	VDI_CALL outCall;
 	HDIGDRIVER result;
@@ -3118,9 +3118,9 @@ HDIGDRIVER sub_A2EA0(AIL_DRIVER* ailDriver, IO_PARMS IO)//283ea0
 						{
 							for (int i = 0; i < digDriver->n_samples_24; i++)
 							{
-								digDriver->samples_23[i].status_1 = 1;
+								digDriver->samples_23[i].status_1 = AilSampleLoaded;
 								digDriver->samples_23[i].driver_0 = digDriver;
-								digDriver->samples_23[i].channel = i;//fixed
+								digDriver->samples_23[i].channel = i;
 							}
 							//digDriver->timer_3 = AilRegisterTimer_92600(sub_A2450);
 							digDriver->timer_3 = 1;
@@ -3208,7 +3208,7 @@ HDIGDRIVER AilApiInstallDigDriverFile_A3600(char* filename, IO_PARMS* IO)//28460
 		if (ailDriver)
 		{
 			//   IO
-			hdigDriver = sub_A2EA0(ailDriver, *IO);
+			hdigDriver = CreateDigDriver_A2EA0(ailDriver, *IO);
 			if (!hdigDriver)
 				AilUninstallDriver_93160(ailDriver);
 			result = hdigDriver;
@@ -3261,7 +3261,9 @@ HSAMPLE sub_A3820_allocate_sample_handle(HDIGDRIVER dig)//284820
 	int i;
 
 	PlusE3FF2_91BD0();
-	for (i = 0; i < dig->n_samples_24 && dig->samples_23[i].status_1 != 1; i++)
+
+	//Find next sample not loaded
+	for (i = 0; i < dig->n_samples_24 && dig->samples_23[i].status_1 != AilSampleLoaded; i++)
 		;
 	if (i == dig->n_samples_24)
 	{
@@ -3300,7 +3302,7 @@ void InitSample_A38E0(HSAMPLE S)//2848e0
 		S->flags_14 = 0;
 		S->playback_rate_15 = 11025;
 		S->volume_16 = preference_181DAC[5];
-		if (S->pos_6_7[0] && S->pos_6_7[0] != 1)
+		if (S->vol_scale_18[0][6] && S->vol_scale_18[0][6] != 1)
 			S->pan_17 = 64;
 		else
 			S->pan_17 = 0;
@@ -5246,32 +5248,33 @@ int sub_8F0AB(FILE* a1, /*int a2,*/ int a3)//26f0ab
 }
 
 //----- (0008F100) --------------------------------------------------------
-void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, uint16_t playRate, uint8_t loopCount, uint8_t playType)//270100
+void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePan, uint16_t playRate, uint8_t loopCount, uint8_t playType)//270100
 {
-	bool bool1; // [esp+0h] [ebp-18h]
+	bool foundExisting = false; // [esp+0h] [ebp-18h]
 
-	HSAMPLE* soundBuffer1 = nullptr;
-	HSAMPLE* soundBuffer2 = nullptr;
+	HSAMPLE* ptrExistingStoppedSample = nullptr;
+	HSAMPLE* ptrExistingPlayingSample = nullptr;
 
 	if (!soundAble_E3798
 		|| !soundActive_E3799
-		|| index > (signed int)indexLoadedSound_180B50
-		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[index -1].filename_14, "null.wav"))
+		|| sampleId > (signed int)MaxLoadedSampleId_180B50
+		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[sampleId -1].filename_14, "null.wav"))
 	{
 		return;
 	}
-	bool1 = false;
+
 	switch (playType)
 	{
 	case 1:
 		{
-			soundBuffer1 = NULL;
+		    //Get from stopped from buffer (if available)
+		    ptrExistingStoppedSample = nullptr;
 			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 			{
 				if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
 				{
-					soundBuffer1 = &SoundBuffer3_180750[i];
-					soundBuffer2 = nullptr;
+					ptrExistingStoppedSample = &SoundBuffer3_180750[i];
+					ptrExistingPlayingSample = nullptr;
 					break;
 				}
 			}
@@ -5279,23 +5282,25 @@ void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, 
 		}
 	case 2:
 		{
-			soundBuffer2 = nullptr;
-			for (int j = 0; j < SoundBuffer3EndIdx_180B4C; j++)
+		    //Look for existing playing sound using flags, id and status
+		    ptrExistingPlayingSample = nullptr;
+			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 			{
-				if (SoundBuffer3_180750[j]->flags_14 == flags && SoundBuffer3_180750[j]->vol_scale_18[0][0] == index && AilSampleStatus_94010(SoundBuffer3_180750[j]) != AilSampleStopped)
+				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 				{
-					soundBuffer2 = &SoundBuffer3_180750[j];
+					ptrExistingPlayingSample = &SoundBuffer3_180750[i];
 					break;
 				}
 			}
-			if (!soundBuffer2)
+			if (!ptrExistingPlayingSample)
 			{
-				soundBuffer1 = nullptr;
-				for (int k = 0; k < SoundBuffer3EndIdx_180B4C; k++)
+				//Nothing found, get stopped from buffer (if available)
+				ptrExistingStoppedSample = nullptr;
+				for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 				{
-					if (AilSampleStatus_94010(SoundBuffer3_180750[k]) == AilSampleStopped)
+					if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
 					{
-						soundBuffer1 = &SoundBuffer3_180750[k];
+						ptrExistingStoppedSample = &SoundBuffer3_180750[i];
 						break;
 					}
 				}
@@ -5304,26 +5309,28 @@ void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, 
 		}
 	case 3:
 		{
-			bool1 = false;
-			for (int l = 0; l < SoundBuffer3EndIdx_180B4C; l++)
+			//Get by flag and Id, regardless of status
+			foundExisting = false;
+			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 			{
-				if (SoundBuffer3_180750[l]->flags_14 == flags && SoundBuffer3_180750[l]->vol_scale_18[0][0] == index)
+				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId)
 				{
-					soundBuffer1 = &SoundBuffer3_180750[l];
-					soundBuffer2 = nullptr;
-					bool1 = true;
+					ptrExistingStoppedSample = &SoundBuffer3_180750[i];
+					ptrExistingPlayingSample = nullptr;
+					foundExisting = true;
 					break;
 				}
 			}
-			if (!bool1)
+			//Nothing found, get stopped from buffer (if available)
+			if (!foundExisting)
 			{
-				soundBuffer1 = nullptr;
-				for (int m = 0; m < SoundBuffer3EndIdx_180B4C; m++)
+				ptrExistingStoppedSample = nullptr;
+				for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 				{
-					if (AilSampleStatus_94010(SoundBuffer3_180750[m]) == 2)
+					if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
 					{
-						soundBuffer1 = &SoundBuffer3_180750[m];
-						soundBuffer2 = nullptr;
+						ptrExistingStoppedSample = &SoundBuffer3_180750[i];
+						ptrExistingPlayingSample = nullptr;
 						break;
 					}
 				}
@@ -5331,48 +5338,49 @@ void PlaySample_8F100(uint32_t flags, int16_t index, int volume, int volumePan, 
 			break;
 		}
 	}
-	if (!soundBuffer1 || soundBuffer2)
+	if (!ptrExistingStoppedSample || ptrExistingPlayingSample)
 		return;
-	if (!bool1)
+
+	if (!foundExisting)
 	{
-		AilInitSample_93830(*soundBuffer1);
+		AilInitSample_93830(*ptrExistingStoppedSample);
 		if (debug_first_sound) {
-			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[index].wavData_0;
+			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0;
 			Logger->trace("PlaySample_8F100:buff:");
 			for (int i = 0; i < 100; i++)
 				Logger->trace("{}", debug_sound_buff[i]);
 		}
-		AilSetSampleFile_938C0(*soundBuffer1, soundIndex_E37A0->str_8.wavs_10[index].wavData_0, 1);
+		AilSetSampleFile_938C0(*ptrExistingStoppedSample, soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0, 1);
 	}
-	AilSetSampleVolume_93E30(*soundBuffer1, volume);
-	AilSetSampleVolumePan_93ED0(*soundBuffer1, volumePan);
-	AilSetSamplePlaybackRate_93D90(*soundBuffer1, soundFrequence_E37BC * playRate / 100);
-	AilSetSampleLoopCount_93F70(*soundBuffer1, loopCount + 1);
+	AilSetSampleVolume_93E30(*ptrExistingStoppedSample, volume);
+	AilSetSampleVolumePan_93ED0(*ptrExistingStoppedSample, volumePan);
+	AilSetSamplePlaybackRate_93D90(*ptrExistingStoppedSample, soundFrequence_E37BC * playRate / 100);
+	AilSetSampleLoopCount_93F70(*ptrExistingStoppedSample, loopCount);
 
 	if (debug_first_sound) {
 		Logger->trace("PlaySample_8F100:44mhz:");
-		Logger->trace("PlaySample_8F100:rate:{}", (*soundBuffer1)->playback_rate_15);
+		Logger->trace("PlaySample_8F100:rate:{}", (*ptrExistingStoppedSample)->playback_rate_15);
 	}
 
-	AilStartSample_93B50(*soundBuffer1);
-	(*soundBuffer1)->flags_14 = flags;
-	(*soundBuffer1)->id_9 = index;
-	(*soundBuffer1)->vol_scale_18[0][0] = index;
-	(*soundBuffer1)->status_1 = AilSampleStarted;
-	(*soundBuffer1)->volume_16 = volume;
-	(*soundBuffer1)->len_4_5[1] = volumePan;
-	(*soundBuffer1)->vol_scale_18[0][2] = 0;
-	(*soundBuffer1)->vol_scale_18[0][3] = 0;
+	AilStartSample_93B50(*ptrExistingStoppedSample);
+	(*ptrExistingStoppedSample)->flags_14 = flags;
+	(*ptrExistingStoppedSample)->id_9 = sampleId;
+	(*ptrExistingStoppedSample)->vol_scale_18[0][0] = sampleId;
+	(*ptrExistingStoppedSample)->status_1 = AilSampleStarted;
+	(*ptrExistingStoppedSample)->volume_16 = volume;
+	(*ptrExistingStoppedSample)->len_4_5[1] = volumePan;
+	(*ptrExistingStoppedSample)->vol_scale_18[0][2] = 0;
+	(*ptrExistingStoppedSample)->vol_scale_18[0][3] = 0;
 }
 
 //----- (0008F420) --------------------------------------------------------
-void sub_8F420_sound_proc20(int flags, __int16 index)//270420
+void AilEndAllSamples_8F420(int flags, __int16 sampleId)//270420
 {
 	if (soundAble_E3798 && soundActive_E3799)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == index && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				AilEndSample_93D00(SoundBuffer3_180750[i]);
 				return;
@@ -5382,20 +5390,20 @@ void sub_8F420_sound_proc20(int flags, __int16 index)//270420
 }
 
 //----- (0008F710) --------------------------------------------------------
-void Update_Playing_Sample_Status_8F710(int flags, __int16 index, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale)//270710
+void Update_Playing_Sample_Status_8F710(int flags, __int16 sampleId, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale)//270710
 {
-	if (soundAble_E3798 && soundActive_E3799 && index <= indexLoadedSound_180B50)
+	if (soundAble_E3798 && soundActive_E3799 && sampleId <= MaxLoadedSampleId_180B50)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == index && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				if (targetVolume > 127)
 					targetVolume = 127;
 				if (targetVolume != SoundBuffer3_180750[i]->status_1)
 				{
 					SoundBuffer3_180750[i]->vol_scale_18[0][2] = 0;
-					SoundBuffer3_180750[i]->pos_6_7[0] = targetVolume;
+					SoundBuffer3_180750[i]->target_volume_6 = targetVolume;
 					SoundBuffer3_180750[i]->vol_scale_18[0][3] = volScale;
 					if (targetVolume > SoundBuffer3_180750[i]->status_1)
 						SoundBuffer3_180750[i]->vol_scale_18[0][2] = 1;
@@ -5435,11 +5443,11 @@ uint32_t FadeSamples_8F4B0(uint32_t interval)
 				continue;
 			}
 
-			if (SoundBuffer3_180750[i]->volume_16 != SoundBuffer3_180750[i]->pos_6_7[0])
+			if (SoundBuffer3_180750[i]->volume_16 != SoundBuffer3_180750[i]->target_volume_6)
 			{
 				int change = 1;
 
-				if (SoundBuffer3_180750[i]->volume_16 > SoundBuffer3_180750[i]->pos_6_7[0])
+				if (SoundBuffer3_180750[i]->volume_16 > SoundBuffer3_180750[i]->target_volume_6)
 					change = - 1;
 
 				if (SoundBuffer3_180750[i]->volume_16 + change > 127)

@@ -92,7 +92,9 @@ struct _DIG_DRIVER* driver_0;//0
 uint32_t status_1=0;//4
 void* start_2_3[2];//8
 uint32_t len_4_5[2];
-uint32_t pos_6_7[2];            // Index to next byte (R/W)
+//uint32_t pos_6_7[2];            // Index to next byte (R/W)
+uint32_t target_volume_6 = 0;
+uint32_t pos_7 = 0;
 //uint32_t done_8_9[2];            // Nonzero if buffer with len=0 sent by app
 uint32_t done_8;
 int32_t id_9; // Games index for sample
