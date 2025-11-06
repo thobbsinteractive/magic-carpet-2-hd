@@ -300,7 +300,7 @@
     <ClInclude Include="portability\ConfigToSdlScancodeMapping.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
-    <ClInclude Include="engine\SoundInGameIndexes.h">
+    <ClInclude Include="engine\WavIndexes.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
   </ItemGroup>

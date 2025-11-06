@@ -2,7 +2,7 @@
 
 #include "ail_sound.h"
 #include "Basic.h"
-#include "SoundInGameIndexes.h"
+#include "WavIndexes.h"
 #include "../utilities/Wave.h"
 #include "../engine/CommandLineParser.h"
 #include "../portability/port_show_perifery.h"
@@ -281,7 +281,7 @@ void SetSoundFreq_9A230(int a1);
 void WriteWaveToFile(wav_t* wav, const char* name);
 void AIL_fix();
 const char* mygetenv(const char* a1);
-void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3);
+void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex);
 void ChangeSoundLevel_19CA0(uint8_t option);
 int sub_582B0(__int16 a1, __int16 a2);
 int sub_582F0(int a1, __int16 a2);
