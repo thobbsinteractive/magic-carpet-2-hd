@@ -17,15 +17,13 @@
 					"hqSound: sound is transfered from 11025,8bit,mono to 44000,16bit,stereo. using AWE32 record of MIDI",
 					"oggMusic: music, for this function is hqsound auto enabled",
 					"oggMusicAlternative: use original and alternative sound tracks",
-					"fixspeedsound: set true when sounds play double speed",
-					"maxSimultaniousSounds: Original was 10. Increasing might impact performance"
+					"fixspeedsound: set true when sounds play double speed"
 				],
 				"hqSound": true,
 				"oggMusic": true,
 				"oggFolder": "music-ogg",
 				"oggMusicAlternative": false,
-				"fixSpeedSound": false,
-				"maxSimultaniousSounds": 30
+				"fixSpeedSound": false
 			},
 			"graphics": {
 				"description": [

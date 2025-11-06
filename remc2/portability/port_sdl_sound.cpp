@@ -20,7 +20,6 @@ bool oggmusicalternative = false;
 char oggmusicFolder[512];
 
 bool fixspeedsound = false;
-int maxSimultaniousSounds = 10;
 
 int32_t last_sequence_num = 0;
 

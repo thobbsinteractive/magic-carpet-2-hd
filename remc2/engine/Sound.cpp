@@ -330,8 +330,6 @@ void sub_A6F30(void*  /*a*/) { stub_fix_it(); }; // weak
 //----- (0008D290) --------------------------------------------------------
 void InitSound_8D290()//26e290
 {
-	MaxSoundBufferChannels_E3794 = maxSimultaniousSounds;
-
 	IO_PARMS ioParms = {}; // [esp+4h] [ebp-3Ch]
 	const char* mdSound;
 	bool soundCardOk;
