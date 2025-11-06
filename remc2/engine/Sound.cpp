@@ -5403,7 +5403,7 @@ void Update_Playing_Sample_Status_8F710(int flags, __int16 sampleId, int targetV
 			{
 				if (targetVolume > 127)
 					targetVolume = 127;
-				if (targetVolume != SoundBuffer3_180750[i]->status_1)
+				if (targetVolume != SoundBuffer3_180750[i]->volume_16)
 				{
 					SoundBuffer3_180750[i]->vol_scale_18[0][2] = 0;
 					SoundBuffer3_180750[i]->target_volume_6 = targetVolume;
