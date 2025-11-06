@@ -2187,7 +2187,8 @@ AIL_DRIVER* AilApiInstallDriver_9E720(uint8_t* driver_image, int32_t n_bytes)//2
 				AilCallDriver_91F70(ailDriver, 768, nullptr, nullptr);
 				if (ailDriver->VHDR_4->VDI_HDR_var46 > 0)
 				{
-					ailDriver->server_8 = AilRegisterTimer_92600(sub_9E250);
+					ailDriver->server_8 = 1;
+					//ailDriver->server_8 = AilRegisterTimer_92600(sub_9E250);
 					if (ailDriver->server_8 == -1)
 					{
 						qmemcpy(textBuffer_181C90, (void*)"Out of timer handles\n", 22);
