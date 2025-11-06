@@ -87,7 +87,7 @@ int soundBufferLen_E2A18 = 0; // weak
 HDIGDRIVER hDigSoundEffectsDriver_180B48; // weak
 //uint8_t* x_DWORD_180B4C_end_sound_buffer3; // weak
 uint32_t SoundBuffer3EndIdx_180B4C;
-__int16 MaxLoadedSampleId_180B50; // weak
+int16_t MaxLoadedWavIndex_180B50; // weak
 AIL_INI musicAILSettings; // weak
 char textBuffer_180BE0[512]; // weak
 HSEQUENCE m_hSequence; // weak
@@ -1963,20 +1963,20 @@ bool LoadSound_84300(uint8_t soundIndex)//265300
 //----- (000844A0) --------------------------------------------------------
 void LoadSoundDataFromBuffer_844A0(uint16_t count)//2654a0
 {
-	int sampleId = MaxLoadedSampleId_180B50;
+	int wavIndex = MaxLoadedWavIndex_180B50;
 	if (soundIndex_E37A0 && soundBuffer1_E37A8)
 	{
-		for (sampleId = 0; sampleId < count; sampleId++)
+		for (wavIndex = 0; wavIndex < count; wavIndex++)
 		{
 #ifdef x32_BIT_ENVIRONMENT
-			soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0 = reinterpret_cast<uint32_t>(soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0) + soundBuffer1_E37A8;
+			soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0 = reinterpret_cast<uint32_t>(soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0) + soundBuffer1_E37A8;
 #endif //x32_BIT_ENVIRONMENT
 #ifdef x64_BIT_ENVIRONMENT
-			soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0 = reinterpret_cast<uint64_t>(soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0) + soundBuffer1_E37A8;
+			soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0 = reinterpret_cast<uint64_t>(soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0) + soundBuffer1_E37A8;
 #endif //x64_BIT_ENVIRONMENT
 		}
 	}
-	MaxLoadedSampleId_180B50 = sampleId;
+	MaxLoadedWavIndex_180B50 = wavIndex;
 }
 
 //----- (000844F0) --------------------------------------------------------
@@ -5251,7 +5251,7 @@ int sub_8F0AB(FILE* a1, /*int a2,*/ int a3)//26f0ab
 }
 
 //----- (0008F100) --------------------------------------------------------
-void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePan, uint16_t playRate, uint8_t loopCount, uint8_t playType)//270100
+void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePan, uint16_t playRate, uint8_t loopCount, uint8_t playType)//270100
 {
 	bool foundExisting = false; // [esp+0h] [ebp-18h]
 
@@ -5260,8 +5260,8 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 
 	if (!soundAble_E3798
 		|| !soundActive_E3799
-		|| sampleId > (signed int)MaxLoadedSampleId_180B50
-		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[sampleId -1].filename_14, "null.wav"))
+		|| wavIndex > (signed int)MaxLoadedWavIndex_180B50
+		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[wavIndex -1].filename_14, "null.wav"))
 	{
 		return;
 	}
@@ -5287,7 +5287,7 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 		    //Look for existing playing sound using flags, id and not stopped
 			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 			{
-				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 				{
 					ptrExistingPlayingSample = &SoundBuffer3_180750[i];
 					break;
@@ -5313,7 +5313,7 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 			foundExisting = false;
 			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 			{
-				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId)
+				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex)
 				{
 					ptrExistingStoppedSample = &SoundBuffer3_180750[i];
 					ptrExistingPlayingSample = nullptr;
@@ -5347,12 +5347,12 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 		//Initialize new from wavs
 		AilInitSample_93830(*ptrExistingStoppedSample);
 		if (debug_first_sound) {
-			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0;
+			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0;
 			Logger->trace("PlaySample_8F100:buff:");
 			for (int i = 0; i < 100; i++)
 				Logger->trace("{}", debug_sound_buff[i]);
 		}
-		AilSetSampleFile_938C0(*ptrExistingStoppedSample, soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0, 1);
+		AilSetSampleFile_938C0(*ptrExistingStoppedSample, soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0, 1);
 	}
 	AilSetSampleVolume_93E30(*ptrExistingStoppedSample, volume);
 	AilSetSampleVolumePan_93ED0(*ptrExistingStoppedSample, volumePan);
@@ -5366,8 +5366,8 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 
 	AilStartSample_93B50(*ptrExistingStoppedSample);
 	(*ptrExistingStoppedSample)->flags_14 = flags;
-	(*ptrExistingStoppedSample)->id_9 = sampleId;
-	(*ptrExistingStoppedSample)->vol_scale_18[0][0] = sampleId;
+	(*ptrExistingStoppedSample)->id_9 = wavIndex;
+	(*ptrExistingStoppedSample)->vol_scale_18[0][0] = wavIndex;
 	(*ptrExistingStoppedSample)->status_1 = AilSampleStarted;
 	(*ptrExistingStoppedSample)->volume_16 = volume;
 	(*ptrExistingStoppedSample)->len_4_5[1] = volumePan;
@@ -5376,13 +5376,13 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 }
 
 //----- (0008F420) --------------------------------------------------------
-void AilEndAllSamples_8F420(int flags, __int16 sampleId)//270420
+void AilEndAllSamples_8F420(int flags, __int16 wavIndex)//270420
 {
 	if (soundAble_E3798 && soundActive_E3799)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				AilEndSample_93D00(SoundBuffer3_180750[i]);
 				return;
@@ -5392,13 +5392,13 @@ void AilEndAllSamples_8F420(int flags, __int16 sampleId)//270420
 }
 
 //----- (0008F710) --------------------------------------------------------
-void Update_Playing_Sample_Status_8F710(int flags, __int16 sampleId, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale)//270710
+void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale)//270710
 {
-	if (soundAble_E3798 && soundActive_E3799 && sampleId <= MaxLoadedSampleId_180B50)
+	if (soundAble_E3798 && soundActive_E3799 && wavIndex <= MaxLoadedWavIndex_180B50)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				if (targetVolume > 127)
 					targetVolume = 127;
