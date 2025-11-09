@@ -5402,7 +5402,7 @@ void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetV
 			{
 				if (targetVolume > 127)
 					targetVolume = 127;
-				if (targetVolume != SoundBuffer3_180750[i]->status_1)
+				if (targetVolume != SoundBuffer3_180750[i]->target_volume_6)
 				{
 					SoundBuffer3_180750[i]->vol_scale_18[0][2] = 0;
 					SoundBuffer3_180750[i]->target_volume_6 = targetVolume;
@@ -5434,16 +5434,8 @@ uint32_t FadeSamples_8F4B0(uint32_t interval)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->id_9 < 31)
-			{
-				if (SoundBuffer3_180750[i]->id_9 < 1u || SoundBuffer3_180750[i]->id_9 > 2u && SoundBuffer3_180750[i]->id_9 != 5)
-					continue;
-			}
-			else if (SoundBuffer3_180750[i]->id_9 > 31)
-			{
-				//if (SoundBuffer3_180750[i]->id_9 >= 47 && (SoundBuffer3_180750[i]->id_9 <= 47 || SoundBuffer3_180750[i]->id_9 == 49))
+			if (SoundBuffer3_180750[i]->loop_count_12 == 0)
 				continue;
-			}
 
 			if (SoundBuffer3_180750[i]->volume_16 != SoundBuffer3_180750[i]->target_volume_6)
 			{
