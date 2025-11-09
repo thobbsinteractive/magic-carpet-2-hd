@@ -4,7 +4,6 @@
     "dependencies": [
 		"rapidjson",
 		"spdlog",
-		"freetype",
 		"sdl2",
 		"sdl2-mixer",
 		"sdl2-image",
