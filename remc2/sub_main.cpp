@@ -46056,7 +46056,7 @@ void PlayEntitySounds_6E150()//24f150
 					if (EntitySounds_F4FE0[i].volume_2 == 512)
 						AilEndAllSamples_8F420(0, i);
 				    else
-						PlaySample_8F100(0, i, (signed int)EntitySounds_F4FE0[i].volume_2 >> 8, 64, 0x64u, -1, IfNotPlayingPlaySample);
+						PlaySample_8F100(0, i, (signed int)EntitySounds_F4FE0[i].volume_2 >> 8, 64, 0x64u, 0, IfNotPlayingPlaySample);
 					EntitySounds_F4FE0[i].playRate_5 = 2;
 					EntitySounds_F4FE0[i].playType_0 = 0;
 				break;
