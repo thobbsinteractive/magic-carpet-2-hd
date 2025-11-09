@@ -34,7 +34,7 @@ jobs:
         
     - name: Restore vcpkg packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: vcpkg integrate install
+      run: vcpkg install
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
