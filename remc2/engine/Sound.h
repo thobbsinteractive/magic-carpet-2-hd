@@ -79,7 +79,7 @@ bool InitMusicBank_8EAD0(int channel);
 void GetMusicSequenceCount();
 bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber);
 int sub_8F0AB(FILE* a1, int a3);
-void PlaySample_8F100(uint32_t a1, int16_t wavIndex, int volume, int volumePan, uint16_t playRate, uint8_t loopCount, uint8_t playType);
+void PlaySample_8F100(uint32_t a1, int16_t wavIndex, int volume, int volumePan, uint16_t playRate, int8_t loopCount, uint8_t playType);
 void AilEndAllSamples_8F420(int flags, __int16 wavIndex);
 void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale);
 int32_t StopTimer_8F850(uint32_t interval);

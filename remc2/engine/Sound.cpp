@@ -5251,7 +5251,7 @@ int sub_8F0AB(FILE* a1, /*int a2,*/ int a3)//26f0ab
 }
 
 //----- (0008F100) --------------------------------------------------------
-void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePan, uint16_t playRate, uint8_t loopCount, uint8_t playType)//270100
+void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePan, uint16_t playRate, int8_t loopCount, uint8_t playType)//270100
 {
 	bool foundExisting = false; // [esp+0h] [ebp-18h]
 
