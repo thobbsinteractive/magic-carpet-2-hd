@@ -5852,7 +5852,7 @@ LABEL_29:
 	{
 		if ((unsigned __int16)wavIndex < 0x20u)
 		{
-			if (wavIndex != 7)
+			if (wavIndex != Caveman_7)
 				goto LABEL_46;
 			goto LABEL_45;
 		}
