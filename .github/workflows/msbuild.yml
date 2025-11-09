@@ -34,7 +34,7 @@ jobs:
         
     - name: Restore vcpkg packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: vcpkg install
+      run: vcpkg install rapidjson spdlog libvorbis libogg libpng sdl2 sdl2-ttf sdl2-mixer libadlmidi boost-config boost-asio boost-system
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
