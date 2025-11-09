@@ -4,6 +4,7 @@
     "dependencies": [
 		"rapidjson",
 		"spdlog",
+		"freetype",
 		"libvorbis",
 		"libogg",
 		"libpng",
