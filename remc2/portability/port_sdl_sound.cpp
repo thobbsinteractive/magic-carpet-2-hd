@@ -545,6 +545,10 @@ void SOUND_start_sample(HSAMPLE S) {
 	GameChunks[S->channel].volume = S->volume_16;
 	GameChunkHSamples[S->channel] = S;
 
+	float percentage = (float)S->playback_rate_15 / (float)22050;
+	if (percentage != 1.0f)
+		SOUND_ChangeSamplePlaybackRate(S, percentage);
+
 	Mix_PlayChannel(S->channel, &GameChunks[S->channel], S->loop_count_12);
 	Mix_ChannelFinished(ChannelFinished);
 
@@ -678,6 +682,8 @@ int run();
 
 bool init_sound()
 {
+	ActiveAudioEffects.resize(10);
+
 	//run();
 	//#define MUSIC_MID_FLUIDSYNTH
 	//Initialize SDL_mixer
@@ -722,10 +728,37 @@ Mix_HookMusicFinished(void (SDLCALL *music_finished)(void));
 	return true;
 }
 
+void SOUND_ChangeSamplePlaybackRate(HSAMPLE S, float percent)
+{
+	if (hqsound)
+		RegisterEffect(S->channel, &GameChunks[S->channel], percent, 44100, 2, AUDIO_S16);
+	else
+		RegisterEffect(S->channel, &GameChunks[S->channel], percent, 22050, 2, AUDIO_U8);
+}
+
+void RegisterEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format)
+{
+	Logger->debug("Attempting to register effect on channel {}", channel);
+	if (ActiveAudioEffects[channel].effect != nullptr) { return; }
+
+	switch (format)
+	{
+		case AUDIO_U16: LoadAudioEffect<uint16_t>(channel, chunk, speed, frequency, channels, format); break;
+		case AUDIO_S16: LoadAudioEffect<int16_t>(channel, chunk, speed, frequency, channels, format); break;
+		case AUDIO_S32: LoadAudioEffect<int32_t>(channel, chunk, speed, frequency, channels, format); break;
+		case AUDIO_F32: LoadAudioEffect<float>(channel, chunk, speed, frequency, channels, format); break;
+	}
+}
+
+template <typename T>
+void LoadAudioEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format)
+{
+	ActiveAudioEffects[channel].effect = new SfxEffectWrapper<T>(chunk, speed, frequency, channels, format);
+	Mix_RegisterEffect(channel, SfxEffectWrapper<T>::EffectModifierCallback, SfxEffectWrapper<T>::EffectDoneCallback, nullptr);
+}
+
 AIL_DRIVER* ac_AIL_API_install_driver(int  /*a1*/, uint8_t*  /*a2*/, int  /*a3*/)/*driver_image,n_bytes*///27f720
 {
-
-
 	//printf("drvr:%08X, fn:%08X, in:%08X, out:%08X\n", drvr, fn, in, out);
 	return 0;
 }
