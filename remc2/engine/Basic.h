@@ -498,6 +498,10 @@ extern type_TMAPS00TAB_BEGIN_BUFFER* str_TMAPS00TAB_BEGIN_BUFFER;
 
 extern uint8_t* Zero_pointer;
 
+extern int GameTimerTick_17DB54; // weak
+
+extern uint32_t PitFrequency_F4240;
+
 bool DefaultResolutions();
 bool IsDefaultResolution(int width, int height);
 
