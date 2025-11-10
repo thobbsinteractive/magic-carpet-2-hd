@@ -682,7 +682,7 @@ int run();
 
 bool init_sound()
 {
-	ActiveAudioEffects.resize(maxSimultaniousSounds);
+	ActiveAudioEffects.resize(10);
 
 	//run();
 	//#define MUSIC_MID_FLUIDSYNTH
