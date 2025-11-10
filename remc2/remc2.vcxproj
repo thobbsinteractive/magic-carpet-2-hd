@@ -385,6 +385,7 @@
     <ClInclude Include="portability\port_net.h" />
     <ClInclude Include="portability\port_sdl_joystick.h" />
     <ClInclude Include="portability\port_show_perifery.h" />
+    <ClInclude Include="portability\SfxEffectWrapper.h" />
     <ClInclude Include="utilities\BitmapIO.h" />
     <ClInclude Include="utilities\DataFileIO.h" />
     <ClInclude Include="utilities\StateMonitor.h" />

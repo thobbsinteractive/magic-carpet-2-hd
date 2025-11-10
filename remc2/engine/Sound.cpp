@@ -5951,10 +5951,7 @@ LABEL_46:
 			EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
 			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
 			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
-			if (MaxSoundBufferChannels_E3794 > 10)
-				EntitySounds_F4FE0[wavIndex].playType_0 = 2;
-			else
-				EntitySounds_F4FE0[wavIndex].playType_0 = 3;
+			EntitySounds_F4FE0[wavIndex].playType_0 = 3;
 			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
 		}
 		break;
