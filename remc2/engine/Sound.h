@@ -2,18 +2,19 @@
 
 #include "ail_sound.h"
 #include "Basic.h"
+#include "WavIndexes.h"
 #include "../utilities/Wave.h"
 #include "../engine/CommandLineParser.h"
 #include "../portability/port_show_perifery.h"
 
 #pragma pack (1)
 typedef struct {//lenght 12
-	int16_t word_0;
-	int16_t word_1;
-	int16_t word_2;
-	int16_t word_3;
+	int16_t playType_0;
+	int16_t volumePan_1;
+	int16_t volume_2;
+	int16_t flags_3;
 	int16_t word_4;
-	int16_t word_5;
+	int16_t playRate_5;
 }type_F4FE0;
 
 typedef struct {
@@ -33,7 +34,7 @@ extern __int16 m_iNumberOfTracks;
 extern int x_DWORD_E387C;
 extern int8_t soundActiveL_E2A14;
 extern int8_t soundActiveH_E2A14;
-extern __int16 soundFreqType_E37B6;
+extern __int16 SoundNumber_E37B6;
 extern bool autoScanForSoundHardware_E379B;
 extern __int16 x_WORD_E3828;
 extern int x_DWORD_E3824;
@@ -49,13 +50,21 @@ extern type_E3808_music_header* musicHeader_E3808;
 extern char musicDriverType_180C84;
 extern int16_t x_WORD_181B44;
 extern char x_BYTE_E2A28_speek; // weak
-extern type_F4FE0 str_F4FE0[70];
+extern type_F4FE0 EntitySounds_F4FE0[70];
 
 extern uint8_t* x_DWORD_182188[];
 extern uint8_t* x_DWORD_1821A0[];
 extern uint8_t* x_DWORD_1821B8[];
 extern uint8_t* x_DWORD_1821D0[];
 extern uint8_t* x_DWORD_1821E8[];
+
+const uint32_t AilSampleLoaded = 1;
+const uint32_t AilSampleStopped = 2;
+const uint32_t AilSampleStarted = 4;
+
+const uint8_t AlwaysPlaySample = 1;
+const uint8_t IfNotPlayingPlaySample = 2;
+const uint8_t RestartOrIfNotExistingPlaySample = 3;
 
 void InitSound_8D290();
 void sub_8D800_sound_proc2();
@@ -70,10 +79,10 @@ bool InitMusicBank_8EAD0(int channel);
 void GetMusicSequenceCount();
 bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber);
 int sub_8F0AB(FILE* a1, int a3);
-void sub_8F100_sound_proc19(uint32_t a1, __int16 index, int volume, int a4, unsigned __int16 a5, char a6, unsigned __int8 a7);
-void sub_8F420_sound_proc20(int a1, __int16 a2);
-void sub_8F710_sound_proc21(int flags, __int16 index, int loopCount, unsigned __int8 initTimers, char volScale);
-void StopTimer_8F850();
+void PlaySample_8F100(uint32_t a1, int16_t wavIndex, int volume, int volumePan, uint16_t playRate, int8_t loopCount, uint8_t playType);
+void AilEndAllSamples_8F420(int flags, __int16 wavIndex);
+void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale);
+int32_t StopTimer_8F850(uint32_t interval);
 void InitSoundAndMusic_90FD0();
 void InitAWE32orMPU401_91010();
 void sub_91420();
@@ -104,6 +113,20 @@ void AilInitSample_93830(HSAMPLE sample);
 int32_t AilSetSampleFile_938C0(HSAMPLE S, uint8_t* pWaveData, int32_t block);
 void AilSetSampleAddress_93A10(HSAMPLE S, uint8_t* start, uint32_t len);
 void AilStartSample_93B50(HSAMPLE S);
+
+int AilRegisterTimer_92600(uint32_t(*callback)(uint32_t));
+int RegisterTimer_A16AE(uint32_t(*callback)(uint32_t));
+void AilSetTimerFrequency_92930(int timerIdx, unsigned long hertz);
+void AilSetTimerPeriod_A1840(int timerIdx, unsigned long hertz);
+void AilSetTimerPeriod_92890(int timerIdx, unsigned long microseconds);
+void SetTimerPeriod_A1810(int timerIdx, unsigned long microseconds);
+void AilStartTimer_92BA0(int timerIdx);
+void StartTimer_A1768(int timerIdx);
+void AilReleaseTimer_92DC0(int timerIdx);
+void ReleaseTimer_A171D(int timerIdx);
+uint32_t FadeSamples_8F4B0(uint32_t interval);
+uint32_t SimpleTimer_46820(uint32_t interval);
+
 void AilEndSample_93D00(HSAMPLE S);
 void AilSetSamplePlaybackRate_93D90(HSAMPLE S, int32_t playback_rate);
 void AilSetSampleVolume_93E30(HSAMPLE S, int32_t volume);
@@ -143,6 +166,8 @@ int AilApiUninstallDriver_9EA60(AIL_DRIVER* ailDriver);
 IO_PARMS* AilApiGetIoEnvironment_9EB60(AIL_DRIVER* drvr);
 void sub_9EC30();
 void UninstallDrivers_9ED70();
+void AilReleaseAllTimers_92E50();
+void ReleaseAllTimers_A1744();
 int sub_9EE70();
 void sub_9F040();
 void sub_9FA80();
@@ -155,7 +180,7 @@ VDI_CALL sub_9F5E0(HMDIDRIVER hMdiDriver, int a2, unsigned __int16 a3, unsigned 
 VDI_CALL sub_9F6D0(HMDIDRIVER hMdiDriver, __int16 a2);
 void PlusE3FF2_A0EEC();
 void MinusE3FF2_A0EF9();
-char sub_A102C(int a1);
+char SetProgrammableIntervalTimer_A102C(int a1);
 char sub_A105C(unsigned int a1);
 void sub_A108F();
 void sub_A10F4_sound_proc_irq();
@@ -174,7 +199,7 @@ void InitSampleVolume_A2110(HSAMPLE S);
 bool sub_A2650(HDIGDRIVER digDriver);
 int InitEnvs_A2C80(HDIGDRIVER a1, IO_PARMS* a2);
 int sub_A2DE0();
-HDIGDRIVER sub_A2EA0(AIL_DRIVER* a1, IO_PARMS IO);
+HDIGDRIVER CreateDigDriver_A2EA0(AIL_DRIVER* a1, IO_PARMS IO);
 int sub_A37A0(HDIGDRIVER a1);
 HSAMPLE sub_A3820_allocate_sample_handle(HDIGDRIVER dig);
 void InitSample_A38E0(HSAMPLE S);
@@ -220,7 +245,7 @@ int32_t sub_A7990_AIL_API_MDI_driver_type(HMDIDRIVER mdi);
 void AilApiSetGTLFilenamePrefix_A7AA0(char* samplePath);
 HSEQUENCE AilApiAllocateSequenceHandle_A7B30(HMDIDRIVER mdi);
 void sub_A7BF0_sound_proc33(HSEQUENCE hSequence);
-int32_t AilApiInitSequence_A7C20(HSEQUENCE hSequence, void* start, int32_t sequence_num, uint32_t track);
+int32_t AilApiInitMusicSequence_A7C20(HSEQUENCE hSequence, void* start, int32_t sequence_num, uint32_t track);
 void AilApiStartSequence_A8010(HSEQUENCE hSequence, uint32_t track);
 void sub_A8050_AIL_API_stop_sequence(HSEQUENCE hSequence);
 void sub_A8180_AIL_API_resume_sequence(HSEQUENCE hSequence);
@@ -249,14 +274,14 @@ signed __int64 sub_9F110(int a1);
 int sub_9F170(int a1, unsigned __int16 a2);
 int sub_9F1D0(int a1);
 int sub_9F220(int a1);
-void sub_99970(char a1, unsigned __int8 a2);
+void UpdateMusic_99970(char a1, unsigned __int8 a2);
 signed int sub_99E8E(char* a1, char** a2, signed int a3, int a4);
 int sub_99FF5(unsigned __int8 a1);
 void SetSoundFreq_9A230(int a1);
 void WriteWaveToFile(wav_t* wav, const char* name);
 void AIL_fix();
 const char* mygetenv(const char* a1);
-void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3);
+void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex);
 void ChangeSoundLevel_19CA0(uint8_t option);
 int sub_582B0(__int16 a1, __int16 a2);
 int sub_582F0(int a1, __int16 a2);

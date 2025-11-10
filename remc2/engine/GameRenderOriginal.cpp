@@ -1054,7 +1054,7 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 				v37 = 0;
 				if (!mapTerrainType_10B4E0[v36])
 				{
-					v38 = 32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248;
+					v38 = 32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248;
 					v37 = (Maths::sin_DB750[(v38 + (HIBYTE(v279) << 7)) & 0x7FF] >> 8)
 						* (Maths::sin_DB750[(((unsigned __int8)v279 << 7) + v38) & 0x7FF] >> 8);
 					Str_E9C38_smalltit[v278x].alt_4 -= v37 >> 13;
@@ -1553,7 +1553,7 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 				Str_E9C38_smalltit[v278x].pnt1_16 = str_F2C20ar.dword0x18 * Str_E9C38_smalltit[v278x].x_0 / v109;
 				v111 = v279;
 				Str_E9C38_smalltit[v278x].alt_4 = 32 * mapHeightmap_11B4E0[v279] - posZ;
-				v112 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6;
+				v112 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 << 6;
 				v248x[26] = Maths::sin_DB750[(v112 + (HIBYTE(v279) << 7)) & 0x7FF] >> 8;
 				v113 = v248x[26] * (Maths::sin_DB750[(((unsigned __int8)v279 << 7) + v112) & 0x7FF] >> 8);
 				v248x[26] = mapHeightmap_11B4E0[v111];
@@ -1642,7 +1642,7 @@ LABEL_259:
 		v200 = v279;
 		Str_E9C38_smalltit[v278x].pnt1_16 = str_F2C20ar.dword0x18 * Str_E9C38_smalltit[v278x].x_0 / v198;
 		Str_E9C38_smalltit[v278x].alt_4 = 32 * mapHeightmap_11B4E0[v200] - posZ;
-		v201 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6;
+		v201 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 << 6;
 		v248x[26] = Maths::sin_DB750[(v201 + (HIBYTE(v279) << 7)) & 0x7FF] >> 8;
 		v202 = v248x[26] * (Maths::sin_DB750[(((unsigned __int8)v279 << 7) + v201) & 0x7FF] >> 8);
 		if (!(mapAngle_13B4E0[v200] & 8) || (Str_E9C38_smalltit[v278x].alt_4 -= v202 >> 10, v197 >= 14464))

@@ -39,10 +39,12 @@ ALint source_state[32];
 ALuint alSource[32];      //source
 ALuint alSampleSet[32];
 #endif//SOUND_OPENAL
-Mix_Chunk gamechunk[32];
-HSAMPLE gamechunkHSAMPLE[32];
+std::map<int, Mix_Chunk> GameChunks = std::map<int, Mix_Chunk>();
+std::map<int, HSAMPLE> GameChunkHSamples = std::map<int, HSAMPLE>();
 
 uint8_t sound_buffer[4][20000];
+
+std::vector<Mix_Timer> Timers = std::vector<Mix_Timer>();
 /*
 10
 29
@@ -461,12 +463,14 @@ int32_t ac_sound_call_driver(AIL_DRIVER* drvr, int32_t fn, VDI_CALL* out) {
 };
 
 void SOUND_set_master_volume(int32_t volume) {
-	//gamechunk[S->index_sample].volume = volume;
+	//gamechunk[S->channel].volume = volume;
 #ifdef SOUND_SDLMIXER
 	master_volume = volume;
 
-	for (int i = 0; i < 32; i++)
-		Mix_Volume(i, (int)((gamechunk[i].volume * master_volume) / 127));
+	for (auto gameChunk : GameChunks)
+	{
+		Mix_Volume(gameChunk.first, (int)((gameChunk.second.volume * master_volume) / 127));
+	}
 #endif//SOUND_SDLMIXER
 
 	//may be can fix - must analyze
@@ -477,14 +481,24 @@ void SOUND_set_sample_volume(HSAMPLE S, int32_t volume) {
 #ifdef SOUND_SDLMIXER
 	if (master_volume == -1)
 		master_volume = 127;
-	gamechunk[S->index_sample].volume = volume;
-	Mix_Volume(S->index_sample, (int)((gamechunk[S->index_sample].volume * master_volume) / 127));
+
+	GameChunks[S->channel].volume = volume;
+	Mix_Volume(S->channel, (int)((GameChunks[S->channel].volume * master_volume) / 127));
 #endif//SOUND_SDLMIXER
+}
+
+void SOUND_set_sample_volume_panning(HSAMPLE S, int32_t panning) {
+	
+	auto left = uint8_t(255.0f * ((float)(127 - panning) / 127));// * masterPercent);
+	auto right = uint8_t(255.0f * ((float)panning / 127));// * masterPercent);
+
+	Mix_SetPanning(S->channel, left, right);
 }
 
 void SOUND_start_sample(HSAMPLE S) {
 	if (unitTests)return;
 #ifdef SOUND_SDLMIXER
+
 	if (hqsound)
 	{
 		/*
@@ -508,11 +522,11 @@ void SOUND_start_sample(HSAMPLE S) {
 		// read your float32 data into cvt.buf here.
 		SDL_ConvertAudio(&cvt);*/
 
-		gamechunk[S->index_sample].abuf = /*sample->abuf;//*/ (uint8_t*)S->start_44mhz;
+		GameChunks[S->channel].abuf = /*sample->abuf;//*/ (uint8_t*)S->start_44mhz;
 		if (fixspeedsound)
-			gamechunk[S->index_sample].alen = /*sample->alen;//*/S->len_4_5[0] * 16;
+			GameChunks[S->channel].alen = /*sample->alen;//*/S->len_4_5[0] * 16;
 		else
-			gamechunk[S->index_sample].alen = /*sample->alen;//*/S->len_4_5[0] * 8;
+			GameChunks[S->channel].alen = /*sample->alen;//*/S->len_4_5[0] * 8;
 			if (debug_first_sound) {
 				Logger->trace("SOUND_start_sample-hq:{}", S->start_44mhz);
 				debug_first_sound = false;
@@ -524,38 +538,49 @@ void SOUND_start_sample(HSAMPLE S) {
 			Logger->trace("SOUND_start_sample:{}", S->start_44mhz);
 			debug_first_sound = false;
 		}
-		gamechunk[S->index_sample].abuf = (uint8_t*)S->start_2_3[0];
-		gamechunk[S->index_sample].alen = S->len_4_5[0];
+		GameChunks[S->channel].abuf = (uint8_t*)S->start_2_3[0];
+		GameChunks[S->channel].alen = S->len_4_5[0];
 	}
 	
-	gamechunk[S->index_sample].volume = S->volume_16;
-	gamechunkHSAMPLE[S->index_sample] = S;
+	GameChunks[S->channel].volume = S->volume_16;
+	GameChunkHSamples[S->channel] = S;
 
-	Mix_PlayChannel(S->index_sample, &gamechunk[S->index_sample], 0);
+	Mix_PlayChannel(S->channel, &GameChunks[S->channel], S->loop_count_12);
+	Mix_ChannelFinished(ChannelFinished);
+
 #endif//SOUND_SDLMIXER
 #ifdef SOUND_OPENAL
 	//sound_load_wav((char*)S->start_44mhz, sizeof(S->start_44mhz));
 	if (hqsound)
 	{
-		gamechunk[S->index_sample].abuf = (uint8_t*)S->start_44mhz;
-		gamechunk[S->index_sample].alen = S->len_4_5[0] * 4;
+		gamechunk[S->channel].abuf = (uint8_t*)S->start_44mhz;
+		gamechunk[S->channel].alen = S->len_4_5[0] * 4;
 	}
 	else
 	{
-		gamechunk[S->index_sample].abuf = (uint8_t*)S->start_2_3[0];
-		gamechunk[S->index_sample].alen = S->len_4_5[0];
+		gamechunk[S->channel].abuf = (uint8_t*)S->start_2_3[0];
+		gamechunk[S->channel].alen = S->len_4_5[0];
 	}
 
-	gamechunk[S->index_sample].volume = S->volume_16;
-	gamechunkHSAMPLE[S->index_sample] = S;
-	ALSOUND_play(S->index_sample,&gamechunk[S->index_sample],0);
+	gamechunk[S->channel].volume = S->volume_16;
+	gamechunkHSAMPLE[S->channel] = S;
+	ALSOUND_play(S->channel,&gamechunk[S->channel],0);
 #endif//SOUND_OPENAL
 };
 
+void ChannelFinished(int channel)
+{
+	if (GameChunkHSamples.count(channel) > 0)
+	{
+		GameChunkHSamples[channel]->status_1 = 2;
+	}
+}
+
 uint32_t SOUND_sample_status(HSAMPLE S) {
 	if (unitTests)return 0;
+	
 #ifdef SOUND_SDLMIXER
-	if (Mix_Playing(S->index_sample)==0)return 2;
+	if (Mix_Playing(S->channel)==0) return 2;
 #endif//SOUND_SDLMIXER
 #ifdef SOUND_OPENAL
 	return 2;
@@ -563,16 +588,77 @@ uint32_t SOUND_sample_status(HSAMPLE S) {
 	return 0;
 }
 
-void SOUND_end_sample(HSAMPLE  /*S*/) {
+void SOUND_RegisterTimer(int timerIdx, uint32_t(*callback)(uint32_t))
+{
+	auto timer = Mix_Timer();
+	timer.Id = timerIdx;
+	timer.Callback = (SDL_TimerCallback)callback;
+	Timers.push_back(timer);
+}
+
+void SOUND_SetTimerPeriod(int timerIdx, uint32_t intervalMs)
+{
+	for (int i = 0; i < Timers.size(); i++)
+	{
+		if (Timers[i].Id == timerIdx)
+		{
+			Timers[i].IntervalMs = intervalMs;
+			break;
+		}
+	}
+}
+
+void SOUND_StartTimer(int timerIdx)
+{
+	for (int i = 0; i < Timers.size(); i++)
+	{
+		if (Timers[i].Id == timerIdx)
+		{
+			Timers[i].SdlId = SDL_AddTimer(Timers[i].IntervalMs, Timers[i].Callback, nullptr);
+			break;
+		}
+	}
+}
+
+void SOUND_StopTimer(int timerIdx)
+{
+	int idxToDelete = -1;
+	for (int i = 0; i < Timers.size(); i++)
+	{
+		if (Timers[i].Id == timerIdx)
+		{
+			SDL_RemoveTimer(Timers[i].SdlId);
+			idxToDelete = i;
+			break;
+		}
+	}
+	if (idxToDelete > -1)
+		Timers.erase(Timers.begin() + idxToDelete);
+}
+
+void SOUND_end_sample(HSAMPLE S) {
 #ifdef SOUND_SDLMIXER
-	Mix_HaltChannel(-1);
+	Mix_HaltChannel(S->channel);
+
+	if (GameChunks.count(S->channel) == 0)
+		return;
+
+	GameChunks.erase(S->channel);
+	GameChunkHSamples.erase(S->channel);
+
 #endif//SOUND_SDLMIXER
 };
 
 void SOUND_finalize(int channel) {
-	HSAMPLE S = gamechunkHSAMPLE[channel];
+
+	if (GameChunks.count(channel) == 0)
+		return;
+
+	HSAMPLE S = GameChunkHSamples[channel];
 	if (S)
 	{
+		S->channel = -1;
+
 		if (S->status_1 != 1)
 		{
 			if (S->status_1 != 2)
@@ -581,6 +667,7 @@ void SOUND_finalize(int channel) {
 			}
 		}
 		S->vol_scale_18[0][0] = 0;
+		S->id_9 = 0;
 		S->flags_14 = 0;
 		S->vol_scale_18[0][2] = 0;
 		S->vol_scale_18[0][3] = 0;
