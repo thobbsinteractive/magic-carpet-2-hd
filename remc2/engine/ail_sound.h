@@ -92,8 +92,12 @@ struct _DIG_DRIVER* driver_0;//0
 uint32_t status_1=0;//4
 void* start_2_3[2];//8
 uint32_t len_4_5[2];
-uint32_t pos_6_7[2];            // Index to next byte (R/W)
-uint32_t done_8_9[2];            // Nonzero if buffer with len=0 sent by app
+//uint32_t pos_6_7[2];            // Index to next byte (R/W)
+uint32_t target_volume_6 = 0;
+uint32_t pos_7 = 0;
+//uint32_t done_8_9[2];            // Nonzero if buffer with len=0 sent by app
+uint32_t done_8;
+int32_t id_9; // Games index for sample
 
 int32_t current_buffer_10;      // Buffer # active (0/1)
 int32_t last_buffer_11;         // Last active buffer (for double-buffering)
@@ -114,7 +118,7 @@ int32_t vol_scale_18[2][256];
 EOS_callback_type sam_var532_EOS_ptr;
 int32_t sam_var[1000];
    uint8_t* sam_var542;
-   int index_sample = -1;
+   int channel = -1;
 
    void* start_44mhz;//8
    uint8_t mark44mark[sample_mark];

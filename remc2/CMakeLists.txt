@@ -76,6 +76,7 @@ set(SOURCE_FILES_ENGINE
     "engine/RenderThread.h"
     "engine/Sound.cpp"
     "engine/Sound.h"
+    "engine/WavIndexes.h"
     "engine/Terrain.cpp"
     "engine/Terrain.h"
     "engine/TextureMaps.cpp"

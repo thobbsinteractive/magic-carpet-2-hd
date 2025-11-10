@@ -2818,10 +2818,10 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 				 void sub_59760(uint8_t* a1, uint8_t* a2)//23a760
 				 void sub_59820()//23a820
 
-				 int sub_59A50_sound_proc8()//23aa50
+				 int FadeDownSoundVolume_59A50()//23aa50
 				 void sub_59AF0_sound_proc9()//23aaf0
-				 void sub_59B50_sound_proc10(HMDIDRIVER user)//23ab50
-				 void sub_59BF0_sound_proc11_volume()//23abf0
+				 void FadeUpSound_59B50(HMDIDRIVER user)//23ab50
+				 void RestoreSoundVolume_59BF0()//23abf0
 				 */
 
 	case 0x23ac40: {
@@ -3879,7 +3879,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 	}
 
 	case 0x24f150: {
-		sub_6E150();
+		PlayEntitySounds_6E150();
 		break;
 	}
 	case 0x24f450: {
@@ -3910,7 +3910,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_6EAB0((int)a1_6E8E, 0, 0);
+		EndLoop_6EAB0((int)a1_6E8E, 0, 0);
 		allert_error();
 #endif
 		break;

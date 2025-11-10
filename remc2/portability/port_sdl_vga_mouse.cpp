@@ -125,7 +125,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 		m_iWindowHeight = windowHeight;
 
 		//Initialize SDL
-		if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
 		{
 			Logger->error("SDL could not initialize! SDL_Error: {}", SDL_GetError());
 			exit(0);

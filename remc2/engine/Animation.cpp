@@ -33,8 +33,6 @@ uint32_t x_DWORD_17D720[4]; // weak 0
 uint16_t x_WORD_17D724; // weak 4
 uint16_t x_WORD_17D726; // weak 6
 
-int x_DWORD_17DB54_game_turn2; // weak
-
 char x_BYTE_17D738[256]; // idb
 
 __int16 x_WORD_E12FE = 0; // weak
@@ -126,13 +124,14 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 			break;
 		case 'F':
 		case 'f':
+			//Stop loop
 			if (soundAble_E3798)
-				sub_8F710_sound_proc21(0, pSoundEvent[x_WORD_D4004].index, 0, 4u, 1);
+				Update_Playing_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0, 4u, 1);
 			break;
 		case 'H':
 		case 'h':
 			if (soundAble_E3798)
-				sub_8F100_sound_proc19(0, pSoundEvent[x_WORD_D4004].index, 0, 64, 0x64u, -1, 2u);
+				PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			break;
 		case 'K':
 		case 'W':
@@ -152,13 +151,15 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 			break;
 		case 'O':
 		case 'o':
+			//Materialisation Sound
 			if (soundAble_E3798)
-				sub_8F710_sound_proc21(0, pSoundEvent[x_WORD_D4004].index, 0x7Fu, 2u, 0);
+				Update_Playing_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x7Fu, 2u, 0);
 			break;
 		case 'P':
 		case 'p':
+			//People Sound
 			if (soundAble_E3798)
-				sub_8F710_sound_proc21(0, pSoundEvent[x_WORD_D4004].index, 0x50u, 2u, 0);
+				Update_Playing_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x50u, 2u, 0);
 			break;
 		case 'Q':
 			sub_2EBB0_draw_text_with_border_630x340(x_DWORD_E9C4C_langindexbuffer[pSoundEvent[x_WORD_D4004].index]);
@@ -166,14 +167,14 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 'R':
 		case 'r':
 			if (soundAble_E3798)
-				sub_8F100_sound_proc19(0, pSoundEvent[x_WORD_D4004].index, 127, 64, 0x64u, -1, 2u);
+				PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 127, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			break;
 		case 'S':
 		case 's':
 			if (soundAble_E3798)
 			{
 				if (pSoundEvent[x_WORD_D4004].index)
-					sub_8F100_sound_proc19(0, pSoundEvent[x_WORD_D4004].index, 127, 64, 0x64u, 0, 2u);
+					PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 127, 64, 0x64u, 0, IfNotPlayingPlaySample);
 				else
 					EndSample_8D8F0();
 			}
@@ -183,7 +184,7 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 			if (soundAble_E3798)
 			{
 				if (pSoundEvent[x_WORD_D4004].index)
-					sub_8F420_sound_proc20(0, pSoundEvent[x_WORD_D4004].index);
+					AilEndAllSamples_8F420(0, pSoundEvent[x_WORD_D4004].index);
 				else
 					EndSample_8D8F0();
 			}
@@ -251,11 +252,6 @@ void /*__fastcall*/ sub_75E70()//256e70
 	//int v21; // [esp+4h] [ebp-Ch]
 	uint8_t* v22; // [esp+8h] [ebp-8h]
 	char v23; // [esp+Ch] [ebp-4h]
-
-	//fix it
-	//v21 = 0;
-	x_DWORD_17DB54_game_turn2 = 0x40;
-	//fix it
 
 	//HIBYTE(a1) = 0;
 	v23 = 0;
@@ -597,7 +593,7 @@ void sub_75CB0()//256cb0
 	}
 	else
 	{
-		while (x_DWORD_17DB54_game_turn2 < x_DWORD_E3844)
+		while (GameTimerTick_17DB54 < x_DWORD_E3844)
 		{
 			if (x_WORD_E12FE && sub_473E0())
 			{
@@ -610,12 +606,12 @@ void sub_75CB0()//256cb0
 				return;
 			}
 		}
-		x_DWORD_17DB54_game_turn2 = 0;
+		GameTimerTick_17DB54 = 0;
 	}
 }
 // E12FE: using guessed type __int16 x_WORD_E12FE;
 // E3844: using guessed type int x_DWORD_E3844;
-// 17DB54: using guessed type int x_DWORD_17DB54_game_turn2;
+// 17DB54: using guessed type int GameTimerTick_17DB54;
 // 17DB5A: using guessed type __int16 x_WORD_17DB5A;
 // 17DB5C: using guessed type __int16 x_WORD_17DB5C;
 // 1806E4: using guessed type char x_BYTE_1806E4;
