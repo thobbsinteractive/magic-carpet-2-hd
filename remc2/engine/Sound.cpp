@@ -5791,7 +5791,7 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex)//2
 			return;
 		ptrEntity_v26x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 		flags_v29 = ptrEntity_v22x->id_0x1A_26;
-		v5 = Maths::sub_58490_radix_3d_2(&ptrEntity_v26x->position_0x4C_76, v4x);
+		v5 = Maths::EuclideanDistXYZ_58490(&ptrEntity_v26x->position_0x4C_76, v4x);
 		v25 = v5;
 		v23 = v5;
 		v6 = Maths::sub_581E0_maybe_tan2(&ptrEntity_v26x->position_0x4C_76, v4x);

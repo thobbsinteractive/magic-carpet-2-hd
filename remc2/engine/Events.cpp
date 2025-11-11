@@ -5508,7 +5508,7 @@ void sub_487D0(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	v11x.x = posX << 8;
 	v11x.y = posY << 8;
 	v5 = Maths::sub_581E0_maybe_tan2(&v8x, &v11x);
-	v6 = Maths::sub_58490_radix_3d_2(&v8x, &v11x);
+	v6 = Maths::EuclideanDistXYZ_58490(&v8x, &v11x);
 	resultx = IfSubtypeCallAxisEvent_4A190(&v8x, 10, 32);
 	if (resultx)
 	{
@@ -5538,7 +5538,7 @@ void sub_48880(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	v12x.x = posX << 8;
 	v12x.y = posY << 8;
 	v4 = Maths::sub_581E0_maybe_tan2(&v9x, &v12x);
-	v5 = Maths::sub_58490_radix_3d_2(&v9x, &v12x);
+	v5 = Maths::EuclideanDistXYZ_58490(&v9x, &v12x);
 	resultx = IfSubtypeCallAxisEvent_4A190(&v9x, 10, 51);
 	//v7x = resultx;
 	if (resultx)

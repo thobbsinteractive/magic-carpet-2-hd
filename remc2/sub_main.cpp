@@ -6931,7 +6931,7 @@ signed int sub_14C90(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, signed in
 	a1x->dword_0xA4_164x->word_0xe_14 = 0;
 	if (!a2x)
 	{
-		v4 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &a1x->word_0x9A_154x);
+		v4 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &a1x->word_0x9A_154x);
 		if (v4 > a3)
 		{
 			if (v4 > a4 && sub_15170(a1x, 3u))
@@ -6951,7 +6951,7 @@ signed int sub_14C90(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, signed in
 		a1x->dword_0xA4_164x->word_0xe_14 = 1;
 		return 1;
 	}
-	v6 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &a2x->position_0x4C_76);
+	v6 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &a2x->position_0x4C_76);
 	if (v6 <= a3)
 		goto LABEL_16;
 	if (v6 > a4 && sub_15170(a1x, 3u))
@@ -12993,7 +12993,7 @@ void sub_21030(type_entity_0x6E8E* a1x)//202030
 		if (a1x->word_0x2A_42 & 1)
 			goto LABEL_26;
 		a1x->dword_0x10_16--;
-		if ((signed int)Maths::sub_58490_radix_3d_2(&v1x->position_0x4C_76, &a1x->position_0x4C_76) < 0x2000 && a1x->dword_0x10_16 <= 0)
+		if ((signed int)Maths::EuclideanDistXYZ_58490(&v1x->position_0x4C_76, &a1x->position_0x4C_76) < 0x2000 && a1x->dword_0x10_16 <= 0)
 		{
 			a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 			if ((signed int)(a1x->rand_0x14_20 % 0xCu) < 9)
@@ -13267,7 +13267,7 @@ char sub_21490(type_entity_0x6E8E* a1x)//202490
 		}
 		else if (v1 & 0x40)
 		{
-			if (Maths::sub_58490_radix_3d_2(&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->position_0x4C_76,
+			if (Maths::EuclideanDistXYZ_58490(&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->position_0x4C_76,
 				&a1x->position_0x4C_76) >= 0xA00)
 			{
 				a1x->word_0x2A_42 &= 0xBFu;
@@ -13822,7 +13822,7 @@ char sub_21F60(type_entity_0x6E8E* a1x)//202f60
 		LABEL_19:
 			if (!v17)
 			{
-				if (Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &ix->position_0x4C_76) <= 0xC00)
+				if (Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &ix->position_0x4C_76) <= 0xC00)
 				{
 					v19 = 1;
 					v18 = 1;
@@ -16127,7 +16127,7 @@ void sub_24E20(type_entity_0x6E8E* a1x)//205e20
 			if ((x_BYTE)result == 1 && a1x->word_0x96_150)
 			{
 				v10x = Entities_EA3E4[a1x->word_0x96_150];
-				v11 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &v10x->position_0x4C_76);
+				v11 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &v10x->position_0x4C_76);
 				if (v11 < a1x->dword_0xA0_160x->word_160_0x1c_28)
 				{
 					sub_254E0(a1x, v10x, 4u);
@@ -17604,7 +17604,7 @@ void sub_26AA0(type_entity_0x6E8E* a1x)//207aa0
 		v5 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &v4x->position_0x4C_76);
 		v6 = a1x->byte_0x3E_62;
 		a1x->word_0x20_32 = v5;
-		if (v6 & 3 || Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &v4x->position_0x4C_76) > 0x100)
+		if (v6 & 3 || Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &v4x->position_0x4C_76) > 0x100)
 			goto LABEL_13;
 		if (a1x->mana_0x90_144 + v4x->mana_0x90_144 < v4x->maxMana_0x8C_140)
 		{
@@ -18399,7 +18399,7 @@ void sub_27950(type_entity_0x6E8E* event)//208950
 	{
 		v9x = &v5x->position_0x4C_76;
 		event->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&event->position_0x4C_76, &v5x->position_0x4C_76);
-		if ((signed int)Maths::sub_58490_radix_3d_2(&event->position_0x4C_76, v9x) < 768)
+		if ((signed int)Maths::EuclideanDistXYZ_58490(&event->position_0x4C_76, v9x) < 768)
 		{
 			v13 = 500;
 			v12 = 0;
@@ -18505,7 +18505,7 @@ void sub_27C10(type_entity_0x6E8E* a1x)//208c10
 			v7x = sub_28000(a1x);
 			if (v7x
 				&& (a1x->word_0x96_150 = v7x - D41A0_0.struct_0x6E8E,
-					(signed int)Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &v7x->position_0x4C_76) <= 3584))
+					(signed int)Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &v7x->position_0x4C_76) <= 3584))
 			{
 				sub_27FE0(a1x, 185, 0, 500);
 			}
@@ -18840,7 +18840,7 @@ char sub_28390(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//209390
 	char v3; // [esp+0h] [ebp-4h]
 
 	v3 = 1;
-	if ((signed int)Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &a2x->position_0x4C_76) > 128)
+	if ((signed int)Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &a2x->position_0x4C_76) > 128)
 	{
 		v3 = 0;
 		a1x->word_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &a2x->position_0x4C_76);
@@ -23356,7 +23356,7 @@ LABEL_8:
 						break;
 					v28x.x = LOBYTE(ix) << 8;
 					v28x.y = HIBYTE(ix) << 8;
-					v10 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &v28x);
+					v10 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &v28x);
 					if (v10 < v35 && v10 >= v43)
 					{
 						v11 = (v44 * ((x_DWORD)(0x10000 + (signed int)Maths::sin_DB750[0x200 + (v10 << 10) / v35]) >> 1) >> 16)
@@ -23719,7 +23719,7 @@ void sub_31940(type_entity_0x6E8E* a1x)//212940
 					break;
 				v31x.x = v9x._axis_2d.x << 8;
 				v31x.y = v9x._axis_2d.y << 8;
-				v11 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &v31x);
+				v11 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &v31x);
 				v33 = v11;
 				if (v11 < v6)
 				{
@@ -24624,7 +24624,7 @@ void sub_331A0(type_entity_0x6E8E* a1x)//2141a0
 		x_WORD_EB398ar = v7x->position_0x4C_76;
 		v4 = &resultx->position_0x4C_76;
 		v7x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&v7x->position_0x4C_76, &resultx->position_0x4C_76);
-		v5 = Maths::sub_58490_radix_3d_2(v4, &v7x->position_0x4C_76);
+		v5 = Maths::EuclideanDistXYZ_58490(v4, &v7x->position_0x4C_76);
 		v6 = 72 - 4 * (12 - v7x->word_0x2C_44);
 		if (v5 > v6)
 			MovePlayer_57FA0(&x_WORD_EB398ar, v7x->word_0x1C_28, 0, v5 - v6);
@@ -25542,7 +25542,7 @@ void sub_34540(type_entity_0x6E8E* a1x)//215540
 
 	v28 = (a1x->byte_0x46_70 >> 4 << 8) + 512;
 	v27 = ((a1x->byte_0x46_70 & 0xF) << 8) + 512;
-	v29 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &a1x->word_0x9A_154x) / 0x55;
+	v29 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &a1x->word_0x9A_154x) / 0x55;
 	v34 = (unsigned __int16)Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &a1x->word_0x9A_154x);
 	v33 = 0;
 	v25x = a1x->position_0x4C_76;
@@ -25910,7 +25910,7 @@ void sub_34C40(type_entity_0x6E8E* a1x)//215c40
 					v12x.x = (unsigned __int8)i << 8;
 					v12x.y = HIBYTE(i) << 8;
 					v16 = 0;
-					v8 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &v12x);
+					v8 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &v12x);
 					v15 = v8;
 					if (v8 < v7)
 					{
@@ -26079,7 +26079,7 @@ void sub_34EE0(/*signed int a1, int a2, */type_entity_0x6E8E* a3x)//215ee0
 				{
 					v28x.x = (unsigned __int8)i << 8;
 					v28x.y = HIBYTE(i) << 8;
-					v15 = Maths::sub_58490_radix_3d_2(&a3x->position_0x4C_76, &v28x);
+					v15 = Maths::EuclideanDistXYZ_58490(&a3x->position_0x4C_76, &v28x);
 					v31 = v15;
 					if (v15 < v35)
 					{
@@ -26548,7 +26548,7 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 				v10 = a1x->word_0x96_150;
 				a1x->word_0x2C_44 = 128;
 				a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &Entities_EA3E4[v10]->position_0x4C_76);
-				v11 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &Entities_EA3E4[a1x->word_0x96_150]->position_0x4C_76);
+				v11 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &Entities_EA3E4[a1x->word_0x96_150]->position_0x4C_76);
 				if (v11 <= 1024)
 				{
 					if (v11 >= 16)
@@ -26824,7 +26824,7 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 				v8 = a1x->word_0x96_150;
 				a1x->word_0x2C_44 = 128;
 				a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &Entities_EA3E4[v8]->position_0x4C_76);
-				v9 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &Entities_EA3E4[a1x->word_0x96_150]->position_0x4C_76);
+				v9 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &Entities_EA3E4[a1x->word_0x96_150]->position_0x4C_76);
 				if (v9 <= 1024)
 				{
 					if (v9 >= 16)
@@ -29075,7 +29075,7 @@ void sub_39040(type_entity_0x6E8E* a1x)//21a040
 						{
 							v40x.x = v8x._axis_2d.x << 8;
 							v40x.y = v8x._axis_2d.y << 8;
-							v9 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &v40x);
+							v9 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &v40x);
 							v48 = v9;
 							if (v9 < 3840)
 							{
@@ -29434,7 +29434,7 @@ unsigned __int8 sub_396D0(type_entity_0x6E8E* a1x)//21a6d0
 				{
 					v30x.x = (unsigned __int8)v10 << 8;
 					v30x.y = HIBYTE(v10) << 8;
-					v36 = Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &v30x);
+					v36 = Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &v30x);
 					if (v36 < 3840)
 					{
 						v11 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &v30x);
@@ -29555,7 +29555,7 @@ void sub_39B60(type_entity_0x6E8E* a1x)//21ab60
 						goto LABEL_35;
 					if (sub_39FA0(a1x, Entities_EA3E4[i]))
 					{
-						v3 = Maths::sub_58490_radix_3d_2(&v10x->position_0x4C_76, &a1x->position_0x4C_76);
+						v3 = Maths::EuclideanDistXYZ_58490(&v10x->position_0x4C_76, &a1x->position_0x4C_76);
 						v4 = a1x->word_0x2C_44;
 						v5 = v10x->position_0x4C_76.z - v4;
 						v14 = v10x->position_0x4C_76.z - v4;
@@ -57544,7 +57544,7 @@ int sub_68490(type_entity_0x6E8E* a1y, type_entity_0x6E8E* a2x, unsigned __int16
 		v14 = sub_582B0(a1y->word_0x1E_30, v7);
 		if (v14 <= a4)
 		{
-			v8 = Maths::sub_58490_radix_3d_2(&a1y->position_0x4C_76, &a2x->position_0x4C_76);
+			v8 = Maths::EuclideanDistXYZ_58490(&a1y->position_0x4C_76, &a2x->position_0x4C_76);
 			if (v8 <= 5120)
 			{
 				sub_655A0(a2x);
@@ -57600,7 +57600,7 @@ int sub_685D0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, unsigned __int16
 	v9 = sub_582B0(a1x->word_0x1E_30, v8);
 	if (v9 > a4)
 		return -1;
-	v10 = Maths::sub_58490_radix_3d_2(v5x, v4x);
+	v10 = Maths::EuclideanDistXYZ_58490(v5x, v4x);
 	if (v10 > 5120)
 		return -1;
 	v11 = v10 * (x_DWORD)Maths::sin_DB750[0x200 + v15];
@@ -63102,7 +63102,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 		if (!sub_5D0A0(a1x))
 			goto LABEL_51;
 		sub_57CF0(a1x, &x_WORD_EB398ar);
-		if (Maths::sub_58490_radix_3d_2(&a1x->position_0x4C_76, &v14x->position_0x4C_76) < 0x180)
+		if (Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &v14x->position_0x4C_76) < 0x180)
 			goto LABEL_51;
 		break;
 	case 8:
@@ -64416,7 +64416,7 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 				v4 = 2048;
 			else
 				v4 = 1024;
-			v5 = Maths::sub_58490_radix_3d_2(&x_WORD_EB398ar, &v16x->position_0x4C_76);
+			v5 = Maths::EuclideanDistXYZ_58490(&x_WORD_EB398ar, &v16x->position_0x4C_76);
 			if (v5 > v4)
 			{
 				v16x->struct_byte_0xc_12_15.byte[0] &= 0xBFu;
@@ -64447,7 +64447,7 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 			if (v3 == 3)
 			{
 				v7 = a1x->actSpeed_0x82_130 * v16x->dword_0x10_16;
-				if (Maths::sub_58490_radix_3d_2(&x_WORD_EB398ar, v2) <= v7)
+				if (Maths::EuclideanDistXYZ_58490(&x_WORD_EB398ar, v2) <= v7)
 				{
 					v8 = a1x->dword_0xA0_160x->word_160_0xc_12;
 					if (x_WORD_EB398ar.z <= v8 + (signed __int16)getTerrainAlt_10C40(&x_WORD_EB398ar) && v16x->dword_0x10_16 > 0)
