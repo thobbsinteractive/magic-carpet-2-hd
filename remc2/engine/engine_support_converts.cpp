@@ -421,7 +421,7 @@ void convert_struct_to_array_0x6E8E(type_entity_0x6E8E* input, uint8_t* output) 
 	memcpy(output + 73, &input->StageVar2_0x49_73, 1);
 	//int16_t word_0x4A_74;
 	memcpy(output + 74, &input->word_0x4A_74, 2);
-	//axis_3d array_0x4C_76;//position//ACTUAL X Y Z
+	//axis_3d position_0x4C_76;//position//ACTUAL X Y Z
 	//axis_4d array_0x54_82;
 	//int16_t word_0x5A_90;
 	memcpy(output + 90, &input->word_0x5A_90, 2);

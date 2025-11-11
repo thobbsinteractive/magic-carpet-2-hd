@@ -1621,9 +1621,9 @@ uint16_t GameRenderNG::sub_3FD60(int a2x)
 			v41x = v3x;
 			if (!(v3x->struct_byte_0xc_12_15.byte[0] & 0x21))
 			{
-				v4 = (signed __int16)(v3x->axis_0x4C_76.x - x_WORD_F2CC4);
-				v5 = (signed __int16)(x_WORD_F2CC2 - v3x->axis_0x4C_76.y);
-				v42 = -v3x->axis_0x4C_76.z - str_F2C20ar.dword0x20;
+				v4 = (signed __int16)(v3x->position_0x4C_76.x - x_WORD_F2CC4);
+				v5 = (signed __int16)(x_WORD_F2CC2 - v3x->position_0x4C_76.y);
+				v42 = -v3x->position_0x4C_76.z - str_F2C20ar.dword0x20;
 				v6 = (v4 * str_F2C20ar.dword0x0f - v5 * str_F2C20ar.dword0x17) >> 16;
 				v40 = (str_F2C20ar.dword0x17 * v4 + str_F2C20ar.dword0x0f * v5) >> 16;
 				v7 = (str_F2C20ar.dword0x17 * v4 + str_F2C20ar.dword0x0f * v5) >> 16;
@@ -2029,7 +2029,7 @@ LABEL_48:
 		else
 		{
 			v18 = 0;
-			v13 = Maths::sub_58490_radix_3d_2(&v4x->axis_0x4C_76, &a1x->axis_0x4C_76);
+			v13 = Maths::sub_58490_radix_3d_2(&v4x->position_0x4C_76, &a1x->position_0x4C_76);
 			if (!str_E2A74[v3].dword_12 || v13 < str_E2A74[v3].dword_20 && v13 > 1024)
 				v18 = 1;
 			if (v18)
@@ -2837,15 +2837,15 @@ void GameRenderNG::DrawSprites_3E360(int a2x)//21f360
 		str_F2C20ar.dword0x14x = v3x;
 		if (!(v3x->struct_byte_0xc_12_15.byte[0] & 0x21))
 		{
-			v4 = v3x->axis_0x4C_76.y;
-			v96 = (signed __int16)(v3x->axis_0x4C_76.x - x_WORD_F2CC4);
+			v4 = v3x->position_0x4C_76.y;
+			v96 = (signed __int16)(v3x->position_0x4C_76.x - x_WORD_F2CC4);
 			v97 = (signed __int16)(x_WORD_F2CC2 - v4);
 			if (shadows_F2CC7)
 			{
 				if (!Str_E9C38_smalltit[a2x].textAtyp_43 && !(v3x->struct_byte_0xc_12_15.word[1] & 0x808))
 				{
 					//adress 21f40c
-					v98 = sub_B5C60_getTerrainAlt2(v3x->axis_0x4C_76.x, v4) - str_F2C20ar.dword0x20;
+					v98 = sub_B5C60_getTerrainAlt2(v3x->position_0x4C_76.x, v4) - str_F2C20ar.dword0x20;
 					v5 = (str_F2C20ar.dword0x0f * v96 - str_F2C20ar.dword0x17 * v97) >> 16;
 					v99 = (str_F2C20ar.dword0x17 * v96 + str_F2C20ar.dword0x0f * v97) >> 16;
 					v6 = v99 * v99 + v5 * v5;
@@ -3137,9 +3137,9 @@ void GameRenderNG::DrawSprites_3E360(int a2x)//21f360
 				}
 			}
 			if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] >= 0)
-				v48 = str_F2C20ar.dword0x14x->axis_0x4C_76.z;
+				v48 = str_F2C20ar.dword0x14x->position_0x4C_76.z;
 			else
-				v48 = str_F2C20ar.dword0x14x->axis_0x4C_76.z - 160;
+				v48 = str_F2C20ar.dword0x14x->position_0x4C_76.z - 160;
 			v100 = (str_F2C20ar.dword0x17 * v96 + str_F2C20ar.dword0x0f * v97) >> 16;
 			v49 = (str_F2C20ar.dword0x0f * v96 - str_F2C20ar.dword0x17 * v97) >> 16;
 			if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] & 0x20)

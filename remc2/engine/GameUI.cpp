@@ -1126,13 +1126,13 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	//v17 = v80x->dword_0xA4_164;
 	if (v80x->dword_0xA4_164x->word_0x3A_58)
 	{
-		v18 = (int16_t)(v80x->axis_0x4C_76.x - posX);
-		v19 = (int16_t)(v80x->axis_0x4C_76.y - posY);
+		v18 = (int16_t)(v80x->position_0x4C_76.x - posX);
+		v19 = (int16_t)(v80x->position_0x4C_76.y - posY);
 		v20 = v82 + ((v18 * v73 - v19 * v86) >> 16);
 		v21 = ((v73 * v19 + v86 * v18) >> 16) + v76;
 		v22x = Entities_EA3E4[v80x->dword_0xA4_164x->word_0x3A_58];
-		v23 = (int16_t)(v22x->axis_0x4C_76.x - posX);
-		v24 = (int16_t)(v22x->axis_0x4C_76.y - posY);
+		v23 = (int16_t)(v22x->position_0x4C_76.x - posX);
+		v24 = (int16_t)(v22x->position_0x4C_76.y - posY);
 		v25 = v82 + ((v23 * v73 - v24 * v86) >> 16);
 		v26 = ((v73 * v24 + v86 * v23) >> 16) + v76;
 		v27 = v82 + ((v23 * v73 - v24 * v86) >> 16) - v20;
@@ -1452,8 +1452,8 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	LABEL_123:
 		if (v31)//adress 243207
 		{
-			v52 = (int16_t)(jy->axis_0x4C_76.x - posX);
-			v53 = (int16_t)(jy->axis_0x4C_76.y - posY);
+			v52 = (int16_t)(jy->position_0x4C_76.x - posX);
+			v53 = (int16_t)(jy->position_0x4C_76.y - posY);
 			posx = v82 + ((v52 * v73 - v53 * v86) >> 16);
 			if (posx >= 0 && posx < width)
 			{//24324e
@@ -1539,8 +1539,8 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 				{
 					if (sub_63570(v74x, Entities_EA3E4[v59]))
 					{
-						v61 = (int16_t)(v60x->axis_0x4C_76.x - posX);
-						v62 = (int16_t)(v60x->axis_0x4C_76.y - posY);
+						v61 = (int16_t)(v60x->position_0x4C_76.x - posX);
+						v62 = (int16_t)(v60x->position_0x4C_76.y - posY);
 						v63 = v82 + ((v61 * v73 - v62 * v86) >> 16);
 						if (v63 >= 0 && v63 < width)
 						{
@@ -1745,14 +1745,14 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	//v18 = v102x->dword_0xA4_164;
 	if (v102x->dword_0xA4_164x->word_0x3A_58)
 	{
-		v19 = (int16_t)(v102x->axis_0x4C_76.x - posX);
-		v20 = (int16_t)(v102x->axis_0x4C_76.y - posY);
+		v19 = (int16_t)(v102x->position_0x4C_76.x - posX);
+		v20 = (int16_t)(v102x->position_0x4C_76.y - posY);
 		v21 = v98 + ((v19 * v87 - v20 * v86) >> 16);
 		v22 = v87 * v20 + v86 * v19;
 		v23x = Entities_EA3E4[v102x->dword_0xA4_164x->word_0x3A_58];
 		v24 = (v22 >> 16) + v85;
-		v25 = (int16_t)(v23x->axis_0x4C_76.x - posX);
-		v26 = (int16_t)(v23x->axis_0x4C_76.y - posY);
+		v25 = (int16_t)(v23x->position_0x4C_76.x - posX);
+		v26 = (int16_t)(v23x->position_0x4C_76.y - posY);
 		v27 = v98 + ((v25 * v87 - v26 * v86) >> 16);
 		v28 = ((v86 * v25 + v87 * v26) >> 16) + v85;
 		v29 = v98 + ((v25 * v87 - v26 * v86) >> 16) - v21;
@@ -2047,8 +2047,8 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	LABEL_119:
 		if (v36)
 		{
-			v57 = (int16_t)(iy->axis_0x4C_76.x - posX);
-			v58 = (int16_t)(iy->axis_0x4C_76.y - posY);
+			v57 = (int16_t)(iy->position_0x4C_76.x - posX);
+			v58 = (int16_t)(iy->position_0x4C_76.y - posY);
 			v59 = v98 + ((v57 * v87 - v58 * v86) >> 16);
 			if (v59 >= 0 && v59 < width)
 			{
@@ -2149,8 +2149,8 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 				{
 					if (sub_63570(v90x, Entities_EA3E4[v65]))
 					{
-						v67 = (int16_t)(v66x->axis_0x4C_76.x - posX);
-						v68 = (int16_t)(v66x->axis_0x4C_76.y - posY);
+						v67 = (int16_t)(v66x->position_0x4C_76.x - posX);
+						v68 = (int16_t)(v66x->position_0x4C_76.y - posY);
 						v69 = v98 + ((v67 * v87 - v68 * v86) >> 16);
 						if (v69 >= 0 && v69 < width)
 						{
@@ -3088,8 +3088,8 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 		if (v81)
 		{
 			v36x = &v67x;
-			v16x = &v75x->axis_0x4C_76;
-			v17x = &v72x->axis_0x4C_76;
+			v16x = &v75x->position_0x4C_76;
+			v17x = &v72x->position_0x4C_76;
 			goto LABEL_47;
 		}
 		break;
@@ -3099,12 +3099,12 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 		if (sub_59610(&v72x, D41A0_0.LevelIndex_0xc))
 		{
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[3840];
-			v51x.v51y = v72x->axis_0x4C_76;
+			v51x.v51y = v72x->position_0x4C_76;
 			if (sub_64CE0_draw_follow_rectangle(&v51x))
 				sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
-			v36x = &v72x->axis_0x4C_76;
-			v17x = &v72x->axis_0x4C_76;
-			v16x = &v75x->axis_0x4C_76;
+			v36x = &v72x->position_0x4C_76;
+			v17x = &v72x->position_0x4C_76;
+			v16x = &v75x->position_0x4C_76;
 			v81 = 1;
 			goto LABEL_47;
 		}
@@ -3119,7 +3119,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				sub_885E0(0, v51x.v62xw_42, v51x.v63xw_44, 0x51u);
 			v36x = &v65y;
 			v17x = &v65y;
-			v16x = &v75x->axis_0x4C_76;
+			v16x = &v75x->position_0x4C_76;
 			v81 = 1;
 		LABEL_47:
 			v67x = *v17x;
@@ -3135,15 +3135,15 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			v72x = ix;
 			if (ix <= Entities_EA3E4[0])
 				break;
-			v51x.v51y = v72x->axis_0x4C_76;
+			v51x.v51y = v72x->position_0x4C_76;
 			if (sub_64CE0_draw_follow_rectangle(&v51x))
 				sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
-			v19 = Maths::sub_58490_radix_3d_2(&v75x->axis_0x4C_76, &v72x->axis_0x4C_76);
+			v19 = Maths::sub_58490_radix_3d_2(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 			if (v19 < v8)
 			{
 				v81 = 1;
 				v8 = v19;
-				v67x = v72x->axis_0x4C_76;
+				v67x = v72x->position_0x4C_76;
 			}
 		}
 		break;
@@ -3160,15 +3160,15 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			{
 				if (v72x->byte_0x46_70 == v79)
 				{
-					v51x.v51y = v72x->axis_0x4C_76;
+					v51x.v51y = v72x->position_0x4C_76;
 					if (sub_64CE0_draw_follow_rectangle(&v51x))
 						sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
-					v20 = Maths::sub_58490_radix_3d_2(&v75x->axis_0x4C_76, &v72x->axis_0x4C_76);
+					v20 = Maths::sub_58490_radix_3d_2(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 					if (v20 < v8)
 					{
 						v8 = v20;
 						v81 = 1;
-						v67x = v72x->axis_0x4C_76;
+						v67x = v72x->position_0x4C_76;
 					}
 				}
 				v79 = str_D93C0_bldgprmbuffer[v79].byte_3;
@@ -3186,11 +3186,11 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[6])
 			{
 				v21 = v8 - 512;
-				LOWORD(v78) = Maths::sub_581E0_maybe_tan2(&v75x->axis_0x4C_76, &v67x);
+				LOWORD(v78) = Maths::sub_581E0_maybe_tan2(&v75x->position_0x4C_76, &v67x);
 				v78 = (uint16_t)v78;
 				if (v21 > 15872)
 					LOWORD(v21) = 15872;
-				v67x = v75x->axis_0x4C_76;
+				v67x = v75x->position_0x4C_76;
 				MovePlayer_57FA0(&v67x, v78, 0, v21);
 				v22 = v83 * Maths::sin_DB750[v82];
 				v23 = v83 * (x_DWORD)Maths::sin_DB750[0x200 + v82];
@@ -3394,8 +3394,8 @@ void sub_885E0(type_entity_0x6E8E* a1x, int16_t posX, int16_t posY, uint16_t a4)
 				v12 = 0;
 				if (!a1x
 					|| (v4 = Maths::sub_58490_radix_3d_2(
-						&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->axis_0x4C_76,
-						&a1x->axis_0x4C_76),
+						&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->position_0x4C_76,
+						&a1x->position_0x4C_76),
 						v5 = v4,
 						!str_E2A74[a4].dword_12)
 					|| v4 < str_E2A74[a4].dword_20)

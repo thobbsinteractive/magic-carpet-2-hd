@@ -5784,17 +5784,17 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex)//2
 	{
 		if (ptrEntity_v3x->struct_byte_0xc_12_15.byte[0] < 0)
 			return;
-		v4x = &ptrEntity_v3x->axis_0x4C_76;
+		v4x = &ptrEntity_v3x->position_0x4C_76;
 		if ((unsigned int)Maths::EuclideanDistXY_584D0(
-			&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->axis_0x4C_76,
-			&ptrEntity_v3x->axis_0x4C_76) > 0x9000000)
+			&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->position_0x4C_76,
+			&ptrEntity_v3x->position_0x4C_76) > 0x9000000)
 			return;
 		ptrEntity_v26x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 		flags_v29 = ptrEntity_v22x->id_0x1A_26;
-		v5 = Maths::sub_58490_radix_3d_2(&ptrEntity_v26x->axis_0x4C_76, v4x);
+		v5 = Maths::sub_58490_radix_3d_2(&ptrEntity_v26x->position_0x4C_76, v4x);
 		v25 = v5;
 		v23 = v5;
-		v6 = Maths::sub_581E0_maybe_tan2(&ptrEntity_v26x->axis_0x4C_76, v4x);
+		v6 = Maths::sub_581E0_maybe_tan2(&ptrEntity_v26x->position_0x4C_76, v4x);
 		v28 = v6;
 		v7 = sub_582B0(ptrEntity_v26x->word_0x1C_28, v6);
 		v27 = v7;

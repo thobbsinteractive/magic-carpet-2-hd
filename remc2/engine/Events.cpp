@@ -384,7 +384,7 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 						case 0x55:
 						{
 							event->word_0x9A_154x.x = entity->word_10;
-							event->axis_0x4C_76.z = entity->par3_18;
+							event->position_0x4C_76.z = entity->par3_18;
 							break;
 						}
 						case 0x58:
@@ -5134,7 +5134,7 @@ void sub_57E50(type_entity_0x6E8E* entity)//238e50
 		if (entity->nextEntity_0x18_24)
 			D41A0_0.struct_0x6E8E[entity->nextEntity_0x18_24].oldMapEntity_0x16_22 = entity->oldMapEntity_0x16_22;
 		else
-			mapEntityIndex_15B4E0[(entity->axis_0x4C_76.x >> 8) + ((entity->axis_0x4C_76.y >> 8) << 8)] = entity->oldMapEntity_0x16_22;
+			mapEntityIndex_15B4E0[(entity->position_0x4C_76.x >> 8) + ((entity->position_0x4C_76.y >> 8) << 8)] = entity->oldMapEntity_0x16_22;
 		if (entity->oldMapEntity_0x16_22)
 			D41A0_0.struct_0x6E8E[entity->oldMapEntity_0x16_22].nextEntity_0x18_24 = entity->nextEntity_0x18_24;
 		entity->struct_byte_0xc_12_15.byte[0] &= 0xFBu;
@@ -5183,8 +5183,8 @@ signed int sub_69250(type_entity_0x6E8E* a1x)//24a250
 	result = sub_68FF0(a1x, a1x->model_0x40_64, a1x->state_0x45_69 - 2);
 	if (result)
 	{
-		resultx = arsub_2a881e[a1x->model_0x40_64](&a1x->axis_0x4C_76);
-		//resultx = pre_sub_4A190(0x2a881e + 14 * a1x->byte_0x40_64, (int16_t*)&a1x->array_0x4C_76,2);//result = (*(int(**)(uint8_t*))((char *)&off_D781E + 14 * *(char *)(a1 + 64)))(a1 + 76);
+		resultx = arsub_2a881e[a1x->model_0x40_64](&a1x->position_0x4C_76);
+		//resultx = pre_sub_4A190(0x2a881e + 14 * a1x->byte_0x40_64, (int16_t*)&a1x->position_0x4C_76,2);//result = (*(int(**)(uint8_t*))((char *)&off_D781E + 14 * *(char *)(a1 + 64)))(a1 + 76);
 		//v63 = (uint8_t*)pre_sub_4A190(0x232530 + 14 * v112, v113 + 76);//v63 = (uint8_t*)(*(int(**)(uint8_t*))((char *)&off_D781E + 14 * v112))(v113 + 76);
 		if (resultx)
 			resultx->state_0x45_69 += 2;

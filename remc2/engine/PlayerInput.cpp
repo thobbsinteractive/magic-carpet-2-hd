@@ -1700,8 +1700,8 @@ void sub_70940()//251940
 	char v10; // [esp+Ch] [ebp-4h]
 
 	v0x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-	v1 = (v0x->axis_0x4C_76.x + 128) >> 8;
-	v9 = (v0x->axis_0x4C_76.y + 128) >> 8;
+	v1 = (v0x->position_0x4C_76.x + 128) >> 8;
+	v9 = (v0x->position_0x4C_76.y + 128) >> 8;
 	result = AddE7EE0x_10080(0, 128);
 	v3 = result;
 	if (result)
