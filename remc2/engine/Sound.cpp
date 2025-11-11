@@ -87,7 +87,7 @@ int soundBufferLen_E2A18 = 0; // weak
 HDIGDRIVER hDigSoundEffectsDriver_180B48; // weak
 //uint8_t* x_DWORD_180B4C_end_sound_buffer3; // weak
 uint32_t SoundBuffer3EndIdx_180B4C;
-__int16 MaxLoadedSampleId_180B50; // weak
+int16_t MaxLoadedWavIndex_180B50; // weak
 AIL_INI musicAILSettings; // weak
 char textBuffer_180BE0[512]; // weak
 HSEQUENCE m_hMusicSequence; // weak
@@ -1965,20 +1965,20 @@ bool LoadSound_84300(uint8_t soundIndex)//265300
 //----- (000844A0) --------------------------------------------------------
 void LoadSoundDataFromBuffer_844A0(uint16_t count)//2654a0
 {
-	int sampleId = MaxLoadedSampleId_180B50;
+	int wavIndex = MaxLoadedWavIndex_180B50;
 	if (soundIndex_E37A0 && soundBuffer1_E37A8)
 	{
-		for (sampleId = 0; sampleId < count; sampleId++)
+		for (wavIndex = 0; wavIndex < count; wavIndex++)
 		{
 #ifdef x32_BIT_ENVIRONMENT
-			soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0 = reinterpret_cast<uint32_t>(soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0) + soundBuffer1_E37A8;
+			soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0 = reinterpret_cast<uint32_t>(soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0) + soundBuffer1_E37A8;
 #endif //x32_BIT_ENVIRONMENT
 #ifdef x64_BIT_ENVIRONMENT
-			soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0 = reinterpret_cast<uint64_t>(soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0) + soundBuffer1_E37A8;
+			soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0 = reinterpret_cast<uint64_t>(soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0) + soundBuffer1_E37A8;
 #endif //x64_BIT_ENVIRONMENT
 		}
 	}
-	MaxLoadedSampleId_180B50 = sampleId;
+	MaxLoadedWavIndex_180B50 = wavIndex;
 }
 
 //----- (000844F0) --------------------------------------------------------
@@ -2187,7 +2187,8 @@ AIL_DRIVER* AilApiInstallDriver_9E720(uint8_t* driver_image, int32_t n_bytes)//2
 				AilCallDriver_91F70(ailDriver, 768, nullptr, nullptr);
 				if (ailDriver->VHDR_4->VDI_HDR_var46 > 0)
 				{
-					ailDriver->server_8 = AilRegisterTimer_92600(sub_9E250);
+					ailDriver->server_8 = 1;
+					//ailDriver->server_8 = AilRegisterTimer_92600(sub_9E250);
 					if (ailDriver->server_8 == -1)
 					{
 						qmemcpy(textBuffer_181C90, (void*)"Out of timer handles\n", 22);
@@ -5252,7 +5253,7 @@ int sub_8F0AB(FILE* a1, /*int a2,*/ int a3)//26f0ab
 }
 
 //----- (0008F100) --------------------------------------------------------
-void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePan, uint16_t playRate, uint8_t loopCount, uint8_t playType)//270100
+void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePan, uint16_t playRate, int8_t loopCount, uint8_t playType)//270100
 {
 	bool foundExisting = false; // [esp+0h] [ebp-18h]
 
@@ -5261,8 +5262,8 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 
 	if (!soundAble_E3798
 		|| !soundActive_E3799
-		|| sampleId > (signed int)MaxLoadedSampleId_180B50
-		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[sampleId -1].filename_14, "null.wav"))
+		|| wavIndex > (signed int)MaxLoadedWavIndex_180B50
+		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[wavIndex -1].filename_14, "null.wav"))
 	{
 		return;
 	}
@@ -5288,7 +5289,7 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 		    //Look for existing playing sound using flags, id and not stopped
 			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 			{
-				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 				{
 					ptrExistingPlayingSample = &SoundBuffer3_180750[i];
 					break;
@@ -5314,7 +5315,7 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 			foundExisting = false;
 			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 			{
-				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId)
+				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex)
 				{
 					ptrExistingStoppedSample = &SoundBuffer3_180750[i];
 					ptrExistingPlayingSample = nullptr;
@@ -5348,12 +5349,12 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 		//Initialize new from wavs
 		AilInitSample_93830(*ptrExistingStoppedSample);
 		if (debug_first_sound) {
-			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0;
+			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0;
 			Logger->trace("PlaySample_8F100:buff:");
 			for (int i = 0; i < 100; i++)
 				Logger->trace("{}", debug_sound_buff[i]);
 		}
-		AilSetSampleFile_938C0(*ptrExistingStoppedSample, soundIndex_E37A0->str_8.wavs_10[sampleId].wavData_0, 1);
+		AilSetSampleFile_938C0(*ptrExistingStoppedSample, soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0, 1);
 	}
 	AilSetSampleVolume_93E30(*ptrExistingStoppedSample, volume);
 	AilSetSampleVolumePan_93ED0(*ptrExistingStoppedSample, volumePan);
@@ -5367,8 +5368,8 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 
 	AilStartSample_93B50(*ptrExistingStoppedSample);
 	(*ptrExistingStoppedSample)->flags_14 = flags;
-	(*ptrExistingStoppedSample)->id_9 = sampleId;
-	(*ptrExistingStoppedSample)->vol_scale_18[0][0] = sampleId;
+	(*ptrExistingStoppedSample)->id_9 = wavIndex;
+	(*ptrExistingStoppedSample)->vol_scale_18[0][0] = wavIndex;
 	(*ptrExistingStoppedSample)->status_1 = AilSampleStarted;
 	(*ptrExistingStoppedSample)->volume_16 = volume;
 	(*ptrExistingStoppedSample)->len_4_5[1] = volumePan;
@@ -5377,13 +5378,13 @@ void PlaySample_8F100(uint32_t flags, int16_t sampleId, int volume, int volumePa
 }
 
 //----- (0008F420) --------------------------------------------------------
-void AilEndAllSamples_8F420(int flags, __int16 sampleId)//270420
+void AilEndAllSamples_8F420(int flags, __int16 wavIndex)//270420
 {
 	if (soundAble_E3798 && soundActive_E3799)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				AilEndSample_93D00(SoundBuffer3_180750[i]);
 				return;
@@ -5393,17 +5394,17 @@ void AilEndAllSamples_8F420(int flags, __int16 sampleId)//270420
 }
 
 //----- (0008F710) --------------------------------------------------------
-void Update_Playing_Sample_Status_8F710(int flags, __int16 sampleId, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale)//270710
+void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale)//270710
 {
-	if (soundAble_E3798 && soundActive_E3799 && sampleId <= MaxLoadedSampleId_180B50)
+	if (soundAble_E3798 && soundActive_E3799 && wavIndex <= MaxLoadedWavIndex_180B50)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == sampleId && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				if (targetVolume > 127)
 					targetVolume = 127;
-				if (targetVolume != SoundBuffer3_180750[i]->volume_16)
+				if (targetVolume != SoundBuffer3_180750[i]->target_volume_6)
 				{
 					SoundBuffer3_180750[i]->vol_scale_18[0][2] = 0;
 					SoundBuffer3_180750[i]->target_volume_6 = targetVolume;
@@ -5435,16 +5436,8 @@ uint32_t FadeSamples_8F4B0(uint32_t interval)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->id_9 < 31)
-			{
-				if (SoundBuffer3_180750[i]->id_9 < 1u || SoundBuffer3_180750[i]->id_9 > 2u && SoundBuffer3_180750[i]->id_9 != 5)
-					continue;
-			}
-			else if (SoundBuffer3_180750[i]->id_9 > 31)
-			{
-				//if (SoundBuffer3_180750[i]->id_9 >= 47 && (SoundBuffer3_180750[i]->id_9 <= 47 || SoundBuffer3_180750[i]->id_9 == 49))
+			if (SoundBuffer3_180750[i]->loop_count_12 == 0)
 				continue;
-			}
 
 			if (SoundBuffer3_180750[i]->volume_16 != SoundBuffer3_180750[i]->target_volume_6)
 			{
@@ -5751,7 +5744,7 @@ void WriteWaveToFile(wav_t* wav, const char* name)
 }
 
 //----- (0006E450) --------------------------------------------------------
-void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t index)//24f450
+void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex)//24f450
 {
 	type_entity_0x6E8E* ptrEntity_v3x; // edx
 	axis_3d* v4x; // esi
@@ -5828,16 +5821,16 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t index)//24f4
 		{
 			LOWORD(volumePan_v12) = 0x7FFF;
 		}
-		if ((unsigned __int16)index >= 0x2Au)
+		if ((unsigned __int16)wavIndex >= 0x2Au)
 		{
 			v13 = 9377 * v24 + 9439;
-			if ((unsigned __int16)index <= 0x2Cu)
+			if ((unsigned __int16)wavIndex <= 0x2Cu)
 			{
 				v14 = v13 % 0x1E - 15;
 			}
 			else
 			{
-				if (index != 46)
+				if (wavIndex != Goat_46)
 					goto LABEL_29;
 				v14 = v13 % 0x14;
 				if (ptrEntity_v22x->state_0x45_69 == 14)
@@ -5849,15 +5842,15 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t index)//24f4
 		}
 	}
 LABEL_29:
-	if ((unsigned __int16)index < 0x2Au)
+	if ((unsigned __int16)wavIndex < 0x2Au)
 	{
-		if ((unsigned __int16)index < 0x20u)
+		if ((unsigned __int16)wavIndex < 0x20u)
 		{
-			if (index != 7)
+			if (wavIndex != Caveman_7)
 				goto LABEL_46;
 			goto LABEL_45;
 		}
-		if ((unsigned __int16)index <= 0x20u || index == 38)
+		if ((unsigned __int16)wavIndex <= 0x20u || wavIndex == DeepOne_38)
 		{
 		LABEL_45:
 			flags_v29 = 0;
@@ -5866,27 +5859,27 @@ LABEL_29:
 	}
 	else
 	{
-		if ((unsigned __int16)index <= 0x2Cu)
+		if ((unsigned __int16)wavIndex <= 0x2Cu)
 			goto LABEL_45;
-		if ((unsigned __int16)index >= 0x31u)
+		if ((unsigned __int16)wavIndex >= 0x31u)
 		{
-			if ((unsigned __int16)index > 0x35u && ((unsigned __int16)index < 0x3Au || (unsigned __int16)index > 0x3Bu && index != 62))
+			if ((unsigned __int16)wavIndex > 0x35u && ((unsigned __int16)wavIndex < 0x3Au || (unsigned __int16)wavIndex > 0x3Bu && wavIndex != Zombie_62))
 				goto LABEL_46;
 			goto LABEL_45;
 		}
-		if ((unsigned __int16)index >= 0x2Eu && (unsigned __int16)index <= 0x2Fu)
+		if ((unsigned __int16)wavIndex >= 0x2Eu && (unsigned __int16)wavIndex <= 0x2Fu)
 			goto LABEL_45;
 	}
 LABEL_46:
-	switch (index)
+	switch (wavIndex)
 	{
 	case Ocean_1:
 	case Crickets_2:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Terrain background sound
-			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
-			Update_Playing_Sample_Status_8F710(0, index, 70, 2u, 0);
+			PlaySample_8F100(0, wavIndex, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
+			Update_Playing_Sample_Status_8F710(0, wavIndex, 70, 2u, 0);
 		}
 		break;
 	case Explode3_3:
@@ -5920,21 +5913,21 @@ LABEL_46:
 	case Success2_61:
 	case SpellUp_63:
 	case GWell_64:
-		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
+		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[wavIndex].volume_2))
 		{
-			EntitySounds_F4FE0[index].volume_2 = volume_v10;
-			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-			EntitySounds_F4FE0[index].playType_0 = 1;
-			EntitySounds_F4FE0[index].flags_3 = flags_v29;
+			EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
+			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
+			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+			EntitySounds_F4FE0[wavIndex].playType_0 = 1;
+			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
 		}
 		break;
 	case Fire_5:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Fire sound
-			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
-			Update_Playing_Sample_Status_8F710(0, index, 120, 2u, 0);
+			PlaySample_8F100(0, wavIndex, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
+			Update_Playing_Sample_Status_8F710(0, wavIndex, 120, 2u, 0);
 		}
 		break;
 	case Caveman_7:
@@ -5955,37 +5948,37 @@ LABEL_46:
 	case MadDog_58:
 	case MdWeller_59:
 	case Zombie_62:
-		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
+		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[wavIndex].volume_2))
 		{
-			EntitySounds_F4FE0[index].volume_2 = volume_v10;
-			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
+			EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
+			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
+			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
 			if (MaxSoundBufferChannels_E3794 > 10)
-				EntitySounds_F4FE0[index].playType_0 = 2;
+				EntitySounds_F4FE0[wavIndex].playType_0 = 2;
 			else
-				EntitySounds_F4FE0[index].playType_0 = 3;
-			EntitySounds_F4FE0[index].flags_3 = flags_v29;
+				EntitySounds_F4FE0[wavIndex].playType_0 = 3;
+			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
 		}
 		break;
 	case Select_14:
 	case CantUse_29:
-		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
+		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[wavIndex].volume_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
-				EntitySounds_F4FE0[index].volume_2 = volume_v10;
-				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-				EntitySounds_F4FE0[index].flags_3 = 0;
-				EntitySounds_F4FE0[index].playType_0 = 1;
+				EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
+				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
+				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+				EntitySounds_F4FE0[wavIndex].flags_3 = 0;
+				EntitySounds_F4FE0[wavIndex].playType_0 = 1;
 			}
 			else if (a2 == -1)
 			{
-				EntitySounds_F4FE0[index].volume_2 = volume_v10;
-				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-				EntitySounds_F4FE0[index].flags_3 = flags_v29;
-				EntitySounds_F4FE0[index].playType_0 = 1;
+				EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
+				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
+				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+				EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+				EntitySounds_F4FE0[wavIndex].playType_0 = 1;
 			}
 		}
 		break;
@@ -5993,42 +5986,42 @@ LABEL_46:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
 			//Building Sound
-			PlaySample_8F100(0, index, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
-			Update_Playing_Sample_Status_8F710(0, index, 85, 2u, 0);
+			PlaySample_8F100(0, wavIndex, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
+			Update_Playing_Sample_Status_8F710(0, wavIndex, 85, 2u, 0);
 		}
 		break;
 	case DoorC2_47:
 	case Tornado_49:
-		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
+		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[wavIndex].volume_2))
 		{
-			EntitySounds_F4FE0[index].volume_2 = volume_v10;
-			EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-			EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-			EntitySounds_F4FE0[index].flags_3 = flags_v29;
-			EntitySounds_F4FE0[index].playType_0 = 4;
+			EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
+			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
+			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+			EntitySounds_F4FE0[wavIndex].playType_0 = 4;
 		}
 		break;
 	case Hit1_54:
 	case Hit2_55:
 	case Hit3_56:
 	case Hit4_57:
-		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[index].volume_2))
+		if (sub_6EA90(volume_v10, EntitySounds_F4FE0[wavIndex].volume_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
-				EntitySounds_F4FE0[index].volume_2 = volume_v10;
-				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-				EntitySounds_F4FE0[index].flags_3 = 0;
-				EntitySounds_F4FE0[index].playType_0 = 3;
+				EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
+				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
+				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+				EntitySounds_F4FE0[wavIndex].flags_3 = 0;
+				EntitySounds_F4FE0[wavIndex].playType_0 = 3;
 			}
 			else if (a2 == -1)
 			{
-				EntitySounds_F4FE0[index].volume_2 = volume_v10;
-				EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-				EntitySounds_F4FE0[index].flags_3 = flags_v29;
-				EntitySounds_F4FE0[index].playType_0 = 3;
+				EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
+				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
+				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+				EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+				EntitySounds_F4FE0[wavIndex].playType_0 = 3;
 			}
 		}
 		break;
@@ -6037,11 +6030,11 @@ LABEL_46:
 	case Drip3_67:
 	case Drip4_68:
 	case Drip5_69:
-		EntitySounds_F4FE0[index].volume_2 = volume_v10;
-		EntitySounds_F4FE0[index].volumePan_1 = volumePan_v12;
-		EntitySounds_F4FE0[index].playType_0 = 3;
-		EntitySounds_F4FE0[index].playRate_5 = playRate_v21;
-		EntitySounds_F4FE0[index].flags_3 = flags_v29;
+		EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
+		EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
+		EntitySounds_F4FE0[wavIndex].playType_0 = 3;
+		EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+		EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
 		break;
 	default:
 		return;

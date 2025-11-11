@@ -96,10 +96,10 @@ private:
 	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* startX, int* endX, int* brightness, int startX_inc, int endX_inc, int brightness_inc, int* numLines);
 	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* startX, int* endX, int* U, int* V, int startX_inc, int endX_inc, int U_inc, int V_inc, int* numLines);
 	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* startX, int* endX, int* U, int* V, int* brightness, int startX_inc, int endX_inc, int U_inc, int V_inc, int brightness_inc, int* numLines);
-	uint16_t sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth);
 	void sub_88740(type_entity_0x6E8E* a1, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);
 	void DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1, int16_t a2, int a3, int16_t a4);
+	uint16_t sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth);
 	void StartWorkerThreads(uint8_t numOfThreads, bool assignToSpecificCores);
 	void StartWorkerThread();
 	void StartWorkerThread(int core);

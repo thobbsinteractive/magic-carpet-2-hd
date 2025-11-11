@@ -2,7 +2,7 @@
 
 #include "ail_sound.h"
 #include "Basic.h"
-#include "SoundInGameIndexes.h"
+#include "WavIndexes.h"
 #include "../utilities/Wave.h"
 #include "../engine/CommandLineParser.h"
 #include "../portability/port_show_perifery.h"
@@ -79,9 +79,9 @@ bool InitMusicBank_8EAD0(int channel);
 void GetMusicSequenceCount();
 bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber);
 int sub_8F0AB(FILE* a1, int a3);
-void PlaySample_8F100(uint32_t a1, int16_t sampleId, int volume, int volumePan, uint16_t playRate, uint8_t loopCount, uint8_t playType);
-void AilEndAllSamples_8F420(int flags, __int16 sampleId);
-void Update_Playing_Sample_Status_8F710(int flags, __int16 sampleId, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale);
+void PlaySample_8F100(uint32_t a1, int16_t wavIndex, int volume, int volumePan, uint16_t playRate, int8_t loopCount, uint8_t playType);
+void AilEndAllSamples_8F420(int flags, __int16 wavIndex);
+void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale);
 int32_t StopTimer_8F850(uint32_t interval);
 void InitSoundAndMusic_90FD0();
 void InitAWE32orMPU401_91010();
@@ -281,7 +281,7 @@ void SetSoundFreq_9A230(int a1);
 void WriteWaveToFile(wav_t* wav, const char* name);
 void AIL_fix();
 const char* mygetenv(const char* a1);
-void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t soundIdx);
+void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex);
 void ChangeSoundLevel_19CA0(uint8_t option);
 int sub_582B0(__int16 a1, __int16 a2);
 int sub_582F0(int a1, __int16 a2);
