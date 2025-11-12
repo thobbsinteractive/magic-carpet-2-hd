@@ -1008,10 +1008,10 @@ void sub_86460(uint16_t a1);
 char sub_86780(unsigned __int16 a1, int a2, int a3);
 void sub_86A00_some_allocs();
 void sub_86BD0_freemem1();
-uint32_t sub_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
+uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
 void PlayCDTrackSegmentForSecretLevel_86F20(char a1);
-void PlayCDTrackSegment_86F70(uint8_t trackIdx, int16_t startPos, int16_t length);
-void sub_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3);
+void PlayCDTrackSegmentWithPaletteFade_86F70(uint8_t trackIdx, int16_t startPos, int16_t length);
+void PlayCDTrackSegment_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3);
 char sub_871E0();
 void sub_872A0();
 void sub_87A30();
@@ -50329,7 +50329,7 @@ void sub_86BD0_freemem1()//267bd0
 // E2A70: using guessed type int x_DWORD_E2A70;
 
 //----- (00086EA0) --------------------------------------------------------
-uint32_t sub_86EA0(/*int a1, int a2, int a3*/ uint32_t interval)//267ea0
+uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/ uint32_t interval)//267ea0
 {
 	PaletteChanges_47760(/*a1, */interval/*, a3*/);
 	return interval;
@@ -50355,9 +50355,9 @@ void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, char a
 	if (trackId_v4 && length_v7)
 	{
 		if (a3)
-			PlayCDTrackSegment_86F70(trackId_v4, startPos_v6, length_v7);
+			PlayCDTrackSegmentWithPaletteFade_86F70(trackId_v4, startPos_v6, length_v7);
 		else
-			sub_86FF0(trackId_v4, startPos_v6, length_v7);
+			PlayCDTrackSegment_86FF0(trackId_v4, startPos_v6, length_v7);
 	}
 }
 // DB082: using guessed type __int16 x_WORD_DB082[];
@@ -50382,21 +50382,21 @@ void PlayCDTrackSegmentForSecretLevel_86F20(char a1)//267f20
 	if (trackIdx_v2)
 	{
 		if (length_v4)
-			PlayCDTrackSegment_86F70(trackIdx_v2, startPos_v3, length_v4);
+			PlayCDTrackSegmentWithPaletteFade_86F70(trackIdx_v2, startPos_v3, length_v4);
 	}
 }
 // DB082: using guessed type __int16 x_WORD_DB082[];
 // DB084: using guessed type __int16 x_WORD_DB084[];
 
 //----- (00086F70) --------------------------------------------------------
-void PlayCDTrackSegment_86F70(uint8_t trackIdx, int16_t startPos, int16_t length)//267f70
+void PlayCDTrackSegmentWithPaletteFade_86F70(uint8_t trackIdx, int16_t startPos, int16_t length)//267f70
 {
 	if (x_BYTE_E2A28_speek && (musicAble_E37FC || soundAble_E3798))
 	{
-		TimerIdx_180078 = AilRegisterTimer_92600(sub_86EA0);
+		TimerIdx_180078 = AilRegisterTimer_92600(FadePalettes_86EA0);
 		AilSetTimerFrequency_92930(TimerIdx_180078, 50);
 		AilStartTimer_92BA0(TimerIdx_180078);
-		sub_86FF0(trackIdx, startPos, length);
+		PlayCDTrackSegment_86FF0(trackIdx, startPos, length);
 		AilReleaseTimer_92DC0(TimerIdx_180078);
 	}
 }
@@ -50406,7 +50406,7 @@ void PlayCDTrackSegment_86F70(uint8_t trackIdx, int16_t startPos, int16_t length
 // 180078: using guessed type int x_DWORD_180078;
 
 //----- (00086FF0) --------------------------------------------------------
-void sub_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3)//267ff0
+void PlayCDTrackSegment_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3)//267ff0
 {
 	if (x_BYTE_E2A28_speek && (musicAble_E37FC || soundAble_E3798))
 	{
