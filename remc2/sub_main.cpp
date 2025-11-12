@@ -1009,8 +1009,8 @@ char sub_86780(unsigned __int16 a1, int a2, int a3);
 void sub_86A00_some_allocs();
 void sub_86BD0_freemem1();
 uint32_t sub_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
-void sub_86F20(char a1);
-void sub_86F70_sound_proc12(unsigned __int8 a1, __int16 a2, __int16 a3);
+void PlayCDTrackSegmentForSecretLevel_86F20(char a1);
+void PlayCDTrackSegment_86F70(unsigned __int8 a1, __int16 a2, __int16 a3);
 void sub_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3);
 char sub_871E0();
 void sub_872A0();
@@ -42585,7 +42585,7 @@ void sub_59820()//23a820
 					if (v4 & 1)
 					{
 						x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 8;
-						sub_86F20(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E4_2BE4_12226);
+						PlayCDTrackSegmentForSecretLevel_86F20(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E4_2BE4_12226);
 						FadeDownSoundVolume_59A50();
 						return;
 					}
@@ -42609,7 +42609,7 @@ void sub_59820()//23a820
 							v9 = D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.ObjectiveText_1 + 1;
 						LABEL_30:
 							x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 8;
-							sub_86EB0(v8, v9, 1);
+							PlayCDTrackSegmentNumber_86EB0(v8, v9, 1);
 							FadeDownSoundVolume_59A50();
 							return;
 						}
@@ -50336,13 +50336,13 @@ uint32_t sub_86EA0(/*int a1, int a2, int a3*/ uint32_t interval)//267ea0
 }
 
 //----- (00086EB0) --------------------------------------------------------
-void sub_86EB0(uint8_t trackIdx, unsigned __int8 a2, char a3)//267eb0
+void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, char a3)//267eb0
 {
 	//int v3; // eax
 	uint8_t trackId_v4; // dl
 	//int v5; // eax
-	__int16 v6; // bx
-	__int16 v7; // ax
+	__int16 startPos_v6; // bx
+	__int16 length_v7; // ax
 
 	//v3 = 42 * a1;
 	//v4 = x_BYTE_DB080[v3];
@@ -50350,46 +50350,46 @@ void sub_86EB0(uint8_t trackIdx, unsigned __int8 a2, char a3)//267eb0
 	/*v5 = 4 * a2 + v3;
 	v6 = *(__int16*)((char*)&x_BYTE_DB080[2] + v5);
 	v7 = *(__int16*)((char*)&x_BYTE_DB080[4] + v5);*/
-	v6 = CdTracks_DB080[trackIdx].TrackIndexes_DB080[a2].word_0;
-	v7 = CdTracks_DB080[trackIdx].TrackIndexes_DB080[a2].word_2;
-	if (trackId_v4 && v7)
+	startPos_v6 = CdTracks_DB080[trackIdx].TrackSegments_DB080[segmentIdx].startPos_0;
+	length_v7 = CdTracks_DB080[trackIdx].TrackSegments_DB080[segmentIdx].length_2;
+	if (trackId_v4 && length_v7)
 	{
 		if (a3)
-			sub_86F70_sound_proc12(trackId_v4, v6, v7);
+			PlayCDTrackSegment_86F70(trackId_v4, startPos_v6, length_v7);
 		else
-			sub_86FF0(trackId_v4, v6, v7);
+			sub_86FF0(trackId_v4, startPos_v6, length_v7);
 	}
 }
 // DB082: using guessed type __int16 x_WORD_DB082[];
 // DB084: using guessed type __int16 x_WORD_DB084[];
 
 //----- (00086F20) --------------------------------------------------------
-void sub_86F20(char a1)//267f20
+void PlayCDTrackSegmentForSecretLevel_86F20(char a1)//267f20
 {
 	int trackIdx; // eax
-	unsigned __int8 v2; // dl
-	__int16 v3; // bx
-	__int16 v4; // ax
+	unsigned __int8 trackIdx_v2; // dl
+	__int16 startPos_v3; // bx
+	__int16 length_v4; // ax
 
 	//v1 = 21 * ((a1 != 0) + 25);
 	//v2 = x_BYTE_DB080[v1 * 2];
 	/*v3 = *(int16_t*)&x_BYTE_DB080[2 + v1 * 2];
 	v4 = *(int16_t*)&x_BYTE_DB080[4 + v1 * 2];*/
 	trackIdx = ((a1 != 0) + 25);
-	v2 = CdTracks_DB080[trackIdx].TrackIdx_0;
-	v3 = CdTracks_DB080[trackIdx].TrackIndexes_DB080[0].word_0;
-	v4 = CdTracks_DB080[trackIdx].TrackIndexes_DB080[0].word_2;
-	if (v2)
+	trackIdx_v2 = CdTracks_DB080[trackIdx].TrackIdx_0;
+	startPos_v3 = CdTracks_DB080[trackIdx].TrackSegments_DB080[0].startPos_0;
+	length_v4 = CdTracks_DB080[trackIdx].TrackSegments_DB080[0].length_2;
+	if (trackIdx_v2)
 	{
-		if (v4)
-			sub_86F70_sound_proc12(v2, v3, v4);
+		if (length_v4)
+			PlayCDTrackSegment_86F70(trackIdx_v2, startPos_v3, length_v4);
 	}
 }
 // DB082: using guessed type __int16 x_WORD_DB082[];
 // DB084: using guessed type __int16 x_WORD_DB084[];
 
 //----- (00086F70) --------------------------------------------------------
-void sub_86F70_sound_proc12(unsigned __int8 a1, __int16 a2, __int16 a3)//267f70
+void PlayCDTrackSegment_86F70(unsigned __int8 a1, __int16 a2, __int16 a3)//267f70
 {
 	if (x_BYTE_E2A28_speek && (musicAble_E37FC || soundAble_E3798))
 	{

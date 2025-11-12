@@ -4230,7 +4230,7 @@ void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3)//261c30
 	{
 		x_BYTE_17E09D = 1;
 		if ((signed __int16)v3 != -1)
-			sub_86EB0(v3, 0, 0);
+			PlayCDTrackSegmentNumber_86EB0(v3, 0, 0);
 	}
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
