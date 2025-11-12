@@ -765,6 +765,33 @@ void LoadAudioEffect(int channel, const Mix_Chunk* chunk, float speed, int frequ
 	Mix_RegisterEffect(channel, SfxEffectWrapper<T>::EffectModifierCallback, SfxEffectWrapper<T>::EffectDoneCallback, nullptr);
 }
 
+bool PlayCdTrackSegment(uint8_t trackIdx, int16_t startPos, int16_t length)
+{
+	char speechPath[512];
+	sprintf(speechPath, "%s/TRACK%02d.WAV", GetSubDirectoryPath(speechFolder).c_str(), trackIdx);
+	Mix_Chunk* ptrSpeechChunk = Mix_LoadWAV(speechPath);
+	return Mix_PlayChannelTimed(maxSimultaniousSounds + 1, ptrSpeechChunk, 0, length) > -1;
+}
+
+bool EndPlayingCdTrackSegment()
+{
+	return Mix_HaltChannel(maxSimultaniousSounds + 1) == 0;
+}
+
+bool AreCdTracksAvailable()
+{
+	char speechPath[512];
+	sprintf(speechPath, "%s/TRACK%02d.WAV", GetSubDirectoryPath(speechFolder).c_str(),1);
+
+	if (FILE* file = fopen(speechPath, "r")) {
+		fclose(file);
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 AIL_DRIVER* ac_AIL_API_install_driver(int  /*a1*/, uint8_t*  /*a2*/, int  /*a3*/)/*driver_image,n_bytes*///27f720
 {
 	//printf("drvr:%08X, fn:%08X, in:%08X, out:%08X\n", drvr, fn, in, out);

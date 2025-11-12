@@ -246,6 +246,10 @@ void SOUND_StartTimer(int timerIdx);
 void SOUND_StopTimer(int timerIdx);
 void SOUND_ChangeSamplePlaybackRate(HSAMPLE S, float percent);
 
+bool PlayCdTrackSegment(uint8_t trackIdx, int16_t startPos, int16_t length);
+bool EndPlayingCdTrackSegment();
+bool AreCdTracksAvailable();
+
 void RegisterEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);
 template <typename T> void LoadAudioEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);
 
