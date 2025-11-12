@@ -1839,7 +1839,7 @@ void AilSendChannelVoiceMessage_98360(HMDIDRIVER mdi, HSEQUENCE hSequence, int32
 }
 
 //----- (000986E0) --------------------------------------------------------
-void sub_986E0()//2796e0
+void EndAllSound_986E0()//2796e0
 {
 	EndMusic_99C90();
 	EndSounds_99C10();

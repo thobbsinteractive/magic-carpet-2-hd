@@ -1010,7 +1010,7 @@ void sub_86A00_some_allocs();
 void sub_86BD0_freemem1();
 uint32_t sub_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
 void PlayCDTrackSegmentForSecretLevel_86F20(char a1);
-void PlayCDTrackSegment_86F70(unsigned __int8 a1, __int16 a2, __int16 a3);
+void PlayCDTrackSegment_86F70(uint8_t trackIdx, int16_t startPos, int16_t length);
 void sub_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3);
 char sub_871E0();
 void sub_872A0();
@@ -1068,7 +1068,7 @@ char sub_904C0(float a1);
 //int sub_90810();
 void sub_90D27();
 int sub_90EA0(int a1, char* a2);
-void sub_986E0();
+void EndAllSound_986E0();
 void SetMusicVolume_98790(int milliseconds, int volume);
 void sub_99080(char a1);
 int sub_9937E_set_video_mode(__int16 a1);
@@ -32219,7 +32219,7 @@ void sub_46F50_sound_proc7()//227f50
 		AilReleaseTimer_92DC0(TimerIdx_F42A4);
 	else
 		ClearProgrammableIntervalTimer_6FE20();
-	sub_986E0();
+	EndAllSound_986E0();
 }
 
 int debug_first_run = 0;
@@ -50389,14 +50389,14 @@ void PlayCDTrackSegmentForSecretLevel_86F20(char a1)//267f20
 // DB084: using guessed type __int16 x_WORD_DB084[];
 
 //----- (00086F70) --------------------------------------------------------
-void PlayCDTrackSegment_86F70(unsigned __int8 a1, __int16 a2, __int16 a3)//267f70
+void PlayCDTrackSegment_86F70(uint8_t trackIdx, int16_t startPos, int16_t length)//267f70
 {
 	if (x_BYTE_E2A28_speek && (musicAble_E37FC || soundAble_E3798))
 	{
 		TimerIdx_180078 = AilRegisterTimer_92600(sub_86EA0);
 		AilSetTimerFrequency_92930(TimerIdx_180078, 50);
 		AilStartTimer_92BA0(TimerIdx_180078);
-		sub_86FF0(a1, a2, a3);
+		sub_86FF0(trackIdx, startPos, length);
 		AilReleaseTimer_92DC0(TimerIdx_180078);
 	}
 }
