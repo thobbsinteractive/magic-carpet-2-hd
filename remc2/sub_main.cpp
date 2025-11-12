@@ -3656,7 +3656,7 @@ uint32_t x_DWORD_17DBC8x[125];
 
 uint32_t x_DWORD_17DDBCx[26];
 
-char x_BYTE_17E09D; // weak
+char IsPlayingCDTrack_17E09D; // weak
 char* x_DWORD_17E0A0[768]; // fix it -  weak
 int x_DWORD_17E0A4[768]; // fix it -  weak
 int x_DWORD_17E0A8[768]; // idb
@@ -42534,7 +42534,7 @@ void sub_59820()//23a820
 {
 	unsigned __int8 v3; // ch
 	char v4; // cl
-	uint8_t v8; // bx
+	uint8_t levelIdx_v8; // bx
 	unsigned __int8 v9; // al
 	char v10; // cl
 	int v11; // ebx
@@ -42596,20 +42596,20 @@ void sub_59820()//23a820
 						if (!D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.IsLevelEnd_0)
 						{
 							v9 = 4;
-							v8 = 0;
+							levelIdx_v8 = 0;
 							goto LABEL_30;
 						}
-						v8 = 10;
+						levelIdx_v8 = 10;
 					}
 					else
 					{
-						v8 = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
+						levelIdx_v8 = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
 						if (!D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.IsLevelEnd_0)
 						{
 							v9 = D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.ObjectiveText_1 + 1;
 						LABEL_30:
 							x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 8;
-							PlayCDTrackSegmentNumber_86EB0(v8, v9, 1);
+							PlayCDTrackSegmentNumber_86EB0(levelIdx_v8, v9, 1);
 							FadeDownSoundVolume_59A50();
 							return;
 						}

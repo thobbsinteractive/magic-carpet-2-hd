@@ -1136,7 +1136,7 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 	unk_17DBA8str.x_BYTE_17DBB6 = 2;
 	if (x_BYTE_D419C_level_num <= -1)
 	{
-		x_BYTE_17E09D = 0;
+		IsPlayingCDTrack_17E09D = 0;
 		x_DWORD_17DE38str.unk_17E078x[11] = 16;
 		x_DWORD_17DE38str.x_WORD_17E06E = 480;
 		*(int16_t*)&x_DWORD_17DE38str.unk_17E078x[8] = 13;
@@ -1612,7 +1612,7 @@ signed int sub_7E640(type_WORD_E1F84* a1x)//25f640
 		sub_86860_speak_Sound(x_WORD_1803EC);
 		sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map, 0xB2C44 + 3, 0x87D80 + 3);
 		sub_7AA70_load_and_decompres_dat_file(0, 0, 0, 0);
-		x_BYTE_17E09D = 0;
+		IsPlayingCDTrack_17E09D = 0;
 		D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] = 0;
 		memset(&x_DWORD_17DB70str, 0, 56);
 		*(int16_t*)&x_DWORD_17DE38str.unk_17E078x[8] = 13;
@@ -3868,7 +3868,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 						v39 = x_DWORD_17DE28str.x_DWORD_17DE2C;
 						x_DWORD_17DE28str.x_DWORD_17DE28 = x_DWORD_17DE28str.x_DWORD_17DE2C;
 						x_DWORD_17DE28str.x_BYTE_17DE34 = 2;
-						x_BYTE_17E09D = v42;
+						IsPlayingCDTrack_17E09D = v42;
 					}
 					else if (x_DWORD_17DE28str.x_BYTE_17DE34 == 2)
 					{
@@ -3876,7 +3876,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 						x_DWORD_17DE28str.x_DWORD_17DE2C = v39;
 						x_DWORD_17DE28str.x_BYTE_17DE34 = 1;
 						x_DWORD_17DE28str.x_DWORD_17DE28 = v39;
-						x_BYTE_17E09D = 0;
+						IsPlayingCDTrack_17E09D = 0;
 					}
 				}
 				if (x_DWORD_17DE28str.x_BYTE_17DE34 == 1)
@@ -4184,7 +4184,7 @@ int sub_7F960(bitmap_pos_struct2_t* a1x, bitmap_pos_struct2_t* a2x, uint8_t* a3,
 //----- (00080C30) --------------------------------------------------------
 void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3)//261c30
 {
-	signed int v3; // ebx
+	signed int levelIdx_v3; // ebx
 	//char *v4; // eax
 	int v4x;
 	signed int v5; // edx
@@ -4193,7 +4193,7 @@ void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3)//261c30
 	int v8; // ST08_4
 	__int16 v9; // ax
 
-	v3 = -1;
+	levelIdx_v3 = -1;
 	//v4 = (char *)unk_E17CC_0x194;
 	v4x = 0;
 	v5 = 0;
@@ -4201,7 +4201,7 @@ void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3)//261c30
 	{
 		if (mapScreenPortals_E17CC[v4x].activated_18 == 2)
 		{
-			v3 = v5;
+			levelIdx_v3 = v5;
 			break;
 		}
 		//v4 += 22;
@@ -4213,7 +4213,7 @@ void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3)//261c30
 		//for (i = x_WORD_E2970; *(int32_t*)&i[6]; i = (x_WORD *)((char *)i + 17))
 		for (int ii = 0; secretMapScreenPortals_E2970[ii].activated_12; ii++)
 		{
-			if (secretMapScreenPortals_E2970[ii].activated_12 != 3 && v3 == secretMapScreenPortals_E2970[ii].word_4)
+			if (secretMapScreenPortals_E2970[ii].activated_12 != 3 && levelIdx_v3 == secretMapScreenPortals_E2970[ii].word_4)
 			{
 				x_DWORD_17DE28str.x_BYTE_17DE34 = 3;
 				return;
@@ -4223,20 +4223,20 @@ void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3)//261c30
 		v7 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
 		v8 = (signed __int16)(posX + a3 - 3 * GetLetterWidth_6FC10());
 		v9 = GetLetterWidth_6FC10();
-		sub_7FCB0_draw_text_with_border(/*v3,*/ x_DWORD_E9C4C_langindexbuffer[23 + v3], (signed __int16)(posX + 4 * v9), v8, posY, 5, v7, 1);
+		sub_7FCB0_draw_text_with_border(/*v3,*/ x_DWORD_E9C4C_langindexbuffer[23 + levelIdx_v3], (signed __int16)(posX + 4 * v9), v8, posY, 5, v7, 1);
 		//"You must explore the outer Netherworlds while you learn its magic. Your first destination is the ancient city of Jahwl."+
 	}
-	if (x_DWORD_17DE28str.x_BYTE_17DE34 != 3 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40 && !x_BYTE_17E09D)
+	if (x_DWORD_17DE28str.x_BYTE_17DE34 != 3 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40 && !IsPlayingCDTrack_17E09D)
 	{
-		x_BYTE_17E09D = 1;
-		if ((signed __int16)v3 != -1)
-			PlayCDTrackSegmentNumber_86EB0(v3, 0, 0);
+		IsPlayingCDTrack_17E09D = 1;
+		if ((signed __int16)levelIdx_v3 != -1)
+			PlayCDTrackSegmentNumber_86EB0(levelIdx_v3, 0, 0);
 	}
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
 // 17DE34: using guessed type char x_BYTE_17DE34;
 // 17DE38: using guessed type int x_DWORD_17DE38;
-// 17E09D: using guessed type char x_BYTE_17E09D;
+// 17E09D: using guessed type char IsPlayingCDTrack_17E09D;
 
 //----- (00080D40) --------------------------------------------------------
 bool sub_80D40_move_graphics_and_play_sounds(__int16 a2, __int16 a3, __int16 a4, __int16 a5, char a6)//261d40
