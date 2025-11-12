@@ -1011,7 +1011,7 @@ void sub_86BD0_freemem1();
 uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
 void PlayCDTrackSegmentForSecretLevel_86F20(char a1);
 void PlayCDTrackSegmentWithPaletteFade_86F70(uint8_t trackIdx, int16_t startPos, int16_t length);
-void PlayCDTrackSegment_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3);
+void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length);
 char sub_871E0();
 void sub_872A0();
 void sub_87A30();
@@ -3682,7 +3682,7 @@ int x_DWORD_180214[101]; // idb
 uint8_t unk_1803A8x[16]; // weak
 __int16 x_WORD_1803AB; // weak
 __int16 x_WORD_1803C3; // weak
-__int16 x_WORD_1803E8; // weak
+__int16 PlayingTrackIdx_1803E8; // weak
 __int16 x_WORD_1803EA; // weak
 int16_t x_WORD_1803EC; // weak
 char x_BYTE_1803EE[100]; // idb
@@ -32054,7 +32054,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 				sub_53CC0_close_movie();
 				EndSample_8D8F0();
 				StopMusic_8E020();
-				sub_86860_speak_Sound(x_WORD_1803EC);//get graphics parametres?
+				StopCdTrack_86860(x_WORD_1803EC);
 				RestoreSoundVolume_59BF0();
 				sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 				if (x_WORD_180660_VGA_type_resolution & 1)
@@ -32188,12 +32188,13 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 			SetProgrammableIntervalTimer_6FDA0();
 		}
 		//v5 = x_BYTE_E3798_sound_active2;
-		if (!soundAble_E3798 && !musicAble_E37FC && x_BYTE_E2A28_speek)
+		//Free sound
+		if (!soundAble_E3798 && !musicAble_E37FC && cdSpeechEnabled_E2A28)
 		{
-			sub_86860_speak_Sound(x_WORD_1803EC);
+			StopCdTrack_86860(x_WORD_1803EC);
 			sub_86BD0_freemem1();
 			//v6 = x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0xBF;
-			x_BYTE_E2A28_speek = soundAble_E3798;
+			cdSpeechEnabled_E2A28 = soundAble_E3798;
 			(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24) &= 0xBF;
 		}
 	}
@@ -40759,7 +40760,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 8u;
 	if (x_BYTE_355244_spellsedit)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x10u;
-	if (!x_BYTE_35522C_nocd && x_BYTE_E2A28_speek)
+	if (!x_BYTE_35522C_nocd && cdSpeechEnabled_E2A28)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x40u;
 	if (x_BYTE_355240_load_set_level)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x80u;
@@ -42648,7 +42649,7 @@ void sub_59AF0_sound_proc9()//23aaf0
 {
 	//int result; // eax
 
-	sub_86860_speak_Sound(x_WORD_1803EC);
+	StopCdTrack_86860(x_WORD_1803EC);
 	TimerIdx_F4940 = AilRegisterTimer_92600(FadeUpSound_59B50);
 	AilSetTimerFrequency_92930(TimerIdx_F4940, 120);
 	AilStartTimer_92BA0(TimerIdx_F4940);
@@ -44624,7 +44625,7 @@ void sub_5BC20()//23cc20
 //removed sub_83E80_freemem4(x_DWORD_D4198);
 	//sub_83E80_freemem4(x_D41A0_BYTEARRAY_0);
 	//sub_83E80_freemem4(x_D41A0_BYTEARRAY_4);
-	sub_86860_speak_Sound(x_WORD_1803EC);
+	StopCdTrack_86860(x_WORD_1803EC);
 	sub_86BD0_freemem1();
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
@@ -50116,7 +50117,7 @@ char sub_86780(unsigned __int16 a1, int  /*a2*/, int  /*a3*/)//267780 see:https:
 {
 	/* char* v4; // esi
 
-	if (!x_BYTE_E2A28_speek)
+	if (!cdSpeechEnabled_E2A28)
 		return 0;
 	if (!x_DWORD_E2A6C || !x_DWORD_E2A70)
 		return 0;
@@ -50283,7 +50284,7 @@ void sub_86A00_some_allocs()//267a00
 					x_DWORD_180214[v13] = v15 - v14;
 				}
 				sub_86460(x_WORD_1803EC);
-				x_BYTE_E2A28_speek = 1;
+				cdSpeechEnabled_E2A28 = 1;
 			}
 			else
 			{
@@ -50319,7 +50320,7 @@ void sub_86BD0_freemem1()//267bd0
 //		result = sub_85F00_free_memory(x_DWORD_E2A6C);//264CDC - 266070
 	/*if (x_DWORD_E2A70)
 		result = sub_85F00_free_memory(x_DWORD_E2A70);*/
-	x_BYTE_E2A28_speek = 0;
+	cdSpeechEnabled_E2A28 = 0;
 	//x_DWORD_E2A6C = 0;
 	//x_DWORD_E2A70 = 0;
 	//return result;
@@ -50391,7 +50392,7 @@ void PlayCDTrackSegmentForSecretLevel_86F20(char a1)//267f20
 //----- (00086F70) --------------------------------------------------------
 void PlayCDTrackSegmentWithPaletteFade_86F70(uint8_t trackIdx, int16_t startPos, int16_t length)//267f70
 {
-	if (x_BYTE_E2A28_speek && (musicAble_E37FC || soundAble_E3798))
+	if (cdSpeechEnabled_E2A28 && (musicAble_E37FC || soundAble_E3798))
 	{
 		TimerIdx_180078 = AilRegisterTimer_92600(FadePalettes_86EA0);
 		AilSetTimerFrequency_92930(TimerIdx_180078, 50);
@@ -50406,17 +50407,17 @@ void PlayCDTrackSegmentWithPaletteFade_86F70(uint8_t trackIdx, int16_t startPos,
 // 180078: using guessed type int x_DWORD_180078;
 
 //----- (00086FF0) --------------------------------------------------------
-void PlayCDTrackSegment_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3)//267ff0
+void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length)//267ff0
 {
-	if (x_BYTE_E2A28_speek && (musicAble_E37FC || soundAble_E3798))
+	if (cdSpeechEnabled_E2A28 && (musicAble_E37FC || soundAble_E3798))
 	{
-		x_WORD_1803E8 = a1;
-		sub_86860_speak_Sound(x_WORD_1803EC);
-		if ((unsigned __int16)x_WORD_1803E8 >= (signed int)(unsigned __int8)x_BYTE_1804A1
-			&& (unsigned __int16)x_WORD_1803E8 <= (signed int)(unsigned __int8)x_BYTE_18049E)
+		PlayingTrackIdx_1803E8 = trackIdx;
+		StopCdTrack_86860(x_WORD_1803EC);
+		if ((unsigned __int16)PlayingTrackIdx_1803E8 >= (signed int)(unsigned __int8)x_BYTE_1804A1
+			&& (unsigned __int16)PlayingTrackIdx_1803E8 <= (signed int)(unsigned __int8)x_BYTE_18049E)
 		{
-			if (x_BYTE_1803EE[(unsigned __int16)x_WORD_1803E8])
-				sub_86780(x_WORD_1803EC, x_DWORD_180084[(unsigned __int16)x_WORD_1803E8] + a2, a3);
+			if (x_BYTE_1803EE[(unsigned __int16)PlayingTrackIdx_1803E8])
+				sub_86780(x_WORD_1803EC, x_DWORD_180084[(unsigned __int16)PlayingTrackIdx_1803E8] + startPos, length);
 		}
 	}
 }
@@ -50424,7 +50425,7 @@ void PlayCDTrackSegment_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3)//267ff
 // E3798: using guessed type char x_BYTE_E3798_sound_active2;
 // E37FC: using guessed type char x_BYTE_E37FC;
 // 180084: using guessed type int x_DWORD_180084[];
-// 1803E8: using guessed type __int16 x_WORD_1803E8;
+// 1803E8: using guessed type __int16 PlayingTrackIdx_1803E8;
 // 1803EA: using guessed type __int16 x_WORD_1803EA;
 // 1803EC: using guessed type __int16 x_WORD_1803EC;
 // 18049E: using guessed type char x_BYTE_18049E;
@@ -63071,7 +63072,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 				a1x->byte_0x46_70 = 8;
 			if (x_DWORD_E9C3C && (D41A0_0.terrain_2FECE.MapType == MapType_t::Day))
 			{
-				sub_86860_speak_Sound(x_WORD_1803EC);
+				StopCdTrack_86860(x_WORD_1803EC);
 				sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/GTD2.DAT");
 				DataFileIO::ReadFileAndDecompress(dataPath, &x_BYTE_FAEE0_tablesx_pre); //fix it
 			}

@@ -3885,7 +3885,7 @@ void sub_1A280()//1fb280
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_192 |= 0x02;//sound
 	if (musicAble_E37FC)
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_192 |= 0x04;//music
-	if (x_BYTE_E2A28_speek)
+	if (cdSpeechEnabled_E2A28)
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_192 |= 0x08;//speek
 	x_D41A0_BYTEARRAY_4_struct.dwordindex_192 |= 0xF0u;//fly,bright,speed,screen size
 	if (D41A0_0.str_0x21AA.creflections_0x21AA)

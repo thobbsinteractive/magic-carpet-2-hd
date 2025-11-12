@@ -1273,7 +1273,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		//Sound On / Sound Off
 
 		EndSample_8D8F0();
-		sub_86860_speak_Sound(x_WORD_1803EC);
+		StopCdTrack_86860(x_WORD_1803EC);
 		soundActive_E3799 ^= 1u;
 		return;
 	case 3:
@@ -1294,7 +1294,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		}
 		return;
 	case 4:
-		if (!x_BYTE_E2A28_speek)
+		if (!cdSpeechEnabled_E2A28)
 			return;
 		//v16 = x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24;
 		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40)
@@ -1827,7 +1827,7 @@ char sub_86930(unsigned __int16 a1)//267930 see:https://github.com/videogamepres
 	//int v2; // esi
 	//__int16 v3; // ax
 
-	if (!x_BYTE_E2A28_speek)
+	if (!cdSpeechEnabled_E2A28)
 		return 0;
 	/*if (!x_DWORD_E2A6C || !x_DWORD_E2A70)
 		return 0;

@@ -17,7 +17,7 @@ bool soundActive_E3799 = true; // weak
 bool soundLoaded_E379A = true; // weak
 bool autoScanForSoundHardware_E379B = true; // weak
 char x_BYTE_E379C = 1; // weak
-char x_BYTE_E2A28_speek = 0; // weak
+char cdSpeechEnabled_E2A28 = 0; // weak
 type_F4FE0 EntitySounds_F4FE0[70];
 
 type_E37A0_sound_buffer2* soundIndex_E37A0 = 0;
