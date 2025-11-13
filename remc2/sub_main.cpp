@@ -996,18 +996,15 @@ int sub_84FB0_3dim_scalar(axis_3d* a1, axis_3d* a2);
 int sub_85060(int a1);
 void sub_85070();
 int sub_85B20_copy_bitmap(x_BYTE* a1, x_WORD* a2, unsigned __int16 a3);
-int sub_85E40();
 __int16 sub_85F00_free_memory(__int16 a1);
 int sub_85F60(int a1);
-int sub_86010();
 __int16 sub_86180(unsigned __int16 a1);
-__int16 sub_86270(unsigned __int16 a1);
+__int16 ReadCdTrackInfo_86270(unsigned __int16 a1);
 __int16 sub_86370(unsigned __int16 a1, char a2);
 void sub_86460(uint16_t a1);
 //void sub_86550();
 char sub_86780(unsigned __int16 a1, int a2, int a3);
 void sub_86A00_some_allocs();
-void sub_86BD0_freemem1();
 uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
 void PlayCDTrackSegmentForSecretLevel_86F20(char a1);
 void PlayCDTrackSegmentWithPaletteFade_86F70(uint8_t trackIdx, int16_t startPos, int16_t length);
@@ -3010,7 +3007,6 @@ char x_BYTE_E29EF = 0; // weak
 char x_BYTE_E29F0 = 0; // weak
 char x_BYTE_E29F1 = 0; // weak
 char x_BYTE_E2A20 = 0; // weak
-uint8_t* x_WORD_E2A24 = 0; // weak
 
 
 
@@ -32054,7 +32050,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 				sub_53CC0_close_movie();
 				EndSample_8D8F0();
 				StopMusic_8E020();
-				StopCdTrack_86860(x_WORD_1803EC);
+				QueryCdDriveStatus_86860(x_WORD_1803EC);
 				RestoreSoundVolume_59BF0();
 				sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 				if (x_WORD_180660_VGA_type_resolution & 1)
@@ -32191,8 +32187,8 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 		//Free sound
 		if (!soundAble_E3798 && !musicAble_E37FC && cdSpeechEnabled_E2A28)
 		{
-			StopCdTrack_86860(x_WORD_1803EC);
-			sub_86BD0_freemem1();
+			QueryCdDriveStatus_86860(x_WORD_1803EC);
+			CloseCdDriver_85F00();
 			//v6 = x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0xBF;
 			cdSpeechEnabled_E2A28 = soundAble_E3798;
 			(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24) &= 0xBF;
@@ -42649,7 +42645,7 @@ void sub_59AF0_sound_proc9()//23aaf0
 {
 	//int result; // eax
 
-	StopCdTrack_86860(x_WORD_1803EC);
+	QueryCdDriveStatus_86860(x_WORD_1803EC);
 	TimerIdx_F4940 = AilRegisterTimer_92600(FadeUpSound_59B50);
 	AilSetTimerFrequency_92930(TimerIdx_F4940, 120);
 	AilStartTimer_92BA0(TimerIdx_F4940);
@@ -44625,8 +44621,8 @@ void sub_5BC20()//23cc20
 //removed sub_83E80_freemem4(x_DWORD_D4198);
 	//sub_83E80_freemem4(x_D41A0_BYTEARRAY_0);
 	//sub_83E80_freemem4(x_D41A0_BYTEARRAY_4);
-	StopCdTrack_86860(x_WORD_1803EC);
-	sub_86BD0_freemem1();
+	QueryCdDriveStatus_86860(x_WORD_1803EC);
+	CloseCdDriver_85F00();
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
@@ -49768,28 +49764,7 @@ void sub_85CC3_draw_round_frame(uint16_t* buffer)//266cc3
 	} while (a2);
 }
 
-//----- (00085E40) --------------------------------------------------------
-int sub_85E40()//266e40 //see https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
-{
-	/*signed __int16 result; // ax
-
-	if ( x_WORD_E2A24 )
-	  return 1;
-	x_DWORD_17FF10 = 4096;//ax
-	x_DWORD_17FF0C = 256;//bx - size
-//removed int386(49, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//dpmi_real_malloc
-	x_WORD_E2A24 = x_DWORD_17FF0C;//2B3A24 AA0
-	x_WORD_17FF5A = x_WORD_17FF18;//350F5A 1C8
-	LOBYTE(result) = x_DWORD_17FF24 == 0;//desriptor
-	HIBYTE(result) = 0;
-	return result;*/
-	int size = 0x1000;
-	if (x_WORD_E2A24)//==0
-		return 1;
-	x_WORD_E2A24 = (uint8_t*)malloc(size * 16 * sizeof(uint8_t));
-	return size & 0xff;
-}
-// E2A24: using guessed type __int16 x_WORD_E2A24;
+// E2A24: using guessed type __int16 x_CdDriveStatus_E2A24;
 // 17FF0C: using guessed type int x_DWORD_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF18: using guessed type __int16 x_WORD_17FF18;
@@ -49850,7 +49825,7 @@ int sub_85F60(int a1)//266f60
 }
 /*
 //----- (00085FD0) --------------------------------------------------------
-bool sub_85FD0()//266fd0
+bool CheckReadyCdDriveIsReady_85FD0()//266fd0
 {
 	//int v0; // ax
 	// 2B3A6C - D5020000A11A0000
@@ -49863,22 +49838,7 @@ bool sub_85FD0()//266fd0
 // E2A70: using guessed type int x_DWORD_E2A70;
 */
 
-//----- (00086010) --------------------------------------------------------
-int sub_86010()//267010 //dpmi_real_int386x see:https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
-{
-	x_DWORD_17FF38 = 0;//not changed
-	x_DWORD_17FF44 = 0x1500;//not changed
-	//x_DWORD_17FF0C = 0x300;//not changed
-	x_DWORD_17FF10 = 47;//not changed
-	x_DWORD_17FF14 = 0;//not changed
-	x_DWORD_17FF20 = x_DWORD_17FF28;//350f28 //not changed
-//removed int386(49, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);
-	if (x_DWORD_17FF10 == 0)x_DWORD_17FF38 = 0;
 
-	x_WORD_1803EA = x_DWORD_17FF38;//0
-	x_WORD_1803EC = x_DWORD_17FF40;//0
-	return x_DWORD_17FF38;
-}
 // 17FF0C: using guessed type int x_DWORD_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF14: using guessed type int x_DWORD_17FF14;
@@ -49945,13 +49905,6 @@ __int16 sub_86180(unsigned __int16 a1)//267180
 //----- (00086550) --------------------------------------------------------
 // void sub_86550()//267550 NOTE: removed as it did DOS memory handling
 
-//----- (00086270) --------------------------------------------------------
-__int16 sub_86270(unsigned __int16 a1)//267270 see:https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
-{
-	//int v1; // ecx
-	__int16 result; // ax
-	//char* v3; // esi
-	//int v4; // ebx
 
 	/*if (!x_DWORD_E2A6C)
 		return 0;
@@ -50188,24 +50141,24 @@ void sub_86A00_some_allocs()//267a00
 	int v14; // edx
 	int v15; // ecx
 
-	//sub_85E40();
+	//InitializeCdDriver_85E40();
 	//v0 = malloc(1000 * sizeof(uint8_t));//
-	//result =sub_85FD0();// fix it//2B3A6C - D5020000A11A0000
+	//result =CheckReadyCdDriveIsReady_85FD0();// fix it//2B3A6C - D5020000A11A0000
 
-	if (1/*sub_85FD0()*/)//v0=1
+	if (CheckReadyCdDriveIsReady_85FD0())//v0=1
 	{
-		if (sub_86010())
+		if (QueryInstalledCdDrives_86010())
 		{
 //removed sub_86550();//some allocation
 			v1 = 0;
 			while (1)
 			{
-				v2x = sub_86270((unsigned __int16)x_WORD_1803EC);
+				v2x = ReadCdTrackInfo_86270((unsigned __int16)x_WORD_1803EC);
 				if ((v2x & 0x8000) == 0)
 					break;
 				j___delay(1000);
 				if ((_WORD)++v1 == 4)
-					sub_86BD0_freemem1();
+					CloseCdDriver_85F00();
 			}
 			x_BYTE_1804A1 = x_BYTE_180471;
 			v2 = (unsigned __int8)x_BYTE_180471;
@@ -50255,12 +50208,12 @@ void sub_86A00_some_allocs()//267a00
 			}
 			else
 			{
-				sub_86BD0_freemem1();
+				CloseCdDriver_85F00();
 			}
 		}
 		else
 		{
-			sub_86BD0_freemem1();//23759B - 264CD0
+			CloseCdDriver_85F00();//23759B - 264CD0
 		}
 	}
 	//return result;
@@ -50278,20 +50231,6 @@ void sub_86A00_some_allocs()//267a00
 // 18049E: using guessed type char x_BYTE_18049E;
 // 1804A1: using guessed type char x_BYTE_1804A1;
 
-//----- (00086BD0) --------------------------------------------------------
-void sub_86BD0_freemem1()//267bd0
-{
-	//char result; // al
-	//result = 1;//fix it
-	//if (x_DWORD_E2A6C)//2B3A6C - D5020000A11A0000
-//		result = sub_85F00_free_memory(x_DWORD_E2A6C);//264CDC - 266070
-	/*if (x_DWORD_E2A70)
-		result = sub_85F00_free_memory(x_DWORD_E2A70);*/
-	cdSpeechEnabled_E2A28 = 0;
-	//x_DWORD_E2A6C = 0;
-	//x_DWORD_E2A70 = 0;
-	//return result;
-}
 // E2A28: using guessed type char x_BYTE_E2A28;
 // E2A6C: using guessed type int x_DWORD_E2A6C;
 // E2A70: using guessed type int x_DWORD_E2A70;
@@ -50379,7 +50318,7 @@ void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length
 	if (cdSpeechEnabled_E2A28 && (musicAble_E37FC || soundAble_E3798))
 	{
 		PlayingTrackIdx_1803E8 = trackIdx;
-		StopCdTrack_86860(x_WORD_1803EC);
+		QueryCdDriveStatus_86860(x_WORD_1803EC);
 		if ((unsigned __int16)PlayingTrackIdx_1803E8 >= (signed int)(unsigned __int8)x_BYTE_1804A1
 			&& (unsigned __int16)PlayingTrackIdx_1803E8 <= (signed int)(unsigned __int8)x_BYTE_18049E)
 		{
@@ -63039,7 +62978,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 				a1x->byte_0x46_70 = 8;
 			if (x_DWORD_E9C3C && (D41A0_0.terrain_2FECE.MapType == MapType_t::Day))
 			{
-				StopCdTrack_86860(x_WORD_1803EC);
+				QueryCdDriveStatus_86860(x_WORD_1803EC);
 				sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/GTD2.DAT");
 				DataFileIO::ReadFileAndDecompress(dataPath, &x_BYTE_FAEE0_tablesx_pre); //fix it
 			}

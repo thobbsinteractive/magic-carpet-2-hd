@@ -239,6 +239,8 @@ int TimerIdx_180CA0 = -1;
 int MusicTimerIdx_180C80 = -1;
 int TimerIdx_181C00 = -1;
 
+uint8_t* x_CdDriveStatus_E2A24 = 0;
+
 int x_DWORD_A9390[128] = {
 0x00000008,0x00000011,0x00000012,0x00000013,
 0x00000014,0x00000015,0x00000017,0x00000018,
@@ -875,7 +877,82 @@ void StartMusic_8E160(int track, int volume)//26f160
 	}
 }
 
-char StopCdTrack_86860(unsigned __int16 a1)//267860 see:https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
+int InitializeCdDriver_85E40()//266e40 //see https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
+{
+	/*signed __int16 result; // ax
+
+	if ( x_CdDriveStatus_E2A24 )
+	  return 1;
+	x_DWORD_17FF10 = 4096;//ax
+	x_DWORD_17FF0C = 256;//bx - size
+//removed int386(49, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//dpmi_real_malloc
+	x_CdDriveStatus_E2A24 = x_DWORD_17FF0C;//2B3A24 AA0
+	x_WORD_17FF5A = x_WORD_17FF18;//350F5A 1C8
+	LOBYTE(result) = x_DWORD_17FF24 == 0;//desriptor
+	HIBYTE(result) = 0;
+	return result;*/
+	int size = 0x1000;
+	if (x_CdDriveStatus_E2A24)//==0
+		return 1;
+	x_CdDriveStatus_E2A24 = (uint8_t*)malloc(size * 16 * sizeof(uint8_t));
+	return size & 0xff;
+}
+
+int QueryInstalledCdDrives_86010()
+{
+	x_DWORD_17FF38 = 0;//not changed
+	x_DWORD_17FF44 = 0x1500;//not changed
+	//x_DWORD_17FF0C = 0x300;//not changed
+	x_DWORD_17FF10 = 47;//not changed
+	x_DWORD_17FF14 = 0;//not changed
+	x_DWORD_17FF20 = x_DWORD_17FF28;//350f28 //not changed
+	//removed int386(49, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);
+	if (x_DWORD_17FF10 == 0)x_DWORD_17FF38 = 0;
+
+	x_WORD_1803EA = x_DWORD_17FF38;//0
+	x_WORD_1803EC = x_DWORD_17FF40;//0
+	return x_DWORD_17FF38;
+}
+
+void CloseCdDriver_85F00()//267bd0
+{
+	//char result; // al
+	//result = 1;//fix it
+	//if (x_DWORD_E2A6C)//2B3A6C - D5020000A11A0000
+//		result = sub_85F00_free_memory(x_DWORD_E2A6C);//264CDC - 266070
+	/*if (x_DWORD_E2A70)
+		result = sub_85F00_free_memory(x_DWORD_E2A70);*/
+	cdSpeechEnabled_E2A28 = 0;
+	//x_DWORD_E2A6C = 0;
+	//x_DWORD_E2A70 = 0;
+	//return result;
+}
+
+bool CheckReadyCdDriveIsReady_85FD0()
+{
+	__int16 v0; // ax
+
+	dword_E2A6C = SendCdDriveCommand_85EB0(2);
+	v0 = SendCdDriveCommand_85EB0(256);
+	dword_E2A70 = v0;
+	return dword_E2A6C && v0;
+}
+
+int16_t SendCdDriveCommand_85EB0(int16_t a1)
+{
+	__int16 result; // ax
+
+	LOWORD(dword_17FF10) = a1;
+	LOWORD(dword_17FF0C) = 256;
+	int386(49, (DWORD)&dword_17FF0C, (DWORD)&dword_17FF0C);
+	if (dword_17FF24)
+		result = 0;
+	else
+		result = dword_17FF0C;
+	return result;
+}
+
+char QueryCdDriveStatus_86860(uint16_t a1)
 {
 	/*int v2; // esi
 	//__int16 v3; // ax
@@ -905,8 +982,49 @@ char StopCdTrack_86860(unsigned __int16 a1)//267860 see:https://github.com/video
 		v2 += 4;
 		*((x_DWORD*)unk_180452ar + 2) = *(x_DWORD*)v2;
 		*((x_BYTE*)unk_180452ar + 12) = *(x_BYTE*)(v2 + 4);*/
+}
 
-	return EndPlayingCdTrackSegment();
+int16_t ReadCdTrackInfo_86270(uint16_t a1)
+{
+	//int v1; // ecx
+	__int16 result; // ax
+	//char* v3; // esi
+	//int v4; // ebx
+
+	/*if (!x_DWORD_E2A6C)
+		return 0;
+	v1 = x_DWORD_E2A70;
+	if (!x_DWORD_E2A70)
+		return 0;
+	v3 = (char*)(16 * x_DWORD_E2A6C);
+	*v3 = 26;
+	v3[1] = 0;
+	v3[2] = 3;
+	*(x_WORD*)(v3 + 3) = 0;
+	v3[13] = 0;
+	*((x_WORD*)v3 + 9) = 7;
+	*((x_WORD*)v3 + 10) = 0;
+	*(x_DWORD*)(v3 + 22) = 0;
+	v4 = 16 * v1;
+	*(x_DWORD*)(v3 + 14) = v1 << 16;
+	*(x_BYTE*)(16 * v1) = 10;*/
+	x_WORD_17FF58 = 0;
+	x_WORD_17FF56 = 0;
+	//x_WORD_17FF4A = x_DWORD_E2A6C;
+	x_DWORD_17FF38 = 0;
+	x_DWORD_17FF14 = 0;
+	x_DWORD_17FF10 = 47;
+	x_DWORD_17FF40 = a1;
+	x_DWORD_17FF44 = 0x1510;
+	//x_DWORD_17FF0C = 0x300;
+	x_DWORD_17FF20 = x_DWORD_17FF28;
+	//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//Return Physical Display Parms
+		//qmemcpy(unk_1803C0x, v3, 0x1Au);
+	result = x_WORD_1803C3;
+	/**unk_180470ar = *(x_DWORD*)v4;
+	*((x_WORD*)unk_180470ar + 2) = *(x_WORD*)(v4 + 4);
+	*((x_BYTE*)unk_180470ar + 6) = *(x_BYTE*)(v4 + 6);*/
+	return result;
 }
 
 //----- (0008E410) --------------------------------------------------------

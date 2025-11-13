@@ -286,4 +286,11 @@ void ChangeSoundLevel_19CA0(uint8_t option);
 int sub_582B0(__int16 a1, __int16 a2);
 int sub_582F0(int a1, __int16 a2);
 bool sub_6EA90(int a1, int a2);
-char StopCdTrack_86860(unsigned __int16 a1);
+
+int InitializeCdDriver_85E40();
+int QueryInstalledCdDrives_86010();
+void CloseCdDriver_85F00();
+bool CheckReadyCdDriveIsReady_85FD0();
+int16_t SendCdDriveCommand_85EB0(int16_t a1);
+char QueryCdDriveStatus_86860(uint16_t a1);
+int16_t ReadCdTrackInfo_86270(uint16_t a1);
