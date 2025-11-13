@@ -286,3 +286,4 @@ void ChangeSoundLevel_19CA0(uint8_t option);
 int sub_582B0(__int16 a1, __int16 a2);
 int sub_582F0(int a1, __int16 a2);
 bool sub_6EA90(int a1, int a2);
+char StopCdTrack_86860(unsigned __int16 a1);

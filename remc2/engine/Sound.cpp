@@ -875,6 +875,40 @@ void StartMusic_8E160(int track, int volume)//26f160
 	}
 }
 
+char StopCdTrack_86860(unsigned __int16 a1)//267860 see:https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
+{
+	/*int v2; // esi
+	//__int16 v3; // ax
+
+	if (!x_BYTE_E2A28_speek)
+		return 0;
+	if (!x_DWORD_E2A6C || !x_DWORD_E2A70)
+		return 0;
+	v2 = 16 * x_DWORD_E2A70;
+	*(x_BYTE*)v2 = 13;
+	v3 = x_DWORD_E2A70;
+	*(x_BYTE*)(v2 + 1) = 0;
+	*(x_BYTE*)(v2 + 2) = -123;
+	*(x_WORD*)(v2 + 3) = 0;
+	//x_WORD_17FF4A = v3;*/
+	x_DWORD_17FF38 = 0;
+	x_DWORD_17FF10 = 47;
+	x_DWORD_17FF14 = 0;
+	x_DWORD_17FF20 = x_DWORD_17FF28;
+	x_DWORD_17FF40 = a1;
+	//x_DWORD_17FF0C = 0x300;
+	x_DWORD_17FF44 = 0x1510;
+	//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//Return Physical Display Parms
+		// *unk_180452ar = *(x_DWORD*)v2;
+		/*v2 += 4;
+		*((x_DWORD*)unk_180452ar + 1) = *(x_DWORD*)v2;
+		v2 += 4;
+		*((x_DWORD*)unk_180452ar + 2) = *(x_DWORD*)v2;
+		*((x_BYTE*)unk_180452ar + 12) = *(x_BYTE*)(v2 + 4);*/
+
+	return EndPlayingCdTrackSegment();
+}
+
 //----- (0008E410) --------------------------------------------------------
 void sub_8E410_sound_proc16_xmidivolume(int master_volume)//26f410
 {

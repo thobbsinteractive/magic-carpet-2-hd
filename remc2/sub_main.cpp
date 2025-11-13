@@ -49869,7 +49869,7 @@ int sub_86010()//267010 //dpmi_real_int386x see:https://github.com/videogamepres
 	x_DWORD_17FF38 = 0;//not changed
 	x_DWORD_17FF44 = 0x1500;//not changed
 	//x_DWORD_17FF0C = 0x300;//not changed
-	x_DWORD_17FF10 = 0x2f;//not changed
+	x_DWORD_17FF10 = 47;//not changed
 	x_DWORD_17FF14 = 0;//not changed
 	x_DWORD_17FF20 = x_DWORD_17FF28;//350f28 //not changed
 //removed int386(49, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);
@@ -50154,39 +50154,6 @@ char sub_86780(unsigned __int16 a1, int  /*a2*/, int  /*a3*/)//267780 see:https:
 // 17FF4A: using guessed type __int16 x_WORD_17FF4A;
 // 1803AB: using guessed type __int16 x_WORD_1803AB;
 
-//----- (00086860) --------------------------------------------------------
-char sub_86860_speak_Sound(unsigned __int16 a1)//267860 see:https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
-{
-	/*int v2; // esi
-	//__int16 v3; // ax
-
-	if (!x_BYTE_E2A28_speek)
-		return 0;
-	if (!x_DWORD_E2A6C || !x_DWORD_E2A70)
-		return 0;
-	v2 = 16 * x_DWORD_E2A70;
-	*(x_BYTE*)v2 = 13;
-	v3 = x_DWORD_E2A70;
-	*(x_BYTE*)(v2 + 1) = 0;
-	*(x_BYTE*)(v2 + 2) = -123;
-	*(x_WORD*)(v2 + 3) = 0;
-	//x_WORD_17FF4A = v3;*/
-	x_DWORD_17FF38 = 0;
-	x_DWORD_17FF10 = 47;
-	x_DWORD_17FF14 = 0;
-	x_DWORD_17FF20 = x_DWORD_17FF28;
-	x_DWORD_17FF40 = a1;
-	//x_DWORD_17FF0C = 0x300;
-	x_DWORD_17FF44 = 0x1510;
-//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//Return Physical Display Parms
-	// *unk_180452ar = *(x_DWORD*)v2;
-	/*v2 += 4;
-	*((x_DWORD*)unk_180452ar + 1) = *(x_DWORD*)v2;
-	v2 += 4;
-	*((x_DWORD*)unk_180452ar + 2) = *(x_DWORD*)v2;
-	*((x_BYTE*)unk_180452ar + 12) = *(x_BYTE*)(v2 + 4);*/
-	return x_WORD_180455;
-}
 // E2A28: using guessed type char x_BYTE_E2A28;
 // E2A6C: using guessed type int x_DWORD_E2A6C;
 // E2A70: using guessed type int x_DWORD_E2A70;

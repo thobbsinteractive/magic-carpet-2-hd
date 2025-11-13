@@ -541,7 +541,6 @@ void  sub_841CE(__int16 a1);//ShowPerifery
 //sub_B5015 ShowPerifery
 //sub_840B8 ShowPerifery
 
-char sub_86860_speak_Sound(unsigned __int16 a1);
 void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, char a3);
 int16_t sub_89B60_aplicate_setting(uint8_t a1);
 //void __writeeflags(unsigned Value);
