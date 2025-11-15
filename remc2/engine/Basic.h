@@ -222,6 +222,8 @@ extern uint8_t* x_DWORD_E9C38_smalltit;
 
 extern int Int386Request_17FF0C;
 extern int MscdexCommand_17FF44;
+extern uint8_t MinTrackIdx_180471;
+extern uint8_t MaxTrackIdx_180472;
 
 extern TColor unk_17D838x[]; // weak
 

@@ -770,6 +770,8 @@ bool PlayCdTrackSegment(uint8_t trackIdx, int16_t startPos, int16_t length)
 	char speechPath[512];
 	sprintf(speechPath, "%s/TRACK%02d.WAV", GetSubDirectoryPath(speechFolder).c_str(), trackIdx);
 	Mix_Chunk* ptrSpeechChunk = Mix_LoadWAV(speechPath);
+	ptrSpeechChunk->volume = (uint8_t)master_volume;
+	GameChunks[maxSimultaniousSounds + 1] = *ptrSpeechChunk;
 	return Mix_PlayChannelTimed(maxSimultaniousSounds + 1, ptrSpeechChunk, 0, length) > -1;
 }
 
@@ -780,16 +782,34 @@ bool EndPlayingCdTrackSegment()
 
 bool AreCdTracksAvailable()
 {
-	char speechPath[512];
-	sprintf(speechPath, "%s/TRACK%02d.WAV", GetSubDirectoryPath(speechFolder).c_str(),1);
+	return GetCdTrackCount() > 0;
+}
 
-	if (FILE* file = fopen(speechPath, "r")) {
-		fclose(file);
-		return true;
+int GetCdTrackCount()
+{
+	char speechPath[512];
+	int count = 0;
+	try
+	{
+		for (int i = 1; i < 1000; i++)
+		{
+			sprintf(speechPath, "%s/TRACK%02d.WAV", GetSubDirectoryPath(speechFolder).c_str(), i);
+
+			if (FILE* file = fopen(speechPath, "r")) {
+				fclose(file);
+				count++;
+			}
+			else
+			{
+				break;
+			}
+		}
 	}
-	else {
-		return false;
+	catch (std::exception ex)
+	{
+		return count;
 	}
+	return count;
 }
 
 AIL_DRIVER* ac_AIL_API_install_driver(int  /*a1*/, uint8_t*  /*a2*/, int  /*a3*/)/*driver_image,n_bytes*///27f720

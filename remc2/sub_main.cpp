@@ -3668,7 +3668,7 @@ int x_DWORD_17FECC; // weak
 __int16 x_WORD_17FF56; // weak
 __int16 x_WORD_17FF58; // weak
 __int16 x_WORD_17FF5A; // weak
-int x_DWORD_180084[100]; // fix it -  weak
+int TrackOffsets_180084[100]; // fix it -  weak
 int x_DWORD_180214[101]; // idb
 uint8_t unk_1803A8x[16]; // weak
 __int16 x_WORD_1803AB; // weak
@@ -3678,8 +3678,6 @@ __int16 x_WORD_1803EA; // weak
 int16_t x_WORD_1803EC; // weak
 char x_BYTE_1803EE[100]; // idb
 __int16 x_WORD_180455; // weak
-uint8_t MinTrackIdx_180471; // weak
-uint8_t MaxTrackIdx_180472; // weak
 int x_DWORD_180473; // weak
 int x_DWORD_180486; // weak
 char x_BYTE_18048A; // weak
@@ -49865,7 +49863,7 @@ void sub_86A00_some_allocs()//267a00
 				v3 = v2;
 				v4 = x_DWORD_180486;
 				x_BYTE_1803EE[v2++] = (x_BYTE_18048A & 0x40) == 0;
-				x_DWORD_180084[v3] = sub_85F60(v4);
+				TrackOffsets_180084[v3] = sub_85F60(v4);
 			}
 			v5 = 0;
 			for (i = (uint8_t)MinTrackIdx_180471; i <= (signed int)(uint8_t)MaxTrackIdx_180472; i++)
@@ -49875,7 +49873,7 @@ void sub_86A00_some_allocs()//267a00
 			}
 			if (v5)
 			{
-				v7 = x_DWORD_180084[1];
+				v7 = TrackOffsets_180084[1];
 				v8 = (uint8_t)MinTrackIdx_180471;
 				while (1)
 				{
@@ -49883,7 +49881,7 @@ void sub_86A00_some_allocs()//267a00
 					if (v8 > (signed int)(uint8_t)MaxTrackIdx_180472)
 						break;
 					++v8;
-					x_DWORD_180084[v9] -= v7;
+					TrackOffsets_180084[v9] -= v7;
 				}
 				v10 = (uint8_t)MinTrackIdx_180471;
 				while (v10 <= (signed int)(uint8_t)MaxTrackIdx_180472)
@@ -49892,10 +49890,10 @@ void sub_86A00_some_allocs()//267a00
 					if (v10 == (uint8_t)MaxTrackIdx_180472)
 						v12 = sub_85F60(x_DWORD_180473) - v7;
 					else
-						v12 = x_DWORD_180084[1 + v11];
+						v12 = TrackOffsets_180084[1 + v11];
 					x_DWORD_180214[v11] = v12;
 					v13 = v10;
-					v14 = x_DWORD_180084[v10];
+					v14 = TrackOffsets_180084[v10];
 					v15 = x_DWORD_180214[v10++];
 					x_DWORD_180214[v13] = v15 - v14;
 				}
@@ -49916,7 +49914,7 @@ void sub_86A00_some_allocs()//267a00
 }
 // 9A122: using guessed type x_DWORD j___delay(x_DWORD);
 // E2A28: using guessed type char x_BYTE_E2A28;
-// 180084: using guessed type int x_DWORD_180084[];
+// 180084: using guessed type int TrackOffsets_180084[];
 // 180088: using guessed type int x_DWORD_180088[];
 // 1803EC: using guessed type __int16 x_WORD_1803EC;
 // 180473: using guessed type int x_DWORD_180473;
@@ -50015,14 +50013,17 @@ void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length
 			&& (uint16_t)PlayingTrackIdx_1803E8 <= TrackEndIdx_18049E)
 		{
 			if (x_BYTE_1803EE[(uint16_t)PlayingTrackIdx_1803E8])
-				sub_86780(x_WORD_1803EC, x_DWORD_180084[(uint16_t)PlayingTrackIdx_1803E8] + startPos, length);
+			{
+				sub_86780(x_WORD_1803EC, TrackOffsets_180084[(uint16_t)PlayingTrackIdx_1803E8] + startPos, length);
+				bool isPlaying = PlayCdTrackSegment(trackIdx, startPos, length);
+			}
 		}
 	}
 }
 // E2A28: using guessed type char x_BYTE_E2A28;
 // E3798: using guessed type char x_BYTE_E3798_sound_active2;
 // E37FC: using guessed type char x_BYTE_E37FC;
-// 180084: using guessed type int x_DWORD_180084[];
+// 180084: using guessed type int TrackOffsets_180084[];
 // 1803E8: using guessed type __int16 PlayingTrackIdx_1803E8;
 // 1803EA: using guessed type __int16 x_WORD_1803EA;
 // 1803EC: using guessed type __int16 x_WORD_1803EC;

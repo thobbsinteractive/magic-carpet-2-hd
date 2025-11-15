@@ -1067,6 +1067,9 @@ int16_t ReadCdTrackInfo_86270(uint16_t a1)
 	//*((x_WORD*)unk_180470ar + 2) = *(x_WORD*)(v4 + 4);
 	//*((x_BYTE*)unk_180470ar + 6) = *(x_BYTE*)(v4 + 6);
 	//return result;
+
+	MinTrackIdx_180471 = 0;
+	MaxTrackIdx_180472 = GetCdTrackCount();
 	return 1;
 }
 
@@ -1080,7 +1083,8 @@ int CheckCdDrive_86550()
 	//x_WORD_17FF20 = (int)&unk_17FF28;
 	//int386(49, (DWORD)&x_WORD_17FF0C, (DWORD)&x_WORD_17FF0C);
 	//return x_WORD_17FF38;
-	return 1;
+
+	return AreCdTracksAvailable();
 }
 
 char sub_86780(uint16_t a1, int  /*a2*/, int  /*a3*/)
