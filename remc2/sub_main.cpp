@@ -998,10 +998,6 @@ void sub_85070();
 int sub_85B20_copy_bitmap(x_BYTE* a1, x_WORD* a2, unsigned __int16 a3);
 __int16 sub_85F00_free_memory(__int16 a1);
 int sub_85F60(int a1);
-__int16 sub_86180(unsigned __int16 a1);
-__int16 ReadCdTrackInfo_86270(unsigned __int16 a1);
-__int16 sub_86370(unsigned __int16 a1, char a2);
-void sub_86460(uint16_t a1);
 char sub_86780(unsigned __int16 a1, int a2, int a3);
 void sub_86A00_some_allocs();
 uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
@@ -3677,18 +3673,18 @@ int x_DWORD_180214[101]; // idb
 uint8_t unk_1803A8x[16]; // weak
 __int16 x_WORD_1803AB; // weak
 __int16 x_WORD_1803C3; // weak
-__int16 PlayingTrackIdx_1803E8; // weak
+int16_t PlayingTrackIdx_1803E8; // weak
 __int16 x_WORD_1803EA; // weak
 int16_t x_WORD_1803EC; // weak
 char x_BYTE_1803EE[100]; // idb
 __int16 x_WORD_180455; // weak
-char x_BYTE_180471; // weak
-char x_BYTE_180472; // weak
+uint8_t MinTrackIdx_180471; // weak
+uint8_t MaxTrackIdx_180472; // weak
 int x_DWORD_180473; // weak
 int x_DWORD_180486; // weak
 char x_BYTE_18048A; // weak
-char MaxTrackIdx_18049E; // weak
-char MinTrackIdx_1804A1; // weak
+uint8_t TrackEndIdx_18049E; // weak
+uint8_t TrackStartIdx_1804A1; // weak
 
 uint8_t unk_180560x[44]; // weak
 
@@ -49823,218 +49819,6 @@ int sub_85F60(int a1)//266f60
 	return 75 * BYTE1(a1) + 4500 * BYTE2(a1) + (unsigned __int8)a1;
 }
 
-// 17FF0C: using guessed type int Int386Request_17FF0C;
-// 17FF10: using guessed type int x_DWORD_17FF10;
-// 17FF14: using guessed type int x_DWORD_17FF14;
-// 17FF20: using guessed type int x_DWORD_17FF20;
-// 17FF38: using guessed type int x_DWORD_17FF38;
-// 17FF40: using guessed type int x_DWORD_17FF40;
-// 1803EA: using guessed type __int16 x_WORD_1803EA;
-// 1803EC: using guessed type __int16 x_WORD_1803EC;
-
-//----- (00086180) --------------------------------------------------------
-__int16 sub_86180(unsigned __int16 a1)//267180
-{
-	//int v1; // ecx
-	__int16 result; // ax
-	//char* v3; // esi
-	//int v4; // ebx
-	//__int16 v5; // ax
-
-	//if (!x_DWORD_E2A6C)
-//		return 0;
-	/*v1 = x_DWORD_E2A70;
-	if (!x_DWORD_E2A70)
-		return 0;*/
-	/*v3 = (char*)(16 * x_DWORD_E2A6C);
-	*v3 = 26;
-	v3[1] = 0;
-	v3[2] = 3;
-	*(x_WORD*)(v3 + 3) = 0;
-	v3[13] = 0;
-	*((x_WORD*)v3 + 9) = 5;
-	*((x_WORD*)v3 + 10) = 0;
-	*(x_DWORD*)(v3 + 22) = 0;
-	v4 = 16 * v1;
-	*(x_DWORD*)(v3 + 14) = v1 << 16;
-	v5 = x_DWORD_E2A6C;
-	*(x_BYTE*)(16 * v1) = 6;*/
-	//x_WORD_17FF4A = v5;
-	x_DWORD_17FF38 = 0;
-	x_DWORD_17FF10 = 47;
-	x_DWORD_17FF14 = 0;
-	x_DWORD_17FF40 = a1;
-	MscdexCommand_17FF44 = 0x1510; //Drive Request (Low-Level)
-	Int386Request_17FF0C = 0x300;
-	x_DWORD_17FF20 = x_DWORD_17FF28;
-	//qmemcpy(unk_1803C0x, v3, 0x1Au);
-	result = x_WORD_1803C3;
-	/*unk_180498 = *(x_DWORD*)v4;
-	*((x_BYTE*)&unk_180498 + 4) = *(x_BYTE*)(v4 + 4);*/
-	return result;
-}
-// E2A6C: using guessed type int x_DWORD_E2A6C;
-// E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int Int386Request_17FF0C;
-// 17FF10: using guessed type int x_DWORD_17FF10;
-// 17FF14: using guessed type int x_DWORD_17FF14;
-// 17FF20: using guessed type int x_DWORD_17FF20;
-// 17FF38: using guessed type int x_DWORD_17FF38;
-// 17FF40: using guessed type int x_DWORD_17FF40;
-// 17FF4A: using guessed type __int16 x_WORD_17FF4A;
-// 1803C3: using guessed type __int16 x_WORD_1803C3;
-
-//----- (00086550) --------------------------------------------------------
-// void sub_86550()//267550 NOTE: removed as it did DOS memory handling
-
-// E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int Int386Request_17FF0C;
-// 17FF10: using guessed type int x_DWORD_17FF10;
-// 17FF14: using guessed type int x_DWORD_17FF14;
-// 17FF20: using guessed type int x_DWORD_17FF20;
-// 17FF38: using guessed type int x_DWORD_17FF38;
-// 17FF40: using guessed type int x_DWORD_17FF40;
-// 17FF4A: using guessed type __int16 x_WORD_17FF4A;
-// 17FF56: using guessed type __int16 x_WORD_17FF56;
-// 17FF58: using guessed type __int16 x_WORD_17FF58;
-// 1803C3: using guessed type __int16 x_WORD_1803C3;
-
-//----- (00086370) --------------------------------------------------------
-__int16 sub_86370(unsigned __int16 a1, char  /*a2*/)//267370 see:https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
-{
-	//int v2; // ecx
-	__int16 result; // ax
-	//char* v4; // esi
-	//int v5; // ebx
-
-	/*if (!x_DWORD_E2A6C)
-		return 0;
-	v2 = x_DWORD_E2A70;
-	if (!x_DWORD_E2A70)
-		return 0;
-	v4 = (char*)(16 * x_DWORD_E2A6C);
-	*v4 = 26;
-	v4[1] = 0;
-	v4[2] = 3;
-	*(x_WORD*)(v4 + 3) = 0;
-	v4[13] = 0;
-	*((x_WORD*)v4 + 9) = 7;
-	*((x_WORD*)v4 + 10) = 0;
-	*(x_DWORD*)(v4 + 22) = 0;
-	v5 = 16 * v2;
-	*(x_DWORD*)(v4 + 14) = v2 << 16;*/
-	/* *(x_BYTE*)v5 = 11;
-	*(x_BYTE*)(v5 + 1) = a2;*/
-	x_DWORD_17FF38 = 0;
-	x_DWORD_17FF10 = 47;
-	//x_WORD_17FF4A = x_DWORD_E2A6C;
-	x_DWORD_17FF14 = 0;
-	x_DWORD_17FF40 = a1;
-	MscdexCommand_17FF44 = 0x1510; //Drive Request (Low-Level)
-	Int386Request_17FF0C = 0x300;
-	x_DWORD_17FF20 = x_DWORD_17FF28;
-
-	//0x31 //DPMI Memory information
-	//removed int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);//joystick, or graphics
-	//qmemcpy(unk_1803C0x, v4, 0x1Au);
-	result = x_WORD_1803C3;
-	/* *unk_180484ar = *(x_DWORD*)v5;
-	*((x_WORD*)&unk_180484ar + 2) = *(x_WORD*)(v5 + 4);
-	*((x_BYTE*)&unk_180484ar + 6) = *(x_BYTE*)(v5 + 6);*/
-	return result;
-}
-// E2A6C: using guessed type int x_DWORD_E2A6C;
-// E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int Int386Request_17FF0C;
-// 17FF10: using guessed type int x_DWORD_17FF10;
-// 17FF14: using guessed type int x_DWORD_17FF14;
-// 17FF20: using guessed type int x_DWORD_17FF20;
-// 17FF38: using guessed type int x_DWORD_17FF38;
-// 17FF40: using guessed type int x_DWORD_17FF40;
-// 17FF4A: using guessed type __int16 x_WORD_17FF4A;
-// 1803C3: using guessed type __int16 x_WORD_1803C3;
-
-//----- (00086460) --------------------------------------------------------
-void sub_86460(uint16_t a1)//267460 see:https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
-{
-	//int v1; // ecx
-	//__int16 result; // ax
-	//char* v3; // esi
-	//int v4; // ebx
-	//__int16 v5; // ax
-
-	/*if (!x_DWORD_E2A6C)
-		return;
-	v1 = x_DWORD_E2A70;
-	if (!x_DWORD_E2A70)
-		return;
-	v3 = (char*)(16 * x_DWORD_E2A6C);*/
-	/* *v3 = 26;
-	v3[1] = 0;
-	v3[2] = 3;
-	*(x_WORD*)(v3 + 3) = 0;
-	v3[13] = 0;
-	*((x_WORD*)v3 + 9) = 11;
-	*((x_WORD*)v3 + 10) = 0;
-	*(x_DWORD*)(v3 + 22) = 0;
-	v4 = 16 * v1;
-	*(x_DWORD*)(v3 + 14) = v1 << 16;
-	v5 = x_DWORD_E2A6C;
-	*(x_BYTE*)(16 * v1) = 12;*/
-	//x_WORD_17FF4A = v5;
-	x_DWORD_17FF38 = 0;
-	x_DWORD_17FF10 = 47;
-	x_DWORD_17FF14 = 0;
-	x_DWORD_17FF40 = a1;
-	MscdexCommand_17FF44 = 0x1510; //Drive Request (Low-Level)
-	Int386Request_17FF0C = 0x300;
-	x_DWORD_17FF20 = x_DWORD_17FF28;
-	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);//joystick nebo grafika
-	//qmemcpy(unk_1803C0x, v3, 0x1Au);
-	//result = x_WORD_1803C3;
-	/**unk_18048Bar = *(x_DWORD*)v4;
-	*((x_DWORD*)&unk_18048Bar + 1) = *(x_DWORD*)(v4 + 4);
-	*((x_WORD*)&unk_18048Bar + 4) = *(x_WORD*)(v4 + 8);
-	*((x_BYTE*)&unk_18048Bar + 10) = *(x_BYTE*)(v4 + 10);*/
-	//return result;
-}
-// E2A6C: using guessed type int x_DWORD_E2A6C;
-// E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int Int386Request_17FF0C;
-// 17FF10: using guessed type int x_DWORD_17FF10;
-// 17FF14: using guessed type int x_DWORD_17FF14;
-// 17FF20: using guessed type int x_DWORD_17FF20;
-// 17FF38: using guessed type int x_DWORD_17FF38;
-// 17FF40: using guessed type int x_DWORD_17FF40;
-// 17FF4A: using guessed type __int16 x_WORD_17FF4A;
-// 1803C3: using guessed type __int16 x_WORD_1803C3;
-
-//----- (00086780) --------------------------------------------------------
-// E2A28: using guessed type char x_BYTE_E2A28;
-// E2A6C: using guessed type int x_DWORD_E2A6C;
-// E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int Int386Request_17FF0C;
-// 17FF10: using guessed type int x_DWORD_17FF10;
-// 17FF14: using guessed type int x_DWORD_17FF14;
-// 17FF20: using guessed type int x_DWORD_17FF20;
-// 17FF38: using guessed type int x_DWORD_17FF38;
-// 17FF40: using guessed type int x_DWORD_17FF40;
-// 17FF4A: using guessed type __int16 x_WORD_17FF4A;
-// 1803AB: using guessed type __int16 x_WORD_1803AB;
-
-// E2A28: using guessed type char x_BYTE_E2A28;
-// E2A6C: using guessed type int x_DWORD_E2A6C;
-// E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int Int386Request_17FF0C;
-// 17FF10: using guessed type int x_DWORD_17FF10;
-// 17FF14: using guessed type int x_DWORD_17FF14;
-// 17FF20: using guessed type int x_DWORD_17FF20;
-// 17FF38: using guessed type int x_DWORD_17FF38;
-// 17FF40: using guessed type int x_DWORD_17FF40;
-// 17FF4A: using guessed type __int16 x_WORD_17FF4A;
-// 180455: using guessed type __int16 x_WORD_180455;
-
-//----- (00086A00) --------------------------------------------------------
 void sub_86A00_some_allocs()//267a00
 {
 	//int result; // eax
@@ -50057,8 +49841,6 @@ void sub_86A00_some_allocs()//267a00
 
 	//InitializeCdDriver_85E40();
 	//v0 = malloc(1000 * sizeof(uint8_t));//
-	//result =CheckReadyCdDriveIsReady_85FD0();// fix it//2B3A6C - D5020000A11A0000
-
 	if (CheckReadyCdDriveIsReady_85FD0())//v0=1
 	{
 		if (QueryInstalledCdDrives_86010())
@@ -50074,10 +49856,10 @@ void sub_86A00_some_allocs()//267a00
 				if ((_WORD)++v1 == 4)
 					CloseCdDriver_85F00();
 			}
-			MinTrackIdx_1804A1 = x_BYTE_180471;
-			v2 = (unsigned __int8)x_BYTE_180471;
-			MaxTrackIdx_18049E = x_BYTE_180472;
-			while (v2 <= (signed int)(unsigned __int8)x_BYTE_180472)
+			TrackStartIdx_1804A1 = MinTrackIdx_180471;
+			v2 = (uint8_t)MinTrackIdx_180471;
+			TrackEndIdx_18049E = MaxTrackIdx_180472;
+			while (v2 <= (signed int)(uint8_t)MaxTrackIdx_180472)
 			{
 				sub_86370(x_WORD_1803EC, v2);
 				v3 = v2;
@@ -50086,7 +49868,7 @@ void sub_86A00_some_allocs()//267a00
 				x_DWORD_180084[v3] = sub_85F60(v4);
 			}
 			v5 = 0;
-			for (i = (unsigned __int8)x_BYTE_180471; i <= (signed int)(unsigned __int8)x_BYTE_180472; i++)
+			for (i = (uint8_t)MinTrackIdx_180471; i <= (signed int)(uint8_t)MaxTrackIdx_180472; i++)
 			{
 				if (x_BYTE_1803EE[i])
 					v5 = 1;
@@ -50094,20 +49876,20 @@ void sub_86A00_some_allocs()//267a00
 			if (v5)
 			{
 				v7 = x_DWORD_180084[1];
-				v8 = (unsigned __int8)x_BYTE_180471;
+				v8 = (uint8_t)MinTrackIdx_180471;
 				while (1)
 				{
 					v9 = v8;
-					if (v8 > (signed int)(unsigned __int8)x_BYTE_180472)
+					if (v8 > (signed int)(uint8_t)MaxTrackIdx_180472)
 						break;
 					++v8;
 					x_DWORD_180084[v9] -= v7;
 				}
-				v10 = (unsigned __int8)x_BYTE_180471;
-				while (v10 <= (signed int)(unsigned __int8)x_BYTE_180472)
+				v10 = (uint8_t)MinTrackIdx_180471;
+				while (v10 <= (signed int)(uint8_t)MaxTrackIdx_180472)
 				{
 					v11 = v10;
-					if (v10 == (unsigned __int8)x_BYTE_180472)
+					if (v10 == (uint8_t)MaxTrackIdx_180472)
 						v12 = sub_85F60(x_DWORD_180473) - v7;
 					else
 						v12 = x_DWORD_180084[1 + v11];
@@ -50137,13 +49919,9 @@ void sub_86A00_some_allocs()//267a00
 // 180084: using guessed type int x_DWORD_180084[];
 // 180088: using guessed type int x_DWORD_180088[];
 // 1803EC: using guessed type __int16 x_WORD_1803EC;
-// 180471: using guessed type char x_BYTE_180471;
-// 180472: using guessed type char x_BYTE_180472;
 // 180473: using guessed type int x_DWORD_180473;
 // 180486: using guessed type int x_DWORD_180486;
 // 18048A: using guessed type char x_BYTE_18048A;
-// 18049E: using guessed type char MaxTrackIdx_18049E;
-// 1804A1: using guessed type char MinTrackIdx_1804A1;
 
 // E2A28: using guessed type char x_BYTE_E2A28;
 // E2A6C: using guessed type int x_DWORD_E2A6C;
@@ -50233,8 +50011,8 @@ void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length
 	{
 		PlayingTrackIdx_1803E8 = trackIdx;
 		QueryCdDriveStatus_86860(x_WORD_1803EC);
-		if ((uint16_t)PlayingTrackIdx_1803E8 >= (int)(uint8_t)MinTrackIdx_1804A1
-			&& (uint16_t)PlayingTrackIdx_1803E8 <= (int)(uint8_t)MaxTrackIdx_18049E)
+		if ((uint16_t)PlayingTrackIdx_1803E8 >= TrackStartIdx_1804A1
+			&& (uint16_t)PlayingTrackIdx_1803E8 <= TrackEndIdx_18049E)
 		{
 			if (x_BYTE_1803EE[(uint16_t)PlayingTrackIdx_1803E8])
 				sub_86780(x_WORD_1803EC, x_DWORD_180084[(uint16_t)PlayingTrackIdx_1803E8] + startPos, length);
@@ -50248,8 +50026,6 @@ void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length
 // 1803E8: using guessed type __int16 PlayingTrackIdx_1803E8;
 // 1803EA: using guessed type __int16 x_WORD_1803EA;
 // 1803EC: using guessed type __int16 x_WORD_1803EC;
-// 18049E: using guessed type char MaxTrackIdx_18049E;
-// 1804A1: using guessed type char MinTrackIdx_1804A1;
 
 //----- (00087090) --------------------------------------------------------
 void SetTextBoxMinMaxSizes_87090()//268090

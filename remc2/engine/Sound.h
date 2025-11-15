@@ -298,4 +298,7 @@ char QueryCdDriveStatus_86860(uint16_t a1);
 int16_t ReadCdTrackInfo_86270(uint16_t a1);
 int CheckCdDrive_86550();
 char QueryCdAudioStatus_86930(uint16_t a1);
-char sub_86780(unsigned __int16 a1, int  /*a2*/, int  /*a3*/);
+char sub_86780(uint16_t a1, int  /*a2*/, int  /*a3*/);
+void sub_86460(uint16_t a1);
+int16_t sub_86180(uint16_t a1);
+int16_t sub_86370(uint16_t a1, char  /*a2*/);

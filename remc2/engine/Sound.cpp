@@ -1083,7 +1083,7 @@ int CheckCdDrive_86550()
 	return 1;
 }
 
-char sub_86780(unsigned __int16 a1, int  /*a2*/, int  /*a3*/)
+char sub_86780(uint16_t a1, int  /*a2*/, int  /*a3*/)
 {
 	char* v4; // esi
 
@@ -1113,6 +1113,136 @@ char sub_86780(unsigned __int16 a1, int  /*a2*/, int  /*a3*/)
 	return 1;
 }
 
+void sub_86460(uint16_t a1)
+{
+	//int v1; // ecx
+	//__int16 result; // ax
+	//char* v3; // esi
+	//int v4; // ebx
+	//__int16 v5; // ax
+
+	/*if (!x_DWORD_E2A6C)
+		return;
+	v1 = x_DWORD_E2A70;
+	if (!x_DWORD_E2A70)
+		return;
+	v3 = (char*)(16 * x_DWORD_E2A6C);*/
+	/* *v3 = 26;
+	v3[1] = 0;
+	v3[2] = 3;
+	*(x_WORD*)(v3 + 3) = 0;
+	v3[13] = 0;
+	*((x_WORD*)v3 + 9) = 11;
+	*((x_WORD*)v3 + 10) = 0;
+	*(x_DWORD*)(v3 + 22) = 0;
+	v4 = 16 * v1;
+	*(x_DWORD*)(v3 + 14) = v1 << 16;
+	v5 = x_DWORD_E2A6C;
+	*(x_BYTE*)(16 * v1) = 12;*/
+	//x_WORD_17FF4A = v5;
+	x_DWORD_17FF38 = 0;
+	x_DWORD_17FF10 = 47;
+	x_DWORD_17FF14 = 0;
+	x_DWORD_17FF40 = a1;
+	MscdexCommand_17FF44 = 0x1510; //Drive Request (Low-Level)
+	Int386Request_17FF0C = 0x300;
+	x_DWORD_17FF20 = x_DWORD_17FF28;
+	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);//joystick nebo grafika
+	//qmemcpy(unk_1803C0x, v3, 0x1Au);
+	//result = x_WORD_1803C3;
+	/**unk_18048Bar = *(x_DWORD*)v4;
+	*((x_DWORD*)&unk_18048Bar + 1) = *(x_DWORD*)(v4 + 4);
+	*((x_WORD*)&unk_18048Bar + 4) = *(x_WORD*)(v4 + 8);
+	*((x_BYTE*)&unk_18048Bar + 10) = *(x_BYTE*)(v4 + 10);*/
+	//return result;
+}
+
+int16_t sub_86180(uint16_t a1)
+{
+	//int v1; // ecx
+	__int16 result; // ax
+	//char* v3; // esi
+	//int v4; // ebx
+	//__int16 v5; // ax
+
+	//if (!x_DWORD_E2A6C)
+//		return 0;
+	/*v1 = x_DWORD_E2A70;
+	if (!x_DWORD_E2A70)
+		return 0;*/
+		/*v3 = (char*)(16 * x_DWORD_E2A6C);
+		*v3 = 26;
+		v3[1] = 0;
+		v3[2] = 3;
+		*(x_WORD*)(v3 + 3) = 0;
+		v3[13] = 0;
+		*((x_WORD*)v3 + 9) = 5;
+		*((x_WORD*)v3 + 10) = 0;
+		*(x_DWORD*)(v3 + 22) = 0;
+		v4 = 16 * v1;
+		*(x_DWORD*)(v3 + 14) = v1 << 16;
+		v5 = x_DWORD_E2A6C;
+		*(x_BYTE*)(16 * v1) = 6;*/
+		//x_WORD_17FF4A = v5;
+	x_DWORD_17FF38 = 0;
+	x_DWORD_17FF10 = 47;
+	x_DWORD_17FF14 = 0;
+	x_DWORD_17FF40 = a1;
+	MscdexCommand_17FF44 = 0x1510; //Drive Request (Low-Level)
+	Int386Request_17FF0C = 0x300;
+	x_DWORD_17FF20 = x_DWORD_17FF28;
+	//qmemcpy(unk_1803C0x, v3, 0x1Au);
+	//result = x_WORD_1803C3;
+	/*unk_180498 = *(x_DWORD*)v4;
+	*((x_BYTE*)&unk_180498 + 4) = *(x_BYTE*)(v4 + 4);*/
+	//return result;
+	return 256;
+}
+
+int16_t sub_86370(uint16_t a1, char  /*a2*/)
+{
+	//int v2; // ecx
+	__int16 result; // ax
+	//char* v4; // esi
+	//int v5; // ebx
+
+	/*if (!x_DWORD_E2A6C)
+		return 0;
+	v2 = x_DWORD_E2A70;
+	if (!x_DWORD_E2A70)
+		return 0;
+	v4 = (char*)(16 * x_DWORD_E2A6C);
+	*v4 = 26;
+	v4[1] = 0;
+	v4[2] = 3;
+	*(x_WORD*)(v4 + 3) = 0;
+	v4[13] = 0;
+	*((x_WORD*)v4 + 9) = 7;
+	*((x_WORD*)v4 + 10) = 0;
+	*(x_DWORD*)(v4 + 22) = 0;
+	v5 = 16 * v2;
+	*(x_DWORD*)(v4 + 14) = v2 << 16;*/
+	/* *(x_BYTE*)v5 = 11;
+	*(x_BYTE*)(v5 + 1) = a2;*/
+	x_DWORD_17FF38 = 0;
+	x_DWORD_17FF10 = 47;
+	//x_WORD_17FF4A = x_DWORD_E2A6C;
+	x_DWORD_17FF14 = 0;
+	x_DWORD_17FF40 = a1;
+	MscdexCommand_17FF44 = 0x1510; //Drive Request (Low-Level)
+	Int386Request_17FF0C = 0x300;
+	x_DWORD_17FF20 = x_DWORD_17FF28;
+
+	//0x31 //DPMI Memory information
+	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);//joystick, or graphics
+	//qmemcpy(unk_1803C0x, v4, 0x1Au);
+	//result = x_WORD_1803C3;
+	/* *unk_180484ar = *(x_DWORD*)v5;
+	*((x_WORD*)&unk_180484ar + 2) = *(x_WORD*)(v5 + 4);
+	*((x_BYTE*)&unk_180484ar + 6) = *(x_BYTE*)(v5 + 6);*/
+	//return result;
+	return 1;
+}
 
 //----- (0008E410) --------------------------------------------------------
 void sub_8E410_sound_proc16_xmidivolume(int master_volume)//26f410
