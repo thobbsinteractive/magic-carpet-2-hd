@@ -6,7 +6,6 @@
 extern char CURSOR_SPRITE_INDEX_D419E; // weak//2a519e
 extern char x_BYTE_D47D9; // weak
 extern int debugcounter_47560;
-extern int x_DWORD_17FF10; // weak
 extern int x_DWORD_17FF14; // weak
 extern int16_t x_WORD_17FF18; // weak
 extern int x_DWORD_17FF20; // weak

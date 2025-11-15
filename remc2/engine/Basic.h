@@ -220,6 +220,8 @@ extern __int16 x_WORD_18074C_mouse_left2_button; // weak//35174c
 extern type_x_DWORD_17DE38str x_DWORD_17DE38str;
 extern uint8_t* x_DWORD_E9C38_smalltit;
 
+extern int Int386Request_17FF0C;
+
 extern TColor unk_17D838x[]; // weak
 
 extern uint8_t x_BYTE_D41B5_texture_size;

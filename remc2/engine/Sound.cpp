@@ -204,6 +204,8 @@ uint16_t x_WORD_A12B3 = 39321; // weak
 
 __int16 x_WORD_E3B4E = 0; // weak
 
+int x_DWORD_17FF10; // weak
+
 uint32_t unk_E4004; // weak
 __int16 x_WORD_E4A04 = 0; // weak
 int x_DWORD_E4A08 = 0; // weak
@@ -877,41 +879,79 @@ void StartMusic_8E160(int track, int volume)//26f160
 	}
 }
 
-int InitializeCdDriver_85E40()//266e40 //see https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
+int InitializeCdDriver_85E40()
 {
-	/*signed __int16 result; // ax
+	//int16_t result;
 
 	if ( x_CdDriveStatus_E2A24 )
 	  return 1;
-	x_DWORD_17FF10 = 4096;//ax
-	x_DWORD_17FF0C = 256;//bx - size
-//removed int386(49, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//dpmi_real_malloc
-	x_CdDriveStatus_E2A24 = x_DWORD_17FF0C;//2B3A24 AA0
-	x_WORD_17FF5A = x_WORD_17FF18;//350F5A 1C8
-	LOBYTE(result) = x_DWORD_17FF24 == 0;//desriptor
-	HIBYTE(result) = 0;
-	return result;*/
-	int size = 0x1000;
-	if (x_CdDriveStatus_E2A24)//==0
-		return 1;
-	x_CdDriveStatus_E2A24 = (uint8_t*)malloc(size * 16 * sizeof(uint8_t));
-	return size & 0xff;
+	//x_DWORD_17FF10 = 4096;//ax
+	//Int386Request_17FF0C = 256;//bx - size
+	//int386(49, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);
+	//x_CdDriveStatus_E2A24 = Int386Request_17FF0C;//2B3A24 AA0
+	//x_WORD_17FF5A = x_WORD_17FF18;//350F5A 1C8
+	//LOBYTE(result) = x_DWORD_17FF24 == 0;//desriptor
+	//HIBYTE(result) = 0;
+	//return result;
+	//int size = 0x1000;
+	//if (x_CdDriveStatus_E2A24)//==0
+	//	return 1;
+	//x_CdDriveStatus_E2A24 = (uint8_t*)malloc(size * 16 * sizeof(uint8_t));
+	//return size & 0xff;
+	return 1;
 }
 
 int QueryInstalledCdDrives_86010()
 {
-	x_DWORD_17FF38 = 0;//not changed
-	x_DWORD_17FF44 = 0x1500;//not changed
-	//x_DWORD_17FF0C = 0x300;//not changed
-	x_DWORD_17FF10 = 47;//not changed
-	x_DWORD_17FF14 = 0;//not changed
-	x_DWORD_17FF20 = x_DWORD_17FF28;//350f28 //not changed
-	//removed int386(49, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);
-	if (x_DWORD_17FF10 == 0)x_DWORD_17FF38 = 0;
+	//x_DWORD_17FF38 = 0;//not changed
+	//x_DWORD_17FF44 = 0x1500;//not changed
+	//Int386Request_17FF0C = 0x300;//not changed
+	//x_DWORD_17FF10 = 47;//not changed
+	//x_DWORD_17FF14 = 0;//not changed
+	//x_DWORD_17FF20 = x_DWORD_17FF28;//350f28 //not changed
+	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);
+	//if (x_DWORD_17FF10 == 0)
+	//	x_DWORD_17FF38 = 0;
 
-	x_WORD_1803EA = x_DWORD_17FF38;//0
-	x_WORD_1803EC = x_DWORD_17FF40;//0
-	return x_DWORD_17FF38;
+	//x_WORD_1803EA = x_DWORD_17FF38;//0
+	//x_WORD_1803EC = x_DWORD_17FF40;//0
+	//return x_DWORD_17FF38;
+	return 1;
+}
+
+char QueryCdAudioStatus_86930(uint16_t a1)
+{
+	//int v2; // esi
+	//__int16 v3; // ax
+
+	if (!cdSpeechEnabled_E2A28)
+		return 0;
+
+	//if (!x_DWORD_E2A6C || !x_DWORD_E2A70)
+	//	return 0;
+	//v2 = 16 * x_DWORD_E2A70;
+	//*(x_BYTE*)v2 = 13;
+	//v3 = x_DWORD_E2A70;
+	//*(x_BYTE*)(v2 + 1) = 0;
+	//*(x_BYTE*)(v2 + 2) = -120;
+	//*(x_WORD*)(v2 + 3) = 0;
+	//x_WORD_17FF4A = v3;
+	//x_DWORD_17FF38 = 0;
+	//x_DWORD_17FF10 = 47;
+	//x_DWORD_17FF14 = 0;
+	//x_DWORD_17FF20 = x_DWORD_17FF28;
+	//x_DWORD_17FF40 = a1;
+	//Int386Request_17FF0C = 0x300;
+	//x_DWORD_17FF44 = 0x1510;
+	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);
+	//	*unk_180460ar = *(x_DWORD*)v2;
+	//	v2 += 4;
+	//	*((x_DWORD*)unk_180460ar + 1) = *(x_DWORD*)v2;
+	//	v2 += 4;
+	//	*((x_DWORD*)unk_180460ar + 2) = *(x_DWORD*)v2;
+	//	*((x_BYTE*)unk_180460ar + 12) = *(x_BYTE*)(v2 + 4);
+	//return x_WORD_180463;
+	return 1;
 }
 
 void CloseCdDriver_85F00()//267bd0
@@ -930,58 +970,61 @@ void CloseCdDriver_85F00()//267bd0
 
 bool CheckReadyCdDriveIsReady_85FD0()
 {
-	__int16 v0; // ax
+	//__int16 v0; // ax
 
-	dword_E2A6C = SendCdDriveCommand_85EB0(2);
-	v0 = SendCdDriveCommand_85EB0(256);
-	dword_E2A70 = v0;
-	return dword_E2A6C && v0;
+	//x_DWORD_E2A6C = SendCdDriveCommand_85EB0(2);
+	//v0 = SendCdDriveCommand_85EB0(256);
+	//x_DWORD_E2A70 = v0;
+	//return x_DWORD_E2A6C && v0;
+	return true;
 }
 
-int16_t SendCdDriveCommand_85EB0(int16_t a1)
+int16_t SendCdDriveCommand_85EB0(int16_t command)
 {
-	__int16 result; // ax
+	//__int16 result; // ax
 
-	LOWORD(dword_17FF10) = a1;
-	LOWORD(dword_17FF0C) = 256;
-	int386(49, (DWORD)&dword_17FF0C, (DWORD)&dword_17FF0C);
-	if (dword_17FF24)
-		result = 0;
-	else
-		result = dword_17FF0C;
-	return result;
+	//LOWORD(x_DWORD_17FF10) = command;
+	//LOWORD(Int386Request_17FF0C) = 256;
+	//int386(49, (DWORD)&Int386Request_17FF0C, (DWORD)&Int386Request_17FF0C);
+	//if (x_DWORD_17FF24)
+	//	result = 0;
+	//else
+	//	result = Int386Request_17FF0C;
+	//return result;
+	return 1;
 }
 
 char QueryCdDriveStatus_86860(uint16_t a1)
 {
-	/*int v2; // esi
+	int v2; // esi
 	//__int16 v3; // ax
 
-	if (!x_BYTE_E2A28_speek)
+	if (!cdSpeechEnabled_E2A28)
 		return 0;
-	if (!x_DWORD_E2A6C || !x_DWORD_E2A70)
-		return 0;
-	v2 = 16 * x_DWORD_E2A70;
-	*(x_BYTE*)v2 = 13;
-	v3 = x_DWORD_E2A70;
-	*(x_BYTE*)(v2 + 1) = 0;
-	*(x_BYTE*)(v2 + 2) = -123;
-	*(x_WORD*)(v2 + 3) = 0;
-	//x_WORD_17FF4A = v3;*/
-	x_DWORD_17FF38 = 0;
-	x_DWORD_17FF10 = 47;
-	x_DWORD_17FF14 = 0;
-	x_DWORD_17FF20 = x_DWORD_17FF28;
-	x_DWORD_17FF40 = a1;
-	//x_DWORD_17FF0C = 0x300;
-	x_DWORD_17FF44 = 0x1510;
-	//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//Return Physical Display Parms
-		// *unk_180452ar = *(x_DWORD*)v2;
-		/*v2 += 4;
-		*((x_DWORD*)unk_180452ar + 1) = *(x_DWORD*)v2;
-		v2 += 4;
-		*((x_DWORD*)unk_180452ar + 2) = *(x_DWORD*)v2;
-		*((x_BYTE*)unk_180452ar + 12) = *(x_BYTE*)(v2 + 4);*/
+	//if (!x_DWORD_E2A6C || !x_DWORD_E2A70)
+	//	return 0;
+	//v2 = 16 * x_DWORD_E2A70;
+	//*(x_BYTE*)v2 = 13;
+	//v3 = x_DWORD_E2A70;
+	//*(x_BYTE*)(v2 + 1) = 0;
+	//*(x_BYTE*)(v2 + 2) = -123;
+	//*(x_WORD*)(v2 + 3) = 0;
+	//x_WORD_17FF4A = v3;
+	//x_DWORD_17FF38 = 0;
+	//x_DWORD_17FF10 = 47;
+	//x_DWORD_17FF14 = 0;
+	//x_DWORD_17FF20 = x_DWORD_17FF28;
+	//x_DWORD_17FF40 = a1;
+	//Int386Request_17FF0C = 0x300;
+	//x_DWORD_17FF44 = 0x1510;
+	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);//Return Physical Display Parms
+	//*unk_180452ar = *(x_DWORD*)v2;
+	//v2 += 4;
+	//*((x_DWORD*)unk_180452ar + 1) = *(x_DWORD*)v2;
+	//v2 += 4;
+	//*((x_DWORD*)unk_180452ar + 2) = *(x_DWORD*)v2;
+	//*((x_BYTE*)unk_180452ar + 12) = *(x_BYTE*)(v2 + 4);
+	return 1;
 }
 
 int16_t ReadCdTrackInfo_86270(uint16_t a1)
@@ -990,42 +1033,56 @@ int16_t ReadCdTrackInfo_86270(uint16_t a1)
 	__int16 result; // ax
 	//char* v3; // esi
 	//int v4; // ebx
-
-	/*if (!x_DWORD_E2A6C)
-		return 0;
-	v1 = x_DWORD_E2A70;
-	if (!x_DWORD_E2A70)
-		return 0;
-	v3 = (char*)(16 * x_DWORD_E2A6C);
-	*v3 = 26;
-	v3[1] = 0;
-	v3[2] = 3;
-	*(x_WORD*)(v3 + 3) = 0;
-	v3[13] = 0;
-	*((x_WORD*)v3 + 9) = 7;
-	*((x_WORD*)v3 + 10) = 0;
-	*(x_DWORD*)(v3 + 22) = 0;
-	v4 = 16 * v1;
-	*(x_DWORD*)(v3 + 14) = v1 << 16;
-	*(x_BYTE*)(16 * v1) = 10;*/
-	x_WORD_17FF58 = 0;
-	x_WORD_17FF56 = 0;
+	//if (!x_DWORD_E2A6C)
+	//	return 0;
+	//v1 = x_DWORD_E2A70;
+	//if (!x_DWORD_E2A70)
+	//	return 0;
+	//v3 = (char*)(16 * x_DWORD_E2A6C);
+	//*v3 = 26;
+	//v3[1] = 0;
+	//v3[2] = 3;
+	//*(x_WORD*)(v3 + 3) = 0;
+	//v3[13] = 0;
+	//*((x_WORD*)v3 + 9) = 7;
+	//*((x_WORD*)v3 + 10) = 0;
+	//*(x_DWORD*)(v3 + 22) = 0;
+	//v4 = 16 * v1;
+	//*(x_DWORD*)(v3 + 14) = v1 << 16;
+	//*(x_BYTE*)(16 * v1) = 10;
+	//x_WORD_17FF58 = 0;
+	//x_WORD_17FF56 = 0;
 	//x_WORD_17FF4A = x_DWORD_E2A6C;
-	x_DWORD_17FF38 = 0;
-	x_DWORD_17FF14 = 0;
-	x_DWORD_17FF10 = 47;
-	x_DWORD_17FF40 = a1;
-	x_DWORD_17FF44 = 0x1510;
-	//x_DWORD_17FF0C = 0x300;
-	x_DWORD_17FF20 = x_DWORD_17FF28;
-	//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//Return Physical Display Parms
-		//qmemcpy(unk_1803C0x, v3, 0x1Au);
-	result = x_WORD_1803C3;
-	/**unk_180470ar = *(x_DWORD*)v4;
-	*((x_WORD*)unk_180470ar + 2) = *(x_WORD*)(v4 + 4);
-	*((x_BYTE*)unk_180470ar + 6) = *(x_BYTE*)(v4 + 6);*/
-	return result;
+	//x_DWORD_17FF38 = 0;
+	//x_DWORD_17FF14 = 0;
+	//x_DWORD_17FF10 = 47;
+	//x_DWORD_17FF40 = a1;
+	//x_DWORD_17FF44 = 0x1510; 
+	//Int386Request_17FF0C = 0x300;
+	//x_DWORD_17FF20 = x_DWORD_17FF28;
+	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);
+	//qmemcpy(unk_1803C0x, v3, 0x1Au);
+	//result = x_WORD_1803C3;
+	//*unk_180470ar = *(x_DWORD*)v4;
+	//*((x_WORD*)unk_180470ar + 2) = *(x_WORD*)(v4 + 4);
+	//*((x_BYTE*)unk_180470ar + 6) = *(x_BYTE*)(v4 + 6);
+	//return result;
+	return 1;
 }
+
+int CheckCdDrive_86550()
+{
+	//x_WORD_17FF38 = 0;
+	//x_WORD_17FF44 = 5388;
+	//x_WORD_17FF0C = 768;
+	//x_WORD_17FF10 = 47;
+	//x_WORD_17FF14 = 0;
+	//x_WORD_17FF20 = (int)&unk_17FF28;
+	//int386(49, (DWORD)&x_WORD_17FF0C, (DWORD)&x_WORD_17FF0C);
+	//return x_WORD_17FF38;
+	return 1;
+}
+
 
 //----- (0008E410) --------------------------------------------------------
 void sub_8E410_sound_proc16_xmidivolume(int master_volume)//26f410

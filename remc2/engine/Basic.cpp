@@ -132,6 +132,8 @@ uint8_t* ViewPortRenderBufferAltStart_DE554 = 0;
 char* x_DWORD_E9C4C_langindexbuffer[1000]; // idb
 
 
+int Int386Request_17FF0C;
+
 //file
 
 int filearrayindex_POINTERSDATTAB = 0;

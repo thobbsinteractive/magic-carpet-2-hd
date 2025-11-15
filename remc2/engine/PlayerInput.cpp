@@ -32,7 +32,6 @@ int x_DWORD_180658; // weak
 int x_DWORD_180638; // weak
 int x_DWORD_180654; // weak
 char x_BYTE_1810A3[320]; // fix it -  weak
-int x_DWORD_17FF10; // weak
 int x_DWORD_17FF14; // weak
 int16_t x_WORD_17FF18; // weak
 int x_DWORD_17FF20; // weak
@@ -46,7 +45,6 @@ int16_t x_WORD_1811E4[400]; // fix it -  weak
 
 char sub_5BF10();
 void sub_70940();
-char sub_86930(unsigned __int16 a1);
 void HandleOptionsMenuButtonClick_19A70();
 void sub_18AA0();
 int SelectSpell_6D4F0(type_str_611* a1, int16_t mouseX);
@@ -457,7 +455,7 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221, true, gameUiScale);
 		if (musicActive_E37FD)
 			StartMusic_8E160(D41A0_0.maptypeMusic_0x235, 0x7Fu);
-		sub_86930(x_WORD_1803EC);
+		QueryCdAudioStatus_86930(x_WORD_1803EC);
 		if (x_D41A0_BYTEARRAY_4_struct.byteindex_225)
 			x_D41A0_BYTEARRAY_4_struct.byteindex_225 = 1;
 	}
@@ -1821,43 +1819,11 @@ void sub_417D0_install_pal_and_mouse_minmax2()//2227d0
 	sub_6EF10_set_mouse_minmax(0, 640, 0, 800);
 }
 
-//----- (00086930) --------------------------------------------------------
-char sub_86930(unsigned __int16 a1)//267930 see:https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
-{
-	//int v2; // esi
-	//__int16 v3; // ax
-
-	if (!cdSpeechEnabled_E2A28)
-		return 0;
-	/*if (!x_DWORD_E2A6C || !x_DWORD_E2A70)
-		return 0;
-	v2 = 16 * x_DWORD_E2A70;
-	*(x_BYTE*)v2 = 13;
-	v3 = x_DWORD_E2A70;
-	*(x_BYTE*)(v2 + 1) = 0;
-	*(x_BYTE*)(v2 + 2) = -120;
-	*(x_WORD*)(v2 + 3) = 0;*/
-	//x_WORD_17FF4A = v3;
-	x_DWORD_17FF38 = 0;
-	x_DWORD_17FF10 = 47;
-	x_DWORD_17FF14 = 0;
-	x_DWORD_17FF20 = x_DWORD_17FF28;
-	x_DWORD_17FF40 = a1;
-	//x_DWORD_17FF0C = 0x300;
-	x_DWORD_17FF44 = 0x1510;
-//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);
-	/**unk_180460ar = *(x_DWORD*)v2;
-	v2 += 4;
-	*((x_DWORD*)unk_180460ar + 1) = *(x_DWORD*)v2;
-	v2 += 4;
-	*((x_DWORD*)unk_180460ar + 2) = *(x_DWORD*)v2;
-	*((x_BYTE*)unk_180460ar + 12) = *(x_BYTE*)(v2 + 4);*/
-	return x_WORD_180463;
-}
+//----- (00086930) -------------------------------------------------------
 // E2A28: using guessed type char x_BYTE_E2A28;
 // E2A6C: using guessed type int x_DWORD_E2A6C;
 // E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF14: using guessed type int x_DWORD_17FF14;
 // 17FF20: using guessed type int x_DWORD_17FF20;

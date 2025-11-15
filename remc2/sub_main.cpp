@@ -1002,7 +1002,6 @@ __int16 sub_86180(unsigned __int16 a1);
 __int16 ReadCdTrackInfo_86270(unsigned __int16 a1);
 __int16 sub_86370(unsigned __int16 a1, char a2);
 void sub_86460(uint16_t a1);
-//void sub_86550();
 char sub_86780(unsigned __int16 a1, int a2, int a3);
 void sub_86A00_some_allocs();
 uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
@@ -49765,7 +49764,7 @@ void sub_85CC3_draw_round_frame(uint16_t* buffer)//266cc3
 }
 
 // E2A24: using guessed type __int16 x_CdDriveStatus_E2A24;
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF18: using guessed type __int16 x_WORD_17FF18;
 // 17FF24: using guessed type int x_DWORD_17FF24;
@@ -49787,7 +49786,7 @@ void* sub_85EB0_alloc_memory(int32 a1)//266eb0 //malloc
 	*/
 	return malloc(a1*16*sizeof(uint8_t));
 }
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF24: using guessed type int x_DWORD_17FF24;
 
@@ -49797,8 +49796,8 @@ __int16 sub_85F00_free_memory(__int16  /*a1*/)//266f00 //https://github.com/vide
 	/*__int16 result; // ax
 
 	x_WORD_17FF18 = a1;
-	LOWORD(x_DWORD_17FF0C) = 0x100;
-//removed int386(49, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);
+	LOWORD(Int386Request_17FF0C) = 0x100;
+	//removed int386(49, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);
 	if ( x_DWORD_17FF24 )
 	  myprintf("fdm:error freeing %lx\n");
 	LOBYTE(result) = x_DWORD_17FF24 == 0;
@@ -49814,7 +49813,7 @@ __int16 sub_85F00_free_memory(__int16  /*a1*/)//266f00 //https://github.com/vide
 	}
 	return 0;
 }
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF18: using guessed type __int16 x_WORD_17FF18;
 // 17FF24: using guessed type int x_DWORD_17FF24;
 
@@ -49823,23 +49822,8 @@ int sub_85F60(int a1)//266f60
 {
 	return 75 * BYTE1(a1) + 4500 * BYTE2(a1) + (unsigned __int8)a1;
 }
-/*
-//----- (00085FD0) --------------------------------------------------------
-bool CheckReadyCdDriveIsReady_85FD0()//266fd0
-{
-	//int v0; // ax
-	// 2B3A6C - D5020000A11A0000
-	//x_DWORD_E2A6C
-	x_DWORD_E2A6C = (int)sub_85EB0_alloc_memory(0x2);
-	x_DWORD_E2A70 = (int)sub_85EB0_alloc_memory(0x100);
-	return x_DWORD_E2A6C && x_DWORD_E2A70;
-}
-// E2A6C: using guessed type int x_DWORD_E2A6C;
-// E2A70: using guessed type int x_DWORD_E2A70;
-*/
 
-
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF14: using guessed type int x_DWORD_17FF14;
 // 17FF20: using guessed type int x_DWORD_17FF20;
@@ -49882,7 +49866,7 @@ __int16 sub_86180(unsigned __int16 a1)//267180
 	x_DWORD_17FF14 = 0;
 	x_DWORD_17FF40 = a1;
 	x_DWORD_17FF44 = 0x1510;
-	//x_DWORD_17FF0C = 0x300;
+	//Int386Request_17FF0C = 0x300;
 	x_DWORD_17FF20 = x_DWORD_17FF28;
 	//qmemcpy(unk_1803C0x, v3, 0x1Au);
 	result = x_WORD_1803C3;
@@ -49892,7 +49876,7 @@ __int16 sub_86180(unsigned __int16 a1)//267180
 }
 // E2A6C: using guessed type int x_DWORD_E2A6C;
 // E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF14: using guessed type int x_DWORD_17FF14;
 // 17FF20: using guessed type int x_DWORD_17FF20;
@@ -49905,45 +49889,8 @@ __int16 sub_86180(unsigned __int16 a1)//267180
 //----- (00086550) --------------------------------------------------------
 // void sub_86550()//267550 NOTE: removed as it did DOS memory handling
 
-
-	/*if (!x_DWORD_E2A6C)
-		return 0;
-	v1 = x_DWORD_E2A70;
-	if (!x_DWORD_E2A70)
-		return 0;
-	v3 = (char*)(16 * x_DWORD_E2A6C);
-	*v3 = 26;
-	v3[1] = 0;
-	v3[2] = 3;
-	*(x_WORD*)(v3 + 3) = 0;
-	v3[13] = 0;
-	*((x_WORD*)v3 + 9) = 7;
-	*((x_WORD*)v3 + 10) = 0;
-	*(x_DWORD*)(v3 + 22) = 0;
-	v4 = 16 * v1;
-	*(x_DWORD*)(v3 + 14) = v1 << 16;
-	*(x_BYTE*)(16 * v1) = 10;*/
-	x_WORD_17FF58 = 0;
-	x_WORD_17FF56 = 0;
-	//x_WORD_17FF4A = x_DWORD_E2A6C;
-	x_DWORD_17FF38 = 0;
-	x_DWORD_17FF14 = 0;
-	x_DWORD_17FF10 = 47;
-	x_DWORD_17FF40 = a1;
-	x_DWORD_17FF44 = 0x1510;
-	//x_DWORD_17FF0C = 0x300;
-	x_DWORD_17FF20 = x_DWORD_17FF28;
-//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//Return Physical Display Parms
-	//qmemcpy(unk_1803C0x, v3, 0x1Au);
-	result = x_WORD_1803C3;
-	/**unk_180470ar = *(x_DWORD*)v4;
-	*((x_WORD*)unk_180470ar + 2) = *(x_WORD*)(v4 + 4);
-	*((x_BYTE*)unk_180470ar + 6) = *(x_BYTE*)(v4 + 6);*/
-	return result;
-}
-// E2A6C: using guessed type int x_DWORD_E2A6C;
 // E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF14: using guessed type int x_DWORD_17FF14;
 // 17FF20: using guessed type int x_DWORD_17FF20;
@@ -49987,9 +49934,11 @@ __int16 sub_86370(unsigned __int16 a1, char  /*a2*/)//267370 see:https://github.
 	x_DWORD_17FF14 = 0;
 	x_DWORD_17FF40 = a1;
 	x_DWORD_17FF44 = 0x1510;
-	//x_DWORD_17FF0C = 0x300;
+	//Int386Request_17FF0C = 0x300;
 	x_DWORD_17FF20 = x_DWORD_17FF28;
-//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//joystick, or graphics
+
+	//0x31 //DPMI Memory information
+	//removed int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);//joystick, or graphics
 	//qmemcpy(unk_1803C0x, v4, 0x1Au);
 	result = x_WORD_1803C3;
 	/* *unk_180484ar = *(x_DWORD*)v5;
@@ -49999,7 +49948,7 @@ __int16 sub_86370(unsigned __int16 a1, char  /*a2*/)//267370 see:https://github.
 }
 // E2A6C: using guessed type int x_DWORD_E2A6C;
 // E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF14: using guessed type int x_DWORD_17FF14;
 // 17FF20: using guessed type int x_DWORD_17FF20;
@@ -50042,9 +49991,9 @@ void sub_86460(uint16_t a1)//267460 see:https://github.com/videogamepreservation
 	x_DWORD_17FF14 = 0;
 	x_DWORD_17FF40 = a1;
 	x_DWORD_17FF44 = 0x1510;
-	//x_DWORD_17FF0C = 0x300;
+	//Int386Request_17FF0C = 0x300;
 	x_DWORD_17FF20 = x_DWORD_17FF28;
-//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//joystick nebo grafika
+//removed int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);//joystick nebo grafika
 	//qmemcpy(unk_1803C0x, v3, 0x1Au);
 	//result = x_WORD_1803C3;
 	/**unk_18048Bar = *(x_DWORD*)v4;
@@ -50055,7 +50004,7 @@ void sub_86460(uint16_t a1)//267460 see:https://github.com/videogamepreservation
 }
 // E2A6C: using guessed type int x_DWORD_E2A6C;
 // E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF14: using guessed type int x_DWORD_17FF14;
 // 17FF20: using guessed type int x_DWORD_17FF20;
@@ -50088,16 +50037,16 @@ char sub_86780(unsigned __int16 a1, int  /*a2*/, int  /*a3*/)//267780 see:https:
 	//x_WORD_17FF4A = x_DWORD_E2A70;
 	x_DWORD_17FF20 = x_DWORD_17FF28;
 	x_DWORD_17FF40 = a1;
-	//x_DWORD_17FF0C = 0x300;
+	//Int386Request_17FF0C = 0x300;
 	x_DWORD_17FF44 = 0x1510;
-//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);//joystick nebo grafika
+//removed int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);//joystick nebo grafika
 	//qmemcpy(unk_1803A8x, v4, 0x16u);
 	return x_WORD_1803AB;
 }
 // E2A28: using guessed type char x_BYTE_E2A28;
 // E2A6C: using guessed type int x_DWORD_E2A6C;
 // E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF14: using guessed type int x_DWORD_17FF14;
 // 17FF20: using guessed type int x_DWORD_17FF20;
@@ -50110,7 +50059,7 @@ char sub_86780(unsigned __int16 a1, int  /*a2*/, int  /*a3*/)//267780 see:https:
 // E2A28: using guessed type char x_BYTE_E2A28;
 // E2A6C: using guessed type int x_DWORD_E2A6C;
 // E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int x_DWORD_17FF0C;
+// 17FF0C: using guessed type int Int386Request_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF14: using guessed type int x_DWORD_17FF14;
 // 17FF20: using guessed type int x_DWORD_17FF20;
@@ -50149,7 +50098,7 @@ void sub_86A00_some_allocs()//267a00
 	{
 		if (QueryInstalledCdDrives_86010())
 		{
-//removed sub_86550();//some allocation
+			CheckCdDrive_86550();//some allocation
 			v1 = 0;
 			while (1)
 			{
