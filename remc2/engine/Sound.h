@@ -58,6 +58,8 @@ extern uint8_t* x_DWORD_1821B8[];
 extern uint8_t* x_DWORD_1821D0[];
 extern uint8_t* x_DWORD_1821E8[];
 
+extern int x_DWORD_17FF10; // weak
+
 const uint32_t AilSampleLoaded = 1;
 const uint32_t AilSampleStopped = 2;
 const uint32_t AilSampleStarted = 4;
@@ -291,6 +293,9 @@ int InitializeCdDriver_85E40();
 int QueryInstalledCdDrives_86010();
 void CloseCdDriver_85F00();
 bool CheckReadyCdDriveIsReady_85FD0();
-int16_t SendCdDriveCommand_85EB0(int16_t a1);
+int16_t SendCdDriveCommand_85EB0(int16_t command);
 char QueryCdDriveStatus_86860(uint16_t a1);
 int16_t ReadCdTrackInfo_86270(uint16_t a1);
+int CheckCdDrive_86550();
+char QueryCdAudioStatus_86930(uint16_t a1);
+char sub_86780(unsigned __int16 a1, int  /*a2*/, int  /*a3*/);

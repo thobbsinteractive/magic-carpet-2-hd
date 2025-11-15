@@ -886,7 +886,7 @@ int InitializeCdDriver_85E40()
 	if ( x_CdDriveStatus_E2A24 )
 	  return 1;
 	//x_DWORD_17FF10 = 4096;//ax
-	//Int386Request_17FF0C = 256;//bx - size
+	Int386Request_17FF0C = 256;//bx - size
 	//int386(49, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);
 	//x_CdDriveStatus_E2A24 = Int386Request_17FF0C;//2B3A24 AA0
 	//x_WORD_17FF5A = x_WORD_17FF18;//350F5A 1C8
@@ -904,9 +904,9 @@ int InitializeCdDriver_85E40()
 int QueryInstalledCdDrives_86010()
 {
 	//x_DWORD_17FF38 = 0;//not changed
-	//x_DWORD_17FF44 = 0x1500;//not changed
-	//Int386Request_17FF0C = 0x300;//not changed
-	//x_DWORD_17FF10 = 47;//not changed
+	MscdexCommand_17FF44 = 0x1500; //Install Check
+	Int386Request_17FF0C = 0x300;
+	x_DWORD_17FF10 = 47;
 	//x_DWORD_17FF14 = 0;//not changed
 	//x_DWORD_17FF20 = x_DWORD_17FF28;//350f28 //not changed
 	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);
@@ -937,12 +937,12 @@ char QueryCdAudioStatus_86930(uint16_t a1)
 	//*(x_WORD*)(v2 + 3) = 0;
 	//x_WORD_17FF4A = v3;
 	//x_DWORD_17FF38 = 0;
-	//x_DWORD_17FF10 = 47;
+	x_DWORD_17FF10 = 47;
 	//x_DWORD_17FF14 = 0;
 	//x_DWORD_17FF20 = x_DWORD_17FF28;
-	//x_DWORD_17FF40 = a1;
-	//Int386Request_17FF0C = 0x300;
-	//x_DWORD_17FF44 = 0x1510;
+	x_DWORD_17FF40 = a1;
+	Int386Request_17FF0C = 0x300;
+	MscdexCommand_17FF44 = 0x1510; //Drive Request (Low-Level)
 	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);
 	//	*unk_180460ar = *(x_DWORD*)v2;
 	//	v2 += 4;
@@ -984,7 +984,7 @@ int16_t SendCdDriveCommand_85EB0(int16_t command)
 	//__int16 result; // ax
 
 	//LOWORD(x_DWORD_17FF10) = command;
-	//LOWORD(Int386Request_17FF0C) = 256;
+	LOWORD(Int386Request_17FF0C) = 256;
 	//int386(49, (DWORD)&Int386Request_17FF0C, (DWORD)&Int386Request_17FF0C);
 	//if (x_DWORD_17FF24)
 	//	result = 0;
@@ -1011,12 +1011,12 @@ char QueryCdDriveStatus_86860(uint16_t a1)
 	//*(x_WORD*)(v2 + 3) = 0;
 	//x_WORD_17FF4A = v3;
 	//x_DWORD_17FF38 = 0;
-	//x_DWORD_17FF10 = 47;
+	x_DWORD_17FF10 = 47;
 	//x_DWORD_17FF14 = 0;
 	//x_DWORD_17FF20 = x_DWORD_17FF28;
-	//x_DWORD_17FF40 = a1;
-	//Int386Request_17FF0C = 0x300;
-	//x_DWORD_17FF44 = 0x1510;
+	x_DWORD_17FF40 = a1;
+	Int386Request_17FF0C = 0x300;
+	MscdexCommand_17FF44 = 0x1510; //Drive Request (Low-Level)
 	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);//Return Physical Display Parms
 	//*unk_180452ar = *(x_DWORD*)v2;
 	//v2 += 4;
@@ -1030,7 +1030,7 @@ char QueryCdDriveStatus_86860(uint16_t a1)
 int16_t ReadCdTrackInfo_86270(uint16_t a1)
 {
 	//int v1; // ecx
-	__int16 result; // ax
+	//int16_t result; // ax
 	//char* v3; // esi
 	//int v4; // ebx
 	//if (!x_DWORD_E2A6C)
@@ -1055,10 +1055,10 @@ int16_t ReadCdTrackInfo_86270(uint16_t a1)
 	//x_WORD_17FF4A = x_DWORD_E2A6C;
 	//x_DWORD_17FF38 = 0;
 	//x_DWORD_17FF14 = 0;
-	//x_DWORD_17FF10 = 47;
-	//x_DWORD_17FF40 = a1;
-	//x_DWORD_17FF44 = 0x1510; 
-	//Int386Request_17FF0C = 0x300;
+	x_DWORD_17FF10 = 47;
+	x_DWORD_17FF40 = a1;
+	MscdexCommand_17FF44 = 0x1510; //Drive Request (Low-Level)
+	Int386Request_17FF0C = 0x300;
 	//x_DWORD_17FF20 = x_DWORD_17FF28;
 	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);
 	//qmemcpy(unk_1803C0x, v3, 0x1Au);
@@ -1080,6 +1080,36 @@ int CheckCdDrive_86550()
 	//x_WORD_17FF20 = (int)&unk_17FF28;
 	//int386(49, (DWORD)&x_WORD_17FF0C, (DWORD)&x_WORD_17FF0C);
 	//return x_WORD_17FF38;
+	return 1;
+}
+
+char sub_86780(unsigned __int16 a1, int  /*a2*/, int  /*a3*/)
+{
+	char* v4; // esi
+
+	if (!cdSpeechEnabled_E2A28)
+		return 0;
+	//if (!x_DWORD_E2A6C || !x_DWORD_E2A70)
+	//	return 0;
+	//v4 = (char*)(16 * x_DWORD_E2A70);
+	//*v4 = 22;
+	//v4[1] = 0;
+	//v4[2] = -124;
+	//*(x_WORD*)(v4 + 3) = 0;
+	//v4[13] = 0;
+	//*(x_DWORD*)(v4 + 14) = a2;
+	//*(x_DWORD*)(v4 + 18) = a3;*/
+	//x_DWORD_17FF38 = 0;
+	x_DWORD_17FF10 = 47;
+	//x_DWORD_17FF14 = 0;
+	//x_WORD_17FF4A = x_DWORD_E2A70;
+	//x_DWORD_17FF20 = x_DWORD_17FF28;
+	x_DWORD_17FF40 = a1;
+	Int386Request_17FF0C = 0x300;
+	MscdexCommand_17FF44 = 0x1510; //Drive Request (Low-Level)
+	//int386(0x31, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);//joystick nebo grafika
+	//qmemcpy(unk_1803A8x, v4, 0x16u);
+	//return x_WORD_1803AB;
 	return 1;
 }
 

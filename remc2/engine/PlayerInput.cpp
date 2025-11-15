@@ -39,9 +39,7 @@ int x_DWORD_17FF24; // weak
 int x_DWORD_17FF28 = 0; // weak
 int x_DWORD_17FF38; // weak
 int x_DWORD_17FF40; // weak
-int x_DWORD_17FF44; // weak
 int16_t x_WORD_1811E4[400]; // fix it -  weak
-
 
 char sub_5BF10();
 void sub_70940();
@@ -1829,7 +1827,6 @@ void sub_417D0_install_pal_and_mouse_minmax2()//2227d0
 // 17FF20: using guessed type int x_DWORD_17FF20;
 // 17FF38: using guessed type int x_DWORD_17FF38;
 // 17FF40: using guessed type int x_DWORD_17FF40;
-// 17FF44: using guessed type int x_DWORD_17FF44;
 // 17FF4A: using guessed type __int16 x_WORD_17FF4A;
 // 180463: using guessed type __int16 x_WORD_180463;
 

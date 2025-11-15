@@ -131,8 +131,8 @@ uint8_t* ViewPortRenderBufferAltStart_DE554 = 0;
 //language
 char* x_DWORD_E9C4C_langindexbuffer[1000]; // idb
 
-
 int Int386Request_17FF0C;
+int MscdexCommand_17FF44;
 
 //file
 

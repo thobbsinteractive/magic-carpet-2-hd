@@ -13,7 +13,6 @@ extern int x_DWORD_17FF24; // weak
 extern int x_DWORD_17FF28; // weak
 extern int x_DWORD_17FF38; // weak
 extern int x_DWORD_17FF40; // weak
-extern int x_DWORD_17FF44; // weak
 
 void ProcessKeyboardPresses_17190();
 void MouseAndKeysEvents_17A00(signed int a2, int16_t a3);
