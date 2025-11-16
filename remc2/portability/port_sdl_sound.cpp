@@ -769,17 +769,29 @@ void LoadAudioEffect(int channel, const Mix_Chunk* chunk, float speed, int frequ
 
 bool PlayCdTrackSegment(uint8_t trackIdx, int16_t startPos, int16_t length)
 {
-	char speechPath[512];
-	sprintf(speechPath, "%s/TRACK%02d.WAV", GetSubDirectoryPath(speechFolder).c_str(), trackIdx);
-	Mix_Chunk* ptrSpeechChunk = Mix_LoadWAV(speechPath);
-	ptrSpeechChunk->volume = (uint8_t)master_volume;
-	GameChunks[maxSimultaniousSounds + 1] = *ptrSpeechChunk;
-	return Mix_PlayChannelTimed(maxSimultaniousSounds + 1, ptrSpeechChunk, 0, length) > -1;
+	try
+	{
+		char speechPath[512];
+		sprintf(speechPath, "%s/TRACK%02d.WAV", GetSubDirectoryPath(speechFolder).c_str(), trackIdx);
+		Mix_Chunk* ptrSpeechChunk = Mix_LoadWAV(speechPath);
+		ptrSpeechChunk->volume = (uint8_t)master_volume;
+		GameChunks[maxSimultaniousSounds] = *ptrSpeechChunk;
+		if (Mix_PlayChannelTimed(maxSimultaniousSounds, ptrSpeechChunk, 0, length * 10) < 0)
+		{
+			fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
+			return false;
+		}
+		return true;
+	}
+	catch (std::exception ex)
+	{
+		return false;
+	}
 }
 
 bool EndPlayingCdTrackSegment()
 {
-	return Mix_HaltChannel(maxSimultaniousSounds + 1) == 0;
+	return Mix_HaltChannel(maxSimultaniousSounds) == 0;
 }
 
 bool AreCdTracksAvailable()

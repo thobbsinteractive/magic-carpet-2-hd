@@ -1027,7 +1027,7 @@ char QueryCdDriveStatus_86860(uint16_t a1)
 	return 1;
 }
 
-int16_t ReadCdTrackInfo_86270(uint16_t a1)
+int16_t QueryCdTracks_86270(uint16_t a1)
 {
 	//int v1; // ecx
 	//int16_t result; // ax
@@ -1203,7 +1203,7 @@ int16_t sub_86180(uint16_t a1)
 	return 256;
 }
 
-int16_t sub_86370(uint16_t a1, char  /*a2*/)
+int16_t QueryCdTrack_86370(uint16_t a1, char  /*a2*/)
 {
 	//int v2; // ecx
 	__int16 result; // ax

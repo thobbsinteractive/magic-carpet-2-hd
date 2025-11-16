@@ -49847,7 +49847,7 @@ void sub_86A00_some_allocs()//267a00
 			v1 = 0;
 			while (1)
 			{
-				v2x = ReadCdTrackInfo_86270((uint16_t)x_WORD_1803EC);
+				v2x = QueryCdTracks_86270((uint16_t)x_WORD_1803EC);
 				if ((v2x & 0x8000) == 0)
 					break;
 				j___delay(1000);
@@ -49859,7 +49859,7 @@ void sub_86A00_some_allocs()//267a00
 			TrackEndIdx_18049E = MaxTrackIdx_180472;
 			while (v2 <= (signed int)(uint8_t)MaxTrackIdx_180472)
 			{
-				sub_86370(x_WORD_1803EC, v2);
+				QueryCdTrack_86370(x_WORD_1803EC, v2);
 				v3 = v2;
 				v4 = x_DWORD_180486;
 				x_BYTE_1803EE[v2++] = (x_BYTE_18048A & 0x40) == 0;
@@ -50015,7 +50015,7 @@ void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length
 			if (x_BYTE_1803EE[(uint16_t)PlayingTrackIdx_1803E8])
 			{
 				sub_86780(x_WORD_1803EC, TrackOffsets_180084[(uint16_t)PlayingTrackIdx_1803E8] + startPos, length);
-				bool isPlaying = PlayCdTrackSegment(trackIdx, startPos, length);
+				PlayCdTrackSegment(trackIdx, startPos, length);
 			}
 		}
 	}
