@@ -706,6 +706,8 @@ bool init_sound()
 		}
 	}
 
+	Mix_AllocateChannels(10);
+
 	//Mix_SetSoundFonts("c:\\prenos\\Magic2\\sf2\\TOM-SF2.sf2");
 	//load_sound_files();
 	/*if(mp3music)
