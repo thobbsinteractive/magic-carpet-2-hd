@@ -49949,7 +49949,7 @@ void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, char a
 	if (trackId_v4 && length_v7)
 	{
 		if (a3)
-			PlayCDTrackSegmentWithPaletteFade_86F70(trackId_v4, startPos_v6, length_v7);
+			PlayCDTrackSegmentWithPaletteFlash_86F70(trackId_v4, startPos_v6, length_v7);
 		else
 			PlayCDTrackSegment_86FF0(trackId_v4, startPos_v6, length_v7);
 	}
@@ -49976,14 +49976,14 @@ void PlayCDTrackSegmentForSecretLevel_86F20(char a1)//267f20
 	if (trackIdx_v2)
 	{
 		if (length_v4)
-			PlayCDTrackSegmentWithPaletteFade_86F70(trackIdx_v2, startPos_v3, length_v4);
+			PlayCDTrackSegmentWithPaletteFlash_86F70(trackIdx_v2, startPos_v3, length_v4);
 	}
 }
 // DB082: using guessed type __int16 x_WORD_DB082[];
 // DB084: using guessed type __int16 x_WORD_DB084[];
 
 //----- (00086F70) --------------------------------------------------------
-void PlayCDTrackSegmentWithPaletteFade_86F70(uint8_t trackIdx, int16_t startPos, int16_t length)//267f70
+void PlayCDTrackSegmentWithPaletteFlash_86F70(uint8_t trackIdx, int16_t startPos, int16_t length)//267f70
 {
 	if (cdSpeechEnabled_E2A28 && (musicAble_E37FC || soundAble_E3798))
 	{
