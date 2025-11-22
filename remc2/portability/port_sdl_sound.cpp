@@ -771,7 +771,7 @@ bool PlayCdTrackSegment(uint8_t trackIdx, int16_t startPos, int16_t length)
 {
 	try
 	{
-		double seconds = (startPos * 10) / 1000;
+		double seconds = (startPos * 10.0f) / 1000;
 		int bytesOffSet = (44100 * seconds * 16 * 2) / 8;
 
 		char speechPath[512];
