@@ -771,10 +771,15 @@ bool PlayCdTrackSegment(uint8_t trackIdx, int16_t startPos, int16_t length)
 {
 	try
 	{
+		double seconds = (startPos * 10) / 1000;
+		int bytesOffSet = (44100 * seconds * 16 * 2) / 8;
+
 		char speechPath[512];
 		sprintf(speechPath, "%s/TRACK%02d.WAV", GetSubDirectoryPath(speechFolder).c_str(), trackIdx);
 		Mix_Chunk* ptrSpeechChunk = Mix_LoadWAV(speechPath);
 		ptrSpeechChunk->volume = (uint8_t)master_volume;
+		ptrSpeechChunk->abuf = ptrSpeechChunk->abuf + bytesOffSet;
+		ptrSpeechChunk->alen = ptrSpeechChunk->alen - bytesOffSet;
 		GameChunks[maxSimultaniousSounds] = *ptrSpeechChunk;
 		if (Mix_PlayChannelTimed(maxSimultaniousSounds, ptrSpeechChunk, 0, length * 10) < 0)
 		{
