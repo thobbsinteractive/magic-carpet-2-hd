@@ -781,6 +781,7 @@ bool PlayCdTrackSegment(uint8_t trackIdx, int16_t startPos, int16_t length)
 		ptrSpeechChunk->abuf = ptrSpeechChunk->abuf + bytesOffSet;
 		ptrSpeechChunk->alen = ptrSpeechChunk->alen - bytesOffSet;
 		GameChunks[maxSimultaniousSounds] = *ptrSpeechChunk;
+		Mix_HaltChannel(maxSimultaniousSounds);
 		if (Mix_PlayChannelTimed(maxSimultaniousSounds, ptrSpeechChunk, 0, length * 10) < 0)
 		{
 			fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
