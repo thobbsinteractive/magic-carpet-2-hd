@@ -1579,4 +1579,8 @@ void CollectLevelStats_5C530();
 void SetProgrammableIntervalTimer_6FDA0();
 void ClearProgrammableIntervalTimer_6FE20();
 
+void PlayCDTrackSegmentForSecretLevel_86F20(char a1);
+void PlayCDTrackSegmentWithPaletteFade_86F70(uint8_t trackIdx, int16_t startPos, int16_t length);
+void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length);
+
 #endif //SUB_MAIN_ACTIVE

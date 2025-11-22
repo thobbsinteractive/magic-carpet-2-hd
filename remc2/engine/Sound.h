@@ -59,6 +59,7 @@ extern uint8_t* x_DWORD_1821D0[];
 extern uint8_t* x_DWORD_1821E8[];
 
 extern int x_DWORD_17FF10; // weak
+extern int x_DWORD_E2A6C;
 
 const uint32_t AilSampleLoaded = 1;
 const uint32_t AilSampleStopped = 2;

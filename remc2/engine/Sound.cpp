@@ -204,6 +204,7 @@ uint16_t x_WORD_A12B3 = 39321; // weak
 
 __int16 x_WORD_E3B4E = 0; // weak
 
+int x_DWORD_E2A6C;
 int x_DWORD_17FF10; // weak
 
 uint32_t unk_E4004; // weak
@@ -970,13 +971,12 @@ void CloseCdDriver_85F00()//267bd0
 
 bool CheckReadyCdDriveIsReady_85FD0()
 {
-	//__int16 v0; // ax
+	int16_t v0; // ax
 
-	//x_DWORD_E2A6C = SendCdDriveCommand_85EB0(2);
-	//v0 = SendCdDriveCommand_85EB0(256);
+	x_DWORD_E2A6C = SendCdDriveCommand_85EB0(2);
+	v0 = SendCdDriveCommand_85EB0(256);
 	//x_DWORD_E2A70 = v0;
-	//return x_DWORD_E2A6C && v0;
-	return true;
+	return x_DWORD_E2A6C && v0;
 }
 
 int16_t SendCdDriveCommand_85EB0(int16_t command)
@@ -1070,7 +1070,7 @@ int16_t QueryCdTracks_86270(uint16_t a1)
 
 	MinTrackIdx_180471 = 0;
 	MaxTrackIdx_180472 = GetCdTrackCount();
-	return 1;
+	return MaxTrackIdx_180472;
 }
 
 int CheckCdDrive_86550()
