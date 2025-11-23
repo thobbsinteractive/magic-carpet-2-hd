@@ -1580,7 +1580,7 @@ void SetProgrammableIntervalTimer_6FDA0();
 void ClearProgrammableIntervalTimer_6FE20();
 
 void PlayCDTrackSegmentForSecretLevel_86F20(char a1);
-void PlayCDTrackSegmentWithPaletteFlash_86F70(uint8_t trackIdx, int16_t startPos, int16_t length);
-void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length);
+void PlayCDTrackSegmentWithPaletteFlash_86F70(uint8_t trackIdx, int32_t startPosMs, int32_t lengthMs);
+void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int32_t startPosMs, int32_t lengthMs);
 
 #endif //SUB_MAIN_ACTIVE

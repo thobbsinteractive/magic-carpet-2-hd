@@ -49962,8 +49962,8 @@ void PlayCDTrackSegmentForSecretLevel_86F20(char a1)//267f20
 {
 	int trackIdx; // eax
 	unsigned __int8 trackIdx_v2; // dl
-	__int16 startPos_v3; // bx
-	__int16 length_v4; // ax
+	int32_t startPos_v3; // bx
+	int32_t length_v4; // ax
 
 	//v1 = 21 * ((a1 != 0) + 25);
 	//v2 = x_BYTE_DB080[v1 * 2];
@@ -49983,14 +49983,14 @@ void PlayCDTrackSegmentForSecretLevel_86F20(char a1)//267f20
 // DB084: using guessed type __int16 x_WORD_DB084[];
 
 //----- (00086F70) --------------------------------------------------------
-void PlayCDTrackSegmentWithPaletteFlash_86F70(uint8_t trackIdx, int16_t startPos, int16_t length)//267f70
+void PlayCDTrackSegmentWithPaletteFlash_86F70(uint8_t trackIdx, int32_t startPosMs, int32_t lengthMs)//267f70
 {
 	if (cdSpeechEnabled_E2A28 && (musicAble_E37FC || soundAble_E3798))
 	{
 		TimerIdx_180078 = AilRegisterTimer_92600(FadePalettes_86EA0);
 		AilSetTimerFrequency_92930(TimerIdx_180078, 50);
 		AilStartTimer_92BA0(TimerIdx_180078);
-		PlayCDTrackSegment_86FF0(trackIdx, startPos, length);
+		PlayCDTrackSegment_86FF0(trackIdx, startPosMs, lengthMs);
 		AilReleaseTimer_92DC0(TimerIdx_180078);
 	}
 }
@@ -50000,7 +50000,7 @@ void PlayCDTrackSegmentWithPaletteFlash_86F70(uint8_t trackIdx, int16_t startPos
 // 180078: using guessed type int x_DWORD_180078;
 
 //----- (00086FF0) --------------------------------------------------------
-void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length)//267ff0
+void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPosSec, int16_t lengthMs)//267ff0
 {
 	if (cdSpeechEnabled_E2A28 && (musicAble_E37FC || soundAble_E3798))
 	{
@@ -50011,8 +50011,8 @@ void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPos, int16_t length
 		{
 			if (x_BYTE_1803EE[(uint16_t)PlayingTrackIdx_1803E8])
 			{
-				sub_86780(x_WORD_1803EC, TrackOffsets_180084[(uint16_t)PlayingTrackIdx_1803E8] + startPos, length);
-				PlayCdTrackSegment(trackIdx, startPos, length);
+				sub_86780(x_WORD_1803EC, TrackOffsets_180084[(uint16_t)PlayingTrackIdx_1803E8] + startPosSec, lengthMs);
+				PlayCdTrackSegment(trackIdx, startPosSec, lengthMs);
 			}
 		}
 	}

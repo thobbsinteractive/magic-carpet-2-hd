@@ -246,7 +246,7 @@ void SOUND_StartTimer(int timerIdx);
 void SOUND_StopTimer(int timerIdx);
 void SOUND_ChangeSamplePlaybackRate(HSAMPLE S, float percent);
 
-bool PlayCdTrackSegment(uint8_t trackIdx, int16_t startPos, int16_t length);
+bool PlayCdTrackSegment(uint8_t trackIdx, int32_t startPosSec, int32_t lengthMs);
 bool EndPlayingCdTrackSegment();
 bool AreCdTracksAvailable();
 int GetCdTrackCount();

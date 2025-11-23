@@ -767,12 +767,12 @@ void LoadAudioEffect(int channel, const Mix_Chunk* chunk, float speed, int frequ
 	Mix_RegisterEffect(channel, SfxEffectWrapper<T>::EffectModifierCallback, SfxEffectWrapper<T>::EffectDoneCallback, nullptr);
 }
 
-bool PlayCdTrackSegment(uint8_t trackIdx, int16_t startPos, int16_t length)
+bool PlayCdTrackSegment(uint8_t trackIdx, int32_t startPosMs, int32_t lengthMs)
 {
 	try
 	{
-		double seconds = (startPos * 10.0f) / 1000;
-		int bytesOffSet = (44100 * seconds * 16 * 2) / 8;
+		double startPosSec = startPosMs / 1000;
+		int bytesOffSet = (44100 * startPosSec * 16 * 2) / 8;
 
 		char speechPath[512];
 		sprintf(speechPath, "%s/TRACK%02d.WAV", GetSubDirectoryPath(speechFolder).c_str(), trackIdx);
@@ -782,7 +782,7 @@ bool PlayCdTrackSegment(uint8_t trackIdx, int16_t startPos, int16_t length)
 		ptrSpeechChunk->alen = ptrSpeechChunk->alen - bytesOffSet;
 		GameChunks[maxSimultaniousSounds] = *ptrSpeechChunk;
 		Mix_HaltChannel(maxSimultaniousSounds);
-		if (Mix_PlayChannelTimed(maxSimultaniousSounds, ptrSpeechChunk, 0, length * 10) < 0)
+		if (Mix_PlayChannelTimed(maxSimultaniousSounds, ptrSpeechChunk, 0, lengthMs) < 0)
 		{
 			fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
 			return false;
