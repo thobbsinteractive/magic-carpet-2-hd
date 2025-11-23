@@ -295,7 +295,7 @@ int QueryInstalledCdDrives_86010();
 void CloseCdDriver_85F00();
 bool CheckReadyCdDriveIsReady_85FD0();
 int16_t SendCdDriveCommand_85EB0(int16_t command);
-char QueryCdDriveStatus_86860(uint16_t a1);
+bool StopCdPlayback_86860(uint16_t a1);
 int16_t QueryCdTracks_86270(uint16_t a1);
 int CheckCdDrive_86550();
 char QueryCdAudioStatus_86930(uint16_t a1);

@@ -1259,7 +1259,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		//Sound On / Sound Off
 
 		EndSample_8D8F0();
-		QueryCdDriveStatus_86860(x_WORD_1803EC);
+		StopCdPlayback_86860(x_WORD_1803EC);
 		soundActive_E3799 ^= 1u;
 		return;
 	case 3:

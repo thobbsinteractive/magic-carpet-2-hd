@@ -987,7 +987,7 @@ void MainMenu_76FA0(/*int a1, */int  /*a2*/, uint16_t a3x)//257fa0
 	v24 = 0x3301;
 	v25 = 0;
 	int386(0x21, (REGS*)&v24, (REGS*)&v24);//get set ctrl break*/
-	QueryCdDriveStatus_86860(x_WORD_1803EC);//267860
+	StopCdPlayback_86860(x_WORD_1803EC);//267860
 	LoadSound_84300(0);//265300
 	memset(&x_DWORD_17DBB8, 0, 16);
 	x_BYTE_17DBC6 = 2;
@@ -1207,7 +1207,7 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 				sub_75200_VGA_Blit640(480, menuFps);
 			sub_7A060_get_mouse_and_keyboard_events();
 		}
-		QueryCdDriveStatus_86860(x_WORD_1803EC);
+		StopCdPlayback_86860(x_WORD_1803EC);
 		D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] = 0;
 		EndSample_8D8F0();
 		map_not_moving_WORD_E29D6 = false;
@@ -1609,7 +1609,7 @@ signed int sub_7E640(type_WORD_E1F84* a1x)//25f640
 			secretMapScreenPortals_E2970[jj].word_14 = 70;
 		}
 		memset(&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.str_611, 0, sizeof(type_str_611));
-		QueryCdDriveStatus_86860(x_WORD_1803EC);
+		StopCdPlayback_86860(x_WORD_1803EC);
 		sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map, 0xB2C44 + 3, 0x87D80 + 3);
 		sub_7AA70_load_and_decompres_dat_file(0, 0, 0, 0);
 		IsPlayingCDTrack_17E09D = 0;

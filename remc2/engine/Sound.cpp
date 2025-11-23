@@ -994,7 +994,7 @@ int16_t SendCdDriveCommand_85EB0(int16_t command)
 	return 1;
 }
 
-char QueryCdDriveStatus_86860(uint16_t a1)
+bool StopCdPlayback_86860(uint16_t a1)
 {
 	int v2; // esi
 	//__int16 v3; // ax
@@ -1024,7 +1024,7 @@ char QueryCdDriveStatus_86860(uint16_t a1)
 	//v2 += 4;
 	//*((x_DWORD*)unk_180452ar + 2) = *(x_DWORD*)v2;
 	//*((x_BYTE*)unk_180452ar + 12) = *(x_BYTE*)(v2 + 4);
-	return 1;
+	return EndPlayingCdTrackSegment();
 }
 
 int16_t QueryCdTracks_86270(uint16_t a1)

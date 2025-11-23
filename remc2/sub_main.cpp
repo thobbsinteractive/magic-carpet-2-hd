@@ -32040,7 +32040,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 				sub_53CC0_close_movie();
 				EndSample_8D8F0();
 				StopMusic_8E020();
-				QueryCdDriveStatus_86860(x_WORD_1803EC);
+				StopCdPlayback_86860(x_WORD_1803EC);
 				RestoreSoundVolume_59BF0();
 				sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 				if (x_WORD_180660_VGA_type_resolution & 1)
@@ -32177,7 +32177,7 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 		//Free sound
 		if (!soundAble_E3798 && !musicAble_E37FC && cdSpeechEnabled_E2A28)
 		{
-			QueryCdDriveStatus_86860(x_WORD_1803EC);
+			StopCdPlayback_86860(x_WORD_1803EC);
 			CloseCdDriver_85F00();
 			//v6 = x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0xBF;
 			cdSpeechEnabled_E2A28 = soundAble_E3798;
@@ -42635,7 +42635,7 @@ void sub_59AF0_sound_proc9()//23aaf0
 {
 	//int result; // eax
 
-	QueryCdDriveStatus_86860(x_WORD_1803EC);
+	StopCdPlayback_86860(x_WORD_1803EC);
 	TimerIdx_F4940 = AilRegisterTimer_92600(FadeUpSound_59B50);
 	AilSetTimerFrequency_92930(TimerIdx_F4940, 120);
 	AilStartTimer_92BA0(TimerIdx_F4940);
@@ -44611,7 +44611,7 @@ void sub_5BC20()//23cc20
 //removed sub_83E80_freemem4(x_DWORD_D4198);
 	//sub_83E80_freemem4(x_D41A0_BYTEARRAY_0);
 	//sub_83E80_freemem4(x_D41A0_BYTEARRAY_4);
-	QueryCdDriveStatus_86860(x_WORD_1803EC);
+	StopCdPlayback_86860(x_WORD_1803EC);
 	CloseCdDriver_85F00();
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
@@ -50005,7 +50005,7 @@ void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int32_t startPosSec, int32_t len
 	if (cdSpeechEnabled_E2A28 && (musicAble_E37FC || soundAble_E3798))
 	{
 		PlayingTrackIdx_1803E8 = trackIdx;
-		QueryCdDriveStatus_86860(x_WORD_1803EC);
+		StopCdPlayback_86860(x_WORD_1803EC);
 		if ((uint16_t)PlayingTrackIdx_1803E8 >= TrackStartIdx_1804A1
 			&& (uint16_t)PlayingTrackIdx_1803E8 <= TrackEndIdx_18049E)
 		{
@@ -62666,7 +62666,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 				a1x->byte_0x46_70 = 8;
 			if (x_DWORD_E9C3C && (D41A0_0.terrain_2FECE.MapType == MapType_t::Day))
 			{
-				QueryCdDriveStatus_86860(x_WORD_1803EC);
+				StopCdPlayback_86860(x_WORD_1803EC);
 				sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/GTD2.DAT");
 				DataFileIO::ReadFileAndDecompress(dataPath, &x_BYTE_FAEE0_tablesx_pre); //fix it
 			}
