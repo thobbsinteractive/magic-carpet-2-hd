@@ -49935,8 +49935,8 @@ void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, char a
 	//int v3; // eax
 	uint8_t trackId_v4; // dl
 	//int v5; // eax
-	__int16 startPos_v6; // bx
-	__int16 length_v7; // ax
+	int32_t startPos_v6; // bx
+	int32_t length_v7; // ax
 
 	//v3 = 42 * a1;
 	//v4 = x_BYTE_DB080[v3];
@@ -49944,8 +49944,8 @@ void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, char a
 	/*v5 = 4 * a2 + v3;
 	v6 = *(__int16*)((char*)&x_BYTE_DB080[2] + v5);
 	v7 = *(__int16*)((char*)&x_BYTE_DB080[4] + v5);*/
-	startPos_v6 = CdTracks_DB080[trackIdx].TrackSegments_DB080[segmentIdx].startPos_0;
-	length_v7 = CdTracks_DB080[trackIdx].TrackSegments_DB080[segmentIdx].length_2;
+	startPos_v6 = CdTracks_DB080[trackIdx].TrackSegments_DB080[segmentIdx].startPos_0 * 13.33333333333;
+	length_v7 = CdTracks_DB080[trackIdx].TrackSegments_DB080[segmentIdx].length_2 * 13.33333333333;
 	if (trackId_v4 && length_v7)
 	{
 		if (a3)
@@ -50000,7 +50000,7 @@ void PlayCDTrackSegmentWithPaletteFlash_86F70(uint8_t trackIdx, int32_t startPos
 // 180078: using guessed type int x_DWORD_180078;
 
 //----- (00086FF0) --------------------------------------------------------
-void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int16_t startPosSec, int16_t lengthMs)//267ff0
+void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int32_t startPosSec, int32_t lengthMs)//267ff0
 {
 	if (cdSpeechEnabled_E2A28 && (musicAble_E37FC || soundAble_E3798))
 	{
