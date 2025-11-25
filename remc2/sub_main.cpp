@@ -885,10 +885,6 @@ void sub_58DA0(type_entity_0x30311* a1, type_entity_0x6E8E* a2);
 void sub_58F00_game_objectives();
 void sub_59760(type_entity_0x6E8E* a1, type_entity_0x6E8E* a2);
 void sub_59820();
-int FadeDownSoundVolume_59A50();
-void sub_59AF0_sound_proc9();
-uint32_t FadeUpSound_59B50(uint32_t interval);
-void RestoreSoundVolume_59BF0();
 void sub_5B7A0_prepare_textures();
 void sub_5B840_load_Palette_and_help_Palette();
 //char sub_5B8D0_initialize();
@@ -42531,8 +42527,8 @@ void sub_59820()//23a820
 		if (D41A0_0.byte_counter_current_objective_box_0x36E04-- == 1)
 			sub_88BA0();
 	}
-	if (x_D41A0_BYTEARRAY_4_struct.setting_38545 & 0x40 && sub_86180(x_WORD_1803EC) == 256)
-		sub_59AF0_sound_proc9();
+	if (x_D41A0_BYTEARRAY_4_struct.setting_38545 & 0x40 && GetCdTrackStatus_86180(x_WORD_1803EC) == 256)
+		StopCdPlayBackAndFadeUp_59AF0();
 	if (x_D41A0_BYTEARRAY_4_struct.byteindex_51 >= 3u)
 	{
 		v3 = D41A0_0.byte_0x36E02;
@@ -42631,12 +42627,12 @@ void sub_59820()//23a820
 // F4940: using guessed type int x_DWORD_F4940;
 
 //----- (00059AF0) --------------------------------------------------------
-void sub_59AF0_sound_proc9()//23aaf0
+void StopCdPlayBackAndFadeUp_59AF0()//23aaf0
 {
 	//int result; // eax
 
 	StopCdPlayback_86860(x_WORD_1803EC);
-	TimerIdx_F4940 = AilRegisterTimer_92600(FadeUpSound_59B50);
+	TimerIdx_F4940 = AilRegisterTimer_92600(FadeUpSoundVolume_59B50);
 	AilSetTimerFrequency_92930(TimerIdx_F4940, 120);
 	AilStartTimer_92BA0(TimerIdx_F4940);
 	IsVolumeFaded_D4B7A = 1;
@@ -42669,7 +42665,7 @@ int FadeDownSoundVolume_59A50()//23aa50
 }
 
 //----- (00059B50) --------------------------------------------------------
-uint32_t FadeUpSound_59B50(uint32_t interval)//23ab50
+uint32_t FadeUpSoundVolume_59B50(uint32_t interval)//23ab50
 {
 	__int16 v0; // bx
 	__int16 v1; // dx

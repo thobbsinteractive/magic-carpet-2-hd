@@ -1161,7 +1161,7 @@ void sub_86460(uint16_t a1)
 	//return result;
 }
 
-int16_t sub_86180(uint16_t a1)
+int16_t GetCdTrackStatus_86180(uint16_t a1)
 {
 	//int v1; // ecx
 	__int16 result; // ax
@@ -1200,6 +1200,9 @@ int16_t sub_86180(uint16_t a1)
 	/*unk_180498 = *(x_DWORD*)v4;
 	*((x_BYTE*)&unk_180498 + 4) = *(x_BYTE*)(v4 + 4);*/
 	//return result;
+
+	if (IsCdTrackPlaying())
+		return 1;
 	return 256;
 }
 

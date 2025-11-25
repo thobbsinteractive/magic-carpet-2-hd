@@ -1582,5 +1582,10 @@ void ClearProgrammableIntervalTimer_6FE20();
 void PlayCDTrackSegmentForSecretLevel_86F20(char a1);
 void PlayCDTrackSegmentWithPaletteFlash_86F70(uint8_t trackIdx, int32_t startPosMs, int32_t lengthMs);
 void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int32_t startPosMs, int32_t lengthMs);
+void StopCdPlayBackAndFadeUp_59AF0();
+
+int FadeDownSoundVolume_59A50();
+uint32_t FadeUpSoundVolume_59B50(uint32_t interval);
+void RestoreSoundVolume_59BF0();
 
 #endif //SUB_MAIN_ACTIVE

@@ -2819,8 +2819,8 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 				 void sub_59820()//23a820
 
 				 int FadeDownSoundVolume_59A50()//23aa50
-				 void sub_59AF0_sound_proc9()//23aaf0
-				 void FadeUpSound_59B50(HMDIDRIVER user)//23ab50
+				 void StopCdPlayBackAndFadeUp_59AF0()//23aaf0
+				 void FadeUpSoundVolume_59B50(HMDIDRIVER user)//23ab50
 				 void RestoreSoundVolume_59BF0()//23abf0
 				 */
 

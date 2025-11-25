@@ -475,9 +475,9 @@ void SOUND_set_master_volume(int32_t volume) {
 #ifdef SOUND_SDLMIXER
 	master_volume = volume;
 
-	for (auto gameChunk : GameChunks)
+	for (int i = 0; i < maxSimultaniousSounds; i++)
 	{
-		Mix_Volume(gameChunk.first, (int)((gameChunk.second.volume * master_volume) / 127));
+		Mix_Volume(i, (int)((GameChunks[i].volume * master_volume) / 127));
 	}
 #endif//SOUND_SDLMIXER
 
@@ -793,6 +793,11 @@ bool PlayCdTrackSegment(uint8_t trackIdx, int32_t startPosMs, int32_t lengthMs)
 	{
 		return false;
 	}
+}
+
+bool IsCdTrackPlaying()
+{
+	return Mix_Playing(maxSimultaniousSounds) == 1;
 }
 
 bool EndPlayingCdTrackSegment()
