@@ -588,6 +588,11 @@ void ChannelFinished(int channel)
 	{
 		GameChunkHSamples[channel]->status_1 = 2;
 	}
+
+	if (channel == maxSimultaniousSounds && !IsCdTrackPlaying())
+	{
+		ClearCdTrackSegment();
+	}
 }
 
 uint32_t SOUND_sample_status(HSAMPLE S) {
@@ -803,14 +808,26 @@ bool IsCdTrackPlaying()
 
 bool EndPlayingCdTrackSegment()
 {
-	if (m_ptrSpeechChunk != nullptr)
+	if (IsCdTrackPlaying())
 	{
 		auto success = Mix_HaltChannel(maxSimultaniousSounds) == 0;
+		if (success)
+			success = ClearCdTrackSegment();
+
+		return success;
+	}
+	return true;
+}
+
+bool ClearCdTrackSegment()
+{
+	if (m_ptrSpeechChunk != nullptr)
+	{
 		m_ptrSpeechChunk->abuf = m_ptrSpeechChunk->abuf - m_ptrSpeechBytesOffSet;
 		m_ptrSpeechChunk->alen = m_ptrSpeechChunk->alen + m_ptrSpeechBytesOffSet;
 		Mix_FreeChunk(m_ptrSpeechChunk);
 		m_ptrSpeechChunk = nullptr;
-		return success;
+		return true;
 	}
 	return true;
 }
