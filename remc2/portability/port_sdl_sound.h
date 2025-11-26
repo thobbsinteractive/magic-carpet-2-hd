@@ -202,6 +202,9 @@ extern bool fixspeedsound;
 extern int maxSimultaniousSounds;
 extern char speechFolder[512];
 
+extern Mix_Chunk* m_ptrSpeechChunk;
+extern int m_ptrSpeechBytesOffSet;
+
 bool init_sound();
 //bool load_sound_files();
 void clean_up_sound();

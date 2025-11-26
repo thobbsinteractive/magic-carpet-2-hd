@@ -19,6 +19,8 @@ bool oggmusic=false;
 bool oggmusicalternative = false;
 char oggmusicFolder[512];
 char speechFolder[512];
+Mix_Chunk* m_ptrSpeechChunk;
+int m_ptrSpeechBytesOffSet;
 
 bool fixspeedsound = false;
 int maxSimultaniousSounds = 10;
@@ -772,21 +774,20 @@ bool PlayCdTrackSegment(uint8_t trackIdx, int32_t startPosMs, int32_t lengthMs)
 	try
 	{
 		double startPosSec = startPosMs / 1000;
-		int bytesOffSet = (44100 * startPosSec * 16 * 2) / 8;
-
+		m_ptrSpeechBytesOffSet = (44100 * startPosSec * 16 * 2) / 8;
 		char speechPath[512];
 		sprintf(speechPath, "%s/TRACK%02d.WAV", GetSubDirectoryPath(speechFolder).c_str(), trackIdx);
-		Mix_Chunk* ptrSpeechChunk = Mix_LoadWAV(speechPath);
-		ptrSpeechChunk->volume = (uint8_t)master_volume;
-		ptrSpeechChunk->abuf = ptrSpeechChunk->abuf + bytesOffSet;
-		ptrSpeechChunk->alen = ptrSpeechChunk->alen - bytesOffSet;
-		GameChunks[maxSimultaniousSounds] = *ptrSpeechChunk;
+		m_ptrSpeechChunk = Mix_LoadWAV(speechPath);
+		m_ptrSpeechChunk->volume = (uint8_t)master_volume;
+		m_ptrSpeechChunk->abuf = m_ptrSpeechChunk->abuf + m_ptrSpeechBytesOffSet;
+		m_ptrSpeechChunk->alen = m_ptrSpeechChunk->alen - m_ptrSpeechBytesOffSet;
 		Mix_HaltChannel(maxSimultaniousSounds);
-		if (Mix_PlayChannelTimed(maxSimultaniousSounds, ptrSpeechChunk, 0, lengthMs) < 0)
+		if (Mix_PlayChannelTimed(maxSimultaniousSounds, m_ptrSpeechChunk, 0, lengthMs) < 0)
 		{
 			fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
 			return false;
 		}
+
 		return true;
 	}
 	catch (std::exception ex)
@@ -802,7 +803,16 @@ bool IsCdTrackPlaying()
 
 bool EndPlayingCdTrackSegment()
 {
-	return Mix_HaltChannel(maxSimultaniousSounds) == 0;
+	if (m_ptrSpeechChunk != nullptr)
+	{
+		auto success = Mix_HaltChannel(maxSimultaniousSounds) == 0;
+		m_ptrSpeechChunk->abuf = m_ptrSpeechChunk->abuf - m_ptrSpeechBytesOffSet;
+		m_ptrSpeechChunk->alen = m_ptrSpeechChunk->alen + m_ptrSpeechBytesOffSet;
+		Mix_FreeChunk(m_ptrSpeechChunk);
+		m_ptrSpeechChunk = nullptr;
+		return success;
+	}
+	return true;
 }
 
 bool AreCdTracksAvailable()
