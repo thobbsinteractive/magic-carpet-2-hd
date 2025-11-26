@@ -36,13 +36,12 @@ GameRenderHD::GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 
 GameRenderHD::~GameRenderHD()
 {
-	delete[] m_ptrDWORD_E9C38_smalltit;
-	delete[] m_preBlurBuffer_E9C3C;
-
 	if (m_renderThreads.size() > 0)
 	{
 		StopWorkerThreads();
 	}
+	delete[] m_ptrDWORD_E9C38_smalltit;
+	delete[] m_preBlurBuffer_E9C3C;
 }
 
 void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov)
