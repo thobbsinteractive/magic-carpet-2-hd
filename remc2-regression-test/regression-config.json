@@ -12,8 +12,7 @@
 				"oggMusic": true,
 				"oggFolder": "music-ogg",
 				"oggMusicAlternative": false,
-				"fixSpeedSound": false,
-				"speechFolder": "CD_Files/SPEECH"
+				"fixSpeedSound": false
 			},
 			"graphics": {
 				"displayIndex": 0,
