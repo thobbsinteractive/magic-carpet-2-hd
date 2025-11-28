@@ -53,4 +53,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\asan\clang_rt.asan_dynamic-i386.dll" />
+  </ItemGroup>
 </Project>
