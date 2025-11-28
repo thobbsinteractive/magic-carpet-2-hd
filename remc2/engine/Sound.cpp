@@ -1084,7 +1084,7 @@ int CheckCdDrive_86550()
 	//int386(49, (DWORD)&x_WORD_17FF0C, (DWORD)&x_WORD_17FF0C);
 	//return x_WORD_17FF38;
 
-	return AreCdTracksAvailable();
+	return AreCdTracksAvailable() == true ? 1: 0;
 }
 
 char sub_86780(uint16_t a1, int  /*a2*/, int  /*a3*/)

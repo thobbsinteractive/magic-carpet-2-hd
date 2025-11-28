@@ -49837,7 +49837,10 @@ void sub_86A00_some_allocs()//267a00
 		if (QueryInstalledCdDrives_86010())
 		{
 			if (!CheckCdDrive_86550())
+			{
 				CloseCdDriver_85F00();
+				return;
+			}
 
 			v1 = 0;
 			while (1)
