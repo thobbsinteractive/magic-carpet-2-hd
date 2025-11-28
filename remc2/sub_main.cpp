@@ -42592,7 +42592,7 @@ void sub_59820()//23a820
 							v9 = D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.ObjectiveText_1 + 1;
 						LABEL_30:
 							x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 8;
-							PlayCDTrackSegmentNumber_86EB0(levelIdx_v8, v9, 1);
+							PlayCDTrackSegmentNumber_86EB0(levelIdx_v8, v9, true);
 							FadeDownSoundVolume_59A50();
 							return;
 						}
@@ -49836,7 +49836,9 @@ void sub_86A00_some_allocs()//267a00
 	{
 		if (QueryInstalledCdDrives_86010())
 		{
-			CheckCdDrive_86550();//some allocation
+			if (!CheckCdDrive_86550())
+				CloseCdDriver_85F00();
+
 			v1 = 0;
 			while (1)
 			{
@@ -49926,7 +49928,7 @@ uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/ uint32_t interval)//267ea
 }
 
 //----- (00086EB0) --------------------------------------------------------
-void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, char a3)//267eb0
+void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, bool paletteFlash)//267eb0
 {
 	//int v3; // eax
 	uint8_t trackId_v4; // dl
@@ -49944,7 +49946,7 @@ void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, char a
 	length_v7 = CdTracks_DB080[trackIdx].TrackSegments_DB080[segmentIdx].length_2 * 13.33333333333;
 	if (trackId_v4 && length_v7)
 	{
-		if (a3)
+		if (paletteFlash)
 			PlayCDTrackSegmentWithPaletteFlash_86F70(trackId_v4, startPos_v6, length_v7);
 		else
 			PlayCDTrackSegment_86FF0(trackId_v4, startPos_v6, length_v7);
