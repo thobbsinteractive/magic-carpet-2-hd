@@ -140,8 +140,8 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	memset(output + 0x191, 0, 4);
 	//int8_t byte_0x195_405;
 	memcpy(output + 0x195, &input->byte_0x195_405, 1);
-	//int8_t byte_0x196_406;
-	memcpy(output + 0x196, &input->byte_0x196_406, 1);
+	//int8_t PlayerHitFrameTime_406;
+	memcpy(output + 0x196, &input->PlayerHitFrameTime_406, 1);
 	//int8_t byte_0x197_407;
 	memcpy(output + 0x197, &input->byte_0x197_407, 1);
 	//uint8_t stubj[2];
@@ -421,7 +421,7 @@ void convert_struct_to_array_0x6E8E(type_entity_0x6E8E* input, uint8_t* output) 
 	memcpy(output + 73, &input->StageVar2_0x49_73, 1);
 	//int16_t word_0x4A_74;
 	memcpy(output + 74, &input->word_0x4A_74, 2);
-	//axis_3d array_0x4C_76;//position//ACTUAL X Y Z
+	//axis_3d position_0x4C_76;//position//ACTUAL X Y Z
 	//axis_4d array_0x54_82;
 	//int16_t word_0x5A_90;
 	memcpy(output + 90, &input->word_0x5A_90, 2);

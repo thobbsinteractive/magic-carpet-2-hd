@@ -735,7 +735,7 @@ uint16_t Maths::x_WORD_DE350[257] = { //speed table3//2af350 tang?
 		0x00FA,0x00FB,0x00FC,0x00FC,0x00FD,0x00FE,0x00FE,0x00FF,
 		0x0100};
 
-unsigned int Maths::sub_58490_radix_3d_2(axis_3d* a1, axis_3d* a2)//239490
+unsigned int Maths::EuclideanDistXYZ_58490(axis_3d* a1, axis_3d* a2)//239490
 {
 	uint32_t radix = ((int16_t)(a2->x - a1->x)) * ((int16_t)(a2->x - a1->x)) + ((int16_t)(a2->y - a1->y)) * ((int16_t)(a2->y - a1->y));
 	return Maths::sub_7277A_radix_3d(radix);
@@ -757,7 +757,7 @@ unsigned int Maths::sub_7277A_radix_3d(unsigned int a1)//25377a
 int16_t Maths::sub_58210_radix_tan(axis_3d* a1, axis_3d* a2)//239210
 {
 	int16_t v2; // ax
-	v2 = sub_58490_radix_3d_2(a1, a2);//
+	v2 = EuclideanDistXYZ_58490(a1, a2);//
 	return sub_72633_maybe_tan(a1->z - a2->z, -v2);
 }
 

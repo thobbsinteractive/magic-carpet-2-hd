@@ -11,7 +11,7 @@
 #define SOUND_SDLMIXER
 
 #ifdef SOUND_SDLMIXER
-	#include "SDL2/SDL_mixer.h"
+	#include <SDL2/SDL_mixer.h>
 #endif
 
 #ifdef SOUND_OPENAL
@@ -19,7 +19,6 @@
 	#include <alc.h>
 #endif//SOUND_OPENAL
 
-//#include "music_timidity.h"
 #include "xmi2mid.h"
 #include <time.h>       /* time */
 #include <string>
@@ -200,6 +199,11 @@ extern bool oggmusic;
 extern char oggmusicFolder[512];
 extern bool oggmusicalternative;
 extern bool fixspeedsound;
+extern int maxSimultaniousSounds;
+extern char speechFolder[512];
+
+extern Mix_Chunk* m_ptrSpeechChunk;
+extern int m_ptrSpeechBytesOffSet;
 
 bool init_sound();
 //bool load_sound_files();
@@ -244,6 +248,13 @@ void SOUND_SetTimerPeriod(int timerIdx, uint32_t intervalMs);
 void SOUND_StartTimer(int timerIdx);
 void SOUND_StopTimer(int timerIdx);
 void SOUND_ChangeSamplePlaybackRate(HSAMPLE S, float percent);
+
+bool PlayCdTrackSegment(uint8_t trackIdx, int32_t startPosSec, int32_t lengthMs);
+bool IsCdTrackPlaying();
+bool EndPlayingCdTrackSegment();
+bool ClearCdTrackSegment();
+bool AreCdTracksAvailable();
+int GetCdTrackCount();
 
 void RegisterEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);
 template <typename T> void LoadAudioEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);

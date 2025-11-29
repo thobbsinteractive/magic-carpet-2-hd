@@ -24,7 +24,7 @@ public:
 	static int32_t sin_DB750[2560]; //2ac750 //speed table1 //sin and cos table
 	static char x_BYTE_D41D8[328];
 
-	static unsigned int sub_58490_radix_3d_2(axis_3d* a1, axis_3d* a2);
+	static unsigned int EuclideanDistXYZ_58490(axis_3d* a1, axis_3d* a2);
 	static unsigned int sub_7277A_radix_3d(unsigned int a1);
 	static int16_t sub_58210_radix_tan(axis_3d* a1, axis_3d* a2);
 	static uint16_t sub_72633_maybe_tan(int16_t a1, int16_t a2);

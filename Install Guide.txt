@@ -5,7 +5,7 @@
 - x86: https://aka.ms/vs/17/release/vc_redist.x86.exe
 - x64: https://aka.ms/vs/17/release/vc_redist.x64.exe
 4. Extract the contents of this Zip Archive to your Game Directory E.g. "C:\Program Files (x86)\GOG Galaxy\Games\Magic Carpet 2"
-5. Edit the config.ini file. Change "gameFolder = NETHERW" to "gameFolder = GAME/NETHERW"
+5. Edit the config.json file. Change "gameFolder = NETHERW" to "gameFolder = GAME/NETHERW"
 6. In the "Extract" folder run extract-GOG-CD.bat. The CD Data will now be copied to a directory called "CD_Files"
 7. Run "remc2.exe"
 8. Any errors will be output to "log.txt"

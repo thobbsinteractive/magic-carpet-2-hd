@@ -131,6 +131,10 @@ uint8_t* ViewPortRenderBufferAltStart_DE554 = 0;
 //language
 char* x_DWORD_E9C4C_langindexbuffer[1000]; // idb
 
+int Int386Request_17FF0C;
+int MscdexCommand_17FF44;
+uint8_t MinTrackIdx_180471;
+uint8_t MaxTrackIdx_180472;
 
 //file
 
@@ -513,31 +517,6 @@ void FreeMem_83E80(uint8_t* ptr)//264e80
 	}*/
 }
 // 17ECA0: using guessed type int x_DWORD_17ECA0;
-
-//----- (00084000) --------------------------------------------------------
-int sub_84000(int a1)//265000
-{
-	int result; // eax
-	int v2; // edx
-	int v3; // ebx
-
-	result = a1;
-	if (*(x_DWORD*)(a1 + 12))
-	{
-		*(x_BYTE*)(a1 + 16) = 0;
-		v2 = *(x_DWORD*)(a1 + 12);
-		if (*(x_BYTE*)(a1 + 17) == *(x_BYTE*)(v2 + 17) && !*(x_BYTE*)(v2 + 16))
-		{
-			v3 = *(x_DWORD*)(a1 + 8);
-			if (v3)
-				*(x_DWORD*)(v3 + 12) = v2;
-			*(x_DWORD*)(*(x_DWORD*)(a1 + 12) + 8) = *(x_DWORD*)(a1 + 8);
-			*(x_DWORD*)(*(x_DWORD*)(a1 + 12) + 4) += *(x_DWORD*)(a1 + 4);
-			*(x_DWORD*)(a1 + 4) = 0;
-		}
-	}
-	return result;
-}
 
 x_DWORD x_outp(x_DWORD, char) { stub_fix_it(); return 0; };// weak
 x_DWORD x_inp(x_DWORD) { stub_fix_it(); return 0; };// weak
@@ -3435,7 +3414,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 		to->struct_0x6E8E[i].StageVar1_0x48_72 = from->struct_0x6E8E[i].byte_0x48_72;
 		to->struct_0x6E8E[i].StageVar2_0x49_73 = from->struct_0x6E8E[i].byte_0x49_73;
 		to->struct_0x6E8E[i].word_0x4A_74 = from->struct_0x6E8E[i].word_0x4A_74;
-		to->struct_0x6E8E[i].axis_0x4C_76 = from->struct_0x6E8E[i].array_0x4C_76;
+		to->struct_0x6E8E[i].position_0x4C_76 = from->struct_0x6E8E[i].position_0x4C_76;
 		to->struct_0x6E8E[i].array_0x52_82 = from->struct_0x6E8E[i].array_0x52_82;
 		to->struct_0x6E8E[i].word_0x5A_90 = from->struct_0x6E8E[i].word_0x5A_90;
 		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
@@ -3628,7 +3607,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 		to->struct_0x6E8E[i].byte_0x48_72 = from->struct_0x6E8E[i].StageVar1_0x48_72;
 		to->struct_0x6E8E[i].byte_0x49_73 = from->struct_0x6E8E[i].StageVar2_0x49_73;
 		to->struct_0x6E8E[i].word_0x4A_74 = from->struct_0x6E8E[i].word_0x4A_74;
-		to->struct_0x6E8E[i].array_0x4C_76 = from->struct_0x6E8E[i].axis_0x4C_76;
+		to->struct_0x6E8E[i].position_0x4C_76 = from->struct_0x6E8E[i].position_0x4C_76;
 		to->struct_0x6E8E[i].array_0x52_82 = from->struct_0x6E8E[i].array_0x52_82;
 		to->struct_0x6E8E[i].word_0x5A_90 = from->struct_0x6E8E[i].word_0x5A_90;
 		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
@@ -3773,9 +3752,9 @@ void SetPlayerLocation(uint16_t x, uint16_t y, int16_t z, int16_t pitch, int16_t
 	if (Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240] != nullptr)
 	{
 		auto ptrPlayerEntity = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-		ptrPlayerEntity->axis_0x4C_76.x = x;
-		ptrPlayerEntity->axis_0x4C_76.y = y;
-		ptrPlayerEntity->axis_0x4C_76.z = z;
+		ptrPlayerEntity->position_0x4C_76.x = x;
+		ptrPlayerEntity->position_0x4C_76.y = y;
+		ptrPlayerEntity->position_0x4C_76.z = z;
 
 		ptrPlayerEntity->array_0x52_82.pitch = pitch;
 		ptrPlayerEntity->array_0x52_82.roll = roll;
