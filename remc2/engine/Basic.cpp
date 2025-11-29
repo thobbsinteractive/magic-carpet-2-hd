@@ -120,7 +120,7 @@ type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
 
 uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
 uint8_t* x_BYTE_F6EE0_tablesx_pre = (uint8_t*)x_BYTE_F6EE0_tablesx;
-uint8_t* x_BYTE_FAEE0_tablesx_pre = (uint8_t*)&x_BYTE_F6EE0_tablesx[0x4000];
+uint8_t* x_BYTE_FAEE0_tablesx_pre = (uint8_t*)&x_BYTE_F6EE0_tablesx[16384];
 
 type_E9C38_smalltit Str_E9C38_smalltit[21 * 40];
 
@@ -131,6 +131,10 @@ uint8_t* ViewPortRenderBufferAltStart_DE554 = 0;
 //language
 char* x_DWORD_E9C4C_langindexbuffer[1000]; // idb
 
+int Int386Request_17FF0C;
+int MscdexCommand_17FF44;
+uint8_t MinTrackIdx_180471;
+uint8_t MaxTrackIdx_180472;
 
 //file
 
@@ -3410,7 +3414,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 		to->struct_0x6E8E[i].StageVar1_0x48_72 = from->struct_0x6E8E[i].byte_0x48_72;
 		to->struct_0x6E8E[i].StageVar2_0x49_73 = from->struct_0x6E8E[i].byte_0x49_73;
 		to->struct_0x6E8E[i].word_0x4A_74 = from->struct_0x6E8E[i].word_0x4A_74;
-		to->struct_0x6E8E[i].axis_0x4C_76 = from->struct_0x6E8E[i].array_0x4C_76;
+		to->struct_0x6E8E[i].position_0x4C_76 = from->struct_0x6E8E[i].position_0x4C_76;
 		to->struct_0x6E8E[i].array_0x52_82 = from->struct_0x6E8E[i].array_0x52_82;
 		to->struct_0x6E8E[i].word_0x5A_90 = from->struct_0x6E8E[i].word_0x5A_90;
 		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
@@ -3603,7 +3607,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 		to->struct_0x6E8E[i].byte_0x48_72 = from->struct_0x6E8E[i].StageVar1_0x48_72;
 		to->struct_0x6E8E[i].byte_0x49_73 = from->struct_0x6E8E[i].StageVar2_0x49_73;
 		to->struct_0x6E8E[i].word_0x4A_74 = from->struct_0x6E8E[i].word_0x4A_74;
-		to->struct_0x6E8E[i].array_0x4C_76 = from->struct_0x6E8E[i].axis_0x4C_76;
+		to->struct_0x6E8E[i].position_0x4C_76 = from->struct_0x6E8E[i].position_0x4C_76;
 		to->struct_0x6E8E[i].array_0x52_82 = from->struct_0x6E8E[i].array_0x52_82;
 		to->struct_0x6E8E[i].word_0x5A_90 = from->struct_0x6E8E[i].word_0x5A_90;
 		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
@@ -3748,9 +3752,9 @@ void SetPlayerLocation(uint16_t x, uint16_t y, int16_t z, int16_t pitch, int16_t
 	if (Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240] != nullptr)
 	{
 		auto ptrPlayerEntity = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-		ptrPlayerEntity->axis_0x4C_76.x = x;
-		ptrPlayerEntity->axis_0x4C_76.y = y;
-		ptrPlayerEntity->axis_0x4C_76.z = z;
+		ptrPlayerEntity->position_0x4C_76.x = x;
+		ptrPlayerEntity->position_0x4C_76.y = y;
+		ptrPlayerEntity->position_0x4C_76.z = z;
 
 		ptrPlayerEntity->array_0x52_82.pitch = pitch;
 		ptrPlayerEntity->array_0x52_82.roll = roll;

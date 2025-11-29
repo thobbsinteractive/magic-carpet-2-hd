@@ -274,7 +274,7 @@ typedef struct Type_str_164 {//size 1136
 	int32_t dword_0x18D_397;
 	uint8_t stubi[4];
 	int8_t byte_0x195_405;
-	int8_t byte_0x196_406;
+	int8_t PlayerHitFrameTime_406;
 	int8_t byte_0x197_407;
 	uint8_t stubj[2];
 	int32_t dword_0x19A_410;
@@ -369,7 +369,7 @@ typedef struct _entity_0x6E8E {//lenght a8//THING
 	int8_t StageVar1_0x48_72;//72
 	int8_t StageVar2_0x49_73;//70
 	int16_t word_0x4A_74;
-	axis_3d axis_0x4C_76;//position//ACTUAL X Y Z
+	axis_3d position_0x4C_76;//position//ACTUAL X Y Z
 	axis_4d array_0x52_82;
 	int16_t word_0x5A_90;
 	int8_t byte_0x5C_92;

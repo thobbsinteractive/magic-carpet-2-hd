@@ -2162,7 +2162,7 @@ x_DWORD_180B48 = sub_93330_AIL_install_DIG_driver_file(/*(int)a1, */unk_180AB0, 
 	v6
 
 void sub_8F710_sound_proc21(int a1, __int16 a2, signed int a3, unsigned __int8 a4, char a5)
-int **sub_8F100_sound_proc19(int *a1, __int16 a2, int a3, int a4, unsigned __int16 a5, char a6, unsigned __int8 a7)//270100 -asi pley sound
+int **PlaySample_8F100(int *a1, __int16 a2, int a3, int a4, unsigned __int16 a5, char a6, unsigned __int8 a7)//270100 -asi pley sound
 signed int sub_916F0_sound_proc24()
 
 unk_180750 - 351750

@@ -146,8 +146,13 @@ bool SetConfig() {
 	}
 	else
 		oggmusic = false;
+
+	if (config.m_Sound.m_MaxSimultaniousSounds > 10)
+		maxSimultaniousSounds = config.m_Sound.m_MaxSimultaniousSounds;
+
 	oggmusicalternative = config.m_Sound.m_OggMusicAlternative;
 	strcpy(oggmusicFolder, config.m_Sound.m_OggFolder.c_str());
+	strcpy(speechFolder, config.m_Sound.m_SpeechFolder.c_str());
 
 	//Graphics
 	displayIndex = config.m_Graphics.m_DisplayIndex;

@@ -49,7 +49,7 @@ extern __int16 x_WORD_E3834;
 extern type_E3808_music_header* musicHeader_E3808;
 extern char musicDriverType_180C84;
 extern int16_t x_WORD_181B44;
-extern char x_BYTE_E2A28_speek; // weak
+extern char cdSpeechEnabled_E2A28; // weak
 extern type_F4FE0 EntitySounds_F4FE0[70];
 
 extern uint8_t* x_DWORD_182188[];
@@ -57,6 +57,9 @@ extern uint8_t* x_DWORD_1821A0[];
 extern uint8_t* x_DWORD_1821B8[];
 extern uint8_t* x_DWORD_1821D0[];
 extern uint8_t* x_DWORD_1821E8[];
+
+extern int x_DWORD_17FF10; // weak
+extern int x_DWORD_E2A6C;
 
 const uint32_t AilSampleLoaded = 1;
 const uint32_t AilSampleStopped = 2;
@@ -95,7 +98,7 @@ uint16_t AilApiGetRealVect_A121D(uint32_t vectnum);
 void AilSetRealVect_91D50(uint32_t vectnum, uint16_t real_ptr);
 void AilRestoreUSE16ISR_91E90(int32_t isr);
 void EndSounds_99C10();
-void sub_99C90();
+void EndMusic_99C90();
 HDIGDRIVER AilInstallDigDriverFile_93330(char* filename, IO_PARMS* IO);
 char sub_9AE90(int eax0, int edx0, char* ebx0, int* a1, int8_t* a2, int a3, int a4);
 int AilInstallDigIni_931F0(HDIGDRIVER* a2, char* digPath);
@@ -286,3 +289,17 @@ void ChangeSoundLevel_19CA0(uint8_t option);
 int sub_582B0(__int16 a1, __int16 a2);
 int sub_582F0(int a1, __int16 a2);
 bool sub_6EA90(int a1, int a2);
+
+int InitializeCdDriver_85E40();
+int QueryInstalledCdDrives_86010();
+void CloseCdDriver_85F00();
+bool CheckReadyCdDriveIsReady_85FD0();
+int16_t SendCdDriveCommand_85EB0(int16_t command);
+bool StopCdPlayback_86860(uint16_t a1);
+int16_t QueryCdTracks_86270(uint16_t a1);
+int CheckCdDrive_86550();
+char QueryCdAudioStatus_86930(uint16_t a1);
+char sub_86780(uint16_t a1, int  /*a2*/, int  /*a3*/);
+void sub_86460(uint16_t a1);
+int16_t GetCdTrackStatus_86180(uint16_t a1);
+int16_t QueryCdTrack_86370(uint16_t a1, char  /*a2*/);
