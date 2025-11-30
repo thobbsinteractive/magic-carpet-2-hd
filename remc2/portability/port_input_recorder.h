@@ -9,7 +9,7 @@ class port_input_recorder
 {
 private:
 	uint32_t m_Tick = 0;
-	std::map<uint32_t, InputEvent>* m_InputEvents;
+	std::map<uint32_t, InputEvent*>* m_InputEvents;
 
 public:
 	bool m_IsRecording = false;
@@ -20,6 +20,7 @@ public:
 
 	void StartRecording();
 	bool StopRecording(std::string outputFileName);
+	void ClearInputEvents();
 	void IncrementTick();
 	InputEvent* GetCurrentInputEvent();
 	

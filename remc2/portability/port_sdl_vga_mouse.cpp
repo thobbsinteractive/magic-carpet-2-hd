@@ -874,10 +874,25 @@ int PollSdlEvents()
 	uint32_t buttonresult;
 	gamepad_event_t gpe = {};
 
-	while (SDL_PollEvent(&event))
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying)
 	{
-		switch (event.type)
+		auto ptrInputEvent = m_InputRecorder->GetCurrentInputEvent();
+		if (ptrInputEvent != nullptr)
 		{
+			if (ptrInputEvent->IsMouse)
+				SetMouseEvents(ptrInputEvent->mouse_buttons, ptrInputEvent->mouse_x, ptrInputEvent->mouse_y);
+
+			if (ptrInputEvent->IsKeyPress)
+				SetPress(ptrInputEvent->keyPressed, ptrInputEvent->scanCodeChar);
+		}
+		m_InputRecorder->IncrementTick();
+	}
+	else
+	{
+		while (SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
 			case SDL_WINDOWEVENT:
 			{
 				if (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESIZED)
@@ -963,40 +978,19 @@ int PollSdlEvents()
 				break;
 			}
 			case SDL_QUIT: return 0;
+			}
 		}
+		gamepad_poll_data(&gpe);
 	}
-
-	gamepad_poll_data(&gpe);
-
-	if (m_InputRecorder != nullptr)
-	{
-		if (m_InputRecorder->m_IsRecording)
-			m_InputRecorder->IncrementTick();
-	}
-
 	return 1;
 }
 
 void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) 
 {
-	ScaleUpMouseCoordsToVga(x, y);
-	
-	if (m_InputRecorder != nullptr)
-	{
-		if (m_InputRecorder->m_IsRecording)
-			m_InputRecorder->RecordMouseInput(buttons, x, y);
-		else if (m_InputRecorder->m_IsPlaying)
-		{
-			auto ptrInputEvent = m_InputRecorder->GetCurrentInputEvent();
-			if (ptrInputEvent != nullptr)
-			{
-				buttons = ptrInputEvent->mouse_buttons;
-				x = ptrInputEvent->mouse_x;
-				y = ptrInputEvent->mouse_y;
-			}
-		}
-	}
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
+		m_InputRecorder->RecordMouseInput(buttons, x, y);
 
+	ScaleUpMouseCoordsToVga(x, y);
 	MouseEvents(buttons, x, y);
 }
 
@@ -1575,23 +1569,11 @@ uint16_t VGA_read_char_from_buffer() {
 }
 
 void SetPress(bool pressed, uint16_t scanCodeChar) {
+
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
+		m_InputRecorder->RecordKeyPress(pressed, scanCodeChar);
+
 	auto gameKeyChar = TranslateSdlKeysToGameKeys(scanCodeChar);
-
-	if (m_InputRecorder != nullptr)
-	{
-		if (m_InputRecorder->m_IsRecording)
-			m_InputRecorder->RecordKeyPress(pressed, gameKeyChar);
-		else if (m_InputRecorder->m_IsPlaying)
-		{
-			auto ptrInputEvent = m_InputRecorder->GetCurrentInputEvent();
-			if (ptrInputEvent != nullptr)
-			{
-				pressed = ptrInputEvent->keyPressed;
-				scanCodeChar = ptrInputEvent->scanCodeChar;
-			}
-		}
-	}
-
 	SetGameKeyPress_1806E4(pressed, gameKeyChar);
 }
 
