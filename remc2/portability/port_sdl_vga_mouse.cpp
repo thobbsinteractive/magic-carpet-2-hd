@@ -2,6 +2,7 @@
 #include "port_sdl_joystick.h"
 #include "port_sdl_vga_mouse.h"
 #include "port_time.h"
+#include "port_input_recorder.h"
 
 #include <cstdint>
 
@@ -26,6 +27,7 @@ uint8_t m_fontBuffer[256 * 256];
 SDL_Surface* m_surfaceFont = nullptr;
 uint8_t m_smallFontBuffer[128 * 128];
 SDL_Surface* m_smallSurfaceFont = nullptr;
+port_input_recorder* m_InputRecorder = nullptr;
 
 uint8_t LastPressedKey_1806E4; //3516e4
 int8_t pressedKeys_180664[128]; // idb
@@ -966,12 +968,35 @@ int PollSdlEvents()
 
 	gamepad_poll_data(&gpe);
 
+	if (m_InputRecorder != nullptr)
+	{
+		if (m_InputRecorder->m_IsRecording)
+			m_InputRecorder->IncrementTick();
+	}
+
 	return 1;
 }
 
 void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) 
 {
 	ScaleUpMouseCoordsToVga(x, y);
+	
+	if (m_InputRecorder != nullptr)
+	{
+		if (m_InputRecorder->m_IsRecording)
+			m_InputRecorder->RecordMouseInput(buttons, x, y);
+		else if (m_InputRecorder->m_IsPlaying)
+		{
+			auto ptrInputEvent = m_InputRecorder->GetCurrentInputEvent();
+			if (ptrInputEvent != nullptr)
+			{
+				buttons = ptrInputEvent->mouse_buttons;
+				x = ptrInputEvent->mouse_x;
+				y = ptrInputEvent->mouse_y;
+			}
+		}
+	}
+
 	MouseEvents(buttons, x, y);
 }
 
@@ -1551,6 +1576,22 @@ uint16_t VGA_read_char_from_buffer() {
 
 void SetPress(bool pressed, uint16_t scanCodeChar) {
 	auto gameKeyChar = TranslateSdlKeysToGameKeys(scanCodeChar);
+
+	if (m_InputRecorder != nullptr)
+	{
+		if (m_InputRecorder->m_IsRecording)
+			m_InputRecorder->RecordKeyPress(pressed, gameKeyChar);
+		else if (m_InputRecorder->m_IsPlaying)
+		{
+			auto ptrInputEvent = m_InputRecorder->GetCurrentInputEvent();
+			if (ptrInputEvent != nullptr)
+			{
+				pressed = ptrInputEvent->keyPressed;
+				scanCodeChar = ptrInputEvent->scanCodeChar;
+			}
+		}
+	}
+
 	SetGameKeyPress_1806E4(pressed, gameKeyChar);
 }
 
@@ -1569,6 +1610,42 @@ void SetGameKeyPress_1806E4(bool pressed, uint16_t gameKeyChar) {
 void VGA_mouse_clear_keys() {
 	for (int i = 0; i < 128; i++)
 		pressedKeys_180664[i] = 0;
+}
+
+void StartRecording()
+{
+	if (m_InputRecorder != nullptr)
+		delete m_InputRecorder;
+
+	m_InputRecorder = new port_input_recorder();
+	m_InputRecorder->StartRecording();
+}
+
+void StopRecording(std::string outputFileName)
+{
+	if (m_InputRecorder != nullptr)
+	{
+		m_InputRecorder->StopRecording(outputFileName);
+		delete m_InputRecorder;
+	}
+}
+
+void StartPlayback(std::string inputFileName)
+{
+	if (m_InputRecorder != nullptr)
+		delete m_InputRecorder;
+
+	m_InputRecorder = new port_input_recorder();
+	m_InputRecorder->StartPlayback(inputFileName);
+}
+
+void StopPlayback()
+{
+	if (m_InputRecorder != nullptr)
+	{
+		m_InputRecorder->StopPlayback();
+		delete m_InputRecorder;
+	}
 }
 
 void WriteSurfaceToFile(SDL_Surface* surface)

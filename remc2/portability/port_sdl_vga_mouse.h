@@ -80,6 +80,10 @@ void SetMouseKeyboardGameState(const GameState state);
 void OnMouseResolutionChanged(uint32_t width, uint32_t height);
 void WriteSurfaceToFile(SDL_Surface* surface);
 void WriteSurfaceToFile(SDL_Surface* surface, const char* filename);
+void StartRecording();
+void StopRecording(std::string outputFileName);
+void StartPlayback(std::string inputFileName);
+void StopPlayback();
 
 extern uint8_t LastPressedKey_1806E4; // weak//3516e4
 extern int8_t pressedKeys_180664[128]; // idb

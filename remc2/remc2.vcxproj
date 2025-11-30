@@ -339,6 +339,7 @@
     <ClInclude Include="engine\global_types.h" />
     <ClInclude Include="engine\GameBitmapIndexes.h" />
     <ClInclude Include="engine\IEvent.h" />
+    <ClInclude Include="engine\InputEvent.h" />
     <ClInclude Include="engine\LangTextIndexes.h" />
     <ClInclude Include="engine\Map.h" />
     <ClInclude Include="engine\MapColourIndexs.h" />
@@ -383,6 +384,7 @@
     <ClInclude Include="portability\GameKey.h" />
     <ClInclude Include="portability\KeyboardInputMapping.h" />
     <ClInclude Include="portability\MouseInputMapping.h" />
+    <ClInclude Include="portability\port_input_recorder.h" />
     <ClInclude Include="portability\port_net.h" />
     <ClInclude Include="portability\port_sdl_joystick.h" />
     <ClInclude Include="portability\port_show_perifery.h" />
@@ -450,6 +452,7 @@
     <ClCompile Include="portability\Config.cpp" />
     <ClCompile Include="portability\dirent.c" />
     <ClCompile Include="portability\fcaseopen.cpp" />
+    <ClCompile Include="portability\port_input_recorder.cpp" />
     <ClCompile Include="portability\port_net.cpp" />
     <ClCompile Include="portability\port_sdl_joystick.cpp" />
     <ClCompile Include="portability\port_show_perifery.cpp" />
