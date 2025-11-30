@@ -6,14 +6,14 @@
 #include "stdint.h"
 #include <array>
 
-#pragma pack (1)
+#pragma pack (push,1)
 typedef struct {//lenght 4
 	uint16_t word_0;
 	uint8_t byte_2;
 	uint8_t byte_3;
 }
 type_D93C0_bldgprmbuffer;
-#pragma pack (16)
+#pragma pack (pop)
 
 extern std::array<type_D93C0_bldgprmbuffer, 77> str_D93C0_bldgprmbuffer; // size? at least index 76 is accessed
 

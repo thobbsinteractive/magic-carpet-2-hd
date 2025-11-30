@@ -1,5 +1,7 @@
 #include "editor.h"
 
+#include <filesystem>
+
 #include "../remc2/engine/Level.h"
 #include "../remc2/engine/Events.h"
 

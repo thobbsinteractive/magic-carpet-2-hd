@@ -5,7 +5,7 @@
 
 #include "stdint.h"
 
-#pragma pack (1)
+#pragma pack (push,1)
 typedef struct {//lenght 44
 	int32_t x_0;
 	int32_t alt_4;//altitude
@@ -24,6 +24,6 @@ typedef struct {//lenght 44
 	bool textAtyp_43;
 }
 type_E9C38_smalltit;
-#pragma pack (16)
+#pragma pack (pop)
 
 #endif //TYPE_E9C38_SMALLTIT_H

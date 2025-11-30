@@ -1290,7 +1290,7 @@ typedef struct {//lenght a8//THING
 	int8_t byte_0x48_72;//72
 	int8_t byte_0x49_73;//70
 	int16_t word_0x4A_74;
-	axis_3d array_0x4C_76;//position//ACTUAL X Y Z
+	axis_3d position_0x4C_76;//position//ACTUAL X Y Z
 	axis_4d array_0x52_82;
 	int16_t word_0x5A_90;
 	int8_t byte_0x5C_92;

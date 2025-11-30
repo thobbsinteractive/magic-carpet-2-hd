@@ -1,5 +1,27 @@
 #include "read_config.h"
 
+#include <cstdlib>
+#include <ctype.h>
+#include <filesystem>
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifdef _MSC_VER
+    #include <direct.h>  
+    #include <io.h>  
+    #include <windows.h>
+    #include "../portability/dirent-x.h"
+#else
+    #include "dirent.h"
+#endif
+
+#include "../portability/port_filesystem.h"
+#include "../portability/port_sdl_sound.h"
+#include "../portability/port_time.h"
+#include "rapidjson/document.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
+
 int config_skip_screen;
 int texturepixels = 32;
 int maxGameFps = 30;
@@ -124,8 +146,13 @@ bool SetConfig() {
 	}
 	else
 		oggmusic = false;
+
+	if (config.m_Sound.m_MaxSimultaniousSounds > 10)
+		maxSimultaniousSounds = config.m_Sound.m_MaxSimultaniousSounds;
+
 	oggmusicalternative = config.m_Sound.m_OggMusicAlternative;
 	strcpy(oggmusicFolder, config.m_Sound.m_OggFolder.c_str());
+	strcpy(speechFolder, config.m_Sound.m_SpeechFolder.c_str());
 
 	//Graphics
 	displayIndex = config.m_Graphics.m_DisplayIndex;

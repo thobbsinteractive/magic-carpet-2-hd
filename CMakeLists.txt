@@ -123,9 +123,6 @@ if (USE_SANITIZERS)
         -fsanitize=pointer-subtract
         -fsanitize=leak
         -fsanitize=undefined
-        -static-libasan
-        -static-liblsan
-        -static-libubsan
     )
 endif ()
 

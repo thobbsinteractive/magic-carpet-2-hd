@@ -6,7 +6,7 @@
 #include "stdint.h"
 #include "engine_support.h"
 
-#pragma pack (1)
+#pragma pack (push,1)
 typedef struct {//lenght 28
 	int32_t dword_0;
 	type_particle_str* Particles_4;//mayby type_particle_str*
@@ -27,7 +27,7 @@ typedef struct {//lenght 6
 	type_animations1* dword_2;
 }
 type_E9C08;
-#pragma pack (16)
+#pragma pack (pop)
 
 #endif //TYPE_ANIMATIONS_H
 

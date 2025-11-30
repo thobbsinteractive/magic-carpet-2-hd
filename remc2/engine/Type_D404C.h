@@ -5,7 +5,7 @@
 
 #include "stdint.h"
 
-#pragma pack (1)
+#pragma pack (push,1)
 typedef struct {//lenght 22
 	int16_t word_0;
 	int16_t word_2;
@@ -20,7 +20,7 @@ typedef struct {//lenght 22
 	int16_t word_20;
 }
 type_D404C;
-#pragma pack (16)
+#pragma pack (pop)
 
 extern type_D404C str_D404C[5];
 
