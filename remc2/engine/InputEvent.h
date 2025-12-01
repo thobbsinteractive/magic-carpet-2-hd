@@ -4,6 +4,7 @@
 struct InputEvent
 {
 	uint32_t tick = 0;
+	uint16_t iteration = 0;
 	bool IsMouse = false;
 	uint32_t mouse_buttons = 0;
 	int16_t mouse_x = -1;

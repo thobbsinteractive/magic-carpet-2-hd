@@ -4,12 +4,14 @@
 #include <map>
 #include <fstream>
 #include "../engine/InputEvent.h"
+#include <vector>
 
 class port_input_recorder
 {
 private:
 	uint32_t m_Tick = 0;
-	std::map<uint32_t, InputEvent*>* m_InputEvents;
+	uint16_t m_Iteration = 0;
+	std::map<uint32_t, std::vector<InputEvent*>*>* m_InputEvents;
 
 public:
 	bool m_IsRecording = false;

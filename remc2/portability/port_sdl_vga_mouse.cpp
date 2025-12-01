@@ -981,6 +981,7 @@ int PollSdlEvents()
 			}
 		}
 		gamepad_poll_data(&gpe);
+		m_InputRecorder->IncrementTick();
 	}
 	return 1;
 }
