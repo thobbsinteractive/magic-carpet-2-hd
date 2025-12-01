@@ -138,17 +138,24 @@ bool port_input_recorder::LoadRecordingFile(std::string inputFileName)
 		return false;
 
 	uint32_t tick = 0;
+	uint16_t iteration = 0;
 	while (fread(&tick, sizeof(InputEvent::tick), 1, eventsFile))
 	{
-		//m_InputEvents->insert(std::pair<uint32_t, InputEvent*>(tick, new InputEvent()));
-		//m_InputEvents->at(tick)->tick = tick;
-		//fread(&m_InputEvents->at(tick)->IsMouse, sizeof(InputEvent::IsMouse), 1, eventsFile);
-		//fread(&m_InputEvents->at(tick)->mouse_buttons, sizeof(InputEvent::mouse_buttons), 1, eventsFile);
-		//fread(&m_InputEvents->at(tick)->mouse_x, sizeof(InputEvent::mouse_x), 1, eventsFile);
-		//fread(&m_InputEvents->at(tick)->mouse_y, sizeof(InputEvent::mouse_y), 1, eventsFile);
-		//fread(&m_InputEvents->at(tick)->IsKeyPress, sizeof(InputEvent::IsKeyPress), 1, eventsFile);
-		//fread(&m_InputEvents->at(tick)->keyPressed, sizeof(InputEvent::keyPressed), 1, eventsFile);
-		//fread(&m_InputEvents->at(tick)->scanCodeChar, sizeof(InputEvent::scanCodeChar), 1, eventsFile);
+		fread(&iteration, sizeof(InputEvent::iteration), 1, eventsFile);
+		if (iteration == 0)
+		{
+			m_InputEvents->insert(std::pair<uint32_t, std::vector<InputEvent*>*>(tick, new std::vector<InputEvent*>()));
+		}
+		m_InputEvents->at(tick)->push_back(new InputEvent());
+		m_InputEvents->at(tick)->at(iteration)->tick = tick;
+		m_InputEvents->at(tick)->at(iteration)->iteration = iteration;
+		fread(&m_InputEvents->at(tick)->at(iteration)->IsMouse, sizeof(InputEvent::IsMouse), 1, eventsFile);
+		fread(&m_InputEvents->at(tick)->at(iteration)->mouse_buttons, sizeof(InputEvent::mouse_buttons), 1, eventsFile);
+		fread(&m_InputEvents->at(tick)->at(iteration)->mouse_x, sizeof(InputEvent::mouse_x), 1, eventsFile);
+		fread(&m_InputEvents->at(tick)->at(iteration)->mouse_y, sizeof(InputEvent::mouse_y), 1, eventsFile);
+		fread(&m_InputEvents->at(tick)->at(iteration)->IsKeyPress, sizeof(InputEvent::IsKeyPress), 1, eventsFile);
+		fread(&m_InputEvents->at(tick)->at(iteration)->keyPressed, sizeof(InputEvent::keyPressed), 1, eventsFile);
+		fread(&m_InputEvents->at(tick)->at(iteration)->scanCodeChar, sizeof(InputEvent::scanCodeChar), 1, eventsFile);
 	}
 	return fclose(eventsFile) == 0;
 }
