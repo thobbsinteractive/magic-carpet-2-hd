@@ -24,7 +24,7 @@ public:
 	bool StopRecording(std::string outputFileName);
 	void ClearInputEvents();
 	void IncrementTick();
-	InputEvent* GetCurrentInputEvent();
+	std::vector<InputEvent*>* GetCurrentInputEvents();
 	
 	bool StartPlayback(std::string inputFileName);
 	void StopPlayback();

@@ -65,18 +65,12 @@ void port_input_recorder::IncrementTick()
 	m_Iteration = 0;
 }
 
-InputEvent* port_input_recorder::GetCurrentInputEvent()
+std::vector<InputEvent*>* port_input_recorder::GetCurrentInputEvents()
 {
 	if (!m_IsPlaying || m_InputEvents->count(m_Tick) == 0)
 		return nullptr;
 
-	auto tick = m_InputEvents->at(m_Tick);
-	if (m_Iteration < tick->size())
-	{
-		return m_InputEvents->at(m_Tick)->at(m_Iteration);
-		m_Iteration++;
-	}
-	return nullptr;
+	return m_InputEvents->at(m_Tick);
 }
 
 void port_input_recorder::RecordKeyPress(bool keyPressed, uint16_t scanCodeChar)
