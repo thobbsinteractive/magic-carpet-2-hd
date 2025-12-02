@@ -885,7 +885,11 @@ int PollSdlEvents()
 					SetMouseEvents(ptrInputEvents->at(i)->mouse_buttons, ptrInputEvents->at(i)->mouse_x, ptrInputEvents->at(i)->mouse_y);
 
 				if (ptrInputEvents->at(i)->IsKeyPress)
+				{
+					m_pressed = ptrInputEvents->at(i)->keyPressed;
+					m_lastScancode = ptrInputEvents->at(i)->scanCodeChar;
 					SetPress(ptrInputEvents->at(i)->keyPressed, ptrInputEvents->at(i)->scanCodeChar);
+				}
 			}
 		}
 		while (SDL_PollEvent(&event))
@@ -909,7 +913,6 @@ int PollSdlEvents()
 				case SDL_QUIT: return 0;
 			}
 		}
-		m_InputRecorder->IncrementTick();
 	}
 	else
 	{
@@ -1005,8 +1008,8 @@ int PollSdlEvents()
 			}
 		}
 		gamepad_poll_data(&gpe);
-		m_InputRecorder->IncrementTick();
 	}
+	m_InputRecorder->IncrementTick();
 	return 1;
 }
 
