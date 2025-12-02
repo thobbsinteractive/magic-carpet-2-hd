@@ -29,6 +29,7 @@ void port_input_recorder::ClearInputEvents()
 		it->second->clear();
 	}
 	m_InputEvents->clear();
+	delete m_InputEvents;
 }
 
 bool port_input_recorder::StopRecording(std::string outputFileName)
