@@ -32,7 +32,7 @@ void port_input_recorder::ClearInputEvents()
 	delete m_InputEvents;
 }
 
-bool port_input_recorder::StopRecording(std::string outputFileName)
+bool port_input_recorder::StopRecording(const char* outputFileName)
 {
 	m_IsRecording = false;
 	if (SaveRecordingToFile(outputFileName))
@@ -45,7 +45,7 @@ bool port_input_recorder::StopRecording(std::string outputFileName)
 	return false;
 }
 
-bool port_input_recorder::StartPlayback(std::string inputFileName)
+bool port_input_recorder::StartPlayback(const char* inputFileName)
 {
 	m_Tick = 0;
 	m_Iteration = 0;
@@ -109,11 +109,9 @@ void port_input_recorder::RecordMouseInput(uint32_t mouse_buttons, int16_t mouse
 	m_Iteration++;
 }
 
-bool port_input_recorder::SaveRecordingToFile(std::string outputFileName)
+bool port_input_recorder::SaveRecordingToFile(const char* outputFileName)
 {
-	outputFileName = "c:\\temp\\testRecording.bin";
-	
-	FILE* eventsFile = fopen(outputFileName.c_str(), "wb");
+	FILE* eventsFile = fopen(outputFileName, "wb");
 	if (!eventsFile)
 		return false;
 
@@ -126,11 +124,9 @@ bool port_input_recorder::SaveRecordingToFile(std::string outputFileName)
 	return fclose(eventsFile) == 0;
 }
 
-bool port_input_recorder::LoadRecordingFile(std::string inputFileName)
+bool port_input_recorder::LoadRecordingFile(const char* inputFileName)
 {
-	inputFileName = "c:\\temp\\testRecording.bin";
-
-	FILE* eventsFile = fopen(inputFileName.c_str(), "rb");
+	FILE* eventsFile = fopen(inputFileName, "rb");
 	if (eventsFile == nullptr)
 		return false;
 

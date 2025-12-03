@@ -21,18 +21,18 @@ public:
 	~port_input_recorder();
 
 	void StartRecording();
-	bool StopRecording(std::string outputFileName);
+	bool StopRecording(const char* outputFileName);
 	void ClearInputEvents();
 	void IncrementTick();
 	std::vector<InputEvent*>* GetCurrentInputEvents();
 	
-	bool StartPlayback(std::string inputFileName);
+	bool StartPlayback(const char* inputFileName);
 	void StopPlayback();
 
 	void RecordKeyPress(bool keyPressed, uint16_t scanCodeChar);
 	void RecordMouseInput(uint32_t mouse_buttons, int16_t mouse_x, int16_t mouse_y);
 
-	bool SaveRecordingToFile(std::string outputFileName);
-	bool LoadRecordingFile(std::string inputFileName);
+	bool SaveRecordingToFile(const char* outputFileName);
+	bool LoadRecordingFile(const char* inputFileName);
 };
 
