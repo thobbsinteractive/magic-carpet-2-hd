@@ -1631,7 +1631,7 @@ void StartRecording()
 	m_InputRecorder->StartRecording();
 }
 
-void StopRecording(std::string outputFileName)
+void StopRecording(const char* outputFileName)
 {
 	if (m_InputRecorder != nullptr)
 	{
@@ -1640,7 +1640,7 @@ void StopRecording(std::string outputFileName)
 	}
 }
 
-void StartPlayback(std::string inputFileName)
+void StartPlayback(const char* inputFileName)
 {
 	if (m_InputRecorder != nullptr)
 		delete m_InputRecorder;

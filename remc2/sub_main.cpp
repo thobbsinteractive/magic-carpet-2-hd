@@ -40439,9 +40439,30 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 			x_BYTE_D41AD_skip_screen = config_skip_screen;
 		}
 
+		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
+			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
+		{
+			StartPlayback(CommandLineParams.GetPlaybackPath().c_str());
+		}
+		else if (CommandLineParams.GetRecordingPath().length() > 0)
+		{
+			StartRecording();
+		}
+
 		Initialize();//236FDC - 23C8D0//rozdil 1E1000
 
 		sub_46830_main_loop(/*0, */v3, v4);//227830
+
+
+		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
+			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
+		{
+			StopPlayback();
+		}
+		else if (CommandLineParams.GetRecordingPath().length() > 0)
+		{
+			StopRecording(CommandLineParams.GetRecordingPath().c_str());
+		}
 
 		sub_5BC20();//23CC20 //remove devices?
 		sub_56730_clean_memory();//237730

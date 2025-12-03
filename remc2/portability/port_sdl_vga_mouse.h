@@ -81,8 +81,8 @@ void OnMouseResolutionChanged(uint32_t width, uint32_t height);
 void WriteSurfaceToFile(SDL_Surface* surface);
 void WriteSurfaceToFile(SDL_Surface* surface, const char* filename);
 void StartRecording();
-void StopRecording(std::string outputFileName);
-void StartPlayback(std::string inputFileName);
+void StopRecording(const char* outputFileName);
+void StartPlayback(const char* inputFileName);
 void StopPlayback();
 
 extern uint8_t LastPressedKey_1806E4; // weak//3516e4
