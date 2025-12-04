@@ -9,6 +9,7 @@ port_input_recorder::port_input_recorder()
 port_input_recorder::~port_input_recorder()
 {
 	ClearInputEvents();
+	delete m_InputEvents;
 }
 
 void port_input_recorder::StartRecording()
@@ -29,7 +30,6 @@ void port_input_recorder::ClearInputEvents()
 		it->second->clear();
 	}
 	m_InputEvents->clear();
-	delete m_InputEvents;
 }
 
 bool port_input_recorder::StopRecording(const char* outputFileName)
@@ -85,7 +85,7 @@ void port_input_recorder::RecordKeyPress(bool keyPressed, uint16_t scanCodeChar)
 	m_InputEvents->at(m_Tick)->push_back(new InputEvent());
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->tick = m_Tick;
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->iteration = m_Iteration;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->IsKeyPress = true;
+	m_InputEvents->at(m_Tick)->at(m_Iteration)->isKeyPress = true;
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->keyPressed = keyPressed;
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->scanCodeChar = scanCodeChar;
 	m_Iteration++;
@@ -102,7 +102,7 @@ void port_input_recorder::RecordMouseInput(uint32_t mouse_buttons, int16_t mouse
 	m_InputEvents->at(m_Tick)->push_back(new InputEvent());
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->tick = m_Tick;
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->iteration = m_Iteration;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->IsMouse = true;
+	m_InputEvents->at(m_Tick)->at(m_Iteration)->isMouse = true;
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->mouse_buttons = mouse_buttons;
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->mouse_x = mouse_x;
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->mouse_y = mouse_y;
@@ -151,11 +151,12 @@ bool port_input_recorder::LoadRecordingFile(const char* inputFileName)
 			m_InputEvents->at(tick)->push_back(new InputEvent());
 			m_InputEvents->at(tick)->at(iteration)->tick = tick;
 			m_InputEvents->at(tick)->at(iteration)->iteration = iteration;
-			fread(&m_InputEvents->at(tick)->at(iteration)->IsMouse, sizeof(InputEvent::IsMouse), 1, eventsFile);
+			fread(&m_InputEvents->at(tick)->at(iteration)->isMouse, sizeof(InputEvent::isMouse), 1, eventsFile);
+			fseek(eventsFile, 1, SEEK_CUR); //padding
 			fread(&m_InputEvents->at(tick)->at(iteration)->mouse_buttons, sizeof(InputEvent::mouse_buttons), 1, eventsFile);
 			fread(&m_InputEvents->at(tick)->at(iteration)->mouse_x, sizeof(InputEvent::mouse_x), 1, eventsFile);
 			fread(&m_InputEvents->at(tick)->at(iteration)->mouse_y, sizeof(InputEvent::mouse_y), 1, eventsFile);
-			fread(&m_InputEvents->at(tick)->at(iteration)->IsKeyPress, sizeof(InputEvent::IsKeyPress), 1, eventsFile);
+			fread(&m_InputEvents->at(tick)->at(iteration)->isKeyPress, sizeof(InputEvent::isKeyPress), 1, eventsFile);
 			fread(&m_InputEvents->at(tick)->at(iteration)->keyPressed, sizeof(InputEvent::keyPressed), 1, eventsFile);
 			fread(&m_InputEvents->at(tick)->at(iteration)->scanCodeChar, sizeof(InputEvent::scanCodeChar), 1, eventsFile);
 		}

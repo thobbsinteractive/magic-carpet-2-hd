@@ -881,10 +881,10 @@ int PollSdlEvents()
 		{
 			for (int i = 0; i < ptrInputEvents->size(); i++)
 			{
-				if (ptrInputEvents->at(i)->IsMouse)
+				if (ptrInputEvents->at(i)->isMouse)
 					SetMouseEvents(ptrInputEvents->at(i)->mouse_buttons, ptrInputEvents->at(i)->mouse_x, ptrInputEvents->at(i)->mouse_y);
 
-				if (ptrInputEvents->at(i)->IsKeyPress)
+				if (ptrInputEvents->at(i)->isKeyPress)
 				{
 					m_pressed = ptrInputEvents->at(i)->keyPressed;
 					m_lastScancode = ptrInputEvents->at(i)->scanCodeChar;
@@ -1009,7 +1009,8 @@ int PollSdlEvents()
 		}
 		gamepad_poll_data(&gpe);
 	}
-	m_InputRecorder->IncrementTick();
+	if (m_InputRecorder != nullptr)
+		m_InputRecorder->IncrementTick();
 	return 1;
 }
 
