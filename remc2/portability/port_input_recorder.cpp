@@ -64,6 +64,10 @@ void port_input_recorder::IncrementTick()
 {
 	m_Tick++;
 	m_Iteration = 0;
+	if (m_Tick > m_InputEvents->rbegin()->first)
+	{
+		StopPlayback();
+	}
 }
 
 std::vector<InputEvent*>* port_input_recorder::GetCurrentInputEvents()
