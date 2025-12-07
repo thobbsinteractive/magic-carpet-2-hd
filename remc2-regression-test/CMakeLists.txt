@@ -80,6 +80,8 @@ set(SOURCE_FILES_REGRESSIONTESTS
     "../remc2/portability/fcaseopen.h"
     "../remc2/portability/port_filesystem.cpp"
     "../remc2/portability/port_filesystem.h"
+    "../remc2/portability/InputRecorder.cpp"
+    "../remc2/portability/InputRecorder.h"
     "../remc2/portability/port_net.cpp"
     "../remc2/portability/port_net.h"
     "../remc2/portability/port_outputs.cpp"

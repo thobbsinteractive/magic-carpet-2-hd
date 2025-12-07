@@ -1,18 +1,18 @@
-#include "port_input_recorder.h"
+#include "InputRecorder.h"
 using namespace std;
 
-port_input_recorder::port_input_recorder()
+InputRecorder::InputRecorder()
 {
 	m_InputEvents = new std::map<uint32_t, std::vector<InputEvent*>*>();
 }
 
-port_input_recorder::~port_input_recorder()
+InputRecorder::~InputRecorder()
 {
 	ClearInputEvents();
 	delete m_InputEvents;
 }
 
-void port_input_recorder::StartRecording()
+void InputRecorder::StartRecording()
 {
 	m_Tick = 0;
 	m_Iteration = 0;
@@ -20,7 +20,7 @@ void port_input_recorder::StartRecording()
 	m_IsRecording = true;
 }
 
-void port_input_recorder::ClearInputEvents()
+void InputRecorder::ClearInputEvents()
 {
 	map<uint32_t, std::vector<InputEvent*>*>::iterator it;
 	for (it = m_InputEvents->begin(); it != m_InputEvents->end(); it++)
@@ -32,7 +32,7 @@ void port_input_recorder::ClearInputEvents()
 	m_InputEvents->clear();
 }
 
-bool port_input_recorder::StopRecording(const char* outputFileName)
+bool InputRecorder::StopRecording(const char* outputFileName)
 {
 	m_IsRecording = false;
 	if (SaveRecordingToFile(outputFileName))
@@ -45,7 +45,7 @@ bool port_input_recorder::StopRecording(const char* outputFileName)
 	return false;
 }
 
-bool port_input_recorder::StartPlayback(const char* inputFileName)
+bool InputRecorder::StartPlayback(const char* inputFileName)
 {
 	m_Tick = 0;
 	m_Iteration = 0;
@@ -55,12 +55,12 @@ bool port_input_recorder::StartPlayback(const char* inputFileName)
 	return m_IsPlaying;
 }
 
-void port_input_recorder::StopPlayback()
+void InputRecorder::StopPlayback()
 {
 	m_IsPlaying = false;
 }
 
-void port_input_recorder::IncrementTick()
+void InputRecorder::IncrementTick()
 {
 	m_Tick++;
 	m_Iteration = 0;
@@ -70,7 +70,7 @@ void port_input_recorder::IncrementTick()
 	}
 }
 
-std::vector<InputEvent*>* port_input_recorder::GetCurrentInputEvents()
+std::vector<InputEvent*>* InputRecorder::GetCurrentInputEvents()
 {
 	if (!m_IsPlaying || m_InputEvents->count(m_Tick) == 0)
 		return nullptr;
@@ -78,7 +78,7 @@ std::vector<InputEvent*>* port_input_recorder::GetCurrentInputEvents()
 	return m_InputEvents->at(m_Tick);
 }
 
-void port_input_recorder::RecordKeyPress(bool keyPressed, uint16_t scanCodeChar)
+void InputRecorder::RecordKeyPress(bool keyPressed, uint16_t scanCodeChar)
 {
 	if (!m_IsRecording)
 		return;
@@ -95,7 +95,7 @@ void port_input_recorder::RecordKeyPress(bool keyPressed, uint16_t scanCodeChar)
 	m_Iteration++;
 }
 
-void port_input_recorder::RecordMouseInput(uint32_t mouse_buttons, int16_t mouse_x, int16_t mouse_y)
+void InputRecorder::RecordMouseInput(uint32_t mouse_buttons, int16_t mouse_x, int16_t mouse_y)
 {
 	if (!m_IsRecording)
 		return;
@@ -113,7 +113,7 @@ void port_input_recorder::RecordMouseInput(uint32_t mouse_buttons, int16_t mouse
 	m_Iteration++;
 }
 
-bool port_input_recorder::SaveRecordingToFile(const char* outputFileName)
+bool InputRecorder::SaveRecordingToFile(const char* outputFileName)
 {
 	try
 	{
@@ -135,7 +135,7 @@ bool port_input_recorder::SaveRecordingToFile(const char* outputFileName)
 	}
 }
 
-bool port_input_recorder::LoadRecordingFile(const char* inputFileName)
+bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 {
 	try
 	{

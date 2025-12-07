@@ -6,7 +6,7 @@
 #include "../engine/InputEvent.h"
 #include <vector>
 
-class port_input_recorder
+class InputRecorder
 {
 private:
 	uint32_t m_Tick = 0;
@@ -17,8 +17,8 @@ public:
 	bool m_IsRecording = false;
 	bool m_IsPlaying = false;
 
-	port_input_recorder();
-	~port_input_recorder();
+	InputRecorder();
+	~InputRecorder();
 
 	void StartRecording();
 	bool StopRecording(const char* outputFileName);

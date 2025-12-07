@@ -2,7 +2,7 @@
 #include "port_sdl_joystick.h"
 #include "port_sdl_vga_mouse.h"
 #include "port_time.h"
-#include "port_input_recorder.h"
+#include "InputRecorder.h"
 
 #include <cstdint>
 
@@ -27,7 +27,7 @@ uint8_t m_fontBuffer[256 * 256];
 SDL_Surface* m_surfaceFont = nullptr;
 uint8_t m_smallFontBuffer[128 * 128];
 SDL_Surface* m_smallSurfaceFont = nullptr;
-port_input_recorder* m_InputRecorder = nullptr;
+InputRecorder* m_InputRecorder = nullptr;
 
 uint8_t LastPressedKey_1806E4; //3516e4
 int8_t pressedKeys_180664[128]; // idb
@@ -1628,7 +1628,7 @@ void StartRecording()
 	if (m_InputRecorder != nullptr)
 		delete m_InputRecorder;
 
-	m_InputRecorder = new port_input_recorder();
+	m_InputRecorder = new InputRecorder();
 	m_InputRecorder->StartRecording();
 }
 
@@ -1646,7 +1646,7 @@ void StartPlayback(const char* inputFileName)
 	if (m_InputRecorder != nullptr)
 		delete m_InputRecorder;
 
-	m_InputRecorder = new port_input_recorder();
+	m_InputRecorder = new InputRecorder();
 	m_InputRecorder->StartPlayback(inputFileName);
 }
 

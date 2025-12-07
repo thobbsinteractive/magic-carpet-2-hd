@@ -45,9 +45,6 @@
     <ClInclude Include="portability\dirent-x.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
-    <ClInclude Include="portability\port_inputs.h">
-      <Filter>Header Files\portability</Filter>
-    </ClInclude>
     <ClInclude Include="portability\port_sdl_sound.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
@@ -309,7 +306,7 @@
     <ClInclude Include="engine\Type_DB080_CdTrack.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
-    <ClInclude Include="portability\port_input_recorder.h">
+    <ClInclude Include="portability\InputRecorder.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
     <ClInclude Include="engine\InputEvent.h">
@@ -327,9 +324,6 @@
       <Filter>Source Files\engine</Filter>
     </ClCompile>
     <ClCompile Include="portability\port_filesystem.cpp">
-      <Filter>Source Files\portability</Filter>
-    </ClCompile>
-    <ClCompile Include="portability\port_inputs.cpp">
       <Filter>Source Files\portability</Filter>
     </ClCompile>
     <ClCompile Include="portability\port_outputs.cpp">
@@ -488,7 +482,7 @@
     <ClCompile Include="portability\Config.cpp">
       <Filter>Source Files\portability</Filter>
     </ClCompile>
-    <ClCompile Include="portability\port_input_recorder.cpp">
+    <ClCompile Include="portability\InputRecorder.cpp">
       <Filter>Source Files\portability</Filter>
     </ClCompile>
   </ItemGroup>

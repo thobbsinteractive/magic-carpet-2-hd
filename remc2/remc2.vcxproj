@@ -384,7 +384,7 @@
     <ClInclude Include="portability\GameKey.h" />
     <ClInclude Include="portability\KeyboardInputMapping.h" />
     <ClInclude Include="portability\MouseInputMapping.h" />
-    <ClInclude Include="portability\port_input_recorder.h" />
+    <ClInclude Include="portability\InputRecorder.h" />
     <ClInclude Include="portability\port_net.h" />
     <ClInclude Include="portability\port_sdl_joystick.h" />
     <ClInclude Include="portability\port_show_perifery.h" />
@@ -402,7 +402,6 @@
     <ClInclude Include="portability\dirent-x.h" />
     <ClInclude Include="portability\bitmap_pos_struct.h" />
     <ClInclude Include="portability\port_filesystem.h" />
-    <ClInclude Include="portability\port_inputs.h" />
     <ClInclude Include="portability\port_outputs.h" />
     <ClInclude Include="portability\port_sdl_sound.h" />
     <ClInclude Include="portability\port_sdl_vga_mouse.h" />
@@ -452,7 +451,7 @@
     <ClCompile Include="portability\Config.cpp" />
     <ClCompile Include="portability\dirent.c" />
     <ClCompile Include="portability\fcaseopen.cpp" />
-    <ClCompile Include="portability\port_input_recorder.cpp" />
+    <ClCompile Include="portability\InputRecorder.cpp" />
     <ClCompile Include="portability\port_net.cpp" />
     <ClCompile Include="portability\port_sdl_joystick.cpp" />
     <ClCompile Include="portability\port_show_perifery.cpp" />
@@ -465,7 +464,6 @@
     <ClCompile Include="engine\read_config.cpp" />
     <ClCompile Include="sub_main.cpp" />
     <ClCompile Include="portability\port_filesystem.cpp" />
-    <ClCompile Include="portability\port_inputs.cpp" />
     <ClCompile Include="portability\port_outputs.cpp" />
     <ClCompile Include="portability\port_sdl_sound.cpp" />
     <ClCompile Include="portability\port_sdl_vga_mouse.cpp" />
