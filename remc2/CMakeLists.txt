@@ -146,6 +146,8 @@ set(SOURCE_FILES__portability
     "portability/port_net.h"
     "portability/port_filesystem.cpp"
     "portability/port_filesystem.h"
+    "portability/InputRecorder.cpp"
+    "portability/InputRecorder.h"
     "portability/port_inputs.cpp"
     "portability/port_inputs.h"
     "portability/port_outputs.cpp"
