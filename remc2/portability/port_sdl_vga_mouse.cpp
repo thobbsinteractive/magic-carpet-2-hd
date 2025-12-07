@@ -2,7 +2,6 @@
 #include "port_sdl_joystick.h"
 #include "port_sdl_vga_mouse.h"
 #include "port_time.h"
-#include "InputRecorder.h"
 
 #include <cstdint>
 
