@@ -32,7 +32,7 @@ typedef struct //lenght 50
 #pragma pack (16)
 
 // from sub_main
-extern char x_BYTE_D419C_level_num;
+extern int8_t LoadLevelNumber_D419C;
 extern char x_BYTE_D41AD_skip_screen;
 extern const char* LevelsNames_D9204[61];
 extern char* off_DB558[];

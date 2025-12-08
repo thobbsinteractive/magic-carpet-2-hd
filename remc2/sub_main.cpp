@@ -850,7 +850,7 @@ bool SaveSMAPSLEVmovie2_54F00(__int16 a1);
 void sub_55EB0(__int16 a1);
 //int sub_main(int argc, const char **argv, const char **envp);
 void sub_560D0_create_sound_dir();
-void sub_56210_process_command_line(int a1, char** a2);
+void ProcessCommandLine_56210(int a1, char** a2);
 int sub_56730_clean_memory();
 void ClearSettings_567C0();
 // char sub_56A30_init_game_level(unsigned int a1);
@@ -1207,7 +1207,7 @@ int32_t xx_DWORD_D40BC[17][3] =  // weak//min 16*3 //2a50bc
 {0x000001C6, 0x0000009C, 0x00000000},
 {0x00000000, 0x00000000, 0x00000000} };
 
-char x_BYTE_D419C_level_num = -1; // weak
+int8_t LoadLevelNumber_D419C = -1; // weak
 
 x_DWORD x_DWORD_D41A4_4 = 0;
 x_DWORD x_DWORD_D41A4_6 = 127;
@@ -40428,7 +40428,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		initposistruct();
 
-		sub_56210_process_command_line(argc, argv);//236FD4 - 237210
+		ProcessCommandLine_56210(argc, argv);//236FD4 - 237210
 		if (CommandLineParams.ModeTestNetwork()) {
 			if (Iam_server || Iam_client)
 				InitNetworkInfo();
@@ -40540,16 +40540,16 @@ void sub_560D0_create_sound_dir()//2370d0
 // D41A4: using guessed type int x_DWORD_D41A4;
 
 //----- (00056210) --------------------------------------------------------
-void sub_56210_process_command_line(int argc, char** argv)//237210
+void ProcessCommandLine_56210(int argc, char** argv)//237210
 {
 	int32_t x_DWORD_355208;//3551CE+3A DWORD
 	x_BYTE x_BYTE_355234_hardisknumber;//harddrive//3551CE+66 BYTE
 	x_BYTE x_BYTE_35520C;//3551CE+3e BYTE
-	x_BYTE x_BYTE_355210_level;//3551CE+42 BYTE
+	x_BYTE loadLevelNumber;//3551CE+42 BYTE
 	x_BYTE x_BYTE_355230;//3551CE+62 BYTE
 	x_BYTE x_BYTE_355218;//3551CE+4a BYTE
 	x_BYTE x_BYTE_355244_spellsedit;//aSpellsedit//3551CE+76 BYTE
-	x_BYTE x_BYTE_355240_load_set_level;//3551CE+72 BYTE
+	bool LoadSetLevel_355240;//3551CE+72 BYTE
 	x_BYTE x_BYTE_35522C_nocd;//nocd//3551CE+5e BYTE
 	x_BYTE x_BYTE_355224_showversion;//Showversion//3551CE+56 BYTE
 	x_BYTE x_BYTE_355228_showversion2;//Showversion2//3551CE+5a BYTE
@@ -40591,11 +40591,11 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 	x_DWORD_355208/* v13*/ = -1;//3551CE+3A DWORD //355208
 	x_BYTE_355234_hardisknumber/*v24*/ = 'C';//harddrive//3551CE+66 BYTE
 	x_BYTE_35520C/*v14*/ = 0;//3551CE+3e BYTE
-	x_BYTE_355210_level/*v15*/ = 0;//3551CE+42 BYTE
+	loadLevelNumber/*v15*/ = 0;//3551CE+42 BYTE
 	x_BYTE_355230/*v23*/ = 0;//3551CE+62 BYTE
 	x_BYTE_355218/*v17*/ = 0;//3551CE+4a BYTE
 	x_BYTE_355244_spellsedit/*v28*/ = 0;//aSpellsedit//3551CE+76 BYTE
-	x_BYTE_355240_load_set_level/*v27*/ = 0;//3551CE+72 BYTE
+	LoadSetLevel_355240/*v27*/ = 0;//3551CE+72 BYTE
 	x_BYTE_35522C_nocd/*v22*/ = 0;//nocd//3551CE+5e BYTE
 	x_BYTE_355224_showversion/*v20*/ = 0;//Showversion//3551CE+56 BYTE
 	x_BYTE_355228_showversion2/*v21*/ = 0;//Showversion2//3551CE+5a BYTE
@@ -40627,9 +40627,9 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 			}
 			else if (!_stricmp("level", (char*)actarg))
 			{
-				x_BYTE_355210_level = atoi(argv[++argnumber]);//2372C4 - 279F5D
-				x_BYTE_D419C_level_num = x_BYTE_355210_level;
-				x_BYTE_355240_load_set_level = 1;
+				loadLevelNumber = atoi(argv[++argnumber]);//2372C4 - 279F5D
+				LoadLevelNumber_D419C = loadLevelNumber;
+				LoadSetLevel_355240 = 1;
 			}
 			else if (!_stricmp("harddrive", (char*)actarg))
 			{
@@ -40765,7 +40765,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x10u;
 	if (!x_BYTE_35522C_nocd && cdSpeechEnabled_E2A28)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x40u;
-	if (x_BYTE_355240_load_set_level)
+	if (LoadSetLevel_355240)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x80u;
 	if (x_BYTE_355214)
 		x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 |= 2u;
@@ -40778,7 +40778,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 	if (x_BYTE_35523C_detectoff)
 		autoScanForSoundHardware_E379B = true;
 	//result = x_D41A0_BYTEARRAY_4;
-	x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = x_BYTE_355210_level;
+	x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = LoadLevelNumber_D419C;
 	x_D41A0_BYTEARRAY_4_struct.setting_45w = x_DWORD_355208;
 	if (x_BYTE_35521C_cc)
 		x_D41A0_BYTEARRAY_4_struct.setting_byte4_25 = (x_D41A0_BYTEARRAY_4_struct.setting_byte4_25 | 4) & 0xFD;
@@ -40794,7 +40794,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 // 98805: using guessed type x_DWORD x_toupper(x_DWORD);
 // 98F5D: using guessed type x_DWORD stricmp(x_DWORD, x_DWORD);
 // 98F9E: using guessed type x_DWORD unknown_libname_1_atoi(x_DWORD);
-// D419C: using guessed type char x_BYTE_D419C_level_num;
+// D419C: using guessed type char LoadLevelNumber_D419C;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // D41AD: using guessed type char x_BYTE_D41AD_skip_screen;
