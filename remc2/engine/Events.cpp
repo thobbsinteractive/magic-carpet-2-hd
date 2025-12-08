@@ -2801,7 +2801,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_533B0_decompress_levels((short)a1_6E8E, 0);
+		DecompressLevels_533B0((short)a1_6E8E, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;

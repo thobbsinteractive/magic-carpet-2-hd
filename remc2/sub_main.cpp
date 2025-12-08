@@ -853,7 +853,7 @@ void sub_560D0_create_sound_dir();
 void ProcessCommandLine_56210(int a1, char** a2);
 int sub_56730_clean_memory();
 void ClearSettings_567C0();
-// char sub_56A30_init_game_level(unsigned int a1);
+// char InitGameLevel_56A30(unsigned int a1);
 void sub_56C00_sound_proc2(Type_Level_2FECE* a1);
 // char sub_56D60(unsigned int a1, char a2);
 bool sub_56EE0(uaxis_2d a1);
@@ -31963,7 +31963,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 
 			Logger->debug("sub_46830_main_loop:load scr passed");
 
-			sub_56A30_init_game_level(a3, setLevel, customLevelPath);
+			InitGameLevel_56A30(a3, setLevel, customLevelPath);
 
 			Logger->debug("sub_46830_main_loop:init game level passed");
 
@@ -32098,7 +32098,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 
 							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = v13->levelNumber_6;
 							sub_47FC0_load_screen(true);
-							sub_56A30_init_game_level(a3);
+							InitGameLevel_56A30(a3);
 							sub_47160();
 						}
 					}
@@ -38961,7 +38961,7 @@ void sub_53160()//234160
 // D93A0: using guessed type const char *off_D93A0_wizards_names2;
 
 //----- (000533B0) --------------------------------------------------------
-char sub_533B0_decompress_levels(__int16 a1, Type_Level_2FECE* a2x, std::string customLevelPath)//2343b0
+char DecompressLevels_533B0(__int16 a1, Type_Level_2FECE* a2x, std::string customLevelPath)//2343b0
 {
 	uint8_t* v2; // edi
 	FILE* levelsdatfile; // ebx
@@ -40865,17 +40865,17 @@ void ClearSettings_567C0()//2377c0 // clean level
 // E9C38: using guessed type int x_DWORD_E9C38_smalltit;
 
 //----- (00056A30) --------------------------------------------------------
-void sub_56A30_init_game_level(unsigned int a1, int16_t level, std::string customLevelPath)//237a30
+void InitGameLevel_56A30(unsigned int a1, int16_t level, std::string customLevelPath)//237a30
 {
 	if (CommandLineParams.DoMouseOff()) { mouseturnoff = true; }
 	if (level > -1) {
 		x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = (uint16_t)level;
 	}
-	Logger->debug("sub_56A30_init_game_level:before sub_6EB90");
+	Logger->debug("InitGameLevel_56A30:before sub_6EB90");
 	//fixing
 	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_BUILD00DATTAB]);//24fb90 adress 0x23ca2e
 	//fixing
-	Logger->debug("sub_56A30_init_game_level:sub_6EB90 passed");
+	Logger->debug("InitGameLevel_56A30:sub_6EB90 passed");
 
 	char temp_x_BYTE_E3799_sound_card = soundActive_E3799;
 	soundActive_E3799 = false;
@@ -40884,11 +40884,11 @@ void sub_56A30_init_game_level(unsigned int a1, int16_t level, std::string custo
 	{
 		PrintTextMessage_70910((char*)"Load Level\0");
 
-		Logger->debug("sub_56A30_init_game_level:before sub_533B0_decompress_levels");
+		Logger->debug("InitGameLevel_56A30:before DecompressLevels_533B0");
 
-		sub_533B0_decompress_levels(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE, customLevelPath);
+		DecompressLevels_533B0(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE, customLevelPath);
 
-		Logger->debug("sub_56A30_init_game_level:sub_533B0_decompress_levels passed");
+		Logger->debug("InitGameLevel_56A30:DecompressLevels_533B0 passed");
 
 	}
 	sub_54660_read_and_decompress_sky_and_blocks(D41A0_0.terrain_2FECE.MapType, x_BYTE_D41B5_texture_size);//235660
@@ -41041,7 +41041,7 @@ void sub_56D60(unsigned int a1, char a2)//237d60
 	v2 = soundActive_E3799;
 	soundActive_E3799 = false;
 	ClearSettings_567C0();
-	sub_533B0_decompress_levels(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE);
+	DecompressLevels_533B0(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE);
 	if (a2)
 	{
 		sub_54660_read_and_decompress_sky_and_blocks(D41A0_0.terrain_2FECE.MapType, x_BYTE_D41B5_texture_size);
