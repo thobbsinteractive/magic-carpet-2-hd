@@ -301,14 +301,14 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 		case 0x02:
 		case 0x0E:
 		{			
-			x_WORD_EB398ar.x = entity->axis2d_4.x << 8;//adress 22a7b0
-			x_WORD_EB398ar.y = entity->axis2d_4.y << 8;
-			z_temp = getTerrainAlt_10C40(&x_WORD_EB398ar);
-			x_WORD_EB398ar.z = z_temp;
+			PlayerPosition_EB398.x = entity->axis2d_4.x << 8;//adress 22a7b0
+			PlayerPosition_EB398.y = entity->axis2d_4.y << 8;
+			z_temp = getTerrainAlt_10C40(&PlayerPosition_EB398);
+			PlayerPosition_EB398.z = z_temp;
 			temp_adress = str_x_DWORD_D4C52ar_0x2F22[entity->subtype_0x30311].address_6;
 			if (temp_adress)
 			{
-				event = pre_sub_4A190_axis_3d(temp_adress, &x_WORD_EB398ar);
+				event = pre_sub_4A190_axis_3d(temp_adress, &PlayerPosition_EB398);
 				if (event)
 				{
 					event->word_0x2C_44 = entity->par1_14;
@@ -333,27 +333,27 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 				}
 				case 0x2D:
 				{
-					x_WORD_EB398ar.x = entity->axis2d_4.x << 8;//adress 22a5af
-					x_WORD_EB398ar.y = entity->axis2d_4.y << 8;
-					z_temp = getTerrainAlt_10C40(&x_WORD_EB398ar);
-					x_WORD_EB398ar.z = z_temp;
+					PlayerPosition_EB398.x = entity->axis2d_4.x << 8;//adress 22a5af
+					PlayerPosition_EB398.y = entity->axis2d_4.y << 8;
+					z_temp = getTerrainAlt_10C40(&PlayerPosition_EB398);
+					PlayerPosition_EB398.z = z_temp;
 					temp_adress = str_x_DWORD_D4C52ar_0x1D26[entity->subtype_0x30311].address_6;
 					if (temp_adress)
 					{
-						event = pre_sub_4A190_axis_3d(temp_adress, &x_WORD_EB398ar);//(*(int(**)(int))((char *)&off_D697E + 14 * v4))((int)x_WORD_EB398ar);
+						event = pre_sub_4A190_axis_3d(temp_adress, &PlayerPosition_EB398);//(*(int(**)(int))((char *)&off_D697E + 14 * v4))((int)PlayerPosition_EB398);
 						if (event)
 							sub_49A30(event, entity->par1_14);
 					}
 					return;
 				}
 			}
-			x_WORD_EB398ar.x = entity->axis2d_4.x << 8;
-			x_WORD_EB398ar.y = entity->axis2d_4.y << 8;
-			x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
+			PlayerPosition_EB398.x = entity->axis2d_4.x << 8;
+			PlayerPosition_EB398.y = entity->axis2d_4.y << 8;
+			PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
 			temp_adress = str_x_DWORD_D4C52ar_0x1D26[entity->subtype_0x30311].address_6;
 			if (temp_adress)
 			{
-				event = pre_sub_4A190_axis_3d(temp_adress, &x_WORD_EB398ar);
+				event = pre_sub_4A190_axis_3d(temp_adress, &PlayerPosition_EB398);
 				if (event)
 				{
 					switch (entity->subtype_0x30311)
@@ -5359,7 +5359,7 @@ void sub_48400(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 			for (i = v6 - result; v18; v28 = 0)
 			{
 				sub_483A0(posX2, posY2, posX, posY);
-				v22x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 27);
+				v22x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 27);
 				if (v20 >= 0)
 				{
 					v22x->state_0x45_69 = 28;
@@ -5374,7 +5374,7 @@ void sub_48400(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 				sub_483A0(posX2, (unsigned __int16)(v20 + v28 + posY2), posX, posY);
 				v18--;
 				posY2 += v20 + v28;
-				v24x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 27);
+				v24x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 27);
 				v24x->state_0x45_69 = 29;
 				v24x->dword_0x10_16 = i + v30;
 				result = 0;
@@ -5395,12 +5395,12 @@ void sub_48400(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 				do
 				{
 					sub_483A0(posX2, posY2, posX, posY);
-					v13x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 27);
+					v13x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 27);
 					v13x->state_0x45_69 = 29;
 					v13x->dword_0x10_16 = v25 + v29;
 					posX2 += v25 + v29;
 					sub_483A0(posX2, posY2, posX, posY);
-					v14x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 27);
+					v14x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 27);
 					if (v12 >= 0)
 					{
 						v14x->state_0x45_69 = 28;
@@ -5470,18 +5470,18 @@ void sub_48690(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 		v14 = Xdir;
 		v15 = 0;
 	}
-	x_WORD_EB398ar.x = posX2 << 8;
-	x_WORD_EB398ar.y = posY2 << 8;
-	v10x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 30);
+	PlayerPosition_EB398.x = posX2 << 8;
+	PlayerPosition_EB398.y = posY2 << 8;
+	v10x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 30);
 	if (v10x)
 	{
 		v10x->dword_0x10_16 = maxabsdist;
 		v10x->word_0x1C_28 = Xdir;
 		v10x->word_0x1E_30 = Ydir;
 	}
-	x_WORD_EB398ar.x = (maxabsdist * Xdir + posX2) << 8;
-	x_WORD_EB398ar.y = (maxabsdist * Ydir + posY2) << 8;
-	resultx = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 30);
+	PlayerPosition_EB398.x = (maxabsdist * Xdir + posX2) << 8;
+	PlayerPosition_EB398.y = (maxabsdist * Ydir + posY2) << 8;
+	resultx = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 30);
 	if (resultx)
 	{
 		resultx->dword_0x10_16 = distXYdiff;
@@ -5670,10 +5670,10 @@ void sub_48930(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	else
 		result = 0;
 
-	//result = pre_sub_4A190(v8x, (int16_t*)& x_WORD_EB398ar, 81);
+	//result = pre_sub_4A190(v8x, (int16_t*)& PlayerPosition_EB398, 81);
 
 	//v8x = *(uint32_t*) & (x_DWORD_D4C52ar[(0x2a8b7a + v13 * 14 - 0x2a5c52)]);
-	//v14x = pre_sub_4A190(v8x, (int16_t*)& x_WORD_EB398ar, 1); //(*(int(**)(int))((char *)&off_D7B7A + 14 * v13))((int)x_WORD_EB398ar);
+	//v14x = pre_sub_4A190(v8x, (int16_t*)& PlayerPosition_EB398, 1); //(*(int(**)(int))((char *)&off_D7B7A + 14 * v13))((int)PlayerPosition_EB398);
 
 	if (result)
 	{
@@ -5714,12 +5714,12 @@ int sub_483A0(__int16 a1, int a2, char a3, char a4)//2293a0
 	v7 = mapHeightmap_11B4E0[v6];
 	if (v7 > (unsigned __int8)v5)
 		LOBYTE(v5) = mapHeightmap_11B4E0[v6];
-	x_WORD_EB398ar.x = a1 << 8;
+	PlayerPosition_EB398.x = a1 << 8;
 	result = a2 << 8;
-	x_WORD_EB398ar.z = 32 * v5;
-	x_WORD_EB398ar.y = (x_WORD)a2 << 8;
+	PlayerPosition_EB398.z = 32 * v5;
+	PlayerPosition_EB398.y = (x_WORD)a2 << 8;
 	return result;
 }
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
