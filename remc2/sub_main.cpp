@@ -70,7 +70,7 @@ bool config_EDITOR = false;
 
 /*
 fix sub_3C080_draw_terrain_and_particles_old
-MovePlayer_57FA0(&x_WORD_EB398ar, v4, 0, v3);
+MovePlayer_57FA0(&PlayerPosition_EB398, v4, 0, v3);
 (char*)&D41A0_0+0x13de2
 addprocedurestop(0x238cf3, 0x348, true, true, 0x356038 + 0x13de2, 0x12345678);
 
@@ -850,10 +850,9 @@ bool SaveSMAPSLEVmovie2_54F00(__int16 a1);
 void sub_55EB0(__int16 a1);
 //int sub_main(int argc, const char **argv, const char **envp);
 void sub_560D0_create_sound_dir();
-void sub_56210_process_command_line(int a1, char** a2);
+void ProcessCommandLine_56210(int a1, char** a2);
 int sub_56730_clean_memory();
 void ClearSettings_567C0();
-// char sub_56A30_init_game_level(unsigned int a1);
 void sub_56C00_sound_proc2(Type_Level_2FECE* a1);
 // char sub_56D60(unsigned int a1, char a2);
 bool sub_56EE0(uaxis_2d a1);
@@ -1207,7 +1206,7 @@ int32_t xx_DWORD_D40BC[17][3] =  // weak//min 16*3 //2a50bc
 {0x000001C6, 0x0000009C, 0x00000000},
 {0x00000000, 0x00000000, 0x00000000} };
 
-char x_BYTE_D419C_level_num = -1; // weak
+int8_t LoadLevelNumber_D419C = -1; // weak
 
 x_DWORD x_DWORD_D41A4_4 = 0;
 x_DWORD x_DWORD_D41A4_6 = 127;
@@ -3587,7 +3586,7 @@ int x_DWORD_E9C24_fps; // weak
 
 //uint8_t* x_DWORD_E9C28x; // weak
 
-axis_3d x_WORD_EB398ar; // weak
+axis_3d PlayerPosition_EB398; // weak
 uint8_t x_BYTE_EB39E_keys[10]; // weak 0 - setting keys
 uint8_t uiBackGroundColorIdx_EB3A8;
 void(*ptrDrawBitmap_F01EC)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale); // eax
@@ -6640,18 +6639,18 @@ void sub_146F0(type_entity_0x6E8E* a1x)//1f56f0
 	}
 	else
 	{
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		//v2 = *(signed __int16 **)a1x->dword_0xA0_160;
 		v3 = a1x->dword_0xA0_160x->word_160_0xe_14;
 		v4 = a1x->dword_0xA0_160x->word_160_0xa_10;
 		v5 = a1x->dword_0xA0_160x->word_160_0xc_12;
-		v6 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-		sub_580E0(&x_WORD_EB398ar, v6, v5, v4, v3);
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
+		v6 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+		sub_580E0(&PlayerPosition_EB398, v6, v5, v4, v3);
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
 		v7 = a1x->word_0x1C_28;
 		//HIBYTE(v7) += 2;
 		v7 += 512;
-		MovePlayer_57FA0(&x_WORD_EB398ar, v7, 0, a1x->dword_0xA4_164x->word_0x10_16);
+		MovePlayer_57FA0(&PlayerPosition_EB398, v7, 0, a1x->dword_0xA4_164x->word_0x10_16);
 		//v8 = a1x->dword_0xA4_164;
 		//v9 = *(x_WORD *)(v8 + 16);
 		//v10 = (x_WORD *)(v8 + 16);
@@ -6667,7 +6666,7 @@ void sub_146F0(type_entity_0x6E8E* a1x)//1f56f0
 			v11 = 0;
 		}
 		a1x->dword_0xA4_164x->word_0x10_16 -= 4 * v11;
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		v12 = a1x->dword_0xA4_164x->word_0xc_12 - a1x->actSpeed_0x82_130;
 		if (a1x->dword_0xA4_164x->word_0xc_12 != a1x->actSpeed_0x82_130)
 		{
@@ -8919,9 +8918,9 @@ void sub_1B6B0(type_entity_0x6E8E* a1x)//1fc6b0
 		a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &v1x->position_0x4C_76);
 		a1x->word_0x1E_30 = Maths::sub_58210_radix_tan(&a1x->position_0x4C_76, &v1x->position_0x4C_76);
 		v2x = &v1x->position_0x4C_76;
-		x_WORD_EB398ar = *v2x;
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, -a1x->word_0x36_54);
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		PlayerPosition_EB398 = *v2x;
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, -a1x->word_0x36_54);
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		if (a1x->str_0x5E_94.word_0x62_98)
 		{
 			v3 = a1x->str_0x5E_94.dword_0x5E_94;
@@ -9005,19 +9004,19 @@ signed int sub_1B8C0(type_entity_0x6E8E* a1x)//1fc8c0
 	}
 	else
 	{
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		//v4 = *(signed __int16 **)(a1x->dword_0xA0_160);
 		v5 = a1x->dword_0xA0_160x->word_160_0xe_14;
 		v6 = a1x->dword_0xA0_160x->word_160_0xa_10;
 		v7 = a1x->dword_0xA0_160x->word_160_0xc_12;
-		v8 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-		sub_580E0(&x_WORD_EB398ar, v8, v7, v6, v5);
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
-		if (a1x->position_0x4C_76.x >> 8 != x_WORD_EB398ar.x >> 8 || a1x->position_0x4C_76.y >> 8 != x_WORD_EB398ar.y >> 8)
+		v8 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+		sub_580E0(&PlayerPosition_EB398, v8, v7, v6, v5);
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
+		if (a1x->position_0x4C_76.x >> 8 != PlayerPosition_EB398.x >> 8 || a1x->position_0x4C_76.y >> 8 != PlayerPosition_EB398.y >> 8)
 		{
 			//adress 1fc9e4
-			if (sub_102D0(a1x, &x_WORD_EB398ar, 1)
-				|| sub_1B7A0_tile_compare(&x_WORD_EB398ar) >= a1x->dword_0xA0_160x->word_160_0x10_16)
+			if (sub_102D0(a1x, &PlayerPosition_EB398, 1)
+				|| sub_1B7A0_tile_compare(&PlayerPosition_EB398) >= a1x->dword_0xA0_160x->word_160_0x10_16)
 			{
 				a1x->struct_byte_0xc_12_15.byte[2] |= 4u;
 				v13 = a1x->word_0x1C_28;
@@ -9025,42 +9024,42 @@ signed int sub_1B8C0(type_entity_0x6E8E* a1x)//1fc8c0
 				v13 += 341;
 				v13 &= 0x7ffu;
 				a1x->word_0x1C_28 = v13;//je z a1+28
-				x_WORD_EB398ar = a1x->position_0x4C_76;
+				PlayerPosition_EB398 = a1x->position_0x4C_76;
 				//v14 = *(signed __int16 **)(a1x->dword_0xA0_160);
 				v15 = a1x->dword_0xA0_160x->word_160_0xe_14;
 				v16 = a1x->dword_0xA0_160x->word_160_0xa_10;
 				v17 = a1x->dword_0xA0_160x->word_160_0xc_12;
-				v18 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-				sub_580E0(&x_WORD_EB398ar, v18, v17, v16, v15);
-				MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
-				if (sub_102D0(a1x, &x_WORD_EB398ar, 1)
-					|| sub_1B7A0_tile_compare(&x_WORD_EB398ar) >= a1x->dword_0xA0_160x->word_160_0x10_16)
+				v18 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+				sub_580E0(&PlayerPosition_EB398, v18, v17, v16, v15);
+				MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
+				if (sub_102D0(a1x, &PlayerPosition_EB398, 1)
+					|| sub_1B7A0_tile_compare(&PlayerPosition_EB398) >= a1x->dword_0xA0_160x->word_160_0x10_16)
 				{
 					LOBYTE(v21) = v37 - 85;
 					HIBYTE(v21) = ((unsigned __int16)(v37 - 341) >> 8) & 7;
 					a1x->word_0x1C_28 = v21;
-					x_WORD_EB398ar = a1x->position_0x4C_76;
+					PlayerPosition_EB398 = a1x->position_0x4C_76;
 					//v22 = *(signed __int16 **)(a1x->dword_0xA0_160);
 					v23 = a1x->dword_0xA0_160x->word_160_0xe_14;
 					v24 = a1x->dword_0xA0_160x->word_160_0xa_10;
 					v25 = a1x->dword_0xA0_160x->word_160_0xc_12;
-					v26 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-					sub_580E0(&x_WORD_EB398ar, v26, v25, v24, v23);
-					MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
-					if (sub_102D0(a1x, &x_WORD_EB398ar, 1)
-						|| sub_1B7A0_tile_compare(&x_WORD_EB398ar) >= a1x->dword_0xA0_160x->word_160_0x10_16)
+					v26 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+					sub_580E0(&PlayerPosition_EB398, v26, v25, v24, v23);
+					MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
+					if (sub_102D0(a1x, &PlayerPosition_EB398, 1)
+						|| sub_1B7A0_tile_compare(&PlayerPosition_EB398) >= a1x->dword_0xA0_160x->word_160_0x10_16)
 					{
 						a1x->word_0x1C_28 = (v37 + 0x400) & 0x700 + (uint8_t)v37;
-						x_WORD_EB398ar = a1x->position_0x4C_76;
+						PlayerPosition_EB398 = a1x->position_0x4C_76;
 						//v29 = (short*)a1x->dword_0xA0_160;
 						v30 = a1x->dword_0xA0_160x->word_160_0xe_14;
 						v31 = a1x->dword_0xA0_160x->word_160_0xa_10;
 						v32 = a1x->dword_0xA0_160x->word_160_0xc_12;
-						v33 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-						sub_580E0(&x_WORD_EB398ar, v33, v32, v31, v30);
-						MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
-						if (sub_102D0(a1x, &x_WORD_EB398ar, 1)
-							|| sub_1B7A0_tile_compare(&x_WORD_EB398ar) >= a1x->dword_0xA0_160x->word_160_0x10_16)
+						v33 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+						sub_580E0(&PlayerPosition_EB398, v33, v32, v31, v30);
+						MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
+						if (sub_102D0(a1x, &PlayerPosition_EB398, 1)
+							|| sub_1B7A0_tile_compare(&PlayerPosition_EB398) >= a1x->dword_0xA0_160x->word_160_0x10_16)
 						{
 							if (a1x->dword_0xA0_160x->byte_160_0x20_32 & 1 || sub_104D0_terrain_tile_is_water(&a1x->position_0x4C_76) == 1)
 								a1x->life_0x8 = -1;
@@ -9074,7 +9073,7 @@ signed int sub_1B8C0(type_entity_0x6E8E* a1x)//1fc8c0
 						}
 						else
 						{
-							sub_57CF0(a1x, &x_WORD_EB398ar);
+							sub_57CF0(a1x, &PlayerPosition_EB398);
 							v35 = a1x->word_0x1C_28
 								+ sub_58350(
 									a1x->word_0x1C_28,
@@ -9088,7 +9087,7 @@ signed int sub_1B8C0(type_entity_0x6E8E* a1x)//1fc8c0
 					}
 					else
 					{
-						sub_57CF0(a1x, &x_WORD_EB398ar);
+						sub_57CF0(a1x, &PlayerPosition_EB398);
 						v28 = a1x->word_0x1C_28
 							+ sub_58350(
 								a1x->word_0x1C_28,
@@ -9102,7 +9101,7 @@ signed int sub_1B8C0(type_entity_0x6E8E* a1x)//1fc8c0
 				}
 				else
 				{
-					sub_57CF0(a1x, &x_WORD_EB398ar);
+					sub_57CF0(a1x, &PlayerPosition_EB398);
 					v20 = a1x->word_0x1C_28
 						+ sub_58350(
 							a1x->word_0x1C_28,
@@ -9116,7 +9115,7 @@ signed int sub_1B8C0(type_entity_0x6E8E* a1x)//1fc8c0
 			}
 			else
 			{
-				sub_57CF0(a1x, &x_WORD_EB398ar);
+				sub_57CF0(a1x, &PlayerPosition_EB398);
 				v11 = a1x->word_0x1C_28
 					+ sub_58350(
 						a1x->word_0x1C_28,
@@ -9132,7 +9131,7 @@ signed int sub_1B8C0(type_entity_0x6E8E* a1x)//1fc8c0
 		}
 		else
 		{
-			sub_57CF0(a1x, &x_WORD_EB398ar);
+			sub_57CF0(a1x, &PlayerPosition_EB398);
 			v9 = a1x->word_0x1C_28
 				+ sub_58350(
 					a1x->word_0x1C_28,
@@ -9149,7 +9148,7 @@ signed int sub_1B8C0(type_entity_0x6E8E* a1x)//1fc8c0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
 
 //----- (0001BD90) --------------------------------------------------------
 void sub_1BD90(type_entity_0x6E8E* a1x, char a2)//1fcd90
@@ -10115,18 +10114,18 @@ signed int sub_1D260(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//1fe260
 	char v4; // al
 	signed int v6; // [esp+0h] [ebp-4h]
 
-	x_WORD_EB398ar = a1x->position_0x4C_76;
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
 	v6 = 0;
-	x_WORD_EB398ar.z += a1x->array_0x52_82.fov;
-	v2x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 9, 9);
+	PlayerPosition_EB398.z += a1x->array_0x52_82.fov;
+	v2x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 9, 9);
 	v3x = v2x;
 	if (v2x)
 	{
 		v2x->byte_0x43_67 = 10;
 		v2x->byte_0x44_68 = 23;
 		v2x->id_0x1A_26 = a1x->id_0x1A_26;
-		v2x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&x_WORD_EB398ar, &a2x->position_0x4C_76);
-		v3x->word_0x1E_30 = Maths::sub_58210_radix_tan(&x_WORD_EB398ar, &a2x->position_0x4C_76);
+		v2x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&PlayerPosition_EB398, &a2x->position_0x4C_76);
+		v3x->word_0x1E_30 = Maths::sub_58210_radix_tan(&PlayerPosition_EB398, &a2x->position_0x4C_76);
 		v3x->word_0x96_150 = a1x->word_0x96_150;
 		v3x->dword_0xA0_160x = &str_D7BD6[64];//(type_str_160*)&unk_D7BD6[0x880];
 		v3x->xsubtype_0x42_66 = a2x->model_0x40_64;
@@ -10140,7 +10139,7 @@ signed int sub_1D260(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//1fe260
 }
 // D8456: using guessed type void *off_D8456;
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (0001D460) --------------------------------------------------------
 void sub_1D460(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//1fe460
@@ -10885,9 +10884,9 @@ void sub_1E4D0(type_entity_0x6E8E* a1x)//1ff4d0
 	v1x = Entities_EA3E4[a1x->parentId_0x28_40];
 	if (v1x <= Entities_EA3E4[0] || v1x->life_0x8 < 0)
 		SetEntity04_57F10(a1x);
-	x_WORD_EB398ar.x = v1x->position_0x4C_76.x;
+	PlayerPosition_EB398.x = v1x->position_0x4C_76.x;
 	v2 = a1x->model_0x40_64;
-	x_WORD_EB398ar.y = v1x->position_0x4C_76.y;
+	PlayerPosition_EB398.y = v1x->position_0x4C_76.y;
 	v3 = v1x->position_0x4C_76.z;
 	if (v2 >= 0x10u)
 	{
@@ -10902,16 +10901,16 @@ void sub_1E4D0(type_entity_0x6E8E* a1x)//1ff4d0
 	}
 	if (v3 <= 0)
 		LOWORD(v3) = 0;
-	x_WORD_EB398ar.z = v3;
-	/*result = */sub_57CF0(a1x, &x_WORD_EB398ar);
+	PlayerPosition_EB398.z = v3;
+	/*result = */sub_57CF0(a1x, &PlayerPosition_EB398);
 	a1x->word_0x20_32 = v1x->word_0x20_32;
 	a1x->word_0x1C_28 = v1x->word_0x1C_28;
 	//return result;
 }
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (0001E580) --------------------------------------------------------
 void sub_1E580(type_entity_0x6E8E* a1x, __int16 a2)//1ff580
@@ -11522,9 +11521,9 @@ void sub_1F0C0(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x)//2000c0
 						v8 = v7x->word_0x1C_28 + 512;
 					else
 						v8 = v7x->word_0x1C_28 - 512;
-					x_WORD_EB398ar = a2x->position_0x4C_76;
-					MovePlayer_57FA0(&x_WORD_EB398ar, v8 & 0x7FF, 0, 48 * a2x->word_0x2C_44);
-					sub_57CF0(a2x, &x_WORD_EB398ar);
+					PlayerPosition_EB398 = a2x->position_0x4C_76;
+					MovePlayer_57FA0(&PlayerPosition_EB398, v8 & 0x7FF, 0, 48 * a2x->word_0x2C_44);
+					sub_57CF0(a2x, &PlayerPosition_EB398);
 					a2x->word_0x2C_44--;
 				}
 			}
@@ -12447,9 +12446,9 @@ void sub_203D0(type_entity_0x6E8E* a1x)//2013d0
 							{
 								if (sub_583F0_distance_3d(&a1x->position_0x4C_76, &v41x->position_0x4C_76) <= 0x600)
 								{
-									x_WORD_EB398ar = v41x->position_0x4C_76;
+									PlayerPosition_EB398 = v41x->position_0x4C_76;
 									SetEntity04_57F10(v41x);
-									v39x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 9);
+									v39x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 5, 9);
 									if (v39x)
 									{
 										if (Entities_EA3E4[a1x->id_0x1A_26]->class_0x3F_63 == 3)
@@ -12645,9 +12644,9 @@ void sub_20940(type_entity_0x6E8E* a1x)//201940
 						+ v22 * v22
 						+ (v24x->position_0x4C_76.z - a1x->position_0x4C_76.z) * (v24x->position_0x4C_76.z - a1x->position_0x4C_76.z)) <= 0x600)
 					{
-						x_WORD_EB398ar = v24x->position_0x4C_76;
+						PlayerPosition_EB398 = v24x->position_0x4C_76;
 						SetEntity04_57F10(v24x);
-						v23x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 9);
+						v23x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 5, 9);
 						if (v23x)
 							v23x->id_0x1A_26 = a1x->id_0x1A_26;
 					}
@@ -13680,18 +13679,18 @@ void sub_21AB0(type_entity_0x6E8E* a1x)//202ab0
 				if (D41A0_0.word_0x36546 > 1024)
 					D41A0_0.word_0x36546 = 1024;
 				v17 = &v31x->position_0x4C_76;
-				x_WORD_EB398ar = v31x->position_0x4C_76;
+				PlayerPosition_EB398 = v31x->position_0x4C_76;
 				v18 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, v17);
 				v32 = v18;
-				MovePlayer_57FA0(&x_WORD_EB398ar, v18, 0, D41A0_0.word_0x36546);
+				MovePlayer_57FA0(&PlayerPosition_EB398, v18, 0, D41A0_0.word_0x36546);
 				v19x = v31x;
 				if (sub_5D0A0(v31x))
 				{
 					v20 = v19x->dword_0xA0_160x->word_160_0xc_12;
-					v21 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-					if (x_WORD_EB398ar.z < v21 + v20)
-						x_WORD_EB398ar.z = v19x->dword_0xA0_160x->word_160_0xc_12 + v21;
-					sub_57CF0(v31x, &x_WORD_EB398ar);
+					v21 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+					if (PlayerPosition_EB398.z < v21 + v20)
+						PlayerPosition_EB398.z = v19x->dword_0xA0_160x->word_160_0xc_12 + v21;
+					sub_57CF0(v31x, &PlayerPosition_EB398);
 				}
 				break;
 			case 8:
@@ -13753,7 +13752,7 @@ void sub_21AB0(type_entity_0x6E8E* a1x)//202ab0
 // D8412: using guessed type void *off_D8412;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00021F60) --------------------------------------------------------
 char sub_21F60(type_entity_0x6E8E* a1x)//202f60
@@ -14217,7 +14216,7 @@ void sub_22760(type_entity_0x6E8E* a1x)//203760
 		a1x->state_0x45_69 = v20 + 1;
 		return;
 	}
-	x_WORD_EB398ar = v1x->position_0x4C_76;
+	PlayerPosition_EB398 = v1x->position_0x4C_76;
 	v2 = a1x->dword_0x10_16;
 	a1x->dword_0x10_16 = v2 + 1;
 	if (v2 >= 4)
@@ -14233,48 +14232,48 @@ void sub_22760(type_entity_0x6E8E* a1x)//203760
 	case 1:
 		a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 		v4 = 9377 * a1x->rand_0x14_20;
-		x_WORD_EB398ar.x += (a1x->rand_0x14_20 % 3u << 8) + v17x->array_0x52_82.pitch + exwidth + 256;
+		PlayerPosition_EB398.x += (a1x->rand_0x14_20 % 3u << 8) + v17x->array_0x52_82.pitch + exwidth + 256;
 		a1x->rand_0x14_20 = v4 + 9439;
 		v3 = (a1x->rand_0x14_20 % 3u << 8) - 1280;
-		v5 = v3 + x_WORD_EB398ar.y;
+		v5 = v3 + PlayerPosition_EB398.y;
 		goto LABEL_10;
 	case 2:
 		a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
-		x_WORD_EB398ar.x -= (a1x->rand_0x14_20 % 3u << 8) + v17x->array_0x52_82.pitch + exwidth + 256;
+		PlayerPosition_EB398.x -= (a1x->rand_0x14_20 % 3u << 8) + v17x->array_0x52_82.pitch + exwidth + 256;
 		a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 		v3 = (a1x->rand_0x14_20 % 3u << 8) - 1280;
-		v5 = v3 + x_WORD_EB398ar.y;
+		v5 = v3 + PlayerPosition_EB398.y;
 		goto LABEL_10;
 	case 3:
 		a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 		v6 = 9377 * a1x->rand_0x14_20;
-		x_WORD_EB398ar.x += (a1x->rand_0x14_20 % 3u << 8) - 1280;
+		PlayerPosition_EB398.x += (a1x->rand_0x14_20 % 3u << 8) - 1280;
 		a1x->rand_0x14_20 = v6 + 9439;
 		v3 = (a1x->rand_0x14_20 % 3u << 8) + v17x->array_0x52_82.roll + exheight + 256;
-		v5 = v3 + x_WORD_EB398ar.y;
+		v5 = v3 + PlayerPosition_EB398.y;
 		goto LABEL_10;
 	case 4:
 		a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
-		x_WORD_EB398ar.x += (a1x->rand_0x14_20 % 3u << 8) - 1280;
+		PlayerPosition_EB398.x += (a1x->rand_0x14_20 % 3u << 8) - 1280;
 		a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 		v3 = v17x->array_0x52_82.roll + exheight;
-		v5 = x_WORD_EB398ar.y - (v3 + (a1x->rand_0x14_20 % 3u << 8) + 256);
+		v5 = PlayerPosition_EB398.y - (v3 + (a1x->rand_0x14_20 % 3u << 8) + 256);
 	LABEL_10:
-		x_WORD_EB398ar.y = v5;
+		PlayerPosition_EB398.y = v5;
 		break;
 	default:
 		break;
 	}
-	LOWORD(v3) = x_WORD_EB398ar.x;
-	v7 = x_WORD_EB398ar.y;
+	LOWORD(v3) = PlayerPosition_EB398.x;
+	v7 = PlayerPosition_EB398.y;
 	v21 = v3;
-	if (sub_104D0_terrain_tile_is_water(&x_WORD_EB398ar) == 1)
+	if (sub_104D0_terrain_tile_is_water(&PlayerPosition_EB398) == 1)
 	{
 		a1x->dword_0x10_16 = 2;
 		goto LABEL_51;
 	}
 	LOBYTE(v8z) = sub_22640(
-		&x_WORD_EB398ar,
+		&PlayerPosition_EB398,
 		(signed int)exwidth >> 8,
 		(signed int)exheight >> 8,
 		(((signed int)exwidth >> 7) + ((signed int)exheight >> 7) > 4) + 15);
@@ -14333,7 +14332,7 @@ void sub_22760(type_entity_0x6E8E* a1x)//203760
 		}
 		if (!v9)
 		{
-			v8y = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 45);
+			v8y = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 45);
 			v14x = v8y;
 			if (v8y)
 			{
@@ -14352,7 +14351,7 @@ void sub_22760(type_entity_0x6E8E* a1x)//203760
 // D41A4: using guessed type int x_DWORD_D41A4;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
 
 //----- (00022C80) --------------------------------------------------------
 void sub_22C80(type_entity_0x6E8E* a1x)//203c80
@@ -15502,12 +15501,12 @@ void sub_24190(type_entity_0x6E8E* a1x)//205190
 			if ((unsigned __int16)v10 >= 4u)
 				break;
 			//v3 = v11;
-			x_WORD_EB398ar = a1x->position_0x4C_76;
-			MovePlayer_57FA0(&x_WORD_EB398ar, v3, 0, 256);
+			PlayerPosition_EB398 = a1x->position_0x4C_76;
+			MovePlayer_57FA0(&PlayerPosition_EB398, v3, 0, 256);
 			v4 = v10;
 			a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 			v5 = a1x->rand_0x14_20 % v8y[v4];
-			v6 = (v5 + 2) * (sub_102D0(a1x, &x_WORD_EB398ar, 1) == 0);
+			v6 = (v5 + 2) * (sub_102D0(a1x, &PlayerPosition_EB398, 1) == 0);
 			if ((unsigned __int16)v6 > (unsigned __int16)v12)
 			{
 				v12 = v6;
@@ -15520,18 +15519,18 @@ void sub_24190(type_entity_0x6E8E* a1x)//205190
 			v10++;
 		}
 	}
-	x_WORD_EB398ar = a1x->position_0x4C_76;
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
 	if (!(a1x->byte_0x3E_62 % 16))
 	{
 		switch (((a1x->word_0x1C_28 - 256) >> 9) & 3)
 		{
 		case 0:
 		case 2:
-			x_WORD_EB398ar.y = (x_WORD_EB398ar.y >> 8 << 8) + 128;
+			PlayerPosition_EB398.y = (PlayerPosition_EB398.y >> 8 << 8) + 128;
 			break;
 		case 1:
 		case 3:
-			x_WORD_EB398ar.x = (x_WORD_EB398ar.x >> 8 << 8) + 128;
+			PlayerPosition_EB398.x = (PlayerPosition_EB398.x >> 8 << 8) + 128;
 			break;
 		default:
 			break;
@@ -15553,15 +15552,15 @@ void sub_24190(type_entity_0x6E8E* a1x)//205190
 		|| (a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439,
 			(signed int)(a1x->rand_0x14_20 % 0x14u) <= 10))
 	{
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 	}
 	sub_1EEE0(a1x);
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
 
 //----- (00024400) --------------------------------------------------------
 void sub_24400(type_entity_0x6E8E* a1x)//205400
@@ -15987,9 +15986,9 @@ void sub_24930(type_entity_0x6E8E* a1x)//205930
 			v10 = a1x->actSpeed_0x82_130;
 			if (v10 > a1x->maxSpeed_0x86_134)
 				a1x->actSpeed_0x82_130 = v10 - 8;
-			x_WORD_EB398ar = a1x->position_0x4C_76;
-			v11 = v14 + x_WORD_EB398ar.z;
-			LOWORD(v1) = getTerrainAlt_10C40(&x_WORD_EB398ar);
+			PlayerPosition_EB398 = a1x->position_0x4C_76;
+			v11 = v14 + PlayerPosition_EB398.z;
+			LOWORD(v1) = getTerrainAlt_10C40(&PlayerPosition_EB398);
 			if (v11 <= (signed __int16)v1)
 			{
 				a1x->byte_0x46_70 = 4;
@@ -16037,7 +16036,7 @@ void sub_24930(type_entity_0x6E8E* a1x)//205930
 // D41A4: using guessed type int x_DWORD_D41A4;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00024D40) --------------------------------------------------------
 void sub_24D40(type_entity_0x6E8E* a1x)//205d40
@@ -16615,20 +16614,20 @@ void HitFirebug_25610(type_entity_0x6E8E* a1x)//206610
 					goto LABEL_25;
 				case 1:
 				LABEL_25:
-					x_WORD_EB398ar = v34x->position_0x4C_76;
+					PlayerPosition_EB398 = v34x->position_0x4C_76;
 					a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 					MovePlayer_57FA0(
-						&x_WORD_EB398ar,
+						&PlayerPosition_EB398,
 						(v34x->word_0x1C_28 - 256 + (signed int)(a1x->rand_0x14_20 % 0x5Au << 11) / 360) & 0x7FF,
 						0,
 						2048);
-					if (sub_583F0_distance_3d(&a1x->position_0x4C_76, &x_WORD_EB398ar) <= 0x500)
+					if (sub_583F0_distance_3d(&a1x->position_0x4C_76, &PlayerPosition_EB398) <= 0x500)
 					{
 						a1x->byte_0x46_70 = 2;
 					}
 					else
 					{
-						v9 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &x_WORD_EB398ar);
+						v9 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &PlayerPosition_EB398);
 						v10 = a1x->byte_0x3E_62;
 						a1x->word_0x20_32 = v9;
 						if (v10 & 3)
@@ -16675,9 +16674,9 @@ void HitFirebug_25610(type_entity_0x6E8E* a1x)//206610
 						}
 						break;
 					}
-					x_WORD_EB398ar = v34x->position_0x4C_76;
-					MovePlayer_57FA0(&x_WORD_EB398ar, v34x->word_0x1C_28, 0, 2048);
-					if (sub_583F0_distance_3d(&a1x->position_0x4C_76, &x_WORD_EB398ar) > 0x500)
+					PlayerPosition_EB398 = v34x->position_0x4C_76;
+					MovePlayer_57FA0(&PlayerPosition_EB398, v34x->word_0x1C_28, 0, 2048);
+					if (sub_583F0_distance_3d(&a1x->position_0x4C_76, &PlayerPosition_EB398) > 0x500)
 					{
 					LABEL_57:
 						a1x->byte_0x46_70 = 0;
@@ -17368,7 +17367,7 @@ void sub_265A0(type_entity_0x6E8E* a1x)//2075a0
 		else if (a1x->position_0x4C_76.z == v6)
 		{
 			a1x->byte_0x46_70 = 10;
-			IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 5);//this set 02 2077b2
+			IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 5);//this set 02 2077b2
 		}
 		if (a1x->state_0x45_69 == 170)
 			v10 = 66;
@@ -17945,16 +17944,16 @@ void sub_271D0(type_entity_0x6E8E* a1x)//2081d0
 			if (v6)
 				v5x = Entities_EA3E4[v6];
 		}
-		x_WORD_EB398ar = v5x->position_0x4C_76;
-		MovePlayer_57FA0(&x_WORD_EB398ar, v4, 0, a1x->array_0x52_82.pitch + v5x->array_0x52_82.pitch);
-		x_WORD_EB398ar.z = v5x->array_0x52_82.pitch - a1x->array_0x52_82.pitch + v5x->position_0x4C_76.z;
-		/*result = */sub_57CF0(a1x, &x_WORD_EB398ar);
+		PlayerPosition_EB398 = v5x->position_0x4C_76;
+		MovePlayer_57FA0(&PlayerPosition_EB398, v4, 0, a1x->array_0x52_82.pitch + v5x->array_0x52_82.pitch);
+		PlayerPosition_EB398.z = v5x->array_0x52_82.pitch - a1x->array_0x52_82.pitch + v5x->position_0x4C_76.z;
+		/*result = */sub_57CF0(a1x, &PlayerPosition_EB398);
 	}
 	//return result;
 }
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (000272C0) --------------------------------------------------------
 void sub_272C0(type_entity_0x6E8E* a1x)//2082c0
@@ -18096,8 +18095,8 @@ void sub_274C0(type_entity_0x6E8E* event1, type_entity_0x6E8E* event2, type_enti
 	event2->word_0x94_148 = 0;
 	event2->mana_0x90_144 = 0;
 	event2->word_0x96_150 = event1 - D41A0_0.struct_0x6E8E;
-	x_WORD_EB398ar = event1->position_0x4C_76;
-	AddEventToMap_57D70(event2, &x_WORD_EB398ar);
+	PlayerPosition_EB398 = event1->position_0x4C_76;
+	AddEventToMap_57D70(event2, &PlayerPosition_EB398);
 	CopyEventVar0408_49A20(event2);
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
@@ -19724,23 +19723,23 @@ void sub_29400(type_entity_0x6E8E* a1x)//20a400
 	{
 		if (v1 <= 9)
 		{
-			x_WORD_EB398ar = a1x->position_0x4C_76;
+			PlayerPosition_EB398 = a1x->position_0x4C_76;
 			a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 			v3 = (a1x->rand_0x14_20 & 7) + 8;
 			v4 = 9377 * a1x->rand_0x14_20 + 9439;
 			a1x->rand_0x14_20 = v4;
 			v5 = 0;
-			x_WORD_EB398ar.x += (x_WORD)v3 << 8;
-			x_WORD_EB398ar.y += ((v4 & 7) + 8) << 8;
+			PlayerPosition_EB398.x += (x_WORD)v3 << 8;
+			PlayerPosition_EB398.y += ((v4 & 7) + 8) << 8;
 			while (v5 < 128)
 			{
-				x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
-				if (!sub_102D0(a1x, &x_WORD_EB398ar, 1) && !sub_102D0(a1x, &x_WORD_EB398ar, 4) && sub_1B830(&x_WORD_EB398ar) < 32)
+				PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
+				if (!sub_102D0(a1x, &PlayerPosition_EB398, 1) && !sub_102D0(a1x, &PlayerPosition_EB398, 4) && sub_1B830(&PlayerPosition_EB398) < 32)
 					break;
 				v5++;
-				MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, 768);
+				MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, 768);
 			}
-			sub_57CF0(a1x, &x_WORD_EB398ar);
+			sub_57CF0(a1x, &PlayerPosition_EB398);
 			PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 22);
 			goto LABEL_36;
 		}
@@ -19789,8 +19788,8 @@ LABEL_36:
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00029670) --------------------------------------------------------
 void sub_29670(type_entity_0x6E8E* a1x)//20a670
@@ -20452,8 +20451,8 @@ void sub_29A90(type_entity_0x6E8E* a1x)//20aa90
 				sub_2A940(a1x, ix);
 				sub_2AA90(/*ix,*/ a1x, ix);
 				v35x = Entities_EA3E4[ix->word_0x96_150];
-				x_WORD_EB398ar = v35x->position_0x4C_76;
-				sub_57CF0(ix, &x_WORD_EB398ar);
+				PlayerPosition_EB398 = v35x->position_0x4C_76;
+				sub_57CF0(ix, &PlayerPosition_EB398);
 			LABEL_99:
 				/*LOWORD(v2) = */sub_2A9F0(a1x, ix);
 				break;
@@ -20619,17 +20618,17 @@ void sub_2A5B0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x, __int16 a3)//20
 
 	//v3 = (__int16*)((char*)ar_D404C + 22 * a2x->byte_0x3B_59);
 	v3x = &str_D404C[a2x->byte_0x3B_59];
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	MovePlayer_57FA0(&x_WORD_EB398ar, v3x->word_2 + a1x->word_0x1C_28, 0, v3x->word_0);
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	MovePlayer_57FA0(&PlayerPosition_EB398, v3x->word_2 + a1x->word_0x1C_28, 0, v3x->word_0);
 	v4 = v3x->word_14;
 	v5 = a1x->word_0x1E_30;
-	x_WORD_EB398ar.z += v3x->word_4;
-	MovePlayer_57FA0(&x_WORD_EB398ar, v3x->word_12 + a1x->word_0x1C_28, v4 + v5, a3);
-	sub_57CF0(a2x, &x_WORD_EB398ar);
+	PlayerPosition_EB398.z += v3x->word_4;
+	MovePlayer_57FA0(&PlayerPosition_EB398, v3x->word_12 + a1x->word_0x1C_28, v4 + v5, a3);
+	sub_57CF0(a2x, &PlayerPosition_EB398);
 }
 // D404C: using guessed type void *off_D404C;
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (0002A660) --------------------------------------------------------
 void sub_2A660(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//20b660
@@ -20831,13 +20830,13 @@ void sub_2A940(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//20b940
 	}
 	if (a2x->actSpeed_0x82_130)
 	{
-		x_WORD_EB398ar = a2x->position_0x4C_76;
+		PlayerPosition_EB398 = a2x->position_0x4C_76;
 		MovePlayer_57FA0(
-			&x_WORD_EB398ar,
+			&PlayerPosition_EB398,
 			a2x->word_0x20_32 + a1x->word_0x1C_28,
 			a2x->word_0x22_34 + a1x->word_0x1E_30,
 			a2x->actSpeed_0x82_130);
-		sub_57CF0(a2x, &x_WORD_EB398ar);
+		sub_57CF0(a2x, &PlayerPosition_EB398);
 	}
 	//return result;
 }
@@ -20855,19 +20854,19 @@ void sub_2A9F0(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//20b9f0
 	__int16 v6; // dx
 
 	//v2 = 22 * a2x->byte_0x3B_59;
-	x_WORD_EB398ar = a2x->position_0x4C_76;
+	PlayerPosition_EB398 = a2x->position_0x4C_76;
 	//v3 = (x_WORD*)((char*)ar_D404C + v2);
 	v3x = &str_D404C[a2x->byte_0x3B_59];
 	v4 = v3x->word_14;
 	v5 = v3x->word_6;
 	v6 = a1x->word_0x1E_30;
-	x_WORD_EB398ar.z += v3x->word_10;
-	MovePlayer_57FA0(&x_WORD_EB398ar, v3x->word_12 + a1x->word_0x1C_28, v4 + v6, v5);
-	sub_57CF0(a2x, &x_WORD_EB398ar);
+	PlayerPosition_EB398.z += v3x->word_10;
+	MovePlayer_57FA0(&PlayerPosition_EB398, v3x->word_12 + a1x->word_0x1C_28, v4 + v6, v5);
+	sub_57CF0(a2x, &PlayerPosition_EB398);
 }
 // D404C: using guessed type void *off_D404C;
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (0002AA90) --------------------------------------------------------
 void sub_2AA90(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x, type_entity_0x6E8E* a3x)//20ba90
@@ -21136,20 +21135,20 @@ char sub_2AF10(type_entity_0x6E8E* a1x, char a2)//20bf10
 	}
 	else
 	{
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		if (a2)
-			MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
-		x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
+			MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
+		PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
 		if (a2
-			&& a1x->position_0x4C_76.x >> 8 == x_WORD_EB398ar.x >> 8
-			&& a1x->position_0x4C_76.y >> 8 == x_WORD_EB398ar.y >> 8)
+			&& a1x->position_0x4C_76.x >> 8 == PlayerPosition_EB398.x >> 8
+			&& a1x->position_0x4C_76.y >> 8 == PlayerPosition_EB398.y >> 8)
 		{
 			v10 = 1;
 			v12 = 1;
 			v13 = 1;
 			a1x->struct_byte_0xc_12_15.byte[2] &= 0xFBu;
 		}
-		else if (sub_102D0(a1x, &x_WORD_EB398ar, 1) || sub_102D0(a1x, &x_WORD_EB398ar, 4) || sub_1B830(&x_WORD_EB398ar) >= 32)
+		else if (sub_102D0(a1x, &PlayerPosition_EB398, 1) || sub_102D0(a1x, &PlayerPosition_EB398, 4) || sub_1B830(&PlayerPosition_EB398) >= 32)
 		{
 			if (a1x->word_0x1C_28 == a1x->word_0x20_32)
 			{
@@ -21159,11 +21158,11 @@ char sub_2AF10(type_entity_0x6E8E* a1x, char a2)//20bf10
 				v11 = BYTE1(v7);
 				while (v7 <= 1024)
 				{
-					x_WORD_EB398ar = a1x->position_0x4C_76;
+					PlayerPosition_EB398 = a1x->position_0x4C_76;
 					v8 = (a1x->word_0x1C_28 + v9 * v7) & 0x7FF;
-					MovePlayer_57FA0(&x_WORD_EB398ar, v8, 0, a1x->actSpeed_0x82_130);
-					x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
-					if (!sub_102D0(a1x, &x_WORD_EB398ar, 1) && !sub_102D0(a1x, &x_WORD_EB398ar, 4) && sub_1B830(&x_WORD_EB398ar) < 32)
+					MovePlayer_57FA0(&PlayerPosition_EB398, v8, 0, a1x->actSpeed_0x82_130);
+					PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
+					if (!sub_102D0(a1x, &PlayerPosition_EB398, 1) && !sub_102D0(a1x, &PlayerPosition_EB398, 4) && sub_1B830(&PlayerPosition_EB398) < 32)
 					{
 						v11 = 1;
 						break;
@@ -21201,7 +21200,7 @@ char sub_2AF10(type_entity_0x6E8E* a1x, char a2)//20bf10
 			a1x->struct_byte_0xc_12_15.byte[2] &= 0xFBu;
 		}
 		if (a2 && v10)
-			sub_57CF0(a1x, &x_WORD_EB398ar);
+			sub_57CF0(a1x, &PlayerPosition_EB398);
 		if (v12)
 		{
 			v5 = a1x->word_0x1C_28
@@ -21223,8 +21222,8 @@ char sub_2AF10(type_entity_0x6E8E* a1x, char a2)//20bf10
 	return v13;
 }
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (0002B1D0) --------------------------------------------------------
 void sub_2B1D0(type_entity_0x6E8E* a1x)//20c1d0
@@ -23417,20 +23416,20 @@ LABEL_8:
 		for (k = 0; k < 2048; k += 28)
 		{
 			v24 = (v39 << 8) - 768;
-			x_WORD_EB398ar = a1x->position_0x4C_76;
+			PlayerPosition_EB398 = a1x->position_0x4C_76;
 			if (v24 < 256)
 				v24 = 256;
 			if (v24 > 0x2000)
 				LOWORD(v24) = 0x2000;
-			MovePlayer_57FA0(&x_WORD_EB398ar, k, 0, v24);
-			v2x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 13);
+			MovePlayer_57FA0(&PlayerPosition_EB398, k, 0, v24);
+			v2x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 13);
 			if (v2x)
 			{
 				v2x->word_0x1C_28 = k;
 				v25 = ix;
 				v2x->maxSpeed_0x86_134 = 512;
-				x_WORD_EB398ar.z = 32 * mapHeightmap_11B4E0[v25];
-				/*LOBYTE(v2) = */sub_57CF0(v2x, &x_WORD_EB398ar);
+				PlayerPosition_EB398.z = 32 * mapHeightmap_11B4E0[v25];
+				/*LOBYTE(v2) = */sub_57CF0(v2x, &PlayerPosition_EB398);
 			}
 		}
 	}
@@ -23446,7 +23445,7 @@ LABEL_8:
 // DBF50: using guessed type void (/*__noreturn*/ *off_DBF50[2])();
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00031760) --------------------------------------------------------
 void sub_31760(type_entity_0x6E8E* a1x)//212760
@@ -23774,10 +23773,10 @@ void sub_31940(type_entity_0x6E8E* a1x)//212940
 				v17++;
 				v16x._axis_2d.y++;
 			}
-			x_WORD_EB398ar = a1x->position_0x4C_76;
-			x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
-			v1x = D41A0_0.byte_0x36E03 ? IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 91) : IfSubtypeCallAxisEvent_4A190(
-				&x_WORD_EB398ar, 10, 18);
+			PlayerPosition_EB398 = a1x->position_0x4C_76;
+			PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
+			v1x = D41A0_0.byte_0x36E03 ? IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 91) : IfSubtypeCallAxisEvent_4A190(
+				&PlayerPosition_EB398, 10, 18);
 			if (v1x)
 				v1x->id_0x1A_26 = a1x->id_0x1A_26;
 		}
@@ -23789,7 +23788,7 @@ void sub_31940(type_entity_0x6E8E* a1x)//212940
 // D41B6: using guessed type char x_BYTE_D41B6;
 // DBF50: using guessed type void (/*__noreturn*/ *off_DBF50[2])();
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00031E90) --------------------------------------------------------
 void sub_31E90(type_entity_0x6E8E* a1x)//212e90
@@ -23947,22 +23946,22 @@ void sub_32160(type_entity_0x6E8E* a1x)//213160
 		SetEntity04_57F10(a1x);
 		return;
 	}
-	x_WORD_EB398ar = a1x->position_0x4C_76;
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
 	v3 = a1x->actSpeed_0x82_130 - 4;
 	a1x->actSpeed_0x82_130 = v3;
 	if (v3 < 64)
 		a1x->actSpeed_0x82_130 = 64;
 	if (a1x->actSpeed_0x82_130 > 128)
 		a1x->actSpeed_0x82_130 = 128;
-	x_WORD_EB398ar.z += a1x->actSpeed_0x82_130;
+	PlayerPosition_EB398.z += a1x->actSpeed_0x82_130;
 	v4 = getTerrainAlt_10C40(&a1x->position_0x4C_76);
-	if (x_WORD_EB398ar.z < v4)
-		x_WORD_EB398ar.z = v4;
+	if (PlayerPosition_EB398.z < v4)
+		PlayerPosition_EB398.z = v4;
 	v5 = a1x->dword_0x10_16 + 1;
 	a1x->dword_0x10_16 = v5;
 	if (v5 < 16)
 	{
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->maxSpeed_0x86_134);
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->maxSpeed_0x86_134);
 		v6 = a1x->maxSpeed_0x86_134 - 52;
 		a1x->maxSpeed_0x86_134 = v6;
 		if (v6 < 30)
@@ -23982,10 +23981,10 @@ void sub_32160(type_entity_0x6E8E* a1x)//213160
 		if (v8 > 67)
 			a1x->word_0x5A_90 = v8 - 1;
 	}
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 }
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (000322A0) --------------------------------------------------------
 void sub_322A0(type_entity_0x6E8E* a1x)//2132a0
@@ -24005,22 +24004,22 @@ void sub_322A0(type_entity_0x6E8E* a1x)//2132a0
 		SetEntity04_57F10(a1x);
 		return;
 	}
-	x_WORD_EB398ar = a1x->position_0x4C_76;
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
 	//v3 = a1x->word_0x82_130 - 4;
 	a1x->actSpeed_0x82_130 -= 4;
 	if (a1x->actSpeed_0x82_130 < 64)
 		a1x->actSpeed_0x82_130 = 64;
 	if (a1x->actSpeed_0x82_130 > 128)
 		a1x->actSpeed_0x82_130 = 128;
-	x_WORD_EB398ar.z += a1x->actSpeed_0x82_130;
+	PlayerPosition_EB398.z += a1x->actSpeed_0x82_130;
 	v4 = getTerrainAlt_10C40(&a1x->position_0x4C_76);
-	if (x_WORD_EB398ar.z < v4)
-		x_WORD_EB398ar.z = v4;
+	if (PlayerPosition_EB398.z < v4)
+		PlayerPosition_EB398.z = v4;
 	//v5 = a1x->dword_0x10_16 + 1;
 	a1x->dword_0x10_16++;
 	if (a1x->dword_0x10_16 < 16)
 	{
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->maxSpeed_0x86_134);
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->maxSpeed_0x86_134);
 		//v6 = a1x->word_0x86_134 - 52;
 		a1x->maxSpeed_0x86_134 -= 52;
 		if (a1x->maxSpeed_0x86_134 < 30)
@@ -24040,10 +24039,10 @@ void sub_322A0(type_entity_0x6E8E* a1x)//2132a0
 		if (a1x->word_0x5A_90 > 9)
 			a1x->word_0x5A_90--;
 	}
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 }
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (000323E0) --------------------------------------------------------
 void AddParticleSmoke0A_3B_323E0(type_entity_0x6E8E* event)//2133e0
@@ -24153,28 +24152,28 @@ void sub_32600(type_entity_0x6E8E* a1x)//213600
 			a1x->word_0x9A_154x.y = -80;
 		if ((int16_t)a1x->word_0x9A_154x.y > 80)
 			a1x->word_0x9A_154x.y = 80;
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		//v4 = a1x->word_0x9A_154[1];
-		x_WORD_EB398ar.x = a1x->word_0x9A_154x.x + a1x->position_0x4C_76.x;
-		x_WORD_EB398ar.y = a1x->word_0x9A_154x.y + a1x->position_0x4C_76.y;
+		PlayerPosition_EB398.x = a1x->word_0x9A_154x.x + a1x->position_0x4C_76.x;
+		PlayerPosition_EB398.y = a1x->word_0x9A_154x.y + a1x->position_0x4C_76.y;
 		//v5 = *(x_WORD *)(a1 + 44);
-		x_WORD_EB398ar.z += a1x->word_0x2C_44;
+		PlayerPosition_EB398.z += a1x->word_0x2C_44;
 		a1x->word_0x2C_44 -= 28;
 		if (a1x->word_0x2C_44 < -384)
 			a1x->word_0x2C_44 = -384;
 		if (a1x->word_0x2C_44 > 256)
 			a1x->word_0x2C_44 = 256;
-		//v6 = sub_10C40_getTerrainAlt(x_WORD_EB398ar);
-		v7 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-		if (v7 > x_WORD_EB398ar.z)
+		//v6 = sub_10C40_getTerrainAlt(PlayerPosition_EB398);
+		v7 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+		if (v7 > PlayerPosition_EB398.z)
 		{
 			v8 = a1x->word_0x2C_44;
-			x_WORD_EB398ar.z = v7;
+			PlayerPosition_EB398.z = v7;
 			//a1x->word_0x2C_44 = -((v8 - (__CFSHL__(v8 >> 31, 2) + 4 * (v8 >> 31))) >> 2);
 			a1x->word_0x2C_44 = -((v8 - (my_sign32(v8) << 2) + my_sign32(v8)) >> 2);
 			if (sub_104D0_terrain_tile_is_water(&a1x->position_0x4C_76) == 1)
 			{
-				v9x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 5);
+				v9x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 5);
 				if (v9x)
 				{
 					v9x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -24183,9 +24182,9 @@ void sub_32600(type_entity_0x6E8E* a1x)//213600
 			}
 			else
 			{
-				if (!sub_10B70(&x_WORD_EB398ar, 10, 6))
+				if (!sub_10B70(&PlayerPosition_EB398, 10, 6))
 				{
-					v10x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 6);
+					v10x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 6);
 					if (v10x)
 					{
 						v11 = v10x->word_0x2A_42;
@@ -24200,15 +24199,15 @@ void sub_32600(type_entity_0x6E8E* a1x)//213600
 			}
 		}
 		a1x->dword_0x10_16++;
-		sub_57CF0(a1x, &x_WORD_EB398ar);
-		//LOWORD(v2) = x_WORD_EB398ar.z;
-		if (v7 == x_WORD_EB398ar.z)
+		sub_57CF0(a1x, &PlayerPosition_EB398);
+		//LOWORD(v2) = PlayerPosition_EB398.z;
+		if (v7 == PlayerPosition_EB398.z)
 		{
-			sub_58030(&a1x->position_0x4C_76, &x_WORD_EB398ar);
-			a1x->word_0x9A_154x.x += x_WORD_EB398ar.x;
+			sub_58030(&a1x->position_0x4C_76, &PlayerPosition_EB398);
+			a1x->word_0x9A_154x.x += PlayerPosition_EB398.x;
 			//v12 = (250 * a1x->word_0x9A_154x.x - (__CFSHL__(250 * a1x->word_0x9A_154x.x >> 31, 8) + (250 * a1x->word_0x9A_154x.x >> 31 << 8))) >> 8;
 			v12 = ((250 * (int16_t)a1x->word_0x9A_154x.x) - (my_sign32(250 * (int16_t)a1x->word_0x9A_154x.x) << 8) + my_sign32(250 * (int16_t)a1x->word_0x9A_154x.x)) >> 8;
-			a1x->word_0x9A_154x.y += x_WORD_EB398ar.y;
+			a1x->word_0x9A_154x.y += PlayerPosition_EB398.y;
 			//v13 = a1x->word_0x9A_154x.y;
 			a1x->word_0x9A_154x.x = v12;
 			//v2 = (250 * v13 - (__CFSHL__(250 * v13 >> 31, 8) + (250 * v13 >> 31 << 8))) >> 8;
@@ -24223,8 +24222,8 @@ void sub_32600(type_entity_0x6E8E* a1x)//213600
 	//return v2;
 }
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00032880) --------------------------------------------------------
 void sub_32880(type_entity_0x6E8E* a1x)//213880
@@ -24580,8 +24579,8 @@ void sub_331A0(type_entity_0x6E8E* a1x)//2141a0
 	int v6; // edi
 	type_entity_0x6E8E* v7x; // [esp+0h] [ebp-4h]
 
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	a1x->word_0x30_48 = x_WORD_EB398ar.z;
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	a1x->word_0x30_48 = PlayerPosition_EB398.z;
 	if (!(a1x->byte_0x3E_62 & 0xF))
 	{
 		a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
@@ -24591,27 +24590,27 @@ void sub_331A0(type_entity_0x6E8E* a1x)//2141a0
 	v1 = a1x->word_0x20_32 + 11 * a1x->word_0x2E_46;
 	HIBYTE(v1) &= 7u;
 	a1x->word_0x20_32 = v1;
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x20_32, 0, 32);
-	a1x->word_0x9A_154x = x_WORD_EB398ar;
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x20_32, 0, 32);
+	a1x->word_0x9A_154x = PlayerPosition_EB398;
 	v2 = a1x->word_0x1C_28 + 341;
 	HIBYTE(v2) &= 7u;
 	a1x->word_0x1C_28 = v2;
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, 120);
-	x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, 120);
+	PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 	v7x = Entities_EA3E4[a1x->word_0x34_52];
 	resultx = a1x;
 	while (v7x > Entities_EA3E4[0])
 	{
-		x_WORD_EB398ar = v7x->position_0x4C_76;
+		PlayerPosition_EB398 = v7x->position_0x4C_76;
 		v4 = &resultx->position_0x4C_76;
 		v7x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&v7x->position_0x4C_76, &resultx->position_0x4C_76);
 		v5 = Maths::EuclideanDistXYZ_58490(v4, &v7x->position_0x4C_76);
 		v6 = 72 - 4 * (12 - v7x->word_0x2C_44);
 		if (v5 > v6)
-			MovePlayer_57FA0(&x_WORD_EB398ar, v7x->word_0x1C_28, 0, v5 - v6);
-		x_WORD_EB398ar.z = v7x->word_0x36_54 + a1x->position_0x4C_76.z;
-		sub_57CF0(v7x, &x_WORD_EB398ar);
+			MovePlayer_57FA0(&PlayerPosition_EB398, v7x->word_0x1C_28, 0, v5 - v6);
+		PlayerPosition_EB398.z = v7x->word_0x36_54 + a1x->position_0x4C_76.z;
+		sub_57CF0(v7x, &PlayerPosition_EB398);
 		resultx = v7x;
 		v7x = Entities_EA3E4[v7x->word_0x34_52];
 	}
@@ -24619,7 +24618,7 @@ void sub_331A0(type_entity_0x6E8E* a1x)//2141a0
 }
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00033340) --------------------------------------------------------
 void sub_33340(type_entity_0x6E8E* a1x)//214340
@@ -24701,7 +24700,7 @@ void sub_33340(type_entity_0x6E8E* a1x)//214340
 					v33 = v5;
 					if (v5 >= 3211264)
 					{
-						x_WORD_EB398ar = ix->position_0x4C_76;
+						PlayerPosition_EB398 = ix->position_0x4C_76;
 						if (ix->struct_byte_0xc_12_15.byte[3] & 0x10)
 						{
 							v17 = ix->struct_byte_0xc_12_15.byte[1] | 8;
@@ -24724,12 +24723,12 @@ void sub_33340(type_entity_0x6E8E* a1x)//214340
 						{
 							ix->struct_byte_0xc_12_15.byte[1] |= 8u;
 							v30 = 128;
-							x_WORD_EB398ar = ix->position_0x4C_76;
+							PlayerPosition_EB398 = ix->position_0x4C_76;
 							v15 = ix->word_0x1C_28;
 							v39 = 1;
 							v16 = v38 + v15;
 							v16 &= 0x7ffu;
-							x_WORD_EB398ar.z += 114;
+							PlayerPosition_EB398.z += 114;
 							ix->word_0x1C_28 = v16;
 						}
 						else
@@ -24746,7 +24745,7 @@ void sub_33340(type_entity_0x6E8E* a1x)//214340
 							{
 								v14 = v6 + 591;
 								v14 &= 0x7ffu;
-								x_WORD_EB398ar = ix->position_0x4C_76;
+								PlayerPosition_EB398 = ix->position_0x4C_76;
 								ix->word_0x30_48 = v14;
 								ix->word_0x1C_28 = v14;
 								v30 = 96;
@@ -24754,12 +24753,12 @@ void sub_33340(type_entity_0x6E8E* a1x)//214340
 							else
 							{
 								ix->struct_byte_0xc_12_15.byte[1] |= 8u;
-								x_WORD_EB398ar = a1x->word_0x9A_154x;
+								PlayerPosition_EB398 = a1x->word_0x9A_154x;
 								v9 = ix->position_0x4C_76.z - a1x->word_0x30_48 + 57;
-								v10 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-								x_WORD_EB398ar.z = v9 + v10;
-								if (x_WORD_EB398ar.z < v10)
-									x_WORD_EB398ar.z = v10;
+								v10 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+								PlayerPosition_EB398.z = v9 + v10;
+								if (PlayerPosition_EB398.z < v10)
+									PlayerPosition_EB398.z = v10;
 								v11 = v38 + ix->word_0x1C_28;
 								v11 &= 0x7ffu;
 								v12 = ix->rand_0x14_20;
@@ -24774,21 +24773,21 @@ void sub_33340(type_entity_0x6E8E* a1x)//214340
 							}
 						}
 					}
-					MovePlayer_57FA0(&x_WORD_EB398ar, ix->word_0x30_48, 0, v30);
+					MovePlayer_57FA0(&PlayerPosition_EB398, ix->word_0x30_48, 0, v30);
 					if (isCaveLevel_D41B6)
 					{
 						v19 = ix->array_0x52_82.fov;
-						v20 = (signed __int16)sub_10C60(&x_WORD_EB398ar) - v19;
-						if (x_WORD_EB398ar.z > v20)
-							x_WORD_EB398ar.z = v20;
+						v20 = (signed __int16)sub_10C60(&PlayerPosition_EB398) - v19;
+						if (PlayerPosition_EB398.z > v20)
+							PlayerPosition_EB398.z = v20;
 					}
 					//v21 = ix->dword_0xA0_160;
 					v22 = v37;
 					v23 = ix->dword_0xA0_160x->word_160_0xa_10;
 					v24 = ix->dword_0xA0_160x->word_160_0xc_12;
-					v25 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-					sub_580E0(&x_WORD_EB398ar, v25, v24, v23, v22);
-					sub_57CF0(ix, &x_WORD_EB398ar);
+					v25 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+					sub_580E0(&PlayerPosition_EB398, v25, v24, v23, v22);
+					sub_57CF0(ix, &PlayerPosition_EB398);
 					if (v39)
 					{
 						v26 = a1x->word_0x2A_42;
@@ -24806,7 +24805,7 @@ void sub_33340(type_entity_0x6E8E* a1x)//214340
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00033710) --------------------------------------------------------
 void sub_33710(type_entity_0x6E8E* a1x)//214710
@@ -25078,14 +25077,14 @@ void sub_33B20(type_entity_0x6E8E* a1x)//214b20
 		v5 = v9x->word_0x22_34 + v9x->word_0x1E_30;
 		HIBYTE(v5) &= 7u;
 		v9x->word_0x1E_30 = v5;
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		v6 = v9x->word_0x1E_30 + a1x->word_0x1E_30;
 		HIBYTE(v6) &= 7u;
 		v7 = v6;
 		v8 = v9x->word_0x1C_28 + a1x->word_0x1C_28;
 		HIBYTE(v8) &= 7u;
-		MovePlayer_57FA0(&x_WORD_EB398ar, v8, v7, a1x->word_0x2C_44);
-		sub_57CF0(v9x, &x_WORD_EB398ar);
+		MovePlayer_57FA0(&PlayerPosition_EB398, v8, v7, a1x->word_0x2C_44);
+		sub_57CF0(v9x, &PlayerPosition_EB398);
 	}
 	//return i;
 }
@@ -25132,10 +25131,10 @@ void sub_33C70(type_entity_0x6E8E* a1x)//214c70
 	if (v1)
 	{
 		v2x = Entities_EA3E4[v1];
-		x_WORD_EB398ar = v2x->position_0x4C_76;
+		PlayerPosition_EB398 = v2x->position_0x4C_76;
 		//v3 = v2;
-		x_WORD_EB398ar.z += v2x->array_0x52_82.yaw;
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		PlayerPosition_EB398.z += v2x->array_0x52_82.yaw;
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		if (v2x->life_0x8 < 0 || v2x->struct_byte_0xc_12_15.byte[1] & 4)
 			v9 = 1;
 	}
@@ -25159,7 +25158,7 @@ void sub_33C70(type_entity_0x6E8E* a1x)//214c70
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00033D40) --------------------------------------------------------
 void sub_33D40(type_entity_0x6E8E* a1x)//214d40
@@ -26229,22 +26228,22 @@ void sub_35530(type_entity_0x6E8E* a1x)//216530
 		}
 		else
 		{
-			x_WORD_EB398ar = resultx->position_0x4C_76;
-			MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+			PlayerPosition_EB398 = resultx->position_0x4C_76;
+			MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
 			v2 = a1x->word_0x1C_28 + 45;
 			HIBYTE(v2) &= 7u;
 			a1x->word_0x1C_28 = v2;
-			v3 = getTerrainAlt_10C40(&x_WORD_EB398ar);
+			v3 = getTerrainAlt_10C40(&PlayerPosition_EB398);
 			HIBYTE(v3)++;
-			x_WORD_EB398ar.z = v3;
-			/*result = */sub_57CF0(a1x, &x_WORD_EB398ar);
+			PlayerPosition_EB398.z = v3;
+			/*result = */sub_57CF0(a1x, &PlayerPosition_EB398);
 		}
 	}
 	//return result;
 }
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00035600) --------------------------------------------------------
 void sub_35600(type_entity_0x6E8E* a1x)//216600
@@ -26312,10 +26311,10 @@ void sub_35640(type_entity_0x6E8E* a1x)//216640
 				v5 = a1x->word_0x1C_28;
 				HIBYTE(v5) = (HIBYTE(v5) + 4) & 7;
 				a1x->word_0x1C_28 = v5;
-				x_WORD_EB398ar = a1x->position_0x4C_76;
+				PlayerPosition_EB398 = a1x->position_0x4C_76;
 				v6 = a1x->byte_0x44_68;
 				v7 = a1x->byte_0x43_67;
-				x_WORD_EB398ar.z += a1x->array_0x52_82.yaw;
+				PlayerPosition_EB398.z += a1x->array_0x52_82.yaw;
 				v8x = IfSubtypeCallAxisEvent_4A190(&a1x->position_0x4C_76, v7, v6);
 				v9x = v8x;
 				if (v8x)
@@ -26342,7 +26341,7 @@ void sub_35640(type_entity_0x6E8E* a1x)//216640
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (000357C0) --------------------------------------------------------
 void sub_357C0(type_entity_0x6E8E* a1x)//2167c0
@@ -26385,9 +26384,9 @@ void sub_357C0(type_entity_0x6E8E* a1x)//2167c0
 			v8 = 0;
 			while (v1 > 0)
 			{
-				x_WORD_EB398ar = a1x->position_0x4C_76;
-				MovePlayer_57FA0(&x_WORD_EB398ar, v8, 0, 512);
-				v5x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 9);
+				PlayerPosition_EB398 = a1x->position_0x4C_76;
+				MovePlayer_57FA0(&PlayerPosition_EB398, v8, 0, 512);
+				v5x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 5, 9);
 				if (v5x)
 				{
 					v5x->mana_0x90_144 = (signed __int16)v7 % (signed __int16)v10;
@@ -26496,12 +26495,12 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 			a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &Entities_EA3E4[a1x->str_0x5E_94.word_0x7A_122]->position_0x4C_76);
 			//v6 = a1x->str_0x5E_94.word_0x76_118;
 			//v7 = a1x->word_0x1C_28;
-			x_WORD_EB398ar.x = 0;
-			x_WORD_EB398ar.y = 0;
-			x_WORD_EB398ar.z = 0;
-			MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->str_0x5E_94.word_0x76_118);
-			a1x->word_0x9A_154x.x = x_WORD_EB398ar.x;
-			a1x->word_0x9A_154x.y = x_WORD_EB398ar.y;
+			PlayerPosition_EB398.x = 0;
+			PlayerPosition_EB398.y = 0;
+			PlayerPosition_EB398.z = 0;
+			MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->str_0x5E_94.word_0x76_118);
+			a1x->word_0x9A_154x.x = PlayerPosition_EB398.x;
+			a1x->word_0x9A_154x.y = PlayerPosition_EB398.y;
 			a1x->str_0x5E_94.word_0x7A_122 = 0;
 		}
 		if (a1x->struct_byte_0xc_12_15.byte[0] & 0x40)
@@ -26535,30 +26534,30 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 				{
 					if (v11 >= 16)
 					{
-						x_WORD_EB398ar = a1x->position_0x4C_76;
-						MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, 16);
+						PlayerPosition_EB398 = a1x->position_0x4C_76;
+						MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, 16);
 					}
 					else
 					{
-						x_WORD_EB398ar = a1x->position_0x4C_76;
+						PlayerPosition_EB398 = a1x->position_0x4C_76;
 						v12x = Entities_EA3E4[a1x->word_0x96_150];
-						x_WORD_EB398ar.x = v12x->position_0x4C_76.x;
+						PlayerPosition_EB398.x = v12x->position_0x4C_76.x;
 						//v13 = v12x->position_0x4C_76.z;
-						x_WORD_EB398ar.y = v12x->position_0x4C_76.y;
-						if (x_WORD_EB398ar.z >= v12x->position_0x4C_76.z)
+						PlayerPosition_EB398.y = v12x->position_0x4C_76.y;
+						if (PlayerPosition_EB398.z >= v12x->position_0x4C_76.z)
 						{
-							if (x_WORD_EB398ar.z > v12x->position_0x4C_76.z + 512)
-								x_WORD_EB398ar.z -= v33;
+							if (PlayerPosition_EB398.z > v12x->position_0x4C_76.z + 512)
+								PlayerPosition_EB398.z -= v33;
 						}
 						else
 						{
-							x_WORD_EB398ar.z += v33;
+							PlayerPosition_EB398.z += v33;
 						}
 					}
-					v14 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-					if (v14 > x_WORD_EB398ar.z)
-						x_WORD_EB398ar.z = v14;
-					sub_57CF0(a1x, &x_WORD_EB398ar);
+					v14 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+					if (v14 > PlayerPosition_EB398.z)
+						PlayerPosition_EB398.z = v14;
+					sub_57CF0(a1x, &PlayerPosition_EB398);
 				}
 				else
 				{
@@ -26576,20 +26575,20 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 				a1x->word_0x9A_154x.y = -64;
 			if ((int16_t)a1x->word_0x9A_154x.y > 64)
 				a1x->word_0x9A_154x.y = 64;
-			x_WORD_EB398ar = a1x->position_0x4C_76;
+			PlayerPosition_EB398 = a1x->position_0x4C_76;
 			//v15 = a1x->word_0x9A_154x.y;
-			x_WORD_EB398ar.x = (int16_t)a1x->word_0x9A_154x.x + a1x->position_0x4C_76.x;
-			x_WORD_EB398ar.y = (int16_t)a1x->word_0x9A_154x.y + a1x->position_0x4C_76.y;
+			PlayerPosition_EB398.x = (int16_t)a1x->word_0x9A_154x.x + a1x->position_0x4C_76.x;
+			PlayerPosition_EB398.y = (int16_t)a1x->word_0x9A_154x.y + a1x->position_0x4C_76.y;
 			//v16 = a1x->word_0x2C_44;
-			x_WORD_EB398ar.z += a1x->word_0x2C_44;
+			PlayerPosition_EB398.z += a1x->word_0x2C_44;
 			a1x->word_0x2C_44 -= 16;
 			if (a1x->word_0x2C_44 < -128)
 				a1x->word_0x2C_44 = -128;
-			if (isCaveLevel_D41B6 && sub_11E70(a1x, &x_WORD_EB398ar))
+			if (isCaveLevel_D41B6 && sub_11E70(a1x, &PlayerPosition_EB398))
 			{
 				if (v35)
 				{
-					x_WORD_EB398ar = a1x->position_0x4C_76;
+					PlayerPosition_EB398 = a1x->position_0x4C_76;
 				}
 				else
 				{
@@ -26600,11 +26599,11 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 					v30 = 1;
 					while (v32 <= 1024)
 					{
-						x_WORD_EB398ar = a1x->position_0x4C_76;
+						PlayerPosition_EB398 = a1x->position_0x4C_76;
 						v31 = (v30 * v32 + a1x->word_0x1C_28 + 512) & 0x7FF;
-						MovePlayer_57FA0(&x_WORD_EB398ar, v31, 0, a1x->actSpeed_0x82_130);
-						x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
-						if (!sub_11E70(a1x, &x_WORD_EB398ar))
+						MovePlayer_57FA0(&PlayerPosition_EB398, v31, 0, a1x->actSpeed_0x82_130);
+						PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
+						if (!sub_11E70(a1x, &PlayerPosition_EB398))
 						{
 							v34 = 1;
 							break;
@@ -26628,14 +26627,14 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 						//v20 = a1x->word_0x9A_154x.x;
 						a1x->word_0x9A_154x.y = 64;
 						//v21 = a1x->word_0x9A_154x.y;
-						x_WORD_EB398ar.x = (int16_t)a1x->word_0x9A_154x.x + a1x->position_0x4C_76.x;
-						x_WORD_EB398ar.y = (int16_t)a1x->word_0x9A_154x.y + a1x->position_0x4C_76.y;
+						PlayerPosition_EB398.x = (int16_t)a1x->word_0x9A_154x.x + a1x->position_0x4C_76.x;
+						PlayerPosition_EB398.y = (int16_t)a1x->word_0x9A_154x.y + a1x->position_0x4C_76.y;
 					}
 				}
 				a1x->word_0x2C_44 = -128;
 			}
-			v22 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-			if (v22 > (int16_t)x_WORD_EB398ar.z)
+			v22 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+			if (v22 > (int16_t)PlayerPosition_EB398.z)
 			{
 				int cftemp = 0;
 				if ((a1x->word_0x2C_44 >> 30) & 1)cftemp = 1;
@@ -26646,32 +26645,32 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 				a1x->word_0x2C_44 = v23;
 				if ((signed __int16)v23 <= 16)
 					a1x->word_0x2C_44 = 0;
-				x_WORD_EB398ar.z = v22;
+				PlayerPosition_EB398.z = v22;
 			}
 			if (isCaveLevel_D41B6)
 			{
-				v24 = sub_10C60(&x_WORD_EB398ar) - a1x->array_0x52_82.fov;
-				if (v24 < (int16_t)x_WORD_EB398ar.z)
+				v24 = sub_10C60(&PlayerPosition_EB398) - a1x->array_0x52_82.fov;
+				if (v24 < (int16_t)PlayerPosition_EB398.z)
 				{
 					a1x->word_0x2C_44 = -abs(a1x->word_0x2C_44);
-					x_WORD_EB398ar.z = v24;
+					PlayerPosition_EB398.z = v24;
 				}
 			}
-			sub_57CF0(a1x, &x_WORD_EB398ar);
-			if (v22 == x_WORD_EB398ar.z)
+			sub_57CF0(a1x, &PlayerPosition_EB398);
+			if (v22 == PlayerPosition_EB398.z)
 			{
 				v25x = sub_10A50(a1x);
 				if (v25x && !(a1x->struct_byte_0xc_12_15.byte[1] & 0x20))
 					sub_36D50(a1x, v25x);
-				sub_58030(&a1x->position_0x4C_76, &x_WORD_EB398ar);
-				a1x->word_0x9A_154x.x += x_WORD_EB398ar.x;
+				sub_58030(&a1x->position_0x4C_76, &PlayerPosition_EB398);
+				a1x->word_0x9A_154x.x += PlayerPosition_EB398.x;
 				int cftemp = 0;
 				if ((250 * (int16_t)a1x->word_0x9A_154x.x >> 30) & 1)cftemp = 1;
 				v26 = (((250 * (int16_t)a1x->word_0x9A_154x.x - ((250 * (int16_t)a1x->word_0x9A_154x.x >> 31) << 8)) - cftemp) >> 8);
 				/*v26 = (250 * (int16_t)a1x->word_0x9A_154x.x
 					- (__CFSHL__(250 * (int16_t)a1x->word_0x9A_154x.x >> 31, 8)
 						+ (250 * (int16_t)a1x->word_0x9A_154x.x >> 31 << 8))) >> 8;*/
-				a1x->word_0x9A_154x.y += x_WORD_EB398ar.y;
+				a1x->word_0x9A_154x.y += PlayerPosition_EB398.y;
 				//v27 = (int16_t)a1x->word_0x9A_154x.y;
 				a1x->word_0x9A_154x.x = v26;
 				cftemp = 0;
@@ -26708,8 +26707,8 @@ void TransformArcherToMana_35940(type_entity_0x6E8E* a1x)//216940 //move mana sp
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 {
@@ -26770,12 +26769,12 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 			a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &Entities_EA3E4[v2]->position_0x4C_76);
 			//v3 = a1x->str_0x5E_94.word_0x76_118;
 			//v4 = a1x->word_0x1C_28;
-			x_WORD_EB398ar.x = 0;
-			x_WORD_EB398ar.y = 0;
-			x_WORD_EB398ar.z = 0;
-			MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->str_0x5E_94.word_0x76_118);
-			a1x->word_0x9A_154x.x = x_WORD_EB398ar.x;
-			a1x->word_0x9A_154x.y = x_WORD_EB398ar.y;
+			PlayerPosition_EB398.x = 0;
+			PlayerPosition_EB398.y = 0;
+			PlayerPosition_EB398.z = 0;
+			MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->str_0x5E_94.word_0x76_118);
+			a1x->word_0x9A_154x.x = PlayerPosition_EB398.x;
+			a1x->word_0x9A_154x.y = PlayerPosition_EB398.y;
 			a1x->str_0x5E_94.word_0x7A_122 = 0;
 		}
 		if (a1x->struct_byte_0xc_12_15.byte[0] & 0x40)
@@ -26811,37 +26810,37 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 				{
 					if (v9 >= 16)
 					{
-						x_WORD_EB398ar = a1x->position_0x4C_76;
+						PlayerPosition_EB398 = a1x->position_0x4C_76;
 						//*(_DWORD*)& word_EB398 = *(_DWORD*)(a1 + 76);
 						//*(&word_EB398 + 2) = *(_WORD*)(a1 + 80);
-						MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, 16);
+						MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, 16);
 					}
 					else
 					{
-						x_WORD_EB398ar = a1x->position_0x4C_76;
+						PlayerPosition_EB398 = a1x->position_0x4C_76;
 						//*(_DWORD*)& word_EB398 = *(_DWORD*)(a1 + 76);
 						//*(&word_EB398 + 2) = *(_WORD*)(a1 + 80);
 						v10x = Entities_EA3E4[a1x->word_0x96_150];
 						//word_EB398 = v10[38];
 						//v11 = v10[40];
 						//word_EB39A = v10[39];
-						x_WORD_EB398ar.x = v10x->position_0x4C_76.x;
-						x_WORD_EB398ar.y = v10x->position_0x4C_76.y;
+						PlayerPosition_EB398.x = v10x->position_0x4C_76.x;
+						PlayerPosition_EB398.y = v10x->position_0x4C_76.y;
 						v11 = v10x->position_0x4C_76.z;
-						if (x_WORD_EB398ar.z >= v11)
+						if (PlayerPosition_EB398.z >= v11)
 						{
-							if (x_WORD_EB398ar.z > v11 + 512)
-								x_WORD_EB398ar.z -= v30;
+							if (PlayerPosition_EB398.z > v11 + 512)
+								PlayerPosition_EB398.z -= v30;
 						}
 						else
 						{
-							x_WORD_EB398ar.z += v30;
+							PlayerPosition_EB398.z += v30;
 						}
 					}
-					v12 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-					if (v12 > x_WORD_EB398ar.z)
-						x_WORD_EB398ar.z = v12;
-					sub_57CF0(a1x, &x_WORD_EB398ar);
+					v12 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+					if (v12 > PlayerPosition_EB398.z)
+						PlayerPosition_EB398.z = v12;
+					sub_57CF0(a1x, &PlayerPosition_EB398);
 				}
 				else
 				{
@@ -26865,32 +26864,32 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 				}
 				//*(_DWORD*)& word_EB398 = *(_DWORD*)(a1 + 76);
 				//*(&word_EB398 + 2) = *(_WORD*)(a1 + 80);
-				x_WORD_EB398ar = a1x->position_0x4C_76;
-				MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+				PlayerPosition_EB398 = a1x->position_0x4C_76;
+				MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
 				v14 = a1x->word_0x2C_44 - 16;
 				a1x->word_0x2C_44 = v14;
 				if (v14 < -128)
 					a1x->word_0x2C_44 = -128;
-				x_WORD_EB398ar.z += a1x->word_0x2C_44;
-				if (isCaveLevel_D41B6 && (unsigned __int8)sub_11E70(a1x, &x_WORD_EB398ar))
+				PlayerPosition_EB398.z += a1x->word_0x2C_44;
+				if (isCaveLevel_D41B6 && (unsigned __int8)sub_11E70(a1x, &PlayerPosition_EB398))
 				{
 					//*(_DWORD*)& word_EB398 = *(_DWORD*)(a1 + 76);
 					//*(&word_EB398 + 2) = *(_WORD*)(a1 + 80);
-					x_WORD_EB398ar = a1x->position_0x4C_76;
+					PlayerPosition_EB398 = a1x->position_0x4C_76;
 					a1x->actSpeed_0x82_130 = 0;
 					a1x->word_0x2C_44 = -128;
 				}
 				else
 				{
-					sub_57CF0(a1x, &x_WORD_EB398ar);
+					sub_57CF0(a1x, &PlayerPosition_EB398);
 				}
-				v15 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-				if (v15 <= (int16_t)x_WORD_EB398ar.z)
+				v15 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+				if (v15 <= (int16_t)PlayerPosition_EB398.z)
 				{
 					if (isCaveLevel_D41B6)
 					{
-						v17 = sub_10C60(&x_WORD_EB398ar) - a1x->array_0x52_82.fov;
-						if (v17 < x_WORD_EB398ar.z)
+						v17 = sub_10C60(&PlayerPosition_EB398) - a1x->array_0x52_82.fov;
+						if (v17 < PlayerPosition_EB398.z)
 						{
 							a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 							v18 = (a1x->rand_0x14_20 & 3) - 2;
@@ -26898,7 +26897,7 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 							if (!(_WORD)v18)
 								a1x->actSpeed_0x82_130 = 1;
 							a1x->word_0x2C_44 = -abs(a1x->word_0x2C_44);
-							x_WORD_EB398ar.z = v17;
+							PlayerPosition_EB398.z = v17;
 						}
 					}
 				}
@@ -26931,22 +26930,22 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 					a1x->word_0x9A_154x.y = 64;
 				//*(_DWORD*)& word_EB398 = *(_DWORD*)(a1 + 76);
 				//*(&word_EB398 + 2) = *(_WORD*)(a1 + 80);
-				x_WORD_EB398ar = a1x->position_0x4C_76;
+				PlayerPosition_EB398 = a1x->position_0x4C_76;
 				//v19 = a1x->word_0x9A_154x.y;
-				x_WORD_EB398ar.x = a1x->word_0x9A_154x.x + a1x->position_0x4C_76.x;
-				x_WORD_EB398ar.y = a1x->word_0x9A_154x.y + a1x->position_0x4C_76.y;
+				PlayerPosition_EB398.x = a1x->word_0x9A_154x.x + a1x->position_0x4C_76.x;
+				PlayerPosition_EB398.y = a1x->word_0x9A_154x.y + a1x->position_0x4C_76.y;
 				v20 = a1x->word_0x2C_44;
-				x_WORD_EB398ar.z += v20;
+				PlayerPosition_EB398.z += v20;
 				a1x->word_0x2C_44 = v20 - 16;
 				if ((int16_t)(v20 - 16) < -128)
 					a1x->word_0x2C_44 = -128;
-				if (isCaveLevel_D41B6 && (unsigned __int8)sub_11E70(a1x, &x_WORD_EB398ar))
+				if (isCaveLevel_D41B6 && (unsigned __int8)sub_11E70(a1x, &PlayerPosition_EB398))
 				{
 					if (v31)
 					{
 						//*(_DWORD*)& word_EB398 = *(_DWORD*)(a1 + 76);
 						//*(&word_EB398 + 2) = *(_WORD*)(a1 + 80);
-						x_WORD_EB398ar = a1x->position_0x4C_76;
+						PlayerPosition_EB398 = a1x->position_0x4C_76;
 					}
 					else
 					{
@@ -26955,13 +26954,13 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 						v22 = a1x->word_0x9A_154x.x;
 						a1x->word_0x9A_154x.y = 64;
 						v23 = a1x->word_0x9A_154x.y;
-						x_WORD_EB398ar.x = v22 + v21;
-						x_WORD_EB398ar.y = v23 + a1x->position_0x4C_76.y;
+						PlayerPosition_EB398.x = v22 + v21;
+						PlayerPosition_EB398.y = v23 + a1x->position_0x4C_76.y;
 					}
 					a1x->word_0x2C_44 = -128;
 				}
-				v24 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-				if (v24 > (int16_t)x_WORD_EB398ar.z)
+				v24 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+				if (v24 > (int16_t)PlayerPosition_EB398.z)
 				{
 					/*v25 = -((signed int)(a1x->word_0x2C_44
 						- (__CFSHL__(a1x->word_0x2C_44 >> 32, 2)
@@ -26970,19 +26969,19 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 					a1x->word_0x2C_44 = v25;
 					if ((signed __int16)v25 <= 16)
 						a1x->word_0x2C_44 = 0;
-					x_WORD_EB398ar.z = v24;
+					PlayerPosition_EB398.z = v24;
 				}
 				if (isCaveLevel_D41B6)
 				{
-					v24 = sub_10C60(&x_WORD_EB398ar) - a1x->array_0x52_82.fov;
-					if (v24 < x_WORD_EB398ar.z)
+					v24 = sub_10C60(&PlayerPosition_EB398) - a1x->array_0x52_82.fov;
+					if (v24 < PlayerPosition_EB398.z)
 					{
 						a1x->word_0x2C_44 = -abs(a1x->word_0x2C_44);
-						x_WORD_EB398ar.z = v24;
+						PlayerPosition_EB398.z = v24;
 					}
 				}
-				sub_57CF0(a1x, &x_WORD_EB398ar);
-				if (v24 == x_WORD_EB398ar.z)
+				sub_57CF0(a1x, &PlayerPosition_EB398);
+				if (v24 == PlayerPosition_EB398.z)
 				{
 					v27x = sub_10A50(a1x);
 					if (v27x)
@@ -26990,13 +26989,13 @@ void sub_35FB0(type_entity_0x6E8E* a1x)//216FB0
 						sub_36F30(a1x, v27x);
 						sub_36920(a1x);
 					}
-					sub_58030(&a1x->position_0x4C_76, &x_WORD_EB398ar);
-					a1x->word_0x9A_154x.x += x_WORD_EB398ar.x;
+					sub_58030(&a1x->position_0x4C_76, &PlayerPosition_EB398);
+					a1x->word_0x9A_154x.x += PlayerPosition_EB398.x;
 					/*v28 = (250 * a1x->word_0x9A_154x.x
 						- (__CFSHL__(250 * a1x->word_0x9A_154x.x >> 31, 8)
 							+ (250 * a1x->word_0x9A_154x.x >> 31 << 8))) >> 8;*/
 					v28 = ((250 * (int16_t)a1x->word_0x9A_154x.x) - (my_sign32(250 * (int16_t)a1x->word_0x9A_154x.x) * 256) + my_sign32(250 * (int16_t)a1x->word_0x9A_154x.x)) >> 8;
-					a1x->word_0x9A_154x.y += x_WORD_EB398ar.y;
+					a1x->word_0x9A_154x.y += PlayerPosition_EB398.y;
 					v29 = a1x->word_0x9A_154x.y;
 					a1x->word_0x9A_154x.x = v28;
 					//a1x->word_0x9A_154x.y = (250 * v29 - (__CFSHL__(250 * v29 >> 31, 8) + (250 * v29 >> 31 << 8))) >> 8;
@@ -27100,8 +27099,8 @@ void sub_36850(type_entity_0x6E8E* a1x)//217850
 	type_entity_0x6E8E* v2x; // ebx
 	type_entity_0x6E8E* v3x; // esi
 
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	v1x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 9, 9);
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	v1x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 9, 9);
 	v2x = v1x;
 	if (v1x)
 	{
@@ -28351,7 +28350,7 @@ type_entity_0x6E8E* sub_38270(type_entity_0x6E8E* a1x)//219270
 	{
 	case 0u:
 	case 1u:
-		resultx = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 4);
+		resultx = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 5, 4);
 		v1x = resultx;
 		if (!resultx)
 			goto LABEL_10;
@@ -28359,7 +28358,7 @@ type_entity_0x6E8E* sub_38270(type_entity_0x6E8E* a1x)//219270
 		break;
 	case 2u:
 	case 3u:
-		resultx = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 14);
+		resultx = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 5, 14);
 		v1x = resultx;
 		if (!resultx)
 			goto LABEL_10;
@@ -28370,7 +28369,7 @@ type_entity_0x6E8E* sub_38270(type_entity_0x6E8E* a1x)//219270
 	case 6u:
 	case 7u:
 	case 8u:
-		resultx = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 13);
+		resultx = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 5, 13);
 		v1x = resultx;
 		if (!resultx)
 			goto LABEL_10;
@@ -28379,7 +28378,7 @@ type_entity_0x6E8E* sub_38270(type_entity_0x6E8E* a1x)//219270
 	case 9u:
 	case 0xAu:
 	case 0xBu:
-		v3x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 12);
+		v3x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 5, 12);
 		v1x = v3x;
 		if (v3x)
 			v3x->state_0x45_69 = 97;
@@ -28435,9 +28434,9 @@ int AddHouse0A_2D_38330(type_entity_0x6E8E* event)//219330
 			event->dword_0x10_16 = v2 - 1;
 			if (str_D93C0_bldgprmbuffer[v3].byte_2 & 1)
 			{
-				x_WORD_EB398ar = event->position_0x4C_76;
-				x_WORD_EB398ar.x += event->array_0x52_82.pitch;
-				v4x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 4);
+				PlayerPosition_EB398 = event->position_0x4C_76;
+				PlayerPosition_EB398.x += event->array_0x52_82.pitch;
+				v4x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 5, 4);
 				if (v4x)
 				{
 					v4x->state_0x45_69 = 33;
@@ -28491,8 +28490,8 @@ int AddHouse0A_2D_38330(type_entity_0x6E8E* event)//219330
 					- (event->minSpeed_0x84_132 >> 4)
 					- 2)
 				{
-					x_WORD_EB398ar = event->position_0x4C_76;
-					x_WORD_EB398ar.x += event->array_0x52_82.pitch;
+					PlayerPosition_EB398 = event->position_0x4C_76;
+					PlayerPosition_EB398.x += event->array_0x52_82.pitch;
 					sub_38270(event);
 				}
 			}
@@ -28564,12 +28563,12 @@ void sub_385C0_remove_castle_stage(type_entity_0x6E8E* a1x)//2195c0 //remove cas
 			{
 				if (v3[1] != 0xff || v3[0] != 0xff)
 				{
-					x_WORD_EB398ar.x = v26x._axis_2d.x << 8;
-					x_WORD_EB398ar.y = v26x._axis_2d.y << 8;
+					PlayerPosition_EB398.x = v26x._axis_2d.x << 8;
+					PlayerPosition_EB398.y = v26x._axis_2d.y << 8;
 					v20++;
-					x_WORD_EB398ar.z = 32 * v25;
+					PlayerPosition_EB398.z = 32 * v25;
 					if (!(v20 & 7))
-						x_WORD_EB398ar.z = 32 * (v25 - 10);
+						PlayerPosition_EB398.z = 32 * (v25 - 10);
 					v4 = a1x->dword_0x10_16;
 					if (v4 > 0)
 					{
@@ -28585,14 +28584,14 @@ void sub_385C0_remove_castle_stage(type_entity_0x6E8E* a1x)//2195c0 //remove cas
 								}
 								else
 								{
-									v6x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 4);
+									v6x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 5, 4);
 									if (v6x)
 										v6x->state_0x45_69 = 33;
 								}
 							}
 							else
 							{
-								v6x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 5, 12);
+								v6x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 5, 12);
 								if (v6x)
 									v6x->state_0x45_69 = 97;
 							}
@@ -29565,7 +29564,7 @@ void sub_39B60(type_entity_0x6E8E* a1x)//21ab60
 					sub_3A200(a1x, v10x);
 					goto LABEL_25;
 				}
-				x_WORD_EB398ar = v10x->position_0x4C_76;
+				PlayerPosition_EB398 = v10x->position_0x4C_76;
 				v6 = ((3328 - v3) << 8) / 3328 << 7 >> 8;
 				if (v6 < 4)
 					v6 = 4;
@@ -29573,17 +29572,17 @@ void sub_39B60(type_entity_0x6E8E* a1x)//21ab60
 					v6 = 128;
 				if (v6 > v3)
 					LOWORD(v6) = v3;
-				v7 = Maths::sub_581E0_maybe_tan2(&x_WORD_EB398ar, &a1x->position_0x4C_76);
-				MovePlayer_57FA0(&x_WORD_EB398ar, v7, 0, v6);
-				v8 = (signed __int16)getTerrainAlt_10C40(&x_WORD_EB398ar);
+				v7 = Maths::sub_581E0_maybe_tan2(&PlayerPosition_EB398, &a1x->position_0x4C_76);
+				MovePlayer_57FA0(&PlayerPosition_EB398, v7, 0, v6);
+				v8 = (signed __int16)getTerrainAlt_10C40(&PlayerPosition_EB398);
 				if (v10x->class_0x3F_63 == 3 && !v10x->model_0x40_64)
 				{
-					v9 = (signed __int16)(x_WORD_EB398ar.z
+					v9 = (signed __int16)(PlayerPosition_EB398.z
 						- (48
 							* ((((4096 - v14) << 8)
 								- (__CFSHL__((4096 - v14) << 8 >> 31, 12)
 									+ ((4096 - v14) << 8 >> 31 << 12))) >> 12) >> 8));
-					x_WORD_EB398ar.z -= 48
+					PlayerPosition_EB398.z -= 48
 						* ((((4096 - v14) << 8)
 							- (__CFSHL__((4096 - v14) << 8 >> 31, 12)
 								+ ((4096 - v14) << 8 >> 31 << 12))) >> 12) >> 8;
@@ -29591,14 +29590,14 @@ void sub_39B60(type_entity_0x6E8E* a1x)//21ab60
 				}
 				if (v10x->dword_0xA0_160x->word_160_0xe_14 < -64)
 					goto LABEL_40;
-				x_WORD_EB398ar.z -= 48
+				PlayerPosition_EB398.z -= 48
 					* ((((4096 - v14) << 8) - (__CFSHL__((4096 - v14) << 8 >> 31, 12) + ((4096 - v14) << 8 >> 31 << 12))) >> 12) >> 8;
-				v9 = x_WORD_EB398ar.z;
+				v9 = PlayerPosition_EB398.z;
 			LABEL_21:
 				if (v9 < v8)
 					LABEL_40 :
-					x_WORD_EB398ar.z = v8;
-				sub_57CF0(v10x, &x_WORD_EB398ar);
+					PlayerPosition_EB398.z = v8;
+				sub_57CF0(v10x, &PlayerPosition_EB398);
 				goto LABEL_25;
 			}
 		LABEL_35:
@@ -29613,7 +29612,7 @@ void sub_39B60(type_entity_0x6E8E* a1x)//21ab60
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00039E40) --------------------------------------------------------
 char sub_39E40(type_entity_0x6E8E* a1x)//21ae40
@@ -30313,10 +30312,10 @@ void sub_3A8B0(type_entity_0x6E8E* a1x)//21b8b0
 			default:
 				break;
 			}
-			x_WORD_EB398ar = a1x->word_0x9A_154x;
-			x_WORD_EB398ar.z = a1x->position_0x4C_76.z;
-			MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, v1);
-			sub_57CF0(a1x, &x_WORD_EB398ar);
+			PlayerPosition_EB398 = a1x->word_0x9A_154x;
+			PlayerPosition_EB398.z = a1x->position_0x4C_76.z;
+			MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, v1);
+			sub_57CF0(a1x, &PlayerPosition_EB398);
 			v4 = a1x->byte_0x44_68 + 1;
 			a1x->byte_0x44_68 = v4;
 			if (v4 > 0 && v4 > 6)
@@ -30581,7 +30580,7 @@ void sub_3A8B0(type_entity_0x6E8E* a1x)//21b8b0
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 typedef union {
 	type_entity_0x6E8E* un_0x6E8E;
@@ -30912,10 +30911,10 @@ LABEL_74:
 			break;
 		}
 		v24 = -(signed __int16)v34;
-		x_WORD_EB398ar = a1x->word_0x9A_154x;
+		PlayerPosition_EB398 = a1x->word_0x9A_154x;
 		//v3z = a1x->dword_0xA0_160;
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, v24);
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, v24);
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		v25 = a1x->byte_0x44_68 + 1;
 		a1x->byte_0x44_68 = v25;
 		if (v25 > 0 && v25 > 6)
@@ -31963,7 +31962,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 
 			Logger->debug("sub_46830_main_loop:load scr passed");
 
-			sub_56A30_init_game_level(a3, setLevel, customLevelPath);
+			InitGameLevel_56A30(a3, setLevel, customLevelPath);
 
 			Logger->debug("sub_46830_main_loop:init game level passed");
 
@@ -32098,7 +32097,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 
 							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = v13->levelNumber_6;
 							sub_47FC0_load_screen(true);
-							sub_56A30_init_game_level(a3);
+							InitGameLevel_56A30(a3);
 							sub_47160();
 						}
 					}
@@ -33498,17 +33497,17 @@ void sub_49A30(type_entity_0x6E8E* a1x, unsigned __int16 a2)//22aa30
 		v8 >>= 1;
 		v9 >>= 1;
 	}
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	x_WORD_EB398ar.x = a1x->position_0x4C_76.x >> 8 << 8;
-	x_WORD_EB398ar.y = a1x->position_0x4C_76.y >> 8 << 8;
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	PlayerPosition_EB398.x = a1x->position_0x4C_76.x >> 8 << 8;
+	PlayerPosition_EB398.y = a1x->position_0x4C_76.y >> 8 << 8;
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 	v10 = (a1x->position_0x4C_76.x >> 8) - ((signed int)v9 >> 1);
 	v11 = (a1x->position_0x4C_76.y >> 8) - ((signed int)v8 >> 1);
 	if ((v10 + v11) % 2)
 	{
-		x_WORD_EB398ar = a1x->position_0x4C_76;
-		x_WORD_EB398ar.x += 256;
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
+		PlayerPosition_EB398.x += 256;
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		v10++;
 	}
 	SetShiftByCastle_49EC0(a1x, a2);
@@ -33542,7 +33541,7 @@ void sub_49A30(type_entity_0x6E8E* a1x, unsigned __int16 a2)//22aa30
 // D93C0: using guessed type __int16 x_WORD_D93C0_bldgprmbuffer[];
 // EA3BC: using guessed type int **filearray_2aa18c[24];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
 // 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00049C70) --------------------------------------------------------
@@ -34093,7 +34092,7 @@ type_entity_0x6E8E* sub_4AA40(axis_3d* position)//22ba40 //Spawn Scenery Bad Sto
 	axis_3d v6ar; // [esp+0h] [ebp-Ch]
 	int v8; // [esp+8h] [ebp-4h]
 
-	x_WORD_EB398ar = *position;
+	PlayerPosition_EB398 = *position;
 	event = NewEvent_4A050();
 	v2x = event;
 	if (event)
@@ -34104,10 +34103,10 @@ type_entity_0x6E8E* sub_4AA40(axis_3d* position)//22ba40 //Spawn Scenery Bad Sto
 		event->maxLife_0x4 = 40000;
 		event->dword_0x10_16 = 0;
 		event->byte_0x38_56 = 33;
-		v6ar = x_WORD_EB398ar;
+		v6ar = PlayerPosition_EB398;
 		v6ar.x >>= 8;
 		v6ar.y >>= 8;
-		v6ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
+		v6ar.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
 		if ((v6ar.x + v6ar.y) % 2)
 			v6ar.x++;
 		v6ar.x <<= 8;
@@ -35133,9 +35132,9 @@ type_entity_0x6E8E* sub_4CA00(axis_3d* position)//22da00
 	v1x->word_0x24_36 = 0;
 	v1x->byte_0x46_70 = 15;
 	v1x->byte_0x39_57 = v1x->dword_0xA0_160x->word_160_0x1a_26 - (signed __int16)v1x->byte_0x3E_62 % v1x->dword_0xA0_160x->word_160_0x1a_26 + 4;
-	x_WORD_EB398ar = *position;
-	x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar) + 384;
-	AddEventToMap_57D70(v1x, &x_WORD_EB398ar);
+	PlayerPosition_EB398 = *position;
+	PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398) + 384;
+	AddEventToMap_57D70(v1x, &PlayerPosition_EB398);
 	SetEvent144_49C70(v1x);
 	CopyEventVar0408_49A20(v1x);
 	return v1x;
@@ -36836,9 +36835,9 @@ __int16 sub_4F440(type_entity_0x6E8E* a1x)//230440
 		default:
 			break;
 		}
-		x_WORD_EB398ar = a1x->position_0x4C_76;
-		MovePlayer_57FA0(&x_WORD_EB398ar, v13x->word_0x1C_28, v13x->word_0x1E_30, a1x->word_0x2C_44);
-		sub_57CF0(v13x, &x_WORD_EB398ar);
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
+		MovePlayer_57FA0(&PlayerPosition_EB398, v13x->word_0x1C_28, v13x->word_0x1E_30, a1x->word_0x2C_44);
+		sub_57CF0(v13x, &PlayerPosition_EB398);
 		SetEntityIndexAndRot_49CD0(v13x, 340);
 		AddEvent2_847D0(v13x, 128, 1, 0);
 		v2 = v13x->word_0x34_52;
@@ -38246,19 +38245,19 @@ type_entity_0x6E8E* sub_51800(axis_3d* position)//232800
 					prevEvent->word_0x34_52 = newEvent - D41A0_0.struct_0x6E8E;
 					newEvent->word_0x34_52 = 0;
 					newEvent->byte_0x3E_62 = index;
-					x_WORD_EB398ar = *position;
-					MovePlayer_57FA0(&x_WORD_EB398ar, index * (2048 / x_D41A0_BYTEARRAY_4_struct.byteindex_224), 0, 512);
-					x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
-					AddEventToMap_57D70(newEvent, &x_WORD_EB398ar);
+					PlayerPosition_EB398 = *position;
+					MovePlayer_57FA0(&PlayerPosition_EB398, index * (2048 / x_D41A0_BYTEARRAY_4_struct.byteindex_224), 0, 512);
+					PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
+					AddEventToMap_57D70(newEvent, &PlayerPosition_EB398);
 					SetEntityShiftRot_49EA0(newEvent, 128, 256);
 					SetEntityIndexAndRot_49CD0(newEvent, 220);
 				}
 				prevEvent = newEvent;
 			}
-			x_WORD_EB398ar = *position;
-			MovePlayer_57FA0(&x_WORD_EB398ar, 0, 0, 512);
-			x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
-			AddEventToMap_57D70(event, &x_WORD_EB398ar);
+			PlayerPosition_EB398 = *position;
+			MovePlayer_57FA0(&PlayerPosition_EB398, 0, 0, 512);
+			PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
+			AddEventToMap_57D70(event, &PlayerPosition_EB398);
 			SetEntityShiftRot_49EA0(event, 128, 256);
 			SetEntityIndexAndRot_49CD0(event, 220);
 		}
@@ -38278,9 +38277,9 @@ type_entity_0x6E8E* sub_51A00(axis_3d* position)//232a00
 		entity->life_0x8 = 16;
 		entity->struct_byte_0xc_12_15.byte[0] &= 0xF7;
 		entity->maxLife_0x4 = entity->life_0x8;
-		x_WORD_EB398ar = *position;
-		x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
-		AddEventToMap_57D70(entity, &x_WORD_EB398ar);
+		PlayerPosition_EB398 = *position;
+		PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
+		AddEventToMap_57D70(entity, &PlayerPosition_EB398);
 		SetEntityShiftRot_49EA0(entity, 128, 256);
 		SetEntityIndexAndRot_49CD0(entity, 220);
 	}
@@ -38956,7 +38955,7 @@ void sub_53160()//234160
 // D93A0: using guessed type const char *off_D93A0_wizards_names2;
 
 //----- (000533B0) --------------------------------------------------------
-char sub_533B0_decompress_levels(__int16 a1, Type_Level_2FECE* a2x, std::string customLevelPath)//2343b0
+char DecompressLevels_533B0(__int16 a1, Type_Level_2FECE* a2x, std::string customLevelPath)//2343b0
 {
 	uint8_t* v2; // edi
 	FILE* levelsdatfile; // ebx
@@ -40423,7 +40422,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		initposistruct();
 
-		sub_56210_process_command_line(argc, argv);//236FD4 - 237210
+		ProcessCommandLine_56210(argc, argv);//236FD4 - 237210
 		if (CommandLineParams.ModeTestNetwork()) {
 			if (Iam_server || Iam_client)
 				InitNetworkInfo();
@@ -40434,9 +40433,34 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 			x_BYTE_D41AD_skip_screen = config_skip_screen;
 		}
 
+		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
+			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
+		{
+			StartPlayback(CommandLineParams.GetPlaybackPath().c_str());
+		}
+		else if (CommandLineParams.GetRecordingPath().length() > 0)
+		{
+			StartRecording();
+		}
+
 		Initialize();//236FDC - 23C8D0//rozdil 1E1000
 
 		sub_46830_main_loop(/*0, */v3, v4);//227830
+
+		for (int i = 0; i < 100000; i++)
+		{
+			Logger->debug("[{}] x: {} y: {} z: {}", i, m_coords->at(i).x, m_coords->at(i).y, m_coords->at(i).z);
+		}
+
+		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
+			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
+		{
+			StopPlayback();
+		}
+		else if (CommandLineParams.GetRecordingPath().length() > 0)
+		{
+			StopRecording(CommandLineParams.GetRecordingPath().c_str());
+		}
 
 		sub_5BC20();//23CC20 //remove devices?
 		sub_56730_clean_memory();//237730
@@ -40514,16 +40538,16 @@ void sub_560D0_create_sound_dir()//2370d0
 // D41A4: using guessed type int x_DWORD_D41A4;
 
 //----- (00056210) --------------------------------------------------------
-void sub_56210_process_command_line(int argc, char** argv)//237210
+void ProcessCommandLine_56210(int argc, char** argv)//237210
 {
 	int32_t x_DWORD_355208;//3551CE+3A DWORD
 	x_BYTE x_BYTE_355234_hardisknumber;//harddrive//3551CE+66 BYTE
 	x_BYTE x_BYTE_35520C;//3551CE+3e BYTE
-	x_BYTE x_BYTE_355210_level;//3551CE+42 BYTE
+	x_BYTE loadLevelNumber;//3551CE+42 BYTE
 	x_BYTE x_BYTE_355230;//3551CE+62 BYTE
 	x_BYTE x_BYTE_355218;//3551CE+4a BYTE
 	x_BYTE x_BYTE_355244_spellsedit;//aSpellsedit//3551CE+76 BYTE
-	x_BYTE x_BYTE_355240_load_set_level;//3551CE+72 BYTE
+	bool LoadSetLevel_355240;//3551CE+72 BYTE
 	x_BYTE x_BYTE_35522C_nocd;//nocd//3551CE+5e BYTE
 	x_BYTE x_BYTE_355224_showversion;//Showversion//3551CE+56 BYTE
 	x_BYTE x_BYTE_355228_showversion2;//Showversion2//3551CE+5a BYTE
@@ -40565,11 +40589,11 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 	x_DWORD_355208/* v13*/ = -1;//3551CE+3A DWORD //355208
 	x_BYTE_355234_hardisknumber/*v24*/ = 'C';//harddrive//3551CE+66 BYTE
 	x_BYTE_35520C/*v14*/ = 0;//3551CE+3e BYTE
-	x_BYTE_355210_level/*v15*/ = 0;//3551CE+42 BYTE
+	loadLevelNumber/*v15*/ = 0;//3551CE+42 BYTE
 	x_BYTE_355230/*v23*/ = 0;//3551CE+62 BYTE
 	x_BYTE_355218/*v17*/ = 0;//3551CE+4a BYTE
 	x_BYTE_355244_spellsedit/*v28*/ = 0;//aSpellsedit//3551CE+76 BYTE
-	x_BYTE_355240_load_set_level/*v27*/ = 0;//3551CE+72 BYTE
+	LoadSetLevel_355240/*v27*/ = 0;//3551CE+72 BYTE
 	x_BYTE_35522C_nocd/*v22*/ = 0;//nocd//3551CE+5e BYTE
 	x_BYTE_355224_showversion/*v20*/ = 0;//Showversion//3551CE+56 BYTE
 	x_BYTE_355228_showversion2/*v21*/ = 0;//Showversion2//3551CE+5a BYTE
@@ -40601,9 +40625,9 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 			}
 			else if (!_stricmp("level", (char*)actarg))
 			{
-				x_BYTE_355210_level = atoi(argv[++argnumber]);//2372C4 - 279F5D
-				x_BYTE_D419C_level_num = x_BYTE_355210_level;
-				x_BYTE_355240_load_set_level = 1;
+				loadLevelNumber = atoi(argv[++argnumber]);//2372C4 - 279F5D
+				LoadLevelNumber_D419C = loadLevelNumber;
+				LoadSetLevel_355240 = 1;
 			}
 			else if (!_stricmp("harddrive", (char*)actarg))
 			{
@@ -40739,7 +40763,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x10u;
 	if (!x_BYTE_35522C_nocd && cdSpeechEnabled_E2A28)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x40u;
-	if (x_BYTE_355240_load_set_level)
+	if (LoadSetLevel_355240)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x80u;
 	if (x_BYTE_355214)
 		x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 |= 2u;
@@ -40752,7 +40776,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 	if (x_BYTE_35523C_detectoff)
 		autoScanForSoundHardware_E379B = true;
 	//result = x_D41A0_BYTEARRAY_4;
-	x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = x_BYTE_355210_level;
+	x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = LoadLevelNumber_D419C;
 	x_D41A0_BYTEARRAY_4_struct.setting_45w = x_DWORD_355208;
 	if (x_BYTE_35521C_cc)
 		x_D41A0_BYTEARRAY_4_struct.setting_byte4_25 = (x_D41A0_BYTEARRAY_4_struct.setting_byte4_25 | 4) & 0xFD;
@@ -40768,7 +40792,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 // 98805: using guessed type x_DWORD x_toupper(x_DWORD);
 // 98F5D: using guessed type x_DWORD stricmp(x_DWORD, x_DWORD);
 // 98F9E: using guessed type x_DWORD unknown_libname_1_atoi(x_DWORD);
-// D419C: using guessed type char x_BYTE_D419C_level_num;
+// D419C: using guessed type char LoadLevelNumber_D419C;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // D41AD: using guessed type char x_BYTE_D41AD_skip_screen;
@@ -40839,17 +40863,17 @@ void ClearSettings_567C0()//2377c0 // clean level
 // E9C38: using guessed type int x_DWORD_E9C38_smalltit;
 
 //----- (00056A30) --------------------------------------------------------
-void sub_56A30_init_game_level(unsigned int a1, int16_t level, std::string customLevelPath)//237a30
+void InitGameLevel_56A30(unsigned int a1, int16_t level, std::string customLevelPath)//237a30
 {
 	if (CommandLineParams.DoMouseOff()) { mouseturnoff = true; }
 	if (level > -1) {
 		x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = (uint16_t)level;
 	}
-	Logger->debug("sub_56A30_init_game_level:before sub_6EB90");
+	Logger->debug("InitGameLevel_56A30:before sub_6EB90");
 	//fixing
 	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_BUILD00DATTAB]);//24fb90 adress 0x23ca2e
 	//fixing
-	Logger->debug("sub_56A30_init_game_level:sub_6EB90 passed");
+	Logger->debug("InitGameLevel_56A30:sub_6EB90 passed");
 
 	char temp_x_BYTE_E3799_sound_card = soundActive_E3799;
 	soundActive_E3799 = false;
@@ -40858,11 +40882,11 @@ void sub_56A30_init_game_level(unsigned int a1, int16_t level, std::string custo
 	{
 		PrintTextMessage_70910((char*)"Load Level\0");
 
-		Logger->debug("sub_56A30_init_game_level:before sub_533B0_decompress_levels");
+		Logger->debug("InitGameLevel_56A30:before DecompressLevels_533B0");
 
-		sub_533B0_decompress_levels(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE, customLevelPath);
+		DecompressLevels_533B0(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE, customLevelPath);
 
-		Logger->debug("sub_56A30_init_game_level:sub_533B0_decompress_levels passed");
+		Logger->debug("InitGameLevel_56A30:DecompressLevels_533B0 passed");
 
 	}
 	sub_54660_read_and_decompress_sky_and_blocks(D41A0_0.terrain_2FECE.MapType, x_BYTE_D41B5_texture_size);//235660
@@ -40882,7 +40906,7 @@ void sub_56A30_init_game_level(unsigned int a1, int16_t level, std::string custo
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4))
 		sub_49270_generate_level_features(&D41A0_0.terrain_2FECE);
 	PrintTextMessage_70910((char*)"Initialise Models\0");
-	memset(&x_WORD_EB398ar, 0, 6);
+	memset(&PlayerPosition_EB398, 0, 6);
 	sub_49F90();
 	//adress 237B55
 	if (CommandLineParams.DoDebugSequences()) {
@@ -41015,7 +41039,7 @@ void sub_56D60(unsigned int a1, char a2)//237d60
 	v2 = soundActive_E3799;
 	soundActive_E3799 = false;
 	ClearSettings_567C0();
-	sub_533B0_decompress_levels(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE);
+	DecompressLevels_533B0(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE);
 	if (a2)
 	{
 		sub_54660_read_and_decompress_sky_and_blocks(D41A0_0.terrain_2FECE.MapType, x_BYTE_D41B5_texture_size);
@@ -41026,7 +41050,7 @@ void sub_56D60(unsigned int a1, char a2)//237d60
 	GenerateLevelMap_43830(&D41A0_0.terrain_2FECE);
 	sub_49F30();
 	sub_49270_generate_level_features(&D41A0_0.terrain_2FECE);
-	memset(&x_WORD_EB398ar, 0, 6);
+	memset(&PlayerPosition_EB398, 0, 6);
 	sub_49F90();
 	//v4 = x_D41A0_BYTEARRAY_0;
 	D41A0_0.dword_0x11e6 = -1;
@@ -42793,13 +42817,13 @@ char sub_59DC0(type_entity_0x6E8E* a1x)//23adc0
 		return 1;
 	if (a1x->dword_0x10_16 <= 5)
 	{
-		x_WORD_EB398ar = v1x->position_0x4C_76;
+		PlayerPosition_EB398 = v1x->position_0x4C_76;
 		a1x->word_0x1C_28 = v1x->word_0x1C_28;
 		v2 = a1x->dword_0x10_16;
 		v3 = v1x->word_0x1E_30;
 		a1x->word_0x1E_30 = v3;
-		MovePlayer_57FA0(&x_WORD_EB398ar, v1x->word_0x1C_28, v3 - 16 * v2, 384);
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		MovePlayer_57FA0(&PlayerPosition_EB398, v1x->word_0x1C_28, v3 - 16 * v2, 384);
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		a1x->dword_0x10_16++;
 		return v12;
 	}
@@ -42812,12 +42836,12 @@ char sub_59DC0(type_entity_0x6E8E* a1x)//23adc0
 	}
 	v10x = v4x->position_0x4C_76;
 	MovePlayer_57FA0(&v10x, v4x->word_0x1C_28, 0, 384);
-	x_WORD_EB398ar = a1x->position_0x4C_76;
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
 	v5 = 32 * (a1x->dword_0x10_16 - 5);
 	v6 = Maths::sub_58210_radix_tan(&a1x->position_0x4C_76, &v10x);
 	v7 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &v10x);
-	MovePlayer_57FA0(&x_WORD_EB398ar, v7, v6, v5);
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	MovePlayer_57FA0(&PlayerPosition_EB398, v7, v6, v5);
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 	v8 = getTerrainAlt_10C40(&a1x->position_0x4C_76);
 	if (a1x->position_0x4C_76.z >= v8 + 64)
 	{
@@ -57312,9 +57336,9 @@ LABEL_23:
 		v11x = Entities_EA3E4[a1x->word_0x96_150];
 		a1x->xtype_0x41_65 = v11x->class_0x3F_63;
 		a1x->xsubtype_0x42_66 = v11x->model_0x40_64;
-		x_WORD_EB398ar = a2x->position_0x4C_76;
-		x_WORD_EB398ar.z += a2x->array_0x52_82.fov;
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		PlayerPosition_EB398 = a2x->position_0x4C_76;
+		PlayerPosition_EB398.z += a2x->array_0x52_82.fov;
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		v4 = 1;
 	}
 	return v4;
@@ -57322,7 +57346,7 @@ LABEL_23:
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00068940) --------------------------------------------------------
 char sub_68940(type_entity_0x6E8E* a1x)//249940
@@ -57828,8 +57852,8 @@ void sub_69300(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//24a300
 		v3 = a1x->parentId_0x28_40;
 		a1x->dword_0x10_16 = 0;
 		v6x = Entities_EA3E4[v3];
-		x_WORD_EB398ar = v6x->position_0x4C_76;
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		PlayerPosition_EB398 = v6x->position_0x4C_76;
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		v6x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->model_0x40_64] = 0;
 		a1x->word_0x4A_74 = 0;
 		//v4 = v6x->dword_0xA4_164;
@@ -60360,7 +60384,7 @@ void sub_66750(type_entity_0x6E8E* a1x)//247750
 	v25 = 0;
 	v28 = 0;
 	MovePlayer_57FA0(&v22x, v5, v4, v26);
-	x_WORD_EB398ar = v18x;
+	PlayerPosition_EB398 = v18x;
 	v20x = v18x;
 	while ((v27 & 0x8000u) == 0)
 	{
@@ -60416,13 +60440,13 @@ void sub_66750(type_entity_0x6E8E* a1x)//247750
 		{
 			v25--;
 		}
-		x_WORD_EB398ar.x += v22x.x;
-		x_WORD_EB398ar.y += v22x.y;
-		x_WORD_EB398ar.z += v22x.z;
-		v20x = x_WORD_EB398ar;
+		PlayerPosition_EB398.x += v22x.x;
+		PlayerPosition_EB398.y += v22x.y;
+		PlayerPosition_EB398.z += v22x.z;
+		v20x = PlayerPosition_EB398;
 		v20x.z = v28
 			* (((signed __int16)v26 - (__CFSHL__((signed __int16)v26 >> 31, 2) + 4 * ((signed __int16)v26 >> 31))) >> 2)
-			+ x_WORD_EB398ar.z;
+			+ PlayerPosition_EB398.z;
 		v12 = a1x->word_0x1C_28;
 		HIBYTE(v12) = (HIBYTE(v12) + 2) & 7;
 		MovePlayer_57FA0(
@@ -60488,8 +60512,8 @@ LABEL_36:
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00066B30) --------------------------------------------------------
 void CastCastleProjectile_66B30(type_entity_0x6E8E* a1x)//247b30
@@ -60524,9 +60548,9 @@ void CastCastleProjectile_66B30(type_entity_0x6E8E* a1x)//247b30
 				LOWORD(v3) = 1;
 		}
 		a1x->actSpeed_0x82_130 += 2 * v3;
-		x_WORD_EB398ar = a1x->position_0x4C_76;
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		if (sub_106C0(a1x, v10x))
 		{
 			/*LOBYTE(v2) = */sub_57CF0(a1x, &v10x->position_0x4C_76);
@@ -60536,18 +60560,18 @@ void CastCastleProjectile_66B30(type_entity_0x6E8E* a1x)//247b30
 		{
 			v2 = getTerrainAlt_10C40(&a1x->position_0x4C_76);
 			v4 = a1x->position_0x4C_76.z;
-			x_WORD_EB398ar.z = v2;
+			PlayerPosition_EB398.z = v2;
 			if (v2 > v4
 				|| isCaveLevel_D41B6
 				&& (v5 = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov,
-					x_WORD_EB398ar.z = v5,
+					PlayerPosition_EB398.z = v5,
 					v6 = v5,
 					v2 = a1x->position_0x4C_76.z,
 					v2 > v6))
 			{
-				//LOBYTE(v2) = x_WORD_EB398ar.z;
+				//LOBYTE(v2) = PlayerPosition_EB398.z;
 				v11 = 1;
-				a1x->position_0x4C_76.z = x_WORD_EB398ar.z;
+				a1x->position_0x4C_76.z = PlayerPosition_EB398.z;
 			}
 			else
 			{
@@ -60587,7 +60611,7 @@ void CastCastleProjectile_66B30(type_entity_0x6E8E* a1x)//247b30
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00066D00) --------------------------------------------------------
 void sub_66D00(type_entity_0x6E8E* a1x)//247d00
@@ -60652,9 +60676,9 @@ void sub_66D00(type_entity_0x6E8E* a1x)//247d00
 			v5 = 1;
 	}
 	a1x->actSpeed_0x82_130 += 2 * v5;
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 	v6 = a1x->word_0x96_150;
 	v7x = Entities_EA3E4[v6];
 	if (v7x > Entities_EA3E4[0] && sub_106C0(a1x, Entities_EA3E4[v6]))
@@ -60666,17 +60690,17 @@ void sub_66D00(type_entity_0x6E8E* a1x)//247d00
 	}
 	//LOWORD(v2x) = sub_10C40_getTerrainAlt(&a1x->position_0x4C_76);
 	v8 = a1x->position_0x4C_76.z;
-	x_WORD_EB398ar.z = getTerrainAlt_10C40(&a1x->position_0x4C_76);
-	if (x_WORD_EB398ar.z > v8
+	PlayerPosition_EB398.z = getTerrainAlt_10C40(&a1x->position_0x4C_76);
+	if (PlayerPosition_EB398.z > v8
 		|| isCaveLevel_D41B6
-		&& (x_WORD_EB398ar.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov,
-			//x_WORD_EB398ar.z = (short)v2,
+		&& (PlayerPosition_EB398.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov,
+			//PlayerPosition_EB398.z = (short)v2,
 			//v9 = (short)v2,
 			//LOWORD(v2) = a1x->position_0x4C_76.z,
-			a1x->position_0x4C_76.z > x_WORD_EB398ar.z))
+			a1x->position_0x4C_76.z > PlayerPosition_EB398.z))
 	{
-		//LOBYTE(v2) = x_WORD_EB398ar[2];
-		a1x->position_0x4C_76.z = x_WORD_EB398ar.z;
+		//LOBYTE(v2) = PlayerPosition_EB398[2];
+		a1x->position_0x4C_76.z = PlayerPosition_EB398.z;
 	LABEL_17:
 		v13 = 1;
 		goto LABEL_18;
@@ -60694,12 +60718,12 @@ LABEL_18:
 	{
 		if (v14)
 		{
-			x_WORD_EB398ar = a1x->position_0x4C_76;
-			//*(x_WORD_EB398ar + 2) = *(x_WORD *)(a1 + 80);
+			PlayerPosition_EB398 = a1x->position_0x4C_76;
+			//*(PlayerPosition_EB398 + 2) = *(x_WORD *)(a1 + 80);
 			v11 = a1x->word_0x1C_28;
 			HIBYTE(v11) = (HIBYTE(v11) + 4) & 7;
-			MovePlayer_57FA0(&x_WORD_EB398ar, v11, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
-			sub_57CF0(a1x, &x_WORD_EB398ar);
+			MovePlayer_57FA0(&PlayerPosition_EB398, v11, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+			sub_57CF0(a1x, &PlayerPosition_EB398);
 		}
 		v2x = IfSubtypeCallAxisEvent_4A190(&a1x->position_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
 		if (v2x)
@@ -60713,7 +60737,7 @@ LABEL_18:
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00066FB0) --------------------------------------------------------
 type_entity_0x6E8E* sub_66FB0(type_entity_0x6E8E* a1)//247fb0
@@ -60791,9 +60815,9 @@ void sub_66FD0(type_entity_0x6E8E* a1x)//247fd0
 			v5 = 1;
 	}
 	a1x->actSpeed_0x82_130 += 2 * v5;
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 	v6x = sub_10780(a1x);
 	v7x = v6x;
 	if (v6x)
@@ -60813,13 +60837,13 @@ void sub_66FD0(type_entity_0x6E8E* a1x)//247fd0
 	{
 		v9 = getTerrainAlt_10C40(&a1x->position_0x4C_76);
 		v10 = a1x->position_0x4C_76.z;
-		x_WORD_EB398ar.z = v9;
+		PlayerPosition_EB398.z = v9;
 		if (v9 > v10
 			|| isCaveLevel_D41B6
-			&& (x_WORD_EB398ar.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov, a1x->position_0x4C_76.z > x_WORD_EB398ar.z))
+			&& (PlayerPosition_EB398.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov, a1x->position_0x4C_76.z > PlayerPosition_EB398.z))
 		{
-			//LOBYTE(v8) = x_WORD_EB398ar[2];
-			a1x->position_0x4C_76.z = x_WORD_EB398ar.z;
+			//LOBYTE(v8) = PlayerPosition_EB398[2];
+			a1x->position_0x4C_76.z = PlayerPosition_EB398.z;
 			if (a1x->model_0x40_64 != 4)
 			{
 				//v8 = (uint8_t*)sub_104D0_terrain_tile_is_water((signed __int16 *)(a1 + 76));
@@ -60880,7 +60904,7 @@ LABEL_28:
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (000672E0) --------------------------------------------------------
 void AddArcherArrow_672E0(type_entity_0x6E8E* a1x)//2482e0
@@ -60900,10 +60924,10 @@ void AddArcherArrow_672E0(type_entity_0x6E8E* a1x)//2482e0
 		PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, (D41A0_0.rand_0x8 & 1) + 33);
 		a1x->struct_byte_0xc_12_15.byte[0] |= 2u;
 	}
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
 	v3x = sub_10780(a1x);
-	if (getTerrainAlt_10C40(&x_WORD_EB398ar) <= x_WORD_EB398ar.z)
+	if (getTerrainAlt_10C40(&PlayerPosition_EB398) <= PlayerPosition_EB398.z)
 	{
 		//v4 = *(x_DWORD *)(a1 + 8);
 		//(a1x->dword_0x8)--;// = v4 - 1;
@@ -60911,7 +60935,7 @@ void AddArcherArrow_672E0(type_entity_0x6E8E* a1x)//2482e0
 		{
 			if (!v3x)
 			{
-				sub_57CF0(a1x, &x_WORD_EB398ar);
+				sub_57CF0(a1x, &PlayerPosition_EB398);
 				return;
 			}
 		}
@@ -60934,7 +60958,7 @@ void AddArcherArrow_672E0(type_entity_0x6E8E* a1x)//2482e0
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00067410) --------------------------------------------------------
 void sub_67410(type_entity_0x6E8E* a1x)//248410
@@ -61022,13 +61046,13 @@ void sub_674C0(type_entity_0x6E8E* a1x)//2484c0
 	{
 		sub_65610(a1x, v1x);
 	}
-	x_WORD_EB398ar = a1x->position_0x4C_76;
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
 
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
-	v3 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-	if (v3 > x_WORD_EB398ar.z)
-		x_WORD_EB398ar.z = v3;
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+	v3 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+	if (v3 > PlayerPosition_EB398.z)
+		PlayerPosition_EB398.z = v3;
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 	v4x = sub_108B0(a1x);
 	v5x = v4x;
 	v6x = v4x;
@@ -61042,17 +61066,17 @@ void sub_674C0(type_entity_0x6E8E* a1x)//2484c0
 	}
 	result = getTerrainAlt_10C40(&a1x->position_0x4C_76);
 	v8 = a1x->position_0x4C_76.z;
-	x_WORD_EB398ar.z = result;
+	PlayerPosition_EB398.z = result;
 	if (result > v8
 		|| isCaveLevel_D41B6
 		&& (v9 = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov,
-			x_WORD_EB398ar.z = v9,
+			PlayerPosition_EB398.z = v9,
 			v10 = v9,
 			result = a1x->position_0x4C_76.z,
 			result > v10))
 	{
-		result = x_WORD_EB398ar.z;
-		a1x->position_0x4C_76.z = x_WORD_EB398ar.z;
+		result = PlayerPosition_EB398.z;
+		a1x->position_0x4C_76.z = PlayerPosition_EB398.z;
 	}
 	else
 	{
@@ -61097,7 +61121,7 @@ LABEL_16:
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (000676F0) --------------------------------------------------------
 type_entity_0x6E8E* sub_676F0(type_entity_0x6E8E* a1x)//2486f0
@@ -61367,16 +61391,16 @@ void sub_67960(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x)//248960
 	}
 	else
 	{
-		x_WORD_EB398ar = a2x->position_0x4C_76;
-		MovePlayer_57FA0(&x_WORD_EB398ar, a2x->word_0x1C_28, a2x->word_0x1E_30, a2x->actSpeed_0x82_130);
-		sub_57CF0(a2x, &x_WORD_EB398ar);
+		PlayerPosition_EB398 = a2x->position_0x4C_76;
+		MovePlayer_57FA0(&PlayerPosition_EB398, a2x->word_0x1C_28, a2x->word_0x1E_30, a2x->actSpeed_0x82_130);
+		sub_57CF0(a2x, &PlayerPosition_EB398);
 		v9 = getTerrainAlt_10C40(v13x);
 		v10 = a2x->position_0x4C_76.z;
-		x_WORD_EB398ar.z = v9;
-		if (v9 > v10 || isCaveLevel_D41B6 && (x_WORD_EB398ar.z = sub_10C60(v13x) - a2x->array_0x52_82.fov, a2x->position_0x4C_76.z > x_WORD_EB398ar.z))
+		PlayerPosition_EB398.z = v9;
+		if (v9 > v10 || isCaveLevel_D41B6 && (PlayerPosition_EB398.z = sub_10C60(v13x) - a2x->array_0x52_82.fov, a2x->position_0x4C_76.z > PlayerPosition_EB398.z))
 		{
 			v18 = 1;
-			a2x->position_0x4C_76.z = x_WORD_EB398ar.z;
+			a2x->position_0x4C_76.z = PlayerPosition_EB398.z;
 		}
 		//result = *(x_DWORD *)(a2 + 8) - 1;
 		a2x->life_0x8 = a2x->life_0x8 - 1;
@@ -61402,7 +61426,7 @@ void sub_67960(/*type_entity_0x6E8E* a1x,*/ type_entity_0x6E8E* a2x)//248960
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (0005CF40) --------------------------------------------------------
 void sub_5CF40(type_entity_0x6E8E* a1x, char a2)//23df40
@@ -61513,44 +61537,44 @@ int sub_5D0A0(type_entity_0x6E8E* a1x)//23e0a0
 	char v50; // [esp+5Ch] [ebp-4h]
 
 	v46 = 1;
-	if (sub_104D0_terrain_tile_is_water(&x_WORD_EB398ar) == 256)
+	if (sub_104D0_terrain_tile_is_water(&PlayerPosition_EB398) == 256)
 	{
 		a1x->dword_0xA4_164x->byte_0x262_610++;
-		v1 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &x_WORD_EB398ar);
-		LOWORD(v2) = Maths::sub_58210_radix_tan(&a1x->position_0x4C_76, &x_WORD_EB398ar);
+		v1 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &PlayerPosition_EB398);
+		LOWORD(v2) = Maths::sub_58210_radix_tan(&a1x->position_0x4C_76, &PlayerPosition_EB398);
 		v45 = v2;
-		v42 = sub_583F0_distance_3d(&a1x->position_0x4C_76, &x_WORD_EB398ar);
+		v42 = sub_583F0_distance_3d(&a1x->position_0x4C_76, &PlayerPosition_EB398);
 		v41 = v1;
 		v3 = (v41 - (__CFSHL__(v41 >> 31, 9) + (v41 >> 31 << 9))) >> 9;
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		v4 = (x_WORD)v3 << 9;
 		v49 = (((x_WORD)v3 + 1) << 9) & 0x7FF;
 		v5 = sub_582B0(v41, (x_WORD)v3 << 9);
 		v36 = (unsigned __int16)v42;
 		v35 = (unsigned __int16)v45;
 		MovePlayer_57FA0(
-			&x_WORD_EB398ar,
+			&PlayerPosition_EB398,
 			v4,
 			v45,
 			((unsigned __int16)v42 * (512 - v5)
 				- (__CFSHL__((unsigned __int16)v42 * (512 - v5) >> 31, 9)
 					+ ((unsigned __int16)v42 * (512 - v5) >> 31 << 9))) >> 9);
-		if (sub_104D0_terrain_tile_is_water(&x_WORD_EB398ar) == 256)
+		if (sub_104D0_terrain_tile_is_water(&PlayerPosition_EB398) == 256)
 		{
-			x_WORD_EB398ar = a1x->position_0x4C_76;
+			PlayerPosition_EB398 = a1x->position_0x4C_76;
 			v6 = sub_582B0(v41, v49);
 			MovePlayer_57FA0(
-				&x_WORD_EB398ar,
+				&PlayerPosition_EB398,
 				v49,
 				v35,
 				(v36 * (512 - v6) - (__CFSHL__(v36 * (512 - v6) >> 31, 9) + (v36 * (512 - v6) >> 31 << 9))) >> 9);
-			if (sub_104D0_terrain_tile_is_water(&x_WORD_EB398ar) == 256)
+			if (sub_104D0_terrain_tile_is_water(&PlayerPosition_EB398) == 256)
 				v46 = 0;
 		}
 	}
 	if (!isCaveLevel_D41B6)
 		return v46;
-	v31x = x_WORD_EB398ar;
+	v31x = PlayerPosition_EB398;
 	v7 = a1x->dword_0xA0_160x->word_160_0xc_12;
 	v8 = v7 + (signed __int16)getTerrainAlt_10C40(&v31x) + a1x->array_0x52_82.fov;
 	v9 = sub_10C60(&v31x);
@@ -61615,7 +61639,7 @@ int sub_5D0A0(type_entity_0x6E8E* a1x)//23e0a0
 	{
 		v21 = i;
 		v22 = 16 * i;
-		x_WORD_EB398ar = v29x;
+		PlayerPosition_EB398 = v29x;
 		v23 = (v22 + v21) / 6;
 		if (v20 == 1)
 			v23 = -v23;
@@ -61629,20 +61653,20 @@ int sub_5D0A0(type_entity_0x6E8E* a1x)//23e0a0
 	}
 	else
 	{
-		x_WORD_EB398ar = v31x;
+		PlayerPosition_EB398 = v31x;
 	}
 LABEL_30:
 	if ((x_WORD)v46)
 	{
-		LOBYTE(v47) = HIBYTE(x_WORD_EB398ar.x);
-		HIBYTE(v47) = HIBYTE(x_WORD_EB398ar.y);
+		LOBYTE(v47) = HIBYTE(PlayerPosition_EB398.x);
+		HIBYTE(v47) = HIBYTE(PlayerPosition_EB398.y);
 		if (mapAngle_13B4E0[v47] & 8)
 			v46 = 0;
 	}
 	if (!(x_WORD)v46)
 	{
 		//a1x->dword_0xA4_164x->byte_0x262_610;
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		a1x->dword_0xA4_164x->word_0xc_12 = 0;
 		v25 = a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[3];
 		if (v25)
@@ -61653,8 +61677,8 @@ LABEL_30:
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (0005D530) --------------------------------------------------------
 void sub_5D530(type_entity_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
@@ -61716,7 +61740,7 @@ void sub_5D530(type_entity_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 		a1x->struct_byte_0xc_12_15.byte[1] = v1 & 0xF7;
 		return;
 	}
-	x_WORD_EB398ar = a1x->position_0x4C_76;
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
 	//v2 = a1x->dword_0xA4_164;
 	v3 = a1x->dword_0xA4_164x->byte_0x14C_332;
 	if (v3)
@@ -61748,7 +61772,7 @@ void sub_5D530(type_entity_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 			LOWORD(v8) = 1;
 	}
 	a1x->actSpeed_0x82_130 += v8 * x_DWORD_D4B84;
-	v9 = ((x_WORD_EB398ar.z - (signed __int16)getTerrainAlt_10C40(&x_WORD_EB398ar) - a1x->dword_0xA0_160x->word_160_0xa_10) << 10)
+	v9 = ((PlayerPosition_EB398.z - (signed __int16)getTerrainAlt_10C40(&PlayerPosition_EB398) - a1x->dword_0xA0_160x->word_160_0xa_10) << 10)
 		/ a1x->dword_0xA0_160x->word_160_0xa_10;
 	if (v9 < -256)
 		v9 = -256;
@@ -61807,7 +61831,7 @@ LABEL_27:
 	{
 		LOWORD(v16) = a1x->actSpeed_0x82_130;
 	}
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->dword_0xA4_164x->word_0x24_36, v16);
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->dword_0xA4_164x->word_0x24_36, v16);
 	//v17 = a1x->dword_0xA4_164;
 	v18 = a1x->dword_0xA4_164x->word_0x10_16;
 	if (v18)
@@ -61830,7 +61854,7 @@ LABEL_27:
 		v20 = v19;
 		v21 = a1x->word_0x1C_28;
 		HIBYTE(v21) += 2;
-		MovePlayer_57FA0(&x_WORD_EB398ar, v21, 0, v20);
+		MovePlayer_57FA0(&PlayerPosition_EB398, v21, 0, v20);
 	}
 	//v22 = a1x->dword_0xA4_164;
 	v23 = a1x->dword_0xA4_164x->word_0x1E_30;
@@ -61838,7 +61862,7 @@ LABEL_27:
 	{
 		if (v23 > 128)
 			a1x->dword_0xA4_164x->word_0x1E_30 = 128;
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->dword_0xA4_164x->word_0x20_32, 0, a1x->dword_0xA4_164x->word_0x1E_30);
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->dword_0xA4_164x->word_0x20_32, 0, a1x->dword_0xA4_164x->word_0x1E_30);
 		//v24 = a1x->dword_0xA4_164;
 		v25 = a1x->dword_0xA4_164x->word_0x1E_30;
 		//v26 = a1x->dword_0xA4_164x->word_0x1E_30;
@@ -61858,11 +61882,11 @@ LABEL_27:
 			a1x->dword_0xA4_164x->word_0x1E_30 = 0;
 	}
 	//v28 = (int16*)a1x->dword_0xA4_164;
-	//v29 = a1x->dword_0xA4_164x->word_0x1A8_424 + x_WORD_EB398ar.y;
+	//v29 = a1x->dword_0xA4_164x->word_0x1A8_424 + PlayerPosition_EB398.y;
 	//v30 = a1x->dword_0xA4_164x->word_0x1AA_426;
-	x_WORD_EB398ar.x += a1x->dword_0xA4_164x->word_0x1A6_422;
-	x_WORD_EB398ar.y += a1x->dword_0xA4_164x->word_0x1A8_424;
-	x_WORD_EB398ar.z += a1x->dword_0xA4_164x->word_0x1AA_426;
+	PlayerPosition_EB398.x += a1x->dword_0xA4_164x->word_0x1A6_422;
+	PlayerPosition_EB398.y += a1x->dword_0xA4_164x->word_0x1A8_424;
+	PlayerPosition_EB398.z += a1x->dword_0xA4_164x->word_0x1AA_426;
 	a1x->dword_0xA4_164x->word_0x1A6_422 = 0;
 	a1x->dword_0xA4_164x->word_0x1A8_424 = 0;
 	a1x->dword_0xA4_164x->word_0x1AA_426 = 0;
@@ -61902,33 +61926,33 @@ LABEL_27:
 	}
 	if ((unsigned __int16)sub_5D0A0(a1x))
 	{
-		v39 = getTerrainAlt_10C40(&x_WORD_EB398ar);
+		v39 = getTerrainAlt_10C40(&PlayerPosition_EB398);
 		v40 = v39;
 		if (a1x->dword_0xA4_164x->byte_0x14E_334)
 		{
-			x_WORD_EB398ar.z -= 51;
+			PlayerPosition_EB398.z -= 51;
 		}
 		else
 		{
 			//v41 = a1x->dword_0xA0_160;
-			if (x_WORD_EB398ar.z > a1x->dword_0xA0_160x->word_160_0xc_12 + v39)
-				x_WORD_EB398ar.z += a1x->dword_0xA0_160x->word_160_0xe_14;
+			if (PlayerPosition_EB398.z > a1x->dword_0xA0_160x->word_160_0xc_12 + v39)
+				PlayerPosition_EB398.z += a1x->dword_0xA0_160x->word_160_0xe_14;
 		}
 		//v42 = a1x->dword_0xA0_160;
-		if (x_WORD_EB398ar.z >= v40 + a1x->dword_0xA0_160x->word_160_0xc_12)
+		if (PlayerPosition_EB398.z >= v40 + a1x->dword_0xA0_160x->word_160_0xc_12)
 		{
 			if (isCaveLevel_D41B6)
 			{
-				v43 = sub_10C60(&x_WORD_EB398ar);
-				if (x_WORD_EB398ar.z > v43 - 384)
-					x_WORD_EB398ar.z = v43 - 384;
+				v43 = sub_10C60(&PlayerPosition_EB398);
+				if (PlayerPosition_EB398.z > v43 - 384)
+					PlayerPosition_EB398.z = v43 - 384;
 			}
 		}
 		else
 		{
-			x_WORD_EB398ar.z = a1x->dword_0xA0_160x->word_160_0xc_12 + v40;
+			PlayerPosition_EB398.z = a1x->dword_0xA0_160x->word_160_0xc_12 + v40;
 		}
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 	}
 	else
 	{
@@ -62033,8 +62057,8 @@ LABEL_27:
 // D4B90: using guessed type int x_DWORD_D4B90;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (0005DD50) --------------------------------------------------------
 void sub_5DD50(type_entity_0x6E8E* a1x)//23dd50
@@ -62057,9 +62081,9 @@ void sub_5DD50(type_entity_0x6E8E* a1x)//23dd50
 	if (v3)
 	{
 		a1x->dword_0xA4_164x->byte_0x261_609 = 1;
-		x_WORD_EB398ar = a1x->position_0x4C_76;
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, 128);
-		/*result = */sub_57CF0(a1x, &x_WORD_EB398ar);
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, 128);
+		/*result = */sub_57CF0(a1x, &PlayerPosition_EB398);
 	}
 	else
 	{
@@ -62112,7 +62136,7 @@ void sub_5DE30(type_entity_0x6E8E* a1x)//23ee30
 			v9 = a1x->word_0x1C_28 + sub_58350(a1x->word_0x1C_28, v7, 5, 0x82u);
 			HIBYTE(v9) &= 7u;
 			a1x->word_0x1C_28 = v9;
-			MovePlayer_57FA0(&x_WORD_EB398ar, v8, a1x->word_0x1E_30, v6);
+			MovePlayer_57FA0(&PlayerPosition_EB398, v8, a1x->word_0x1E_30, v6);
 			v10 = SPELLS_BEGIN_BUFFER_str[14].subspell[a1x->dword_0xA4_164x->word_0x14A_330].byte_0x1A;
 			if ((unsigned __int8)v10 >= 1u)
 			{
@@ -62295,7 +62319,7 @@ void sub_5E310_multiplayer_test_die(type_entity_0x6E8E* a1x)//23f310
 	v5 = v4;
 	if (a1x->position_0x4C_76.z < v3 + v4)
 		a1x->position_0x4C_76.z = a1x->dword_0xA0_160x->word_160_0xc_12 + v4;
-	v6x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 1);
+	v6x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 1);
 	if (v6x)
 	{
 		v6x->struct_byte_0xc_12_15.byte[0] |= 0x80u;
@@ -62355,14 +62379,14 @@ void sub_5E310_multiplayer_test_die(type_entity_0x6E8E* a1x)//23f310
 				a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[i] = 1;
 				v19x->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
 				v19x->state_0x45_69++;
-				x_WORD_EB398ar = a1x->position_0x4C_76;
+				PlayerPosition_EB398 = a1x->position_0x4C_76;
 				a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 				v20 = a1x->rand_0x14_20;
-				x_WORD_EB398ar.x += (a1x->rand_0x14_20 & 0x1FF) - 256;
+				PlayerPosition_EB398.x += (a1x->rand_0x14_20 & 0x1FF) - 256;
 				v21 = 9377 * v20 + 9439;
 				a1x->rand_0x14_20 = v21;
-				x_WORD_EB398ar.y += (v21 & 0x1FF) - 256;
-				sub_57CF0(v19x, &x_WORD_EB398ar);
+				PlayerPosition_EB398.y += (v21 & 0x1FF) - 256;
+				sub_57CF0(v19x, &PlayerPosition_EB398);
 				a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 				v26x->life_0x8 = a1x->rand_0x14_20 % 0x5Au + 200;
 			}
@@ -62392,7 +62416,7 @@ void sub_5E310_multiplayer_test_die(type_entity_0x6E8E* a1x)//23f310
 // EA224: using guessed type int x_DWORD_EA224;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
 
 //----- (0005E660) --------------------------------------------------------
 int sub_5E660(type_entity_0x6E8E* a1x)//23f660
@@ -62602,11 +62626,11 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 		a1x->byte_0x46_70 = 1;
 		break;
 	case 1://change lightness
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		v8 = a1x->actSpeed_0x82_130;
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
 		if (sub_5D0A0(a1x))
-			sub_57CF0(a1x, &x_WORD_EB398ar);
+			sub_57CF0(a1x, &PlayerPosition_EB398);
 		else
 			a1x->actSpeed_0x82_130 = 0;
 		if (abs(v8) <= 4)
@@ -62680,10 +62704,10 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 		a1x->dword_0x10_16--;// = v13;
 		if (!a1x->dword_0x10_16)
 			goto LABEL_51;
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		v14x = Entities_EA3E4[a1x->word_0x96_150];
 		a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &v14x->position_0x4C_76);
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
 		//v15 = a1x->word_0x82_130 + 8;
 		a1x->actSpeed_0x82_130 += 8;// = v15;
 		if (a1x->actSpeed_0x82_130 < 0)
@@ -62692,7 +62716,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 			a1x->actSpeed_0x82_130 = 200;
 		if (!sub_5D0A0(a1x))
 			goto LABEL_51;
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		if (Maths::EuclideanDistXYZ_58490(&a1x->position_0x4C_76, &v14x->position_0x4C_76) < 0x180)
 			goto LABEL_51;
 		break;
@@ -62708,8 +62732,8 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 		a1x->dword_0x10_16 = v16;
 		if (!v16)
 			goto LABEL_51;
-		x_WORD_EB398ar = a1x->position_0x4C_76;
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, a1x->actSpeed_0x82_130);
 		v17 = a1x->actSpeed_0x82_130 + 8;
 		a1x->actSpeed_0x82_130 = v17;
 		if (v17 < 0)
@@ -62717,7 +62741,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 		if (a1x->actSpeed_0x82_130 > 200)
 			a1x->actSpeed_0x82_130 = 200;
 		if (sub_5D0A0(a1x))
-			sub_57CF0(a1x, &x_WORD_EB398ar);
+			sub_57CF0(a1x, &PlayerPosition_EB398);
 		else
 			LABEL_51:
 		a1x->byte_0x46_70 = 10;
@@ -62735,10 +62759,10 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 		a1x->dword_0x10_16--;// = v19;
 		if (a1x->dword_0x10_16 && x_D41A0_BYTEARRAY_4_struct.byteindex_180)
 		{
-			x_WORD_EB398ar = a1x->position_0x4C_76;
-			MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, 2);
+			PlayerPosition_EB398 = a1x->position_0x4C_76;
+			MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, 2);
 			if (sub_5D0A0(a1x))
-				sub_57CF0(a1x, &x_WORD_EB398ar);
+				sub_57CF0(a1x, &PlayerPosition_EB398);
 		}
 		else
 		{
@@ -63511,8 +63535,8 @@ void sub_5FD00(type_entity_0x6E8E* a1x)//240d00
 				v15 = v14 / v16;
 				for (result = v16; v16 > v13; result = v16)
 				{
-					x_WORD_EB398ar = a1x->position_0x4C_76;
-					v4x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 39);
+					PlayerPosition_EB398 = a1x->position_0x4C_76;
+					v4x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 39);
 					//v5x = v4x;
 					if (v4x)
 					{
@@ -63531,8 +63555,8 @@ void sub_5FD00(type_entity_0x6E8E* a1x)//240d00
 						a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 						v10 = a1x->rand_0x14_20 % 0x1400u + 3840;
 						a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
-						MovePlayer_57FA0(&x_WORD_EB398ar, a1x->rand_0x14_20 & 0x7FF, 0, v10);
-						sub_57CF0(v4x, &x_WORD_EB398ar);
+						MovePlayer_57FA0(&PlayerPosition_EB398, a1x->rand_0x14_20 & 0x7FF, 0, v10);
+						sub_57CF0(v4x, &PlayerPosition_EB398);
 						v11 = v4x->mana_0x90_144;
 						v12 = v14 - v11;
 						v14 = v12;
@@ -63709,11 +63733,11 @@ LABEL_22:
 						v18x->dword_0xA4_164x->array_0x5C_92.at(v20) = v17x - D41A0_0.struct_0x6E8E;
 						v17x->word_0x1C_28 = 512;
 						v17x->word_0x20_32 = v17x->word_0x1C_28;
-						x_WORD_EB398ar = v17x->position_0x4C_76;
-						x_WORD_EB398ar.x += 128;
-						x_WORD_EB398ar.y += 640;
-						x_WORD_EB398ar.z = getTerrainAlt_10C40(&x_WORD_EB398ar);
-						sub_57CF0(v17x, &x_WORD_EB398ar);
+						PlayerPosition_EB398 = v17x->position_0x4C_76;
+						PlayerPosition_EB398.x += 128;
+						PlayerPosition_EB398.y += 640;
+						PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
+						sub_57CF0(v17x, &PlayerPosition_EB398);
 					}
 				}
 			}
@@ -63730,8 +63754,8 @@ LABEL_22:
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00060400) --------------------------------------------------------
 x_WORD* sub_60400(__int16 a1, x_WORD* a2, x_WORD* a3)//241400
@@ -63995,7 +64019,7 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 	v16x = v1x;
 	if (v1x > Entities_EA3E4[0])
 	{
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		v2 = &v1x->position_0x4C_76;
 		a1x->word_0x1C_28 = Maths::sub_581E0_maybe_tan2(&a1x->position_0x4C_76, &v1x->position_0x4C_76);
 		v3 = v16x->class_0x3F_63;
@@ -64007,7 +64031,7 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 				v4 = 2048;
 			else
 				v4 = 1024;
-			v5 = Maths::EuclideanDistXYZ_58490(&x_WORD_EB398ar, &v16x->position_0x4C_76);
+			v5 = Maths::EuclideanDistXYZ_58490(&PlayerPosition_EB398, &v16x->position_0x4C_76);
 			if (v5 > v4)
 			{
 				v16x->struct_byte_0xc_12_15.byte[0] &= 0xBFu;
@@ -64028,8 +64052,8 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 			v6 = a1x->actSpeed_0x82_130;
 			if (v5 <= v6)
 			{
-				x_WORD_EB398ar.x = v16x->position_0x4C_76.x;
-				x_WORD_EB398ar.y = v16x->position_0x4C_76.y;
+				PlayerPosition_EB398.x = v16x->position_0x4C_76.x;
+				PlayerPosition_EB398.y = v16x->position_0x4C_76.y;
 				goto LABEL_20;
 			}
 		}
@@ -64038,14 +64062,14 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 			if (v3 == 3)
 			{
 				v7 = a1x->actSpeed_0x82_130 * v16x->dword_0x10_16;
-				if (Maths::EuclideanDistXYZ_58490(&x_WORD_EB398ar, v2) <= v7)
+				if (Maths::EuclideanDistXYZ_58490(&PlayerPosition_EB398, v2) <= v7)
 				{
 					v8 = a1x->dword_0xA0_160x->word_160_0xc_12;
-					if (x_WORD_EB398ar.z <= v8 + (signed __int16)getTerrainAlt_10C40(&x_WORD_EB398ar) && v16x->dword_0x10_16 > 0)
+					if (PlayerPosition_EB398.z <= v8 + (signed __int16)getTerrainAlt_10C40(&PlayerPosition_EB398) && v16x->dword_0x10_16 > 0)
 					{
-						x_WORD_EB398ar.x = v16x->position_0x4C_76.x;
+						PlayerPosition_EB398.x = v16x->position_0x4C_76.x;
 						v9 = v16x->mana_0x90_144;
-						x_WORD_EB398ar.y = v16x->position_0x4C_76.y;
+						PlayerPosition_EB398.y = v16x->position_0x4C_76.y;
 						v16x->mana_0x90_144 = a1x->mana_0x90_144 + v9;
 						a1x->mana_0x90_144 = 0;
 						a1x->word_0x94_148 = a1x->id_0x1A_26;
@@ -64056,11 +64080,11 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 			}
 			LOWORD(v6) = a1x->actSpeed_0x82_130;
 		}
-		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, v6);
+		MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, v6);
 	LABEL_20:
 		if (isCaveLevel_D41B6)
 		{
-			sub_60D50(&x_WORD_EB398ar, a1x);
+			sub_60D50(&PlayerPosition_EB398, a1x);
 		}
 		else
 		{
@@ -64068,9 +64092,9 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 			v11 = a1x->dword_0xA0_160x->word_160_0xe_14;
 			v12 = a1x->dword_0xA0_160x->word_160_0xa_10;
 			v13 = a1x->dword_0xA0_160x->word_160_0xc_12;
-			v14 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-			sub_580E0(&x_WORD_EB398ar, v14, v13, v12, v11);
-			sub_57CF0(a1x, &x_WORD_EB398ar);
+			v14 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+			sub_580E0(&PlayerPosition_EB398, v14, v13, v12, v11);
+			sub_57CF0(a1x, &PlayerPosition_EB398);
 		}
 	}
 	sub_60EA0(a1x);
@@ -64079,8 +64103,8 @@ void AddBallon_60AB0(type_entity_0x6E8E* a1x)//241ab0
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00060D50) --------------------------------------------------------
 void sub_60D50(axis_3d* a1x, type_entity_0x6E8E* a2x)//241d50
@@ -64511,9 +64535,9 @@ void sub_613D0(type_entity_0x6E8E* a1x)//2423d0
 			{
 				do
 				{
-					x_WORD_EB398ar.x = (v20 + v13[0]) << 8;
-					x_WORD_EB398ar.y = (v19 + v13[1]) << 8;
-					i2x = IfSubtypeCallAxisEvent_4A190(&x_WORD_EB398ar, 10, 79);
+					PlayerPosition_EB398.x = (v20 + v13[0]) << 8;
+					PlayerPosition_EB398.y = (v19 + v13[1]) << 8;
+					i2x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 79);
 					v9x = i2x;
 					v17x = i2x;
 					if (!i2x)
@@ -64541,7 +64565,7 @@ void sub_613D0(type_entity_0x6E8E* a1x)//2423d0
 // EA3BC: using guessed type int **filearray_2aa18c[24];
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
+// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
 // 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00061620) --------------------------------------------------------
@@ -64844,19 +64868,19 @@ void sub_652C0(type_entity_0x6E8E* a1x)//2462c0
 	}
 	else
 	{
-		x_WORD_EB398ar = a1x->position_0x4C_76;
+		PlayerPosition_EB398 = a1x->position_0x4C_76;
 		if ((int16_t)a1x->position_0x4C_76.z > (signed __int16)getTerrainAlt_10C40(&a1x->position_0x4C_76))
 		{
 			v2 = a1x->actSpeed_0x82_130;
 			if (v2)
-				MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, 0, v2);
+				MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, 0, v2);
 		}
 		else
 		{
 			a1x->actSpeed_0x82_130 = 0;
 			sub_654B0(a1x);
 		}
-		sub_57CF0(a1x, &x_WORD_EB398ar);
+		sub_57CF0(a1x, &PlayerPosition_EB398);
 		v3 = a1x->actSpeed_0x82_130;
 		if (v3)
 			a1x->actSpeed_0x82_130 = v3 - 1;
@@ -64928,11 +64952,11 @@ void sub_654B0(/*axis_3d* a1x,*/ type_entity_0x6E8E* a2x)//2464b0
 	uint32_t v10; // [esp+14h] [ebp-8h]
 	int v11; // [esp+18h] [ebp-4h]
 
-	result = sub_1B7A0_tile_compare(&x_WORD_EB398ar);
+	result = sub_1B7A0_tile_compare(&PlayerPosition_EB398);
 	if (result > 20)
 	{
 		v9 = 0;
-		v5x = x_WORD_EB398ar;
+		v5x = PlayerPosition_EB398;
 		result = a2x->word_0x1C_28;
 		v10 = 0x10000;
 		while (1)
@@ -64940,7 +64964,7 @@ void sub_654B0(/*axis_3d* a1x,*/ type_entity_0x6E8E* a2x)//2464b0
 			v11 = result;
 			if (v9 >= 8)
 				break;
-			v7x = x_WORD_EB398ar;
+			v7x = PlayerPosition_EB398;
 			MovePlayer_57FA0(&v7x, v11, 0, 64);
 			v3 = v10;
 			v4 = getTerrainAlt_10C40(&v7x);
@@ -64953,7 +64977,7 @@ void sub_654B0(/*axis_3d* a1x,*/ type_entity_0x6E8E* a2x)//2464b0
 			v9++;
 		}
 		//a1x = &v5x;
-		x_WORD_EB398ar = v5x;
+		PlayerPosition_EB398 = v5x;
 	}
 	//return result;
 }
@@ -65142,9 +65166,9 @@ type_entity_0x6E8E* sub_65820(type_entity_0x6E8E* a1x)//246820
 			v3 = 1;
 	}
 	a1x->actSpeed_0x82_130 += 2 * v3;
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 	v4x = sub_10780(a1x);
 	v5x = v4x;
 	if (v4x)
@@ -65159,12 +65183,12 @@ type_entity_0x6E8E* sub_65820(type_entity_0x6E8E* a1x)//246820
 	}
 	v6 = getTerrainAlt_10C40(&a1x->position_0x4C_76);
 	v7 = a1x->position_0x4C_76.z;
-	x_WORD_EB398ar.z = v6;
+	PlayerPosition_EB398.z = v6;
 	if (v6 > v7
 		|| isCaveLevel_D41B6
-		&& (x_WORD_EB398ar.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov, a1x->position_0x4C_76.z > x_WORD_EB398ar.z))
+		&& (PlayerPosition_EB398.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov, a1x->position_0x4C_76.z > PlayerPosition_EB398.z))
 	{
-		a1x->position_0x4C_76.z = x_WORD_EB398ar.z;
+		a1x->position_0x4C_76.z = PlayerPosition_EB398.z;
 		v8 = a1x->model_0x40_64;
 		if (v8 != 4 && v8 != 22 && v8 != 24 && v8 != 26 && sub_104D0_terrain_tile_is_water(&a1x->position_0x4C_76) == 1)
 		{
@@ -65212,7 +65236,7 @@ LABEL_29:
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00065B30) --------------------------------------------------------
 void CastPlayerFire_65B30(type_entity_0x6E8E* entity)//246b30
@@ -65335,21 +65359,21 @@ type_entity_0x6E8E* sub_65C20(type_entity_0x6E8E* a1x)//246c20
 	}
 LABEL_18:
 	v16x = a1x->position_0x4C_76;
-	x_WORD_EB398ar = v16x;
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
-	sub_57CF0(a1x, &x_WORD_EB398ar);//move projectile?
+	PlayerPosition_EB398 = v16x;
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+	sub_57CF0(a1x, &PlayerPosition_EB398);//move projectile?
 	v8x = sub_10780(a1x);
 	v9x = v8x;
 	if (!v8x)
 	{
 		v11 = getTerrainAlt_10C40(&a1x->position_0x4C_76);
 		v12 = a1x->position_0x4C_76.z;
-		x_WORD_EB398ar.z = v11;
+		PlayerPosition_EB398.z = v11;
 		if (v11 > v12
 			|| isCaveLevel_D41B6
-			&& (x_WORD_EB398ar.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov, a1x->position_0x4C_76.z > x_WORD_EB398ar.z))
+			&& (PlayerPosition_EB398.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov, a1x->position_0x4C_76.z > PlayerPosition_EB398.z))
 		{
-			v16x.z = x_WORD_EB398ar.z;
+			v16x.z = PlayerPosition_EB398.z;
 			sub_57CF0(a1x, &v16x);
 			if (a1x->model_0x40_64 != 4 && sub_104D0_terrain_tile_is_water(&a1x->position_0x4C_76) == 1)
 			{
@@ -65415,7 +65439,7 @@ LABEL_35:
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 int debugcounter_sub_65F60 = 0;
 
@@ -65470,18 +65494,18 @@ void CastPosses_65F60(type_entity_0x6E8E* a1x)//246f60
 	{
 		sub_65610(a1x, v1x);
 	}
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
-	v3 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-	if (v3 > x_WORD_EB398ar.z)
-		x_WORD_EB398ar.z = v3;
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+	v3 = getTerrainAlt_10C40(&PlayerPosition_EB398);
+	if (v3 > PlayerPosition_EB398.z)
+		PlayerPosition_EB398.z = v3;
 	if (isCaveLevel_D41B6)
 	{
-		v4 = sub_10C60(&x_WORD_EB398ar) - a1x->array_0x52_82.fov;
-		if (v4 < x_WORD_EB398ar.z)
-			x_WORD_EB398ar.z = v4;
+		v4 = sub_10C60(&PlayerPosition_EB398) - a1x->array_0x52_82.fov;
+		if (v4 < PlayerPosition_EB398.z)
+			PlayerPosition_EB398.z = v4;
 	}
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 	v5x = sub_108B0(a1x);
 	v6x = v5x;
 	v7x = v5x;
@@ -65489,17 +65513,17 @@ void CastPosses_65F60(type_entity_0x6E8E* a1x)//246f60
 	{
 		/*LOWORD(v8) = *///sub_10C40_getTerrainAlt(a1x->position_0x4C_76);
 		v9 = a1x->position_0x4C_76.z;
-		x_WORD_EB398ar.z = getTerrainAlt_10C40(&a1x->position_0x4C_76);
-		if (x_WORD_EB398ar.z > v9
+		PlayerPosition_EB398.z = getTerrainAlt_10C40(&a1x->position_0x4C_76);
+		if (PlayerPosition_EB398.z > v9
 			|| isCaveLevel_D41B6
-			&& (x_WORD_EB398ar.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov,
-				/*x_WORD_EB398ar[2] = (short)v8,*/
-				//v10 = x_WORD_EB398ar[2],
+			&& (PlayerPosition_EB398.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov,
+				/*PlayerPosition_EB398[2] = (short)v8,*/
+				//v10 = PlayerPosition_EB398[2],
 				//LOWORD(v8) = a1x->position_0x4C_76.z,
-				a1x->position_0x4C_76.z > x_WORD_EB398ar.z))
+				a1x->position_0x4C_76.z > PlayerPosition_EB398.z))
 		{
-			//LOWORD(v8) = x_WORD_EB398ar[2];
-			a1x->position_0x4C_76.z = x_WORD_EB398ar.z;
+			//LOWORD(v8) = PlayerPosition_EB398[2];
+			a1x->position_0x4C_76.z = PlayerPosition_EB398.z;
 		}
 		else
 		{
@@ -65536,7 +65560,7 @@ LABEL_19:
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00066160) --------------------------------------------------------
 type_entity_0x6E8E* sub_66160(type_entity_0x6E8E* a1x)//247160
@@ -65685,9 +65709,9 @@ void sub_662E0(type_entity_0x6E8E* a1x)//2472e0
 			v3 = 1;
 	}
 	a1x->actSpeed_0x82_130 += 2 * v3;
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
-	sub_57CF0(a1x, &x_WORD_EB398ar);
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+	sub_57CF0(a1x, &PlayerPosition_EB398);
 	v4x = sub_10780(a1x);
 	v5x = v4x;
 	if (v4x)
@@ -65707,17 +65731,17 @@ void sub_662E0(type_entity_0x6E8E* a1x)//2472e0
 	{
 		//LOWORD(v6) = sub_10C40_getTerrainAlt(a1x->position_0x4C_76);
 		v7 = a1x->position_0x4C_76.z;
-		x_WORD_EB398ar.z = getTerrainAlt_10C40(&a1x->position_0x4C_76);
-		if (x_WORD_EB398ar.z > v7
+		PlayerPosition_EB398.z = getTerrainAlt_10C40(&a1x->position_0x4C_76);
+		if (PlayerPosition_EB398.z > v7
 			|| isCaveLevel_D41B6
-			&& (x_WORD_EB398ar.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov,
-				//x_WORD_EB398ar[2] = (signed __int16)v6,
+			&& (PlayerPosition_EB398.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov,
+				//PlayerPosition_EB398[2] = (signed __int16)v6,
 				//v8 = (signed __int16)v6,
 				//LOWORD(v6) = a1x->position_0x4C_76.z,
-				a1x->position_0x4C_76.z > x_WORD_EB398ar.z))
+				a1x->position_0x4C_76.z > PlayerPosition_EB398.z))
 		{
-			//LOBYTE(v6) = x_WORD_EB398ar[2];
-			a1x->position_0x4C_76.z = x_WORD_EB398ar.z;
+			//LOBYTE(v6) = PlayerPosition_EB398[2];
+			a1x->position_0x4C_76.z = PlayerPosition_EB398.z;
 			if (a1x->model_0x40_64 != 4)
 			{
 				//v6 = sub_104D0_terrain_tile_is_water((signed __int16 *)(a1 + 76));
@@ -65780,7 +65804,7 @@ LABEL_26:
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 //----- (00066610) --------------------------------------------------------
 void sub_66610(type_entity_0x6E8E* a1x)//247610
@@ -65811,9 +65835,9 @@ void sub_66610(type_entity_0x6E8E* a1x)//247610
 			}
 		}
 	}
-	x_WORD_EB398ar = a1x->position_0x4C_76;
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
-	a1x->position_0x4C_76 = x_WORD_EB398ar;
+	PlayerPosition_EB398 = a1x->position_0x4C_76;
+	MovePlayer_57FA0(&PlayerPosition_EB398, a1x->word_0x1C_28, a1x->word_0x1E_30, a1x->actSpeed_0x82_130);
+	a1x->position_0x4C_76 = PlayerPosition_EB398;
 	v2x = sub_10780(a1x);
 	if (v2x)
 	{
@@ -65824,14 +65848,14 @@ void sub_66610(type_entity_0x6E8E* a1x)//247610
 	{
 		//LOWORD(v2) = sub_10C40_getTerrainAlt(a1x->position_0x4C_76);
 		v3 = a1x->position_0x4C_76.z;
-		x_WORD_EB398ar.z = getTerrainAlt_10C40(&a1x->position_0x4C_76);
-		if (x_WORD_EB398ar.z > v3
+		PlayerPosition_EB398.z = getTerrainAlt_10C40(&a1x->position_0x4C_76);
+		if (PlayerPosition_EB398.z > v3
 			|| isCaveLevel_D41B6
-			&& (x_WORD_EB398ar.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov,
-				//x_WORD_EB398ar[2] = (short)v2,
-				//v4 = x_WORD_EB398ar[2],
+			&& (PlayerPosition_EB398.z = sub_10C60(&a1x->position_0x4C_76) - a1x->array_0x52_82.fov,
+				//PlayerPosition_EB398[2] = (short)v2,
+				//v4 = PlayerPosition_EB398[2],
 				//LOWORD(v2) = *(x_WORD *)(a1 + 80),
-				a1x->position_0x4C_76.z > x_WORD_EB398ar.z)
+				a1x->position_0x4C_76.z > PlayerPosition_EB398.z)
 			|| (v5 = a1x->life_0x8 - 1, a1x->life_0x8 = v5, v5 < 0))
 		{
 			v7 = 1;
@@ -65844,6 +65868,6 @@ void sub_66610(type_entity_0x6E8E* a1x)//247610
 // D41B6: using guessed type char x_BYTE_D41B6;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
+// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
 
 #pragma endregion

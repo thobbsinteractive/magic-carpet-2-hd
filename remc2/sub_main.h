@@ -435,7 +435,7 @@ void sub_49F30();
 
 void sub_6EBF0(filearray_struct* a1);
 
-char sub_533B0_decompress_levels(__int16 a1, Type_Level_2FECE* a2, std::string customLevelPath = "");
+char DecompressLevels_533B0(__int16 a1, Type_Level_2FECE* a2, std::string customLevelPath = "");
 
 //int /*__noreturn*/ sub_10000(); // weak
 type_entity_0x6E8E* sub_15CB0(/*type_entity_0x6E8E* a1,*/ type_entity_0x6E8E* a2); // weak
@@ -465,7 +465,7 @@ void sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6);
 //unsigned char __inx_BYTE(unsigned short Port);
 void sub_44EE0_smooth_tiles(/*int a1, */uaxis_2d a2);
 void sub_54600_mouse_reset();
-void sub_56A30_init_game_level(unsigned int a1, int16_t level = -1, std::string customLevelPath = "");
+void InitGameLevel_56A30(unsigned int a1, int16_t level = -1, std::string customLevelPath = "");
 void sub_5B870_copy_sentence(char* langbuffer, char** langindexbuffer, uint32_t count);
 void sub_47320_in_game_loop(signed int a1);
 void sub_56D60(unsigned int a1, char a2);
@@ -629,7 +629,7 @@ int /*__cdecl*/ sub_main(int argc, char **argv, char **envp);
 
 
 // FIXME: these functions and vars are used in Events.cpp and should be moved somewhere else
-extern axis_3d x_WORD_EB398ar;
+extern axis_3d PlayerPosition_EB398;
 extern type_D4C52ar2 str_x_DWORD_D4C52ar_0x2F22[7];
 extern std::array<type_D4C52ar, 17> str_D4C48ar;
 extern type_entity_0x6E8E* (*arsub_2a881e[])(axis_3d*);
