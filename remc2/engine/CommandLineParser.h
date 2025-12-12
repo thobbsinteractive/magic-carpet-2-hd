@@ -59,6 +59,8 @@ class CommandLineParser {
 		int16_t GetSetLevel() const { return m_set_level; };
 		std::string GetCustomLevelPath() const { return m_custom_level_path; };
 		std::string GetLogLevelStr() const { return m_log_level_str; };
+		std::string GetRecordingPath() const { return m_record_file; };
+		std::string GetPlaybackPath() const { return m_play_file; };
 
     private:
         void InterpretParams();
@@ -111,6 +113,8 @@ class CommandLineParser {
         uint16_t m_set_level;
         std::string m_custom_level_path;
 		std::string m_log_level_str;
+		std::string m_record_file;
+		std::string m_play_file;
 };
 
 extern CommandLineParser CommandLineParams;

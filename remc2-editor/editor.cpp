@@ -125,7 +125,7 @@ void terrain_recalculate();
 int main_x(/*int argc, char** argv*/);
 
 void loadlevel(int levelnumber) {
-	sub_533B0_decompress_levels(levelnumber, &D41A0_0.terrain_2FECE);
+	DecompressLevels_533B0(levelnumber, &D41A0_0.terrain_2FECE);
 	memcpy(temparray_0x30311, D41A0_0.terrain_2FECE.entity_0x30311,sizeof(type_entity_0x30311)*0x4b0);
 	for(int i=0;i< 0x4b0;i++)
 		temparray_0x30311_inactive[i]=0;

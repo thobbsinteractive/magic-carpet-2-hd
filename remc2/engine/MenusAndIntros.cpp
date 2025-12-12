@@ -1134,7 +1134,7 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 	}
 	memset((void*)&unk_17DBA8str, 0, 16);
 	unk_17DBA8str.x_BYTE_17DBB6 = 2;
-	if (x_BYTE_D419C_level_num <= -1)
+	if (LoadLevelNumber_D419C <= -1)
 	{
 		IsPlayingCDTrack_17E09D = 0;
 		x_DWORD_17DE38str.unk_17E078x[11] = 16;
@@ -1231,7 +1231,7 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 	else
 	{
 		m_ExitMenuLoop_E29DC = 1;
-		x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = x_BYTE_D419C_level_num;
+		x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = LoadLevelNumber_D419C;
 		if (a1x)
 			a1x->dword_4 = 0;
 		result = true;
