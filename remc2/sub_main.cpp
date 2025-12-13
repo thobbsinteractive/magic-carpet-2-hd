@@ -31958,6 +31958,9 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 			Logger->debug("sub_46830_main_loop:before load scr");
 
 			isSecretLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w > 24 && x_D41A0_BYTEARRAY_4_struct.levelnumber_43w < 50;
+
+			EventDispatcher::I->DispatchEvent(EventType::E_GAMEPLAY_STATE_CHANGE, GameState::LOADING);
+
 			sub_47FC0_load_screen(isSecretLevel);//vga smaltitle
 
 			Logger->debug("sub_46830_main_loop:load scr passed");
@@ -32096,6 +32099,9 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 							count_begin++;//for debug
 
 							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = v13->levelNumber_6;
+
+							EventDispatcher::I->DispatchEvent(EventType::E_GAMEPLAY_STATE_CHANGE, GameState::LOADING);
+
 							sub_47FC0_load_screen(true);
 							InitGameLevel_56A30(a3);
 							sub_47160();

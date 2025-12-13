@@ -5,6 +5,7 @@
 enum class GameState
 {
 	STARTED,
+	LOADING,
 	ENDED
 };
 
