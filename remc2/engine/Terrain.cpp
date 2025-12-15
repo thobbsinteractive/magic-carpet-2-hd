@@ -1,6 +1,4 @@
 #include "Terrain.h"
-#include "engine_support.h"
-#include "CommandLineParser.h"
 
 uint16_t x_WORD_17B4E0; // 34c4e0
 
