@@ -4,6 +4,8 @@
 #define MAIN_TERRAIN
 
 #include "Basic.h"
+#include "Basic_mini.h"
+#include "Basic_terrain.h"
 #include "Unk_D4A30.h"
 #include "Unk_D47E0.h"
 

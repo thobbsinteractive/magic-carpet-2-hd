@@ -19,5 +19,6 @@
 #include <windows.h>
 #endif
 #include "defs.h"
+#include "global_types.h"
 
 #endif //MAIN_BASIC_MINI
