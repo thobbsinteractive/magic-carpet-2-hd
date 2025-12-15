@@ -313,7 +313,7 @@ extern TColor* str_PALDATA_BEGIN_BUFFER;//2bb3c8
 extern TColor* str_PALMEM_BEGIN_BUFFER;//6d654d
 extern uint8_t* POINTERSDAT_BEGIN_BUFFER;//2bc390
 extern posistruct2_t* POINTERSTAB_BEGIN_BUFFER;//2bc394
-extern posistruct2_t* POINTERSTAB_END_BUFFER;//2bc388*/
+extern posistruct2_t* POINTERSTAB_END_BUFFER;//2bc388
 
 extern uint8_t* BUILD00DAT_BEGIN_BUFFER;
 extern posistruct2_t* BUILD00TAB_BEGIN_BUFFER;
