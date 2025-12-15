@@ -177,7 +177,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBackScene));
 
 			std::function<void(GameState)> callBackGameState = SetMouseKeyboardGameState;
-			EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAMEPLAY_STATE_CHANGE, callBackGameState));
+			EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAME_STATE_CHANGE, callBackGameState));
 
 			std::function<void(uint32_t, uint32_t)> resCallBack = OnMouseResolutionChanged;
 			EventDispatcher::I->RegisterEvent(new Event<uint32_t, uint32_t>(EventType::E_RESOLUTION_CHANGE, resCallBack));
@@ -202,7 +202,7 @@ void SetMouseKeyboardScene(const Scene sceneId)
 
 void SetMouseKeyboardGameState(const GameState state)
 {
-	if (state == GameState::ENDED)
+	if (state == GameState::GAMEPLAY_ENDED)
 	{
 		SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, 640, 480 });
 	}
@@ -1622,20 +1622,20 @@ void VGA_mouse_clear_keys() {
 		pressedKeys_180664[i] = 0;
 }
 
-void StartRecording()
+void StartRecording(const char* outputFileName)
 {
 	if (m_InputRecorder != nullptr)
 		delete m_InputRecorder;
 
-	m_InputRecorder = new InputRecorder();
+	m_InputRecorder = new InputRecorder(outputFileName);
 	m_InputRecorder->StartRecording();
 }
 
-void StopRecording(const char* outputFileName)
+void StopRecording()
 {
 	if (m_InputRecorder != nullptr)
 	{
-		m_InputRecorder->StopRecording(outputFileName);
+		m_InputRecorder->StopRecording();
 		delete m_InputRecorder;
 	}
 }
@@ -1645,8 +1645,8 @@ void StartPlayback(const char* inputFileName)
 	if (m_InputRecorder != nullptr)
 		delete m_InputRecorder;
 
-	m_InputRecorder = new InputRecorder();
-	m_InputRecorder->StartPlayback(inputFileName);
+	m_InputRecorder = new InputRecorder(inputFileName);
+	m_InputRecorder->StartPlayback();
 }
 
 void StopPlayback()
