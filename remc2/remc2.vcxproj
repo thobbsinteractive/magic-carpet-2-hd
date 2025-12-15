@@ -380,6 +380,8 @@
     <ClInclude Include="..\SDL-Mixer-X-master\src\music.h" />
     <ClInclude Include="engine\Animation.h" />
     <ClInclude Include="engine\Basic.h" />
+    <ClInclude Include="engine\Basic_mini.h" />
+    <ClInclude Include="engine\Basic_terrain.h" />
     <ClInclude Include="engine\CommandLineParser.h" />
     <ClInclude Include="engine\Compare.h" />
     <ClInclude Include="engine\GameRenderInterface.h" />
@@ -508,6 +510,8 @@
     <ClCompile Include="..\SDL-Mixer-X-master\src\music.c" />
     <ClCompile Include="engine\Animation.cpp" />
     <ClCompile Include="engine\Basic.cpp" />
+    <ClCompile Include="engine\Basic_mini.cpp" />
+    <ClCompile Include="engine\Basic_terrain.cpp" />
     <ClCompile Include="engine\CommandLineParser.cpp" />
     <ClCompile Include="engine\Compare.cpp" />
     <ClCompile Include="engine\GameRenderGL.cpp" />

@@ -3,19 +3,7 @@
 #ifndef MAIN_BASIC
 #define MAIN_BASIC
 
-#if (!defined(WIN32) && !defined(__linux__)) || defined(COMPILE_FOR_64BIT)
-  #define TEST_x64//only for x64 testing
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <cstdint>
-#include <functional>
-#include <chrono>
-
-#include "stdint.h"
+#include "Basic_mini.h"
 
 #ifdef _MSC_VER
 #include <direct.h>  
@@ -45,6 +33,7 @@
 #else
 #define x32_BIT_ENVIRONMENT 1
 #endif
+
 
 #define __CFSHL__(x, y) (x<<y)
 

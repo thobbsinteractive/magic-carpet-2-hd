@@ -480,6 +480,12 @@
     <ClInclude Include="engine\GameRenderNG.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
+    <ClInclude Include="engine\Basic_mini.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Basic_terrain.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -807,6 +813,12 @@
       <Filter>Source Files\engine</Filter>
     </ClCompile>
     <ClCompile Include="engine\GameRenderNG.cpp">
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Basic_mini.cpp">
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Basic_terrain.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
   </ItemGroup>

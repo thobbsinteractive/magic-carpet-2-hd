@@ -1,0 +1,4 @@
+#pragma once
+#ifndef MAIN_BASIC_TERRAIN
+#define MAIN_BASIC_TERRAIN
+#endif //MAIN_BASIC_TERRAIN
