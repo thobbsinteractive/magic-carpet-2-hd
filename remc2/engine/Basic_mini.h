@@ -15,5 +15,9 @@
 #include <chrono>
 
 #include "stdint.h"
+#ifdef _MSC_VER
+#include <windows.h>
+#endif
+#include "defs.h"
 
 #endif //MAIN_BASIC_MINI

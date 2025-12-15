@@ -8,18 +8,18 @@
 #ifdef _MSC_VER
 #include <direct.h>  
 #include <io.h>  
-#include <windows.h>
 #include "../portability/dirent-x.h"
 #else
 #include "dirent.h"
 #endif
+
 
 #include "../portability/port_outputs.h"
 #include "../portability/port_time.h"
 #include "../portability/port_filesystem.h"
 #include "engine_support.h"
 #include "read_config.h"
-#include "defs.h"
+
 
 #include "../utilities/DataFileIO.h"
 #include "../engine/ViewPort.h"
