@@ -89,6 +89,8 @@ set(SOURCE_FILES_REGRESSIONTESTS
     "../remc2/engine/Compare_maps.h"
     "../remc2/engine/Level.cpp"
     "../remc2/engine/Level.h"
+    "../remc2/engine/ScreenBuff.cpp"
+    "../remc2/engine/ScreenBuff.h"
     "../remc2/engine/Sound.cpp"
     "../remc2/engine/Sound.h"
     "../remc2/engine/engine_support.cpp"

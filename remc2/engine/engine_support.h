@@ -24,6 +24,7 @@
 
 #include "Basic_terrain.h"
 #include "Level.h"
+#include "ScreenBuff.h"
 
 #pragma pack (1)
 typedef struct {//lenght 3

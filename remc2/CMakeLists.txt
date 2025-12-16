@@ -98,6 +98,8 @@ set(SOURCE_FILES_ENGINE
     "engine/Compare_maps.h"
     "engine/Level.cpp"
     "engine/Level.h"
+    "engine/ScreenBuff.cpp"
+    "engine/ScreenBuff.h"
     "engine/Animation.cpp"
     "engine/Animation.h"
     "engine/Terrain.cpp"

@@ -7,6 +7,7 @@
 
 #include "Basic.h"
 #include "Sound.h"
+#include "ScreenBuff.h"
 
 #pragma pack (1)
 typedef struct {//lenght 7

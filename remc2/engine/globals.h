@@ -3,7 +3,6 @@
 #include <cstdint>
 #include "Type_F2C20ar.h"
 
-extern uint8_t* pdwScreenBuffer_351628;
 extern int16_t x_WORD_180660_VGA_type_resolution;
 extern type_F2C20ar str_F2C20ar;
 extern uint32_t screenHeight_180624;
