@@ -14,5 +14,7 @@
 //#include "CommandLineParser.h"
 //Convert_to_shadow_D41A0_BYTESTR_0
 //qmemcpy
+void add_compare(uint32_t adress, bool debugafterload, int stopstep = -1, bool skip = false, int exitindex = 1000000, int skip2 = 0);
+void add_compare2(uint32_t adress, uint8_t* memadress, uint32_t dosmemadress, uint32_t size, bool debugafterload, int stopstep = -1, bool skip = false, int exitindex = 1000000);
 
 #endif //MAIN_COMPARE_MAPS

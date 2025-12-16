@@ -90,6 +90,8 @@ set(SOURCE_FILES_UNITTESTS
     "../remc2/engine/Basic_mini.h"
     "../remc2/engine/Basic_terrain.cpp"
     "../remc2/engine/Basic_terrain.h"
+    "../remc2/engine/Compare_maps.cpp"
+    "../remc2/engine/Compare_maps.h"
     "../remc2/engine/Level.cpp"
     "../remc2/engine/Level.h"
     "../remc2/engine/Sound.cpp"
