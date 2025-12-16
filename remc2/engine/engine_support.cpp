@@ -1405,7 +1405,6 @@ void writehex(uint8_t* buffer, uint32_t count) {
 	Logger->trace("\n");
 };
 
-type_D41A0_BYTESTR_0 D41A0_0;
 /*
 void x_D41A0_BYTEARRAY_0_to_x_D41A0_BYTESTR_0()
 {
