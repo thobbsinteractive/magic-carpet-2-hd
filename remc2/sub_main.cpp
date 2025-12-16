@@ -2562,7 +2562,6 @@ int x_DWORD_D4794 = 0; // weak
 //int x_DWORD_D4798 = 0; // weak
 char x_BYTE_D47D8 = 0; // weak
 char x_BYTE_D47D9 = 0; // weak
-bool lowDiffHeightmap_D47DC = true;
 char x_BYTE_D4B50 = 0; // weak
 char x_BYTE_D4B51 = 0; // weak
 char x_BYTE_D4B78 = 0; // weak
