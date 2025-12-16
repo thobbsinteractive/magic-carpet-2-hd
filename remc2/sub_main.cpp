@@ -1,5 +1,6 @@
 #include "sub_main.h"
 #include "engine/engine_support.h"
+#include "engine/Compare_maps.h"
 #include "engine/CommandLineParser.h"
 #include "engine/MenusAndIntros.h"
 #include "engine/Network.h"
