@@ -4,7 +4,7 @@
 #define MAIN_TERRAIN
 
 #include "globals.h"
-#include "Basic.h"
+//#include "Basic.h"
 #include "Basic_mini.h"
 #include "Basic_terrain.h"
 #include "Unk_D4A30.h"
@@ -13,7 +13,6 @@
 #include "engine_support.h"
 #include "CommandLineParser.h"
 //Convert_to_shadow_D41A0_BYTESTR_0
-//isCaveLevel_D41B6
 //qmemcpy
 
 extern char x_BYTE_F2CD0x[7 * 7 * 7 * 7][2]; // 233cd0//4802 //4816
@@ -69,6 +68,8 @@ int getTerrainAlt_10C40(axis_3d* a1);
 bool sub_11E70(type_event_0x6E8E* a1, axis_3d* a2);
 int sub_10C60(axis_3d* a1);
 int sub_B5D68(uint16_t a1, uint16_t a2);
+
+void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D41A0_BYTESTR_0* to);
 
 typedef struct {
 	int index;

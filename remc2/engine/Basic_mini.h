@@ -21,4 +21,8 @@
 #include "defs.h"
 #include "global_types.h"
 
+extern uint8_t* Zero_pointer;
+
+void qmemcpy(void* a, void* b, size_t c);
+
 #endif //MAIN_BASIC_MINI

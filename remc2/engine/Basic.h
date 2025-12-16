@@ -505,8 +505,6 @@ extern __int16 x_WORD_E36D4; // weak
 
 extern type_TMAPS00TAB_BEGIN_BUFFER* str_TMAPS00TAB_BEGIN_BUFFER;
 
-extern uint8_t* Zero_pointer;
-
 bool DefaultResolutions();
 
 void FreeMem_83E80(uint8_t* a1);
@@ -516,7 +514,6 @@ x_DWORD x_outp(x_DWORD, char);// weak
 x_DWORD x_inp(x_DWORD);// weak
 void stub_fix_it();
 void* Malloc_83CD0(size_t a1);
-void qmemcpy(void* a, void* b, size_t c);
 int FreeMem_9D490(void* a1, int a2);
 int x_free(void* ptr);
 void* Malloc_83D70(int a1);
@@ -600,7 +597,6 @@ signed int GetTrueWizardNumber_61790(signed int inputnumber);
 
 void Convert_from_shadow_str_2FECE(type_shadow_str_2FECE* from, type_str_2FECE* to);
 void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type_D41A0_BYTESTR_0* to);
-void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D41A0_BYTESTR_0* to);
 void Convert_to_shadow_str_E2A74(const type_array_str_E2A74 &from, type_shadow_str_E2A74* to);
 
 #endif //MAIN_BASIC
