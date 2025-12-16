@@ -123,4 +123,5 @@ typedef struct {//lenght 0x6604u
 	type_str_0x36442 stages_0x36442[8];//stages(checkpoints)
 	type_str_0x3647Ac StageVars_0x3647A[11];//8x11
 } type_str_2FECE;//compress level
+extern bool isCaveLevel_D41B6;
 #endif //MAIN_BASIC_TERRAIN
