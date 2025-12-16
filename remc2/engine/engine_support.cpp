@@ -483,7 +483,6 @@ uint8_t test_str_E2A74[] = {
 uint8_t* pdwScreenBuffer_351628; //351628
 
 uint8_t* off_D41A8_sky;//graphics buffer// = (uint8_t*)&x_BYTE_14B4E0; // weak
-uint8_t* x_BYTE_14B4E0_second_heightmap;//31C4E0
 
 posistruct_t* xy_DWORD_17DED4_spritestr;
 posistruct_t* xy_DWORD_17DEC0_spritestr;
