@@ -94,6 +94,8 @@ set(SOURCE_FILES_ENGINE
     "engine/Basic_mini.h"
     "engine/Basic_terrain.cpp"
     "engine/Basic_terrain.h"
+    "engine/Level.cpp"
+    "engine/Level.h"
     "engine/Animation.cpp"
     "engine/Animation.h"
     "engine/Terrain.cpp"

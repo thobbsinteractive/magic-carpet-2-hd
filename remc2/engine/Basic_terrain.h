@@ -3,6 +3,7 @@
 #define MAIN_BASIC_TERRAIN
 #include "Basic_mini.h"
 #include "MapType.h"
+#pragma pack (1)
 typedef struct {//lenght 20
 	//uint8_t byte_0;//type_str_0x30310//type_str_0x30324
 	uint16_t type_0x30311;//type_str_0x30311//type_str_0x30325//1091
@@ -123,5 +124,6 @@ typedef struct {//lenght 0x6604u
 	type_str_0x36442 stages_0x36442[8];//stages(checkpoints)
 	type_str_0x3647Ac StageVars_0x3647A[11];//8x11
 } type_str_2FECE;//compress level
+#pragma pack (16)
 extern bool isCaveLevel_D41B6;
 #endif //MAIN_BASIC_TERRAIN

@@ -390,6 +390,7 @@
     <ClInclude Include="engine\GameRenderNG.h" />
     <ClInclude Include="engine\globals.h" />
     <ClInclude Include="engine\global_types.h" />
+    <ClInclude Include="engine\Level.h" />
     <ClInclude Include="engine\MapType.h" />
     <ClInclude Include="engine\MenusAndIntros.h" />
     <ClInclude Include="engine\GameRenderOriginal.h" />
@@ -517,6 +518,7 @@
     <ClCompile Include="engine\GameRenderGL.cpp" />
     <ClCompile Include="engine\GameRenderHD.cpp" />
     <ClCompile Include="engine\GameRenderNG.cpp" />
+    <ClCompile Include="engine\Level.cpp" />
     <ClCompile Include="engine\MenusAndIntros.cpp" />
     <ClCompile Include="engine\GameRenderOriginal.cpp" />
     <ClCompile Include="engine\Network.cpp" />

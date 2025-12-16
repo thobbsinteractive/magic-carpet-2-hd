@@ -10,8 +10,9 @@
 #include "Unk_D4A30.h"
 #include "Unk_D47E0.h"
 
+#include "Level.h"
 #include "engine_support.h"
-#include "CommandLineParser.h"
+//#include "CommandLineParser.h"
 //Convert_to_shadow_D41A0_BYTESTR_0
 //qmemcpy
 
