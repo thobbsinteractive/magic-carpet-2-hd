@@ -3,8 +3,9 @@
 #include <string>
 #include <map>
 #include <fstream>
-#include "../engine/InputEvent.h"
 #include <vector>
+#include "../engine/InputEvent.h"
+#include "../engine/GameState.h"
 
 class InputRecorder
 {
@@ -16,17 +17,20 @@ private:
 public:
 	bool m_IsRecording = false;
 	bool m_IsPlaying = false;
+	const char* m_FilePath;
 
-	InputRecorder();
+	InputRecorder(const char* filePath);
 	~InputRecorder();
 
+	void PlayPause(const GameState state);
 	void StartRecording();
-	bool StopRecording(const char* outputFileName);
+	bool StopRecording();
+	void PauseRecording(bool pause);
 	void ClearInputEvents();
 	void IncrementTick();
 	std::vector<InputEvent*>* GetCurrentInputEvents();
 	
-	bool StartPlayback(const char* inputFileName);
+	bool StartPlayback();
 	void StopPlayback();
 
 	void RecordKeyPress(bool keyPressed, uint16_t scanCodeChar);

@@ -31958,6 +31958,9 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 			Logger->debug("sub_46830_main_loop:before load scr");
 
 			isSecretLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w > 24 && x_D41A0_BYTEARRAY_4_struct.levelnumber_43w < 50;
+
+			EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::GAMEPLAY_LOADING);
+
 			sub_47FC0_load_screen(isSecretLevel);//vga smaltitle
 
 			Logger->debug("sub_46830_main_loop:load scr passed");
@@ -32096,6 +32099,9 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 							count_begin++;//for debug
 
 							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = v13->levelNumber_6;
+
+							EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::GAMEPLAY_LOADING);
+
 							sub_47FC0_load_screen(true);
 							InitGameLevel_56A30(a3);
 							sub_47160();
@@ -32240,7 +32246,7 @@ void sub_47320_in_game_loop(signed int a1)//228320
 	v1 = 0;
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
 
-	EventDispatcher::I->DispatchEvent(EventType::E_GAMEPLAY_STATE_CHANGE, GameState::STARTED);
+	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::GAMEPLAY_STARTED);
 
 	while (1)
 	{
@@ -32314,7 +32320,7 @@ void sub_47320_in_game_loop(signed int a1)//228320
 		}
 	}
 
-	EventDispatcher::I->DispatchEvent(EventType::E_GAMEPLAY_STATE_CHANGE, GameState::ENDED);
+	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::GAMEPLAY_ENDED);
 
 	sub_90E07_VGA_set_video_mode_640x480_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
 }
@@ -40372,6 +40378,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		EventDispatcher::I = new EventDispatcher();
 
 		EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, sceneChangeCallBack));
+		EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::STARTED);
 
 		if (assignToSpecificCores)
 		{
@@ -40440,17 +40447,12 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		}
 		else if (CommandLineParams.GetRecordingPath().length() > 0)
 		{
-			StartRecording();
+			StartRecording(CommandLineParams.GetRecordingPath().c_str());
 		}
 
 		Initialize();//236FDC - 23C8D0//rozdil 1E1000
 
 		sub_46830_main_loop(/*0, */v3, v4);//227830
-
-		for (int i = 0; i < 100000; i++)
-		{
-			Logger->debug("[{}] x: {} y: {} z: {}", i, m_coords->at(i).x, m_coords->at(i).y, m_coords->at(i).z);
-		}
 
 		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
 			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
@@ -40459,7 +40461,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		}
 		else if (CommandLineParams.GetRecordingPath().length() > 0)
 		{
-			StopRecording(CommandLineParams.GetRecordingPath().c_str());
+			StopRecording();
 		}
 
 		sub_5BC20();//23CC20 //remove devices?
@@ -40474,6 +40476,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 					EndLibNetServer();*/
 			}
 		}
+		EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::EXITING);
 		delete EventDispatcher::I;
 	}
 	catch (const thread_exit_exception& e)
