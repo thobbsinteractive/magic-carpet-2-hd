@@ -40459,11 +40459,6 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		sub_46830_main_loop(/*0, */v3, v4);//227830
 
-		for (int i = 0; i < 100000; i++)
-		{
-			Logger->debug("[{}] x: {} y: {} z: {}", i, m_coords->at(i).x, m_coords->at(i).y, m_coords->at(i).z);
-		}
-
 		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
 			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
 		{
