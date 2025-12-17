@@ -51177,7 +51177,7 @@ char sub_533B0_decompress_levels(__int16 a1, type_str_2FECE* a2x)//2343b0
 		{
 			DataFileIO::Seek(levelsdatfile, v7, 0);
 			DataFileIO::Read(levelsdatfile, (uint8_t*)x_DWORD_E9C38_smalltit, v9);
-			if (DataFileIO::Decompress((uint8_t*)x_DWORD_E9C38_smalltit, (uint8_t*)x_DWORD_E9C38_smalltit) < 0)
+			if (DataFileRNC::Decompress((uint8_t*)x_DWORD_E9C38_smalltit, (uint8_t*)x_DWORD_E9C38_smalltit) < 0)
 			{
 				myprintf("ERROR decompressing LEVELS.DAT\n");
 				return 0;
@@ -57996,7 +57996,7 @@ signed int sub_5C3D0_file_decompress(uint8_t* input, uint8_t* output)//23d3d0
 	//v7 = 0;
 	if (strncmp((const char*)input, RNSSING, 4))
 		return 0;
-	DataFileIO::Decompress(input, output);
+	DataFileRNC::Decompress(input, output);
 	return 1;
 }
 // 99682: using guessed type x_DWORD strncmp(x_DWORD, x_DWORD, x_DWORD);

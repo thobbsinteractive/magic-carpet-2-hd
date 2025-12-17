@@ -651,7 +651,7 @@ int sub_70C60_decompress_tmap(uint16_t texture_index, uint8_t* texture_buffer)//
 	int v3 = str_TMAPS00TAB_BEGIN_BUFFER[texture_index + 1].dword_4 - str_TMAPS00TAB_BEGIN_BUFFER[texture_index].dword_4;
 	if (DataFileIO::Read(x_DWORD_DB73C_tmapsfile, texture_buffer, v3) != v3)
 		return -1;
-	result = DataFileIO::Decompress(texture_buffer, texture_buffer);
+	result = DataFileRNC::Decompress(texture_buffer, texture_buffer);
 	if (result >= 0)
 	{
 		if (!result)

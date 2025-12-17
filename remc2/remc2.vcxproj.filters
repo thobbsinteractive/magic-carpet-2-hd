@@ -324,9 +324,6 @@
     <ClInclude Include="portability\mctypes.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
-    <ClInclude Include="engine\defs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="engine\ail_sound.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
@@ -494,6 +491,12 @@
     </ClInclude>
     <ClInclude Include="engine\ScreenBuff.h">
       <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\defs.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\DataFileRNC.h">
+      <Filter>Header Files\utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -838,6 +841,9 @@
     </ClCompile>
     <ClCompile Include="engine\ScreenBuff.cpp">
       <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities\DataFileRNC.cpp">
+      <Filter>Source Files\utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

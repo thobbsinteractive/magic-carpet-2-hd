@@ -67,6 +67,8 @@ set(SOURCE_FILES_ENGINE
     "utilities/BitmapIO.h"
     "utilities/DataFileIO.cpp"
     "utilities/DataFileIO.h"
+    "utilities/DataFileRNC.cpp"
+    "utilities/DataFileRNC.h"
     "engine/read_config.cpp"
     "engine/read_config.h"
     "engine/TextureMaps.cpp"

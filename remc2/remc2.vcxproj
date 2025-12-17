@@ -443,6 +443,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="sub_main.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="utilities\DataFileRNC.h" />
     <ClInclude Include="utilities\Maths.h" />
     <ClInclude Include="utilities\SafeQueue.h" />
     <ClInclude Include="utilities\Wave.h" />
@@ -569,6 +570,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <DeploymentContent>false</DeploymentContent>
     </ClCompile>
+    <ClCompile Include="utilities\DataFileRNC.cpp" />
     <ClCompile Include="utilities\Maths.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,8 @@ set(SOURCE_FILES_UNITTESTS
     "../remc2/utilities/Maths.h"
     "../remc2/utilities/DataFileIO.cpp"
     "../remc2/utilities/DataFileIO.h"
+    "../remc2/utilities/DataFileRNC.cpp"
+    "../remc2/utilities/DataFileRNC.h"
     "../remc2/utilities/BitmapIO.cpp"
     "../remc2/utilities/BitmapIO.h"
     "../remc2/portability/port_time.cpp"

@@ -1894,7 +1894,7 @@ bool ReadAndDecompressSound(FILE* file, uint8_t soundIndex2)//2654f0
 	else
 	{
 		DataFileIO::Read(file, (soundBuffer1_E37A8 + 8), soundBuffer1_E37A8[7] + ((soundBuffer1_E37A8[6] + ((soundBuffer1_E37A8[5] + (soundBuffer1_E37A8[4] << 8)) << 8)) << 8) - 8);
-		DataFileIO::Decompress(soundBuffer1_E37A8, soundBuffer1_E37A8);
+		DataFileRNC::Decompress(soundBuffer1_E37A8, soundBuffer1_E37A8);
 	}
 	DataFileIO::Seek(file, soundBank2[soundIndex2].dword_0, 0);
 	DataFileIO::Read(file, (uint8_t*)shadow_str_E37A0_sound_buffer2, 8);
@@ -1905,7 +1905,7 @@ bool ReadAndDecompressSound(FILE* file, uint8_t soundIndex2)//2654f0
 	else
 	{
 		DataFileIO::Read(file, (uint8_t*)&shadow_str_E37A0_sound_buffer2->str_8, shadow_str_E37A0_sound_buffer2->byte_7 + ((shadow_str_E37A0_sound_buffer2->byte_6 + ((shadow_str_E37A0_sound_buffer2->byte_5 + (shadow_str_E37A0_sound_buffer2->byte_4 << 8)) << 8)) << 8) - 8);
-		DataFileIO::Decompress((uint8_t*)shadow_str_E37A0_sound_buffer2, (uint8_t*)shadow_str_E37A0_sound_buffer2);
+		DataFileRNC::Decompress((uint8_t*)shadow_str_E37A0_sound_buffer2, (uint8_t*)shadow_str_E37A0_sound_buffer2);
 	}
 	soundIndex_E37A0->byte_0 = shadow_str_E37A0_sound_buffer2->byte_0;
 	soundIndex_E37A0->byte_1 = shadow_str_E37A0_sound_buffer2->byte_1;
@@ -5006,7 +5006,7 @@ bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber)//26fd00
 		rncsize <<= 8;
 		rncsize += musicData_E3810[7];
 		DataFileIO::Read(filehandle, (uint8_t*)&musicData_E3810[8], rncsize - 8);
-		DataFileIO::Decompress(musicData_E3810, musicData_E3810);
+		DataFileRNC::Decompress(musicData_E3810, musicData_E3810);
 	}
 	else
 	{
@@ -5026,7 +5026,7 @@ bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber)//26fd00
 		rncsize <<= 8;
 		rncsize += shadow_str_E3808_music_header->byte_7;
 		DataFileIO::Read(filehandle, (uint8_t*)(&shadow_str_E3808_music_header->str_8), rncsize - 8);
-		DataFileIO::Decompress((uint8_t*)shadow_str_E3808_music_header, (uint8_t*)shadow_str_E3808_music_header);
+		DataFileRNC::Decompress((uint8_t*)shadow_str_E3808_music_header, (uint8_t*)shadow_str_E3808_music_header);
 	}
 	else
 	{

@@ -21,6 +21,7 @@
 #include "read_config.h"
 
 
+#include "../utilities/DataFileRNC.h"
 #include "../utilities/DataFileIO.h"
 #include "../engine/ViewPort.h"
 #include "Type_E9C38_Smalltit.h"
