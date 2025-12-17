@@ -43,6 +43,8 @@ void CommandLineParser::Init(int argc, char **argv) {
     m_set_objective = false;
     m_set_level = -1;
 	m_custom_level_path = "";
+	m_record_file = "";
+	m_play_file = "";
     m_test_network_chng1 = false;
     m_show_debug_messages1 = false;
     m_show_debug_perifery = false;
@@ -212,6 +214,12 @@ void CommandLineParser::InterpretParams() {
 		}
 		else if (param == "-l" || param == "--log_level") {
 			m_log_level_str = *(++p);
+		}
+		else if (param == "--record_file") {
+			m_record_file = *(++p);
+		}
+		else if (param == "--play_file") {
+			m_play_file = *(++p);
 		}
     }
 #ifdef _DEBUG
