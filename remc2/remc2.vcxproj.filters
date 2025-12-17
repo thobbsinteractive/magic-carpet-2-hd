@@ -498,6 +498,9 @@
     <ClInclude Include="utilities\DataFileRNC.h">
       <Filter>Header Files\utilities</Filter>
     </ClInclude>
+    <ClInclude Include="engine\ConvertMapInfo.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -844,6 +847,9 @@
     </ClCompile>
     <ClCompile Include="utilities\DataFileRNC.cpp">
       <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\ConvertMapInfo.cpp">
+      <Filter>Source Files\engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

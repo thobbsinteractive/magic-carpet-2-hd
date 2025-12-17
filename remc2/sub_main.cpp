@@ -4,6 +4,7 @@
 #include "engine/CommandLineParser.h"
 #include "engine/MenusAndIntros.h"
 #include "engine/Network.h"
+#include "engine/ConvertMapInfo.h"
 
 /*
 

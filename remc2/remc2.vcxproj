@@ -385,6 +385,7 @@
     <ClInclude Include="engine\CommandLineParser.h" />
     <ClInclude Include="engine\Compare.h" />
     <ClInclude Include="engine\Compare_maps.h" />
+    <ClInclude Include="engine\ConvertMapInfo.h" />
     <ClInclude Include="engine\GameRenderInterface.h" />
     <ClInclude Include="engine\GameRenderGL.h" />
     <ClInclude Include="engine\GameRenderHD.h" />
@@ -519,6 +520,7 @@
     <ClCompile Include="engine\CommandLineParser.cpp" />
     <ClCompile Include="engine\Compare.cpp" />
     <ClCompile Include="engine\Compare_maps.cpp" />
+    <ClCompile Include="engine\ConvertMapInfo.cpp" />
     <ClCompile Include="engine\GameRenderGL.cpp" />
     <ClCompile Include="engine\GameRenderHD.cpp" />
     <ClCompile Include="engine\GameRenderNG.cpp" />
