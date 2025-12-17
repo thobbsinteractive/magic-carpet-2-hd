@@ -1,15 +1,31 @@
 #include "InputRecorder.h"
+#include "../engine/EventDispatcher.h"
+#include "../engine/GameState.h"
 using namespace std;
 
-InputRecorder::InputRecorder()
+InputRecorder::InputRecorder(const char* filePath)
 {
+	m_FilePath = filePath;
 	m_InputEvents = new std::map<uint32_t, std::vector<InputEvent*>*>();
+	std::function<void(GameState)> stateChangeCallBack = [this](GameState a) { this->PlayPause(a); };
+	EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAME_STATE_CHANGE, stateChangeCallBack));
 }
 
 InputRecorder::~InputRecorder()
 {
 	ClearInputEvents();
 	delete m_InputEvents;
+}
+
+void InputRecorder::PlayPause(const GameState state)
+{
+	switch (state)
+	{
+		case GameState::GAMEPLAY_LOADING:
+			PauseRecording(true);
+		case GameState::GAMEPLAY_STARTED:
+			PauseRecording(false);
+	};
 }
 
 void InputRecorder::StartRecording()
@@ -32,10 +48,10 @@ void InputRecorder::ClearInputEvents()
 	m_InputEvents->clear();
 }
 
-bool InputRecorder::StopRecording(const char* outputFileName)
+bool InputRecorder::StopRecording()
 {
 	m_IsRecording = false;
-	if (SaveRecordingToFile(outputFileName))
+	if (SaveRecordingToFile(m_FilePath))
 	{
 		m_Tick = 0;
 		m_Iteration = 0;
@@ -45,11 +61,17 @@ bool InputRecorder::StopRecording(const char* outputFileName)
 	return false;
 }
 
-bool InputRecorder::StartPlayback(const char* inputFileName)
+void InputRecorder::PauseRecording(bool pause)
+{
+	m_IsRecording = !pause;
+	m_IsPlaying = !pause;
+}
+
+bool InputRecorder::StartPlayback()
 {
 	m_Tick = 0;
 	m_Iteration = 0;
-	if (LoadRecordingFile(inputFileName))
+	if (LoadRecordingFile(m_FilePath))
 		m_IsPlaying = true;
 
 	return m_IsPlaying;
@@ -62,6 +84,9 @@ void InputRecorder::StopPlayback()
 
 void InputRecorder::IncrementTick()
 {
+	if (!m_IsRecording && !m_IsPlaying)
+		return;
+
 	m_Tick++;
 	m_Iteration = 0;
 	if (m_Tick > m_InputEvents->rbegin()->first)
