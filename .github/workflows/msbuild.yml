@@ -26,25 +26,12 @@ jobs:
         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
-
-    - name: Restore vcpkg from cache
-      uses: actions/cache@v4
-      with:
-        path: C:/tools/vcpkg/installed
-        key: vcpkg-${{ matrix.BUILD_PLATFORM }}-${{ hashFiles('vcpkg.json') }} # pokud máte vcpkg.json
-        restore-keys: vcpkg-${{ matrix.BUILD_PLATFORM }}-
       
     - name: Install googletest
       uses: cvpkg/googletest-action@v0.1
       with:
         googletest_tag: 'release-1.11.0' # default is 'v1.11.0'
         
-    - name: Install dependencies via vcpkg
-      run: |
-        vcpkg install sdl2:${{ matrix.BUILD_PLATFORM }}-windows-static
-        vcpkg install libogg:${{ matrix.BUILD_PLATFORM }}-windows-static
-        vcpkg install libvorbis:${{ matrix.BUILD_PLATFORM }}-windows-static
-
     - name: Restore vcpkg packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: vcpkg integrate install
@@ -55,15 +42,7 @@ jobs:
         
     - name: Build ${{matrix.BUILD_CONFIGURATION}} ${{matrix.BUILD_PLATFORM}}
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Přidáváme VcpkgTriplet, aby se vynutila statická knihovna, kterou linker hledá
-      run: |
-        if ("${{matrix.BUILD_PLATFORM}}" -eq "x86") { $triplet = "x86-windows-static" } else { $triplet = "x64-windows-static" }
-        msbuild /m /p:Configuration=${{matrix.BUILD_CONFIGURATION}} `
-                   /p:PlatformTarget=${{matrix.BUILD_PLATFORM}} `
-                   /p:Platform=${{matrix.BUILD_PLATFORM}} `
-                   /p:VcpkgEnableManifest=true `
-                   /p:VcpkgTriplet=$triplet `
-                   ${{env.SOLUTION_FILE_PATH}}/remc2.sln
+      run: msbuild /m /p:Configuration=${{matrix.BUILD_CONFIGURATION}} /p:PlatformTarget=${{matrix.BUILD_PLATFORM}} /p:Platform=${{matrix.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}}/remc2.sln
     
     #- name: Run Unit Tests x86
     #  if: ${{ matrix.BUILD_CONFIGURATION == 'Debug' && matrix.BUILD_PLATFORM == 'x86' }}

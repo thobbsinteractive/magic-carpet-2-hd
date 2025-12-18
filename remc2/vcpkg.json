@@ -1,9 +1,21 @@
 {
-  "name": "remc2",
-  "version-string": "1.0.0",
-  "dependencies": [
-    "sdl2",
-    "libogg",
-    "libvorbis"
-  ]
+    "name": "remc2",
+    "version": "0.9.4",
+    "dependencies": [
+		"rapidjson",
+		"spdlog",
+		"libvorbis",
+		"libogg",
+		"libpng",
+		"sdl2",
+		"sdl2-ttf",
+		"sdl2-mixer"
+    ],
+	"builtin-baseline": "f6a5d4e8eb7476b8d7fc12a56dff300c1c986131",
+	"overrides": [
+        {
+            "name": "sdl2",
+            "version": "2.0.14#4"
+        }
+    ]
 }

@@ -1,10 +1,3 @@
-project(remc2 C CXX)
-
-if (USE_CLANG_TIDY)
-    #set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=*")
-    #set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=misc-unused-parameters;-fix")
-    set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=misc-unused-parameters")
-endif ()
 
 ################################################################################
 # Source groups
@@ -118,7 +111,6 @@ set(SOURCE_FILES_ENGINE
 )
 source_group("Source Files\\engine" FILES ${SOURCE_FILES_ENGINE})
 
-
 set(SOURCE_FILES__libs__inih
     "../inih/ini.c"
     "../inih/ini.h"
@@ -136,7 +128,7 @@ set(SOURCE_FILES__libs__findfirst
 source_group("Source Files\\libs\\findfirst" FILES ${SOURCE_FILES__libs__findfirst})
 
 set(SOURCE_FILES__portability
-    "portability/mctypes.h"
+    "portability/bitmap_pos_struct.h"
     "portability/fcaseopen.cpp"
     "portability/fcaseopen.h"
     "portability/port_net.cpp"
@@ -151,7 +143,9 @@ set(SOURCE_FILES__portability
     "portability/port_sdl_sound.h"
     "portability/port_sdl_vga_mouse.cpp"
     "portability/port_sdl_vga_mouse.h"
-	"portability/port_show_perifery.cpp"
+    "portability/port_sdl_joystick.cpp"
+    "portability/port_sdl_joystick.h"
+    "portability/port_show_perifery.cpp"
     "portability/port_show_perifery.h"
     "portability/port_time.cpp"
     "portability/port_time.h"
@@ -185,6 +179,7 @@ install(
     FILES 
     ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/font/16x16-font.bmp
     ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/font/8x8-font.bmp
+    ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/font/UbuntuMono-B.ttf
     DESTINATION bin/font
 )
 install(
@@ -211,21 +206,24 @@ set(ROOT_NAMESPACE remc2)
 ################################################################################
 if (UNIX)
     target_include_directories(${PROJECT_NAME} PUBLIC
-        "${CMAKE_SOURCE_DIR}/inih"
+		"${CMAKE_SOURCE_DIR}/inih"
         "${CMAKE_SOURCE_DIR}/findfirst"
         "${CMAKE_SOURCE_DIR}/spdlog/include"
+		"${CMAKE_SOURCE_DIR}/rapidjson"
     )
     #target_compile_definitions(${PROJECT_NAME} PRIVATE
     #)
     #target_compile_options(${PROJECT_NAME} PRIVATE
     #)
     target_link_libraries(${PROJECT_NAME} PUBLIC 
-        SDL2::Main
-        SDL2::Mixer
+        SDL2::SDL2
+        SDL2_mixer::SDL2_mixer
+        SDL2_ttf::SDL2_ttf
         ${PNG_LIBRARY}
         findfirst
         ADLMIDI_static
         Boost::system
+        fmt::fmt
     )
     target_link_directories(${PROJECT_NAME} PUBLIC
     )
@@ -234,28 +232,8 @@ if (UNIX)
     )
 endif ()
 
-
-# editor
-if (EDITOR)
-    add_subdirectory(editor)
-endif ()
-
-
 if (UNIX)
     if (USE_SANITIZERS)
-        set(SANITIZER_OPTIONS
-            -fsanitize=address
-            -fsanitize=pointer-compare
-            -fsanitize=pointer-subtract
-            -fsanitize=leak
-            -fsanitize=undefined
-            -static-libasan
-            -static-liblsan
-            -static-libubsan
-        )
-        target_link_options(remc2 PRIVATE ${SANITIZER_OPTIONS})
-        if (EDITOR)
-            target_link_options(remc2editor PRIVATE ${SANITIZER_OPTIONS})
-        endif ()
+        target_link_options(${PROJECT_NAME} PRIVATE ${SANITIZER_OPTIONS})
     endif ()
 endif ()
