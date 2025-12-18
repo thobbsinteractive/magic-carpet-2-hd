@@ -53604,78 +53604,50 @@ void sub_56A30_init_game_level(unsigned int a1)//237a30
 }
 
 //----- (00056C00) --------------------------------------------------------
-void LevelInit_56C00(levelDataType_2FECE* a1x)//237c00
+void LevelInit_56C00(levelDataType_2FECE* levelData)//237c00
 {
-	MapType_t v1; // al
-	//int v2; // eax
-	char v3; // cl
-	//int result; // eax
-
-	isCaveLevel_D41B6 = 0;
-	//SPELLS_BEGIN_BUFFER_DA818[0x15a] = 19;
+	isCaveLevel_D41B6 = false;
 	SPELLS_BEGIN_BUFFER_str[4].subspell[0].byte_0x1A = 19;
-	//*(int16_t*)& SPELLS_BEGIN_BUFFER_DA818[0x606] = 0xf5;
-	SPELLS_BEGIN_BUFFER_str[19].subspell[0].word_0x16x = 0xf5;
-	//*(int16_t*)& SPELLS_BEGIN_BUFFER_DA818[0x156] = 0xc7;
-	SPELLS_BEGIN_BUFFER_str[4].subspell[0].word_0x16x = 0xc7;
-	v1 = a1x->MapType;// *(x_BYTE*)(a1 + 6);
-	//SPELLS_BEGIN_BUFFER_DA818[0x60a] = 19;
+	SPELLS_BEGIN_BUFFER_str[4].subspell[0].word_0x16x = 0xc7;	
 	SPELLS_BEGIN_BUFFER_str[19].subspell[0].byte_0x1A = 19;
-	if (v1 == MapType_t::Day)
+	SPELLS_BEGIN_BUFFER_str[19].subspell[0].word_0x16x = 0xf5;
+	if (levelData->MapType == MapType_t::Day)
 	{
-    //SPELLS_BEGIN_BUFFER_DA818[0x15a] = 2;
-    SPELLS_BEGIN_BUFFER_str[4].subspell[0].byte_0x1A = 2;
-    //*(int16_t*)& SPELLS_BEGIN_BUFFER_DA818[0x156] = 198;
-    SPELLS_BEGIN_BUFFER_str[4].subspell[0].word_0x16x = 198;
-    //SPELLS_BEGIN_BUFFER_DA818[0x60a] = 2;
-    SPELLS_BEGIN_BUFFER_str[19].subspell[0].byte_0x1A = 2;
-    //*(uint8_t*)& SPELLS_BEGIN_BUFFER_DA818[0x606] = 244;
-    SPELLS_BEGIN_BUFFER_str[19].subspell[0].word_0x16x = 244;
-    D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 0;
-    LoadSound_84300(0);
-    x_BYTE_D419E = 1;
+		SPELLS_BEGIN_BUFFER_str[4].subspell[0].byte_0x1A = 2;
+		SPELLS_BEGIN_BUFFER_str[4].subspell[0].word_0x16x = 0xc6;
+		SPELLS_BEGIN_BUFFER_str[19].subspell[0].byte_0x1A = 2;
+		SPELLS_BEGIN_BUFFER_str[19].subspell[0].word_0x16x = 0xf4;
+		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 0;
+		LoadSound_84300(0);
+		x_BYTE_D419E = 1;
 	}
-	else if (v1 == MapType_t::Night)
+	else if (levelData->MapType == MapType_t::Night)
 	{
 		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 0;
 		LoadSound_84300(1u);
 		x_BYTE_D419E = 9;
 	}
-	else if (v1 == MapType_t::Cave)
+	else if (levelData->MapType == MapType_t::Cave)
 	{
 		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 1;
 		isCaveLevel_D41B6 = 1;
-		x_BYTE_D41B7 = a1x->byte_0x2FED3;// *(x_BYTE*)(a1 + 5);
+		x_BYTE_D41B7 = levelData->byte_0x2FED3;
 		LoadSound_84300(2u);
 		x_BYTE_D419E = 10;
 	}
 	sub_5C0A0();
-	//v2 = (int)x_D41A0_BYTEARRAY_0;
 	D41A0_0.byte_0x36E02 = 1;
 	D41A0_0.word_0x36DFE = 0;
 	D41A0_0.word_0x36DFC = 0;
 	D41A0_0.str_0x21AE.xxxx_0x21B1 = 0;
-	v3 = D41A0_0.byte_0x36E0B;
 	D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 = 0;
-	D41A0_0.byte_0x36E0B = v3 & 0xFC;
-	//result = (int)x_D41A0_BYTEARRAY_4;
+	D41A0_0.byte_0x36E0B = D41A0_0.byte_0x36E0B & 0xFC;
 	x_D41A0_BYTEARRAY_4_struct.SelectedMenuItem_38546 = 0;
 	if (x_WORD_180660_VGA_type_resolution == 1)
 		x_BYTE_D419D_fonttype = 1;
 	else
 		x_BYTE_D419D_fonttype = 3;
-	//return result;
 }
-// D419D: using guessed type char x_BYTE_D419D_fonttype;
-// D419E: using guessed type char x_BYTE_D419E;
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// D41B6: using guessed type char x_BYTE_D41B6;
-// D41B7: using guessed type char x_BYTE_D41B7;
-// DA96E: using guessed type __int16 x_WORD_DA96E;
-// DAE1E: using guessed type __int16 x_WORD_DAE1E;
-// DAE22: using guessed type char x_BYTE_DAE22;
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00056D60) --------------------------------------------------------
 void sub_56D60(unsigned int a1, char a2)//237d60
