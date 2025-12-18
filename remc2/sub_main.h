@@ -450,7 +450,7 @@ void DrawHelpText_6FC50(__int16 a1);
 
 void sub_6EBF0(filearray_struct* a1);
 
-char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* a2);
+char sub_533B0_decompress_levels(int16 levelIndex, levelDataType_2FECE* levelData);
 
 //int /*__noreturn*/ sub_10000(); // weak
 type_event_0x6E8E* sub_15CB0(/*type_str_0x6E8E* a1,*/ type_event_0x6E8E* a2); // weak

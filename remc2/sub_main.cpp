@@ -44144,7 +44144,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_533B0_decompress_levels((short)a1_6E8E, 0);
+		LevelDecompress_533B0((short)a1_6E8E, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;
@@ -51134,21 +51134,12 @@ void sub_53160()//234160
 // D93A0: using guessed type const char *off_D93A0_wizards_names2;
 
 //----- (000533B0) --------------------------------------------------------
-char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* levelData)//2343b0
+char LevelDecompress_533B0(int16 levelIndex, levelDataType_2FECE* levelData)//2343b0
 {
-	uint8_t* v2; // edi
-	FILE* levelsdatfile; // ebx
-	FILE* levelstabfile; // esi
-	int* v6; // eax
-	int v7; // edi
-	//char v8; // [esp+0h] [ebp-44h]
-	int v9; // [esp+40h] [ebp-4h]
-
-	v2 = (uint8_t*)x_DWORD_E9C38_smalltit;
-	if (a1 < 1000)
+	if (levelIndex < 1000)
 	{
 		std::string levelDataPath = GetSubDirectoryFile(gameFolder, "CLEVELS", "LEVELS.DAT");
-		levelsdatfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
+		FILE* levelsdatfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 		if (levelsdatfile == NULL)
 		{
 			levelDataPath = GetSubDirectoryFile(cdFolder, "LEVELS", "LEVELS.DAT");
@@ -51157,7 +51148,7 @@ char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* levelData)//23
 				return 0;
 		}
 		levelDataPath = GetSubDirectoryFile(gameFolder, "CLEVELS", "LEVELS.TAB");
-		levelstabfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
+		FILE* levelstabfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 		if (levelstabfile == NULL)
 		{
 			levelDataPath = GetSubDirectoryFile(cdFolder, "LEVELS", "LEVELS.TAB");
@@ -51168,30 +51159,22 @@ char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* levelData)//23
 				return 0;
 			}
 		}
-		DataFileIO::Read(levelstabfile, v2, 4000);
-		v6 = (int*)(v2 + 4 * a1);
-		v7 = v6[0];
-		v9 = v6[1] - v6[0];
+		DataFileIO::Read(levelstabfile, x_DWORD_E9C38_smalltit, 4000);
 		DataFileIO::Close(levelstabfile);
 
 		if (DataFileIO::FileLengthBytes(levelsdatfile))
 		{
-			DataFileIO::Seek(levelsdatfile, v7, 0);
-			DataFileIO::Read(levelsdatfile, (uint8_t*)x_DWORD_E9C38_smalltit, v9);
+			DataFileIO::Seek(levelsdatfile, ((uint32*)x_DWORD_E9C38_smalltit)[levelIndex], 0);
+			DataFileIO::Read(levelsdatfile, (uint8_t*)x_DWORD_E9C38_smalltit, ((uint32*)x_DWORD_E9C38_smalltit)[levelIndex + 1] - ((uint32*)x_DWORD_E9C38_smalltit)[levelIndex]);
 			if (DataFileRNC::Decompress((uint8_t*)x_DWORD_E9C38_smalltit, (uint8_t*)x_DWORD_E9C38_smalltit) < 0)
 			{
 				myprintf("ERROR decompressing LEVELS.DAT\n");
 				return 0;
 			}
-			/*
-			qmemcpy(a2x, (type_str_2FECE*)(const void*)x_DWORD_E9C38_smalltit, sizeof(type_str_2FECE));//0x6604
-			memset((type_str_2FECE*)x_DWORD_E9C38_smalltit, 0, sizeof(type_str_2FECE));//0x6604
-			*/
 			shadow_levelDataType_2FECE shadow_levelData;
 			qmemcpy(&shadow_levelData, (shadow_levelDataType_2FECE*)(const void*)x_DWORD_E9C38_smalltit, sizeof(shadow_levelDataType_2FECE));//0x6604
 			memset((shadow_levelDataType_2FECE*)x_DWORD_E9C38_smalltit, 0, sizeof(shadow_levelDataType_2FECE));//0x6604
 			Convert_from_shadow_str_2FECE(&shadow_levelData, levelData);
-			//type_shadow_str_2FECE
 		}
 		DataFileIO::Close(levelsdatfile);
 
@@ -51206,9 +51189,6 @@ char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* levelData)//23
 					{
 						shadow_levelDataType_2FECE shadow_2FECE;
 						fread(&shadow_2FECE, sizeof(shadow_levelDataType_2FECE), 1, file);
-						/*for (int i = 0; i < sizeof(type_shadow_str_2FECE); i++)
-							if(((int8_t*)&shadow_2FECE)[i]!=((int8_t*)&D41A0_BYTESTR_0.terrain_2FECE)[i])
-								allert_error();*/
 						Convert_from_shadow_str_2FECE(&shadow_2FECE, &D41A0_0.terrain_2FECE);
 					}
 					fclose(file);
@@ -51222,11 +51202,6 @@ char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* levelData)//23
 	}
 	return 1;
 }
-// 8C250: using guessed type x_DWORD memset(x_DWORD, x_DWORD, x_DWORD);
-// 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// 988DA: using guessed type x_DWORD filelength(x_DWORD);
-// D41A4: using guessed type int x_DWORD_D41A4;
-// E9C38: using guessed type int x_DWORD_E9C38_smalltit;
 
 //----- (00053590) --------------------------------------------------------
 void SetLevelId_53590(levelDataType_2FECE* levelData)//234590
@@ -53558,7 +53533,7 @@ void sub_56A30_init_game_level(unsigned int a1)//237a30
 
 		Logger->debug("sub_56A30_init_game_level:before sub_533B0_decompress_levels");
 
-		sub_533B0_decompress_levels(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE);
+		LevelDecompress_533B0(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE);
 
 		Logger->debug("sub_56A30_init_game_level:sub_533B0_decompress_levels passed");
 
@@ -53713,7 +53688,7 @@ void sub_56D60(unsigned int a1, char a2)//237d60
 	v2 = soundActive_E3799;
 	soundActive_E3799 = false;
 	ClearSettings_567C0();
-	sub_533B0_decompress_levels(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE);
+	LevelDecompress_533B0(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE);
 	if (a2)
 	{
 		sub_54660_read_and_decompress_sky_and_blocks(D41A0_0.terrain_2FECE.MapType, x_BYTE_D41B5_texture_size);
