@@ -375,7 +375,7 @@
     <ClInclude Include="engine\ViewPort.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
-    <ClInclude Include="engine\XUnk_D4350.h">
+    <ClInclude Include="engine\UVTable_D4350.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
     <ClInclude Include="engine\Type_D404C.h">
@@ -758,7 +758,7 @@
     <ClCompile Include="engine\TextureMaps.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
-    <ClCompile Include="engine\XUnk_D4350.cpp">
+    <ClCompile Include="engine\UVTable_D4350.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
     <ClCompile Include="engine\Type_D404C.cpp">
