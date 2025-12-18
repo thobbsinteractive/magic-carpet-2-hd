@@ -435,7 +435,7 @@ typedef struct {//lenght 0x6604u
 	type_str_0x360D2 next_0x360D2[8];//lenght 110  /spells?
 	type_str_0x36442 str_0x36442[8];//stages(checkpoints)
 	type_shadow_str_0x3647Ac array_0x3647A[11];//8x11
-} type_shadow_str_2FECE;//compress level
+} shadow_levelDataType_2FECE;//compress level
 typedef union {
 	int32_t dword;
 	uint32_t ptr16u;
@@ -495,7 +495,7 @@ typedef struct {//lenght 224791
 	type_str_0x2BDE array_0x2BDE[8];
 	type_str_0x6E3E array_0x6E3E[8];
 	type_shadow_str_0x6E8E struct_0x6E8E[1000];
-	type_shadow_str_2FECE str_2FECE;
+	shadow_levelDataType_2FECE str_2FECE;
 	type_str_0x364D2 str_0x364D2;
 	int16_t word_0x3653E;
 	int16_t word_0x36540;

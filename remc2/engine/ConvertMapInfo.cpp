@@ -1,5 +1,5 @@
 #include "ConvertMapInfo.h"
-void Convert_from_shadow_str_2FECE(type_shadow_str_2FECE* from, levelDataType_2FECE* to) {
+void Convert_from_shadow_str_2FECE(shadow_levelDataType_2FECE* from, levelDataType_2FECE* to) {
 	to->word_2FECE = from->word_2FECE;
 	to->levelID_2FED0 = from->word_2FED0;
 	to->byte_0x2FED2 = from->byte_0x2FED2;

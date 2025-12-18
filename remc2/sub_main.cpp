@@ -1732,7 +1732,7 @@ void sub_52E90(type_str_0x2BDE* playStr, uint16_t type, bool useSound);
 void sub_53120();
 void sub_53160();
 //char sub_533B0_decompress_levels(__int16 a1, type_str_2FECE* a2);
-void SetLevelId_53590(levelDataType_2FECE* a1);
+void SetLevelId_53590(levelDataType_2FECE* levelData);
 char sub_53770_test_open_moviegam(uint16_t a1);
 char sub_53950_test_open_moviemap(uint16_t a1);
 void sub_539A0_load_bldgprm();
@@ -51134,7 +51134,7 @@ void sub_53160()//234160
 // D93A0: using guessed type const char *off_D93A0_wizards_names2;
 
 //----- (000533B0) --------------------------------------------------------
-char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* a2x)//2343b0
+char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* levelData)//2343b0
 {
 	uint8_t* v2; // edi
 	FILE* levelsdatfile; // ebx
@@ -51187,10 +51187,10 @@ char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* a2x)//2343b0
 			qmemcpy(a2x, (type_str_2FECE*)(const void*)x_DWORD_E9C38_smalltit, sizeof(type_str_2FECE));//0x6604
 			memset((type_str_2FECE*)x_DWORD_E9C38_smalltit, 0, sizeof(type_str_2FECE));//0x6604
 			*/
-			type_shadow_str_2FECE shadow_a2x;
-			qmemcpy(&shadow_a2x, (type_shadow_str_2FECE*)(const void*)x_DWORD_E9C38_smalltit, sizeof(type_shadow_str_2FECE));//0x6604
-			memset((type_shadow_str_2FECE*)x_DWORD_E9C38_smalltit, 0, sizeof(type_shadow_str_2FECE));//0x6604
-			Convert_from_shadow_str_2FECE(&shadow_a2x, a2x);
+			shadow_levelDataType_2FECE shadow_levelData;
+			qmemcpy(&shadow_levelData, (shadow_levelDataType_2FECE*)(const void*)x_DWORD_E9C38_smalltit, sizeof(shadow_levelDataType_2FECE));//0x6604
+			memset((shadow_levelDataType_2FECE*)x_DWORD_E9C38_smalltit, 0, sizeof(shadow_levelDataType_2FECE));//0x6604
+			Convert_from_shadow_str_2FECE(&shadow_levelData, levelData);
 			//type_shadow_str_2FECE
 		}
 		DataFileIO::Close(levelsdatfile);
@@ -51204,8 +51204,8 @@ char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* a2x)//2343b0
 					FILE* file = fopen(path2, "rb");
 					if (file)
 					{
-						type_shadow_str_2FECE shadow_2FECE;
-						fread(&shadow_2FECE, sizeof(type_shadow_str_2FECE), 1, file);
+						shadow_levelDataType_2FECE shadow_2FECE;
+						fread(&shadow_2FECE, sizeof(shadow_levelDataType_2FECE), 1, file);
 						/*for (int i = 0; i < sizeof(type_shadow_str_2FECE); i++)
 							if(((int8_t*)&shadow_2FECE)[i]!=((int8_t*)&D41A0_BYTESTR_0.terrain_2FECE)[i])
 								allert_error();*/
@@ -51217,8 +51217,8 @@ char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* a2x)//2343b0
 		#endif //!IS_EDITOR
 		//if exist editor generated level
 
-		LevelInit_56C00(a2x);
-		SetLevelId_53590(a2x);
+		LevelInit_56C00(levelData);
+		SetLevelId_53590(levelData);
 	}
 	return 1;
 }
@@ -51229,9 +51229,9 @@ char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* a2x)//2343b0
 // E9C38: using guessed type int x_DWORD_E9C38_smalltit;
 
 //----- (00053590) --------------------------------------------------------
-void SetLevelId_53590(levelDataType_2FECE* a1x)//234590
+void SetLevelId_53590(levelDataType_2FECE* levelData)//234590
 {
-	D41A0_0.levelID_0x4 = a1x->levelID_2FED0;
+	D41A0_0.levelID_0x4 = levelData->levelID_2FED0;
 }
 
 //----- (00053770) --------------------------------------------------------
