@@ -544,10 +544,10 @@ void convert_struct_to_array_0x3647Ac(type_str_0x3647Ac* input, uint8_t* output)
 	memcpy(output + 4, &input->str_0x3647C_4, 4);
 }
 
-void convert_struct_to_array_2FECE(type_str_2FECE* input, uint8_t* output) {//lenght 6604
+void convert_struct_to_array_2FECE(levelDataType_2FECE* input, uint8_t* output) {//lenght 6604
 	//type_str_0x6E8E* dword_2FECE;//D41A0_BYTESTR_0.str_2FECE.dword_2FECE
 	memcpy(output + 0, &input->word_2FECE, 2);
-	memcpy(output + 2, &input->word_2FED0, 2);
+	memcpy(output + 2, &input->levelID_2FED0, 2);
 	//uint8_t byte_0x2FED2;//x_D41A0_BYTEARRAY_0[196306] // type of level graphics//4
 	memcpy(output + 4, &input->byte_0x2FED2, 1);//0xa8
 	//uint8_t stuba[1];//5
@@ -666,7 +666,7 @@ void convert_struct_to_array_D41A0_0(type_D41A0_BYTESTR_0* input,uint8_t* output
 	//uint8_t stub0[4];
 	memset(output + 0, 0, 4);
 	//int32_t dword_0x4;
-	memcpy(output + 4, &input->dword_0x4, 4);
+	memcpy(output + 4, &input->levelID_0x4, 4);
 	//int32_t dword_0x8;
 	memcpy(output + 8, &input->rand_0x8, 4);
 	//int16_t word_0xc;//player_index?

@@ -441,8 +441,8 @@ void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint
 
 void sub_43C60(unsigned __int8 a1, char a2, int a3, int a4);
 
-void SetStagetagForTermod_49830(type_str_2FECE* terrain);
-void GenerateEvents_49290(type_str_2FECE* terrain, char a2, uint16_t width, uint16_t height);
+void SetStagetagForTermod_49830(levelDataType_2FECE* terrain);
+void GenerateEvents_49290(levelDataType_2FECE* terrain, char a2, uint16_t width, uint16_t height);
 
 void sub_49F30();
 
@@ -450,7 +450,7 @@ void DrawHelpText_6FC50(__int16 a1);
 
 void sub_6EBF0(filearray_struct* a1);
 
-char sub_533B0_decompress_levels(__int16 a1, type_str_2FECE* a2);
+char sub_533B0_decompress_levels(__int16 a1, levelDataType_2FECE* a2);
 
 //int /*__noreturn*/ sub_10000(); // weak
 type_event_0x6E8E* sub_15CB0(/*type_str_0x6E8E* a1,*/ type_event_0x6E8E* a2); // weak

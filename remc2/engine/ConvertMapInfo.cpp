@@ -1,7 +1,7 @@
 #include "ConvertMapInfo.h"
-void Convert_from_shadow_str_2FECE(type_shadow_str_2FECE* from, type_str_2FECE* to) {
+void Convert_from_shadow_str_2FECE(type_shadow_str_2FECE* from, levelDataType_2FECE* to) {
 	to->word_2FECE = from->word_2FECE;
-	to->word_2FED0 = from->word_2FED0;
+	to->levelID_2FED0 = from->word_2FED0;
 	to->byte_0x2FED2 = from->byte_0x2FED2;
 	to->byte_0x2FED3 = from->byte_0x2FED3;
 	to->MapType = (from->MapType == 2) ? MapType_t::Cave : (from->MapType == 1) ? MapType_t::Night : MapType_t::Day;

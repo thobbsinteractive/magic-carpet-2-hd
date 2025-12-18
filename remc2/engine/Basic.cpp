@@ -3709,7 +3709,7 @@ signed int GetTrueWizardNumber_61790(signed int inputnumber)//242790
 
 void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type_D41A0_BYTESTR_0* to) {
 	for (int i = 0; i < 4; i++)to->stub0[i] = from->stub0[i];
-	to->dword_0x4 = from->dword_0x4;
+	to->levelID_0x4 = from->dword_0x4;
 	to->rand_0x8 = from->dword_0x8;
 	to->LevelIndex_0xc = from->word_0xc;
 	to->word_0xe = from->word_0xe;
@@ -3806,7 +3806,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	}
 
 	to->terrain_2FECE.word_2FECE = from->str_2FECE.word_2FECE;
-	to->terrain_2FECE.word_2FED0 = from->str_2FECE.word_2FED0;
+	to->terrain_2FECE.levelID_2FED0 = from->str_2FECE.word_2FED0;
 	to->terrain_2FECE.byte_0x2FED2 = from->str_2FECE.byte_0x2FED2;
 	to->terrain_2FECE.byte_0x2FED3 = from->str_2FECE.byte_0x2FED3;
 	to->terrain_2FECE.MapType = (from->str_2FECE.MapType == 2) ? MapType_t::Cave : (from->str_2FECE.MapType == 1) ? MapType_t::Night : MapType_t::Day;

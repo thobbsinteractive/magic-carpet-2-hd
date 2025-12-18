@@ -16,7 +16,7 @@ uint8_t x_BYTE_D41B7 = 44; // weak
 
 int debugcounter_224959 = 0;
 //----- (00043830) --------------------------------------------------------
-void GenerateLevelMap_43830(type_str_2FECE* a2x)//224830
+void GenerateLevelMap_43830(levelDataType_2FECE* a2x)//224830
 {
 	x_WORD_17B4E0 = a2x->seed_0x2FEE5;
 	D41A0_0.rand_0x8 = a2x->seed_0x2FEE5;
@@ -2224,7 +2224,7 @@ int sub_B5D68(uint16_t inX, uint16_t inY)//296d68
 
 void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D41A0_BYTESTR_0* to) {
 	for (int i = 0; i < 4; i++)to->stub0[i] = from->stub0[i];
-	to->dword_0x4 = from->dword_0x4;
+	to->dword_0x4 = from->levelID_0x4;
 	to->dword_0x8 = from->rand_0x8;
 	to->word_0xc = from->LevelIndex_0xc;
 	to->word_0xe = from->word_0xe;
@@ -2321,7 +2321,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 	}
 
 	to->str_2FECE.word_2FECE = from->terrain_2FECE.word_2FECE;
-	to->str_2FECE.word_2FED0 = from->terrain_2FECE.word_2FED0;
+	to->str_2FECE.word_2FED0 = from->terrain_2FECE.levelID_2FED0;
 	to->str_2FECE.byte_0x2FED2 = from->terrain_2FECE.byte_0x2FED2;
 	to->str_2FECE.byte_0x2FED3 = from->terrain_2FECE.byte_0x2FED3;
 	to->str_2FECE.MapType = static_cast<std::underlying_type<MapType_t>::type>(from->terrain_2FECE.MapType);

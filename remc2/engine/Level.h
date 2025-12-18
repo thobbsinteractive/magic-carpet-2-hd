@@ -257,7 +257,7 @@ typedef struct {//size 11 count 6
 } type_str_3659C;
 typedef struct {//lenght 224791
 	uint8_t stub0[4];
-	uint32_t dword_0x4;
+	uint32_t levelID_0x4;
 	uint32_t rand_0x8;
 	int16_t LevelIndex_0xc;//player_index?
 	int16_t word_0xe;
@@ -291,7 +291,7 @@ typedef struct {//lenght 224791
 	type_str_0x2BDE array_0x2BDE[8];
 	type_str_0x6E3E array_0x6E3E[8];//28222	lenght 0xa size 0x8// game events
 	type_event_0x6E8E struct_0x6E8E[1000];//28302 a8*3e8
-	type_str_2FECE terrain_2FECE;// a1 = &x_D41A0_BYTEARRAY_0[0x2FECE/*196302*/];//fix - size 0x6604u//compress level
+	levelDataType_2FECE terrain_2FECE;// a1 = &x_D41A0_BYTEARRAY_0[0x2FECE/*196302*/];//fix - size 0x6604u//compress level
 	type_str_0x364D2 str_0x364D2;//lenght 108
 	int16_t word_0x3653E;//
 	int16_t word_0x36540;//

@@ -87,7 +87,7 @@ typedef struct {//lenght 8
 } type_str_0x3647Ac;
 typedef struct {//lenght 0x6604u
 	uint16_t word_2FECE;
-	uint16_t word_2FED0;
+	uint16_t levelID_2FED0;
 	uint8_t byte_0x2FED2;//x_D41A0_BYTEARRAY_0[196306] // type of level graphics
 	uint8_t byte_0x2FED3;
 	MapType_t MapType;//x_D41A0_BYTEARRAY_0[196308]//GraphicsType
@@ -123,7 +123,7 @@ typedef struct {//lenght 0x6604u
 	type_str_0x360D2 next_0x360D2[8];//lenght 110  /spells?
 	type_str_0x36442 stages_0x36442[8];//stages(checkpoints)
 	type_str_0x3647Ac StageVars_0x3647A[11];//8x11
-} type_str_2FECE;//compress level
+} levelDataType_2FECE;//compress level
 #pragma pack (16)
 extern bool isCaveLevel_D41B6;
 extern uint8_t* x_BYTE_14B4E0_second_heightmap;//31C4E0
