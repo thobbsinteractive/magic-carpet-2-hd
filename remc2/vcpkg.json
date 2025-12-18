@@ -2,6 +2,8 @@
   "name": "remc2",
   "version-string": "1.0.0",
   "dependencies": [
-    "sdl2"
+    "sdl2",
+    "libogg",
+    "libvorbis"
   ]
 }
