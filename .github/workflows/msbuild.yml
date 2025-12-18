@@ -39,9 +39,12 @@ jobs:
       with:
         googletest_tag: 'release-1.11.0' # default is 'v1.11.0'
         
-    - name: Install SDL2 via vcpkg
-      run: vcpkg install sdl2:${{ matrix.BUILD_PLATFORM }}-windows
-        
+    - name: Install dependencies via vcpkg
+      run: |
+        vcpkg install sdl2:${{ matrix.BUILD_PLATFORM }}-windows
+        vcpkg install libogg:${{ matrix.BUILD_PLATFORM }}-windows
+        vcpkg install libvorbis:${{ matrix.BUILD_PLATFORM }}-windows
+
     - name: Restore vcpkg packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: vcpkg integrate install
