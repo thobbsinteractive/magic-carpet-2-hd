@@ -37813,7 +37813,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 
 			Logger->debug("sub_46830_main_loop:load scr passed");
 
-			sub_56A30_init_game_level(a3);
+			LevelInitGame_56A30();
 
 			Logger->debug("sub_46830_main_loop:init game level passed");
 
@@ -37948,7 +37948,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 
 							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = v13->levelNumber_6;
 							sub_47FC0_load_screen(true);
-							sub_56A30_init_game_level(a3);
+							LevelInitGame_56A30();
 							sub_47160();
 						}
 					}
@@ -51133,14 +51133,13 @@ void sub_53160()//234160
 // D93A0: using guessed type const char *off_D93A0_wizards_names2;
 
 //----- (000533B0) --------------------------------------------------------
-char LevelDecompress_533B0(int16 levelIndex, levelDataType_2FECE* levelData)//2343b0
+char LevelDecompress_533B0(int16 levelIndex, levelDataType_2FECE* levelData) //2343b0
 {
-	if (levelIndex < 1000)
-	{
+	if (levelIndex < 1000) {
+#ifdef REMC2_CODE
 		std::string levelDataPath = GetSubDirectoryFile(gameFolder, "CLEVELS", "LEVELS.DAT");
 		FILE* levelsdatfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
-		if (levelsdatfile == NULL)
-		{
+		if (levelsdatfile == NULL) {
 			levelDataPath = GetSubDirectoryFile(cdFolder, "LEVELS", "LEVELS.DAT");
 			levelsdatfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 			if (levelsdatfile == NULL)
@@ -51148,54 +51147,47 @@ char LevelDecompress_533B0(int16 levelIndex, levelDataType_2FECE* levelData)//23
 		}
 		levelDataPath = GetSubDirectoryFile(gameFolder, "CLEVELS", "LEVELS.TAB");
 		FILE* levelstabfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
-		if (levelstabfile == NULL)
-		{
+		if (levelstabfile == NULL) {
 			levelDataPath = GetSubDirectoryFile(cdFolder, "LEVELS", "LEVELS.TAB");
 			levelstabfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
-			if (levelstabfile == NULL)
-			{
+			if (levelstabfile == NULL) {
 				DataFileIO::Close(levelsdatfile);
 				return 0;
 			}
 		}
 		DataFileIO::Read(levelstabfile, x_DWORD_E9C38_smalltit, 4000);
 		DataFileIO::Close(levelstabfile);
-
-		if (DataFileIO::FileLengthBytes(levelsdatfile))
-		{
+		if (DataFileIO::FileLengthBytes(levelsdatfile)) {
 			DataFileIO::Seek(levelsdatfile, ((uint32*)x_DWORD_E9C38_smalltit)[levelIndex], 0);
 			DataFileIO::Read(levelsdatfile, (uint8_t*)x_DWORD_E9C38_smalltit, ((uint32*)x_DWORD_E9C38_smalltit)[levelIndex + 1] - ((uint32*)x_DWORD_E9C38_smalltit)[levelIndex]);
-			if (DataFileRNC::Decompress((uint8_t*)x_DWORD_E9C38_smalltit, (uint8_t*)x_DWORD_E9C38_smalltit) < 0)
-			{
+			if (DataFileRNC::Decompress((uint8_t*)x_DWORD_E9C38_smalltit, (uint8_t*)x_DWORD_E9C38_smalltit) < 0) {
 				myprintf("ERROR decompressing LEVELS.DAT\n");
 				return 0;
 			}
 			shadow_levelDataType_2FECE shadow_levelData;
-			qmemcpy(&shadow_levelData, (shadow_levelDataType_2FECE*)(const void*)x_DWORD_E9C38_smalltit, sizeof(shadow_levelDataType_2FECE));//0x6604
-			memset((shadow_levelDataType_2FECE*)x_DWORD_E9C38_smalltit, 0, sizeof(shadow_levelDataType_2FECE));//0x6604
+			qmemcpy(&shadow_levelData, (shadow_levelDataType_2FECE*)(const void*)x_DWORD_E9C38_smalltit, sizeof(shadow_levelDataType_2FECE)); //0x6604
+			memset((shadow_levelDataType_2FECE*)x_DWORD_E9C38_smalltit, 0, sizeof(shadow_levelDataType_2FECE)); //0x6604
 			Convert_from_shadow_str_2FECE(&shadow_levelData, levelData);
 		}
 		DataFileIO::Close(levelsdatfile);
-
 		//if exist editor generated level
-		#if !defined(IS_EDITOR)
-			if (CommandLineParams.DoLoadEditedLevel()) {
-				if (config_LOAD_EDITED_LEVEL) {
-					char path2[512];
-					FixDir(path2, (char*)"../remc2/editor/Debug/testsave.sav");
-					FILE* file = fopen(path2, "rb");
-					if (file)
-					{
-						shadow_levelDataType_2FECE shadow_2FECE;
-						fread(&shadow_2FECE, sizeof(shadow_levelDataType_2FECE), 1, file);
-						Convert_from_shadow_str_2FECE(&shadow_2FECE, &D41A0_0.terrain_2FECE);
-					}
-					fclose(file);
+#if !defined(IS_EDITOR)
+		if (CommandLineParams.DoLoadEditedLevel()) {
+			if (config_LOAD_EDITED_LEVEL) {
+				char path2[512];
+				FixDir(path2, (char*)"../remc2/editor/Debug/testsave.sav");
+				FILE* file = fopen(path2, "rb");
+				if (file) {
+					shadow_levelDataType_2FECE shadow_2FECE;
+					fread(&shadow_2FECE, sizeof(shadow_levelDataType_2FECE), 1, file);
+					Convert_from_shadow_str_2FECE(&shadow_2FECE, &D41A0_0.terrain_2FECE);
 				}
+				fclose(file);
 			}
-		#endif //!IS_EDITOR
+		}
+#endif //!IS_EDITOR
 		//if exist editor generated level
-
+#endif //REMC2_CODE
 		LevelInit_56C00(levelData);
 		SetLevelId_53590(levelData);
 	}
@@ -53511,60 +53503,72 @@ void ClearSettings_567C0()//2377c0 // clean level
 // E9C38: using guessed type int x_DWORD_E9C38_smalltit;
 
 //----- (00056A30) --------------------------------------------------------
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30() //237a30
 {
-	if (CommandLineParams.DoMouseOff()) { mouseturnoff = true; }
+#ifdef REMC2_CODE
+	if (CommandLineParams.DoMouseOff()) {
+		mouseturnoff = true;
+	}
 	if (CommandLineParams.DoSetLevel()) {
 		x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = 1;
 	}
 	Logger->debug("sub_56A30_init_game_level:before sub_6EB90");
 	//fixing
-	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_BUILD00DATTAB]);//24fb90 adress 0x23ca2e
+	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_BUILD00DATTAB]); //24fb90 adress 0x23ca2e
 	//fixing
 	Logger->debug("sub_56A30_init_game_level:sub_6EB90 passed");
-
 	char temp_x_BYTE_E3799_sound_card = soundActive_E3799;
 	soundActive_E3799 = false;
 	ClearSettings_567C0();
-	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 8))
-	{
+#endif //REMC2_CODE
+	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 8)) {
+#ifdef REMC2_CODE
 		PrintTextMessage_70910((char*)"Load Level\0");
-
 		Logger->debug("sub_56A30_init_game_level:before sub_533B0_decompress_levels");
-
+#endif //REMC2_CODE
 		LevelDecompress_533B0(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE);
-
+#ifdef REMC2_CODE
 		Logger->debug("sub_56A30_init_game_level:sub_533B0_decompress_levels passed");
-
+#endif //REMC2_CODE
 	}
-	sub_54660_read_and_decompress_sky_and_blocks(D41A0_0.terrain_2FECE.MapType, x_BYTE_D41B5_texture_size);//235660
-	sub_54800_read_and_decompress_tables(D41A0_0.terrain_2FECE.MapType);//235800
+#ifdef REMC2_CODE
+	sub_54660_read_and_decompress_sky_and_blocks(D41A0_0.terrain_2FECE.MapType, x_BYTE_D41B5_texture_size); //235660
+	sub_54800_read_and_decompress_tables(D41A0_0.terrain_2FECE.MapType); //235800
 	//237ab3
+#endif //REMC2_CODE
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
 		D41A0_0.word_0xe = D41A0_0.terrain_2FECE.word_0x2FED7;
+#ifdef REMC2_CODE
 	PrintTextMessage_70910((char*)"Generate map\0");
+#endif //REMC2_CODE
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4))
 		GenerateLevelMap_43830(&D41A0_0.terrain_2FECE);
-	sub_49F30();//prepare events pointers
+#ifdef REMC2_CODE
+	sub_49F30(); //prepare events pointers
 	//237B05
 	if (CommandLineParams.DoDebugSequences()) {
 		add_compare(0x237B05, CommandLineParams.DoDebugafterload());
 	}
 	PrintTextMessage_70910((char*)"Generate features\0");
+#endif //REMC2_CODE
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4))
 		sub_49270_generate_level_features(&D41A0_0.terrain_2FECE);
+#ifdef REMC2_CODE
 	PrintTextMessage_70910((char*)"Initialise Models\0");
 	memset(&x_WORD_EB398ar, 0, 6);
+#endif //REMC2_CODE
 	sub_49F90();
+#ifdef REMC2_CODE
 	//adress 237B55
 	if (CommandLineParams.DoDebugSequences()) {
 		add_compare(0x237B55, CommandLineParams.DoDebugafterload());
 	}
+#endif //REMC2_CODE
 	D41A0_0.dword_0x11e6 = -1;
+#ifdef REMC2_CODE
 	sub_71A70_setTmaps(D41A0_0.terrain_2FECE.MapType);
 	//adress 237b75
-	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4))
-	{
+	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4)) {
 		InitStages_58940();
 		InitStageVars_11EE0();
 		Init0x3664C_84790();
@@ -53584,22 +53588,29 @@ void sub_56A30_init_game_level(unsigned int a1)//237a30
 		// //D41A0_BYTESTR_0.struct_0x3654C[0].str_3654E_word2 = 40;
 		// //D41A0_BYTESTR_0.struct_0x3654C[0].str_36550_word4 = 40;
 	}
+#endif //REMC2_CODE
 	sub_4A1E0(0, 1);
+#ifdef REMC2_CODE
 	//adress 237bb9
 	if (CommandLineParams.DoDebugSequences()) {
 		add_compare(0x237bb9, CommandLineParams.DoDebugafterload());
 	}
 	soundActive_E3799 = temp_x_BYTE_E3799_sound_card;
+#endif //REMC2_CODE
 	sub_53160();
+#ifdef REMC2_CODE
 	//adress 237bc7
 	if (CommandLineParams.DoDebugSequences()) {
 		add_compare(0x237BC7, CommandLineParams.DoDebugafterload());
 	}
 	//adress 237beb
+#endif //REMC2_CODE
 	sub_60F00();
+#ifdef REMC2_CODE
 	if (CommandLineParams.DoDebugSequences()) {
 		add_compare(0x237BF0, CommandLineParams.DoDebugafterload());
 	}
+#endif //REMC2_CODE
 }
 
 //----- (00056C00) --------------------------------------------------------
