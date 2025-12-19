@@ -530,6 +530,8 @@ typedef struct {//lenght 224791
 #pragma pack (16)
 
 //type_shadow_D41A0_BYTESTR_0
+extern char FontType_D419D;
+extern char CursorGraphicsIndex_D419E;
 
 extern type_D41A0_BYTESTR_0 D41A0_0;
 #endif //MAIN_LEVEL

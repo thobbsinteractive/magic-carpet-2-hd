@@ -496,7 +496,7 @@ TEST(Terrain, sub_43B40) {
 	uint8_t* tempSecondHeightmap1 = (uint8_t*)malloc(65536);
 	uint8_t* tempAng1 = (uint8_t*)malloc(65536);
 	x_BYTE_14B4E0_second_heightmap = (uint8_t*)malloc(65536);
-	uint16_t temp_x_BYTE_D41B7_1;
+	uint16_t temp_MapBasicHeight_D41B7_1;
 
 	//Create Test Data
 	for (int i = 0; i < 256 * 256; i++)
@@ -508,14 +508,14 @@ TEST(Terrain, sub_43B40) {
 		tempMapHeightmap1[i] = mapHeightmap_11B4E0[i];
 		tempSecondHeightmap1[i] = x_BYTE_14B4E0_second_heightmap[i];
 	}
-	x_BYTE_D41B7 = pseudoRand() % 256;
-	temp_x_BYTE_D41B7_1 = x_BYTE_D41B7;
+	MapBasicHeight_D41B7 = pseudoRand() % 256;
+	temp_MapBasicHeight_D41B7_1 = MapBasicHeight_D41B7;
 
-	sub_43B40_orig(temp_x_BYTE_D41B7_1, tempMapHeightmap1, tempAng1, tempSecondHeightmap1);
+	sub_43B40_orig(temp_MapBasicHeight_D41B7_1, tempMapHeightmap1, tempAng1, tempSecondHeightmap1);
 
 	sub_43B40();
 
-	ASSERT_EQ(temp_x_BYTE_D41B7_1, x_BYTE_D41B7);
+	ASSERT_EQ(temp_MapBasicHeight_D41B7_1, MapBasicHeight_D41B7);
 
 	for (int i = 0; i < 256 * 256; i++)
 	{

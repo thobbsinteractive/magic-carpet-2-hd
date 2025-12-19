@@ -1281,7 +1281,7 @@ unsigned int sub_439A0_orig(unsigned __int16 a2, uint8_t mapHeightmap_11B4E0[], 
 }
 
 //----- (00043B40) --------------------------------------------------------
-void sub_43B40_orig(uint8_t x_BYTE_D41B7, uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[], uint8_t* x_BYTE_14B4E0_second_heightmap)//224b40
+void sub_43B40_orig(uint8_t MapBasicHeight_D41B7, uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[], uint8_t* x_BYTE_14B4E0_second_heightmap)//224b40
 {
 	uint16_t v0; // dx
 	uint8_t v1; // eax
@@ -1293,10 +1293,10 @@ void sub_43B40_orig(uint8_t x_BYTE_D41B7, uint8_t mapHeightmap_11B4E0[], uint8_t
 	do
 	{
 		v1 = mapHeightmap_11B4E0[v0];
-		if (v1 > x_BYTE_D41B7)
-			v1 = x_BYTE_D41B7;
-		v2 = x_BYTE_D41B7 - v1;
-		x_BYTE_14B4E0_second_heightmap[v0] = x_BYTE_D41B7 - v1;
+		if (v1 > MapBasicHeight_D41B7)
+			v1 = MapBasicHeight_D41B7;
+		v2 = MapBasicHeight_D41B7 - v1;
+		x_BYTE_14B4E0_second_heightmap[v0] = MapBasicHeight_D41B7 - v1;
 		v3 = mapHeightmap_11B4E0[v0];
 		if (v2 > v3)
 		{

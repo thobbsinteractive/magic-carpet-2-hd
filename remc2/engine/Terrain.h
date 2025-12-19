@@ -18,7 +18,7 @@
 //qmemcpy
 
 extern char x_BYTE_F2CD0x[7 * 7 * 7 * 7][2]; // 233cd0//4802 //4816
-extern uint8_t x_BYTE_D41B7;
+extern uint8_t MapBasicHeight_D41B7;
 
 extern uint16_t x_WORD_17B4E0;
 

@@ -5,6 +5,7 @@
 #include "engine/MenusAndIntros.h"
 #include "engine/Network.h"
 #include "engine/ConvertMapInfo.h"
+#include "engine/LevelInit.h"
 
 /*
 
@@ -1775,7 +1776,7 @@ void sub_56210_process_command_line(int a1, char** a2);
 int sub_56730_clean_memory();
 void ClearSettings_567C0();
 // char sub_56A30_init_game_level(unsigned int a1);
-void LevelInit_56C00(levelDataType_2FECE* levelData);
+//void LevelInit_56C00(levelDataType_2FECE* levelData);
 // char sub_56D60(unsigned int a1, char a2);
 bool sub_56EE0(uaxis_2d a1);
 char sub_56F10(__int16 a1, __int16 a2, __int16 a3, char a4);
@@ -2536,8 +2537,6 @@ posistruct2_t* x_DWORD_D4188 = 0; // weak
 posistruct2_t* x_DWORD_D418C = 0; // weak
 posistruct2_t* x_DWORD_D4190 = 0; // weak
 char x_BYTE_D419C_level_num = -1; // weak
-char x_BYTE_D419D_fonttype = 1; // weak
-char CursorGraphicsIndex_D419E = 0; // weak//2a519e
 
 x_DWORD x_DWORD_D41A4_4 = 0;
 x_DWORD x_DWORD_D41A4_6 = 127;
@@ -26500,7 +26499,7 @@ void DrawGameFrame_2BE30()//20CE30
 					256);
 			}
 
-			DrawHelpText_6FC50(x_BYTE_D419D_fonttype);
+			DrawHelpText_6FC50(FontType_D419D);
 			if (D41A0_0.m_GameSettings.m_Display.m_wTopBar)
 			{
 
@@ -26725,7 +26724,7 @@ void DrawGameFrame_2BE30()//20CE30
 	}
 	if (D41A0_0.byte_0x36E04)
 		sub_30630();
-	DrawHelpText_6FC50(x_BYTE_D419D_fonttype);
+	DrawHelpText_6FC50(FontType_D419D);
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4))
 		return;
 
@@ -26814,7 +26813,7 @@ void sub_2CE30_pause_end_level(int a1, int a2)//20de30
 	int v22; // [esp+84h] [ebp+76h]
 
 	v2 = a2;
-	DrawHelpText_6FC50(x_BYTE_D419D_fonttype);
+	DrawHelpText_6FC50(FontType_D419D);
 	//result = (int)x_D41A0_BYTEARRAY_4;
 	v4x = a1;
 	indexedColor = (*xadataclrd0dat.colorPalette_var28)[3840];
@@ -26922,7 +26921,7 @@ void sub_2CE30_pause_end_level(int a1, int a2)//20de30
 	//return result;
 }
 // 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// D419D: using guessed type char x_BYTE_D419D_fonttype;
+// D419D: using guessed type char FontType_D419D;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // E89F0: using guessed type char x_BYTE_E89F0;
@@ -26992,7 +26991,7 @@ void DrawSorcererScores_2D1D0()//20e1d0
 		}
 
 	v0 = 0;
-	DrawHelpText_6FC50(x_BYTE_D419D_fonttype);
+	DrawHelpText_6FC50(FontType_D419D);
 	v1 = 0;
 	//v2 = x_D41A0_BYTEARRAY_0 + 11230;
 	v2x = 0;
@@ -27109,7 +27108,7 @@ void DrawSorcererScores_2D1D0()//20e1d0
 	}
 }
 // 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// D419D: using guessed type char x_BYTE_D419D_fonttype;
+// D419D: using guessed type char FontType_D419D;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // EA3DC: using guessed type int **filearray_2aa18c[6];
@@ -27554,7 +27553,7 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* a3x, cha
 
 	if (a3x > x_DWORD_EA3E4[0])
 	{
-		DrawHelpText_6FC50(x_BYTE_D419D_fonttype);
+		DrawHelpText_6FC50(FontType_D419D);
 		v4x = x_DWORD_EA3E4[a3x->parentId_0x28_40];
 		v15x = v4x;
 		if (v4x > x_DWORD_EA3E4[0])
@@ -27632,7 +27631,7 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* a3x, cha
 		}
 	}
 }
-// D419D: using guessed type char x_BYTE_D419D_fonttype;
+// D419D: using guessed type char FontType_D419D;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // DB06C: using guessed type void *off_DB06C;
@@ -38050,9 +38049,9 @@ void sub_46B40()//227b40
 		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 		x_D41A0_BYTEARRAY_4_struct.byteindex_51 = 2;
 		if (x_WORD_180660_VGA_type_resolution == 1)
-			x_BYTE_D419D_fonttype = 1;
+			FontType_D419D = 1;
 		else
-			x_BYTE_D419D_fonttype = 3;
+			FontType_D419D = 3;
 		SetMousePositionInMemory_5BDC0(v0_tempmousex, v0_tempmousey);
 	}
 }
@@ -53613,52 +53612,6 @@ void LevelInitGame_56A30() //237a30
 #endif //REMC2_CODE
 }
 
-//----- (00056C00) --------------------------------------------------------
-void LevelInit_56C00(levelDataType_2FECE* levelData)//237c00
-{
-	isCaveLevel_D41B6 = false;
-	SPELLS_BEGIN_BUFFER_str[4].subspell[0].byte_0x1A = 19;
-	SPELLS_BEGIN_BUFFER_str[4].subspell[0].word_0x16x = 0xc7;	
-	SPELLS_BEGIN_BUFFER_str[19].subspell[0].byte_0x1A = 19;
-	SPELLS_BEGIN_BUFFER_str[19].subspell[0].word_0x16x = 0xf5;
-	if (levelData->MapType == MapType_t::Day)
-	{
-		SPELLS_BEGIN_BUFFER_str[4].subspell[0].byte_0x1A = 2;
-		SPELLS_BEGIN_BUFFER_str[4].subspell[0].word_0x16x = 0xc6;
-		SPELLS_BEGIN_BUFFER_str[19].subspell[0].byte_0x1A = 2;
-		SPELLS_BEGIN_BUFFER_str[19].subspell[0].word_0x16x = 0xf4;
-		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 0;
-		LoadSound_84300(0);
-		CursorGraphicsIndex_D419E = 1;
-	}
-	else if (levelData->MapType == MapType_t::Night)
-	{
-		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 0;
-		LoadSound_84300(1u);
-		CursorGraphicsIndex_D419E = 9;
-	}
-	else if (levelData->MapType == MapType_t::Cave)
-	{
-		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 1;
-		isCaveLevel_D41B6 = 1;
-		x_BYTE_D41B7 = levelData->byte_0x2FED3;
-		LoadSound_84300(2u);
-		CursorGraphicsIndex_D419E = 10;
-	}
-	SetDefaultSpells_5C0A0();
-	D41A0_0.byte_0x36E02 = 1;
-	D41A0_0.word_0x36DFE = 0;
-	D41A0_0.word_0x36DFC = 0;
-	D41A0_0.str_0x21AE.xxxx_0x21B1 = 0;
-	D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 = 0;
-	D41A0_0.byte_0x36E0B = D41A0_0.byte_0x36E0B & 0xFC;
-	x_D41A0_BYTEARRAY_4_struct.SelectedMenuItem_38546 = 0;
-	if (x_WORD_180660_VGA_type_resolution == 1)
-		x_BYTE_D419D_fonttype = 1;
-	else
-		x_BYTE_D419D_fonttype = 3;
-}
-
 //----- (00056D60) --------------------------------------------------------
 void sub_56D60(unsigned int a1, char a2)//237d60
 {
@@ -61745,7 +61698,7 @@ void sub_61A00_draw_minimap_entites_b(int a1, int a2, int16_t posX, int16_t posY
 	v76 = height / 2;
 	v15 = (x_DWORD)Maths::sin_DB750[0x200 + yaw & 0x7FF] * v13;
 	v86 = -v14 >> 16;
-	DrawHelpText_6FC50(x_BYTE_D419D_fonttype);
+	DrawHelpText_6FC50(FontType_D419D);
 	v73 = v15 >> 16;
 	v80x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v16 = v80x->dword_0xA4_164x->str_611.array_0x333_819x.word[12];
@@ -62350,7 +62303,7 @@ void sub_627F0_draw_minimap_entites_a(int a1, int a2, int16_t posX, int16_t posY
 	v16 = (x_DWORD)Maths::sin_DB750[0x200 + yaw & 0x7FF] * v14;
 	v85 = height / 2;
 	v86 = -v15 >> 16;
-	DrawHelpText_6FC50(x_BYTE_D419D_fonttype);
+	DrawHelpText_6FC50(FontType_D419D);
 	v87 = v16 >> 16;
 	v102x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v17 = v102x->dword_0xA4_164x->str_611.array_0x333_819x.word[12];
