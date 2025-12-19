@@ -382,6 +382,7 @@
     <ClInclude Include="engine\Basic.h" />
     <ClInclude Include="engine\Basic_mini.h" />
     <ClInclude Include="engine\Basic_terrain.h" />
+    <ClInclude Include="engine\build_config.h" />
     <ClInclude Include="engine\CommandLineParser.h" />
     <ClInclude Include="engine\Compare.h" />
     <ClInclude Include="engine\Compare_maps.h" />

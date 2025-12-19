@@ -106,6 +106,7 @@ set(SOURCE_FILES_UNITTESTS
     "../remc2/engine/engine_support.h"
     "../remc2/engine/Terrain.cpp"
     "../remc2/engine/Terrain.h"
+    "../remc2/engine/build_config.h"
     "utilities/Math.cpp"
     "utilities/Math.h"
     "comparison/engine/OriginalTerrain.cpp"

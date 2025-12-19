@@ -108,6 +108,7 @@ set(SOURCE_FILES_ENGINE
     "engine/CommandLineParser.h"
     "engine/MenusAndIntros.cpp"
     "engine/MenusAndIntros.h"
+    "engine/build_config.h"
 )
 source_group("Source Files\\engine" FILES ${SOURCE_FILES_ENGINE})
 
