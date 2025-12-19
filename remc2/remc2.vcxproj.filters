@@ -504,6 +504,9 @@
     <ClInclude Include="engine\build_config.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
+    <ClInclude Include="engine\Spells.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -852,6 +855,9 @@
       <Filter>Source Files\utilities</Filter>
     </ClCompile>
     <ClCompile Include="engine\ConvertMapInfo.cpp">
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Spells.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
   </ItemGroup>

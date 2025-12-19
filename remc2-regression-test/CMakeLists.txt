@@ -97,6 +97,8 @@ set(SOURCE_FILES_REGRESSIONTESTS
     "../remc2/engine/ScreenBuff.h"
     "../remc2/engine/Sound.cpp"
     "../remc2/engine/Sound.h"
+    "../remc2/engine/Spells.cpp"
+    "../remc2/engine/Spells.h"
     "../remc2/engine/engine_support.cpp"
     "../remc2/engine/engine_support.h"
     "../remc2/engine/Terrain.cpp"

@@ -400,6 +400,7 @@
     <ClInclude Include="engine\Network.h" />
     <ClInclude Include="engine\ProjectionPolygon.h" />
     <ClInclude Include="engine\ScreenBuff.h" />
+    <ClInclude Include="engine\Spells.h" />
     <ClInclude Include="engine\TypeConfigDat.h" />
     <ClInclude Include="engine\Rectangle.h" />
     <ClInclude Include="engine\Type_BigSpritesBuffer.h" />
@@ -532,6 +533,7 @@
     <ClCompile Include="engine\ProjectionPolygon.cpp" />
     <ClCompile Include="engine\ScreenBuff.cpp" />
     <ClCompile Include="engine\Sound.cpp" />
+    <ClCompile Include="engine\Spells.cpp" />
     <ClCompile Include="engine\Terrain.cpp" />
     <ClCompile Include="engine\TextureMaps.cpp" />
     <ClCompile Include="engine\Type_D404C.cpp" />
