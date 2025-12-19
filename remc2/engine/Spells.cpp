@@ -105,3 +105,44 @@ type_SPELLS_BEGIN_BUFFER_str SPELLS_BEGIN_BUFFER_str[26] =
 {0x00000082,0x000032C8,0x00009470,0x000000C8,0x00000028,0x0108,0x0029,0x01,0x00},
 {0x00000186,0x00006590,0x0000DAC0,0x00000190,0x00000078,0x0109,0x0033,0x02,0x00}}}
 };
+//----- (0005C0A0) --------------------------------------------------------
+void SetDefaultSpells_5C0A0()//23d0a0
+{
+	for (int i = 0; i < 26; i++)
+	{
+		SPELLS_BEGIN_BUFFER_str[i].byte_1 = 0;
+		SPELLS_BEGIN_BUFFER_str[i].subspell[0].byte_0x1B &= 0xFE;
+		SPELLS_BEGIN_BUFFER_str[i].subspell[1].byte_0x1B &= 0xFE;
+		SPELLS_BEGIN_BUFFER_str[i].subspell[2].byte_0x1B &= 0xFE;
+		switch (i)
+		{
+			case 0:
+				SPELLS_BEGIN_BUFFER_str[i].subspell[1].byte_0x1B |= 1u;
+			case 3:
+			case 4:
+			case 6:
+			case 8:
+			case 11:
+			case 12:
+			case 14:
+				SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 4u;// 3 4 6 8 B C E
+			case 7:
+				SPELLS_BEGIN_BUFFER_str[i].subspell[0].byte_0x1B |= 1u;
+			case 23:
+				SPELLS_BEGIN_BUFFER_str[i].subspell[0].dword_A = 50000;
+				SPELLS_BEGIN_BUFFER_str[i].subspell[1].dword_A = 70000;
+				SPELLS_BEGIN_BUFFER_str[i].subspell[2].dword_A = 90000;
+		}
+		if (SPELLS_BEGIN_BUFFER_str[i].subspell[2].dword_A <= 0 && 1000 / SPELLS_BEGIN_BUFFER_str[i].subspell[2].dword_6 > 0)
+		{
+			SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 0x20u;
+		}
+		else
+		{
+			if (SPELLS_BEGIN_BUFFER_str[i].subspell[1].dword_A > 0 || 1000 / SPELLS_BEGIN_BUFFER_str[i].subspell[1].dword_6 <= 0)
+				SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 0x8u;
+			else
+				SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 0x10u;
+		}
+	}	
+}

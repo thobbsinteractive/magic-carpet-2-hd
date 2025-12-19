@@ -1838,7 +1838,6 @@ void SetMousePositionInMemory_5BDC0(int16_t posX, int16_t posY);
 char sub_5BF10();
 //signed int sub_5BF50_load_psxdata();
 signed int sub_5C060();
-void sub_5C0A0();
 //signed int sub_5C1B0_set_any_variables2();
 void sub_5C330();
 bool sub_5C380_test_vga_driver_header(uint16_t testlenght);
@@ -53635,7 +53634,7 @@ void LevelInit_56C00(levelDataType_2FECE* levelData)//237c00
 		LoadSound_84300(2u);
 		x_BYTE_D419E = 10;
 	}
-	sub_5C0A0();
+	SetDefaultSpells_5C0A0();
 	D41A0_0.byte_0x36E02 = 1;
 	D41A0_0.word_0x36DFE = 0;
 	D41A0_0.word_0x36DFC = 0;
@@ -57332,7 +57331,7 @@ void Initialize()//23c8d0
 	}
 
 	//v0 = sub_5C0A0();//23d0a0g
-	sub_5C0A0();
+	SetDefaultSpells_5C0A0();
 	if (x_BYTE_D4B80)
 		exit(-1);
 	x_BYTE_D4B80 = 1;
@@ -57640,117 +57639,6 @@ signed int sub_5C060()//23d060
 	sub_90D3F_unload_file_array(psxadatabuild00dat);
 	sub_90D3F_unload_file_array(psxawscreen_351628);
 	return 1;
-}
-
-//----- (0005C0A0) --------------------------------------------------------
-void sub_5C0A0()//23d0a0
-{
-	//char *v0; // ebx
-	int v0x;
-	unsigned int v1; // ecx
-	//char v2; // dl
-	//char v3; // ah
-	//char v4; // dh
-	//int result; // eax
-
-	//v0 = (char*)*xadataspellsdat.colorPalette_var28;
-	v0x = 0;
-	v1 = 0;
-	do
-	{
-		while (1)
-		{
-			//v2 = v0[53];
-			//v2 = SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].byte_0x1B;
-			//v0[1] = 0;
-			SPELLS_BEGIN_BUFFER_str[v0x].byte_1 = 0;
-			//v3 = v0[27];
-			//v3 = SPELLS_BEGIN_BUFFER_str[v0x].subspell[0].byte_0x1B;
-			//v0[53] = v2 & 0xFE;
-			SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].byte_0x1B &= 0xFE;
-			//v4 = v0[79];
-			//v4 = SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].byte_0x1B;
-
-			//v0[27] = v3 & 0xFE;
-			SPELLS_BEGIN_BUFFER_str[v0x].subspell[0].byte_0x1B &= 0xFE;
-			//v0[79] = v4 & 0xFE;
-			SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].byte_0x1B &= 0xFE;
-			if (v1 < 7)
-			{
-				if (v1 < 3)
-				{
-					if (!v1)
-						//v0[53] |= 1u;
-						SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].byte_0x1B |= 1u;
-				}
-				else if (v1 <= 4 || v1 == 6)
-				{
-					goto LABEL_18;
-				}
-			}
-			else
-			{
-				if (v1 <= 7)
-				{
-					//v0[27] |= 1u;
-					SPELLS_BEGIN_BUFFER_str[v0x].subspell[0].byte_0x1B |= 1;
-					goto LABEL_22;
-				}
-				if (v1 < 0xB)
-				{
-					if (v1 != 8)
-						goto LABEL_22;
-				LABEL_18:
-					//v0[1] |= 4u;
-					SPELLS_BEGIN_BUFFER_str[v0x].byte_1 |= 4u;
-					goto LABEL_22;
-				}
-				if (v1 <= 0xC)
-					goto LABEL_18;
-				if (v1 >= 0xE)
-				{
-					if (v1 <= 0xE)
-						goto LABEL_18;
-					if (v1 == 23)
-					{
-						/**(x_DWORD *)(v0 + 10) = 50000;
-						*((x_DWORD *)v0 + 9) = 70000;
-						*(x_DWORD *)(v0 + 62) = 90000;*/
-						SPELLS_BEGIN_BUFFER_str[v0x].subspell[0].dword_A = 50000;
-						SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].dword_A = 70000;
-						SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].dword_A = 90000;
-					}
-				}
-			}
-		LABEL_22:
-			//result = 1000 / *(x_DWORD *)(v0 + 58);
-			//result = 1000 / SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].dword_6;
-			//if (*(x_DWORD *)(v0 + 62) <= 0 && result > 0)
-			if (SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].dword_A <= 0 && 1000 / SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].dword_6 > 0)
-			{
-				//v0[1] |= 0x20u;
-				SPELLS_BEGIN_BUFFER_str[v0x].byte_1 |= 0x20u;
-				goto LABEL_30;
-			}
-			//if (*((x_DWORD *)v0 + 9) > 0 || 1000 / *((x_DWORD *)v0 + 8) <= 0)
-			if (SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].dword_A > 0 || 1000 / SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].dword_6 <= 0)
-				break;
-			//v0[1] |= 0x10u;
-			SPELLS_BEGIN_BUFFER_str[v0x].byte_1 |= 0x10u;
-			++v1;
-			//v0 += 80;
-			v0x++;
-			if ((signed int)v1 >= 26)
-				return;// result;
-		}
-		//v0[1] |= 8u;
-		SPELLS_BEGIN_BUFFER_str[v0x].byte_1 |= 0x8u;
-	LABEL_30:
-		v1++;
-		//v0 += 80;
-		v0x++;
-	} while ((signed int)v1 < 26);
-	//return result;
 }
 
 //----- (0005C1B0) --------------------------------------------------------

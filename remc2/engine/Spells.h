@@ -68,4 +68,5 @@ typedef struct {//lenght 80
 type_SPELLS_BEGIN_BUFFER_str;
 #pragma pack (16)
 extern type_SPELLS_BEGIN_BUFFER_str SPELLS_BEGIN_BUFFER_str[];
+extern void SetDefaultSpells_5C0A0();
 #endif //MAIN_SPELLS
