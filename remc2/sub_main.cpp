@@ -1733,7 +1733,6 @@ void sub_52E90(type_str_0x2BDE* playStr, uint16_t type, bool useSound);
 void sub_53120();
 void sub_53160();
 //char sub_533B0_decompress_levels(__int16 a1, type_str_2FECE* a2);
-void SetLevelId_53590(levelDataType_2FECE* levelData);
 char sub_53770_test_open_moviegam(uint16_t a1);
 char sub_53950_test_open_moviemap(uint16_t a1);
 void sub_539A0_load_bldgprm();
@@ -51191,12 +51190,6 @@ char LevelDecompress_533B0(int16 levelIndex, levelDataType_2FECE* levelData) //2
 		SetLevelId_53590(levelData);
 	}
 	return 1;
-}
-
-//----- (00053590) --------------------------------------------------------
-void SetLevelId_53590(levelDataType_2FECE* levelData)//234590
-{
-	D41A0_0.levelID_0x4 = levelData->levelID_2FED0;
 }
 
 //----- (00053770) --------------------------------------------------------

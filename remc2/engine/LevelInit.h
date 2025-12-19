@@ -5,5 +5,6 @@
 #include "Sound.h"
 #include "Terrain.h"
 void LevelInit_56C00(levelDataType_2FECE* levelData);
+void SetLevelId_53590(levelDataType_2FECE* levelData);
 #endif //MAIN_LEVEL_INIT
 

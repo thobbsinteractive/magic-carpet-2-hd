@@ -44,3 +44,9 @@ void LevelInit_56C00(levelDataType_2FECE* levelData)//237c00
 	else
 		FontType_D419D = 3;
 }
+
+//----- (00053590) --------------------------------------------------------
+void SetLevelId_53590(levelDataType_2FECE* levelData)//234590
+{
+	D41A0_0.levelID_0x4 = levelData->levelID_2FED0;
+}
