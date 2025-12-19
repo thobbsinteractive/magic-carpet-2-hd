@@ -125,7 +125,7 @@ void SetDefaultSpells_5C0A0()//23d0a0
 			case 11:
 			case 12:
 			case 14:
-				SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 4u;// 3 4 6 8 B C E
+				SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 4u;
 			case 7:
 				SPELLS_BEGIN_BUFFER_str[i].subspell[0].byte_0x1B |= 1u;
 			case 23:
