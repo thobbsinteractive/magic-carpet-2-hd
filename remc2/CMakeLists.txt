@@ -97,6 +97,8 @@ set(SOURCE_FILES_ENGINE
     "engine/ConvertMapInfo.h"
     "engine/Level.cpp"
     "engine/Level.h"
+    "engine/LevelInit.cpp"
+    "engine/LevelInit.h"
     "engine/ScreenBuff.cpp"
     "engine/ScreenBuff.h"
     "engine/Animation.cpp"
