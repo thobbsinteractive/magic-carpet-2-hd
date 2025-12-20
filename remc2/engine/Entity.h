@@ -13,8 +13,8 @@
 #include <array>
 #include <typeinfo>
 
-#include "../utilities/DataFileIO.h"
-#include "../utilities/BitmapIO.h"
+//#include "../utilities/DataFileIO.h"
+//#include "../utilities/BitmapIO.h"
 
 #include "UVtable_D4350.h"
 #include "Type_D404C.h"
@@ -22,7 +22,7 @@
 #include "Type_D93C0_Bldgprmbuffer.h"
 #include "Type_MapScreenPortals_E17CC.h"
 #include "Type_SecretMapScreenPortals_E2970.h"
-#include "Basic.h"
+//#include "Basic.h"
 #include "Sound.h"
 #include "Type_Animations.h"
 #include "Animation.h"

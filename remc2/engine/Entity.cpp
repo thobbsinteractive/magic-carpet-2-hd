@@ -1,41 +1,10 @@
 #include "Entity.h"
-#include "engine_support.h"
-#include "Compare_maps.h"
-#include "CommandLineParser.h"
+//#include "Compare_maps.h"
+//#include "CommandLineParser.h"
 #include "MenusAndIntros.h"
 #include "Network.h"
-#include "ConvertMapInfo.h"
+//#include "ConvertMapInfo.h"
 #include "LevelInit.h"
-
-/*
-
-//2541e7
-mainConnection_E12AA 2b22aa->326f0 7f0300 .. 03
-after NetworkTestCall_72FBB 350000 .. 00
-after NetworkCancel_748F7 not changed
-
-connection_E12AE[] 2b22ae->34340 b0160002 .. 16
-after NetworkTestCall_72FBB 900b73 .. 0b
-after NetworkCancel_748F7 not changed
-
-*/
-
-#ifdef __linux__
-#include <strings.h>
-#include <cstdlib>
-#include <cstring>
-#define _stricmp strcasecmp
-#define _strnicmp strncasecmp
-#define strnicmp strncasecmp
-#define __cdecl
-#include <ctype.h>
-#include "../findfirst/findfirst.h"
-#include <iostream>
-#include <functional>
-#include <type_traits>
-#else
-#include <filesystem>
-#endif //__linux__
 
 int test_regression_level = 1;
 //first multi is 50(51) 10
