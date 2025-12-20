@@ -240,6 +240,7 @@ void SOUND_set_sample_volume(HSAMPLE S, int32_t volume);
 void SOUND_set_sequence_volume(int32_t volume, int32_t  milliseconds);
 void SOUND_set_master_volume(int32_t volume);
 void SOUND_set_sample_volume_panning(HSAMPLE S, int32_t panning);
+void SetSamplePosition(HSAMPLE S, int16_t angle, uint8_t distance);
 void SOUND_UPDATE();
 void ChannelFinished(int channel);
 

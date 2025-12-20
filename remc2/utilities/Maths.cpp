@@ -1045,3 +1045,46 @@ uint32_t Maths::EuclideanDistXY_584D0(axis_3d* a1, axis_3d* a2)//2394d0
 	return (int16_t)(a2->x - a1->x) * (int16_t)(a2->x - a1->x)
 		+ (int16_t)(a2->y - a1->y) * (int16_t)(a2->y - a1->y);
 }
+
+uint32_t Maths::EuclideanDistXYFromZero(axis_3d_32* a1)
+{
+	return (int16_t)(a1->x) * (int16_t)(a1->x)
+		+ (int16_t)(a1->y) * (int16_t)(a1->y);
+}
+
+axis_3d_32 Maths::RelativeXYZCoordinate(axis_3d* a1, axis_3d* a2)
+{
+	axis_3d_32 position;
+	position.x = (int32_t)a1->x - (int32_t)a2->x;
+	position.y = (int32_t)a1->y - (int32_t)a2->y;
+	position.z = (int32_t)a1->z - (int32_t)a2->z;
+	return position;
+}
+
+float Maths::ConvertYawToDegrees(int16_t yaw)
+{
+	auto degreesYaw = 360.0f * ((float)yaw / 0x7ff);
+	return degreesYaw;
+}
+
+Maths::Vec3 Maths::RotateX(const Vec3& v, float angle) {
+	float rad = angle * M_PI / 180.0f;
+	float cosA = cos(rad);
+	float sinA = sin(rad);
+
+	return { v.x, v.y * cosA - v.z * sinA, v.y * sinA + v.z * cosA };
+}
+
+Maths::Vec3 Maths::RotateY(const Vec3& v, float angle) {
+	float rad = angle * M_PI / 180.0f;
+	float cosA = cos(rad);
+	float sinA = sin(rad);
+	return { v.x * cosA + v.z * sinA, v.y, -v.x * sinA + v.z * cosA };
+}
+
+Maths::Vec3 Maths::RotateZ(const Vec3& v, float angle) {
+	float rad = angle * M_PI / 180.0f;
+	float cosA = cos(rad);
+	float sinA = sin(rad);
+	return { v.x * cosA + v.y * -sinA, v.x * sinA + v.y * cosA, v.z };
+}
