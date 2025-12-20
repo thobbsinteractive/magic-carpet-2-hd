@@ -435,6 +435,11 @@ extern axis_3d PlayerAxis_EB398ar; // weak
 extern Pathstruct pstr[];
 extern char x_BYTE_D4B80;
 
+extern uint8_t xx_array_E36C4[64];
+extern char x_BYTE_E2A28_speek; // weak
+
+void sub_86A00_some_allocs();
+
 void j___delay(x_DWORD); // weak
 unsigned long j___clock();
 
@@ -647,7 +652,6 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1);//pre 22b190
 
 void sub_71410_process_tmaps();
 void SetCDFilePaths(const char* cdDataPath, Pathstruct pstr[]);
-void initposistruct();
 
 void Initialize();
 
@@ -659,13 +663,10 @@ void Init0x3664C_84790();
 void sub_4A1E0(int a1, char a2);
 void sub_53160();
 void sub_60F00();
-void sub_56210_process_command_line(int a1, char** a2);
 void InitNetworkInfo();
 void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3);//227830
 void sub_5BC20();
 int sub_56730_clean_memory();
-void begin_plugin();
-void preconvert();
 //int /*__cdecl*/ sub_main(int argc, char** argv, char** envp);
 
 #endif //MAIN_ENTITY

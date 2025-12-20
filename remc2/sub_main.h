@@ -65,6 +65,11 @@ x_DWORD * sub_A5850(int a1, char a2, unsigned int a3, signed int a4, int a5);*/
 #ifndef SUB_MAIN_ACTIVE
 #define SUB_MAIN_ACTIVE
 
+void begin_plugin();
+void preconvert();
+void initposistruct();
+void sub_56210_process_command_line(int a1, char** a2);
+
 int sub_main(int argc, char** argv, char** envp);
 
 #endif //SUB_MAIN_ACTIVE

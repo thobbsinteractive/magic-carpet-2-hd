@@ -6,6 +6,7 @@
 
 #define IS_EDITOR
 #include "../engine/Entity.h"
+#include "../sub_main.h"
 #include "../engine/DatTabIndexes.h"
 #include "../engine/LevelInit.h"
 //#include "../engine/engine_support.h"
