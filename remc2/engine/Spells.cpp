@@ -118,6 +118,7 @@ void SetDefaultSpells_5C0A0()//23d0a0
 		{
 			case 0:
 				SPELLS_BEGIN_BUFFER_str[i].subspell[1].byte_0x1B |= 1u;
+				break;
 			case 3:
 			case 4:
 			case 6:
@@ -126,12 +127,15 @@ void SetDefaultSpells_5C0A0()//23d0a0
 			case 12:
 			case 14:
 				SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 4u;
+				break;
 			case 7:
 				SPELLS_BEGIN_BUFFER_str[i].subspell[0].byte_0x1B |= 1u;
+				break;
 			case 23:
 				SPELLS_BEGIN_BUFFER_str[i].subspell[0].dword_A = 50000;
 				SPELLS_BEGIN_BUFFER_str[i].subspell[1].dword_A = 70000;
 				SPELLS_BEGIN_BUFFER_str[i].subspell[2].dword_A = 90000;
+				break;
 		}
 		if (SPELLS_BEGIN_BUFFER_str[i].subspell[2].dword_A <= 0 && 1000 / SPELLS_BEGIN_BUFFER_str[i].subspell[2].dword_6 > 0)
 		{
