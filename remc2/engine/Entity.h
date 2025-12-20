@@ -194,15 +194,6 @@ union REGS {
 */
 //#define REGS x_DWORD[6]
 
-/*extern x_WORD __CS__;
-extern x_WORD __GS__;
-extern x_WORD __DS__;
-extern x_WORD __ES__;
-extern x_WORD __FS__;
-extern x_WORD __SS__;*/
-
-//extern char IsTable[];
-
 #pragma pack (1)
 typedef struct {//lenght 6
 	int8_t* bitmapData_0;
@@ -249,6 +240,8 @@ typedef struct {//lenght 30
 } type_x_BYTE_E25ED_db_str;
 #pragma pack (16)
 
+extern char x_BYTE_DB734;
+extern char x_BYTE_D4B51;
 extern filearray_struct x_DWORD_E9B20[4];
 
 extern __int16 x_WORD_E29DA_type_resolution; // weak
@@ -439,6 +432,7 @@ extern uint8_t xx_array_E36C4[64];
 extern char x_BYTE_E2A28_speek; // weak
 extern char x_BYTE_E36D1; // weak
 extern int x_DWORD_17D6C8; // weak
+extern POSITION x_DWORD_F4720; // weak
 
 void sub_86A00_some_allocs();
 
@@ -510,7 +504,7 @@ int32_t /*__cdecl*/ fix_filelength(int32_t);// weak
 //x_DWORD /*__cdecl*/ mkdir(char* path);
 int32_t /*__cdecl*/ settextposition(int32_t, int32_t);// weak
 void outtext(const char* text);// weak
-int /*__fastcall*/ gettextposition(int32_t, int32_t, int32_t);// weak
+POSITION /*__fastcall*/ gettextposition();// weak
 int32_t /*__cdecl*/ signal(int32_t, int32_t);// weak
 //int __cdecl unknown_libname_1(char *a1);
 //void _disable();
@@ -655,8 +649,6 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1);//pre 22b190
 void sub_71410_process_tmaps();
 void SetCDFilePaths(const char* cdDataPath, Pathstruct pstr[]);
 
-void Initialize();
-
 void sub_49F90();
 void sub_71A70_setTmaps(MapType_t a1);
 void InitStages_58940();//239940 //init games objectives
@@ -669,6 +661,10 @@ void InitNetworkInfo();
 void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3);//227830
 void sub_5BC20();
 void sub_75AB0();
+void sub_5C490_testers_info();
+signed int sub_98C48_open_nwrite_close(const char* file, uint8_t* buffer, uint32_t count);
+void sub_83CC0(char a1);
+void sub_86BD0_freemem1();
 //int /*__cdecl*/ sub_main(int argc, char** argv, char** envp);
 
 #endif //MAIN_ENTITY
