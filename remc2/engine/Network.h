@@ -56,5 +56,6 @@ void DrawNetworkLevelName_7D1F0();
 signed int sub_7D230(char a1, unsigned __int8 a2, unsigned __int8 a3);
 
 void SetPaletteColor_7CDC0(unsigned __int8 a1, unsigned __int8 a2);
+uint8_t NetworkAddName_74767(myNCB* connection, char* name);
 
 #endif //MAIN_NETWORK
