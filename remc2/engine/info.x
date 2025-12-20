@@ -1591,7 +1591,7 @@ sub_8CEDF_install_mouse()
 https://www.equestionanswers.com/c/c-int33-mouse-service.php
 
 instalace kursoru mozna zde:
-sub_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);//24FBF0 - 2AA18C//?tab
+DivMinusIndexes_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);//24FBF0 - 2AA18C//?tab
 
 nebo tady:
 sub_52E90
@@ -1926,7 +1926,7 @@ nekde se to musi upravit a tam z toho bude posistruct
 sub_7AC00_load_and_set_graphics_and_Palette - 25bc00
 	24fbf0
 
-sub_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);
+DivMinusIndexes_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);
 -find filearray_2aa18c changes !
 
 x_DWORD_E9B20 je filearray_2aa18c[filearrayindex_ZERO1] - ale je nuytne prijit na to kde to vznika
@@ -2594,7 +2594,7 @@ problem
 void sub_49540(uint8_t* a1, uint8_t* a2)//22a540
 
 problem:
-x_WORD_EB398ar[0] = *(int16_t*)(a2 + 4) << 8;//adress 22a5af
+PlayerAxis_EB398ar[0] = *(int16_t*)(a2 + 4) << 8;//adress 22a5af
 1a70ee - 75a5390060607eb7
 27971f - call 279709
 call 24fb90
@@ -2737,7 +2737,7 @@ __int16 sub_48B90(int a1)//229b90
 sub_44D00();//225d00
 
 sub_70910_print_string((char*)"Initialise Models\0");
-	memset(x_WORD_EB398ar, 0, 6);
+	memset(PlayerAxis_EB398ar, 0, 6);
 	sub_49F90();
 	v2 = x_D41A0_BYTEARRAY_0;
 	x_D41A0_BYTEARRAY_0[4582] = -1;
@@ -4485,7 +4485,7 @@ if (v114[5] &  40)
 				v18[2118] = 1;
 			goto LABEL_215;
 
-x_WORD_EB398ar - position and rotation
+PlayerAxis_EB398ar - position and rotation
 
 
 x_BYTE_EB39E_keys[0]
@@ -5907,7 +5907,7 @@ sub_57CF0
 -more count than 35
 
 zde:
-sub_57CF0(a1x, &x_WORD_EB398ar);
+sub_57CF0(a1x, &PlayerAxis_EB398ar);
 
 je to ok, je jen ulozen maly vzorek
 
@@ -5982,12 +5982,12 @@ for (jy = &D41A0_BYTESTR_0.struct_0x6E8E[1]; jy <= &D41A0_BYTESTR_0.struct_0x6E8
 
  D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].struct_0x1d1_2BDE_11695[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].word_0x00e_2BDE_11244+1].axis_2BDE_11695
  &x_DWORD_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[0].word_0x00a_2BE4_11240]->array_0x4C_76
- &x_WORD_EB398ar
+ &PlayerAxis_EB398ar
 
  a1x->dword_0xA4_164x->word_0x1A6_422
  a1x->dword_0xA4_164x->word_0x1A8_424
  move
- sub_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->dword_0xA4_164x->word_0x24_36, v16);
+ sub_57FA0(&PlayerAxis_EB398ar, a1x->word_0x1C_28, a1x->dword_0xA4_164x->word_0x24_36, v16);
 
   (uint8_t*)&x_WORD_15B4E0+0x1ba9a 0xce
  x_WORD_15B4E0+0x1ba9a 0x00
@@ -6941,7 +6941,7 @@ void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // regist
 type_str_0x6E8E* sub_501D0(axis_3d* a1x)//2311d0
 
 adress 2bc398
-x_WORD_EB398ar = a1x->array_0x4C_76;
+PlayerAxis_EB398ar = a1x->array_0x4C_76;
 
 v113x->dword_0xA4_164x->word_0x4_4 = ((v100x - ((v100x>>31) << 2)) - cftemp) >> 2;
 		//v113x->dword_0xA4_164x->word_0x4_4 = (signed int)(v100 - (__CFSHL__(HIDWORD(v100), 2) + 4 * HIDWORD(v100))) >> 2;
@@ -8501,7 +8501,7 @@ problem here:
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4))
 		sub_49270_generate_level_features(&D41A0_BYTESTR_0.str_2FECE);
 	sub_70910_print_string((char*)"Initialise Models\0");
-	memset(&x_WORD_EB398ar, 0, 6);
+	memset(&PlayerAxis_EB398ar, 0, 6);
 	sub_49F90();
 
 2272dd

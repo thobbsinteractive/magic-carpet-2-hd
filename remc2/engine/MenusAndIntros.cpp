@@ -951,7 +951,7 @@ void MainMenu_76FA0(/*int a1, */int  /*a2*/, uint16_t a3x)//257fa0
 	//fixed
 	//x_WORD_180660_VGA_type_resolution = 8;
 	//sub_6EB90(posistruct7);
-	//sub_6EBF0(&filearray_2aa18c[filearrayindex_HFONT3DATTAB]);
+	//DivMinusIndexes_6EBF0(&filearray_2aa18c[filearrayindex_HFONT3DATTAB]);
 	help_VGA_type_resolution = 0;
 	//fixed
 
@@ -2353,7 +2353,7 @@ void LoadAndSetGraphicsAndPalette_7AC00()//25BC00
 		}
 		//fix
 		sub_54600_mouse_reset();//235600 //mouse reset
-		sub_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);//24FBF0 - 2AA18C//?tab
+		DivMinusIndexes_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);//24FBF0 - 2AA18C//?tab
 		if (x_WORD_180660_VGA_type_resolution == 1)
 		{
 			x_WORD_E29DA_type_resolution = x_WORD_180660_VGA_type_resolution;
@@ -2421,7 +2421,7 @@ int sub_7ADE0(char a1)//25bde0
 		}
 		//fix
 		sub_54600_mouse_reset();//mouse reset
-		sub_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);
+		DivMinusIndexes_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);
 		x_WORD_180660_VGA_type_resolution = 1;
 		x_WORD_E29DA_type_resolution = 1;
 		/*

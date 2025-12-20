@@ -2,8 +2,9 @@
 
 #include <cstdint>
 
-#include "../sub_main.h"
+#include "Entity.h"
 #include "TypeConfigDat.h"
+#include "DatTabIndexes.h"
 
 // from sub_main
 extern char x_BYTE_D419C_level_num;

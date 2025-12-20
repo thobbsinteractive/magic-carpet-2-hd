@@ -131,7 +131,7 @@ void editor_run()
 	sub_101C0();//23CA36 - 1f11c0 //sem se to vubec nedostane
 
 	//init
-	sub_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);
+	DivMinusIndexes_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);
 	x_WORD_180660_VGA_type_resolution = 1;
 	x_WORD_E29DA_type_resolution = 1;
 

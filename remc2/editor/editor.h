@@ -5,7 +5,9 @@
 #include "kiss_sdl.h"
 
 #define IS_EDITOR
-#include "../sub_main.h"
+#include "../engine/Entity.h"
+#include "../engine/DatTabIndexes.h"
+#include "../engine/LevelInit.h"
 //#include "../engine/engine_support.h"
 //#include "../Terrain.h"
 

@@ -22,6 +22,9 @@
 #include "defs.h"
 #include "global_types.h"
 
+extern bool config_EDITOR;
+extern bool config_LOAD_EDITED_LEVEL;
+
 extern uint8_t* Zero_pointer;
 
 void qmemcpy(void* a, void* b, size_t c);

@@ -387,6 +387,8 @@
     <ClInclude Include="engine\Compare.h" />
     <ClInclude Include="engine\Compare_maps.h" />
     <ClInclude Include="engine\ConvertMapInfo.h" />
+    <ClInclude Include="engine\DatTabIndexes.h" />
+    <ClInclude Include="engine\Entity.h" />
     <ClInclude Include="engine\GameRenderInterface.h" />
     <ClInclude Include="engine\GameRenderGL.h" />
     <ClInclude Include="engine\GameRenderHD.h" />
@@ -398,8 +400,11 @@
     <ClInclude Include="engine\MapType.h" />
     <ClInclude Include="engine\MenusAndIntros.h" />
     <ClInclude Include="engine\GameRenderOriginal.h" />
+    <ClInclude Include="engine\MouseOnOff.h" />
     <ClInclude Include="engine\Network.h" />
+    <ClInclude Include="engine\PrintMessages.h" />
     <ClInclude Include="engine\ProjectionPolygon.h" />
+    <ClInclude Include="engine\ReadAndDecompress.h" />
     <ClInclude Include="engine\ScreenBuff.h" />
     <ClInclude Include="engine\Spells.h" />
     <ClInclude Include="engine\TypeConfigDat.h" />
@@ -524,6 +529,8 @@
     <ClCompile Include="engine\Compare.cpp" />
     <ClCompile Include="engine\Compare_maps.cpp" />
     <ClCompile Include="engine\ConvertMapInfo.cpp" />
+    <ClCompile Include="engine\DatTabIndexes.cpp" />
+    <ClCompile Include="engine\Entity.cpp" />
     <ClCompile Include="engine\GameRenderGL.cpp" />
     <ClCompile Include="engine\GameRenderHD.cpp" />
     <ClCompile Include="engine\GameRenderNG.cpp" />
@@ -531,8 +538,11 @@
     <ClCompile Include="engine\LevelInit.cpp" />
     <ClCompile Include="engine\MenusAndIntros.cpp" />
     <ClCompile Include="engine\GameRenderOriginal.cpp" />
+    <ClCompile Include="engine\MouseOnOff.cpp" />
     <ClCompile Include="engine\Network.cpp" />
+    <ClCompile Include="engine\PrintMessages.cpp" />
     <ClCompile Include="engine\ProjectionPolygon.cpp" />
+    <ClCompile Include="engine\ReadAndDecompress.cpp" />
     <ClCompile Include="engine\ScreenBuff.cpp" />
     <ClCompile Include="engine\Sound.cpp" />
     <ClCompile Include="engine\Spells.cpp" />
