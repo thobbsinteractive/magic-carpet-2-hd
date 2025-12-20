@@ -437,6 +437,8 @@ extern char x_BYTE_D4B80;
 
 extern uint8_t xx_array_E36C4[64];
 extern char x_BYTE_E2A28_speek; // weak
+extern char x_BYTE_E36D1; // weak
+extern int x_DWORD_17D6C8; // weak
 
 void sub_86A00_some_allocs();
 
@@ -666,7 +668,7 @@ void sub_60F00();
 void InitNetworkInfo();
 void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3);//227830
 void sub_5BC20();
-int sub_56730_clean_memory();
+void sub_75AB0();
 //int /*__cdecl*/ sub_main(int argc, char** argv, char** envp);
 
 #endif //MAIN_ENTITY

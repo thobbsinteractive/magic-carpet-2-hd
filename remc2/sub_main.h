@@ -69,6 +69,11 @@ void begin_plugin();
 void preconvert();
 void initposistruct();
 void sub_56210_process_command_line(int a1, char** a2);
+int sub_56730_clean_memory();
+int sub_8B5A0();
+int sub_8B770();
+int sub_9B234(int* a1);
+void sub_75900();
 
 int sub_main(int argc, char** argv, char** envp);
 

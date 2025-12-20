@@ -550,6 +550,62 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 	//return (int)x_D41A0_BYTEARRAY_4;
 }
 
+//----- (0009B234) --------------------------------------------------------
+int sub_9B234(int* a1)//27C234
+{
+	int result; // eax
+
+	if (*a1)
+	{
+		//fix  sub_9C58C(*a1);
+		allert_error();
+		//fix
+		result = x_free((void*)*a1);
+		*a1 = 0;
+	}
+	return result;
+}
+
+
+//----- (0008B770) --------------------------------------------------------
+int sub_8B770()//26c770
+{
+	return sub_9B234((int*)unk_18058Cstr.unk_1805CE);
+}
+
+//----- (00075900) --------------------------------------------------------
+void sub_75900()
+{
+	sub_75AB0();
+}
+
+//----- (0008B5A0) --------------------------------------------------------
+int sub_8B5A0()//26c5a0
+{
+	if (x_BYTE_E36D1)
+	{
+		switch (unk_18058Cstr.x_WORD_1805C2_joystick)
+		{
+		case 1:
+			sub_8B770();
+			break;
+		case 9:
+			sub_75900();
+			break;
+		default:
+			break;
+		}
+		x_BYTE_E36D1 = 0;
+	}
+	return 0;
+}
+
+//----- (00056730) --------------------------------------------------------
+int sub_56730_clean_memory()//237730
+{
+	return sub_8B5A0();
+}
+
 //----- (00055F70) --------------------------------------------------------
 int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 {
