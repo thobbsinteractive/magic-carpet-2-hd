@@ -1067,6 +1067,18 @@ float Maths::ConvertYawToDegrees(int16_t yaw)
 	return degreesYaw;
 }
 
+/// <summary>
+/// Magic Carpet uses a Z-Up coordinate system
+/// 
+/// Z+  Y-
+/// |  /
+/// | /
+/// |/_____ X+
+/// 
+/// </summary>
+/// <param name="v"></param>
+/// <param name="angle"></param>
+/// <returns></returns>
 Maths::Vec3 Maths::RotateX(const Vec3& v, float angle) {
 	float rad = angle * M_PI / 180.0f;
 	float cosA = cos(rad);
@@ -1079,12 +1091,12 @@ Maths::Vec3 Maths::RotateY(const Vec3& v, float angle) {
 	float rad = angle * M_PI / 180.0f;
 	float cosA = cos(rad);
 	float sinA = sin(rad);
-	return { (v.x * cosA) + (v.z * -sinA), v.y, (v.x * sinA) + (v.z * cosA)};
+	return { (v.x * cosA) + (v.y * sinA), (v.x * -sinA) + (v.y * cosA), v.z };
 }
 
 Maths::Vec3 Maths::RotateZ(const Vec3& v, float angle) {
 	float rad = angle * M_PI / 180.0f;
 	float cosA = cos(rad);
 	float sinA = sin(rad);
-	return { (v.x * cosA) + (v.y * sinA), (v.x * -sinA) + (v.y * cosA), v.z };
+	return { (v.x * cosA) + (v.z * -sinA), v.y, (v.x * sinA) + (v.z * cosA)};
 }
