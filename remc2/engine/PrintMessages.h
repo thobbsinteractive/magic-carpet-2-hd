@@ -1,0 +1,5 @@
+#pragma once
+#ifndef MAIN_PRINT_MESSAGES
+#define MAIN_PRINT_MESSAGES
+
+#endif//MAIN_PRINT_MESSAGES

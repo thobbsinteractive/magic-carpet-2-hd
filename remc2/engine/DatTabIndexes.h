@@ -1,0 +1,5 @@
+#pragma once
+#ifndef MAIN_DATTAB_INDEXES
+#define MAIN_DATTAB_INDEXES
+
+#endif//DATTAB_INDEXES
