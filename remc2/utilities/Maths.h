@@ -43,6 +43,7 @@ public:
 	static Vec3 RotateX(const Vec3& v, float angle);
 	static Vec3 RotateY(const Vec3& v, float angle);
 	static Vec3 RotateZ(const Vec3& v, float angle);
+	static float MeasureYawAngleDegrees(const Vec3& v);
 };
 
 #endif //MATHS_H
