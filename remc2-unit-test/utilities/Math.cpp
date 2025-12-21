@@ -11,20 +11,30 @@ unsigned int pseudoRand()
 
 TEST(Math, RotateX)
 {
-	Maths::Vec3 point{ 0, 1, 1 };
+	Maths::Vec3 point{ 0, 1, 0 };
 	auto rotatedPoint = Maths::RotateX(point, 90);
 
 	ASSERT_EQ((int)round(rotatedPoint.x), 0);
-	ASSERT_EQ((int)round(rotatedPoint.y), 1);
+	ASSERT_EQ((int)round(rotatedPoint.y), 0);
 	ASSERT_EQ((int)round(rotatedPoint.z), -1);
 }
 
 TEST(Math, RotateY)
 {
-	Maths::Vec3 point{ 1, 0, 1};
+	Maths::Vec3 point{ 0, 0, 1};
 	auto rotatedPoint = Maths::RotateY(point, 90);
+
+	ASSERT_EQ((int)round(rotatedPoint.x), 1);
+	ASSERT_EQ((int)round(rotatedPoint.y), 0);
+	ASSERT_EQ((int)round(rotatedPoint.z), 0);
+}
+
+TEST(Math, RotateZ)
+{
+	Maths::Vec3 point{ 1, 0, 0 };
+	auto rotatedPoint = Maths::RotateZ(point, 90);
 
 	ASSERT_EQ((int)round(rotatedPoint.x), 0);
 	ASSERT_EQ((int)round(rotatedPoint.y), 1);
-	ASSERT_EQ((int)round(rotatedPoint.z), 1);
+	ASSERT_EQ((int)round(rotatedPoint.z), 0);
 }
