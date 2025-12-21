@@ -2,6 +2,7 @@
 #define PORT_NETWORK
 
 #include <cstdlib>
+#include <cstdint>
 #include <iostream>
 #include <fstream>
 

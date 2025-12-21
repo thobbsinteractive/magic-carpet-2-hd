@@ -1,0 +1,20 @@
+{
+    "name": "remc2-editor",
+    "version": "0.9.4",
+    "dependencies": [
+		"rapidjson",
+		"spdlog",
+		"libogg",
+		"libpng",
+		"sdl2-mixer",
+		"sdl2-image",
+		"sdl2-ttf"
+    ],
+	"builtin-baseline": "f6a5d4e8eb7476b8d7fc12a56dff300c1c986131",
+	"overrides": [
+        {
+            "name": "sdl2",
+            "version": "2.0.14#4"
+        }
+    ]
+}

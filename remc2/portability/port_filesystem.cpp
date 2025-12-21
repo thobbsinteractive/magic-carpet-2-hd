@@ -11,7 +11,6 @@ using namespace std;
 #endif
 */
 
-//char gamepath[512] = "c:\\prenos\\Magic2\\mc2-orig-copy";
 char gameFolder[512] = "NETHERW";
 char cdFolder[512] = "CD_Files";
 char bigGraphicsFolder[512] = "bigGraphics";
@@ -52,7 +51,13 @@ spdlog::level::level_enum GetLoggingLevelFromString(const char* levelStr)
 
 	return level;
 }
+
 void InitializeLogging(spdlog::level::level_enum level)
+{
+	InitializeLogging(level, "log.txt");
+}
+
+void InitializeLogging(spdlog::level::level_enum level, const char* logFileName)
 {
 	try
 	{
@@ -64,7 +69,7 @@ void InitializeLogging(spdlog::level::level_enum level)
 
 			auto max_size = 1048576 * 5;
 			auto max_files = 3;
-			auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>("log.txt", max_size, max_files);
+			auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(logFileName, max_size, max_files);
 			file_sink->set_level(level);
 			file_sink->set_pattern("[%H:%M:%S:%f %z] [%^%-8l%$] %v");
 
@@ -214,10 +219,15 @@ FILE* myopen(const char* path, int pmode, uint32_t flags) {
 	Logger->debug("myopen:open file: {}", path);
 	//bool localDrive::FileOpen(DOS_File * * file, const char * name, uint32_t flags) {
 	const char * type;
-	if ((pmode == 0x222) && (flags == 0x40))type = "rb+";
-	else if ((pmode == 0x200) && (flags == 0x40))type = "rb+";
-	else
+	if ((pmode == 0x222) && (flags == 0x40)) {
+		// Open for reading and writing.  The stream is positioned at the beginning of the file.
+		type = "rb+";
+	} else if ((pmode == 0x200) && (flags == 0x40)) {
+		// Open file for reading.  The stream is positioned at the beginning of the file.
+		type = "rb";
+	} else {
 		exit(1);//error - DOSSetError(DOSERR_ACCESS_CODE_INVALID);
+	}
 	FILE* fp = nullptr;
 	//char path2[512] = "\0";
 	//pathfix(path, path2);//only for DOSBOX version
@@ -450,7 +460,7 @@ bool ExistGraphicsfile(const char* path) {
 	return false;
 }
 
-void ReadGraphicsfile(const char* path, uint8_t* buffer, long size) 
+long ReadGraphicsfile(const char* path, uint8_t* buffer, long size) 
 {
 	FILE* file;
 	file = fcaseopen(path, (char*)"rb");
@@ -464,7 +474,9 @@ void ReadGraphicsfile(const char* path, uint8_t* buffer, long size)
 		}
 		fread(buffer, size, 1, file);
 		myclose(file);
+		return size;
 	}
+	return -1;
 };
 
 std::string getExistingDataPath(std::filesystem::path path) 
@@ -480,9 +492,11 @@ std::string getExistingDataPath(std::filesystem::path path)
 
 	if (std::filesystem::exists(xdg_data_home_dir)) {
 		file_locations.emplace_back(xdg_data_home_dir / "remc2" / path);
+		file_locations.emplace_back(xdg_data_home_dir / "remc2" / "NETHERW" / path);
 	}
 	if (std::filesystem::exists(home_dir)) {
 		file_locations.emplace_back(home_dir / ".local" / "share" / "remc2" / path);
+		file_locations.emplace_back(home_dir / ".local" / "share" / "remc2" / "NETHERW" / path);
 	}
 #else //__linux__
 	auto home_drive = std::getenv("HOMEDRIVE");

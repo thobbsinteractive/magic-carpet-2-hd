@@ -485,13 +485,13 @@ uint8_t* pdwScreenBuffer_351628; //351628
 uint8_t* off_D41A8_sky;//graphics buffer// = (uint8_t*)&x_BYTE_14B4E0; // weak
 uint8_t* x_BYTE_14B4E0_second_heightmap;//31C4E0
 
-posistruct_t* xy_DWORD_17DED4_spritestr;
-posistruct_t* xy_DWORD_17DEC0_spritestr;
-posistruct_t* xy_DWORD_17DEC8_spritestr;
+bitmap_pos_struct_t* xy_DWORD_17DED4_spritestr;
+bitmap_pos_struct_t* xy_DWORD_17DEC0_spritestr;
+bitmap_pos_struct_t* xy_DWORD_17DEC8_spritestr;
 
-posistruct_t* x_DWORD_D4188t_spritestr;
+bitmap_pos_struct_t* x_DWORD_D4188t_spritestr;
 
-posistruct_t* xy_DWORD_17DEC0_spritestr_orig;
+bitmap_pos_struct_t* xy_DWORD_17DEC0_spritestr_orig;
 
 doublebyte doublebyte_conv(uint16_t a2) {
 	doublebyte result;
@@ -536,8 +536,8 @@ void support_begin() {
 	//pre_pdwScreenBuffer_351628 = (uint8_t*)malloc(2228224);// 640x480
 	//pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[1114112];// 640x480
 
-	pre_pdwScreenBuffer_351628 = (uint8_t*)malloc(16588800); // (1920x1080 * 4) * 2
-	pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[8294400]; // 1920x1080 * 4
+	pre_pdwScreenBuffer_351628 = (uint8_t*)malloc((GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT) * 3); // Allow x 3 padding for sprite rendering
+	pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
 
 	//x_DWORD_E9C38_smalltit= (uint8_t*)malloc(64000);
 	//x_D41A0_BYTEARRAY_4_0xDE_heapbuffer= (uint8_t*)malloc(64000);
@@ -561,12 +561,12 @@ void support_begin() {
 	off_D41A8_sky = new uint8_t[1024 * 1024];
 	memcpy(off_D41A8_sky, &x_BYTE_14B4E0_second_heightmap, 4);
 
-	xy_DWORD_17DED4_spritestr = new posistruct_t[1000];
-	xy_DWORD_17DEC0_spritestr_orig = new posistruct_t[1000];
+	xy_DWORD_17DED4_spritestr = new bitmap_pos_struct_t[1000];
+	xy_DWORD_17DEC0_spritestr_orig = new bitmap_pos_struct_t[1000];
 	xy_DWORD_17DEC0_spritestr = xy_DWORD_17DEC0_spritestr_orig;
-	xy_DWORD_17DEC8_spritestr = new posistruct_t[1000];
+	xy_DWORD_17DEC8_spritestr = new bitmap_pos_struct_t[1000];
 
-	x_DWORD_D4188t_spritestr = new posistruct_t[1000];
+	x_DWORD_D4188t_spritestr = new bitmap_pos_struct_t[1000];
 	//x_D41A0_BYTEARRAY_4_struct.player_name_57 = 0;
 
 	//printbuffer2[0] = '\0';
@@ -674,6 +674,9 @@ int test_0x6E8E_id_pointer(uint32_t adress) {
 }
 int test_D41A0_id_pointer(uint32_t adress) {
 	if ((adress >= 0x2fc4) && (adress < 0x2fc5))return 2;//event
+
+	if ((adress >= 0x2fd8) && (adress < 0x2fdc))return 2; // mouse position: position_backup_20 in dword_0x3E6_2BE4_12228 in array_0x2BDE
+	// if ((adress == 0x36e04))return 2;                     // objective box counter
 
 	if ((adress >= 0x314d) && (adress < 0x3151))return 2;//clock - 4 bytes
 	if ((adress >= 0x3999) && (adress < 0x399d))return 2;//clock2 - 4 bytes
@@ -933,13 +936,24 @@ uint32_t compare_with_sequence_D41A0(const char* filename, uint8_t* adress, uint
 			{
 				*origbyte = buffer[i];
 				*copybyte = adress[i];
+				for (int j = 0; (j < 10) && (i+j < size); j++)
+				{
+					std::cout << "buffer[" << i + j << "] = " << (int)buffer[i + j] << "   ";
+					std::cout << "adress[" << i + j << "] = " << (int)adress[i + j] << std::endl;
+				}
 				break;
 			}
 		}
 	}
 
 	if (i < size) {
-		std::cout << "Regression compare sequence error @ function " << __FUNCTION__ << ", line " << __LINE__ << ": " << i << std::endl;
+		Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}",__FUNCTION__ , __LINE__, i);
+		// print the next 10 bytes of buffer and adress
+		for (int j = 0; (j < 10) && (i+j < size); j++)
+		{
+			std::cout << "buffer[" << i + j << "] = " << (int)buffer[i + j] << "   ";
+			std::cout << "adress[" << i + j << "] = " << (int)adress[i + j] << std::endl;
+		}
 		End_thread(-1);
 	}
 	free(buffer);
@@ -993,7 +1007,7 @@ uint32_t compare_0x6E8E(const char* filename, uint8_t* adress, uint32_t count, u
 	free(buffer);
 	fclose(fptestepc);
 	if (i < size) {
-		std::cout << "Regression compare sequence error @ function " << __FUNCTION__ << ", line " << __LINE__ << ": " << i << std::endl;
+		Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}", __FUNCTION__, __LINE__, i);
 		allert_error();
 	}
 	return(i);
@@ -1047,7 +1061,7 @@ uint32_t compare_with_sequence_EA3E4(const char* filename, type_event_0x6E8E** a
 			}
 		}
 		if (i < size) {
-			std::cout << "Regression compare sequence error @ function " << __FUNCTION__ << ", line " << __LINE__ << ": " << i << std::endl;
+			Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}", __FUNCTION__, __LINE__, i);
 			allert_error();
 		}
 	}
@@ -1107,7 +1121,7 @@ uint32_t compare_with_sequence_D41A0_4(const char* filename, uint8_t* adress, ui
 	free(buffer);
 	fclose(fptestepc);
 	if (i < size) {
-		std::cout << "Regression compare sequence error @ function " << __FUNCTION__ << ", line " << __LINE__ << ": " << i << std::endl;
+		Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}", __FUNCTION__, __LINE__, i);
 		allert_error();
 	}
 	return(i);
@@ -1170,7 +1184,7 @@ uint32_t compare_with_sequence_x_DWORD_F2C20ar(const char* filename, uint8_t* ad
 	fclose(fptestepc);
 
 	if (i < size) {
-		std::cout << "Regression compare sequence error @ function " << __FUNCTION__ << ", line " << __LINE__ << ": " << i << std::endl;
+		Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}", __FUNCTION__, __LINE__, i);
 	}
 	return(diffindex);
 };
@@ -1228,7 +1242,7 @@ uint32_t compare_with_sequence_array_E2A74(const char* filename, uint8_t* adress
 	fclose(fptestepc);
 
 	if (i < size2) {
-		std::cout << "Regression compare sequence error @ function " << __FUNCTION__ << ", line " << __LINE__ << ": " << i << std::endl;
+		Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}", __FUNCTION__, __LINE__, i);
 	}
 	return(i);
 };
@@ -1285,7 +1299,7 @@ uint32_t compare_with_sequence_array_222BD3(const char* filename, uint8_t* adres
 	fclose(fptestepc);
 
 	if (i < size) {
-		std::cout << "Regression compare sequence error @ function " << __FUNCTION__ << ", line " << __LINE__ << ": " << i << std::endl;
+		Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}", __FUNCTION__, __LINE__, i);
 	}
 	return(i);
 };
@@ -1344,7 +1358,7 @@ uint32_t compare_with_sequence(const char* filename, const uint8_t* adress, uint
 	}
 
 	if (i < size2) {
-		std::cout << "Regression compare sequence error @ function " << __FUNCTION__ << ", line " << __LINE__ << ": " << i << std::endl;
+		Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}", __FUNCTION__, __LINE__, i);
 		End_thread(-1);
 	}
 	free(buffer);
@@ -1477,6 +1491,7 @@ void x_D41A0_BYTESTR_0_to_x_D41A0_BYTEARRAY_0()
 	}
 }*/
 
+#ifdef _DEBUG
 inline void setRGBA(png_byte* ptr, uint8_t* val)
 {
 	ptr[0] = val[0];
@@ -1484,7 +1499,9 @@ inline void setRGBA(png_byte* ptr, uint8_t* val)
 	ptr[2] = val[2];
 	ptr[3] = val[3];
 }
+#endif
 
+#ifdef _DEBUG
 int writeImage(const char* filename, int width, int height, uint8_t* buffer, char* title)
 {
 	int code = 0;
@@ -1565,6 +1582,7 @@ finalise:
 
 	return code;
 }
+#endif
 
 const int bytesPerPixel = 4; /// red, green, blue
 const int fileHeaderSize = 14;
@@ -1646,7 +1664,7 @@ void writeImageBMP(const char* imageFileName, int width, int height, uint8_t* im
 	//free(infoHeader);
 }
 
-void write_posistruct_to_png(uint8_t* buffer, int width, int height, const char* filename) {
+void write_bitmap_pos_struct_to_png(uint8_t* buffer, int width, int height, const char* filename) {
 	//int width = actposistruct->width;
 	//int height = actposistruct->height;
 	//png_bytep *row_pointers=(png_bytep*)malloc(sizeof(row_pointers)*height);
@@ -1778,7 +1796,8 @@ void write_posistruct_to_png(uint8_t* buffer, int width, int height, const char*
 	if (row != NULL) free(row);*/
 }
 
-void buff_posistruct_to_png(uint8_t* buffer, int width, int height, const char* filename) {
+#ifdef _DEBUG
+void buff_bitmap_pos_struct_to_png(uint8_t* buffer, int width, int height, const char* filename) {
 	//png_bytep row = NULL;
 	uint8_t Palettebuffer[768];
 	FILE* palfile;
@@ -1797,6 +1816,7 @@ void buff_posistruct_to_png(uint8_t* buffer, int width, int height, const char* 
 	}
 	writeImage(filename, width, height, buffer2, (char*)"test");
 }
+#endif
 
 void testdword(int32_t* val1, int32_t* val2) {
 	if (*val1 != *val2)
@@ -2223,7 +2243,7 @@ void clean_x_D41A0_BYTEARRAY_0_0x2BDE(int number) {
 		for (int j = 0; j < 846; j++)
 			D41A0_BYTESTR_0.array_0x2BDE[i].stub2[j];
 		for (int j = 0; j < 64; j++)
-			D41A0_BYTESTR_0.array_0x2BDE[i].array_0x39f_2BFA_12157[j];//927//12157 - byte(11230+927) 100% jmeno
+			D41A0_BYTESTR_0.array_0x2BDE[i].WizardName_0x39f_2BFA_12157[j];//927//12157 - byte(11230+927) 100% jmeno
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x3DF_2BE4_12221 = 0;//991//12221 - byte
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x3E1_2BE4_12223 = 0;//993//12223 - byte
@@ -2325,7 +2345,7 @@ void set_x_D41A0_BYTEARRAY_0_0x2BDE_0x1dd_2BDE_11707(int index, int subindex, in
 };//477
 
 int8_t* get_x_D41A0_BYTEARRAY_0_0x2BDE_0x39f_2BFA_12157(int index) {
-	return D41A0_BYTESTR_0.array_0x2BDE[index].array_0x39f_2BFA_12157;
+	return D41A0_BYTESTR_0.array_0x2BDE[index].WizardName_0x39f_2BFA_12157;
 };
 
 void set_x_D41A0_BYTEARRAY_0_0x2BDE_0x5a6(int number, int8_t value) {

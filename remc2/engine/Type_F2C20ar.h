@@ -7,7 +7,7 @@
 
 #include "global_types.h"
 
-#pragma pack (1)
+#pragma pack (push,1)
 typedef struct {
 	int32_t dword0x00;
 	int32_t dword0x01_rotIdx;
@@ -30,7 +30,7 @@ typedef struct {
 	int32_t dword0x12;
 	int32_t dword0x13;
 	type_event_0x6E8E* dword0x14x;
-	int32_t dword0x15;
+	int32_t dword0x15_tileRenderCutOffDistance;
 	int32_t dword0x16;
 	int32_t dword0x17;
 	int32_t dword0x18;
@@ -44,12 +44,12 @@ typedef struct {
 	int32_t dword0x20;
 	int32_t dword0x21;
 	int32_t dword0x22;
-	int32_t dword0x23;
+	int32_t dword0x23_stride;
 	int32_t dword0x24;
 	int32_t width0x25;
 	int32_t height0x26;
 	int32_t dword0x27;
 }type_F2C20ar;
-#pragma pack (16)
+#pragma pack (pop)
 
 #endif //TYPE_F2C20_AR_H

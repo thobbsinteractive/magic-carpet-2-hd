@@ -10,7 +10,7 @@
 //#include"../portability/port_time.h"
 
 //#include "../portability/port_sdl_vga_mouse.h"
-//#include "../portability/mctypes.h"
+//#include "../portability/bitmap_pos_struct.h"
 
 void myWriteOut(const char * format, ...);
 void myprintf(const char * format, ...);

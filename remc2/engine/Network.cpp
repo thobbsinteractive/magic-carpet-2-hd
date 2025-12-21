@@ -1152,7 +1152,7 @@ bool SetMultiplayerColors_7CE50()//25de50
 				x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 |= 0x10;
 				D41A0_0.word_0xe = x_DWORD_17DE38str.x_WORD_17DEFE;
 				NetworkCancelAll_7449C();
-				x_WORD_E29DC = 1;
+				m_ExitMenuLoop_E29DC = 1;
 				result = true;
 				break;
 			case 6:

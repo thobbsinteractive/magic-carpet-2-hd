@@ -1,4 +1,5 @@
 #include "../engine/engine_support.h"
+#include "port_sdl_joystick.h"
 #include "port_sdl_vga_mouse.h"
 #include "port_time.h"
 
@@ -29,7 +30,8 @@ int8_t pressedKeys_180664[128]; // idb
 uint16_t m_iOrigw = 640;
 uint16_t m_iOrigh = 480;
 
-
+uint16_t m_iWindowWidth = 640;
+uint16_t m_iWindowHeight = 480;
 
 bool m_bMaintainAspectRatio = true;
 
@@ -101,15 +103,17 @@ SDL_Rect FindDisplayByResolution(uint32_t width, uint32_t height)
 	std::vector<SDL_Rect> displayBounds = GetDisplays();
 
 	for (int i = 0; i < displayBounds.size(); i++) {
-		if (displayBounds[i].w <= width && displayBounds[i].h <= height)
+		if (width <= displayBounds[i].w && height <= displayBounds[i].h)
 			return displayBounds[i];
 	}
 	return display;
 }
 
-void VGA_Init(Uint32  /*flags*/, int width, int height, bool maintainAspectRatio, int displayIndex)
+void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResWidth, int gameResHeight, bool maintainAspectRatio, int displayIndex)
 {
 	m_bMaintainAspectRatio = maintainAspectRatio;
+	m_iWindowWidth = windowWidth;
+	m_iWindowHeight = windowHeight;
 
 	if (!inited)
 	{
@@ -122,7 +126,9 @@ void VGA_Init(Uint32  /*flags*/, int width, int height, bool maintainAspectRatio
 		}
 		else
 		{
+
 			init_sound();
+			gamepad_sdl_init();
 
 			SDL_ShowCursor(0);
 			// Set hint before you create the Renderer!
@@ -140,14 +146,14 @@ void VGA_Init(Uint32  /*flags*/, int width, int height, bool maintainAspectRatio
 
 			if (forceWindow)//window
 			{
-				m_window = SDL_CreateWindow(default_caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width/*dm.w*/, height/*dm.h*/, test_fullscr);
+				m_window = SDL_CreateWindow(default_caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth/*dm.w*/, windowHeight/*dm.h*/, test_fullscr);
 			}
 			else
 			{
 				SDL_Rect display = GetDisplayByIndex(displayIndex);
-				if (width > display.w || height > display.h)
+				if (windowWidth > display.w || windowHeight > display.h)
 				{
-					display = FindDisplayByResolution(width, height);
+					display = FindDisplayByResolution(windowWidth, windowHeight);
 				}
 				m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, test_fullscr);
 			}
@@ -166,7 +172,7 @@ void VGA_Init(Uint32  /*flags*/, int width, int height, bool maintainAspectRatio
 
 			m_gamePalletisedSurface =
 				SDL_CreateRGBSurface(
-					SDL_SWSURFACE, width, height, 24,
+					SDL_SWSURFACE, gameResWidth, gameResHeight, 24,
 					redMask, greenMask, blueMask, alphaMask);
 
 			m_gamePalletisedSurface =
@@ -175,7 +181,7 @@ void VGA_Init(Uint32  /*flags*/, int width, int height, bool maintainAspectRatio
 
 			m_gameRGBASurface =
 				SDL_CreateRGBSurface(
-					SDL_SWSURFACE, width, height, 24,
+					SDL_SWSURFACE, gameResWidth, gameResHeight, 24,
 					redMask, greenMask, blueMask, alphaMask);
 
 			m_gameRGBASurface =
@@ -553,12 +559,12 @@ void VGA_Draw_stringXYtoBuffer(const char* wrstring, int x, int y, uint8_t* buff
 	}
 }
 
-void VGA_Init(int width, int height, bool maintainAspectRatio, int displayIndex) {
+void VGA_Init(int windowWidth, int windowHeight, int gameResWidth, int gameResHeight, bool maintainAspectRatio, int displayIndex) {
 	if (unitTests)return;
 	m_bMaintainAspectRatio = maintainAspectRatio;
 
 #define SDL_HWPALETTE 0
-	VGA_Init(SDL_HWPALETTE | SDL_INIT_AUDIO, width, height, maintainAspectRatio, displayIndex);
+	VGA_Init(SDL_HWPALETTE | SDL_INIT_AUDIO, windowWidth, windowHeight, gameResWidth, gameResHeight, maintainAspectRatio, displayIndex);
 }
 
 SDL_Rect dst;
@@ -822,10 +828,44 @@ int events()
 	Uint8 buttonindex;
 	Uint8 buttonstate;
 	uint32_t buttonresult;
+	gamepad_event_t gpe = {};
+
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
 		{
+		case SDL_JOYAXISMOTION:
+			if (event.jaxis.which == gpc.controller_id) {
+				// motion on controller 0
+				//gps.initialized = 1;
+				// actual axis data is being read via gamepad_poll_data()
+				// to counteract jerkiness due to missing event triggers
+				Logger->trace("axis {} event detected", event.jaxis.axis + 1);
+			}
+			break;
+		case SDL_JOYHATMOTION:
+			if (event.jhat.which == gpc.controller_id) {
+				//gps.initialized = 1;
+				// actual axis data is being read via gamepad_poll_data()
+				Logger->trace("hat {} event detected", event.jhat.hat + 1);
+			}
+			break;
+		case SDL_JOYBUTTONDOWN:
+			if (event.jbutton.which == gpc.controller_id) {
+				//gps.initialized = 1;
+				gpe.btn_pressed = 1 << (event.jbutton.button + 1);
+				Logger->trace("key {} press detected", event.jbutton.button + 1);
+				gpe.flag |= GP_BTN_PRESSED;
+			}
+			break;
+		case SDL_JOYBUTTONUP:
+			if (event.jbutton.which == gpc.controller_id) {
+				//gps.initialized = 1;
+				gpe.btn_released = 1 << (event.jbutton.button + 1);
+				Logger->trace("key {} release detected", event.jbutton.button + 1);
+				gpe.flag |= GP_BTN_RELEASED;
+			}
+			break;
 		case SDL_KEYDOWN:
 			pressed = true;
 			lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
@@ -833,13 +873,12 @@ int events()
 			if (!handleSpecialKeys(event)) {
 				setPress(true, lastchar);
 			}
-			Logger->trace("Key press detected");//test
+			Logger->trace("Key {} press detected", lastchar);
 			break;
-
 		case SDL_KEYUP:
 			lastchar = (event.key.keysym.scancode << 8) + event.key.keysym.sym;
 			setPress(false, lastchar);
-			Logger->trace("Key release detected");//test
+			Logger->trace("Key {} release detected", lastchar);
 			break;
 
 		case SDL_MOUSEMOTION:
@@ -910,11 +949,15 @@ int events()
 		case SDL_QUIT: return 0;
 		}
 	}
+
+	gamepad_poll_data(&gpe);
+
 	return 1;
 }
 
-void VGA_Set_mouse(int16_t x, int16_t y) {
+void VGA_Set_mouse(const int16_t x, const int16_t y) {
 	SDL_WarpMouseInWindow(m_window, x, y);
+	joystick_set_env(x, y);
 };
 
 void VGA_Blit(Uint8* srcBuffer) {
@@ -951,7 +994,7 @@ void VGA_Blit(Uint8* srcBuffer) {
 	}
 	if (srcBuffer)
 		memcpy(m_gamePalletisedSurface->pixels, srcBuffer, m_gamePalletisedSurface->h * m_gamePalletisedSurface->w);
-	
+
 	if (SDL_MUSTLOCK(m_gamePalletisedSurface)) {
 		SDL_UnlockSurface(m_gamePalletisedSurface);
 	}
@@ -972,14 +1015,14 @@ void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight) {
 	SDL_Rect dscrect;
 	if (m_bMaintainAspectRatio)
 	{
-		float widthRatio = (float)m_gameRGBASurface->w / (float)originalResWidth;
-		float heightRatio = (float)m_gameRGBASurface->h / (float)originalResHeight;
+		float widthRatio = (float)m_iWindowWidth / (float)originalResWidth;
+		float heightRatio = (float)m_iWindowHeight / (float)originalResHeight;
 
 		if (widthRatio >= heightRatio)
 		{
 			dscrect.w = (int)((float)originalResWidth * heightRatio);
 			dscrect.h = (int)((float)originalResHeight * heightRatio);
-			dscrect.x = (m_gameRGBASurface->w - dscrect.w) / 2;
+			dscrect.x = (m_iWindowWidth - dscrect.w) / 2;
 			dscrect.y = 0;
 		}
 		else
@@ -987,13 +1030,13 @@ void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight) {
 			dscrect.w = (int)((float)originalResWidth * widthRatio);
 			dscrect.h = (int)((float)originalResHeight * widthRatio);
 			dscrect.x = 0;
-			dscrect.y = (m_gameRGBASurface->h - dscrect.h) / 2;
+			dscrect.y = (m_iWindowHeight - dscrect.h) / 2;
 		}
 	}
 	else
 	{
-		dscrect.w = m_gameRGBASurface->w;
-		dscrect.h = m_gameRGBASurface->h;
+		dscrect.w = m_iWindowWidth;
+		dscrect.h = m_iWindowHeight;
 		dscrect.x = 0;
 		dscrect.y = 0;
 	}
@@ -1066,6 +1109,7 @@ void VGA_Debug_Blit(int width, int height, Uint8* buffer) {
 void VGA_close()
 {
 	clean_up_sound();
+	gamepad_sdl_close();
 	SDL_FreeSurface(m_surfaceFont);
 	m_surfaceFont = nullptr;
 	SDL_FreeSurface(m_gamePalletisedSurface);

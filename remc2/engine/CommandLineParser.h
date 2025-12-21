@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 class CommandLineParser {
     public:
@@ -45,15 +46,17 @@ class CommandLineParser {
         bool DoHideGraphics() const {return m_hide_graphics;};
         bool DoRotatePlayer() const {return m_rotate_player;};
         bool DoSetObjective() const {return m_set_objective;};
-        bool DoSetLevel() const {return m_set_level;};
         bool DoTestNetworkChng1() const {return m_test_network_chng1;};
         bool DoShowDebugMessages1() const { return m_show_debug_messages1;};
         bool DoShowDebugPerifery() const { return m_show_debug_perifery; };
         bool DoTextOutputToConsole() const { return m_text_output_to_console;};
+        bool DoStateMonitor() const { return m_state_monitor;};
 
         // settings
         std::string GetMemimagesPath() const {return m_memimages_path;};
         std::string GetConfigFilePath() const { return m_config_file_path; };
+		int16_t GetSetLevel() const { return m_set_level; };
+		std::string GetCustomLevelPath() const { return m_custom_level_path; };
 
     private:
         void InterpretParams();
@@ -94,13 +97,16 @@ class CommandLineParser {
         bool m_hide_graphics;
         bool m_rotate_player;
         bool m_set_objective;
-        bool m_set_level;
         bool m_test_network_chng1;
         bool m_show_debug_messages1;
         bool m_show_debug_perifery;
         bool m_text_output_to_console;
+        bool m_state_monitor;
+
         std::string m_memimages_path;
         std::string m_config_file_path;
+        uint16_t m_set_level;
+        std::string m_custom_level_path;
 };
 
 extern CommandLineParser CommandLineParams;

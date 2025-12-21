@@ -1,102 +1,4 @@
-﻿// DecompressTMAPS.cpp : Tento soubor obsahuje funkci main. Provádění programu se tam zahajuje a ukončuje.
-//
-
-#include <iostream>
-#include <algorithm>    // std::sort
-#include <vector>
-
-//#define level1 //night
-//#define level2 //day
-//#define level4 //cave
-char palfilename[512];
-char tmapsdatfilename[512];
-char tmapstabfilename[512];
-char tmapsstr[512];
-int transparent_color = 0;
-/*
-#ifdef level1
-char palfilename[] = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-n.pal";
-char tmapsdatfilename[] = "c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps1-0.dat";
-char tmapstabfilename[] = "c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps1-0.tab";
-char tmapsstr[] = "TMAPS2-1-";
-int transparent_color = 0;
-#endif
-#ifdef level2
-char palfilename[] = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-block.pal";
-char tmapsdatfilename[] = "c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps0-0.dat";
-char tmapstabfilename[] = "c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps0-0.tab";
-char tmapsstr[]="TMAPS2-0-";
-int transparent_color = 0;
-#endif
-#ifdef level4
-char palfilename[] = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-c.pal";
-char tmapsdatfilename[] = "c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps2-0.dat";
-char tmapstabfilename[] = "c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps2-0.tab";
-char tmapsstr[] = "TMAPS2-2-";
-int transparent_color = 0;
-#endif
-*/
-#include "png.h"
-#pragma comment(lib, "zlib.lib") // must be before libpng!
-#ifndef _WIN64
-#pragma comment(lib, "libpng15.lib") // must be after zlib!
-#else
-#endif
-
-#define x_BYTE int8
-#define x_WORD int16
-#define x_DWORD int32
-#define x_LONG int32
-
-#define SIZEOF_UNSIGNED_INT 4
-
-#define SIZEOF_UNSIGNED_CHAR 1
-
-#define SIZEOF_UNSIGNED_SHORT 2
-
-#if SIZEOF_UNSIGNED_SHORT != 2
-#  error "sizeof (unsigned short) != 2"
-#else
-typedef unsigned short Bit16u;
-typedef   signed short Bit16s;
-#endif
-
-#if SIZEOF_UNSIGNED_INT == 4
-typedef unsigned int Bit32u;
-typedef   signed int Bit32s;
-#elif SIZEOF_UNSIGNED_LONG == 4
-typedef unsigned long Bit32u;
-typedef   signed long Bit32s;
-#else
-//#  error "can't find sizeof(type) of 4 bytes!"
-#endif
-
-#if SIZEOF_UNSIGNED_CHAR != 1
-#  error "sizeof (unsigned char) != 1"
-#else
-typedef unsigned char Bit8u;
-typedef   signed char Bit8s;
-#endif
-
-typedef          char   int8;
-typedef   signed char   sint8;
-typedef unsigned char   uint8;
-typedef          short  int16;
-typedef   signed short  sint16;
-typedef unsigned short  uint16;
-typedef          int    int32;
-typedef   signed int    sint32;
-typedef unsigned int    uint32;
-
-#define _BYTE  uint8
-#define _WORD  uint16
-#define _DWORD uint32
-#define _QWORD uint64
-
-#define LOWORD(x)   (*((_WORD*)&(x)))   // low word
-#define HIWORD(x)   (*((_WORD*)&(x)+1))
-#define LOBYTE(x)   (*((_BYTE*)&(x)))   // low byte
-#define HIBYTE(x)   (*((_BYTE*)&(x)+1))
+#include "DecompressTMAPS.h"
 
 typedef struct huftable_s {
 	uint32 l1; // +0
@@ -852,32 +754,6 @@ unsigned char* createBitmapInfoHeader(int height, int width) {
 	return infoHeader;
 }
 
-void writeImageBMP(char* imageFileName, int width, int height, Bit8u* image)
-{
-	int pitch = bytesPerPixel * width;
-	unsigned char padding[3] = { 0, 0, 0 };
-	int paddingSize = (4 - (/*width*bytesPerPixel*/ pitch) % 4) % 4;
-
-	unsigned char* fileHeader = createBitmapFileHeader(height, width, pitch, paddingSize);
-	unsigned char* infoHeader = createBitmapInfoHeader(height, width);
-
-	FILE* imageFile;
-	fopen_s(&imageFile, imageFileName, "wb");
-
-	fwrite(fileHeader, 1, fileHeaderSize, imageFile);
-	fwrite(infoHeader, 1, infoHeaderSize, imageFile);
-
-	int i;
-	for (i = 0; i < height; i++) {
-		fwrite(image + (i * pitch /*width*bytesPerPixel*/), bytesPerPixel, width, imageFile);
-		fwrite(padding, 1, paddingSize, imageFile);
-	}
-
-	fclose(imageFile);
-	//free(fileHeader);
-	//free(infoHeader);
-}
-
 inline void setRGBA(png_byte* ptr, Bit8u* val)
 {
 	ptr[0] = val[0];
@@ -1022,41 +898,7 @@ void removeAlpha(Bit8u* buffer, int width, int height) {
 			buffer[(i * width + j) * 4 + 3] = 255;
 		}
 };
-/*
-void write_posistruct_to_png(Bit8u* buffer, int width, int height, char* filename,char* title, bool alpha, int frame) {
-	Bit8u pallettebuffer[768];
-	FILE* palfile;
-	//fopen_s(&palfile, "c:\\prenos\\remc2\\testpal.pal", "rb");
-	fopen_s(&palfile, palfilename, "rb");
-	fread(pallettebuffer, 768, 1, palfile);
-	fclose(palfile);
 
-	Bit8u buffer2[100000 * 4];
-	for (int y = 0; y < height + 2 * frame; y++)
-	for (int x = 0; x < width + 2 * frame; x++)
-	{
-		int x2 = x + frame;
-		int y2 = y + frame;
-		if ((x < frame)||(y < frame) || (x >= width + frame) || (y >= height + frame)) {
-			buffer2[(y * width + x) * 4 + 0] = pallettebuffer[buffer[(0 * width + 0)] * 3];
-			buffer2[(y * width + x) * 4 + 1] = pallettebuffer[buffer[(0 * width + 0)] * 3 + 1];
-			buffer2[(y * width + x) * 4 + 2] = pallettebuffer[buffer[(0 * width + 0)] * 3 + 2];
-			buffer2[(y * width + x) * 4 + 3] = 255;
-		}
-		else
-		{
-buffer2[(y * width + x) * 4 + 0] = pallettebuffer[buffer[(y2 * width + x2)] * 3];
-buffer2[(y * width + x) * 4 + 1] = pallettebuffer[buffer[(y2 * width + x2)] * 3 + 1];
-buffer2[(y * width + x) * 4 + 2] = pallettebuffer[buffer[(y2 * width + x2)] * 3 + 2];
-buffer2[(y * width + x) * 4 + 3] = 255;
-
-		}
-	}
-	//writeImage(filename, width, height, buffer2);
-	writeImagePNG(filename, width, height, buffer2, title);
-}
-
-*/
 void writeUsedColor(char* filename, std::vector<uint8_t> usedColors) {
 	FILE* colfile;
 	fopen_s(&colfile, filename, "wt");
@@ -1075,301 +917,6 @@ void writeUsedColor(char* filename, std::vector<uint8_t> usedColors) {
 	}
 	fclose(colfile);
 };
-
-void write_posistruct_to_png(Bit8u* buffer, int width, int height, char* filename, char* filenamealpha, char* title,bool alpha, int frame) {
-	Bit8u pallettebuffer[768];
-	FILE* palfile;
-	//fopen_s(&palfile, "c:\\prenos\\remc2\\testpal.pal", "rb");
-	fopen_s(&palfile, palfilename, "rb");
-	fread(pallettebuffer, 768, 1, palfile);
-	fclose(palfile);
-	char textbuffer[512];
-	Bit8u buffer2[100000 * 4];
-	/*for (int i = 0; i < width * height; i++)
-	{		
-		buffer2[i * 4 + 0] = pallettebuffer[buffer[i] * 3];
-		buffer2[i * 4 + 1] = pallettebuffer[buffer[i] * 3 + 1];
-		buffer2[i * 4 + 2] = pallettebuffer[buffer[i] * 3 + 2];
-
-		if (buffer[i] == transparent_color)
-		{
-			buffer2[i * 4 + 0] = 255;
-			buffer2[i * 4 + 1] = 255;
-			buffer2[i * 4 + 2] = 255;
-			buffer2[i * 4 + 3] = 0;
-		}
-		else
-		{
-			buffer2[i * 4 + 3] = 255;
-		}
-	}*/
-	std::vector<uint8_t> usedColors;
-
-	for (int y = 0; y < height + 2 * frame; y++)
-		for (int x = 0; x < width + 2 * frame; x++)
-		{
-			int x2 = x - frame;
-			int y2 = y - frame;
-			usedColors.push_back(buffer[y2 * width + x2]);
-			if ((x < frame) || (y < frame) || (x >= width + frame) || (y >= height + frame)) {
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 255;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 0;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 0;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-			}
-			else
-			{
-
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[y2 * width + x2] * 3];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[y2 * width + x2] * 3 + 1];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[y2 * width + x2] * 3 + 2];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-				if (buffer[y2 * width + x2] == transparent_color)
-				{
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 255;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 0;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 0;
-				}
-			}
-	}
-	sort(usedColors.begin(), usedColors.end());
-	sprintf_s(textbuffer, "%s-col.txt", filename);
-	writeUsedColor(textbuffer, usedColors);
-
-	sprintf_s(textbuffer,"%sR.png", filename);
-	writeImagePNG(textbuffer, width + 2 * frame, height + 2 * frame, buffer2,title);
-	for (int y = 0; y < height + 2 * frame; y++)
-		for (int x = 0; x < width + 2 * frame; x++)
-		{
-			int x2 = x - frame;
-			int y2 = y - frame;
-			if ((x < frame) || (y < frame) || (x >= width + frame) || (y >= height + frame)) {
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 0;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 255;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 0;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-			}
-			else
-			{
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[y2 * width + x2] * 3];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[y2 * width + x2] * 3 + 1];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[y2 * width + x2] * 3 + 2];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-				if (buffer[y2 * width + x2] == transparent_color)
-				{
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 0;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 255;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 0;
-				}
-			}
-	}
-	sprintf_s(textbuffer, "%sG.png", filename);
-	writeImagePNG(textbuffer, width + 2 * frame, height + 2 * frame, buffer2, title);
-	for (int y = 0; y < height + 2 * frame; y++)
-		for (int x = 0; x < width + 2 * frame; x++)
-		{
-			int x2 = x - frame;
-			int y2 = y - frame;
-			if ((x < frame) || (y < frame) || (x >= width + frame) || (y >= height + frame)) {
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 0;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 0;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 255;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-			}
-			else
-			{
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[y2 * width + x2] * 3];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[y2 * width + x2] * 3 + 1];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[y2 * width + x2] * 3 + 2];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-				if (buffer[y2 * width + x2] == transparent_color)
-				{
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 0;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 0;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 255;
-				}
-			}
-	}
-	sprintf_s(textbuffer, "%sB.png", filename);
-	writeImagePNG(textbuffer, width + 2 * frame, height + 2 * frame, buffer2, title);
-	for (int y = 0; y < height + 2 * frame; y++)
-		for (int x = 0; x < width + 2 * frame; x++)
-		{
-			int x2 = x - frame;
-			int y2 = y - frame;
-			if ((x < frame) || (y < frame) || (x >= width + frame) || (y >= height + frame)) {
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 0;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 0;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 0;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-			}
-			else
-			{
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[y2 * width + x2] * 3];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[y2 * width + x2] * 3 + 1];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[y2 * width + x2] * 3 + 2];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-				if (buffer[y2 * width + x2] == transparent_color)
-				{
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 0;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 0;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 0;
-				}
-			}
-	}
-	sprintf_s(textbuffer, "%sBl.png", filename);
-	writeImagePNG(textbuffer, width + 2 * frame, height + 2 * frame, buffer2, title);
-	for (int y = 0; y < height + 2 * frame; y++)
-		for (int x = 0; x < width + 2 * frame; x++)
-		{
-			int x2 = x - frame;
-			int y2 = y - frame;
-			if ((x < frame) || (y < frame) || (x >= width + frame) || (y >= height + frame)) {
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 255;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 255;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 255;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-			}
-			else
-			{
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[y2 * width + x2] * 3];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[y2 * width + x2] * 3 + 1];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[y2 * width + x2] * 3 + 2];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-				if (buffer[y2 * width + x2] == transparent_color)
-				{
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 255;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 255;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 255;
-				}
-			}
-	}
-	sprintf_s(textbuffer, "%sWh.png", filename);
-	writeImagePNG(textbuffer, width + 2 * frame, height + 2 * frame, buffer2, title);
-	for (int y = 0; y < height + 2 * frame; y++)
-		for (int x = 0; x < width + 2 * frame; x++)
-		{
-			int x2 = x - frame;
-			int y2 = y - frame;
-			if ((x < frame) || (y < frame) || (x >= width + frame) || (y >= height + frame)) {
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 128;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 128;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 128;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-			}
-			else
-			{
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[y2 * width + x2] * 3];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[y2 * width + x2] * 3 + 1];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[y2 * width + x2] * 3 + 2];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-				if (buffer[y2 * width + x2] == transparent_color)
-				{
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 128;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 128;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 128;
-				}
-			}
-	}
-	sprintf_s(textbuffer, "%sGr.png", filename);
-	writeImagePNG(textbuffer, width + 2 * frame, height + 2 * frame, buffer2, title);
-
-	for (int y = 0; y < height + 2 * frame; y++)
-		for (int x = 0; x < width + 2 * frame; x++)
-		{
-			int x2 = x - frame;
-			int y2 = y - frame;
-
-			if ((x < frame) || (y < frame) || (x >= width + frame) || (y >= height + frame)) {
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 255;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 255;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 255;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-			}
-			else
-			{
-				bool isWhite = false;
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[y2 * width + x2] * 3];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[y2 * width + x2] * 3 + 1];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[y2 * width + x2] * 3 + 2];
-				buffer2[(y * (width + 2 * frame) + x) * 4 + 3] = 255;
-				if (buffer[(y2 * width + x2)] == transparent_color)
-				{
-					isWhite = true;
-					if (y2 > 0)
-						if ((buffer[((y2 - 1) * width + x2)] != transparent_color) && (buffer[y2 * width + x2] == transparent_color))
-						{
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[((y2 - 1) * width + x2)] * 3];
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[((y2 - 1) * width + x2)] * 3 + 1];
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[((y2 - 1) * width + x2)] * 3 + 2];
-							isWhite = false;
-						}
-					if (y2 < height - 1)
-						if ((buffer[((y2 + 1) * width + x2)] != transparent_color) && (buffer[y2 * width + x2] == transparent_color))
-						{
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[((y2 + 1) * width + x2)] * 3];
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[((y2 + 1) * width + x2)] * 3 + 1];
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[((y2 + 1) * width + x2)] * 3 + 2];
-							isWhite = false;
-						}
-					if (x2 > 0)
-						if ((buffer[(y2 * width + (x2 - 1))] != transparent_color) && (buffer[y2 * width + x2] == transparent_color))
-						{
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[(y2 * width + (x2 - 1))] * 3];
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[(y2 * width + (x2 - 1))] * 3 + 1];
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[(y2 * width + (x2 - 1))] * 3 + 2];
-							isWhite = false;
-						}
-					if (x2 < width - 1)
-						if ((buffer[(y2 * width + (x2 + 1))] != transparent_color) && (buffer[y2 * width + x2] == transparent_color))
-						{
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = pallettebuffer[buffer[(y2 * width + (x2 + 1))] * 3];
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = pallettebuffer[buffer[(y2 * width + (x2 + 1))] * 3 + 1];
-							buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = pallettebuffer[buffer[(y2 * width + (x2 + 1))] * 3 + 2];
-							isWhite = false;
-						}
-				}
-				if (isWhite)
-				{
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 0] = 255;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 1] = 255;
-					buffer2[(y * (width + 2 * frame) + x) * 4 + 2] = 255;
-				}
-			}
-		}
-	sprintf_s(textbuffer, "%sFinal.png", filename);
-	writeImagePNG(textbuffer, width + 2 * frame, height + 2 * frame, buffer2, title);
-}
-
-void write_posistruct_to_bmp(Bit8u* buffer, int width, int height, char* filename) {
-	Bit8u pallettebuffer[768];
-	FILE* palfile;
-	//fopen_s(&palfile, "c:\\prenos\\remc2\\testpal.pal", "rb");
-	fopen_s(&palfile, palfilename, "rb");
-	fread(pallettebuffer, 768, 1, palfile);
-	fclose(palfile);
-
-	Bit8u buffer2[100000 * 4];
-	for (int i = 0; i < width * height; i++)
-	{
-		/*buffer2[i * 4 + 0] = buffer[i];
-		buffer2[i * 4 + 1] = buffer[i];
-		buffer2[i * 4 + 2] = buffer[i];*/
-		buffer2[i * 4 + 0] = pallettebuffer[buffer[(width * height) - 1 - i] * 3+2];
-		buffer2[i * 4 + 1] = pallettebuffer[buffer[(width * height) - 1 - i] * 3 + 1];
-		buffer2[i * 4 + 2] = pallettebuffer[buffer[(width * height) - 1 - i] * 3];
-
-		if (buffer[(width * height) - 1 - i] != 0xff)
-		{
-			if((buffer2[i * 4 + 0]==0)&& (buffer2[i * 4 + 1] == 0)&& (buffer2[i * 4 + 2] == 0))
-				buffer2[i * 4 + 3] = 0;
-			else
-				buffer2[i * 4 + 3] = 255;
-		}
-	}
-	//writeImage(filename, width, height, buffer2);
-	writeImageBMP(filename, width, height, buffer2);
-}
 
 #pragma pack (1)
 typedef struct {//size 26
@@ -2007,7 +1554,6 @@ type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C2
 	return v7y;
 }
 
-
 type_animations1* sub_721C0_initTmap(type_E9C08* a1x, int* a2, __int16 a3)//2531c0
 {
 	signed __int16 v3; // cx
@@ -2060,65 +1606,179 @@ type_animations1* sub_721C0_initTmap(type_E9C08* a1x, int* a2, __int16 a3)//2531
 	return &a1x->dword_2[v12];
 }
 
-
-#define write_data
-//#define write_rnc
-//#define write_bmp
-#define write_png
-//#define write_alphapng
-
-int other_folder0[] = { 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
-	51, 52, 53, 54, 57, 59, 76, 77, 82, 85, 88, 89, 90,
-	91, 92, 93, 94, 95, 144, 260, 261, 425 -1};
-
-int other_folder1[] = { 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 ,48, 49, 50,
-	51, 52, 53, 54, 77, 82, 261, -1};
-
-int other_folder2[] = { 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
-	51, 52, 53, 54, 66, 77, 82, 261, -1};
-
-int* other_folder;
-
 bool isOther(int* other_folder,int index) {
-	for (int i = 0; other_folder[i] != -1; i++)
-		if (index == other_folder[i])
-			return true;
+	if (other_folder != nullptr)
+	{
+		for (int i = 0; other_folder[i] != -1; i++)
+			if (index == other_folder[i])
+				return true;
+	}
 	return false;
 }
 
-int sub_main();
-int max_images = 504;
-int main() {
-	strcpy_s(palfilename, "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-n.pal");
-	strcpy_s(tmapsdatfilename,"c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps1-0.dat");
-	strcpy_s(tmapstabfilename,"c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps1-0.tab");
-	strcpy_s(tmapsstr,"TMAPS2-1-");
-	transparent_color = 0;
-	other_folder = other_folder1;
-	max_images = 504;
-	sub_main();
+int main(int argc, char** argv) {
 
-	strcpy_s(palfilename,"c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-block.pal");
-	strcpy_s(tmapsdatfilename,"c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps0-0.dat");
-	strcpy_s(tmapstabfilename,"c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps0-0.tab");
-	strcpy_s(tmapsstr,"TMAPS2-0-");
-	transparent_color = 0;
-	other_folder = other_folder0;
-	max_images = 504;
-	sub_main();
+	int max_images = 504;
+	std::string palletPath;
+	std::string tmapsDat;
+	std::string tmapsTab;
+	std::string outputPath = fs::current_path().u8string() + "/out";
+	int padding = 0;
+	std::string folderPath;
+	std::string format;
+	ImageType imageType = ImageType::png;
+	bool showHelp = false;
+	bool caveSprites = false;
 
-	strcpy_s(palfilename,"c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-c.pal");
-	strcpy_s(tmapsdatfilename,"c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps2-0.dat");
-	strcpy_s(tmapstabfilename,"c:\\prenos\\Magic2\\mc2-orig\\data\\tmaps2-0.tab");
-	strcpy_s(tmapsstr,"TMAPS2-2-");
-	transparent_color = 0;
-	other_folder = other_folder2;
-	max_images = 464;
-	sub_main();
+	std::vector<std::string> params;
+	params.clear();
+	for (int i = 1; i < argc; ++i) {
+		params.emplace_back(argv[i]);
+	}
+
+	for (auto p = params.cbegin(); p != params.cend(); ++p) {
+		const auto param = *p;
+		if ((param == "-p") || (param == "--pallet")) 
+		{
+			palletPath = *(++p);
+			if (!fs::exists(palletPath))
+			{
+				palletPath = fs::current_path().u8string() + "/" + palletPath;
+				if (!fs::exists(palletPath))
+					showHelp = true;
+			}
+		}
+		else if ((param == "-t") || (param == "--tmaps-dat")) 
+		{
+			tmapsDat = *(++p);
+
+			if (!fs::exists(tmapsDat))
+			{
+				tmapsDat = fs::current_path().u8string() + "/" + tmapsDat;
+				if (!fs::exists(tmapsDat))
+					showHelp = true;
+			}
+
+			tmapsTab = fs::path(tmapsDat).replace_extension("tab").u8string();
+
+			folderPath = fs::path(tmapsTab).filename().replace_extension("").u8string() + "-";
+
+		}
+		else if ((param == "-i") || (param == "--image-type"))
+		{
+			format = *(++p);
+
+			if (strcmp(format.c_str(), "data") == 0)
+			{
+				imageType = ImageType::data;
+			}
+			if (strcmp(format.c_str(), "rnc") == 0)
+			{
+				imageType = ImageType::rnc;
+			}
+			if (strcmp(format.c_str(), "bmp") == 0)
+			{
+				imageType = ImageType::bmp;
+			}
+			if (strcmp(format.c_str(), "pnga") == 0)
+			{
+				imageType = ImageType::pnga;
+			}
+		}
+		else if ((param == "-f") || (param == "--folder-pattern"))
+		{
+			std::string folderPattern = *(++p);
+
+			if (strcmp(folderPattern.c_str(), "0") == 0)
+			{
+				other_folder = other_folder0;
+			}
+			if (strcmp(folderPattern.c_str(), "1") == 0)
+			{
+				other_folder = other_folder1;
+			}
+			if (strcmp(folderPattern.c_str(), "2") == 0)
+			{
+				other_folder = other_folder2;
+				caveSprites = true;
+				max_images = 464;
+			}
+		}
+		else if (param == "--padding")
+		{
+			padding = std::stoi(*(++p));
+		}
+		else if ((param == "-o") || (param == "--output-path"))
+		{
+			outputPath = *(++p);
+		}
+		else if ((param == "-h") || (param == "--help")) {
+			showHelp = true;
+		}
+	}
+
+	if (palletPath.length() == 0 || tmapsDat.length() == 0 || tmapsTab.length() == 0)
+	{
+		printf("Missing required parameters!\n");
+		showHelp = true;
+	}
+
+	if (!fs::exists(palletPath))
+	{
+		printf("Pallet file not found!\n");
+		showHelp;
+	}
+
+	if (!fs::exists(tmapsDat))
+	{
+		printf("TMaps DAT file not found!\n");
+		showHelp;
+	}
+
+	if (!fs::exists(tmapsTab))
+	{
+		printf("TMaps TAB file not found!\n");
+		showHelp;
+	}
+
+	if (!fs::is_directory(outputPath) || !fs::exists(outputPath)) { // Check if outputPath folder exists
+		fs::create_directory(outputPath); // create src folder
+	}
+
+	if (showHelp)
+	{
+		printf("-p --pallet: (Required) Pallet file path\n");
+		printf("-t --tmaps-dat: (Required) Tmap .DAT file path. Needs a .TAB file of the same name\n");
+		printf("-d --data: (Optional) Extracts a *.Data file path. Needs the .DAT and .TAB file to get dimensions\n");
+		printf("-i --image-type: (Default png) File output format to use rnc, data, bmp, png or pnga\n");
+		printf("-f --folder-pattern: (Optional) Required for full error free extraction of MC2 Data\n");
+		printf("--padding: (Optional) For PNG you can specify how many pixels of padding around the image you want\n");
+		printf("-o --output-path: (Default) ./out\n");
+		printf("For night levels:\n");
+		printf("-p PALN-0.DAT -t TMAPS1-0.DAT -f 1 -o out-night\n");
+		printf("For day levels:\n");
+		printf("-p PALD-0.DAT -t TMAPS0-0.DAT -f 0 -o out-day\n");
+		printf("For cave levels:\n");
+		printf("-p PALC-0.DAT -t TMAPS2-0.DAT -f 2 -o out-cave\n");
+		return -1;
+	}
+
+	try
+	{
+		return sub_main(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
+	}
+	catch (std::exception& e)
+	{
+		printf(e.what());
+		return -100;
+	}
 }
 
-int sub_main()
+int sub_main(const char palfilename[], const char tmapsdatfilename[], const char tmapstabfilename[], const char tmapsstr[], int max_images, ImageType imageType, int padding, bool caveSprites, const char outputPath[])
 {
+	std::vector<std::string> filesToDelete;
+	double colourMultiplier = 4;
+
 	FILE* fptrTMAPSdata;
 	fopen_s(&fptrTMAPSdata, tmapsdatfilename, "rb");
 	fseek(fptrTMAPSdata, 0L, SEEK_END);
@@ -2153,15 +1813,22 @@ int sub_main()
 	char outnameAlpha[512];
 	char title[512];
 
+	Bit8u pallettebuffer[768];
+	FILE* palfile = nullptr;
+
+	fopen_s(&palfile, palfilename, "rb");
+	fread(pallettebuffer, 768, 1, palfile);
+	fclose(palfile);
+
 	while (index < max_images)
 	{
-		if (index == 186)
-		{
-			index++;
-			index--;
-		}
+		//if (index == 186)
+		//{
+		//	index++;
+		//	index--;
+		//}
 		//int size = *(Bit32u*)&contentTMAPStab[indextab];
-		int shift = *(Bit32u*)& contentTMAPStab[indextab + 4];
+		int shift = *(Bit32u*)&contentTMAPStab[indextab + 4];
 		//if (shift > 500)shift = shift - 500;
 		Bit8u* stmpdat = &contentTMAPSdat[shift];
 
@@ -2170,87 +1837,84 @@ int sub_main()
 		Bit32u size = stmpdat[11] + (stmpdat[10] << 8) + (stmpdat[9] << 16) + (stmpdat[8] << 24) + 12;
 		Bit32u unpacksize = stmpdat[7] + (stmpdat[6] << 8) + (stmpdat[5] << 16) + (stmpdat[4] << 24);
 
-#ifdef write_rnc
-		FILE* fptw;
-		char filename[300];
-		sprintf_s(filename, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i.rnc", tmapsstr, index);
-		fopen_s(&fptw, filename, "wb");
-		fwrite(&contentTMAPSdat[shift], size, 1, fptw);
-		fclose(fptw);
-#endif
+		if (imageType == ImageType::rnc)
+		{
+			FILE* fptw;
+			char filename[300];
+			sprintf_s(filename, "%s\\out\\%s%03i.rnc", outputPath, tmapsstr, index);
+			fopen_s(&fptw, filename, "wb");
+			fwrite(&contentTMAPSdat[shift], size, 1, fptw);
+			fclose(fptw);
+		}
 
-		int decompsize = *(Bit32u*)& contentTMAPSdat[shift + 6];
+		int decompsize = *(Bit32u*)&contentTMAPSdat[shift + 6];
 		sub_5C3D0_file_decompress(&contentTMAPSdat[shift], buffer);
-
-
 
 		Bit8u* index2 = 10 * index + TMAPS00TAB_BEGIN_BUFFER;
 		x_DWORD_F66F0[index] = (int)sub_71E70(x_DWORD_E9C28_str, (unsigned __int16)(4 * ((unsigned int)(*(x_DWORD*)index2 + 13) >> 2)), index);
 		int index6 = x_DWORD_F66F0[index];
-		Bit8u** subpointer = (Bit8u * *)x_DWORD_F66F0[index];
+		Bit8u** subpointer = (Bit8u**)x_DWORD_F66F0[index];
 		*subpointer = (Bit8u*)malloc(unpacksize);
 		memcpy(*subpointer, buffer, unpacksize);
 
-		if (**(x_BYTE * *)index6 & 1)
+		if (**(x_BYTE**)index6 & 1)
 			/*index = */sub_721C0_initTmap(x_DWORD_E9C08x, (int*)index6, index);
 		/*
 				if (**(x_BYTE **)index6 & 1)
 			index = sub_721C0_initTmap((unsigned __int16*)x_DWORD_E9C08, (int*)index6, index);
 		*/
 
+		int width = *(Bit16u*)&buffer[2];
+		int height = *(Bit16u*)&buffer[4];
 
-
-		int width = *(Bit16u*)& buffer[2];
-		int height = *(Bit16u*)& buffer[4];
-
-#ifdef write_data
+		//Used for later comparison
 		FILE* fptw2;
 		char filenamedata[300];
-		sprintf_s(filenamedata, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00.data", tmapsstr, index);
+		sprintf_s(filenamedata, "%s\\%s%03i-00.data", outputPath, tmapsstr, index);
 		fopen_s(&fptw2, filenamedata, "wb");
 		fwrite(buffer, unpacksize, 1, fptw2);
 		fclose(fptw2);
-#endif
+		filesToDelete.push_back(filenamedata);
 
+		if (imageType == ImageType::bmp)
+		{
+			sprintf_s(outname, "%s\\%s%03i-00.bmp", outputPath, tmapsstr, index);
+			BitmapIO::WriteRGBAImageBufferAsImageBMP(outname, width, height, pallettebuffer, buffer + 6, colourMultiplier);
+		}
 
-#ifdef write_bmp
-		sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00.bmp", tmapsstr, index);
-		write_posistruct_to_bmp(buffer + 6, width, height, outname);//test write
-#endif
+		if (imageType == ImageType::png)
+		{
+			if (isOther(other_folder, index))
+				sprintf_s(outname, "%s\\%s%03i-00-other", outputPath, tmapsstr, index);
+			else
+				sprintf_s(outname, "%s\\%s%03i-00", outputPath, tmapsstr, index);
 
-#ifdef write_png
-		
-		if(isOther(other_folder, index))
-			sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00-other.png", tmapsstr, index);
-		else
-			sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00.png", tmapsstr, index);
+			sprintf_s(title, "%s%03i", tmapsstr, index);
+			BitmapIO::WritePosistructToPng(pallettebuffer, buffer + 6, width, height, outname, title, padding, colourMultiplier);
+		}
 
-		sprintf_s(title, "%s%03i", tmapsstr, index);
+		if (imageType == ImageType::pnga)
+		{
+			sprintf_s(outname, "%s\\%s%03i-00", outputPath, tmapsstr, index);
+			sprintf_s(title, "%s%03i", tmapsstr, index);
+			BitmapIO::WritePosistructToPng(pallettebuffer, buffer + 6, width, height, outname, title, padding, colourMultiplier);
+			sprintf_s(outname, "%s\\%s%03i-alpha-00", outputPath, tmapsstr, index);
+			BitmapIO::WritePosistructToAlphaPng(pallettebuffer, buffer + 6, width, height, outname, title, padding);
+		}
 
-		sprintf_s(outnameAlpha, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00APLH.png", tmapsstr, index);
-
-		write_posistruct_to_png(buffer + 6, width, height, outname, outnameAlpha, title, 0, 30);//test write
-#endif
-#ifdef write_alphapng
-		sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-alpha-00.png", tmapsstr, index);
-		sprintf_s(title, "%s%03i", tmapsstr, index);
-		write_posistruct_to_png(buffer + 6, width, height, outname, title, 1);//test write
-#endif
-
-#ifdef level4
-		if (index < 452)
-#endif
+		if (caveSprites && index < 452)
 			indextab += 10;
+		else if (!caveSprites)
+			indextab += 10;
+
 		index++;
 	}
 
-	for(int mainindex=0; mainindex<24; mainindex++)
+	for (int mainindex = 0; mainindex < 24; mainindex++)
 	{
-		
-
 		index = 0;
 		while (index < max_images) {
-			Bit8u* subpointer = *(Bit8u * *)x_DWORD_F66F0[index];
+			Bit8u* subpointer = *(Bit8u**)x_DWORD_F66F0[index];
 			subpointer[0] |= 8;
 			index++;
 		}
@@ -2262,7 +1926,7 @@ int sub_main()
 		while (index < max_images)
 		{
 
-			Bit8u* subpointer = *(Bit8u * *)x_DWORD_F66F0[index];
+			Bit8u* subpointer = *(Bit8u**)x_DWORD_F66F0[index];
 			//memcpy(buffer, subpointer, unpacksize);
 
 			//int shift = *(Bit32u*)&contentTMAPStab[indextab + 4];
@@ -2270,8 +1934,8 @@ int sub_main()
 			//Bit32u size = stmpdat[11] + (stmpdat[10] << 8) + (stmpdat[9] << 16) + (stmpdat[8] << 24) + 12;
 			//Bit32u unpacksize = stmpdat[7] + (stmpdat[6] << 8) + (stmpdat[5] << 16) + (stmpdat[4] << 24);
 
-			int width = *(Bit16u*)& stmpdat[2];
-			int height = *(Bit16u*)& stmpdat[4];
+			int width = *(Bit16u*)&stmpdat[2];
+			int height = *(Bit16u*)&stmpdat[4];
 
 			memcpy(buffer, stmpdat, width * height + 6);
 			/*
@@ -2294,14 +1958,13 @@ int sub_main()
 			memcpy(subpointer, buffer, unpacksize);
 			*/
 
-	#ifdef write_data
-
 			FILE* fptw2_prev;
 			char filenamedata[300];
-			sprintf_s(filenamedata, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00.data", tmapsstr, index);
+			sprintf_s(filenamedata, "%s\\%s%03i-00.data", outputPath, tmapsstr, index);
 			fopen_s(&fptw2_prev, filenamedata, "rb");
 			fread(prevbuffer, width * height + 6, 1, fptw2_prev);
 			fclose(fptw2_prev);
+			filesToDelete.push_back(filenamedata);
 
 			bool same = true;
 			for (int kk = 0; kk < width * height + 6; kk++)
@@ -2316,14 +1979,15 @@ int sub_main()
 
 			//FILE* fptw2_prev;
 			//char filenamedata[300];
-			sprintf_s(filenamedata, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.data", tmapsstr, index, mainindex);
+			sprintf_s(filenamedata, "%s\\%s%03i-%02i.data", outputPath, tmapsstr, index, mainindex);
 			fopen_s(&fptw2_prev, filenamedata, "rb");
-			if(fptw2_prev==NULL)
+			if (fptw2_prev == NULL)
 			{
 				index++; continue;
 			}
-			fread(prevbuffer, width* height + 6, 1, fptw2_prev);
+			fread(prevbuffer, width * height + 6, 1, fptw2_prev);
 			fclose(fptw2_prev);
+			filesToDelete.push_back(filenamedata);
 
 			same = true;
 			for (int kk = 0; kk < width * height + 6; kk++)
@@ -2336,108 +2000,63 @@ int sub_main()
 				index++; continue;
 			}
 
-
 			FILE* fptw2;
-			sprintf_s(filenamedata, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.data", tmapsstr, index, mainindex+1);
+			sprintf_s(filenamedata, "%s\\%s%03i-%02i.data", outputPath, tmapsstr, index, mainindex + 1);
 			fopen_s(&fptw2, filenamedata, "wb");
 			fwrite(buffer, width * height + 6, 1, fptw2);
 			fclose(fptw2);
-	#endif
+			filesToDelete.push_back(filenamedata);
 
-	#ifdef write_bmp
-			char outname[512];
-			sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.bmp", tmapsstr, index, mainindex + 1);
-			write_posistruct_to_bmp(buffer + 6, width, height, outname);//test write
-	#endif
+			if (imageType == ImageType::bmp)
+			{
+				sprintf_s(outname, "%s\\%s%03i-00.bmp", outputPath, tmapsstr, index);
+				BitmapIO::WriteRGBAImageBufferAsImageBMP(outname, width, height, pallettebuffer, buffer + 6, colourMultiplier);
+			}
 
-	#ifdef write_png
-			if (isOther(other_folder, index))
-				sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i-other.png", tmapsstr, index, mainindex + 1);
-			else
-				sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.png", tmapsstr, index, mainindex + 1);
-			//sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.png", tmapsstr, index, mainindex+1);
-			sprintf_s(outnameAlpha, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02iAlpha.png", tmapsstr, index, mainindex + 1);
-			sprintf_s(title, "%s%03i", tmapsstr, index);
-			write_posistruct_to_png(buffer + 6, width, height, outname, outnameAlpha,title, 0, 30);//test write
-	#endif
-	#ifdef write_alphapng
-			sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-alpha-%02i.png", tmapsstr, index, mainindex + 1);
-			sprintf_s(title, "%s%03i", tmapsstr, index);
-			write_posistruct_to_png(buffer + 6, width, height, outname, title, 1);//test write
-	#endif
+			if (imageType == ImageType::png)
+			{
+				if (isOther(other_folder, index))
+					sprintf_s(outname, "%s\\%s%03i-%02i-other", outputPath, tmapsstr, index, mainindex + 1);
+				else
+					sprintf_s(outname, "%s\\%s%03i-%02i", outputPath, tmapsstr, index, mainindex + 1);
 
-	#ifdef level4
-			if (index < 452)
-	#endif
+				sprintf_s(title, "%s%03i", tmapsstr, index);
+				BitmapIO::WritePosistructToPng(pallettebuffer, buffer + 6, width, height, outname, title, padding, colourMultiplier);
+			}
+
+			if (imageType == ImageType::pnga)
+			{
+				sprintf_s(outname, "%s\\%s%03i-alpha-%02i", outputPath, tmapsstr, index, mainindex + 1);
+				sprintf_s(title, "%s%03i", tmapsstr, index);
+				BitmapIO::WritePosistructToPng(pallettebuffer, buffer + 6, width, height, outname, title, padding, colourMultiplier);
+				sprintf_s(outname, "%s\\%s%03i-alpha-00", outputPath, tmapsstr, index);
+				BitmapIO::WritePosistructToAlphaPng(pallettebuffer, buffer + 6, width, height, outname, title, padding);
+			}
+
+			if (caveSprites && index < 452)
 				indextab += 10;
+			else if(!caveSprites)
+				indextab += 10;
+
 			index++;
 		}
-
-
-
-}
-
-	/*
-	sub_715B0();
-
-	indextab = 0;
-	index = 0;
-	while (index < 504)
-	{
-
-		Bit8u* subpointer = *(Bit8u * *)x_DWORD_F66F0[index];
-		//memcpy(buffer, subpointer, unpacksize);
-
-		//int shift = *(Bit32u*)&contentTMAPStab[indextab + 4];
-		Bit8u* stmpdat = &subpointer[0];
-		//Bit32u size = stmpdat[11] + (stmpdat[10] << 8) + (stmpdat[9] << 16) + (stmpdat[8] << 24) + 12;
-		//Bit32u unpacksize = stmpdat[7] + (stmpdat[6] << 8) + (stmpdat[5] << 16) + (stmpdat[4] << 24);
-
-		int width = *(Bit16u*)& stmpdat[2];
-		int height = *(Bit16u*)& stmpdat[4];
-
-		memcpy(buffer, stmpdat, width * height + 6);
-
-#ifdef write_data
-		FILE* fptw2;
-		char filenamedata[300];
-		sprintf_s(filenamedata, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\TMAPS2-0-%03i-3.data", index);
-		fopen_s(&fptw2, filenamedata, "wb");
-		fwrite(buffer, width * height + 6, 1, fptw2);
-		fclose(fptw2);
-#endif
-
-#ifdef write_bmp
-		char outname[512];
-		sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\TMAPS2-0-%03i-3.bmp", index);
-		write_posistruct_to_bmp(buffer + 6, width, height, outname);//test write
-#endif
-
-#ifdef write_png
-		sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\TMAPS2-0-%03i-3.png", index);
-		sprintf_s(title, "TMAPS2-0-%03i", index);
-		write_posistruct_to_png(buffer + 6, width, height, outname, title, 0);//test write
-#ifdef write_alphapng
-#endif
-		sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\TMAPS2-0-%03i-alpha-3.png", index);
-		sprintf_s(title, "TMAPS2-0-%03i", index);
-		write_posistruct_to_png(buffer + 6, width, height, outname, title, 1);//test write
-#endif
-
-		indextab += 10;
-		index++;
 	}
-	*/
+
+	//Clean up
+	if (imageType != ImageType::data && filesToDelete.size() > 0)
+	{
+		printf("Cleaning up .data files...\n");
+
+		for(int i = 0; i < filesToDelete.size(); i++)
+		{
+			if (std::filesystem::exists(filesToDelete[i]))
+			{
+				std::filesystem::remove(filesToDelete[i]);
+			}
+		}
+
+		printf("Completed cleanup\n");
+	}
+	printf("Extraction Completed\n");
 	return 0;
 }
-
-// Spuštění programu: Ctrl+F5 nebo nabídka Ladit > Spustit bez ladění
-// Ladění programu: F5 nebo nabídka Ladit > Spustit ladění
-
-// Tipy pro zahájení práce:
-//   1. K přidání nebo správě souborů použijte okno Průzkumník řešení.
-//   2. Pro připojení ke správě zdrojového kódu použijte okno Team Explorer.
-//   3. K zobrazení výstupu sestavení a dalších zpráv použijte okno Výstup.
-//   4. K zobrazení chyb použijte okno Seznam chyb.
-//   5. Pokud chcete vytvořit nové soubory kódu, přejděte na Projekt > Přidat novou položku. Pokud chcete přidat do projektu existující soubory kódu, přejděte na Projekt > Přidat existující položku.
-//   6. Pokud budete chtít v budoucnu znovu otevřít tento projekt, přejděte na Soubor > Otevřít > Projekt a vyberte příslušný soubor .sln.

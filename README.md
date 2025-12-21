@@ -1,19 +1,33 @@
 # Magic Carpet 2 HD
+## Now actually in HD or 2K!
 Based off the Reverse engineering of game Magic Carpet 2 from assembler to c/c++ language by Tomas Versly <br />
 Forked from Tomas Vesely's repo here: https://github.com/turican0/remc2 <br /><br />
 Tomas has done amazing work, not only reverse engineering this code but updating it to use more modern memory allocation and use the SDL library for input and sound. He has even increased the sprite resolutions.
 
-## Download the latest Alpha Here ##
+## Download the latest Alpha Here (now with MSI Installer)! ##
 https://github.com/thobbsinteractive/magic-carpet-2-hd/releases/latest
 
-### Install Guide for GOG Edition ###
+### Install Guide for GOG Edition or from Magic Carpet CD ###
 #### Windows ####
 - 1: Purchase a copy of Magic Carpet 2 from GOG here: https://www.gog.com/game/magic_carpet_2_the_netherworlds
 - 2: Install the Game.
-- 3: Extract the contents of this Zip Archive to your Game Directory, 
-- 4: In the "Extract" folder run extract-GOG-CD.bat. The CD Data will now be copied to a directory called "CD_Files"
-- 5: Run remc2.exe
+- 3: Download the x86 or x64 MSI file. (x64 is faster but also a little more buggy)
+- 4: Run the MSI file. Follow the on-screen instructions to install.
+- 5: Click the Start menu shortcut "Magic Carpet 2 HD" to run the game.
 - 6: Any errors will be output to "log.txt"
+
+#### Command Line Args ####
+You can use the following arguments:</br>
+To jump to a selected Level use:</br>
+--set_level [0-25]</br>
+To run a level you have created using the editor:</br>
+--custom_level "[Path to .mc2 file]"</br>
+
+## FAQ ##
+https://github.com/thobbsinteractive/magic-carpet-2-hd/wiki/FAQ
+
+## For more information on Magic Carpet 2 ##
+Moburma has been tirelessly working to document cut levels, level data structures and missing graphics at: https://tcrf.net/Magic_Carpet_2:_The_Netherworlds
 
 ## My intention is to make a patch for Magic Carpet 1 and 2 (GOG editions) that initially will:
 - Add more screen resolution options
@@ -33,18 +47,15 @@ https://github.com/thobbsinteractive/magic-carpet-2-hd/releases/latest
 ## Steps: to build and run this code
 
 ### Windows:
-- 1: Pull the development branch
-- 2: You can build either x64 or 32 bit versions
-- 3: Open the Solution file "\sdl2\VisualC\SDL.sln" and build it in your prefered config (x64, x86). This builds the SDL2 library
-- 4: Open the Solution file "\libogg\win32\VS2015\libogg_static.sln" and build it in your prefered config (x64, x86). This builds the libogg library
-- 5: Open the Solution file "\libvorbis\win32\VS2010\vorbis_static.sln" and build it in your prefered config (x64, x86). This builds the vorbis library
-- 6: Close that solution and open "remc2.sln" in your prefered config (x64, x86).
-- 6: Build the code
-- 7: Purchase a copy of Magic Carpet 2 from GOG here: https://www.gog.com/game/magic_carpet_2_the_netherworlds
-- 8: Install the Game. Copy the "NETHERW" directory to "remc2\Debug\GAME" Folder
-- 9: Copy the "Extract" folder to your Game Directory, run extract-GOG-CD.bat. The CD Data will now be copied to a directory called "CD_Files" in the "Extract" directory
-- 10: Move "CD_Files" directory into the "remc2\Debug" Folder
-- 11: Run
+- 1: Install the latest version of Visual Studio 2022 Community. Ensure you install [vcpkg](https://devblogs.microsoft.com/cppblog/vcpkg-is-now-included-with-visual-studio/)
+- 2: Pull the development branch
+- 3: Open "remc2.sln", you can build either x64 or 32 bit versions
+- 4: Build the code
+- 5: Purchase a copy of Magic Carpet 2 from GOG here: https://www.gog.com/game/magic_carpet_2_the_netherworlds
+- 6: Install the Game. Copy the "NETHERW" directory to "remc2\Debug\" Folder
+- 7: Copy the "Extract" folder to your Game Directory, run extract-GOG-CD.bat. The CD Data will now be copied to a directory called "CD_Files" in the "Extract" directory
+- 8: Move "CD_Files" directory into the "remc2\Debug" Folder
+- 9: Run
 
 ### Linux:
 
@@ -63,7 +74,8 @@ There are two ways to build the Linux binary.
   - libpng
   - boost
   - boost-system
-    - To install them on Debian/Pi OS: `sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libpng-dev libpng++-dev libboost-system-dev` 
+  - spdlog
+    - To install them on Debian/Pi OS: `sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libpng-dev libpng++-dev libboost-system-dev libspdlog-dev` 
   4. Build the code
   ```bash
   export BUILDTYPE=Debug # or Release
@@ -75,7 +87,6 @@ There are two ways to build the Linux binary.
   ```
   5. Magic Carpet 2 is now built. you can find it in `build/Debug/inst/bin`
      - You can also run the code with sanitizers (leak, address, undefined behaviour, pointers) by passing `-DUSE_SANITIZERS=True` to CMake
-     - Additionally you can compile the code with clang-tidy analyzers by passing `-DUSE_CLANG_TIDY=True` to CMake
 
 - Building a [flatpak](https://flatpak.org/)
   1. Pull the development branch
@@ -89,6 +100,16 @@ There are two ways to build the Linux binary.
   flatpak run com.github.thobbsinteractive.magic-carpet-2-hd
   ```
 
+- Running clang-tidy for static code analysis
+  1. Run CMake with the flag `CMAKE_EXPORT_COMPILE_COMMANDS` for exporting the build commands like this
+  ```
+  cmake -GNinja -DUSE_SANITIZERS=True -DCMAKE_BUILD_TYPE=${BUILDTYPE} -DCMAKE_INSTALL_PREFIX=./inst -DUNIT_TESTS=True  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ../..
+  ```
+  2. Run clang-tidy
+  ```
+  run-clang-tidy -p . -j 4 -export-fixes clang-tidy-fixes.yaml
+  ```
+
 ### Providing the original game assets to `remc2` and running the game
 
 In order to run the game you need to own a copy of Magic Carpet 2. We provide a script to extract the assets from the GOG version. The following steps extract the required files from the original.
@@ -96,25 +117,29 @@ In order to run the game you need to own a copy of Magic Carpet 2. We provide a 
   2. Download the Windows "Offline Backup Game Installer"
   - Open GOGGalaxy
   - Install the game
-  - Go to the "Extras" section of a GOG Magic Carpet 2
-  - In the Offline Backup Installers Windows section:
-    - Click the Download button
-    - Wait for the download to complete
-    - Click the Downloads menu item on the left. 
-    - Click to open the containing folder and copy it to the `Downloads` folder on your Linux PC
-  3. Make sure that you have `innoextract` and `dosbox` installed
-     - To install them on Debian/Pi OS:`sudo apt install innoextract dosbox`  
-  4. Run the `extract-GOG-CD.sh` script from the `EXTRACT` directory of the `remc2` source code and provide the path to the GOG installer as well as a path where the files should be extractet to. Example:
+  3. In order to retrieve the original game's assets run the following script located in the root of the repository:
   ```
-  ./extract-GOG-CD.sh ~/Downloads/setup_magic_carpet_2_1.0_\(28044\).exe ~/.local/share/remc2
+  bash check_install.sh -s [directory where GOG installed MC2] -d [destination directory]
+  # for example :
+  bash check_install.sh -s "${HOME}/.wine/drive_c/games/Magic Carpet 2/" -d "build/${BUILDTYPE}/inst/bin/NETHERW"
   ```
-  5. NOTE: The game will search in the following locations (and in this particular order) for the game assets. For the flatpak only the first two locations can be used.
+  Please note that if you have used any other method to get the assets, at least run a check to make sure that remc2 has access to every file it needs:
+  ```
+  bash check_install.sh -d [destination directory]
+  # for example:
+  bash check_install.sh -d "build/${BUILDTYPE}/inst/bin/"
+   [ ok ] CD_Files directory
+   [ ok ] GAME directory
+  ```
+  this script will fix the permissions, make everything uppercase, check all file hashes and complain if any file is missing.
+  it's also recommended that before the first run you remove the file GAME/NETHERW/CONFIG.DAT if it exists.
+  4. NOTE: The game will search in the following locations (and in this particular order) for the game assets. For the flatpak only the first two locations can be used.
      1. `$XDG_DATA_HOME/remc2/`
      2. `$HOME/.local/share/remc2`
      3. next to the `remc2` binary
-  6. Run the `remc2` executable in install directory
-  ```bash
-  cd /Documents/repos/magic-carpet-2-hd/build/${BUILDTYPE}/inst/bin
+  5. Run the `remc2` executable in install directory
+  ```
+  cd magic-carpet-2-hd/build/${BUILDTYPE}/inst/bin
   ./remc2
   ```
 
@@ -126,7 +151,7 @@ The game will search for this file in the following locations and this particula
 2. `$HOME/.config/remc2`
 3. next to the `remc2` binary
 
-
+ 
 # ROADMAP:
 
 ## MILLSTONE 1
@@ -136,11 +161,12 @@ The game will search for this file in the following locations and this particula
 ## MILLSTONE 2
 - [x] Add resolution support
 - [ ] Implement Open GL render
+- [X] Implement Controller Support
 - [ ] Implement a (platform independent) Launch menu to adjust settings in config.ini before launch
 
 ## MILLSTONE 3
-- [ ] Improve sounds and music using updated original scores and directional sounds in game
-- [ ] Implement a wix sharp .msi installation for new .exe to make patching the and running existing game simple and something similar for the Linux versions
+- [ ] Improve sounds and music using updated original scores and directional sounds in game - In Review!
+- [X] Implement a wix sharp .msi installation for new .exe to make patching the and running existing game simple and something similar for the Linux versions
 
 ## MILLSTONE 4
 - [ ] Get basic LAN/IPv4 multiplayer working again (Tom is currently making great progress on this!)

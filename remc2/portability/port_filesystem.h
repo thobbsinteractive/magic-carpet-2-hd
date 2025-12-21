@@ -7,7 +7,7 @@
 #include <stdlib.h>  
 #include <string.h>
 #include <string>
-#include "mctypes.h"
+#include "bitmap_pos_struct.h"
 #include "fcaseopen.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/rotating_file_sink.h"
@@ -44,6 +44,7 @@ extern spdlog::logger* Logger;
 const char* GetStringFromLoggingLevel(spdlog::level::level_enum level);
 spdlog::level::level_enum GetLoggingLevelFromString(const char* levelStr);
 void InitializeLogging(spdlog::level::level_enum level);
+void InitializeLogging(spdlog::level::level_enum level, const char* logFileName);
 long my_findfirst(char* path, _finddata_t* c_file);
 long my_findnext(long hFile, _finddata_t* c_file);
 void my_findclose(long hFile);
@@ -58,7 +59,7 @@ int32_t mylseek(FILE* filedesc, x_DWORD position, char type);
 int32_t myfseek(FILE* filedesc, x_DWORD position, char type);
 
 void AdvReadfile(const char* path, uint8_t* buffer);
-void ReadGraphicsfile(const char* path, uint8_t* buffer,long size=-1);
+long ReadGraphicsfile(const char* path, uint8_t* buffer,long size=-1);
 bool ExistGraphicsfile(const char* path);
 
 long myftell(FILE* decriptor);

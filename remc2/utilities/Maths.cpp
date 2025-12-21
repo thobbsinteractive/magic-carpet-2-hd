@@ -1,6 +1,6 @@
 #include "Maths.h"
 
-int32_t Maths::sin_DB750[4608] = //2ac750 //speed table1 //sin and cos table
+int32_t Maths::sin_DB750[2560] = //2ac750 //speed table1 //sin and cos table
 {
 	0x00000000, 0x000000C9, 0x00000192, 0x0000025B,
 	0x00000324, 0x000003ED, 0x000004B6, 0x0000057F,
@@ -1012,4 +1012,36 @@ int Maths::SubtrackUntilZero(int x, int y)
 		result = 0;
 	}
 	return result;
+}
+
+uint16_t Maths::CurveCoords(uint16_t x, uint16_t y, std::vector<Maths::Zone>& zones)
+{
+	double factor = 1;
+
+	if (&zones != nullptr)
+	{
+		//Get Zone
+		for (uint16_t i = 0; i < zones.size(); i++)
+		{
+			if ((x >= zones[i].m_xStart) && (x < zones[i].m_xEnd))
+			{
+				factor = zones[i].m_factor;
+				break;
+			}
+		}
+	}
+
+	if (factor * y >= 0 && factor * y <= INT16_MAX)
+	{
+		y = factor * y;
+	}
+
+	return y;
+}
+
+//----- (000584D0) --------------------------------------------------------
+int sub_584D0_SQdistX_SQdistY(axis_3d* a1, axis_3d* a2)//2394d0
+{
+	return (int16_t)(a2->x - a1->x) * (int16_t)(a2->x - a1->x)
+		+ (int16_t)(a2->y - a1->y) * (int16_t)(a2->y - a1->y);
 }

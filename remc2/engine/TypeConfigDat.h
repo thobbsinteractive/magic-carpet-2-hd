@@ -7,7 +7,7 @@ typedef struct {//32
 	uint16_t langIndex_4;
 	uint16_t soundVolume_6;
 	uint16_t musicVolume_8;
-	uint8_t byteindex_10;
+	uint8_t showHelp_10;
 	int8_t brightness_11;
 	int8_t brightness_12;
 	int8_t brightness_13;

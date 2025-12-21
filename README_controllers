@@ -1,0 +1,118 @@
+
+    Gamepads and joysticks
+
+  the 'gamepad' group inside the config.ini file can be used to define how gamepad controls are picked up by the game.
+three different joysticks (each with two axes), two hats and six buttons can be configured using the keywords shown below.
+  based on user preference and device limitations, the menu navigation can share axes/hat with the camera angle (axis_yaw/pitch) or the movement controls (axis_long/trans, hat_mov).
+  the integer value expected is either '1'+ for enabled items or '0' for disabled ones.
+ 
+
+possible keywords:
+[gamepad]
+axis_yaw = 0 ; roll and yaw axis (initiates turns during flight)
+axis_yaw_inv = false ; false - no inversion needed, true - axis values need inversion
+axis_pitch = 0 ; pitch (moves camera up/down during flight)
+axis_pitch_inv = false
+axis_long = 0 ; longitudinal movement (aka forward / back)
+axis_long_inv = false
+axis_trans = 0 ; transversal movement (aka strafe left/right)
+axis_trans_inv = false
+axis_nav_ns = 0 ; menu navigation North / South
+axis_nav_ns_inv = false
+axis_nav_ew = 0 ; menu navigation East / West
+axis_nav_ew_inv = false
+axis_fire_R = 0 ; fire right-hand spell, also right mouse button equivalent (right trigger)
+axis_fire_L = 0 ; fire left-hand spell, also left mouse button equivalent (left trigger)
+hat_nav = 0 ; menu navigation North / South / East / West
+hat_nav_inv = false ; invert vertical axis
+hat_mov = 0 ; longitudinal and transversal movement
+hat_mov_inv = false ; invert vertical axis
+button_spell = 0 ; joystick button-press code used for displaying the spellbook
+button_minimap = 0 ; half-screen minimap
+button_fire_R = 0 ; fire right-hand spell, also right mouse button equivalent
+button_fire_L = 0 ; fire left-hand spell, also left mouse button equivalent
+button_fwd = 0 ; joystick button-press code used for forward movement
+button_back = 0 ; joystick button-press code used for backward movement
+button_esc = 0 ; escape key equivalent
+axis_dead_zone = 2048 ; increase if _mouse_ is unresponsive
+trigger_dead_zone = 2048 ; trigger button-related dead zone
+haptic_enabled = 0 ; set to 1 to try initialization of the controller's haptic engine
+haptic_max_gain = 75 ; set GAIN value, if feature is supported. it limits the amplitude of all the effects between 0-100
+
+
+    Sample setups
+
+XBOX controllers:
+
+[gamepad]
+axis_yaw = 4 ; roll and yaw - horizontal axis on the right joystick
+axis_pitch = 5 ; pitch - vertical axis on the right joystick
+axis_long = 2 ; longitudinal movement - vertical axis on the left joystick
+axis_long_inv = true ; needs inversion
+axis_trans = 1 ; transversal movement - horizontal axis on the left joystick
+button_minimap = 1 ; half-screen minimap - (A) button
+button_spell = 3 ; spellbook - (X) button
+button_esc = 4 ; escape key equivalent - (Y) button
+button_fire_L = 2 ; a secondary MLB equivalent for menu interaction - (B) button
+axis_dead_zone = 3000 ; joysticks are quite noisy and can get bumped accidentally so definitely at least 3000
+trigger_dead_zone = 3000 ; trigger button-related dead zone
+; select either hat or joystick control below:
+;   menu navigation using the hat
+;hat_nav = 1 ; menu navigation on the hat
+;hat_nav_inv = true ; needs inversion on the vertical axis
+;   menu navigation using the left joystick:
+axis_nav_ns = 2 ; menu navigation North / South
+axis_nav_ns_inv = true
+axis_nav_ew = 1 ; menu navigation East / West
+axis_nav_ew_inv = false
+; select either buttons or triggers for firing
+;   use buttons to fire
+;button_fire_R = 6 ; fire right-hand spell - right button
+;button_fire_L = 5 ; fire left-hand spell - left button
+;   use triggers to fire
+axis_fire_R = 6 ; fire right-hand spell - right trigger
+axis_fire_L = 3 ; fire left-hand spell - left trigger
+haptic_enabled = 1 ; set to 1 to try initialization of the controller's haptic engine
+haptic_max_gain = 90 ; set GAIN value, if feature is supported. it limits the amplitude of all the effects between 0-100
+
+
+Logitech Attack 3 (the joystick shares flight and navigation modes, the 3-rd axis can be used for fwd-back movement)
+
+[gamepad]
+axis_yaw = 1 ; roll and yaw axis (initiates turns during flight)
+axis_yaw_inv = false ; false - no inversion needed, true - axis values need inversion
+axis_pitch = 2 ; pitch (moves camera up/down during flight)
+axis_pitch_inv = false
+;optional axis_long = 3 ; longitudinal movement (aka forward / back)
+axis_long_inv = true
+axis_nav_ns = 2 ; menu navigation North / South
+axis_nav_ew = 1 ; menu navigation East / West
+button_spell = 8 ; joystick button-press code used for displaying the spellbook
+button_fire_R = 2 ; fire right-hand spell, also right mouse button equivalent
+button_fire_L = 1 ; fire left-hand spell, also left mouse button equivalent
+button_fwd = 6 ; joystick button-press code used for forward movement
+button_back = 7 ; joystick button-press code used for backward movement
+button_minimap = 9 ; half-screen minimap
+axis_dead_zone = 2048 ; increase if _mouse_ is unresponsive
+
+
+Logitech Extreme 3D PRO (the joystick shares flight and navigation modes, the 4-th axis can be used for fwd-back movement)
+
+[gamepad]
+axis_yaw = 1 ; roll and yaw axis (initiates turns during flight)
+axis_yaw_inv = false ; false - no inversion needed, true - axis values need inversion
+axis_pitch = 2 ; pitch (moves camera up/down during flight)
+axis_pitch_inv = false
+; optional axis_long = 4 ; longitudinal movement (aka forward / back)
+axis_long_inv = true
+axis_nav_ns = 2 ; menu navigation North / South
+axis_nav_ew = 1 ; menu navigation East / West
+button_spell = 7 ; joystick button-press code used for displaying the spellbook
+button_minimap = 9 ; half-screen minimap
+button_fire_R = 2 ; fire right-hand spell, also right mouse button equivalent
+button_fire_L = 1 ; fire left-hand spell, also left mouse button equivalent
+button_fwd = 5 ; joystick button-press code used for forward movement
+button_back = 3 ; joystick button-press code used for backward movement
+axis_dead_zone = 2048 ; increase if _mouse_ is unresponsive
+
+

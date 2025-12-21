@@ -1,11 +1,17 @@
-﻿################################################################################
+################################################################################
 # Tento soubor .gitignore byl automaticky vytvořen aplikací Microsoft(R) Visual Studio.
 ################################################################################
 
 /.vs
 /.vs/remc2/v15
 /.vs/remc2/v16
+/.vscode/settings.json
 /remc2/Debug
+/remc2/Debug-Deploy-Enhanced-Assets
+/remc2/Release
+/remc2/x64/Debug
+/remc2/x64/Debug-Deploy-Enhanced-Assets
+/remc2/x64/Release
 /outimg
 **/vc141.idb
 **/vc141.pdb
@@ -33,9 +39,8 @@ remc2-test/Debug
 **/remc2.exe
 **/remc2.exp
 **/remc2.lib
-**/remc2_without_xcopy.exe
-**/remc2_without_xcopy.exp
-**/remc2_without_xcopy.lib
+**/libvorbis_static.lib
+**/libvorbisfile_static.lib
 /packages
 **/Netherw
 /debug.txt
@@ -45,6 +50,7 @@ remc2-test/Debug
 **/music-ogg
 **/config.ini
 **/BufferOut
+**/vcpkg_installed
 /build*
 flatpak/build-dir
 .flatpak*
@@ -223,3 +229,24 @@ OpenCover/
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+
+# vim temporary files
+*.swp
+
+# indent
+*~
+
+# exuberant ctags
+tags
+
+# Wix
+*.wxs
+*.g.wxs
+*.msi
+/remc2-installer/wix/remc2-installer.g.wxs
+
+/libvorbis/win32/VS2010/Win32/Debug/libvorbisfile_static.lib
+/libvorbis/win32/VS2010/Win32/Debug/libvorbis_static.lib
+/libvorbis/win32/VS2010/x64/Debug/libvorbisfile_static.lib
+/libvorbis/win32/VS2010/x64/Debug/libvorbis_static.lib
+remc2-editor/log-editor.txt

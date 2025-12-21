@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "remc2", "remc2\remc2.vcxproj", "{1DF21D49-CDF7-47FB-A256-0813C1EC5923}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "remc2-unit-test", "remc2-unit-test\remc2-unit-test.vcxproj", "{1FC94160-2730-4A8A-B779-BBFCA181BFB6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "remc2-regression-test", "remc2-regression-test\remc2-regression-test.vcxproj", "{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "remc2-editor", "remc2-editor\remc2-editor.vcxproj", "{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,6 @@ Global
 		Debug-Deploy-Enhanced-Assets|x86 = Debug-Deploy-Enhanced-Assets|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-		XBOX_Debug|x64 = XBOX_Debug|x64
-		XBOX_Debug|x86 = XBOX_Debug|x86
-		XBOX_Release|x64 = XBOX_Release|x64
-		XBOX_Release|x86 = XBOX_Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.Debug|x64.ActiveCfg = Debug|x64
@@ -35,14 +33,6 @@ Global
 		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.Release|x64.Build.0 = Release|x64
 		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.Release|x86.ActiveCfg = Release|Win32
 		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.Release|x86.Build.0 = Release|Win32
-		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.XBOX_Debug|x64.ActiveCfg = Debug|x64
-		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.XBOX_Debug|x64.Build.0 = Debug|x64
-		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.XBOX_Debug|x86.ActiveCfg = Debug|Win32
-		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.XBOX_Debug|x86.Build.0 = Debug|Win32
-		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.XBOX_Release|x64.ActiveCfg = Release|x64
-		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.XBOX_Release|x64.Build.0 = Release|x64
-		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.XBOX_Release|x86.ActiveCfg = Release|Win32
-		{1DF21D49-CDF7-47FB-A256-0813C1EC5923}.XBOX_Release|x86.Build.0 = Release|Win32
 		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.Debug|x64.ActiveCfg = Debug|x64
 		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.Debug|x64.Build.0 = Debug|x64
 		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.Debug|x86.ActiveCfg = Debug|Win32
@@ -53,32 +43,28 @@ Global
 		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.Debug-Deploy-Enhanced-Assets|x86.Build.0 = Debug|Win32
 		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.Release|x64.ActiveCfg = Release|x64
 		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.Release|x86.ActiveCfg = Release|Win32
-		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.XBOX_Debug|x64.ActiveCfg = Debug|x64
-		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.XBOX_Debug|x64.Build.0 = Debug|x64
-		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.XBOX_Debug|x86.ActiveCfg = Debug|Win32
-		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.XBOX_Debug|x86.Build.0 = Debug|Win32
-		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.XBOX_Release|x64.ActiveCfg = Release|x64
-		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.XBOX_Release|x64.Build.0 = Release|x64
-		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.XBOX_Release|x86.ActiveCfg = Release|Win32
-		{1FC94160-2730-4A8A-B779-BBFCA181BFB6}.XBOX_Release|x86.Build.0 = Release|Win32
 		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Debug|x64.ActiveCfg = Debug|x64
 		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Debug|x64.Build.0 = Debug|x64
 		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Debug|x86.ActiveCfg = Debug|Win32
 		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Debug|x86.Build.0 = Debug|Win32
-		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Debug-Deploy-Enhanced-Assets|x64.ActiveCfg = Debug|x64
-		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Debug-Deploy-Enhanced-Assets|x64.Build.0 = Debug|x64
+		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Debug-Deploy-Enhanced-Assets|x64.ActiveCfg = Release|x64
+		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Debug-Deploy-Enhanced-Assets|x64.Build.0 = Release|x64
 		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Debug-Deploy-Enhanced-Assets|x86.ActiveCfg = Debug|Win32
 		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Debug-Deploy-Enhanced-Assets|x86.Build.0 = Debug|Win32
 		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Release|x64.ActiveCfg = Release|x64
 		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.Release|x86.ActiveCfg = Release|Win32
-		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.XBOX_Debug|x64.ActiveCfg = Debug|x64
-		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.XBOX_Debug|x64.Build.0 = Debug|x64
-		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.XBOX_Debug|x86.ActiveCfg = Debug|Win32
-		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.XBOX_Debug|x86.Build.0 = Debug|Win32
-		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.XBOX_Release|x64.ActiveCfg = Release|x64
-		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.XBOX_Release|x64.Build.0 = Release|x64
-		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.XBOX_Release|x86.ActiveCfg = Release|Win32
-		{5A8F70A7-DFC4-4103-BFC2-C8E212918A73}.XBOX_Release|x86.Build.0 = Release|Win32
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Debug|x64.ActiveCfg = Debug|x64
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Debug|x64.Build.0 = Debug|x64
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Debug|x86.ActiveCfg = Debug|Win32
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Debug|x86.Build.0 = Debug|Win32
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Debug-Deploy-Enhanced-Assets|x64.ActiveCfg = Debug|x64
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Debug-Deploy-Enhanced-Assets|x64.Build.0 = Debug|x64
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Debug-Deploy-Enhanced-Assets|x86.ActiveCfg = Debug|Win32
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Debug-Deploy-Enhanced-Assets|x86.Build.0 = Debug|Win32
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Release|x64.ActiveCfg = Release|x64
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Release|x64.Build.0 = Release|x64
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Release|x86.ActiveCfg = Release|Win32
+		{0A75248B-A8E1-4DA9-99FD-3EE4D2BE77A8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

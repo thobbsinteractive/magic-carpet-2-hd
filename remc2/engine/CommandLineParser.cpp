@@ -41,11 +41,13 @@ void CommandLineParser::Init(int argc, char **argv) {
     m_hide_graphics = false;
     m_rotate_player = false;
     m_set_objective = false;
-    m_set_level = false;
+    m_set_level = -1;
+	m_custom_level_path = "";
     m_test_network_chng1 = false;
     m_show_debug_messages1 = false;
     m_show_debug_perifery = false;
     m_text_output_to_console = false;
+    m_state_monitor = false;
 
     m_memimages_path = "../remc2/memimages/";
     m_config_file_path = "";
@@ -183,16 +185,27 @@ void CommandLineParser::InterpretParams() {
         else if (param == "--hide_graphics")                    m_hide_graphics = true;
         else if (param == "--rotate_player")                    m_rotate_player = true;
         else if (param == "--set_objective")                    m_set_objective = true;
-        else if (param == "--set_level")                        m_set_level = true;
         else if (param == "--test_network_chng1")               m_test_network_chng1 = true;
         else if (param == "--show_debug_messages1")             m_show_debug_messages1 = true;
         else if (param == "--show_debug_show_perifery")         m_show_debug_perifery = true;
         else if (param == "--text_output_to_console")           m_text_output_to_console = true;
+        else if (param == "--state_monitor")                    m_state_monitor = true;
         else if (param == "--memimages_path") {
             m_memimages_path = *(++p);
         }
         else if (param == "--config_file_path") {
             m_config_file_path = *(++p);
         }
+		else if (param == "--set_level") {
+			std::string levelStr = *(++p);
+			uint16_t level = std::stoi(levelStr);
+			if (level > -1)
+			{
+				m_set_level = level;
+			}
+		}
+		else if (param == "--custom_level") {
+			m_custom_level_path = *(++p);
+		}
     }
 }

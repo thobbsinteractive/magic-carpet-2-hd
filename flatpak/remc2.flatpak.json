@@ -29,7 +29,6 @@
                 "-DUNIT_TESTS=False", 
                 "-DEDITOR=False", 
                 "-DUSE_SANITIZERS=False", 
-                "-DUSE_CLANG_TIDY=False", 
                 "-DALL_WARNINGS=False", 
                 "-DFLATPAK=True"
             ],

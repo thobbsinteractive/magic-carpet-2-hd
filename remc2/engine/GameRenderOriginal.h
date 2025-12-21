@@ -10,7 +10,7 @@
 
 #include "../utilities/Maths.h"
 #include "../utilities/BitmapIO.h"
-#include "../portability/mctypes.h"
+#include "../portability/bitmap_pos_struct.h"
 #include "../utilities/SafeQueue.h"
 #include "Terrain.h"
 #include "Type_F2C20ar.h"
@@ -52,7 +52,7 @@ private:
 		0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0C,0x0C,0x0C
 	};
 
-	type_unk_F0E20x m_str_F0E20x[1920]; // Originally 640
+	type_unk_F0E20x m_str_F0E20x[640]; // Originally 640
 
 	std::array<uint8_t*, 256> m_textureAddresses;
 	
@@ -73,11 +73,11 @@ private:
 	void DrawSky_40950(int16_t roll);
 	void DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __int16 yaw, signed int posZ, int pitch, int16_t roll, int fov);
 	void DrawSprite_41BD3(uint32 a1);
-	void DrawParticles_3E360(int a2x);
+	void DrawSprites_3E360(int a2x);
 	void DrawTriangleInProjectionSpace_B6253(x_DWORD* a1, x_DWORD* a2, x_DWORD* a3);
 	int32_t* x_DWORD_DB350_ret(uint32_t adress);
 	uint16_t sub_3FD60(int a2x);
-	void sub_88740(type_event_0x6E8E* a1x, int a2, int a3);
+	void sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);
 	void DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1x, __int16 a2, int a3, __int16 a4);
 
