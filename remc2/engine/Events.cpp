@@ -5,6 +5,7 @@
 #include "PlayerInput.h"
 #include "Terrain.h"
 #include "Type_D93C0_Bldgprmbuffer.h"
+#include "LevelInit.h"
 
 #include "../sub_main.h"  // FIXME: only temporary until dependencies are untangled
 
@@ -2807,7 +2808,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 		break;
 	}
 	case 0x234590: {
-		sub_53590((Type_Level_2FECE*)a1_6E8E);
+		SetLevelId_53590((Type_Level_2FECE*)a1_6E8E);
 		break;
 	}
 

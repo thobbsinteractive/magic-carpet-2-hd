@@ -1081,7 +1081,6 @@ char sub_3A7F0(type_event_0x6E8E* a1);
 void sub_3A8B0(type_event_0x6E8E* a1);
 void sub_3AF00_castle_defend_event(type_event_0x6E8E* a1);
 void sub_53160();
-void sub_53590(Type_Level_2FECE* a1);
 void sub_59C40_getTerrtoZ(type_event_0x6E8E* a1);
 int sub_59C60(type_event_0x6E8E* a1);
 int sub_59C80(type_event_0x6E8E* a1);
