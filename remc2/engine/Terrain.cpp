@@ -1,6 +1,7 @@
 #include "Terrain.h"
 
 uint16_t x_WORD_17B4E0; // 34c4e0
+bool lowDiffHeightmap_D47DC = true;
 
 uint8_t mapTerrainType_10B4E0[65536]; // 256x256 //map array1
 uint8_t mapHeightmap_11B4E0[65536]; // 256x256 //map array2 // heightmap
