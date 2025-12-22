@@ -136,7 +136,7 @@ set(SOURCE_FILES_EDITOR
     "../remc2/engine/UVTable_D4350.cpp"
     "../remc2/engine/UVTable_D4350.h"
     "../remc2/utilities/DataFileRNC.cpp"
-    "../remc2/utilities/DataFileRNC.h"	
+    "../remc2/utilities/DataFileRNC.h"
     "kiss_widgets.cpp"
     "kiss_general.cpp"
     "kiss_draw.cpp"

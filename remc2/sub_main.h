@@ -430,7 +430,7 @@ void sub_49F30();
 
 void sub_6EBF0(filearray_struct* a1);
 
-char sub_533B0_decompress_levels(__int16 a1, Type_Level_2FECE* a2, std::string customLevelPath = "");
+char LevelDecompress_533B0(int16 levelIndex, Type_Level_2FECE* levelData, std::string customLevelPath = "");
 
 //int /*__noreturn*/ sub_10000(); // weak
 type_event_0x6E8E* sub_15CB0(/*type_str_0x6E8E* a1,*/ type_event_0x6E8E* a2); // weak
