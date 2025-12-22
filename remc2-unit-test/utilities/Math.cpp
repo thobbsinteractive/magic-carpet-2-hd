@@ -62,3 +62,20 @@ TEST(Math, MeasureYawAngleDegrees)
 	degrees = Maths::MeasureYawAngleDegrees(Maths::Vec3{ -1, -1, 0 });
 	ASSERT_EQ((int)round(degrees), 315);
 }
+
+TEST(Math, CalculateAngleFromPosition)
+{
+	auto playerYawDeg = 0;
+	auto rotatedCoords = Maths::RotateZ(Maths::Vec3{ 10000, -10000, 0 }, -playerYawDeg);
+	float degrees = Maths::MeasureYawAngleDegrees(rotatedCoords);
+	ASSERT_EQ((int)round(degrees), 45);
+
+	playerYawDeg = 45;
+	rotatedCoords = Maths::RotateZ(Maths::Vec3{ 10000, -10000, 0 }, -playerYawDeg);
+	degrees = Maths::MeasureYawAngleDegrees(rotatedCoords);
+	ASSERT_EQ((int)round(degrees), 0);
+
+	rotatedCoords = Maths::RotateZ(Maths::Vec3{ -10000, -10000, 0 }, -playerYawDeg);
+	degrees = Maths::MeasureYawAngleDegrees(rotatedCoords);
+	ASSERT_EQ((int)round(degrees), 270);
+}
