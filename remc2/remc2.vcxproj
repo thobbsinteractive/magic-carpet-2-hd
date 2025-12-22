@@ -452,7 +452,7 @@
     <ClInclude Include="engine\CompareMaps.h" />
     <ClInclude Include="engine\ConvertMapInfo.h" />
     <ClInclude Include="engine\DatTabIndexes.h" />
-    <ClInclude Include="engine\Entity.h" />
+    <ClInclude Include="engine\EventsFunctions.h" />
     <ClInclude Include="engine\GameBitmap.h" />
     <ClInclude Include="engine\GameUiConstants.h" />
     <ClInclude Include="engine\Graphics.h" />
@@ -560,7 +560,7 @@
     <ClCompile Include="engine\CompareMaps.cpp" />
     <ClCompile Include="engine\ConvertMapInfo.cpp" />
     <ClCompile Include="engine\DatTabIndexes.cpp" />
-    <ClCompile Include="engine\Entity.cpp" />
+    <ClCompile Include="engine\EventsFunctions.cpp" />
     <ClCompile Include="engine\GameBitmap.cpp" />
     <ClCompile Include="engine\GameRenderGL.cpp" />
     <ClCompile Include="engine\GameRenderHD.cpp" />

@@ -354,7 +354,7 @@
     <ClInclude Include="engine\DatTabIndexes.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
-    <ClInclude Include="engine\Entity.h">
+    <ClInclude Include="engine\EventsFunctions.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
     <ClInclude Include="engine\LevelInit.h">
@@ -617,7 +617,7 @@
     <ClCompile Include="engine\DatTabIndexes.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Entity.cpp">
+    <ClCompile Include="engine\EventsFunctions.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
     <ClCompile Include="engine\LevelInit.cpp">
