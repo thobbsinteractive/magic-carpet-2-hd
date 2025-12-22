@@ -465,6 +465,7 @@
     <ClInclude Include="engine\GameBitmapIndexes.h" />
     <ClInclude Include="engine\LangTextIndexes.h" />
     <ClInclude Include="engine\LevelInit.h" />
+    <ClInclude Include="engine\LevelStructs.h" />
     <ClInclude Include="engine\Map.h" />
     <ClInclude Include="engine\MapType.h" />
     <ClInclude Include="engine\MenusAndIntros.h" />
@@ -566,6 +567,7 @@
     <ClCompile Include="engine\GameRenderHD.cpp" />
     <ClCompile Include="engine\GameRenderNG.cpp" />
     <ClCompile Include="engine\LevelInit.cpp" />
+    <ClCompile Include="engine\LevelStructs.cpp" />
     <ClCompile Include="engine\MenusAndIntros.cpp" />
     <ClCompile Include="engine\GameRenderOriginal.cpp" />
     <ClCompile Include="engine\Graphics.cpp" />

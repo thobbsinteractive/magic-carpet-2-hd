@@ -352,8 +352,6 @@ extern uint16_t x_WORD_17B4E0; // 34c4e0
 // needed from GameUI
 extern void(*ptrDrawBitmap_F01E8)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale);
 
-extern char isCaveLevel_D41B6;
-
 #pragma pack (1)
 typedef struct {//lenght 16
 	int16_t x1_26_0;//0 x

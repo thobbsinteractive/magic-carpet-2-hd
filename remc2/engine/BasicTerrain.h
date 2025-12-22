@@ -107,6 +107,6 @@ typedef struct {//lenght 0x6604u
 } Type_Level_2FECE;//Uncompressed level
 #pragma pack (16)
 
-extern char isCaveLevel_D41B6;
+extern bool isCaveLevel_D41B6;
 
 #endif //MAIN_BASIC_TERRAIN

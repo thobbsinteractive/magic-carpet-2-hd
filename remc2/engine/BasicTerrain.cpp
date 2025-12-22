@@ -1,2 +1,2 @@
 #include "BasicTerrain.h"
-char isCaveLevel_D41B6 = 1;
+bool isCaveLevel_D41B6 = true;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BasicMini.h"
+#include "LevelStructs.h"
 
 #ifdef _MSC_VER
 #include <direct.h>  

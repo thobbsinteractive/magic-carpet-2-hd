@@ -46,6 +46,8 @@ set(SOURCE_FILES_UNITTESTS_DEPENDENCIES
     "../remc2/engine/Graphics.h"
     "../remc2/engine/Level.cpp"
     "../remc2/engine/Level.h"
+    "../remc2/engine/LevelStructs.cpp"
+    "../remc2/engine/LevelStructs.h"
     "../remc2/engine/Map.h"
     "../remc2/engine/MenusAndIntros.cpp"
     "../remc2/engine/MenusAndIntros.h"

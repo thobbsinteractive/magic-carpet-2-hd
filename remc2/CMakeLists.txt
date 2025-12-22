@@ -56,6 +56,8 @@ set(SOURCE_FILES_ENGINE
     "engine/LangTextIndexes.h"
     "engine/Level.cpp"
     "engine/Level.h"
+    "engine/LevelStructs.cpp"
+    "engine/LevelStructs.h"
     "engine/Map.h"
     "engine/MenusAndIntros.cpp"
     "engine/MenusAndIntros.h"
