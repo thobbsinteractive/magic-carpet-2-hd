@@ -815,14 +815,14 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 							if (!(v67 & 2))
 							{
 								{
-									v248x[20] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][0];
-									v248x[21] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][1];
-									v248x[14] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][2];
-									v248x[15] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][3];
-									v248x[8] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][4];
-									v248x[9] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][5];
-									v248x[2] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][6];
-									v248x[3] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][7];
+									v248x[20] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][0];
+									v248x[21] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][1];
+									v248x[14] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][2];
+									v248x[15] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][3];
+									v248x[8] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][4];
+									v248x[9] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][5];
+									v248x[2] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][6];
+									v248x[3] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][7];
 									x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[1];
 									x_BYTE_E126D = 5;
 									if (Str_E9C38_smalltit[jx].triangleFeatures_38 & 1)
@@ -877,14 +877,14 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 							}
 							if (!(v78 & 2) && !(v79 & 0x78))
 							{
-								v248x[20] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][0];
-								v248x[21] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][1];
-								v248x[14] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][2];
-								v248x[15] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][3];
-								v248x[8] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][4];
-								v248x[9] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][5];
-								v248x[2] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][6];
-								v248x[3] = xunk_D4350[Str_E9C38_smalltit[jx].textUV_42][7];
+								v248x[20] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][0];
+								v248x[21] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][1];
+								v248x[14] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][2];
+								v248x[15] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][3];
+								v248x[8] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][4];
+								v248x[9] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][5];
+								v248x[2] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][6];
+								v248x[3] = UVTable_D4350[Str_E9C38_smalltit[jx].textUV_42][7];
 								x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[Str_E9C38_smalltit[jx].textIndex_41];
 								if (Str_E9C38_smalltit[jx].triangleFeatures_38 & 1)
 								{
@@ -944,14 +944,14 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 								}
 								if (!(v93 & 2))
 								{
-									v248x[20] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][0];
-									v248x[21] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][1];
-									v248x[14] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][2];
-									v248x[15] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][3];
-									v248x[8] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][4];
-									v248x[9] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][5];
-									v248x[2] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][6];
-									v248x[3] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][7];
+									v248x[20] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][0];
+									v248x[21] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][1];
+									v248x[14] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][2];
+									v248x[15] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][3];
+									v248x[8] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][4];
+									v248x[9] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][5];
+									v248x[2] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][6];
+									v248x[3] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][7];
 									x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[1];
 									v96 = Str_E9C38_smalltit[v83x].triangleFeatures_38 & 0xff;
 									x_BYTE_E126D = 5;
@@ -1003,14 +1003,14 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 								}
 								if (!(v105 & 2) && !(v106 & 0x78))
 								{
-									v248x[20] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][0];
-									v248x[21] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][1];
-									v248x[14] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][2];
-									v248x[15] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][3];
-									v248x[8] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][4];
-									v248x[9] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][5];
-									v248x[2] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][6];
-									v248x[3] = xunk_D4350[Str_E9C38_smalltit[v83x].textUV_42][7];
+									v248x[20] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][0];
+									v248x[21] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][1];
+									v248x[14] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][2];
+									v248x[15] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][3];
+									v248x[8] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][4];
+									v248x[9] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][5];
+									v248x[2] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][6];
+									v248x[3] = UVTable_D4350[Str_E9C38_smalltit[v83x].textUV_42][7];
 									x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[Str_E9C38_smalltit[v83x].textIndex_41];
 									if (Str_E9C38_smalltit[v83x].triangleFeatures_38 & 1)
 									{
@@ -1228,14 +1228,14 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 								if (!(v144 & 2))
 								{
 									{
-										v248x[20] = xunk_D4350[Str_E9C38_smalltit[v134x].textUV_42][0];
-										v248x[21] = xunk_D4350[Str_E9C38_smalltit[v134x].textUV_42][1];
-										v248x[14] = xunk_D4350[Str_E9C38_smalltit[v134x].textUV_42][2];
-										v248x[15] = xunk_D4350[Str_E9C38_smalltit[v134x].textUV_42][3];
-										v248x[8] = xunk_D4350[Str_E9C38_smalltit[v134x].textUV_42][4];
-										v248x[9] = xunk_D4350[Str_E9C38_smalltit[v134x].textUV_42][5];
-										v248x[2] = xunk_D4350[Str_E9C38_smalltit[v134x].textUV_42][6];
-										v248x[3] = xunk_D4350[Str_E9C38_smalltit[v134x].textUV_42][7];
+										v248x[20] = UVTable_D4350[Str_E9C38_smalltit[v134x].textUV_42][0];
+										v248x[21] = UVTable_D4350[Str_E9C38_smalltit[v134x].textUV_42][1];
+										v248x[14] = UVTable_D4350[Str_E9C38_smalltit[v134x].textUV_42][2];
+										v248x[15] = UVTable_D4350[Str_E9C38_smalltit[v134x].textUV_42][3];
+										v248x[8] = UVTable_D4350[Str_E9C38_smalltit[v134x].textUV_42][4];
+										v248x[9] = UVTable_D4350[Str_E9C38_smalltit[v134x].textUV_42][5];
+										v248x[2] = UVTable_D4350[Str_E9C38_smalltit[v134x].textUV_42][6];
+										v248x[3] = UVTable_D4350[Str_E9C38_smalltit[v134x].textUV_42][7];
 										x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[Str_E9C38_smalltit[v134x].textIndex_41];
 										x_BYTE_E126D = 5;
 										//allert_error();
@@ -1300,14 +1300,14 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 									if (!(v156 & 2))
 									{
 										{
-											v248x[20] = xunk_D4350[Str_E9C38_smalltit[v147x].textUV_42][0];
-											v248x[21] = xunk_D4350[Str_E9C38_smalltit[v147x].textUV_42][1];
-											v248x[14] = xunk_D4350[Str_E9C38_smalltit[v147x].textUV_42][2];
-											v248x[15] = xunk_D4350[Str_E9C38_smalltit[v147x].textUV_42][3];
-											v248x[8] = xunk_D4350[Str_E9C38_smalltit[v147x].textUV_42][4];
-											v248x[9] = xunk_D4350[Str_E9C38_smalltit[v147x].textUV_42][5];
-											v248x[2] = xunk_D4350[Str_E9C38_smalltit[v147x].textUV_42][6];
-											v248x[3] = xunk_D4350[Str_E9C38_smalltit[v147x].textUV_42][7];
+											v248x[20] = UVTable_D4350[Str_E9C38_smalltit[v147x].textUV_42][0];
+											v248x[21] = UVTable_D4350[Str_E9C38_smalltit[v147x].textUV_42][1];
+											v248x[14] = UVTable_D4350[Str_E9C38_smalltit[v147x].textUV_42][2];
+											v248x[15] = UVTable_D4350[Str_E9C38_smalltit[v147x].textUV_42][3];
+											v248x[8] = UVTable_D4350[Str_E9C38_smalltit[v147x].textUV_42][4];
+											v248x[9] = UVTable_D4350[Str_E9C38_smalltit[v147x].textUV_42][5];
+											v248x[2] = UVTable_D4350[Str_E9C38_smalltit[v147x].textUV_42][6];
+											v248x[3] = UVTable_D4350[Str_E9C38_smalltit[v147x].textUV_42][7];
 											x_BYTE_E126D = 5;
 											x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[Str_E9C38_smalltit[v147x].textIndex_41];
 											//allert_error();
@@ -1386,14 +1386,14 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 							}
 							if (!(v173 & 2) && !(v174 & 0x78))
 							{
-								v248x[20] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][0];
-								v248x[21] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][1];
-								v248x[14] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][2];
-								v248x[15] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][3];
-								v248x[8] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][4];
-								v248x[9] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][5];
-								v248x[2] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][6];
-								v248x[3] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][7];
+								v248x[20] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][0];
+								v248x[21] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][1];
+								v248x[14] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][2];
+								v248x[15] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][3];
+								v248x[8] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][4];
+								v248x[9] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][5];
+								v248x[2] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][6];
+								v248x[3] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][7];
 								x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[Str_E9C38_smalltit[v161x].textIndex_41];
 								if (Str_E9C38_smalltit[v161x].triangleFeatures_38 & 1)
 								{
@@ -1412,14 +1412,14 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 							x_BYTE_E126D = 26;
 							if (!(v173 & 2) && !(v174 & 0x78))
 							{
-								v248x[20] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][0];
-								v248x[21] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][1];
-								v248x[14] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][2];
-								v248x[15] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][3];
-								v248x[8] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][4];
-								v248x[9] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][5];
-								v248x[2] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][6];
-								v248x[3] = xunk_D4350[Str_E9C38_smalltit[v161x].textUV_42][7];
+								v248x[20] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][0];
+								v248x[21] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][1];
+								v248x[14] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][2];
+								v248x[15] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][3];
+								v248x[8] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][4];
+								v248x[9] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][5];
+								v248x[2] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][6];
+								v248x[3] = UVTable_D4350[Str_E9C38_smalltit[v161x].textUV_42][7];
 								x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[Str_E9C38_smalltit[v161x].textIndex_41];
 								if (Str_E9C38_smalltit[v161x].triangleFeatures_38 & 1)
 								{
@@ -1479,14 +1479,14 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 								}
 								if (!(v191 & 2) && !(v192 & 0x78))
 								{
-									v248x[20] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][0];
-									v248x[21] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][1];
-									v248x[14] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][2];
-									v248x[15] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][3];
-									v248x[8] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][4];
-									v248x[9] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][5];
-									v248x[2] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][6];
-									v248x[3] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][7];
+									v248x[20] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][0];
+									v248x[21] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][1];
+									v248x[14] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][2];
+									v248x[15] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][3];
+									v248x[8] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][4];
+									v248x[9] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][5];
+									v248x[2] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][6];
+									v248x[3] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][7];
 									x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[Str_E9C38_smalltit[v178x].textIndex_41];
 									if (Str_E9C38_smalltit[v178x].triangleFeatures_38 & 1)
 									{
@@ -1505,14 +1505,14 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 								x_BYTE_E126D = 26;
 								if (!(v191 & 2) && !(v192 & 0x78))
 								{
-									v248x[20] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][0];
-									v248x[21] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][1];
-									v248x[14] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][2];
-									v248x[15] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][3];
-									v248x[8] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][4];
-									v248x[9] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][5];
-									v248x[2] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][6];
-									v248x[3] = xunk_D4350[Str_E9C38_smalltit[v178x].textUV_42][7];
+									v248x[20] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][0];
+									v248x[21] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][1];
+									v248x[14] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][2];
+									v248x[15] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][3];
+									v248x[8] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][4];
+									v248x[9] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][5];
+									v248x[2] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][6];
+									v248x[3] = UVTable_D4350[Str_E9C38_smalltit[v178x].textUV_42][7];
 									v194 = Str_E9C38_smalltit[v178x].triangleFeatures_38 & 0xff;
 									x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[Str_E9C38_smalltit[v178x].textIndex_41];
 									if (v194 & 1)
@@ -1752,14 +1752,14 @@ LABEL_259:
 			}
 			if (!(v228 & 2) && !(v229 & 0x78))
 			{//21ef76
-				v248x[20] = xunk_D4350[Str_E9C38_smalltit[v218x].textUV_42][0];
-				v248x[21] = xunk_D4350[Str_E9C38_smalltit[v218x].textUV_42][1];
-				v248x[14] = xunk_D4350[Str_E9C38_smalltit[v218x].textUV_42][2];
-				v248x[15] = xunk_D4350[Str_E9C38_smalltit[v218x].textUV_42][3];
-				v248x[8] = xunk_D4350[Str_E9C38_smalltit[v218x].textUV_42][4];
-				v248x[9] = xunk_D4350[Str_E9C38_smalltit[v218x].textUV_42][5];
-				v248x[2] = xunk_D4350[Str_E9C38_smalltit[v218x].textUV_42][6];
-				v248x[3] = xunk_D4350[Str_E9C38_smalltit[v218x].textUV_42][7];
+				v248x[20] = UVTable_D4350[Str_E9C38_smalltit[v218x].textUV_42][0];
+				v248x[21] = UVTable_D4350[Str_E9C38_smalltit[v218x].textUV_42][1];
+				v248x[14] = UVTable_D4350[Str_E9C38_smalltit[v218x].textUV_42][2];
+				v248x[15] = UVTable_D4350[Str_E9C38_smalltit[v218x].textUV_42][3];
+				v248x[8] = UVTable_D4350[Str_E9C38_smalltit[v218x].textUV_42][4];
+				v248x[9] = UVTable_D4350[Str_E9C38_smalltit[v218x].textUV_42][5];
+				v248x[2] = UVTable_D4350[Str_E9C38_smalltit[v218x].textUV_42][6];
+				v248x[3] = UVTable_D4350[Str_E9C38_smalltit[v218x].textUV_42][7];
 				x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[Str_E9C38_smalltit[v218x].textIndex_41];
 				if ((Str_E9C38_smalltit[v218x].triangleFeatures_38 & 0xff) & 1)
 				{//adress 21ddf0
@@ -1818,14 +1818,14 @@ LABEL_259:
 				}
 				if (!(v244 & 2) && !(v245 & 0x78))
 				{
-					v248x[20] = xunk_D4350[Str_E9C38_smalltit[v232x].textUV_42][0];
-					v248x[21] = xunk_D4350[Str_E9C38_smalltit[v232x].textUV_42][1];
-					v248x[14] = xunk_D4350[Str_E9C38_smalltit[v232x].textUV_42][2];
-					v248x[15] = xunk_D4350[Str_E9C38_smalltit[v232x].textUV_42][3];
-					v248x[8] = xunk_D4350[Str_E9C38_smalltit[v232x].textUV_42][4];
-					v248x[9] = xunk_D4350[Str_E9C38_smalltit[v232x].textUV_42][5];
-					v248x[2] = xunk_D4350[Str_E9C38_smalltit[v232x].textUV_42][6];
-					v248x[3] = xunk_D4350[Str_E9C38_smalltit[v232x].textUV_42][7];
+					v248x[20] = UVTable_D4350[Str_E9C38_smalltit[v232x].textUV_42][0];
+					v248x[21] = UVTable_D4350[Str_E9C38_smalltit[v232x].textUV_42][1];
+					v248x[14] = UVTable_D4350[Str_E9C38_smalltit[v232x].textUV_42][2];
+					v248x[15] = UVTable_D4350[Str_E9C38_smalltit[v232x].textUV_42][3];
+					v248x[8] = UVTable_D4350[Str_E9C38_smalltit[v232x].textUV_42][4];
+					v248x[9] = UVTable_D4350[Str_E9C38_smalltit[v232x].textUV_42][5];
+					v248x[2] = UVTable_D4350[Str_E9C38_smalltit[v232x].textUV_42][6];
+					v248x[3] = UVTable_D4350[Str_E9C38_smalltit[v232x].textUV_42][7];
 					x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses[Str_E9C38_smalltit[v232x].textIndex_41];
 					if (Str_E9C38_smalltit[v232x].triangleFeatures_38 & 1)
 					{

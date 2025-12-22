@@ -16,7 +16,7 @@
 #include "Type_E9C38_Smalltit.h"
 #include "Type_F2C20ar.h"
 #include "Type_WORD_D951C.h"
-#include "XUnk_D4350.h"
+#include "UVTable_D4350.h"
 #include "defs.h"
 
 
@@ -2878,14 +2878,14 @@ void GameRenderHD::StopWorkerThreads()
 void GameRenderHD::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index)
 {
 	//Set Texture coordinates for polys
-	vertexs[20] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][0];
-	vertexs[21] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][1];
-	vertexs[14] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][2];
-	vertexs[15] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][3];
-	vertexs[8] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][4];
-	vertexs[9] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][5];
-	vertexs[2] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][6];
-	vertexs[3] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][7];
+	vertexs[20] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][0];
+	vertexs[21] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][1];
+	vertexs[14] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][2];
+	vertexs[15] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][3];
+	vertexs[8] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][4];
+	vertexs[9] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][5];
+	vertexs[2] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][6];
+	vertexs[3] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][7];
 
 	//Get Texture
 	x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses.at(Str_E9C38_smalltit[index].textIndex_41);
@@ -2958,14 +2958,14 @@ void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index)
 void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture)
 {
 	//Set Texture coordinates for polys
-	vertexs[20] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][0];
-	vertexs[21] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][1];
-	vertexs[14] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][2];
-	vertexs[15] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][3];
-	vertexs[8] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][4];
-	vertexs[9] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][5];
-	vertexs[2] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][6];
-	vertexs[3] = xunk_D4350[Str_E9C38_smalltit[index].textUV_42][7];
+	vertexs[20] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][0];
+	vertexs[21] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][1];
+	vertexs[14] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][2];
+	vertexs[15] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][3];
+	vertexs[8] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][4];
+	vertexs[9] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][5];
+	vertexs[2] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][6];
+	vertexs[3] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][7];
 	x_BYTE_E126D = 5;
 
 	//Get Texture

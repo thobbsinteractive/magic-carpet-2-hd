@@ -497,7 +497,6 @@
     <ClInclude Include="engine\Type_WORD_D951C.h" />
     <ClInclude Include="engine\UVTable_D4350.h" />
     <ClInclude Include="engine\ViewPort.h" />
-    <ClInclude Include="engine\XUnk_D4350.h" />
     <ClInclude Include="engine\RenderThread.h" />
     <ClInclude Include="engine\GameUI.h" />
     <ClInclude Include="engine\Events.h" />
@@ -591,7 +590,6 @@
     <ClCompile Include="engine\Type_WORD_D951C.cpp" />
     <ClCompile Include="engine\UVTable_D4350.cpp" />
     <ClCompile Include="engine\ViewPort.cpp" />
-    <ClCompile Include="engine\XUnk_D4350.cpp" />
     <ClCompile Include="engine\RenderThread.cpp" />
     <ClCompile Include="engine\GameUI.cpp" />
     <ClCompile Include="engine\Events.cpp" />

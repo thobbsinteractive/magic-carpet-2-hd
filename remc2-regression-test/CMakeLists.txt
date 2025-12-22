@@ -71,8 +71,6 @@ set(SOURCE_FILES_REGRESSIONTESTS
     "../remc2/engine/Unk_D4A30.cpp"
     "../remc2/engine/Unk_D4A30.h"
     "../remc2/engine/ViewPort.cpp"
-    "../remc2/engine/XUnk_D4350.cpp"
-    "../remc2/engine/XUnk_D4350.h"
     "../remc2/engine/engine_support.cpp"
     "../remc2/engine/engine_support.h"
     "../remc2/engine/read_config.cpp"

@@ -14,7 +14,7 @@
 #include "utilities/DataFileIO.h"
 #include "utilities/BitmapIO.h"
 
-#include "engine/XUnk_D4350.h"
+#include "engine/UVTable_D4350.h"
 #include "engine/Type_D404C.h"
 #include "engine/Type_D94F0_Bldgprmbuffer.h"
 #include "engine/Type_D93C0_Bldgprmbuffer.h"

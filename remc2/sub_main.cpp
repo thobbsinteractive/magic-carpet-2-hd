@@ -31025,22 +31025,22 @@ void sub_3B4D0_fill_unk_D4350_256(int a1)//21c4d0
 	v3 = (a1 << 16) - 1;
 	do
 	{
-		if (xunk_D4350[resultx][0])
-			xunk_D4350[resultx][0] = v3;
-		if (xunk_D4350[resultx][1])
-			xunk_D4350[resultx][1] = v3;
-		if (xunk_D4350[resultx][2])
-			xunk_D4350[resultx][2] = v3;
-		if (xunk_D4350[resultx][3])
-			xunk_D4350[resultx][3] = v3;
-		if (xunk_D4350[resultx][4])
-			xunk_D4350[resultx][4] = v3;
-		if (xunk_D4350[resultx][5])
-			xunk_D4350[resultx][5] = v3;
-		if (xunk_D4350[resultx][6])
-			xunk_D4350[resultx][6] = v3;
-		if (xunk_D4350[resultx][7])
-			xunk_D4350[resultx][7] = v3;
+		if (UVTable_D4350[resultx][0])
+			UVTable_D4350[resultx][0] = v3;
+		if (UVTable_D4350[resultx][1])
+			UVTable_D4350[resultx][1] = v3;
+		if (UVTable_D4350[resultx][2])
+			UVTable_D4350[resultx][2] = v3;
+		if (UVTable_D4350[resultx][3])
+			UVTable_D4350[resultx][3] = v3;
+		if (UVTable_D4350[resultx][4])
+			UVTable_D4350[resultx][4] = v3;
+		if (UVTable_D4350[resultx][5])
+			UVTable_D4350[resultx][5] = v3;
+		if (UVTable_D4350[resultx][6])
+			UVTable_D4350[resultx][6] = v3;
+		if (UVTable_D4350[resultx][7])
+			UVTable_D4350[resultx][7] = v3;
 		//result += 8;
 		resultx++;
 		v2--;

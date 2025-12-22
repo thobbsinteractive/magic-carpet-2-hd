@@ -2,8 +2,7 @@
 #ifndef DataFileRNC_H
 #define DataFileRNC_H
 
-#include <cstdio>
-#include <cstdint>
+#include "../engine/BasicMini.h"
 #include "../engine/global_types.h"
 
 #define RNC_SIGN 0x524E43 // RNC

@@ -95,8 +95,6 @@ set(SOURCE_FILES_ENGINE
     "engine/Unk_D4A30.h"
     "engine/ViewPort.cpp"
     "engine/ViewPort.h"
-    "engine/XUnk_D4350.cpp"
-    "engine/XUnk_D4350.h"
     "engine/ail_sound.h"
     "engine/defs.h"
     "engine/engine_support.cpp"
