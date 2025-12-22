@@ -12,7 +12,7 @@
 #include "Type_D93C0_Bldgprmbuffer.h"
 
 
-char x_BYTE_D419D_fonttype = 1; // weak
+char FontType_D419D = 1; // weak
 int16_t x_WORD_D41D4 = 1; // weak
 char* SpellLevelText_DB06C[5] = { (char*)"I",(char*)"II",(char*)"III",(char*)"IV",(char*)"V" };//x_DWORD_DAF50ar[0x11c]//2ac06c
 std::array<uint8_t, 25> IndexLevelText_DB4EE = //x_DWORD_DAF50ar[0x59e] //index for levels endings?
@@ -352,7 +352,7 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* a3x, cha
 
 	if (a3x > x_DWORD_EA3E4[0])
 	{
-		GetFont_6FC50(x_BYTE_D419D_fonttype);
+		GetFont_6FC50(FontType_D419D);
 		v4x = x_DWORD_EA3E4[a3x->parentId_0x28_40];
 		v15x = v4x;
 		if (v4x > x_DWORD_EA3E4[0])
@@ -431,7 +431,7 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* a3x, cha
 		}
 	}
 }
-// D419D: using guessed type char x_BYTE_D419D_fonttype;
+// D419D: using guessed type char FontType_D419D;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // DB06C: using guessed type void *off_DB06C;
@@ -1106,7 +1106,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	v76 = height / 2;
 	v15 = (x_DWORD)Maths::sin_DB750[0x200 + yaw & 0x7FF] * v13;
 	v86 = -v14 >> 16;
-	GetFont_6FC50(x_BYTE_D419D_fonttype);
+	GetFont_6FC50(FontType_D419D);
 	v73 = v15 >> 16;
 	v80x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v16 = v80x->dword_0xA4_164x->str_611.array_0x333_819x.word[12];
@@ -1723,7 +1723,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	v16 = (x_DWORD)Maths::sin_DB750[0x200 + yaw & 0x7FF] * v14;
 	v85 = height / 2;
 	v86 = -v15 >> 16;
-	GetFont_6FC50(x_BYTE_D419D_fonttype);
+	GetFont_6FC50(FontType_D419D);
 	v87 = v16 >> 16;
 	v102x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v17 = v102x->dword_0xA4_164x->str_611.array_0x333_819x.word[12];

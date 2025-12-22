@@ -22060,7 +22060,7 @@ void DrawGameFrame_2BE30()//20CE30
 					256 / scale);
 			}
 
-			GetFont_6FC50(x_BYTE_D419D_fonttype);
+			GetFont_6FC50(FontType_D419D);
 			if (D41A0_0.m_GameSettings.m_Display.m_wTopBar)
 			{
 
@@ -22316,7 +22316,7 @@ void DrawGameFrame_2BE30()//20CE30
 	}
 	if (D41A0_0.byte_counter_current_objective_box_0x36E04)
 		DrawCurrentObjectiveTextbox_30630(scale);
-	GetFont_6FC50(x_BYTE_D419D_fonttype);
+	GetFont_6FC50(FontType_D419D);
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4))
 		return;
 
@@ -22403,7 +22403,7 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 	int v22; // [esp+84h] [ebp+76h]
 
 	textPosY = posY;
-	GetFont_6FC50(x_BYTE_D419D_fonttype);
+	GetFont_6FC50(FontType_D419D);
 	//result = (int)x_D41A0_BYTEARRAY_4;
 	textPosX = posX;
 	indexedColor = (*xadataclrd0dat.colorPalette_var28)[3840];
@@ -22512,7 +22512,7 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 	//return result;
 }
 // 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// D419D: using guessed type char x_BYTE_D419D_fonttype;
+// D419D: using guessed type char FontType_D419D;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // E89F0: using guessed type char x_BYTE_E89F0;
@@ -22566,7 +22566,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 		}
 
 	v0 = 0;
-	GetFont_6FC50(x_BYTE_D419D_fonttype);
+	GetFont_6FC50(FontType_D419D);
 	v1 = 0;
 	//v2 = x_D41A0_BYTEARRAY_0 + 11230;
 	v2x = 0;
@@ -22677,7 +22677,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 	}
 }
 // 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// D419D: using guessed type char x_BYTE_D419D_fonttype;
+// D419D: using guessed type char FontType_D419D;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // EA3DC: using guessed type int **filearray_2aa18c[6];
@@ -40984,9 +40984,9 @@ void LevelInit_56C00(Type_Level_2FECE* levelData)//237c00
 	D41A0_0.byte_0x36E0B &= 0xFC;
 	x_D41A0_BYTEARRAY_4_struct.SelectedMenuItem_38546 = 0;
 	if (x_WORD_180660_VGA_type_resolution == 1)
-		x_BYTE_D419D_fonttype = 1;
+		FontType_D419D = 1;
 	else
-		x_BYTE_D419D_fonttype = 3;
+		FontType_D419D = 3;
 }
 
 //----- (00056D60) --------------------------------------------------------

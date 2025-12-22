@@ -29,7 +29,7 @@ typedef struct {
 #pragma pack (16)
 
 
-extern char x_BYTE_D419D_fonttype;
+extern char FontType_D419D;
 extern char x_BYTE_D47D8;
 extern char x_BYTE_D94FF_spell_index[29];
 extern int16_t x_WORD_E375C_mouse_position_x;

@@ -2806,9 +2806,9 @@ void sub_46B40()//227b40
 	sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 	x_D41A0_BYTEARRAY_4_struct.byteindex_51 = 2;
 	if (x_WORD_180660_VGA_type_resolution == 1)
-		x_BYTE_D419D_fonttype = 1;
+		FontType_D419D = 1;
 	else
-		x_BYTE_D419D_fonttype = 3;
+		FontType_D419D = 3;
 	SetMousePositionInMemory_5BDC0(v0_tempmousex, v0_tempmousey);
 }
 
