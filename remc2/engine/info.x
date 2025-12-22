@@ -4419,7 +4419,7 @@ void sub_693F0(uint8_t* a1)//24a3f0
 
 2482e0
 
-filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct[x_BYTE_D419E]
+filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct[CursorGraphicsIndex_D419E]
 
 x_D41A0_BYTEARRAY_0[8589]->28
 versus

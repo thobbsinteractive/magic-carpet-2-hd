@@ -8845,7 +8845,7 @@ void AdjustVolume_1A070(signed int a1, __int16 a2)//1fb070
 	}
 
 	if (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2)
-		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[x_BYTE_D419E]); //fixit
+		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CursorGraphicsIndex_D419E]); //fixit
 	GetPauseMenuCoordinates_2FFE0(&posX, &posY, &width, &height, scale);
 	v2 = x_D41A0_BYTEARRAY_4_struct.byte_38591;
 	if (v2 >= 1u)
@@ -23070,11 +23070,11 @@ void DrawBottomMenu_2ECC0()//20fcc0
 		|| unk_18058Cstr.x_WORD_1805C2_joystick == 11
 		|| unk_18058Cstr.x_WORD_1805C2_joystick == 5)
 	{
-		sub_2BB40_draw_bitmap(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[x_BYTE_D419E]);
+		sub_2BB40_draw_bitmap(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[CursorGraphicsIndex_D419E]);
 	}
 	set_scene(SCENE_SPELL_MENU);
 }
-// D419E: using guessed type char x_BYTE_D419E;
+// D419E: using guessed type char CursorGraphicsIndex_D419E;
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
 // D41B6: using guessed type char x_BYTE_D41B6;
@@ -40959,13 +40959,13 @@ void LevelInit_56C00(Type_Level_2FECE* levelData)//237c00
 		SPELLS_BEGIN_BUFFER_str[19].subspell[0].word_0x16x = 244;
 		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 0;
 		LoadSound_84300(0);
-		x_BYTE_D419E = 1;
+		CursorGraphicsIndex_D419E = 1;
 	}
 	else if (levelData->MapType == MapType_t::Night)
 	{
 		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 0;
 		LoadSound_84300(1u);
-		x_BYTE_D419E = 9;
+		CursorGraphicsIndex_D419E = 9;
 	}
 	else if (levelData->MapType == MapType_t::Cave)
 	{
@@ -40973,7 +40973,7 @@ void LevelInit_56C00(Type_Level_2FECE* levelData)//237c00
 		isCaveLevel_D41B6 = 1;
 		x_BYTE_D41B7 = levelData->byte_0x2FED3;
 		LoadSound_84300(2u);
-		x_BYTE_D419E = 10;
+		CursorGraphicsIndex_D419E = 10;
 	}
 	SetDefaultSpells_5C0A0();
 	D41A0_0.byte_0x36E02 = 1;
