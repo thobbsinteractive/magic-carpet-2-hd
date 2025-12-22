@@ -1,7 +1,7 @@
 #include "ConvertMapInfo.h"
 void DecompressLevel_2FECE(Type_CompressedLevel_2FECE* from, Type_Level_2FECE* to) {
 	to->word_2FECE = from->word_2FECE;
-	to->word_2FED0 = from->word_2FED0;
+	to->levelID_2FED0 = from->levelID_2FED0;
 	to->byte_0x2FED2 = from->byte_0x2FED2;
 	to->byte_0x2FED3 = from->byte_0x2FED3;
 	to->MapType = (from->MapType == 2) ? MapType_t::Cave : (from->MapType == 1) ? MapType_t::Night : MapType_t::Day;

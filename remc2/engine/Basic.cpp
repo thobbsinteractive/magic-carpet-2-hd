@@ -3374,7 +3374,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	}
 
 	to->terrain_2FECE.word_2FECE = from->str_2FECE.word_2FECE;
-	to->terrain_2FECE.word_2FED0 = from->str_2FECE.word_2FED0;
+	to->terrain_2FECE.levelID_2FED0 = from->str_2FECE.levelID_2FED0;
 	to->terrain_2FECE.byte_0x2FED2 = from->str_2FECE.byte_0x2FED2;
 	to->terrain_2FECE.byte_0x2FED3 = from->str_2FECE.byte_0x2FED3;
 	to->terrain_2FECE.MapType = (from->str_2FECE.MapType == 2) ? MapType_t::Cave : (from->str_2FECE.MapType == 1) ? MapType_t::Night : MapType_t::Day;
@@ -3567,7 +3567,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 	}
 
 	to->str_2FECE.word_2FECE = from->terrain_2FECE.word_2FECE;
-	to->str_2FECE.word_2FED0 = from->terrain_2FECE.word_2FED0;
+	to->str_2FECE.levelID_2FED0 = from->terrain_2FECE.levelID_2FED0;
 	to->str_2FECE.byte_0x2FED2 = from->terrain_2FECE.byte_0x2FED2;
 	to->str_2FECE.byte_0x2FED3 = from->terrain_2FECE.byte_0x2FED3;
 	to->str_2FECE.MapType = static_cast<std::underlying_type<MapType_t>::type>(from->terrain_2FECE.MapType);

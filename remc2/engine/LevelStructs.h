@@ -282,7 +282,7 @@ typedef struct {//lenght 8
 
 typedef struct {//lenght 0x6604u
 	uint16_t word_2FECE;
-	uint16_t word_2FED0;
+	uint16_t levelID_2FED0;
 	uint8_t byte_0x2FED2;//x_D41A0_BYTEARRAY_0[196306] // type of level graphics
 	uint8_t byte_0x2FED3;
 	uint8_t MapType;//x_D41A0_BYTEARRAY_0[196308]//GraphicsType

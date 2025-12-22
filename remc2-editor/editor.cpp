@@ -3160,7 +3160,7 @@ int main_x(/*int argc, char** argv*/)
 	kiss_hex4edit_new(&hex4edit12, &window1, &D41A0_0.terrain_2FECE.rkSte_0x2FF11, (char*)"RkSte:", 10, 230, 70);
 
 	kiss_hex4edit_new(&hex4edit13, &window1, &D41A0_0.terrain_2FECE.word_2FECE, (char*)"2FECE:", 250, 10,80);
-	kiss_hex4edit_new(&hex4edit14, &window1, &D41A0_0.terrain_2FECE.word_2FED0, (char*)"2FED0:", 250, 30, 80);
+	kiss_hex4edit_new(&hex4edit14, &window1, &D41A0_0.terrain_2FECE.levelID_2FED0, (char*)"2FED0:", 250, 30, 80);
 	kiss_hex2edit_new(&hex2edit15, &window1, &D41A0_0.terrain_2FECE.byte_0x2FED2, (char*)"2FED2:", 250, 50, 80);
 	kiss_hex2edit_new(&hex2edit16, &window1, &D41A0_0.terrain_2FECE.byte_0x2FED3, (char*)"2FED3:", 250, 70, 80);
 	kiss_hex2edit_new(&hex2edit17, &window1, &D41A0_0.terrain_2FECE.MapType, (char*)"DY/NG/CV:", 250, 90, 80);
@@ -3178,7 +3178,7 @@ int main_x(/*int argc, char** argv*/)
 
 	/*
 	uint16_t word_2FECE;
-	uint16_t word_2FED0;
+	uint16_t levelID_2FED0;
 	uint8_t byte_0x2FED2;//x_D41A0_BYTEARRAY_0[196306] // type of level graphics
 	uint8_t byte_0x2FED3;
 	uint8_t byte_0x2FED4;//x_D41A0_BYTEARRAY_0[196308]//GraphicsType

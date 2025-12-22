@@ -39110,7 +39110,7 @@ void sub_53590(Type_Level_2FECE* a1x)//234590
 
 	//result = *(unsigned __int16 *)(a1 + 2);
 	//*(x_DWORD *)(x_D41A0_BYTEARRAY_0 + 4) = *(unsigned __int16 *)(a1 + 2);
-	D41A0_0.dword_0x4 = a1x->word_2FED0; //*(unsigned __int16*)(a1 + 2);
+	D41A0_0.dword_0x4 = a1x->levelID_2FED0; //*(unsigned __int16*)(a1 + 2);
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
