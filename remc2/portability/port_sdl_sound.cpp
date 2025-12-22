@@ -505,6 +505,11 @@ void SOUND_set_sample_volume_panning(HSAMPLE S, int32_t panning) {
 	Mix_SetPanning(S->channel, left, right);
 }
 
+void SetSamplePosition(HSAMPLE S, int16_t angle, uint8_t distance) 
+{
+	Mix_SetPosition(S->channel, angle, distance);
+}
+
 void SOUND_start_sample(HSAMPLE S) {
 	if (unitTests)return;
 #ifdef SOUND_SDLMIXER

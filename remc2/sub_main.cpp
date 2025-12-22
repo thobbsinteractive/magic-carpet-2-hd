@@ -46004,6 +46004,8 @@ void sub_6E0D0()//24f0d0
 //----- (0006E150) --------------------------------------------------------
 void PlayEntitySounds_6E150()//24f150
 {
+	auto playerEntity = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
+
 	if (soundActive_E3799 && soundAble_E3798 && (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1) || x_D41A0_BYTEARRAY_4_struct.byte_38591))
 	{
 		for(int i = 0; i < 70; i++)
@@ -46012,22 +46014,25 @@ void PlayEntitySounds_6E150()//24f150
 			{
 			case 1:
 					RestartOrIfNotExistingPlaySample_75110(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].playRate_5);
+					SetSamplePositionFromPlayer(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].positionFromPlayer);
 					EntitySounds_F4FE0[i].playType_0 = 0;
 					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 2:
 					AlwaysPlaySample_751B0(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].playRate_5);
+					SetSamplePositionFromPlayer(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].positionFromPlayer);
 					EntitySounds_F4FE0[i].playType_0 = 0;
 					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 3:
 					IfNotPlayingPlaySample_75160(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].volume_2, EntitySounds_F4FE0[i].volumePan_1, EntitySounds_F4FE0[i].playRate_5);
+					SetSamplePositionFromPlayer(EntitySounds_F4FE0[i].flags_3, i, EntitySounds_F4FE0[i].positionFromPlayer);
 					EntitySounds_F4FE0[i].playType_0 = 0;
 					EntitySounds_F4FE0[i].word_4 = 2;
 				break;
 			case 4:
 					if (EntitySounds_F4FE0[i].volume_2 == 512)
-						AilEndAllSamples_8F420(0, i);
+						AilEndSamplePlayingByIndex_8F420(0, i);
 				    else
 						PlaySample_8F100(0, i, (signed int)EntitySounds_F4FE0[i].volume_2 >> 8, 64, 0x64u, 0, IfNotPlayingPlaySample);
 					EntitySounds_F4FE0[i].playRate_5 = 2;
@@ -47065,6 +47070,7 @@ void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8
 void RestartOrIfNotExistingPlaySample_75110(int16_t flags, int16_t wavIndex, int16_t volume, uint16_t volumePan, int16_t playRate)
 {
 	PlaySample_8F100(flags, wavIndex, volume >> 8, 127 * volumePan / 0xFFFF, playRate + 100, 0, RestartOrIfNotExistingPlaySample);
+
 }
 
 //----- (00075160) --------------------------------------------------------
