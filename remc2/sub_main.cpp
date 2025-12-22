@@ -17,6 +17,7 @@
 #include "engine/LevelInit.h"
 #include "engine/DatTabIndexes.h"
 #include "engine/MouseOnOff.h"
+#include "engine/PrintMessages.h"
 
 /*
 
@@ -919,8 +920,6 @@ void sub_5DE30(type_event_0x6E8E* a1);
 void sub_6FDA0();
 void sub_6FE20();
 void sub_6FEC0();
-void sub_70890_print_header();
-void PrintTextMessage_70910(char* a1);
 void sub_713A0();
 //int sub_71410_process_tmaps_process_tmaps();
 void sub_715B0();
@@ -40760,7 +40759,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 		x_D41A0_BYTEARRAY_4_struct.setting_byte4_25 = (x_D41A0_BYTEARRAY_4_struct.setting_byte4_25 | 4) & 0xFD;
 	if (x_BYTE_355228_showversion2)
 	{
-		sub_70890_print_header();
+		PrintHeader_70890();
 		sub_5BC20();
 		exit(1);
 	}
@@ -44354,7 +44353,7 @@ void sub_5B870_copy_sentence(char* langbuffer, char** langindexbuffer, uint32_t 
 //----- (0005B8D0) --------------------------------------------------------
 void Initialize()//23c8d0
 {
-	sub_70890_print_header();//23C8D6 - 251890
+	PrintHeader_70890();//23C8D6 - 251890
 	if ((x_D41A0_BYTEARRAY_4_struct.setting_byte4_25) & 8)
 		sub_5C490_testers_info();//23C8E6 - 23D490
 
@@ -46393,27 +46392,6 @@ void sub_6FEC0()//250ec0
 // 17ECA0: using guessed type int x_DWORD_17ECA0;
 // 17FEA4: using guessed type int x_DWORD_17FEA4_mem_free;
 // 17FEA8: using guessed type int x_DWORD_17FEA8_mem_used;
-
-//----- (00070890) --------------------------------------------------------
-void sub_70890_print_header()//251890
-{
-	myprintf("Copyright (c) 1995 Bullfrog Productions Ltd.\n");
-	myprintf("All rights reserved.\n");
-	myprintf("%s \n", "Magic Carpet 2 (Netherworlds)");
-}
-
-//----- (00070910) --------------------------------------------------------
-void PrintTextMessage_70910(char* a1)//251910
-{
-	//int result; // eax
-
-	//result = (int)x_D41A0_BYTEARRAY_4;
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 & 1)//fix it
-		/*result = */myprintf("%s\n", a1);
-	//return (char*)result;
-}
-// D189C: using guessed type void *off_D189C;
-// D41A4: using guessed type int x_DWORD_D41A4;
 
 //----- (000713A0) --------------------------------------------------------
 void sub_713A0()//2523a0
