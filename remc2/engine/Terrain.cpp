@@ -11,7 +11,7 @@ int16_t mapEntityIndex_15B4E0[65536]; // 256x256 //map array5
 
 char x_BYTE_F2CD0x[2800][2]; // 233cd0//4802 //4816 // size has to be 2 * (7^4 + 7^3 + 7^2 + 7^1) = 2 * (2401 + 343 + 49 + 7) = 2*2800 as seen in sub_462A0_orig
 
-uint8_t x_BYTE_D41B7 = 44; // weak
+uint8_t MapBasicHeight_D41B7 = 44; // weak
 
 int debugcounter_224959 = 0;
 //----- (00043830) --------------------------------------------------------
@@ -1162,10 +1162,10 @@ void sub_43B40()//224b40
 	{
 		index.word = i;
 		locHeight = mapHeightmap_11B4E0[index.word];
-		if (locHeight > x_BYTE_D41B7)
-			locHeight = x_BYTE_D41B7;
-		x_BYTE_14B4E0_second_heightmap[index.word] = x_BYTE_D41B7 - locHeight;
-		if (x_BYTE_D41B7 - locHeight > mapHeightmap_11B4E0[index.word])
+		if (locHeight > MapBasicHeight_D41B7)
+			locHeight = MapBasicHeight_D41B7;
+		x_BYTE_14B4E0_second_heightmap[index.word] = MapBasicHeight_D41B7 - locHeight;
+		if (MapBasicHeight_D41B7 - locHeight > mapHeightmap_11B4E0[index.word])
 		{
 			mapAngle_13B4E0[index.word] &= 0xF7u;
 		}
