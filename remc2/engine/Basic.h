@@ -1,23 +1,10 @@
 #pragma once
 
-#if (!defined(WIN32) && !defined(__linux__)) || defined(COMPILE_FOR_64BIT)
-  #define TEST_x64//only for x64 testing
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <cstdint>
-#include <functional>
-#include <chrono>
-
-#include "stdint.h"
+#include "BasicMini.h"
 
 #ifdef _MSC_VER
 #include <direct.h>  
 #include <io.h>  
-#include <windows.h>
 #include "../portability/dirent-x.h"
 #else
 #include "dirent.h"
@@ -28,15 +15,12 @@
 #include "../portability/port_filesystem.h"
 #include "engine_support.h"
 #include "read_config.h"
-#include "defs.h"
 
 #include "../utilities/DataFileIO.h"
 #include "../engine/ViewPort.h"
 #include "../engine/GameBitmap.h"
 #include "Type_E9C38_Smalltit.h"
 #include "Type_F2C20ar.h"
-
-#include "globals.h"
 
 #if defined(__LP64__) || defined(_WIN64) || (defined(__x86_64__) &&     !defined(__ILP32__) ) || defined(_M_X64) || defined(__ia64) || defined (_M_IA64) || defined(__aarch64__) || defined(__powerpc64__) || defined(__x86_64__) || (UINT_MAX >= 0xffffffffffffffff) || defined (COMPILE_FOR_64BIT)
 #define x64_BIT_ENVIRONMENT 1
@@ -156,7 +140,6 @@ extern type_str_unk_1804B0ar str_unk_1804B0ar;
 extern __int16 x_WORD_180660_VGA_type_resolution;
 extern uint8_t x_BYTE_E88E0x[32];
 extern uint8_t unk_F0A20x[1024];//2c1a20
-extern char isCaveLevel_D41B6;
 extern uint8_t keyColor1_D4B7C; // weak
 extern uint8_t keyColor2_D4B7E; // weak
 extern type_event_0x6E8E* x_DWORD_EA3E4[1001];//2bb3e4
