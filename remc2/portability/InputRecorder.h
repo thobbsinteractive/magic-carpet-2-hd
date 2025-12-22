@@ -12,12 +12,12 @@ class InputRecorder
 private:
 	uint32_t m_Tick = 0;
 	uint16_t m_Iteration = 0;
+	std::string m_FilePath;
 	std::map<uint32_t, std::vector<InputEvent*>*>* m_InputEvents;
 
 public:
 	bool m_IsRecording = false;
 	bool m_IsPlaying = false;
-	const char* m_FilePath;
 
 	InputRecorder(const char* filePath);
 	~InputRecorder();
