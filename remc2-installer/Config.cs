@@ -29,6 +29,8 @@ namespace remc2_installer
 		public string oggFolder { get; set; }
 		public bool oggMusicAlternative { get; set; }
 		public bool fixSpeedSound { get; set; }
+		public int maxSimultaniousSounds { get; set; }
+		public string speechFolder { get; set; }
 	}
 
 	public class Graphics
