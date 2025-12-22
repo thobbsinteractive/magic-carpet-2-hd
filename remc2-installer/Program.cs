@@ -161,7 +161,7 @@ namespace remc2_installer
             project.Platform = Platform.x64;
 #endif
             project.GUID = new Guid("d945f1c4-cbe4-445c-9674-07de64692857");
-			project.Version = new Version(0, 9, 9, 0);
+			project.Version = new Version(0, 9, 10, 0);
 #if WIN64
 			project.DefaultRefAssemblies.Add(@"bin\x64\Release\net48\Newtonsoft.Json.dll");
 #else
