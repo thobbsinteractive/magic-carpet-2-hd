@@ -4,6 +4,7 @@
 
 #include "../remc2/engine/Level.h"
 #include "../remc2/engine/Events.h"
+#include "../remc2/engine/DatTabIndexes.h"
 
 bool changed = false;
 

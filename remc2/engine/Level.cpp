@@ -8,6 +8,7 @@
 #include "MenusAndIntros.h"
 #include "PlayerInput.h"
 #include "Terrain.h"
+#include "DatTabIndexes.h"
 
 
 void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* textureBuffer);
@@ -843,23 +844,6 @@ void SetStagetagForTermod_49830(Type_Level_2FECE* terrain)//22a830 //set v1x->wo
 		entity++;
 	} while (entity < &terrain->entity_0x30311[1200]);
 }
-
-//----- (0006EB90) --------------------------------------------------------
-void CreateIndexes_6EB90(filearray_struct* a1)//24fb90
-{
-	for (uint32_t i = 0; (a1[i].begin_buffer) != &ZERO_BUFFER_PST2; i++)
-	{
-		if (x_WORD_180660_VGA_type_resolution & 1)
-			sub_98709_create_index_dattab_power(*a1[i].begin_buffer, *a1[i].end_buffer, *a1[i].dat_buffer, *a1[i].posistruct);//279709 //1a6f44,1a6f86,1a6578
-		  //result = sub_98709_create_index_dattab_power(**i, *i[1], *i[2]);
-		  //1a6f44 000000000000020000000c0d92000000
-		  //1a6f86 00000000000000000000000000000000
-		  //1a6578 0b0005a1a1a1a1a10005a1b413aaa100
-		else
-			sub_9874D_create_index_dattab(*a1[i].begin_buffer, *a1[i].end_buffer, *a1[i].dat_buffer, *a1[i].posistruct);
-	}
-}
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00046F80) --------------------------------------------------------
 void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* textureBuffer)//227f80

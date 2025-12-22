@@ -6,6 +6,7 @@
 #include "Terrain.h"
 #include "Type_D93C0_Bldgprmbuffer.h"
 #include "LevelInit.h"
+#include "DatTabIndexes.h"
 
 #include "../sub_main.h"  // FIXME: only temporary until dependencies are untangled
 

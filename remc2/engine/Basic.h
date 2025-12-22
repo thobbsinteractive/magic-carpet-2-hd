@@ -547,12 +547,6 @@ void sub_8C635_draw_cursor();
 void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, int tilex, uint8_t* texture, uint8_t setbyte, char a6, uint8_t scale);
 void sub_8F920(uint8_t a1byte1, uint8_t a1byte2, int16_t posx, int16_t posy, uint8_t* a4, unsigned __int8 a5, char a6);
 
-void sub_99A77_create_index_dattab_div(uint8_t* a1, uint8_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4);
-void sub_99AEB_create_index_dattab_minus(uint8_t* a1, uint8_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4);
-void sub_98709_create_index_dattab_power(bitmap_pos_struct2_t* a1, bitmap_pos_struct2_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4);
-void sub_98709_create_index_dattab_power_add(uint8_t* a1, uint8_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4, int add);
-void sub_9874D_create_index_dattab(bitmap_pos_struct2_t* a1, bitmap_pos_struct2_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4);
-void sub_9874D_create_index_dattab_add(uint8_t* a1, uint8_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4, int add);
 signed int GetTrueWizardNumber_61790(signed int inputnumber);
 
 void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type_D41A0_BYTESTR_0* to);

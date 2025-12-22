@@ -7,6 +7,7 @@
 #include "GameUI.h"
 #include "Level.h"
 #include "PlayerInput.h"
+#include "DatTabIndexes.h"
 
 constexpr int16_t MOUSE_MIN = 0;
 constexpr int16_t MOUSE_MAX_X = 638;

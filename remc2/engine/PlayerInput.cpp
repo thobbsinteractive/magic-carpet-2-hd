@@ -10,6 +10,7 @@
 #include "MenusAndIntros.h"
 #include "Sound.h"
 #include "engine_support.h"
+#include "DatTabIndexes.h"
 
 
 char CursorGraphicsIndex_D419E = 0; // weak//2a519e

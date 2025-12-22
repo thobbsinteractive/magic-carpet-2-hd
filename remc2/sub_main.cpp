@@ -15,6 +15,7 @@
 #include "utilities/RendererTests.h"
 #include "engine/ConvertMapInfo.h"
 #include "engine/LevelInit.h"
+#include "engine/DatTabIndexes.h"
 
 /*
 
