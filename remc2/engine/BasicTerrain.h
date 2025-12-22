@@ -3,30 +3,17 @@
 #define MAIN_BASIC_TERRAIN
 #include "BasicMini.h"
 #include "MapType.h"
-
+#pragma pack (1)
 typedef struct {//lenght 20
-	//uint8_t byte_0;//type_str_0x30310//type_str_0x30324
 	uint16_t type_0x30311;//type_str_0x30311//type_str_0x30325//1091
-	//uint8_t byte_1;//type_str_0x30312//type_str_0x30326
 	int16_t subtype_0x30311;//type_str_0x30313//type_str_0x30327//1091
-	//uint8_t byte_4;//type_str_0x30314//type_str_0x30328
-	//axis_3d axis3d_4;//type_str_0x30315//type_str_0x30329
 	axis_2du axis2d_4;
 	int16_t DisId;// must be signed
-	//uint8_t byte_5;//type_str_0x30316//type_str_0x3032a
-	//uint16_t word_6;//type_str_0x30317//type_str_0x3032b
-	//uint8_t byte_7;//type_str_0x30318//type_str_0x3032c
-	//uint16_t word_8;//type_str_0x30319//type_str_0x3032d
 	uint16_t word_10;//type_str_0x3031b//type_str_0x3032f
-	//uint8_t byte_11;//type_str_0x3031c//type_str_0x30330
 	int16_t stageTag_12;//type_str_0x3031d//type_str_0x30331
-	//uint8_t byte_13;//type_str_0x3031e//type_str_0x30332
 	uint16_t par1_14;//type_str_0x3031f//type_str_0x30333//1105
-	//uint8_t byte_15;//type_str_0x30320//type_str_0x30334
 	uint16_t par2_16;//type_str_0x30321//type_str_0x30335
-	//uint8_t byte_17;//type_str_0x30322//type_str_0x30336
 	uint16_t par3_18;//type_str_0x30323//type_str_0x30337
-	//uint8_t byte_19;//type_str_0x30324//type_str_0x30338
 }
 type_entity_0x30311;
 
@@ -40,12 +27,8 @@ typedef struct {//lenght 110 //word_0x360D2
 	uint8_t stubd[2];
 	uint8_t byte_0x360E1x[26];
 	uint8_t byte_0x360FBx[26];
-	//uint8_t byte_0x36112;
-	//uint8_t stubb[2];
 	uint8_t byte_0x36115x[26];
-	//uint8_t stube[25];
 	int16_t word_0x3612F;
-	//uint8_t byte_0x0x36140;
 	uint8_t stubf[15];
 }
 type_str_0x360D2;
@@ -66,13 +49,6 @@ typedef struct {
 	int8_t index_0;
 	int16_t stage_1;//25973//word_0
 	axis_2d _axis_2d;
-	//int16_t word_3;//25975//word_2
-	//int16_t word_5; //25977//word_4
-	/*
-	int16_t word_0;//25973
-	int16_t word_2;//25975
-	int16_t word_4; //25977
-	uint8_t stub[1];*/
 }
 type_str_0x36442;
 
@@ -129,6 +105,7 @@ typedef struct {//lenght 0x6604u
 	type_str_0x36442 stages_0x36442[8];//stages(checkpoints)
 	type_str_0x3647Ac StageVars_0x3647A[11];//8x11
 } Type_Level_2FECE;//Uncompressed level
+#pragma pack (16)
 
 extern char isCaveLevel_D41B6;
 
