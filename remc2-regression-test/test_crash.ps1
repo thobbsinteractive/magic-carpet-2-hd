@@ -1,6 +1,6 @@
 $REMC2_EXECUTABLE = "$PSScriptRoot/../Release/remc2.exe"
-$CONFIG_FILE_PATH = "$PSScriptRoot/demo-config.json"
-$RECORDING_FILE_PATH = "$PSScriptRoot/Levels-1-4-Recording.bin"
+$CONFIG_FILE_PATH = "$PSScriptRoot/playthough-config.json"
+$RECORDING_FILE_PATH = "$PSScriptRoot/Level-1-Crash-Recording.bin"
 
 Write-Output "Running Demo"
 Write-Output $REMC2_EXECUTABLE
