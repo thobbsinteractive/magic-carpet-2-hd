@@ -574,7 +574,6 @@ void sub_9874D_create_index_dattab(bitmap_pos_struct2_t* a1, bitmap_pos_struct2_
 void sub_9874D_create_index_dattab_add(uint8_t* a1, uint8_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4, int add);
 signed int GetTrueWizardNumber_61790(signed int inputnumber);
 
-void DecompressLevel_2FECE(Type_CompressedLevel_2FECE* from, Type_Level_2FECE* to);
 void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type_D41A0_BYTESTR_0* to);
 void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D41A0_BYTESTR_0* to);
 void Convert_to_shadow_str_E2A74(const type_array_str_E2A74 &from, type_shadow_str_E2A74* to);

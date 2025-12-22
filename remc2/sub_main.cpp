@@ -13,6 +13,7 @@
 #include "engine/Level.h"
 #include "utilities/StateMonitor.h"
 #include "utilities/RendererTests.h"
+#include "engine/ConvertMapInfo.h"
 
 /*
 

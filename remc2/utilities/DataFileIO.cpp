@@ -3,11 +3,6 @@
 #include "../engine/Basic.h"
 #include "../engine/engine_support.h"
 
-#ifndef _countof
-#define _countof(arr) sizeof(arr) / sizeof(arr[0])
-//dirty
-#endif
-
 Pathstruct pstr[100] = {
 xasearchd_2bac30 ,//00
 xafonts0dat,//01
