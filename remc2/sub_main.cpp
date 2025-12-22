@@ -16,6 +16,7 @@
 #include "engine/ConvertMapInfo.h"
 #include "engine/LevelInit.h"
 #include "engine/DatTabIndexes.h"
+#include "engine/MouseOnOff.h"
 
 /*
 
@@ -31928,7 +31929,6 @@ void write_pngs2()
 	}*/
 }
 
-bool mouseturnoff = false;
 /*
 uint8_t testarraymain[168] = {
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x05,0x00,0x00,0x00,
