@@ -105,3 +105,114 @@ type_SPELLS_BEGIN_BUFFER_str SPELLS_BEGIN_BUFFER_str[26] =
 {0x00000082,0x000032C8,0x00009470,0x000000C8,0x00000028,0x0108,0x0029,0x01,0x00},
 {0x00000186,0x00006590,0x0000DAC0,0x00000190,0x00000078,0x0109,0x0033,0x02,0x00}}}
 };
+
+//----- (0005C0A0) --------------------------------------------------------
+void sub_5C0A0()//23d0a0
+{
+	//char *v0; // ebx
+	int v0x;
+	unsigned int v1; // ecx
+	//char v2; // dl
+	//char v3; // ah
+	//char v4; // dh
+	//int result; // eax
+
+	//v0 = (char*)*xadataspellsdat.colorPalette_var28;
+	v0x = 0;
+	v1 = 0;
+	do
+	{
+		while (1)
+		{
+			//v2 = v0[53];
+			//v2 = SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].byte_0x1B;
+			//v0[1] = 0;
+			SPELLS_BEGIN_BUFFER_str[v0x].byte_1 = 0;
+			//v3 = v0[27];
+			//v3 = SPELLS_BEGIN_BUFFER_str[v0x].subspell[0].byte_0x1B;
+			//v0[53] = v2 & 0xFE;
+			SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].byte_0x1B &= 0xFE;
+			//v4 = v0[79];
+			//v4 = SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].byte_0x1B;
+
+			//v0[27] = v3 & 0xFE;
+			SPELLS_BEGIN_BUFFER_str[v0x].subspell[0].byte_0x1B &= 0xFE;
+			//v0[79] = v4 & 0xFE;
+			SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].byte_0x1B &= 0xFE;
+			if (v1 < 7)
+			{
+				if (v1 < 3)
+				{
+					if (!v1)
+						//v0[53] |= 1u;
+						SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].byte_0x1B |= 1u;
+				}
+				else if (v1 <= 4 || v1 == 6)
+				{
+					goto LABEL_18;
+				}
+			}
+			else
+			{
+				if (v1 <= 7)
+				{
+					//v0[27] |= 1u;
+					SPELLS_BEGIN_BUFFER_str[v0x].subspell[0].byte_0x1B |= 1;
+					goto LABEL_22;
+				}
+				if (v1 < 0xB)
+				{
+					if (v1 != 8)
+						goto LABEL_22;
+				LABEL_18:
+					//v0[1] |= 4u;
+					SPELLS_BEGIN_BUFFER_str[v0x].byte_1 |= 4u;
+					goto LABEL_22;
+				}
+				if (v1 <= 0xC)
+					goto LABEL_18;
+				if (v1 >= 0xE)
+				{
+					if (v1 <= 0xE)
+						goto LABEL_18;
+					if (v1 == 23)
+					{
+						/**(x_DWORD *)(v0 + 10) = 50000;
+						*((x_DWORD *)v0 + 9) = 70000;
+						*(x_DWORD *)(v0 + 62) = 90000;*/
+						SPELLS_BEGIN_BUFFER_str[v0x].subspell[0].dword_A = 50000;
+						SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].dword_A = 70000;
+						SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].dword_A = 90000;
+					}
+				}
+			}
+		LABEL_22:
+			//result = 1000 / *(x_DWORD *)(v0 + 58);
+			//result = 1000 / SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].dword_6;
+			//if (*(x_DWORD *)(v0 + 62) <= 0 && result > 0)
+			if (SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].dword_A <= 0 && 1000 / SPELLS_BEGIN_BUFFER_str[v0x].subspell[2].dword_6 > 0)
+			{
+				//v0[1] |= 0x20u;
+				SPELLS_BEGIN_BUFFER_str[v0x].byte_1 |= 0x20u;
+				goto LABEL_30;
+			}
+			//if (*((x_DWORD *)v0 + 9) > 0 || 1000 / *((x_DWORD *)v0 + 8) <= 0)
+			if (SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].dword_A > 0 || 1000 / SPELLS_BEGIN_BUFFER_str[v0x].subspell[1].dword_6 <= 0)
+				break;
+			//v0[1] |= 0x10u;
+			SPELLS_BEGIN_BUFFER_str[v0x].byte_1 |= 0x10u;
+			++v1;
+			//v0 += 80;
+			v0x++;
+			if ((signed int)v1 >= 26)
+				return;// result;
+		}
+		//v0[1] |= 8u;
+		SPELLS_BEGIN_BUFFER_str[v0x].byte_1 |= 0x8u;
+	LABEL_30:
+		v1++;
+		//v0 += 80;
+		v0x++;
+	} while ((signed int)v1 < 26);
+	//return result;
+}

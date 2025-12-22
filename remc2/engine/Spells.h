@@ -51,4 +51,6 @@ Entity Sub-Type - Spell
 17 : Mini Fireball
 */
 
+void sub_5C0A0();
+
 #endif //MAIN_SPELLS
