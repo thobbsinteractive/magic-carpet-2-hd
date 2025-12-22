@@ -50,7 +50,7 @@ TEST(Math, MeasureYawAngleDegrees)
 	degrees = Maths::MeasureYawAngleDegrees(Maths::Vec3 { 1, 0, 0 });
 	ASSERT_EQ((int)round(degrees), 90);
 
-	degrees = Maths::MeasureYawAngleDegrees(Maths::Vec3{ 1, 0, 0 });
+	degrees = Maths::MeasureYawAngleDegrees(Maths::Vec3{ 0, 1, 0 });
 	ASSERT_EQ((int)round(degrees), 180);
 
 	degrees = Maths::MeasureYawAngleDegrees(Maths::Vec3{ -1, 1, 0 });

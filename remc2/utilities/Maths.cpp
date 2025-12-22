@@ -1108,14 +1108,11 @@ Maths::Vec3 Maths::RotateZ(const Vec3& v, float angle) {
 /// <returns></returns>
 float Maths::MeasureYawAngleDegrees(const Vec3& v)
 {
-	float angleRad = std::atan2(-v.y, v.x);
+	float angleRad = std::atan2(v.x, -v.y);
 
 	// Convert to degrees
 	float angleDeg = angleRad * 180.0 / M_PI;
 
 	// Convert from [-180, 180] to [0, 360)
-	if (angleDeg < 0) {
-		angleDeg += 360.0;
-	}
-	return angleDeg;
+	return ((int)angleDeg + 360) % 360;
 }
