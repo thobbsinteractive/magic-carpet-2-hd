@@ -8,6 +8,7 @@
 #include "engine/Player.h"
 #include "engine/PlayerInput.h"
 #include "engine/engine_support.h"
+#include "engine/CompareMaps.h"
 #include "engine/Events.h"
 #include "engine/Level.h"
 #include "utilities/StateMonitor.h"

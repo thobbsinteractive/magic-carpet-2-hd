@@ -108,5 +108,6 @@ typedef struct {//lenght 0x6604u
 #pragma pack (16)
 
 extern bool isCaveLevel_D41B6;
+extern uint8_t* x_BYTE_14B4E0_second_heightmap;
 
 #endif //MAIN_BASIC_TERRAIN

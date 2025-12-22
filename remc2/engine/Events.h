@@ -2,7 +2,7 @@
 
 #include "global_types.h"
 #include "Level.h"
-
+#include "CompareMaps.h"
 
 #pragma pack (1)
 typedef struct {//lenght 6
