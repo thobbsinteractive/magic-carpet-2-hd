@@ -9,6 +9,7 @@
 #include "DatTabIndexes.h"
 
 #include "../sub_main.h"  // FIXME: only temporary until dependencies are untangled
+#include "EventsFunctions.h"
 
 
 // void sub_49090(Type_Level_2FECE* a1, Type_Level_2FECE* a2); // FIXME: investigate this function: the type of param 2 is wrong - this was the original declaration but the fucntion definition was as below with another type

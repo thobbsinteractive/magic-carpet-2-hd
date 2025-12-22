@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "../sub_main.h"
+#include "EventsFunctions.h"
 #include "TypeConfigDat.h"
 
 // types
