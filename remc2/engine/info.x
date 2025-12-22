@@ -1,4 +1,4 @@
-﻿find  351660;
+find  351660;
 
 x_WORD_180662(351662)// neni treba
 
@@ -6976,7 +6976,7 @@ v113x->dword_0xA4_164x->word_0x4_4 = ((v100x - ((v100x>>31) << 2)) - cftemp) >> 
 
  void sub_7DD70()//25ed70 - must rewrite
  sub_81CA0 - must rewrite
- void sub_56C00_sound_proc2(int a1)//237c00 - must rewrite
+ void LevelInit_56C00(int a1)//237c00 - must rewrite
 
 (uint8_t*)&D41A0_BYTESTR_0+0x3479 0x1
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x3479 0x0
