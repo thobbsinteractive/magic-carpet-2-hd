@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BasicMini.h"
+#include "Spells.h"
 #include "LevelStructs.h"
 
 #ifdef _MSC_VER
@@ -223,26 +224,6 @@ typedef struct {
 	uint8_t** dat_buffer;
 	bitmap_pos_struct_t** posistruct;
 } filearray_struct;
-
-typedef struct {//lenght 26
-	int32_t dword_2;
-	int32_t dword_6;
-	int32_t dword_A;
-	int32_t dword_E;
-	int32_t dword_0x12;
-	int16_t word_0x16x;
-	int16_t word_0x18;
-	int8_t byte_0x1A;
-	uint8_t byte_0x1B;
-}
-type_SPELLS_BEGIN_BUFFER_str_sub;
-
-typedef struct {//lenght 80
-	int8_t byte_0;
-	uint8_t byte_1;
-	type_SPELLS_BEGIN_BUFFER_str_sub subspell[3];
-}
-type_SPELLS_BEGIN_BUFFER_str;
 
 typedef struct {//lenght 10
 	int32_t dword_0;

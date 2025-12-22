@@ -402,33 +402,6 @@ typedef struct {
 	uint32_t var40_alloc_type;//28
 } Pathstruct;
 #pragma pack (16)
-/* ???
-Entity Sub-Type - Spell
-00 : Fireball
-01 : Heal
-02 : Speed Up
-03 : Posession
-04 : Shield
-05 : Beyond Sight
-06 : Earthquake
-07 : Meteor
-08 : Volcano
-09 : Crater
-0A : Teleport
-0B : Rubber Band
-0C : Invisible
-0D : Steal Mana
-0E : Rebound
-0F : Lightning
-10 : Castle
-11 : Skeleton
-12 : Thunderbolt
-13 : Mana Magnet
-14 : Fire Wall
-15 : Reverse Speed
-16 : Smart Bomb
-17 : Mini Fireball
-*/
 
 #pragma pack (pop)
 /*
