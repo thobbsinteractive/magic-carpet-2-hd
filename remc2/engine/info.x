@@ -8459,7 +8459,7 @@ x_WORD_15B4E0+0x12a50 0x05
 
 ((uint8_t*)SPELLS_BEGIN_BUFFER_str)+80*4+22
 ((uint8_t*)SPELLS_BEGIN_BUFFER_DA818)+80*4+22
-compare void sub_5C0A0()//23d0a0
+compare void SetDefaultSpells_5C0A0()//23d0a0
 
 spell 4
 

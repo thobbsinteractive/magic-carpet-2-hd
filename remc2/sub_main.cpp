@@ -40975,7 +40975,7 @@ void LevelInit_56C00(Type_Level_2FECE* levelData)//237c00
 		LoadSound_84300(2u);
 		x_BYTE_D419E = 10;
 	}
-	sub_5C0A0();
+	SetDefaultSpells_5C0A0();
 	D41A0_0.byte_0x36E02 = 1;
 	D41A0_0.word_0x36DFE = 0;
 	D41A0_0.word_0x36DFC = 0;
@@ -44469,8 +44469,8 @@ void Initialize()//23c8d0
 		DataFileIO::ReadFileAndDecompress(spellDataPath, xadataspellsdatx.colorPalette_var28);//234e60 buffer - 2ab818
 	}
 
-	//v0 = sub_5C0A0();//23d0a0g
-	sub_5C0A0();
+	//v0 = SetDefaultSpells_5C0A0();//23d0a0g
+	SetDefaultSpells_5C0A0();
 	if (x_BYTE_D4B80)
 		exit(-1);
 	x_BYTE_D4B80 = 1;
