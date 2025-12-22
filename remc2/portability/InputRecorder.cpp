@@ -51,7 +51,7 @@ void InputRecorder::ClearInputEvents()
 bool InputRecorder::StopRecording()
 {
 	m_IsRecording = false;
-	if (SaveRecordingToFile(m_FilePath))
+	if (SaveRecordingToFile(m_FilePath.c_str()))
 	{
 		m_Tick = 0;
 		m_Iteration = 0;
@@ -71,7 +71,7 @@ bool InputRecorder::StartPlayback()
 {
 	m_Tick = 0;
 	m_Iteration = 0;
-	if (LoadRecordingFile(m_FilePath))
+	if (LoadRecordingFile(m_FilePath.c_str()))
 		m_IsPlaying = true;
 
 	return m_IsPlaying;
