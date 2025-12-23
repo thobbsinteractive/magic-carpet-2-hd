@@ -914,11 +914,9 @@ int sub_754C0(int a1, x_DWORD* a2, uint8_t* a3);
 int sub_75540(int a1, uint8_t* a2);
 int sub_755B0(int a1, x_DWORD* a2, uint8_t* a3);
 bool sub_75650();
-void sub_75900();
 signed int sub_75910();
 void sub_759B0_set_mouse_minmax_vert();
 unsigned __int8 sub_75A10(int a1, unsigned __int8* a2);
-void sub_75AB0();
 //void sub_75AE0(int a1);
 //void sub_75B50(__int16 a1);
 int sub_75B80_alloc_mem_block(int a1, x_WORD* a2, x_WORD* a3);
@@ -994,10 +992,8 @@ void sub_88B60();
 void sub_88BA0();
 void sub_88D00();
 int ReadGameUserInputs_89D10();
-int sub_8B5A0();
 
 signed int sub_8B600(type_unk_18058Cstr a1);
-int sub_8B770();
 signed int sub_8B790(type_unk_18058Cstr a1);
 char sub_8B880(uint8_t** a1, char a2, signed int a3, int a4);
 // char sub_8B980(int a1, int a2, x_DWORD **a3, int a4);
@@ -1051,7 +1047,6 @@ int sub_9ADB4(int a1);
 int j_j___clock(x_DWORD, x_DWORD, char*); // weak
 void OriginalDebugOutput_9AEEC(x_DWORD** a1, char* a2);
 char sub_9B038(int* a1, char* a2, int a3);
-int sub_9B234(int* a1);
 signed int sub_9B260(x_DWORD** a1);
 char sub_9B274(int* a1, int a2);
 char* sub_9B498(char a1);
@@ -40219,12 +40214,6 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 // 1805C4: using guessed type __int16 x_WORD_1805C4_vio1_analog_joy;
 // 1805C6: using guessed type __int16 x_WORD_1805C6_vio2_analog_joy;
 
-//----- (00056730) --------------------------------------------------------
-int sub_56730_clean_memory()//237730
-{
-	return sub_8B5A0();
-}
-
 //----- (000567C0) --------------------------------------------------------
 void ClearSettings_567C0()//2377c0 // clean level
 {
@@ -46563,12 +46552,6 @@ bool sub_75650()//VR something
 	}
 }
 
-//----- (00075900) --------------------------------------------------------
-void sub_75900()
-{
-	sub_75AB0();
-}
-
 //----- (00075910) --------------------------------------------------------
 signed int sub_75910()
 {
@@ -52028,29 +52011,6 @@ int ReadGameUserInputs_89D10()//26ad10
 	}
 }
 
-//----- (0008B5A0) --------------------------------------------------------
-int sub_8B5A0()//26c5a0
-{
-	if (x_BYTE_E36D1)
-	{
-		switch (unk_18058Cstr.x_WORD_1805C2_joystick)
-		{
-		case 1:
-			sub_8B770();
-			break;
-		case 9:
-			sub_75900();
-			break;
-		default:
-			break;
-		}
-		x_BYTE_E36D1 = 0;
-	}
-	return 0;
-}
-// E36D1: using guessed type char x_BYTE_E36D1;
-// 1805C2: using guessed type __int16 x_WORD_1805C2_joystick;
-
 //----- (0008B600) --------------------------------------------------------
 signed int sub_8B600(type_unk_18058Cstr a1)//26c600
 {
@@ -52126,12 +52086,6 @@ LABEL_16:
 }
 // 8C250: using guessed type x_DWORD memset(x_DWORD, x_DWORD, x_DWORD);
 // D1F10: using guessed type void *off_D1F10;
-
-//----- (0008B770) --------------------------------------------------------
-int sub_8B770()//26c770
-{
-	return sub_9B234((int*)unk_18058Cstr.unk_1805CE);
-}
 
 //----- (0008B790) --------------------------------------------------------
 signed int sub_8B790(type_unk_18058Cstr a1)//26c790
@@ -54127,23 +54081,6 @@ char sub_9B038(int* a1, char* a2, int a3)//27C038
 	//return sub_9AFC4(v3, v4, a1, a1, a3);
 	return 0;
 }
-
-//----- (0009B234) --------------------------------------------------------
-int sub_9B234(int* a1)//27C234
-{
-	int result; // eax
-
-	if (*a1)
-	{
-		//fix  sub_9C58C(*a1);
-		allert_error();
-		//fix
-		result = x_free((void*)*a1);
-		*a1 = 0;
-	}
-	return result;
-}
-// A0E6B: using guessed type x_DWORD free(x_DWORD);
 
 //----- (0009B260) --------------------------------------------------------
 signed int sub_9B260(x_DWORD** a1)//27C260

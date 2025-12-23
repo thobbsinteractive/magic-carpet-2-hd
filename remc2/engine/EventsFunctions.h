@@ -416,6 +416,7 @@ type_WORD_E1F84;
 //		 } NCB;
 
 extern char x_BYTE_D4B80;
+extern char x_BYTE_E36D1;
 
 void j___delay(x_DWORD); // weak
 
@@ -1565,6 +1566,5 @@ void sub_56210_process_command_line(int a1, char** a2);
 void InitNetworkInfo();
 void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3);
 void sub_5BC20();
-int sub_56730_clean_memory();
-
+void sub_75AB0();
 #endif
