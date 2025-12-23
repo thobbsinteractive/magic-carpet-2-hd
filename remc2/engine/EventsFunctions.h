@@ -466,7 +466,7 @@ void sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6);
 //unsigned char __inx_BYTE(unsigned short Port);
 void sub_44EE0_smooth_tiles(/*int a1, */uaxis_2d a2);
 void sub_54600_mouse_reset();
-void LevelInitGame_56A30(unsigned int a1, int16_t level = -1, std::string customLevelPath = "");
+void LevelInitGame_56A30(int16_t level = -1, std::string customLevelPath = "");
 void sub_5B870_copy_sentence(char* langbuffer, char** langindexbuffer, uint32_t count);
 void sub_47320_in_game_loop(signed int a1);
 void sub_56D60(unsigned int a1, char a2);
