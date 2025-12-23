@@ -417,7 +417,12 @@ type_WORD_E1F84;
 
 extern char x_BYTE_D4B80;
 extern char x_BYTE_E36D1;
+extern POSITION x_DWORD_F4720;
+extern char x_BYTE_D4B50;
+extern char x_BYTE_D4B51;
+extern char x_BYTE_DB734;
 
+void sub_86BD0_freemem1();
 void j___delay(x_DWORD); // weak
 
 void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const std::string& filename = "BufferOut.bmp");

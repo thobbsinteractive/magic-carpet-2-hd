@@ -79,5 +79,19 @@ int sub_8B770();
 int sub_9B234(int* a1);
 void sub_75900();
 
+int sub_53CF0_access(const char* a1);
+void sub_560D0_create_sound_dir();
+bool sub_53EF0_fileexist(const char* path, const char* path2);
+char LoadFilesFromCDAndGameData(const char* cdPath, const char* gamePath, const char* fileName);
+bool sub_53F60(const char* a1);
+void sub_8C2CD();
+void NetworkAllocation2_5C430();
+void sub_46DD0_init_sound_and_music();
+void sub_6FDA0();
+
+uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::string& subDir);
+
+void Initialize();
+
 int sub_main(int argc, char** argv, char** envp);
 #endif //SUB_MAIN_ACTIVE

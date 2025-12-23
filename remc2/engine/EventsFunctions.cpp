@@ -760,7 +760,6 @@ unsigned __int16 sub_46180(unsigned __int16 a1, char a2);
 void sub_46570(uaxis_2d a1, uaxis_2d a2);
 void sub_46820_simple_timer(uint32_t user);
 // int sub_46830_main_loop(signed __int16 *a1, signed int a2, unsigned __int16 a3);
-void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/);
 void sub_46F50_sound_proc7();
 // int sub_47320_in_game_loop(signed int a1);
 //void sub_473B0();
@@ -804,11 +803,7 @@ void sub_53A40(type_str_0x6E3E* a1);
 void sub_53C70();
 void sub_53CA0();
 void sub_53CC0_close_movie();
-int sub_53CF0_access(char* a1);
 uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::string& subDir);
-bool sub_53EF0_fileexist(const char* path, const char* path2);
-bool sub_53F60(char* a1);
-char LoadFilesFromCDAndGameData(const char* cdPath, const char* gamePath, const char* fileName);
 
 void sub_54960();
 void sub_54A50(int playerIndex2, int playerIndex);
@@ -817,7 +812,6 @@ bool SaveSMAPSLEVmovie2_54F00(__int16 a1);
 // unsigned int sub_55C60(int a1, int a2, int a3);
 void sub_55EB0(__int16 a1);
 //int sub_main(int argc, const char **argv, const char **envp);
-void sub_560D0_create_sound_dir();
 void ClearSettings_567C0();
 // char sub_56A30_init_game_level(unsigned int a1);
 // char sub_56D60(unsigned int a1, char a2);
@@ -865,7 +859,6 @@ signed int sub_5C060();
 //signed int sub_5C1B0_set_any_variables2();
 void sub_5C330();
 signed int sub_5C3D0_file_decompress(uint8_t* a1, uint8_t* a2);
-void NetworkAllocation2_5C430();
 void NetworkDisallocation2_5C450();
 void sub_5C490_testers_info();
 void sub_5C530();
@@ -884,7 +877,6 @@ void sub_5DE30(type_event_0x6E8E* a1);
 //uint8_t GetLetterHeight_6FC30();
 //void sub_6FC50(__int16 a1);
 //unsigned int sub_6FC80_pre_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
-void sub_6FDA0();
 void sub_6FE20();
 void sub_6FEC0();
 void sub_713A0();
@@ -974,7 +966,6 @@ void sub_86460(uint16_t a1);
 //void sub_86550();
 char sub_86780(unsigned __int16 a1, int a2, int a3);
 void sub_86A00_some_allocs();
-void sub_86BD0_freemem1();
 void sub_86EA0(/*int a1, int a2, int a3*/uint32_t user);
 void sub_86F20(char a1);
 void sub_86F70_sound_proc12(unsigned __int8 a1, __int16 a2, __int16 a3);
@@ -1007,7 +998,6 @@ char sub_8C140(unsigned __int16 a1, uint8_t* a2);
 // x_DWORD memset(x_DWORD, x_DWORD, x_DWORD); weak
 // int rand(void); weak
 // x_DWORD printf(x_DWORD);
-void sub_8C2CD();
 //void sub_8C2DE();
 int sub_8C329();
 //void sub_8C635_draw_cursor();
@@ -32137,76 +32127,6 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 	//x_D41A0_BYTESTR_0_to_x_D41A0_BYTEARRAY_0();//fixing x_D41A0_BYTEARRAY_0
 }
 
-//----- (00046DD0) --------------------------------------------------------
-void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)//227DD0
-{
-	//char* v3; // eax
-	//int v4; // edx
-	//char v5; // bl
-	//char v6; // dl
-	//char v8[512]; // [esp+0h] [ebp-40h]
-	// fix if begin
-	//v4 = 0;
-	// end
-
-	sub_83CC0(20);
-	if (!x_BYTE_D4B50)
-	{
-		x_BYTE_D4B50 = 1;
-		if ((x_D41A0_BYTEARRAY_4_struct.setting_byte1_22) & 0x40)//fix it
-		{
-			PrintTextMessage_70910((char*)"Sound Disabled\0");
-			musicActive_E37FD = false;
-			soundActive_E3799 = false;
-			musicAble_E37FC = false;
-			soundAble_E3798 = false;
-		}
-		else
-		{
-			sprintf(printbuffer, "%s/%s", gameDataPath.c_str(), "sound");
-			PrintTextMessage_70910((char*)"Initialise Sound\0");
-			InitSoundAndMusic_90FD0(/*v3*//*v3, v4, a3*/); //fix it sound off here!
-			if (!soundActiveL_E2A14)
-				myprintf("ERROR: NOT ENOUGH MEMORY FOR SOUNDS\n");
-			if ((x_D41A0_BYTEARRAY_4_struct.setting_byte4_25) & 0x40)//fix it
-				InitMusicBank_8EAD0(1);
-		}
-		if (soundAble_E3798 || musicAble_E37FC)
-		{
-			//x_DWORD_F42A4_sound_timer = sub_92600_AIL_register_timer(sub_46820_simple_timer);
-			//sub_92930_AIL_set_timer_frequency(x_DWORD_F42A4_sound_timer, 0x78u);
-			//sub_92BA0_AIL_start_timer(x_DWORD_F42A4_sound_timer);
-			x_BYTE_D4B51 = 1;
-		}
-		else
-		{
-			sub_6FDA0();
-		}
-		//v5 = x_BYTE_E3798_sound_active2;
-		if (!soundAble_E3798 && !musicAble_E37FC && x_BYTE_E2A28_speek)
-		{
-			sub_86860_speak_Sound(x_WORD_1803EC);
-			sub_86BD0_freemem1();
-			//v6 = x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0xBF;
-			x_BYTE_E2A28_speek = soundAble_E3798;
-			(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24) &= 0xBF;
-		}
-	}
-	sub_83CC0(21);
-}
-// 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// D41A4: using guessed type int x_DWORD_D41A4;
-// D4B50: using guessed type char x_BYTE_D4B50;
-// D4B51: using guessed type char x_BYTE_D4B51;
-// E2A14: using guessed type __int16 x_WORD_E2A14_sound_active;
-// E2A28: using guessed type char x_BYTE_E2A28;
-// E3798: using guessed type char x_BYTE_E3798_sound_active2;
-// E3799: using guessed type char x_BYTE_E3799_sound_card;
-// E37FC: using guessed type char x_BYTE_E37FC;
-// E37FD: using guessed type char x_BYTE_E37FD;
-// F42A4: using guessed type int x_DWORD_F42A4_sound_timer;
-// 1803EC: using guessed type __int16 x_WORD_1803EC;
-
 //----- (00046F50) --------------------------------------------------------
 void sub_46F50_sound_proc7()//227f50
 {
@@ -39236,13 +39156,6 @@ void sub_53CC0_close_movie()//234cc0
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
 
-//----- (00053CF0) --------------------------------------------------------
-int sub_53CF0_access(const char* a1)//234cf0
-{
-	return myaccess(a1, 0);
-}
-// 98CF2: using guessed type x_DWORD access(x_DWORD, x_DWORD);
-
 //----- (00053D10) --------------------------------------------------------
 uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::string& subDir)
 {
@@ -39263,114 +39176,6 @@ uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::st
 
 //----- (00053E60) --------------------------------------------------------
 // 988DA: using guessed type x_DWORD filelength(x_DWORD);
-
-//----- (00053EF0) --------------------------------------------------------
-bool sub_53EF0_fileexist(const char* path, const char* path2)//234ef0//fix a2
-{
-	FILE* testfile1; // eax
-	FILE* testfile2; // eax
-	bool result = false; // [esp+0h] [ebp-4h]
-	testfile1 = DataFileIO::CreateOrOpenFile(path, 512);
-	testfile2 = DataFileIO::CreateOrOpenFile(path2, 512);
-	if (testfile1 == NULL || testfile2 == NULL)
-		result = true;
-	if (testfile1 != NULL)
-		DataFileIO::Close(testfile1);
-	if (testfile2 != NULL)
-		DataFileIO::Close(testfile2);
-	return result;
-}
-
-//----- (00053F60) --------------------------------------------------------
-bool sub_53F60(const char* a1)//234f60
-{
-	return myaccess(a1, 0) != NULL;//234F69 - 279CF2
-}
-// 98CF2: using guessed type x_DWORD access(x_DWORD, x_DWORD);
-
-//----- (00053F80) --------------------------------------------------------
-char LoadFilesFromCDAndGameData(const char* cdPath, const char* gamePath, const char* fileName)//234f80
-{
-	FILE* file1; // ebx
-	FILE* file2; // esi
-	int v5; // eax
-	int v6; // edi
-	FILE* file3; // ebx
-	FILE* file4; // edi
-	signed int v10; // ebx
-	int v11; // eax
-	int v12; // esi
-	int v13; // esi
-	int v14; // eax
-
-	char printbuffer[512] = { '\0' };//char v15; // [esp+0h] [ebp-194h]
-	char printbuffer2[512] = { '\0' };//char v16; // [esp+90h] [ebp-104h]
-	// pdwScreenBuffer_351628 - readbuffer
-	//printbuffer - char v17; // [esp+120h] [ebp-74h]
-	int v18; // [esp+184h] [ebp-10h]
-	int v19; // [esp+188h] [ebp-Ch]
-	int v20; // [esp+18Ch] [ebp-8h]
-	//FILE* v21; // [esp+190h] [ebp-4h]
-
-	if (!sub_53F60(cdPath))//234F90 - 234F60
-		return 2;
-	if (!sub_53F60(gamePath))//234FA5 - 234F60
-		return 1;
-	sprintf(printbuffer, "%s/%s.TAB", cdPath, fileName);//234FCA - 269F3D5
-	sprintf(printbuffer2, "%s/%s.TAB", gamePath, fileName);//234FE3 - 269F3D5
-	file1 = DataFileIO::CreateOrOpenFile(printbuffer, 0x200);//234FF7 - 279817
-	if (file1 == NULL)//there will probably be inequality here
-		return 3;
-	file2 = DataFileIO::CreateOrOpenFile(printbuffer2, 0x222);//235012 - 279817
-	if (file2 == NULL)
-		return 3;
-	v5 = DataFileIO::FileLengthBytes(file1);
-	v6 = DataFileIO::Read(file1, readbuffer, v5);
-	v19 = DataFileIO::WriteFile_98CAA(file2, readbuffer, v6);
-	DataFileIO::Close(file1);
-	DataFileIO::Close(file2);
-	if (v6 != v19)
-		return 3;
-	sprintf(printbuffer, "%s/%s.DAT", cdPath, fileName);
-	sprintf(printbuffer2, "%s/%s.DAT", gamePath, fileName);
-	file3 = DataFileIO::CreateOrOpenFile(printbuffer, 512);
-	//v21 = v8;
-	if (file3 == NULL)
-		return 3;
-	file4 = DataFileIO::CreateOrOpenFile(printbuffer2, 546);
-	if (file4 == NULL)
-		return 3;
-	v10 = DataFileIO::FileLengthBytes(file3);
-	v18 = v10;
-	v20 = 0;
-	while (v10)
-	{
-		if (v10 <= 64000)
-			v11 = v10;
-		else
-			v11 = 64000;
-		v12 = DataFileIO::Read(file3, readbuffer, v11);
-		v10 -= v12;
-		if (DataFileIO::WriteFile_98CAA(file4, readbuffer, v12) != v12)
-		{
-			DataFileIO::Close(file3);
-			DataFileIO::Close(file4);
-			return 3;
-		}
-		v20 += v12;
-		v13 = v20;
-		settextposition(x_DWORD_F4720.x, x_DWORD_F4720.y);
-		v14 = 100 * v13 / v18;
-		if (v14 > 100)
-			v14 = 100;
-		sprintf(printbuffer, "%d%c", v14, 37);
-		outtext(printbuffer);
-	}
-	DataFileIO::Close(file3);
-	DataFileIO::Close(file4);
-	memset(readbuffer, 0, 64000);
-	return 0;
-}
 
 //----- (00054200) --------------------------------------------------------
 char sub_54200_create_user_directiores()//235200
@@ -39901,54 +39706,6 @@ void InitNetworkInfo() {
 		}*/
 	}
 };
-
-//----- (000560D0) --------------------------------------------------------
-void sub_560D0_create_sound_dir()//2370d0
-{
-	FILE* diginifile2; // eax
-	FILE* diginifile; // ebx
-	FILE* mdiini; // eax
-	FILE* mdiini2; // ebx
-	//printbuffer char v5; // [esp+0h] [ebp-2Ah]
-	//printbuffer2 char v6; // [esp+80h] [ebp+56h]
-	//char v7; // [esp+A8h] [ebp+7Eh]
-
-	//v7 = 1;
-	sprintf(printbuffer, "DEVICE\t\tNone\r\nDRIVER\t\tNone\r\nIO_ADDR\t\t-1\r\nIRQ\t\t-1\r\nDMA_8_BIT\t\t-1\r\nDMA_16_BIT\t\t-1\r\n");
-	std::string digPath = GetSubDirectoryFile(gameFolder, "SOUND", "DIG.INI");
-	diginifile2 = DataFileIO::CreateOrOpenFile(digPath.c_str(), 512);
-	if (diginifile2 == NULL)
-	{
-		diginifile = DataFileIO::CreateOrOpenFile(digPath.c_str(), 546);
-		if (diginifile != NULL)
-		{
-			DataFileIO::WriteFile_98CAA(diginifile, (uint8_t*)printbuffer, strlen(printbuffer));
-			DataFileIO::Close(diginifile);
-		}
-	}
-	else
-	{
-		DataFileIO::Close(diginifile2);
-	}
-	std::string mdiPath = GetSubDirectoryFile(gameFolder, "SOUND", "MDI.INI");
-	mdiini = DataFileIO::CreateOrOpenFile(mdiPath.c_str(), 512);
-	if (mdiini == NULL)
-	{
-		mdiini2 = DataFileIO::CreateOrOpenFile(mdiPath.c_str(), 546);
-		if (mdiini2 != NULL)
-		{
-			DataFileIO::WriteFile_98CAA(mdiini2, (uint8_t*)printbuffer, strlen(printbuffer));
-			DataFileIO::Close(mdiini2);
-		}
-	}
-	else
-	{
-		DataFileIO::Close(mdiini);
-	}
-	//return v7;
-}
-// 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// D41A4: using guessed type int x_DWORD_D41A4;
 
 //----- (00056210) --------------------------------------------------------
 void sub_56210_process_command_line(int argc, char** argv)//237210
@@ -44268,13 +44025,6 @@ signed int sub_5C3D0_file_decompress(uint8_t* input, uint8_t* output)//23d3d0
 }
 // 99682: using guessed type x_DWORD strncmp(x_DWORD, x_DWORD, x_DWORD);
 
-//----- (0005C430) --------------------------------------------------------
-void NetworkAllocation2_5C430()//23d430
-{
-	x_D41A0_BYTEARRAY_4_struct.isNetwork_216w = NetworkAllocation_74556();//255556 push ebp 355250
-}
-// D41A4: using guessed type int x_DWORD_D41A4;
-
 //----- (0005C450) --------------------------------------------------------
 void NetworkDisallocation2_5C450()//23d450
 {
@@ -45478,39 +45228,6 @@ type_event_0x6E8E* InitSwitchChainZaxisAndSound_6F850(type_event_0x6E8E* event, 
 		PrepareEventSound_6E450(ix - D41A0_0.struct_0x6E8E, -1, 41);
 	return ix;
 }
-
-
-//----- (0006FDA0) --------------------------------------------------------
-void sub_6FDA0()//fix//250da0
-{
-	//int v0; // eax
-	//void(*v1)(); // eax
-	//__int16 v2; // dx
-	//int result; // eax
-
-	//fix it
-	//v2 = 0;
-	//fix it
-
-	//v0 = (int)x_D41A0_BYTEARRAY_4;
-	x_D41A0_BYTEARRAY_4_struct.dwordindex_2388 = 10022;
-	x_D41A0_BYTEARRAY_4_struct.dwordindex_2392 = 0;
-	//v1 = dos_getvect(8);
-	//x_WORD_F5334 = v2;
-	//x_DWORD_F5330 = v1;
-	/* __outx_BYTE(0x43u, 0x36u);
-	 __outx_BYTE(0x40u, x_D41A0_BYTEARRAY_4[0x954]);
-	 __outx_BYTE(0x40u, x_D41A0_BYTEARRAY_4[0x954] >> 8);*/
-	 //BYTE1(result) = 1;
-	x_BYTE_DB734 = 1;
-	//return result;
-}
-// 99BA7: using guessed type x_DWORD dos_getvect(x_DWORD);
-// 99BDB: using guessed type x_DWORD dos_setvect(x_DWORD, x_DWORD, x_DWORD);
-// D41A4: using guessed type int x_DWORD_D41A4;
-// DB734: using guessed type char x_BYTE_DB734;
-// F5330: using guessed type int x_DWORD_F5330;
-// F5334: using guessed type __int16 x_WORD_F5334;
 
 //----- (0006FE20) --------------------------------------------------------
 void sub_6FE20()//fix//250e20
@@ -52762,12 +52479,6 @@ char sub_8C140(unsigned __int16 a1, uint8_t* a2)//26d140
 
 //----- (0008C21F) --------------------------------------------------------
 // int sub_8C21F_any_graphics_command()//26d21f NOTE: removed as it did DOS memory handling
-
-//----- (0008C2CD) --------------------------------------------------------
-void sub_8C2CD()//26d2cd
-{
-	;
-}
 
 //----- (0008C2DE) --------------------------------------------------------
 /*void sub_8C2DE()//26d2de

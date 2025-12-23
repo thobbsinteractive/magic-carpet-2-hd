@@ -337,10 +337,82 @@ int sub_8B5A0()//26c5a0
 // E36D1: using guessed type char x_BYTE_E36D1;
 // 1805C2: using guessed type __int16 x_WORD_1805C2_joystick;
 
+//----- (00053CF0) --------------------------------------------------------
+int sub_53CF0_access(const char* a1)//234cf0
+{
+	return myaccess(a1, 0);
+}
+// 98CF2: using guessed type x_DWORD access(x_DWORD, x_DWORD);
+
+//----- (000560D0) --------------------------------------------------------
+void sub_560D0_create_sound_dir()//2370d0
+{
+	FILE* diginifile2; // eax
+	FILE* diginifile; // ebx
+	FILE* mdiini; // eax
+	FILE* mdiini2; // ebx
+	//printbuffer char v5; // [esp+0h] [ebp-2Ah]
+	//printbuffer2 char v6; // [esp+80h] [ebp+56h]
+	//char v7; // [esp+A8h] [ebp+7Eh]
+
+	//v7 = 1;
+	sprintf(printbuffer, "DEVICE\t\tNone\r\nDRIVER\t\tNone\r\nIO_ADDR\t\t-1\r\nIRQ\t\t-1\r\nDMA_8_BIT\t\t-1\r\nDMA_16_BIT\t\t-1\r\n");
+	std::string digPath = GetSubDirectoryFile(gameFolder, "SOUND", "DIG.INI");
+	diginifile2 = DataFileIO::CreateOrOpenFile(digPath.c_str(), 512);
+	if (diginifile2 == NULL)
+	{
+		diginifile = DataFileIO::CreateOrOpenFile(digPath.c_str(), 546);
+		if (diginifile != NULL)
+		{
+			DataFileIO::WriteFile_98CAA(diginifile, (uint8_t*)printbuffer, strlen(printbuffer));
+			DataFileIO::Close(diginifile);
+		}
+	}
+	else
+	{
+		DataFileIO::Close(diginifile2);
+	}
+	std::string mdiPath = GetSubDirectoryFile(gameFolder, "SOUND", "MDI.INI");
+	mdiini = DataFileIO::CreateOrOpenFile(mdiPath.c_str(), 512);
+	if (mdiini == NULL)
+	{
+		mdiini2 = DataFileIO::CreateOrOpenFile(mdiPath.c_str(), 546);
+		if (mdiini2 != NULL)
+		{
+			DataFileIO::WriteFile_98CAA(mdiini2, (uint8_t*)printbuffer, strlen(printbuffer));
+			DataFileIO::Close(mdiini2);
+		}
+	}
+	else
+	{
+		DataFileIO::Close(mdiini);
+	}
+	//return v7;
+}
+// 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
+// D41A4: using guessed type int x_DWORD_D41A4;
+
 //----- (0008B770) --------------------------------------------------------
 int sub_8B770()//26c770
 {
 	return sub_9B234((int*)unk_18058Cstr.unk_1805CE);
+}
+
+//----- (00053EF0) --------------------------------------------------------
+bool sub_53EF0_fileexist(const char* path, const char* path2)//234ef0//fix a2
+{
+	FILE* testfile1; // eax
+	FILE* testfile2; // eax
+	bool result = false; // [esp+0h] [ebp-4h]
+	testfile1 = DataFileIO::CreateOrOpenFile(path, 512);
+	testfile2 = DataFileIO::CreateOrOpenFile(path2, 512);
+	if (testfile1 == NULL || testfile2 == NULL)
+		result = true;
+	if (testfile1 != NULL)
+		DataFileIO::Close(testfile1);
+	if (testfile2 != NULL)
+		DataFileIO::Close(testfile2);
+	return result;
 }
 
 //----- (0009B234) --------------------------------------------------------
@@ -364,6 +436,194 @@ int sub_9B234(int* a1)//27C234
 void sub_75900()
 {
 	sub_75AB0();
+}
+
+//----- (00053F80) --------------------------------------------------------
+char LoadFilesFromCDAndGameData(const char* cdPath, const char* gamePath, const char* fileName)//234f80
+{
+	FILE* file1; // ebx
+	FILE* file2; // esi
+	int v5; // eax
+	int v6; // edi
+	FILE* file3; // ebx
+	FILE* file4; // edi
+	signed int v10; // ebx
+	int v11; // eax
+	int v12; // esi
+	int v13; // esi
+	int v14; // eax
+
+	char printbuffer[512] = { '\0' };//char v15; // [esp+0h] [ebp-194h]
+	char printbuffer2[512] = { '\0' };//char v16; // [esp+90h] [ebp-104h]
+	// pdwScreenBuffer_351628 - readbuffer
+	//printbuffer - char v17; // [esp+120h] [ebp-74h]
+	int v18; // [esp+184h] [ebp-10h]
+	int v19; // [esp+188h] [ebp-Ch]
+	int v20; // [esp+18Ch] [ebp-8h]
+	//FILE* v21; // [esp+190h] [ebp-4h]
+
+	if (!sub_53F60(cdPath))//234F90 - 234F60
+		return 2;
+	if (!sub_53F60(gamePath))//234FA5 - 234F60
+		return 1;
+	sprintf(printbuffer, "%s/%s.TAB", cdPath, fileName);//234FCA - 269F3D5
+	sprintf(printbuffer2, "%s/%s.TAB", gamePath, fileName);//234FE3 - 269F3D5
+	file1 = DataFileIO::CreateOrOpenFile(printbuffer, 0x200);//234FF7 - 279817
+	if (file1 == NULL)//there will probably be inequality here
+		return 3;
+	file2 = DataFileIO::CreateOrOpenFile(printbuffer2, 0x222);//235012 - 279817
+	if (file2 == NULL)
+		return 3;
+	v5 = DataFileIO::FileLengthBytes(file1);
+	v6 = DataFileIO::Read(file1, readbuffer, v5);
+	v19 = DataFileIO::WriteFile_98CAA(file2, readbuffer, v6);
+	DataFileIO::Close(file1);
+	DataFileIO::Close(file2);
+	if (v6 != v19)
+		return 3;
+	sprintf(printbuffer, "%s/%s.DAT", cdPath, fileName);
+	sprintf(printbuffer2, "%s/%s.DAT", gamePath, fileName);
+	file3 = DataFileIO::CreateOrOpenFile(printbuffer, 512);
+	//v21 = v8;
+	if (file3 == NULL)
+		return 3;
+	file4 = DataFileIO::CreateOrOpenFile(printbuffer2, 546);
+	if (file4 == NULL)
+		return 3;
+	v10 = DataFileIO::FileLengthBytes(file3);
+	v18 = v10;
+	v20 = 0;
+	while (v10)
+	{
+		if (v10 <= 64000)
+			v11 = v10;
+		else
+			v11 = 64000;
+		v12 = DataFileIO::Read(file3, readbuffer, v11);
+		v10 -= v12;
+		if (DataFileIO::WriteFile_98CAA(file4, readbuffer, v12) != v12)
+		{
+			DataFileIO::Close(file3);
+			DataFileIO::Close(file4);
+			return 3;
+		}
+		v20 += v12;
+		v13 = v20;
+		settextposition(x_DWORD_F4720.x, x_DWORD_F4720.y);
+		v14 = 100 * v13 / v18;
+		if (v14 > 100)
+			v14 = 100;
+		sprintf(printbuffer, "%d%c", v14, 37);
+		outtext(printbuffer);
+	}
+	DataFileIO::Close(file3);
+	DataFileIO::Close(file4);
+	memset(readbuffer, 0, 64000);
+	return 0;
+}
+
+//----- (00053F60) --------------------------------------------------------
+bool sub_53F60(const char* a1)//234f60
+{
+	return myaccess(a1, 0) != NULL;//234F69 - 279CF2
+}
+// 98CF2: using guessed type x_DWORD access(x_DWORD, x_DWORD);
+
+//----- (0008C2CD) --------------------------------------------------------
+void sub_8C2CD()//26d2cd
+{
+	;
+}
+
+//----- (0005C430) --------------------------------------------------------
+void NetworkAllocation2_5C430()//23d430
+{
+	x_D41A0_BYTEARRAY_4_struct.isNetwork_216w = NetworkAllocation_74556();//255556 push ebp 355250
+}
+// D41A4: using guessed type int x_DWORD_D41A4;
+
+//----- (00046DD0) --------------------------------------------------------
+void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)//227DD0
+{
+	//char* v3; // eax
+	//int v4; // edx
+	//char v5; // bl
+	//char v6; // dl
+	//char v8[512]; // [esp+0h] [ebp-40h]
+	// fix if begin
+	//v4 = 0;
+	// end
+
+	sub_83CC0(20);
+	if (!x_BYTE_D4B50)
+	{
+		x_BYTE_D4B50 = 1;
+		if ((x_D41A0_BYTEARRAY_4_struct.setting_byte1_22) & 0x40)//fix it
+		{
+			PrintTextMessage_70910((char*)"Sound Disabled\0");
+			musicActive_E37FD = false;
+			soundActive_E3799 = false;
+			musicAble_E37FC = false;
+			soundAble_E3798 = false;
+		}
+		else
+		{
+			sprintf(printbuffer, "%s/%s", gameDataPath.c_str(), "sound");
+			PrintTextMessage_70910((char*)"Initialise Sound\0");
+			InitSoundAndMusic_90FD0(/*v3*//*v3, v4, a3*/); //fix it sound off here!
+			if (!soundActiveL_E2A14)
+				myprintf("ERROR: NOT ENOUGH MEMORY FOR SOUNDS\n");
+			if ((x_D41A0_BYTEARRAY_4_struct.setting_byte4_25) & 0x40)//fix it
+				InitMusicBank_8EAD0(1);
+		}
+		if (soundAble_E3798 || musicAble_E37FC)
+		{
+			//x_DWORD_F42A4_sound_timer = sub_92600_AIL_register_timer(sub_46820_simple_timer);
+			//sub_92930_AIL_set_timer_frequency(x_DWORD_F42A4_sound_timer, 0x78u);
+			//sub_92BA0_AIL_start_timer(x_DWORD_F42A4_sound_timer);
+			x_BYTE_D4B51 = 1;
+		}
+		else
+		{
+			sub_6FDA0();
+		}
+		//v5 = x_BYTE_E3798_sound_active2;
+		if (!soundAble_E3798 && !musicAble_E37FC && x_BYTE_E2A28_speek)
+		{
+			sub_86860_speak_Sound(x_WORD_1803EC);
+			sub_86BD0_freemem1();
+			//v6 = x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0xBF;
+			x_BYTE_E2A28_speek = soundAble_E3798;
+			(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24) &= 0xBF;
+		}
+	}
+	sub_83CC0(21);
+}
+
+//----- (0006FDA0) --------------------------------------------------------
+void sub_6FDA0()//fix//250da0
+{
+	//int v0; // eax
+	//void(*v1)(); // eax
+	//__int16 v2; // dx
+	//int result; // eax
+
+	//fix it
+	//v2 = 0;
+	//fix it
+
+	//v0 = (int)x_D41A0_BYTEARRAY_4;
+	x_D41A0_BYTEARRAY_4_struct.dwordindex_2388 = 10022;
+	x_D41A0_BYTEARRAY_4_struct.dwordindex_2392 = 0;
+	//v1 = dos_getvect(8);
+	//x_WORD_F5334 = v2;
+	//x_DWORD_F5330 = v1;
+	/* __outx_BYTE(0x43u, 0x36u);
+	 __outx_BYTE(0x40u, x_D41A0_BYTEARRAY_4[0x954]);
+	 __outx_BYTE(0x40u, x_D41A0_BYTEARRAY_4[0x954] >> 8);*/
+	 //BYTE1(result) = 1;
+	x_BYTE_DB734 = 1;
+	//return result;
 }
 
 //----- (00055F70) --------------------------------------------------------
