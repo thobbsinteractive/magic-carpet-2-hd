@@ -616,7 +616,6 @@ void CleanF5538_716A0();
 //char sub_54200();
 
 void sub_71410_process_tmaps();
-void initposistruct();
 
 void Initialize();
 
@@ -1562,8 +1561,6 @@ type_event_0x6E8E* AddSpell25_75_514C0(axis_3d* a1);
 x_WORD* sub_60400(__int16 a1, x_WORD* a2, x_WORD* a3);
 void sub_6D8B0(unsigned __int16 a1, unsigned __int16 a2, __int16 a3);
 
-void begin_plugin();
-void preconvert();
 void sub_56210_process_command_line(int a1, char** a2);
 void InitNetworkInfo();
 void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3);
