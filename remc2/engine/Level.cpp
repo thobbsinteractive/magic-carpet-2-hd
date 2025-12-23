@@ -229,9 +229,9 @@ bool SaveLevelSMAP_55320(uint8_t savefileindex, char* savefileindex2)//236320 //
 {
 	FILE* savesmapfile; // eax
 	size_t writedsize; // [esp+40h] [ebp-8h]
-	
+#ifdef REMC2_CODE
 	Logger->debug("InGameSave-begin");
-
+#endif //REMC2_CODE
 	sprintf(printbuffer, "%s/%s/%s%d%s.DAT", gameDataPath.c_str(), "SAVE", "SMAP", savefileindex + 1, savefileindex2);
 	savesmapfile = DataFileIO::CreateOrOpenFile(printbuffer, 546);
 	if (savesmapfile)
@@ -245,9 +245,9 @@ bool SaveLevelSMAP_55320(uint8_t savefileindex, char* savefileindex2)//236320 //
 		writedsize = DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)x_BYTE_F2CD0x, 4802) != 4802;
 		DataFileIO::Close(savesmapfile);
 	}
-
+#ifdef REMC2_CODE
 	Logger->debug("InGameSave-end-{}", writedsize);
-
+#endif //REMC2_CODE
 	return (writedsize == 0);
 }
 // 10000: using guessed type void /*__noreturn*/ sub_10000();
@@ -342,7 +342,9 @@ bool LoadLevel_555D0(uint8_t fileindex, int levelindex)//2365d0
 //----- (000558E0) --------------------------------------------------------
 bool LoadLevelSMAP_558E0(uint8_t savefileindex)//2368e0
 {
+#ifdef REMC2_CODE
 	Logger->debug("InGameLoad-begin\n");
+#endif //REMC2_CODE
 
 	//fix
 	x_D41A0_BYTEARRAY_4_struct.dword_38519 = x_DWORD_EA3E4[1];
@@ -366,12 +368,16 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex)//2368e0
 		DataFileIO::Read(loadfile, (uint8_t*)mapEntityIndex_15B4E0, 0x20000);
 		int truesize = DataFileIO::Read(loadfile, (uint8_t*)x_BYTE_F2CD0x, 4802) == 4802;
 		DataFileIO::Close(loadfile);
+#ifdef REMC2_CODE
 		if (truesize) {
 			Logger->debug("InGameLoad-end-ok\n");
 			return 1;
 		}
+#endif //REMC2_CODE
 	}
+#ifdef REMC2_CODE
 	Logger->debug("InGameLoad-end-error\n");
+#endif //REMC2_CODE
 	return 0;
 }
 

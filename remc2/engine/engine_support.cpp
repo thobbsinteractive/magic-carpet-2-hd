@@ -1487,6 +1487,7 @@ void x_D41A0_BYTESTR_0_to_x_D41A0_BYTEARRAY_0()
 	}
 }*/
 
+#ifdef REMC2_CODE
 #ifdef _DEBUG
 inline void setRGBA(png_byte* ptr, uint8_t* val)
 {
@@ -1495,7 +1496,8 @@ inline void setRGBA(png_byte* ptr, uint8_t* val)
 	ptr[2] = val[2];
 	ptr[3] = val[3];
 }
-#endif
+#endif //_DEBUG
+#endif //REMC2_CODE
 
 #ifdef _DEBUG
 int writeImage(const char* filename, int width, int height, uint8_t* buffer, char* title)

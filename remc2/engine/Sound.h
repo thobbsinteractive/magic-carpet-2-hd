@@ -5,6 +5,7 @@
 #include "../utilities/Wave.h"
 #include "../engine/CommandLineParser.h"
 #include "../portability/port_show_perifery.h"
+#include "../portability/port_sdl_sound.h"
 
 #pragma pack (1)
 typedef struct {//lenght 12
