@@ -14,8 +14,8 @@
 #include <array>
 #include <typeinfo>
 
-#include "../utilities/DataFileIO.h"
-#include "../utilities/BitmapIO.h"
+//#include "../utilities/DataFileIO.h"
+//#include "../utilities/BitmapIO.h"
 
 #include "UVTable_D4350.h"
 #include "Type_D404C.h"
@@ -38,7 +38,7 @@
 
 #include "Terrain.h"
 
-#include "../portability/port_net.h"
+//#include "../portability/port_net.h"
 
 //#define __CFSHL__(x, y) (x<<y)
 //#define __CFSHL__(x, y) 1
@@ -496,7 +496,6 @@ int32_t /*__cdecl*/ signal(int32_t, int32_t);// weak
 //unsigned char _BitScanReverse(unsigned long * Index, unsigned long Mask);
 //void sub_8F920(uint8_t a1byte1, uint8_t a1byte2, int16_t posx, int16_t posy, uint8_t* a4, unsigned __int8 a5, char a6);
 //void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t a2, int a3, uint8_t* a4, uint8_t setbyte, char a6);
-uint8_t NetworkAddName_74767(/*signed __int16* a1,*/ myNCB* a2x, char* a3);
 //x_DWORD /*__cdecl*/ segread(SREGS*); //weak
 //x_DWORD /*__cdecl*/ int386x(x_DWORD, x_DWORD, x_DWORD, x_DWORD);// weak
 //int int386x(int, REGS *, REGS *, struct SREGS *);

@@ -7,8 +7,8 @@
 #include "Network.h"
 #include "Player.h"
 #include "PlayerInput.h"
-#include "engine_support.h"
-#include "CompareMaps.h"
+//#include "engine_support.h"
+//#include "CompareMaps.h"
 #include "Events.h"
 #include "Level.h"
 #include "../utilities/StateMonitor.h"
@@ -19,6 +19,7 @@
 #include "MouseOnOff.h"
 #include "PrintMessages.h"
 #include "ReadAndDecompress.h"
+
 
 #ifdef __linux__
 #include <strings.h>
@@ -35,6 +36,7 @@
 #include <type_traits>
 #else
 #endif //__linux__
+
 
 #include <filesystem>
 
