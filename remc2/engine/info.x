@@ -2624,7 +2624,7 @@ call 265250
 call 228160
 
 			sub_47FC0(v7);//vga smaltitle
-			sub_56A30_init_game_level(a3);
+			LevelInitGame_56A30(a3);
 			sub_47160();
 
 find 363286 ->c6ce3500
@@ -2966,7 +2966,7 @@ uint8_t* sub_4B490(int a1)//22c490
 uint8_t* sub_4A190(uint8_t* a1, int a2, int a3)//22b190
 void sub_4A310(unsigned __int16 *a1)//22b310
 void sub_4A1E0(int a1, char a2)//22b1e0
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30(unsigned int a1)//237a30
 
 36193e
 
@@ -3184,7 +3184,7 @@ call 281863
 size_t sub_988A7_read(FILE* a1, uint8_t* a2, int a3)//2798a7
 int sub_53E60_readfile_and_decompress(const char* path, uint8_t** a2)//234E60
 void sub_54800_read_and_decompress_tables(uint8_t a1)//235800
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30(unsigned int a1)//237a30
 
 2c7ee0+ 14300
 x_BYTE_F6EE0_tables
@@ -3541,7 +3541,7 @@ v18
 38cf50+f6=38d046->4c79
 24203d call uint8_t* sub_61000(uint8_t* a1)//242000
 241f00 call void sub_60F00()//241f00
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30(unsigned int a1)//237a30
 
 void sub_60F00()//241f00
 
@@ -5278,7 +5278,7 @@ versus
 *(int32_t*)(v6 + 316)//0x13c
 
 
-sub_56A30_init_game_level
+LevelInitGame_56A30
 
 
 x_D41A0_BYTEARRAY_0 + 28222
@@ -5678,7 +5678,7 @@ x_BYTE_11B4E0[0xdf4d]
 
 test
 
-sub_56A30_init_game_level
+LevelInitGame_56A30
 
 (uint8_t*)&D41A0_BYTESTR_0+0x795e
 
@@ -6200,7 +6200,7 @@ pdwScreenBuffer_351628+0x1a4d 0x23
 (uint8_t*)x_D41A0_BYTEARRAY_0+0xf6f6 0x14
 0x356038 +0x12b2
 
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30(unsigned int a1)//237a30
 
 0xc1aa
 0xd542
@@ -6380,7 +6380,7 @@ pdwScreenBuffer_351628+0x5d3 0x78
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x3999 0xc5
 0x356038 +0x3999
 
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30(unsigned int a1)//237a30
 
  step 0x0
 (uint8_t*)&D41A0_BYTESTR_0+0x39e2 0x1f
