@@ -3,6 +3,7 @@
 #define MAIN_SPELLS
 #include <cstdint>
 
+#pragma pack (push,1)
 typedef struct {//lenght 26
 	int32_t dword_2;
 	int32_t dword_6;
@@ -22,6 +23,7 @@ typedef struct {//lenght 80
 	type_SPELLS_BEGIN_BUFFER_str_sub subspell[3];
 }
 type_SPELLS_BEGIN_BUFFER_str;
+#pragma pack (pop)
 
 /* ???
 Entity Sub-Type - Spell
