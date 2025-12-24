@@ -886,7 +886,6 @@ int PollSdlEvents()
 				if (ptrInputEvents->at(i)->isKeyPress)
 				{
 					m_pressed = ptrInputEvents->at(i)->keyPressed;
-					m_lastScancode = ptrInputEvents->at(i)->gameKeyChar;
 					SetGameKeyPress_1806E4(ptrInputEvents->at(i)->keyPressed, ptrInputEvents->at(i)->gameKeyChar);
 				}
 			}
