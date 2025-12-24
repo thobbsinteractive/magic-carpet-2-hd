@@ -10,5 +10,5 @@ struct InputEvent
 	int16_t mouse_y = -1;
 	bool isKeyPress = false;
 	bool keyPressed = false;
-	uint16_t scanCodeChar = 0;
+	uint16_t gameKeyChar = 0;
 };

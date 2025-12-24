@@ -881,13 +881,13 @@ int PollSdlEvents()
 			for (int i = 0; i < ptrInputEvents->size(); i++)
 			{
 				if (ptrInputEvents->at(i)->isMouse)
-					SetMouseEvents(ptrInputEvents->at(i)->mouse_buttons, ptrInputEvents->at(i)->mouse_x, ptrInputEvents->at(i)->mouse_y);
+					MouseEvents(ptrInputEvents->at(i)->mouse_buttons, ptrInputEvents->at(i)->mouse_x, ptrInputEvents->at(i)->mouse_y);
 
 				if (ptrInputEvents->at(i)->isKeyPress)
 				{
 					m_pressed = ptrInputEvents->at(i)->keyPressed;
-					m_lastScancode = ptrInputEvents->at(i)->scanCodeChar;
-					SetPress(ptrInputEvents->at(i)->keyPressed, ptrInputEvents->at(i)->scanCodeChar);
+					m_lastScancode = ptrInputEvents->at(i)->gameKeyChar;
+					SetGameKeyPress_1806E4(ptrInputEvents->at(i)->keyPressed, ptrInputEvents->at(i)->gameKeyChar);
 				}
 			}
 		}
@@ -1015,10 +1015,11 @@ int PollSdlEvents()
 
 void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) 
 {
+	ScaleUpMouseCoordsToVga(x, y);
+
 	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
 		m_InputRecorder->RecordMouseInput(buttons, x, y);
 
-	ScaleUpMouseCoordsToVga(x, y);
 	MouseEvents(buttons, x, y);
 }
 
@@ -1597,11 +1598,11 @@ uint16_t VGA_read_char_from_buffer() {
 }
 
 void SetPress(bool pressed, uint16_t scanCodeChar) {
+	auto gameKeyChar = TranslateSdlKeysToGameKeys(scanCodeChar);
 
 	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
-		m_InputRecorder->RecordKeyPress(pressed, scanCodeChar);
+		m_InputRecorder->RecordKeyPress(pressed, gameKeyChar);
 
-	auto gameKeyChar = TranslateSdlKeysToGameKeys(scanCodeChar);
 	SetGameKeyPress_1806E4(pressed, gameKeyChar);
 }
 

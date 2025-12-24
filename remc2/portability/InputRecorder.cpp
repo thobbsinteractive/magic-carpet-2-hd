@@ -103,7 +103,7 @@ std::vector<InputEvent*>* InputRecorder::GetCurrentInputEvents()
 	return m_InputEvents->at(m_Tick);
 }
 
-void InputRecorder::RecordKeyPress(bool keyPressed, uint16_t scanCodeChar)
+void InputRecorder::RecordKeyPress(bool keyPressed, uint16_t gameKeyChar)
 {
 	if (!m_IsRecording)
 		return;
@@ -116,7 +116,7 @@ void InputRecorder::RecordKeyPress(bool keyPressed, uint16_t scanCodeChar)
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->iteration = m_Iteration;
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->isKeyPress = true;
 	m_InputEvents->at(m_Tick)->at(m_Iteration)->keyPressed = keyPressed;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->scanCodeChar = scanCodeChar;
+	m_InputEvents->at(m_Tick)->at(m_Iteration)->gameKeyChar = gameKeyChar;
 	m_Iteration++;
 }
 
@@ -187,7 +187,7 @@ bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 			fread(&m_InputEvents->at(tick)->at(iteration)->mouse_y, sizeof(InputEvent::mouse_y), 1, eventsFile);
 			fread(&m_InputEvents->at(tick)->at(iteration)->isKeyPress, sizeof(InputEvent::isKeyPress), 1, eventsFile);
 			fread(&m_InputEvents->at(tick)->at(iteration)->keyPressed, sizeof(InputEvent::keyPressed), 1, eventsFile);
-			fread(&m_InputEvents->at(tick)->at(iteration)->scanCodeChar, sizeof(InputEvent::scanCodeChar), 1, eventsFile);
+			fread(&m_InputEvents->at(tick)->at(iteration)->gameKeyChar, sizeof(InputEvent::gameKeyChar), 1, eventsFile);
 		}
 		return fclose(eventsFile) == 0;
 	}

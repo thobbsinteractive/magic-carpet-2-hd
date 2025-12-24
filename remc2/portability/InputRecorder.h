@@ -33,7 +33,7 @@ public:
 	bool StartPlayback();
 	void StopPlayback();
 
-	void RecordKeyPress(bool keyPressed, uint16_t scanCodeChar);
+	void RecordKeyPress(bool keyPressed, uint16_t gameKeyChar);
 	void RecordMouseInput(uint32_t mouse_buttons, int16_t mouse_x, int16_t mouse_y);
 
 	bool SaveRecordingToFile(const char* outputFileName);
