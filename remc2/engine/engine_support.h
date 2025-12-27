@@ -173,7 +173,7 @@ typedef struct {//size 14
 }
 subtype_x_DWORD_E9C28_str;
 
-typedef struct {//size 26
+typedef struct {//size 4
 	int8_t byte_0;
 	int8_t byte_1;
 	int8_t byte_2;

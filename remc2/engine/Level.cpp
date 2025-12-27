@@ -1098,7 +1098,7 @@ type_E9C08* sub_72120(unsigned __int16 a1)//253120
 type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C28_str* a3y)//252b40
 {
 	unsigned __int16 v3; // di
-	int v4; // eax
+	//int v4; // eax
 	int v5; // eax
 	int v6; // edx
 	type_x_DWORD_E9C28_str* v7y; // esi
@@ -1107,14 +1107,14 @@ type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C2
 	uint8_t* v11x; // eax
 	uint8_t* v12x; // eax
 	uint8_t* v13x; // eax
-	int v14; // [esp+0h] [ebp-Ch]
+	//int v14; // [esp+0h] [ebp-Ch]
 	//allert_error();//test a3y->dword_0 and a1
 	v3 = a2;
 	if (a3y)
 	{
-		v4 = 14 * a2;
-		v14 = v4;
-		v5 = 4 * a2 + v4 + 26;
+		//v4 = 14 * a2;
+		//v14 = 14 * a2;
+		v5 = 4 * a2 + (14 * a2) + 26;
 		v6 = a1 - v5;
 		if (a1 == v5)
 			return 0;
@@ -1126,8 +1126,8 @@ type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C2
 		a3y->word_22 = a2;
 		a3y->str_8_data = (subtype_x_DWORD_E9C28_str*)a3y->data;
 		//v8 = v14 + a3x + 26;
-		a3y->dword_12x = (subtype_x_DWORD_E9C28_str**)((uint8_t*)a3y->data+v14);// (uint32_t)(v14 + (uint8_t*)a3y + 26);//must fix for 64 bit version - data
-		a3y->dword_16x = (uint32_t*)((uint8_t*)a3y->data+(v14 + 4 * a2));//(uint32_t)(4 * a2 + (v14 + (uint8_t*)a3y + 26));//must fix for 64 bit version - data
+		a3y->dword_12x = (subtype_x_DWORD_E9C28_str**)((uint8_t*)a3y->data + (14 * a2));// (uint32_t)(v14 + (uint8_t*)a3y + 26);//must fix for 64 bit version - data
+		a3y->dword_16x = (uint32_t*)((uint8_t*)a3y->data+((14 * a2) + 4 * a2));//(uint32_t)(4 * a2 + (v14 + (uint8_t*)a3y + 26));//must fix for 64 bit version - data
 		while (--v3 != 0xffff)
 			//*(x_DWORD*)(a3y->dword_8_data + 14 * v3 + 4) = 0;
 			a3y->str_8_data[v3].dword_4 = 0;
@@ -1138,8 +1138,8 @@ type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C2
 		v7y = v10y;
 		if (!v10y
 			|| (v11x = (uint8_t*)Malloc_83CD0(a1), (v10y->dword_16x = (uint32_t*)v11x) == 0)
-			|| (v12x = (uint8_t*)Malloc_83CD0(14 * a2), (v10y->str_8_data = (subtype_x_DWORD_E9C28_str*)v12x) == 0)
-			|| (v13x = (uint8_t*)Malloc_83CD0(4 * a2), (v10y->dword_12x = (subtype_x_DWORD_E9C28_str**)v13x) == 0))
+			|| (v12x = (uint8_t*)Malloc_83CD0(sizeof(subtype_x_DWORD_E9C28_str) * a2), (v10y->str_8_data = (subtype_x_DWORD_E9C28_str*)v12x) == 0)
+			|| (v13x = (uint8_t*)Malloc_83CD0(sizeof(subtype_x_DWORD_E9C28_str*) * a2), (v10y->dword_12x = (subtype_x_DWORD_E9C28_str**)v13x) == 0))
 		{
 			if (v10y)
 			{
