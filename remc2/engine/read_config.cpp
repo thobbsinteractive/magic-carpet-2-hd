@@ -19,11 +19,13 @@
 #include "../portability/port_sdl_sound.h"
 #include "../portability/port_time.h"
 
+#ifdef REMC2_CODE
 #include "INIReader.h"
 #include "ini.h"
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
+#endif //REMC2_CODE
 
 int config_skip_screen;
 int texturepixels = 32;
@@ -98,7 +100,7 @@ std::string findIniFile() {
 
 std::vector<Maths::Zone> ReadZones(std::string zonesJson) {
 	std::vector<Maths::Zone> zones;
-
+#ifdef REMC2_CODE
 	if (zonesJson.size() > 0)
 	{
 		rapidjson::Document document;
@@ -120,6 +122,7 @@ std::vector<Maths::Zone> ReadZones(std::string zonesJson) {
 			}
 		}
 	}
+#endif //REMC2_CODE
 	return zones;
 }
 
@@ -136,6 +139,7 @@ bool readini() {
 		return false;
 	}
 
+#ifdef REMC2_CODE
 	INIReader reader(inifile);
 
 	if (reader.ParseError() < 0) {
@@ -359,6 +363,6 @@ bool readini() {
 
 	gpc.haptic_enabled = reader.GetBoolean("gamepad", "haptic_enabled", false);
 	gpc.haptic_gain_max = reader.GetInteger("gamepad", "haptic_max_gain", 75);
-
+#endif //REMC2_CODE
 	return true;
 };

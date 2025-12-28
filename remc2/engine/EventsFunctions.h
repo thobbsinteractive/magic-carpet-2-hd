@@ -1571,4 +1571,9 @@ void InitNetworkInfo();
 void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3);
 void sub_5BC20();
 void sub_75AB0();
+void InitStageVars_11EE0();
+void sub_4A1E0(int a1, char a2);
+void ClearSettings_567C0();
+void InitStages_58940(/*uint8_t* a1*/);
+void Init0x3664C_84790();
 #endif

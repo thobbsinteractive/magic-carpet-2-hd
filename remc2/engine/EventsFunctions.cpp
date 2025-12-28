@@ -713,7 +713,6 @@ char sub_11A10(type_event_0x6E8E* a1);
 char sub_11C80(uaxis_2d a1);
 bool sub_11CB0(axis_3d* a1);
 bool sub_11E20(type_event_0x6E8E* a1, axis_3d* a2);
-void InitStageVars_11EE0();
 void sub_12100(type_entity_0x30311* a1, type_event_0x6E8E* a2, char a3);
 void sub_122A0(type_event_0x6E8E* a1);
 void sub_122C0(__int16 a1);
@@ -795,7 +794,6 @@ void sub_49E10(type_event_0x6E8E* event, int16_t entityIndex);
 void SetEntityShiftRot_49EA0(type_event_0x6E8E* event, int16_t shift, int16_t rotation);
 void SetShiftByCastle_49EC0(type_event_0x6E8E* event, int16_t a2);
 //void sub_49F30();
-void sub_4A1E0(int a1, char a2);
 void sub_4A310(type_entity_0x30311* a1);
 int sub_4A810_get_0x35plus();
 char sub_53770_test_open_moviegam(uint16_t a1);
@@ -814,7 +812,6 @@ bool SaveSMAPSLEVmovie2_54F00(__int16 a1);
 // unsigned int sub_55C60(int a1, int a2, int a3);
 void sub_55EB0(__int16 a1);
 //int sub_main(int argc, const char **argv, const char **envp);
-void ClearSettings_567C0();
 // char LevelInitGame_56A30(unsigned int a1);
 // char sub_56D60(unsigned int a1, char a2);
 bool sub_56EE0(uaxis_2d a1);
@@ -841,7 +838,6 @@ int sub_58440(axis_3d* a1, axis_3d* a2);
 void sub_585A0(type_event_0x6E8E* a1);
 void sub_585D0();
 void sub_58630();
-void InitStages_58940(/*uint8_t* a1*/);
 void sub_58DA0(type_entity_0x30311* a1, type_event_0x6E8E* a2);
 void sub_58F00_game_objectives();
 void sub_59760(type_event_0x6E8E* a1, type_event_0x6E8E* a2);
@@ -947,7 +943,6 @@ void sub_82AB0(unsigned __int8 a1);
 void sub_83B50();
 //char sub_83E00(int a1, int a2);
 void GetSystemSpeed();
-void Init0x3664C_84790();
 void AddEvent2_847D0(type_event_0x6E8E* a1, char a2, char a3, char a4);
 void sub_84880(type_str_0x3664C* a1);
 void sub_848A0();
@@ -31454,7 +31449,7 @@ void sub_41A90_VGA_Palette_install(TColor* bufferx)//222a90
 	//loadfromsnapshot((char*)"0160-00222A90-x", a1, 0x1a7358, 0x300);//4c
 	//loadfromsnapshot((char*)"0160-00222A90-x", a1, 0x3aa0a4, 0x300);//4c
 	//debug
-	VGA_Set_Palette((Uint8*)bufferx);
+	VGA_Set_Palette((uint8*)bufferx);
 }
 //----- (00041A90) --------------------------------------------------------
 /*char sub_41A90_VGA_Palette_install_orig(unsigned __int8 *a1)//insgtalace palety viz:http://www.hoschl.cz/cyril/voxel5.c
