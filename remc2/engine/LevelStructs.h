@@ -109,7 +109,7 @@ typedef struct {//lenght 2124=0x84C
 	uint16_t word_0x00a_2BE4_11240;//10 //11240 - word - index z EA3E4 //0xa
 	uint8_t byte_0x00c_2BE0_11242_xx;
 	uint8_t byte_0x00d_2BE0_11243_xx;
-	int16_t word_0x00e_2BDE_11244; //14
+	int16_t ActPlayerIndex_0x00e_2BDE_11244; //14
 	int16_t word_0x010_2BDE_11246; //16
 	int32_t dword_0x012_2BE0_11248;//18 ??
 	uint8_t byte_0x016_2BE0_11252_xx;//22

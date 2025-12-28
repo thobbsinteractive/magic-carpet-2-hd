@@ -2286,7 +2286,7 @@ void set_x_D41A0_BYTEARRAY_0_0x2BDE_0x9(int number, int8_t value) {
 };
 void set_x_D41A0_BYTEARRAY_0_0x2BDE_0xe(int number, int16_t value) {
 	*(int16_t*)&x_D41A0_BYTEARRAY_0[0x2BDE + 2124 * number + 0xe] = value;
-	D41A0_BYTESTR_0.array_0x2BDE[number].word_0x00e_2BDE_11244 = value;
+	D41A0_BYTESTR_0.array_0x2BDE[number].ActPlayerIndex_0x00e_2BDE_11244 = value;
 };
 int16_t get_x_D41A0_BYTEARRAY_0_0x2BDE_0x10(int number) {
 	testword((int16_t*)&x_D41A0_BYTEARRAY_0[0x2BDE + 2124 * number + 0x10], &D41A0_BYTESTR_0.array_0x2BDE[number].word_0x010_2BDE_11246);
