@@ -29,6 +29,10 @@ https://github.com/thobbsinteractive/magic-carpet-2-hd/wiki/FAQ
 ## For more information on Magic Carpet 2 ##
 Moburma has been tirelessly working to document cut levels, level data structures and missing graphics at: https://tcrf.net/Magic_Carpet_2:_The_Netherworlds
 
+## Using this engine ##
+This engine will be partially used in the MagicBalls project. It will be a mix of remc2 and the Godot engine.
+[https://github.com/turican0/MagicBalls](https://github.com/turican0/MagicBalls)
+
 ## My intention is to make a patch for Magic Carpet 1 and 2 (GOG editions) that initially will:
 - Add more screen resolution options
 - Increase draw distance
