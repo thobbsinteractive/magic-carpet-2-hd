@@ -824,7 +824,6 @@ void sub_574A0();
 void sub_57570();
 void sub_575C0();
 void sub_57640();
-void UpdateEntities_57730();
 void sub_57B20(type_str_0x2BDE* a1, type_event_0x6E8E* a2);
 void sub_57CF0(type_event_0x6E8E* entity, axis_3d* position);
 void sub_57D40(type_event_0x6E8E* entity, axis_3d* position);

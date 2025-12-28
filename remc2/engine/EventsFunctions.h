@@ -1576,4 +1576,5 @@ void sub_4A1E0(int a1, char a2);
 void ClearSettings_567C0();
 void InitStages_58940(/*uint8_t* a1*/);
 void Init0x3664C_84790();
+void UpdateEntities_57730();
 #endif
