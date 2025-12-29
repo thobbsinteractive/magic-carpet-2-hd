@@ -2091,13 +2091,6 @@ void HandleOptionsMenuButtonClick_19A70()//1faa70
 //----- (00018F80) --------------------------------------------------------
 void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
 {
-	//int v1; // eax
-	int v2; // edx
-	type_event_0x6E8E* v3x; // eax
-	//uint8_t* v4; // eax
-	type_event_0x6E8E* v4x; // eax
-	int v5; // edx
-
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 1)
 		HandleButtonClick_191B0(6, 1);
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 2)
@@ -2106,16 +2099,13 @@ void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
 		HandleButtonClick_191B0(6, 4);
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 8)
 		HandleButtonClick_191B0(6, 8);
-	//v1 = a1x->dword_0xA4_164;
-	v2 = a1x->dword_0xA4_164x->str_611.word_0x451_1105;
-	if (v2 == -1)
+	if (a1x->dword_0xA4_164x->str_611.word_0x451_1105 == -1)
 	{
 		unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 	}
 	else
 	{
-		v3x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v2]];
-		if (v3x->byte_0x3B_59 == 1)
+		if (x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x451_1105]]->byte_0x3B_59 == 1)
 		{
 			if (unk_18058Cstr.x_DWORD_18059C & 1)
 			{
@@ -2123,73 +2113,53 @@ void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
 				unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 			}
 		}
-		else if (unk_18058Cstr.x_DWORD_18059C & 1 || unk_18058Cstr.x_DWORD_18059C & 4 && v3x->word_0x2E_46 > 0)
+		else if (unk_18058Cstr.x_DWORD_18059C & 1 || unk_18058Cstr.x_DWORD_18059C & 4 && x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x451_1105]]->word_0x2E_46 > 0)
 		{
 			HandleButtonClick_191B0(6, 16);
 			unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 		}
 	}
-	//v4 = (uint8_t*)a1x->dword_0xA4_164;
-	v5 = a1x->dword_0xA4_164x->str_611.word_0x453_1107;
-	if (v5 == -1)
+	if (a1x->dword_0xA4_164x->str_611.word_0x453_1107 == -1)
 	{
 		unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 	}
 	else
 	{
-		v4x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v5]];
-		if (v4x->byte_0x3B_59 == 1)
+		if (x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x453_1107]]->byte_0x3B_59 == 1)
 		{
 			if (unk_18058Cstr.x_DWORD_18059C & 2)
 			{
-				/*LOBYTE(v4) = */HandleButtonClick_191B0(6, 32);
+				HandleButtonClick_191B0(6, 32);
 				unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 			}
 		}
 		else if (unk_18058Cstr.x_DWORD_18059C & 2 || unk_18058Cstr.x_DWORD_18059C & 8 && a1x->dword_0xA4_164x->word_0x26_38[4] > 0)
 		{
-			/*LOBYTE(v4) = */HandleButtonClick_191B0(6, 32);
+			HandleButtonClick_191B0(6, 32);
 			unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 		}
 	}
-	//return v4;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
-// 18059C: using guessed type int x_DWORD_18059C;
-// 1805C0: using guessed type __int16 x_WORD_1805C0_arrow_keys;
 
 //----- (0001A8A0) --------------------------------------------------------
 void sub_1A8A0()//1fb8a0
 {
-	//char v0; // dh
-	//int result; // eax
-	//char v2; // bh
-	//char v3; // cl
-
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 4)
 	{
 		if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 8)
 		{
-			//v0 = x_D41A0_BYTEARRAY_4_struct.byteindex_183;
 			if (!(x_D41A0_BYTEARRAY_4_struct.byteindex_183 & 1) && !(x_D41A0_BYTEARRAY_4_struct.byteindex_183 & 2))
 				HandleButtonClick_191B0(6, 128);
 		}
 	}
-	//result = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
-	//v2 = x_D41A0_BYTEARRAY_4_struct.byteindex_183 & 0xFC;
-	//v3 = unk_18058Cstr.x_WORD_1805C0_arrow_keys;
 	x_D41A0_BYTEARRAY_4_struct.byteindex_183 &= 0xFC;
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 4)
 		x_D41A0_BYTEARRAY_4_struct.byteindex_183 |= 1;
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 8)
 	{
-		//result = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 		x_D41A0_BYTEARRAY_4_struct.byteindex_183 |= 2;
 	}
-	//return result;
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
-// 1805C0: using guessed type __int16 x_WORD_1805C0_arrow_keys;
 
 //----- (00017060) --------------------------------------------------------
 void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
@@ -2232,11 +2202,9 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 //----- (00018AA0) --------------------------------------------------------
 void sub_18AA0()//1f9aa0
 {
-	//int result; // eax
 	char v1; // bl
 	char v2; // bh
 
-	//result = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 	v1 = 1;
 	if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 	{
@@ -2247,13 +2215,12 @@ void sub_18AA0()//1f9aa0
 		SetTextBoxMinMaxSizes_87090();
 		if (str_unk_1804B0ar.byte_0xa2)
 		{
-			//result = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 			x_D41A0_BYTEARRAY_4_struct.showHelp_10 = 1;
 		}
 		else
 		{
 			v1 = 0;
-			/*result = */sub_19760_set_message("No Help Data", 3u, 50);
+			sub_19760_set_message("No Help Data", 3u, 50);
 		}
 	}
 	if (v1)
@@ -2261,14 +2228,10 @@ void sub_18AA0()//1f9aa0
 		str_unk_1804B0ar.byte_0xaa = -1;
 		v2 = x_D41A0_BYTEARRAY_4_struct.showHelp_10;
 		x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
-		/*result = */sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[(v2 == 0) + 400], 3u, 50);
+		sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[(v2 == 0) + 400], 3u, 50);
 		//Help Mode On / Help Mode Off
 	}
-	//return result;
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
-// 180552: using guessed type char x_BYTE_180552;
-// 18055A: using guessed type char x_BYTE_18055A;
 
 //----- (0006D4F0) --------------------------------------------------------
 int SelectSpell_6D4F0(type_str_611* a1x, int16_t mouseX)//24e4f0
@@ -2371,11 +2334,8 @@ int SelectSpellCategory_6D420(int16_t posX, int16_t posY)//24e420
 //----- (0006D4C0) --------------------------------------------------------
 char sub_6D4C0(type_str_611* a1x)//24e4c0
 {
-	char result; // al
-
-	result = a1x->array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[a1x->byte_0x458_1112]];
-	a1x->byte_0x459_1113 = result;
-	return result;
+	a1x->byte_0x459_1113 = a1x->array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[a1x->byte_0x458_1112]];
+	return a1x->byte_0x459_1113;
 }
 
 //----- (00019AB0) --------------------------------------------------------
