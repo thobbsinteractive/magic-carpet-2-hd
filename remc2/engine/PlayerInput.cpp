@@ -518,17 +518,17 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			else if (pressedKeys_180664[56] || pressedKeys_180664[x_BYTE_EB39E_keys[9]])
 			{
 				switch (LastPressedKey_1806E4) {
-				case 0x13://r
-				case 0x19://p
-				case 0x1f: {//s
-					LastPressedKey_1806E4 = 0;
-					break;
-				}
-				case 0x21: {//f
-					HandleButtonClick_191B0(4, 32);
-					LastPressedKey_1806E4 = 0;
-					break;
-				}
+					case 0x13://r
+					case 0x19://p
+					case 0x1f: {//s
+						LastPressedKey_1806E4 = 0;
+						break;
+					}
+					case 0x21: {//f
+						HandleButtonClick_191B0(4, 32);
+						LastPressedKey_1806E4 = 0;
+						break;
+					}
 				}
 
 				if (unk_18058Cstr.x_DWORD_18059C & 1)

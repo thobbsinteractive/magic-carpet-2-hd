@@ -50925,14 +50925,14 @@ int ReadGameUserInputs_89D10()//26ad10
 			unk_18058Cstr.x_DWORD_1805B8_mouse_position_x = x_WORD_E375C_mouse_position_x;
 			unk_18058Cstr.x_DWORD_1805BC_mouse_position_y = x_WORD_E375E_mouse_position_y;
 			unk_18058Cstr.x_WORD_1805C0_arrow_keys = 0;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys = 1;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])//UP
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])//DOWN
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])//LEFT
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])//RIGHT
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8u;
 			unk_18058Cstr.x_DWORD_18059C = 0;
 			if (x_WORD_180746_mouse_left_button)
 				unk_18058Cstr.x_DWORD_18059C = 1;
@@ -50942,7 +50942,7 @@ int ReadGameUserInputs_89D10()//26ad10
 				unk_18058Cstr.x_DWORD_18059C |= 4;
 			if (x_WORD_18074A_mouse_right2_button)
 				unk_18058Cstr.x_DWORD_18059C |= 8;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[5]])
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[5]])//CTRL
 				unk_18058Cstr.x_DWORD_18059C |= 0x10;
 		}
 		unk_18058Cstr.x_DWORD_180594 *= 4;
@@ -50964,14 +50964,14 @@ int ReadGameUserInputs_89D10()//26ad10
 			unk_18058Cstr.x_DWORD_1805B8_mouse_position_x = x_WORD_E375C_mouse_position_x;
 			unk_18058Cstr.x_DWORD_1805BC_mouse_position_y = x_WORD_E375E_mouse_position_y;
 			unk_18058Cstr.x_WORD_1805C0_arrow_keys = 0;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys = 1;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])//UP
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])//DOWN
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])//LEFT
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])//RIGHT
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8u;
 			unk_18058Cstr.x_DWORD_18059C = 0;
 			if (x_WORD_180746_mouse_left_button)
 				unk_18058Cstr.x_DWORD_18059C = 1;
@@ -50981,7 +50981,7 @@ int ReadGameUserInputs_89D10()//26ad10
 				unk_18058Cstr.x_DWORD_18059C |= 4;
 			if (x_WORD_18074A_mouse_right2_button)
 				unk_18058Cstr.x_DWORD_18059C |= 8;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[5]])
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[5]])//CTRL
 				unk_18058Cstr.x_DWORD_18059C |= 0x10;
 		}
 		unk_18058Cstr.x_DWORD_180590 = -2048 * x_WORD_17D6CCar[0] / 0xFFFFu & 0x7FF;
@@ -51011,14 +51011,14 @@ int ReadGameUserInputs_89D10()//26ad10
 			unk_18058Cstr.x_DWORD_1805B8_mouse_position_x = x_WORD_E375C_mouse_position_x;
 			unk_18058Cstr.x_DWORD_1805BC_mouse_position_y = x_WORD_E375E_mouse_position_y;
 			unk_18058Cstr.x_WORD_1805C0_arrow_keys = 0;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys = 1;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])//UP
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])//DOWN
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])//LEFT
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])//RIGHT
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8u;
 			unk_18058Cstr.x_DWORD_18059C = 0;
 			if (x_WORD_180746_mouse_left_button)
 				unk_18058Cstr.x_DWORD_18059C = 1;
@@ -51028,7 +51028,7 @@ int ReadGameUserInputs_89D10()//26ad10
 				unk_18058Cstr.x_DWORD_18059C |= 4;
 			if (x_WORD_18074A_mouse_right2_button)
 				unk_18058Cstr.x_DWORD_18059C |= 8;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[5]])
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[5]])//CTRL
 			{
 				unk_18058Cstr.x_DWORD_18059C |= 0x10;
 				return v61;
@@ -51073,7 +51073,7 @@ int ReadGameUserInputs_89D10()//26ad10
 				unk_18058Cstr.x_DWORD_1805BC_mouse_position_y = unk_18058Cstr.x_DWORD_1805B0_mouse.y;
 				unk_180560x[27] |= 2u;
 			}
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[5]])
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[5]])//CTRL
 			{
 				unk_180560x[27] &= 0xF7u;
 				unk_180560x[26] &= 0xF7u;
@@ -51300,13 +51300,13 @@ int ReadGameUserInputs_89D10()//26ad10
 				if (unk_180560x[26] & 4)
 				{
 					if (unk_180560x[29] < 0)
-						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1u;
+						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1u;//UP
 					if (unk_180560x[29] > 0)
-						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 0xff02;
+						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2u;//DOWN
 					if (unk_180560x[28] < 0)
-						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 0xff04;
+						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4u;//LEFT
 					if (unk_180560x[28] > 0)
-						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 0xff08;
+						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8u;//RIGHT
 				}
 				else
 				{
@@ -51314,17 +51314,14 @@ int ReadGameUserInputs_89D10()//26ad10
 					x_WORD_E36CE = unk_180560x[29];
 					unk_18058Cstr.x_DWORD_1805B0_mouse.x = 2 * unk_180560x[28] + 320;
 					unk_18058Cstr.x_DWORD_1805B0_mouse.y = 2 * unk_180560x[29] + 200;
-					if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])
-						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1;
-					if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])
-						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2;
-					if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])
-						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4;
-					if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])
-					{
-						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8;
-						return v61;
-					}
+					if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])//UP
+						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1u;
+					if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])//DOWN
+						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2u;
+					if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])//LEFT
+						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4u;
+					if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])//RIGHT
+						unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8u;
 				}
 				return v61;
 			}
@@ -51401,7 +51398,7 @@ int ReadGameUserInputs_89D10()//26ad10
 			unk_180560x[27] |= 2u;
 			unk_18058Cstr.x_DWORD_1805BC_mouse_position_y = unk_18058Cstr.x_DWORD_1805B0_mouse.y;
 		}
-		if (pressedKeys_180664[x_BYTE_EB39E_keys[5]])
+		if (pressedKeys_180664[x_BYTE_EB39E_keys[5]])//CTRL
 		{
 			unk_180560x[26] &= 0xF7u;
 			unk_18058Cstr.x_DWORD_18059C |= 0xffffff10;
@@ -51655,16 +51652,13 @@ int ReadGameUserInputs_89D10()//26ad10
 		if (unk_180560x[26] & 4)
 		{
 			if (unk_180560x[29] < 0)
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1u;
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1u;//UP
 			if (unk_180560x[29] > 0)
-				LOBYTE(unk_18058Cstr.x_WORD_1805C0_arrow_keys) = unk_18058Cstr.x_WORD_1805C0_arrow_keys | 2;
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2u;//DOWN
 			if (unk_180560x[28] < 0)
-				LOBYTE(unk_18058Cstr.x_WORD_1805C0_arrow_keys) = unk_18058Cstr.x_WORD_1805C0_arrow_keys | 4;
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4u;//LEFT
 			if (unk_180560x[28] > 0)
-			{
-				LOBYTE(unk_18058Cstr.x_WORD_1805C0_arrow_keys) = unk_18058Cstr.x_WORD_1805C0_arrow_keys | 8;
-				return v61;
-			}
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8u;//RIGHT
 		}
 		else
 		{
@@ -51674,17 +51668,14 @@ int ReadGameUserInputs_89D10()//26ad10
 			x_WORD_E36CE = (signed int)(v27 - (__CFSHL__(HIDWORD(v27), 5) + 32 * HIDWORD(v27))) >> 5;
 			unk_18058Cstr.x_DWORD_1805B0_mouse.x = 2 * x_WORD_E36CC + 320;
 			unk_18058Cstr.x_DWORD_1805B0_mouse.y = 2 * x_WORD_E36CE + 200;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4;
-			if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])
-			{
-				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8;
-				return v61;
-			}
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])//UP
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])//DOWN
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])//LEFT
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4u;
+			if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])//RIGHT
+				unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8u;
 		}
 		return v61;
 	case 7:
@@ -51693,14 +51684,14 @@ int ReadGameUserInputs_89D10()//26ad10
 		unk_18058Cstr.x_DWORD_1805B8_mouse_position_x = x_WORD_E375C_mouse_position_x;
 		unk_18058Cstr.x_DWORD_1805BC_mouse_position_y = x_WORD_E375E_mouse_position_y;
 		unk_18058Cstr.x_WORD_1805C0_arrow_keys = 0;
-		if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])
-			unk_18058Cstr.x_WORD_1805C0_arrow_keys = 1;
-		if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])
-			unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2;
-		if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])
-			unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4;
-		if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])
-			unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8;
+		if (pressedKeys_180664[x_BYTE_EB39E_keys[0]])//UP
+			unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 1u;
+		if (pressedKeys_180664[x_BYTE_EB39E_keys[1]])//DOWN
+			unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 2u;
+		if (pressedKeys_180664[x_BYTE_EB39E_keys[2]])//RIGHT
+			unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 4u;
+		if (pressedKeys_180664[x_BYTE_EB39E_keys[3]])//LEFT
+			unk_18058Cstr.x_WORD_1805C0_arrow_keys |= 8u;
 		unk_18058Cstr.x_DWORD_18059C = 0;
 		if (x_WORD_180746_mouse_left_button)
 			unk_18058Cstr.x_DWORD_18059C = 1;
@@ -51710,7 +51701,7 @@ int ReadGameUserInputs_89D10()//26ad10
 			unk_18058Cstr.x_DWORD_18059C |= 4;
 		if (x_WORD_18074A_mouse_right2_button)
 			unk_18058Cstr.x_DWORD_18059C |= 8;
-		if (!pressedKeys_180664[x_BYTE_EB39E_keys[5]])
+		if (!pressedKeys_180664[x_BYTE_EB39E_keys[5]])//CTRL
 			return v61;
 		unk_18058Cstr.x_DWORD_18059C |= 0x10;
 		return v61;
