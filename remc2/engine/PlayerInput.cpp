@@ -495,33 +495,20 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 	char v33; // [esp+0h] [ebp-8h]
 	char v34; // [esp+4h] [ebp-4h]
 
-	// fix if begin
-	//v14 = 0;
-	// end
-
 	if ((uint8_t)LastPressedKey_1806E4 >= 0x80u)
 		LastPressedKey_1806E4 = 0;
-	//result = 2124 * D41A0_BYTESTR_0.word_0xc;
-	//v4 = x_D41A0_BYTEARRAY_0[result];
 	if (!(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x20))
 	{
 		switch (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221)
 		{
 		case 0:
 		case 4:
-			//keys and buttons
 			if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 				goto LABEL_292;
 			if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 				ReadPauseMenuEvents_197F0();
 			sub_17190_process_keyboard();//test FnX
-			//v5 = x_D41A0_BYTEARRAY_0;
-			//v6 = D41A0_BYTESTR_0.word_0xc;
-			//v7 = 5 * D41A0_BYTESTR_0.word_0xc;
-
 			v8x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
-			//LOBYTE(v6) = unk_18058Cstr.x_DWORD_18059C;
-
 			D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte5 = 0;
 			if (unk_18058Cstr.x_DWORD_18059C & 0x10)
 			{
@@ -575,7 +562,6 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				case 0x1a: {//[
 					if (!D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 					{
-						//v9 = *(x_BYTE *)(x_D41A0_BYTEARRAY_0 + 8589);
 						if (D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize < 40)
 						{
 							D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize++;
@@ -588,7 +574,6 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				case 0x1b: {//]
 					if (!D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 					{
-						//v10 = x_D41A0_BYTEARRAY_0[8589];
 						if (D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize > 17)
 						{
 							D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize--;// = v10 - 1;
@@ -660,7 +645,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			}
 			sub_1A8A0();
 			ComputeMousePlayerMovement_17060(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y);
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 1:
 			sub_17190_process_keyboard();
@@ -669,7 +654,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			LastPressedKey_1806E4 = 0;
 			unk_18058Cstr.x_DWORD_18059C &= 0xFC;
 			HandleButtonClick_191B0(20, 0);
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 3:
 			if (!LastPressedKey_1806E4 || (unsigned __int8)LastPressedKey_1806E4 >= 0x80u)
@@ -718,9 +703,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 					}
 					goto LABEL_215;
 				}
-				//v25 = x_D41A0_BYTEARRAY_0[result + 12223] + 1;
-				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E1_2BE4_12223++;// = v25;
-				//v26 = D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].byte_0x3E1_2BE4_12223;
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E1_2BE4_12223++;
 				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E1_2BE4_12223 >= 4)
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E1_2BE4_12223 = 0;
 				HandleButtonClick_191B0(36, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E1_2BE4_12223);
@@ -822,7 +805,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			}
 		LABEL_292:
 			unk_18058Cstr.x_DWORD_18059C &= 0xFC;
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 5:
 		case 8:
@@ -836,9 +819,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			}
 			else
 			{
-				//v15 = (uint8_t*)v12x->dword_0xA4_164;
 				v16 = v12x->dword_0xA4_164x->str_611.byte_0x457_1111;
-				//a1 = &v15[611];
 				if (v16)
 				{
 					if (v16 <= 2u)
@@ -852,11 +833,9 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 						else
 						{
 							if (v12x->dword_0xA4_164x->str_611.byte_0x457_1111 == 1)
-								//D41A0_BYTESTR_0.array_0x6E3E[D41A0_BYTESTR_0.word_0xc].str_0x6E3E_byte0
 								D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = 31;
 							else
 								D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = 32;
-							//v22 = x_D41A0_BYTEARRAY_0;
 							D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = v12x->dword_0xA4_164x->str_611.byte_0x458_1112;
 							D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = v12x->dword_0xA4_164x->str_611.byte_0x459_1113;
 							v12x->dword_0xA4_164x->str_611.byte_0x457_1111 = 0;
@@ -881,7 +860,6 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 					if (pressedKeys_180664[42] || pressedKeys_180664[x_BYTE_EB39E_keys[7]])
 					{
 						HandleButtonClick_191B0(38, v18);
-						//v20 = (int)x_D41A0_BYTEARRAY_0;
 						D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 0;
 						v21 = v12x->dword_0xA4_164x->str_611.array_0x3B5_949x.byte[v18];
 						if (v21)
@@ -951,7 +929,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			ComputeMousePlayerMovement_17060(v12x->dword_0xA4_164x->position_backup_20.x, v12x->dword_0xA4_164x->position_backup_20.y);
 			LastPressedKey_1806E4 = 0;
 			unk_18058Cstr.x_DWORD_18059C &= 0xFC;
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 6:
 		case 7:
@@ -1033,17 +1011,17 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			ComputeMousePlayerMovement_17060(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y);
 			LastPressedKey_1806E4 = 0;
 			unk_18058Cstr.x_DWORD_18059C &= 0xFC;
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 9:
 		case 0xB:
 			ReadOptionMenuEvents_19AB0();
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 0xA:
 		case 0xC:
 			AdjustVolume_1A070(a2, a3);
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 0xD:
 		case 0xE:
@@ -1051,22 +1029,20 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			goto LABEL_296;
 		default:
 		LABEL_296:
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		}
 	}
 	if (LastPressedKey_1806E4)
 	{
-		//LOBYTE(result) = x_BYTE_1806E4;
 		if ((unsigned __int8)LastPressedKey_1806E4 >= 1u)
 		{
 			if ((unsigned __int8)LastPressedKey_1806E4 <= 1u)
 			{
-				/*LOBYTE(result) = */sub_18B30();
+				sub_18B30();
 			}
 			else if (LastPressedKey_1806E4 == 0x19)
 			{
-				//LOBYTE(result) = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 				if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
 					sub_18BB0();
 			}
@@ -1078,32 +1054,7 @@ LABEL_306:
 		x_WORD_180746_mouse_left_button = 0;
 	if (!(unk_18058Cstr.x_DWORD_18059C & 2))
 		x_WORD_180744_mouse_right_button = 0;
-	//return result;
 }
-// 6D5D0: using guessed type int /*__fastcall*/ _wcpp_1_unwind_leave__120(x_DWORD, x_DWORD, x_DWORD);
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
-// EB3A2: using guessed type char x_BYTE_EB3A2;
-// EB3A4: using guessed type char x_BYTE_EB3A4;
-// EB3A5: using guessed type char x_BYTE_EB3A5;
-// EB3A6: using guessed type char x_BYTE_EB3A6;
-// EB3A7: using guessed type char x_BYTE_EB3A7;
-// 180559: using guessed type char x_BYTE_180559;
-// 18059C: using guessed type int x_DWORD_18059C;
-// 1805B0: using guessed type int x_DWORD_1805B0_mouse.x;
-// 1805B4: using guessed type int x_DWORD_1805B0_mouse.y;
-// 1805C0: using guessed type __int16 x_WORD_1805C0_arrow_keys;
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
-// 18068E: using guessed type char x_BYTE_18068E;
-// 180693: using guessed type char x_BYTE_180693;
-// 180696: using guessed type char x_BYTE_180696;
-// 18069A: using guessed type char x_BYTE_18069A;
-// 18069C: using guessed type char x_BYTE_18069C;
-// 1806E4: using guessed type char x_BYTE_1806E4;
-// 180744: using guessed type __int16 x_WORD_180744_mouse_right_button;
-// 180746: using guessed type __int16 x_WORD_180746_mouse_left_button;
 
 //----- (000191B0) --------------------------------------------------------
 void HandleButtonClick_191B0(int16_t a1, char a2)//1fa1b0 //set spell, destroy castle sub_191B0(0x2a, 0x00)
