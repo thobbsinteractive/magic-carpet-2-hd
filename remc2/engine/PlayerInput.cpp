@@ -487,7 +487,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 	char v21; // dl
 	char v23; // al
 	type_event_0x6E8E* v24x; // ebx
-	char v27; // al
+	unsigned char v27; // al
 	signed int v28; // eax
 	int v29; // eax
 	int v30; // ecx
@@ -495,7 +495,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 	char v33; // [esp+0h] [ebp-8h]
 	char v34; // [esp+4h] [ebp-4h]
 
-	if ((uint8_t)LastPressedKey_1806E4 >= 0x80u)
+	if (LastPressedKey_1806E4 >= 0x80u)
 		LastPressedKey_1806E4 = 0;
 	if (!(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x20))
 	{
@@ -614,9 +614,9 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 						HandleButtonClick_191B0(20, 6);
 					LastPressedKey_1806E4 = 0;
 				}
-				if ((unsigned __int8)LastPressedKey_1806E4 >= 2u)//2-9
+				if (LastPressedKey_1806E4 >= 2u)//2-9
 				{
-					if ((unsigned __int8)LastPressedKey_1806E4 <= 9u)
+					if (LastPressedKey_1806E4 <= 9u)
 					{
 						HandleButtonClick_191B0(43, LastPressedKey_1806E4 - 2);
 						LastPressedKey_1806E4 = 0;
@@ -638,7 +638,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				}
 				sub_18F80(v8x);
 			}
-			if (LastPressedKey_1806E4 && x_BYTE_E36DC[(unsigned __int8)LastPressedKey_1806E4] == 8)
+			if (LastPressedKey_1806E4 && x_BYTE_E36DC[LastPressedKey_1806E4] == 8)
 			{
 				HandleButtonClick_191B0(39, 1);
 				LastPressedKey_1806E4 = 0;
@@ -657,9 +657,9 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 3:
-			if (!LastPressedKey_1806E4 || (unsigned __int8)LastPressedKey_1806E4 >= 0x80u)
+			if (!LastPressedKey_1806E4 || LastPressedKey_1806E4 >= 0x80u)
 				goto LABEL_216;
-			if ((unsigned __int8)LastPressedKey_1806E4 < 0x1Cu)
+			if (LastPressedKey_1806E4 < 0x1Cu)
 			{
 				if (LastPressedKey_1806E4 == 1)
 				{
@@ -668,14 +668,14 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				}
 				goto LABEL_206;
 			}
-			if ((unsigned __int8)LastPressedKey_1806E4 <= 0x1Cu)
+			if (LastPressedKey_1806E4 <= 0x1Cu)
 			{
 				HandleButtonClick_191B0(19, 0);
 				goto LABEL_215;
 			}
-			if ((unsigned __int8)LastPressedKey_1806E4 < 0x3Bu)
+			if (LastPressedKey_1806E4 < 0x3Bu)
 				goto LABEL_206;
-			if ((unsigned __int8)LastPressedKey_1806E4 <= 0x42u)
+			if (LastPressedKey_1806E4 <= 0x42u)
 			{
 				if (pressedKeys_180664[42] || pressedKeys_180664[54]) //LShift or RShift
 				{
@@ -692,14 +692,14 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				if (LastPressedKey_1806E4 != 0x43)
 				{
 				LABEL_206:
-					v27 = x_BYTE_E36DC[(unsigned __int8)LastPressedKey_1806E4];
-					if ((unsigned __int8)v27 >= 0x41u && (unsigned __int8)v27 <= 0x5Au
-						|| (unsigned __int8)v27 >= 0x61u && (unsigned __int8)v27 <= 0x7Au
-						|| (unsigned __int8)v27 >= 0x30u && (unsigned __int8)v27 <= 0x39u
+					v27 = x_BYTE_E36DC[LastPressedKey_1806E4];
+					if (v27 >= 0x41u && v27 <= 0x5Au
+						|| v27 >= 0x61u && v27 <= 0x7Au
+						|| v27 >= 0x30u && v27 <= 0x39u
 						|| v27 == 8
 						|| v27 == 32)
 					{
-						HandleButtonClick_191B0(17, x_BYTE_E36DC[(unsigned __int8)LastPressedKey_1806E4]);
+						HandleButtonClick_191B0(17, x_BYTE_E36DC[LastPressedKey_1806E4]);
 					}
 					goto LABEL_215;
 				}
@@ -1035,9 +1035,9 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 	}
 	if (LastPressedKey_1806E4)
 	{
-		if ((unsigned __int8)LastPressedKey_1806E4 >= 1u)
+		if (LastPressedKey_1806E4 >= 1u)
 		{
-			if ((unsigned __int8)LastPressedKey_1806E4 <= 1u)
+			if (LastPressedKey_1806E4 <= 1u)
 			{
 				sub_18B30();
 			}
