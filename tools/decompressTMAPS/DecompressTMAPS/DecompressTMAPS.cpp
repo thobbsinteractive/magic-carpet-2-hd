@@ -687,7 +687,7 @@ signed int sub_5C3D0_file_decompress(Bit8u* input, Bit8u* output)//23d3d0
 	//char v6; // [esp+3h] [ebp-5h]
 	//char v7; // [esp+4h] [ebp-4h]
 
-	char RNSSING[5] = "RNC\x1";
+	char RNSSING[] = "RNC\x1";
 	//v3 = 82;
 	//v4 = 78;
 	//v6 = 1;
