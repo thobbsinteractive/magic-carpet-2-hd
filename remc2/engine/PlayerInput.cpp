@@ -48,7 +48,7 @@ char sub_5BF10();
 void sub_70940();
 char sub_86930(unsigned __int16 a1);
 void HandleOptionsMenuButtonClick_19A70();
-void sub_18AA0();
+void SwitchHelpMode_18AA0();
 int SelectSpell_6D4F0(type_str_611* a1, int16_t mouseX);
 void sub_46B40();
 void sub_75C50();
@@ -683,7 +683,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				}
 				else if (LastPressedKey_1806E4 == 0x3b) //F1
 				{
-					sub_18AA0();
+					SwitchHelpMode_18AA0();
 				}
 				LastPressedKey_1806E4 = 0;
 			}
@@ -1081,7 +1081,7 @@ void HandleButtonClick_191B0(int16_t hiSetting, char loSetting)//1fa1b0 //set sp
 		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 |= loSetting;
 		return;
 	case 5:
-	case 6:
+	case 6://set Palyer movement
 		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 != hiSetting && D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 			return;
 		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
@@ -1189,7 +1189,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 	switch (a1)
 	{
 	case 1:
-		sub_18AA0();
+		SwitchHelpMode_18AA0();
 		return;
 	case 2:
 		if (!soundAble_E3798)
@@ -2200,12 +2200,9 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 }
 
 //----- (00018AA0) --------------------------------------------------------
-void sub_18AA0()//1f9aa0
+void SwitchHelpMode_18AA0()//1f9aa0
 {
-	char v1; // bl
-	char v2; // bh
-
-	v1 = 1;
+	bool switchHelpMode = true;
 	if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 	{
 		x_D41A0_BYTEARRAY_4_struct.showHelp_10 = 0;
@@ -2219,16 +2216,15 @@ void sub_18AA0()//1f9aa0
 		}
 		else
 		{
-			v1 = 0;
+			switchHelpMode = false;
 			sub_19760_set_message("No Help Data", 3u, 50);
 		}
 	}
-	if (v1)
+	if (switchHelpMode)
 	{
 		str_unk_1804B0ar.byte_0xaa = -1;
-		v2 = x_D41A0_BYTEARRAY_4_struct.showHelp_10;
 		x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
-		sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[(v2 == 0) + 400], 3u, 50);
+		sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[(x_D41A0_BYTEARRAY_4_struct.showHelp_10 == 0) + 400], 3u, 50);
 		//Help Mode On / Help Mode Off
 	}
 }
