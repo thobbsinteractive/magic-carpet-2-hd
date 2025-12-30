@@ -626,7 +626,7 @@ void Initialize();
 
 
 // FIXME: these functions and vars are used in Events.cpp and should be moved somewhere else
-extern axis_3d x_WORD_EB398ar;
+extern axis_3d predictedAxis_EB398ar;
 extern type_D4C52ar2 str_x_DWORD_D4C52ar_0x2F22[7];
 extern std::array<type_D4C52ar, 17> str_D4C48ar;
 extern type_event_0x6E8E* (*arsub_2a881e[])(axis_3d*);
