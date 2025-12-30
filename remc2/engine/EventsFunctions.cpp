@@ -5622,8 +5622,8 @@ signed int sub_12A70(type_event_0x6E8E* a1x)//1f3a70
 	//v19 = a1x->dword_0xA4_164->byte_0x154_340;
 	if (a1x->dword_0xA4_164x->byte_0x154_340 < 200)
 		a1x->dword_0xA4_164x->byte_0x154_340++;
-	a1x->mana_0x90_144 += a1x->dword_0x88_136;
-	v20 = a1x->dword_0xA4_164x->word_0x163_355 + a1x->life_0x8;
+	a1x->mana_0x90_144 += a1x->manaRegen_0x88_136;
+	v20 = a1x->dword_0xA4_164x->lifeRegen_0x163_355 + a1x->life_0x8;
 	a1x->life_0x8 = v20;
 	if (v20 < -1)
 		a1x->life_0x8 = -1;
@@ -5636,18 +5636,18 @@ signed int sub_12A70(type_event_0x6E8E* a1x)//1f3a70
 		a1x->dword_0xA4_164x->dword_0x16D_365--;
 	if (v2 || a1x->struct_byte_0xc_12_15.byte[1] & 0x10)
 	{
-		a1x->dword_0x88_136 = a1x->maxMana_0x8C_140 / 200;
-		a1x->dword_0xA4_164x->word_0x163_355 = a1x->maxLife_0x4 / 200;
-		if (a1x->dword_0x88_136 < 1000)
-			a1x->dword_0x88_136 = 1000;
+		a1x->manaRegen_0x88_136 = a1x->maxMana_0x8C_140 / 200;
+		a1x->dword_0xA4_164x->lifeRegen_0x163_355 = a1x->maxLife_0x4 / 200;
+		if (a1x->manaRegen_0x88_136 < 1000)
+			a1x->manaRegen_0x88_136 = 1000;
 		a1x->struct_byte_0xc_12_15.byte[1] &= 0xEFu;
 	}
 	else
 	{
-		a1x->dword_0x88_136 = a1x->maxMana_0x8C_140 / 2000;
-		a1x->dword_0xA4_164x->word_0x163_355 = a1x->maxLife_0x4 / 500;
-		if (a1x->dword_0x88_136 < 100)
-			a1x->dword_0x88_136 = 100;
+		a1x->manaRegen_0x88_136 = a1x->maxMana_0x8C_140 / 2000;
+		a1x->dword_0xA4_164x->lifeRegen_0x163_355 = a1x->maxLife_0x4 / 500;
+		if (a1x->manaRegen_0x88_136 < 100)
+			a1x->manaRegen_0x88_136 = 100;
 	}
 	if (a1x->mana_0x90_144 < 0)
 		a1x->mana_0x90_144 = 0;
@@ -19562,7 +19562,7 @@ void sub_28FF0(type_event_0x6E8E* a1x)//209ff0
 					}
 				}
 			}
-			v9 = v6x->mana_0x90_144 - (v6x->dword_0x88_136 + 14);
+			v9 = v6x->mana_0x90_144 - (v6x->manaRegen_0x88_136 + 14);
 			v6x->mana_0x90_144 = v9;
 			if (v9 < 0)
 				v6x->mana_0x90_144 = 0;
@@ -20753,9 +20753,9 @@ void sub_2A7F0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x, char a3)//20b7f0
 		a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 		v4 = a1x->rand_0x14_20 % 0xCu;
 		a1x->rand_0x14_20 += x_D41A0_BYTEARRAY_4_struct.setting_30;
-		a1x->dword_0x88_136 = (v4 > 7) + 1;
+		a1x->manaRegen_0x88_136 = (v4 > 7) + 1;
 	}
-	v5 = a1x->dword_0x88_136;
+	v5 = a1x->manaRegen_0x88_136;
 	if (v5 >= 1)
 	{
 		if (v5 <= 1)
@@ -38472,7 +38472,7 @@ void GameEvents_51BB0()//232bb0
 						if (locEv)
 						{
 							locEv->struct_byte_0xc_12_15.byte[0] |= 1u;
-							locEv->dword_0x88_136 = 0;
+							locEv->manaRegen_0x88_136 = 0;
 							locEv->parentId_0x28_40 = actEvent - D41A0_0.struct_0x6E8E;
 							actEvent->dword_0xA4_164x->str_611.array_0x333_819x.word[k] = locEv - D41A0_0.struct_0x6E8E;
 							for (int n = 0; n < 10; n++)
@@ -56814,9 +56814,9 @@ bool sub_68D50(type_event_0x6E8E* locEvent1, type_event_0x6E8E* locEvent2)//249d
 		return false;
 	if (locEvent2->life_0x8 < 0)
 		return false;
-	if (locEvent1->dword_0x88_136)
+	if (locEvent1->manaRegen_0x88_136)
 	{
-		if (!locEvent2->dword_0xA4_164x->word_0x3A_58 || locEvent1->dword_0x88_136 > x_DWORD_EA3E4[locEvent2->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144)
+		if (!locEvent2->dword_0xA4_164x->word_0x3A_58 || locEvent1->manaRegen_0x88_136 > x_DWORD_EA3E4[locEvent2->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144)
 			return false;
 	}
 	if (locEvent2->mana_0x90_144 >= locEvent1->maxMana_0x8C_140 && locEvent1->word_0x2E_46 == locEvent1->word_0x30_48)
@@ -56838,17 +56838,17 @@ signed int sub_68DE0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//249de0
 	v2 = a1x->word_0x2E_46;
 	if (v2 == a1x->word_0x30_48)
 	{
-		v3 = a2x->dword_0x88_136;
+		v3 = a2x->manaRegen_0x88_136;
 		if (v3 >= 0)
-			a2x->dword_0x88_136 = -a1x->maxMana_0x8C_140;
+			a2x->manaRegen_0x88_136 = -a1x->maxMana_0x8C_140;
 		else
-			a2x->dword_0x88_136 = v3 - a1x->maxMana_0x8C_140;
+			a2x->manaRegen_0x88_136 = v3 - a1x->maxMana_0x8C_140;
 		result = 1;
 	}
 	else
 	{
-		if (v2 && a2x->dword_0x88_136 > 0)
-			a2x->dword_0x88_136 = 0;
+		if (v2 && a2x->manaRegen_0x88_136 > 0)
+			a2x->manaRegen_0x88_136 = 0;
 		result = 0;
 	}
 	return result;
@@ -57719,11 +57719,11 @@ void sub_6A300(type_event_0x6E8E* a1x)//24b300
 					v1x->life_0x8 = v2;
 					if (v2 > v3)
 						v1x->life_0x8 = v3;
-					v4 = v1x->dword_0x88_136;
+					v4 = v1x->manaRegen_0x88_136;
 					if (v4 >= 0)
-						v1x->dword_0x88_136 = -a1x->maxMana_0x8C_140;
+						v1x->manaRegen_0x88_136 = -a1x->maxMana_0x8C_140;
 					else
-						v1x->dword_0x88_136 = v4 - a1x->maxMana_0x8C_140;
+						v1x->manaRegen_0x88_136 = v4 - a1x->maxMana_0x8C_140;
 				}
 			}
 			else
@@ -61360,9 +61360,9 @@ void sub_5DE30(type_event_0x6E8E* a1x)//23ee30
 				{
 					if (v10 != 2)
 						return;
-					v2x->life_0x8 -= v2x->dword_0xA4_164x->word_0x163_355 + 2;
+					v2x->life_0x8 -= v2x->dword_0xA4_164x->lifeRegen_0x163_355 + 2;
 				}
-				v11 = v2x->mana_0x90_144 - (v2x->dword_0x88_136 + 8);
+				v11 = v2x->mana_0x90_144 - (v2x->manaRegen_0x88_136 + 8);
 				v2x->mana_0x90_144 = v11;
 				if (v11 < 0)
 					v2x->mana_0x90_144 = 0;
@@ -61380,39 +61380,26 @@ void sub_5DE30(type_event_0x6E8E* a1x)//23ee30
 //----- (0005E010) --------------------------------------------------------
 void AddPlayer03_00_5E010(type_event_0x6E8E* a1x)//23f010
 {
-	unsigned __int16 v1; // dx
-	type_event_0x6E8E* v2x; // edx
-	unsigned __int8 v4; // cl
-	int v7; // eax
-	__int16 v9; // cx
-	int v10; // edi
-	int v11; // edx
-	int v13; // ecx
-	__int16 v15; // di
-	char v16; // [esp+0h] [ebp-4h]
-
-	v16 = 0;
+	bool locIsOk = false;
 	a1x->minSpeed_0x84_132 = x_DWORD_D4B8C;
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1))
 	{
-		v1 = a1x->dword_0xA4_164x->word_0x3A_58;
-		if (v1)
+		if (a1x->dword_0xA4_164x->word_0x3A_58)
 		{
-			if (sub_106C0(a1x, x_DWORD_EA3E4[v1]))
-				v16 = 1;
+			if (sub_106C0(a1x, x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]))
+				locIsOk = true;
 		}
 	}
 	sub_5F380(a1x);
-	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1) && v16)
+	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1) && locIsOk)
 	{
 		if (a1x->str_0x5E_94.word_0x62_98)
 		{
-			v2x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
-			if (v2x->str_0x5E_94.word_0x62_98)
-				v2x->str_0x5E_94.dword_0x5E_94 += a1x->str_0x5E_94.dword_0x5E_94;
+			if (x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]->str_0x5E_94.word_0x62_98)
+				x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]->str_0x5E_94.dword_0x5E_94 += a1x->str_0x5E_94.dword_0x5E_94;
 			else
-				v2x->str_0x5E_94.dword_0x5E_94 = a1x->str_0x5E_94.dword_0x5E_94;
-			v2x->str_0x5E_94.word_0x62_98 = a1x->str_0x5E_94.word_0x62_98;
+				x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]->str_0x5E_94.dword_0x5E_94 = a1x->str_0x5E_94.dword_0x5E_94;
+			x_DWORD_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58]->str_0x5E_94.word_0x62_98 = a1x->str_0x5E_94.word_0x62_98;
 		}
 		a1x->dword_0xA4_164x->word_0x159_345 = 2;
 	}
@@ -61427,54 +61414,47 @@ void AddPlayer03_00_5E010(type_event_0x6E8E* a1x)//23f010
 		{
 			sub_5EFA0(a1x);
 		}
-		v4 = a1x->dword_0xA4_164x->byte_0x154_340;
-		if (v4 < 200)
-			a1x->dword_0xA4_164x->byte_0x154_340 = v4 + 1;
+		if (a1x->dword_0xA4_164x->byte_0x154_340 < 200)
+			a1x->dword_0xA4_164x->byte_0x154_340++;
 	}
 	sub_5D530(a1x);
 	if (a1x->life_0x8 >= 0)
 	{
 		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1))
 		{
-			a1x->mana_0x90_144 += a1x->dword_0x88_136;
-			v7 = a1x->dword_0xA4_164x->dword_0x18D_397;
-			if (v7)
-				a1x->dword_0xA4_164x->dword_0x18D_397 = v7 - 1;
+			a1x->mana_0x90_144 += a1x->manaRegen_0x88_136;
+			if (a1x->dword_0xA4_164x->dword_0x18D_397)
+				a1x->dword_0xA4_164x->dword_0x18D_397--;
 			else
-				a1x->life_0x8 += a1x->dword_0xA4_164x->word_0x163_355;//cure
-			v9 = a1x->dword_0xA4_164x->word_0x24C_588;
-			if (v9)
-				a1x->dword_0xA4_164x->word_0x24C_588 = v9 - 1;
+				a1x->life_0x8 += a1x->dword_0xA4_164x->lifeRegen_0x163_355;//cure
+			if (a1x->dword_0xA4_164x->word_0x24C_588)
+				a1x->dword_0xA4_164x->word_0x24C_588--;
 			if (a1x->mana_0x90_144 < 0)
 				a1x->mana_0x90_144 = 0;
-			v10 = a1x->maxMana_0x8C_140;
-			if (a1x->mana_0x90_144 > v10)
-				a1x->mana_0x90_144 = v10;
+			if (a1x->mana_0x90_144 > a1x->maxMana_0x8C_140)
+				a1x->mana_0x90_144 = a1x->maxMana_0x8C_140;
 			if (a1x->life_0x8 < -1)
 				a1x->life_0x8 = -1;
-			v11 = a1x->maxLife_0x4;
-			if (a1x->life_0x8 > v11)//if act life bigger then max life trim it
-				a1x->life_0x8 = v11;
-			v13 = a1x->dword_0xA4_164x->dword_0x16D_365;
-			if (v13)
-				a1x->dword_0xA4_164x->dword_0x16D_365 = v13 - 1;
-			v15 = a1x->dword_0xA4_164x->word_0x248_584;
-			if (v15)
-				a1x->dword_0xA4_164x->word_0x248_584 = v15 - 1;
-			if (v16 || a1x->struct_byte_0xc_12_15.byte[1] & 0x10)
+			if (a1x->life_0x8 > a1x->maxLife_0x4)
+				a1x->life_0x8 = a1x->maxLife_0x4;
+			if (a1x->dword_0xA4_164x->dword_0x16D_365)
+				a1x->dword_0xA4_164x->dword_0x16D_365--;
+			if (a1x->dword_0xA4_164x->word_0x248_584)
+				a1x->dword_0xA4_164x->word_0x248_584--;
+			if (locIsOk || a1x->struct_byte_0xc_12_15.byte[1] & 0x10)
 			{
-				a1x->dword_0x88_136 = a1x->maxMana_0x8C_140 / 200;
-				a1x->dword_0xA4_164x->word_0x163_355 = a1x->maxLife_0x4 / 250;
-				if (a1x->dword_0x88_136 < 1000)
-					a1x->dword_0x88_136 = 1000;
+				a1x->manaRegen_0x88_136 = a1x->maxMana_0x8C_140 / 200;
+				a1x->dword_0xA4_164x->lifeRegen_0x163_355 = a1x->maxLife_0x4 / 250;
+				if (a1x->manaRegen_0x88_136 < 1000)
+					a1x->manaRegen_0x88_136 = 1000;
 				a1x->struct_byte_0xc_12_15.byte[1] &= 0xEFu;
 			}
 			else
 			{
-				a1x->dword_0x88_136 = a1x->maxMana_0x8C_140 / 2000;
-				a1x->dword_0xA4_164x->word_0x163_355 = a1x->maxLife_0x4 / 2000;
-				if (a1x->dword_0x88_136 < 100)
-					a1x->dword_0x88_136 = 100;
+				a1x->manaRegen_0x88_136 = a1x->maxMana_0x8C_140 / 2000;
+				a1x->dword_0xA4_164x->lifeRegen_0x163_355 = a1x->maxLife_0x4 / 2000;
+				if (a1x->manaRegen_0x88_136 < 100)
+					a1x->manaRegen_0x88_136 = 100;
 			}
 		}
 	}

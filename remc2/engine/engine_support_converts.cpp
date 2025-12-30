@@ -113,7 +113,7 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	for (int i = 0; i < 8; i++)
 		memcpy(output + 0x15b + i, &input->array_0x15B_347[i], 1);
 	//int16_t word_0x163_355;
-	memcpy(output + 0x163, &input->word_0x163_355, 2);
+	memcpy(output + 0x163, &input->lifeRegen_0x163_355, 2);
 	//int32_t dword_0x165_357;
 	memcpy(output + 0x165, &input->dword_0x165_357, 4);
 	//int32_t dword_0x169_361;
@@ -438,7 +438,7 @@ void convert_struct_to_array_0x6E8E(type_event_0x6E8E* input, uint8_t* output) {
 	//int16_t word_0x86_134;//134//MAX SPEED
 	memcpy(output + 134, &input->maxSpeed_0x86_134, 2);
 	//int32_t dword_0x88_136;//136
-	memcpy(output + 136, &input->dword_0x88_136, 4);
+	memcpy(output + 136, &input->manaRegen_0x88_136, 4);
 	//int32_t dword_0x8C_140;//140 //wiz name?//ACTUAL MANA
 	memcpy(output + 140, &input->maxMana_0x8C_140, 4);
 	//int32_t dword_0x90_144;//144 0-1000//MAX MANA

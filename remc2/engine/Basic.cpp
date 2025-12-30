@@ -3123,7 +3123,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 		to->struct_0x6E8E[i].actSpeed_0x82_130 = from->struct_0x6E8E[i].word_0x82_130;
 		to->struct_0x6E8E[i].minSpeed_0x84_132 = from->struct_0x6E8E[i].word_0x84_132;
 		to->struct_0x6E8E[i].maxSpeed_0x86_134 = from->struct_0x6E8E[i].word_0x86_134;
-		to->struct_0x6E8E[i].dword_0x88_136 = from->struct_0x6E8E[i].dword_0x88_136;
+		to->struct_0x6E8E[i].manaRegen_0x88_136 = from->struct_0x6E8E[i].dword_0x88_136;
 		to->struct_0x6E8E[i].maxMana_0x8C_140 = from->struct_0x6E8E[i].dword_0x8C_140;
 		to->struct_0x6E8E[i].mana_0x90_144 = from->struct_0x6E8E[i].dword_0x90_144;
 		to->struct_0x6E8E[i].word_0x94_148 = from->struct_0x6E8E[i].word_0x94_148;
@@ -3316,7 +3316,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 		to->struct_0x6E8E[i].word_0x82_130 = from->struct_0x6E8E[i].actSpeed_0x82_130;
 		to->struct_0x6E8E[i].word_0x84_132 = from->struct_0x6E8E[i].minSpeed_0x84_132;
 		to->struct_0x6E8E[i].word_0x86_134 = from->struct_0x6E8E[i].maxSpeed_0x86_134;
-		to->struct_0x6E8E[i].dword_0x88_136 = from->struct_0x6E8E[i].dword_0x88_136;
+		to->struct_0x6E8E[i].dword_0x88_136 = from->struct_0x6E8E[i].manaRegen_0x88_136;
 		to->struct_0x6E8E[i].dword_0x8C_140 = from->struct_0x6E8E[i].maxMana_0x8C_140;
 		to->struct_0x6E8E[i].dword_0x90_144 = from->struct_0x6E8E[i].mana_0x90_144;
 		to->struct_0x6E8E[i].word_0x94_148 = from->struct_0x6E8E[i].word_0x94_148;

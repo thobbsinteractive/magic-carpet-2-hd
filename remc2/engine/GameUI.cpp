@@ -415,10 +415,10 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* a3x, cha
 						}
 					}
 				}
-				if (a3x->dword_0x88_136)
+				if (a3x->manaRegen_0x88_136)
 				{
 					v11 = v15x->dword_0xA4_164x->word_0x3A_58;
-					if (!v11 || a3x->dword_0x88_136 > x_DWORD_EA3E4[v11]->mana_0x90_144)
+					if (!v11 || a3x->manaRegen_0x88_136 > x_DWORD_EA3E4[v11]->mana_0x90_144)
 					{
 						if (D41A0_0.terrain_2FECE.MapType != MapType_t::Day)
 							v12 = 16;

@@ -965,7 +965,7 @@ void SetSpell_6D5E0(type_event_0x6E8E* entity, char spell)//24e5e0
 		entity->byte_0x3C_60 = 0;
 		entity->byte_0x3D_61 = 0;
 		//fix
-		entity->dword_0x88_136 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].dword_A;
+		entity->manaRegen_0x88_136 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].dword_A;
 		//fix
 		v2y = sub_6D710(x_DWORD_EA3E4[entity->parentId_0x28_40], entity->model_0x40_64, actspell);
 		entity->maxMana_0x8C_140 = v2y;
@@ -974,7 +974,7 @@ void SetSpell_6D5E0(type_event_0x6E8E* entity, char spell)//24e5e0
 		entity->mana_0x90_144 = v2y;		
 		if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x20)
 		{
-			entity->dword_0x88_136 = 0;
+			entity->manaRegen_0x88_136 = 0;
 			entity->mana_0x90_144 = 1;
 		}
 	}

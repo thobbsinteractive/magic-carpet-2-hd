@@ -260,7 +260,7 @@ typedef struct Type_str_164 {//size 1136
 	int16_t word_0x157_343;
 	int16_t word_0x159_345;
 	int8_t array_0x15B_347[8] = {0,0,0,0,0,0,0,0};
-	int16_t word_0x163_355;
+	int16_t lifeRegen_0x163_355;
 	int32_t dword_0x165_357;
 	int32_t dword_0x169_361;
 	int32_t dword_0x16D_365;
@@ -379,7 +379,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	int16_t actSpeed_0x82_130;//130 //add to z//ACTUAL SPEED
 	int16_t minSpeed_0x84_132;//132//MIN SPEED
 	int16_t maxSpeed_0x86_134;//134//MAX SPEED
-	int32_t dword_0x88_136;//136
+	int32_t manaRegen_0x88_136;//136
 	int32_t maxMana_0x8C_140;//140 //wiz name?//ACTUAL MANA
 	int32_t mana_0x90_144;//144 0-1000//MAX MANA
 	uint16_t word_0x94_148;//148
