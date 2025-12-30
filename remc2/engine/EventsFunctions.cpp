@@ -978,7 +978,6 @@ void sub_88B20();
 void sub_88B60();
 void sub_88BA0();
 void sub_88D00();
-int ReadGameUserInputs_89D10();
 
 signed int sub_8B600(type_unk_18058Cstr a1);
 signed int sub_8B790(type_unk_18058Cstr a1);
@@ -46734,31 +46733,19 @@ int sub_76840()
 //----- (0007A060) --------------------------------------------------------
 void sub_7A060_get_mouse_and_keyboard_events()//25B060
 {
-	//char result; // al
-
 	x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons = 0;
 	if (x_WORD_180746_mouse_left_button)
-		x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons = 1;
+		x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons |= 1;
 	if (x_WORD_180744_mouse_right_button)
 		x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons |= 2;
 	x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx = x_WORD_E3760_mouse.x;//2b4760
 	x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony = x_WORD_E3760_mouse.y;//2b4762
 	sub_7C050_get_keyboard_keys1();
-	//result = x_BYTE_17DF10_get_key_scancode;
 	x_WORD_180744_mouse_right_button = 0;
 	x_WORD_180746_mouse_left_button = 0;
 	x_WORD_18074A_mouse_right2_button = 0;
 	x_WORD_18074C_mouse_left2_button = 0;
-	//return result;
 }
-// E3760: using guessed type int x_DWORD_E3760;
-// 17DEE4: using guessed type int x_DWORD_17DEE4_mouse_position;
-// 17DEEE: using guessed type __int16 x_WORD_17DEEE_mouse_buttons;
-// 17DF10: using guessed type char x_BYTE_17DF10_get_key_scancode;
-// 180744: using guessed type __int16 x_WORD_180744_mouse_right_button;
-// 180746: using guessed type __int16 x_WORD_180746_mouse_left_button;
-// 18074A: using guessed type __int16 x_WORD_18074A_mouse_right2_button;
-// 18074C: using guessed type __int16 x_WORD_18074C_mouse_left2_button;
 
 //----- (0007A110) --------------------------------------------------------
 void sub_7A110_load_hscreen(char a1, char a2)//25b110

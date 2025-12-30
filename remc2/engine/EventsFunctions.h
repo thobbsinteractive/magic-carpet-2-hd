@@ -1577,4 +1577,5 @@ void ClearSettings_567C0();
 void InitStages_58940(/*uint8_t* a1*/);
 void Init0x3664C_84790();
 void UpdateEntities_57730();
+int ReadGameUserInputs_89D10();
 #endif
