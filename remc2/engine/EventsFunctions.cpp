@@ -60900,58 +60900,9 @@ LABEL_30:
 //----- (0005D530) --------------------------------------------------------
 void sub_5D530(type_event_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 {
-	//char v1; // ah
-	//int v2; // ecx
-	//unsigned __int8 v3; // dh
-	//int v4; // edx
-	//int v5; // ecx
-	//int v6; // edx
-	//int v7; // edx
-	//int v8; // eax
-	//int v9; // edx
-	//__int16 v10; // ax
-	//int v11; // eax
-	//__int16 v12; // dx
-	//int v13; // eax
-	unsigned __int8 v14; // cl
-	int v15; // edx
-	int v16; // eax
-	//int v17; // edx
-	__int16 v18; // di
-	int v19; // eax
-	__int16 v20; // ST0C_2
-	unsigned __int16 v21; // ax
-	//int v22; // eax
-	__int16 v23; // dx
-	//int v24; // eax
-	__int16 v25; // si
-	//x_WORD *v26; // edx
-	signed __int16 v27; // ax
-	//x_WORD *v28; // edx
-	//__int16 v29; // si
-	//__int16 v30; // ax
-	//int v31; // edx
-	char v32; // cl
-	//int v33; // edx
-	char v34; // ah
-	//int v35; // eax
-	char v36; // ch
-	//int v37; // edx
-	char v38; // ch
-	__int16 v39; // ax
-	__int16 v40; // dx
-	//int v41; // ecx
-	//int v42; // eax
-	__int16 v43; // ax
-	type_event_0x6E8E* v44x; // edx
-	char v45; // al
-	//int v46; // ecx
-	//unsigned int v47; // eax
-	__int16 v48; // si
-	//int v49; // edx
-	__int16 v50; // ax
-
 	int locIntTemp;
+	int locActSpeed;
+	int locAlt;
 
 	if (a1x->struct_byte_0xc_12_15.byte[1] & 8)
 	{
@@ -60988,90 +60939,64 @@ void sub_5D530(type_event_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 		altDiff = -256;
 	if (altDiff > 256)
 		altDiff = 256;
-	//v10 = a1x->dword_0xA4_164x->word_0x157_343 & 0x7ffu;
-	//HIBYTE(v10) &= 0x7ffu;
 	a1x->word_0x1E_30 = a1x->dword_0xA4_164x->word_0x157_343 & 0x7ffu;
 	if (a1x->word_0x1E_30 > 1024)
 		a1x->word_0x1E_30 -= 2048;
 	if (a1x->actSpeed_0x82_130 >= 0 || a1x->word_0x1E_30 <= 0)
 	{
 		if (a1x->actSpeed_0x82_130 < 0 && a1x->word_0x1E_30 < 0)
-			goto LABEL_105;
-		if (a1x->actSpeed_0x82_130 > 0 && a1x->word_0x1E_30 < 0)
-		{
-			a1x->dword_0xA4_164x->word_0x24_36 = ((a1x->word_0x1E_30 * -altDiff - (my_sign32(a1x->word_0x1E_30 * -altDiff) * 255)) >> 8);
-			goto LABEL_27;
-		}
-		if (a1x->actSpeed_0x82_130 > 0 && a1x->word_0x1E_30 > 0)
-		{
-		LABEL_105:
 			a1x->dword_0xA4_164x->word_0x24_36 = a1x->dword_0xA4_164x->word_0x157_343;
-			goto LABEL_27;
-		}
+		else if (a1x->actSpeed_0x82_130 > 0 && a1x->word_0x1E_30 < 0)
+			a1x->dword_0xA4_164x->word_0x24_36 = ((a1x->word_0x1E_30 * -altDiff - (my_sign32(a1x->word_0x1E_30 * -altDiff) * 255)) >> 8);
+		else if (a1x->actSpeed_0x82_130 > 0 && a1x->word_0x1E_30 > 0)
+			a1x->dword_0xA4_164x->word_0x24_36 = a1x->dword_0xA4_164x->word_0x157_343;
 	}
 	else
-	{
 		a1x->dword_0xA4_164x->word_0x24_36 = ((a1x->word_0x1E_30 * -altDiff - (my_sign32(a1x->word_0x1E_30 * -altDiff) * 255)) >> 8);
-	}
-LABEL_27:
 	a1x->dword_0xA4_164x->word_0x24_36 &= 0x7ffu;
-	v14 = a1x->dword_0xA4_164x->byte_0x14C_332;
-	if (v14)
+	if (a1x->dword_0xA4_164x->byte_0x14C_332)
 	{
-		v15 = a1x->actSpeed_0x82_130 * (4 - v14);
-		v16 = (v15 - (__CFSHL__(v15 >> 31, 2) + 4 * (v15 >> 31))) >> 2;
+		locIntTemp = a1x->actSpeed_0x82_130 * (4 - a1x->dword_0xA4_164x->byte_0x14C_332);
+		locActSpeed = (locIntTemp - (__CFSHL__(locIntTemp >> 31, 2) + 4 * (locIntTemp >> 31))) >> 2;
 	}
 	else if (a1x->dword_0xA4_164x->byte_0x14E_334)
 	{
-		LOWORD(v16) = 0;
+		locActSpeed = 0;
 	}
 	else
 	{
-		LOWORD(v16) = a1x->actSpeed_0x82_130;
+		locActSpeed = a1x->actSpeed_0x82_130;
 	}
-	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->dword_0xA4_164x->word_0x24_36, v16);
-	v18 = a1x->dword_0xA4_164x->word_0x10_16;
-	if (v18)
+	MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28, a1x->dword_0xA4_164x->word_0x24_36, locActSpeed);
+	if (a1x->dword_0xA4_164x->word_0x10_16)
 	{
-		LOBYTE(v19) = a1x->dword_0xA4_164x->byte_0x14C_332;
-		if ((x_BYTE)v19)
+		if (a1x->dword_0xA4_164x->byte_0x14C_332)
 		{
-			v19 = ((4 - a1x->dword_0xA4_164x->byte_0x14C_332) * v18
-				- (__CFSHL__((4 - a1x->dword_0xA4_164x->byte_0x14C_332) * v18 >> 31, 2)
-					+ 4 * ((4 - a1x->dword_0xA4_164x->byte_0x14C_332) * v18 >> 31))) >> 2;
+			locIntTemp = ((4 - a1x->dword_0xA4_164x->byte_0x14C_332) * a1x->dword_0xA4_164x->word_0x10_16
+				- (__CFSHL__((4 - a1x->dword_0xA4_164x->byte_0x14C_332) * a1x->dword_0xA4_164x->word_0x10_16 >> 31, 2)
+					+ 4 * ((4 - a1x->dword_0xA4_164x->byte_0x14C_332) * a1x->dword_0xA4_164x->word_0x10_16 >> 31))) >> 2;
 		}
 		else if (a1x->dword_0xA4_164x->byte_0x14E_334)
-		{
-			BYTE1(v19) = 0;
-		}
+			locIntTemp = 0;
 		else
-		{
-			LOWORD(v19) = a1x->dword_0xA4_164x->word_0x10_16;
-		}
-		v20 = v19;
-		v21 = a1x->word_0x1C_28;
-		HIBYTE(v21) += 2;
-		MovePlayer_57FA0(&x_WORD_EB398ar, v21, 0, v20);
+			locIntTemp = a1x->dword_0xA4_164x->word_0x10_16;
+		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->word_0x1C_28+0x200, 0, locIntTemp);
 	}
-	v23 = a1x->dword_0xA4_164x->word_0x1E_30;
-	if (v23)
+	if (a1x->dword_0xA4_164x->word_0x1E_30)
 	{
-		if (v23 > 128)
+		if (a1x->dword_0xA4_164x->word_0x1E_30 > 128)
 			a1x->dword_0xA4_164x->word_0x1E_30 = 128;
 		MovePlayer_57FA0(&x_WORD_EB398ar, a1x->dword_0xA4_164x->word_0x20_32, 0, a1x->dword_0xA4_164x->word_0x1E_30);
-		v25 = a1x->dword_0xA4_164x->word_0x1E_30;
-		if (v25)
+		if (a1x->dword_0xA4_164x->word_0x1E_30)
 		{
-			if (v25 <= 0)
-				v27 = -1;
+			if (a1x->dword_0xA4_164x->word_0x1E_30 <= 0)
+				locIntTemp = -1;
 			else
-				v27 = 1;
+				locIntTemp = 1;
 		}
 		else
-		{
-			v27 = 0;
-		}
-		a1x->dword_0xA4_164x->word_0x1E_30 += v27 * x_DWORD_D4B90;
+			locIntTemp = 0;
+		a1x->dword_0xA4_164x->word_0x1E_30 += locIntTemp * x_DWORD_D4B90;
 		if (abs(a1x->dword_0xA4_164x->word_0x1E_30) < 4)
 			a1x->dword_0xA4_164x->word_0x1E_30 = 0;
 	}
@@ -61081,19 +61006,16 @@ LABEL_27:
 	a1x->dword_0xA4_164x->word_0x1A6_422 = 0;
 	a1x->dword_0xA4_164x->word_0x1A8_424 = 0;
 	a1x->dword_0xA4_164x->word_0x1AA_426 = 0;
-	v32 = a1x->dword_0xA4_164x->byte_0x262_610;
-	if (v32)
-		a1x->dword_0xA4_164x->byte_0x262_610 = v32 - 1;
+	if (a1x->dword_0xA4_164x->byte_0x262_610)
+		a1x->dword_0xA4_164x->byte_0x262_610--;
 	sub_5DE30(a1x);
 	if (a1x->dword_0xA4_164x->byte_0x14C_332)
 	{
-		v34 = a1x->dword_0xA4_164x->byte_0x14D_333 - 1;
-		a1x->dword_0xA4_164x->byte_0x14D_333 = v34;
-		if (!v34)
+		a1x->dword_0xA4_164x->byte_0x14D_333--;
+		if (!a1x->dword_0xA4_164x->byte_0x14D_333)
 		{
-			v36 = a1x->dword_0xA4_164x->byte_0x14C_332 - 1;
-			a1x->dword_0xA4_164x->byte_0x14C_332 = v36;
-			if (v36)
+			a1x->dword_0xA4_164x->byte_0x14C_332--;
+			if (a1x->dword_0xA4_164x->byte_0x14C_332)
 			{
 				a1x->dword_0xA4_164x->byte_0x14D_333 = 8;
 				x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
@@ -61106,36 +61028,34 @@ LABEL_27:
 	}
 	if (a1x->dword_0xA4_164x->byte_0x14E_334)
 	{
-		v38 = a1x->dword_0xA4_164x->byte_0x14F_335 - 1;
-		a1x->dword_0xA4_164x->byte_0x14F_335 = v38;
-		if (!v38)
+		a1x->dword_0xA4_164x->byte_0x14F_335--;
+		if (!a1x->dword_0xA4_164x->byte_0x14F_335)
 			a1x->dword_0xA4_164x->byte_0x14E_334--;
 	}
-	if ((unsigned __int16)sub_5D0A0(a1x))
+	if (sub_5D0A0(a1x))
 	{
-		v39 = getTerrainAlt_10C40(&x_WORD_EB398ar);
-		v40 = v39;
+		locAlt = getTerrainAlt_10C40(&x_WORD_EB398ar);
 		if (a1x->dword_0xA4_164x->byte_0x14E_334)
 		{
 			x_WORD_EB398ar.z -= 51;
 		}
 		else
 		{
-			if (x_WORD_EB398ar.z > a1x->dword_0xA0_160x->word_160_0xc_12 + v39)
+			if (x_WORD_EB398ar.z > a1x->dword_0xA0_160x->word_160_0xc_12 + locAlt)
 				x_WORD_EB398ar.z += a1x->dword_0xA0_160x->word_160_0xe_14;
 		}
-		if (x_WORD_EB398ar.z >= v40 + a1x->dword_0xA0_160x->word_160_0xc_12)
+		if (x_WORD_EB398ar.z >= locAlt + a1x->dword_0xA0_160x->word_160_0xc_12)
 		{
 			if (isCaveLevel_D41B6)
 			{
-				v43 = sub_10C60(&x_WORD_EB398ar);
-				if (x_WORD_EB398ar.z > v43 - 384)
-					x_WORD_EB398ar.z = v43 - 384;
+				locIntTemp = sub_10C60(&x_WORD_EB398ar);
+				if (x_WORD_EB398ar.z > locIntTemp - 384)
+					x_WORD_EB398ar.z = locIntTemp - 384;
 			}
 		}
 		else
 		{
-			x_WORD_EB398ar.z = a1x->dword_0xA0_160x->word_160_0xc_12 + v40;
+			x_WORD_EB398ar.z = a1x->dword_0xA0_160x->word_160_0xc_12 + locAlt;
 		}
 		CopyEntityPosition_57CF0(a1x, &x_WORD_EB398ar);
 	}
@@ -61145,31 +61065,24 @@ LABEL_27:
 	}
 	if (!(a1x->byte_0x3E_62 & 0x3F))
 	{
-		v44x = x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[4]];
-		if (v44x > x_DWORD_EA3E4[0])
+		if (x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[4]] > x_DWORD_EA3E4[0])
 		{
-			if (v44x->word_0x2E_46)
+			if (x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[4]]->word_0x2E_46)
 			{
-				v45 = SPELLS_BEGIN_BUFFER_str[4].subspell[v44x->byte_0x46_70].byte_0x1A;
-				if ((unsigned __int8)v45 < 0x10u)
+				switch (SPELLS_BEGIN_BUFFER_str[4].subspell[x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[4]]->byte_0x46_70].byte_0x1A)
 				{
-					if (v45 == 2)
-						PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 12);
-				}
-				else if ((unsigned __int8)v45 <= 0x10u)
-				{
-					PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 39);
-				}
-				else if ((unsigned __int8)v45 >= 0x13u)
-				{
-					if ((unsigned __int8)v45 <= 0x13u)
-					{
-						PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 43);
-					}
-					else if (v45 == 25)
-					{
-						PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 37);
-					}
+					case 0x2:
+						PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 12);//0x2
+						break;
+					case 0x10:
+						PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 39);//0x10
+						break;
+					case 0x13:
+						PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 43);//0x13
+						break;
+					case 0x19:
+						PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 37);//0x19
+						break;
 				}
 			}
 		}
@@ -61178,11 +61091,10 @@ LABEL_27:
 	{
 		D41A0_0.rand_0x8 = 9377 * D41A0_0.rand_0x8 + 9439;
 		D41A0_0.rand_0x8 = D41A0_0.rand_0x8 + x_D41A0_BYTEARRAY_4_struct.setting_30;
-		if ((signed int)(D41A0_0.rand_0x8 % 0x83) < 5)
+		if ((int)(D41A0_0.rand_0x8 % 0x83) < 5)
 		{
-			v48 = D41A0_0.LevelIndex_0xc;
-			if (v48 == a1x->dword_0xA4_164x->word_0x38_56)
-				PrepareEventSound_6E450(0, v48, D41A0_0.rand_0x8 % 0x83 + 65);
+			if (D41A0_0.LevelIndex_0xc == a1x->dword_0xA4_164x->word_0x38_56)
+				PrepareEventSound_6E450(0, D41A0_0.LevelIndex_0xc, D41A0_0.rand_0x8 % 0x83 + 65);
 		}
 	}
 	else if (sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76) == 1)
@@ -61215,14 +61127,13 @@ LABEL_27:
 	}
 	if (a1x->dword_0xA4_164x->word_0x38_56 == D41A0_0.LevelIndex_0xc)
 	{
-		v50 = a1x->dword_0xA4_164x->word_0x36_54;
-		if (v50 <= 0)
+		if (a1x->dword_0xA4_164x->word_0x36_54 <= 0)
 		{
 			sub_99970(1, 3u);
 		}
 		else
 		{
-			a1x->dword_0xA4_164x->word_0x36_54 = v50 - 1;
+			a1x->dword_0xA4_164x->word_0x36_54--;
 			sub_99970(2, 3u);
 		}
 	}
