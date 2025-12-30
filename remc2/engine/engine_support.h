@@ -255,7 +255,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	uint8_t speedIndex;//0xb2//x_D41A0_BYTEARRAY_4_struct.byteindex_178
 	uint8_t SelectedLangIndex;
 	uint8_t byteindex_180;//0xb4//x_D41A0_BYTEARRAY_4_struct.byteindex_180
-	uint8_t byteindex_181;//0xb5//x_D41A0_BYTEARRAY_4_struct.byteindex_181
+	uint8_t moveSpeedFlag_181;//0xb5//x_D41A0_BYTEARRAY_4_struct.byteindex_181
 	uint8_t byteindex_183;//0xb7//x_D41A0_BYTEARRAY_4_struct.byteindex_183
 	uint16_t byteindex_184w;//0xb8//x_D41A0_BYTEARRAY_4_struct.byteindex_184
 	//uint8_t stubj[1];

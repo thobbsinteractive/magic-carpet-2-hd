@@ -25,9 +25,9 @@ void convert_struct_to_array_164_pos(axis_2d* input, uint8_t* output) {
 
 void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int32_t dword_0x0_0;
-	memcpy(output + 0x0, &input->dword_0x0_0, 4);
+	memcpy(output + 0x0, &input->entityIndex_0x0, 4);
 	//int16_t word_0x4_4;
-	memcpy(output + 0x4, &input->yawDelta_0x4_4, 2);
+	memcpy(output + 0x4, &input->rollDelta_0x4_4, 2);
 	//int16_t word_0x6_6;
 	memcpy(output + 0x6, &input->pitchDelta_0x6_6, 2);
 	//uint8_t stuba[4];
@@ -37,15 +37,15 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int16_t word_0xe_14;
 	memcpy(output + 0xe, &input->word_0xe_14, 2);
 	//int16_t word_0x10_16;
-	memcpy(output + 0x10, &input->word_0x10_16, 2);
+	memcpy(output + 0x10, &input->strafeSpeed_0x10_16, 2);
 	//uint8_t stubb[2];
 	memset(output + 0x12, 0, 2);
 	//type_str_164_pos position_20;//position
 	convert_struct_to_array_164_pos(&input->position_backup_20, output + 0x14);
 	//int16_t word_0x18_24_next_entity;
-	memcpy(output + 0x24, &input->word_0x18_24_next_entity, 2);
+	memcpy(output + 0x24, &input->nextEntity_0x18_24, 2);
 	//int16_t word_0x1A_26;
-	memcpy(output + 0x26, &input->word_0x1A_26, 2);
+	memcpy(output + 0x26, &input->entityIndex2_0x1A_26, 2);
 	//uint8_t stubc[2];
 	memset(output + 0x1c, 0, 2);
 	//int16_t word_0x1E_30;
@@ -104,7 +104,7 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int8_t byte_0x154_340;
 	memcpy(output + 0x154, &input->byte_0x154_340, 1);
 	//int16_t word_0x155_341;
-	memcpy(output + 0x155, &input->yaw_0x155_341, 2);
+	memcpy(output + 0x155, &input->roll_0x155_341, 2);
 	//int16_t word_0x157_343;
 	memcpy(output + 0xc, &input->pitch_0x157_343, 2);
 	//int16_t word_0x159_345;
@@ -469,11 +469,11 @@ void convert_struct_to_array_0x6E3E(type_str_0x6E3E* input, uint8_t* output) {//
 	//int8_t str_0x6E3E_byte4;//0x6E42-28226
 	memcpy(output + 4, &input->pitch, 1);
 	//int8_t str_0x6E3E_byte5;//0x6E43-28227
-	memcpy(output + 5, &input->str_0x6E3E_byte5, 1);
+	memcpy(output + 5, &input->entityIndex_0x6E3E_byte5, 1);
 	//uint16_t str_0x6E3E_word6;//0x6E44-28228
-	memcpy(output + 6, &input->str_0x6E3E_word6, 2);
+	memcpy(output + 6, &input->nextEntity_0x6E3E_word6, 2);
 	//uint16_t str_0x6E3E_word8;//0x6E46-28230
-	memcpy(output + 8, &input->str_0x6E3E_word8, 2);
+	memcpy(output + 8, &input->entityIndex2_0x6E3E_word8, 2);
 }
 
 void convert_struct_to_array_0x30311(type_entity_0x30311* input, uint8_t* output) {//lenght 20

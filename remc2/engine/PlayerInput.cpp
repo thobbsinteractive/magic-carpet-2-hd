@@ -509,7 +509,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				ReadPauseMenuEvents_197F0();
 			sub_17190_process_keyboard();//test FnX
 			v8x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
-			D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte5 = 0;
+			D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].entityIndex_0x6E3E_byte5 = 0;
 			if (unk_18058Cstr.x_DWORD_18059C & 0x10)
 			{
 				if (v8x->life_0x8 >= 0)
@@ -1085,7 +1085,7 @@ void HandleButtonClick_191B0(int16_t hiSetting, char loSetting)//1fa1b0 //set sp
 		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 != hiSetting && D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 			return;
 		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
-		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte5 |= loSetting;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].entityIndex_0x6E3E_byte5 |= loSetting;
 		return;
 	case 12:
 	case 13:
@@ -1401,7 +1401,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 					return;
 				sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[383], 3u, 50);//speed super fast
 			}
-			v13x->dword_0xA4_164x->yaw_0x155_341 = 0;
+			v13x->dword_0xA4_164x->roll_0x155_341 = 0;
 			v13x->dword_0xA4_164x->pitch_0x157_343 = 0;
 			//result = 0;
 		}
@@ -2057,7 +2057,7 @@ void sub_1A7A0_fly_asistant()//1fb7a0 // fly asistant
 			if (D41A0_0.word_0x36DEC_mousex != unk_18058Cstr.x_DWORD_1805B8_mouse_position_x
 				|| D41A0_0.word_0x36DEE_mousey != unk_18058Cstr.x_DWORD_1805BC_mouse_position_y
 				|| D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0
-				|| D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte5)
+				|| D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].entityIndex_0x6E3E_byte5)
 			{
 				;
 			}
@@ -2194,8 +2194,8 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 			pitch = 127;
 		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].roll = roll;
 		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].pitch = pitch;
-		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_word6 = unk_18058Cstr.x_DWORD_180590;
-		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_word8 = unk_18058Cstr.x_DWORD_180594;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].nextEntity_0x6E3E_word6 = unk_18058Cstr.x_DWORD_180590;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].entityIndex2_0x6E3E_word8 = unk_18058Cstr.x_DWORD_180594;
 	}
 }
 

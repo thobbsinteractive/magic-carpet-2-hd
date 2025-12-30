@@ -217,18 +217,18 @@ typedef struct {//begin 611//str_611
 type_str_611;
 
 typedef struct Type_str_164 {//size 1136
-	int32_t dword_0x0_0;
-	int16_t yawDelta_0x4_4;
+	int32_t entityIndex_0x0;
+	int16_t rollDelta_0x4_4;
 	int16_t pitchDelta_0x6_6;
 	uint8_t stuba[4];
 	int16_t speed_0xc_12;//final speed
 	int16_t word_0xe_14;
-	int16_t word_0x10_16;
+	int16_t strafeSpeed_0x10_16;
 	//int8_t byte_0x11_17;
 	uint8_t stubb[2];
 	axis_2d position_backup_20;//position //mouse backup
-	int16_t word_0x18_24_next_entity;
-	int16_t word_0x1A_26;
+	int16_t nextEntity_0x18_24;
+	int16_t entityIndex2_0x1A_26;
 	uint8_t stubc[2];
 	int16_t moveBoost_0x1E_30;
 	int16_t yaw_0x1E_30;
@@ -256,7 +256,7 @@ typedef struct Type_str_164 {//size 1136
 	int8_t mobilizeCounter2_0x150_336;
 	int32_t byte_0x150_336;
 	uint8_t byte_0x154_340;
-	int16_t yaw_0x155_341;
+	int16_t roll_0x155_341;
 	int16_t pitch_0x157_343;
 	int16_t word_0x159_345;
 	int8_t array_0x15B_347[8] = {0,0,0,0,0,0,0,0};

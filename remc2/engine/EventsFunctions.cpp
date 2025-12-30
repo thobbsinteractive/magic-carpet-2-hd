@@ -1201,7 +1201,7 @@ char x_BYTE_D4B80 = 0; // weak
 int speedIcrement_D4B84 = 16; // weak
 int x_DWORD_D4B88 = 4294967216; // weak
 int x_DWORD_D4B8C = 80; // weak
-int x_DWORD_D4B90 = 4294967292; // weak
+int moveBoosStep_D4B90 = 4294967292; // weak
 __int16 x_WORD_D4BA4 = 16; // weak
 int x_DWORD_D4BA8 = 4294967216; // weak
 int x_DWORD_D4BAC = 80; // weak
@@ -6655,13 +6655,13 @@ void sub_146F0(type_event_0x6E8E* a1x)//1f56f0
 		v7 = a1x->yaw_0x1C_28;
 		//HIBYTE(v7) += 2;
 		v7 += 512;
-		MovePlayer_57FA0(&predictedAxis_EB398ar, v7, 0, a1x->dword_0xA4_164x->word_0x10_16);
+		MovePlayer_57FA0(&predictedAxis_EB398ar, v7, 0, a1x->dword_0xA4_164x->strafeSpeed_0x10_16);
 		//v8 = a1x->dword_0xA4_164;
 		//v9 = *(x_WORD *)(v8 + 16);
 		//v10 = (x_WORD *)(v8 + 16);
-		if (a1x->dword_0xA4_164x->word_0x10_16)
+		if (a1x->dword_0xA4_164x->strafeSpeed_0x10_16)
 		{
-			if (a1x->dword_0xA4_164x->word_0x10_16 <= 0)
+			if (a1x->dword_0xA4_164x->strafeSpeed_0x10_16 <= 0)
 				v11 = -1;
 			else
 				v11 = 1;
@@ -6670,7 +6670,7 @@ void sub_146F0(type_event_0x6E8E* a1x)//1f56f0
 		{
 			v11 = 0;
 		}
-		a1x->dword_0xA4_164x->word_0x10_16 -= 4 * v11;
+		a1x->dword_0xA4_164x->strafeSpeed_0x10_16 -= 4 * v11;
 		CopyEntityPosition_57CF0(a1x, &predictedAxis_EB398ar);
 		v12 = a1x->dword_0xA4_164x->speed_0xc_12 - a1x->actSpeed_0x82_130;
 		if (a1x->dword_0xA4_164x->speed_0xc_12 != a1x->actSpeed_0x82_130)
@@ -7671,7 +7671,7 @@ void sub_15D20(type_event_0x6E8E* a1x)//1f6d20
 
 	//index = a1x->dword_0xA4_164;
 	if (!a1x->dword_0xA4_164x->str_611_byte_0x45E_1118)
-		a1x->dword_0xA4_164x->word_0x10_16 = 80;
+		a1x->dword_0xA4_164x->strafeSpeed_0x10_16 = 80;
 	//	return result;
 }
 
@@ -24728,9 +24728,9 @@ void sub_33340(type_event_0x6E8E* a1x)//214340
 							if (v40)
 							{
 								//v7 = ix->dword_0xA4_164;
-								v8 = ix->dword_0xA4_164x->yaw_0x155_341;
+								v8 = ix->dword_0xA4_164x->roll_0x155_341;
 								if (v8 < 256)
-									ix->dword_0xA4_164x->yaw_0x155_341 = v8 + 28;
+									ix->dword_0xA4_164x->roll_0x155_341 = v8 + 28;
 								ix->actSpeed_0x82_130 = 80;
 							}
 							if (v33 >= 0x40000)
@@ -32443,7 +32443,7 @@ void PaletteChanges_47760(/*int a1,*/uint32_t  /*user*//* int a2, int a3*/)//228
 
 	//v3 = (x_BYTE *)x_D41A0_BYTEARRAY_4;
 	//v4 = x_D41A0_BYTEARRAY_4_struct.byteindex_51;
-	x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 0;
+	x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 0;
 	switch (x_D41A0_BYTEARRAY_4_struct.byteindex_51)
 	{
 	case 0:
@@ -32515,7 +32515,7 @@ void PaletteChanges_47760(/*int a1,*/uint32_t  /*user*//* int a2, int a3*/)//228
 		case 1:
 			//Fade back
 			//v8 = (char*)*xadatapald0dat2.colorPalette_var28;
-			x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+			x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			///*LOWORD(v3) = */sub_90B27_VGA_pal_fadein_fadeout((uint8_t*)v8, 4u, 1);
 			if (sub_90B27_VGA_pal_fadein_fadeout(*DefaultPal, 4u, 1, 0) == 4)
 			{
@@ -32552,7 +32552,7 @@ void PaletteChanges_47760(/*int a1,*/uint32_t  /*user*//* int a2, int a3*/)//228
 			sub_41A90_VGA_Palette_install(x_BYTE_F3FA0arx);
 			//v3 = (x_BYTE *)x_D41A0_BYTEARRAY_4;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 1;
-			x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+			x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			break;
 		case 3:
 			v13 = 1;
@@ -32586,7 +32586,7 @@ void PaletteChanges_47760(/*int a1,*/uint32_t  /*user*//* int a2, int a3*/)//228
 			sub_41A90_VGA_Palette_install(x_BYTE_F3FA0arx);
 			//v3 = (x_BYTE *)x_D41A0_BYTEARRAY_4;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 1;
-			x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+			x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			break;
 		case 4:
 			v17 = 1;
@@ -32605,13 +32605,13 @@ void PaletteChanges_47760(/*int a1,*/uint32_t  /*user*//* int a2, int a3*/)//228
 			sub_41A90_VGA_Palette_install(x_BYTE_F3FA0arx);
 			//v3 = (x_BYTE *)x_D41A0_BYTEARRAY_4;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 1;
-			x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+			x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			break;
 		case 5:
 			memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
 			//v3 = (x_BYTE *)x_D41A0_BYTEARRAY_4;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 10;
-			x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+			x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			break;
 		case 6:
 			v21 = 1;
@@ -32641,7 +32641,7 @@ void PaletteChanges_47760(/*int a1,*/uint32_t  /*user*//* int a2, int a3*/)//228
 			sub_41A90_VGA_Palette_install(x_BYTE_F3FA0arx);
 			//v3 = (x_BYTE *)x_D41A0_BYTEARRAY_4;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 1;
-			x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+			x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			break;
 		case 7:
 			//Black and White
@@ -32668,7 +32668,7 @@ void PaletteChanges_47760(/*int a1,*/uint32_t  /*user*//* int a2, int a3*/)//228
 			sub_41A90_VGA_Palette_install(x_BYTE_F3FA0arx);
 			//v3 = (x_BYTE *)x_D41A0_BYTEARRAY_4;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 1;
-			x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+			x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			break;
 		case 8:
 			v27 = 1;
@@ -32699,11 +32699,11 @@ void PaletteChanges_47760(/*int a1,*/uint32_t  /*user*//* int a2, int a3*/)//228
 			sub_41A90_VGA_Palette_install(x_BYTE_F3FA0arx);
 			//v3 = (x_BYTE *)x_D41A0_BYTEARRAY_4;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 9;
-			x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+			x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			break;
 		case 9:
 			//v9 = (char*)*xadatapald0dat2.colorPalette_var28;
-			x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+			x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			///*LOWORD(v3) = */sub_90B27_VGA_pal_fadein_fadeout((uint8_t*)v9, 0x10u, 1);
 			if (sub_90B27_VGA_pal_fadein_fadeout((TColor*)*xadatapald0dat2.colorPalette_var28, 0x10u, 1) == 16)
 			{
@@ -32713,7 +32713,7 @@ void PaletteChanges_47760(/*int a1,*/uint32_t  /*user*//* int a2, int a3*/)//228
 			break;
 		case 0xA:
 			//v10 = (char*)*xadatapald0dat2.colorPalette_var28;
-			x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+			x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			///*LOWORD(v3) = */sub_90B27_VGA_pal_fadein_fadeout((uint8_t*)v10, 0x1Cu, 1);
 			if (sub_90B27_VGA_pal_fadein_fadeout((TColor*)*xadatapald0dat2.colorPalette_var28, 0x1Cu, 1) == 28)
 			{
@@ -38300,9 +38300,9 @@ void GameEvents_51BB0()//232bb0
 			D41A0_0.array_0x2BDE[i].byte_0x005_2BE0_11235 ^= D41A0_0.array_0x2BDE[i].dw_w_b_0_2BDE_11230.byte[1];
 			break;
 		case 6:
-			if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte5 & 0x40)
+			if (D41A0_0.array_0x6E3E[i].entityIndex_0x6E3E_byte5 & 0x40)
 				actEvent->dword_0xA4_164x->str_611.byte_0x458_1112 = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1;
-			if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte5 < 0 && !D41A0_0.array_0x2BDE[i].byte_0x846_2BDE)
+			if (D41A0_0.array_0x6E3E[i].entityIndex_0x6E3E_byte5 < 0 && !D41A0_0.array_0x2BDE[i].byte_0x846_2BDE)
 				D41A0_0.array_0x2BDE[i].byte_0x846_2BDE = 1;
 			break;
 		case 7:
@@ -38733,13 +38733,13 @@ void GameEvents_51BB0()//232bb0
 			break;
 		}
 		//233c76
-		int rollEnv = 2 * D41A0_0.array_0x6E3E[i].roll - actEvent->dword_0xA4_164x->yaw_0x155_341;
-		actEvent->dword_0xA4_164x->yawDelta_0x4_4 = (rollEnv - (my_sign32(rollEnv) << 2) + my_sign32(rollEnv)) >> 2;
+		int rollEnv = 2 * D41A0_0.array_0x6E3E[i].roll - actEvent->dword_0xA4_164x->roll_0x155_341;
+		actEvent->dword_0xA4_164x->rollDelta_0x4_4 = (rollEnv - (my_sign32(rollEnv) << 2) + my_sign32(rollEnv)) >> 2;
 		int pitchEnv = 2 * D41A0_0.array_0x6E3E[i].pitch - actEvent->dword_0xA4_164x->pitch_0x157_343;
 		actEvent->dword_0xA4_164x->pitchDelta_0x6_6 = (pitchEnv - (my_sign32(pitchEnv) << 2) + my_sign32(pitchEnv)) >> 2;
-		actEvent->dword_0xA4_164x->dword_0x0_0 = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte5;
-		actEvent->dword_0xA4_164x->word_0x18_24_next_entity = D41A0_0.array_0x6E3E[i].str_0x6E3E_word6;
-		actEvent->dword_0xA4_164x->word_0x1A_26 = D41A0_0.array_0x6E3E[i].str_0x6E3E_word8;
+		actEvent->dword_0xA4_164x->entityIndex_0x0 = D41A0_0.array_0x6E3E[i].entityIndex_0x6E3E_byte5;
+		actEvent->dword_0xA4_164x->nextEntity_0x18_24 = D41A0_0.array_0x6E3E[i].nextEntity_0x6E3E_word6;
+		actEvent->dword_0xA4_164x->entityIndex2_0x1A_26 = D41A0_0.array_0x6E3E[i].entityIndex2_0x6E3E_word8;
 		sub_57B20(&D41A0_0.array_0x2BDE[i], x_DWORD_EA3E4[D41A0_0.array_0x2BDE[i].word_0x00a_2BE4_11240]);
 		if (D41A0_0.array_0x2BDE[i].byte_0x846_2BDE)
 			sub_55C60(&D41A0_0.array_0x2BDE[i]);
@@ -38789,9 +38789,9 @@ void sub_53160()//234160
 		D41A0_0.array_0x6E3E[v11index].str_0x6E3E_byte2 = 0;
 		D41A0_0.array_0x6E3E[v11index].roll = 0;
 		D41A0_0.array_0x6E3E[v11index].pitch = 0;
-		D41A0_0.array_0x6E3E[v11index].str_0x6E3E_byte5 = 0;
-		D41A0_0.array_0x6E3E[v11index].str_0x6E3E_word6 = 0;
-		D41A0_0.array_0x6E3E[v11index].str_0x6E3E_word8 = 0;
+		D41A0_0.array_0x6E3E[v11index].entityIndex_0x6E3E_byte5 = 0;
+		D41A0_0.array_0x6E3E[v11index].nextEntity_0x6E3E_word6 = 0;
+		D41A0_0.array_0x6E3E[v11index].entityIndex2_0x6E3E_word8 = 0;
 
 		//qmemcpy(x_D41A0_BYTEARRAY_4_struct.byteindex_256ar, (void *)v0, 2124);
 		//x_D41A0_BYTEARRAY_4_struct.byteindex_256ar = D41A0_BYTESTR_0.array_0x2BDE[v0index];
@@ -39520,7 +39520,7 @@ void sub_55C60(type_str_0x2BDE* loc0x2BDE)//236c60
 
 	if ((x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1) == 0)
 	{
-		int number1 = abs(loc0x2BDE->dword_0x3E6_2BE4_12228.yaw_0x155_341);
+		int number1 = abs(loc0x2BDE->dword_0x3E6_2BE4_12228.roll_0x155_341);
 		switch (loc0x2BDE->byte_0x846_2BDE)
 		{
 		case 1:
@@ -39559,12 +39559,12 @@ void sub_55C60(type_str_0x2BDE* loc0x2BDE)//236c60
 		}
 		if (loc0x2BDE->byte_0x846_2BDE == 1)
 		{
-			if (loc0x2BDE->dword_0x3E6_2BE4_12228.yaw_0x155_341 >= 0)
+			if (loc0x2BDE->dword_0x3E6_2BE4_12228.roll_0x155_341 >= 0)
 				loc0x2BDE->byte_0x847_2BDE = 1;
 			else
 				loc0x2BDE->byte_0x847_2BDE = -1;
 			loc0x2BDE->word_0x84A_2BDE = 91;
-			loc0x2BDE->word_0x848_2BDE = abs(loc0x2BDE->dword_0x3E6_2BE4_12228.yaw_0x155_341);
+			loc0x2BDE->word_0x848_2BDE = abs(loc0x2BDE->dword_0x3E6_2BE4_12228.roll_0x155_341);
 			loc0x2BDE->byte_0x846_2BDE++;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_220 = x_WORD_E3760_mouse.x;
 			sub_55EB0(loc0x2BDE->word_0x00a_2BE4_11240);
@@ -39590,7 +39590,7 @@ void sub_55C60(type_str_0x2BDE* loc0x2BDE)//236c60
 				loc0x2BDE->byte_0x846_2BDE = 8;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_220 = x_WORD_E3760_mouse.x;
 		}
-		loc0x2BDE->dword_0x3E6_2BE4_12228.yawDelta_0x4_4 = 0;
+		loc0x2BDE->dword_0x3E6_2BE4_12228.rollDelta_0x4_4 = 0;
 		if (loc0x2BDE->byte_0x846_2BDE == 8)
 		{
 			sub_55EB0(loc0x2BDE->word_0x00a_2BE4_11240);
@@ -40913,7 +40913,7 @@ void sub_57B20(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//238b20 //copy posi
 
 		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].rotation__2BDE_11701.yaw = a2x->yaw_0x1C_28;
 		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].rotation__2BDE_11701.fov = a1x->struct_0x1d1_2BDE_11695[0].rotation__2BDE_11701.fov;
-		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].rotation__2BDE_11701.roll = a2x->dword_0xA4_164x->yaw_0x155_341;
+		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].rotation__2BDE_11701.roll = a2x->dword_0xA4_164x->roll_0x155_341;
 		//if(mouseturnoff)*(x_WORD *)(14 * (*(unsigned __int16 *)(a1 + 16) - 1) + a1 + 489) = 6;//testdebug
 		//v3 = a2x->dword_0xA4_164;
 		v4 = a2x->dword_0xA4_164x->moveBoost_0x1E_30;
@@ -40928,8 +40928,8 @@ void sub_57B20(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//238b20 //copy posi
 			- ((v4 - (my_sign32(v4) << 3) + my_sign32(v4)) >> 3);
 
 		//my_sign32(a2x->dword_0xA4_164x->word_0x1E_30)
-		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].rotation__2BDE_11701.yaw += a2x->dword_0xA4_164x->word_0x18_24_next_entity;
-		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].rotation__2BDE_11701.pitch += a2x->dword_0xA4_164x->word_0x1A_26;
+		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].rotation__2BDE_11701.yaw += a2x->dword_0xA4_164x->nextEntity_0x18_24;
+		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].rotation__2BDE_11701.pitch += a2x->dword_0xA4_164x->entityIndex2_0x1A_26;
 	}
 	//return 1;
 }
@@ -44344,7 +44344,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//23d950
 	v2x->dword_0xA4_164x->yaw_0x1E_30 = 0;
 	v2x->dword_0xA4_164x->word_0x22_34 = 0;
 	v2x->dword_0xA4_164x->moveBoost_0x1E_30 = 0;
-	v2x->dword_0xA4_164x->word_0x10_16 = 0;
+	v2x->dword_0xA4_164x->strafeSpeed_0x10_16 = 0;
 	memset(&v2x->dword_0xA4_164x->str_0x1AC_428, 0, 18);
 	v2x->dword_0xA4_164x->word_0x24A_586 = 256;
 	v8 = v37;
@@ -57127,15 +57127,15 @@ void sub_693F0(type_event_0x6E8E* a1x)//24a3f0//spell fire
 						v6x->word_0x2A_42 = a1x->word_0x2A_42;
 						v6x->mana_0x90_144 = a1x->mana_0x90_144;
 						v6x->axis_0x4C_76.z += v1x->array_0x52_82.fov;
-						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
 						MovePlayer_57FA0(
 							&v6x->word_0x9A_154x,
-							v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28,
-							v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30,
+							v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
+							v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30,
 							0x4000);
 						if (v1x->dword_0xA4_164x->word_0x38_56 == D41A0_0.LevelIndex_0xc)
 							SetEntityIndex_49C90(v6x, 42);
@@ -57232,15 +57232,15 @@ void sub_69640(type_event_0x6E8E* a1x)//24a640//spell posses
 								v4x->id_0x1A_26 = v1x->id_0x1A_26;
 								v4x->mana_0x90_144 = a1x->mana_0x90_144;
 								v4x->axis_0x4C_76.z += v1x->array_0x52_82.fov;
-								v4x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-								v4x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+								v4x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+								v4x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 								v4x->dword_0x10_16 = (a1x->word_0x2A_42 << 8) * (a1x->word_0x2A_42 << 8);
 								v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 								v4x->word_0x9A_154x = v1x->axis_0x4C_76;
 								MovePlayer_57FA0(
 									&v4x->word_0x9A_154x,
-									v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28,
-									v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30,
+									v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
+									v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30,
 									0x4000);
 								PrepareEventSound_6E450(v4x - D41A0_0.struct_0x6E8E, -1, 40);
 								sub_68DE0(a1x, v1x);
@@ -57322,12 +57322,12 @@ void sub_69900(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//24a900
 		v2x->word_0x9A_154x = a2x->axis_0x4C_76;
 		MovePlayer_57FA0(
 			&v2x->word_0x9A_154x,
-			a2x->dword_0xA4_164x->word_0x18_24_next_entity + a2x->yaw_0x1C_28,
-			a2x->dword_0xA4_164x->word_0x1A_26 + a2x->pitchAngle_0x1E_30,
+			a2x->dword_0xA4_164x->nextEntity_0x18_24 + a2x->yaw_0x1C_28,
+			a2x->dword_0xA4_164x->entityIndex2_0x1A_26 + a2x->pitchAngle_0x1E_30,
 			10240);
-		v2x->yaw_0x1C_28 = a2x->dword_0xA4_164x->word_0x18_24_next_entity + a2x->yaw_0x1C_28;
+		v2x->yaw_0x1C_28 = a2x->dword_0xA4_164x->nextEntity_0x18_24 + a2x->yaw_0x1C_28;
 		//v4 = x_D41A0_BYTEARRAY_0 + 28302;
-		v2x->pitchAngle_0x1E_30 = a2x->dword_0xA4_164x->word_0x1A_26 + a2x->pitchAngle_0x1E_30;
+		v2x->pitchAngle_0x1E_30 = a2x->dword_0xA4_164x->entityIndex2_0x1A_26 + a2x->pitchAngle_0x1E_30;
 		PrepareEventSound_6E450(v2x - D41A0_0.struct_0x6E8E, -1, 40);
 	}
 }
@@ -57401,7 +57401,7 @@ type_event_0x6E8E* sub_69AB0(type_event_0x6E8E* a1x)//24aab0
 						if (v7x <= x_DWORD_EA3E4[0])
 						{
 							v12x->word_0x9A_154x = v1x->axis_0x4C_76;
-							MovePlayer_57FA0(&v12x->word_0x9A_154x, v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28, 0, 4096);
+							MovePlayer_57FA0(&v12x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
 							v8 = getTerrainAlt_10C40(&v12x->word_0x9A_154x);
 							v12x->byte_0x43_67 = 3;
 							v12x->byte_0x44_68 = 2;
@@ -57415,8 +57415,8 @@ type_event_0x6E8E* sub_69AB0(type_event_0x6E8E* a1x)//24aab0
 						}
 						v11x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v11x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v11x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v11x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v11x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 						PrepareEventSound_6E450(v11x - D41A0_0.struct_0x6E8E, -1, 15);
 					}
 				}
@@ -57885,8 +57885,8 @@ void sub_6A5C0(type_event_0x6E8E* a1x)//24b5c0
 								v16x->word_0x9A_154x = v1x->axis_0x4C_76;
 								MovePlayer_57FA0(
 									&v16x->word_0x9A_154x,
-									v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28,
-									v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30,
+									v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
+									v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30,
 									0x4000);
 								if (SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A == 2)
 								{
@@ -57895,15 +57895,15 @@ void sub_6A5C0(type_event_0x6E8E* a1x)//24b5c0
 									else
 										v5 = v1x->yaw_0x1C_28 + 113;
 									v6x = v16x;
-									v7 = (v1x->dword_0xA4_164x->word_0x18_24_next_entity + v5) & 0x7FF;
+									v7 = (v1x->dword_0xA4_164x->nextEntity_0x18_24 + v5) & 0x7FF;
 								}
 								else
 								{
 									v6x = v16x;
-									v7 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
+									v7 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
 								}
 								v6x->yaw_0x1C_28 = v7;
-								v16x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+								v16x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 								if (v18)
 									v13x = v16x;
 								else
@@ -57930,16 +57930,16 @@ void sub_6A5C0(type_event_0x6E8E* a1x)//24b5c0
 						v15x->id_0x1A_26 = v1x->id_0x1A_26;
 						v15x->mana_0x90_144 = a1x->mana_0x90_144;
 						v15x->axis_0x4C_76.z += v1x->array_0x52_82.fov;
-						v15x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v15x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v15x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v15x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 						v15x->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].dword_2;
 						v15x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v15x->word_0x9A_154x = v1x->axis_0x4C_76;
 						MovePlayer_57FA0(
 							&v15x->word_0x9A_154x,
-							v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28,
-							v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30,
+							v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
+							v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30,
 							0x4000);
 						sub_68DE0(a1x, v1x);
 						goto LABEL_27;
@@ -58079,11 +58079,11 @@ void sub_6AB00(type_event_0x6E8E* a1x)//24bb00
 						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
 						MovePlayer_57FA0(
 							&v6x->word_0x9A_154x,
-							v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28,
-							v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30,
+							v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
+							v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30,
 							10240);
-						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 					}
 				}
 				sub_68DE0(a1x, v1x);
@@ -58477,11 +58477,11 @@ void sub_6B3E0(type_event_0x6E8E* a1x)//24c3e0
 						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
 						MovePlayer_57FA0(
 							&v6x->word_0x9A_154x,
-							v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28,
-							v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30,
+							v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
+							v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30,
 							0x4000);
-						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 					}
 				}
 				sub_68DE0(a1x, v1x);
@@ -58571,11 +58571,11 @@ __int16 sub_6B610(type_event_0x6E8E* a1x)//24c610
 						//*(x_WORD *)(v3 + 4) = *(x_WORD *)(v8 + 80);
 						MovePlayer_57FA0(
 							&v7x->word_0x9A_154x,
-							v8x->dword_0xA4_164x->word_0x18_24_next_entity + v8x->yaw_0x1C_28,
-							v8x->dword_0xA4_164x->word_0x1A_26 + v8x->pitchAngle_0x1E_30,
+							v8x->dword_0xA4_164x->nextEntity_0x18_24 + v8x->yaw_0x1C_28,
+							v8x->dword_0xA4_164x->entityIndex2_0x1A_26 + v8x->pitchAngle_0x1E_30,
 							10240);
-						v7x->yaw_0x1C_28 = v8x->dword_0xA4_164x->word_0x18_24_next_entity + v8x->yaw_0x1C_28;
-						v7x->pitchAngle_0x1E_30 = v8x->dword_0xA4_164x->word_0x1A_26 + v8x->pitchAngle_0x1E_30;
+						v7x->yaw_0x1C_28 = v8x->dword_0xA4_164x->nextEntity_0x18_24 + v8x->yaw_0x1C_28;
+						v7x->pitchAngle_0x1E_30 = v8x->dword_0xA4_164x->entityIndex2_0x1A_26 + v8x->pitchAngle_0x1E_30;
 						PrepareEventSound_6E450(v7x - D41A0_0.struct_0x6E8E, -1, 9);
 					}
 				}
@@ -58635,15 +58635,15 @@ void sub_6B870(type_event_0x6E8E* a1x)//24c870
 						v6x->word_0x26_38 = a1x - D41A0_0.struct_0x6E8E;
 						v6x->id_0x1A_26 = v1x->id_0x1A_26;
 						v6x->axis_0x4C_76.z += v1x->array_0x52_82.fov;
-						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 						v6x->mana_0x90_144 = a1x->mana_0x90_144;
 						v6x->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].dword_2;
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
-						MovePlayer_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28, 0, 4096);
+						MovePlayer_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
 						v6x->word_0x9A_154x.z = getTerrainAlt_10C40(&v6x->word_0x9A_154x);
 					}
 				}
@@ -58708,15 +58708,15 @@ void sub_6BAB0(type_event_0x6E8E* a1x)//24cab0
 						v6x->word_0x26_38 = a1x - D41A0_0.struct_0x6E8E;
 						v6x->id_0x1A_26 = v1x->id_0x1A_26;
 						v6x->axis_0x4C_76.z += v1x->array_0x52_82.fov;
-						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 						v6x->mana_0x90_144 = a1x->mana_0x90_144;
 						v6x->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].dword_2;
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
-						MovePlayer_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28, 0, 4096);
+						MovePlayer_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
 						v6x->word_0x9A_154x.z = getTerrainAlt_10C40(&v6x->word_0x9A_154x);
 					}
 				}
@@ -58780,15 +58780,15 @@ void sub_6BCF0(type_event_0x6E8E* a1x)//24ccf0
 						v6x->word_0x26_38 = a1x - D41A0_0.struct_0x6E8E;
 						v6x->id_0x1A_26 = v1x->id_0x1A_26;
 						v6x->axis_0x4C_76.z += v1x->array_0x52_82.fov;
-						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 						v6x->mana_0x90_144 = a1x->mana_0x90_144;
 						v6x->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].dword_2;
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
-						MovePlayer_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28, 0, 4096);
+						MovePlayer_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
 						v6x->word_0x9A_154x.z = getTerrainAlt_10C40(&v6x->word_0x9A_154x);
 					}
 					sub_68DE0(a1x, v1x);
@@ -58858,10 +58858,10 @@ void sub_6BF30(type_event_0x6E8E* a1x)//24cf30
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
-						MovePlayer_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28, 0, 4096);
+						MovePlayer_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
 						v6x->word_0x9A_154x.z = getTerrainAlt_10C40(&v6x->word_0x9A_154x);
-						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 					}
 					sub_68DE0(a1x, v1x);
 				}
@@ -58936,11 +58936,11 @@ void sub_6C170(type_event_0x6E8E* a1x)//24d170
 						v6x->word_0x9A_154x = v7x->axis_0x4C_76;
 						MovePlayer_57FA0(
 							&v6x->word_0x9A_154x,
-							v7x->dword_0xA4_164x->word_0x18_24_next_entity + v7x->yaw_0x1C_28,
-							v7x->dword_0xA4_164x->word_0x1A_26 + v7x->pitchAngle_0x1E_30,
+							v7x->dword_0xA4_164x->nextEntity_0x18_24 + v7x->yaw_0x1C_28,
+							v7x->dword_0xA4_164x->entityIndex2_0x1A_26 + v7x->pitchAngle_0x1E_30,
 							0x4000);
-						v6x->yaw_0x1C_28 = v7x->dword_0xA4_164x->word_0x18_24_next_entity + v7x->yaw_0x1C_28;
-						v6x->pitchAngle_0x1E_30 = v7x->dword_0xA4_164x->word_0x1A_26 + v7x->pitchAngle_0x1E_30;
+						v6x->yaw_0x1C_28 = v7x->dword_0xA4_164x->nextEntity_0x18_24 + v7x->yaw_0x1C_28;
+						v6x->pitchAngle_0x1E_30 = v7x->dword_0xA4_164x->entityIndex2_0x1A_26 + v7x->pitchAngle_0x1E_30;
 						PrepareEventSound_6E450(v6x - D41A0_0.struct_0x6E8E, -1, 9);
 					}
 				}
@@ -59003,15 +59003,15 @@ void sub_6C3E0(type_event_0x6E8E* a1x)//24d3e0
 						v6x->word_0x26_38 = a1x - D41A0_0.struct_0x6E8E;
 						v6x->id_0x1A_26 = v1x->id_0x1A_26;
 						v6x->axis_0x4C_76.z += v1x->array_0x52_82.fov;
-						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v6x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 						v6x->mana_0x90_144 = a1x->mana_0x90_144;
 						v6x->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].dword_2;
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
-						MovePlayer_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28, 0, 4096);
+						MovePlayer_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
 						v6x->word_0x9A_154x.z = getTerrainAlt_10C40(&v6x->word_0x9A_154x);
 					}
 				}
@@ -59088,10 +59088,10 @@ void sub_6C620(type_event_0x6E8E* a1x)//24d620
 						v3x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v3x->word_0x9A_154x = v1x->axis_0x4C_76;
-						MovePlayer_57FA0(&v3x->word_0x9A_154x, v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28, 0, 4096);
+						MovePlayer_57FA0(&v3x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
 						v3x->word_0x9A_154x.z = getTerrainAlt_10C40(&v3x->word_0x9A_154x);
-						v3x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v3x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v3x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v3x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 					}
 					sub_68DE0(a1x, v1x);
 				}
@@ -59178,8 +59178,8 @@ void sub_6C870(type_event_0x6E8E* a1x)//24d870
 								v1x->yaw_0x1C_28 = (v2x->yaw_0x1C_28
 									- 85
 									+ a1x->rand_0x14_20 % 0xAAu
-									+ v2x->dword_0xA4_164x->word_0x18_24_next_entity) & 0x7FF;
-								v1x->pitchAngle_0x1E_30 = v2x->dword_0xA4_164x->word_0x1A_26 + v2x->pitchAngle_0x1E_30;
+									+ v2x->dword_0xA4_164x->nextEntity_0x18_24) & 0x7FF;
+								v1x->pitchAngle_0x1E_30 = v2x->dword_0xA4_164x->entityIndex2_0x1A_26 + v2x->pitchAngle_0x1E_30;
 							}
 							v6++;
 						}
@@ -59257,11 +59257,11 @@ void sub_6CAC0(type_event_0x6E8E* a1x)//24dac0
 						v2x->dword_0x10_16 = v8x->dword_0xA4_164x->byte_0x154_340;
 						v8x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v2x->word_0x9A_154x = v8x->axis_0x4C_76;
-						MovePlayer_57FA0(&v2x->word_0x9A_154x, v8x->dword_0xA4_164x->word_0x18_24_next_entity + v8x->yaw_0x1C_28, 0, 4096);
+						MovePlayer_57FA0(&v2x->word_0x9A_154x, v8x->dword_0xA4_164x->nextEntity_0x18_24 + v8x->yaw_0x1C_28, 0, 4096);
 						v2x->word_0x9A_154x.z = getTerrainAlt_10C40(&v2x->word_0x9A_154x);
-						v2x->yaw_0x1C_28 = v8x->dword_0xA4_164x->word_0x18_24_next_entity + v8x->yaw_0x1C_28;
+						v2x->yaw_0x1C_28 = v8x->dword_0xA4_164x->nextEntity_0x18_24 + v8x->yaw_0x1C_28;
 						//v4 = x_D41A0_BYTEARRAY_0 + 28302;
-						v2x->pitchAngle_0x1E_30 = v8x->dword_0xA4_164x->word_0x1A_26 + v8x->pitchAngle_0x1E_30;
+						v2x->pitchAngle_0x1E_30 = v8x->dword_0xA4_164x->entityIndex2_0x1A_26 + v8x->pitchAngle_0x1E_30;
 						PrepareEventSound_6E450(v2x - D41A0_0.struct_0x6E8E, -1, 15);
 					}
 					sub_68DE0(a1x, v8x);
@@ -59340,12 +59340,12 @@ void sub_6CD20(type_event_0x6E8E* a1x)//24dd20
 						v3x->word_0x9A_154x = v9x->axis_0x4C_76;
 						MovePlayer_57FA0(
 							&v3x->word_0x9A_154x,
-							v9x->dword_0xA4_164x->word_0x18_24_next_entity + v9x->yaw_0x1C_28,
-							v9x->dword_0xA4_164x->word_0x1A_26 + v9x->pitchAngle_0x1E_30,
+							v9x->dword_0xA4_164x->nextEntity_0x18_24 + v9x->yaw_0x1C_28,
+							v9x->dword_0xA4_164x->entityIndex2_0x1A_26 + v9x->pitchAngle_0x1E_30,
 							0x4000);
-						v3x->yaw_0x1C_28 = v9x->dword_0xA4_164x->word_0x18_24_next_entity + v9x->yaw_0x1C_28;
+						v3x->yaw_0x1C_28 = v9x->dword_0xA4_164x->nextEntity_0x18_24 + v9x->yaw_0x1C_28;
 						//v5 = x_D41A0_BYTEARRAY_0 + 28302;
-						v3x->pitchAngle_0x1E_30 = v9x->dword_0xA4_164x->word_0x1A_26 + v9x->pitchAngle_0x1E_30;
+						v3x->pitchAngle_0x1E_30 = v9x->dword_0xA4_164x->entityIndex2_0x1A_26 + v9x->pitchAngle_0x1E_30;
 						PrepareEventSound_6E450(v3x - D41A0_0.struct_0x6E8E, -1, 9);
 					}
 				}
@@ -59422,10 +59422,10 @@ void sub_6CFA0(type_event_0x6E8E* a1x)//24dfa0
 						v3x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v3x->word_0x9A_154x = v1x->axis_0x4C_76;
-						MovePlayer_57FA0(&v3x->word_0x9A_154x, v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28, 0, 4096);
+						MovePlayer_57FA0(&v3x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
 						v3x->word_0x9A_154x.z = getTerrainAlt_10C40(&v3x->word_0x9A_154x);
-						v3x->yaw_0x1C_28 = v1x->dword_0xA4_164x->word_0x18_24_next_entity + v1x->yaw_0x1C_28;
-						v3x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->word_0x1A_26 + v1x->pitchAngle_0x1E_30;
+						v3x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
+						v3x->pitchAngle_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitchAngle_0x1E_30;
 					}
 					sub_68DE0(a1x, v1x);
 				}
@@ -60896,17 +60896,17 @@ void sub_5D530(type_event_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 	predictedAxis_EB398ar = a1x->axis_0x4C_76;
 	if (a1x->dword_0xA4_164x->moveSpeed_0x14C_332)
 	{
-		locIntTemp = a1x->dword_0xA4_164x->yawDelta_0x4_4 * (4 - a1x->dword_0xA4_164x->moveSpeed_0x14C_332);
-		a1x->dword_0xA4_164x->yaw_0x155_341 += (locIntTemp - (my_sign32(locIntTemp) * 3)) >> 2;
+		locIntTemp = a1x->dword_0xA4_164x->rollDelta_0x4_4 * (4 - a1x->dword_0xA4_164x->moveSpeed_0x14C_332);
+		a1x->dword_0xA4_164x->roll_0x155_341 += (locIntTemp - (my_sign32(locIntTemp) * 3)) >> 2;
 		locIntTemp = a1x->dword_0xA4_164x->pitchDelta_0x6_6 * (4 - a1x->dword_0xA4_164x->moveSpeed_0x14C_332);
 		a1x->dword_0xA4_164x->pitch_0x157_343 += (locIntTemp - (my_sign32(locIntTemp) * 3)) >> 2;
 	}
 	else
 	{
-		a1x->dword_0xA4_164x->yaw_0x155_341 += a1x->dword_0xA4_164x->yawDelta_0x4_4;
+		a1x->dword_0xA4_164x->roll_0x155_341 += a1x->dword_0xA4_164x->rollDelta_0x4_4;
 		a1x->dword_0xA4_164x->pitch_0x157_343 += a1x->dword_0xA4_164x->pitchDelta_0x6_6;
 	}
-	locIntTemp = a1x->dword_0xA4_164x->yaw_0x155_341;
+	locIntTemp = a1x->dword_0xA4_164x->roll_0x155_341;
 	a1x->yaw_0x1C_28 = (a1x->yaw_0x1C_28 + ((locIntTemp - (my_sign32(locIntTemp) * 7)) >> 3)) & 0x7FF;
 	int speedSign = a1x->dword_0xA4_164x->speed_0xc_12 - a1x->actSpeed_0x82_130;
 	if (a1x->dword_0xA4_164x->speed_0xc_12 != a1x->actSpeed_0x82_130)
@@ -60952,18 +60952,18 @@ void sub_5D530(type_event_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 		locActSpeed = a1x->actSpeed_0x82_130;
 	}
 	MovePlayer_57FA0(&predictedAxis_EB398ar, a1x->yaw_0x1C_28, a1x->dword_0xA4_164x->pitch_0x24_36, locActSpeed);
-	if (a1x->dword_0xA4_164x->word_0x10_16)
+	if (a1x->dword_0xA4_164x->strafeSpeed_0x10_16)
 	{
 		if (a1x->dword_0xA4_164x->moveSpeed_0x14C_332)
 		{
-			locIntTemp = ((4 - a1x->dword_0xA4_164x->moveSpeed_0x14C_332) * a1x->dword_0xA4_164x->word_0x10_16
-				- (__CFSHL__((4 - a1x->dword_0xA4_164x->moveSpeed_0x14C_332) * a1x->dword_0xA4_164x->word_0x10_16 >> 31, 2)
-					+ 4 * ((4 - a1x->dword_0xA4_164x->moveSpeed_0x14C_332) * a1x->dword_0xA4_164x->word_0x10_16 >> 31))) >> 2;
+			locIntTemp = ((4 - a1x->dword_0xA4_164x->moveSpeed_0x14C_332) * a1x->dword_0xA4_164x->strafeSpeed_0x10_16
+				- (__CFSHL__((4 - a1x->dword_0xA4_164x->moveSpeed_0x14C_332) * a1x->dword_0xA4_164x->strafeSpeed_0x10_16 >> 31, 2)
+					+ 4 * ((4 - a1x->dword_0xA4_164x->moveSpeed_0x14C_332) * a1x->dword_0xA4_164x->strafeSpeed_0x10_16 >> 31))) >> 2;
 		}
 		else if (a1x->dword_0xA4_164x->mobilizeCounter_0x14E_334)
 			locIntTemp = 0;
 		else
-			locIntTemp = a1x->dword_0xA4_164x->word_0x10_16;
+			locIntTemp = a1x->dword_0xA4_164x->strafeSpeed_0x10_16;
 		MovePlayer_57FA0(&predictedAxis_EB398ar, a1x->yaw_0x1C_28 + 0x200, 0, locIntTemp);
 	}
 	if (a1x->dword_0xA4_164x->moveBoost_0x1E_30)
@@ -60980,7 +60980,7 @@ void sub_5D530(type_event_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 		}
 		else
 			locIntTemp = 0;
-		a1x->dword_0xA4_164x->moveBoost_0x1E_30 += locIntTemp * x_DWORD_D4B90;
+		a1x->dword_0xA4_164x->moveBoost_0x1E_30 += locIntTemp * moveBoosStep_D4B90;
 		if (abs(a1x->dword_0xA4_164x->moveBoost_0x1E_30) < 4)
 			a1x->dword_0xA4_164x->moveBoost_0x1E_30 = 0;
 	}
@@ -61002,7 +61002,7 @@ void sub_5D530(type_event_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 			if (a1x->dword_0xA4_164x->moveSpeed_0x14C_332)
 			{
 				a1x->dword_0xA4_164x->moveSpeedCounter_0x14D_333 = 8;
-				x_D41A0_BYTEARRAY_4_struct.byteindex_181 = 1;
+				x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181 = 1;
 			}
 			else
 			{
@@ -61526,7 +61526,7 @@ __int16 sub_5E6C0(type_event_0x6E8E* a1x)//23f6c0
 	a1x->pitchAngle_0x1E_30 = 0;
 	result = a1x->pitchAngle_0x1E_30;
 	a1x->dword_0xA4_164x->pitch_0x157_343 = result;
-	a1x->dword_0xA4_164x->yaw_0x155_341 = 0;
+	a1x->dword_0xA4_164x->roll_0x155_341 = 0;
 	return result;
 }
 // EA3E4: using guessed type int x_DWORD_EA3E4[];
@@ -61637,7 +61637,7 @@ signed int sub_5E8C0_endGameSeq(type_event_0x6E8E* a1x)//23f8c0 //end game seque
 		a1x->dword_0xA4_164x->mobilizeCounter_0x14E_334 = 0;
 		a1x->dword_0xA4_164x->moveSpeed_0x14C_332 = 0;
 		a1x->dword_0xA4_164x->moveBoost_0x1E_30 = 0;
-		a1x->dword_0xA4_164x->word_0x10_16 = 0;
+		a1x->dword_0xA4_164x->strafeSpeed_0x10_16 = 0;
 		v1 = a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[3];
 		if (v1)
 			x_DWORD_EA3E4[v1]->word_0x2E_46 = 0;
@@ -61855,7 +61855,7 @@ signed int sub_5E8C0_endGameSeq(type_event_0x6E8E* a1x)//23f8c0 //end game seque
 	//v25 = a1x->dword_0xA4_164;
 
 	//a1x->dword_0xA4_164x->word_0x155_341 -= (signed int)(a1x->dword_0xA4_164x->word_0x155_341-(__CFSHL__(a1x->dword_0xA4_164x->word_0x155_341 >> 32, 3)+ 8 * (a1x->dword_0xA4_164x->word_0x155_341 >> 32))) >> 3;
-	a1x->dword_0xA4_164x->yaw_0x155_341 -= (signed int)(a1x->dword_0xA4_164x->yaw_0x155_341 - (my_sign32(a1x->dword_0xA4_164x->yaw_0x155_341) * 7)) >> 3;
+	a1x->dword_0xA4_164x->roll_0x155_341 -= (signed int)(a1x->dword_0xA4_164x->roll_0x155_341 - (my_sign32(a1x->dword_0xA4_164x->roll_0x155_341) * 7)) >> 3;
 
 	//my_sign(a1x->dword_0xA4_164x->word_0x155_341) * 7))
 
@@ -61947,7 +61947,7 @@ signed int sub_5EFA0(type_event_0x6E8E* a1x)//23ffa0
 		if (a1x->str_0x5E_94.word_0x74_116)
 			sub_61050(a1x);
 		//v7 = a1x->dword_0xA4_164;
-		if (a1x->dword_0xA4_164x->moveSpeed_0x14C_332 && x_D41A0_BYTEARRAY_4_struct.byteindex_181)
+		if (a1x->dword_0xA4_164x->moveSpeed_0x14C_332 && x_D41A0_BYTEARRAY_4_struct.moveSpeedFlag_181)
 			sub_5C830(a1x, 3, 171 * a1x->dword_0xA4_164x->moveSpeed_0x14C_332 / 3 + 85);
 		v8 = a1x->str_0x5E_94.word_0x62_98;
 		if (v8)
@@ -62054,10 +62054,10 @@ void sub_5F380(type_event_0x6E8E* a1x)//240380
 	v1 = 0;
 	a1x->dword_0xA4_164x->word_0xe_14 = 0;
 	//v2 = a1x->dword_0xA4_164;
-	if (a1x->dword_0xA4_164x->dword_0x0_0 & 1 && a1x->dword_0xA4_164x->speed_0xc_12 < x_DWORD_D4B8C)
+	if (a1x->dword_0xA4_164x->entityIndex_0x0 & 1 && a1x->dword_0xA4_164x->speed_0xc_12 < x_DWORD_D4B8C)
 		v1 = 1;
 	//v3 = a1x->dword_0xA4_164;
-	if (a1x->dword_0xA4_164x->dword_0x0_0 & 2 && a1x->dword_0xA4_164x->speed_0xc_12 > x_DWORD_D4B88)
+	if (a1x->dword_0xA4_164x->entityIndex_0x0 & 2 && a1x->dword_0xA4_164x->speed_0xc_12 > x_DWORD_D4B88)
 		v1 = -1;
 	if (v1)
 	{
@@ -62071,25 +62071,25 @@ void sub_5F380(type_event_0x6E8E* a1x)//240380
 		a1x->dword_0xA4_164x->word_0xe_14 = 1;
 	}
 	v6 = 0;
-	if (a1x->dword_0xA4_164x->dword_0x0_0 & 4)
+	if (a1x->dword_0xA4_164x->entityIndex_0x0 & 4)
 		v6 = -1;
-	if (a1x->dword_0xA4_164x->dword_0x0_0 & 8)
+	if (a1x->dword_0xA4_164x->entityIndex_0x0 & 8)
 		v6 = 1;
 	if (v6)
 	{
-		a1x->dword_0xA4_164x->word_0x10_16 += x_WORD_D4BA4 * v6;
+		a1x->dword_0xA4_164x->strafeSpeed_0x10_16 += x_WORD_D4BA4 * v6;
 		//v18 = a1x->dword_0xA4_164;
-		if (a1x->dword_0xA4_164x->word_0x10_16 < x_DWORD_D4BA8)
-			a1x->dword_0xA4_164x->word_0x10_16 = x_DWORD_D4BA8;
+		if (a1x->dword_0xA4_164x->strafeSpeed_0x10_16 < x_DWORD_D4BA8)
+			a1x->dword_0xA4_164x->strafeSpeed_0x10_16 = x_DWORD_D4BA8;
 		//v13 = a1x->dword_0xA4_164;
-		v19 = a1x->dword_0xA4_164x->word_0x10_16;
+		v19 = a1x->dword_0xA4_164x->strafeSpeed_0x10_16;
 		v17 = __OFSUB__(v19, x_DWORD_D4BAC);
 		v15 = v19 == x_DWORD_D4BAC;
 		v16 = v19 - x_DWORD_D4BAC < 0;
 	}
 	else
 	{
-		v7 = a1x->dword_0xA4_164x->word_0x10_16;
+		v7 = a1x->dword_0xA4_164x->strafeSpeed_0x10_16;
 		if (v7)
 		{
 			if (v7 <= 0)
@@ -62102,8 +62102,8 @@ void sub_5F380(type_event_0x6E8E* a1x)//240380
 			v8 = 0;
 		}
 		v9 = v8;
-		a1x->dword_0xA4_164x->word_0x10_16 += v8 * x_WORD_D4BB0;
-		v10 = a1x->dword_0xA4_164x->word_0x10_16;
+		a1x->dword_0xA4_164x->strafeSpeed_0x10_16 += v8 * x_WORD_D4BB0;
+		v10 = a1x->dword_0xA4_164x->strafeSpeed_0x10_16;
 		if (v10)
 		{
 			if (v10 <= 0)
@@ -62116,26 +62116,26 @@ void sub_5F380(type_event_0x6E8E* a1x)//240380
 			v11 = 0;
 		}
 		if (v9 != v11)
-			a1x->dword_0xA4_164x->word_0x10_16 = 0;
+			a1x->dword_0xA4_164x->strafeSpeed_0x10_16 = 0;
 		//v12 = a1x->dword_0xA4_164;
-		if (a1x->dword_0xA4_164x->word_0x10_16 < x_DWORD_D4BA8)
-			a1x->dword_0xA4_164x->word_0x10_16 = x_DWORD_D4BA8;
+		if (a1x->dword_0xA4_164x->strafeSpeed_0x10_16 < x_DWORD_D4BA8)
+			a1x->dword_0xA4_164x->strafeSpeed_0x10_16 = x_DWORD_D4BA8;
 		//v13 = a1x->dword_0xA4_164;
-		v14 = a1x->dword_0xA4_164x->word_0x10_16;
+		v14 = a1x->dword_0xA4_164x->strafeSpeed_0x10_16;
 		v17 = __OFSUB__(v14, x_DWORD_D4BAC);
 		v15 = v14 == x_DWORD_D4BAC;
 		v16 = v14 - x_DWORD_D4BAC < 0;
 	}
 	if (!((unsigned __int8)(v16 ^ v17) | (unsigned __int8)v15))
-		a1x->dword_0xA4_164x->word_0x10_16 = x_DWORD_D4BAC;
+		a1x->dword_0xA4_164x->strafeSpeed_0x10_16 = x_DWORD_D4BAC;
 	//v20 = a1x->dword_0xA4_164;
-	if (a1x->dword_0xA4_164x->dword_0x0_0 & 0x10)
+	if (a1x->dword_0xA4_164x->entityIndex_0x0 & 0x10)
 		sub_5F660(a1x, x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x451_1105]], 256);
 	//v21 = a1x->dword_0xA4_164;
-	if (a1x->dword_0xA4_164x->dword_0x0_0 & 0x20)
+	if (a1x->dword_0xA4_164x->entityIndex_0x0 & 0x20)
 		sub_5F660(a1x, x_DWORD_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x453_1107]], 512);
 	//v22 = *(x_BYTE**)&a1x->dword_0xA4_164;
-	if (a1x->dword_0xA4_164x->dword_0x0_0 & 0x40)
+	if (a1x->dword_0xA4_164x->entityIndex_0x0 & 0x40)
 		/*LOBYTE(v22) = */
 		sub_5F660(
 			a1x,
