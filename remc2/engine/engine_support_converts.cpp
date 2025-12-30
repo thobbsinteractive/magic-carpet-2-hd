@@ -27,13 +27,13 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int32_t dword_0x0_0;
 	memcpy(output + 0x0, &input->dword_0x0_0, 4);
 	//int16_t word_0x4_4;
-	memcpy(output + 0x4, &input->word_0x4_4, 2);
+	memcpy(output + 0x4, &input->yawDelta_0x4_4, 2);
 	//int16_t word_0x6_6;
-	memcpy(output + 0x6, &input->word_0x6_6, 2);
+	memcpy(output + 0x6, &input->pitchDelta_0x6_6, 2);
 	//uint8_t stuba[4];
 	memset(output + 0xa, 0, 4);
 	//int16_t word_0xc_12;//final speed
-	memcpy(output + 0xc, &input->word_0xc_12, 2);
+	memcpy(output + 0xc, &input->speed_0xc_12, 2);
 	//int16_t word_0xe_14;
 	memcpy(output + 0xe, &input->word_0xe_14, 2);
 	//int16_t word_0x10_16;
@@ -49,13 +49,13 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//uint8_t stubc[2];
 	memset(output + 0x1c, 0, 2);
 	//int16_t word_0x1E_30;
-	memcpy(output + 0x1e, &input->word_0x1E_30, 2);
+	memcpy(output + 0x1e, &input->moveBoost_0x1E_30, 2);
 	//int16_t word_0x20_32;
-	memcpy(output + 0x20, &input->word_0x20_32, 2);
+	memcpy(output + 0x20, &input->yaw_0x1E_30, 2);
 	//int16_t word_0x22_34;
 	memcpy(output + 0x22, &input->word_0x22_34, 2);
 	//int16_t word_0x24_36;
-	memcpy(output + 0x24, &input->word_0x24_36, 2);
+	memcpy(output + 0x24, &input->pitch_0x24_36, 2);
 	//int16_t word_0x26_38[8];
 	for(int i=0;i<8;i++)
 		memcpy(output + 0x36+2*i, &input->word_0x26_38[i], 2);
@@ -92,21 +92,21 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int16_t word_0x14A_330;
 	memcpy(output + 0x14a, &input->word_0x14A_330, 2);
 	//uint8_t byte_0x14C_332;
-	memcpy(output + 0x14c, &input->byte_0x14C_332, 1);
+	memcpy(output + 0x14c, &input->moveSpeed_0x14C_332, 1);
 	//int8_t byte_0x14D_333;
-	memcpy(output + 0x14d, &input->byte_0x14D_333, 1);
+	memcpy(output + 0x14d, &input->moveSpeedCounter_0x14D_333, 1);
 	//int8_t byte_0x14E_334;
-	memcpy(output + 0x14e, &input->byte_0x14E_334, 1);
+	memcpy(output + 0x14e, &input->mobilizeCounter_0x14E_334, 1);
 	//int8_t byte_0x14F_335;
-	memcpy(output + 0x14f, &input->byte_0x14F_335, 1);
+	memcpy(output + 0x14f, &input->mobilizeCounter2_0x150_336, 1);
 	//int32_t byte_0x150_336;
 	memcpy(output + 0x150, &input->byte_0x150_336, 1);
 	//int8_t byte_0x154_340;
 	memcpy(output + 0x154, &input->byte_0x154_340, 1);
 	//int16_t word_0x155_341;
-	memcpy(output + 0x155, &input->word_0x155_341, 2);
+	memcpy(output + 0x155, &input->yaw_0x155_341, 2);
 	//int16_t word_0x157_343;
-	memcpy(output + 0xc, &input->word_0x157_343, 2);
+	memcpy(output + 0xc, &input->pitch_0x157_343, 2);
 	//int16_t word_0x159_345;
 	memcpy(output + 0x159, &input->word_0x159_345, 2);
 	//int8_t array_0x15B_347[8];
@@ -155,11 +155,11 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int16_t word_0x1A4_420;
 	memcpy(output + 0x1a4, &input->word_0x1A4_420, 2);
 	//int16_t word_0x1A6_422;//211 x add
-	memcpy(output + 0x1a6, &input->word_0x1A6_422, 2);
+	memcpy(output + 0x1a6, &input->xAdd_0x1A6_422, 2);
 	//int16_t word_0x1A8_424;//212 y add
-	memcpy(output + 0x1a8, &input->word_0x1A8_424, 2);
+	memcpy(output + 0x1a8, &input->yAdd_0x1A8_424, 2);
 	//int16_t word_0x1AA_426;//213 z add
-	memcpy(output + 0x1aa, &input->word_0x1AA_426, 2);
+	memcpy(output + 0x1aa, &input->zAdd_0x1AA_426, 2);
 	//type_str_0x1AC_428 str_0x1AC_428;
 	convert_struct_to_array_0x1AC_428(&input->str_0x1AC_428, output + 0x1ac);
 	//int8_t byte_0x1BE_446;
@@ -199,7 +199,7 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int8_t byte_0x261_609;
 	memcpy(output + 0x609, &input->byte_0x261_609, 1);
 	//int8_t byte_0x262_610;
-	memcpy(output + 0x610, &input->byte_0x262_610, 1);
+	memcpy(output + 0x610, &input->waterCounter_0x262_610, 1);
 	//type_str_611 str_611;
 }
 
@@ -356,9 +356,9 @@ void convert_struct_to_array_0x6E8E(type_event_0x6E8E* input, uint8_t* output) {
 	//uint16_t word_0x1A_26;//26 // index - owner //ID last index
 	memcpy(output + 26, &input->id_0x1A_26, 2);
 	//int16_t word_0x1C_28;//28//rotate1
-	memcpy(output + 28, &input->word_0x1C_28, 2);
+	memcpy(output + 28, &input->yaw_0x1C_28, 2);
 	//int16_t word_0x1E_30;//30//rotate2
-	memcpy(output + 30, &input->word_0x1E_30, 2);
+	memcpy(output + 30, &input->pitchAngle_0x1E_30, 2);
 	//int16_t word_0x20_32;//32//rotate3
 	memcpy(output + 32, &input->word_0x20_32, 2);
 	//int16_t word_0x22_34;//34//rotate4

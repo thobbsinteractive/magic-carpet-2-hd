@@ -218,10 +218,10 @@ type_str_611;
 
 typedef struct Type_str_164 {//size 1136
 	int32_t dword_0x0_0;
-	int16_t word_0x4_4;
-	int16_t word_0x6_6;
+	int16_t yawDelta_0x4_4;
+	int16_t pitchDelta_0x6_6;
 	uint8_t stuba[4];
-	int16_t word_0xc_12;//final speed
+	int16_t speed_0xc_12;//final speed
 	int16_t word_0xe_14;
 	int16_t word_0x10_16;
 	//int8_t byte_0x11_17;
@@ -230,10 +230,10 @@ typedef struct Type_str_164 {//size 1136
 	int16_t word_0x18_24_next_entity;
 	int16_t word_0x1A_26;
 	uint8_t stubc[2];
-	int16_t word_0x1E_30;
-	int16_t word_0x20_32;
+	int16_t moveBoost_0x1E_30;
+	int16_t yaw_0x1E_30;
 	int16_t word_0x22_34;
-	int16_t word_0x24_36;
+	int16_t pitch_0x24_36;
 	int16_t word_0x26_38[8];
 	//int16_t word_0x2E_46;//word_0x26_38[4]
 	int16_t word_0x36_54;
@@ -250,14 +250,14 @@ typedef struct Type_str_164 {//size 1136
 	int16_t word_0x146_326;
 	int16_t word_0x148_328;
 	int16_t word_0x14A_330;
-	uint8_t byte_0x14C_332;
-	int8_t byte_0x14D_333;
-	int8_t byte_0x14E_334;
-	int8_t byte_0x14F_335;
+	uint8_t moveSpeed_0x14C_332;
+	int8_t moveSpeedCounter_0x14D_333;
+	int8_t mobilizeCounter_0x14E_334;
+	int8_t mobilizeCounter2_0x150_336;
 	int32_t byte_0x150_336;
 	uint8_t byte_0x154_340;
-	int16_t word_0x155_341;
-	int16_t word_0x157_343;
+	int16_t yaw_0x155_341;
+	int16_t pitch_0x157_343;
 	int16_t word_0x159_345;
 	int8_t array_0x15B_347[8] = {0,0,0,0,0,0,0,0};
 	int16_t lifeRegen_0x163_355;
@@ -281,9 +281,9 @@ typedef struct Type_str_164 {//size 1136
 	int32_t maxDistance_0x19E_414;
 	int16_t word_0x1A2_418;
 	int16_t word_0x1A4_420;
-	int16_t word_0x1A6_422;//211 x add
-	int16_t word_0x1A8_424;//212 y add
-	int16_t word_0x1AA_426;//213 z add
+	int16_t xAdd_0x1A6_422;//211 x add
+	int16_t yAdd_0x1A8_424;//212 y add
+	int16_t zAdd_0x1AA_426;//213 z add
 	type_str_0x1AC_428 str_0x1AC_428;
 	int8_t byte_0x1BE_446;
 	int8_t byte_0x1BF_447;
@@ -305,7 +305,7 @@ typedef struct Type_str_164 {//size 1136
 	std::array<int8_t, 19> array_0x24E_590; // size?? -> at least 12 in level 19. using the whole space of stubn now.
 	//uint8_t stubn[8];
 	int8_t byte_0x261_609;
-	int8_t byte_0x262_610;
+	int8_t waterCounter_0x262_610;
 	type_str_611 str_611;
 
 	int8_t str_611_byte_0x45C_1116;
@@ -333,8 +333,8 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	uint16_t oldMapEntity_0x16_22;//22
 	uint16_t nextEntity_0x18_24;//24 //next entity index
 	uint16_t id_0x1A_26;//26 // index - owner //ID last index
-	int16_t word_0x1C_28;//28//rotate1
-	int16_t word_0x1E_30;//30//rotate2
+	int16_t yaw_0x1C_28;//28//rotate1
+	int16_t pitchAngle_0x1E_30;//30//rotate2
 	int16_t word_0x20_32;//32//rotate3
 	//int8_t byte_0x21_33;//33
 	int16_t word_0x22_34;//34//rotate4

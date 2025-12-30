@@ -5577,12 +5577,12 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
 		v23 = v5;
 		v6 = Maths::sub_581E0_maybe_tan2(&v26x->axis_0x4C_76, v4x);
 		v28 = v6;
-		v7 = sub_582B0(v26x->word_0x1C_28, v6);
+		v7 = sub_582B0(v26x->yaw_0x1C_28, v6);
 		v27 = v7;
 		v8 = 12288 * (512 - v7 / 2 + 512);
 		v9 = (v8 - (__CFSHL__(v8 >> 31, 10) + (v8 >> 31 << 10))) >> 10;
 		v10 = v9 ? (signed int)(0x7FFF * (v9 - v25)) / v9 : 0x7FFF;
-		v11 = (signed __int16)sub_582F0(v26x->word_0x1C_28, v28);
+		v11 = (signed __int16)sub_582F0(v26x->yaw_0x1C_28, v28);
 		if (v10 < 512)
 			return;
 		if (v10 > 0x7FFF)

@@ -5479,8 +5479,8 @@ void sub_48690(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	if (v10x)
 	{
 		v10x->dword_0x10_16 = maxabsdist;
-		v10x->word_0x1C_28 = Xdir;
-		v10x->word_0x1E_30 = Ydir;
+		v10x->yaw_0x1C_28 = Xdir;
+		v10x->pitchAngle_0x1E_30 = Ydir;
 	}
 	predictedAxis_EB398ar.x = (maxabsdist * Xdir + posX2) << 8;
 	predictedAxis_EB398ar.y = (maxabsdist * Ydir + posY2) << 8;
@@ -5488,8 +5488,8 @@ void sub_48690(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	if (resultx)
 	{
 		resultx->dword_0x10_16 = distXYdiff;
-		resultx->word_0x1C_28 = v14;
-		resultx->word_0x1E_30 = v15;
+		resultx->yaw_0x1C_28 = v14;
+		resultx->pitchAngle_0x1E_30 = v15;
 	}
 }
 
@@ -5515,7 +5515,7 @@ void sub_487D0(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	resultx = IfSubtypeCallAxisEvent_4A190(&v8x, 10, 32);
 	if (resultx)
 	{
-		resultx->word_0x1C_28 = v5;
+		resultx->yaw_0x1C_28 = v5;
 		resultx->life_0x8 = (signed int)v6 >> 8;
 		resultx->byte_0x46_70 = a5;
 	}
@@ -5547,7 +5547,7 @@ void sub_48880(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	if (resultx)
 	{
 		v8 = resultx->actSpeed_0x82_130;
-		resultx->word_0x1C_28 = v4;
+		resultx->yaw_0x1C_28 = v4;
 		//result = (uint8_t*)(v5 / v8);
 		resultx->life_0x8 = (v5 / v8);
 	}

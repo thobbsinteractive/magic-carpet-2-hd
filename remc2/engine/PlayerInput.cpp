@@ -1401,8 +1401,8 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 					return;
 				sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[383], 3u, 50);//speed super fast
 			}
-			v13x->dword_0xA4_164x->word_0x155_341 = 0;
-			v13x->dword_0xA4_164x->word_0x157_343 = 0;
+			v13x->dword_0xA4_164x->yaw_0x155_341 = 0;
+			v13x->dword_0xA4_164x->pitch_0x157_343 = 0;
 			//result = 0;
 		}
 		return;// result;
