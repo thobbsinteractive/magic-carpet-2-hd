@@ -60902,14 +60902,14 @@ void sub_5D530(type_event_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 {
 	//char v1; // ah
 	//int v2; // ecx
-	unsigned __int8 v3; // dh
-	int v4; // edx
+	//unsigned __int8 v3; // dh
+	//int v4; // edx
 	//int v5; // ecx
-	int v6; // edx
-	int v7; // edx
-	int v8; // eax
-	int v9; // edx
-	__int16 v10; // ax
+	//int v6; // edx
+	//int v7; // edx
+	//int v8; // eax
+	//int v9; // edx
+	//__int16 v10; // ax
 	//int v11; // eax
 	//__int16 v12; // dx
 	//int v13; // eax
@@ -60951,58 +60951,58 @@ void sub_5D530(type_event_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 	//int v49; // edx
 	__int16 v50; // ax
 
-	//v1 = a1x->struct_byte_0xc_12_15.byte[1];
+	int locIntTemp;
+
 	if (a1x->struct_byte_0xc_12_15.byte[1] & 8)
 	{
 		a1x->struct_byte_0xc_12_15.byte[1] &= 0xF7;
 		return;
 	}
 	x_WORD_EB398ar = a1x->axis_0x4C_76;
-	v3 = a1x->dword_0xA4_164x->byte_0x14C_332;
-	if (v3)
+	if (a1x->dword_0xA4_164x->byte_0x14C_332)
 	{
-		v4 = a1x->dword_0xA4_164x->word_0x4_4 * (4 - v3);
-		a1x->dword_0xA4_164x->word_0x155_341 += (v4 - (my_sign32(v4) * 3)) >> 2;
-		v6 = a1x->dword_0xA4_164x->word_0x6_6 * (4 - a1x->dword_0xA4_164x->byte_0x14C_332);
-		a1x->dword_0xA4_164x->word_0x157_343 += (v6 - (my_sign32(v6) * 3)) >> 2;
+		locIntTemp = a1x->dword_0xA4_164x->word_0x4_4 * (4 - a1x->dword_0xA4_164x->byte_0x14C_332);
+		a1x->dword_0xA4_164x->word_0x155_341 += (locIntTemp - (my_sign32(locIntTemp) * 3)) >> 2;
+		locIntTemp = a1x->dword_0xA4_164x->word_0x6_6 * (4 - a1x->dword_0xA4_164x->byte_0x14C_332);
+		a1x->dword_0xA4_164x->word_0x157_343 += (locIntTemp - (my_sign32(locIntTemp) * 3)) >> 2;
 	}
 	else
 	{
 		a1x->dword_0xA4_164x->word_0x155_341 += a1x->dword_0xA4_164x->word_0x4_4;
 		a1x->dword_0xA4_164x->word_0x157_343 += a1x->dword_0xA4_164x->word_0x6_6;
 	}
-	v7 = a1x->dword_0xA4_164x->word_0x155_341;
-	a1x->word_0x1C_28 = (a1x->word_0x1C_28 + ((v7 - (my_sign32(v7) * 7)) >> 3)) & 0x7FF;
-	v8 = a1x->dword_0xA4_164x->word_0xc_12 - a1x->actSpeed_0x82_130;
+	locIntTemp = a1x->dword_0xA4_164x->word_0x155_341;
+	a1x->word_0x1C_28 = (a1x->word_0x1C_28 + ((locIntTemp - (my_sign32(locIntTemp) * 7)) >> 3)) & 0x7FF;
+	int speedSign = a1x->dword_0xA4_164x->word_0xc_12 - a1x->actSpeed_0x82_130;
 	if (a1x->dword_0xA4_164x->word_0xc_12 != a1x->actSpeed_0x82_130)
 	{
-		if (v8 <= 0)
-			LOWORD(v8) = -1;
+		if (speedSign <= 0)
+			speedSign = -1;
 		else
-			LOWORD(v8) = 1;
+			speedSign = 1;
 	}
-	a1x->actSpeed_0x82_130 += v8 * x_DWORD_D4B84;
-	v9 = ((x_WORD_EB398ar.z - (signed __int16)getTerrainAlt_10C40(&x_WORD_EB398ar) - a1x->dword_0xA0_160x->word_160_0xa_10) << 10)
+	a1x->actSpeed_0x82_130 += speedSign * x_DWORD_D4B84;
+	int altDiff = ((x_WORD_EB398ar.z - getTerrainAlt_10C40(&x_WORD_EB398ar) - a1x->dword_0xA0_160x->word_160_0xa_10) << 10)
 		/ a1x->dword_0xA0_160x->word_160_0xa_10;
-	if (v9 < -256)
-		v9 = -256;
-	if (v9 > 256)
-		v9 = 256;
-	v10 = a1x->dword_0xA4_164x->word_0x157_343;
-	HIBYTE(v10) &= 7u;
-	a1x->word_0x1E_30 = v10;
-	if (v10 > 1024)
-		v10 -= 2048;
-	if (a1x->actSpeed_0x82_130 >= 0 || v10 <= 0)
+	if (altDiff < -256)
+		altDiff = -256;
+	if (altDiff > 256)
+		altDiff = 256;
+	//v10 = a1x->dword_0xA4_164x->word_0x157_343 & 0x7ffu;
+	//HIBYTE(v10) &= 0x7ffu;
+	a1x->word_0x1E_30 = a1x->dword_0xA4_164x->word_0x157_343 & 0x7ffu;
+	if (a1x->word_0x1E_30 > 1024)
+		a1x->word_0x1E_30 -= 2048;
+	if (a1x->actSpeed_0x82_130 >= 0 || a1x->word_0x1E_30 <= 0)
 	{
-		if (a1x->actSpeed_0x82_130 < 0 && v10 < 0)
+		if (a1x->actSpeed_0x82_130 < 0 && a1x->word_0x1E_30 < 0)
 			goto LABEL_105;
-		if (a1x->actSpeed_0x82_130 > 0 && v10 < 0)
+		if (a1x->actSpeed_0x82_130 > 0 && a1x->word_0x1E_30 < 0)
 		{
-			a1x->dword_0xA4_164x->word_0x24_36 = ((v10 * -v9 - (my_sign32(v10 * -v9) * 255)) >> 8);
+			a1x->dword_0xA4_164x->word_0x24_36 = ((a1x->word_0x1E_30 * -altDiff - (my_sign32(a1x->word_0x1E_30 * -altDiff) * 255)) >> 8);
 			goto LABEL_27;
 		}
-		if (a1x->actSpeed_0x82_130 > 0 && v10 > 0)
+		if (a1x->actSpeed_0x82_130 > 0 && a1x->word_0x1E_30 > 0)
 		{
 		LABEL_105:
 			a1x->dword_0xA4_164x->word_0x24_36 = a1x->dword_0xA4_164x->word_0x157_343;
@@ -61011,7 +61011,7 @@ void sub_5D530(type_event_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 	}
 	else
 	{
-		a1x->dword_0xA4_164x->word_0x24_36 = ((v10 * -v9 - (my_sign32(v10 * -v9) * 255)) >> 8);
+		a1x->dword_0xA4_164x->word_0x24_36 = ((a1x->word_0x1E_30 * -altDiff - (my_sign32(a1x->word_0x1E_30 * -altDiff) * 255)) >> 8);
 	}
 LABEL_27:
 	a1x->dword_0xA4_164x->word_0x24_36 &= 0x7ffu;
