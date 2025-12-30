@@ -4110,7 +4110,7 @@ x_D41A0_BYTEARRAY_0+ d886// 356038+ d886
 
 238e42 d60f
 238e42 d60f19
-238e42 561019 call void sub_57CF0(uint8_t* a1, uint8_t* a2)//238cf0
+238e42 561019 call void CopyEntityPosition_57CF0(uint8_t* a1, uint8_t* a2)//238cf0
 190
 
 x_D41A0_BYTEARRAY_0+ d570// 356038+ d570
@@ -5892,7 +5892,7 @@ test char sub_1DDA0(type_str_0x6E8E* a1x, __int16 a2)//1feda0
 (uint8_t*)&D41A0_BYTESTR_0+0xd496 0x00
 (uint8_t*)x_D41A0_BYTEARRAY_0+0xd496 0x40
 
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 
 (uint8_t*)x_BYTE_10B4E0+0xbcae 0x25
 (uint8_t*)x_BYTE_10B4E0+0xbcae 0x00
@@ -5903,11 +5903,11 @@ void sub_462A0(unsigned __int16 a1, __int16 a2)//2272a0
 void sub_37240(type_str_0x6E8E* a1x)//218240
 test begin
 
-sub_57CF0
+CopyEntityPosition_57CF0
 -more count than 35
 
 zde:
-sub_57CF0(a1x, &x_WORD_EB398ar);
+CopyEntityPosition_57CF0(a1x, &x_WORD_EB398ar);
 
 je to ok, je jen ulozen maly vzorek
 
@@ -6037,21 +6037,21 @@ krok 0xc8
 0x356038 +0x91a6
 
 test
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
-sub_57CF0 - 00 - ok
-sub_57CF0 - 16 - ok
-sub_57CF0 - 2f - ok
-sub_57CF0 - 48 - ok
-sub_57CF0 - 61 - ok
-sub_57CF0 - 7a - ok
-sub_57CF0 - 93 - ok
-sub_57CF0 - ab - ok
-sub_57CF0 - c1 - ok
-sub_57CF0 - c3 - ok
-sub_57CF0 - c6 - ok
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+CopyEntityPosition_57CF0 - 00 - ok
+CopyEntityPosition_57CF0 - 16 - ok
+CopyEntityPosition_57CF0 - 2f - ok
+CopyEntityPosition_57CF0 - 48 - ok
+CopyEntityPosition_57CF0 - 61 - ok
+CopyEntityPosition_57CF0 - 7a - ok
+CopyEntityPosition_57CF0 - 93 - ok
+CopyEntityPosition_57CF0 - ab - ok
+CopyEntityPosition_57CF0 - c1 - ok
+CopyEntityPosition_57CF0 - c3 - ok
+CopyEntityPosition_57CF0 - c6 - ok
 sub_57D70_clean_event - cb
-sub_57CF0 - d0
-sub_57CF0 - d0ff x c2 238d31
+CopyEntityPosition_57CF0 - d0
+CopyEntityPosition_57CF0 - d0ff x c2 238d31
 
 signed int sub_1B8C0(type_str_0x6E8E* a1x)//1fc8c0
 
@@ -6704,7 +6704,7 @@ step 1
 238e3c
 void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
 238d1d
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 1fca1e
 signed int sub_1B8C0(type_str_0x6E8E* a1x)//1fc8c0
 1ff2cf
@@ -6914,7 +6914,7 @@ a1x->dword_0xA4_164x->byte_0x196_406
  x_WORD_15B4E0+0xebb2 0x86
  32c4e0+0xebb2 0x86
  238e3c - void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- 238d18 - void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ 238d18 - void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  2413bc - int sub_5FF50(type_str_0x6E8E* a1x)//240f50
 
  (uint8_t*)&D41A0_BYTESTR_0+0x2fe8 0xba
@@ -6968,7 +6968,7 @@ v113x->dword_0xA4_164x->word_0x4_4 = ((v100x - ((v100x>>31) << 2)) - cftemp) >> 
 
  238ec4
  238d0e void sub_57E50(type_str_0x6E8E* a1x)//238e50
- 2053d8 void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ 2053d8 void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 
 
 
@@ -7018,7 +7018,7 @@ versus
 
  238e3c
  238d18 void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- 240f05 void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ 240f05 void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  24095c void sub_5FD00(type_str_0x6E8E* a1x)//240d00
 
  debugcounter_238CF0 ==0xfd
@@ -7909,7 +7909,7 @@ x_WORD_15B4E0+0x15d28 0x4e
 238e3c
 void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
 238cf0
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 
 (uint8_t*)&D41A0_BYTESTR_0+0x8 0x7c
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x8 0xef
@@ -7926,7 +7926,7 @@ versus
 238e40
 238d70 void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
 238cf0
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 23adc0
 char sub_59DC0(type_str_0x6E8E* a1x)//23adc0
 
@@ -8278,7 +8278,7 @@ x_WORD_15B4E0+0x7718 0x19
  32c4e0+0x7718 0x19
 
  238ec4 void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- 238d28 void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ 238d28 void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  1fca1e signed int sub_1B8C0(type_str_0x6E8E* a1x)//1fc8c0
 
  (uint8_t*)&D41A0_BYTESTR_0+0x6Ff4 a6
@@ -8339,7 +8339,7 @@ x_WORD_15B4E0+0x6104 0xa5
 
  238e3c
  sub_57D70_actualize_event(a1x, a2x);
- void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 
 (uint8_t*)&x_WORD_15B4E0_source+0x5d04 79
 x_WORD_15B4E0+0x5d04 0xa5
@@ -8452,7 +8452,7 @@ x_WORD_15B4E0+0x12a50 0x05
  32c4e0+0xb12a 0x05
 
  void sub_57D70_actualize_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  sequence 00238CF0
 
  SPELLS_BEGIN_BUFFER_str
@@ -8791,7 +8791,7 @@ x_WORD_180660_VGA_type_resolution
 
  238e3c
  void sub_57D70_actualize_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  1fca19
  signed int sub_1B8C0(type_str_0x6E8E* a1x)//1fc8c0
   void sub_1DDA0(type_str_0x6E8E* a1x, __int16 a2)//1feda0
@@ -8822,7 +8822,7 @@ x_WORD_15B4E0+0x3f12 0x34
  238e3c
 
  void sub_57D70_actualize_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 signed int sub_68E50(type_str_0x6E8E* a1x, type_str_0x6E8E* a2x, type_str_0x6E8E* a3x)//249e50
  void sub_69640(type_str_0x6E8E* a1x)//24a640//spell posses
 
@@ -8995,7 +8995,7 @@ x_WORD_15B4E0+0xcffe 0x2f
 
  238e3c
 void sub_57D70_actualize_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 0x238cf3
 0x238a8a
 
@@ -9022,7 +9022,7 @@ x_WORD_15B4E0+0x1c2a 0x00
 
  238ec4
  void sub_57E50(type_str_0x6E8E* a1x)//238e50
- void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  a8a
 
  (uint8_t*)&D41A0_BYTESTR_0+0x118dd 0x09

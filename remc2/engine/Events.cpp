@@ -586,7 +586,7 @@ type_event_0x6E8E* NewEvent_4A050()//22b050
 		x_D41A0_BYTEARRAY_4_struct.dword_38519 = 0;
 		x_D41A0_BYTEARRAY_4_struct.dword_38531 = 0;
 		x_D41A0_BYTEARRAY_4_struct.dword_38535 = 0;
-		sub_57E50(D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]);
+		SetMapEntity_57E50(D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]);
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->class_0x3F_63 = 0;
 		memset(D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6], 0, sizeof(type_event_0x6E8E));
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->maxLife_0x4 = 300;
@@ -5130,7 +5130,7 @@ type_event_0x6E8E* IfSubtypeCallAxisEvent_4A190(axis_3d* position, int type, int
 }
 
 //----- (00057E50) --------------------------------------------------------
-void sub_57E50(type_event_0x6E8E* entity)//238e50
+void SetMapEntity_57E50(type_event_0x6E8E* entity)//238e50
 {
 	if (entity->struct_byte_0xc_12_15.byte[0] & 4)
 	{
@@ -5150,7 +5150,7 @@ void sub_57F20(type_event_0x6E8E* entity)//238f20
 	int32_t v1; // edx
 	signed int v2; // ecx
 	int v3x;
-	sub_57E50(entity);
+	SetMapEntity_57E50(entity);
 	if (entity->struct_byte_0xc_12_15.byte[2] & 2)
 	{
 		v1 = 0;
