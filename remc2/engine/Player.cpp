@@ -3,18 +3,18 @@
 #include "../utilities/Maths.h"
 
 //----- (00057FA0) --------------------------------------------------------
-void MovePlayer_57FA0(axis_3d* position, uint16_t a2, int16_t a3, int16_t a4)//238fa0 // move player
+void MoveEntity_57FA0(axis_3d* position, uint16_t yaw, int16_t pitch, int16_t speed)//238fa0 // move player
 {
-	if (a4)
+	if (speed)
 	{
-		a3 &= 0x7ffu;
-		a2 &= 0x7ffu;
-		if (a3)
+		pitch &= 0x7ffu;
+		yaw &= 0x7ffu;
+		if (pitch)
 		{
-			position->z -= (int)(a4 * Maths::sin_DB750[a3]) >> 16;//change z axis
-			a4 = (int)(a4 * Maths::sin_DB750[0x200 + a3]) >> 16;
+			position->z -= (int)(speed * Maths::sin_DB750[pitch]) >> 16;//change z axis
+			speed = (int)(speed * Maths::sin_DB750[0x200 + pitch]) >> 16;
 		}
-		position->x += (int)(a4 * Maths::sin_DB750[a2]) >> 16;
-		position->y -= (int)(a4 * Maths::sin_DB750[0x200 + a2]) >> 16;
+		position->x += (int)(speed * Maths::sin_DB750[yaw]) >> 16;
+		position->y -= (int)(speed * Maths::sin_DB750[0x200 + yaw]) >> 16;
 	}
 }

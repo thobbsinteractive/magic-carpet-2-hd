@@ -334,10 +334,10 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	uint16_t nextEntity_0x18_24;//24 //next entity index
 	uint16_t id_0x1A_26;//26 // index - owner //ID last index
 	int16_t yaw_0x1C_28;//28//rotate1
-	int16_t pitchAngle_0x1E_30;//30//rotate2
-	int16_t word_0x20_32;//32//rotate3
+	int16_t pitch_0x1E_30;//30//rotate2
+	int16_t roll_0x20_32;//32//rotate3
 	//int8_t byte_0x21_33;//33
-	int16_t word_0x22_34;//34//rotate4
+	int16_t fov_0x22_34;//34//rotate4
 	int16_t word_0x24_36;//36 // index subentity
 	int16_t word_0x26_38;//38 // index subentity
 	uint16_t parentId_0x28_40;//40//WHO OWNS ME

@@ -2627,7 +2627,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	}
 
 	case 0x217ba0: {
-		sub_36BA0(a1_6E8E, false);
+		CreateManaSphereFromKilled_36BA0(a1_6E8E, false);
 		break;
 	}
 	case 0x217d50: {
@@ -4700,7 +4700,7 @@ type_event_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//p
 		break;
 	}
 	case 0x231080: {//creating mana sphere
-		return sub_50080(a1_axis3d);
+		return CreateManaSphere_50080(a1_axis3d);
 		break;
 	}
 	case 0x2310a0: {
@@ -5480,7 +5480,7 @@ void sub_48690(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	{
 		v10x->dword_0x10_16 = maxabsdist;
 		v10x->yaw_0x1C_28 = Xdir;
-		v10x->pitchAngle_0x1E_30 = Ydir;
+		v10x->pitch_0x1E_30 = Ydir;
 	}
 	predictedAxis_EB398ar.x = (maxabsdist * Xdir + posX2) << 8;
 	predictedAxis_EB398ar.y = (maxabsdist * Ydir + posY2) << 8;
@@ -5489,7 +5489,7 @@ void sub_48690(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	{
 		resultx->dword_0x10_16 = distXYdiff;
 		resultx->yaw_0x1C_28 = v14;
-		resultx->pitchAngle_0x1E_30 = v15;
+		resultx->pitch_0x1E_30 = v15;
 	}
 }
 

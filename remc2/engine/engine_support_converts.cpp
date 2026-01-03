@@ -358,11 +358,11 @@ void convert_struct_to_array_0x6E8E(type_event_0x6E8E* input, uint8_t* output) {
 	//int16_t word_0x1C_28;//28//rotate1
 	memcpy(output + 28, &input->yaw_0x1C_28, 2);
 	//int16_t word_0x1E_30;//30//rotate2
-	memcpy(output + 30, &input->pitchAngle_0x1E_30, 2);
+	memcpy(output + 30, &input->pitch_0x1E_30, 2);
 	//int16_t word_0x20_32;//32//rotate3
-	memcpy(output + 32, &input->word_0x20_32, 2);
+	memcpy(output + 32, &input->roll_0x20_32, 2);
 	//int16_t word_0x22_34;//34//rotate4
-	memcpy(output + 34, &input->word_0x22_34, 2);
+	memcpy(output + 34, &input->fov_0x22_34, 2);
 	//int16_t word_0x24_36;//36 // index subentity
 	memcpy(output + 36, &input->word_0x24_36, 2);
 	//int16_t word_0x26_38;//38 // index subentity

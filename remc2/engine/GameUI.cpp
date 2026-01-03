@@ -3178,7 +3178,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				if (v21 > 15872)
 					LOWORD(v21) = 15872;
 				v67x = v75x->axis_0x4C_76;
-				MovePlayer_57FA0(&v67x, v78, 0, v21);
+				MoveEntity_57FA0(&v67x, v78, 0, v21);
 				v22 = v83 * Maths::sin_DB750[v82];
 				v23 = v83 * (x_DWORD)Maths::sin_DB750[0x200 + v82];
 				v71 = (int16_t)(*(int16_t*)&v67x - posX);
