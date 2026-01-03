@@ -864,6 +864,10 @@ bool HandleSpecialKeys(const SDL_Event &event) {
 		ToggleMouseGrabbed();
 		specialKey = true;
 	}
+	if ((event.key.keysym.sym == SDLK_ESCAPE) && (event.key.keysym.mod & KMOD_SHIFT)) {
+		StopPlayback();
+		specialKey = true;
+	}
 	return specialKey;
 }
 
@@ -907,6 +911,12 @@ int PollSdlEvents()
 							EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
 					}
 					break;
+				}
+				case SDL_KEYDOWN:
+				{
+					if (HandleSpecialKeys(event)) {
+						break;
+					}
 				}
 				case SDL_QUIT: return 0;
 			}
@@ -1655,6 +1665,7 @@ void StopPlayback()
 	{
 		m_InputRecorder->StopPlayback();
 		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
 	}
 }
 
