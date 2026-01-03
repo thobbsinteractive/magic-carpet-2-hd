@@ -1017,7 +1017,7 @@ int PollSdlEvents()
 		}
 		gamepad_poll_data(&gpe);
 	}
-	if (m_InputRecorder != nullptr)
+	if (m_InputRecorder != nullptr && (m_InputRecorder->m_IsRecording || m_InputRecorder->m_IsPlaying))
 		m_InputRecorder->IncrementTick();
 	return 1;
 }
@@ -1643,17 +1643,21 @@ void StartRecording(const char* outputFileName)
 
 void StopRecording()
 {
-	if (m_InputRecorder != nullptr)
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
 	{
 		m_InputRecorder->StopRecording();
 		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
 	}
 }
 
 void StartPlayback(const char* inputFileName)
 {
 	if (m_InputRecorder != nullptr)
+	{
 		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
+	}
 
 	m_InputRecorder = new InputRecorder(inputFileName);
 	m_InputRecorder->StartPlayback();
@@ -1661,7 +1665,7 @@ void StartPlayback(const char* inputFileName)
 
 void StopPlayback()
 {
-	if (m_InputRecorder != nullptr)
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying)
 	{
 		m_InputRecorder->StopPlayback();
 		delete m_InputRecorder;
