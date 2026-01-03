@@ -232,7 +232,7 @@ typedef struct Type_str_164 {//size 1136
 	uint8_t stubc[2];
 	int16_t moveBoost_0x1E_30;
 	int16_t yaw_0x1E_30;
-	int16_t word_0x22_34;
+	int16_t fov_0x22_34;
 	int16_t pitch_0x24_36;
 	int16_t word_0x26_38[8];
 	//int16_t word_0x2E_46;//word_0x26_38[4]

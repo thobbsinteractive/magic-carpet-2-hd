@@ -50,10 +50,10 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	memset(output + 0x1c, 0, 2);
 	//int16_t word_0x1E_30;
 	memcpy(output + 0x1e, &input->moveBoost_0x1E_30, 2);
-	//int16_t word_0x20_32;
+	//int16_t roll_0x20_32;
 	memcpy(output + 0x20, &input->yaw_0x1E_30, 2);
-	//int16_t word_0x22_34;
-	memcpy(output + 0x22, &input->word_0x22_34, 2);
+	//int16_t fov_0x22_34;
+	memcpy(output + 0x22, &input->fov_0x22_34, 2);
 	//int16_t word_0x24_36;
 	memcpy(output + 0x24, &input->pitch_0x24_36, 2);
 	//int16_t word_0x26_38[8];
@@ -359,9 +359,9 @@ void convert_struct_to_array_0x6E8E(type_event_0x6E8E* input, uint8_t* output) {
 	memcpy(output + 28, &input->yaw_0x1C_28, 2);
 	//int16_t word_0x1E_30;//30//rotate2
 	memcpy(output + 30, &input->pitch_0x1E_30, 2);
-	//int16_t word_0x20_32;//32//rotate3
+	//int16_t roll_0x20_32;//32//rotate3
 	memcpy(output + 32, &input->roll_0x20_32, 2);
-	//int16_t word_0x22_34;//34//rotate4
+	//int16_t fov_0x22_34;//34//rotate4
 	memcpy(output + 34, &input->fov_0x22_34, 2);
 	//int16_t word_0x24_36;//36 // index subentity
 	memcpy(output + 36, &input->word_0x24_36, 2);

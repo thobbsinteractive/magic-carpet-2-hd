@@ -5822,7 +5822,7 @@ signed int sub_13100(type_event_0x6E8E* a1x)//1f4100
 	int v2; // eax
 	signed int v3; // ebx
 
-	a1x->roll_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &a1x->axis2_0x9A_154x);
+	a1x->roll_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &a1x->word_0x9A_154x);
 	if (!sub_14C90(a1x, 0, 2048, 4096))
 		goto LABEL_16;
 	for (i = a1x->dword_0xA4_164x->str_611.array_0x41D_1053z.byte[2]; i >= 0 && (unsigned __int16)sub_15F20(a1x, i, 2) != 2; i--)
@@ -5836,10 +5836,10 @@ signed int sub_13100(type_event_0x6E8E* a1x)//1f4100
 	else
 	{
 		a1x->dword_0xA4_164x->speed_0xc_12 = 0;
-		v2 = a1x->axis_0x4C_76.z - (a1x->axis2_0x9A_154x.z + 512);
-		if (a1x->axis_0x4C_76.z != a1x->axis2_0x9A_154x.z + 512)
+		v2 = a1x->axis_0x4C_76.z - (a1x->word_0x9A_154x.z + 512);
+		if (a1x->axis_0x4C_76.z != a1x->word_0x9A_154x.z + 512)
 		{
-			if (a1x->axis_0x4C_76.z - (a1x->axis2_0x9A_154x.z + 512) <= 0)
+			if (a1x->axis_0x4C_76.z - (a1x->word_0x9A_154x.z + 512) <= 0)
 				v2 = -1;
 			//LOWORD(v2) = -1;
 			else
@@ -6285,13 +6285,13 @@ signed int sub_13B00(type_event_0x6E8E* a1x)//1f4b00
 				v3x = sub_14B10(v1x, 2u);
 				if (!v3x || (unsigned int)sub_583B0(&v3x->axis_0x4C_76, &v1x->axis_0x4C_76) > 0x3000)
 				{
-					a1x->axis2_0x9A_154x = v1x->axis_0x4C_76;
+					a1x->word_0x9A_154x = v1x->axis_0x4C_76;
 					return 1;
 				}
 				v7x = sub_14B10(v1x, 2u);
 				if (!v7x || (unsigned int)sub_583B0(&v7x->axis_0x4C_76, &v1x->axis_0x4C_76) > 0x3000)
 				{
-					a1x->axis2_0x9A_154x = v1x->axis_0x4C_76;
+					a1x->word_0x9A_154x = v1x->axis_0x4C_76;
 					return 1;
 				}
 			}
@@ -6681,7 +6681,7 @@ void sub_146F0(type_event_0x6E8E* a1x)//1f56f0
 				v12 = 1;
 		}
 		a1x->actSpeed_0x82_130 += 16 * v12;
-		//v13 = a1x->word_0x20_32;
+		//v13 = a1x->roll_0x20_32;
 		//HIBYTE(v13) &= 7ffu;
 		v14 = sub_582B0(a1x->yaw_0x1C_28, a1x->roll_0x20_32 & 0x7ffu);
 		v15 = 255 - a1x->dword_0xA4_164x->word_0x246_582;
@@ -6917,7 +6917,7 @@ signed int sub_14C90(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x, signed int 
 	a1x->dword_0xA4_164x->word_0xe_14 = 0;
 	if (!a2x)
 	{
-		v4 = Maths::sub_58490_radix_3d_2(&a1x->axis_0x4C_76, &a1x->axis2_0x9A_154x);
+		v4 = Maths::sub_58490_radix_3d_2(&a1x->axis_0x4C_76, &a1x->word_0x9A_154x);
 		if (v4 > a3)
 		{
 			if (v4 > a4 && sub_15170(a1x, 3u))
@@ -7029,7 +7029,7 @@ signed int sub_14E10(type_event_0x6E8E* a1x, unsigned __int8 a2)//1f5e10
 		}
 		else
 		{
-			v4x = IfSubtypeCallAxisEvent_4A190(&a1x->axis2_0x9A_154x, 3, 2);
+			v4x = IfSubtypeCallAxisEvent_4A190(&a1x->word_0x9A_154x, 3, 2);
 			if (v4x)
 			{
 				v4x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -9771,7 +9771,7 @@ void KillEntity_1C930(type_event_0x6E8E* entity)//1fd930
 {
 	if (!(entity->byte_0x3E_62 & 7))
 	{
-		CreateManaSphereFromKilled_36BA0(entity, false);
+		sub_36BA0(entity, false);
 		if (!(entity->struct_byte_0xc_12_15.byte[2] & 0x10))
 		{
 			type_event_0x6E8E* tempEntity = IfSubtypeCallAxisEvent_4A190(&entity->axis_0x4C_76, 10, 1);
@@ -10745,7 +10745,7 @@ void sub_1E1C0(type_event_0x6E8E* a1x, __int16 a2)//1ff1c0
 				if (!(a1x->byte_0x3E_62 & 0xF) && !(a1x->struct_byte_0xc_12_15.byte[2] & 4))
 				{
 					a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
-					//v2 = a1x->word_0x14_20 % 0x71u + 142 + a1x->word_0x20_32;
+					//v2 = a1x->word_0x14_20 % 0x71u + 142 + a1x->roll_0x20_32;
 					a1x->roll_0x20_32 = a1x->rand_0x14_20 % 0x71u + 142 + a1x->roll_0x20_32;
 					a1x->roll_0x20_32 &= 0x7ff;
 				}
@@ -16450,7 +16450,7 @@ void sub_254E0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x, unsigned __int8 a
 
 	v3x = a1x;
 	a1x->roll_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &a2x->axis_0x4C_76);
-	//result = sub_58350(v3x->word_0x1C_28, v3x->word_0x20_32, 5, (a3 << 11) / 360);
+	//result = sub_58350(v3x->word_0x1C_28, v3x->roll_0x20_32, 5, (a3 << 11) / 360);
 	v3x->yaw_0x1C_28 += sub_58350(v3x->yaw_0x1C_28, v3x->roll_0x20_32, 5, (a3 << 11) / 360);
 	//BYTE1(result) = *(x_BYTE *)(a1 + 29) & 7;
 	a1x->yaw_0x1C_28 &= 0x7ff;// BYTE1(result);
@@ -17648,10 +17648,10 @@ void sub_26CC0(type_event_0x6E8E* a1x)//207cc0
 		v2x = x_DWORD_EA3E4[i];
 		if (v2x == x_DWORD_EA3E4[0])
 			break;
-		CreateManaSphereFromKilled_36BA0(v2x, false);
+		sub_36BA0(v2x, false);
 		SetEntity04_57F10(v2x);
 	}
-	CreateManaSphereFromKilled_36BA0(a1x, false);
+	sub_36BA0(a1x, false);
 	SetEntity04_57F10(a1x);
 	//return 1;
 }
@@ -19232,7 +19232,7 @@ __int16 sub_28860(type_event_0x6E8E* a1x)//209860
 			a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 			v23 = a1x->rand_0x14_20 % 0x9Du;
 			a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
-			//a1x->word_0x20_32 += (2 * (unsigned __int64)(v23 / 79) - 1) * (a1x->word_0x14_20 % 0x17Du);
+			//a1x->roll_0x20_32 += (2 * (unsigned __int64)(v23 / 79) - 1) * (a1x->word_0x14_20 % 0x17Du);
 			a1x->roll_0x20_32 += (2 * (v23 / 79) - 1) * (a1x->rand_0x14_20 % 0x17Du);
 			a1x->roll_0x20_32 &= 0x7ff;
 		}
@@ -19336,7 +19336,7 @@ void sub_28CE0(type_event_0x6E8E* a1x)//209ce0
 	}
 	if (sub_4A810_get_0x35plus() <= 1)
 	{
-		CreateManaSphereFromKilled_36BA0(a1x, false);
+		sub_36BA0(a1x, false);
 	}
 	else
 	{
@@ -19895,7 +19895,7 @@ int sub_298D0(type_event_0x6E8E* a1x)//20a8d0
 	type_event_0x6E8E* v1x; // eax
 
 	a1x->life_0x8 = -1;
-	CreateManaSphereFromKilled_36BA0(a1x, true);
+	sub_36BA0(a1x, true);
 	if (!(a1x->struct_byte_0xc_12_15.byte[2] & 0x10))
 	{
 		v1x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 1);
@@ -23262,7 +23262,7 @@ LABEL_8:
 		a1x->word_0x2C_44 = 227;
 		a1x->word_0x36_54 = 0;
 		a1x->byte_0x46_70 = 2;
-		a1x->axis2_0x9A_154x.z = v6;
+		a1x->word_0x9A_154x.z = v6;
 	}
 	else if (a1x->byte_0x46_70 > 2)
 	{
@@ -23271,7 +23271,7 @@ LABEL_8:
 		return;
 	}
 	v32 = a1x->axis_0x4C_76.z;
-	v42 = a1x->axis2_0x9A_154x.z;
+	v42 = a1x->word_0x9A_154x.z;
 	v33 = 0;
 	v44 = v32 - v42;
 	v35 = 0;
@@ -24116,18 +24116,18 @@ void sub_32600(type_event_0x6E8E* a1x)//213600
 		v3 = a1x->struct_byte_0xc_12_15.byte[0];
 		if (!(v3 & 2))
 			a1x->struct_byte_0xc_12_15.byte[0] = v3 | 2;
-		if ((int16_t)a1x->axis2_0x9A_154x.x < -80)
-			a1x->axis2_0x9A_154x.x = -80;
-		if ((int16_t)a1x->axis2_0x9A_154x.x > 80)
-			a1x->axis2_0x9A_154x.x = 80;
-		if ((int16_t)a1x->axis2_0x9A_154x.y < -80)
-			a1x->axis2_0x9A_154x.y = -80;
-		if ((int16_t)a1x->axis2_0x9A_154x.y > 80)
-			a1x->axis2_0x9A_154x.y = 80;
+		if ((int16_t)a1x->word_0x9A_154x.x < -80)
+			a1x->word_0x9A_154x.x = -80;
+		if ((int16_t)a1x->word_0x9A_154x.x > 80)
+			a1x->word_0x9A_154x.x = 80;
+		if ((int16_t)a1x->word_0x9A_154x.y < -80)
+			a1x->word_0x9A_154x.y = -80;
+		if ((int16_t)a1x->word_0x9A_154x.y > 80)
+			a1x->word_0x9A_154x.y = 80;
 		predictedAxis_EB398ar = a1x->axis_0x4C_76;
 		//v4 = a1x->word_0x9A_154[1];
-		predictedAxis_EB398ar.x = a1x->axis2_0x9A_154x.x + a1x->axis_0x4C_76.x;
-		predictedAxis_EB398ar.y = a1x->axis2_0x9A_154x.y + a1x->axis_0x4C_76.y;
+		predictedAxis_EB398ar.x = a1x->word_0x9A_154x.x + a1x->axis_0x4C_76.x;
+		predictedAxis_EB398ar.y = a1x->word_0x9A_154x.y + a1x->axis_0x4C_76.y;
 		//v5 = *(x_WORD *)(a1 + 44);
 		predictedAxis_EB398ar.z += a1x->word_0x2C_44;
 		a1x->word_0x2C_44 -= 28;
@@ -24176,15 +24176,15 @@ void sub_32600(type_event_0x6E8E* a1x)//213600
 		if (v7 == predictedAxis_EB398ar.z)
 		{
 			sub_58030(&a1x->axis_0x4C_76, &predictedAxis_EB398ar);
-			a1x->axis2_0x9A_154x.x += predictedAxis_EB398ar.x;
+			a1x->word_0x9A_154x.x += predictedAxis_EB398ar.x;
 			//v12 = (250 * a1x->word_0x9A_154x.x - (__CFSHL__(250 * a1x->word_0x9A_154x.x >> 31, 8) + (250 * a1x->word_0x9A_154x.x >> 31 << 8))) >> 8;
-			v12 = ((250 * (int16_t)a1x->axis2_0x9A_154x.x) - (my_sign32(250 * (int16_t)a1x->axis2_0x9A_154x.x) << 8) + my_sign32(250 * (int16_t)a1x->axis2_0x9A_154x.x)) >> 8;
-			a1x->axis2_0x9A_154x.y += predictedAxis_EB398ar.y;
+			v12 = ((250 * (int16_t)a1x->word_0x9A_154x.x) - (my_sign32(250 * (int16_t)a1x->word_0x9A_154x.x) << 8) + my_sign32(250 * (int16_t)a1x->word_0x9A_154x.x)) >> 8;
+			a1x->word_0x9A_154x.y += predictedAxis_EB398ar.y;
 			//v13 = a1x->word_0x9A_154x.y;
-			a1x->axis2_0x9A_154x.x = v12;
+			a1x->word_0x9A_154x.x = v12;
 			//v2 = (250 * v13 - (__CFSHL__(250 * v13 >> 31, 8) + (250 * v13 >> 31 << 8))) >> 8;
-			v2 = ((250 * (int16_t)a1x->axis2_0x9A_154x.y) - (my_sign32(250 * (int16_t)a1x->axis2_0x9A_154x.y) << 8) + my_sign32(250 * (int16_t)a1x->axis2_0x9A_154x.y)) >> 8;
-			a1x->axis2_0x9A_154x.y = v2;
+			v2 = ((250 * (int16_t)a1x->word_0x9A_154x.y) - (my_sign32(250 * (int16_t)a1x->word_0x9A_154x.y) << 8) + my_sign32(250 * (int16_t)a1x->word_0x9A_154x.y)) >> 8;
+			a1x->word_0x9A_154x.y = v2;
 		}
 	}
 	else
@@ -24354,9 +24354,9 @@ void sub_32A70(type_event_0x6E8E* a1x)//213a70
 				HIBYTE(v11) &= 7u;
 				v12x->life_0x8 = 1;
 				v12x->yaw_0x1C_28 = v11;
-				v12x->axis2_0x9A_154x = a1x->axis_0x4C_76;
-				MoveEntity_57FA0(&v12x->axis2_0x9A_154x, v12x->yaw_0x1C_28, 0, 1536);
-				v12x->axis2_0x9A_154x.z = getTerrainAlt_10C40(&v12x->axis2_0x9A_154x);
+				v12x->word_0x9A_154x = a1x->axis_0x4C_76;
+				MoveEntity_57FA0(&v12x->word_0x9A_154x, v12x->yaw_0x1C_28, 0, 1536);
+				v12x->word_0x9A_154x.z = getTerrainAlt_10C40(&v12x->word_0x9A_154x);
 			}
 		}
 		if (a1x->dword_0x10_16 >= 127)
@@ -24431,11 +24431,11 @@ void sub_32CF0(type_event_0x6E8E* a1x)//213cf0
 			v1x->pitch_0x1E_30 = 0;
 			v1x->yaw_0x1C_28 = v10;
 			v1x->roll_0x20_32 = v1x->yaw_0x1C_28;
-			v1x->axis2_0x9A_154x = a1x->axis_0x4C_76;
-			MoveEntity_57FA0(&v1x->axis2_0x9A_154x, v1x->yaw_0x1C_28, 0, v1x->actSpeed_0x82_130);
+			v1x->word_0x9A_154x = a1x->axis_0x4C_76;
+			MoveEntity_57FA0(&v1x->word_0x9A_154x, v1x->yaw_0x1C_28, 0, v1x->actSpeed_0x82_130);
 			//v11 = v1x->word_0x9A_154x[1] - v1x->array_0x4C_76.y;
-			v1x->axis2_0x9A_154x.x -= v1x->axis_0x4C_76.x;
-			v1x->axis2_0x9A_154x.y -= v1x->axis_0x4C_76.y;
+			v1x->word_0x9A_154x.x -= v1x->axis_0x4C_76.x;
+			v1x->word_0x9A_154x.y -= v1x->axis_0x4C_76.y;
 			v1x->axis_0x4C_76.z = getTerrainAlt_10C40(&v1x->axis_0x4C_76) + 96;
 		}
 	}
@@ -24563,7 +24563,7 @@ void sub_331A0(type_event_0x6E8E* a1x)//2141a0
 	HIBYTE(v1) &= 7u;
 	a1x->roll_0x20_32 = v1;
 	MoveEntity_57FA0(&predictedAxis_EB398ar, a1x->roll_0x20_32, 0, 32);
-	a1x->axis2_0x9A_154x = predictedAxis_EB398ar;
+	a1x->word_0x9A_154x = predictedAxis_EB398ar;
 	v2 = a1x->yaw_0x1C_28 + 341;
 	HIBYTE(v2) &= 7u;
 	a1x->yaw_0x1C_28 = v2;
@@ -24668,7 +24668,7 @@ void sub_33340(type_event_0x6E8E* a1x)//214340
 					else
 						v4 = 768;
 					v34 = v4;
-					v5 = sub_584D0_SQdistX_SQdistY(&a1x->axis2_0x9A_154x, &ix->axis_0x4C_76);
+					v5 = sub_584D0_SQdistX_SQdistY(&a1x->word_0x9A_154x, &ix->axis_0x4C_76);
 					v33 = v5;
 					if (v5 >= 3211264)
 					{
@@ -24690,7 +24690,7 @@ void sub_33340(type_event_0x6E8E* a1x)//214340
 					}
 					else
 					{
-						v6 = Maths::sub_581E0_maybe_tan2(&a1x->axis2_0x9A_154x, &ix->axis_0x4C_76);
+						v6 = Maths::sub_581E0_maybe_tan2(&a1x->word_0x9A_154x, &ix->axis_0x4C_76);
 						if (ix->struct_byte_0xc_12_15.byte[3] & 0x10)
 						{
 							ix->struct_byte_0xc_12_15.byte[1] |= 8u;
@@ -24725,7 +24725,7 @@ void sub_33340(type_event_0x6E8E* a1x)//214340
 							else
 							{
 								ix->struct_byte_0xc_12_15.byte[1] |= 8u;
-								predictedAxis_EB398ar = a1x->axis2_0x9A_154x;
+								predictedAxis_EB398ar = a1x->word_0x9A_154x;
 								v9 = ix->axis_0x4C_76.z - a1x->word_0x30_48 + 57;
 								v10 = getTerrainAlt_10C40(&predictedAxis_EB398ar);
 								predictedAxis_EB398ar.z = v9 + v10;
@@ -25495,8 +25495,8 @@ void sub_34540(type_event_0x6E8E* a1x)//215540
 
 	v28 = (a1x->byte_0x46_70 >> 4 << 8) + 512;
 	v27 = ((a1x->byte_0x46_70 & 0xF) << 8) + 512;
-	v29 = Maths::sub_58490_radix_3d_2(&a1x->axis_0x4C_76, &a1x->axis2_0x9A_154x) / 0x55;
-	v34 = (unsigned __int16)Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &a1x->axis2_0x9A_154x);
+	v29 = Maths::sub_58490_radix_3d_2(&a1x->axis_0x4C_76, &a1x->word_0x9A_154x) / 0x55;
+	v34 = (unsigned __int16)Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &a1x->word_0x9A_154x);
 	v33 = 0;
 	v25x = a1x->axis_0x4C_76;
 	while (v33 < 32)
@@ -25824,7 +25824,7 @@ void sub_34C40(type_event_0x6E8E* a1x)//215c40
 	}
 	else
 	{
-		v2 = a1x->axis2_0x9A_154x.x;
+		v2 = a1x->word_0x9A_154x.x;
 		v3 = 2 * v2;
 		v4 = ((unsigned __int16)(a1x->axis_0x4C_76.x + 128) >> 8) - v2;
 		BYTE1(v27) = ((unsigned __int16)(a1x->axis_0x4C_76.y + 128) >> 8) - v2;
@@ -25838,7 +25838,7 @@ void sub_34C40(type_event_0x6E8E* a1x)//215c40
 				v21 = BYTE1(v27);
 				a1x->axis_0x4C_76.z = sub_48E60(v4, BYTE1(v27), v3, v3);
 				LOWORD(v2) = sub_48EF0(v6, v21, v3, v3);
-				a1x->axis2_0x9A_154x.z = v2;
+				a1x->word_0x9A_154x.z = v2;
 				LOBYTE(v2) = ((signed __int16)v2 - a1x->axis_0x4C_76.z <= 0) + 1;
 				a1x->byte_0x46_70 = v2;
 			}
@@ -25847,7 +25847,7 @@ void sub_34C40(type_event_0x6E8E* a1x)//215c40
 		{
 			v7 = v2 << 8;
 			v23 = a1x->axis_0x4C_76.z;
-			v2 = a1x->axis2_0x9A_154x.z;
+			v2 = a1x->word_0x9A_154x.z;
 			v24 = v2;
 			v17 = 192 * v7 >> 8;
 			v14 = v2 - v23;
@@ -25960,7 +25960,7 @@ void sub_34EE0(/*signed int a1, int a2, */type_event_0x6E8E* a3x)//215ee0
 	}
 	else
 	{
-		v4 = a3x->axis2_0x9A_154x.x;
+		v4 = a3x->word_0x9A_154x.x;
 		v5 = a3x->axis_0x4C_76.y;
 		v38 = 2 * v4;
 		v6 = (a3x->axis_0x4C_76.x + 128) >> 8;
@@ -26007,7 +26007,7 @@ void sub_34EE0(/*signed int a1, int a2, */type_event_0x6E8E* a3x)//215ee0
 						v10 = a3x->rand_0x14_20 % (unsigned int)a2;
 					}
 					v11 = a3x->model_0x40_64;
-					a3x->axis2_0x9A_154x.z = a1;
+					a3x->word_0x9A_154x.z = a1;
 					if (v11 == 84)
 						v12 = a1 - v10;
 					else
@@ -26020,7 +26020,7 @@ void sub_34EE0(/*signed int a1, int a2, */type_event_0x6E8E* a3x)//215ee0
 		else if (v7 <= 1u)
 		{
 			v35 = v4 << 8;
-			v13 = a3x->axis2_0x9A_154x.z;
+			v13 = a3x->word_0x9A_154x.z;
 			v14 = abs(a3x->axis_0x4C_76.z - v13);
 			v34 = 0;
 			v30 = 49152 * v4 >> 8;
@@ -26162,11 +26162,11 @@ void sub_35390(type_event_0x6E8E* a1x)//216390
 				if ((unsigned __int16)sub_582B0(v4x->yaw_0x1C_28, v5) < 0xAAu)
 				{
 					//v6 = a1x->dword_0xA0_160;
-					v7 = getTerrainAlt_10C40(&a1x->axis2_0x9A_154x);
+					v7 = getTerrainAlt_10C40(&a1x->word_0x9A_154x);
 					//v8 = x_D41A0_BYTEARRAY_0;
-					a1x->axis2_0x9A_154x.z = a1x->dword_0xA0_160x->word_160_0xc_12 + v7;
+					a1x->word_0x9A_154x.z = a1x->dword_0xA0_160x->word_160_0xc_12 + v7;
 					PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 22);
-					CopyEntityPosition_57CF0(v4x, &a1x->axis2_0x9A_154x);
+					CopyEntityPosition_57CF0(v4x, &a1x->word_0x9A_154x);
 					sub_5C800(v4x, 6);
 				}
 			}
@@ -26471,8 +26471,8 @@ void TransformArcherToMana_35940(type_event_0x6E8E* a1x)//216940 //move mana sph
 			predictedAxis_EB398ar.y = 0;
 			predictedAxis_EB398ar.z = 0;
 			MoveEntity_57FA0(&predictedAxis_EB398ar, a1x->yaw_0x1C_28, 0, a1x->str_0x5E_94.word_0x76_118);
-			a1x->axis2_0x9A_154x.x = predictedAxis_EB398ar.x;
-			a1x->axis2_0x9A_154x.y = predictedAxis_EB398ar.y;
+			a1x->word_0x9A_154x.x = predictedAxis_EB398ar.x;
+			a1x->word_0x9A_154x.y = predictedAxis_EB398ar.y;
 			a1x->str_0x5E_94.word_0x7A_122 = 0;
 		}
 		if (a1x->struct_byte_0xc_12_15.byte[0] & 0x40)
@@ -26539,18 +26539,18 @@ void TransformArcherToMana_35940(type_event_0x6E8E* a1x)//216940 //move mana sph
 		}
 		else if (a1x->byte_0x39_57 || v35)
 		{
-			if ((int16_t)a1x->axis2_0x9A_154x.x < -64)
-				a1x->axis2_0x9A_154x.x = -64;
-			if ((int16_t)a1x->axis2_0x9A_154x.x > 64)
-				a1x->axis2_0x9A_154x.x = 64;
-			if ((int16_t)a1x->axis2_0x9A_154x.y < -64)
-				a1x->axis2_0x9A_154x.y = -64;
-			if ((int16_t)a1x->axis2_0x9A_154x.y > 64)
-				a1x->axis2_0x9A_154x.y = 64;
+			if ((int16_t)a1x->word_0x9A_154x.x < -64)
+				a1x->word_0x9A_154x.x = -64;
+			if ((int16_t)a1x->word_0x9A_154x.x > 64)
+				a1x->word_0x9A_154x.x = 64;
+			if ((int16_t)a1x->word_0x9A_154x.y < -64)
+				a1x->word_0x9A_154x.y = -64;
+			if ((int16_t)a1x->word_0x9A_154x.y > 64)
+				a1x->word_0x9A_154x.y = 64;
 			predictedAxis_EB398ar = a1x->axis_0x4C_76;
 			//v15 = a1x->word_0x9A_154x.y;
-			predictedAxis_EB398ar.x = (int16_t)a1x->axis2_0x9A_154x.x + a1x->axis_0x4C_76.x;
-			predictedAxis_EB398ar.y = (int16_t)a1x->axis2_0x9A_154x.y + a1x->axis_0x4C_76.y;
+			predictedAxis_EB398ar.x = (int16_t)a1x->word_0x9A_154x.x + a1x->axis_0x4C_76.x;
+			predictedAxis_EB398ar.y = (int16_t)a1x->word_0x9A_154x.y + a1x->axis_0x4C_76.y;
 			//v16 = a1x->word_0x2C_44;
 			predictedAxis_EB398ar.z += a1x->word_0x2C_44;
 			a1x->word_0x2C_44 -= 16;
@@ -26594,13 +26594,13 @@ void TransformArcherToMana_35940(type_event_0x6E8E* a1x)//216940 //move mana sph
 					}
 					else
 					{
-						a1x->axis2_0x9A_154x.x = 64;
+						a1x->word_0x9A_154x.x = 64;
 						//v19 = a1x->array_0x4C_76.x;
 						//v20 = a1x->word_0x9A_154x.x;
-						a1x->axis2_0x9A_154x.y = 64;
+						a1x->word_0x9A_154x.y = 64;
 						//v21 = a1x->word_0x9A_154x.y;
-						predictedAxis_EB398ar.x = (int16_t)a1x->axis2_0x9A_154x.x + a1x->axis_0x4C_76.x;
-						predictedAxis_EB398ar.y = (int16_t)a1x->axis2_0x9A_154x.y + a1x->axis_0x4C_76.y;
+						predictedAxis_EB398ar.x = (int16_t)a1x->word_0x9A_154x.x + a1x->axis_0x4C_76.x;
+						predictedAxis_EB398ar.y = (int16_t)a1x->word_0x9A_154x.y + a1x->axis_0x4C_76.y;
 					}
 				}
 				a1x->word_0x2C_44 = -128;
@@ -26635,20 +26635,20 @@ void TransformArcherToMana_35940(type_event_0x6E8E* a1x)//216940 //move mana sph
 				if (v25x && !(a1x->struct_byte_0xc_12_15.byte[1] & 0x20))
 					sub_36D50(a1x, v25x);
 				sub_58030(&a1x->axis_0x4C_76, &predictedAxis_EB398ar);
-				a1x->axis2_0x9A_154x.x += predictedAxis_EB398ar.x;
+				a1x->word_0x9A_154x.x += predictedAxis_EB398ar.x;
 				int cftemp = 0;
-				if ((250 * (int16_t)a1x->axis2_0x9A_154x.x >> 30) & 1)cftemp = 1;
-				v26 = (((250 * (int16_t)a1x->axis2_0x9A_154x.x - ((250 * (int16_t)a1x->axis2_0x9A_154x.x >> 31) << 8)) - cftemp) >> 8);
+				if ((250 * (int16_t)a1x->word_0x9A_154x.x >> 30) & 1)cftemp = 1;
+				v26 = (((250 * (int16_t)a1x->word_0x9A_154x.x - ((250 * (int16_t)a1x->word_0x9A_154x.x >> 31) << 8)) - cftemp) >> 8);
 				/*v26 = (250 * (int16_t)a1x->word_0x9A_154x.x
 					- (__CFSHL__(250 * (int16_t)a1x->word_0x9A_154x.x >> 31, 8)
 						+ (250 * (int16_t)a1x->word_0x9A_154x.x >> 31 << 8))) >> 8;*/
-				a1x->axis2_0x9A_154x.y += predictedAxis_EB398ar.y;
+				a1x->word_0x9A_154x.y += predictedAxis_EB398ar.y;
 				//v27 = (int16_t)a1x->word_0x9A_154x.y;
-				a1x->axis2_0x9A_154x.x = v26;
+				a1x->word_0x9A_154x.x = v26;
 				cftemp = 0;
-				if ((250 * (int16_t)a1x->axis2_0x9A_154x.y >> 30) & 1)cftemp = 1;
+				if ((250 * (int16_t)a1x->word_0x9A_154x.y >> 30) & 1)cftemp = 1;
 				//a1x->word_0x9A_154x.y = (250 * v27 - (__CFSHL__(250 * v27 >> 31, 8) + (250 * v27 >> 31 << 8))) >> 8;
-				a1x->axis2_0x9A_154x.y = (((250 * (int16_t)a1x->axis2_0x9A_154x.y - ((250 * (int16_t)a1x->axis2_0x9A_154x.y >> 31) << 8)) - cftemp) >> 8);
+				a1x->word_0x9A_154x.y = (((250 * (int16_t)a1x->word_0x9A_154x.y - ((250 * (int16_t)a1x->word_0x9A_154x.y >> 31) << 8)) - cftemp) >> 8);
 			}
 			if (!(a1x->struct_byte_0xc_12_15.byte[1] & 0x20) || v36)
 				sub_36920(/*a1x,*/ a1x);
@@ -26745,8 +26745,8 @@ void sub_35FB0(type_event_0x6E8E* a1x)//216FB0
 			predictedAxis_EB398ar.y = 0;
 			predictedAxis_EB398ar.z = 0;
 			MoveEntity_57FA0(&predictedAxis_EB398ar, a1x->yaw_0x1C_28, 0, a1x->str_0x5E_94.word_0x76_118);
-			a1x->axis2_0x9A_154x.x = predictedAxis_EB398ar.x;
-			a1x->axis2_0x9A_154x.y = predictedAxis_EB398ar.y;
+			a1x->word_0x9A_154x.x = predictedAxis_EB398ar.x;
+			a1x->word_0x9A_154x.y = predictedAxis_EB398ar.y;
 			a1x->str_0x5E_94.word_0x7A_122 = 0;
 		}
 		if (a1x->struct_byte_0xc_12_15.byte[0] & 0x40)
@@ -26892,20 +26892,20 @@ void sub_35FB0(type_event_0x6E8E* a1x)//216FB0
 			}
 			else if (a1x->byte_0x39_57 || v31)
 			{
-				if ((int16_t)a1x->axis2_0x9A_154x.x < -64)
-					a1x->axis2_0x9A_154x.x = -64;
-				if ((int16_t)a1x->axis2_0x9A_154x.x > 64)
-					a1x->axis2_0x9A_154x.x = 64;
-				if ((int16_t)a1x->axis2_0x9A_154x.y < -64)
-					a1x->axis2_0x9A_154x.y = -64;
-				if ((int16_t)a1x->axis2_0x9A_154x.y > 64)
-					a1x->axis2_0x9A_154x.y = 64;
+				if ((int16_t)a1x->word_0x9A_154x.x < -64)
+					a1x->word_0x9A_154x.x = -64;
+				if ((int16_t)a1x->word_0x9A_154x.x > 64)
+					a1x->word_0x9A_154x.x = 64;
+				if ((int16_t)a1x->word_0x9A_154x.y < -64)
+					a1x->word_0x9A_154x.y = -64;
+				if ((int16_t)a1x->word_0x9A_154x.y > 64)
+					a1x->word_0x9A_154x.y = 64;
 				//*(_DWORD*)& word_EB398 = *(_DWORD*)(a1 + 76);
 				//*(&word_EB398 + 2) = *(_WORD*)(a1 + 80);
 				predictedAxis_EB398ar = a1x->axis_0x4C_76;
 				//v19 = a1x->word_0x9A_154x.y;
-				predictedAxis_EB398ar.x = a1x->axis2_0x9A_154x.x + a1x->axis_0x4C_76.x;
-				predictedAxis_EB398ar.y = a1x->axis2_0x9A_154x.y + a1x->axis_0x4C_76.y;
+				predictedAxis_EB398ar.x = a1x->word_0x9A_154x.x + a1x->axis_0x4C_76.x;
+				predictedAxis_EB398ar.y = a1x->word_0x9A_154x.y + a1x->axis_0x4C_76.y;
 				v20 = a1x->word_0x2C_44;
 				predictedAxis_EB398ar.z += v20;
 				a1x->word_0x2C_44 = v20 - 16;
@@ -26921,11 +26921,11 @@ void sub_35FB0(type_event_0x6E8E* a1x)//216FB0
 					}
 					else
 					{
-						a1x->axis2_0x9A_154x.x = 64;
+						a1x->word_0x9A_154x.x = 64;
 						v21 = a1x->axis_0x4C_76.x;
-						v22 = a1x->axis2_0x9A_154x.x;
-						a1x->axis2_0x9A_154x.y = 64;
-						v23 = a1x->axis2_0x9A_154x.y;
+						v22 = a1x->word_0x9A_154x.x;
+						a1x->word_0x9A_154x.y = 64;
+						v23 = a1x->word_0x9A_154x.y;
 						predictedAxis_EB398ar.x = v22 + v21;
 						predictedAxis_EB398ar.y = v23 + a1x->axis_0x4C_76.y;
 					}
@@ -26962,16 +26962,16 @@ void sub_35FB0(type_event_0x6E8E* a1x)//216FB0
 						sub_36920(a1x);
 					}
 					sub_58030(&a1x->axis_0x4C_76, &predictedAxis_EB398ar);
-					a1x->axis2_0x9A_154x.x += predictedAxis_EB398ar.x;
+					a1x->word_0x9A_154x.x += predictedAxis_EB398ar.x;
 					/*v28 = (250 * a1x->word_0x9A_154x.x
 						- (__CFSHL__(250 * a1x->word_0x9A_154x.x >> 31, 8)
 							+ (250 * a1x->word_0x9A_154x.x >> 31 << 8))) >> 8;*/
-					v28 = ((250 * (int16_t)a1x->axis2_0x9A_154x.x) - (my_sign32(250 * (int16_t)a1x->axis2_0x9A_154x.x) * 256) + my_sign32(250 * (int16_t)a1x->axis2_0x9A_154x.x)) >> 8;
-					a1x->axis2_0x9A_154x.y += predictedAxis_EB398ar.y;
-					v29 = a1x->axis2_0x9A_154x.y;
-					a1x->axis2_0x9A_154x.x = v28;
+					v28 = ((250 * (int16_t)a1x->word_0x9A_154x.x) - (my_sign32(250 * (int16_t)a1x->word_0x9A_154x.x) * 256) + my_sign32(250 * (int16_t)a1x->word_0x9A_154x.x)) >> 8;
+					a1x->word_0x9A_154x.y += predictedAxis_EB398ar.y;
+					v29 = a1x->word_0x9A_154x.y;
+					a1x->word_0x9A_154x.x = v28;
 					//a1x->word_0x9A_154x.y = (250 * v29 - (__CFSHL__(250 * v29 >> 31, 8) + (250 * v29 >> 31 << 8))) >> 8;
-					a1x->axis2_0x9A_154x.y = ((250 * (int16_t)v29) - (my_sign32(250 * (int16_t)v29) * 256) + my_sign32(250 * (int16_t)v29)) >> 8;
+					a1x->word_0x9A_154x.y = ((250 * (int16_t)v29) - (my_sign32(250 * (int16_t)v29) * 256) + my_sign32(250 * (int16_t)v29)) >> 8;
 				}
 			}
 		}
@@ -27099,83 +27099,73 @@ void sub_36850(type_event_0x6E8E* a1x)//217850
 // EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (00036920) --------------------------------------------------------
-void sub_36920(/*signed __int16 a1, */type_event_0x6E8E* a2x)//217920
+void sub_36920(type_event_0x6E8E* entity)//217920
 {
-	__int16 i; // si
-	__int16 v3; // ax
-
-	int16_t a1;
-
-	for (i = 0; i < 7 && a2x->mana_0x90_144 > x_DWORD_DB538[i]; i++)
+	int i;
+	for (i = 0; i < 7 && entity->mana_0x90_144 > x_DWORD_DB538[i]; i++)
 		;
-	v3 = sub_369F0(/*a1, */a2x->word_0x94_148);
-	if (v3 + i != a2x->word_0x5A_90)
+	__int16 indexE = sub_369F0(entity->word_0x94_148);
+	if (indexE + i != entity->word_0x5A_90)
 	{
-		/*LOBYTE(v3) = */SetEntityIndex_49C90(a2x, i + v3);
+		SetEntityIndex_49C90(entity, i + indexE);
+		int16_t rotation;
 		switch (i)
 		{
 		case 0:
-			a1 = 13;
+			rotation = 13;
 			break;
 		case 1:
-			a1 = 28;
+			rotation = 28;
 			break;
 		case 2:
-			a1 = 42;
+			rotation = 42;
 			break;
 		case 3:
-			a1 = 56;
+			rotation = 56;
 			break;
 		case 4:
-			a1 = 70;
+			rotation = 70;
 			break;
 		case 5:
-			a1 = 84;
+			rotation = 84;
 			break;
 		case 6:
-			a1 = 98;
+			rotation = 98;
 			break;
 		case 7:
-			a1 = 112;
+			rotation = 112;
 			break;
 		default:
 			break;
 		}
-		a2x->array_0x52_82.pitch = a1;
-		a2x->array_0x52_82.roll = a1;
-		a2x->array_0x52_82.fov = a1;
-		a2x->array_0x52_82.yaw = a1;
+		entity->array_0x52_82.pitch = rotation;
+		entity->array_0x52_82.roll = rotation;
+		entity->array_0x52_82.fov = rotation;
+		entity->array_0x52_82.yaw = rotation;
 	}
-	//return v3;
 }
 
 //----- (000369F0) --------------------------------------------------------
-signed int sub_369F0(/*signed int a1, */__int16 a2)//2179f0
+signed int sub_369F0(__int16 entityIndex)//2179f0
 {
-	type_event_0x6E8E* v2x; // eax
-	signed int result; // eax
-
-	v2x = x_DWORD_EA3E4[a2];
-	if (v2x <= x_DWORD_EA3E4[0] || v2x->class_0x3F_63 != 3)
+	signed int result;
+	type_event_0x6E8E* entity = x_DWORD_EA3E4[entityIndex];
+	if (entity <= x_DWORD_EA3E4[0] || entity->class_0x3F_63 != 3)
 		result = 52;
 	else
-		result = sub_36A50(/*a1, */v2x->dword_0xA4_164x->word_0x38_56);
+		result = sub_36A50(entity->dword_0xA4_164x->word_0x38_56);
 	return result;
 }
-// EA3E4: using guessed type int x_DWORD_EA3E4[];
 
 //----- (00036A50) --------------------------------------------------------
-signed int sub_36A50(/*signed int a1, */char a2)//217a50
+signed int sub_36A50(char index)//217a50
 {
-	char v2; // al
-	signed int result; // eax
+	signed int result=0;
 
-	signed int a1;
-
-	v2 = a2;
-	if (a2 >= 0)
-		v2 = sub_616D0(a2);
-	switch (v2 + 1)
+	char index2 = index;
+	if (index >= 0)
+		index2 = sub_616D0(index);
+	switch (index2 + 1)
 	{
 	case 0:
 		result = 52;
@@ -27202,11 +27192,7 @@ signed int sub_36A50(/*signed int a1, */char a2)//217a50
 		result = 153;
 		break;
 	case 8:
-		a1 = 161;
-		goto LABEL_13;
-	default:
-	LABEL_13:
-		result = a1;
+		result = 161;
 		break;
 	}
 	return result;
@@ -27245,7 +27231,7 @@ void sub_36AE0(type_event_0x6E8E* a1x)//217ae0
 // EB384: using guessed type int x_DWORD_EB384;
 
 //----- (00036BA0) --------------------------------------------------------
-void CreateManaSphereFromKilled_36BA0(type_event_0x6E8E* entity, bool useManaFraction)//217ba0
+void sub_36BA0(type_event_0x6E8E* entity, bool useManaFraction)//217ba0
 {
 	int manaFraction = 1;
 	int locMana;
@@ -27283,12 +27269,12 @@ void CreateManaSphereFromKilled_36BA0(type_event_0x6E8E* entity, bool useManaFra
 				manaSphereEntity->rand_0x14_20 = 9377 * manaSphereEntity->rand_0x14_20 + 9439;
 				manaSphereEntity->yaw_0x1C_28 = (manaSphereEntity->rand_0x14_20 % 0x71u + entity->yaw_0x1C_28 - 56) & 0x7FF;
 				manaSphereEntity->rand_0x14_20 = 9377 * manaSphereEntity->rand_0x14_20 + 9439;
-				manaSphereEntity->axis2_0x9A_154x.x = 0;
-				manaSphereEntity->axis2_0x9A_154x.y = 0;
+				manaSphereEntity->word_0x9A_154x.x = 0;
+				manaSphereEntity->word_0x9A_154x.y = 0;
 				manaSphereEntity->actSpeed_0x82_130 = manaSphereEntity->rand_0x14_20 % 0x30u + 16;
 				int zDiff = entity->axis_0x4C_76.z - getTerrainAlt_10C40(&entity->axis_0x4C_76);
 				manaSphereEntity->word_0x2C_44 = (1024 - zDiff - (__CFSHL__((1024 - zDiff) >> 31, 3) + 8 * ((1024 - zDiff) >> 31))) >> 3;
-				MoveEntity_57FA0(&manaSphereEntity->axis2_0x9A_154x, manaSphereEntity->yaw_0x1C_28, 0, manaSphereEntity->actSpeed_0x82_130);
+				MoveEntity_57FA0(&manaSphereEntity->word_0x9A_154x, manaSphereEntity->yaw_0x1C_28, 0, manaSphereEntity->actSpeed_0x82_130);
 			}
 			manaIndex++;
 		}
@@ -27676,7 +27662,7 @@ void ApplyTerrainModification_37240(type_event_0x6E8E* event)//218240
 						event->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
 					else
 						event->struct_byte_0xc_12_15.byte[0] |= 1u;
-					event->axis2_0x9A_154x.z = event->axis_0x4C_76.z;
+					event->word_0x9A_154x.z = event->axis_0x4C_76.z;
 					v19 = v4 >> 1;
 					event->axis_0x4C_76.z = getTerrainAlt_10C40(&event->axis_0x4C_76);
 					v20 = (v3 >> 1) & 0xFFFF;
@@ -28005,7 +27991,7 @@ void sub_377F0(type_event_0x6E8E* a1x)//2187f0
 		else
 		{
 			x_DWORD_EA3E4[a1x->parentId_0x28_40]->word_0x2E_46 = 2;
-			x_DWORD_EA3E4[a1x->parentId_0x28_40]->axis2_0x9A_154x.z = 32 * a1x->word_0x2E_46;
+			x_DWORD_EA3E4[a1x->parentId_0x28_40]->word_0x9A_154x.z = 32 * a1x->word_0x2E_46;
 			sub_48A20(v5 >> 1, v1, SHIBYTE(v1), (unsigned __int16)(v5 >> 1), (v3 >> 1) & 0xFFFF, 3u);
 			SetEntity04_57F10(a1x);
 		}
@@ -28613,7 +28599,7 @@ void sub_385C0_remove_castle_stage(type_event_0x6E8E* a1x)//2195c0 //remove cast
 		return;
 	}
 	sub_49A30(v13x, a1x->byte_0x3D_61);
-	v13x->axis_0x4C_76.z = a1x->axis2_0x9A_154x.z;
+	v13x->axis_0x4C_76.z = a1x->word_0x9A_154x.z;
 	v13x->xtype_0x41_65 = a1x->xtype_0x41_65;
 	v14 = a1x->word_0x94_148;
 	if (v14)
@@ -30269,7 +30255,7 @@ void sub_3A8B0(type_event_0x6E8E* a1x)//21b8b0
 			default:
 				break;
 			}
-			predictedAxis_EB398ar = a1x->axis2_0x9A_154x;
+			predictedAxis_EB398ar = a1x->word_0x9A_154x;
 			predictedAxis_EB398ar.z = a1x->axis_0x4C_76.z;
 			MoveEntity_57FA0(&predictedAxis_EB398ar, a1x->yaw_0x1C_28, 0, v1);
 			CopyEntityPosition_57CF0(a1x, &predictedAxis_EB398ar);
@@ -30328,7 +30314,7 @@ void sub_3A8B0(type_event_0x6E8E* a1x)//21b8b0
 			v13 = SPELLS_BEGIN_BUFFER_str[23].subspell[a1x->word_0x2A_42].dword_2;
 			a1x->maxLife_0x4 = v13;// *(x_DWORD*)v12;
 			a1x->life_0x8 = v13;
-			a1x->axis2_0x9A_154x = a1x->axis_0x4C_76;
+			a1x->word_0x9A_154x = a1x->axis_0x4C_76;
 			//LOBYTE(v12) = *(x_BYTE *)(v12 + 24);
 			//LOBYTE(v12) = SPELLS_BEGIN_BUFFER_str[23].subspell[a1x->word_0x2A_42].byte_0x1A;
 			switch (SPELLS_BEGIN_BUFFER_str[23].subspell[a1x->word_0x2A_42].byte_0x1A)
@@ -30616,7 +30602,7 @@ void sub_3AF00_castle_defend_event(type_event_0x6E8E* a1x)//21bf00
 	switch (a1x->byte_0x46_70)
 	{
 	case 0:
-		a1x->axis2_0x9A_154x = a1x->axis_0x4C_76;
+		a1x->word_0x9A_154x = a1x->axis_0x4C_76;
 		//v3y = a1x->array_0x52_82;
 		a1x->byte_0x46_70 = 1;
 		goto LABEL_74;
@@ -30663,7 +30649,7 @@ void sub_3AF00_castle_defend_event(type_event_0x6E8E* a1x)//21bf00
 		goto LABEL_74;
 	case 6:
 		v12 = a1x->rand_0x14_20;
-		a1x->axis2_0x9A_154x.z = a1x->axis_0x4C_76.z;
+		a1x->word_0x9A_154x.z = a1x->axis_0x4C_76.z;
 		a1x->rand_0x14_20 = 9377 * v12 + 9439;
 		v13 = a1x->rand_0x14_20 % 0x64u;
 		a1x->byte_0x46_70 = 7;
@@ -30868,7 +30854,7 @@ LABEL_74:
 			break;
 		}
 		v24 = -(signed __int16)v34;
-		predictedAxis_EB398ar = a1x->axis2_0x9A_154x;
+		predictedAxis_EB398ar = a1x->word_0x9A_154x;
 		//v3z = a1x->dword_0xA0_160;
 		MoveEntity_57FA0(&predictedAxis_EB398ar, a1x->yaw_0x1C_28, a1x->pitch_0x1E_30, v24);
 		CopyEntityPosition_57CF0(a1x, &predictedAxis_EB398ar);
@@ -33695,8 +33681,8 @@ void sub_4A310(type_entity_0x30311* entity)//22b310
 		{
 			if (v4 <= 0x22)
 			{
-				v2x->axis2_0x9A_154x.x = (entity->par2_16 << 8) + 128;
-				v2x->axis2_0x9A_154x.y = (entity->par1_14 << 8) + 128;
+				v2x->word_0x9A_154x.x = (entity->par2_16 << 8) + 128;
+				v2x->word_0x9A_154x.y = (entity->par1_14 << 8) + 128;
 				sub_58DA0(entity, v3x);
 				return;
 			}
@@ -33740,7 +33726,7 @@ void sub_4A310(type_entity_0x30311* entity)//22b310
 				{
 					if (v4 <= 0x53u)
 					{
-						v2x->axis2_0x9A_154x.x = entity->word_10;
+						v2x->word_0x9A_154x.x = entity->word_10;
 						sub_58DA0(entity, v3x);
 					}
 					else
@@ -33750,7 +33736,7 @@ void sub_4A310(type_entity_0x30311* entity)//22b310
 							v6 = v2x->axis_0x4C_76.y;
 							v2x->axis_0x4C_76.x -= 128;
 							v2x->axis_0x4C_76.y = v6 - 128;
-							v2x->axis2_0x9A_154x.x = entity->word_10;
+							v2x->word_0x9A_154x.x = entity->word_10;
 							v2x->axis_0x4C_76.z = entity->par3_18;
 						}
 						sub_58DA0(entity, v3x);
@@ -34006,7 +33992,7 @@ type_event_0x6E8E* sub_4AA40(axis_3d* position)//22ba40 //Spawn Scenery Bad Ston
 			v6ar.x++;
 		v6ar.x <<= 8;
 		v6ar.y <<= 8;
-		v2x->axis2_0x9A_154x = v6ar;
+		v2x->word_0x9A_154x = v6ar;
 		v4 = (*filearray_2aa18c[filearrayindex_BUILD00DATTAB].posistruct)[1].width_4;
 		v5 = (*filearray_2aa18c[filearrayindex_BUILD00DATTAB].posistruct)[1].height_5;
 		if (x_WORD_180660_VGA_type_resolution == 1)
@@ -34015,7 +34001,7 @@ type_event_0x6E8E* sub_4AA40(axis_3d* position)//22ba40 //Spawn Scenery Bad Ston
 			v4 >>= 1;
 		}
 		v8 = (v6ar.x >> 8) - v4 / 2;
-		v2x->axis2_0x9A_154x.z = 32 * sub_48E60((v6ar.x >> 8) - v4 / 2, (v6ar.y >> 8) - v5 / 2, v4, v5);
+		v2x->word_0x9A_154x.z = 32 * sub_48E60((v6ar.x >> 8) - v4 / 2, (v6ar.y >> 8) - v5 / 2, v4, v5);
 		AddEventToMap_57D70(v2x, &v6ar);
 		CopyEventVar0408_49A20(v2x);
 		SetEntityIndexAndRot_49CD0(v2x, 177);
@@ -36386,7 +36372,7 @@ type_event_0x6E8E* sub_4EDC0(axis_3d* position)//22fdc0
 		v1x->struct_byte_0xc_12_15.byte[2] |= 2;
 		AddEventToMap_57D70(v1x, position);
 		v1x->axis_0x4C_76.z = getTerrainAlt_10C40(position) + 64;
-		MoveEntity_57FA0(&v1x->axis2_0x9A_154x, v1x->yaw_0x1C_28, 0, v1x->actSpeed_0x82_130);
+		MoveEntity_57FA0(&v1x->word_0x9A_154x, v1x->yaw_0x1C_28, 0, v1x->actSpeed_0x82_130);
 		CopyEventVar0408_49A20(v1x);
 		SetEntityIndexAndRot_49CD0(v1x, 210);
 	}
@@ -37065,8 +37051,8 @@ type_event_0x6E8E* sub_4FC30(axis_3d* position)//230c30
 		event->model_0x40_64 = 83;
 		event->axis_0x4C_76 = *position;
 		event->byte_0x46_70 = 0;
-		event->axis2_0x9A_154x.x = 2;
-		event->axis2_0x9A_154x.z = 0;
+		event->word_0x9A_154x.x = 2;
+		event->word_0x9A_154x.z = 0;
 		event->struct_byte_0xc_12_15.byte[0] |= 1u;
 		event->axis_0x4C_76.z = 0;
 		event->struct_byte_0xc_12_15.byte[0] &= 0xF7;
@@ -37112,8 +37098,8 @@ type_event_0x6E8E* sub_4FD00(axis_3d* position)//230d00
 			event->class_0x3F_63 = 0xA;
 			event->axis_0x4C_76 = *position;
 			event->byte_0x46_70 = 0;
-			event->axis2_0x9A_154x.x = 2;
-			event->axis2_0x9A_154x.z = 0;
+			event->word_0x9A_154x.x = 2;
+			event->word_0x9A_154x.z = 0;
 			event->struct_byte_0xc_12_15.byte[0] |= 1u;
 			event->axis_0x4C_76.z = 0;
 			event->struct_byte_0xc_12_15.byte[0] &= 0xF7;
@@ -37179,9 +37165,9 @@ type_event_0x6E8E* sub_4FE40(axis_3d* position)//230e40
 		CopyEventVar0408_49A20(event);
 		AddEventToMap_57D70(event, position);
 		event->axis_0x4C_76.z = getTerrainAlt_10C40(&event->axis_0x4C_76) + 640;
-		event->axis2_0x9A_154x = event->axis_0x4C_76;
+		event->word_0x9A_154x = event->axis_0x4C_76;
 		event->rand_0x14_20 = 9377 * event->rand_0x14_20 + 9439;
-		MoveEntity_57FA0(&event->axis2_0x9A_154x, event->rand_0x14_20 & 0x7FF, 0, -32768);
+		MoveEntity_57FA0(&event->word_0x9A_154x, event->rand_0x14_20 & 0x7FF, 0, -32768);
 	}
 	return event;
 }
@@ -37250,19 +37236,19 @@ type_event_0x6E8E* sub_50020(axis_3d* position)//231020
 }
 
 //----- (00050080) --------------------------------------------------------
-type_event_0x6E8E* CreateManaSphere_50080(axis_3d* position)//231080
+type_event_0x6E8E* CreateManaSphere512_50080(axis_3d* position)//231080
 {
-	return sub_500C0(position, 512);
+	return CreateManaSphere_500C0(position, 512);
 }
 
 //----- (000500A0) --------------------------------------------------------
-type_event_0x6E8E* sub_500A0(axis_3d* position)//2310a0
+type_event_0x6E8E* CreateManaSphere2560_500A0(axis_3d* position)//2310a0
 {
-	return sub_500C0(position, 2560);
+	return CreateManaSphere_500C0(position, 2560);
 }
 
 //----- (000500C0) --------------------------------------------------------
-type_event_0x6E8E* sub_500C0(axis_3d* position, __int16 a2)//2310c0
+type_event_0x6E8E* CreateManaSphere_500C0(axis_3d* position, __int16 mana)//2310c0
 {
 	type_event_0x6E8E* event = NewEvent_4A050();
 	if (event)
@@ -37277,7 +37263,7 @@ type_event_0x6E8E* sub_500C0(axis_3d* position, __int16 a2)//2310c0
 		event->byte_0x38_56 = 3;
 		event->byte_0x39_57 = 128;
 		event->byte_0x3A_58 = 0;
-		event->mana_0x90_144 = a2;
+		event->mana_0x90_144 = mana;
 		AddEventToMap_57D70(event, position);
 		CopyEventVar0408_49A20(event);
 		sub_36920(event);
@@ -44307,7 +44293,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//23d950
 	v2x->dword_0xA4_164x->dword_0x16D_365 = 2000;
 	v2x->dword_0xA4_164x->speed_0xc_12 = 0;
 	v2x->dword_0xA4_164x->yaw_0x1E_30 = 0;
-	v2x->dword_0xA4_164x->word_0x22_34 = 0;
+	v2x->dword_0xA4_164x->fov_0x22_34 = 0;
 	v2x->dword_0xA4_164x->moveBoost_0x1E_30 = 0;
 	v2x->dword_0xA4_164x->strafeSpeed_0x10_16 = 0;
 	memset(&v2x->dword_0xA4_164x->str_0x1AC_428, 0, 18);
@@ -44386,7 +44372,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//23d950
 								break;
 							v18x = &x_DWORD_EA3E4[0]->axis_0x4C_76;
 							//v19 = v39x->word_0x9A_154x;
-							*v18x = v39x->axis2_0x9A_154x;
+							*v18x = v39x->word_0x9A_154x;
 							v20x = x_DWORD_EA3E4[0];
 							v21 = v39x->id_0x1A_26;
 							x_DWORD_EA3E4[0]->model_0x40_64 = 0;
@@ -57096,9 +57082,9 @@ void sub_693F0(type_event_0x6E8E* a1x)//24a3f0//spell fire
 						v6x->pitch_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v6x->axis2_0x9A_154x = v1x->axis_0x4C_76;
+						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
 						MoveEntity_57FA0(
-							&v6x->axis2_0x9A_154x,
+							&v6x->word_0x9A_154x,
 							v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
 							v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30,
 							0x4000);
@@ -57201,9 +57187,9 @@ void sub_69640(type_event_0x6E8E* a1x)//24a640//spell posses
 								v4x->pitch_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30;
 								v4x->dword_0x10_16 = (a1x->word_0x2A_42 << 8) * (a1x->word_0x2A_42 << 8);
 								v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-								v4x->axis2_0x9A_154x = v1x->axis_0x4C_76;
+								v4x->word_0x9A_154x = v1x->axis_0x4C_76;
 								MoveEntity_57FA0(
-									&v4x->axis2_0x9A_154x,
+									&v4x->word_0x9A_154x,
 									v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
 									v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30,
 									0x4000);
@@ -57284,9 +57270,9 @@ void sub_69900(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//24a900
 		v2x->mana_0x90_144 = a1x->mana_0x90_144;
 		v2x->dword_0x10_16 = 200;
 		a2x->dword_0xA4_164x->byte_0x154_340 = 0;
-		v2x->axis2_0x9A_154x = a2x->axis_0x4C_76;
+		v2x->word_0x9A_154x = a2x->axis_0x4C_76;
 		MoveEntity_57FA0(
-			&v2x->axis2_0x9A_154x,
+			&v2x->word_0x9A_154x,
 			a2x->dword_0xA4_164x->nextEntity_0x18_24 + a2x->yaw_0x1C_28,
 			a2x->dword_0xA4_164x->entityIndex2_0x1A_26 + a2x->pitch_0x1E_30,
 			10240);
@@ -57365,12 +57351,12 @@ type_event_0x6E8E* sub_69AB0(type_event_0x6E8E* a1x)//24aab0
 						v7x = x_DWORD_EA3E4[v1x->dword_0xA4_164x->word_0x3A_58];
 						if (v7x <= x_DWORD_EA3E4[0])
 						{
-							v12x->axis2_0x9A_154x = v1x->axis_0x4C_76;
-							MoveEntity_57FA0(&v12x->axis2_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
-							v8 = getTerrainAlt_10C40(&v12x->axis2_0x9A_154x);
+							v12x->word_0x9A_154x = v1x->axis_0x4C_76;
+							MoveEntity_57FA0(&v12x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
+							v8 = getTerrainAlt_10C40(&v12x->word_0x9A_154x);
 							v12x->byte_0x43_67 = 3;
 							v12x->byte_0x44_68 = 2;
-							v12x->axis2_0x9A_154x.z = v8;
+							v12x->word_0x9A_154x.z = v8;
 						}
 						else
 						{
@@ -57847,9 +57833,9 @@ void sub_6A5C0(type_event_0x6E8E* a1x)//24b5c0
 								v16x->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].dword_2;
 								v16x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 								v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-								v16x->axis2_0x9A_154x = v1x->axis_0x4C_76;
+								v16x->word_0x9A_154x = v1x->axis_0x4C_76;
 								MoveEntity_57FA0(
-									&v16x->axis2_0x9A_154x,
+									&v16x->word_0x9A_154x,
 									v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
 									v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30,
 									0x4000);
@@ -57900,9 +57886,9 @@ void sub_6A5C0(type_event_0x6E8E* a1x)//24b5c0
 						v15x->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].dword_2;
 						v15x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v15x->axis2_0x9A_154x = v1x->axis_0x4C_76;
+						v15x->word_0x9A_154x = v1x->axis_0x4C_76;
 						MoveEntity_57FA0(
-							&v15x->axis2_0x9A_154x,
+							&v15x->word_0x9A_154x,
 							v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
 							v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30,
 							0x4000);
@@ -58041,9 +58027,9 @@ void sub_6AB00(type_event_0x6E8E* a1x)//24bb00
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v6x->axis2_0x9A_154x = v1x->axis_0x4C_76;
+						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
 						MoveEntity_57FA0(
-							&v6x->axis2_0x9A_154x,
+							&v6x->word_0x9A_154x,
 							v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
 							v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30,
 							10240);
@@ -58170,13 +58156,13 @@ void sub_6AD60(type_event_0x6E8E* a1x)//24bd60
 							v9 = a1x->word_0x96_150;
 							if (v9 && v9 == 1)
 							{
-								CopyEntityPosition_57CF0(v29x, &a1x->axis2_0x9A_154x);
+								CopyEntityPosition_57CF0(v29x, &a1x->word_0x9A_154x);
 								a1x->word_0x96_150 = 0;
 							}
 							else
 							{
 								//v10x = v29x->array_0x4C_76;
-								a1x->axis2_0x9A_154x = v29x->axis_0x4C_76;
+								a1x->word_0x9A_154x = v29x->axis_0x4C_76;
 								//*(x_WORD *)(a1 + 158) = *(x_WORD *)(v10 + 4);
 								v25x = v8x->axis_0x4C_76;
 								//v25x[2] = *(x_WORD *)(v8 + 80);
@@ -58247,10 +58233,10 @@ void sub_6AD60(type_event_0x6E8E* a1x)//24bd60
 					if (!v28)
 					{
 						//v21 = (int)(v29 + 19);
-						a1x->axis2_0x9A_154x = v29x->axis_0x4C_76;
+						a1x->word_0x9A_154x = v29x->axis_0x4C_76;
 						a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
-						MoveEntity_57FA0(&a1x->axis2_0x9A_154x, a1x->rand_0x14_20 & 0x7FF, v20, 0x4000);
-						CopyEntityPosition_57CF0(v29x, &a1x->axis2_0x9A_154x);
+						MoveEntity_57FA0(&a1x->word_0x9A_154x, a1x->rand_0x14_20 & 0x7FF, v20, 0x4000);
+						CopyEntityPosition_57CF0(v29x, &a1x->word_0x9A_154x);
 						a1x->word_0x96_150 = 0;
 					}
 					v22 = v28;
@@ -58439,9 +58425,9 @@ void sub_6B3E0(type_event_0x6E8E* a1x)//24c3e0
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
 						v6x->byte_0x46_70 = a1x->byte_0x46_70;
-						v6x->axis2_0x9A_154x = v1x->axis_0x4C_76;
+						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
 						MoveEntity_57FA0(
-							&v6x->axis2_0x9A_154x,
+							&v6x->word_0x9A_154x,
 							v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28,
 							v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30,
 							0x4000);
@@ -58535,7 +58521,7 @@ __int16 sub_6B610(type_event_0x6E8E* a1x)//24c610
 						//v3y = &v8x->axis_0x4C_76;// *(x_DWORD*)v3 = *(x_DWORD*)(v8 + 76);
 						//*(x_WORD *)(v3 + 4) = *(x_WORD *)(v8 + 80);
 						MoveEntity_57FA0(
-							&v7x->axis2_0x9A_154x,
+							&v7x->word_0x9A_154x,
 							v8x->dword_0xA4_164x->nextEntity_0x18_24 + v8x->yaw_0x1C_28,
 							v8x->dword_0xA4_164x->entityIndex2_0x1A_26 + v8x->pitch_0x1E_30,
 							10240);
@@ -58607,9 +58593,9 @@ void sub_6B870(type_event_0x6E8E* a1x)//24c870
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v6x->axis2_0x9A_154x = v1x->axis_0x4C_76;
-						MoveEntity_57FA0(&v6x->axis2_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
-						v6x->axis2_0x9A_154x.z = getTerrainAlt_10C40(&v6x->axis2_0x9A_154x);
+						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
+						MoveEntity_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
+						v6x->word_0x9A_154x.z = getTerrainAlt_10C40(&v6x->word_0x9A_154x);
 					}
 				}
 				sub_68DE0(a1x, v1x);
@@ -58680,9 +58666,9 @@ void sub_6BAB0(type_event_0x6E8E* a1x)//24cab0
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v6x->axis2_0x9A_154x = v1x->axis_0x4C_76;
-						MoveEntity_57FA0(&v6x->axis2_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
-						v6x->axis2_0x9A_154x.z = getTerrainAlt_10C40(&v6x->axis2_0x9A_154x);
+						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
+						MoveEntity_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
+						v6x->word_0x9A_154x.z = getTerrainAlt_10C40(&v6x->word_0x9A_154x);
 					}
 				}
 				sub_68DE0(a1x, v1x);
@@ -58752,9 +58738,9 @@ void sub_6BCF0(type_event_0x6E8E* a1x)//24ccf0
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v6x->axis2_0x9A_154x = v1x->axis_0x4C_76;
-						MoveEntity_57FA0(&v6x->axis2_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
-						v6x->axis2_0x9A_154x.z = getTerrainAlt_10C40(&v6x->axis2_0x9A_154x);
+						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
+						MoveEntity_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
+						v6x->word_0x9A_154x.z = getTerrainAlt_10C40(&v6x->word_0x9A_154x);
 					}
 					sub_68DE0(a1x, v1x);
 				}
@@ -58822,9 +58808,9 @@ void sub_6BF30(type_event_0x6E8E* a1x)//24cf30
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v6x->axis2_0x9A_154x = v1x->axis_0x4C_76;
-						MoveEntity_57FA0(&v6x->axis2_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
-						v6x->axis2_0x9A_154x.z = getTerrainAlt_10C40(&v6x->axis2_0x9A_154x);
+						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
+						MoveEntity_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
+						v6x->word_0x9A_154x.z = getTerrainAlt_10C40(&v6x->word_0x9A_154x);
 						v6x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
 						v6x->pitch_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30;
 					}
@@ -58898,9 +58884,9 @@ void sub_6C170(type_event_0x6E8E* a1x)//24d170
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v7x->dword_0xA4_164x->byte_0x154_340;
 						v7x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v6x->axis2_0x9A_154x = v7x->axis_0x4C_76;
+						v6x->word_0x9A_154x = v7x->axis_0x4C_76;
 						MoveEntity_57FA0(
-							&v6x->axis2_0x9A_154x,
+							&v6x->word_0x9A_154x,
 							v7x->dword_0xA4_164x->nextEntity_0x18_24 + v7x->yaw_0x1C_28,
 							v7x->dword_0xA4_164x->entityIndex2_0x1A_26 + v7x->pitch_0x1E_30,
 							0x4000);
@@ -58975,9 +58961,9 @@ void sub_6C3E0(type_event_0x6E8E* a1x)//24d3e0
 						v6x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v6x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v6x->axis2_0x9A_154x = v1x->axis_0x4C_76;
-						MoveEntity_57FA0(&v6x->axis2_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
-						v6x->axis2_0x9A_154x.z = getTerrainAlt_10C40(&v6x->axis2_0x9A_154x);
+						v6x->word_0x9A_154x = v1x->axis_0x4C_76;
+						MoveEntity_57FA0(&v6x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
+						v6x->word_0x9A_154x.z = getTerrainAlt_10C40(&v6x->word_0x9A_154x);
 					}
 				}
 				sub_68DE0(a1x, v1x);
@@ -59052,9 +59038,9 @@ void sub_6C620(type_event_0x6E8E* a1x)//24d620
 						v3x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v3x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v3x->axis2_0x9A_154x = v1x->axis_0x4C_76;
-						MoveEntity_57FA0(&v3x->axis2_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
-						v3x->axis2_0x9A_154x.z = getTerrainAlt_10C40(&v3x->axis2_0x9A_154x);
+						v3x->word_0x9A_154x = v1x->axis_0x4C_76;
+						MoveEntity_57FA0(&v3x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
+						v3x->word_0x9A_154x.z = getTerrainAlt_10C40(&v3x->word_0x9A_154x);
 						v3x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
 						v3x->pitch_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30;
 					}
@@ -59221,9 +59207,9 @@ void sub_6CAC0(type_event_0x6E8E* a1x)//24dac0
 						v2x->word_0x2A_42 = a1x->byte_0x46_70;
 						v2x->dword_0x10_16 = v8x->dword_0xA4_164x->byte_0x154_340;
 						v8x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v2x->axis2_0x9A_154x = v8x->axis_0x4C_76;
-						MoveEntity_57FA0(&v2x->axis2_0x9A_154x, v8x->dword_0xA4_164x->nextEntity_0x18_24 + v8x->yaw_0x1C_28, 0, 4096);
-						v2x->axis2_0x9A_154x.z = getTerrainAlt_10C40(&v2x->axis2_0x9A_154x);
+						v2x->word_0x9A_154x = v8x->axis_0x4C_76;
+						MoveEntity_57FA0(&v2x->word_0x9A_154x, v8x->dword_0xA4_164x->nextEntity_0x18_24 + v8x->yaw_0x1C_28, 0, 4096);
+						v2x->word_0x9A_154x.z = getTerrainAlt_10C40(&v2x->word_0x9A_154x);
 						v2x->yaw_0x1C_28 = v8x->dword_0xA4_164x->nextEntity_0x18_24 + v8x->yaw_0x1C_28;
 						//v4 = x_D41A0_BYTEARRAY_0 + 28302;
 						v2x->pitch_0x1E_30 = v8x->dword_0xA4_164x->entityIndex2_0x1A_26 + v8x->pitch_0x1E_30;
@@ -59302,9 +59288,9 @@ void sub_6CD20(type_event_0x6E8E* a1x)//24dd20
 						v3x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v3x->dword_0x10_16 = v9x->dword_0xA4_164x->byte_0x154_340;
 						v9x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v3x->axis2_0x9A_154x = v9x->axis_0x4C_76;
+						v3x->word_0x9A_154x = v9x->axis_0x4C_76;
 						MoveEntity_57FA0(
-							&v3x->axis2_0x9A_154x,
+							&v3x->word_0x9A_154x,
 							v9x->dword_0xA4_164x->nextEntity_0x18_24 + v9x->yaw_0x1C_28,
 							v9x->dword_0xA4_164x->entityIndex2_0x1A_26 + v9x->pitch_0x1E_30,
 							0x4000);
@@ -59386,9 +59372,9 @@ void sub_6CFA0(type_event_0x6E8E* a1x)//24dfa0
 						v3x->byte_0x46_70 = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 						v3x->dword_0x10_16 = v1x->dword_0xA4_164x->byte_0x154_340;
 						v1x->dword_0xA4_164x->byte_0x154_340 = 0;
-						v3x->axis2_0x9A_154x = v1x->axis_0x4C_76;
-						MoveEntity_57FA0(&v3x->axis2_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
-						v3x->axis2_0x9A_154x.z = getTerrainAlt_10C40(&v3x->axis2_0x9A_154x);
+						v3x->word_0x9A_154x = v1x->axis_0x4C_76;
+						MoveEntity_57FA0(&v3x->word_0x9A_154x, v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28, 0, 4096);
+						v3x->word_0x9A_154x.z = getTerrainAlt_10C40(&v3x->word_0x9A_154x);
 						v3x->yaw_0x1C_28 = v1x->dword_0xA4_164x->nextEntity_0x18_24 + v1x->yaw_0x1C_28;
 						v3x->pitch_0x1E_30 = v1x->dword_0xA4_164x->entityIndex2_0x1A_26 + v1x->pitch_0x1E_30;
 					}
@@ -59443,7 +59429,7 @@ void sub_6D830(type_event_0x6E8E* a1x, char a2)//24e830
 		if (x_DWORD_EA3E4[a1x->parentId_0x28_40] > x_DWORD_EA3E4[0] && SPELLS_BEGIN_BUFFER_str[10].subspell[a2].byte_0x1A == 1)
 		{
 			//v4 = v3 + 76;
-			a1x->axis2_0x9A_154x = x_DWORD_EA3E4[a1x->parentId_0x28_40]->axis_0x4C_76;
+			a1x->word_0x9A_154x = x_DWORD_EA3E4[a1x->parentId_0x28_40]->axis_0x4C_76;
 			//*(x_WORD *)(a1 + 158) = *(x_WORD *)(v4 + 4);
 		}
 	}
@@ -59831,8 +59817,8 @@ void sub_66D00(type_event_0x6E8E* a1x)//247d00
 		}
 		return;
 	}
-	a1x->roll_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &a1x->axis2_0x9A_154x);
-	a1x->fov_0x22_34 = Maths::sub_58210_radix_tan(&a1x->axis_0x4C_76, &a1x->axis2_0x9A_154x);
+	a1x->roll_0x20_32 = Maths::sub_581E0_maybe_tan2(&a1x->axis_0x4C_76, &a1x->word_0x9A_154x);
+	a1x->fov_0x22_34 = Maths::sub_58210_radix_tan(&a1x->axis_0x4C_76, &a1x->word_0x9A_154x);
 	v3 = a1x->yaw_0x1C_28
 		+ sub_58350(
 			a1x->yaw_0x1C_28,
@@ -61479,7 +61465,7 @@ __int16 sub_5E6C0(type_event_0x6E8E* a1x)//23f6c0
 		v5 = a1x->yaw_0x1C_28;
 		a1x->fov_0x22_34 = v3;
 		v6 = sub_58350(v5, v4, 5, 0x16u);
-		//LOWORD(v2) = a1x->word_0x22_34;
+		//LOWORD(v2) = a1x->fov_0x22_34;
 		a1x->yaw_0x1C_28 += v6;
 		//v7 = a1x->word_0x1E_30;
 		a1x->yaw_0x1C_28 &= 0x7ff;
@@ -61943,7 +61929,7 @@ signed int sub_5EFA0(type_event_0x6E8E* a1x)//23ffa0
 			a1x->life_0x8 -= a1x->str_0x5E_94.dword_0x5E_94;
 			v15x = x_DWORD_EA3E4[v14];
 			a1x->dword_0xA4_164x->yaw_0x1E_30 = Maths::sub_581E0_maybe_tan2(&v15x->axis_0x4C_76, &a1x->axis_0x4C_76);
-			a1x->dword_0xA4_164x->word_0x22_34 = Maths::sub_58210_radix_tan(&v15x->axis_0x4C_76, &a1x->axis_0x4C_76);
+			a1x->dword_0xA4_164x->fov_0x22_34 = Maths::sub_58210_radix_tan(&v15x->axis_0x4C_76, &a1x->axis_0x4C_76);
 			a1x->dword_0xA4_164x->moveBoost_0x1E_30 = a1x->str_0x5E_94.dword_0x5E_94 / 10;
 			//v16 = a1x->dword_0xA4_164;
 			if (a1x->dword_0xA4_164x->moveBoost_0x1E_30 < 0)
@@ -62431,7 +62417,7 @@ void sub_5FBD0(type_event_0x6E8E* a1x)//240bd0
 	type_event_0x6E8E* indexx; // eax
 	__int16 v2; // ST08_2
 
-	indexx = IfSubtypeCallAxisEvent_4A190(&a1x->axis2_0x9A_154x, 10, 42);
+	indexx = IfSubtypeCallAxisEvent_4A190(&a1x->word_0x9A_154x, 10, 42);
 	if (indexx)
 	{
 		indexx->byte_0x46_70 = a1x->dword_0x10_16;
@@ -62451,7 +62437,7 @@ type_event_0x6E8E* sub_5FC40(type_event_0x6E8E* a1x)//240c40
 	type_event_0x6E8E* resultx; // eax
 	type_event_0x6E8E* v2x; // ebx
 
-	resultx = IfSubtypeCallAxisEvent_4A190(&a1x->axis2_0x9A_154x, 10, 41);
+	resultx = IfSubtypeCallAxisEvent_4A190(&a1x->word_0x9A_154x, 10, 41);
 	v2x = resultx;
 	if (resultx)
 	{
@@ -62553,8 +62539,8 @@ void sub_5FD00(type_event_0x6E8E* a1x)//240d00
 						v4x->word_0x94_148 = a1x->id_0x1A_26;
 						v4x->rand_0x14_20 = 9377 * v4x->rand_0x14_20 + 9439;
 						//v7 = v4x->word_0x14_20;
-						v4x->axis2_0x9A_154x.x = 0;
-						v4x->axis2_0x9A_154x.y = 0;
+						v4x->word_0x9A_154x.x = 0;
+						v4x->word_0x9A_154x.y = 0;
 						v4x->actSpeed_0x82_130 = v4x->rand_0x14_20 % 0x30u + 16;
 						v8 = a1x->axis_0x4C_76.z;
 						v9 = getTerrainAlt_10C40(&a1x->axis_0x4C_76);
@@ -62639,7 +62625,7 @@ void sub_5FF50(type_event_0x6E8E* a1x)//240f50
 				}
 				if (v3x->life_0x8 >= 0)
 					break;
-				CreateManaSphereFromKilled_36BA0(v3x, false);
+				sub_36BA0(v3x, false);
 				SetEntity04_57F10(v3x);
 				v18x->dword_0xA4_164x->array_0x3C_60[v1] = 0;
 			LABEL_17:
@@ -62683,7 +62669,7 @@ LABEL_22:
 		v10x = x_DWORD_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[v1]];
 		if (v10x > x_DWORD_EA3E4[0])
 		{
-			CreateManaSphereFromKilled_36BA0(v10x, false);
+			sub_36BA0(v10x, false);
 			SetEntity04_57F10(v10x);
 			v18x->dword_0xA4_164x->array_0x3C_60[v1] = 0;
 		}
@@ -62817,7 +62803,7 @@ void sub_60480(type_event_0x6E8E* a1x)//241480
 	type_event_0x6E8E* v6x; // edi
 	//char v7; // dl
 
-	v1x = sub_50370(&a1x->axis2_0x9A_154x);
+	v1x = sub_50370(&a1x->word_0x9A_154x);
 	v2x = v1x;
 	if (v1x)
 	{
@@ -62871,7 +62857,7 @@ void sub_605E0(type_event_0x6E8E* a1x)//2415e0
 		v2 = a1x - D41A0_0.struct_0x6E8E;
 		a1x->maxMana_0x8C_140 += v1;
 		PrepareEventSound_6E450(v2, -1, 30);
-		x_DWORD_EA3E4[0]->axis_0x4C_76 = a1x->axis2_0x9A_154x;
+		x_DWORD_EA3E4[0]->axis_0x4C_76 = a1x->word_0x9A_154x;
 		x_DWORD_EA3E4[0]->byte_0x46_70 = a1x->dword_0x10_16;
 		x_DWORD_EA3E4[0]->id_0x1A_26 = a1x->id_0x1A_26;
 		v5 = a1x - D41A0_0.struct_0x6E8E;
@@ -63420,10 +63406,10 @@ type_event_0x6E8E* sub_61050(type_event_0x6E8E* a1x)//242050
 						v17x->actSpeed_0x82_130 = v17x->rand_0x14_20 % 0x30u + 16;
 						v20 = v17x->actSpeed_0x82_130;
 						v21 = v17x->yaw_0x1C_28;
-						v17x->axis2_0x9A_154x.x = 0;
-						v17x->axis2_0x9A_154x.y = 0;
+						v17x->word_0x9A_154x.x = 0;
+						v17x->word_0x9A_154x.y = 0;
 						v17x->word_0x2C_44 = 128;
-						MoveEntity_57FA0(&v17x->axis2_0x9A_154x, v21, 0, v20);
+						MoveEntity_57FA0(&v17x->word_0x9A_154x, v21, 0, v20);
 						v17x->mana_0x90_144 = v30;
 						if (SPELLS_BEGIN_BUFFER_str[13].subspell[a1x->str_0x5E_94.dword_0x70_112].byte_0x1A == 2)
 							v17x->word_0x94_148 = v34x - D41A0_0.struct_0x6E8E;

@@ -2627,7 +2627,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	}
 
 	case 0x217ba0: {
-		CreateManaSphereFromKilled_36BA0(a1_6E8E, false);
+		sub_36BA0(a1_6E8E, false);
 		break;
 	}
 	case 0x217d50: {
@@ -4700,15 +4700,15 @@ type_event_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//p
 		break;
 	}
 	case 0x231080: {//creating mana sphere
-		return CreateManaSphere_50080(a1_axis3d);
+		return CreateManaSphere512_50080(a1_axis3d);
 		break;
 	}
 	case 0x2310a0: {
-		return sub_500A0(a1_axis3d);
+		return CreateManaSphere2560_500A0(a1_axis3d);
 		break;
 	}
 	case 0x2310c0: {
-		return sub_500C0(a1_axis3d, 0);//fix it
+		return CreateManaSphere_500C0(a1_axis3d, 0);//fix it
 		break;
 	}
 	case 0x231130: {
