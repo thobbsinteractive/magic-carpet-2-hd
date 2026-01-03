@@ -1048,7 +1048,7 @@ void sub_36770(type_event_0x6E8E* a1);
 void sub_36850(type_event_0x6E8E* a1);
 void sub_36AE0(type_event_0x6E8E* a1);
 void sub_35FB0(type_event_0x6E8E* a1x);
-void sub_36BA0(type_event_0x6E8E* entity, char a2);
+void sub_36BA0(type_event_0x6E8E* entity, bool useManaFraction);
 void sub_36D50(type_event_0x6E8E* a1, type_event_0x6E8E* a2);
 void sub_36F30(type_event_0x6E8E* a1, type_event_0x6E8E* a2);
 void sub_36FC0(type_event_0x6E8E* a1x);

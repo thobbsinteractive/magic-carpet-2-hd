@@ -2627,7 +2627,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	}
 
 	case 0x217ba0: {
-		sub_36BA0(a1_6E8E, 0);
+		sub_36BA0(a1_6E8E, false);
 		break;
 	}
 	case 0x217d50: {

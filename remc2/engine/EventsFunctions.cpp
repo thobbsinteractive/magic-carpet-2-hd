@@ -9771,7 +9771,7 @@ void KillEntity_1C930(type_event_0x6E8E* entity)//1fd930
 {
 	if (!(entity->byte_0x3E_62 & 7))
 	{
-		sub_36BA0(entity, 0);
+		sub_36BA0(entity, false);
 		if (!(entity->struct_byte_0xc_12_15.byte[2] & 0x10))
 		{
 			type_event_0x6E8E* tempEntity = IfSubtypeCallAxisEvent_4A190(&entity->axis_0x4C_76, 10, 1);
@@ -17648,10 +17648,10 @@ void sub_26CC0(type_event_0x6E8E* a1x)//207cc0
 		v2x = x_DWORD_EA3E4[i];
 		if (v2x == x_DWORD_EA3E4[0])
 			break;
-		sub_36BA0(v2x, 0);
+		sub_36BA0(v2x, false);
 		SetEntity04_57F10(v2x);
 	}
-	sub_36BA0(a1x, 0);
+	sub_36BA0(a1x, false);
 	SetEntity04_57F10(a1x);
 	//return 1;
 }
@@ -19336,7 +19336,7 @@ void sub_28CE0(type_event_0x6E8E* a1x)//209ce0
 	}
 	if (sub_4A810_get_0x35plus() <= 1)
 	{
-		sub_36BA0(a1x, 0);
+		sub_36BA0(a1x, false);
 	}
 	else
 	{
@@ -19895,7 +19895,7 @@ int sub_298D0(type_event_0x6E8E* a1x)//20a8d0
 	type_event_0x6E8E* v1x; // eax
 
 	a1x->life_0x8 = -1;
-	sub_36BA0(a1x, 1);
+	sub_36BA0(a1x, true);
 	if (!(a1x->struct_byte_0xc_12_15.byte[2] & 0x10))
 	{
 		v1x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 1);
@@ -27245,67 +27245,50 @@ void sub_36AE0(type_event_0x6E8E* a1x)//217ae0
 // EB384: using guessed type int x_DWORD_EB384;
 
 //----- (00036BA0) --------------------------------------------------------
-void sub_36BA0(type_event_0x6E8E* entity, char a2)//217ba0
+void sub_36BA0(type_event_0x6E8E* entity, bool useManaFraction)//217ba0
 {
-	int v2; // edx
-	int v3; // edi
-	type_event_0x6E8E* v4x; // eax
-	type_event_0x6E8E* v5x; // ebx
-	int v6; // edx
-	__int16 v7; // cx
-	__int16 v8; // dx
-	unsigned __int16 v9; // ax
-	int v10; // ST14_4
-	__int16 v11; // ax
-	int v12; // [esp+0h] [ebp-Ch]
-	int v13; // [esp+8h] [ebp-4h]
-
-	v2 = entity->mana_0x90_144;
-	if (v2 > 0)
+	int manaFraction;
+	int locMana;
+	int manaIndex;
+	if (entity->mana_0x90_144 > 0)
 	{
-		if (a2)
+		if (useManaFraction)
 		{
-			v3 = v2 / 1000;
-			if (v2 / 1000 < 1)
-				v3 = 1;
-			if (v3 > 16)
-				v3 = 16;
-			v13 = entity->mana_0x90_144 / v3;
+			int manaFraction = entity->mana_0x90_144 / 1000;
+			if (entity->mana_0x90_144 / 1000 < 1)
+				manaFraction = 1;
+			if (manaFraction > 16)
+				manaFraction = 16;
+			locMana = entity->mana_0x90_144 / manaFraction;
 		}
 		else
 		{
-			v3 = 1;
-			v13 = entity->mana_0x90_144;
+			manaFraction = 1;
+			locMana = entity->mana_0x90_144;
 		}
-		v12 = 0;
+		manaIndex = 0;
 		entity->rand_0x14_20 = 9377 * entity->rand_0x14_20 + 9439;
-		while (v3 > v12)
+		while (manaFraction > manaIndex)
 		{
-			v4x = IfSubtypeCallAxisEvent_4A190(&entity->axis_0x4C_76, 10, 39);
-			v5x = v4x;
-			if (v4x)
+			type_event_0x6E8E* tempEntity = IfSubtypeCallAxisEvent_4A190(&entity->axis_0x4C_76, 10, 39);
+			if (tempEntity)
 			{
-				if (v3 - 1 == v12)
-					v6 = entity->mana_0x90_144 - (v3 - 1) * v13;
+				if (manaFraction - 1 == manaIndex)
+					tempEntity->mana_0x90_144 = entity->mana_0x90_144 - (manaFraction - 1) * locMana;
 				else
-					v6 = v13;
-				v4x->mana_0x90_144 = v6;
-				v7 = v4x->rand_0x14_20;
-				v4x->word_0x94_148 = entity->word_0x94_148;
-				v4x->rand_0x14_20 = 9377 * v7 + 9439;
-				v8 = v4x->rand_0x14_20;
-				v4x->yaw_0x1C_28 = (v4x->rand_0x14_20 % 0x71u + entity->yaw_0x1C_28 - 56) & 0x7FF;
-				v4x->rand_0x14_20 = 9377 * v8 + 9439;
-				v9 = v4x->rand_0x14_20;
-				v5x->word_0x9A_154x.x = 0;
-				v5x->word_0x9A_154x.y = 0;
-				v5x->actSpeed_0x82_130 = v9 % 0x30u + 16;
-				v10 = entity->axis_0x4C_76.z;
-				v11 = getTerrainAlt_10C40(&entity->axis_0x4C_76);
-				v5x->word_0x2C_44 = (1024 - (v10 - v11) - (__CFSHL__((1024 - (v10 - v11)) >> 31, 3) + 8 * ((1024 - (v10 - v11)) >> 31))) >> 3;
-				MovePlayer_57FA0(&v5x->word_0x9A_154x, v5x->yaw_0x1C_28, 0, v5x->actSpeed_0x82_130);
+					tempEntity->mana_0x90_144 = locMana;
+				tempEntity->word_0x94_148 = entity->word_0x94_148;
+				tempEntity->rand_0x14_20 = 9377 * tempEntity->rand_0x14_20 + 9439;
+				tempEntity->yaw_0x1C_28 = (tempEntity->rand_0x14_20 % 0x71u + entity->yaw_0x1C_28 - 56) & 0x7FF;
+				tempEntity->rand_0x14_20 = 9377 * tempEntity->rand_0x14_20 + 9439;
+				tempEntity->word_0x9A_154x.x = 0;
+				tempEntity->word_0x9A_154x.y = 0;
+				tempEntity->actSpeed_0x82_130 = tempEntity->rand_0x14_20 % 0x30u + 16;
+				int zDiff = entity->axis_0x4C_76.z - getTerrainAlt_10C40(&entity->axis_0x4C_76);
+				tempEntity->word_0x2C_44 = (1024 - zDiff - (__CFSHL__((1024 - zDiff) >> 31, 3) + 8 * ((1024 - zDiff) >> 31))) >> 3;
+				MovePlayer_57FA0(&tempEntity->word_0x9A_154x, tempEntity->yaw_0x1C_28, 0, tempEntity->actSpeed_0x82_130);
 			}
-			v12++;
+			manaIndex++;
 		}
 		entity->word_0x94_148 = 0;
 	}
@@ -62654,7 +62637,7 @@ void sub_5FF50(type_event_0x6E8E* a1x)//240f50
 				}
 				if (v3x->life_0x8 >= 0)
 					break;
-				sub_36BA0(v3x, 0);
+				sub_36BA0(v3x, false);
 				SetEntity04_57F10(v3x);
 				v18x->dword_0xA4_164x->array_0x3C_60[v1] = 0;
 			LABEL_17:
@@ -62698,7 +62681,7 @@ LABEL_22:
 		v10x = x_DWORD_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[v1]];
 		if (v10x > x_DWORD_EA3E4[0])
 		{
-			sub_36BA0(v10x, 0);
+			sub_36BA0(v10x, false);
 			SetEntity04_57F10(v10x);
 			v18x->dword_0xA4_164x->array_0x3C_60[v1] = 0;
 		}
