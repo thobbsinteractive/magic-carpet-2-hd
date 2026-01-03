@@ -1056,11 +1056,11 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	}
 
 	case 0x1fd890: {
-		sub_1C890(a1_6E8E, 0);
+		PreKillEntity_1C890(a1_6E8E, 0);
 		break;
 	}
 	case 0x1fd930: {
-		sub_1C930(a1_6E8E);
+		KillEntity_1C930(a1_6E8E);
 		break;
 	}
 	case 0x1fd980: {
@@ -1249,12 +1249,12 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 		break;
 	}
 	case 0x2004f0: {//begin of goat kill
-		KillGoat_1F4F0(a1_6E8E);
+		PreKillGoat_1F4F0(a1_6E8E);
 		break;
 	}
 
 	case 0x200510: {//end of goat kill
-		TransformGoatToMana_1F510(a1_6E8E);
+		KillGoat_1F510(a1_6E8E);
 		break;
 	}
 	case 0x200530: {
