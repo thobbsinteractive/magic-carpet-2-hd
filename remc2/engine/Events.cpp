@@ -2627,7 +2627,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	}
 
 	case 0x217ba0: {
-		sub_36BA0(a1_6E8E, false);
+		TransformEntityToManaSphere_36BA0(a1_6E8E, false);
 		break;
 	}
 	case 0x217d50: {
@@ -5122,7 +5122,7 @@ type_event_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//p
 }
 
 //----- (0004A190) --------------------------------------------------------
-type_event_0x6E8E* IfSubtypeCallAxisEvent_4A190(axis_3d* position, int type, int subtype)//22b190
+type_event_0x6E8E* IfSubtypeCallCreatingManaSphere_4A190(axis_3d* position, int type, int subtype)//22b190
 {
 	if (str_D4C48ar[type].dword_14[subtype].dword_10 && str_D4C48ar[type].dword_14[subtype].word_4 == subtype)
 		return pre_sub_4A190_axis_3d(str_D4C48ar[type].dword_14[subtype].address_6, position);
@@ -5362,7 +5362,7 @@ void sub_48400(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 			for (i = v6 - result; v18; v28 = 0)
 			{
 				sub_483A0(posX2, posY2, posX, posY);
-				v22x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 27);
+				v22x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 27);
 				if (v20 >= 0)
 				{
 					v22x->state_0x45_69 = 28;
@@ -5377,7 +5377,7 @@ void sub_48400(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 				sub_483A0(posX2, (unsigned __int16)(v20 + v28 + posY2), posX, posY);
 				v18--;
 				posY2 += v20 + v28;
-				v24x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 27);
+				v24x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 27);
 				v24x->state_0x45_69 = 29;
 				v24x->dword_0x10_16 = i + v30;
 				result = 0;
@@ -5398,12 +5398,12 @@ void sub_48400(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 				do
 				{
 					sub_483A0(posX2, posY2, posX, posY);
-					v13x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 27);
+					v13x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 27);
 					v13x->state_0x45_69 = 29;
 					v13x->dword_0x10_16 = v25 + v29;
 					posX2 += v25 + v29;
 					sub_483A0(posX2, posY2, posX, posY);
-					v14x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 27);
+					v14x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 27);
 					if (v12 >= 0)
 					{
 						v14x->state_0x45_69 = 28;
@@ -5475,7 +5475,7 @@ void sub_48690(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	}
 	predictedAxis_EB398ar.x = posX2 << 8;
 	predictedAxis_EB398ar.y = posY2 << 8;
-	v10x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 30);
+	v10x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 30);
 	if (v10x)
 	{
 		v10x->dword_0x10_16 = maxabsdist;
@@ -5484,7 +5484,7 @@ void sub_48690(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	}
 	predictedAxis_EB398ar.x = (maxabsdist * Xdir + posX2) << 8;
 	predictedAxis_EB398ar.y = (maxabsdist * Ydir + posY2) << 8;
-	resultx = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 30);
+	resultx = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 30);
 	if (resultx)
 	{
 		resultx->dword_0x10_16 = distXYdiff;
@@ -5512,7 +5512,7 @@ void sub_487D0(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	v11x.y = posY << 8;
 	v5 = Maths::sub_581E0_maybe_tan2(&v8x, &v11x);
 	v6 = Maths::sub_58490_radix_3d_2(&v8x, &v11x);
-	resultx = IfSubtypeCallAxisEvent_4A190(&v8x, 10, 32);
+	resultx = IfSubtypeCallCreatingManaSphere_4A190(&v8x, 10, 32);
 	if (resultx)
 	{
 		resultx->yaw_0x1C_28 = v5;
@@ -5542,7 +5542,7 @@ void sub_48880(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	v12x.y = posY << 8;
 	v4 = Maths::sub_581E0_maybe_tan2(&v9x, &v12x);
 	v5 = Maths::sub_58490_radix_3d_2(&v9x, &v12x);
-	resultx = IfSubtypeCallAxisEvent_4A190(&v9x, 10, 51);
+	resultx = IfSubtypeCallCreatingManaSphere_4A190(&v9x, 10, 51);
 	//v7x = resultx;
 	if (resultx)
 	{

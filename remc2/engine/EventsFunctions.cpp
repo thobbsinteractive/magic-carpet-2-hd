@@ -7029,7 +7029,7 @@ signed int sub_14E10(type_event_0x6E8E* a1x, unsigned __int8 a2)//1f5e10
 		}
 		else
 		{
-			v4x = IfSubtypeCallAxisEvent_4A190(&a1x->word_0x9A_154x, 3, 2);
+			v4x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->word_0x9A_154x, 3, 2);
 			if (v4x)
 			{
 				v4x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -9771,10 +9771,10 @@ void KillEntity_1C930(type_event_0x6E8E* entity)//1fd930
 {
 	if (!(entity->byte_0x3E_62 & 7))
 	{
-		sub_36BA0(entity, false);
+		TransformEntityToManaSphere_36BA0(entity, false);
 		if (!(entity->struct_byte_0xc_12_15.byte[2] & 0x10))
 		{
-			type_event_0x6E8E* tempEntity = IfSubtypeCallAxisEvent_4A190(&entity->axis_0x4C_76, 10, 1);
+			type_event_0x6E8E* tempEntity = IfSubtypeCallCreatingManaSphere_4A190(&entity->axis_0x4C_76, 10, 1);
 			if (tempEntity)
 				tempEntity->id_0x1A_26 = entity->id_0x1A_26;
 		}
@@ -9901,7 +9901,7 @@ signed int sub_1CC20(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//1fdc20
 
 	v2 = &a1x->axis_0x4C_76;
 	v3 = 0;
-	v4x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 0);
+	v4x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 0);
 	v5x = v4x;
 	if (v4x)
 	{
@@ -9933,7 +9933,7 @@ signed int sub_1CCE0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//1fdce0
 
 	v2 = &a1x->axis_0x4C_76;
 	v3 = 0;
-	v4x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 13);
+	v4x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 13);
 	if (v4x)
 	{
 		v4x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -9961,7 +9961,7 @@ signed int sub_1CDA0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//1fdda0
 
 	v2 = 0;
 	v5 = &a1x->axis_0x4C_76;
-	v3x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 13);
+	v3x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 13);
 	if (v3x)
 	{
 		v3x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -10035,7 +10035,7 @@ signed int sub_1D0E0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//1fe0e0
 
 	v2 = &a1x->axis_0x4C_76;
 	v3 = 0;
-	v4x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 20);
+	v4x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 20);
 	v5x = v4x;
 	if (v4x)
 	{
@@ -10069,7 +10069,7 @@ signed int sub_1D1A0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//1fe1a0
 
 	v2 = &a1x->axis_0x4C_76;
 	v3 = 0;
-	v4x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 21);
+	v4x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 21);
 	v5x = v4x;
 	if (v4x)
 	{
@@ -10104,7 +10104,7 @@ signed int sub_1D260(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//1fe260
 	predictedAxis_EB398ar = a1x->axis_0x4C_76;
 	v6 = 0;
 	predictedAxis_EB398ar.z += a1x->array_0x52_82.fov;
-	v2x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 9, 9);
+	v2x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 9, 9);
 	v3x = v2x;
 	if (v2x)
 	{
@@ -10163,7 +10163,7 @@ void sub_1D460(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//1fe460
 			break;
 		}
 		v9 = &a1x->axis_0x4C_76;
-		v4x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 0);
+		v4x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 0);
 		v5x = v4x;
 		if (v4x)
 		{
@@ -10957,8 +10957,8 @@ void sub_1E580(type_event_0x6E8E* a1x, __int16 a2)//1ff580
 	if (v6)
 	{
 		if (a1x->StageVar2_0x49_73 == 13)
-			IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 73);
-		IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 0);
+			IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 73);
+		IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 0);
 		SetEntity04_57F10(a1x);
 	}
 }
@@ -12423,7 +12423,7 @@ void sub_203D0(type_event_0x6E8E* a1x)//2013d0
 								{
 									predictedAxis_EB398ar = v41x->axis_0x4C_76;
 									SetEntity04_57F10(v41x);
-									v39x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 5, 9);
+									v39x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 9);
 									if (v39x)
 									{
 										if (x_DWORD_EA3E4[a1x->id_0x1A_26]->class_0x3F_63 == 3)
@@ -12621,7 +12621,7 @@ void sub_20940(type_event_0x6E8E* a1x)//201940
 					{
 						predictedAxis_EB398ar = v24x->axis_0x4C_76;
 						SetEntity04_57F10(v24x);
-						v23x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 5, 9);
+						v23x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 9);
 						if (v23x)
 							v23x->id_0x1A_26 = a1x->id_0x1A_26;
 					}
@@ -13024,7 +13024,7 @@ void sub_21030(type_event_0x6E8E* a1x)//202030
 	case 0xC:
 		a1x->byte_0x46_70 = 13;
 		a1x->dword_0x10_16 = 32;
-		v13x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 17);
+		v13x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 17);
 		if (v13x)
 		{
 			v14 = v1x->id_0x1A_26;
@@ -13075,7 +13075,7 @@ void sub_21030(type_event_0x6E8E* a1x)//202030
 		a1x->dword_0x10_16 = v20;
 		if (v20 <= 0)
 		{
-			v21x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 9);
+			v21x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 9);
 			if (v21x)
 			{
 				v22 = v1x->id_0x1A_26;
@@ -13294,7 +13294,7 @@ char sub_21490(type_event_0x6E8E* a1x)//202490
 				break;
 			v18x = a1x->axis_0x4C_76;
 			MoveEntity_57FA0(&v18x, v23, 0, 192);
-			v16x = IfSubtypeCallAxisEvent_4A190(&v18x, 10, 14);
+			v16x = IfSubtypeCallCreatingManaSphere_4A190(&v18x, 10, 14);
 			if (v16x)
 			{
 				a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
@@ -13540,7 +13540,7 @@ void sub_21AB0(type_event_0x6E8E* a1x)//202ab0
 			switch (a1x->byte_0x43_67)
 			{
 			case 1:
-				v5x = IfSubtypeCallAxisEvent_4A190(&v28x, 9, 0);
+				v5x = IfSubtypeCallCreatingManaSphere_4A190(&v28x, 9, 0);
 				v33x = v5x;
 				if (v5x)
 				{
@@ -13556,7 +13556,7 @@ void sub_21AB0(type_event_0x6E8E* a1x)//202ab0
 				}
 				break;
 			case 2:
-				v6x = IfSubtypeCallAxisEvent_4A190(&v28x, 9, 9);
+				v6x = IfSubtypeCallCreatingManaSphere_4A190(&v28x, 9, 9);
 				v33x = v6x;
 				if (v6x)
 				{
@@ -13669,7 +13669,7 @@ void sub_21AB0(type_event_0x6E8E* a1x)//202ab0
 				}
 				break;
 			case 8:
-				v8x = IfSubtypeCallAxisEvent_4A190(&v28x, 9, 26);
+				v8x = IfSubtypeCallCreatingManaSphere_4A190(&v28x, 9, 26);
 				v33x = v8x;
 				if (v8x)
 				{
@@ -13685,7 +13685,7 @@ void sub_21AB0(type_event_0x6E8E* a1x)//202ab0
 				}
 				break;
 			case 9:
-				v7x = IfSubtypeCallAxisEvent_4A190(&v28x, 9, 3);
+				v7x = IfSubtypeCallCreatingManaSphere_4A190(&v28x, 9, 3);
 				v33x = v7x;
 				if (v7x)
 				{
@@ -13821,7 +13821,7 @@ char sub_21F60(type_event_0x6E8E* a1x)//202f60
 		{
 			if (ix->model_0x40_64 == 10)
 				x_DWORD_EA3E4[v16x->dword_0xA4_164x->str_611.array_0x333_819x.word[2]]->word_0x2E_46 = 0;
-			v6x = IfSubtypeCallAxisEvent_4A190(&ix->axis_0x4C_76, 10, 0);
+			v6x = IfSubtypeCallCreatingManaSphere_4A190(&ix->axis_0x4C_76, 10, 0);
 			if (v6x)
 				v6x->id_0x1A_26 = a1x->id_0x1A_26;
 			SetEntity04_57F10(ix);
@@ -14307,7 +14307,7 @@ void sub_22760(type_event_0x6E8E* a1x)//203760
 		}
 		if (!v9)
 		{
-			v8y = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 45);
+			v8y = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 45);
 			v14x = v8y;
 			if (v8y)
 			{
@@ -15365,7 +15365,7 @@ void sub_23E60(type_event_0x6E8E* a1x)//204e60
 				a1x->state_0x45_69 = 121;
 				goto LABEL_26;
 			}
-			v9x = IfSubtypeCallAxisEvent_4A190(v12, 9, 13);
+			v9x = IfSubtypeCallCreatingManaSphere_4A190(v12, 9, 13);
 			v10x = v9x;
 			if (v9x)
 			{
@@ -15685,7 +15685,7 @@ void sub_24510(type_event_0x6E8E* a1x)//205510
 					{
 						a1x->dword_0x10_16 = v6 - 1;
 						v14 = &a1x->axis_0x4C_76;
-						v7x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 0);
+						v7x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 0);
 						v8x = v7x;
 						if (v7x)
 						{
@@ -17342,7 +17342,7 @@ void sub_265A0(type_event_0x6E8E* a1x)//2075a0
 		else if (a1x->axis_0x4C_76.z == v6)
 		{
 			a1x->byte_0x46_70 = 10;
-			IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 5);//this set 02 2077b2
+			IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 5);//this set 02 2077b2
 		}
 		if (a1x->state_0x45_69 == 170)
 			v10 = 66;
@@ -17648,10 +17648,10 @@ void sub_26CC0(type_event_0x6E8E* a1x)//207cc0
 		v2x = x_DWORD_EA3E4[i];
 		if (v2x == x_DWORD_EA3E4[0])
 			break;
-		sub_36BA0(v2x, false);
+		TransformEntityToManaSphere_36BA0(v2x, false);
 		SetEntity04_57F10(v2x);
 	}
-	sub_36BA0(a1x, false);
+	TransformEntityToManaSphere_36BA0(a1x, false);
 	SetEntity04_57F10(a1x);
 	//return 1;
 }
@@ -19336,7 +19336,7 @@ void sub_28CE0(type_event_0x6E8E* a1x)//209ce0
 	}
 	if (sub_4A810_get_0x35plus() <= 1)
 	{
-		sub_36BA0(a1x, false);
+		TransformEntityToManaSphere_36BA0(a1x, false);
 	}
 	else
 	{
@@ -19387,7 +19387,7 @@ void sub_28CE0(type_event_0x6E8E* a1x)//209ce0
 		if (v11x)
 			v11x->mana_0x90_144 += v12;
 	}
-	v7x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 1);
+	v7x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 1);
 	if (v7x)
 		v7x->id_0x1A_26 = a1x->id_0x1A_26;
 	a1x->state_0x45_69 = 205;
@@ -19895,10 +19895,10 @@ int sub_298D0(type_event_0x6E8E* a1x)//20a8d0
 	type_event_0x6E8E* v1x; // eax
 
 	a1x->life_0x8 = -1;
-	sub_36BA0(a1x, true);
+	TransformEntityToManaSphere_36BA0(a1x, true);
 	if (!(a1x->struct_byte_0xc_12_15.byte[2] & 0x10))
 	{
-		v1x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 1);
+		v1x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 1);
 		if (v1x)
 			v1x->id_0x1A_26 = a1x->id_0x1A_26;
 	}
@@ -20742,7 +20742,7 @@ void sub_2A7F0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x, char a3)//20b7f0
 		{
 			if (!a3)
 				goto LABEL_13;
-			v6x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 0);
+			v6x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 0);
 			v3x = v6x;
 			if (!v6x)
 				goto LABEL_13;
@@ -20754,7 +20754,7 @@ void sub_2A7F0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x, char a3)//20b7f0
 		{
 			if (v5 != 2)
 				goto LABEL_13;
-			v6x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 9);
+			v6x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 9);
 			v3x = v6x;
 			if (!v6x)
 				goto LABEL_13;
@@ -21267,7 +21267,7 @@ void sub_2B260(type_event_0x6E8E* a1x)//20c260
 			/*LOBYTE(v1) = */sub_2BA50(a1x, 1u);
 			return;// v1;
 		case 1:
-			IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+			IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 			/*LOBYTE(v1) = */sub_2BA50(a1x, 2u);
 			return;// v1;
 		case 2:
@@ -21381,7 +21381,7 @@ void sub_2B260(type_event_0x6E8E* a1x)//20c260
 			break;
 		case 6:
 			sub_2B860(a1x, 3u);
-			IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+			IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 			v17 = 0;
 			v18 = a1x->word_0x96_150;
 			v26 = 0;
@@ -23120,7 +23120,7 @@ void AddQuickfair0A_01_30F60(type_event_0x6E8E* event)//211f60
 				event->rand_0x14_20 = 9377 * event->rand_0x14_20 + 9439;
 				position.y = event->axis_0x4C_76.y - 96 + 192 * tempY + event->rand_0x14_20 % 0x81u - 64;
 				position.z = event->axis_0x4C_76.z;
-				event2 = IfSubtypeCallAxisEvent_4A190(&position, 10, 0);
+				event2 = IfSubtypeCallCreatingManaSphere_4A190(&position, 10, 0);
 				if (event2)
 				{
 					event2->id_0x1A_26 = event->id_0x1A_26;//here
@@ -23159,7 +23159,7 @@ void sub_31120(type_event_0x6E8E* a1x)//212120
 		goto LABEL_12;
 	if (a1x->maxLife_0x4 - 5 == a1x->life_0x8)
 	{
-		IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 87);
+		IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 87);
 		//v2 = (int)x_D41A0_BYTEARRAY_0;
 		//v3 = 9377 * *(x_DWORD *)(x_D41A0_BYTEARRAY_0 + 8) + 9439;
 		//*(x_DWORD *)(x_D41A0_BYTEARRAY_0 + 8) = v3;
@@ -23394,7 +23394,7 @@ LABEL_8:
 			if (v24 > 0x2000)
 				LOWORD(v24) = 0x2000;
 			MoveEntity_57FA0(&predictedAxis_EB398ar, k, 0, v24);
-			v2x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 13);
+			v2x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 13);
 			if (v2x)
 			{
 				v2x->yaw_0x1C_28 = k;
@@ -23448,7 +23448,7 @@ void sub_31760(type_event_0x6E8E* a1x)//212760
 				a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 				if (!(a1x->rand_0x14_20 % 7u))
 				{
-					v5x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 14);
+					v5x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 14);
 					if (v5x)
 					{
 						v6 = a1x->id_0x1A_26;
@@ -23747,7 +23747,7 @@ void sub_31940(type_event_0x6E8E* a1x)//212940
 			}
 			predictedAxis_EB398ar = a1x->axis_0x4C_76;
 			predictedAxis_EB398ar.z = getTerrainAlt_10C40(&predictedAxis_EB398ar);
-			v1x = D41A0_0.byte_0x36E03 ? IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 91) : IfSubtypeCallAxisEvent_4A190(
+			v1x = D41A0_0.byte_0x36E03 ? IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 91) : IfSubtypeCallCreatingManaSphere_4A190(
 				&predictedAxis_EB398ar, 10, 18);
 			if (v1x)
 				v1x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -24080,7 +24080,7 @@ void sub_32530(type_event_0x6E8E* entity)//213530
 	entity->rand_0x14_20 = 9377 * entity->rand_0x14_20 + 9439;
 	entity->yaw_0x1C_28 = ((entity->rand_0x14_20 % 0x5Bu) + entity->yaw_0x1C_28 - 45) & 0x7FF;
 	MoveEntity_57FA0(&entity->axis_0x4C_76, entity->yaw_0x1C_28, 0, 256);
-	resultx = IfSubtypeCallAxisEvent_4A190(&entity->axis_0x4C_76, 10, 11);
+	resultx = IfSubtypeCallCreatingManaSphere_4A190(&entity->axis_0x4C_76, 10, 11);
 	if (resultx)
 	{
 		resultx->array_0x52_82.pitch = entity->array_0x52_82.pitch;
@@ -24145,7 +24145,7 @@ void sub_32600(type_event_0x6E8E* a1x)//213600
 			a1x->word_0x2C_44 = -((v8 - (my_sign32(v8) << 2) + my_sign32(v8)) >> 2);
 			if (sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76) == 1)
 			{
-				v9x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 5);
+				v9x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 5);
 				if (v9x)
 				{
 					v9x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -24156,7 +24156,7 @@ void sub_32600(type_event_0x6E8E* a1x)//213600
 			{
 				if (!sub_10B70(&predictedAxis_EB398ar, 10, 6))
 				{
-					v10x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 6);
+					v10x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 6);
 					if (v10x)
 					{
 						v11 = v10x->word_0x2A_42;
@@ -24246,7 +24246,7 @@ void sub_32880(type_event_0x6E8E* a1x)//213880
 			a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 			v9x.y = a1x->rand_0x14_20 % 0x81u + 160 * v13 + a1x->axis_0x4C_76.y - 96 - 64;
 			v9x.z = a1x->axis_0x4C_76.z;
-			v6x = IfSubtypeCallAxisEvent_4A190(&v9x, 10, 0);
+			v6x = IfSubtypeCallCreatingManaSphere_4A190(&v9x, 10, 0);
 			//v7 = v6;
 			if (v6x)
 			{
@@ -24321,7 +24321,7 @@ void sub_32A70(type_event_0x6E8E* a1x)//213a70
 			if (v5x > x_DWORD_EA3E4[0])
 				v5x->dword_0x10_16 = 250;
 			D41A0_0.word_0x31 = a1x - D41A0_0.struct_0x6E8E;
-			v6x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 19);
+			v6x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 19);
 			//v7 = v6;
 			if (v6x)
 			{
@@ -24331,7 +24331,7 @@ void sub_32A70(type_event_0x6E8E* a1x)//213a70
 				D41A0_0.word_0x33 = v6x - D41A0_0.struct_0x6E8E;
 			}
 		}
-		v8x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 16);
+		v8x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 16);
 		if (v8x)
 		{
 			v8x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -24343,7 +24343,7 @@ void sub_32A70(type_event_0x6E8E* a1x)//213a70
 		a1x->yaw_0x1C_28 += 1280;
 		if (!v10)
 		{
-			v12x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 0);
+			v12x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 0);
 			if (v12x)
 			{
 				v12x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -24397,7 +24397,7 @@ void sub_32CF0(type_event_0x6E8E* a1x)//213cf0
 
 	for (i = 0; i < 3; i++)
 	{
-		v1x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 39);
+		v1x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 39);
 		//v2 = v1;
 		//v3 = v1;
 		if (v1x)
@@ -24494,7 +24494,7 @@ void sub_32F40(type_event_0x6E8E* a1x)//213f40
 						LOWORD(v10) = (a1x->life_0x8 / 2 & 1) << 8;
 						while ((unsigned __int16)v10 < 0x800u)
 						{
-							v3x = IfSubtypeCallAxisEvent_4A190(&v5x, 10, 14);
+							v3x = IfSubtypeCallCreatingManaSphere_4A190(&v5x, 10, 14);
 							if (v3x)
 							{
 								v3x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -24968,7 +24968,7 @@ void sub_339B0(type_event_0x6E8E* a1x)//2149b0
 			a1x->word_0x2C_44 = v7;
 			if (v7 < 0)
 			{
-				IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 0);
+				IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 0);
 				/*LOBYTE(v1) = */sub_33D40(a1x);
 			}
 		}
@@ -25428,7 +25428,7 @@ void sub_344A0(type_event_0x6E8E* a1x)//2154a0
 		SetEntity04_57F10(a1x);
 		return;// NULL;
 	}
-	v3x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 11);
+	v3x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 11);
 	if (v3x)
 	{
 		v3x->array_0x52_82.fov = a1x->array_0x52_82.fov;
@@ -26287,7 +26287,7 @@ void sub_35640(type_event_0x6E8E* a1x)//216640
 				v6 = a1x->byte_0x44_68;
 				v7 = a1x->byte_0x43_67;
 				predictedAxis_EB398ar.z += a1x->array_0x52_82.yaw;
-				v8x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, v7, v6);
+				v8x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, v7, v6);
 				v9x = v8x;
 				if (v8x)
 				{
@@ -26358,7 +26358,7 @@ void sub_357C0(type_event_0x6E8E* a1x)//2167c0
 			{
 				predictedAxis_EB398ar = a1x->axis_0x4C_76;
 				MoveEntity_57FA0(&predictedAxis_EB398ar, v8, 0, 512);
-				v5x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 5, 9);
+				v5x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 9);
 				if (v5x)
 				{
 					v5x->mana_0x90_144 = (signed __int16)v7 % (signed __int16)v10;
@@ -26728,7 +26728,7 @@ void sub_35FB0(type_event_0x6E8E* a1x)//216FB0
 	}
 	else if (a1x->str_0x5E_94.word_0x68_104 && sub_36680(a1x))
 	{
-		IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 0);
+		IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 0);
 		SetEntity04_57F10(a1x);
 	}
 	else
@@ -26880,7 +26880,7 @@ void sub_35FB0(type_event_0x6E8E* a1x)//216FB0
 					if (sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76) == 1)
 					{
 						a1x->word_0x2C_44 = 0;
-						v16x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+						v16x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 						if (v16x)
 							PrepareEventSound_6E450(v16x - D41A0_0.struct_0x6E8E, -1, 27);
 					}
@@ -27042,7 +27042,7 @@ void sub_36770(type_event_0x6E8E* a1x)//217770
 	type_event_0x6E8E* v2x; // ST08_4
 	type_event_0x6E8E* v3x; // eax
 
-	v1x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 9, 0);
+	v1x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 9, 0);
 	if (v1x)
 	{
 		v2x = x_DWORD_EA3E4[a1x->str_0x5E_94.word_0x68_104];
@@ -27055,7 +27055,7 @@ void sub_36770(type_event_0x6E8E* a1x)//217770
 		PrepareEventSound_6E450(v1x - D41A0_0.struct_0x6E8E, -1, 9);
 		if (sub_104D0_terrain_tile_is_water(&v1x->axis_0x4C_76) == 1)
 		{
-			v3x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+			v3x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 			if (v3x)
 				PrepareEventSound_6E450(v3x - D41A0_0.struct_0x6E8E, -1, 27);
 		}
@@ -27072,7 +27072,7 @@ void sub_36850(type_event_0x6E8E* a1x)//217850
 	type_event_0x6E8E* v3x; // esi
 
 	predictedAxis_EB398ar = a1x->axis_0x4C_76;
-	v1x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 9, 9);
+	v1x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 9, 9);
 	v2x = v1x;
 	if (v1x)
 	{
@@ -27231,7 +27231,7 @@ void sub_36AE0(type_event_0x6E8E* a1x)//217ae0
 // EB384: using guessed type int x_DWORD_EB384;
 
 //----- (00036BA0) --------------------------------------------------------
-void sub_36BA0(type_event_0x6E8E* entity, bool useManaFraction)//217ba0
+void TransformEntityToManaSphere_36BA0(type_event_0x6E8E* entity, bool useManaFraction)//217ba0
 {
 	int manaFraction = 1;
 	int locMana;
@@ -27257,7 +27257,7 @@ void sub_36BA0(type_event_0x6E8E* entity, bool useManaFraction)//217ba0
 		while (manaFraction > manaIndex)
 		{
 			//create mana sphere
-			type_event_0x6E8E* manaSphereEntity = IfSubtypeCallAxisEvent_4A190(&entity->axis_0x4C_76, 10, 39);
+			type_event_0x6E8E* manaSphereEntity = IfSubtypeCallCreatingManaSphere_4A190(&entity->axis_0x4C_76, 10, 39);
 			//create mana sphere
 			if (manaSphereEntity)
 			{
@@ -28293,7 +28293,7 @@ type_event_0x6E8E* sub_38270(type_event_0x6E8E* a1x)//219270
 	{
 	case 0u:
 	case 1u:
-		resultx = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 5, 4);
+		resultx = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 4);
 		v1x = resultx;
 		if (!resultx)
 			goto LABEL_10;
@@ -28301,7 +28301,7 @@ type_event_0x6E8E* sub_38270(type_event_0x6E8E* a1x)//219270
 		break;
 	case 2u:
 	case 3u:
-		resultx = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 5, 14);
+		resultx = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 14);
 		v1x = resultx;
 		if (!resultx)
 			goto LABEL_10;
@@ -28312,7 +28312,7 @@ type_event_0x6E8E* sub_38270(type_event_0x6E8E* a1x)//219270
 	case 6u:
 	case 7u:
 	case 8u:
-		resultx = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 5, 13);
+		resultx = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 13);
 		v1x = resultx;
 		if (!resultx)
 			goto LABEL_10;
@@ -28321,7 +28321,7 @@ type_event_0x6E8E* sub_38270(type_event_0x6E8E* a1x)//219270
 	case 9u:
 	case 0xAu:
 	case 0xBu:
-		v3x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 5, 12);
+		v3x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 12);
 		v1x = v3x;
 		if (v3x)
 			v3x->state_0x45_69 = 97;
@@ -28379,7 +28379,7 @@ int AddHouse0A_2D_38330(type_event_0x6E8E* event)//219330
 			{
 				predictedAxis_EB398ar = event->axis_0x4C_76;
 				predictedAxis_EB398ar.x += event->array_0x52_82.pitch;
-				v4x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 5, 4);
+				v4x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 4);
 				if (v4x)
 				{
 					v4x->state_0x45_69 = 33;
@@ -28527,14 +28527,14 @@ void sub_385C0_remove_castle_stage(type_event_0x6E8E* a1x)//2195c0 //remove cast
 								}
 								else
 								{
-									v6x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 5, 4);
+									v6x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 4);
 									if (v6x)
 										v6x->state_0x45_69 = 33;
 								}
 							}
 							else
 							{
-								v6x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 5, 12);
+								v6x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 12);
 								if (v6x)
 									v6x->state_0x45_69 = 97;
 							}
@@ -28591,7 +28591,7 @@ void sub_385C0_remove_castle_stage(type_event_0x6E8E* a1x)//2195c0 //remove cast
 		SetEntity04_57F10(a1x);
 		return;
 	}
-	v13x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 45);
+	v13x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 45);
 	if (!v13x)
 	{
 		a1x->byte_0x3D_61 = 0;
@@ -28742,7 +28742,7 @@ int sub_38B90(type_event_0x6E8E* a1x)//219b90
 			a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 			v8x.y = a1x->rand_0x14_20 % 0x81u + a1x->axis_0x4C_76.y - 96 + 160 * v11 - 64;
 			v8x.z = a1x->axis_0x4C_76.z;
-			v5x = IfSubtypeCallAxisEvent_4A190(&v8x, 10, 0);
+			v5x = IfSubtypeCallCreatingManaSphere_4A190(&v8x, 10, 0);
 			v6x = v5x;
 			if (v5x)
 			{
@@ -30030,7 +30030,7 @@ void sub_3A5B0(type_event_0x6E8E* a1x)//21b5b0
 	}
 	else if (!v1)
 	{
-		v2x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 5, a1x->byte_0x46_70);
+		v2x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 5, a1x->byte_0x46_70);
 		if (v2x)
 		{
 			v3 = 8 * v2x->model_0x40_64;
@@ -30507,9 +30507,9 @@ void sub_3A8B0(type_event_0x6E8E* a1x)//21b8b0
 				return;// v12;
 			a1x->axis_0x4C_76.z = v5;
 			if (sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76) == 1)
-				IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+				IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 			else
-				IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 0);
+				IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 0);
 			goto LABEL_99;
 		default:
 			return;// v12;
@@ -30757,7 +30757,7 @@ void sub_3AF00_castle_defend_event(type_event_0x6E8E* a1x)//21bf00
 	case 9:
 		goto LABEL_73;
 	case 0xA:
-		v22x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 1);
+		v22x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 1);
 		if (v22x)
 			v22x->id_0x1A_26 = a1x->id_0x1A_26;
 	LABEL_73:
@@ -33619,7 +33619,7 @@ void sub_4A310(type_entity_0x30311* entity)//22b310
 	v11x.x = (entity->axis2d_4.x << 8) + 128;
 	v11x.y = (entity->axis2d_4.y << 8) + 128;
 	v11x.z = getTerrainAlt_10C40(&v11x);//tady to chce pridat jeste 5012 804d80da5012
-	indexx = IfSubtypeCallAxisEvent_4A190(&v11x, entity->type_0x30311, entity->subtype_0x30311);
+	indexx = IfSubtypeCallCreatingManaSphere_4A190(&v11x, entity->type_0x30311, entity->subtype_0x30311);
 	v2x = indexx;
 	v3x = indexx;
 	if (!indexx)
@@ -38445,7 +38445,7 @@ void GameEvents_51BB0()//232bb0
 				sub_52D70(i, (char*)".. CHEAT: access all spells");
 				break;
 			case 2:
-				ifsEvent = IfSubtypeCallAxisEvent_4A190(&actEvent->axis_0x4C_76, 10, 39);
+				ifsEvent = IfSubtypeCallCreatingManaSphere_4A190(&actEvent->axis_0x4C_76, 10, 39);
 				if (ifsEvent)
 				{
 					ifsEvent->mana_0x90_144 = 100000;
@@ -41161,7 +41161,7 @@ LABEL_5:
 				{
 					v15x.x = v13x._axis_2d.x << 8;
 					v15x.y = v13x._axis_2d.y << 8;
-					IfSubtypeCallAxisEvent_4A190(&v15x, 10, 86);
+					IfSubtypeCallCreatingManaSphere_4A190(&v15x, 10, 86);
 					v3x = 1;
 				}
 				v11 += 11;
@@ -44268,7 +44268,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//23d950
 	v35x.z = v3;
 	if (a2x == x_DWORD_EA3E4[0])
 	{
-		v2x = IfSubtypeCallAxisEvent_4A190(&v35x, 3, a1x->byte_0x009_2BE4_11239 == 1);
+		v2x = IfSubtypeCallCreatingManaSphere_4A190(&v35x, 3, a1x->byte_0x009_2BE4_11239 == 1);
 		v37 = 1;
 	}
 	else
@@ -44357,7 +44357,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//23d950
 			{
 				if (D41A0_0.terrain_2FECE.player_0x2FED9[v2x->dword_0xA4_164x->word_0x38_56])
 				{
-					v16x = IfSubtypeCallAxisEvent_4A190(&v2x->axis_0x4C_76, 3, 2);
+					v16x = IfSubtypeCallCreatingManaSphere_4A190(&v2x->axis_0x4C_76, 3, 2);
 					v39x = v16x;
 					if (v16x)
 					{
@@ -44645,7 +44645,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 				{
 					if (a4x->byte_0x1A > 2u)
 						goto LABEL_60;
-					v12x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 12);
+					v12x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 12);
 					v7x = v12x;
 					if (!v12x)
 						goto LABEL_60;
@@ -44656,7 +44656,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 				}
 				else
 				{
-					v10x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 9);
+					v10x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 9);
 					v7x = v10x;
 					if (!v10x)
 						goto LABEL_60;
@@ -44669,9 +44669,9 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 				goto LABEL_60;
 			}
 			if (a4x->byte_0x1A >= 2u)
-				v8x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 28);
+				v8x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 28);
 			else
-				v8x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 0);
+				v8x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 0);
 			v7x = v8x;
 			if (v8x)
 			{
@@ -44687,7 +44687,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 		{
 			if (a3 <= 9u)
 			{
-				v13x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 3);
+				v13x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 3);
 				v7x = v13x;
 				if (!v13x)
 					goto LABEL_60;
@@ -44700,7 +44700,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 				goto LABEL_60;
 			if (a3 <= 0xDu)
 			{
-				v14x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 8);
+				v14x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 8);
 				v7x = v14x;
 				if (v14x)
 				{
@@ -44710,7 +44710,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 			}
 			else if (a3 == 15)
 			{
-				v15x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 23);
+				v15x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 23);
 				v7x = v15x;
 				if (v15x)
 				{
@@ -44726,7 +44726,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 	}
 	else if (a3 <= 0x10u)
 	{
-		v16x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 5);
+		v16x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 5);
 		v7x = v16x;
 		if (v16x)
 		{
@@ -44740,7 +44740,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 	{
 		if (a3 <= 0x11u)
 		{
-			v17x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 2);
+			v17x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 2);
 			v7x = v17x;
 			if (v17x)
 			{
@@ -44752,7 +44752,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 		}
 		else if (a3 == 18)
 		{
-			v18x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 4);
+			v18x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 4);
 			v7x = v18x;
 			if (v18x)
 			{
@@ -44765,7 +44765,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 	}
 	else if (a3 <= 0x14u)
 	{
-		v19x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 22);
+		v19x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 22);
 		v7x = v19x;
 		if (v19x)
 		{
@@ -44779,7 +44779,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 	{
 		if (a3 <= 0x15u)
 		{
-			v20x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 26);
+			v20x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 26);
 			v21x = v20x;
 			v7x = v20x;
 			if (!v20x)
@@ -44794,7 +44794,7 @@ type_event_0x6E8E* sub_6DCA0(type_event_0x6E8E* a1x, axis_3d* a2x, unsigned __in
 		}
 		if (a3 == 25)
 		{
-			v23x = IfSubtypeCallAxisEvent_4A190(a2x, 9, 30);
+			v23x = IfSubtypeCallCreatingManaSphere_4A190(a2x, 9, 30);
 			v21x = v23x;
 			v7x = v23x;
 			if (v23x)
@@ -56638,7 +56638,7 @@ char sub_68AC0(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//249ac0
 		&& a2x->word_0x32_50 == a1x->id_0x1A_26
 		&& a2x->word_0x36_54 == -1)
 	{
-		IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 0);
+		IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 0);
 		PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 26);
 		v4 = a1x->word_0x26_38;
 		if (v4)
@@ -57161,7 +57161,7 @@ void sub_69640(type_event_0x6E8E* a1x)//24a640//spell posses
 					{
 						if (SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A <= 3u)
 						{
-							v4x = IfSubtypeCallAxisEvent_4A190(&v1x->axis_0x4C_76, 9, 17);
+							v4x = IfSubtypeCallCreatingManaSphere_4A190(&v1x->axis_0x4C_76, 9, 17);
 							if (v4x)
 							{
 								v4x->actSpeed_0x82_130 += v1x->actSpeed_0x82_130;
@@ -57256,7 +57256,7 @@ void sub_69900(type_event_0x6E8E* a1x, type_event_0x6E8E* a2x)//24a900
 	//int v3; // edx
 	//uint8_t* v4; // eax
 
-	v2x = IfSubtypeCallAxisEvent_4A190(&a2x->axis_0x4C_76, 9, 1);
+	v2x = IfSubtypeCallCreatingManaSphere_4A190(&a2x->axis_0x4C_76, 9, 1);
 	if (v2x)
 	{
 		v2x->actSpeed_0x82_130 += a2x->actSpeed_0x82_130;
@@ -57334,7 +57334,7 @@ type_event_0x6E8E* sub_69AB0(type_event_0x6E8E* a1x)//24aab0
 					v1x->dword_0xA4_164x->array_0x24E_590.at(v4) = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].dword_2;
 					v1x->dword_0xA4_164x->array_0x24E_590.at(v4 + 9) = SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A;
 					sub_68DE0(a1x, v1x);
-					v5x = IfSubtypeCallAxisEvent_4A190(&v1x->axis_0x4C_76, 9, 10);
+					v5x = IfSubtypeCallCreatingManaSphere_4A190(&v1x->axis_0x4C_76, 9, 10);
 					v12x = v5x;
 					v11x = v5x;
 					if (v5x)
@@ -57464,7 +57464,7 @@ void GetScroll_69DB0(type_event_0x6E8E* a1x)//24adb0
 				v1x->actSpeed_0x82_130 = v1x->dword_0xA4_164x->speed_0xc_12;
 				if (!(a1x->byte_0x3E_62 & 3))
 				{
-					v6x = IfSubtypeCallAxisEvent_4A190(&v1x->axis_0x4C_76, 10, 2);
+					v6x = IfSubtypeCallCreatingManaSphere_4A190(&v1x->axis_0x4C_76, 10, 2);
 					if (v6x)
 					{
 						v7 = 4 * v6x->life_0x8;
@@ -57534,7 +57534,7 @@ void sub_6A030(type_event_0x6E8E* a1x)//24b030
 			{
 				sub_6D8B0(a1x->parentId_0x28_40, 4u, 1);
 				//v4x = sub_4A190(&v2x->array_0x4C_76, 5, (unsigned __int8)(*xadataspellsdat.colorPalette_var28)[80 * a1x->byte_0x40_64 + 26 + 26 * a1x->byte_0x46_70]);
-				v4x = IfSubtypeCallAxisEvent_4A190(&v2x->axis_0x4C_76, 5, SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A);
+				v4x = IfSubtypeCallCreatingManaSphere_4A190(&v2x->axis_0x4C_76, 5, SPELLS_BEGIN_BUFFER_str[a1x->model_0x40_64].subspell[a1x->byte_0x46_70].byte_0x1A);
 				v5x = v4x;
 				if (v4x)
 				{
@@ -58502,7 +58502,7 @@ __int16 sub_6B610(type_event_0x6E8E* a1x)//24c610
 			{
 				if (a1x->word_0x2E_46 == a1x->word_0x30_48)
 				{
-					v2x = IfSubtypeCallAxisEvent_4A190(&v8x->axis_0x4C_76, 9, 7);
+					v2x = IfSubtypeCallCreatingManaSphere_4A190(&v8x->axis_0x4C_76, 9, 7);
 					v7x = v2x;
 					if (v2x)
 					{
@@ -58870,7 +58870,7 @@ void sub_6C170(type_event_0x6E8E* a1x)//24d170
 				if (a1x->word_0x2E_46 == a1x->word_0x30_48)
 				{
 					//v2 = (char*)&(*xadataspellsdat.colorPalette_var28)[80 * a1x->byte_0x40_64 + 2 + 26 * a1x->byte_0x46_70];
-					v6x = IfSubtypeCallAxisEvent_4A190(&v7x->axis_0x4C_76, 9, 24);
+					v6x = IfSubtypeCallCreatingManaSphere_4A190(&v7x->axis_0x4C_76, 9, 24);
 					if (v6x)
 					{
 						v6x->actSpeed_0x82_130 += v7x->actSpeed_0x82_130;
@@ -59105,7 +59105,7 @@ void sub_6C870(type_event_0x6E8E* a1x)//24d870
 						//v7 = (char*)&(*xadataspellsdat.colorPalette_var28)[80 * a1x->byte_0x40_64 + 2 + 26 * a1x->byte_0x46_70];
 						while (v6 < 6)
 						{
-							v1x = IfSubtypeCallAxisEvent_4A190(&v2x->axis_0x4C_76, 10, 57);
+							v1x = IfSubtypeCallCreatingManaSphere_4A190(&v2x->axis_0x4C_76, 10, 57);
 							if (v1x)
 							{
 								v3 = 4 * v2x->actSpeed_0x82_130;
@@ -59192,7 +59192,7 @@ void sub_6CAC0(type_event_0x6E8E* a1x)//24dac0
 			{
 				if (a1x->word_0x2E_46 == a1x->word_0x30_48)
 				{
-					v2x = IfSubtypeCallAxisEvent_4A190(&v8x->axis_0x4C_76, 9, 29);
+					v2x = IfSubtypeCallCreatingManaSphere_4A190(&v8x->axis_0x4C_76, 9, 29);
 					if (v2x)
 					{
 						v2x->actSpeed_0x82_130 += v8x->actSpeed_0x82_130;
@@ -59273,7 +59273,7 @@ void sub_6CD20(type_event_0x6E8E* a1x)//24dd20
 				if (a1x->word_0x2E_46 == a1x->word_0x30_48)
 				{
 					//v2 = (char*)&(*xadataspellsdat.colorPalette_var28)[80 * a1x->byte_0x40_64 + 2 + 26 * a1x->byte_0x46_70];
-					v3x = IfSubtypeCallAxisEvent_4A190(&v9x->axis_0x4C_76, 9, 25);
+					v3x = IfSubtypeCallCreatingManaSphere_4A190(&v9x->axis_0x4C_76, 9, 25);
 					if (v3x)
 					{
 						v3x->actSpeed_0x82_130 += v9x->actSpeed_0x82_130;
@@ -59626,7 +59626,7 @@ void sub_66750(type_event_0x6E8E* a1x)//247750
 	}
 	v13x = sub_10780(a1x);
 	v24x = x_DWORD_EA3E4[a1x->word_0x96_150];
-	v14x = IfSubtypeCallAxisEvent_4A190(&v20x, a1x->byte_0x43_67, a1x->byte_0x44_68);
+	v14x = IfSubtypeCallCreatingManaSphere_4A190(&v20x, a1x->byte_0x43_67, a1x->byte_0x44_68);
 	v15x = v14x;
 	if (!v14x)
 		return;// (short)v14x;
@@ -59757,7 +59757,7 @@ void CastCastleProjectile_66B30(type_event_0x6E8E* a1x)//247b30
 			}
 			else
 			{
-				v8x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
+				v8x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
 				if (v8x)
 				{
 					v8x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -59893,7 +59893,7 @@ LABEL_18:
 			MoveEntity_57FA0(&predictedAxis_EB398ar, v11, a1x->pitch_0x1E_30, a1x->actSpeed_0x82_130);
 			CopyEntityPosition_57CF0(a1x, &predictedAxis_EB398ar);
 		}
-		v2x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
+		v2x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
 		if (v2x)
 		{
 			v2x->id_0x1A_26 = a1x->id_0x1A_26;
@@ -60017,7 +60017,7 @@ void sub_66FD0(type_event_0x6E8E* a1x)//247fd0
 				//v8 = (uint8_t*)sub_104D0_terrain_tile_is_water((signed __int16 *)(a1 + 76));
 				if (sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76) == 1)
 				{
-					v11x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+					v11x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 					if (v11x)
 						v11x->id_0x1A_26 = a1x->id_0x1A_26;
 					SetEntity04_57F10(a1x);
@@ -60044,7 +60044,7 @@ LABEL_28:
 		else
 		{
 			//v8 = sub_4A190((uint8_t*)(a1 + 76), 10, 38);
-			v12x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 38);
+			v12x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 38);
 			if (v12x)
 			{
 				sub_65780(a1x, v7x, v14x);
@@ -60162,7 +60162,7 @@ void sub_67470(type_event_0x6E8E* a1x)//248470
 	//BYTE1(result) = *(x_BYTE *)(a1 + 63);
 	if (a1x->class_0x3F_63)
 	{
-		resultx = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 0);
+		resultx = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 0);
 		if (resultx)
 		{
 			resultx->struct_byte_0xc_12_15.byte[0] |= 0x80u;
@@ -60260,9 +60260,9 @@ LABEL_16:
 		if (v6x)
 		{
 			if (a1x->byte_0x43_67 != 10 || a1x->byte_0x44_68 != 69)
-				v12x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 12);
+				v12x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 12);
 			else
-				v12x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 70);
+				v12x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 70);
 			v13x = v12x;
 			if (v12x)
 			{
@@ -60271,7 +60271,7 @@ LABEL_16:
 				v13x->yaw_0x1C_28 = a1x->yaw_0x1C_28;
 				v13x->pitch_0x1E_30 = a1x->pitch_0x1E_30;
 			}
-			v14x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
+			v14x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
 			if (v14x)
 			{
 				sub_65780(a1x, v6x, v15x);
@@ -60296,7 +60296,7 @@ type_event_0x6E8E* sub_676F0(type_event_0x6E8E* a1x)//2486f0
 {
 	type_event_0x6E8E* resultx; // eax
 
-	resultx = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
+	resultx = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
 	if (resultx)
 	{
 		resultx->id_0x1A_26 = a1x->id_0x1A_26;
@@ -60554,7 +60554,7 @@ void sub_67960(/*type_str_0x6E8E* a1x,*/ type_event_0x6E8E* a2x)//248960
 		CopyEntityPosition_57CF0(a2x, &x_DWORD_EA3E4[a2x->word_0x96_150]->axis_0x4C_76);
 		sub_655A0(x_DWORD_EA3E4[a2x->word_0x96_150]);
 		x_DWORD_EA3E4[a2x->word_0x96_150]->byte_0x46_70 = 8;
-		IfSubtypeCallAxisEvent_4A190(v13x, 10, 0);
+		IfSubtypeCallCreatingManaSphere_4A190(v13x, 10, 0);
 		SetEntity04_57F10(a2x);
 	}
 	else
@@ -60576,7 +60576,7 @@ void sub_67960(/*type_str_0x6E8E* a1x,*/ type_event_0x6E8E* a2x)//248960
 			v18 = 1;
 		if (v18)
 		{
-			resultx = IfSubtypeCallAxisEvent_4A190(&a2x->axis_0x4C_76, a2x->byte_0x43_67, a2x->byte_0x44_68);
+			resultx = IfSubtypeCallCreatingManaSphere_4A190(&a2x->axis_0x4C_76, a2x->byte_0x43_67, a2x->byte_0x44_68);
 			if (resultx)
 			{
 				resultx->word_0x32_50 = a2x->id_0x1A_26;
@@ -60618,7 +60618,7 @@ void sub_5CF40(type_event_0x6E8E* a1x, char a2)//23df40
 		*/
 		if (a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[i])
 		{
-			v4x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 15, i);
+			v4x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 15, i);
 			if (v4x)
 			{
 				a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[i] = v4x - D41A0_0.struct_0x6E8E;
@@ -61313,7 +61313,7 @@ void sub_5E310_multiplayer_test_die(type_event_0x6E8E* a1x)//23f310
 	v5 = v4;
 	if (a1x->axis_0x4C_76.z < v3 + v4)
 		a1x->axis_0x4C_76.z = a1x->dword_0xA0_160x->word_160_0xc_12 + v4;
-	v6x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 1);
+	v6x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 1);
 	if (v6x)
 	{
 		v6x->struct_byte_0xc_12_15.byte[0] |= 0x80u;
@@ -61385,7 +61385,7 @@ void sub_5E310_multiplayer_test_die(type_event_0x6E8E* a1x)//23f310
 				v26x->life_0x8 = a1x->rand_0x14_20 % 0x5Au + 200;
 			}
 		}
-		v24x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 40);
+		v24x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 40);
 		if (v24x)
 		{
 			a1x->state_0x45_69 = 3;
@@ -62417,7 +62417,7 @@ void sub_5FBD0(type_event_0x6E8E* a1x)//240bd0
 	type_event_0x6E8E* indexx; // eax
 	__int16 v2; // ST08_2
 
-	indexx = IfSubtypeCallAxisEvent_4A190(&a1x->word_0x9A_154x, 10, 42);
+	indexx = IfSubtypeCallCreatingManaSphere_4A190(&a1x->word_0x9A_154x, 10, 42);
 	if (indexx)
 	{
 		indexx->byte_0x46_70 = a1x->dword_0x10_16;
@@ -62437,7 +62437,7 @@ type_event_0x6E8E* sub_5FC40(type_event_0x6E8E* a1x)//240c40
 	type_event_0x6E8E* resultx; // eax
 	type_event_0x6E8E* v2x; // ebx
 
-	resultx = IfSubtypeCallAxisEvent_4A190(&a1x->word_0x9A_154x, 10, 41);
+	resultx = IfSubtypeCallCreatingManaSphere_4A190(&a1x->word_0x9A_154x, 10, 41);
 	v2x = resultx;
 	if (resultx)
 	{
@@ -62530,7 +62530,7 @@ void sub_5FD00(type_event_0x6E8E* a1x)//240d00
 				for (result = v16; v16 > v13; result = v16)
 				{
 					predictedAxis_EB398ar = a1x->axis_0x4C_76;
-					v4x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 39);
+					v4x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 39);
 					//v5x = v4x;
 					if (v4x)
 					{
@@ -62611,7 +62611,7 @@ void sub_5FF50(type_event_0x6E8E* a1x)//240f50
 				v3x = x_DWORD_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[v1]];
 				if (v3x <= x_DWORD_EA3E4[0])
 				{
-					v8x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 3, 3);
+					v8x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 3, 3);
 					v9x = v8x;
 					if (v8x)
 					{
@@ -62625,7 +62625,7 @@ void sub_5FF50(type_event_0x6E8E* a1x)//240f50
 				}
 				if (v3x->life_0x8 >= 0)
 					break;
-				sub_36BA0(v3x, false);
+				TransformEntityToManaSphere_36BA0(v3x, false);
 				SetEntity04_57F10(v3x);
 				v18x->dword_0xA4_164x->array_0x3C_60[v1] = 0;
 			LABEL_17:
@@ -62669,7 +62669,7 @@ LABEL_22:
 		v10x = x_DWORD_EA3E4[v18x->dword_0xA4_164x->array_0x3C_60[v1]];
 		if (v10x > x_DWORD_EA3E4[0])
 		{
-			sub_36BA0(v10x, false);
+			TransformEntityToManaSphere_36BA0(v10x, false);
 			SetEntity04_57F10(v10x);
 			v18x->dword_0xA4_164x->array_0x3C_60[v1] = 0;
 		}
@@ -62717,7 +62717,7 @@ LABEL_22:
 			{
 				if (!a1x->word_0x2C_44)
 				{
-					v17x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 5, 15);
+					v17x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 5, 15);
 					if (v17x)
 					{
 						a1x->word_0x2C_44 = 16;
@@ -63394,7 +63394,7 @@ type_event_0x6E8E* sub_61050(type_event_0x6E8E* a1x)//242050
 					v15 = getTerrainAlt_10C40(&v26x);
 					HIBYTE(v15) += 4;
 					v26x.z = v15;
-					v16x = IfSubtypeCallAxisEvent_4A190(&v26x, 10, 39);
+					v16x = IfSubtypeCallCreatingManaSphere_4A190(&v26x, 10, 39);
 					v17x = v16x;
 					if (v16x)
 					{
@@ -63531,7 +63531,7 @@ void sub_613D0(type_event_0x6E8E* a1x)//2423d0
 				{
 					predictedAxis_EB398ar.x = (v20 + v13[0]) << 8;
 					predictedAxis_EB398ar.y = (v19 + v13[1]) << 8;
-					i2x = IfSubtypeCallAxisEvent_4A190(&predictedAxis_EB398ar, 10, 79);
+					i2x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 79);
 					v9x = i2x;
 					v17x = i2x;
 					if (!i2x)
@@ -63649,7 +63649,7 @@ uint32_t AddTree02_00_64E20(type_event_0x6E8E* a1x)//245e20
 		a1x->life_0x8 = v2;
 		if (v2 < 0)
 		{
-			v3x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 6);
+			v3x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 6);
 			v4x = v3x;
 			v5x = v3x;
 			if (v3x)
@@ -63680,7 +63680,7 @@ uint32_t AddTree02_00_64E20(type_event_0x6E8E* a1x)//245e20
 	result = sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76);
 	if (result == 1)
 	{
-		v11x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+		v11x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 		if (v11x)
 			v11x->id_0x1A_26 = a1x->id_0x1A_26;
 		SetEntity04_57F10(a1x);
@@ -63719,7 +63719,7 @@ uint32_t sub_64F60(type_event_0x6E8E* a1x)//245f60
 	result = sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76);
 	if (result == 1)
 	{
-		v4x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+		v4x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 		if (v4x)
 			v4x->id_0x1A_26 = a1x->id_0x1A_26;
 		SetEntity04_57F10(a1x);
@@ -63737,7 +63737,7 @@ uint32_t sub_64FF0(type_event_0x6E8E* a1x)//245ff0
 	result = sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76);
 	if (result == 1)
 	{
-		v2x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+		v2x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 		if (v2x)
 			v2x->id_0x1A_26 = a1x->id_0x1A_26;
 		SetEntity04_57F10(a1x);
@@ -63798,7 +63798,7 @@ uint32_t sub_651B0(type_event_0x6E8E* a1x)//2461b0
 			a1x->state_0x45_69 = 19;
 			a1x->struct_byte_0xc_12_15.byte[0] = v4 & 0xF7;
 			SetHalfSpeedEntity_49DA0(a1x, v3 + 4);
-			IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 13);
+			IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 13);
 		}
 		a1x->str_0x5E_94.word_0x62_98 = 0;
 	}
@@ -63918,12 +63918,12 @@ void sub_652C0(type_event_0x6E8E* a1x)//2462c0
 		}
 		if (a1x->life_0x8 < 0)
 		{
-			IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 13);
+			IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 13);
 			goto LABEL_27;
 		}
 		if ((int16_t)a1x->axis_0x4C_76.z <= v6 && sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76) == 1)
 		{
-			IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+			IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 		LABEL_27:
 			SetEntity04_57F10(a1x);
 			return;
@@ -64186,7 +64186,7 @@ type_event_0x6E8E* sub_65820(type_event_0x6E8E* a1x)//246820
 		v8 = a1x->model_0x40_64;
 		if (v8 != 4 && v8 != 22 && v8 != 24 && v8 != 26 && sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76) == 1)
 		{
-			v9x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+			v9x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 			if (v9x)
 				v9x->id_0x1A_26 = a1x->id_0x1A_26;
 			SetEntity04_57F10(a1x);
@@ -64207,7 +64207,7 @@ LABEL_29:
 		SetEntity04_57F10(a1x);
 		return 0;
 	}
-	v11x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
+	v11x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
 	if (!v11x)
 		return 0;
 	sub_65780(a1x, v5x, v13x);
@@ -64371,7 +64371,7 @@ LABEL_18:
 			CopyEntityPosition_57CF0(a1x, &v16x);
 			if (a1x->model_0x40_64 != 4 && sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76) == 1)
 			{
-				v13x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+				v13x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 				if (v13x)
 					v13x->id_0x1A_26 = a1x->id_0x1A_26;
 				SetEntity04_57F10(a1x);
@@ -64411,7 +64411,7 @@ LABEL_35:
 		}
 		else
 		{
-			v18x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
+			v18x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
 			if (v18x)
 			{
 				sub_65780(a1x, v9x, v19x);
@@ -64537,7 +64537,7 @@ LABEL_19:
 	if (v15)
 	{
 		//v8x = sub_4A190(a1x->array_0x4C_76, *(char *)(a1 + 67), *(char *)(a1 + 68));
-		v12x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
+		v12x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
 		if (v12x)
 		{
 			sub_65780(a1x, v7x, v14x);
@@ -64587,7 +64587,7 @@ void sub_66180(type_event_0x6E8E* a1x)//247180
 		a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 		v4x.y = a1x->rand_0x14_20 % 0x81u + a1x->axis_0x4C_76.y - 96 - 64;
 		v4x.z = a1x->axis_0x4C_76.z;
-		resultx = IfSubtypeCallAxisEvent_4A190(&v4x, 10, 0);
+		resultx = IfSubtypeCallCreatingManaSphere_4A190(&v4x, 10, 0);
 		if (resultx)
 		{
 			resultx->struct_byte_0xc_12_15.dword |= 0x10080;
@@ -64741,7 +64741,7 @@ void sub_662E0(type_event_0x6E8E* a1x)//2472e0
 				//v6 = sub_104D0_terrain_tile_is_water((signed __int16 *)(a1 + 76));
 				if (sub_104D0_terrain_tile_is_water(&a1x->axis_0x4C_76) == 1)
 				{
-					v9x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, 10, 5);
+					v9x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, 10, 5);
 					if (v9x)
 						v9x->id_0x1A_26 = a1x->id_0x1A_26;
 					SetEntity04_57F10(a1x);
@@ -64772,7 +64772,7 @@ LABEL_26:
 		}
 		else
 		{
-			v6x = IfSubtypeCallAxisEvent_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
+			v6x = IfSubtypeCallCreatingManaSphere_4A190(&a1x->axis_0x4C_76, a1x->byte_0x43_67, a1x->byte_0x44_68);
 			v12x = v6x;
 			if (v6x)
 			{

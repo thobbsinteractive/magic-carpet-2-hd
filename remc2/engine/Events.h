@@ -33,7 +33,7 @@ void CopyEventVar0408_49A20(type_event_0x6E8E* event);
 type_event_0x6E8E* NewEvent_4A050();
 void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1);//pre 22b190
 type_event_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1);//pre 22b190
-type_event_0x6E8E* IfSubtypeCallAxisEvent_4A190(axis_3d* a1, int a2, int a3);
+type_event_0x6E8E* IfSubtypeCallCreatingManaSphere_4A190(axis_3d* a1, int a2, int a3);
 void SetMapEntity_57E50(type_event_0x6E8E* entity);
 void sub_57F20(type_event_0x6E8E* entity);
 signed int sub_69250(type_event_0x6E8E* a1);
