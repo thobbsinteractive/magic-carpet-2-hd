@@ -410,7 +410,7 @@ void convert_struct_to_array_0x6E8E(type_event_0x6E8E* input, uint8_t* output) {
 	//int8_t byte_0x44_68;//68	
 	memcpy(output + 68, &input->byte_0x44_68, 1);
 	//uint8_t byte_0x45_69;//69 // index of structure with lenght 14//STATE
-	memcpy(output + 69, &input->state_0x45_69, 1);
+	memcpy(output + 69, &input->actionIndex_0x45_69, 1);
 	//uint8_t byte_0x46_70;//70 // index of bitmap
 	memcpy(output + 70, &input->byte_0x46_70, 1);
 	//int8_t byte_0x47_71_xx;//71

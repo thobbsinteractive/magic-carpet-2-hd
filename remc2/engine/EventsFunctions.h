@@ -633,7 +633,7 @@ extern type_event_0x6E8E* (*arsub_2a881e[])(axis_3d*);
 
 void sub_49A30(type_event_0x6E8E* event, unsigned __int16 a2);
 signed int sub_6E020(unsigned __int16 a1);
-void SetEntity04_57F10(type_event_0x6E8E* entity);
+void DisableEntityDrawing04_57F10(type_event_0x6E8E* entity);
 void test_pre_sub_4a190(uint32_t adress);
 signed int sub_12910(type_event_0x6E8E* a1);
 signed int sub_12A70(type_event_0x6E8E* a1);
@@ -991,7 +991,7 @@ void sub_31940(type_event_0x6E8E* a1);
 void sub_31E90(type_event_0x6E8E* a1);
 void sub_31F00(type_event_0x6E8E* a1, __int16 a2, __int16 a3);
 void sub_31FB0(type_event_0x6E8E* a1x);
-void PossesHitMana_320E0(type_event_0x6E8E* a1x);
+void PossesHitMana_320E0(type_event_0x6E8E* entity);
 void sub_32120(type_event_0x6E8E* a1);
 void sub_32160(type_event_0x6E8E* a1);
 void sub_322A0(type_event_0x6E8E* a1);

@@ -1988,12 +1988,12 @@ void GameRenderNG::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t posY)
 		{
 			if (v7 == 22)
 			{
-				if (a1x->state_0x45_69 != -76 && a1x->word_0x94_148 != v4x->id_0x1A_26)
+				if (a1x->actionIndex_0x45_69 != -76 && a1x->word_0x94_148 != v4x->id_0x1A_26)
 					v3 = 18;
 				goto LABEL_48;
 			}
 		LABEL_30:
-			v8 = a1x->state_0x45_69;
+			v8 = a1x->actionIndex_0x45_69;
 			if (v8 < 0xE8u || v8 > 0xEAu)
 			{
 				v10 = 1;

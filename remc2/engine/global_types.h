@@ -363,7 +363,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	int8_t xsubtype_0x42_66;//66 //subtype subentity
 	int8_t byte_0x43_67;//67
 	int8_t byte_0x44_68;//68
-	uint8_t state_0x45_69;//69 // index of structure with lenght 14//STATE-
+	uint8_t actionIndex_0x45_69;//69 // index of structure with lenght 14//STATE-
 	int8_t byte_0x46_70;//70 // index of bitmap // index of ending sequence
 	int8_t byte_0x47_71_xx;//71
 	int8_t StageVar1_0x48_72;//72

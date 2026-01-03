@@ -5614,7 +5614,7 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
 				if (a3 != 46)
 					goto LABEL_29;
 				v14 = v13 % 0x14;
-				if (v22x->state_0x45_69 == 14)
+				if (v22x->actionIndex_0x45_69 == 14)
 					LOWORD(v14) = v14 + 10;
 				else
 					LOWORD(v14) = v14 - 10;

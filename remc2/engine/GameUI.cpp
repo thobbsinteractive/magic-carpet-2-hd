@@ -1182,7 +1182,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 				switch (v42)
 				{
 				case 0u:
-					if (jy->state_0x45_69 != 2)
+					if (jy->actionIndex_0x45_69 != 2)
 						goto LABEL_78;
 					v94 = v90;
 					v31 = 0;
@@ -1243,7 +1243,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 			case 0xBu:
 				break;
 			case 3u:
-				v44 = jy->state_0x45_69;
+				v44 = jy->actionIndex_0x45_69;
 				if (v44 >= 0xB4u && (v44 <= 0xB4u || v44 >= 0xE8u && v44 <= 0xEAu) || jy->struct_byte_0xc_12_15.byte[0] & 1)
 					break;
 				v45 = jy->id_0x1A_26;
@@ -1784,7 +1784,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 				switch (v48)
 				{
 				case 0u:
-					if (iy->state_0x45_69 != 2)
+					if (iy->actionIndex_0x45_69 != 2)
 						goto LABEL_74;
 					v110 = v108;
 					v36 = 0;
@@ -1838,7 +1838,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 			case 0xBu:
 				break;
 			case 3u:
-				v49 = iy->state_0x45_69;
+				v49 = iy->actionIndex_0x45_69;
 				if (v49 >= 0xB4u && (v49 <= 0xB4u || v49 >= 0xE8u && v49 <= 0xEAu) || iy->struct_byte_0xc_12_15.byte[0] & 1)
 					break;
 				v50 = iy->id_0x1A_26;
