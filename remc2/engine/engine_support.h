@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ENGINE_SUPPORT_H
+#define ENGINE_SUPPORT_H
 
 #include <stdio.h>
 #include <cstdint>
@@ -918,3 +920,5 @@ void write_bitmap_pos_struct_to_png(uint8_t* buffer, int width, int height, cons
 
 int my_sign32(int32_t var);
 int my_sign16(int16_t var);
+
+#endif //ENGINE_SUPPORT_H

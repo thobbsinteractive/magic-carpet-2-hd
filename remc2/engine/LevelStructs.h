@@ -479,9 +479,9 @@ typedef struct {//lenght 224791
 	uint8_t stubend[11];
 } type_shadow_D41A0_BYTESTR_0;
 
-extern type_D41A0_BYTESTR_0 D41A0_0;
-
 #pragma pack (16)
+
+extern type_D41A0_BYTESTR_0 D41A0_0;
 
 #endif //MAIN_LEVEL_STRUCTS
 
