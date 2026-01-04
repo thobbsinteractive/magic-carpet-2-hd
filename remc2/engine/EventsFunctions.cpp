@@ -17483,7 +17483,7 @@ void sub_26990(type_event_0x6E8E* a1x)//207990
 	v1 = a1x->dword_0x10_16 & 0xFF;
 	v2 = 0;
 	//result = (uint8_t*)sub_369F0((int)a1, *(x_WORD *)(a1 + 148));
-	v9 = GetManaSphereColorIndex_369F0(/*a1x, */a1x->playerEntityIndex_0x94_148);
+	v9 = GetManaSphereColorIndexFromEntityId_369F0(/*a1x, */a1x->playerEntityIndex_0x94_148);
 	while (v2 < (signed __int16)((v1 != 0) + 1))
 	{
 		if (v2)
@@ -18084,7 +18084,7 @@ void sub_27590(/*signed int a1, */type_event_0x6E8E* a2x)//208590
 	__int16 v6; // ax
 	type_event_0x6E8E* v7x; // ebx
 
-	v2 = GetManaSphereColorIndex_369F0(/*a1, */a2x->playerEntityIndex_0x94_148);
+	v2 = GetManaSphereColorIndexFromEntityId_369F0(/*a1, */a2x->playerEntityIndex_0x94_148);
 	v3 = v2;
 	v4 = sub_278F0(v2, a2x->byte_0x46_70, 0);
 	sub_49D50(a2x, v4);
@@ -18109,7 +18109,7 @@ void sub_27610(/*signed int a1, */type_event_0x6E8E* a2x)//208610
 	__int32 v5; // rtt
 	type_event_0x6E8E* v6x; // ebx
 
-	v2 = GetManaSphereColorIndex_369F0(/*a1, */a2x->playerEntityIndex_0x94_148);
+	v2 = GetManaSphereColorIndexFromEntityId_369F0(/*a1, */a2x->playerEntityIndex_0x94_148);
 	//v3 = 550 * (unsigned __int16)x_WORD_D951C[4 + 7 * (signed __int16)sub_278F0(v2, a2x->byte_0x46_70, 0)];
 	v3 = 550 * str_WORD_D951C[(signed __int16)sub_278F0(v2, a2x->byte_0x46_70, 0)].rotSpeed_8;
 	SetEntityShiftRot_49EA0(a2x, v3 / 1000, v3 / 1000);
@@ -24418,7 +24418,7 @@ void sub_32CF0(type_event_0x6E8E* a1x)//213cf0
 			v1x->mana_0x90_144 = a1x->rand_0x14_20 % 0xA00u + 1;
 			while (v8 < 7 && v1x->mana_0x90_144 > manaSphereSizeTable_DB538[v8])
 				v8++;
-			v9 = sub_36A50(/*(int)v3, */v7);
+			v9 = GetManaSphereIndexFromId_36A50(/*(int)v3, */v7);
 			SetEntityIndexAndRot_49CD0(v1x, v8 + v9);
 			a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
 			v10 = a1x->rand_0x14_20 & 0x7FF;
@@ -27098,7 +27098,7 @@ void SetManaSphereColorAndRot_36920(type_event_0x6E8E* entity)//217920
 	int sphereSize;
 	for (sphereSize = 0; sphereSize < 7 && entity->mana_0x90_144 > manaSphereSizeTable_DB538[sphereSize]; sphereSize++)
 		;
-	int colorIndex = GetManaSphereColorIndex_369F0(entity->playerEntityIndex_0x94_148);
+	int colorIndex = GetManaSphereColorIndexFromEntityId_369F0(entity->playerEntityIndex_0x94_148);
 	if (colorIndex + sphereSize != entity->word_0x5A_90)
 	{
 		SetEntityIndex_49C90(entity, sphereSize + colorIndex);
@@ -27140,19 +27140,19 @@ void SetManaSphereColorAndRot_36920(type_event_0x6E8E* entity)//217920
 }
 
 //----- (000369F0) --------------------------------------------------------
-int GetManaSphereColorIndex_369F0(int playerEntityIndex)//2179f0
+int GetManaSphereColorIndexFromEntityId_369F0(int playerEntityIndex)//2179f0
 {
 	int result;
 	type_event_0x6E8E* playerEntity = ENTITY_EA3E4[playerEntityIndex];
 	if (playerEntity <= ENTITY_EA3E4[0] || playerEntity->class_0x3F_63 != 3)
 		result = 52;
 	else
-		result = sub_36A50(playerEntity->dword_0xA4_164x->playerColorIndex_0x38_56);
+		result = GetManaSphereIndexFromId_36A50(playerEntity->dword_0xA4_164x->playerColorIndex_0x38_56);
 	return result;
 }
 
 //----- (00036A50) --------------------------------------------------------
-int sub_36A50(char index)//217a50
+int GetManaSphereIndexFromId_36A50(char index)//217a50
 {
 	int result=0;
 
@@ -44311,7 +44311,6 @@ void sub_5C950(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//23d950
 	{
 		sub_58DA0(0, v2x);
 		for (i = 0; i < 26; i++)
-			//*(x_DWORD *)(v2x->dword_0xA4_164 + 4 * i + 711) = 0;
 			v2x->dword_0xA4_164x->str_611.spells_experience_0x2CB_715x.at(i) = 0;
 		v2x->dword_0xA4_164x->dword_0x189_393 = j___clock();
 		switch (TransformPlayerColorIndex_616D0(v2x->dword_0xA4_164x->playerColorIndex_0x38_56))

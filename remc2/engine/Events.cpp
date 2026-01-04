@@ -2609,7 +2609,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		GetManaSphereColorIndex_369F0((int)a1_6E8E);
+		GetManaSphereColorIndexFromEntityId_369F0((int)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -2621,7 +2621,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_36A50((int)a1_6E8E);
+		GetManaSphereIndexFromId_36A50((int)a1_6E8E);
 		allert_error();
 #endif
 		break;

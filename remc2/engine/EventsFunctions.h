@@ -451,14 +451,14 @@ void JUMPOUT(int32_t cs, int* adr);
 void JUMPOUT(int32_t cs, int a, int* adr);
 void sub_1F0C0(/*type_str_0x6E8E* a1,*/ type_event_0x6E8E* a2);
 void sub_253B0(/*int result, */type_event_0x6E8E* a2, unsigned __int8 a3, unsigned __int8 a4);
-int GetManaSphereColorIndex_369F0(int playerEntityIndex);
+int GetManaSphereColorIndexFromEntityId_369F0(int playerEntityIndex);
 //void qmemcpy(void* a, void* b, size_t c);
 void sub_2A340(/*int a1, type_str_0x6E8E* a2, type_str_0x6E8E* a3, int a4, *//*type_str_0x6E8E* a5, */type_event_0x6E8E* a6);
 void sub_2AA90(/*type_str_0x6E8E* a1, */type_event_0x6E8E* a2, type_event_0x6E8E* a3);
 void ClearGraphicsBuffer_72883(void* ptrBuffer, uint16_t width, uint16_t height, char value);
 int _wcpp_1_unwind_leave__62(void); //weak
 //int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* a2, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8);//560cb0
-int sub_36A50(/*signed int a1, */char a2);
+int GetManaSphereIndexFromId_36A50(/*signed int a1, */char a2);
 void SetManaSphereColorAndRot_36920(/*signed __int16 a1, */type_event_0x6E8E* a2);
 void sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6);
 //void __outx_WORD(unsigned short Port, unsigned short Data);
