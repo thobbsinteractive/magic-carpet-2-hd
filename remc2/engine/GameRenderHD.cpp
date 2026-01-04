@@ -1736,7 +1736,7 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 					switch (v12)
 					{
 					case 0:
-						if (str_DWORD_F66F0x[v9x->word_0])
+						if (str_DWORD_F66F0x[v9x->word_0])//tree
 						{
 							//v14 = v9x->word_0;
 							//v15 = 4 * v9x->word_0;
@@ -1877,7 +1877,7 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 						v32 = (((v41x->yaw_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 						if (v32 >= 8)
 						{
-							v35 = v9x->word_0 + (uint8_t)x_BYTE_D4750[28 + v32];
+							v35 = v9x->word_0 + (uint8_t)x_BYTE_D4750[28 + v32];//goat rotations
 							if (str_DWORD_F66F0x[v35])
 							{
 								x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v35].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
@@ -1898,7 +1898,7 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 						}
 						else
 						{
-							v33 = v9x->word_0 + (uint8_t)x_BYTE_D4750[28 + v32];
+							v33 = v9x->word_0 + (uint8_t)x_BYTE_D4750[28 + v32];//goat rotations
 							if (str_DWORD_F66F0x[v33])
 							{
 								x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v33].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
@@ -1951,7 +1951,7 @@ uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x
 					case 36:
 						x_BYTE_F2CC6 = 1;
 					LABEL_26:
-						v18 = v41x->byte_0x5C_92 + v9x->word_0;
+						v18 = v41x->byte_0x5C_92 + v9x->word_0;//fair animation
 						if (str_DWORD_F66F0x[v18])
 						{
 							x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v18].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
@@ -3165,7 +3165,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 							switch (v10)
 							{
 							case 0:
-								if (str_DWORD_F66F0x[v7x->word_0])
+								if (str_DWORD_F66F0x[v7x->word_0])//tree
 								{
 									//v12 = v7x->word_0;
 									//v13 = 4 * v7x->word_0;
@@ -3311,7 +3311,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 								v37 = (((str_F2C20ar.dword0x14x->yaw_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 								if (v37 >= 8)
 								{
-									v41 = v7x->word_0 + (uint8_t)x_BYTE_D4750[28 + v37];
+									v41 = v7x->word_0 + (uint8_t)x_BYTE_D4750[28 + v37];//goat rotations
 									if (!str_DWORD_F66F0x[v41])
 									{
 										if (!MainInitTmaps_71520(v7x->word_0 + (uint8_t)x_BYTE_D4750[28 + v37]))
@@ -3330,7 +3330,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 								else
 								{
 									v38 = (uint8_t)x_BYTE_D4750[28 + v37];
-									v39 = v38 + v7x->word_0;
+									v39 = v38 + v7x->word_0;//villiger rotations
 									if (str_DWORD_F66F0x[v39])
 									{
 										x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v39].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
@@ -3351,7 +3351,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 								}
 								goto LABEL_72;
 							case 21:
-								if (str_DWORD_F66F0x[v7x->word_0])
+								if (str_DWORD_F66F0x[v7x->word_0])//white sphere ball
 								{
 									//v15 = v7x->word_0;
 									//v16 = 4 * v7x->word_0;
@@ -3498,7 +3498,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 				switch (v55)
 				{
 				case 0:
-					if (str_DWORD_F66F0x[v52x->word_0])
+					if (str_DWORD_F66F0x[v52x->word_0])//tree
 					{
 						goto LABEL_105;
 					}
@@ -3651,7 +3651,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					v82 = (((str_F2C20ar.dword0x14x->yaw_0x1C_28 - (uint16_t)yaw_F2CC0) >> 3) & 0xF0) >> 4;
 					if (v82 >= 8)
 					{
-						v86 = (uint8_t)x_BYTE_D4750[28 + v82] + v52x->word_0;
+						v86 = (uint8_t)x_BYTE_D4750[28 + v82] + v52x->word_0;//goat rotations
 						if (str_DWORD_F66F0x[v86])
 						{
 							v88 = str_TMAPS00TAB_BEGIN_BUFFER[v86].word_8;
@@ -3674,7 +3674,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					else
 					{
 						v83 = (uint8_t)x_BYTE_D4750[28 + v82];
-						v84 = v83 + v52x->word_0;
+						v84 = v83 + v52x->word_0;//villiger rotations
 						if (str_DWORD_F66F0x[v84])
 						{
 							x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v84].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
@@ -3685,7 +3685,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 								break;
 							x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v52x->word_0 + (uint8_t)x_BYTE_D4750[28 + v82]].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
 						}
-						a1y = *str_DWORD_F66F0x[v52x->word_0 + (uint8_t)x_BYTE_D4750[28 + v82]];
+						a1y = *str_DWORD_F66F0x[v52x->word_0 + (uint8_t)x_BYTE_D4750[28 + v82]];//villiger rotations
 						str_F2C20ar.dword0x08_width = a1y->width;
 						str_F2C20ar.dword0x06_height = a1y->height;
 						v85 = (signed __int64)(str_F2C20ar.dword0x18 * v52x->rotSpeed_8) / v100;
@@ -3695,7 +3695,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 					}
 					goto LABEL_163;
 				case 21:
-					v59 = v52x->word_0;
+					v59 = v52x->word_0;//white sphere ball
 					if (str_DWORD_F66F0x[v59])
 					{
 						x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v59].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
@@ -3706,7 +3706,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 							break;
 						x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v52x->word_0].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
 					}
-					a1y = *str_DWORD_F66F0x[v52x->word_0];
+					a1y = *str_DWORD_F66F0x[v52x->word_0];//white sphere ball
 					x_BYTE_F2CC6 = 1;
 					goto LABEL_141;
 				case 22:
@@ -3726,7 +3726,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 				case 36:
 					x_BYTE_F2CC6 = 1;
 				LABEL_117:
-					v61 = v52x->word_0 + str_F2C20ar.dword0x14x->byte_0x5C_92;
+					v61 = v52x->word_0 + str_F2C20ar.dword0x14x->byte_0x5C_92;//fair animation
 					if (str_DWORD_F66F0x[v61])
 					{
 						x_DWORD_F5730[str_TMAPS00TAB_BEGIN_BUFFER[v61].word_8] = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
