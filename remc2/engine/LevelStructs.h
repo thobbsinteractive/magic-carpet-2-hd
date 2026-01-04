@@ -375,7 +375,7 @@ typedef struct {//lenght a8//THING
 	int32_t dword_0x88_136;//136
 	int32_t dword_0x8C_140;//140 //wiz name?//ACTUAL MANA
 	int32_t dword_0x90_144;//144 0-1000//MAX MANA
-	uint16_t word_0x94_148;//148
+	uint16_t playerEntityIndex_0x94_148;//148
 	int16_t word_0x96_150;//150 // index subentity
 	uint16_t word_0x98_152;//152
 	axis_3d word_0x9A_154x;//154

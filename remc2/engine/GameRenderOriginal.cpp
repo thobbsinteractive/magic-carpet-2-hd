@@ -135,7 +135,7 @@ GameRenderOriginal::~GameRenderOriginal()
 					{
 						if (D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize == 40)
 						{
-							v34 = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->actSpeed_0x82_130;
+							v34 = ENTITY_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240]->actSpeed_0x82_130;
 							if ((signed int)((HIDWORD(v34) ^ v34) - HIDWORD(v34)) > 80)
 								D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 = 1;
 						}
@@ -1932,7 +1932,7 @@ uint16_t GameRenderOriginal::sub_3FD60(int a2x)
 
 		if (result < 0x3E8u)
 		{
-			v3x = x_DWORD_EA3E4[result];
+			v3x = ENTITY_EA3E4[result];
 			v41x = v3x;
 			if (!(v3x->struct_byte_0xc_12_15.byte[0] & 0x21))
 			{
@@ -2239,7 +2239,7 @@ void GameRenderOriginal::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t
 	v3 = 0;
 	if (str_unk_1804B0ar.PopupStatusByte_0x9e & 1)
 		return;
-	v4x = x_DWORD_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
+	v4x = ENTITY_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240];
 	v5 = a1x->class_0x3F_63;
 	if (v5 < 5u)
 	{
@@ -2289,7 +2289,7 @@ void GameRenderOriginal::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t
 		{
 			if (v5 <= 0xAu)
 			{
-				if (a1x->model_0x40_64 == 39 && a1x->word_0x94_148 != v4x->id_0x1A_26)
+				if (a1x->model_0x40_64 == 39 && a1x->playerEntityIndex_0x94_148 != v4x->id_0x1A_26)
 					v3 = 18;
 			}
 			else if (v5 == 15 && !(a1x->struct_byte_0xc_12_15.byte[0] & 1))
@@ -2308,7 +2308,7 @@ void GameRenderOriginal::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t
 		{
 			if (v7 == 22)
 			{
-				if (a1x->actionIndex_0x45_69 != -76 && a1x->word_0x94_148 != v4x->id_0x1A_26)
+				if (a1x->actionIndex_0x45_69 != -76 && a1x->playerEntityIndex_0x94_148 != v4x->id_0x1A_26)
 					v3 = 18;
 				goto LABEL_48;
 			}
@@ -2991,7 +2991,7 @@ void GameRenderOriginal::DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a
 
 	v31 = viewPort.PreWidth_EA3C4 + viewPort.PosX_EA3D0 - 4;
 	v29 = viewPort.PreHeight_EA3C0 + viewPort.PosY_EA3CC - 22;
-	v25 = a1x->dword_0xA4_164x->word_0x38_56;
+	v25 = a1x->dword_0xA4_164x->playerColorIndex_0x38_56;
 	v5 = D41A0_0.array_0x2BDE[v25].WizardName_0x39f_2BFA_12157;
 	strcpy(v24, v5);
 	v36 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v25)];//c
@@ -3153,7 +3153,7 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 	{
 		//adress 21f370
 
-		v3x = x_DWORD_EA3E4[result];
+		v3x = ENTITY_EA3E4[result];
 		str_F2C20ar.dword0x14x = v3x;
 		if (!(v3x->struct_byte_0xc_12_15.byte[0] & 0x21))
 		{
@@ -3465,7 +3465,7 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 			if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] & 0x20)
 			{
 				v50x = &str_D404C[str_F2C20ar.dword0x14x->byte_0x3B_59];
-				switch ((((x_DWORD_EA3E4[str_F2C20ar.dword0x14x->word_0x32_50]->yaw_0x1C_28
+				switch ((((ENTITY_EA3E4[str_F2C20ar.dword0x14x->word_0x32_50]->yaw_0x1C_28
 					- (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4)
 				{
 				case 0:
@@ -3785,14 +3785,14 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 						if (v93 & 2)
 						{
 							v94 = (unsigned __int8)x_BYTE_E88E0x[2 + 3
-								* x_DWORD_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->word_0x38_56];
+								* ENTITY_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->playerColorIndex_0x38_56];
 							str_F2C20ar.dword0x01_rotIdx = 4;
 							str_F2C20ar.dword0x07 = v94;
 						}
 						else if (v93 & 4)
 						{
 							v95 = (unsigned __int8)x_BYTE_E88E0x[2 + 3
-								* x_DWORD_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->word_0x38_56];
+								* ENTITY_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->playerColorIndex_0x38_56];
 							str_F2C20ar.dword0x01_rotIdx = 5;
 							str_F2C20ar.dword0x07 = v95;
 						}

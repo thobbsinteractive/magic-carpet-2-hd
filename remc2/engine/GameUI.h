@@ -84,7 +84,7 @@ bool sub_596C0(axis_3d* a1, int16_t a2);
 char sub_63570(type_event_0x6E8E* a1, type_event_0x6E8E* a2);
 void DrawMinimap_63600(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10);
 void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling);
-signed int sub_616D0(signed int a1);
+int TransformPlayerColorIndex_616D0(int index);
 void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling);
 char sub_64CE0_draw_follow_rectangle(v51x_struct* a1);
 void DrawOkCancelMenu_30A60(int16_t posTextX, int16_t posTextY, uint8_t scale = 1);

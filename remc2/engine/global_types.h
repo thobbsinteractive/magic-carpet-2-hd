@@ -237,7 +237,7 @@ typedef struct Type_str_164 {//size 1136
 	int16_t word_0x26_38[8];
 	//int16_t word_0x2E_46;//word_0x26_38[4]
 	int16_t word_0x36_54;
-	int16_t word_0x38_56;
+	int16_t playerColorIndex_0x38_56;
 	int16_t word_0x3A_58;
 	uint16_t array_0x3C_60[16];//size??
 	std::array<uint16_t, 103> array_0x5C_92; // size?? at least index 33 is accessed in level 19
@@ -382,7 +382,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	int32_t manaRegen_0x88_136;//136
 	int32_t maxMana_0x8C_140;//140 //wiz name?//ACTUAL MANA
 	int32_t mana_0x90_144;//144 0-1000//MAX MANA
-	uint16_t word_0x94_148;//148
+	uint16_t playerEntityIndex_0x94_148;//148
 	int16_t word_0x96_150;//150 // index subentity
 	uint16_t word_0x98_152;//152
 	axis_3d word_0x9A_154x;//154

@@ -62,7 +62,7 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int16_t word_0x36_54;
 	memcpy(output + 0x36, &input->word_0x36_54, 2);
 	//int16_t word_0x38_56;
-	memcpy(output + 0x36, &input->word_0x38_56, 2);
+	memcpy(output + 0x36, &input->playerColorIndex_0x38_56, 2);
 	//int16_t word_0x3A_58;
 	memcpy(output + 0x3a, &input->word_0x3A_58, 2);
 	//uint16_t array_0x3C_60[16];//size??
@@ -443,8 +443,8 @@ void convert_struct_to_array_0x6E8E(type_event_0x6E8E* input, uint8_t* output) {
 	memcpy(output + 140, &input->maxMana_0x8C_140, 4);
 	//int32_t dword_0x90_144;//144 0-1000//MAX MANA
 	memcpy(output + 144, &input->mana_0x90_144, 4);
-	//uint16_t word_0x94_148;//148
-	memcpy(output + 0x94, &input->word_0x94_148, 2);
+	//uint16_t playerEntityIndex_0x94_148;//148
+	memcpy(output + 0x94, &input->playerEntityIndex_0x94_148, 2);
 	//int16_t word_0x96_150;//150 // index subentity
 	memcpy(output + 0x96, &input->word_0x96_150, 2);
 	//uint16_t word_0x98_152;//152

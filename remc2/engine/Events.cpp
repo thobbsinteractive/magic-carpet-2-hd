@@ -612,6 +612,11 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	if (CommandLineParams.DoShowNewProcedures()) {
 		test_pre_sub_4a190(adress);//for debug
 	}
+	if (str_WORD_D951C[a1_6E8E->word_0x5A_90].word_0 == 58)
+	{
+		int xxx = 1;
+		xxx++;
+	}
 	switch (adress)
 	{
 	case 0x1f3910: {
@@ -2594,7 +2599,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 		break;
 	}
 	case 0x217920: {
-		sub_36920(a1_6E8E);
+		SetManaSphereColorAndRot_36920(a1_6E8E);
 		break;
 	}
 	case 0x2179f0: {
@@ -2604,7 +2609,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_369F0((int)a1_6E8E);
+		GetManaSphereColorIndex_369F0((int)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -3018,7 +3023,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_616D0((int)a1_6E8E);
+		TransformPlayerColorIndex_616D0((int)a1_6E8E);
 		allert_error();
 #endif
 		break;

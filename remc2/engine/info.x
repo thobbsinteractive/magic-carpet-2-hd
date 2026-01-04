@@ -2489,7 +2489,7 @@ call 24fb90 - sub_6EB90
 2bb3bc + 6 * 11
 
 find
-x_DWORD_EA3E4 -  2bb3e4
+ENTITY_EA3E4 -  2bb3e4
 x_DWORD_EA3E8 -  2bb3e8
 sub_5C330();//23D330
 
@@ -2679,10 +2679,10 @@ je
 
 
 signed int sub_5C8D0(int a1)//23d8d0
-x_DWORD_EA3E4[ 98] not 363286 ->c6ce35
+ENTITY_EA3E4[ 98] not 363286 ->c6ce35
 238989
 void sub_57730()//238730
-	for (j = &x_DWORD_EA3E4[1]; j < &x_DWORD_EA3E4[ 3e8]; j += 168)
+	for (j = &ENTITY_EA3E4[1]; j < &ENTITY_EA3E4[ 3e8]; j += 168)
 
 3632d2->804d80de
 238e40
@@ -2908,7 +2908,7 @@ comp2 = compare_with_snapshot((char*)"0160-00229B94", x_BYTE_11B4E0
 signed int sub_5C8D0(uint8_t* a1)//23d8d0
 363286->35cec6
 versus
-x_DWORD_EA3E4[*(uint16_t*)(2124 * x_D41A0_BYTEARRAY_4_struct.byteindex_12 + x_D41A0_BYTEARRAY_0 + 11240)];
+ENTITY_EA3E4[*(uint16_t*)(2124 * x_D41A0_BYTEARRAY_4_struct.byteindex_12 + x_D41A0_BYTEARRAY_0 + 11240)];
 238989 in void sub_57730()//238730
 
 find
@@ -2933,7 +2933,7 @@ find 3618f2
 adress 22b137 -2c01 - uint8_t* sub_4A050()//22b050 - asi ok
 adress 22fc77 -7b03 - uint8_t* sub_4EC10(int a1)//22fc10
 
-(int)x_DWORD_EA3E4
+(int)ENTITY_EA3E4
 
 sub_498A0();//22a383 - problem - test it
 
@@ -3013,7 +3013,7 @@ unsigned int sub_6F150(uint8_t* a1)//250150 - kontrola
 find 363286
 238989 void sub_57730()//238730
 [2a51a4]
-*(uint32_t*)&x_DWORD_EA3E4[ 98]
+*(uint32_t*)&ENTITY_EA3E4[ 98]
 363286
 
 void sub_5C8D0(uint8_t* a1)//23d8d0
@@ -3145,7 +3145,7 @@ tj.
 
 test
 int sub_2BE30()//20ce30
-		v3 = x_DWORD_EA3E4[*(unsigned __int16 *)(2124 * x_D41A0_BYTEARRAY_4_struct.byteindex_12 + x_D41A0_BYTEARRAY_0 + 11240)];
+		v3 = ENTITY_EA3E4[*(unsigned __int16 *)(2124 * x_D41A0_BYTEARRAY_4_struct.byteindex_12 + x_D41A0_BYTEARRAY_0 + 11240)];
 		20ced9
 
 		problem je zde:
@@ -3545,9 +3545,9 @@ void LevelInitGame_56A30(unsigned int a1)//237a30
 
 void sub_60F00()//241f00
 
-find init x_DWORD_EA3E4 versus 2bb3e4
+find init ENTITY_EA3E4 versus 2bb3e4
 
-x_DWORD_EA3E4[ 3e8]
+ENTITY_EA3E4[ 3e8]
 2bb3e4
 [2bb3e8]
 [2bc384]->385f06
@@ -3799,7 +3799,7 @@ addprocedurestop( 21f1b5,  2, true, true,  2c3c3000);
 problem in 
 3640f6
 versus
-x_DWORD_EA3E4[ ae]+ 56
+ENTITY_EA3E4[ ae]+ 56
 + 16 ,  2c,  50,  56
 
  56
@@ -3845,7 +3845,7 @@ versus
 ---
 3640f6+ 50 - 9c107d
 versus
-x_DWORD_EA3E4[ ae]+ 50 88107d
+ENTITY_EA3E4[ ae]+ 50 88107d
 if (debugcounter5 >=  0a)
 
 
@@ -3875,7 +3875,7 @@ versus
 
 363286
 versus
-x_DWORD_EA3E4[ 98]
+ENTITY_EA3E4[ 98]
 + 1c-00000000 -void sub_5D530(uint8_t* a1)//*(x_DWORD *)(a1 + 160)//23e530
 + 3c-00009903 -sub_57730(); pod
 
@@ -3968,7 +3968,7 @@ v63 = (uint8_t*)(*(int(**)(uint8_t*))((char *)&off_D781E + 14 * v112))(v113 + 76
 ---------------------------------------------------
 358ffc
 versus
-*(int32_t*)(*x_DWORD_EA3E4+ 63c0+164)
+*(int32_t*)(*ENTITY_EA3E4+ 63c0+164)
 ------------------------------------
 35ce76
 versus
@@ -4060,14 +4060,14 @@ versus
 12b2
 
 22b046 call void sub_49F90()//22af90
-*(x_DWORD *)(v7 + 582) = (int32_t)x_DWORD_EA3E4[v3]
+*(x_DWORD *)(v7 + 582) = (int32_t)ENTITY_EA3E4[v3]
 
 unk_D83AC - zrusit - sloucit
 
 ---x_D41A0_BYTEARRAY_0+ 12aa // 356038+ 12aa
 7e versus 00
 22b046 call void sub_49F90()//22af90
-*(x_DWORD *)(v7 + 582) = (int32_t)x_DWORD_EA3E4[v3]
+*(x_DWORD *)(v7 + 582) = (int32_t)ENTITY_EA3E4[v3]
 2360e4 call char sub_55080(unsigned __int8 a1, int a2)//236080
 238663 call void sub_57640()//238640
 2288a1 void sub_47760(/*int a1,*/uint32_t user/* int a2, int a3*/)//228760
@@ -4179,7 +4179,7 @@ c203 - 1fc9d8 call sub_1B8C0(uint8_t* a1)//1fc8c0
 1ff2cf - char sub_1E1C0(uint8_t* a1, __int16 a2)//1ff1c0
 1ff02e - char sub_1E020(uint8_t* a1, __int16 a2)//1ff020
 
-porovnat x_DWORD_EA3E4 tj 2bb3e4
+porovnat ENTITY_EA3E4 tj 2bb3e4
 
 void sub_41A90_VGA_Palette_install(uint8_t* buffer)//222a90
 271c10 call int16_t sub_90B27_VGA_pal_fadein_fadeout(uint8_t *newpalbuffer, uint8_t shadow_levels, bool singlestep)//271B27 init and nightfall
@@ -4437,7 +4437,7 @@ versus
 2bc3a8
 
 compare - *(int16_t*)&x_D41A0_BYTEARRAY_0[12] ==1
-x_DWORD_EA3E4[*(unsigned __int16 *)(2124 * *(int16_t*)&x_D41A0_BYTEARRAY_0[12] + x_D41A0_BYTEARRAY_0 + 11240)]
+ENTITY_EA3E4[*(unsigned __int16 *)(2124 * *(int16_t*)&x_D41A0_BYTEARRAY_0[12] + x_D41A0_BYTEARRAY_0 + 11240)]
 
 void sub_752C0()//2562c0
 
@@ -4538,7 +4538,7 @@ LABEL_215:
 		**(x_DWORD **)(v113 + 164) = *(unsigned __int8 *)(HIDWORD(v102) + 5);
 		*(x_WORD *)(*(x_DWORD *)(v113 + 164) + 24) = *(x_WORD *)(v114 + 6);
 		*(x_WORD *)(*(x_DWORD *)(v113 + 164) + 26) = *(x_WORD *)(v114 + 8);
-		v103 = x_DWORD_EA3E4[*(unsigned __int16 *)(v18 + 10)];
+		v103 = ENTITY_EA3E4[*(unsigned __int16 *)(v18 + 10)];
 		sub_57B20(v18, v103);
 		if (*(x_BYTE *)(v18 + 2118))
 			sub_55C60(a1, (int)v103, v18);
@@ -4551,7 +4551,7 @@ LABEL_215:
 
 v18 = x_D41A0_BYTEARRAY_0 + 11230; - projektily?
 
-x_DWORD_EA3E4[ 25a1]
+ENTITY_EA3E4[ 25a1]
 
 --------------------------
 pdwScreenBuffer_351628+ 2168( 00)
@@ -4580,7 +4580,7 @@ x_DWORD_F2C20ar[ 04] - X
 x_DWORD_F2C20ar
 
 
-x_DWORD_EA3E4[ ce]- 1c, 20, 4c, 50
+ENTITY_EA3E4[ ce]- 1c, 20, 4c, 50
 versus
 3655f6- 1c, 20, 4c, 50
  00 00 00 00 0A 00 00 00 09 00 00 00 06 00 00 00
@@ -5186,7 +5186,7 @@ versus
 *(int32_t*)&x_D41A0_BYTEARRAY_0[0x341c]
 -selected bottom spell
 
-sub_692A0(x_DWORD_EA3E4[0xc4e0/168]);
+sub_692A0(ENTITY_EA3E4[0xc4e0/168]);
 +64
 +69
 
@@ -5255,7 +5255,7 @@ sub_A5040(x_DWORD *a1)//286040
 									v7 = (int)x_D41A0_BYTEARRAY_0;
 									if ((unsigned int)(100
 										* (*(x_DWORD *)(v6 + 316)
-											+ *(x_DWORD *)(x_DWORD_EA3E4[*(unsigned __int16 *)(v6 + 58)] + 144))
+											+ *(x_DWORD *)(ENTITY_EA3E4[*(unsigned __int16 *)(v6 + 58)] + 144))
 										/ v18) >= *(x_DWORD *)(x_D41A0_BYTEARRAY_0 + 10 * v3 + 222546))
 									{
 										v0[v3 + 3] = 2;
@@ -5764,7 +5764,7 @@ D41A0_BYTESTR_0.struct_0x6E8E[1]
 &x_D41A0_BYTEARRAY_0[28302+168+63]
 
 (x_D41A0_BYTEARRAY_0 + 4 * 0x3e6+ 582) ==&x_D41A0_BYTEARRAY_0[28302+168]
-x_DWORD_EA3E4[1]
+ENTITY_EA3E4[1]
 6e54fb0b
 versus
 D41A0_BYTESTR_0.pointers_0x246[0x3e6]
@@ -5976,12 +5976,12 @@ for (jy = &D41A0_BYTESTR_0.struct_0x6E8E[1]; jy <= &D41A0_BYTESTR_0.struct_0x6E8
  D41A0_BYTESTR_0.array_0x6E3E[0].str_0x6E3E_byte0
  D41A0_BYTESTR_0.array_0x6E3E[0].str_0x6E3E_byte5
 
- &x_DWORD_EA3E4[0]->array_0x4C_76
+ &ENTITY_EA3E4[0]->array_0x4C_76
 
  v113x->dword_0xA4_164x->word_0x6_6 = v102;//fix - test it
 
  D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].struct_0x1d1_2BDE_11695[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].ActPlayerIndex_0x00e_2BDE_11244+1].axis_2BDE_11695
- &x_DWORD_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[0].word_0x00a_2BE4_11240]->array_0x4C_76
+ &ENTITY_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[0].word_0x00a_2BE4_11240]->array_0x4C_76
  &x_WORD_EB398ar
 
  a1x->dword_0xA4_164x->word_0x1A6_422
@@ -6722,7 +6722,7 @@ step 1
 0x356038 +0x8f66
 
 
-x_DWORD_EA3E4[50]->dword_0xA0_160x
+ENTITY_EA3E4[50]->dword_0xA0_160x
 
 void sub_57680()//238680
 indexx->dword_0xA0_160x += (int)i;
@@ -6750,7 +6750,7 @@ a1x->dword_0xA0_160x->word_160_0x10_16
 versus
 2a98da+10
 
-&x_DWORD_EA3E4[1]->dword_0xA0_160x
+&ENTITY_EA3E4[1]->dword_0xA0_160x
 
 (uint8_t*)&D41A0_BYTESTR_0+0x8f66 0xff
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x8f66 0x58
@@ -6765,7 +6765,7 @@ x_BYTE_10B4E0+0x0 00
 versus
 2dc4e0+0x0 2c
 
-&x_DWORD_EA3E4[0x74]->dword_0xA4_164x
+&ENTITY_EA3E4[0x74]->dword_0xA4_164x
 
 while (v0 < D41A0_BYTESTR_0.word_0xe)
 
@@ -6847,7 +6847,7 @@ v3[3] - v5[3]
 20ed51
 20d2f9 - void sub_2D710_draw_top_menu(type_str_0x6E8E* a1x)//20e710
 
-if (v2x > x_DWORD_EA3E4[0] && v2x->dword_0x10_16)
+if (v2x > ENTITY_EA3E4[0] && v2x->dword_0x10_16)
 
 type_str_0x6E8E* sub_146C0(type_str_0x6E8E* a1x, unsigned __int8 a2)//1f56c0
 type_str_0x6E8E* sub_15760(type_str_0x6E8E* a1x, unsigned __int8 a2)//1f6760
@@ -6873,7 +6873,7 @@ sub_55080(0, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w,(char*)"")
 
 D41A0_BYTESTR_0.dword_0x36DF6 = (uint32_t)&unk_D7BD6[0x7d6];
 
-x_DWORD_EA3E4[0x18]->dword_0xA4_164x->word_0x242_578 - nelze precist
+ENTITY_EA3E4[0x18]->dword_0xA4_164x->word_0x242_578 - nelze precist
 
 (uint8_t*)&D41A0_BYTESTR_0+0x315a 0x04
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x315a 0x03
@@ -6898,7 +6898,7 @@ void sub_2D710_draw_top_menu(type_str_0x6E8E* a1x)//20e710
 0x356038 +0x315a
 
 a1x->dword_0xA4_164x->byte_0x195_405
-x_DWORD_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x
+ENTITY_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x
 je
 (uint8_t*)&D41A0_BYTESTR_0+0x315a
 
@@ -7782,14 +7782,14 @@ versus
  zkontrolovat my_sign16
 
  problem zde:
- for (iix = x_D41A0_BYTEARRAY_4_struct.dword_38519; iix > x_DWORD_EA3E4[0]; iix = iix->next_0)
+ for (iix = x_D41A0_BYTEARRAY_4_struct.dword_38519; iix > ENTITY_EA3E4[0]; iix = iix->next_0)
  76 8a 36 00 40 9c 00 00 6e 8e 00 00 0e 00 00 00
  03 00 00 00 28 8a 00 00 02 00 13 01 00 00 00 00
 
  test abs
 
  v3x->dword_0xA4_164x->str_611.array_0x2CB_715x.dword[a2]
- x_DWORD_EA3E4[0x109]->dword_0xA4_164x->str_611.array_0x2CB_715x.dword[9]
+ ENTITY_EA3E4[0x109]->dword_0xA4_164x->str_611.array_0x2CB_715x.dword[9]
  versus 92
  359xxx+9*4+2cb=3592eb
 
@@ -7966,7 +7966,7 @@ adress 230fb0
 void sub_159E0()//1f69e0
 
 v2x->dword_0xA4_164x->word_0x242_578
-x_DWORD_EA3E4[0xb]->dword_0xA4_164x->word_0x242_578
+ENTITY_EA3E4[0xb]->dword_0xA4_164x->word_0x242_578
 versus
 035d6a2->2c75e28
 281f26
@@ -7983,20 +7983,20 @@ memory_readable
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x4aac 0x97
 0x356038 +0x4aac
 
-x_DWORD_EA3E4[i] = &D41A0_BYTESTR_0.struct_0x6E8E[i]
+ENTITY_EA3E4[i] = &D41A0_BYTESTR_0.struct_0x6E8E[i]
 &D41A0_BYTESTR_0.struct_0x6E8E[0]
 
-x_DWORD_EA3E4[0xb]->dword_0xA4_164x tj.
+ENTITY_EA3E4[0xb]->dword_0xA4_164x tj.
 D41A0_BYTESTR_0.struct_0x6E8E[0xb].dword_0xA4_164x
 
 unk_F42B0x
 0x2c75e28-D41A0_BYTESTR_0.dword_0x36DF6
 
-	for (int indexx = 1; x_DWORD_EA3E4[indexx] < x_DWORD_EA3E4[0x3e8]; indexx++)
-		//if (memory_readable(x_DWORD_EA3E4[indexx]->dword_0xA4_164x,4))
+	for (int indexx = 1; ENTITY_EA3E4[indexx] < ENTITY_EA3E4[0x3e8]; indexx++)
+		//if (memory_readable(ENTITY_EA3E4[indexx]->dword_0xA4_164x,4))
 		{
-			if ((uint32_t)x_DWORD_EA3E4[indexx]->dword_0xA4_164x == 0x2c75e28)//0x014F82E8//0x2c75e28-(uint32_t)&D41A0_BYTESTR_0
-				x_DWORD_EA3E4[indexx]->dword_0xA4_164x = unk_F42B0x;
+			if ((uint32_t)ENTITY_EA3E4[indexx]->dword_0xA4_164x == 0x2c75e28)//0x014F82E8//0x2c75e28-(uint32_t)&D41A0_BYTESTR_0
+				ENTITY_EA3E4[indexx]->dword_0xA4_164x = unk_F42B0x;
 		}
 
 adress 2321e6
@@ -8295,7 +8295,7 @@ x_WORD_15B4E0+0xe0e0 0xa7
 
  for(int ea=0;ea<0x3E9;ea++)
 	
- save x_DWORD_EA3E4
+ save ENTITY_EA3E4
 
  (uint8_t*)&x_WORD_15B4E0_source+0xdcdc 0xa6
 x_WORD_15B4E0+0xdcdc 0x02
@@ -8463,13 +8463,13 @@ compare void SetDefaultSpells_5C0A0()//23d0a0
 
 spell 4
 
-x_DWORD_EA3E4[1]->dword_0xA4_164x->str_611.word_0x451_110
+ENTITY_EA3E4[1]->dword_0xA4_164x->str_611.word_0x451_110
 
 &D41A0_BYTESTR_0.array_0x2BDE[0].dword_0x3E6_2BE4_12228.str_611.array_0x333_819x
 aa misto 01
 
 
-&x_DWORD_EA3E4[0xab]->dword_0x88_136
+&ENTITY_EA3E4[0xab]->dword_0x88_136
 
 (uint8_t*)&D41A0_BYTESTR_0+0x6f46 00
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x6f46 0x17
@@ -8575,11 +8575,11 @@ void sub_57730()//238730
 
 a1x->word_0x96_150 - nemuze byt 0x6e0
 
-&x_DWORD_EA3E4[140]->word_0x96_150
+&ENTITY_EA3E4[140]->word_0x96_150
 
-&x_DWORD_EA3E4[140]->word_0x26_38
+&ENTITY_EA3E4[140]->word_0x26_38
 
-&x_DWORD_EA3E4[140]->str_0x5E_94.word_0x62_98
+&ENTITY_EA3E4[140]->str_0x5E_94.word_0x62_98
 
 test void sub_2CB30(type_str_0x6E8E* a1x, __int16 a2, int a3, __int16 a4)//20db30
 
@@ -8800,7 +8800,7 @@ x_WORD_180660_VGA_type_resolution
 
  v3x->word_0x96_150
 
- &x_DWORD_EA3E4[0xe4]->word_0x96_150
+ &ENTITY_EA3E4[0xe4]->word_0x96_150
 
  void sub_66FD0(type_str_0x6E8E* a1x)//247fd0
 
@@ -8844,12 +8844,12 @@ void sub_5F380(type_str_0x6E8E* a1x)//240380
 void sub_5E010(type_str_0x6E8E* a1x)//23f010
 void sub_57730()//238730
 
-x_DWORD_EA3E4[0x101]->word_0x2E_46
+ENTITY_EA3E4[0x101]->word_0x2E_46
 
-&x_DWORD_EA3E4[0xff]->array_0x4C_76
+&ENTITY_EA3E4[0xff]->array_0x4C_76
 36766a
 
-&x_DWORD_EA3E4[0xff]->array_0x4C_76
+&ENTITY_EA3E4[0xff]->array_0x4C_76
 &v4x->array_0x4C_76
 35f132
 
@@ -9204,7 +9204,7 @@ versus
 0x360a7e
 
 0x012e5e4e
-x_DWORD_EA3E4[0x58]
+ENTITY_EA3E4[0x58]
 
 
 
@@ -9213,7 +9213,7 @@ x_DWORD_EA3E4[0x58]
 0x2bb3e4
 0x2bb544+c
 
-versus x_DWORD_EA3E4[0x5B] -ma byt
+versus ENTITY_EA3E4[0x5B] -ma byt
 
 x_D41A0_BYTEARRAY_4_struct.dword_38519
 
@@ -9401,9 +9401,9 @@ x_BYTE_10B4E0_terraintype+0x0 01
 versus
 2dc4e0+0x0 cd
 
-x_DWORD_EA3E4[0x59]
+ENTITY_EA3E4[0x59]
 ix->word_0x16_22 ==0
-x_DWORD_EA3E4[0]
+ENTITY_EA3E4[0]
 ix->word_0x16_22 ==0
 
 x_WORD_15B4E0_source[0xf552] nesmi byt 0
@@ -9647,9 +9647,9 @@ D41A0_BYTESTR_0.array_0x6E3E[D41A0_BYTESTR_0.word_0xc].str_0x6E3E_byte0
 
 case 0x2A:
 //v97 = v113x->dword_0xA4_164;
-//a1 = x_DWORD_EA3E4[0];
-v98x = x_DWORD_EA3E4[v113x->dword_0xA4_164x->word_0x3A_58];
-if (v98x > x_DWORD_EA3E4[0])
+//a1 = ENTITY_EA3E4[0];
+v98x = ENTITY_EA3E4[v113x->dword_0xA4_164x->word_0x3A_58];
+if (v98x > ENTITY_EA3E4[0])
 {
 	if (v98x->dword_0x10_16 == 1)
 		v113x->dword_0xA4_164x->byte_0x1BE_446 = 1;
@@ -9667,7 +9667,7 @@ byte_0x45_69 == 6
 
 switch (D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte0)
 
-v98x = x_DWORD_EA3E4[v113x->dword_0xA4_164x->word_0x3A_58];
+v98x = ENTITY_EA3E4[v113x->dword_0xA4_164x->word_0x3A_58];
 
 BIG_SPRITES_BUFFERx[8].actdata
 
@@ -9710,7 +9710,7 @@ sub_4A1E0(a1x->word_0x1A_26, 1);
 
  if (*(x_WORD *)(0x36543 + v6 + 1) < 28)
 
- v1x->word_0x94_148 = 0;
+ v1x->playerEntityIndex_0x94_148 = 0;
 
  if (!_stricmp(v11, "!"))
 
