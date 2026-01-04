@@ -45034,6 +45034,12 @@ void SetCenterScreenForFlyAssistant_6EDB0()//24FDB0
 		display_h = 480;
 	}
 
+	if (x_WORD_180660_VGA_type_resolution & 8) {//fix
+		// 640x480 virtual screen
+		display_w = 640;
+		display_h = 480;
+	}
+
 	new_x = display_w >> 1;
 	new_y = display_h >> 1;
 
