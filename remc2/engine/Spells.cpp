@@ -112,13 +112,13 @@ void SetDefaultSpells_5C0A0()//23d0a0
 	for (int i = 0; i < 26; i++)
 	{
 		SPELLS_BEGIN_BUFFER_str[i].byte_1 = 0;
-		SPELLS_BEGIN_BUFFER_str[i].subspell[0].byte_0x1B &= 0xFE;
-		SPELLS_BEGIN_BUFFER_str[i].subspell[1].byte_0x1B &= 0xFE;
-		SPELLS_BEGIN_BUFFER_str[i].subspell[2].byte_0x1B &= 0xFE;
+		SPELLS_BEGIN_BUFFER_str[i].subspell[0].fontType_0x1B &= 0xFE;
+		SPELLS_BEGIN_BUFFER_str[i].subspell[1].fontType_0x1B &= 0xFE;
+		SPELLS_BEGIN_BUFFER_str[i].subspell[2].fontType_0x1B &= 0xFE;
 		switch (i)
 		{
 		case 0:
-			SPELLS_BEGIN_BUFFER_str[i].subspell[1].byte_0x1B |= 1u;
+			SPELLS_BEGIN_BUFFER_str[i].subspell[1].fontType_0x1B |= 1u;
 			break;
 		case 3:
 		case 4:
@@ -130,21 +130,21 @@ void SetDefaultSpells_5C0A0()//23d0a0
 			SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 4u;// 3 4 6 8 B C E
 			break;
 		case 7:
-			SPELLS_BEGIN_BUFFER_str[i].subspell[0].byte_0x1B |= 1u;
+			SPELLS_BEGIN_BUFFER_str[i].subspell[0].fontType_0x1B |= 1u;
 			break;
 		case 23:
-			SPELLS_BEGIN_BUFFER_str[i].subspell[0].dword_A = 50000;
-			SPELLS_BEGIN_BUFFER_str[i].subspell[1].dword_A = 70000;
-			SPELLS_BEGIN_BUFFER_str[i].subspell[2].dword_A = 90000;
+			SPELLS_BEGIN_BUFFER_str[i].subspell[0].maxManaLimit_A = 50000;
+			SPELLS_BEGIN_BUFFER_str[i].subspell[1].maxManaLimit_A = 70000;
+			SPELLS_BEGIN_BUFFER_str[i].subspell[2].maxManaLimit_A = 90000;
 			break;
 		}
-		if (SPELLS_BEGIN_BUFFER_str[i].subspell[2].dword_A <= 0 && 1000 / SPELLS_BEGIN_BUFFER_str[i].subspell[2].dword_6 > 0)
+		if (SPELLS_BEGIN_BUFFER_str[i].subspell[2].maxManaLimit_A <= 0 && 1000 / SPELLS_BEGIN_BUFFER_str[i].subspell[2].manaCost_6 > 0)
 		{
 			SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 0x20u;
 		}
 		else
 		{
-			if (SPELLS_BEGIN_BUFFER_str[i].subspell[1].dword_A > 0 || 1000 / SPELLS_BEGIN_BUFFER_str[i].subspell[1].dword_6 <= 0)
+			if (SPELLS_BEGIN_BUFFER_str[i].subspell[1].maxManaLimit_A > 0 || 1000 / SPELLS_BEGIN_BUFFER_str[i].subspell[1].manaCost_6 <= 0)
 				SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 0x8u;
 			else
 				SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 0x10u;

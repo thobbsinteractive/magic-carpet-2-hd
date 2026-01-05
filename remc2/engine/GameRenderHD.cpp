@@ -4923,7 +4923,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							(int16_t)(str_F2C20ar.dword0x03_screenX + (str_F2C20ar.dword0x0c_realHeight >> 1)));
 					if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] & 0x40)
 					{
-						str_F2C20ar.dword0x14x->word_0x2A_42 |= 0x40u;
+						str_F2C20ar.dword0x14x->subSpellIndex_0x2A_42 |= 0x40u;
 					}
 				}
 				return;

@@ -9,16 +9,16 @@ void SetLevelId_53590(Type_Level_2FECE* levelData)//234590
 void LevelInit_56C00(Type_Level_2FECE* levelData)//237c00
 {
 	isCaveLevel_D41B6 = 0;
-	SPELLS_BEGIN_BUFFER_str[4].subspell[0].byte_0x1A = 19;
-	SPELLS_BEGIN_BUFFER_str[4].subspell[0].word_0x16x = 199;
-	SPELLS_BEGIN_BUFFER_str[19].subspell[0].byte_0x1A = 19;
-	SPELLS_BEGIN_BUFFER_str[19].subspell[0].word_0x16x = 245;
+	SPELLS_BEGIN_BUFFER_str[4].subspell[0].life_0x1A = 19;
+	SPELLS_BEGIN_BUFFER_str[4].subspell[0].hintText_0x16x = 199;
+	SPELLS_BEGIN_BUFFER_str[19].subspell[0].life_0x1A = 19;
+	SPELLS_BEGIN_BUFFER_str[19].subspell[0].hintText_0x16x = 245;
 	if (levelData->MapType == MapType_t::Day)
 	{
-		SPELLS_BEGIN_BUFFER_str[4].subspell[0].byte_0x1A = 2;
-		SPELLS_BEGIN_BUFFER_str[4].subspell[0].word_0x16x = 198;
-		SPELLS_BEGIN_BUFFER_str[19].subspell[0].byte_0x1A = 2;
-		SPELLS_BEGIN_BUFFER_str[19].subspell[0].word_0x16x = 244;
+		SPELLS_BEGIN_BUFFER_str[4].subspell[0].life_0x1A = 2;
+		SPELLS_BEGIN_BUFFER_str[4].subspell[0].hintText_0x16x = 198;
+		SPELLS_BEGIN_BUFFER_str[19].subspell[0].life_0x1A = 2;
+		SPELLS_BEGIN_BUFFER_str[19].subspell[0].hintText_0x16x = 244;
 		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 0;
 		LoadSound_84300(0);
 		CursorGraphicsIndex_D419E = 1;

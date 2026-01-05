@@ -364,11 +364,11 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 						case 0x09:
 						case 0x0B:
 						case 0x0F: {
-							event->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].dword_2;
+							event->subSpellIndex_0x2A_42 = SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].subSpellIndex_2;
 							if (entity->subtype_0x30311 == 0x09)//9
-								event->maxLife_0x4 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].byte_0x1A;
+								event->maxLife_0x4 = SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].life_0x1A;
 							else
-								event->life_0x8 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].byte_0x1A;
+								event->life_0x8 = SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].life_0x1A;
 							break;
 						}
 						case 0x52:
@@ -566,7 +566,7 @@ type_event_0x6E8E* NewEvent_4A050()//22b050
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->maxLife_0x4 = 300;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->struct_byte_0xc_12_15.dword = 8;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->actSpeed_0x82_130 = 16;
-		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->word_0x2A_42 = 100;
+		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->subSpellIndex_0x2A_42 = 100;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->id_0x1A_26 = D41A0_0.pointers_0x246[D41A0_0.dword_0x35] - D41A0_0.struct_0x6E8E;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->xtype_0x41_65 = -1;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->xsubtype_0x42_66 = -1;
@@ -592,7 +592,7 @@ type_event_0x6E8E* NewEvent_4A050()//22b050
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->maxLife_0x4 = 300;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->struct_byte_0xc_12_15.dword = 8;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->actSpeed_0x82_130 = 16;
-		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->word_0x2A_42 = 100;
+		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->subSpellIndex_0x2A_42 = 100;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->id_0x1A_26 = D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6] - D41A0_0.struct_0x6E8E;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->xtype_0x41_65 = -1;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->xsubtype_0x42_66 = -1;

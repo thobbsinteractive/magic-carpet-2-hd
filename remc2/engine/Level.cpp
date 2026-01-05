@@ -959,13 +959,13 @@ void SetSpell_6D5E0(type_event_0x6E8E* entity, char spell)//24e5e0
 	else
 	{
 		entity->byte_0x46_70 = actspell;
-		entity->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].dword_2;
+		entity->subSpellIndex_0x2A_42 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].subSpellIndex_2;
 		entity->word_0x30_48 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].word_0x18;
-		entity->byte_0x3B_59 = (SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].byte_0x1B & 1) == 0;
+		entity->byte_0x3B_59 = (SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].fontType_0x1B & 1) == 0;
 		entity->byte_0x3C_60 = 0;
-		entity->byte_0x3D_61 = 0;
+		entity->fontTypeIndex_0x3D_61 = 0;
 		//fix
-		entity->manaRegen_0x88_136 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].dword_A;
+		entity->manaRegen_0x88_136 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].maxManaLimit_A;
 		//fix
 		v2y = sub_6D710(ENTITY_EA3E4[entity->parentId_0x28_40], entity->model_0x40_64, actspell);
 		entity->maxMana_0x8C_140 = v2y;
@@ -1167,7 +1167,7 @@ int sub_6D710(type_event_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//2
 
 	v3 = 0;
 	//result = *(x_DWORD *)&(*xadataspellsdat.colorPalette_var28)[80 * a2 + 6 + 26 * a3];
-	result = SPELLS_BEGIN_BUFFER_str[a2].subspell[a3].dword_6;
+	result = SPELLS_BEGIN_BUFFER_str[a2].subspell[a3].manaCost_6;
 	if (a2 == 2 && a1x > ENTITY_EA3E4[0])
 	{
 		//v5 = a1x->dword_0xA4_164;

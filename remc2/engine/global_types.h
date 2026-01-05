@@ -341,7 +341,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	int16_t word_0x24_36;//36 // index subentity
 	int16_t word_0x26_38;//38 // index subentity
 	uint16_t parentId_0x28_40;//40//WHO OWNS ME
-	uint16_t word_0x2A_42;//42 //maybe int16_t
+	uint16_t subSpellIndex_0x2A_42;//42 //maybe int16_t
 	int16_t word_0x2C_44;//44 //add to z
 	int16_t word_0x2E_46;//46
 	uint16_t word_0x30_48;//48
@@ -353,7 +353,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	int8_t byte_0x3A_58;//58
 	int8_t byte_0x3B_59;//59
 	int8_t byte_0x3C_60;//60
-	int8_t byte_0x3D_61;//61
+	int8_t fontTypeIndex_0x3D_61;//61
 	uint8_t byte_0x3E_62;//62 //index
 	uint8_t class_0x3F_63;//63 //type//MODEL
 	//11 - spell

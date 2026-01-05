@@ -5,15 +5,15 @@
 
 #pragma pack (push,1)
 typedef struct {//lenght 26
-	int32_t dword_2;
-	int32_t dword_6;
-	int32_t dword_A;
+	int32_t subSpellIndex_2;
+	int32_t manaCost_6;
+	int32_t maxManaLimit_A;
 	int32_t dword_E;
 	int32_t dword_0x12;
-	int16_t word_0x16x;
+	int16_t hintText_0x16x;
 	int16_t word_0x18;
-	int8_t byte_0x1A;
-	uint8_t byte_0x1B;
+	int8_t life_0x1A;
+	uint8_t fontType_0x1B;
 }
 type_SPELLS_BEGIN_BUFFER_str_sub;
 
