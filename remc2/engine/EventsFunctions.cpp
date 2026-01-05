@@ -33744,13 +33744,13 @@ void sub_4A310(type_entity_0x30311* entity)//22b310
 				}
 			}
 		}
-		v3x->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[sub_6E020(v3x->model_0x40_64)].subspell[entity->par1_14].dword_2;
+		v3x->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(v3x->model_0x40_64)].subspell[entity->par1_14].dword_2;
 		v8 = v3x->model_0x40_64;
 		if (v8 >= 0x11u)
 		{
 			if (v8 <= 0x11u)
 			{
-				v9 = SPELLS_BEGIN_BUFFER_str[sub_6E020(v3x->model_0x40_64)].subspell[entity->par1_14].byte_0x1A;
+				v9 = SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(v3x->model_0x40_64)].subspell[entity->par1_14].byte_0x1A;
 			}
 			else
 			{
@@ -33761,7 +33761,7 @@ void sub_4A310(type_entity_0x30311* entity)//22b310
 						sub_58DA0(entity, v3x);
 					}
 				LABEL_65:
-					v9 = SPELLS_BEGIN_BUFFER_str[sub_6E020(v3x->model_0x40_64)].subspell[entity->par1_14].byte_0x1A;
+					v9 = SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(v3x->model_0x40_64)].subspell[entity->par1_14].byte_0x1A;
 				LABEL_69:
 					v3x->life_0x8 = v9;
 					sub_58DA0(entity, v3x);
@@ -33772,7 +33772,7 @@ void sub_4A310(type_entity_0x30311* entity)//22b310
 					sub_58DA0(entity, v3x);
 					return;
 				}
-				v9 = 8 * SPELLS_BEGIN_BUFFER_str[sub_6E020(v3x->model_0x40_64)].subspell[entity->par1_14].byte_0x1A;
+				v9 = 8 * SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(v3x->model_0x40_64)].subspell[entity->par1_14].byte_0x1A;
 			}
 			v3x->maxLife_0x4 = v9;
 			goto LABEL_69;
@@ -33791,7 +33791,7 @@ void sub_4A310(type_entity_0x30311* entity)//22b310
 			sub_58DA0(entity, v3x);
 			return;
 		}
-		v3x->maxLife_0x4 = SPELLS_BEGIN_BUFFER_str[sub_6E020(v3x->model_0x40_64)].subspell[entity->par1_14].byte_0x1A;
+		v3x->maxLife_0x4 = SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(v3x->model_0x40_64)].subspell[entity->par1_14].byte_0x1A;
 		sub_58DA0(entity, v3x);
 		return;
 	case 0xB:
@@ -44831,45 +44831,25 @@ LABEL_60:
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 
 //----- (0006E020) --------------------------------------------------------
-signed int sub_6E020(unsigned __int16 a1)//24f020
+int GetSpellIndex_6E020(int entitySubtype)//24f020
 {
-	signed int result; // eax
-
-	result = 0;
-	if (a1 < 0x11u)
-	{
-		if (a1 < 0xBu)
-		{
-			if (a1 == 9)
-				result = 18;
-		}
-		else if (a1 <= 0xBu)
-		{
-			result = 16;
-		}
-		else if (a1 == 15)
-		{
-			result = 17;
-		}
+	switch (entitySubtype) {
+		case 9:
+			return 18;
+		case 11:
+			return 16;
+		case 15:
+			return 17;
+		case 17:
+			return 9;
+		case 22:
+			return 21;
+		case 67:
+			return 20;
+		case 71:
+			return 15;
 	}
-	else if (a1 <= 0x11u)
-	{
-		result = 9;
-	}
-	else if (a1 < 0x43u)
-	{
-		if (a1 == 22)
-			result = 21;
-	}
-	else if (a1 <= 0x43u)
-	{
-		result = 20;
-	}
-	else if (a1 == 71)
-	{
-		result = 15;
-	}
-	return result;
+	return 0;
 }
 
 //----- (0006E090) --------------------------------------------------------

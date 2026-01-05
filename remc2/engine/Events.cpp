@@ -364,11 +364,11 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 						case 0x09:
 						case 0x0B:
 						case 0x0F: {
-							event->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)sub_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].dword_2;
+							event->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].dword_2;
 							if (entity->subtype_0x30311 == 0x09)//9
-								event->maxLife_0x4 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)sub_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].byte_0x1A;
+								event->maxLife_0x4 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].byte_0x1A;
 							else
-								event->life_0x8 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)sub_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].byte_0x1A;
+								event->life_0x8 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].byte_0x1A;
 							break;
 						}
 						case 0x52:
@@ -3872,7 +3872,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_6E020((unsigned short)a1_6E8E);
+		GetSpellIndex_6E020((unsigned short)a1_6E8E);
 		stub_fix_it();//bad retyping
 #endif
 		break;
