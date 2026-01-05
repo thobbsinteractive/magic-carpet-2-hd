@@ -8869,7 +8869,7 @@ void KillAllCreatures_1B5F0()//1fc5f0
 			case 10:
 				break;
 			case 27:
-				for (type_event_0x6E8E* entity = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[108 / 4]; entity > ENTITY_EA3E4[0]; entity = entity->next_0)
+				for (type_event_0x6E8E* entity = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[27]; entity > ENTITY_EA3E4[0]; entity = entity->next_0)
 				{
 					entity->actionIndex_0x45_69 = 221;
 					entity->word_0x24_36 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240;
