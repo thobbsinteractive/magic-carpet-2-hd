@@ -1276,7 +1276,7 @@ signed int sub_6CF80(type_event_0x6E8E* a1);
 void sub_6CFA0(type_event_0x6E8E* a1);
 signed int sub_6D1C0(type_event_0x6E8E* a1);
 signed int sub_6D1E0(type_event_0x6E8E* a1);
-void sub_6D830(type_event_0x6E8E* a1, char a2);
+void CopyAxisForSpellWithLife_6D830(type_event_0x6E8E* entity, int spellId);
 void sub_6D880(type_event_0x6E8E* a1);
 void sub_6D9C0(type_str_611* a1, type_SPELLS_BEGIN_BUFFER_str* a2, __int16 a3, char a4, char a5);
 void sub_6DAD0(type_str_611* a1, type_SPELLS_BEGIN_BUFFER_str* a2, __int16 a3);

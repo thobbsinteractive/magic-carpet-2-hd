@@ -380,13 +380,13 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 						}
 						case 0x53:
 						{
-							event->word_0x9A_154x.x = entity->word_10;
+							event->axis_0x9A_154x.x = entity->word_10;
 							break;
 						}
 						case 0x54:
 						case 0x55:
 						{
-							event->word_0x9A_154x.x = entity->word_10;
+							event->axis_0x9A_154x.x = entity->word_10;
 							event->axis_0x4C_76.z = entity->par3_18;
 							break;
 						}
@@ -2787,7 +2787,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		showMessage_52D70((unsigned short)a1_6E8E, 0);
+		ShowMessage_52D70((unsigned short)a1_6E8E, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;
@@ -3815,7 +3815,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 		break;
 	}
 	case 0x24e830: {
-		sub_6D830(a1_6E8E, 0);
+		CopyAxisForSpellWithLife_6D830(a1_6E8E, 0);
 		break;
 	}
 	case 0x24e880: {
@@ -5688,7 +5688,7 @@ void sub_48930(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 		/* *(_DWORD*)(result + 154) = *(_DWORD*)&v8;
 		*(_WORD*)(result + 158) = v10;
 		*(_BYTE*)(result + 70) = a5;*/
-		result->word_0x9A_154x = v8x;
+		result->axis_0x9A_154x = v8x;
 		result->byte_0x46_70 = a5;
 	}
 }

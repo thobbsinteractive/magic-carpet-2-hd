@@ -378,7 +378,7 @@ typedef struct {//lenght a8//THING
 	uint16_t playerEntityIndex_0x94_148;//148
 	int16_t word_0x96_150;//150 // index subentity
 	uint16_t word_0x98_152;//152
-	axis_3d word_0x9A_154x;//154
+	axis_3d axis_0x9A_154x;//154
 	uint32_t dword_0xA0_160x;//160 //special settings
 	uint32_t dword_0xA4_164x;//100 // adress of xx
 }

@@ -2472,7 +2472,7 @@ void ReadOkayCancelButtonEvents_19E00()//1fae00
 					sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], "OK");//Load Level
 				else
 					sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], x_DWORD_E9C4C_langindexbuffer[429]);//429 - Failed
-				showMessage_52D70(0, printbuffer);
+				ShowMessage_52D70(0, printbuffer);
 			}
 			selectSpell = true;
 			break;
@@ -2481,7 +2481,7 @@ void ReadOkayCancelButtonEvents_19E00()//1fae00
 				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[424], "OK");//Save Level
 			else
 				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[424], x_DWORD_E9C4C_langindexbuffer[429]);//429 - Failed
-			showMessage_52D70(0, printbuffer);
+			ShowMessage_52D70(0, printbuffer);
 			selectSpell = true;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_208 = DataFileIO::sub_55C00_TestSaveFile2(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w);
 			break;

@@ -385,7 +385,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	uint16_t playerEntityIndex_0x94_148;//148
 	int16_t word_0x96_150;//150 // index subentity
 	uint16_t word_0x98_152;//152
-	axis_3d word_0x9A_154x;//154
+	axis_3d axis_0x9A_154x;//154
 	//int16_t word_0x9E_158;//152
 	type_str_160* dword_0xA0_160x;//160 //special settings
 	//uint16_t word_0xA2_162;//162

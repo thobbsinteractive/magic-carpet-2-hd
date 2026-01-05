@@ -6276,7 +6276,7 @@ void sub_30D50(type_str_0x6E8E* a1x, uint8_t v2, uint8_t v4)//211d50
 
 20c
 
-axis_3d word_0x9A_154x;//154 - mozna dat jako int16_t
+axis_3d axis_0x9A_154x;//154 - mozna dat jako int16_t
 
 0x18e
 
@@ -6437,7 +6437,7 @@ pdwScreenBuffer_351628+0x3688 0xe3
  32C4E0+0x18802
 
  test here:
- v6 = sub_581E0_maybe_tan2(&a1x->word_0x9A_154x, &ix->array_0x4C_76);
+ v6 = sub_581E0_maybe_tan2(&a1x->axis_0x9A_154x, &ix->array_0x4C_76);
 
 step 0xa1f
 (uint8_t*)&D41A0_BYTESTR_0+0x39d1 0x06

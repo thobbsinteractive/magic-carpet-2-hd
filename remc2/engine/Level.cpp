@@ -944,34 +944,31 @@ void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* text
 }
 
 //----- (0006D5E0) --------------------------------------------------------
-void SetSpell_6D5E0(type_event_0x6E8E* entity, char spell)//24e5e0
+void SetSpell_6D5E0(type_event_0x6E8E* entity, int spellId)//24e5e0
 {
-	int v2y; // eax
-	int8_t actspell;
-
-	actspell = spell;
-	if (spell > SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].byte_0 - 1)
-		actspell = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].byte_0 - 1;
+	int locSpellId = spellId;
+	if (locSpellId > SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].byte_0 - 1)
+		locSpellId = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].byte_0 - 1;
 	if (entity->word_0x2E_46)
 	{
-		entity->word_0x2C_44 = actspell + 1;
+		entity->word_0x2C_44 = locSpellId + 1;
 	}
 	else
 	{
-		entity->byte_0x46_70 = actspell;
-		entity->subSpellIndex_0x2A_42 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].subSpellIndex_2;
-		entity->word_0x30_48 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].word_0x18;
-		entity->byte_0x3B_59 = (SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].fontType_0x1B & 1) == 0;
+		entity->byte_0x46_70 = locSpellId;
+		entity->subSpellIndex_0x2A_42 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[locSpellId].subSpellIndex_2;
+		entity->word_0x30_48 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[locSpellId].word_0x18;
+		entity->byte_0x3B_59 = (SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[locSpellId].fontType_0x1B & 1) == 0;
 		entity->byte_0x3C_60 = 0;
 		entity->fontTypeIndex_0x3D_61 = 0;
 		//fix
-		entity->manaRegen_0x88_136 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].maxManaLimit_A;
+		entity->manaRegen_0x88_136 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[locSpellId].maxManaLimit_A;
 		//fix
-		v2y = sub_6D710(ENTITY_EA3E4[entity->parentId_0x28_40], entity->model_0x40_64, actspell);
-		entity->maxMana_0x8C_140 = v2y;
+		int mana = sub_6D710(ENTITY_EA3E4[entity->parentId_0x28_40], entity->model_0x40_64, locSpellId);
+		entity->maxMana_0x8C_140 = mana;
 		if (entity->word_0x30_48)
-			v2y /= entity->word_0x30_48;
-		entity->mana_0x90_144 = v2y;		
+			mana /= entity->word_0x30_48;
+		entity->mana_0x90_144 = mana;
 		if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x20)
 		{
 			entity->manaRegen_0x88_136 = 0;

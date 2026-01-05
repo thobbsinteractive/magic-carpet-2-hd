@@ -116,4 +116,4 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1);
 void SetMousePositionInMemory_5BDC0(int16_t posX, int16_t posY);
 void sub_1A5B0_getLangStrings(int a1, int* a2, int* a3);
 void GetOkayCancelButtonPositions_30BE0(int16_t* a1, int16_t* a2, uint8_t scale = 1);
-void showMessage_52D70(uint16_t playerIndex, char* cheatMessage);
+void ShowMessage_52D70(uint16_t playerIndex, char* cheatMessage);

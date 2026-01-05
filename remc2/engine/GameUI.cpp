@@ -4569,7 +4569,7 @@ void DrawOkCancelMenu_30A60(int16_t posTextX, int16_t posTextY, uint8_t scale)//
 }
 
 //----- (00052D70) --------------------------------------------------------
-void showMessage_52D70(uint16_t playerIndex, char* cheatMessage)//233d70
+void ShowMessage_52D70(uint16_t playerIndex, char* cheatMessage)//233d70
 {
 	strcpy(D41A0_0.array_0x2BDE[playerIndex].array_0x01c_2BFA_11258, cheatMessage);
 	D41A0_0.array_0x2BDE[playerIndex].word_0x04d_2C2B_11307 = 100;
