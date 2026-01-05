@@ -38764,7 +38764,7 @@ void GameEvents_51BB0()//232bb0
 					&& x_toupper(printbuffer[4]) == 'Y')
 				{
 					if (i == D41A0_0.LevelIndex_0xc)
-						x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 |= 0x80u;
+						x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 |= Setting::CHEATS_ENABLED;
 				}
 				else
 				{
