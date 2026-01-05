@@ -1017,7 +1017,7 @@ int PollSdlEvents()
 		}
 		gamepad_poll_data(&gpe);
 	}
-	if (m_InputRecorder != nullptr && (m_InputRecorder->m_IsRecording || m_InputRecorder->m_IsPlaying))
+	if (m_InputRecorder != nullptr)
 		m_InputRecorder->IncrementTick();
 	return 1;
 }

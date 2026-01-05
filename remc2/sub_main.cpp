@@ -22380,7 +22380,7 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 		while (1)
 		{
 			//result = (int)x_D41A0_BYTEARRAY_0;
-			if (v22 >= D41A0_0.word_0xe)
+			if (v22 >= D41A0_0.NumberOfPlayers_0xe)
 				break;
 			v8 = D41A0_0.array_0x2BDE[v7y].word_0x04f_2C2D_11309 - 1;
 			if (v8 <= 4u)
@@ -22521,7 +22521,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 	v1 = 0;
 	//v2 = x_D41A0_BYTEARRAY_0 + 11230;
 	v2x = 0;
-	while (v0 < D41A0_0.word_0xe)
+	while (v0 < D41A0_0.NumberOfPlayers_0xe)
 	{
 		if (D41A0_0.array_0x2BDE[v2x].byte_0x006_2BE4_11236)
 			v1++;
@@ -22536,7 +22536,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 	//i=x_D41A0_BYTEARRAY_0 + 11230
 	for (ix = 0; ; ix++)
 	{
-		result = D41A0_0.word_0xe;
+		result = D41A0_0.NumberOfPlayers_0xe;
 		if (result <= v25)
 			break;
 		v6 = D41A0_0.array_0x2BDE[ix].byte_0x006_2BE4_11236;
@@ -22564,17 +22564,17 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 			}
 			//HIWORD(v11) = HIWORD(**filearray_2aa18c[6]);
 			blackBarX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[85].width_4 * scale) + posX;
-			if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 && D41A0_0.word_0xe > 1u && !str_unk_1804B0ar.byte_0xa8)
+			if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 && D41A0_0.NumberOfPlayers_0xe > 1u && !str_unk_1804B0ar.byte_0xa8)
 			{
 				str_unk_1804B0ar.dword_0x82 = 9377 * str_unk_1804B0ar.dword_0x82 + 9439;
 				v13 = x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0xFF;
-				str_unk_1804B0ar.byte_0xa8 = str_unk_1804B0ar.dword_0x82 % D41A0_0.word_0xe + 1;
+				str_unk_1804B0ar.byte_0xa8 = str_unk_1804B0ar.dword_0x82 % D41A0_0.NumberOfPlayers_0xe + 1;
 				v14 = v13 + str_unk_1804B0ar.dword_0x82;
 				v15 = 1;
 				str_unk_1804B0ar.dword_0x82 = v14;
 				while (v15 < 8 && !D41A0_0.array_0x2BDE[v15].byte_0x006_2BE4_11236)
 				{
-					v16 = D41A0_0.word_0xe;
+					v16 = D41A0_0.NumberOfPlayers_0xe;
 					if ((unsigned __int8)++str_unk_1804B0ar.byte_0xa8 >= (signed int)v16)
 						str_unk_1804B0ar.byte_0xa8 = 1;
 					v15++;
@@ -26181,7 +26181,7 @@ void sub_35390(type_entity_0x6E8E* a1x)//216390
 		for (i = 0; ; i++)
 		{
 			v9 = &a1x->position_0x4C_76;
-			if (D41A0_0.word_0xe <= i)
+			if (D41A0_0.NumberOfPlayers_0xe <= i)
 				break;
 			v4x = Entities_EA3E4[D41A0_0.array_0x2BDE[v3x].PlayerEntityIdx_2BE4_11240];
 			if (sub_106C0(a1x, Entities_EA3E4[D41A0_0.array_0x2BDE[v3x].PlayerEntityIdx_2BE4_11240]))
@@ -38306,7 +38306,7 @@ void GameEvents_51BB0()//232bb0
 		NetworkUpdateConnections2_74374();
 		ReceiveSendAll_7438A((uint8_t*)D41A0_0.array_0x6E3E, sizeof(type_str_0x6E3E));//multi receive
 		bool playerFound = false;
-		for (int i = 0; i < D41A0_0.word_0xe; i++)
+		for (int i = 0; i < D41A0_0.NumberOfPlayers_0xe; i++)
 		{
 			if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte0 == 1)
 			{
@@ -38333,7 +38333,7 @@ void GameEvents_51BB0()//232bb0
 	{
 		x_D41A0_BYTEARRAY_4_struct.byteindex_121[i] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 / i & 1;
 	}
-	for (int i = 0; i < D41A0_0.word_0xe; i++)
+	for (int i = 0; i < D41A0_0.NumberOfPlayers_0xe; i++)
 	{
 		//adress 233d56
 		actEvent = Entities_EA3E4[D41A0_0.array_0x2BDE[i].PlayerEntityIdx_2BE4_11240];
@@ -38503,7 +38503,7 @@ void GameEvents_51BB0()//232bb0
 			break;
 		case 0x19:
 		case 0x1A:
-			for (int k = 0; k < D41A0_0.word_0xe; k++)
+			for (int k = 0; k < D41A0_0.NumberOfPlayers_0xe; k++)
 			{
 				if (D41A0_0.array_0x2BDE[k].byte_0x006_2BE4_11236)
 				{
@@ -40896,7 +40896,7 @@ void InitGameLevel_56A30(unsigned int a1, int16_t level, std::string customLevel
 	sub_54800_read_and_decompress_tables(D41A0_0.terrain_2FECE.MapType);//235800
 	//237ab3
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
-		D41A0_0.word_0xe = D41A0_0.terrain_2FECE.word_0x2FED7;
+		D41A0_0.NumberOfPlayers_0xe = D41A0_0.terrain_2FECE.word_0x2FED7;
 	PrintTextMessage_70910((char*)"Generate map\0");
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4))
 		GenerateLevelMap_43830(&D41A0_0.terrain_2FECE);
@@ -41049,7 +41049,7 @@ void sub_56D60(unsigned int a1, char a2)//237d60
 		sub_54800_read_and_decompress_tables(D41A0_0.terrain_2FECE.MapType);
 	}
 	//v3 = x_D41A0_BYTEARRAY_0 + 196302;
-	D41A0_0.word_0xe = D41A0_0.terrain_2FECE.word_0x2FED7;
+	D41A0_0.NumberOfPlayers_0xe = D41A0_0.terrain_2FECE.word_0x2FED7;
 	GenerateLevelMap_43830(&D41A0_0.terrain_2FECE);
 	sub_49F30();
 	sub_49270_generate_level_features(&D41A0_0.terrain_2FECE);
@@ -42075,7 +42075,7 @@ void sub_58630()//239630
 		//v2 = (int)x_D41A0_BYTEARRAY_0;
 		//*(x_DWORD *)(x_D41A0_BYTEARRAY_0 + 8) = 9377 * *(x_DWORD *)(x_D41A0_BYTEARRAY_0 + 8) + 9439;
 		D41A0_0.rand_0x8 = 9377 * D41A0_0.rand_0x8 + 9439;
-		v1 = D41A0_0.rand_0x8 % D41A0_0.word_0xe;
+		v1 = D41A0_0.rand_0x8 % D41A0_0.NumberOfPlayers_0xe;
 	}
 	else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 & 7)
 		//D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc]+18
@@ -42293,7 +42293,7 @@ void sub_58F00_game_objectives()//239f00
 	unsigned __int8 v26; // [esp+44h] [ebp-4h]
 
 	if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
-		v22 = D41A0_0.word_0xe;
+		v22 = D41A0_0.NumberOfPlayers_0xe;
 	else
 		v22 = 1;
 	v24 = 0;
@@ -42417,7 +42417,7 @@ void sub_58F00_game_objectives()//239f00
 							if (v3 == D41A0_0.struct_0x3659C[v0x].substr_3659C.ObjectiveText_1)
 							{
 								achievedGoal = true;
-								for (i = 0; i < D41A0_0.word_0xe; i++)
+								for (i = 0; i < D41A0_0.NumberOfPlayers_0xe; i++)
 								{
 									if (i != (x_WORD)v24 && D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236)
 									{
@@ -42508,7 +42508,7 @@ void sub_59760(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//23a760
 	int j; // edx
 
 	if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
-		v3 = D41A0_0.word_0xe;
+		v3 = D41A0_0.NumberOfPlayers_0xe;
 	else
 		v3 = 1;
 	v4 = 0;
@@ -44961,7 +44961,7 @@ signed int sub_5C1B0_set_any_variables2()//23A05 - 23D1B0
 	//x_D41A0_BYTEARRAY_0[8601] = 0;//0x2199
 	D41A0_0.m_GameSettings.str_0x2196.flat_0x2199 = 0;
 	//x_D41A0_BYTEARRAY_0[14] = 2;
-	D41A0_0.word_0xe = 2;;
+	D41A0_0.NumberOfPlayers_0xe = 2;
 	strcpy(x_D41A0_BYTEARRAY_4_struct.byteindex_145ar, "NETHERW");
 	x_D41A0_BYTEARRAY_4_struct.byteindex_184w = 256;
 	//v5 = '\0';
@@ -51433,7 +51433,7 @@ void SetPlayerScoresHelpPopupTextAndCoords_89360(uint8_t scale)//26a360
 	if (str_unk_1804B0ar.showPlayerScores_0xa7)
 	{
 		str_unk_1804B0ar.showPlayerScores_0xa7 = 0;
-		if (str_unk_1804B0ar.byte_0xa8 && D41A0_0.word_0xe > 1u)
+		if (str_unk_1804B0ar.byte_0xa8 && D41A0_0.NumberOfPlayers_0xe > 1u)
 		{
 			// Number of times you have killed %s
 			str_E2A74[96].axis_2[3] = str_unk_1804B0ar.word_0x9a;
@@ -56396,7 +56396,7 @@ void AddSwitch0B_20_6F1C0(type_entity_0x6E8E* a1x)//2501c0
 	if (a1x->byte_0x46_70 < D41A0_0.stageIndex_0x36E01)
 	{
 		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
-			v2 = D41A0_0.word_0xe;
+			v2 = D41A0_0.NumberOfPlayers_0xe;
 		else
 			v2 = 1;
 		v3 = 0;
@@ -56427,7 +56427,7 @@ type_entity_0x6E8E* sub_6F8E0(type_entity_0x6E8E* a1x, int a2)////2508e0
 	v2 = 0;
 	//v3 = (int)x_D41A0_BYTEARRAY_0 + 11230;
 	v3x = 0;
-	while (v2 < D41A0_0.word_0xe)
+	while (v2 < D41A0_0.NumberOfPlayers_0xe)
 	{
 		v4x = Entities_EA3E4[D41A0_0.array_0x2BDE[v3x].PlayerEntityIdx_2BE4_11240];
 		if (CompareAxisWithShift_10750(a1x, v4x) == a2)
@@ -59034,7 +59034,7 @@ void sub_6AD60(type_entity_0x6E8E* a1x)//24bd60
 							case 8:
 							case 9:
 								v15 = a1x->word_0x96_150 - 2;
-								if (v15 != v29x->dword_0xA4_164x->word_0x38_56 && v15 < D41A0_0.word_0xe)
+								if (v15 != v29x->dword_0xA4_164x->word_0x38_56 && v15 < D41A0_0.NumberOfPlayers_0xe)
 								{
 									v16x = Entities_EA3E4[D41A0_0.array_0x2BDE[v15].PlayerEntityIdx_2BE4_11240];
 									if (v16x > Entities_EA3E4[0])
@@ -64228,7 +64228,7 @@ void sub_60F00()//241f00
 	v0 = 0;
 	//v1 = &x_D41A0_BYTEARRAY_0[11230];
 	int v1index = 0;
-	while (v0 < D41A0_0.word_0xe)
+	while (v0 < D41A0_0.NumberOfPlayers_0xe)
 	{
 		v2x = Entities_EA3E4[D41A0_0.array_0x2BDE[v1index].PlayerEntityIdx_2BE4_11240];
 		v2x->maxMana_0x8C_140 = v2x->dword_0xA4_164x->byte_0x150_336;
@@ -64770,7 +64770,7 @@ void AddStatue02_01_65040(type_entity_0x6E8E* event)//246040
 //----- (00065080) --------------------------------------------------------
 void AddDolmen02_02_65080(type_entity_0x6E8E* event)//246080
 {
-	for (int v2x = 0;v2x < D41A0_0.word_0xe; v2x++)
+	for (int v2x = 0;v2x < D41A0_0.NumberOfPlayers_0xe; v2x++)
 	{
 		type_entity_0x6E8E* event2 = Entities_EA3E4[D41A0_0.array_0x2BDE[v2x].PlayerEntityIdx_2BE4_11240];
 		if (event2->life_0x8 >= 0 && sub_106C0(event2, event))

@@ -1183,7 +1183,7 @@ typedef struct {//lenght 224791
 	uint32_t dword_0x4;
 	uint32_t rand_0x8;
 	int16_t LevelIndex_0xc;//player_index?
-	int16_t word_0xe;
+	int16_t NumberOfPlayers_0xe;
 	std::array<uint8_t, 29> array_0x10; //0x10, next 0x2d(45)
 	int32_t dword_0x2d;//45
 	uint16_t word_0x31;//49

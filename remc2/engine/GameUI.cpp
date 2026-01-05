@@ -1528,7 +1528,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	{
 		v87 = 0;
 		v74x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-		while (v87 < D41A0_0.word_0xe)
+		while (v87 < D41A0_0.NumberOfPlayers_0xe)
 		{
 			if (v87 != D41A0_0.LevelIndex_0xc)
 			{
@@ -2138,7 +2138,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	if (v93)
 	{
 		v90x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-		for (j = 0; j < D41A0_0.word_0xe; j++)
+		for (j = 0; j < D41A0_0.NumberOfPlayers_0xe; j++)
 		{
 			if (j != D41A0_0.LevelIndex_0xc)
 			{

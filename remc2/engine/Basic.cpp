@@ -3341,7 +3341,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	to->dword_0x4 = from->dword_0x4;
 	to->rand_0x8 = from->dword_0x8;
 	to->LevelIndex_0xc = from->word_0xc;
-	to->word_0xe = from->word_0xe;
+	to->NumberOfPlayers_0xe = from->word_0xe;
 	for (int i = 0; i < 0x1d; i++)to->array_0x10[i] = from->array_0x10[i];
 	to->dword_0x2d = from->dword_0x2d;
 	to->word_0x31 = from->word_0x31;
@@ -3534,7 +3534,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 	to->dword_0x4 = from->dword_0x4;
 	to->dword_0x8 = from->rand_0x8;
 	to->word_0xc = from->LevelIndex_0xc;
-	to->word_0xe = from->word_0xe;
+	to->word_0xe = from->NumberOfPlayers_0xe;
 	for (int i = 0; i < 0x1d; i++)to->array_0x10[i] = from->array_0x10[i];
 	to->dword_0x2d = from->dword_0x2d;
 	to->word_0x31 = from->word_0x31;
