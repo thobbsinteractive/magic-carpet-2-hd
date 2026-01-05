@@ -1093,7 +1093,7 @@ type_event_0x6E8E* sub_5B070(type_event_0x6E8E* a1);
 void sub_5B100(type_event_0x6E8E* locEvent);
 void AddPlayer03_00_5E010(type_event_0x6E8E* a1);
 void sub_5E310_multiplayer_test_die(type_event_0x6E8E* a1);
-int sub_5E660(type_event_0x6E8E* a1);
+void DisableEntitesDrawing_5E660(type_event_0x6E8E* entity);
 __int16 sub_5E6C0(type_event_0x6E8E* a1);
 void sub_5E7C0_multiplayer_test_banished(type_event_0x6E8E* a1);
 signed int sub_5E8C0_endGameSeq(type_event_0x6E8E* a1);
