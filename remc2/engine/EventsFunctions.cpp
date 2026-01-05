@@ -8860,48 +8860,31 @@ LABEL_12:
 }
 
 //----- (0001B5F0) --------------------------------------------------------
-int sub_1B5F0()//1fc5f0
+void KillAllCreatures_1B5F0()//1fc5f0
 {
-	unsigned __int16 v0; // ax
-	type_event_0x6E8E* jx; // edx
-	//__int16 v2; // bx
-	type_event_0x6E8E* ix; // edx
-	//__int16 v4; // bx
-
-	v0 = 0;
-	do
+	for (int index = 0; index < 29; index++)
 	{
-		if (v0 < 0xAu)
-			goto LABEL_16;
-		if (v0 <= 0xAu)
-			goto LABEL_12;
-		if (v0 != 27)
+		switch (index)
 		{
-		LABEL_16:
-			for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[(signed __int16)v0]; ix > ENTITY_EA3E4[0]; ix = ix->next_0)
-			{
-				//v4 = *(x_WORD *)(2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0 + 11240);
-				ix->life_0x8 = -1;
-				ix->word_0x24_36 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240;
-			}
+			case 10:
+				break;
+			case 27:
+				for (type_event_0x6E8E* entity = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[108 / 4]; entity > ENTITY_EA3E4[0]; entity = entity->next_0)
+				{
+					entity->actionIndex_0x45_69 = 221;
+					entity->word_0x24_36 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240;
+				}
+				break;
+			default:
+				for (type_event_0x6E8E* entity = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[index]; entity > ENTITY_EA3E4[0]; entity = entity->next_0)
+				{
+					entity->life_0x8 = -1;
+					entity->word_0x24_36 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240;
+				}
+				break;
 		}
-		else
-		{
-			for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[108 / 4]; jx > ENTITY_EA3E4[0]; jx = jx->next_0)
-			{
-				//v2 = *(x_WORD *)(2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0 + 11240);
-				jx->actionIndex_0x45_69 = 221;
-				jx->word_0x24_36 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00a_2BE4_11240;
-			}
-		}
-	LABEL_12:
-		v0++;
-	} while ((signed __int16)v0 < 29);
-	return 0;
+	}
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int ENTITY_EA3E4[];
 
 //----- (0001B6B0) --------------------------------------------------------
 void sub_1B6B0(type_event_0x6E8E* a1x)//1fc6b0
@@ -13055,7 +13038,7 @@ void sub_21030(type_event_0x6E8E* a1x)//202030
 			v17 = a1x->struct_byte_0xc_12_15.byte[0];
 			a1x->life_0x8 = -1;
 			a1x->struct_byte_0xc_12_15.byte[0] = v17 | 1;
-			sub_1B5F0();
+			KillAllCreatures_1B5F0();
 			for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38523; ix > ENTITY_EA3E4[0]; ix = ix->next_0)
 			{
 				v19 = ix->struct_byte_0xc_12_15.byte[1];
@@ -13066,7 +13049,7 @@ void sub_21030(type_event_0x6E8E* a1x)//202030
 		}
 		goto LABEL_48;
 	case 0xF:
-		sub_1B5F0();
+		KillAllCreatures_1B5F0();
 		v20 = a1x->dword_0x10_16 - 1;
 		v24 = 1;
 		a1x->dword_0x10_16 = v20;
@@ -13176,7 +13159,7 @@ char sub_21490(type_event_0x6E8E* a1x)//202490
 	}
 	else if (v1 & 4)
 	{
-		sub_1B5F0();
+		KillAllCreatures_1B5F0();
 		v7 = a1x->dword_0x10_16;
 		a1x->dword_0x10_16 = v7 - 1;
 		if (v7 < 0x11)
@@ -22742,10 +22725,10 @@ void DrawBottomMenu_2ECC0()//20fcc0
 		iconXIdx = 0;
 		while (iconXIdx < 13)
 		{
-			v44 = x_BYTE_D94FF_spell_index[spellIconIndex];
+			v44 = spellIndex_D94FF[spellIconIndex];
 			v8 = 1;
 
-			if (!SPELLS_BEGIN_BUFFER_str[x_BYTE_D94FF_spell_index[spellIconIndex]].byte_0 || !isCaveLevel_D41B6 && v44 == 25)
+			if (!SPELLS_BEGIN_BUFFER_str[spellIndex_D94FF[spellIconIndex]].byte_0 || !isCaveLevel_D41B6 && v44 == 25)
 				v8 = 0;
 
 			if (!v8)
@@ -22753,7 +22736,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 				ptrDrawBitmap_F01E8(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL], scale);
 				goto LABEL_54;
 			}
-			v9x = ENTITY_EA3E4[v37x->dword_0xA4_164x->str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[spellIconIndex]]];
+			v9x = ENTITY_EA3E4[v37x->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex_D94FF[spellIconIndex]]];
 
 			if (v9x > ENTITY_EA3E4[0])
 			{
@@ -22764,7 +22747,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 				}
 				else
 				{
-					v10 = v37x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[spellIconIndex]];
+					v10 = v37x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[spellIndex_D94FF[spellIconIndex]];
 				}
 				v46 = v10;
 
@@ -22864,7 +22847,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 	selectedSpellIndex = x_D41A0_BYTEARRAY_4_struct.byteindex_50;
 	if (selectedSpellIndex != -1)
 	{
-		v17 = x_BYTE_D94FF_spell_index[selectedSpellIndex];
+		v17 = spellIndex_D94FF[selectedSpellIndex];
 		v43 = v17;
 		v47 = v37x->dword_0xA4_164x->str_611.array_0x41D_1053z.byte[v17];
 		/*v18 = 3 * *(unsigned __int8 *)(**filearray_2aa18c[6] + 982);
@@ -22952,7 +22935,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 						v29 = SPELLS_BEGIN_BUFFER_str[v43].subspell[v20].dword_E;
 					}
 					v30 = v28 - v29;
-					v31 = v37x->dword_0xA4_164x->str_611.array_0x263_611x.dword[v27] + v37x->dword_0xA4_164x->str_611.spells_experience_0x2CB_715x.at(v27) - v29;
+					v31 = v37x->dword_0xA4_164x->str_611.array_0x263_611x.dword[v27] + v37x->dword_0xA4_164x->str_611.spellsExperience_0x2CB_715x.at(v27) - v29;
 					if (v30 > 0)
 					{
 						v32 = 54 * v31 / v30;
@@ -38436,7 +38419,7 @@ void GameEvents_51BB0()//232bb0
 					if (evIndex->class_0x3F_63 == 11)
 						evIndex->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
 				}
-				sub_52D70(i, (char*)".. CHEAT: access all spells");
+				showMessage_52D70(i, (char*)".. CHEAT: access all spells");
 				break;
 			case 2:
 				ifsEvent = IfSubtypeCallCreatingManaSphere_4A190(&actEvent->axis_0x4C_76, 10, 39);
@@ -38446,7 +38429,7 @@ void GameEvents_51BB0()//232bb0
 					ifsEvent->playerEntityIndex_0x94_148 = actEvent - D41A0_0.struct_0x6E8E;
 				}
 				actEvent->mana_0x90_144 = actEvent->maxMana_0x8C_140;
-				sub_52D70(i, (char*)".. CHEAT: more mana");
+				showMessage_52D70(i, (char*)".. CHEAT: more mana");
 				break;
 			case 3:
 				for (type_event_0x6E8E* evLoop = x_D41A0_BYTEARRAY_4_struct.dword_38519; evLoop > ENTITY_EA3E4[0]; evLoop = evLoop->next_0)
@@ -38457,7 +38440,7 @@ void GameEvents_51BB0()//232bb0
 							evLoop->life_0x8 = -1;
 					}
 				}
-				sub_52D70(i, (char*)".. CHEAT: destroy all players");
+				showMessage_52D70(i, (char*)".. CHEAT: destroy all players");
 				break;
 			case 4:
 				for (type_event_0x6E8E* evLoop = x_D41A0_BYTEARRAY_4_struct.dword_38519; evLoop > ENTITY_EA3E4[0]; evLoop = evLoop->next_0)
@@ -38465,7 +38448,7 @@ void GameEvents_51BB0()//232bb0
 					if (evLoop->id_0x1A_26 != actEvent->id_0x1A_26 && evLoop->model_0x40_64 == 2)
 						evLoop->life_0x8 = -1;
 				}
-				sub_52D70(i, (char*)".. CHEAT: destroy all castles");
+				showMessage_52D70(i, (char*)".. CHEAT: destroy all castles");
 				break;
 			case 5:
 				for (type_event_0x6E8E* evLoop = x_D41A0_BYTEARRAY_4_struct.dword_38519; evLoop > ENTITY_EA3E4[0]; evLoop = evLoop->next_0)
@@ -38473,44 +38456,44 @@ void GameEvents_51BB0()//232bb0
 					if (evLoop->id_0x1A_26 != actEvent->id_0x1A_26 && evLoop->model_0x40_64 == 3)
 						evLoop->life_0x8 = -1;
 				}
-				sub_52D70(i, (char*)".. CHEAT: destroy all balloons");
+				showMessage_52D70(i, (char*)".. CHEAT: destroy all balloons");
 				break;
 			case 6:
 				actEvent->life_0x8 = actEvent->maxLife_0x4;
-				sub_52D70(i, (char*)".. CHEAT: heal");
+				showMessage_52D70(i, (char*)".. CHEAT: heal");
 				break;
 			case 7:
-				sub_1B5F0();
-				sub_52D70(i, (char*)".. CHEAT: Kill all creatures");
+				KillAllCreatures_1B5F0();
+				showMessage_52D70(i, (char*)".. CHEAT: Kill all creatures");
 				break;
 			case 8:
 				for (int k = 0; k < 26; k++)
 				{
-					actEvent->dword_0xA4_164x->str_611.spells_experience_0x2CB_715x.at(x_BYTE_D94FF_spell_index[k]) += 100;
+					actEvent->dword_0xA4_164x->str_611.spellsExperience_0x2CB_715x.at(spellIndex_D94FF[k]) += 100;
 				}
 				sub_6DB50(0, 0);
-				sub_52D70(i, (char*)".. CHEAT: More Spell Experience Points");
+				showMessage_52D70(i, (char*)".. CHEAT: More Spell Experience Points");
 				break;
 			case 9:
 				if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x20)
 				{
 					x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 &= 0xDF;
-					sub_52D70(i, (char*)".. CHEAT: Free Spell Usage OFF");
+					showMessage_52D70(i, (char*)".. CHEAT: Free Spell Usage OFF");
 				}
 				else
 				{
 					x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 |= 0x20;
-					sub_52D70(i, (char*)".. CHEAT: Free Spell Usage ON");
+					showMessage_52D70(i, (char*)".. CHEAT: Free Spell Usage ON");
 				}
 				break;
 			case 0xA:
 				if (x_D41A0_BYTEARRAY_4_struct.setting_byte4_25 & 1) {
 					x_D41A0_BYTEARRAY_4_struct.setting_byte4_25 &= 0xFE;
-					sub_52D70(i, (char*)".. CHEAT: Invincability ON");
+					showMessage_52D70(i, (char*)".. CHEAT: Invincability ON");
 				}
 				else {
 					x_D41A0_BYTEARRAY_4_struct.setting_byte4_25 |= 1;
-					sub_52D70(i, (char*)".. CHEAT: Invincability OFF");
+					showMessage_52D70(i, (char*)".. CHEAT: Invincability OFF");
 				}
 				break;
 			default:
@@ -38523,8 +38506,8 @@ void GameEvents_51BB0()//232bb0
 			{
 				PrepareEventSound_6E450(0, D41A0_0.array_0x2BDE[i].word_0x007_2BE4_11237, 14);
 				sub_87C10();
-				spellIndex = x_BYTE_D94FF_spell_index[D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1];
-				actEvent->dword_0xA4_164x->str_611.array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1]] = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2;
+				spellIndex = spellIndex_D94FF[D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1];
+				actEvent->dword_0xA4_164x->str_611.array_0x437_1079x.byte[spellIndex_D94FF[D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1]] = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2;
 				if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte0 >= 0x1Fu)
 				{
 					if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte0 <= 0x1Fu)
@@ -38602,7 +38585,7 @@ void GameEvents_51BB0()//232bb0
 			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4)
 			{
 				actEvent->dword_0xA4_164x->str_611.byte_0x459_1113 = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1;
-				actEvent->dword_0xA4_164x->str_611.array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[actEvent->dword_0xA4_164x->str_611.byte_0x458_1112]] = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1;
+				actEvent->dword_0xA4_164x->str_611.array_0x437_1079x.byte[spellIndex_D94FF[actEvent->dword_0xA4_164x->str_611.byte_0x458_1112]] = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1;
 				if (i == D41A0_0.LevelIndex_0xc)
 				{
 					MoveCursorToSelectedSpell_6D200(&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc]);
@@ -39277,7 +39260,7 @@ void sub_54A50(int playerIndex2, int playerIndex)//235a50
 	int index = 0;
 	for (int i = 0; i < 26; i++)
 	{
-		result = x_BYTE_D94FF_spell_index[i];
+		result = spellIndex_D94FF[i];
 		if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] > 2u)
 			D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] = 2;
 		if (D41A0_0.array_0x2BDE[playerIndex].byte_0x009_2BE4_11239 == 1)
@@ -44311,7 +44294,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//23d950
 	{
 		sub_58DA0(0, v2x);
 		for (i = 0; i < 26; i++)
-			v2x->dword_0xA4_164x->str_611.spells_experience_0x2CB_715x.at(i) = 0;
+			v2x->dword_0xA4_164x->str_611.spellsExperience_0x2CB_715x.at(i) = 0;
 		v2x->dword_0xA4_164x->dword_0x189_393 = j___clock();
 		switch (TransformPlayerColorIndex_616D0(v2x->dword_0xA4_164x->playerColorIndex_0x38_56))
 		{
@@ -44466,11 +44449,11 @@ void sub_6D9C0(type_str_611* a1x, type_SPELLS_BEGIN_BUFFER_str* a2x, __int16 a3,
 	v5 = 0;
 	if ((a1x->array_0x3E9_1001x.byte[a3] || a1x->array_0x333_819x.word[a3]) && (isCaveLevel_D41B6 || a3 != 25))
 		v5 = 1;
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 >= 0 && a1x->spells_experience_0x2CB_715x.at((int)spell_t::castle) > 7) // FIXME: replace magic numbers 2 and 7
-		a1x->spells_experience_0x2CB_715x.at((int)spell_t::castle) = 7;
+	if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 >= 0 && a1x->spellsExperience_0x2CB_715x.at((int)spell_t::castle) > 7) // FIXME: replace magic numbers 2 and 7
+		a1x->spellsExperience_0x2CB_715x.at((int)spell_t::castle) = 7;
 	//v6 = *a2;
 	v6 = a2x->byte_0;
-	v7 = a1x->spells_experience_0x2CB_715x.at(a3) + a1x->array_0x263_611x.dword[a3];
+	v7 = a1x->spellsExperience_0x2CB_715x.at(a3) + a1x->array_0x263_611x.dword[a3];
 	do
 		v6--;
 	//while (v6 >= 0 && v7 < *(x_DWORD *)&a2[26 * v6 + 14]);
@@ -44520,7 +44503,7 @@ void sub_6DAD0(type_str_611* a1x, type_SPELLS_BEGIN_BUFFER_str* a2x, __int16 a3)
 	//if (a1x->array_0x333_819x.word[a3] && a1x->array_0x41D_1053z.byte[a3] < *a2 - 1)
 	if (a1x->array_0x333_819x.word[a3] && a1x->array_0x41D_1053z.byte[a3] < a2x->byte_0 - 1)
 	{
-		v3 = a1x->spells_experience_0x2CB_715x.at(a3) + a1x->array_0x263_611x.dword[a3];
+		v3 = a1x->spellsExperience_0x2CB_715x.at(a3) + a1x->array_0x263_611x.dword[a3];
 		if (v3 < 0)
 			v3 = 0;
 		/*if (v3 > *(x_DWORD *)(a2 + 70) + 2)
@@ -44861,11 +44844,11 @@ void sub_6E090(type_str_611* a1x, int a2)//24f090
 	for (i = 0; i < 26; i++)
 	{
 		if (a1x->array_0x333_819x.word[i])
-			a1x->spells_experience_0x2CB_715x.at(i) += a2;
+			a1x->spellsExperience_0x2CB_715x.at(i) += a2;
 	}
 	//result = (int)x_D41A0_BYTEARRAY_4;
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 >= 0 && a1x->spells_experience_0x2CB_715x.at((int)spell_t::castle) > 7) // FIXME: replace magic numbers
-		a1x->spells_experience_0x2CB_715x.at((int)spell_t::castle) = 7;
+	if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 >= 0 && a1x->spellsExperience_0x2CB_715x.at((int)spell_t::castle) > 7) // FIXME: replace magic numbers
+		a1x->spellsExperience_0x2CB_715x.at((int)spell_t::castle) = 7;
 	//return result;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
@@ -49437,7 +49420,7 @@ void sub_872A0()//2682a0
 		v5 = v2x->dword_0xA4_164x->str_611.byte_0x458_1112;
 		if (v5 != (unsigned __int8)str_unk_1804B0ar.byte_0xa5 || v2x->dword_0xA4_164x->str_611.byte_0x459_1113 != str_unk_1804B0ar.byte_0xa6)
 		{
-			v7 = x_BYTE_D94FF_spell_index[v2x->dword_0xA4_164x->str_611.byte_0x458_1112];
+			v7 = spellIndex_D94FF[v2x->dword_0xA4_164x->str_611.byte_0x458_1112];
 			if ((unsigned __int8)str_unk_1804B0ar.byte_0xa4 > 1u || !v2x->dword_0xA4_164x->str_611.array_0x333_819x.word[v7] || !isCaveLevel_D41B6 && v7 == 25)
 				sub_87C10();
 			str_unk_1804B0ar.byte_0xa4 = 0;
@@ -50492,7 +50475,7 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 				maxScreenHeight = screenHeight_180624;
 		}
 		sizeFromYEnd = maxScreenHeight - 2 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].height_5 * scale);
-		spellIndex = x_BYTE_D94FF_spell_index[locEvent1->dword_0xA4_164x->str_611.byte_0x458_1112];
+		spellIndex = spellIndex_D94FF[locEvent1->dword_0xA4_164x->str_611.byte_0x458_1112];
 		isStandardSpell = locEvent1->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex] != 0;
 		if (D41A0_0.terrain_2FECE.MapType != MapType_t::Cave && spellIndex == 25)
 			isStandardSpell = false;
@@ -59455,9 +59438,9 @@ void sub_6D8B0(unsigned __int16 a1, unsigned __int16 a2, __int16 a3)//24e8b0
 			if (v3x->class_0x3F_63 == 3 && !v3x->model_0x40_64)
 			{
 				//v4 = v3x->dword_0xA4_164;
-				v5 = v3x->dword_0xA4_164x->str_611.spells_experience_0x2CB_715x.at(a2);
+				v5 = v3x->dword_0xA4_164x->str_611.spellsExperience_0x2CB_715x.at(a2);
 				//v6 = v4 + 611;
-				v3x->dword_0xA4_164x->str_611.spells_experience_0x2CB_715x.at(a2) = a3 + v5;
+				v3x->dword_0xA4_164x->str_611.spellsExperience_0x2CB_715x.at(a2) = a3 + v5;
 				if (a2 == 2)
 					SetSpell_6D5E0(ENTITY_EA3E4[v3x->dword_0xA4_164x->str_611.array_0x333_819x.word[2]], v3x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[2]);
 				if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
@@ -62079,7 +62062,7 @@ void sub_5F380(type_event_0x6E8E* a1x)//240380
 		/*LOBYTE(v22) = */
 		sub_5F660(
 			a1x,
-			ENTITY_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[a1x->dword_0xA4_164x->str_611.byte_0x458_1112]]],
+			ENTITY_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex_D94FF[a1x->dword_0xA4_164x->str_611.byte_0x458_1112]]],
 			256);
 	//return (char)v22;
 }

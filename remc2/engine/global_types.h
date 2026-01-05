@@ -174,7 +174,7 @@ enum class spell_t {
 
 typedef struct {//begin 611//str_611
 	type_32_1a array_0x263_611x;//size??//dword_0x649_2BDE
-	std::array<int32_t,NUMBER_OF_SPELLS> spells_experience_0x2CB_715x;//104//size?? spell experience, one dword per spell, 26*4=104 bytes
+	std::array<int32_t,NUMBER_OF_SPELLS> spellsExperience_0x2CB_715x;//104//size?? spell experience, one dword per spell, 26*4=104 bytes
 	//array_0x2CB_715[2] 723
 	type_16_1a array_0x333_819x;//208//size?? spells//word_0x719_2BDE
 	//821//array_0x333_819[1]
@@ -358,7 +358,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	uint8_t class_0x3F_63;//63 //type//MODEL
 	//11 - spell
 	uint8_t model_0x40_64;//64 //subtype//CLASS
-	//0 or 1 - player, 2 - castle,3-ballon
+	//0 or 1 - player, 2 - castle, 3 - ballon
 	int8_t xtype_0x41_65;//65 //type subentity
 	int8_t xsubtype_0x42_66;//66 //subtype subentity
 	int8_t byte_0x43_67;//67

@@ -686,7 +686,7 @@ signed int sub_16580(type_event_0x6E8E* a1);
 char sub_169C0(type_event_0x6E8E* a1);
 int sub_16E70(baxis_2d* a1, baxis_2d* a2);
 type_event_0x6E8E* sub_16FC0(type_event_0x6E8E* a1, type_event_0x6E8E* a2);
-int sub_1B5F0();
+void KillAllCreatures_1B5F0();
 void sub_1B6B0(type_event_0x6E8E* a1);
 signed int sub_1B8C0(type_event_0x6E8E* a1);
 void sub_1BD90(type_event_0x6E8E* a1, char a2);

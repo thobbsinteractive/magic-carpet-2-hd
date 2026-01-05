@@ -1023,7 +1023,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 		allert_error();
 		break;
 	case 0x1fc5f0: {
-		sub_1B5F0();
+		KillAllCreatures_1B5F0();
 		break;
 	}
 	case 0x1fc6b0: {
@@ -2787,7 +2787,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_52D70((unsigned short)a1_6E8E, 0);
+		showMessage_52D70((unsigned short)a1_6E8E, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;

@@ -848,7 +848,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 					v34 = 1;
 					v17 = SelectSpellCategory_6D420(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y);
 					v12x->dword_0xA4_164x->str_611.byte_0x458_1112 = v17;
-					v18 = x_BYTE_D94FF_spell_index[v17];
+					v18 = spellIndex_D94FF[v17];
 					v19 = 1;
 					if (!v12x->dword_0xA4_164x->str_611.array_0x333_819x.word[v18] || !isCaveLevel_D41B6 && v18 == 25)
 						v19 = 0;
@@ -1938,7 +1938,7 @@ char sub_18DA0(type_event_0x6E8E* a1x, char a2, char a3)//1f9da0
 			{
 				v6 = 0;
 			}
-			v7 = x_BYTE_D94FF_spell_index[v6];
+			v7 = spellIndex_D94FF[v6];
 			if (v3x->array_0x333_819x.word[v7])
 			{
 				//v8 = v3 + v7;
@@ -1980,7 +1980,7 @@ char sub_18DA0(type_event_0x6E8E* a1x, char a2, char a3)//1f9da0
 			{
 				v6 = 0;
 			}
-			v13 = x_BYTE_D94FF_spell_index[v6];
+			v13 = spellIndex_D94FF[v6];
 			if (v3x->array_0x333_819x.word[v13])
 			{
 				//v14 = v3 + v13;
@@ -2269,7 +2269,7 @@ int SelectSpell_6D4F0(type_str_611* a1x, int16_t mouseX)//24e4f0
 		spellMenuXPos16 = (640 * scale) - subCategoryTotalWidth;
 	}
 	subCategoryIdx = ((mouseX - posXOffSet) - spellMenuXPos16) / ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
-	maxIdx = a1x->array_0x41D_1053z.byte[x_BYTE_D94FF_spell_index[a1x->byte_0x458_1112]];
+	maxIdx = a1x->array_0x41D_1053z.byte[spellIndex_D94FF[a1x->byte_0x458_1112]];
 
 	if ((signed __int16)subCategoryIdx > maxIdx)
 		return maxIdx;
@@ -2330,7 +2330,7 @@ int SelectSpellCategory_6D420(int16_t posX, int16_t posY)//24e420
 //----- (0006D4C0) --------------------------------------------------------
 char sub_6D4C0(type_str_611* a1x)//24e4c0
 {
-	a1x->byte_0x459_1113 = a1x->array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[a1x->byte_0x458_1112]];
+	a1x->byte_0x459_1113 = a1x->array_0x437_1079x.byte[spellIndex_D94FF[a1x->byte_0x458_1112]];
 	return a1x->byte_0x459_1113;
 }
 
@@ -2472,7 +2472,7 @@ void ReadOkayCancelButtonEvents_19E00()//1fae00
 					sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], "OK");//Load Level
 				else
 					sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], x_DWORD_E9C4C_langindexbuffer[429]);//429 - Failed
-				sub_52D70(0, printbuffer);
+				showMessage_52D70(0, printbuffer);
 			}
 			selectSpell = true;
 			break;
@@ -2481,7 +2481,7 @@ void ReadOkayCancelButtonEvents_19E00()//1fae00
 				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[424], "OK");//Save Level
 			else
 				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[424], x_DWORD_E9C4C_langindexbuffer[429]);//429 - Failed
-			sub_52D70(0, printbuffer);
+			showMessage_52D70(0, printbuffer);
 			selectSpell = true;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_208 = DataFileIO::sub_55C00_TestSaveFile2(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w);
 			break;

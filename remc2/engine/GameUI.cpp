@@ -54,7 +54,7 @@ void(*ptrDrawBitmap_F01E8)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale)
 char x_BYTE_D3F48 = 0; // weak
 char x_BYTE_D47D8 = 0; // weak
 int16_t x_WORD_F4960[1664 * 8]; // Was 1664. Seems to be used in rendering the map 2x indexes ar a time. fix it -  weak
-char x_BYTE_D94FF_spell_index[29] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,0,3,0 }; // idb
+char spellIndex_D94FF[29] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,0,3,0 }; // idb
 int16_t x_WORD_E375C_mouse_position_x = 320; // weak
 int16_t x_WORD_E375E_mouse_position_y = 200; // weak
 
@@ -4035,7 +4035,7 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 					}
 
 					//Calucation Spell Sub Category position
-					subCategoryIndex = a1x->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[a1x->dword_0x3E6_2BE4_12228.str_611.byte_0x458_1112]];
+					subCategoryIndex = a1x->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.byte[spellIndex_D94FF[a1x->dword_0x3E6_2BE4_12228.str_611.byte_0x458_1112]];
 
 					posX = posX + (subCategoryWidth * subCategoryIndex
 						+ (subCategoryWidth / 2)
@@ -4569,7 +4569,7 @@ void DrawOkCancelMenu_30A60(int16_t posTextX, int16_t posTextY, uint8_t scale)//
 }
 
 //----- (00052D70) --------------------------------------------------------
-void sub_52D70(uint16_t playerIndex, char* cheatMessage)//233d70
+void showMessage_52D70(uint16_t playerIndex, char* cheatMessage)//233d70
 {
 	strcpy(D41A0_0.array_0x2BDE[playerIndex].array_0x01c_2BFA_11258, cheatMessage);
 	D41A0_0.array_0x2BDE[playerIndex].word_0x04d_2C2B_11307 = 100;

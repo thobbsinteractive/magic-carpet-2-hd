@@ -7273,9 +7273,9 @@ sub_6EB90(&filearray_2aa18c[filearrayindex_BUILD00DATTAB]);//24fb90 adress 0x23c
 &v37x->dword_0xA4_164x->str_611.byte_0x458_1112 -selected
 &v37x->dword_0xA4_164x->str_611.byte_0x459_1113 -selected
 
-&v37x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[v54]]
+&v37x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[spellIndex_D94FF[v54]]
 
-v79x->array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2]] = D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2;
+v79x->array_0x437_1079x.byte[spellIndex_D94FF[D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2]] = D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2;
 
 x_BYTE_10B4E0 + 0x5050 (0x3)
 versus

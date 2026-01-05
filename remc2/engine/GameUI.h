@@ -31,7 +31,7 @@ typedef struct {
 
 extern char FontType_D419D;
 extern char x_BYTE_D47D8;
-extern char x_BYTE_D94FF_spell_index[29];
+extern char spellIndex_D94FF[29];
 extern int16_t x_WORD_E375C_mouse_position_x;
 extern int16_t x_WORD_E375E_mouse_position_y;
 extern uint8_t xx_array_E36C4[64];
@@ -116,4 +116,4 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1);
 void SetMousePositionInMemory_5BDC0(int16_t posX, int16_t posY);
 void sub_1A5B0_getLangStrings(int a1, int* a2, int* a3);
 void GetOkayCancelButtonPositions_30BE0(int16_t* a1, int16_t* a2, uint8_t scale = 1);
-void sub_52D70(uint16_t playerIndex, char* cheatMessage);
+void showMessage_52D70(uint16_t playerIndex, char* cheatMessage);
