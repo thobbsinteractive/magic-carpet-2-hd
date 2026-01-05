@@ -362,7 +362,7 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* a3x, cha
 			//v6 = a3x->word_0x2E_46;
 			v16 = x_BYTE_E88E0x[1 + 3 * v5];
 			//if (!(SPELLS_BEGIN_BUFFER_DA818[0x1+80 * a3x->byte_0x40_64] & 4)
-			if (!(SPELLS_BEGIN_BUFFER_str[a3x->model_0x40_64].byte_1 & 4)
+			if (!(SPELLS_BEGIN_BUFFER_str[a3x->model_0x40_64].isEnabled_1 & 4)
 				|| (v7 = a3x->word_0x2E_46, v7 <= 0)
 				|| v7 >= 32
 				|| !x_D41A0_BYTEARRAY_4_struct.byteindex_121[1])

@@ -22768,7 +22768,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 				}
 				v46 = v10;
 
-				if (SPELLS_BEGIN_BUFFER_str[v9x->model_0x40_64].byte_1 & 4)
+				if (SPELLS_BEGIN_BUFFER_str[v9x->model_0x40_64].isEnabled_1 & 4)
 				{
 					v11 = v9x->word_0x2E_46;
 					if (v11 > 0 && v11 < 32 && x_D41A0_BYTEARRAY_4_struct.byteindex_121[1])

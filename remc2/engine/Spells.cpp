@@ -111,7 +111,7 @@ void SetDefaultSpells_5C0A0()//23d0a0
 {
 	for (int i = 0; i < 26; i++)
 	{
-		SPELLS_BEGIN_BUFFER_str[i].byte_1 = 0;
+		SPELLS_BEGIN_BUFFER_str[i].isEnabled_1 = 0;
 		SPELLS_BEGIN_BUFFER_str[i].subspell[0].fontType_0x1B &= 0xFE;
 		SPELLS_BEGIN_BUFFER_str[i].subspell[1].fontType_0x1B &= 0xFE;
 		SPELLS_BEGIN_BUFFER_str[i].subspell[2].fontType_0x1B &= 0xFE;
@@ -127,7 +127,7 @@ void SetDefaultSpells_5C0A0()//23d0a0
 		case 11:
 		case 12:
 		case 14:
-			SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 4u;// 3 4 6 8 B C E
+			SPELLS_BEGIN_BUFFER_str[i].isEnabled_1 |= 4u;// 3 4 6 8 B C E
 			break;
 		case 7:
 			SPELLS_BEGIN_BUFFER_str[i].subspell[0].fontType_0x1B |= 1u;
@@ -140,14 +140,14 @@ void SetDefaultSpells_5C0A0()//23d0a0
 		}
 		if (SPELLS_BEGIN_BUFFER_str[i].subspell[2].maxManaLimit_A <= 0 && 1000 / SPELLS_BEGIN_BUFFER_str[i].subspell[2].manaCost_6 > 0)
 		{
-			SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 0x20u;
+			SPELLS_BEGIN_BUFFER_str[i].isEnabled_1 |= 0x20u;
 		}
 		else
 		{
 			if (SPELLS_BEGIN_BUFFER_str[i].subspell[1].maxManaLimit_A > 0 || 1000 / SPELLS_BEGIN_BUFFER_str[i].subspell[1].manaCost_6 <= 0)
-				SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 0x8u;
+				SPELLS_BEGIN_BUFFER_str[i].isEnabled_1 |= 0x8u;
 			else
-				SPELLS_BEGIN_BUFFER_str[i].byte_1 |= 0x10u;
+				SPELLS_BEGIN_BUFFER_str[i].isEnabled_1 |= 0x10u;
 		}
 	}
 }
