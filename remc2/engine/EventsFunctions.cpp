@@ -23148,8 +23148,7 @@ void sub_31120(type_event_0x6E8E* a1x)//212120
 			PrepareEventSound_6E450((a1x - D41A0_0.struct_0x6E8E), -1, a1x->word_0x5A_90 - 282);
 	}
 	//result = *(x_DWORD *)(a1 + 8);
-	a1x->life_0x8--;// = result - 1;
-	if (a1x->life_0x8 + 1 < 0)
+	if (a1x->life_0x8-- < 0)
 		LABEL_12:
 	v4 = true;
 	else
@@ -23850,8 +23849,7 @@ void sub_31FB0(type_event_0x6E8E* a1x)//212fb0
 void PossesHitMana_320E0(type_event_0x6E8E* entity)//2130e0
 {
 	entity->dword_0x10_16++;
-	entity->life_0x8--;
-	if (entity->life_0x8 + 1 < 0)
+	if (entity->life_0x8-- < 0)
 		DisableEntityDrawing04_57F10(entity);
 	else
 	{
@@ -23861,137 +23859,99 @@ void PossesHitMana_320E0(type_event_0x6E8E* entity)//2130e0
 }
 
 //----- (00032120) --------------------------------------------------------
-void sub_32120(type_event_0x6E8E* a1x)//213120
+void sub_32120(type_event_0x6E8E* entity)//213120
 {
-	int v1; // eax
-
-	v1 = a1x->life_0x8;
-	a1x->dword_0x10_16++;
-	a1x->life_0x8 = v1 - 1;
-	if (v1 < 0)
+	entity->dword_0x10_16++;
+	if (entity->life_0x8-- < 0)
 	{
-		DisableEntityDrawing04_57F10(a1x);
+		DisableEntityDrawing04_57F10(entity);
 		return;
 	}
-	sub_585A0(a1x);
-	sub_112D0(a1x, 1u);
+	sub_585A0(entity);
+	sub_112D0(entity, 1u);
 }
 
 //----- (00032160) --------------------------------------------------------
-void sub_32160(type_event_0x6E8E* a1x)//213160
+void sub_32160(type_event_0x6E8E* entity)//213160
 {
-	int v1; // eax
-	__int16 v3; // dx
-	__int16 v4; // ax
-	int v5; // edx
-	__int16 v6; // ax
-	__int16 v7; // si
-	__int16 v8; // ax
-
-	v1 = a1x->life_0x8;
-	a1x->life_0x8 = v1 - 1;
-	if (v1 < 0)
+	if (entity->life_0x8-- < 0)
 	{
-		DisableEntityDrawing04_57F10(a1x);
+		DisableEntityDrawing04_57F10(entity);
 		return;
 	}
-	predictedAxis_EB398ar = a1x->axis_0x4C_76;
-	v3 = a1x->actSpeed_0x82_130 - 4;
-	a1x->actSpeed_0x82_130 = v3;
-	if (v3 < 64)
-		a1x->actSpeed_0x82_130 = 64;
-	if (a1x->actSpeed_0x82_130 > 128)
-		a1x->actSpeed_0x82_130 = 128;
-	predictedAxis_EB398ar.z += a1x->actSpeed_0x82_130;
-	v4 = getTerrainAlt_10C40(&a1x->axis_0x4C_76);
-	if (predictedAxis_EB398ar.z < v4)
-		predictedAxis_EB398ar.z = v4;
-	v5 = a1x->dword_0x10_16 + 1;
-	a1x->dword_0x10_16 = v5;
-	if (v5 < 16)
+	predictedAxis_EB398ar = entity->axis_0x4C_76;
+	entity->actSpeed_0x82_130 -= 4;
+	if (entity->actSpeed_0x82_130 < 64)
+		entity->actSpeed_0x82_130 = 64;
+	if (entity->actSpeed_0x82_130 > 128)
+		entity->actSpeed_0x82_130 = 128;
+	predictedAxis_EB398ar.z += entity->actSpeed_0x82_130;
+	int tempAlt = getTerrainAlt_10C40(&entity->axis_0x4C_76);
+	if (predictedAxis_EB398ar.z < tempAlt)
+		predictedAxis_EB398ar.z = tempAlt;
+	entity->dword_0x10_16++;
+	if (entity->dword_0x10_16 < 16)
 	{
-		MoveEntity_57FA0(&predictedAxis_EB398ar, a1x->yaw_0x1C_28, 0, a1x->maxSpeed_0x86_134);
-		v6 = a1x->maxSpeed_0x86_134 - 52;
-		a1x->maxSpeed_0x86_134 = v6;
-		if (v6 < 30)
-			a1x->maxSpeed_0x86_134 = 30;
-		if (a1x->maxSpeed_0x86_134 > 1024)
-			a1x->maxSpeed_0x86_134 = 1024;
-		if (!(a1x->dword_0x10_16 & 1))
+		MoveEntity_57FA0(&predictedAxis_EB398ar, entity->yaw_0x1C_28, 0, entity->maxSpeed_0x86_134);
+		entity->maxSpeed_0x86_134 -= 52;
+		if (entity->maxSpeed_0x86_134 < 30)
+			entity->maxSpeed_0x86_134 = 30;
+		if (entity->maxSpeed_0x86_134 > 1024)
+			entity->maxSpeed_0x86_134 = 1024;
+		if (!(entity->dword_0x10_16 & 1))
 		{
-			v7 = a1x->word_0x5A_90;
-			if (v7 < 74)
-				a1x->word_0x5A_90 = v7 + 1;
+			if (entity->word_0x5A_90 < 74)
+				entity->word_0x5A_90++;
 		}
 	}
-	if (a1x->life_0x8 < 6)
+	if (entity->life_0x8 < 6)
 	{
-		v8 = a1x->word_0x5A_90;
-		if (v8 > 67)
-			a1x->word_0x5A_90 = v8 - 1;
+		if (entity->word_0x5A_90 > 67)
+			entity->word_0x5A_90--;
 	}
-	CopyEntityPosition_57CF0(a1x, &predictedAxis_EB398ar);
+	CopyEntityPosition_57CF0(entity, &predictedAxis_EB398ar);
 }
-// EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
 //----- (000322A0) --------------------------------------------------------
-void sub_322A0(type_event_0x6E8E* a1x)//2132a0
+void sub_322A0(type_event_0x6E8E* entity)//2132a0
 {
-	//int v1; // eax
-	//__int16 v3; // dx
-	__int16 v4; // ax
-	//int v5; // edx
-	//__int16 v6; // ax
-	//__int16 v7; // si
-	//__int16 v8; // ax
-
-	//v1 = a1x->dword_0x8;
-	//a1x->dword_0x8--;
-	if (a1x->life_0x8-- < 0)
+	if (entity->life_0x8-- < 0)
 	{
-		DisableEntityDrawing04_57F10(a1x);
+		DisableEntityDrawing04_57F10(entity);
 		return;
 	}
-	predictedAxis_EB398ar = a1x->axis_0x4C_76;
-	//v3 = a1x->word_0x82_130 - 4;
-	a1x->actSpeed_0x82_130 -= 4;
-	if (a1x->actSpeed_0x82_130 < 64)
-		a1x->actSpeed_0x82_130 = 64;
-	if (a1x->actSpeed_0x82_130 > 128)
-		a1x->actSpeed_0x82_130 = 128;
-	predictedAxis_EB398ar.z += a1x->actSpeed_0x82_130;
-	v4 = getTerrainAlt_10C40(&a1x->axis_0x4C_76);
-	if (predictedAxis_EB398ar.z < v4)
-		predictedAxis_EB398ar.z = v4;
-	//v5 = a1x->dword_0x10_16 + 1;
-	a1x->dword_0x10_16++;
-	if (a1x->dword_0x10_16 < 16)
+	predictedAxis_EB398ar = entity->axis_0x4C_76;
+	entity->actSpeed_0x82_130 -= 4;
+	if (entity->actSpeed_0x82_130 < 64)
+		entity->actSpeed_0x82_130 = 64;
+	if (entity->actSpeed_0x82_130 > 128)
+		entity->actSpeed_0x82_130 = 128;
+	predictedAxis_EB398ar.z += entity->actSpeed_0x82_130;
+	int tempAlt = getTerrainAlt_10C40(&entity->axis_0x4C_76);
+	if (predictedAxis_EB398ar.z < tempAlt)
+		predictedAxis_EB398ar.z = tempAlt;
+	entity->dword_0x10_16++;
+	if (entity->dword_0x10_16 < 16)
 	{
-		MoveEntity_57FA0(&predictedAxis_EB398ar, a1x->yaw_0x1C_28, 0, a1x->maxSpeed_0x86_134);
-		//v6 = a1x->word_0x86_134 - 52;
-		a1x->maxSpeed_0x86_134 -= 52;
-		if (a1x->maxSpeed_0x86_134 < 30)
-			a1x->maxSpeed_0x86_134 = 30;
-		if (a1x->maxSpeed_0x86_134 > 1024)
-			a1x->maxSpeed_0x86_134 = 1024;
-		if (!(a1x->dword_0x10_16 & 1))
+		MoveEntity_57FA0(&predictedAxis_EB398ar, entity->yaw_0x1C_28, 0, entity->maxSpeed_0x86_134);
+		entity->maxSpeed_0x86_134 -= 52;
+		if (entity->maxSpeed_0x86_134 < 30)
+			entity->maxSpeed_0x86_134 = 30;
+		if (entity->maxSpeed_0x86_134 > 1024)
+			entity->maxSpeed_0x86_134 = 1024;
+		if (!(entity->dword_0x10_16 & 1))
 		{
-			//v7 = a1x->word_0x5A_90;
-			if (a1x->word_0x5A_90 < 16)
-				a1x->word_0x5A_90++;
+			if (entity->word_0x5A_90 < 16)
+				entity->word_0x5A_90++;
 		}
 	}
-	if (a1x->life_0x8 < 6)
+	if (entity->life_0x8 < 6)
 	{
-		//v8 = a1x->word_0x5A_90;
-		if (a1x->word_0x5A_90 > 9)
-			a1x->word_0x5A_90--;
+		if (entity->word_0x5A_90 > 9)
+			entity->word_0x5A_90--;
 	}
-	CopyEntityPosition_57CF0(a1x, &predictedAxis_EB398ar);
+	CopyEntityPosition_57CF0(entity, &predictedAxis_EB398ar);
 }
-// EB398: using guessed type __int16 x_WORD_EB398;
-// EB39C: using guessed type __int16 x_WORD_EB398ar[2];
 
 //----- (000323E0) --------------------------------------------------------
 void AddParticleSmoke0A_3B_323E0(type_event_0x6E8E* event)//2133e0
@@ -24010,8 +23970,7 @@ void AddParticleSmoke0A_3D_32420(type_event_0x6E8E* event)//213420
 {
 	type_event_0x6E8E* tempentity = 0; // ecx
 
-	event->life_0x8--;
-	if (event->life_0x8 + 1 < 0)
+	if (event->life_0x8-- < 0)
 	{
 		DisableEntityDrawing04_57F10(event);
 		return;
