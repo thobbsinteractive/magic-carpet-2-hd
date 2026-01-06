@@ -31436,7 +31436,7 @@ unsigned __int16 sub_46180(unsigned __int16 a1, char a2)//227180
 }
 
 //----- (00046570) --------------------------------------------------------
-void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
+void sub_46570_old(uaxis_2d axis1, uaxis_2d axis2)//227570
 {
 	//uaxis_2d v2x; // cx
 	//bool v3; // zf
@@ -31565,20 +31565,6 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 				zTemp += mapHeightmap_11B4E0[axis2.word];
 				axis2._axis_2d.x++;
 				axis2._axis_2d.y++;
-				/*
-				uaxis_2d v20x;
-				uaxis_2d v21x;
-				char zTemp;
-				axis2._axis_2d.x++;
-				axis2._axis_2d.y++;
-				v20x.word = axis2.word;
-				axis2._axis_2d.x -= 2;
-				axis2._axis_2d.y -= 2;
-				v21x.word = axis2.word;
-				axis2._axis_2d.x++;
-				zTemp = mapHeightmap_11B4E0[v21x.word] - mapHeightmap_11B4E0[v20x.word] + 32;
-				axis2._axis_2d.y++;
-				*/
 				if (zTemp >= 28)
 				{
 					if (zTemp > 40)
@@ -31613,7 +31599,7 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 }
 
 //----- (00046570) --------------------------------------------------------
-void sub_46570_new(uaxis_2d axis1, uaxis_2d axis2)//227570
+void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 {
 	uaxis_2d locAxis1;
 	uaxis_2d locAxis2;
@@ -31703,7 +31689,7 @@ void sub_46570_new(uaxis_2d axis1, uaxis_2d axis2)//227570
 			{
 				axis2._axis_2d.x++;
 				axis2._axis_2d.y++;
-				int zTemp = -mapHeightmap_11B4E0[axis2.word] + 32;
+				char zTemp = -mapHeightmap_11B4E0[axis2.word] + 32;
 				axis2._axis_2d.x -= 2;
 				axis2._axis_2d.y -= 2;
 				zTemp += mapHeightmap_11B4E0[axis2.word];
