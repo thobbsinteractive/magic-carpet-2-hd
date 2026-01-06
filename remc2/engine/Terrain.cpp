@@ -1,6 +1,6 @@
 #include "Terrain.h"
 
-uint16_t x_WORD_17B4E0; // 34c4e0
+uint16_t rand2_17B4E0; // 34c4e0
 bool lowDiffHeightmap_D47DC = true;
 
 uint8_t mapTerrainType_10B4E0[65536]; // 256x256 //map array1
@@ -17,10 +17,10 @@ int debugcounter_224959 = 0;
 //----- (00043830) --------------------------------------------------------
 void GenerateLevelMap_43830(Type_Level_2FECE* a2x)//224830
 {
-	x_WORD_17B4E0 = a2x->seed_0x2FEE5;
+	rand2_17B4E0 = a2x->seed_0x2FEE5;
 	D41A0_0.rand_0x8 = a2x->seed_0x2FEE5;
 	memset((void*)mapEntityIndex_15B4E0, 0, 0x20000);
-	sub_B5E70_decompress_terrain_map_level(x_WORD_17B4E0, a2x->offset_0x2FEE9, a2x->raise_0x2FEED, a2x->gnarl_0x2FEF1);
+	sub_B5E70_decompress_terrain_map_level(rand2_17B4E0, a2x->offset_0x2FEE9, a2x->raise_0x2FEED, a2x->gnarl_0x2FEF1);
 
 	sub_44DB0_truncTerrainHeight(mapEntityIndex_15B4E0, mapHeightmap_11B4E0);//225db0 //trunc and create
 
@@ -188,8 +188,8 @@ void sub_44E40(int count, uint8_t minSmooth)//225e40
 	{
 		for (i = 0; i < 1000; i++)
 		{
-			x_WORD_17B4E0 = 9377 * x_WORD_17B4E0 + 9439;
-			index.word = x_WORD_17B4E0 % 0xffffu;
+			rand2_17B4E0 = 9377 * rand2_17B4E0 + 9439;
+			index.word = rand2_17B4E0 % 0xffffu;
 			if ((mapHeightmap_11B4E0[index.word] > minSmooth) && mapAngle_13B4E0[index.word])
 			{
 				sub_44EE0_smooth_tiles(index);
@@ -1137,11 +1137,11 @@ void sub_44580()//225580
 			actBufEnt = pdwScreenBuffer_351628[25 * (343 * point1 + 49 * point2 + point4 + 7 * point3)];
 			if (actBufEnt)
 			{
-				x_WORD_17B4E0 = 9377 * x_WORD_17B4E0 + 9439;
-				if (x_WORD_17B4E0 % (actBufEnt + 1) >= actBufEnt)
+				rand2_17B4E0 = 9377 * rand2_17B4E0 + 9439;
+				if (rand2_17B4E0 % (actBufEnt + 1) >= actBufEnt)
 					actBufPos = &pdwScreenBuffer_351628[25 * (343 * point1 + 49 * point2 + point4 + 7 * point3)];
 				else
-					actBufPos = &pdwScreenBuffer_351628[x_WORD_17B4E0 % (actBufEnt + 1) + 25 * (343 * point1 + 49 * point2 + point4 + 7 * point3)];
+					actBufPos = &pdwScreenBuffer_351628[rand2_17B4E0 % (actBufEnt + 1) + 25 * (343 * point1 + 49 * point2 + point4 + 7 * point3)];
 				mapTerrainType_10B4E0[uindex.word] = actBufPos[1];
 				mapAngle_13B4E0[uindex.word] = (mapAngle_13B4E0[uindex.word] & 7) + actBufPos[13];
 			}
@@ -1249,7 +1249,7 @@ void sub_44D00()//225d00
 
 	uaxis_2d tempIndex;
 	uaxis_2d index;
-	x_WORD_17B4E0 = 0;
+	rand2_17B4E0 = 0;
 	for (int i = 0; i < 256 * 256; i++)
 	{
 		index.word = i;
@@ -1263,10 +1263,10 @@ void sub_44D00()//225d00
 		index._axis_2d.y++;
 		if (tempIndex._axis_2d.x == 32)
 		{
-			tempIndex.word = 9377 * x_WORD_17B4E0 + 9439;
-			x_WORD_17B4E0 = tempIndex.word;
-			tempIndex._axis_2d.y = (x_WORD_17B4E0 / 9u) >> 8;
-			tempIndex._axis_2d.x = x_WORD_17B4E0 % 9 + 28;
+			tempIndex.word = 9377 * rand2_17B4E0 + 9439;
+			rand2_17B4E0 = tempIndex.word;
+			tempIndex._axis_2d.y = (rand2_17B4E0 / 9u) >> 8;
+			tempIndex._axis_2d.x = rand2_17B4E0 % 9 + 28;
 		}
 		else if ((int8_t)tempIndex._axis_2d.x >= 28)
 		{
@@ -1989,8 +1989,8 @@ void sub_462A0(uaxis_2d inAxis2dA, uaxis_2d inAxis2dB)//2272a0
 				}
 				else
 				{
-					x_WORD_17B4E0 = 9377 * x_WORD_17B4E0 + 9439;
-					nextAngle = (mapAngle_13B4E0[tempAxis.word] & 0x87) + 16 * (x_WORD_17B4E0 % 7u);
+					rand2_17B4E0 = 9377 * rand2_17B4E0 + 9439;
+					nextAngle = (mapAngle_13B4E0[tempAxis.word] & 0x87) + 16 * (rand2_17B4E0 % 7u);
 				}
 				mapAngle_13B4E0[tempAxis.word] = nextAngle;
 			}

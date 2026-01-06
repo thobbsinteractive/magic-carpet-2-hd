@@ -348,7 +348,7 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex)//2368e0
 	//        was before: debugafterload = 1;
 	//        cannot be: CommandLineParams.DoDebugafterload() = 1;
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0x3d;//fix same run after load
-	x_WORD_17B4E0 = 0x21ed;//fix random variable for debugging
+	rand2_17B4E0 = 0x21ed;//fix random variable for debugging
 
 	sprintf(printbuffer, "%s/%s/%s%d.DAT", gameDataPath.c_str(), "SAVE", "SMAP", savefileindex + 1);
 	FILE* loadfile = DataFileIO::CreateOrOpenFile(printbuffer, 512);
@@ -790,7 +790,7 @@ void sub_71990()//252990
 		sub_712F0();
 	for(int i=0;i<504;i++)
 		if (!D41A0_0.array_0x39[i])
-			sub_70D20(i);
+			ResetTmap_70D20(i);
 	for (i = 2; i && !v6_return; i--)
 	{
 		for (j = 0; j < 504 && !v6_return; j++)
@@ -982,7 +982,7 @@ void sub_712F0()//2522f0
 {
 	x_DWORD_E9C28_str = sub_71B40(x_D41A0_BYTEARRAY_4_struct.dword_0xE6_heapsize_230, 504, (type_x_DWORD_E9C28_str*)x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226);
 	if (x_DWORD_E9C28_str)
-		x_DWORD_E9C08x = sub_72120(0x1F8u);
+		animations_E9C08x = sub_72120(0x1F8u);
 	sub_70A60_open_tmaps();
 	sub_71A70_setTmaps(D41A0_0.terrain_2FECE.MapType);
 	memset(str_DWORD_F66F0x, 0, 504 * sizeof(type_particle_str**));

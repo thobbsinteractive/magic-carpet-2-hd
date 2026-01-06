@@ -23,7 +23,7 @@ extern subtype_x_DWORD_E9C28_str* str_F5F10[504];
 
 extern type_x_DWORD_E9C28_str* x_DWORD_E9C28_str;
 
-extern type_E9C08* x_DWORD_E9C08x; // weak
+extern type_E9C08* animations_E9C08x; // weak
 extern bool big_sprites_inited;
 
 extern uint8_t* m_pColorPalette;
@@ -34,8 +34,8 @@ signed int GetIndex_71CD0(type_x_DWORD_E9C28_str* a1);
 int sub_71E60(type_x_DWORD_E9C28_str* a1y);
 unsigned int sub_71090(unsigned int a1);
 char sub_70E10(unsigned __int16 a1);
-char sub_70D20(unsigned __int16 a1);
-type_animations1* sub_724F0(type_E9C08* a1x, __int16 a2);
+char ResetTmap_70D20(uint16 tmapsIndex);
+type_animations1* GetAnimationByIndex_724F0(type_E9C08* a1x, __int16 a2);
 void sub_71F20(type_x_DWORD_E9C28_str* a1y, subtype_x_DWORD_E9C28_str* a2x);
 void InitTmaps(unsigned __int16 a1);
 subtype_x_DWORD_E9C28_str* LoadTMapMetadata_71E70(type_x_DWORD_E9C28_str* a1y, unsigned int a2, __int16 a3);
@@ -45,6 +45,6 @@ int sub_70C60_decompress_tmap(uint16_t texture_index, uint8_t* texture_buffer);
 void WriteTextureMapToBmp(uint16_t texture_index, type_particle_str* ptextureMap, MapType_t mapType);
 uint8_t* LoadTMapColorPalette(MapType_t mapType);
 type_animations1* sub_721C0_initTmap(type_E9C08* a1, type_particle_str** a2x, __int16 a3);
-void sub_72410(type_animations1* a1);
+void ResetAnimation_72410(type_animations1* animation);
 
 #endif //TEXTURE_MAPS_H

@@ -2467,7 +2467,7 @@ sub_5BF50_load_psxdata -23cf50
 *pstr[ c].colorPalette_var28
 
 find
-x_WORD_17B4E0 - 34c4e0
+rand2_17B4E0 - 34c4e0
 sub_44E40 - 225e40
 f33b - ok
 
@@ -8128,7 +8128,7 @@ result-*(uint32_t *)(a1 + 2)
 *(uint32_t *)(a1 + 2)+0x3544
 *(uint32_t *)(x_DWORD_E9C08 + 2)+0x3544
 
-&(x_DWORD_E9C08x->dword_2[488])
+&(animations_E9C08x->dword_2[488])
 
 in init mao
 type_animations1* sub_721C0_initTmap(type_E9C08* a1x, int *a2, __int16 a3)//2531c0
@@ -8422,9 +8422,9 @@ versus
 versus
 0x30c4e0+0x4185(0x40)
 
-x_WORD_17B4E0 ?? 0xae5b0500
+rand2_17B4E0 ?? 0xae5b0500
 
-&x_WORD_17B4E0 34c4e0
+&rand2_17B4E0 34c4e0
 0x2368e2
 
 22743c
@@ -8482,7 +8482,7 @@ aa misto 01
 20c95d
 
 problem je zde
-a1x->dword_0x10_16 = *(unsigned __int16 *)(sub_724F0(x_DWORD_E9C08x, v5) + 16);
+a1x->dword_0x10_16 = *(unsigned __int16 *)(GetAnimationByIndex_724F0(animations_E9C08x, v5) + 16);
 
 x_DWORD_F66F0x[0x137]
 *(uint8_t * *)x_DWORD_F66F0x[0x137]

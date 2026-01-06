@@ -347,7 +347,7 @@ extern char x_BYTE_17DF10_get_key_scancode; // weak
 extern char x_BYTE_17DF11_last_key_status; // weak
 */
 
-extern uint16_t x_WORD_17B4E0; // 34c4e0
+extern uint16_t rand2_17B4E0; // 34c4e0
 
 // needed from GameUI
 extern void(*ptrDrawBitmap_F01E8)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale);

@@ -773,7 +773,7 @@ void sub_48120();
 void sub_48350();
 int sub_48990(char a1, char a2, char a3, char a4);
 // __int16 sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6);
-void sub_48B50(uint8 x, uint8 y, int height, int width);
+void SetHeightmapByBuildingArea_48B50(uint8 x, uint8 y, int height, int width);
 void SetHeightmapByBuilding_48B90(uaxis_2d axis);
 __int16 sub_48D20(int a1, unsigned __int16 a2);
 __int16 GetTerrainHeightFromSquare_48DF0(char x, char y, char height, char width);
@@ -13836,8 +13836,8 @@ void sub_221F0(type_event_0x6E8E* a1x, __int16 a2)//2031f0
 		/*LOBYTE(v2) = */sub_71AB0(v3, 1);
 		if (str_DWORD_F66F0x[v3])
 		{
-			//v2 = *(unsigned __int16 *)(sub_724F0(x_DWORD_E9C08x, v3) + 16);
-			a1x->dword_0x10_16 = *(unsigned __int16*)(sub_724F0(x_DWORD_E9C08x, v3) + 16);
+			//v2 = *(unsigned __int16 *)(GetAnimationByIndex_724F0(animations_E9C08x, v3) + 16);
+			a1x->dword_0x10_16 = *(unsigned __int16*)(GetAnimationByIndex_724F0(animations_E9C08x, v3) + 16);
 		}
 	}
 	//return v2;
@@ -21473,23 +21473,20 @@ void sub_2B840(type_event_0x6E8E* a1x)//20c840
 //----- (0002B860) --------------------------------------------------------
 void sub_2B860(type_event_0x6E8E* a1x, unsigned __int8 a2)//20c860
 {
-	//__int16 v2; // ax
 	char v3; // ah
 	char v4; // dh
 	unsigned __int16 v5; // si
 	char v6; // ch
 
-	//LOBYTE(v2) = a2;
 	if (a2 < 2u)
 	{
 		if (a2 == 1)
 		{
 			v3 = a1x->struct_byte_0xc_12_15.byte[0] & 0xF6;
-			a1x->dword_0xA0_160x = &str_D7BD6[93]; //(type_str_160*)&unk_D7BD6[0xc5a];
+			a1x->dword_0xA0_160x = &str_D7BD6[93];
 			a1x->struct_byte_0xc_12_15.byte[0] = v3 | 8;
 			SetEntityIndexAndRot_49CD0(a1x, 292);
 			SetEntityShiftRot_49EA0(a1x, 85, 42);
-			//v2 = a1x->word_0x86_134;
 			a1x->actSpeed_0x82_130 = a1x->maxSpeed_0x86_134;
 		}
 	}
@@ -21504,27 +21501,22 @@ void sub_2B860(type_event_0x6E8E* a1x, unsigned __int8 a2)//20c860
 		a1x->struct_byte_0xc_12_15.byte[0] = v4 | 8;
 		SetEntityIndexAndRot_49CD0(a1x, 291);
 		SetEntityShiftRot_49EA0(a1x, 384, 768);
-		/*LOBYTE(v2) = */sub_71AB0(v5, 0);
+		sub_71AB0(v5, 0);
 		if (str_DWORD_F66F0x[v5])
 		{
-			a1x->dword_0x10_16 = sub_724F0(x_DWORD_E9C08x, v5)->CountOfFrames_16;
-			//v2 = a1x->dword_0x10_16;
+			a1x->dword_0x10_16 = GetAnimationByIndex_724F0(animations_E9C08x, v5)->CountOfFrames_16;
 			a1x->word_0x2C_44 = a1x->dword_0x10_16;
 		}
 	}
 	else if (a2 == 3)
 	{
 		a1x->byte_0x39_57 = 0;
-		a1x->dword_0xA0_160x = &str_D7BD6[94]; //(type_str_160*)&unk_D7BD6[0xc7c];
+		a1x->dword_0xA0_160x = &str_D7BD6[94];
 		v6 = a1x->struct_byte_0xc_12_15.byte[0] | 1;
 		a1x->actSpeed_0x82_130 = a1x->minSpeed_0x84_132 - 28;
-		//LOBYTE(v2) = v6 & 0xF7;
 		a1x->struct_byte_0xc_12_15.byte[0] = v6 & 0xF7;
 	}
-	//return v2;
 }
-// DA506: using guessed type __int16 x_WORD_DA506;
-// E9C08: using guessed type int x_DWORD_E9C08;
 
 //----- (0002B9A0) --------------------------------------------------------
 signed int sub_2B9A0(type_event_0x6E8E* a1x)//20c9a0
@@ -28442,7 +28434,7 @@ void RemoveCastleStage_385C0(type_event_0x6E8E* event)//2195c0 //remove castle s
 			}
 			locAxis2._axis_2d.y++;
 		}
-		sub_48B50(locAxis1._axis_2d.x, locAxis1._axis_2d.y, locHeight, locWidth);
+		SetHeightmapByBuildingArea_48B50(locAxis1._axis_2d.x, locAxis1._axis_2d.y, locHeight, locWidth);
 		if (event->xtype_0x41_65)
 			sub_4A1E0(event->xtype_0x41_65, 1);
 		if (event->byte_0x46_70 == 68)
@@ -31504,8 +31496,8 @@ void AddBuildingToTerrain_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 				}
 				else
 				{
-					x_WORD_17B4E0 = 9377 * x_WORD_17B4E0 + 9439;
-					mapAngle_13B4E0[axis2.word] = (mapAngle_13B4E0[axis2.word] & 0x87) + 16 * ((unsigned __int16)x_WORD_17B4E0 % 7u);
+					rand2_17B4E0 = 9377 * rand2_17B4E0 + 9439;
+					mapAngle_13B4E0[axis2.word] = (mapAngle_13B4E0[axis2.word] & 0x87) + 16 * ((unsigned __int16)rand2_17B4E0 % 7u);
 				}
 			}
 			axis2._axis_2d.x++;
@@ -32825,7 +32817,7 @@ void sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6)//22
 }
 
 //----- (00048B50) --------------------------------------------------------
-void sub_48B50(uint8 x, uint8 y, int height, int width)//229b50
+void SetHeightmapByBuildingArea_48B50(uint8 x, uint8 y, int height, int width)//229b50
 {
 	uaxis_2d axis;
 	axis._axis_2d.x = x;
@@ -45252,7 +45244,7 @@ void sub_6FEC0()//250ec0
 void sub_713A0()//2523a0
 {
 	sub_720C0(&x_DWORD_E9C28_str);
-	sub_72550(&x_DWORD_E9C08x);
+	sub_72550(&animations_E9C08x);
 	CleanF5538_716A0();
 	memset(str_DWORD_F66F0x, 0, 504 * sizeof(type_particle_str**));
 	memset(str_F5F10, 0, 504 * sizeof(type_particle_str**));
@@ -45350,7 +45342,7 @@ void sub_715B0()//2525b0
 							(*v8x)->word_0 &= 0xF7;
 							if ((*v8x)->word_0 & 1)
 							{
-								v10x = sub_724F0(x_DWORD_E9C08x, i);
+								v10x = GetAnimationByIndex_724F0(animations_E9C08x, i);
 								/*result = */sub_72350(v10x);
 							}
 						}
@@ -45363,7 +45355,7 @@ void sub_715B0()//2525b0
 					//*(x_BYTE *)result = v4;
 					if (v4 & 1)
 					{
-						v5x = sub_724F0(x_DWORD_E9C08x, v0);
+						v5x = GetAnimationByIndex_724F0(animations_E9C08x, v0);
 						/*result = */sub_72350(v5x);
 					}
 				}
@@ -45433,7 +45425,7 @@ void sub_71780()//252780
 	do
 	{
 		if (!x_BYTE_F5538[v0])
-			sub_70D20(v0);
+			ResetTmap_70D20(v0);
 		v0++;
 	} while (v0 < 0x1F8u);
 	for (i = 0xff; i && !v6; i--)
@@ -45479,7 +45471,7 @@ void sub_71AB0(__int16 a1, char a2)//252ab0
 			//v2x = *v5x;
 			if ((*v5x)->word_0 & 1)
 			{
-				v6x = sub_724F0(x_DWORD_E9C08x, i);
+				v6x = GetAnimationByIndex_724F0(animations_E9C08x, i);
 				/*LOWORD(v2) = */sub_723B0(v6x, a2);
 			}
 		}

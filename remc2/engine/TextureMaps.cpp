@@ -18,7 +18,7 @@ subtype_x_DWORD_E9C28_str* str_F5F10[504];
 
 type_x_DWORD_E9C28_str* x_DWORD_E9C28_str;
 
-type_E9C08* x_DWORD_E9C08x; // weak
+type_E9C08* animations_E9C08x; // weak
 bool big_sprites_inited = false;
 uint8_t* m_pColorPalette = NULL;
 
@@ -207,7 +207,7 @@ unsigned int sub_71090(unsigned int a1)//252090
 		if (v31)
 			v18 = sub_70E10(*(x_WORD*)((char*)&v21 + v19));
 		else
-			v18 = sub_70D20(*(x_WORD*)((char*)&v21 + v19));
+			v18 = ResetTmap_70D20(*(x_WORD*)((char*)&v21 + v19));
 		if (v18)
 			v17 += sub_70EF0(*(x_WORD*)((char*)&v21 + v19));
 		++v16;
@@ -234,8 +234,8 @@ char sub_70E10(unsigned __int16 a1)//251e10
 		{
 			if ((*v4x)->word_0 & 1)
 			{
-				v5x = sub_724F0(x_DWORD_E9C08x, i);
-				sub_72410(v5x);
+				v5x = GetAnimationByIndex_724F0(animations_E9C08x, i);
+				ResetAnimation_72410(v5x);
 			}
 			sub_71F20(x_DWORD_E9C28_str, str_F5F10[i]);
 			str_DWORD_F66F0x[i] = 0;
@@ -246,29 +246,20 @@ char sub_70E10(unsigned __int16 a1)//251e10
 	return 1;
 }
 
-char sub_70D20(unsigned __int16 a1)//251d20
+char ResetTmap_70D20(uint16 tmapsIndex)//251d20
 {
-	//unsigned __int16 v1; // ax
-	//__int16 v2; // di
-	unsigned __int16 i; // bx
-	type_particle_str** v4x; // ecx
-	type_animations1* v5; // eax
-
-	//v1 = str_TMAPS00TAB_BEGIN_BUFFER[a1].word_8;
-	if (m_LevelSpriteList_F5340[str_TMAPS00TAB_BEGIN_BUFFER[a1].word_8])
+	if (m_LevelSpriteList_F5340[str_TMAPS00TAB_BEGIN_BUFFER[tmapsIndex].word_8])
 		return 0;
-	//v2 = str_TMAPS00TAB_BEGIN_BUFFER[a1].word_8;
-	if (!str_DWORD_F66F0x[str_TMAPS00TAB_BEGIN_BUFFER[a1].word_8])
+	if (!str_DWORD_F66F0x[str_TMAPS00TAB_BEGIN_BUFFER[tmapsIndex].word_8])
 		return 0;
-	for (i = str_TMAPS00TAB_BEGIN_BUFFER[a1].word_8; i < 504 && str_TMAPS00TAB_BEGIN_BUFFER[a1].word_8 == str_TMAPS00TAB_BEGIN_BUFFER[i].word_8; i++)
+	for (uint16 i = str_TMAPS00TAB_BEGIN_BUFFER[tmapsIndex].word_8; i < 504 && str_TMAPS00TAB_BEGIN_BUFFER[tmapsIndex].word_8 == str_TMAPS00TAB_BEGIN_BUFFER[i].word_8; i++)
 	{
-		v4x = str_DWORD_F66F0x[i];
-		if (v4x)
+		type_particle_str** particle = str_DWORD_F66F0x[i];
+		if (particle)
 		{
-			if ((*v4x)->word_0 & 1)
+			if ((*particle)->word_0 & 1)
 			{
-				v5 = sub_724F0(x_DWORD_E9C08x, i);
-				sub_72410(v5);
+				ResetAnimation_72410(GetAnimationByIndex_724F0(animations_E9C08x, i));
 			}
 			sub_71F20(x_DWORD_E9C28_str, str_F5F10[i]);
 			str_DWORD_F66F0x[i] = 0;
@@ -279,51 +270,33 @@ char sub_70D20(unsigned __int16 a1)//251d20
 	return 1;
 }
 
-type_animations1* sub_724F0(type_E9C08* a1x, __int16 a2)
+type_animations1* GetAnimationByIndex_724F0(type_E9C08* animations, __int16 index)
 {
-	//type_animations1* resultx; // eax
-	int resulty;
-	//int v3; // edx
-	int16_t v3x;
-	//HIWORD(v3) = HIWORD(a1);
-	//resultx = a1x->dword_2;
-	resulty = 0;
-	//LOWORD(v3) = *(x_WORD *)a1;
-	v3x = a1x->word_0;
-	if (!a1x->word_0)
+	int resulty = 0;
+	int16_t v3x = animations->word_0;
+	if (!animations->word_0)
 		return 0;
-	while (!a1x->dword_2[resulty].Particles_4 || a2 != a1x->dword_2[resulty].word_26)
+	while (!animations->dword_2[resulty].Particles_4 || index != animations->dword_2[resulty].word_26)
 	{
 		--v3x;
-		//result += 28;
-		//resultx++;
 		resulty++;
 		if (!v3x)
 			return 0;
 	}
-	return &(a1x->dword_2[resulty]);
+	return &(animations->dword_2[resulty]);
 }
 
 void sub_71F20(type_x_DWORD_E9C28_str* a1y, subtype_x_DWORD_E9C28_str* a2x)//252f20
 {
-	//int v2x; // eax
 	type_particle_str* v2y;
 	subtype_x_DWORD_E9C28_str* v3x; // ecx
 	unsigned __int16 v4; // bx
 	int v5; // esi
 	subtype_x_DWORD_E9C28_str* v6x; // ecx
-	//unsigned __int16 v7; // cx
-	//int v8; // edi
-	//int v9; // eax
-	//const void* v10; // esi
 	type_particle_str* i; // [esp+4h] [ebp-4h]
 
-	//allert_error();//fix this code
-	//a2x->word_10
-	//v2x = *(x_WORD*)((int8_t*)a2x + 10);
 	if (a2x->Index < a1y->word_22)
 	{
-		//v2 = 14 * (unsigned __int16)v2;
 		v3x = &a1y->str_8_data[a2x->Index];
 		if (v3x->dword_4)
 		{
@@ -331,28 +304,17 @@ void sub_71F20(type_x_DWORD_E9C28_str* a1y, subtype_x_DWORD_E9C28_str* a2x)//252
 			v5 = v3x->dword_4 + a1y->dword_4;
 			v6x = a1y->str_8_data;
 			a1y->dword_4 = v5;
-			//*(x_DWORD*)(v6 + v2 + 4) = 0;
 			v6x[a2x->Index].dword_4 = 0;
-			//v2 = 14 * (unsigned __int16)v2;
-			//v2 = *(x_DWORD*)(a1y->dword_8_data + v2);
-			//v2y = a1y->dword_0;
-			//v2y = *(_DWORD*)(*(_DWORD*)(a1 + 8) + v2);//a1y->str_8_data
 			v2y = a1y->str_8_data[a2x->Index].partstr_0;
 			for (i = v2y; ; i += a1y->dword_12x[v4]->dword_4)
 			{
 				++v4;
-				//v7 = a1y->word_20;
 				if (v4 >= a1y->word_20)
 					break;
-				//v8 = 4 * v4;
 				a1y->dword_12x[v4 - 1] = a1y->dword_12x[v4];
-				//v9 = a1y->dword_12x[v4];
 				a1y->dword_12x[v4]->word_8 = v4 - 1;
-				//v10 = *(const void**)a1y->dword_12x[v4];
 				a1y->dword_12x[v4]->partstr_0 = i;
 				qmemcpy(i, a1y->dword_12x[v4], a1y->dword_12x[v4]->dword_4);
-
-				//v2 = *(_DWORD*)(*(_DWORD*)(4 * v4 + a1y->dword_12x) + 4);
 
 				/*
 				v4++;
@@ -529,7 +491,7 @@ void InitTmaps(unsigned __int16 a1)//251f50
 					index6x = str_DWORD_F66F0x[v6];
 					//if (**(uint8_t**)index6 & 1)
 					if ((*index6x)->word_0 & 1)
-						index = sub_721C0_initTmap(x_DWORD_E9C08x, index6x, i);
+						index = sub_721C0_initTmap(animations_E9C08x, index6x, i);
 					if (v2 < 480)
 					{
 						if (v2 != 311)
@@ -788,17 +750,11 @@ type_animations1* sub_721C0_initTmap(type_E9C08* a1x, type_particle_str** a2x, _
 	return &a1x->dword_2[v12];
 }
 
-void sub_72410(type_animations1* a1)
+void ResetAnimation_72410(type_animations1* animation)
 {
-	//x_DWORD* result; // eax
-
-	//result = a1;
-	if (a1)
+	if (animation)
 	{
-		a1->dword_0 = 0;
-		a1->Particles_4 = 0;
-		/*a1[0] = 0;
-		a1[1] = 0;*/
+		animation->dword_0 = 0;
+		animation->Particles_4 = 0;
 	}
-	//return result;
 }
