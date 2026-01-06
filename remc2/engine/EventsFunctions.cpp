@@ -31446,11 +31446,11 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 	uaxis_2d v7x; // dx
 	uaxis_2d v8x; // dx
 	//uaxis_2d v9x; // cx
-	int v10; // edx
+	//int v10; // edx
 	//uaxis_2d v11x; // ax
-	int v12; // edx
-	int v13; // ebx
-	int v14; // eax
+	//int v12; // edx
+	//int v13; // ebx
+	//int v14; // eax
 	//int v15; // edx
 	//char v16; // ST0C_1
 	uaxis_2d v17x; // cx
@@ -31520,18 +31520,18 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 		{
 			if (mapTerrainType_10B4E0[axis2.word] == 1)
 			{
-				v10 = 343 * (mapAngle_13B4E0[axis2.word] & 7);
+				int buildingIndex = 343 * (mapAngle_13B4E0[axis2.word] & 7);
 				axis2._axis_2d.x++;
-				v12 = 49 * (mapAngle_13B4E0[axis2.word] & 7) + v10;
+				buildingIndex += 49 * (mapAngle_13B4E0[axis2.word] & 7);
 				axis2._axis_2d.y++;
-				v13 = mapAngle_13B4E0[axis2.word] & 7;
+				buildingIndex += 7 * (mapAngle_13B4E0[axis2.word] & 7);
 				axis2._axis_2d.x--;
-				v14 = mapAngle_13B4E0[axis2.word] & 7;
+				buildingIndex += mapAngle_13B4E0[axis2.word] & 7;
 				axis2._axis_2d.y--;
-				mapTerrainType_10B4E0[axis2.word] = x_BYTE_F2CD0x[v14 + 7 * v13 + v12][0];
+				mapTerrainType_10B4E0[axis2.word] = x_BYTE_F2CD0x[buildingIndex][0];
 				if (mapTerrainType_10B4E0[axis2.word] >= 8u)
 				{
-					mapAngle_13B4E0[axis2.word] = x_BYTE_F2CD0x[v14 + 7 * v13 + v12][1] + (mapAngle_13B4E0[axis2.word] & 0x87);
+					mapAngle_13B4E0[axis2.word] = x_BYTE_F2CD0x[buildingIndex][1] + (mapAngle_13B4E0[axis2.word] & 0x87);
 				}
 				else
 				{
