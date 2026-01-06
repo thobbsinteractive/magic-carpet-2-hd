@@ -4797,13 +4797,13 @@ x_BYTE_12B4E0(0x1e)
 versus
 0x2fc4e0(0x20)
 
-char sub_46570(unsigned __int16 a1, __int16 a2)//227570
+char AddBuildingToTerrain_46570(unsigned __int16 a1, __int16 a2)//227570
 void sub_37BC0(uint8_t* a1)//218bc0
 
 2276b8 -2401
 
 ---------------
-sub_46570
+AddBuildingToTerrain_46570
 0100-ok
 2500-ok
 2501-ok
@@ -4844,7 +4844,7 @@ x_BYTE_12B4E0+0xfe(0x1f)
 versus
 0x2fc4e0+0xfe(0x20)
 
-2277bf - call char sub_46570(unsigned __int16 a1, __int16 a2)//227570
+2277bf - call char AddBuildingToTerrain_46570(unsigned __int16 a1, __int16 a2)//227570
 eax=ffff
 alah=0000
 218f79 - call void sub_37BC0(uint8_t* a1)//218bc0
@@ -4860,7 +4860,7 @@ versus
 x_BYTE_10B4E0(0x1)
 versus
 0x2dc4e0(0x0)
-char sub_46570(unsigned __int16 a1, __int16 a2)//227570
+char AddBuildingToTerrain_46570(unsigned __int16 a1, __int16 a2)//227570
 0101 =1
 0124 =v14
 
@@ -7104,7 +7104,7 @@ x_BYTE_13B4E0+0xe683(0x15)
 versus
 0x30c4e0+0xe683(0x35)
 
-sub_46570 - step 1
+AddBuildingToTerrain_46570 - step 1
 
 pointer_0xE2_heapbuffer_226
 
@@ -7584,7 +7584,7 @@ int sub_34520(type_str_0x6E8E* a1x)//215520
 
 https://philippegroarke.com/posts/2018/c++_ui_solutions/
 
-char sub_46570(unsigned __int16 a1, __int16 a2)//227570
+char AddBuildingToTerrain_46570(unsigned __int16 a1, __int16 a2)//227570
 rewrite
 
 test
@@ -8519,7 +8519,7 @@ int sub_34910(type_str_0x6E8E* a1x)//215910
 
 test
 
-void sub_46570(uaxis_2d a1x, uaxis_2d a2x)//227570
+void AddBuildingToTerrain_46570(uaxis_2d a1x, uaxis_2d a2x)//227570
 
 2276b8
 
