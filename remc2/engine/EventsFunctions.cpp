@@ -31456,9 +31456,9 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 	//uaxis_2d v17x; // cx
 	//char v18; // dh
 	//char j; // dl
-	uaxis_2d v20x; // ax
-	uaxis_2d v21x; // bx
-	char v22; // al
+	//uaxis_2d v20x; // ax
+	//uaxis_2d v21x; // bx
+	//char v22; // al
 	char v23; // bl
 	unsigned __int8 v24; // bh
 	//char i; // [esp+0h] [ebp-14h]
@@ -31556,6 +31556,19 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 		{
 			for (int j = xIndex; j; j--)
 			{
+				
+				axis2._axis_2d.x++;
+				axis2._axis_2d.y++;
+				char zTemp = -mapHeightmap_11B4E0[axis2.word] + 32;
+				axis2._axis_2d.x -= 2;
+				axis2._axis_2d.y -= 2;
+				zTemp += mapHeightmap_11B4E0[axis2.word];
+				axis2._axis_2d.x++;
+				axis2._axis_2d.y++;
+				/*
+				uaxis_2d v20x;
+				uaxis_2d v21x;
+				char zTemp;
 				axis2._axis_2d.x++;
 				axis2._axis_2d.y++;
 				v20x.word = axis2.word;
@@ -31563,21 +31576,22 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 				axis2._axis_2d.y -= 2;
 				v21x.word = axis2.word;
 				axis2._axis_2d.x++;
-				v22 = mapHeightmap_11B4E0[v21x.word] - mapHeightmap_11B4E0[v20x.word] + 32;
+				zTemp = mapHeightmap_11B4E0[v21x.word] - mapHeightmap_11B4E0[v20x.word] + 32;
 				axis2._axis_2d.y++;
-				if (v22 >= 28)
+				*/
+				if (zTemp >= 28)
 				{
-					if (v22 > 40)
-						v22 = (v22 & 7) + 40;
+					if (zTemp > 40)
+						zTemp = (zTemp & 7) + 40;
 				}
 				else
 				{
-					v22 = (v22 & 3) + 28;
+					zTemp = (zTemp & 3) + 28;
 				}
 				if (D41A0_0.terrain_2FECE.MapType != MapType_t::Day)
-					v23 = 32 - v22 + 32;
+					v23 = 32 - zTemp + 32;
 				else
-					v23 = v22;
+					v23 = zTemp;
 				locAxis1.word = axis2.word;
 				mapShading_12B4E0[axis2.word] = v23;
 				if (isCaveLevel_D41B6 && (v24 = mapHeightmap_11B4E0[axis2.word], x_BYTE_14B4E0_second_heightmap[axis2.word] <= v24))
