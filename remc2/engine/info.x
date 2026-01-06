@@ -2732,7 +2732,7 @@ unsigned int sub_43970(unsigned int a1)//224970
 void sub_37240(uint8_t* a1)//218240
 
 229c84
-__int16 sub_48B90(int a1)//229b90
+__int16 SetHeightmapByBuilding_48B90(int a1)//229b90
 
 sub_44D00();//225d00
 
@@ -8617,7 +8617,7 @@ versus
 v41x.word = v37x.word;//adress 218389
 9b
 
-void sub_48B90(int a1)//229b90
+void SetHeightmapByBuilding_48B90(int a1)//229b90
 
 (uint8_t*)&x_BYTE_11B4E0_height+0xebe7 - 0x77
 versus
@@ -8693,7 +8693,7 @@ versus
 229c84 -95 9a a1 a1
         94 9a 9f a0
 		94 99 9d 9f
-void sub_48B90(uaxis_2d a1x)//229b90
+void SetHeightmapByBuilding_48B90(uaxis_2d a1x)//229b90
 
 00001C3D
 

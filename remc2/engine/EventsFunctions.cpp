@@ -48,7 +48,7 @@ int test_regression_level = 1;
 
 int save_debugcounter = 0;
 
-//#define FIX_sub_48B90// - when set game have error, but compactible with original
+//#define FIX_SetHeightmapByBuilding_48B90// - when set game have error, but compactible with original
 
 //(set in bool sub_558E0_InGameLoad(uint8_t fileindex)//2368e0)
 int count_begin = 1;//1
@@ -773,8 +773,8 @@ void sub_48120();
 void sub_48350();
 int sub_48990(char a1, char a2, char a3, char a4);
 // __int16 sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6);
-void sub_48B50(unsigned __int8 a1, char a2, int a3, int a4);
-void sub_48B90(uaxis_2d a1);
+void sub_48B50(uint8 x, uint8 y, int height, int width);
+void SetHeightmapByBuilding_48B90(uaxis_2d axis);
 __int16 sub_48D20(int a1, unsigned __int16 a2);
 __int16 GetTerrainHeightFromSquare_48DF0(char x, char y, char height, char width);
 signed int sub_48E60(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4);
@@ -32769,8 +32769,8 @@ void sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6)//22
 		a1++;
 		while ((x_WORD)--a1 != -1)
 		{
-			sub_48B90(v8x);
-			sub_48B90(v16x);
+			SetHeightmapByBuilding_48B90(v8x);
+			SetHeightmapByBuilding_48B90(v16x);
 			//LOBYTE(v8)++;
 			//LOBYTE(v16)++;
 			v8x._axis_2d.x++;
@@ -32803,8 +32803,8 @@ void sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6)//22
 		v7++;
 		while ((x_WORD)--v7 != -1)
 		{
-			sub_48B90(v9x);
-			sub_48B90(v17x);
+			SetHeightmapByBuilding_48B90(v9x);
+			SetHeightmapByBuilding_48B90(v17x);
 			//HIBYTE(v9)++;
 			//HIBYTE(v17)++;
 			v9x._axis_2d.y++;
@@ -32825,36 +32825,27 @@ void sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6)//22
 }
 
 //----- (00048B50) --------------------------------------------------------
-void sub_48B50(unsigned __int8 a1, char a2, int a3, int a4)//229b50
+void sub_48B50(uint8 x, uint8 y, int height, int width)//229b50
 {
-	int v4; // edi
-	uaxis_2d v5x; // bx
-	int v6; // esi
-	//__int16 result; // ax
-
-	//LOBYTE(v5) = a1;
-	v5x._axis_2d.x = a1;
-	v4 = a3;
-	//HIBYTE(v5) = a2;
-	v5x._axis_2d.y = a2;
-	while ((x_WORD)--v4 != -1)
+	uaxis_2d axis;
+	axis._axis_2d.x = x;
+	axis._axis_2d.y = y;
+	int indexH = height;
+	while (--indexH != -1)
 	{
-		v6 = a4;
-		while ((x_WORD)--v6 != -1)
+		int indexW = width;
+		while (--indexW != -1)
 		{
-			/*result = */sub_48B90(v5x);
-			//LOBYTE(v5) = v5 + 1;
-			v5x._axis_2d.x++;
+			SetHeightmapByBuilding_48B90(axis);
+			axis._axis_2d.x++;
 		}
-		//v5 = __PAIR__(HIBYTE(v5), a1) + 256;
-		v5x._axis_2d.y++;
-		v5x._axis_2d.x = a1;
+		axis._axis_2d.y++;
+		axis._axis_2d.x = x;
 	}
-	//return result;
 }
 
 uint8_t fix_10B4E0_terraintype(int index) {
-#ifdef FIX_sub_48B90
+#ifdef FIX_SetHeightmapByBuilding_48B90
 	if (index < 0)
 		return 0;
 #endif
@@ -32863,16 +32854,8 @@ uint8_t fix_10B4E0_terraintype(int index) {
 
 int debugcounter_229b90 = 0;
 //----- (00048B90) --------------------------------------------------------
-void sub_48B90(uaxis_2d a1x)//229b90
+void SetHeightmapByBuilding_48B90(uaxis_2d axis)//229b90
 {
-	uint16_t i; // eax
-	unsigned int v2; // ecx
-	unsigned int v3; // ebx
-	char v4; // dl
-	char v5; // dh
-	unsigned __int8 v6; // dh
-	char v7; // bl
-
 	/*if (debugcounter2 >= 0x2450)//0x234c//0x057e
 	{
 		origbyte = 0;
@@ -32896,58 +32879,52 @@ void sub_48B90(uaxis_2d a1x)//229b90
 		//add_compare(0x229B94, CommandLineParams.DoDebugafterload());
 	}
 
-	//LOWORD(i) = a1;
-	v2 = 0;
-	v3 = 0;
-	if (mapAngle_13B4E0[a1x.word] & 7
-		&& mapHeightmap_11B4E0[a1x.word]
-		&& (fix_10B4E0_terraintype(-0x101 + (int)a1x.word) <= 5u
-			|| fix_10B4E0_terraintype(-0x101 + (int)a1x.word) > 0x22u)
-		&& (fix_10B4E0_terraintype(-0x100 + (int)a1x.word) <= 5u
-			|| fix_10B4E0_terraintype(-0x100 + (int)a1x.word) > 0x22u)
-		&& (fix_10B4E0_terraintype(-0x1 + (int)a1x.word) <= 5u
-			|| fix_10B4E0_terraintype(-0x1 + (int)a1x.word) > 0x22u)
-		&& (fix_10B4E0_terraintype((int)a1x.word) <= 5u
-			|| fix_10B4E0_terraintype((int)a1x.word) > 0x22u))
+	uint32 heightSum = 0;
+	uint32 heightCount = 0;
+	if (mapAngle_13B4E0[axis.word] & 7
+		&& mapHeightmap_11B4E0[axis.word]
+		&& (fix_10B4E0_terraintype(-0x101 + axis.word) <= 5u
+			|| fix_10B4E0_terraintype(-0x101 + axis.word) > 0x22u)
+		&& (fix_10B4E0_terraintype(-0x100 + axis.word) <= 5u
+			|| fix_10B4E0_terraintype(-0x100 + axis.word) > 0x22u)
+		&& (fix_10B4E0_terraintype(-0x1 + axis.word) <= 5u
+			|| fix_10B4E0_terraintype(-0x1 + axis.word) > 0x22u)
+		&& (fix_10B4E0_terraintype(axis.word) <= 5u
+			|| fix_10B4E0_terraintype(axis.word) > 0x22u))
 	{
-		v4 = 3;
-		for (i = a1x.word - 0x101; --v4 != -1; i += 0xfd)
+		char indexB = 3;
+		for (uint16 i = axis.word - 0x101; --indexB != -1; i += 0xfd)
 		{
-			v5 = 3;
-			while (--v5 != -1)
+			char indexC = 3;
+			while (--indexC != -1)
 			{
 				if (fix_10B4E0_terraintype(i) <= 5u
 					|| fix_10B4E0_terraintype(i) > 0x22u)
 				{
-					v3++;
-					v2 += mapHeightmap_11B4E0[i];
+					heightCount++;
+					heightSum += mapHeightmap_11B4E0[i];
 				}
 				i++;
 			}
 		}
-		if (v3)
+		if (heightCount)
 		{
-			//i = (unsigned __int16)a1x.word;
-			mapHeightmap_11B4E0[a1x.word] = v2 / v3;
+			mapHeightmap_11B4E0[axis.word] = heightSum / heightCount;
 			if (isCaveLevel_D41B6)
 			{
-				v6 = mapHeightmap_11B4E0[a1x.word];
-				if (x_BYTE_14B4E0_second_heightmap[a1x.word] > v6)
+				if (x_BYTE_14B4E0_second_heightmap[axis.word] > mapHeightmap_11B4E0[axis.word])
 				{
-					mapAngle_13B4E0[a1x.word] &= 0xF7u;
+					mapAngle_13B4E0[axis.word] &= 0xF7u;
 				}
 				else
 				{
-					v7 = mapAngle_13B4E0[a1x.word] | 8;
-					x_BYTE_14B4E0_second_heightmap[a1x.word] = v6 - 1;
-					mapAngle_13B4E0[a1x.word] = v7;
+					x_BYTE_14B4E0_second_heightmap[axis.word] = mapHeightmap_11B4E0[axis.word] - 1;
+					mapAngle_13B4E0[axis.word] |= 8;
 				}
 			}
 		}
 	}
-	//return i;
 }
-// D41B6: using guessed type char x_BYTE_D41B6;
 
 //----- (00048D20) --------------------------------------------------------
 __int16 sub_48D20(int a1, unsigned __int16 a2)//229d20
