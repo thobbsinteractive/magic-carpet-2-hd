@@ -31453,20 +31453,20 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 	//int v14; // eax
 	//int v15; // edx
 	//char v16; // ST0C_1
-	uaxis_2d v17x; // cx
-	char v18; // dh
-	char j; // dl
+	//uaxis_2d v17x; // cx
+	//char v18; // dh
+	//char j; // dl
 	uaxis_2d v20x; // ax
 	uaxis_2d v21x; // bx
 	char v22; // al
 	char v23; // bl
 	unsigned __int8 v24; // bh
-	char i; // [esp+0h] [ebp-14h]
+	//char i; // [esp+0h] [ebp-14h]
 	char v27; // [esp+4h] [ebp-10h]
 	//char v28; // [esp+4h] [ebp-10h]
 	char v29; // [esp+8h] [ebp-Ch]
 	//char v30; // [esp+8h] [ebp-Ch]
-	char v31; // [esp+8h] [ebp-Ch]
+	//char v31; // [esp+8h] [ebp-Ch]
 	//char v32; // [esp+10h] [ebp-4h]
 
 	uaxis_2d locAxis1;
@@ -31516,7 +31516,7 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 			//add_compare(0x227607, CommandLineParams.DoDebugafterload());
 		}
 		locAxis1._axis_2d.x = xAddPlus;
-		for (i = xAddPlus; i; i--)
+		for (int i = xAddPlus; i; i--)
 		{
 			if (mapTerrainType_10B4E0[axis2.word] == 1)
 			{
@@ -31545,26 +31545,26 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 		axis2._axis_2d.y++;
 		yIndex--;
 	}
-	v31 = xAddPlus + 1;//[ebp-10]
-	v17x.word = axis1.word;
-	v18 = yAddPlus + 1;//problem 02, ale ma byt 03
+	char xIndex = xAddPlus + 1;//[ebp-10]
+	axis2.word = axis1.word;
+	yIndex = yAddPlus + 1;//problem 02, ale ma byt 03
 	//v17=0xfefe
 	//adress 227737
 	if (yAddPlus != -1)
 	{
 		do
 		{
-			for (j = v31; j; j--)
+			for (int j = xIndex; j; j--)
 			{
-				v17x._axis_2d.x++;
-				v17x._axis_2d.y++;
-				v20x.word = v17x.word;
-				v17x._axis_2d.x -= 2;
-				v17x._axis_2d.y -= 2;
-				v21x.word = v17x.word;
-				v17x._axis_2d.x++;
+				axis2._axis_2d.x++;
+				axis2._axis_2d.y++;
+				v20x.word = axis2.word;
+				axis2._axis_2d.x -= 2;
+				axis2._axis_2d.y -= 2;
+				v21x.word = axis2.word;
+				axis2._axis_2d.x++;
 				v22 = mapHeightmap_11B4E0[v21x.word] - mapHeightmap_11B4E0[v20x.word] + 32;
-				v17x._axis_2d.y++;
+				axis2._axis_2d.y++;
 				if (v22 >= 28)
 				{
 					if (v22 > 40)
@@ -31578,23 +31578,23 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 					v23 = 32 - v22 + 32;
 				else
 					v23 = v22;
-				locAxis1.word = v17x.word;
-				mapShading_12B4E0[v17x.word] = v23;
-				if (isCaveLevel_D41B6 && (v24 = mapHeightmap_11B4E0[v17x.word], (unsigned __int8)x_BYTE_14B4E0_second_heightmap[v17x.word] <= v24))
+				locAxis1.word = axis2.word;
+				mapShading_12B4E0[axis2.word] = v23;
+				if (isCaveLevel_D41B6 && (v24 = mapHeightmap_11B4E0[axis2.word], x_BYTE_14B4E0_second_heightmap[axis2.word] <= v24))
 				{
-					x_BYTE_14B4E0_second_heightmap[v17x.word] = v24 - 1;
-					mapAngle_13B4E0[v17x.word] |= 8u;
+					x_BYTE_14B4E0_second_heightmap[axis2.word] = v24 - 1;
+					mapAngle_13B4E0[axis2.word] |= 8u;
 				}
 				else
 				{
-					mapAngle_13B4E0[v17x.word] &= 0xF7u;
+					mapAngle_13B4E0[axis2.word] &= 0xF7u;
 				}
-				v17x._axis_2d.x++;
+				axis2._axis_2d.x++;
 			}
-			v17x._axis_2d.x -= v31;
-			v18--;
-			v17x._axis_2d.y++;
-		} while (v18);
+			axis2._axis_2d.x -= xIndex;
+			yIndex--;
+			axis2._axis_2d.y++;
+		} while (yIndex);
 	}
 }
 
