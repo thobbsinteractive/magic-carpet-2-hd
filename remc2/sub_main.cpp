@@ -38820,9 +38820,10 @@ void GameEvents_51BB0()//232bb0
 		actEvent->dword_0xA4_164x->word_0x18_24_next_entity = D41A0_0.array_0x6E3E[i].str_0x6E3E_word6;
 		actEvent->dword_0xA4_164x->word_0x1A_26 = D41A0_0.array_0x6E3E[i].str_0x6E3E_word8;
 
-		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
+		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(D41A0_0.LevelIndex_0xc,
+			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
 		{
-			auto action = m_InputRecorder->GetCurrentPlayerActions(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
+			auto action = m_InputRecorder->GetCurrentPlayerActions(D41A0_0.LevelIndex_0xc, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
 			actEvent->dword_0xA4_164x->word_0x4_4 = action->word_0x4_4;
 			actEvent->dword_0xA4_164x->word_0x6_6 = action->word_0x6_6;
 			actEvent->dword_0xA4_164x->dword_0x0_0 = action->dword_0x0_0;
@@ -38831,7 +38832,7 @@ void GameEvents_51BB0()//232bb0
 		}
 		else if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
 		{
-			m_InputRecorder->RecordPlayerActions(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248, 
+			m_InputRecorder->RecordPlayerActions(D41A0_0.LevelIndex_0xc, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248,
 				actEvent->dword_0xA4_164x->dword_0x0_0,
 				actEvent->dword_0xA4_164x->word_0x4_4,
 				actEvent->dword_0xA4_164x->word_0x6_6,

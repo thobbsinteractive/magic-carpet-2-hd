@@ -863,10 +863,6 @@ bool HandleSpecialKeys(const SDL_Event &event) {
 		ToggleMouseGrabbed();
 		specialKey = true;
 	}
-	//if ((event.key.keysym.sym == SDLK_ESCAPE) && (event.key.keysym.mod & KMOD_SHIFT)) {
-	//	StopPlayback();
-	//	specialKey = true;
-	//}
 	return specialKey;
 }
 
