@@ -31463,11 +31463,11 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 	unsigned __int8 v24; // bh
 	char i; // [esp+0h] [ebp-14h]
 	char v27; // [esp+4h] [ebp-10h]
-	char v28; // [esp+4h] [ebp-10h]
+	//char v28; // [esp+4h] [ebp-10h]
 	char v29; // [esp+8h] [ebp-Ch]
-	char v30; // [esp+8h] [ebp-Ch]
+	//char v30; // [esp+8h] [ebp-Ch]
 	char v31; // [esp+8h] [ebp-Ch]
-	char v32; // [esp+10h] [ebp-4h]
+	//char v32; // [esp+10h] [ebp-4h]
 
 	uaxis_2d locAxis1;
 	uaxis_2d locAxis2;
@@ -31475,14 +31475,6 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 	if (CommandLineParams.DoDebugSequences()) {
 		//add_compare(0x227573,CommandLineParams.DoDebugafterload());
 	}
-	/*
-	v4x._axis_2d.x = a2x._axis_2d.x - a1x._axis_2d.x + 1;
-	v2x.word = a1x.word;
-	v29 = a2x._axis_2d.x - a1x._axis_2d.x + 1;
-	v4x._axis_2d.y = a2x._axis_2d.y - a1x._axis_2d.y + 1;
-	v3 = v4x._axis_2d.y == 0;
-	v27 = a2x._axis_2d.y - a1x._axis_2d.y + 1;
-	*/
 
 	locAxis1._axis_2d.x = axis2._axis_2d.x - axis1._axis_2d.x + 1;
 	locAxis1._axis_2d.y = axis2._axis_2d.y - axis1._axis_2d.y + 1;
@@ -31496,20 +31488,16 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 		locAxis1._axis_2d.x = axis2._axis_2d.x - axis1._axis_2d.x + 1;
 		while (locAxis1._axis_2d.x)
 		{
-			v5x.word = locAxis2.word;
+			mapTerrainType_10B4E0[locAxis2.word] = 1;
 			locAxis2._axis_2d.x--;
-			mapTerrainType_10B4E0[v5x.word] = 1;
-			v6x.word = locAxis2.word;
+			mapTerrainType_10B4E0[locAxis2.word] = 1;
 			locAxis2._axis_2d.y--;
-			mapTerrainType_10B4E0[v6x.word] = 1;
-			v7x.word = locAxis2.word;
+			mapTerrainType_10B4E0[locAxis2.word] = 1;
 			locAxis2._axis_2d.x++;
-			mapTerrainType_10B4E0[v7x.word] = 1;
-			v8x.word = locAxis2.word;
-			locAxis1._axis_2d.x--;
+			mapTerrainType_10B4E0[locAxis2.word] = 1;
+			locAxis2._axis_2d.x++;
 			locAxis2._axis_2d.y++;
-			mapTerrainType_10B4E0[v8x.word] = 1;
-			locAxis2._axis_2d.x++;
+			locAxis1._axis_2d.x--;
 		}
 		locAxis2._axis_2d.x -= xAdd;
 		locAxis2._axis_2d.y++;
@@ -31517,18 +31505,18 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 	}
 	axis1._axis_2d.x--;
 	axis1._axis_2d.y--;
-	v28 = yAdd + 1;
-	v32 = v28;
+	char yAddPlus = yAdd + 1;
+	char yIndex = yAddPlus;
 	v9x.word = axis1.word;
-	v30 = xAdd + 1;
+	char xAddPlus = xAdd + 1;
 	//adress 2275eb
-	while (v32)
+	while (yIndex)
 	{
 		if (CommandLineParams.DoDebugSequences()) {
 			//add_compare(0x227607, CommandLineParams.DoDebugafterload());
 		}
-		locAxis1._axis_2d.x = v30;
-		for (i = v30; i; i--)
+		locAxis1._axis_2d.x = xAddPlus;
+		for (i = xAddPlus; i; i--)
 		{
 			if (mapTerrainType_10B4E0[v9x.word] == 1)
 			{
@@ -31553,16 +31541,16 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 			}
 			v9x._axis_2d.x++;
 		}
-		v9x._axis_2d.x -= v30;
+		v9x._axis_2d.x -= xAddPlus;
 		v9x._axis_2d.y++;
-		v32--;
+		yIndex--;
 	}
-	v31 = v30 + 1;//[ebp-10]
+	v31 = xAddPlus + 1;//[ebp-10]
 	v17x.word = axis1.word;
-	v18 = v28 + 1;//problem 02, ale ma byt 03
+	v18 = yAddPlus + 1;//problem 02, ale ma byt 03
 	//v17=0xfefe
 	//adress 227737
-	if (v28 != -1)
+	if (yAddPlus != -1)
 	{
 		do
 		{
