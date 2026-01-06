@@ -26,7 +26,6 @@ uint8_t m_fontBuffer[256 * 256];
 SDL_Surface* m_surfaceFont = nullptr;
 uint8_t m_smallFontBuffer[128 * 128];
 SDL_Surface* m_smallSurfaceFont = nullptr;
-InputRecorder* m_InputRecorder = nullptr;
 
 uint8_t LastPressedKey_1806E4; //3516e4
 int8_t pressedKeys_180664[128]; // idb
@@ -864,10 +863,10 @@ bool HandleSpecialKeys(const SDL_Event &event) {
 		ToggleMouseGrabbed();
 		specialKey = true;
 	}
-	if ((event.key.keysym.sym == SDLK_ESCAPE) && (event.key.keysym.mod & KMOD_SHIFT)) {
-		StopPlayback();
-		specialKey = true;
-	}
+	//if ((event.key.keysym.sym == SDLK_ESCAPE) && (event.key.keysym.mod & KMOD_SHIFT)) {
+	//	StopPlayback();
+	//	specialKey = true;
+	//}
 	return specialKey;
 }
 
@@ -877,158 +876,105 @@ int PollSdlEvents()
 	uint32_t buttonresult;
 	gamepad_event_t gpe = {};
 
-	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying)
+	while (SDL_PollEvent(&event))
 	{
-		auto ptrInputEvents = m_InputRecorder->GetCurrentInputEvents();
-		if (ptrInputEvents != nullptr)
+		switch (event.type)
 		{
-			for (int i = 0; i < ptrInputEvents->size(); i++)
+		case SDL_WINDOWEVENT:
+		{
+			if (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESIZED)
 			{
-				if (ptrInputEvents->at(i)->isMouse)
-					MouseEvents(ptrInputEvents->at(i)->mouse_buttons, ptrInputEvents->at(i)->mouse_x, ptrInputEvents->at(i)->mouse_y);
-
-				if (ptrInputEvents->at(i)->isKeyPress)
-				{
-					m_pressed = ptrInputEvents->at(i)->keyPressed;
-					SetGameKeyPress_1806E4(ptrInputEvents->at(i)->keyPressed, ptrInputEvents->at(i)->gameKeyChar);
-				}
+				int newWidth = 0;
+				int newHeight = 0;
+				SDL_GetWindowSize(m_window, &newWidth, &newHeight);
+				m_iWindowWidth = newWidth;
+				m_iWindowHeight = newHeight;
+				if (EventDispatcher::I != nullptr)
+					EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
 			}
+			break;
 		}
-		while (SDL_PollEvent(&event))
+		case SDL_KEYDOWN:
 		{
-			switch (event.type)
-			{
-				case SDL_WINDOWEVENT:
-				{
-					if (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESIZED)
-					{
-						int newWidth = 0;
-						int newHeight = 0;
-						SDL_GetWindowSize(m_window, &newWidth, &newHeight);
-						m_iWindowWidth = newWidth;
-						m_iWindowHeight = newHeight;
-						if (EventDispatcher::I != nullptr)
-							EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
-					}
-					break;
-				}
-				case SDL_KEYDOWN:
-				{
-					if (HandleSpecialKeys(event)) {
-						break;
-					}
-				}
-				case SDL_QUIT: return 0;
+			m_pressed = true;
+			m_lastScancode = event.key.keysym.scancode;
+
+			if (!HandleSpecialKeys(event)) {
+				SetPress(true, m_lastScancode);
 			}
+			Logger->trace("Key {} press detected", m_lastScancode);
+			break;
+		}
+		case SDL_KEYUP:
+		{
+			m_lastScancode = event.key.keysym.scancode;
+			SetPress(false, m_lastScancode);
+			Logger->trace("Key {} release detected", m_lastScancode);
+			break;
+		}
+		case SDL_MOUSEMOTION:
+		{
+			SetMouseEvents(1, event.motion.x, event.motion.y);
+			break;
+		}
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP:
+		{
+			buttonresult = TranslateSdlMouseToGameMouse(event.button);
+			SetMouseEvents(buttonresult, event.motion.x, event.motion.y);
+			break;
+		}
+		case SDL_JOYAXISMOTION:
+		{
+			if (event.jaxis.which == gpc.controller_id) {
+				// motion on controller 0
+				//gps.initialized = 1;
+				// actual axis data is being read via gamepad_poll_data()
+				// to counteract jerkiness due to missing event triggers
+				Logger->trace("axis {} event detected", event.jaxis.axis + 1);
+			}
+			break;
+		}
+		case SDL_JOYHATMOTION:
+		{
+			if (event.jhat.which == gpc.controller_id) {
+				//gps.initialized = 1;
+				// actual axis data is being read via gamepad_poll_data()
+				Logger->trace("hat {} event detected", event.jhat.hat + 1);
+			}
+			break;
+		}
+		case SDL_JOYBUTTONDOWN:
+		{
+			if (event.jbutton.which == gpc.controller_id) {
+				//gps.initialized = 1;
+				gpe.btn_pressed = 1 << (event.jbutton.button + 1);
+				Logger->trace("key {} press detected", event.jbutton.button + 1);
+				gpe.flag |= GP_BTN_PRESSED;
+			}
+			break;
+		}
+		case SDL_JOYBUTTONUP:
+		{
+			if (event.jbutton.which == gpc.controller_id) {
+				//gps.initialized = 1;
+				gpe.btn_released = 1 << (event.jbutton.button + 1);
+				Logger->trace("key {} release detected", event.jbutton.button + 1);
+				gpe.flag |= GP_BTN_RELEASED;
+			}
+			break;
+		}
+		case SDL_QUIT: return 0;
 		}
 	}
-	else
-	{
-		while (SDL_PollEvent(&event))
-		{
-			switch (event.type)
-			{
-				case SDL_WINDOWEVENT:
-				{
-					if (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESIZED)
-					{
-						int newWidth = 0;
-						int newHeight = 0;
-						SDL_GetWindowSize(m_window, &newWidth, &newHeight);
-						m_iWindowWidth = newWidth;
-						m_iWindowHeight = newHeight;
-						if (EventDispatcher::I != nullptr)
-							EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
-					}
-					break;
-				}
-				case SDL_KEYDOWN:
-				{
-					m_pressed = true;
-					m_lastScancode = event.key.keysym.scancode;
+	gamepad_poll_data(&gpe);
 
-					if (!HandleSpecialKeys(event)) {
-						SetPress(true, m_lastScancode);
-					}
-					Logger->trace("Key {} press detected", m_lastScancode);
-					break;
-				}
-				case SDL_KEYUP:
-				{
-					m_lastScancode = event.key.keysym.scancode;
-					SetPress(false, m_lastScancode);
-					Logger->trace("Key {} release detected", m_lastScancode);
-					break;
-				}
-				case SDL_MOUSEMOTION:
-				{
-					SetMouseEvents(1, event.motion.x, event.motion.y);
-					break;
-				}
-				case SDL_MOUSEBUTTONDOWN:
-				case SDL_MOUSEBUTTONUP:
-				{
-					buttonresult = TranslateSdlMouseToGameMouse(event.button);
-					SetMouseEvents(buttonresult, event.motion.x, event.motion.y);
-					break;
-				}
-				case SDL_JOYAXISMOTION:
-				{
-					if (event.jaxis.which == gpc.controller_id) {
-						// motion on controller 0
-						//gps.initialized = 1;
-						// actual axis data is being read via gamepad_poll_data()
-						// to counteract jerkiness due to missing event triggers
-						Logger->trace("axis {} event detected", event.jaxis.axis + 1);
-					}
-					break;
-				}
-				case SDL_JOYHATMOTION:
-				{
-					if (event.jhat.which == gpc.controller_id) {
-						//gps.initialized = 1;
-						// actual axis data is being read via gamepad_poll_data()
-						Logger->trace("hat {} event detected", event.jhat.hat + 1);
-					}
-					break;
-				}
-				case SDL_JOYBUTTONDOWN:
-				{
-					if (event.jbutton.which == gpc.controller_id) {
-						//gps.initialized = 1;
-						gpe.btn_pressed = 1 << (event.jbutton.button + 1);
-						Logger->trace("key {} press detected", event.jbutton.button + 1);
-						gpe.flag |= GP_BTN_PRESSED;
-					}
-					break;
-				}
-				case SDL_JOYBUTTONUP:
-				{
-					if (event.jbutton.which == gpc.controller_id) {
-						//gps.initialized = 1;
-						gpe.btn_released = 1 << (event.jbutton.button + 1);
-						Logger->trace("key {} release detected", event.jbutton.button + 1);
-						gpe.flag |= GP_BTN_RELEASED;
-					}
-					break;
-				}
-				case SDL_QUIT: return 0;
-			}
-		}
-		gamepad_poll_data(&gpe);
-	}
-	if (m_InputRecorder != nullptr)
-		m_InputRecorder->IncrementTick();
 	return 1;
 }
 
 void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y) 
 {
 	ScaleUpMouseCoordsToVga(x, y);
-
-	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
-		m_InputRecorder->RecordMouseInput(buttons, x, y);
-
 	MouseEvents(buttons, x, y);
 }
 
@@ -1608,10 +1554,6 @@ uint16_t VGA_read_char_from_buffer() {
 
 void SetPress(bool pressed, uint16_t scanCodeChar) {
 	auto gameKeyChar = TranslateSdlKeysToGameKeys(scanCodeChar);
-
-	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
-		m_InputRecorder->RecordKeyPress(pressed, gameKeyChar);
-
 	SetGameKeyPress_1806E4(pressed, gameKeyChar);
 }
 
@@ -1630,47 +1572,6 @@ void SetGameKeyPress_1806E4(bool pressed, uint16_t gameKeyChar) {
 void VGA_mouse_clear_keys() {
 	for (int i = 0; i < 128; i++)
 		pressedKeys_180664[i] = 0;
-}
-
-void StartRecording(const char* outputFileName)
-{
-	if (m_InputRecorder != nullptr)
-		delete m_InputRecorder;
-
-	m_InputRecorder = new InputRecorder(outputFileName);
-	m_InputRecorder->StartRecording();
-}
-
-void StopRecording()
-{
-	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
-	{
-		m_InputRecorder->StopRecording();
-		delete m_InputRecorder;
-		m_InputRecorder = nullptr;
-	}
-}
-
-void StartPlayback(const char* inputFileName)
-{
-	if (m_InputRecorder != nullptr)
-	{
-		delete m_InputRecorder;
-		m_InputRecorder = nullptr;
-	}
-
-	m_InputRecorder = new InputRecorder(inputFileName);
-	m_InputRecorder->StartPlayback();
-}
-
-void StopPlayback()
-{
-	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying)
-	{
-		m_InputRecorder->StopPlayback();
-		delete m_InputRecorder;
-		m_InputRecorder = nullptr;
-	}
 }
 
 void WriteSurfaceToFile(SDL_Surface* surface)

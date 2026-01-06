@@ -420,6 +420,7 @@ type_WORD_E1F84;
 //		 } NCB;
 
 extern char x_BYTE_D4B80;
+extern InputRecorder* m_InputRecorder;
 
 void j___delay(x_DWORD); // weak
 
@@ -1587,5 +1588,10 @@ void StopCdPlayBackAndFadeUp_59AF0();
 int FadeDownSoundVolume_59A50();
 uint32_t FadeUpSoundVolume_59B50(uint32_t interval);
 void RestoreSoundVolume_59BF0();
+
+void StartRecording(const char* outputFileName);
+void StopRecording();
+void StartPlayback(const char* inputFileName);
+void StopPlayback();
 
 #endif //SUB_MAIN_ACTIVE

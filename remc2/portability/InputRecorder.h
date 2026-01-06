@@ -10,10 +10,8 @@
 class InputRecorder
 {
 private:
-	uint32_t m_Tick = 0;
-	uint16_t m_Iteration = 0;
 	std::string m_FilePath;
-	std::map<uint32_t, std::vector<InputEvent*>*>* m_InputEvents;
+	std::map<uint32_t, InputEvent*>* m_InputEvents;
 
 public:
 	bool m_IsRecording = false;
@@ -27,14 +25,12 @@ public:
 	bool StopRecording();
 	void PauseRecording(bool pause);
 	void ClearInputEvents();
-	void IncrementTick();
-	std::vector<InputEvent*>* GetCurrentInputEvents();
 	
 	bool StartPlayback();
 	void StopPlayback();
 
-	void RecordKeyPress(bool keyPressed, uint16_t gameKeyChar);
-	void RecordMouseInput(uint32_t mouse_buttons, int16_t mouse_x, int16_t mouse_y);
+	InputEvent* GetCurrentPlayerActions(int turn);
+	void RecordPlayerActions(uint32_t turn, int32_t dword_0x0_0, int16_t word_0x4_4, int16_t word_0x6_6, int16_t word_0x18_24_next_entity, int16_t word_0x1A_26);
 
 	bool SaveRecordingToFile(const char* outputFileName);
 	bool LoadRecordingFile(const char* inputFileName);

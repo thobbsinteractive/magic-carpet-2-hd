@@ -1234,6 +1234,7 @@ char FadeVolume_D4B78 = 0; // weak
 char x_BYTE_D4B79 = 0; // weak
 char IsVolumeFaded_D4B7A = 0; // weak
 char x_BYTE_D4B80 = 0; // weak
+InputRecorder* m_InputRecorder = nullptr;
 int x_DWORD_D4B84 = 16; // weak
 int x_DWORD_D4B88 = 4294967216; // weak
 int x_DWORD_D4B8C = 80; // weak
@@ -38809,6 +38810,8 @@ void GameEvents_51BB0()//232bb0
 			break;
 		}
 		//233c76
+
+		//Player movement/actions
 		int rollEnv = 2 * D41A0_0.array_0x6E3E[i].roll - actEvent->dword_0xA4_164x->word_0x155_341;
 		actEvent->dword_0xA4_164x->word_0x4_4 = (rollEnv - (my_sign32(rollEnv) << 2) + my_sign32(rollEnv)) >> 2;
 		int pitchEnv = 2 * D41A0_0.array_0x6E3E[i].pitch - actEvent->dword_0xA4_164x->word_0x157_343;
@@ -38816,6 +38819,26 @@ void GameEvents_51BB0()//232bb0
 		actEvent->dword_0xA4_164x->dword_0x0_0 = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte5;
 		actEvent->dword_0xA4_164x->word_0x18_24_next_entity = D41A0_0.array_0x6E3E[i].str_0x6E3E_word6;
 		actEvent->dword_0xA4_164x->word_0x1A_26 = D41A0_0.array_0x6E3E[i].str_0x6E3E_word8;
+
+		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
+		{
+			auto action = m_InputRecorder->GetCurrentPlayerActions(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
+			actEvent->dword_0xA4_164x->word_0x4_4 = action->word_0x4_4;
+			actEvent->dword_0xA4_164x->word_0x6_6 = action->word_0x6_6;
+			actEvent->dword_0xA4_164x->dword_0x0_0 = action->dword_0x0_0;
+			actEvent->dword_0xA4_164x->word_0x18_24_next_entity = action->word_0x18_24_next_entity;
+			actEvent->dword_0xA4_164x->word_0x1A_26 = action->word_0x1A_26;
+		}
+		else if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
+		{
+			m_InputRecorder->RecordPlayerActions(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248, 
+				actEvent->dword_0xA4_164x->dword_0x0_0,
+				actEvent->dword_0xA4_164x->word_0x4_4,
+				actEvent->dword_0xA4_164x->word_0x6_6,
+				actEvent->dword_0xA4_164x->word_0x18_24_next_entity,
+				actEvent->dword_0xA4_164x->word_0x1A_26);
+		}
+
 		sub_57B20(&D41A0_0.array_0x2BDE[i], Entities_EA3E4[D41A0_0.array_0x2BDE[i].PlayerEntityIdx_2BE4_11240]);
 		if (D41A0_0.array_0x2BDE[i].byte_0x846_2BDE)
 			sub_55C60(&D41A0_0.array_0x2BDE[i]);
@@ -65878,5 +65901,46 @@ void sub_66610(type_entity_0x6E8E* a1x)//247610
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // EB39C: using guessed type __int16 PlayerPosition_EB398[2];
+
+void StartRecording(const char* outputFileName)
+{
+	if (m_InputRecorder != nullptr)
+		delete m_InputRecorder;
+
+	m_InputRecorder = new InputRecorder(outputFileName);
+	m_InputRecorder->StartRecording();
+}
+
+void StopRecording()
+{
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
+	{
+		m_InputRecorder->StopRecording();
+		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
+	}
+}
+
+void StartPlayback(const char* inputFileName)
+{
+	if (m_InputRecorder != nullptr)
+	{
+		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
+	}
+
+	m_InputRecorder = new InputRecorder(inputFileName);
+	m_InputRecorder->StartPlayback();
+}
+
+void StopPlayback()
+{
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying)
+	{
+		m_InputRecorder->StopPlayback();
+		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
+	}
+}
 
 #pragma endregion
