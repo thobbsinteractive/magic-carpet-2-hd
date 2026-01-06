@@ -776,7 +776,7 @@ int sub_48990(char a1, char a2, char a3, char a4);
 void sub_48B50(unsigned __int8 a1, char a2, int a3, int a4);
 void sub_48B90(uaxis_2d a1);
 __int16 sub_48D20(int a1, unsigned __int16 a2);
-__int16 sub_48DF0(char a1, char a2, char a3, char a4);
+__int16 GetTerrainHeightFromSquare_48DF0(char x, char y, char height, char width);
 signed int sub_48E60(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4);
 signed int sub_48E90(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4);
 signed int sub_48EC0(__int16 a1, __int16 a2, __int16 a3, unsigned __int16 a4);
@@ -27908,7 +27908,7 @@ void sub_377F0(type_event_0x6E8E* a1x)//2187f0
 		a1x->word_0x2E_46 = a1x->axis_0x4C_76.z >> 5;
 		a1x->dword_0x10_16 = 10;
 		a1x->struct_byte_0xc_12_15.byte[0] = v6 | 2;
-		v7 = sub_48DF0(v25 - 1, HIBYTE(v25) - 1, v5 + 2, v3 + 2);
+		v7 = GetTerrainHeightFromSquare_48DF0(v25 - 1, HIBYTE(v25) - 1, v5 + 2, v3 + 2);
 		a1x->subSpellIndex_0x2A_42 = v7;
 		if ((unsigned __int16)v7 > 0xDCu)
 			a1x->subSpellIndex_0x2A_42 = 220;
@@ -28188,15 +28188,15 @@ void AddTerrainMod0A_2A_37BC0(type_event_0x6E8E* a1x)//218bc0 // groove castle
 }
 
 //----- (00038270) --------------------------------------------------------
-type_event_0x6E8E* sub_38270(type_event_0x6E8E* a1x)//219270
+type_event_0x6E8E* sub_38270(type_event_0x6E8E* event)//219270
 {
 	type_event_0x6E8E* v1x; // ebx
 	type_event_0x6E8E* resultx; // eax
 	type_event_0x6E8E* v3x; // eax
 
-	a1x->rand_0x14_20 = 9377 * a1x->rand_0x14_20 + 9439;
+	event->rand_0x14_20 = 9377 * event->rand_0x14_20 + 9439;
 	v1x = 0;
-	switch (a1x->rand_0x14_20 % 0xCu)
+	switch (event->rand_0x14_20 % 0xCu)
 	{
 	case 0u:
 	case 1u:
@@ -28240,7 +28240,6 @@ type_event_0x6E8E* sub_38270(type_event_0x6E8E* a1x)//219270
 	}
 	return resultx;
 }
-// EB398: using guessed type __int16 x_WORD_EB398;
 
 //----- (00038330) --------------------------------------------------------
 int AddHouse0A_2D_38330(type_event_0x6E8E* event)//219330
@@ -28357,33 +28356,12 @@ int AddHouse0A_2D_38330(type_event_0x6E8E* event)//219330
 //----- (000385C0) --------------------------------------------------------
 void RemoveCastleStage_385C0(type_event_0x6E8E* event)//2195c0 //remove castle stage
 {
-	//uint8_t* v3; // edi
-	//int v4; // esi
-	//signed int v5; // edx
-	//type_event_0x6E8E* v6x; // eax
-	//uaxis_2d v8x; // esi
-	//unsigned __int8 v10; // cl
-	//char v11; // ch
-	//type_event_0x6E8E* v13x; // esi
-	//__int16 v14; // cx
-	//unsigned int v16; // edi
-	//uint8_t* v17; // eax
-	//unsigned int v18; // esi
-	//int v20; // [esp+4h] [ebp-24h]
-	//unsigned int v23; // [esp+10h] [ebp-18h]
-	//uaxis_2d v26x; // [esp+1Ch] [ebp-Ch]
-	//uaxis_2d v27x; // [esp+1Ch] [ebp-Ch]
-	//uaxis_2d v28x; // [esp+20h] [ebp-8h]
-	//uaxis_2d v29x; // [esp+20h] [ebp-8h]
-
 	uaxis_2d locAxis1;
 	uaxis_2d locAxis2;
 	uaxis_2d locAxis3;
-	//uaxis_2d locAxis4;
 	int16_t zKoef;
 	uint8_t* locData2;
 	type_event_0x6E8E* tempEvent;
-
 
 	uint8_t* locData = (*filearray_2aa18c[filearrayindex_BUILD00DATTAB].posistruct)[event->byte_0x46_70].data;
 	unsigned int locHeight = (*filearray_2aa18c[filearrayindex_BUILD00DATTAB].posistruct)[event->byte_0x46_70].height_5;
@@ -28398,7 +28376,7 @@ void RemoveCastleStage_385C0(type_event_0x6E8E* event)//2195c0 //remove castle s
 	if (!event->fontTypeIndex_0x3D_61)
 	{
 		if (event->model_0x40_64)
-			zKoef = sub_48DF0(locAxis1._axis_2d.x, locAxis1._axis_2d.y, locHeight, locWidth);
+			zKoef = GetTerrainHeightFromSquare_48DF0(locAxis1._axis_2d.x, locAxis1._axis_2d.y, locHeight, locWidth);
 		else
 			zKoef = event->axis_0x4C_76.z >> 5;
 		locAxis2.word = locAxis1.word;
@@ -28413,8 +28391,8 @@ void RemoveCastleStage_385C0(type_event_0x6E8E* event)//2195c0 //remove castle s
 				{
 					predictedAxis_EB398ar.x = locAxis3._axis_2d.x << 8;
 					predictedAxis_EB398ar.y = locAxis3._axis_2d.y << 8;
-					locIndex++;
 					predictedAxis_EB398ar.z = 32 * zKoef;
+					locIndex++;
 					if (!(locIndex & 7))
 						predictedAxis_EB398ar.z = 32 * (zKoef - 10);
 					if (event->dword_0x10_16 > 0)
@@ -28477,7 +28455,6 @@ void RemoveCastleStage_385C0(type_event_0x6E8E* event)//2195c0 //remove castle s
 			locAxis2._axis_2d.y++;
 		}
 		sub_48B50(locAxis1._axis_2d.x, locAxis1._axis_2d.y, locHeight, locWidth);
-		//v11 = event->xtype_0x41_65;
 		if (event->xtype_0x41_65)
 			sub_4A1E0(event->xtype_0x41_65, 1);
 		if (event->byte_0x46_70 == 68)
@@ -28499,7 +28476,6 @@ void RemoveCastleStage_385C0(type_event_0x6E8E* event)//2195c0 //remove castle s
 	sub_49A30(tempEvent, event->fontTypeIndex_0x3D_61);
 	tempEvent->axis_0x4C_76.z = event->axis_0x9A_154x.z;
 	tempEvent->xtype_0x41_65 = event->xtype_0x41_65;
-	//v14 = event->playerEntityIndex_0x94_148;
 	if (event->playerEntityIndex_0x94_148)
 	{
 		tempEvent->playerEntityIndex_0x94_148 = event->playerEntityIndex_0x94_148;
@@ -28512,16 +28488,13 @@ void RemoveCastleStage_385C0(type_event_0x6E8E* event)//2195c0 //remove castle s
 		tempEvent->word_0x5A_90 = event->word_0x5A_90;
 	}
 	sub_59760(event, tempEvent);
-	//v16 = 0;
-	//v29x.word = locAxis1.word;
 	locData2 = locData;
 	for (int y = 0; y < locHeight; y++)
 	{
-		//v27x.word = v29x.word;
 		for (int x = 0; x < locWidth; x++)
 		{
 			if (locData2[1] != 0xff || locData2[0] != 0xff)
-				mapAngle_13B4E0[v27x.word] &= 0x7Fu;
+				mapAngle_13B4E0[locAxis1.word] &= 0x7Fu;
 			locData2 += 2;
 		}
 	}
@@ -28857,7 +28830,7 @@ void sub_39040(type_event_0x6E8E* a1x)//21a040
 					DisableEntityDrawing04_57F10(a1x);
 				break;
 			case 1u:
-				v5 = sub_48DF0(v3 - 9, v1 - 9, 18, 18);
+				v5 = GetTerrainHeightFromSquare_48DF0(v3 - 9, v1 - 9, 18, 18);
 				a1x->axis_0x4C_76.z = 0;
 				a1x->word_0x2C_44 = 0;
 				if ((signed int)v5 > 64)
@@ -33099,22 +33072,21 @@ __int16 sub_48D20(int a1, unsigned __int16 a2)//229d20
 }
 
 //----- (00048DF0) --------------------------------------------------------
-__int16 sub_48DF0(char a1, char a2, char a3, char a4)//229df0
+__int16 GetTerrainHeightFromSquare_48DF0(char x, char y, char height, char width)//229df0
 {
-	unsigned __int16 v4; // ax
-	unsigned __int16 v5; // dx
-	int v6; // eax
-	unsigned __int16 v7; // bx
-
-	LOBYTE(v4) = a1;
-	HIBYTE(v4) = a2;
-	HIBYTE(v5) = a2;
-	LOBYTE(v5) = a4 + a1;
-	v6 = mapHeightmap_11B4E0[v5] + mapHeightmap_11B4E0[v4];
-	HIBYTE(v5) = a3 + a2;
-	v7 = v5;
-	LOBYTE(v5) = a1;
-	return (mapHeightmap_11B4E0[v5] + (unsigned int)mapHeightmap_11B4E0[v7] + v6) >> 2;
+	uaxis_2d locAxis1;
+	uaxis_2d locAxis2;
+	uaxis_2d locAxis3;
+	uaxis_2d locAxis4;
+	locAxis1._axis_2d.x = x;
+	locAxis1._axis_2d.y = y;
+	locAxis2._axis_2d.x = x + width;
+	locAxis2._axis_2d.y = y;
+	locAxis3._axis_2d.x = x + width;
+	locAxis3._axis_2d.y = y + height;
+	locAxis4._axis_2d.x = x;
+	locAxis4._axis_2d.y = y + height;
+	return (mapHeightmap_11B4E0[locAxis1.word] + mapHeightmap_11B4E0[locAxis2.word] + mapHeightmap_11B4E0[locAxis3.word] + mapHeightmap_11B4E0[locAxis4.word]) >> 2;
 }
 
 //----- (00048E60) --------------------------------------------------------
@@ -33285,7 +33257,7 @@ void sub_49A30(type_event_0x6E8E* a1x, unsigned __int16 a2)//22aa30
 		v10++;
 	}
 	SetShiftByCastle_49EC0(a1x, a2);
-	a1x->axis_0x4C_76.z = 32 * sub_48DF0(v10, v11, v8, v9);
+	a1x->axis_0x4C_76.z = 32 * GetTerrainHeightFromSquare_48DF0(v10, v11, v8, v9);
 	a1x->byte_0x46_70 = a2;
 	//LOWORD(v4) = a2;
 	a1x->life_0x8 = 30;
