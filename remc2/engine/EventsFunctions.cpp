@@ -31445,7 +31445,7 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 	uaxis_2d v6x; // dx
 	uaxis_2d v7x; // dx
 	uaxis_2d v8x; // dx
-	uaxis_2d v9x; // cx
+	//uaxis_2d v9x; // cx
 	int v10; // edx
 	//uaxis_2d v11x; // ax
 	int v12; // edx
@@ -31507,7 +31507,7 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 	axis1._axis_2d.y--;
 	char yAddPlus = yAdd + 1;
 	char yIndex = yAddPlus;
-	v9x.word = axis1.word;
+	axis2.word = axis1.word;
 	char xAddPlus = xAdd + 1;
 	//adress 2275eb
 	while (yIndex)
@@ -31518,31 +31518,31 @@ void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 		locAxis1._axis_2d.x = xAddPlus;
 		for (i = xAddPlus; i; i--)
 		{
-			if (mapTerrainType_10B4E0[v9x.word] == 1)
+			if (mapTerrainType_10B4E0[axis2.word] == 1)
 			{
-				v10 = 343 * (mapAngle_13B4E0[v9x.word] & 7);
-				v9x._axis_2d.x++;
-				v12 = 49 * (mapAngle_13B4E0[v9x.word] & 7) + v10;
-				v9x._axis_2d.y++;
-				v13 = mapAngle_13B4E0[v9x.word] & 7;
-				v9x._axis_2d.x--;
-				v14 = mapAngle_13B4E0[v9x.word] & 7;
-				v9x._axis_2d.y--;
-				mapTerrainType_10B4E0[v9x.word] = x_BYTE_F2CD0x[v14 + 7 * v13 + v12][0];
-				if (mapTerrainType_10B4E0[v9x.word] >= 8u)
+				v10 = 343 * (mapAngle_13B4E0[axis2.word] & 7);
+				axis2._axis_2d.x++;
+				v12 = 49 * (mapAngle_13B4E0[axis2.word] & 7) + v10;
+				axis2._axis_2d.y++;
+				v13 = mapAngle_13B4E0[axis2.word] & 7;
+				axis2._axis_2d.x--;
+				v14 = mapAngle_13B4E0[axis2.word] & 7;
+				axis2._axis_2d.y--;
+				mapTerrainType_10B4E0[axis2.word] = x_BYTE_F2CD0x[v14 + 7 * v13 + v12][0];
+				if (mapTerrainType_10B4E0[axis2.word] >= 8u)
 				{
-					mapAngle_13B4E0[v9x.word] = x_BYTE_F2CD0x[v14 + 7 * v13 + v12][1] + (mapAngle_13B4E0[v9x.word] & 0x87);
+					mapAngle_13B4E0[axis2.word] = x_BYTE_F2CD0x[v14 + 7 * v13 + v12][1] + (mapAngle_13B4E0[axis2.word] & 0x87);
 				}
 				else
 				{
 					x_WORD_17B4E0 = 9377 * x_WORD_17B4E0 + 9439;
-					mapAngle_13B4E0[v9x.word] = (mapAngle_13B4E0[v9x.word] & 0x87) + 16 * ((unsigned __int16)x_WORD_17B4E0 % 7u);
+					mapAngle_13B4E0[axis2.word] = (mapAngle_13B4E0[axis2.word] & 0x87) + 16 * (x_WORD_17B4E0 % 7u);
 				}
 			}
-			v9x._axis_2d.x++;
+			axis2._axis_2d.x++;
 		}
-		v9x._axis_2d.x -= xAddPlus;
-		v9x._axis_2d.y++;
+		axis2._axis_2d.x -= xAddPlus;
+		axis2._axis_2d.y++;
 		yIndex--;
 	}
 	v31 = xAddPlus + 1;//[ebp-10]
