@@ -38832,7 +38832,9 @@ void GameEvents_51BB0()//232bb0
 			actEvent->dword_0xA4_164x->word_0x18_24_next_entity = action->word_0x18_24_next_entity;
 			actEvent->dword_0xA4_164x->word_0x1A_26 = action->word_0x1A_26;
 			actEvent->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105 = action->str_611_SpellIndexLeft_0x451_1105;
+			actEvent->dword_0xA4_164x->str_611.byte_0x455_1109 = action->str_611_byte_0x455_1109;
 			actEvent->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107 = action->str_611_SpellIndexRight_0x453_1107;
+			actEvent->dword_0xA4_164x->str_611.byte_0x456_1110 = action->str_611_byte_0x456_1110;
 		}
 		else if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
 		{
@@ -38843,7 +38845,9 @@ void GameEvents_51BB0()//232bb0
 				actEvent->dword_0xA4_164x->word_0x18_24_next_entity,
 				actEvent->dword_0xA4_164x->word_0x1A_26,
 				actEvent->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105,
-				actEvent->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107);
+				actEvent->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107,
+				actEvent->dword_0xA4_164x->str_611.byte_0x455_1109,
+				actEvent->dword_0xA4_164x->str_611.byte_0x456_1110);
 
 		}
 

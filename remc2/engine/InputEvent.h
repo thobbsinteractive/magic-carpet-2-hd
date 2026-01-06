@@ -10,5 +10,7 @@ struct InputEvent
 	int16_t word_0x18_24_next_entity = 0;
 	int16_t word_0x1A_26 = 0;
 	int16_t str_611_SpellIndexLeft_0x451_1105 = 0;
+	int8_t str_611_byte_0x455_1109 = 0;
 	int16_t str_611_SpellIndexRight_0x453_1107 = 0;
+	int8_t str_611_byte_0x456_1110 = 0;
 };
