@@ -28188,31 +28188,23 @@ void AddTerrainMod0A_2A_37BC0(type_event_0x6E8E* a1x)//218bc0 // groove castle
 }
 
 //----- (00038270) --------------------------------------------------------
-type_event_0x6E8E* sub_38270(type_event_0x6E8E* event)//219270
+type_event_0x6E8E* GetRandManaSphere_38270(type_event_0x6E8E* event)//219270
 {
-	type_event_0x6E8E* v1x; // ebx
-	type_event_0x6E8E* resultx; // eax
-	type_event_0x6E8E* v3x; // eax
-
+	type_event_0x6E8E* resultx;
 	event->rand_0x14_20 = 9377 * event->rand_0x14_20 + 9439;
-	v1x = 0;
 	switch (event->rand_0x14_20 % 0xCu)
 	{
 	case 0u:
 	case 1u:
 		resultx = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 4);
-		v1x = resultx;
-		if (!resultx)
-			goto LABEL_10;
-		resultx->actionIndex_0x45_69 = 33;
+		if (resultx)
+			resultx->actionIndex_0x45_69 = 33;
 		break;
 	case 2u:
 	case 3u:
 		resultx = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 14);
-		v1x = resultx;
-		if (!resultx)
-			goto LABEL_10;
-		resultx->actionIndex_0x45_69 = 113;
+		if (resultx)
+			resultx->actionIndex_0x45_69 = 113;
 		break;
 	case 4u:
 	case 5u:
@@ -28220,22 +28212,18 @@ type_event_0x6E8E* sub_38270(type_event_0x6E8E* event)//219270
 	case 7u:
 	case 8u:
 		resultx = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 13);
-		v1x = resultx;
-		if (!resultx)
-			goto LABEL_10;
-		resultx->actionIndex_0x45_69 = 105;
+		if (resultx)
+			resultx->actionIndex_0x45_69 = 105;
 		break;
 	case 9u:
 	case 0xAu:
 	case 0xBu:
-		v3x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 12);
-		v1x = v3x;
-		if (v3x)
-			v3x->actionIndex_0x45_69 = 97;
-		goto LABEL_10;
+		resultx = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 5, 12);
+		if (resultx)
+			resultx->actionIndex_0x45_69 = 97;
+		break;
 	default:
-	LABEL_10:
-		resultx = v1x;
+		resultx = NULL;
 		break;
 	}
 	return resultx;
@@ -28341,7 +28329,7 @@ int AddHouse0A_2D_38330(type_event_0x6E8E* event)//219330
 				{
 					predictedAxis_EB398ar = event->axis_0x4C_76;
 					predictedAxis_EB398ar.x += event->array_0x52_82.pitch;
-					sub_38270(event);
+					GetRandManaSphere_38270(event);
 				}
 			}
 		}
@@ -28404,7 +28392,7 @@ void RemoveCastleStage_385C0(type_event_0x6E8E* event)//2195c0 //remove castle s
 							{
 								if (event->dword_0x10_16 >= 4)
 								{
-									tempEvent = sub_38270(event);
+									tempEvent = GetRandManaSphere_38270(event);
 								}
 								else
 								{

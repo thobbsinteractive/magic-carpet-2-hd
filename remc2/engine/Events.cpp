@@ -2669,7 +2669,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 		break;
 	}
 	case 0x219270: {
-		sub_38270(a1_6E8E);
+		GetRandManaSphere_38270(a1_6E8E);
 		break;
 	}
 

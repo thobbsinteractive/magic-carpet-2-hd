@@ -1057,7 +1057,7 @@ bool IsNextEvent0A_2A_37740(type_event_0x6E8E* a1);
 void sub_377A0(type_event_0x6E8E* a1);
 void sub_377F0(type_event_0x6E8E* a1);
 void AddTerrainMod0A_2A_37BC0(type_event_0x6E8E* a1);
-type_event_0x6E8E* sub_38270(type_event_0x6E8E* event);
+type_event_0x6E8E* GetRandManaSphere_38270(type_event_0x6E8E* event);
 int AddHouse0A_2D_38330(type_event_0x6E8E* a1);
 void RemoveCastleStage_385C0(type_event_0x6E8E* event);
 int sub_389F0(type_event_0x6E8E* a1);
