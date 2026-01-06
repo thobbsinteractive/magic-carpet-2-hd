@@ -31436,11 +31436,11 @@ unsigned __int16 sub_46180(unsigned __int16 a1, char a2)//227180
 }
 
 //----- (00046570) --------------------------------------------------------
-void sub_46570(uaxis_2d a1x, uaxis_2d a2x)//227570
+void sub_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 {
-	uaxis_2d v2x; // cx
-	bool v3; // zf
-	uaxis_2d v4x; // eax
+	//uaxis_2d v2x; // cx
+	//bool v3; // zf
+	//uaxis_2d v4x; // eax
 	uaxis_2d v5x; // dx
 	uaxis_2d v6x; // dx
 	uaxis_2d v7x; // dx
@@ -31475,51 +31475,59 @@ void sub_46570(uaxis_2d a1x, uaxis_2d a2x)//227570
 	if (CommandLineParams.DoDebugSequences()) {
 		//add_compare(0x227573,CommandLineParams.DoDebugafterload());
 	}
-
+	/*
 	v4x._axis_2d.x = a2x._axis_2d.x - a1x._axis_2d.x + 1;
 	v2x.word = a1x.word;
 	v29 = a2x._axis_2d.x - a1x._axis_2d.x + 1;
 	v4x._axis_2d.y = a2x._axis_2d.y - a1x._axis_2d.y + 1;
 	v3 = v4x._axis_2d.y == 0;
 	v27 = a2x._axis_2d.y - a1x._axis_2d.y + 1;
+	*/
 
-	while (!v3)
+	locAxis1._axis_2d.x = axis2._axis_2d.x - axis1._axis_2d.x + 1;
+	locAxis1._axis_2d.y = axis2._axis_2d.y - axis1._axis_2d.y + 1;
+	locAxis2.word = axis1.word;
+	char xAdd = axis2._axis_2d.x - axis1._axis_2d.x + 1;
+	bool yIsZero = locAxis1._axis_2d.y == 0;
+	char yAdd = axis2._axis_2d.y - axis1._axis_2d.y + 1;
+
+	while (!yIsZero)
 	{
-		v4x._axis_2d.x = a2x._axis_2d.x - a1x._axis_2d.x + 1;
-		while (v4x._axis_2d.x)
+		locAxis1._axis_2d.x = axis2._axis_2d.x - axis1._axis_2d.x + 1;
+		while (locAxis1._axis_2d.x)
 		{
-			v5x.word = v2x.word;
-			v2x._axis_2d.x--;
+			v5x.word = locAxis2.word;
+			locAxis2._axis_2d.x--;
 			mapTerrainType_10B4E0[v5x.word] = 1;
-			v6x.word = v2x.word;
-			v2x._axis_2d.y--;
+			v6x.word = locAxis2.word;
+			locAxis2._axis_2d.y--;
 			mapTerrainType_10B4E0[v6x.word] = 1;
-			v7x.word = v2x.word;
-			v2x._axis_2d.x++;
+			v7x.word = locAxis2.word;
+			locAxis2._axis_2d.x++;
 			mapTerrainType_10B4E0[v7x.word] = 1;
-			v8x.word = v2x.word;
-			v4x._axis_2d.x--;
-			v2x._axis_2d.y++;
+			v8x.word = locAxis2.word;
+			locAxis1._axis_2d.x--;
+			locAxis2._axis_2d.y++;
 			mapTerrainType_10B4E0[v8x.word] = 1;
-			v2x._axis_2d.x++;
+			locAxis2._axis_2d.x++;
 		}
-		v2x._axis_2d.x -= v29;
-		v2x._axis_2d.y++;
-		v3 = --v4x._axis_2d.y == 0;
+		locAxis2._axis_2d.x -= xAdd;
+		locAxis2._axis_2d.y++;
+		yIsZero = --locAxis1._axis_2d.y == 0;
 	}
-	a1x._axis_2d.x--;
-	a1x._axis_2d.y--;
-	v28 = v27 + 1;
+	axis1._axis_2d.x--;
+	axis1._axis_2d.y--;
+	v28 = yAdd + 1;
 	v32 = v28;
-	v9x.word = a1x.word;
-	v30 = v29 + 1;
+	v9x.word = axis1.word;
+	v30 = xAdd + 1;
 	//adress 2275eb
 	while (v32)
 	{
 		if (CommandLineParams.DoDebugSequences()) {
 			//add_compare(0x227607, CommandLineParams.DoDebugafterload());
 		}
-		v4x._axis_2d.x = v30;
+		locAxis1._axis_2d.x = v30;
 		for (i = v30; i; i--)
 		{
 			if (mapTerrainType_10B4E0[v9x.word] == 1)
@@ -31550,7 +31558,7 @@ void sub_46570(uaxis_2d a1x, uaxis_2d a2x)//227570
 		v32--;
 	}
 	v31 = v30 + 1;//[ebp-10]
-	v17x.word = a1x.word;
+	v17x.word = axis1.word;
 	v18 = v28 + 1;//problem 02, ale ma byt 03
 	//v17=0xfefe
 	//adress 227737
@@ -31582,7 +31590,7 @@ void sub_46570(uaxis_2d a1x, uaxis_2d a2x)//227570
 					v23 = 32 - v22 + 32;
 				else
 					v23 = v22;
-				v4x.word = v17x.word;
+				locAxis1.word = v17x.word;
 				mapShading_12B4E0[v17x.word] = v23;
 				if (isCaveLevel_D41B6 && (v24 = mapHeightmap_11B4E0[v17x.word], (unsigned __int8)x_BYTE_14B4E0_second_heightmap[v17x.word] <= v24))
 				{
