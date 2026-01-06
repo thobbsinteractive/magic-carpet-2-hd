@@ -11,7 +11,7 @@ class InputRecorder
 {
 private:
 	std::string m_FilePath;
-	std::map<uint16_t, std::map<uint32_t, InputEvent*>*>* m_InputEvents;
+	std::map<uint32_t, std::map<uint32_t, InputEvent*>*>* m_InputEvents;
 
 public:
 	bool m_IsRecording = false;
@@ -30,7 +30,7 @@ public:
 	void StopPlayback();
 
 	InputEvent* GetCurrentPlayerActions(int level, int turn);
-	void RecordPlayerActions(uint16_t level, uint32_t turn, int32_t dword_0x0_0, int16_t word_0x4_4, int16_t word_0x6_6, int16_t word_0x18_24_next_entity, int16_t word_0x1A_26);
+	void RecordPlayerActions(uint32_t level, uint32_t turn, int32_t dword_0x0_0, int16_t word_0x4_4, int16_t word_0x6_6, int16_t word_0x18_24_next_entity, int16_t word_0x1A_26, int16_t str_611_SpellIndexLeft_0x451_1105, int16_t str_611_SpellIndexRight_0x453_1107);
 
 	bool SaveRecordingToFile(const char* outputFileName);
 	bool LoadRecordingFile(const char* inputFileName);

@@ -1939,7 +1939,7 @@ char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 			v5 = -1;
 		else
 			v5 = 1;
-		v6 = a1x->dword_0xA4_164x->str_611.word_0x453_1107 + v5;
+		v6 = a1x->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107 + v5;
 		while (1)
 		{
 			if (a3 || v6 < 26)
@@ -1981,7 +1981,7 @@ char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 			v12 = -1;
 		else
 			v12 = 1;
-		v6 = a1x->dword_0xA4_164x->str_611.word_0x451_1105 + v12;
+		v6 = a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105 + v12;
 		while (1)
 		{
 			if (a3 || v6 < 26)
@@ -2145,7 +2145,7 @@ void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 8)
 		HandleButtonClick_191B0(6, 8);
 	//v1 = a1x->dword_0xA4_164;
-	v2 = a1x->dword_0xA4_164x->str_611.word_0x451_1105;
+	v2 = a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105;
 	if (v2 == -1)
 	{
 		unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
@@ -2168,7 +2168,7 @@ void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 		}
 	}
 	//v4 = (uint8_t*)a1x->dword_0xA4_164;
-	v5 = a1x->dword_0xA4_164x->str_611.word_0x453_1107;
+	v5 = a1x->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107;
 	if (v5 == -1)
 	{
 		unk_18058Cstr.MouseButtonState_18059C &= 0xFD;

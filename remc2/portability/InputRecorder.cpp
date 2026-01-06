@@ -6,7 +6,7 @@ using namespace std;
 InputRecorder::InputRecorder(const char* filePath)
 {
 	m_FilePath = filePath;
-	m_InputEvents = new std::map<uint16_t, std::map<uint32_t, InputEvent*>*>();
+	m_InputEvents = new std::map<uint32_t, std::map<uint32_t, InputEvent*>*>();
 	//std::function<void(GameState)> stateChangeCallBack = [this](GameState a) { this->PlayPause(a); };
 	//EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAME_STATE_CHANGE, stateChangeCallBack));
 }
@@ -36,7 +36,7 @@ void InputRecorder::StartRecording()
 
 void InputRecorder::ClearInputEvents()
 {
-	map<uint16_t, map<uint32_t, InputEvent*>*>::iterator it;
+	map<uint32_t, map<uint32_t, InputEvent*>*>::iterator it;
 	map<uint32_t, InputEvent*>::iterator itturn;
 	for (it = m_InputEvents->begin(); it != m_InputEvents->end(); it++)
 	{
@@ -88,13 +88,13 @@ InputEvent* InputRecorder::GetCurrentPlayerActions(int level, int turn)
 	return m_InputEvents->at(level)->at(turn);
 }
 
-void InputRecorder::RecordPlayerActions(uint16_t level, uint32_t turn, int32_t dword_0x0_0, int16_t word_0x4_4, int16_t word_0x6_6, int16_t word_0x18_24_next_entity, int16_t word_0x1A_26)
+void InputRecorder::RecordPlayerActions(uint32_t level, uint32_t turn, int32_t dword_0x0_0, int16_t word_0x4_4, int16_t word_0x6_6, int16_t word_0x18_24_next_entity, int16_t word_0x1A_26, int16_t str_611_SpellIndexLeft_0x451_1105, int16_t str_611_SpellIndexRight_0x453_1107)
 {
 	if (!m_IsRecording)
 		return;
 
 	if (m_InputEvents->count(level) == 0) {
-		m_InputEvents->insert(std::pair<uint16_t, std::map<uint32_t, InputEvent*>*>(level, new std::map<uint32_t, InputEvent*>()));
+		m_InputEvents->insert(std::pair<uint32_t, std::map<uint32_t, InputEvent*>*>(level, new std::map<uint32_t, InputEvent*>()));
 	}
 	if (m_InputEvents->at(level)->count(turn) == 0)
 	{
@@ -107,6 +107,9 @@ void InputRecorder::RecordPlayerActions(uint16_t level, uint32_t turn, int32_t d
 	m_InputEvents->at(level)->at(turn)->word_0x6_6 = word_0x6_6;
 	m_InputEvents->at(level)->at(turn)->word_0x18_24_next_entity = word_0x18_24_next_entity;
 	m_InputEvents->at(level)->at(turn)->word_0x1A_26 = word_0x1A_26;
+	m_InputEvents->at(level)->at(turn)->str_611_SpellIndexLeft_0x451_1105 = str_611_SpellIndexLeft_0x451_1105;
+	m_InputEvents->at(level)->at(turn)->str_611_SpellIndexRight_0x453_1107 = str_611_SpellIndexRight_0x453_1107;
+
 }
 
 bool InputRecorder::SaveRecordingToFile(const char* outputFileName)
@@ -117,7 +120,7 @@ bool InputRecorder::SaveRecordingToFile(const char* outputFileName)
 		if (!eventsFile)
 			return false;
 
-		map<uint16_t, map<uint32_t, InputEvent*>*>::iterator it;
+		map<uint32_t, map<uint32_t, InputEvent*>*>::iterator it;
 		for (it = m_InputEvents->begin(); it != m_InputEvents->end(); it++)
 		{
 			map<uint32_t, InputEvent*>::iterator it2;
@@ -142,18 +145,16 @@ bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 		if (eventsFile == nullptr)
 			return false;
 
-		uint16_t level = 0;
-		uint16_t currentLevel = -1;
+		uint32_t level = 0;
+		int32_t currentLevel = -1;
 		uint32_t turn = 0;
 		while (fread(&level, sizeof(InputEvent::level), 1, eventsFile))
 		{
-			fseek(eventsFile, 1, SEEK_CUR); //padding
-			fseek(eventsFile, 1, SEEK_CUR); //padding
 			fread(&turn, sizeof(InputEvent::turn), 1, eventsFile);
 
 			if (level != currentLevel)
 			{
-				m_InputEvents->insert(std::pair<uint16_t, std::map<uint32_t, InputEvent*>*>(level, new std::map<uint32_t, InputEvent*>()));
+				m_InputEvents->insert(std::pair<uint32_t, std::map<uint32_t, InputEvent*>*>(level, new std::map<uint32_t, InputEvent*>()));
 				currentLevel = level;
 			}
 			m_InputEvents->at(level)->insert({turn, new InputEvent() });
@@ -163,6 +164,8 @@ bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 			fread(&m_InputEvents->at(level)->at(turn)->word_0x6_6, sizeof(InputEvent::word_0x6_6), 1, eventsFile);
 			fread(&m_InputEvents->at(level)->at(turn)->word_0x18_24_next_entity, sizeof(InputEvent::word_0x18_24_next_entity), 1, eventsFile);
 			fread(&m_InputEvents->at(level)->at(turn)->word_0x1A_26, sizeof(InputEvent::word_0x1A_26), 1, eventsFile);
+			fread(&m_InputEvents->at(level)->at(turn)->str_611_SpellIndexLeft_0x451_1105, sizeof(InputEvent::str_611_SpellIndexLeft_0x451_1105), 1, eventsFile);
+			fread(&m_InputEvents->at(level)->at(turn)->str_611_SpellIndexRight_0x453_1107, sizeof(InputEvent::str_611_SpellIndexRight_0x453_1107), 1, eventsFile);
 		}
 		return fclose(eventsFile) == 0;
 	}
