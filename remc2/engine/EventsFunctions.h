@@ -1059,7 +1059,7 @@ void sub_377F0(type_event_0x6E8E* a1);
 void AddTerrainMod0A_2A_37BC0(type_event_0x6E8E* a1);
 type_event_0x6E8E* sub_38270(type_event_0x6E8E* a1);
 int AddHouse0A_2D_38330(type_event_0x6E8E* a1);
-void sub_385C0_remove_castle_stage(type_event_0x6E8E* a1);
+void RemoveCastleStage_385C0(type_event_0x6E8E* event);
 int sub_389F0(type_event_0x6E8E* a1);
 signed int CompareEvent08_38B00(type_event_0x6E8E* a1);
 int sub_38B90(type_event_0x6E8E* a1);
