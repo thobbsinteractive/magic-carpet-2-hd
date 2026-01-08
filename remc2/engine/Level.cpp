@@ -771,10 +771,10 @@ void sub_55AB0(type_str_0x2BDE* playStr)//236ab0
 			}
 		}
 	}
-	if (playStr->dword_0x3E6_2BE4_12228.str_611.word_0x451_1105 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[playStr->dword_0x3E6_2BE4_12228.str_611.word_0x451_1105])
-		playStr->dword_0x3E6_2BE4_12228.str_611.word_0x451_1105 = -1;
-	if (playStr->dword_0x3E6_2BE4_12228.str_611.word_0x453_1107 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[playStr->dword_0x3E6_2BE4_12228.str_611.word_0x453_1107])
-		playStr->dword_0x3E6_2BE4_12228.str_611.word_0x453_1107 = -1;
+	if (playStr->dword_0x3E6_2BE4_12228.str_611.leftSpellIndex_0x451_1105 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[playStr->dword_0x3E6_2BE4_12228.str_611.leftSpellIndex_0x451_1105])
+		playStr->dword_0x3E6_2BE4_12228.str_611.leftSpellIndex_0x451_1105 = -1;
+	if (playStr->dword_0x3E6_2BE4_12228.str_611.rightSpellIndex_0x453_1107 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[playStr->dword_0x3E6_2BE4_12228.str_611.rightSpellIndex_0x453_1107])
+		playStr->dword_0x3E6_2BE4_12228.str_611.rightSpellIndex_0x453_1107 = -1;
 }
 
 //----- (00071990) --------------------------------------------------------

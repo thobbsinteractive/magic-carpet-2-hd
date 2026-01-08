@@ -1926,7 +1926,7 @@ char sub_18DA0(type_event_0x6E8E* a1x, char a2, char a3)//1f9da0
 			v5 = -1;
 		else
 			v5 = 1;
-		v6 = a1x->dword_0xA4_164x->str_611.word_0x453_1107 + v5;
+		v6 = a1x->dword_0xA4_164x->str_611.rightSpellIndex_0x453_1107 + v5;
 		while (1)
 		{
 			if (a3 || v6 < 26)
@@ -1968,7 +1968,7 @@ char sub_18DA0(type_event_0x6E8E* a1x, char a2, char a3)//1f9da0
 			v12 = -1;
 		else
 			v12 = 1;
-		v6 = a1x->dword_0xA4_164x->str_611.word_0x451_1105 + v12;
+		v6 = a1x->dword_0xA4_164x->str_611.leftSpellIndex_0x451_1105 + v12;
 		while (1)
 		{
 			if (a3 || v6 < 26)
@@ -2099,13 +2099,13 @@ void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
 		HandleButtonClick_191B0(6, 4);
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 8)
 		HandleButtonClick_191B0(6, 8);
-	if (a1x->dword_0xA4_164x->str_611.word_0x451_1105 == -1)
+	if (a1x->dword_0xA4_164x->str_611.leftSpellIndex_0x451_1105 == -1)
 	{
 		unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 	}
 	else
 	{
-		if (ENTITY_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x451_1105]]->byte_0x3B_59 == 1)
+		if (ENTITY_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.leftSpellIndex_0x451_1105]]->byte_0x3B_59 == 1)
 		{
 			if (unk_18058Cstr.x_DWORD_18059C & 1)
 			{
@@ -2113,19 +2113,19 @@ void sub_18F80(type_event_0x6E8E* a1x)//1f9f80
 				unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 			}
 		}
-		else if (unk_18058Cstr.x_DWORD_18059C & 1 || unk_18058Cstr.x_DWORD_18059C & 4 && ENTITY_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x451_1105]]->word_0x2E_46 > 0)
+		else if (unk_18058Cstr.x_DWORD_18059C & 1 || unk_18058Cstr.x_DWORD_18059C & 4 && ENTITY_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.leftSpellIndex_0x451_1105]]->word_0x2E_46 > 0)
 		{
 			HandleButtonClick_191B0(6, 16);
 			unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 		}
 	}
-	if (a1x->dword_0xA4_164x->str_611.word_0x453_1107 == -1)
+	if (a1x->dword_0xA4_164x->str_611.rightSpellIndex_0x453_1107 == -1)
 	{
 		unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 	}
 	else
 	{
-		if (ENTITY_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.word_0x453_1107]]->byte_0x3B_59 == 1)
+		if (ENTITY_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.rightSpellIndex_0x453_1107]]->byte_0x3B_59 == 1)
 		{
 			if (unk_18058Cstr.x_DWORD_18059C & 2)
 			{

@@ -328,8 +328,8 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	//uint8_t setting_38545;
 	uint8_t stubu[36000];
 	type_event_0x6E8E* dwordindex_38396;//0x95FC//x_D41A0_BYTEARRAY_4_struct.dwordindex_38396
-	uint8_t byteindex_38400;//0x9600//x_D41A0_BYTEARRAY_4_struct.byteindex_38400
-	uint8_t byteindex_38401;//0x9601//x_D41A0_BYTEARRAY_4_struct.byteindex_38401
+	uint8_t leftSpellPlayerIndex_38400;//0x9600//x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400
+	uint8_t rightSpellPlayerIndex_38401;//0x9601//x_D41A0_BYTEARRAY_4_struct.rightSpellPlayerIndex_38401
 
 	uint8_t setting_38402;//0x9602//x_D41A0_BYTEARRAY_4_struct.setting_38402
 
