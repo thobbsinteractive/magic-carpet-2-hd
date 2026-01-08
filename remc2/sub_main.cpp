@@ -39768,7 +39768,7 @@ void sub_54A50(int playerIndex2, int playerIndex)//235a50
 		{
 			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.byte[result] = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
 		}
-		else if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 8 || x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
+		else if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 8 || x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 		{
 			int tempByte0x360FB = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
 			if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.byte[result] < tempByte0x360FB)
@@ -41717,7 +41717,7 @@ void UpdateEntities_57730()//238730
 	}
 	
 	//If NOT Paused, move entities
-	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)) 
 	{
 		sub_12780();
 		for (k = 0; k < 29; k++)
@@ -65954,6 +65954,11 @@ void StopPlayback()
 		delete m_InputRecorder;
 		m_InputRecorder = nullptr;
 	}
+}
+
+bool IsRecordingOrPlaying()
+{
+	return (m_InputRecorder != nullptr && (m_InputRecorder->m_IsPlaying || m_InputRecorder->m_IsRecording));
 }
 
 #pragma endregion

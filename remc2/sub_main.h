@@ -1593,5 +1593,6 @@ void StartRecording(const char* outputFileName);
 void StopRecording();
 void StartPlayback(const char* inputFileName);
 void StopPlayback();
+bool IsRecordingOrPlaying();
 
 #endif //SUB_MAIN_ACTIVE
