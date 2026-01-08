@@ -211,7 +211,7 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 		DrawBar_2D190(barStartXPos, 28 * scale, 64 * scale, 10 * scale, /*v6*/(v5 / v3) * scale, v16);
 
 		//Draw Mana Goal Lines
-		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10) && D41A0_0.terrain_2FECE.word_0x2FED5)
+		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE) && D41A0_0.terrain_2FECE.word_0x2FED5)
 		{
 			DrawLine_2BC80(barStartXPos + ((D41A0_0.terrain_2FECE.word_0x2FED5 << 6) / 100) * scale, 26 * scale, 2 * scale, 2 * scale, v26);
 			DrawLine_2BC80(barStartXPos + ((D41A0_0.terrain_2FECE.word_0x2FED5 << 6) / 100) * scale, 38 * scale, 2 * scale, 2 * scale, v26);
@@ -566,15 +566,13 @@ void ColorizeScreen_2E850(int posX, int posY, int width, int height, uint8_t col
 //----- (00030630) --------------------------------------------------------
 void DrawCurrentObjectiveTextbox_30630(uint8_t scale)//211630
 {
-	char v0; // dl
 	int result; // eax
 	uint16_t v2; // cx
 	char* text; // ebx
 	Type_TextBox_1804B0 textbox;
 
-	v0 = x_D41A0_BYTEARRAY_4_struct.setting_byte1_22;
 	result = 0;
-	if (!(v0 & 0x10) && !(v0 & 0x20))
+	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE) && !(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x20))
 	{
 		if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 & 2)
 		{
@@ -911,7 +909,7 @@ signed int sub_616D0(signed int a1)//2426d0
 	result = 0;
 	if (a1 >= 0 && a1 <= 7)
 	{
-		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
+		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 		{
 			switch (D41A0_0.array_0x2BDE[a1].dword_0x3E6_2BE4_12228.byte_0x1C0_448)
 			{

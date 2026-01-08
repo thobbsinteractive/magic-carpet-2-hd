@@ -149,7 +149,7 @@ typedef struct {
 }
 type_32_1a;
 
-enum class spell_t {
+enum class spell {
 	fireball = 0,
 	possession = 1,
 	castle = 2,
@@ -177,6 +177,12 @@ enum class spell_t {
 	alliance = 24,
 	cave_in = 25
 };
+
+typedef enum
+{
+	CHEATS_ENABLED = 0x80u,
+	MULTIPLAYER_MODE = 0x10u
+} Setting;
 
 typedef struct {//begin 611//str_611
 	type_32_1a array_0x263_611x;//size??//dword_0x649_2BDE

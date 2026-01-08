@@ -307,7 +307,7 @@ void ProcessKeyboardPresses_17190()//1f8190
 					switch (LastPressedKey_1806E4)
 					{
 					case 0x19: {//p
-						if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
+						if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 							PauseUnpauseGame_18BB0();
 						LastPressedKey_1806E4 = 0;
 						break;
@@ -1054,7 +1054,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			else if (LastPressedKey_1806E4 == 0x19)
 			{
 				//LOBYTE(result) = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
-				if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
+				if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 					PauseUnpauseGame_18BB0();
 			}
 		}
@@ -1291,7 +1291,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		//	Speech On /	Speech Off
 		return;
 	case 5:
-		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
+		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 		{
 			D41A0_0.byte_0x36DEA_fly_asistant = 0;
 		}
@@ -1419,7 +1419,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		}
 		return;// result;
 	case 7:
-		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
+		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 			return;
 		v13x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
 		if (v13x <= Entities_EA3E4[0] || v13x->life_0x8 < 0)

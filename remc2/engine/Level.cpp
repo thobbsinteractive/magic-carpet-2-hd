@@ -283,7 +283,7 @@ bool LoadLevel_555D0(uint8_t fileindex, int levelindex)//2365d0
 	type_str_0x21B6 temp0x21B6;
 
 	bool readSuccess = false;
-	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
+	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 	{
 		tempGr = D41A0_0.m_GameSettings.m_Graphics;
 		tempDisp = D41A0_0.m_GameSettings.m_Display;
@@ -398,7 +398,7 @@ bool LoadLevelSLEV_55A10(uint8_t savefileindex)//236a10
 bool SaveLevel_55080(uint8_t savefileindex, int32_t LevelNumber, char* savefileindex2)//236080 //filenameindex added for debugging
 {
 	bool success = false;
-	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
+	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 	{
 		sub_71930();
 		sub_55100(1);
