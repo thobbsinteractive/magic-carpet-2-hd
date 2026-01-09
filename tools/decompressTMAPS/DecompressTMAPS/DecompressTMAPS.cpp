@@ -1760,18 +1760,117 @@ int main(int argc, char** argv) {
 		printf("-p PALD-0.DAT -t TMAPS0-0.DAT -f 0 -o out-day\n");
 		printf("For cave levels:\n");
 		printf("-p PALC-0.DAT -t TMAPS2-0.DAT -f 2 -o out-cave\n");
+		//printf("-p in/PALN-0.DAT -t in/MSPRN0-0.DAT -f 2 -o out-MSPRN\n");
 		return -1;
 	}
 
 	try
 	{
-		return sub_main(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
+		//return sub_main(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
+		return sub_mainNoRNC(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
 	}
 	catch (std::exception& e)
 	{
 		printf(e.what());
 		return -100;
 	}
+}
+
+int sub_mainNoRNC(const char palfilename[], const char tmapsdatfilename[], const char tmapstabfilename[], const char tmapsstr[], int max_images, ImageType imageType, int padding, bool caveSprites, const char outputPath[])
+{
+	std::vector<std::string> filesToDelete;
+	double colourMultiplier = 4;
+
+	FILE* fptrTMAPSdata;
+	fopen_s(&fptrTMAPSdata, tmapsdatfilename, "rb");
+	fseek(fptrTMAPSdata, 0L, SEEK_END);
+	long sz = ftell(fptrTMAPSdata);
+	fseek(fptrTMAPSdata, 0L, SEEK_SET);
+	Bit8u* contentTMAPSdat = (Bit8u*)malloc(sz * sizeof(char*));
+	fread(contentTMAPSdat, sz, 1, fptrTMAPSdata);
+	fclose(fptrTMAPSdata);
+
+	FILE* fptrTMAPStab;
+	fopen_s(&fptrTMAPStab, tmapstabfilename, "rb");
+	fseek(fptrTMAPStab, 0L, SEEK_END);
+	long sztab = ftell(fptrTMAPStab);
+	fseek(fptrTMAPStab, 0L, SEEK_SET);
+	bitmap_pos_struct_t* contentTMAPStab = (bitmap_pos_struct_t*)malloc(sztab * sizeof(char*));
+	fread(contentTMAPStab, sztab, 1, fptrTMAPStab);
+	fclose(fptrTMAPStab);
+
+	int count = sztab / sizeof(bitmap_pos_struct_t);
+
+	Bit8u buffer[100000];
+	Bit8u prevbuffer[100000];
+
+	int indextab = 0;
+	int index = 0;
+
+	//int dword_0xE6_heapsize_230 = 0x400000;
+	//Bit8u* pointer_0xE2_heapbuffer_226 = (Bit8u*)sub_83CD0_malloc2(dword_0xE6_heapsize_230);
+	//x_DWORD_E9C28_str = sub_71B40(dword_0xE6_heapsize_230, 0x1F8u, (type_x_DWORD_E9C28_str*)pointer_0xE2_heapbuffer_226);
+	//TMAPS00TAB_BEGIN_BUFFER = contentTMAPStab;
+	//x_DWORD_E9C08x = sub_72120(0x1F8u);
+
+	char outname[512];
+	char outnameAlpha[512];
+	char title[512];
+
+	Bit8u pallettebuffer[768];
+	FILE* palfile = nullptr;
+
+	fopen_s(&palfile, palfilename, "rb");
+	fread(pallettebuffer, 768, 1, palfile);
+	fclose(palfile);
+
+	while (index < count)
+	{
+		int begin = contentTMAPStab[index].data;
+		int end = contentTMAPStab[index+1].data;
+		int size = end - begin;
+		
+		Bit8u* stmpdat = &contentTMAPSdat[begin];
+
+		int width = contentTMAPStab[index].width_4*2;
+		int height = contentTMAPStab[index].height_5*2;
+
+		if (imageType == ImageType::bmp)
+		{
+			sprintf_s(outname, "%s\\%s%03i-00.bmp", outputPath, tmapsstr, index);
+			BitmapIO::WriteRGBAImageBufferAsImageBMP(outname, width, height, pallettebuffer, buffer + 6, colourMultiplier);
+		}
+
+		if (imageType == ImageType::png)
+		{
+			if (isOther(other_folder, index))
+				sprintf_s(outname, "%s\\%s%03i-00-other", outputPath, tmapsstr, index);
+			else
+				sprintf_s(outname, "%s\\%s%03i-00", outputPath, tmapsstr, index);
+
+			sprintf_s(title, "%s%03i", tmapsstr, index);
+			BitmapIO::WritePosistructToPng(pallettebuffer, buffer + 6, width, height, outname, title, padding, colourMultiplier);
+		}
+
+		if (imageType == ImageType::pnga)
+		{
+			sprintf_s(outname, "%s\\%s%03i-00", outputPath, tmapsstr, index);
+			sprintf_s(title, "%s%03i", tmapsstr, index);
+			BitmapIO::WritePosistructToPng(pallettebuffer, buffer + 6, width, height, outname, title, padding, colourMultiplier);
+			sprintf_s(outname, "%s\\%s%03i-alpha-00", outputPath, tmapsstr, index);
+			BitmapIO::WritePosistructToAlphaPng(pallettebuffer, buffer + 6, width, height, outname, title, padding);
+		}
+
+		if (caveSprites && index < 452)
+			indextab += 10;
+		else if (!caveSprites)
+			indextab += 10;
+		
+		index++;
+	}
+
+	printf("Extraction Completed\n");
+	return 0;
 }
 
 int sub_main(const char palfilename[], const char tmapsdatfilename[], const char tmapstabfilename[], const char tmapsstr[], int max_images, ImageType imageType, int padding, bool caveSprites, const char outputPath[])
