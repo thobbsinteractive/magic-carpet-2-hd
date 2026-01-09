@@ -31465,10 +31465,10 @@ void AddBuildingToTerrain_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 				axis2._axis_2d.x--;
 				buildingIndex += mapAngle_13B4E0[axis2.word] & 7;
 				axis2._axis_2d.y--;
-				mapTerrainType_10B4E0[axis2.word] = x_BYTE_F2CD0x[buildingIndex][0];
+				mapTerrainType_10B4E0[axis2.word] = building_F2CD0x[buildingIndex].terrainTileType;
 				if (mapTerrainType_10B4E0[axis2.word] >= 8u)
 				{
-					mapAngle_13B4E0[axis2.word] = x_BYTE_F2CD0x[buildingIndex][1] + (mapAngle_13B4E0[axis2.word] & 0x87);
+					mapAngle_13B4E0[axis2.word] = building_F2CD0x[buildingIndex].rotationTile + (mapAngle_13B4E0[axis2.word] & 0x87);
 				}
 				else
 				{
@@ -39149,7 +39149,7 @@ bool SaveSMAPSLEVmovie_54D30(__int16 a1)//235d30 //in game load
 		DataFileIO::Read(savedfile, (uint8_t*)mapAngle_13B4E0, 0x10000);
 		DataFileIO::Read(savedfile, (uint8_t*)x_BYTE_14B4E0_second_heightmap, 0x10000);
 		DataFileIO::Read(savedfile, (uint8_t*)mapEntityIndex_15B4E0, 0x20000);
-		DataFileIO::Read(savedfile, (uint8_t*)x_BYTE_F2CD0x, 4802);
+		DataFileIO::Read(savedfile, (uint8_t*)building_F2CD0x, 4802);
 		DataFileIO::Close(savedfile);
 	}
 	sprintf(printbuffer, "%s/%s%03d.DAT", "MOVIE", "SLEV", a1);
@@ -39201,7 +39201,7 @@ bool SaveSMAPSLEVmovie2_54F00(__int16 a1)//235f00 //in game save
 		DataFileIO::WriteFile_98CAA(file, (uint8_t*)mapAngle_13B4E0, 0x10000);
 		DataFileIO::WriteFile_98CAA(file, (uint8_t*)x_BYTE_14B4E0_second_heightmap, 0x10000);
 		DataFileIO::WriteFile_98CAA(file, (uint8_t*)mapEntityIndex_15B4E0, 0x20000);
-		DataFileIO::WriteFile_98CAA(file, (uint8_t*)x_BYTE_F2CD0x, 4802);
+		DataFileIO::WriteFile_98CAA(file, (uint8_t*)building_F2CD0x, 4802);
 		DataFileIO::Close(file);
 	}
 	sub_55100(2);
