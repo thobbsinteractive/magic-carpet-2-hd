@@ -160,6 +160,8 @@ bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 				currentLevel = level;
 			}
 			m_InputEvents->at(level)->insert({turn, new InputEvent() });
+			m_InputEvents->at(level)->at(turn)->level = level;
+			m_InputEvents->at(level)->at(turn)->turn = turn;
 
 			fread(&m_InputEvents->at(level)->at(turn)->dword_0x0_0, sizeof(InputEvent::dword_0x0_0), 1, eventsFile);
 			fread(&m_InputEvents->at(level)->at(turn)->word_0x4_4, sizeof(InputEvent::word_0x4_4), 1, eventsFile);
