@@ -11,14 +11,7 @@
 
 #include "LevelStructs.h"
 
-#pragma pack (push,1)
-typedef struct {
-	char terrainTileType;
-	char rotationTile;
-} building_str;
-#pragma pack (pop)
-
-extern building_str building_F2CD0x[2800]; // 233cd0//4802 //4816 // size has to be 2 * (7^4 + 7^3 + 7^2 + 7^1) = 2 * (2401 + 343 + 49 + 7) = 2*2800 as seen in sub_462A0_orig
+extern char x_BYTE_F2CD0x[2800][2]; // 233cd0//4802 //4816 // size has to be 2 * (7^4 + 7^3 + 7^2 + 7^1) = 2 * (2401 + 343 + 49 + 7) = 2*2800 as seen in sub_462A0_orig
 extern uint8_t MapBasicHeight_D41B7;
 
 extern uint16_t rand2_17B4E0;

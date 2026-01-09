@@ -240,7 +240,7 @@ bool SaveLevelSMAP_55320(uint8_t savefileindex, char* savefileindex2)//236320 //
 		DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)mapAngle_13B4E0, 0x10000);
 		DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)x_BYTE_14B4E0_second_heightmap, 0x10000);
 		DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)mapEntityIndex_15B4E0, 0x20000);
-		writedsize = DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)building_F2CD0x, 4802) != 4802;
+		writedsize = DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)x_BYTE_F2CD0x, 4802) != 4802;
 		DataFileIO::Close(savesmapfile);
 	}
 	Logger->debug("InGameSave-end-{}", writedsize);
@@ -360,7 +360,7 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex)//2368e0
 		DataFileIO::Read(loadfile, (uint8_t*)mapAngle_13B4E0, 0x10000);
 		DataFileIO::Read(loadfile, (uint8_t*)x_BYTE_14B4E0_second_heightmap, 0x10000);
 		DataFileIO::Read(loadfile, (uint8_t*)mapEntityIndex_15B4E0, 0x20000);
-		int truesize = DataFileIO::Read(loadfile, (uint8_t*)building_F2CD0x, 4802) == 4802;
+		int truesize = DataFileIO::Read(loadfile, (uint8_t*)x_BYTE_F2CD0x, 4802) == 4802;
 		DataFileIO::Close(loadfile);
 		if (truesize) {
 			Logger->debug("InGameLoad-end-ok\n");

@@ -194,7 +194,7 @@ TEST(Terrain, sub_45DC0) {
 		for (int i = 0; i < 7 * 7 * 7 * 7; i++)
 			for (int m = 0; m < 2; m++)
 			{
-				building_F2CD0x[i][m] = pseudoRand() % 256;
+				x_BYTE_F2CD0x[i][m] = pseudoRand() % 256;
 			}
 		rand2_17B4E0 = pseudoRand() % (256 * 256);
 		uint16_t temprand2_17B4E0 = rand2_17B4E0;
@@ -215,7 +215,7 @@ TEST(Terrain, sub_45DC0) {
 			tempHeight1[i] = mapHeightmap_11B4E0[i];
 		}
 
-		sub_45DC0_orig(tempa2, tempa3x, tempa4, D41A0_0.terrain_2FECE.MapType, lowDiffHeightmap_D47DC, isCaveLevel_D41B6, &temprand2_17B4E0, building_F2CD0x, tempTerrType1, tempHeight1, tempAng1, tempShad1, tempSecHeight1);
+		sub_45DC0_orig(tempa2, tempa3x, tempa4, D41A0_0.terrain_2FECE.MapType, lowDiffHeightmap_D47DC, isCaveLevel_D41B6, &temprand2_17B4E0, x_BYTE_F2CD0x, tempTerrType1, tempHeight1, tempAng1, tempShad1, tempSecHeight1);
 
 		sub_45DC0(tempa2, tempa3x, tempa4);
 
@@ -538,7 +538,7 @@ TEST(Terrain, sub_44580) {
 	uint8_t* tempAng1 = (uint8_t*)malloc(65536);
 	uint8_t* tempTerrainType1 = (uint8_t*)malloc(65536);
 	uint16_t temp_rand2_17B4E0_1;
-	char tempbuilding_F2CD0x1[7 * 7 * 7 * 7][2];
+	char tempx_BYTE_F2CD0x1[7 * 7 * 7 * 7][2];
 
 	//Create Test Data
 	for (int i = 0; i < 256 * 256; i++)
@@ -551,8 +551,8 @@ TEST(Terrain, sub_44580) {
 	for (int i = 0; i < 7 * 7 * 7 * 7; i++)
 		for (int m = 0; m < 2; m++)
 		{
-			building_F2CD0x[i][m] = pseudoRand() % 256;
-			tempbuilding_F2CD0x1[i][m] = building_F2CD0x[i][m];
+			x_BYTE_F2CD0x[i][m] = pseudoRand() % 256;
+			tempx_BYTE_F2CD0x1[i][m] = x_BYTE_F2CD0x[i][m];
 		}
 	for (int i = 0; i < 100000; i++)
 	{
@@ -562,14 +562,14 @@ TEST(Terrain, sub_44580) {
 	rand2_17B4E0 = pseudoRand() % (256 * 256);
 	temp_rand2_17B4E0_1 = rand2_17B4E0;
 
-	sub_44580_orig(tempScreenBuffer1, temp_rand2_17B4E0_1, tempbuilding_F2CD0x1, tempTerrainType1, tempAng1);
+	sub_44580_orig(tempScreenBuffer1, temp_rand2_17B4E0_1, tempx_BYTE_F2CD0x1, tempTerrainType1, tempAng1);
 
 	sub_44580();
 
 	for (int i = 0; i < 7 * 7 * 7 * 7; i++)
 		for (int m = 0; m < 2; m++)
 		{
-			ASSERT_EQ(tempbuilding_F2CD0x1[i][m], building_F2CD0x[i][m]);
+			ASSERT_EQ(tempx_BYTE_F2CD0x1[i][m], x_BYTE_F2CD0x[i][m]);
 		}
 
 	ASSERT_EQ(temp_rand2_17B4E0_1, rand2_17B4E0);
