@@ -38822,14 +38822,11 @@ void PlayerEvents_51BB0()//232bb0
 		actEvent->dword_0xA4_164x->word_0x18_24_next_entity = D41A0_0.array_0x6E3E[i].str_0x6E3E_word6;
 		actEvent->dword_0xA4_164x->word_0x1A_26 = D41A0_0.array_0x6E3E[i].str_0x6E3E_word8;
 
-		//Only play/record first player
-		if (i == 0)
-		{
-			if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
+		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
 			{
 				sub_19760_set_message("Playing", 3u, 50);
 
-				auto action = m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
+			auto action = m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
 			actEvent->dword_0xA4_164x->dword_0x0_0 = action->dword_0x0_0;
 			actEvent->dword_0xA4_164x->word_0x4_4 = action->word_0x4_4;
 			actEvent->dword_0xA4_164x->word_0x6_6 = action->word_0x6_6;
@@ -38844,7 +38841,7 @@ void PlayerEvents_51BB0()//232bb0
 		{
 				sub_19760_set_message("Recording", 3u, 50);
 
-				m_InputRecorder->RecordPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248,
+			m_InputRecorder->RecordPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248,
 				actEvent->dword_0xA4_164x->dword_0x0_0,
 				actEvent->dword_0xA4_164x->word_0x4_4,
 				actEvent->dword_0xA4_164x->word_0x6_6,
@@ -38855,7 +38852,6 @@ void PlayerEvents_51BB0()//232bb0
 				actEvent->dword_0xA4_164x->str_611.byte_0x455_1109,
 				actEvent->dword_0xA4_164x->str_611.byte_0x456_1110);
 
-		}
 		}
 
 		sub_57B20(&D41A0_0.array_0x2BDE[i], Entities_EA3E4[D41A0_0.array_0x2BDE[i].PlayerEntityIdx_2BE4_11240]);

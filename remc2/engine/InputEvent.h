@@ -2,7 +2,8 @@
 #include <cstdint>
 struct InputEvent
 {
-	uint32_t level = 0;
+	uint16_t level = 0;
+	uint16_t playerIdx = 0;
 	uint32_t turn = 0;
 	int32_t dword_0x0_0 = 0;
 	int16_t word_0x4_4 = 0;
