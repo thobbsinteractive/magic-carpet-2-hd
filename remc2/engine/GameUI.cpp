@@ -59,7 +59,7 @@ int16_t x_WORD_E375C_mouse_position_x = 320; // weak
 int16_t x_WORD_E375E_mouse_position_y = 200; // weak
 
 
-void ColorizeScreen_2E850(int posX, int posY, int width, int height, uint8_t color);
+void DrawSquareByColor_2E850(int posX, int posY, int width, int height, uint8_t color);
 void sub_30870();
 void sub_548B0(type_str_0x2BDE* a1);
 signed __int16 sub_10010();
@@ -391,17 +391,11 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* playerEv
 					}
 				}
 				if (playerEvent->manaRegen_0x88_136)
-				{
 					if (!parentEvent->dword_0xA4_164x->word_0x3A_58 || playerEvent->manaRegen_0x88_136 > ENTITY_EA3E4[parentEvent->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144)
-					{
-						uint8_t colorScreen;
 						if (D41A0_0.terrain_2FECE.MapType != MapType_t::Day)
-							colorScreen = 16;
+							DrawSquareByColor_2E850(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1].width_4 * scale, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1].height_5 * scale, 16);
 						else
-							colorScreen = 48;
-						ColorizeScreen_2E850(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1].width_4 * scale, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1].height_5 * scale, colorScreen);
-					}
-				}
+							DrawSquareByColor_2E850(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1].width_4 * scale, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1].height_5 * scale, 48);							
 			}
 		}
 	}
@@ -505,7 +499,7 @@ void GetHintText_89AC0(char* buffer, int helpIndex)//26aac0
 }
 
 //----- (0002E850) --------------------------------------------------------
-void ColorizeScreen_2E850(int posX, int posY, int width, int height, uint8_t color)//20f850
+void DrawSquareByColor_2E850(int posX, int posY, int width, int height, uint8_t color)//20f850
 {
 	int locPosX = posX;
 	int locPosY = posY;
