@@ -30,7 +30,6 @@ void InputRecorder::PlayPause(const GameState state)
 
 void InputRecorder::StartRecording()
 {
-	ClearInputEvents();
 	m_IsRecording = true;
 }
 
