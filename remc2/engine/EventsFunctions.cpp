@@ -21931,18 +21931,19 @@ void DrawGameFrame_2BE30()//20CE30
 			{
 			case 3:
 				DrawChatMenu_2F6B0();
-				goto LABEL_41;
+				DrawPauseMenu_2FD90(scale);
+				break;
 			case 9:
 				DrawInGameOptionsMenu_30050(scale);
 				break;
 			case 10:
 				DrawVolumeSettings_303D0(scale);
-				goto LABEL_41;
+				DrawPauseMenu_2FD90(scale);
+				break;
 			case 13:
 				DrawOkCancelMenu_30A60(132, 50, scale);
 				break;
 			default:
-			LABEL_41:
 				DrawPauseMenu_2FD90(scale);
 				break;
 			}
