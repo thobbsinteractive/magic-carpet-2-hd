@@ -87,6 +87,11 @@ typedef struct {
 	uint32_t data;
 	uint8_t width_4;
 	uint8_t height_5;
+} bitmap_pos_struct_tm;
+typedef struct {
+	uint8_t* data;
+	uint8_t width_4;
+	uint8_t height_5;
 } bitmap_pos_struct_t;
 #pragma pack (pop)
 
