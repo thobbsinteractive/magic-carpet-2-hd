@@ -84,13 +84,13 @@ private:
 	void DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture);
-	void DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t x_BYTE_E88E0x[], int32_t x_DWORD_F5730[], type_event_0x6E8E* ENTITY_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth);
+	void DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t playersColors_E88E0x[], int32_t x_DWORD_F5730[], type_event_0x6E8E* ENTITY_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth);
 	void DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* vertex1, const ProjectionPolygon* vertex2, const ProjectionPolygon* vertex3, uint8_t startLine, uint8_t drawEveryNthLine);
 	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int s0, int s1, int* line);
 	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v4, int s0, int s1, int s4, int* line);
 	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line);
 	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* v0, int* v1, int* v2, int* v3, int* v4, int s0, int s1, int s2, int s3, int s4, int* line);
-	uint16_t sub_3FD60(int a2x, uint8_t x_BYTE_E88E0x[], type_event_0x6E8E* ENTITY_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth);
+	uint16_t sub_3FD60(int a2x, uint8_t playersColors_E88E0x[], type_event_0x6E8E* ENTITY_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth);
 	void sub_88740(type_event_0x6E8E* a1, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);
 	void DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1, int16_t a2, int a3, int16_t a4);

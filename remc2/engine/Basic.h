@@ -140,7 +140,7 @@ typedef struct//lenght 613 // end 17E09D
 
 extern type_str_unk_1804B0ar str_unk_1804B0ar;
 extern __int16 x_WORD_180660_VGA_type_resolution;
-extern uint8_t x_BYTE_E88E0x[32];
+extern uint8_t playersColors_E88E0x[32];
 extern uint8_t unk_F0A20x[1024];//2c1a20
 extern uint8_t keyColor1_D4B7C; // weak
 extern uint8_t keyColor2_D4B7E; // weak

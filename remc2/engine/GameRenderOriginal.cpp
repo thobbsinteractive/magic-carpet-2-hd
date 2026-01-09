@@ -2994,9 +2994,9 @@ void GameRenderOriginal::DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a
 	v25 = a1x->dword_0xA4_164x->playerColorIndex_0x38_56;
 	v5 = D41A0_0.array_0x2BDE[v25].WizardName_0x39f_2BFA_12157;
 	strcpy(v24, v5);
-	v36 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v25)];//c
+	v36 = playersColors_E88E0x[3 * GetTrueWizardNumber_61790(v25)];//c
 	v35 = (*xadataclrd0dat.colorPalette_var28)[0];//10 //v19
-	v34 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v25)];	//14 //v18
+	v34 = playersColors_E88E0x[3 * GetTrueWizardNumber_61790(v25)];	//14 //v18
 	v33 = str_D94F0_bldgprmbuffer[static_cast<std::underlying_type<MapType_t>::type>(D41A0_0.terrain_2FECE.MapType)][2];//18 v14
 	v38 = str_D94F0_bldgprmbuffer[static_cast<std::underlying_type<MapType_t>::type>(D41A0_0.terrain_2FECE.MapType)][3];//4 v15
 	v37 = str_D94F0_bldgprmbuffer[static_cast<std::underlying_type<MapType_t>::type>(D41A0_0.terrain_2FECE.MapType)][0];//?v22
@@ -3784,14 +3784,14 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 						v93 = v90x->struct_byte_0xc_12_15.byte[3];
 						if (v93 & 2)
 						{
-							v94 = (unsigned __int8)x_BYTE_E88E0x[2 + 3
+							v94 = (unsigned __int8)playersColors_E88E0x[2 + 3
 								* ENTITY_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->playerColorIndex_0x38_56];
 							str_F2C20ar.dword0x01_rotIdx = 4;
 							str_F2C20ar.dword0x07 = v94;
 						}
 						else if (v93 & 4)
 						{
-							v95 = (unsigned __int8)x_BYTE_E88E0x[2 + 3
+							v95 = (unsigned __int8)playersColors_E88E0x[2 + 3
 								* ENTITY_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->playerColorIndex_0x38_56];
 							str_F2C20ar.dword0x01_rotIdx = 5;
 							str_F2C20ar.dword0x07 = v95;

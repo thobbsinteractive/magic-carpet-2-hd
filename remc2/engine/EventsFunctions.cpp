@@ -21914,7 +21914,7 @@ void DrawGameFrame_2BE30()//20CE30
 					spellLeftPosX,
 					2 * scale,
 					ENTITY_EA3E4[playerEntity->dword_0xA4_164x->str_611.array_0x333_819x.word[playerEntity->dword_0xA4_164x->str_611.leftSpellIndex_0x451_1105]],
-					0,
+					false,
 					scale);
 
 				//Right
@@ -21922,7 +21922,7 @@ void DrawGameFrame_2BE30()//20CE30
 					spellRightPosX,
 					2 * scale,
 					ENTITY_EA3E4[playerEntity->dword_0xA4_164x->str_611.array_0x333_819x.word[playerEntity->dword_0xA4_164x->str_611.rightSpellIndex_0x453_1107]],
-					0,
+					false,
 					scale);
 
 				DrawTopStatusBar_2D710(playerEntity, scale);
@@ -22138,14 +22138,14 @@ void DrawGameFrame_2BE30()//20CE30
 				spellLeftPosX,
 				2,
 				ENTITY_EA3E4[playerEntity->dword_0xA4_164x->str_611.array_0x333_819x.word[playerEntity->dword_0xA4_164x->str_611.leftSpellIndex_0x451_1105]],
-				0,
+				false,
 				scale);
 		if (x_D41A0_BYTEARRAY_4_struct.rightSpellPlayerIndex_38401)
 			DrawSpellIcon_2E260(
 				spellRightPosX,
 				2,
 				ENTITY_EA3E4[playerEntity->dword_0xA4_164x->str_611.array_0x333_819x.word[playerEntity->dword_0xA4_164x->str_611.rightSpellIndex_0x453_1107]],
-				0,
+				false,
 				scale);
 		break;
 	default:
@@ -22434,8 +22434,8 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 		v23x = ENTITY_EA3E4[D41A0_0.array_0x2BDE[ix].playerIndex_0x00a_2BE4_11240];
 		if (v6 == 1)
 		{
-			textColourIdx = x_BYTE_E88E0x[1 + 3 * GetTrueWizardNumber_61790(v25)];
-			playerColourIdx = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v25)];
+			textColourIdx = playersColors_E88E0x[1 + 3 * GetTrueWizardNumber_61790(v25)];
+			playerColourIdx = playersColors_E88E0x[3 * GetTrueWizardNumber_61790(v25)];
 			sub_2BB40_draw_bitmap(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[85], scale);
 			DrawLine_2BC80(
 				posX + (4 * scale),
@@ -22491,8 +22491,8 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 					}
 					else
 					{
-						textColourIdx = x_BYTE_E88E0x[1 + 3 * GetTrueWizardNumber_61790(j)];
-						playerColourIdx = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(j)];
+						textColourIdx = playersColors_E88E0x[1 + 3 * GetTrueWizardNumber_61790(j)];
+						playerColourIdx = playersColors_E88E0x[3 * GetTrueWizardNumber_61790(j)];
 						sub_2BB40_draw_bitmap(blackBarX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[86], scale);
 						DrawLine_2BC80(
 							barX,
@@ -22619,8 +22619,8 @@ void DrawBottomMenu_2ECC0()//20fcc0
 	char v58; // [esp+6Ch] [ebp-4h]
 
 	v37x = ENTITY_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
-	v57 = x_BYTE_E88E0x[3 * GetTrueWizardNumber_61790(v37x->dword_0xA4_164x->playerColorIndex_0x38_56)];
-	v56 = x_BYTE_E88E0x[1 + 3 * GetTrueWizardNumber_61790(v37x->dword_0xA4_164x->playerColorIndex_0x38_56)];
+	v57 = playersColors_E88E0x[3 * GetTrueWizardNumber_61790(v37x->dword_0xA4_164x->playerColorIndex_0x38_56)];
+	v56 = playersColors_E88E0x[1 + 3 * GetTrueWizardNumber_61790(v37x->dword_0xA4_164x->playerColorIndex_0x38_56)];
 	x_D41A0_BYTEARRAY_4_struct.byteindex_50 = -1;
 
 	int16_t posX = 0;
@@ -32538,76 +32538,76 @@ void sub_48120()//229120
 	{
 		if (result == MapType_t::Night)
 		{
-			x_BYTE_E88E0x[0] = 0xA4;
-			x_BYTE_E88E0x[1] = 0xAA;
-			x_BYTE_E88E0x[3] = 0x77;
-			x_BYTE_E88E0x[2] = 0x7B;
-			x_BYTE_E88E0x[4] = 0x7D;
-			x_BYTE_E88E0x[5] = 0x7B;
-			x_BYTE_E88E0x[7] = 0xC6;
-			x_BYTE_E88E0x[8] = 0x7B;
-			x_BYTE_E88E0x[6] = 0xC0;
-			x_BYTE_E88E0x[12] = 0x97;
-			x_BYTE_E88E0x[15] = 0xD7;
-			x_BYTE_E88E0x[11] = 0x7B;
-			x_BYTE_E88E0x[16] = 0xDD;
-			x_BYTE_E88E0x[9] = 0x58;
+			playersColors_E88E0x[0] = 0xA4;
+			playersColors_E88E0x[1] = 0xAA;
+			playersColors_E88E0x[3] = 0x77;
+			playersColors_E88E0x[2] = 0x7B;
+			playersColors_E88E0x[4] = 0x7D;
+			playersColors_E88E0x[5] = 0x7B;
+			playersColors_E88E0x[7] = 0xC6;
+			playersColors_E88E0x[8] = 0x7B;
+			playersColors_E88E0x[6] = 0xC0;
+			playersColors_E88E0x[12] = 0x97;
+			playersColors_E88E0x[15] = 0xD7;
+			playersColors_E88E0x[11] = 0x7B;
+			playersColors_E88E0x[16] = 0xDD;
+			playersColors_E88E0x[9] = 0x58;
 		}
 		else // Cave
 		{
-			x_BYTE_E88E0x[0] = 0xE0;
-			x_BYTE_E88E0x[1] = 0x58;
-			x_BYTE_E88E0x[3] = 0x77;
-			x_BYTE_E88E0x[2] = 0x7B;
-			x_BYTE_E88E0x[4] = 0x7D;
-			x_BYTE_E88E0x[5] = 0x7B;
-			x_BYTE_E88E0x[7] = 0xC6;
-			x_BYTE_E88E0x[8] = 0x7B;
-			x_BYTE_E88E0x[9] = 0x58;
-			x_BYTE_E88E0x[6] = 0xC0;
-			x_BYTE_E88E0x[12] = 0x97;
-			x_BYTE_E88E0x[15] = 0xD7;
-			x_BYTE_E88E0x[11] = 0x7B;
-			x_BYTE_E88E0x[16] = 0xDD;
+			playersColors_E88E0x[0] = 0xE0;
+			playersColors_E88E0x[1] = 0x58;
+			playersColors_E88E0x[3] = 0x77;
+			playersColors_E88E0x[2] = 0x7B;
+			playersColors_E88E0x[4] = 0x7D;
+			playersColors_E88E0x[5] = 0x7B;
+			playersColors_E88E0x[7] = 0xC6;
+			playersColors_E88E0x[8] = 0x7B;
+			playersColors_E88E0x[9] = 0x58;
+			playersColors_E88E0x[6] = 0xC0;
+			playersColors_E88E0x[12] = 0x97;
+			playersColors_E88E0x[15] = 0xD7;
+			playersColors_E88E0x[11] = 0x7B;
+			playersColors_E88E0x[16] = 0xDD;
 		}
 		// shared between night and cave
-		x_BYTE_E88E0x[19] = 0x62;
-		x_BYTE_E88E0x[10] = 0x5D;
-		x_BYTE_E88E0x[17] = 0x7B;
-		x_BYTE_E88E0x[13] = 0x9D;
-		x_BYTE_E88E0x[14] = 0x7B;
-		x_BYTE_E88E0x[18] = 0x69;
-		x_BYTE_E88E0x[20] = 0x7B;
-		x_BYTE_E88E0x[21] = 0xC9;
-		x_BYTE_E88E0x[23] = 0x7B;
-		x_BYTE_E88E0x[22] = 0xCF;
+		playersColors_E88E0x[19] = 0x62;
+		playersColors_E88E0x[10] = 0x5D;
+		playersColors_E88E0x[17] = 0x7B;
+		playersColors_E88E0x[13] = 0x9D;
+		playersColors_E88E0x[14] = 0x7B;
+		playersColors_E88E0x[18] = 0x69;
+		playersColors_E88E0x[20] = 0x7B;
+		playersColors_E88E0x[21] = 0xC9;
+		playersColors_E88E0x[23] = 0x7B;
+		playersColors_E88E0x[22] = 0xCF;
 	}
 	else // Day
 	{
-		x_BYTE_E88E0x[0] = 0x60;
-		x_BYTE_E88E0x[1] = 0x64;
-		x_BYTE_E88E0x[6] = 0x1C;
-		x_BYTE_E88E0x[2] = 0x7B;
-		x_BYTE_E88E0x[3] = 0x7B;
-		x_BYTE_E88E0x[5] = 0x7B;
-		x_BYTE_E88E0x[7] = 0x18;
-		x_BYTE_E88E0x[8] = 0x7B;
-		x_BYTE_E88E0x[13] = 0x97;
-		x_BYTE_E88E0x[4] = 0x77;
-		x_BYTE_E88E0x[9] = 0x5B;
-		x_BYTE_E88E0x[11] = 0x7B;
-		x_BYTE_E88E0x[15] = 0xDB;
-		x_BYTE_E88E0x[21] = 0x3D;
-		x_BYTE_E88E0x[10] = 0x57;
-		x_BYTE_E88E0x[12] = 0x9A;
-		x_BYTE_E88E0x[14] = 0x7B;
-		x_BYTE_E88E0x[16] = 0xD8;
-		x_BYTE_E88E0x[17] = 0x7B;
-		x_BYTE_E88E0x[22] = 0x3A;
-		x_BYTE_E88E0x[18] = 0x76;
-		x_BYTE_E88E0x[19] = 0xA0;
-		x_BYTE_E88E0x[23] = 0x7B;
-		x_BYTE_E88E0x[20] = 0x7B;
+		playersColors_E88E0x[0] = 0x60;
+		playersColors_E88E0x[1] = 0x64;
+		playersColors_E88E0x[6] = 0x1C;
+		playersColors_E88E0x[2] = 0x7B;
+		playersColors_E88E0x[3] = 0x7B;
+		playersColors_E88E0x[5] = 0x7B;
+		playersColors_E88E0x[7] = 0x18;
+		playersColors_E88E0x[8] = 0x7B;
+		playersColors_E88E0x[13] = 0x97;
+		playersColors_E88E0x[4] = 0x77;
+		playersColors_E88E0x[9] = 0x5B;
+		playersColors_E88E0x[11] = 0x7B;
+		playersColors_E88E0x[15] = 0xDB;
+		playersColors_E88E0x[21] = 0x3D;
+		playersColors_E88E0x[10] = 0x57;
+		playersColors_E88E0x[12] = 0x9A;
+		playersColors_E88E0x[14] = 0x7B;
+		playersColors_E88E0x[16] = 0xD8;
+		playersColors_E88E0x[17] = 0x7B;
+		playersColors_E88E0x[22] = 0x3A;
+		playersColors_E88E0x[18] = 0x76;
+		playersColors_E88E0x[19] = 0xA0;
+		playersColors_E88E0x[23] = 0x7B;
+		playersColors_E88E0x[20] = 0x7B;
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
