@@ -22302,7 +22302,7 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 					}
 					else
 					{
-						v14 = 4080 * x_D41A0_BYTEARRAY_4_struct.byteindex_121[2];
+						v14 = 4080 * x_D41A0_BYTEARRAY_4_struct.colorIndex_121[2];
 						v15 = (*xadataclrd0dat.colorPalette_var28)[256 * ((signed int)(v14 - (__CFSHL__(HIDWORD(v14), 8) + (HIDWORD(v14) << 8))) >> 8)];
 					}
 					DrawText_2BC10(printbuffer, textPosX, textPosY, v15, scale);
@@ -22337,7 +22337,7 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 					else
 					{
 						sprintf(printbuffer, "[%s] %s", D41A0_0.array_0x2BDE[v7y].WizardName_0x39f_2BFA_12157, D41A0_0.array_0x2BDE[v7y].array_0x01c_2BFA_11258);
-						v18 = 4080 * x_D41A0_BYTEARRAY_4_struct.byteindex_121[2];
+						v18 = 4080 * x_D41A0_BYTEARRAY_4_struct.colorIndex_121[2];
 						DrawText_2BC10(printbuffer, textPosX, textPosY, (*xadataclrd0dat.colorPalette_var28)[16 * ((signed int)(v18 - (__CFSHL__(HIDWORD(v18), 8) + (HIDWORD(v18) << 8))) >> 8)]);
 						textPosX = posX;
 						LOWORD(v19) = GetLetterHeight_6FC30() * scale;
@@ -22693,7 +22693,7 @@ void DrawBottomMenu_2ECC0()//20fcc0
 				if (SPELLS_BEGIN_BUFFER_str[v9x->model_0x40_64].isEnabled_1 & 4)
 				{
 					v11 = v9x->word_0x2E_46;
-					if (v11 > 0 && v11 < 32 && x_D41A0_BYTEARRAY_4_struct.byteindex_121[1])
+					if (v11 > 0 && v11 < 32 && x_D41A0_BYTEARRAY_4_struct.colorIndex_121[1])
 						goto LABEL_43;
 				}
 				v55 = 0;
@@ -37954,7 +37954,7 @@ void GameEvents_51BB0()//232bb0
 	//adress 232cd2
 	for (int i = 1; i < 16; i++)
 	{
-		x_D41A0_BYTEARRAY_4_struct.byteindex_121[i] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 / i & 1;
+		x_D41A0_BYTEARRAY_4_struct.colorIndex_121[i] = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 / i & 1;
 	}
 	for (int i = 0; i < D41A0_0.word_0xe; i++)
 	{
@@ -39691,7 +39691,7 @@ void ClearSettings_567C0()//2377c0 // clean level
 	memset(D41A0_0.struct_0x6E8E, 0, sizeof(type_event_0x6E8E) * 0x3e8);
 
 	memset((void*)(&x_D41A0_BYTEARRAY_4_struct.byteindex_51), 0, 1);
-	memset((void*)(x_D41A0_BYTEARRAY_4_struct.byteindex_121), 0, 16);
+	memset((void*)(x_D41A0_BYTEARRAY_4_struct.colorIndex_121), 0, 16);
 	memset((void*)(&x_D41A0_BYTEARRAY_4_struct.speedIndex), 0, 1);
 	memset((void*)(&x_D41A0_BYTEARRAY_4_struct.byteindex_180), 0, 1);
 	memset((void*)(&x_D41A0_BYTEARRAY_4_struct.str_index_242ar), 0, 14);
@@ -40637,7 +40637,7 @@ void sub_57B20(type_str_0x2BDE* a1x, type_event_0x6E8E* a2x)//238b20 //copy posi
 			- ((v4 - (__CFSHL__(v4 >> 31, 3) + 8 * (v4 >> 31))) >> 3);
 			*/
 		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].rotation__2BDE_11701.pitch = a2x->dword_0xA4_164x->pitch_0x157_343 / 2
-			+ x_D41A0_BYTEARRAY_4_struct.byteindex_121[1]
+			+ x_D41A0_BYTEARRAY_4_struct.colorIndex_121[1]
 			* ((v4 - (my_sign32(v4) << 4) + my_sign32(v4)) >> 4)
 			- ((v4 - (my_sign32(v4) << 3) + my_sign32(v4)) >> 3);
 
@@ -61017,7 +61017,7 @@ void sub_5E310_multiplayer_test_die(type_event_0x6E8E* a1x)//23f310
 	type_event_0x6E8E* v26x; // [esp+8h] [ebp-4h]
 
 	sub_5D530(a1x);
-	if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[6])
+	if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[6])
 		sub_5C800(a1x, 7);
 	//v1 = 2124 * a1x->dword_0xA4_164x->word_0x38_56;
 	if (D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].byte_0x3DF_2BE4_12221)

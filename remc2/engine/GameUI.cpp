@@ -143,7 +143,7 @@ void DrawTopStatusBar_2D710(type_event_0x6E8E* a1x, uint8_t scale)//20e710
 
 	manaColourIdx = playersColors_E88E0x[GetTrueWizardNumber_61790(a1x->dword_0xA4_164x->playerColorIndex_0x38_56)][0];
 	manaMaxColourIdx = playersColors_E88E0x[GetTrueWizardNumber_61790(a1x->dword_0xA4_164x->playerColorIndex_0x38_56)][1];
-	v26 = playersColors_E88E0x[GetTrueWizardNumber_61790(a1x->dword_0xA4_164x->playerColorIndex_0x38_56)][x_D41A0_BYTEARRAY_4_struct.byteindex_121[2]];
+	v26 = playersColors_E88E0x[GetTrueWizardNumber_61790(a1x->dword_0xA4_164x->playerColorIndex_0x38_56)][x_D41A0_BYTEARRAY_4_struct.colorIndex_121[2]];
 	//ptrDrawBitmap_F01E8(2, 2, **filearray_2aa18c[6] + 240);
 
 	//Panel around MiniMap
@@ -158,7 +158,7 @@ void DrawTopStatusBar_2D710(type_event_0x6E8E* a1x, uint8_t scale)//20e710
 	v23x = v2x;
 	if (v2x > ENTITY_EA3E4[0] && v2x->dword_0x10_16)
 	{
-		if (a1x->dword_0xA4_164x->byte_0x195_405 > 0 && x_D41A0_BYTEARRAY_4_struct.byteindex_121[1])
+		if (a1x->dword_0xA4_164x->byte_0x195_405 > 0 && x_D41A0_BYTEARRAY_4_struct.colorIndex_121[1])
 		{
 			//ptrDrawBitmap_F01E8(v1, 2, **filearray_2aa18c[6] + 330);
 			//Draw Castle Health Panel Hit
@@ -181,7 +181,7 @@ void DrawTopStatusBar_2D710(type_event_0x6E8E* a1x, uint8_t scale)//20e710
 		v17 = (v23x->mana_0x90_144 + a1x->dword_0xA4_164x->dword_0x13C_316) << 6;
 		if (v23x->mana_0x90_144 + a1x->dword_0xA4_164x->dword_0x13C_316 == v23x->maxMana_0x8C_140)
 		{
-			if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[2] == 1)
+			if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[2] == 1)
 			{
 				v3 = v18;
 				//v4 = v23x->dword_0x8C_140 << 6;
@@ -233,7 +233,7 @@ void DrawTopStatusBar_2D710(type_event_0x6E8E* a1x, uint8_t scale)//20e710
 	}
 	else
 	{
-		if (a1x->dword_0xA4_164x->byte_0x197_407 > 0 && x_D41A0_BYTEARRAY_4_struct.byteindex_121[1])
+		if (a1x->dword_0xA4_164x->byte_0x197_407 > 0 && x_D41A0_BYTEARRAY_4_struct.colorIndex_121[1])
 		{
 			//Draw Balloon Health Panel Hit
 			ptrDrawBitmap_F01E8(posX, (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL_HIT], scale);
@@ -287,7 +287,7 @@ void DrawTopStatusBar_2D710(type_event_0x6E8E* a1x, uint8_t scale)//20e710
 	}
 	posX = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL].width_4 * scale + posX;
 
-	if (a1x->dword_0xA4_164x->byte_0x196_406 > 0 && x_D41A0_BYTEARRAY_4_struct.byteindex_121[1])
+	if (a1x->dword_0xA4_164x->byte_0x196_406 > 0 && x_D41A0_BYTEARRAY_4_struct.colorIndex_121[1])
 	{
 		//Player Health Panel on Hit
 		ptrDrawBitmap_F01E8(posX, 2 * scale, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL_HIT], scale);
@@ -299,7 +299,7 @@ void DrawTopStatusBar_2D710(type_event_0x6E8E* a1x, uint8_t scale)//20e710
 		ptrDrawBitmap_F01E8(posX, 2 * scale, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL], scale);
 	}
 
-	if ((a1x->struct_byte_0xc_12_15.byte[0] & 0x20 || a1x->dword_0xA4_164x->word_0x159_345) && x_D41A0_BYTEARRAY_4_struct.byteindex_121[2])
+	if ((a1x->struct_byte_0xc_12_15.byte[0] & 0x20 || a1x->dword_0xA4_164x->word_0x159_345) && x_D41A0_BYTEARRAY_4_struct.colorIndex_121[2])
 	{
 		//Draw Player Health and Mana flickering
 		GameBitmap::DrawTransparentBitmap_2DE80(posX + (2 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[PLAYER_ICON], scale);
@@ -335,48 +335,36 @@ void DrawTopStatusBar_2D710(type_event_0x6E8E* a1x, uint8_t scale)//20e710
 //----- (0002E260) --------------------------------------------------------
 void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* playerEvent, bool drawNextBitmap, uint8_t scale)//20f260
 {
-	//type_event_0x6E8E* v4x; // eax
-	//signed int v5; // eax
-	//int16_t v7; // cx
-	bitmap_pos_struct_t v8; // eax
-	bitmap_pos_struct_t v9; // eax
-	int v10; // edi
-	uint16_t v11; // di
-	uint8_t v12; // al
-	signed int i; // [esp+0h] [ebp-14h]
-	signed int j; // [esp+4h] [ebp-10h]
-	//type_event_0x6E8E* v15x; // [esp+8h] [ebp-Ch]
-	uint8_t v16; // [esp+Ch] [ebp-8h]
-	uint8_t v17; // [esp+10h] [ebp-4h]
-
 	if (playerEvent > ENTITY_EA3E4[0])
 	{
 		GetFont_6FC50(FontType_D419D);
 		type_event_0x6E8E* parentEvent = ENTITY_EA3E4[playerEvent->parentId_0x28_40];
 		if (parentEvent > ENTITY_EA3E4[0])
 		{
-			v17 = playersColors_E88E0x[GetTrueWizardNumber_61790(parentEvent->dword_0xA4_164x->playerColorIndex_0x38_56)][0];
-			v16 = playersColors_E88E0x[GetTrueWizardNumber_61790(parentEvent->dword_0xA4_164x->playerColorIndex_0x38_56)][1];
+			uint8_t color0 = playersColors_E88E0x[GetTrueWizardNumber_61790(parentEvent->dword_0xA4_164x->playerColorIndex_0x38_56)][0];
+			uint8_t color1 = playersColors_E88E0x[GetTrueWizardNumber_61790(parentEvent->dword_0xA4_164x->playerColorIndex_0x38_56)][1];
 			if (!(SPELLS_BEGIN_BUFFER_str[playerEvent->model_0x40_64].isEnabled_1 & 4)
 				|| playerEvent->word_0x2E_46 <= 0
 				|| playerEvent->word_0x2E_46 >= 32
-				|| !x_D41A0_BYTEARRAY_4_struct.byteindex_121[1])
+				|| !x_D41A0_BYTEARRAY_4_struct.colorIndex_121[1])
 			{
 				if (drawNextBitmap)//adress 20f334
 				{
+					bitmap_pos_struct_t bitmap;
 					if (playerEvent->word_0x2E_46)
-						v8 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[2];
+						bitmap = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[2];
 					else
-						v8 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1];
-					sub_2BB40_draw_bitmap(posX, posY, v8, scale);
+						bitmap = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1];
+					sub_2BB40_draw_bitmap(posX, posY, bitmap, scale);
 				}
 				else
 				{
+					bitmap_pos_struct_t bitmap;
 					if (playerEvent->word_0x2E_46)
-						v9 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[2];
+						bitmap = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[2];
 					else
-						v9 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1];
-					ptrDrawBitmap_F01E8(posX, posY, v9, scale);
+						bitmap = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1];
+					ptrDrawBitmap_F01E8(posX, posY, bitmap, scale);
 				}
 				sub_2BB40_draw_bitmap(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[(playerEvent->model_0x40_64 + 123)], scale);
 				DrawText_2BC10((char*)SpellLevelText_DB06C[playerEvent->byte_0x46_70],
@@ -391,27 +379,27 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* playerEv
 						posY + (36 * scale),
 						(56 * scale) * (parentEvent->mana_0x90_144 % playerEvent->maxMana_0x8C_140) / playerEvent->maxMana_0x8C_140,
 						(4 * scale),
-						v16);
-					v10 = parentEvent->mana_0x90_144 / playerEvent->maxMana_0x8C_140;
-					for (i = 0; i < 27 && v10; i++)
+						color1);
+					int manaScaled = parentEvent->mana_0x90_144 / playerEvent->maxMana_0x8C_140;
+					for (int i = 0; i < 27 && manaScaled; i++)
 					{
-						for (j = 0; j < 2 && v10; j++)
+						for (int j = 0; j < 2 && manaScaled; j++)
 						{
-							DrawLine_2BC80(posX + (2 * (i + 2) * scale), posY + (2 * (j + 18) * scale), 2 * scale, 2 * scale, v17);
-							v10--;
+							DrawLine_2BC80(posX + (2 * (i + 2) * scale), posY + (2 * (j + 18) * scale), 2 * scale, 2 * scale, color0);
+							manaScaled--;
 						}
 					}
 				}
 				if (playerEvent->manaRegen_0x88_136)
 				{
-					v11 = parentEvent->dword_0xA4_164x->word_0x3A_58;
-					if (!v11 || playerEvent->manaRegen_0x88_136 > ENTITY_EA3E4[v11]->mana_0x90_144)
+					if (!parentEvent->dword_0xA4_164x->word_0x3A_58 || playerEvent->manaRegen_0x88_136 > ENTITY_EA3E4[parentEvent->dword_0xA4_164x->word_0x3A_58]->mana_0x90_144)
 					{
+						uint8_t colorScreen;
 						if (D41A0_0.terrain_2FECE.MapType != MapType_t::Day)
-							v12 = 16;
+							colorScreen = 16;
 						else
-							v12 = 48;
-						ColorizeScreen_2E850(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1].width_4 * scale, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1].height_5 * scale, v12);
+							colorScreen = 48;
+						ColorizeScreen_2E850(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1].width_4 * scale, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[1].height_5 * scale, colorScreen);
 					}
 				}
 			}
@@ -1167,14 +1155,14 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 					break;
 				case 1u:
 					v31 = 1;
-					if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[3])
+					if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[3])
 						v94 = (*xadataclrd0dat.colorPalette_var28)[0x88];
 					else
 						v89 = 1;
 					v88 = 27;
 					break;
 				case 2u:
-					if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[2])
+					if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[2])
 						v43 = (*xadataclrd0dat.colorPalette_var28)[0x888];
 					else
 						v43 = v90;
@@ -1283,7 +1271,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 						v41x = ENTITY_EA3E4[v40];
 						if (v41x->class_0x3F_63 == 3)
 						{
-							if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[3])
+							if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[3])
 								v38 = playersColors_E88E0x[GetTrueWizardNumber_61790(v41x->dword_0xA4_164x->playerColorIndex_0x38_56)][0];
 							else
 								v38 = playersColors_E88E0x[GetTrueWizardNumber_61790(v41x->dword_0xA4_164x->playerColorIndex_0x38_56)][1];
@@ -1308,7 +1296,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 					v35 = jy->playerEntityIndex_0x94_148;
 					if (v35 && (v36x = ENTITY_EA3E4[v35], v36x->class_0x3F_63 == 3))
 					{
-						if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[3])
+						if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[3])
 							v37 = playersColors_E88E0x[GetTrueWizardNumber_61790(v36x->dword_0xA4_164x->playerColorIndex_0x38_56)][0];
 						else
 							v37 = playersColors_E88E0x[GetTrueWizardNumber_61790(v36x->dword_0xA4_164x->playerColorIndex_0x38_56)][1];
@@ -1330,7 +1318,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 					{
 						if (jy->word_0x32_50 != D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240)
 							break;
-						v38 = playersColors_E88E0x[GetTrueWizardNumber_61790(v80x->dword_0xA4_164x->playerColorIndex_0x38_56)][x_D41A0_BYTEARRAY_4_struct.byteindex_121[3]];
+						v38 = playersColors_E88E0x[GetTrueWizardNumber_61790(v80x->dword_0xA4_164x->playerColorIndex_0x38_56)][x_D41A0_BYTEARRAY_4_struct.colorIndex_121[3]];
 						goto LABEL_121;
 					}
 					if (v34 < 0x56u || v34 > 0x57u)
@@ -1408,7 +1396,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 			case 0xCu:
 				if (jy->model_0x40_64 != 5)
 					break;
-				if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[3])
+				if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[3])
 					v38 = (*xadataclrd0dat.colorPalette_var28)[3840];
 				else
 					v38 = (*xadataclrd0dat.colorPalette_var28)[4095];
@@ -1768,7 +1756,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 					break;
 				case 1u:
 					v36 = 1;
-					if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[2])
+					if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[2])
 						v110 = (*xadataclrd0dat.colorPalette_var28)[0x88];
 					else
 						v105 = 1;
@@ -1900,7 +1888,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 					v40 = iy->playerEntityIndex_0x94_148;
 					if (v40 && (v41x = ENTITY_EA3E4[v40], v41x->class_0x3F_63 == 3))
 					{
-						if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[3])
+						if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[3])
 							v42 = playersColors_E88E0x[GetTrueWizardNumber_61790(v41x->dword_0xA4_164x->playerColorIndex_0x38_56)][0];
 						else
 							v42 = playersColors_E88E0x[GetTrueWizardNumber_61790(v41x->dword_0xA4_164x->playerColorIndex_0x38_56)][1];
@@ -1922,7 +1910,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 					{
 						if (iy->word_0x32_50 != D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240)
 							break;
-						v43 = playersColors_E88E0x[GetTrueWizardNumber_61790(v102x->dword_0xA4_164x->playerColorIndex_0x38_56)][x_D41A0_BYTEARRAY_4_struct.byteindex_121[3]];
+						v43 = playersColors_E88E0x[GetTrueWizardNumber_61790(v102x->dword_0xA4_164x->playerColorIndex_0x38_56)][x_D41A0_BYTEARRAY_4_struct.colorIndex_121[3]];
 						goto LABEL_117;
 					}
 					if (v39 < 0x56u || v39 > 0x57u)
@@ -2000,7 +1988,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 			case 0xCu:
 				if (iy->model_0x40_64 != 5)
 					break;
-				if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[3])
+				if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[3])
 					v43 = (*xadataclrd0dat.colorPalette_var28)[3840];
 				else
 					v43 = (*xadataclrd0dat.colorPalette_var28)[4095];
@@ -3146,7 +3134,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 		//LOBYTE(i) = (uint8)x_D41A0_BYTEARRAY_4;
 		if (x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0x40)
 		{
-			if (x_D41A0_BYTEARRAY_4_struct.byteindex_121[6])
+			if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[6])
 			{
 				v21 = v8 - 512;
 				LOWORD(v78) = Maths::sub_581E0_maybe_tan2(&v75x->axis_0x4C_76, &v67x);
@@ -4527,7 +4515,7 @@ void DrawOkCancelMenu_30A60(int16_t posTextX, int16_t posTextY, uint8_t scale)//
 			}
 		}
 
-		v4 = 4080 * x_D41A0_BYTEARRAY_4_struct.byteindex_121[4];
+		v4 = 4080 * x_D41A0_BYTEARRAY_4_struct.colorIndex_121[4];
 		DrawText_2BC10(printbuffer, posTextX * scale, posTextY * scale, (*xadataclrd0dat.colorPalette_var28)[256 * ((signed int)(v4 - (__CFSHL__(HIDWORD(v4), 8) + (HIDWORD(v4) << 8))) >> 8)], scale);
 		GetOkayCancelButtonPositions_30BE0(&posX, &posY, scale);
 		sub_2BB40_draw_bitmap(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[257], scale);

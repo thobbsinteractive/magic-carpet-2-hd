@@ -244,7 +244,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	uint8_t stubh[3];
 	char player_name_57ar[32];
 	char savestring_89[32];
-	uint8_t byteindex_121[16];//0x79//x_D41A0_BYTEARRAY_4_struct.byteindex_121
+	uint8_t colorIndex_121[16];//0x79//x_D41A0_BYTEARRAY_4_struct.byteindex_121
 	//uint8_t byteindex_122;//0x7a//x_D41A0_BYTEARRAY_4_struct.byteindex_121[1]
 	//uint8_t byteindex_123;//0x7b//x_D41A0_BYTEARRAY_4_struct.byteindex_121[2]
 	//uint8_t byteindex_124;//0x7c//x_D41A0_BYTEARRAY_4_struct.byteindex_121[3]
