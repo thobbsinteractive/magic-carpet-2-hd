@@ -9,7 +9,8 @@ uint8_t mapShading_12B4E0[65536]; // 256x256 //map array3
 uint8_t mapAngle_13B4E0[65536]; // 256x256 //map array4 // water //!!! find all comparation, change to int8_t and test it !!!
 int16_t mapEntityIndex_15B4E0[65536]; // 256x256 //map array5
 
-char x_BYTE_F2CD0x[2800][2]; // 233cd0//4802 //4816 // size has to be 2 * (7^4 + 7^3 + 7^2 + 7^1) = 2 * (2401 + 343 + 49 + 7) = 2*2800 as seen in sub_462A0_orig
+char building_F2CD0x[2800][2]; // 233cd0//4802 //4816 // size has to be 2 * (7^4 + 7^3 + 7^2 + 7^1) = 2 * (2401 + 343 + 49 + 7) = 2*2800 as seen in sub_462A0_orig
+//0-terrainTileType, 1-rotationTile
 
 uint8_t MapBasicHeight_D41B7 = 44; // weak
 
@@ -1101,13 +1102,13 @@ void sub_44580()//225580
 					actBufPos = &pdwScreenBuffer_351628[25 * (49 * j + 7 * k + l + 343 * i)];
 					if (*actBufPos)
 					{
-						x_BYTE_F2CD0x[index][0] = actBufPos[1];
-						x_BYTE_F2CD0x[index][1] = actBufPos[13];
+						building_F2CD0x[index][0] = actBufPos[1];
+						building_F2CD0x[index][1] = actBufPos[13];
 					}
 					else
 					{
-						x_BYTE_F2CD0x[index][0] = 1;
-						x_BYTE_F2CD0x[index][1] = 0;
+						building_F2CD0x[index][0] = 1;
+						building_F2CD0x[index][1] = 0;
 					}
 					index++;
 				}
@@ -1982,10 +1983,10 @@ void sub_462A0(uaxis_2d inAxis2dA, uaxis_2d inAxis2dB)//2272a0
 				point4 = mapAngle_13B4E0[tempAxis.word];
 				tempAxis._axis_2d.y--;
 				terModIndex = (point4 & 7) + 7 * (point3 & 7) + 49 * (point2 & 7) + 343 * (point1 & 7);
-				mapTerrainType_10B4E0[tempAxis.word] = x_BYTE_F2CD0x[terModIndex][0];
-				if (x_BYTE_F2CD0x[terModIndex][0] >= 8u)
+				mapTerrainType_10B4E0[tempAxis.word] = building_F2CD0x[terModIndex][0];
+				if (building_F2CD0x[terModIndex][0] >= 8u)
 				{
-					nextAngle = x_BYTE_F2CD0x[terModIndex][1] + (mapAngle_13B4E0[tempAxis.word] & 0x87);
+					nextAngle = building_F2CD0x[terModIndex][1] + (mapAngle_13B4E0[tempAxis.word] & 0x87);
 				}
 				else
 				{
