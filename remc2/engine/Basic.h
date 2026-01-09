@@ -537,8 +537,8 @@ void LockFps(uint8_t maxFps);
 void sub_6EF10_set_mouse_minmax(__int16 a1, signed __int16 a2, __int16 a3, signed __int16 a4);
 void sub_7FB90_draw_text(char* a1, int16_t a2, int16_t a3, uint8_t a4);
 void sub_8CACD_draw_cursor2();
-void sub_8F8B0_draw_bitmap320(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);
-void sub_8F8E8_draw_bitmap640(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);
+void drawBitmap320_8F8B0(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);
+void drawBitmap640_8F8E8(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);
 void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx);
 void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx);
 void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t color, uint8_t scale = 1);//250940

@@ -4397,7 +4397,7 @@ char x_BYTE_18069C; // weak
 x_DWORD_180730_cursor_data
 82c714
 270aa0 call void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tiley, int tilex, uint8_t* texture, uint8_t setbyte, char a6)//270935
-2708d7 call void sub_8F8B0_draw_bitmap320(int16_t posx, int16_t posy, posistruct temppstr)//2708B0
+2708d7 call void drawBitmap320_8F8B0(int16_t posx, int16_t posy, posistruct temppstr)//2708B0
 26de71 call void sub_8CD27_set_cursor(posistruct a2)//26dd27
 1f9c2c call void sub_18BB0()//1f9bb0
 
@@ -5981,7 +5981,7 @@ for (jy = &D41A0_BYTESTR_0.struct_0x6E8E[1]; jy <= &D41A0_BYTESTR_0.struct_0x6E8
  v113x->dword_0xA4_164x->word_0x6_6 = v102;//fix - test it
 
  D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].struct_0x1d1_2BDE_11695[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].ActPlayerIndex_0x00e_2BDE_11244+1].axis_2BDE_11695
- &ENTITY_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[0].word_0x00a_2BE4_11240]->array_0x4C_76
+ &ENTITY_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[0].playerIndex_0x00a_2BE4_11240]->array_0x4C_76
  &x_WORD_EB398ar
 
  a1x->dword_0xA4_164x->word_0x1A6_422
@@ -6356,7 +6356,7 @@ versus
 
 5959580d
 270aa0 - sub_8F935_bitmap_draw_final
-270914 - sub_8F8E8_draw_bitmap640
+270914 - drawBitmap640_8F8E8
 20cb72 - sub_2BB40_draw_bitmap
 25d136 - sub_7C120_draw_bitmap_640
 263e43 - sub_82C20
@@ -6898,7 +6898,7 @@ void sub_2D710_draw_top_menu(type_str_0x6E8E* a1x)//20e710
 0x356038 +0x315a
 
 a1x->dword_0xA4_164x->byte_0x195_405
-ENTITY_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x
+ENTITY_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].playerIndex_0x00a_2BE4_11240]->dword_0xA4_164x
 je
 (uint8_t*)&D41A0_BYTESTR_0+0x315a
 
