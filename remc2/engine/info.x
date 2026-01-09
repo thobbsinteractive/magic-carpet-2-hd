@@ -5133,7 +5133,7 @@ LOBYTE(unk_18058Cstr.x_DWORD_18059C) = unk_18058Cstr.x_DWORD_18059C | 0x10;
 
 
 draw spell:
-sub_2BB40_draw_bitmap(a1, a2, filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct[(*(char *)(a3 + 64) + 123)]);
+DrawBitmap_2BB40(a1, a2, filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct[(*(char *)(a3 + 64) + 123)]);
 
 x_WORD_D93C0_bldgprmbuffer[0x13f+v54]
 versus
@@ -6357,7 +6357,7 @@ versus
 5959580d
 270aa0 - sub_8F935_bitmap_draw_final
 270914 - drawBitmap640_8F8E8
-20cb72 - sub_2BB40_draw_bitmap
+20cb72 - DrawBitmap_2BB40
 25d136 - sub_7C120_draw_bitmap_640
 263e43 - sub_82C20
 

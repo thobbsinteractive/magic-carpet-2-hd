@@ -2251,7 +2251,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 		break;
 	}
 				 /*case 0x20cb40: {
-					 sub_2BB40_draw_bitmap((int16_t)a1,0,(bitmap_pos_struct_t)0);
+					 DrawBitmap_2BB40((int16_t)a1,0,(bitmap_pos_struct_t)0);
 
 					 break;
 				 }*/

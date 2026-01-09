@@ -1271,12 +1271,12 @@ signed int sub_7E0E0_mouse_events()//25f0e0
 			//x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[0x4D54A + 164829 - 1]
 			//je asi &x_DWORD_17DED4[6 * v3]
 			//123 cd
-			sub_2BB40_draw_bitmap(str_WORD_E1F84[ix].xmin_10, str_WORD_E1F84[ix].ymin_12, xy_DWORD_17DED4_spritestr[v3]);
+			DrawBitmap_2BB40(str_WORD_E1F84[ix].xmin_10, str_WORD_E1F84[ix].ymin_12, xy_DWORD_17DED4_spritestr[v3]);
 		}
 		else if (InRegion_7B200(&str_WORD_E1F84[ix], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))//change language
 		{
 			sub_8F100_sound_proc19(0, 14, 127, 64, 0x64u, 0, 3u);
-			sub_2BB40_draw_bitmap(str_WORD_E1F84[ix].xmin_10, str_WORD_E1F84[ix].ymin_12, xy_DWORD_17DED4_spritestr[str_WORD_E1F84[ix].xmin_10 & 0xff]);//asi vykresleni stisknuteho tlacitka
+			DrawBitmap_2BB40(str_WORD_E1F84[ix].xmin_10, str_WORD_E1F84[ix].ymin_12, xy_DWORD_17DED4_spritestr[str_WORD_E1F84[ix].xmin_10 & 0xff]);//asi vykresleni stisknuteho tlacitka
 			v0 = str_WORD_E1F84[ix].byte_22;
 		}
 		//i += 22;
@@ -1312,13 +1312,13 @@ int16_t TestMouseRegions_7E1F0()//25f1f0
 		if (!(x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1))
 		{
 			if (InRegion_7B200(&str_WORD_E2008[v0y], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))
-				sub_2BB40_draw_bitmap(str_WORD_E2008[v0y].xmin_10, str_WORD_E2008[v0y].ymin_12, xy_DWORD_17DED4_spritestr[str_WORD_E2008[v0y].byte_21]);
+				DrawBitmap_2BB40(str_WORD_E2008[v0y].xmin_10, str_WORD_E2008[v0y].ymin_12, xy_DWORD_17DED4_spritestr[str_WORD_E2008[v0y].byte_21]);
 			goto LABEL_9;
 		}
 		if (InRegion_7B200(&str_WORD_E2008[v0y], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))
 		{
 			sub_8F100_sound_proc19(0, 14, 127, 64, 0x64u, 0, 3u);
-			sub_2BB40_draw_bitmap(str_WORD_E2008[v0y].xmin_10, str_WORD_E2008[v0y].ymin_12, xy_DWORD_17DED4_spritestr[str_WORD_E2008[v0y].byte_21]);
+			DrawBitmap_2BB40(str_WORD_E2008[v0y].xmin_10, str_WORD_E2008[v0y].ymin_12, xy_DWORD_17DED4_spritestr[str_WORD_E2008[v0y].byte_21]);
 			v1 = str_WORD_E2008[v0y].byte_22;
 			if (str_WORD_E2008[v0y].byte_22)
 				break;
@@ -1433,7 +1433,7 @@ char LanguageSettingDialog_779E0(type_WORD_E1F84* a1y)//2589E0
 			else
 				CopyScreen(x_DWORD_E9C38_smalltit, pdwScreenBuffer_351628, 640, 480);//write default screan 27b144  adress 258c99
 			mouseClick = sub_7E0E0_mouse_events();//25f0e0 adress 258ca1 - change button, return click
-			sub_2BB40_draw_bitmap(263, 134, langDatTab[1]);//20cb40 adress 258cba - change flag
+			DrawBitmap_2BB40(263, 134, langDatTab[1]);//20cb40 adress 258cba - change flag
 			if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 == 1)//is 1 not zero!
 			{
 				if (codeBranch == 2)
@@ -2012,7 +2012,7 @@ char SetKeysDialog_79610()//25a610
 						str_BYTE_E25ED_2BB[v2_int].word_14 = 2;
 						v38 = v17;
 					}
-					sub_2BB40_draw_bitmap(v45, str_BYTE_E25ED_2BB[v2_int].word_2, xy_DWORD_17DED4_spritestr[107]);
+					DrawBitmap_2BB40(v45, str_BYTE_E25ED_2BB[v2_int].word_2, xy_DWORD_17DED4_spritestr[107]);
 					if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode && sub_79E10((char*)v28, x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode))
 					{
 						v18 = 0;
@@ -2057,7 +2057,7 @@ char SetKeysDialog_79610()//25a610
 						str_BYTE_E25ED_2BB[v2_int].word_14 = 1;
 						v38 = v21;
 					}
-					sub_2BB40_draw_bitmap(v45, str_BYTE_E25ED_2BB[v2_int].word_2, xy_DWORD_17DED4_spritestr[107]);
+					DrawBitmap_2BB40(v45, str_BYTE_E25ED_2BB[v2_int].word_2, xy_DWORD_17DED4_spritestr[107]);
 					if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode)
 					{
 						if (sub_79E10((char*)v28, x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode))
@@ -2107,7 +2107,7 @@ char SetKeysDialog_79610()//25a610
 					v1 = 2;
 					v38 = v34;
 				}
-				sub_2BB40_draw_bitmap(283, 381, xy_DWORD_17DED4_spritestr[108]);
+				DrawBitmap_2BB40(283, 381, xy_DWORD_17DED4_spritestr[108]);
 			}
 			else if (v1 == 2 && v25 > 0x32)
 			{
@@ -2343,7 +2343,7 @@ void DrawMenuAnimations_7AB00()//25bb00
 	// animate fire and incense stick animation
 	for (auto& ani: MainMenuAnimations_E1748x)
 	{
-		sub_2BB40_draw_bitmap(ani.PosX_4, ani.PosY_6, xy_DWORD_17DED4_spritestr[ani.ActSprite_8]);
+		DrawBitmap_2BB40(ani.PosX_4, ani.PosY_6, xy_DWORD_17DED4_spritestr[ani.ActSprite_8]);
 		if ((now - ani.LastTimeRendered_0) >> 2 >= 1)
 		{
 			ani.ActSprite_8++;
@@ -2357,7 +2357,7 @@ void DrawMenuAnimations_7AB00()//25bb00
 	{
 		if (str_E1BAC[iy].canSelect_23 && str_E1BAC[iy].gold_color_24)
 		{
-			sub_2BB40_draw_bitmap(str_E1BAC[iy].xmin_10, str_E1BAC[iy].ymin_12, xy_DWORD_17DED4_spritestr[str_E1BAC[iy].byte_21]);
+			DrawBitmap_2BB40(str_E1BAC[iy].xmin_10, str_E1BAC[iy].ymin_12, xy_DWORD_17DED4_spritestr[str_E1BAC[iy].byte_21]);
 		}
 	}
 }
