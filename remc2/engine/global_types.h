@@ -218,8 +218,8 @@ typedef struct {//begin 611//str_611
 	type_8_1a array_0x437_1079x;//468//size?? //table of spell indexes//byte_0x81D_2BDE
 	int16_t SpellIndexLeft_0x451_1105;//494 act left spell index//word_0x837_2BDE
 	int16_t SpellIndexRight_0x453_1107;//496 act right spell index//word_0x839_2BDE
-	int8_t byte_0x455_1109;//498
-	int8_t byte_0x456_1110;//499
+	int8_t SubSpellIndexLeft_1109;//498
+	int8_t SubSpellIndexRight_1110;//499
 	int8_t byte_0x457_1111;//500//byte_0x83D_2BDE //select spell/type spell
 	int8_t byte_0x458_1112;//501//byte_0x83E_2BDE
 	int8_t byte_0x459_1113;//502
@@ -250,7 +250,7 @@ typedef struct Type_str_164 {//size 1136
 	//int16_t word_0x2E_46;//word_0x26_38[4]
 	int16_t word_0x36_54;
 	int16_t word_0x38_56;
-	int16_t word_0x3A_58;
+	int16_t CastleEntityIdx_58;
 	uint16_t array_0x3C_60[16];//size??
 	std::array<uint16_t, 103> array_0x5C_92; // size?? at least index 33 is accessed in level 19
 	int32_t dword_0x12A_298;

@@ -1201,7 +1201,7 @@ int sub_6D710(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//
 	if (a2 == 2 && a1x > Entities_EA3E4[0])
 	{
 		//v5 = a1x->dword_0xA4_164;
-		v6x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+		v6x = Entities_EA3E4[a1x->dword_0xA4_164x->CastleEntityIdx_58];
 		if (v6x <= Entities_EA3E4[0])
 			goto LABEL_23;
 		switch (v6x->dword_0x10_16)

@@ -6,7 +6,7 @@ using namespace std;
 InputRecorder::InputRecorder(const char* filePath)
 {
 	m_FilePath = filePath;
-	m_InputEvents = new std::map<uint16_t, std::map<uint16_t, std::map<uint32_t, InputEvent*>*>*>();
+	m_InputEvents = new std::map<uint16_t, InputEvent*>();
 	//std::function<void(GameState)> stateChangeCallBack = [this](GameState a) { this->PlayPause(a); };
 	//EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAME_STATE_CHANGE, stateChangeCallBack));
 }
@@ -35,21 +35,23 @@ void InputRecorder::StartRecording()
 
 void InputRecorder::ClearInputEvents()
 {
-	map<uint16_t, map<uint16_t, map<uint32_t, InputEvent*>*>*>::iterator levelIt;
-	map<uint16_t, map<uint32_t, InputEvent*>*>::iterator playIt;
-	map<uint32_t, InputEvent*>::iterator turnIt;
+	map<uint16_t, InputEvent*>::iterator levelIt;
+	map<uint16_t, InputPlayer*>::iterator playIt;
+	map<uint32_t, InputTurn*>::iterator turnIt;
+
 	for (levelIt = m_InputEvents->begin(); levelIt != m_InputEvents->end(); levelIt++)
 	{
-		for (playIt = levelIt->second->begin(); playIt != levelIt->second->end(); playIt++)
+
+		for (playIt = levelIt->second->Players->begin(); playIt != levelIt->second->Players->end(); playIt++)
 		{
-			for (turnIt = playIt->second->begin(); turnIt != playIt->second->end(); turnIt++)
+			for (turnIt = playIt->second->Turns->begin(); turnIt != playIt->second->Turns->end(); turnIt++)
 			{
 				delete turnIt->second;
 			}
-			playIt->second->clear();
+			playIt->second->Turns->clear();
 			delete playIt->second;
 		}
-		levelIt->second->clear();
+		levelIt->second->Players->clear();
 		delete levelIt->second;
 	}
 	m_InputEvents->clear();
@@ -85,42 +87,48 @@ void InputRecorder::StopPlayback()
 	m_IsPlaying = false;
 }
 
-InputEvent* InputRecorder::GetCurrentPlayerActions(int level, int playerIdx, int turn)
+InputTurn* InputRecorder::GetCurrentPlayerActions(int level, int playerIdx, int turn)
 {
-	if (!m_IsPlaying || m_InputEvents->count(level) == 0 || m_InputEvents->at(level)->count(playerIdx) == 0 || m_InputEvents->at(level)->at(playerIdx)->count(turn) == 0)
+	if (!m_IsPlaying || m_InputEvents->count(level) == 0 || m_InputEvents->at(level)->Players->count(playerIdx) == 0 || m_InputEvents->at(level)->Players->at(playerIdx)->Turns->count(turn) == 0)
 		return nullptr;
 
-	return m_InputEvents->at(level)->at(playerIdx)->at(turn);
+	return m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn);
 }
 
-void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, int32_t dword_0x0_0, int16_t word_0x4_4, int16_t word_0x6_6, int16_t word_0x18_24_next_entity, int16_t word_0x1A_26, int16_t str_611_SpellIndexLeft_0x451_1105, int16_t str_611_SpellIndexRight_0x453_1107, int8_t str_611_byte_0x455_1109, int8_t str_611_byte_0x456_1110)
+void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, int32_t dword_0x0_0, int16_t word_0x4_4, int16_t word_0x6_6, int16_t word_0x18_24_next_entity, int16_t word_0x1A_26, int16_t SpellIndexLeft_0x451_1105, int16_t SpellIndexRight_0x453_1107, int8_t SubSpellIndexLeft_1109, int8_t SubSpellIndexRight_1110, int16_t CastleEntityIdx_58)
 {
 	if (!m_IsRecording)
 		return;
 
-	if (m_InputEvents->count(level) == 0) {
-		m_InputEvents->insert(std::pair<uint16_t, std::map<uint16_t, std::map<uint32_t, InputEvent*>*>*>(level, new std::map<uint16_t, std::map<uint32_t, InputEvent*>*>()));
-	}
-	if (m_InputEvents->at(level)->count(playerIdx) == 0)
+	if (m_InputEvents->count(level) == 0) 
 	{
-		m_InputEvents->at(level)->insert(std::pair<uint16_t, std::map<uint32_t, InputEvent*>*>(playerIdx, new std::map<uint32_t, InputEvent*>()));
+		m_InputEvents->insert(std::pair<uint16_t, InputEvent*>(level, new InputEvent()));
+		m_InputEvents->at(level)->Header = new InputEventHeader();
+		m_InputEvents->at(level)->Header->Level = level;
+		m_InputEvents->at(level)->Players = new std::map<uint16_t, InputPlayer*>();
 	}
-	if (m_InputEvents->at(level)->at(playerIdx)->count(turn) == 0)
+	if (m_InputEvents->at(level)->Players->count(playerIdx) == 0)
 	{
-		m_InputEvents->at(level)->at(playerIdx)->insert({ turn, { new InputEvent() } });
+		m_InputEvents->at(level)->Players->insert(std::pair<uint16_t, InputPlayer*>(playerIdx, new InputPlayer()));
+		m_InputEvents->at(level)->Players->at(playerIdx) = new InputPlayer();
+		m_InputEvents->at(level)->Players->at(playerIdx)->PlayerIdx = playerIdx;
+		m_InputEvents->at(level)->Players->at(playerIdx)->Turns = new std::map<uint32_t, InputTurn*>();
 	}
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->level = level;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->playerIdx = playerIdx;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->turn = turn;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->dword_0x0_0 = dword_0x0_0;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->word_0x4_4 = word_0x4_4;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->word_0x6_6 = word_0x6_6;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->word_0x18_24_next_entity = word_0x18_24_next_entity;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->word_0x1A_26 = word_0x1A_26;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->str_611_SpellIndexLeft_0x451_1105 = str_611_SpellIndexLeft_0x451_1105;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->str_611_SpellIndexRight_0x453_1107 = str_611_SpellIndexRight_0x453_1107;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->str_611_byte_0x455_1109 = str_611_byte_0x455_1109;
-	m_InputEvents->at(level)->at(playerIdx)->at(turn)->str_611_byte_0x456_1110 = str_611_byte_0x456_1110;
+	if (m_InputEvents->at(level)->Players->at(playerIdx)->Turns->count(turn) == 0)
+	{
+		m_InputEvents->at(level)->Players->at(playerIdx)->Turns->insert({ turn, { new InputTurn() } });
+	}
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Turn = turn;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->dword_0x0_0 = dword_0x0_0;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->word_0x4_4 = word_0x4_4;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->word_0x6_6 = word_0x6_6;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->word_0x18_24_next_entity = word_0x18_24_next_entity;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->word_0x1A_26 = word_0x1A_26;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SpellIndexLeft_0x451_1105 = SpellIndexLeft_0x451_1105;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SpellIndexRight_0x453_1107 = SpellIndexRight_0x453_1107;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SubSpellIndexLeft_1109 = SubSpellIndexLeft_1109;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SubSpellIndexRight_1110 = SubSpellIndexRight_1110;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->CastleEntityIdx_58 = CastleEntityIdx_58;
 
 }
 
@@ -128,23 +136,52 @@ bool InputRecorder::SaveRecordingToFile(const char* outputFileName)
 {
 	try
 	{
+		if (m_InputEvents == nullptr || m_InputEvents->empty())
+			return false;
+
 		FILE* eventsFile = fopen(outputFileName, "wb");
 		if (!eventsFile)
 			return false;
 
-		map<uint16_t, map<uint16_t, map<uint32_t, InputEvent*>*>*>::iterator levelIt;
-		map<uint16_t, map<uint32_t, InputEvent*>*>::iterator playIt;
-		map<uint32_t, InputEvent*>::iterator turnIt;
+		std::string fileSignature = "MC2-HD-Recording";
+
+		fwrite((uint8_t*)fileSignature.c_str(), fileSignature.length() * sizeof(char), 1, eventsFile);
+
+		std::vector<InputTurn*>* playerTurns = new std::vector<InputTurn*>();
+
+		map<uint16_t, InputEvent*>::iterator levelIt;
+		map<uint16_t, InputPlayer*>::iterator playIt;
+		map<uint32_t, InputTurn*>::iterator turnIt;
+
 		for (levelIt = m_InputEvents->begin(); levelIt != m_InputEvents->end(); levelIt++)
 		{
-			for (playIt = levelIt->second->begin(); playIt != levelIt->second->end(); playIt++)
+			int level = levelIt->first;
+			auto* inputEventHeader = new InputEventHeader();
+			inputEventHeader->Level = level;
+			inputEventHeader->PlayerCount = levelIt->second->Players->size();
+			
+			fwrite((uint8_t*)inputEventHeader, sizeof(InputEventHeader), 1, eventsFile);
+
+			for (playIt = levelIt->second->Players->begin(); playIt != levelIt->second->Players->end(); playIt++)
 			{
-				for (turnIt = playIt->second->begin(); turnIt != playIt->second->end(); turnIt++)
+				uint16_t playerIndex = playIt->first;
+				for (turnIt = playIt->second->Turns->begin(); turnIt != playIt->second->Turns->end(); turnIt++)
 				{
-					fwrite((uint8_t*)turnIt->second, sizeof(InputEvent), 1, eventsFile);
+					playerTurns->push_back(turnIt->second);
 				}
+				uint32_t turnCount = playerTurns->size();
+
+				fwrite(&playerIndex, sizeof(uint16_t), 1, eventsFile);
+				fwrite(&turnCount, sizeof(uint32_t), 1, eventsFile);
+
+				for (int i = 0; i < playerTurns->size();i++)
+					fwrite((uint8_t*)playerTurns->at(i), sizeof(InputTurn), 1, eventsFile);
+				
+				playerTurns->clear();
 			}
+			delete inputEventHeader;
 		}
+		delete playerTurns;
 		return fclose(eventsFile) == 0;
 	}
 	catch (exception ex)
@@ -162,43 +199,52 @@ bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 			return false;
 
 		uint16_t level = 0;
-		int16_t currentLevel = -1;
-		uint16_t playerIdx = 0;
-		uint32_t turn = 0;
-		while (fread(&level, sizeof(InputEvent::level), 1, eventsFile))
+		uint16_t playerCount = 0;
+
+		char* fileSignature = new char[17];
+
+		fread(fileSignature, sizeof(char), 16, eventsFile);
+		fileSignature[16] = NULL;
+
+		if (strcmp(fileSignature, m_FileSignature.c_str()) != 0)
+			return false;
+
+		while (fread(&level, sizeof(InputEventHeader::Level), 1, eventsFile))
 		{
-			fread(&playerIdx, sizeof(InputEvent::playerIdx), 1, eventsFile);
-			fread(&turn, sizeof(InputEvent::turn), 1, eventsFile);
+			fread(&playerCount, sizeof(InputEventHeader::PlayerCount), 1, eventsFile);
 
-			if (level != currentLevel)
+			if (m_InputEvents->count(level) == 0)
 			{
-				m_InputEvents->insert(std::pair<uint16_t, std::map<uint16_t, std::map<uint32_t, InputEvent*>*>*>(level, new std::map<uint16_t, std::map<uint32_t, InputEvent*>*>()));
-				currentLevel = level;
-			}
-			if (m_InputEvents->at(level)->count(playerIdx) == 0)
-			{
-				m_InputEvents->at(level)->insert(std::pair<uint16_t, std::map<uint32_t, InputEvent*>*>(playerIdx, new std::map<uint32_t, InputEvent*>()));
-			}
-			if (m_InputEvents->at(level)->at(playerIdx)->count(turn) == 0)
-			{
-				m_InputEvents->at(level)->at(playerIdx)->insert({ turn, { new InputEvent() } });
+				m_InputEvents->insert(std::pair<uint16_t, InputEvent*>(level, new InputEvent()));
+				m_InputEvents->at(level)->Header = new InputEventHeader();
+				m_InputEvents->at(level)->Header->Level = level;
+				m_InputEvents->at(level)->Header->PlayerCount = playerCount;
+				m_InputEvents->at(level)->Players = new std::map<uint16_t, InputPlayer*>();
 			}
 
-			m_InputEvents->at(level)->at(playerIdx)->at(turn)->level = level;
-			m_InputEvents->at(level)->at(playerIdx)->at(turn)->playerIdx = playerIdx;
-			m_InputEvents->at(level)->at(playerIdx)->at(turn)->turn = turn;
 
-			fread(&m_InputEvents->at(level)->at(playerIdx)->at(turn)->dword_0x0_0, sizeof(InputEvent::dword_0x0_0), 1, eventsFile);
-			fread(&m_InputEvents->at(level)->at(playerIdx)->at(turn)->word_0x4_4, sizeof(InputEvent::word_0x4_4), 1, eventsFile);
-			fread(&m_InputEvents->at(level)->at(playerIdx)->at(turn)->word_0x6_6, sizeof(InputEvent::word_0x6_6), 1, eventsFile);
-			fread(&m_InputEvents->at(level)->at(playerIdx)->at(turn)->word_0x18_24_next_entity, sizeof(InputEvent::word_0x18_24_next_entity), 1, eventsFile);
-			fread(&m_InputEvents->at(level)->at(playerIdx)->at(turn)->word_0x1A_26, sizeof(InputEvent::word_0x1A_26), 1, eventsFile);
-			fread(&m_InputEvents->at(level)->at(playerIdx)->at(turn)->str_611_SpellIndexLeft_0x451_1105, sizeof(InputEvent::str_611_SpellIndexLeft_0x451_1105), 1, eventsFile);
-			fread(&m_InputEvents->at(level)->at(playerIdx)->at(turn)->str_611_byte_0x455_1109, sizeof(InputEvent::str_611_byte_0x455_1109), 1, eventsFile);
-			fseek(eventsFile, 1, SEEK_CUR); //padding
-			fread(&m_InputEvents->at(level)->at(playerIdx)->at(turn)->str_611_SpellIndexRight_0x453_1107, sizeof(InputEvent::str_611_SpellIndexRight_0x453_1107), 1, eventsFile);
-			fread(&m_InputEvents->at(level)->at(playerIdx)->at(turn)->str_611_byte_0x456_1110, sizeof(InputEvent::str_611_byte_0x456_1110), 1, eventsFile);
-			fseek(eventsFile, 1, SEEK_CUR); //padding
+			uint16_t playerIdx = 0;
+			uint32_t turnCount = 0;
+			while (playerCount--)
+			{
+				fread(&playerIdx, sizeof(InputPlayer::PlayerIdx), 1, eventsFile);
+				fread(&turnCount, sizeof(InputPlayer::TurnCount), 1, eventsFile);
+
+				if (m_InputEvents->at(level)->Players->count(playerIdx) == 0)
+				{
+					m_InputEvents->at(level)->Players->insert(std::pair<uint16_t, InputPlayer*>(playerIdx, new InputPlayer()));
+					m_InputEvents->at(level)->Players->at(playerIdx)->PlayerIdx = playerIdx;
+					m_InputEvents->at(level)->Players->at(playerIdx)->TurnCount = turnCount;
+					m_InputEvents->at(level)->Players->at(playerIdx)->Turns = new std::map<uint32_t, InputTurn*>();
+				}
+
+				for (int i = 0; i < turnCount; i++)
+				{
+					InputTurn* turn = new InputTurn();
+					fread(turn, sizeof(InputTurn), 1, eventsFile);
+					m_InputEvents->at(level)->Players->at(playerIdx)->Turns->insert({ turn->Turn, turn });
+				}
+			}
 		}
 		return fclose(eventsFile) == 0;
 	}

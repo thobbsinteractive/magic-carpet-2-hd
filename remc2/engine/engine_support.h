@@ -309,7 +309,7 @@ typedef struct {//lenght 2124=0x84C
 	//int16_t word_0x3FC_2BDE;//1020 mouse_y 22 dword_0x3E6_2BE4_12228.position_20.y
 	//uint8_t stub3c[32];
 	//int16_t word_0x420_2BE4_12284;//1054 //dword_0x3E6_2BE4_12228.word_0x38_56
-	//uint8_t byte_0x420_2BE4_12286;//1056//12286 - byte //dword_0x3E6_2BE4_12228.word_0x3A_58
+	//uint8_t byte_0x420_2BE4_12286;//1056//12286 - byte //dword_0x3E6_2BE4_12228.CastleEntityIdx_58
 	//uint8_t stub4[282];
 	//uint16_t word_0x53B_2BDE;// 1339 //dword_0x3E6_2BE4_12228.word_0x155_341
 	//uint8_t stub4b[30];

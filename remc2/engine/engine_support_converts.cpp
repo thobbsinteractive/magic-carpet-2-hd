@@ -63,8 +63,8 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	memcpy(output + 0x36, &input->word_0x36_54, 2);
 	//int16_t word_0x38_56;
 	memcpy(output + 0x36, &input->word_0x38_56, 2);
-	//int16_t word_0x3A_58;
-	memcpy(output + 0x3a, &input->word_0x3A_58, 2);
+	//int16_t CastleEntityIdx_58;
+	memcpy(output + 0x3a, &input->CastleEntityIdx_58, 2);
 	//uint16_t array_0x3C_60[16];//size??
 	for (int i = 0; i < 16; i++)
 		memcpy(output + 0x3c + 2 * i, &input->array_0x3C_60[i], 2);

@@ -213,7 +213,7 @@ void ProcessKeyboardPresses_17190()//1f8190
 						if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 < 0 && !(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 						{
 							D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 0xCu;
-							D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.word_0x3A_58 = 0;
+							D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.CastleEntityIdx_58 = 0;
 						}
 						LastPressedKey_1806E4 = 0;
 						break;
@@ -241,7 +241,7 @@ void ProcessKeyboardPresses_17190()//1f8190
 						break;
 					}
 					case 0x26: {//l remove castle stage
-						if (ptrCastleEntity->dword_0xA4_164x->word_0x3A_58)
+						if (ptrCastleEntity->dword_0xA4_164x->CastleEntityIdx_58)
 							HandleButtonClick_191B0(42, 0);
 						LastPressedKey_1806E4 = 0;
 						break;

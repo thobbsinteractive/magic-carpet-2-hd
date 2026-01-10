@@ -156,7 +156,7 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 	//adress 20e7db
 	v18 = x_D41A0_BYTEARRAY_4_struct.str_index_242ar.dword_4;
 	//v20 = a1x->dword_0xA4_164;
-	v2x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+	v2x = Entities_EA3E4[a1x->dword_0xA4_164x->CastleEntityIdx_58];
 	v23x = v2x;
 	if (v2x > Entities_EA3E4[0] && v2x->dword_0x10_16)
 	{
@@ -419,7 +419,7 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_entity_0x6E8E* a3x, ch
 				}
 				if (a3x->dword_0x88_136)
 				{
-					v11 = v15x->dword_0xA4_164x->word_0x3A_58;
+					v11 = v15x->dword_0xA4_164x->CastleEntityIdx_58;
 					if (!v11 || a3x->dword_0x88_136 > Entities_EA3E4[v11]->mana_0x90_144)
 					{
 						if (D41A0_0.terrain_2FECE.MapType != MapType_t::Day)
@@ -1122,13 +1122,13 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	if (v16)
 		v83 = Entities_EA3E4[v16]->word_0x2E_46;
 	//v17 = v80x->dword_0xA4_164;
-	if (v80x->dword_0xA4_164x->word_0x3A_58)
+	if (v80x->dword_0xA4_164x->CastleEntityIdx_58)
 	{
 		v18 = (int16_t)(v80x->position_0x4C_76.x - posX);
 		v19 = (int16_t)(v80x->position_0x4C_76.y - posY);
 		v20 = v82 + ((v18 * v73 - v19 * v86) >> 16);
 		v21 = ((v73 * v19 + v86 * v18) >> 16) + v76;
-		v22x = Entities_EA3E4[v80x->dword_0xA4_164x->word_0x3A_58];
+		v22x = Entities_EA3E4[v80x->dword_0xA4_164x->CastleEntityIdx_58];
 		v23 = (int16_t)(v22x->position_0x4C_76.x - posX);
 		v24 = (int16_t)(v22x->position_0x4C_76.y - posY);
 		v25 = v82 + ((v23 * v73 - v24 * v86) >> 16);
@@ -1741,13 +1741,13 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	if (v17)
 		v93 = Entities_EA3E4[v17]->word_0x2E_46;
 	//v18 = v102x->dword_0xA4_164;
-	if (v102x->dword_0xA4_164x->word_0x3A_58)
+	if (v102x->dword_0xA4_164x->CastleEntityIdx_58)
 	{
 		v19 = (int16_t)(v102x->position_0x4C_76.x - posX);
 		v20 = (int16_t)(v102x->position_0x4C_76.y - posY);
 		v21 = v98 + ((v19 * v87 - v20 * v86) >> 16);
 		v22 = v87 * v20 + v86 * v19;
-		v23x = Entities_EA3E4[v102x->dword_0xA4_164x->word_0x3A_58];
+		v23x = Entities_EA3E4[v102x->dword_0xA4_164x->CastleEntityIdx_58];
 		v24 = (v22 >> 16) + v85;
 		v25 = (int16_t)(v23x->position_0x4C_76.x - posX);
 		v26 = (int16_t)(v23x->position_0x4C_76.y - posY);
@@ -4201,7 +4201,7 @@ void sub_889F0(uint16_t a1)//2699f0
 	}
 	if (a1 != 93)
 		goto LABEL_22;
-	if (Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->dword_0xA4_164x->word_0x3A_58)
+	if (Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->dword_0xA4_164x->CastleEntityIdx_58)
 		str_unk_1804B0ar.word_0x88 = 94;
 }
 
