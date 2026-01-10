@@ -8,8 +8,8 @@ typedef struct {//lenght 26
 	int32_t subSpellIndex_2;
 	int32_t manaCost_6;
 	int32_t maxManaLimit_A;
-	int32_t dword_E;
-	int32_t dword_0x12;
+	int32_t xpos1_E;
+	int32_t xpos2_0x12;
 	int16_t hintText_0x16x;
 	int16_t word_0x18;
 	int8_t life_0x1A;
