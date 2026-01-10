@@ -22563,51 +22563,13 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 {
 	__int16 posIconsY; // si
 	int16_t posIconsX; // di
-	//char v8; // dl
-	//type_event_0x6E8E* v9x; // edx
-	//__int16 v10; // ax
-	//__int16 v11; // ax
-	//unsigned __int16 v12; // dx
-	//bitmap_pos_struct_t v13; // eax
-	//unsigned __int8 v14; // al
 	int16_t selectedSpellIndex; // eax
-	//unsigned __int8 v17; // dl
-	//__int16 v18; // cx
 	int16_t posSubMenuSpellX; // esi
-	//int v20; // ebx
-	//char *v21; // edi
-	//int v22; // eax
-	//unsigned __int16 v23; // cx
-	//signed __int16 v24; // ax
-	//__int16 v25; // cx
-	//int v26; // eax
-	//int v27; // eax
-	//int v28; // ecx
-	//int v29; // edx
-	//int v30; // ecx
-	//int v31; // eax
-	//int v32; // edi
-	//int v34; // [esp+4h] [ebp-6Ch]
-	//int v35; // [esp+Ch] [ebp-64h]
-	//type_event_0x6E8E* v37x; // [esp+14h] [ebp-5Ch]
-	//signed int i; // [esp+18h] [ebp-58h]
-	//signed int v40; // [esp+28h] [ebp-48h]
 	int16_t posIconsXStart; // [esp+2Ch] [ebp-44h]
 	int16_t spellIconWidth; // [esp+34h] [ebp-3Ch]
-	//int16_t v43; // [esp+38h] [ebp-38h]
-	//__int16 v44; // [esp+38h] [ebp-38h]
-	//__int16 v45; // [esp+3Ch] [ebp-34h]
-	//unsigned __int8 v46; // [esp+40h] [ebp-30h]
-	//signed __int16 v47; // [esp+40h] [ebp-30h]
 	int16_t spellIconHeight; // [esp+44h] [ebp-2Ch]
-	//__int16 v50; // [esp+4Ch] [ebp-24h]
-	//int v51; // [esp+50h] [ebp-20h]
 	int16_t posSubMenuIconWidth; // [esp+54h] [ebp-1Ch]
-	//__int16 v53; // [esp+58h] [ebp-18h]
 	int16_t spellIconIndex; // [esp+5Ch] [ebp-14h]
-	//char v55; // [esp+60h] [ebp-10h]
-	//unsigned __int8 v56; // [esp+64h] [ebp-Ch]
-	//char v58; // [esp+6Ch] [ebp-4h]
 
 	int posIconsY2;
 	bool drawBitmap;
@@ -22696,11 +22658,8 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 				{
 					subSpellIndex = playerEntity->dword_0xA4_164x->str_611.array_0x437_1079x.byte[spellIndex_D94FF[spellIconIndex]];
 				}
-				//v46 = subSpellIndex;
-
 				if (SPELLS_BEGIN_BUFFER_str[spellEntity->model_0x40_64].isEnabled_1 & 4)
 				{
-					//v11 = spellEntity->word_0x2E_46;
 					if (spellEntity->word_0x2E_46 > 0 && spellEntity->word_0x2E_46 < 32 && x_D41A0_BYTEARRAY_4_struct.colorIndex_121[1])
 						goto LABEL_43;
 				}
@@ -22795,10 +22754,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 	if (selectedSpellIndex != -1)
 	{
 		spellIndex = spellIndex_D94FF[selectedSpellIndex];
-		//v43 = v17;
 		signed __int16 spellIndex3 = playerEntity->dword_0xA4_164x->str_611.array_0x41D_1053z.byte[spellIndex];
-		/*v18 = 3 * *(unsigned __int8 *)(**filearray_2aa18c[6] + 982);
-		v50 = v51 - *(unsigned __int8 *)(**filearray_2aa18c[6] + 983);*/
 		__int16 xAdd = 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
 		__int16 posY2 = posIconsY2 - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].height_5 * scale);
 		posSubMenuSpellX = spellIconWidth / 2 + spellIconWidth * (playerEntity->dword_0xA4_164x->str_611.byte_0x458_1112 % 13) + posIconsXStart - xAdd / 2;
@@ -22818,8 +22774,6 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 		{
 			if (subSpellIndex2 >= 3)
 				break;
-			//v21 = (char*)&(*xadataspellsdat.colorPalette_var28)[80 * v43 + 2 + 26 * (signed __int16)v20];
-			//v21 = SPELLS_BEGIN_BUFFER_str[v43].subspell[v20].dword_2;
 			int manaPart = 0;
 			bool drawNext2 = false;
 			if (!SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[subSpellIndex2].maxManaLimit_A
@@ -22831,7 +22785,6 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 			}
 			if (subSpellIndex2 > spellIndex3)
 			{
-				//DrawBitmap_2BB40(v19, v50, (uint8_t**)(**filearray_2aa18c[6] + 978));
 				DrawBitmap_2BB40(posX + posSubMenuSpellX, posY2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163], scale);
 			}
 			else
@@ -22841,24 +22794,14 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 					bitmapIndex = 161;
 				else
 					bitmapIndex = 162;
-				/*DrawBitmap_2BB40(v19, v50, (uint8_t**)(**filearray_2aa18c[6] + 6 * v24));
-				DrawBitmap_2BB40(v19 + 6, v50 + 10, (uint8_t**)(**filearray_2aa18c[6] + 6 * (signed __int16)(v20 + 165)));*/
 				DrawBitmap_2BB40(posX + posSubMenuSpellX, posY2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex], scale);
 				DrawBitmap_2BB40(posX + posSubMenuSpellX + 6, posY2 + 10, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[subSpellIndex2 + 165], scale);
-				//v53 = posSubMenuSpellX + (18 * scale);
-				//v25 = v50 + (6 * scale);
 				int bitmapIndex2 = subSpellIndex2 + 3 * spellIndex + 179;
-				/*if ( v58 )
-					DrawBitmap_2BB40(v53, v25, (uint8_t**)(**filearray_2aa18c[6] + 6 * (signed __int16)v26));
-				else
-					sub_2DE80_draw_bitmapxx(v53, v25, (uint8_t**)(6 * (signed __int16)v26 + **filearray_2aa18c[6]));*/
 				if (drawNext2)
 					DrawBitmap_2BB40(posX + posSubMenuSpellX + (18 * scale), posY2 + (6 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex2], scale);
 				else
 					GameBitmap::DrawTransparentBitmap_2DE80(posX + posSubMenuSpellX + (18 * scale), posY2 + (6 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex2], scale);
 			}
-			//if ( (x_WORD)v20 == *(char *)(v36 + 502) )
-			//DrawBitmap_2BB40(v19, v50, (uint8_t**)(**filearray_2aa18c[6] + 984));
 			if (subSpellIndex2 == playerEntity->dword_0xA4_164x->str_611.byte_0x459_1113)
 				DrawBitmap_2BB40(posX + posSubMenuSpellX, posY2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[164], scale);
 
@@ -22868,18 +22811,12 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 				{
 					if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
 					{
-						//v27 = v43;
-						//v28 = *(x_DWORD *)(v21 + 42);
 						xPosNext = SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[subSpellIndex2 + 1].xpos2_0x12;
-						//v29 = *((x_DWORD *)v21 + 4);
 						xPos = SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[subSpellIndex2].xpos2_0x12;
 					}
 					else
 					{
-						//v27 = v43;
-						//v28 = *(x_DWORD *)(v21 + 38);
 						xPosNext = SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[subSpellIndex2 + 1].xpos1_E;
-						//v29 = *((x_DWORD *)v21 + 3);
 						xPos = SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[subSpellIndex2].xpos1_E;
 					}
 					xDiff = xPosNext - xPos;
@@ -22925,19 +22862,6 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 	}
 	set_scene(SCENE_SPELL_MENU);
 }
-// D419E: using guessed type char CursorGraphicsIndex_D419E;
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// D41B6: using guessed type char x_BYTE_D41B6;
-// E9800: using guessed type char x_BYTE_E9800;
-// EA3DC: using guessed type int **filearray_2aa18c[6];
-// EA3E4: using guessed type int ENTITY_EA3E4[];
-// EB394: using guessed type int **filearray_2aa18c[0];
-// F01E8: using guessed type int (*ptrDrawBitmap_F01E8)(x_DWORD, x_DWORD, x_DWORD);
-// 1805B0: using guessed type int x_DWORD_1805B0_mouse.x;
-// 1805B4: using guessed type int x_DWORD_1805B0_mouse.y;
-// 1805C2: using guessed type __int16 x_WORD_1805C2_joystick;
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00030D50) --------------------------------------------------------
 void sub_30D50(type_event_0x6E8E* a1x)//211d50
