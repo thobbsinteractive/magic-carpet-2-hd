@@ -69,7 +69,7 @@ void SetSoundEffectAndMusicLevelCoordinates_19D60(signed int volume);
 void DrawPauseMenuPopUps_87860();
 void sub_87C10();
 void DrawAndEventsInGame_47560(uint32_t a3, signed int a4, int16_t a5);
-void DrawBottomMenu_2ECC0();
+void DrawBottomSpellsMenu_2ECC0();
 void ColorizeScreen_2E790(int posX, int posY, int width, int height, uint8_t color);
 void DrawChatMenu_2F6B0();
 void DrawPopupTextBox_87610();
