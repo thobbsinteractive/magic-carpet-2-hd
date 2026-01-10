@@ -22703,17 +22703,10 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 					if (skipToLabel43 || x_D41A0_BYTEARRAY_4_struct.byteindex_50 == spellIconIndex)
 					{
 						uint8_t bitmapType = playerEntity->dword_0xA4_164x->str_611.array_0x3B5_949x.byte[spellIndex2];
-						if (bitmapType >= 1u)
-						{
-							if (bitmapType <= 1u)
-							{
-								GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[149], scale);
-							}
-							else if (bitmapType == 2)
-							{
-								GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX + xAdd2, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[150], scale);
-							}
-						}
+						if (bitmapType == 1)
+							GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[149], scale);
+						else if (bitmapType == 2)
+							GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX + xAdd2, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[150], scale);
 					}
 				}
 				else
@@ -22752,11 +22745,11 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 		if (posSubMenuSpellX <= (640 * scale) - xAdd)
 		{
 			if ((posSubMenuSpellX & 0x8000u) != 0)
-				LOWORD(posSubMenuSpellX) = 0;
+				posSubMenuSpellX = 0;
 		}
 		else
 		{
-			LOWORD(posSubMenuSpellX) = (640 * scale) - xAdd;
+			posSubMenuSpellX = (640 * scale) - xAdd;
 		}
 		int subSpellIndex2 = 0;
 		posSubMenuIconWidth = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale;
