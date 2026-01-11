@@ -38309,7 +38309,7 @@ void PlayerEvents_51BB0()//232bb0
 		bool playerFound = false;
 		for (int i = 0; i < D41A0_0.NumberOfPlayers_0xe; i++)
 		{
-			if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte0 == 1)
+			if (D41A0_0.array_0x6E3E[i].PlayerAction_byte0 == 1)
 			{
 				D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236 = 1;
 				if (i == D41A0_0.LevelIndex_0xc && (x_D41A0_BYTEARRAY_4_struct.player_name_57ar[0]))
@@ -38343,7 +38343,14 @@ void PlayerEvents_51BB0()//232bb0
 			sub_53A40(&D41A0_0.array_0x6E3E[i]);
 		}
 
-		switch (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte0)
+		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
+		{
+			auto action = m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
+			D41A0_0.array_0x6E3E[i].PlayerAction_byte0 = action->PlayerAction_byte0;
+			actEvent->life_0x8 = action->Life_8x0;
+		}
+
+		switch (D41A0_0.array_0x6E3E[i].PlayerAction_byte0)
 		{
 		case 1:
 			D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236 = 1;
@@ -38658,17 +38665,17 @@ void PlayerEvents_51BB0()//232bb0
 				sub_87C10();
 				spellIndex = x_BYTE_D94FF_spell_index[D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1];
 				actEvent->dword_0xA4_164x->str_611.array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1]] = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2;
-				if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte0 >= 0x1Fu)
+				if (D41A0_0.array_0x6E3E[i].PlayerAction_byte0 >= 0x1Fu)
 				{
 					//Left Spell
-					if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte0 <= 0x1Fu)
+					if (D41A0_0.array_0x6E3E[i].PlayerAction_byte0 <= 0x1Fu)
 					{
 						actEvent->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105 = spellIndex;
 						actEvent->dword_0xA4_164x->str_611.SubSpellIndexLeft_1109 = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2;
 						x_D41A0_BYTEARRAY_4_struct.byteindex_38400 = 8;
 					}
 					//Right Spell
-					else if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte0 == 32)
+					else if (D41A0_0.array_0x6E3E[i].PlayerAction_byte0 == 32)
 					{
 						actEvent->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107 = spellIndex;
 						actEvent->dword_0xA4_164x->str_611.SubSpellIndexRight_1110 = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2;
@@ -38708,7 +38715,7 @@ void PlayerEvents_51BB0()//232bb0
 			actEvent->dword_0xA4_164x->str_611.array_0x3B5_949x.byte[D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1] = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte2;
 			PrepareEventSound_6E450(0, D41A0_0.array_0x2BDE[i].word_0x007_2BE4_11237, 14);
 			break;
-		case 0x27:
+		case 0x27: //Full stop player
 			D41A0_0.array_0x6E3E[i].roll = 0;
 			D41A0_0.array_0x6E3E[i].pitch = 0;
 			if (D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1)
@@ -38837,7 +38844,6 @@ void PlayerEvents_51BB0()//232bb0
 			actEvent->dword_0xA4_164x->str_611.SubSpellIndexLeft_1109 = action->SubSpellIndexLeft_1109;
 			actEvent->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107 = action->SpellIndexRight_0x453_1107;
 			actEvent->dword_0xA4_164x->str_611.SubSpellIndexRight_1110 = action->SubSpellIndexRight_1110;
-			actEvent->dword_0xA4_164x->CastleEntityIdx_58 = action->CastleEntityIdx_58;
 		}
 		else if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
 		{
@@ -38853,8 +38859,8 @@ void PlayerEvents_51BB0()//232bb0
 				actEvent->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107,
 				actEvent->dword_0xA4_164x->str_611.SubSpellIndexLeft_1109,
 				actEvent->dword_0xA4_164x->str_611.SubSpellIndexRight_1110,
-				actEvent->dword_0xA4_164x->CastleEntityIdx_58);
-
+				actEvent->life_0x8,
+				D41A0_0.array_0x6E3E[i].PlayerAction_byte0);
 		}
 		
 		sub_57B20(&D41A0_0.array_0x2BDE[i], Entities_EA3E4[D41A0_0.array_0x2BDE[i].PlayerEntityIdx_2BE4_11240]);
@@ -38901,7 +38907,7 @@ void sub_53160()//234160
 	{
 		//memset((x_BYTE *)(x_D41A0_BYTEARRAY_0 + 28222+ v11index*10), 0, 10);
 		//for (int kk = 0; kk < 10; kk++)
-		D41A0_0.array_0x6E3E[v11index].str_0x6E3E_byte0 = 0;
+		D41A0_0.array_0x6E3E[v11index].PlayerAction_byte0 = 0;
 		D41A0_0.array_0x6E3E[v11index].str_0x6E3E_byte1 = 0;
 		D41A0_0.array_0x6E3E[v11index].str_0x6E3E_byte2 = 0;
 		D41A0_0.array_0x6E3E[v11index].roll = 0;
@@ -38931,7 +38937,7 @@ void sub_53160()//234160
 		//*(x_DWORD *)(v0 + 24) = x_D41A0_BYTEARRAY_4_struct.byteindex_256ar[24];
 		D41A0_0.array_0x2BDE[v0index].dword_0x018_2BDE_11254 = x_D41A0_BYTEARRAY_4_struct.byteindex_256ar.dword_0x018_2BDE_11254;
 		//*(x_BYTE *)(x_D41A0_BYTEARRAY_0 + 28222 + v11index * 10) = 1;
-		D41A0_0.array_0x6E3E[v0index].str_0x6E3E_byte0 = 1;
+		D41A0_0.array_0x6E3E[v0index].PlayerAction_byte0 = 1;
 		//*(x_WORD *)(v0 + 7) = v12;
 		D41A0_0.array_0x2BDE[v0index].word_0x007_2BE4_11237 = v12;
 		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE) && v12 != D41A0_0.LevelIndex_0xc)
@@ -39194,12 +39200,12 @@ void sub_53A40(type_str_0x6E3E* a1x)//234a40
 		//v6 = x_D41A0_BYTEARRAY_4_struct.moviemvidatfile_byte4_33;
 		if (!x_D41A0_BYTEARRAY_4_struct.moviemvidatfile_byte4_35)
 			goto LABEL_21;
-		if (a1x->str_0x6E3E_byte0 != 2 && DataFileIO::Read(x_D41A0_BYTEARRAY_4_struct.moviemvidatfile_byte4_35, (uint8_t*)a1x, 10) == 10)
+		if (a1x->PlayerAction_byte0 != 2 && DataFileIO::Read(x_D41A0_BYTEARRAY_4_struct.moviemvidatfile_byte4_35, (uint8_t*)a1x, 10) == 10)
 		{
-			v7 = a1x->str_0x6E3E_byte0;
-			if (a1x->str_0x6E3E_byte0 == 13)
+			v7 = a1x->PlayerAction_byte0;
+			if (a1x->PlayerAction_byte0 == 13)
 			{
-				a1x->str_0x6E3E_byte0 = 0;
+				a1x->PlayerAction_byte0 = 0;
 				goto LABEL_21;
 			}
 			if (v7 != 2 && v7 != 29 && !sub_473E0())
@@ -39212,7 +39218,7 @@ void sub_53A40(type_str_0x6E3E* a1x)//234a40
 			sub_53CC0_close_movie();
 			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] = 8;
 			sub_53CA0();
-			a1x->str_0x6E3E_byte0 = 0;
+			a1x->PlayerAction_byte0 = 0;
 		}
 		return;
 	}
@@ -39247,8 +39253,8 @@ void sub_53A40(type_str_0x6E3E* a1x)//234a40
 			{
 				if (DataFileIO::WriteFile_98CAA(x_D41A0_BYTEARRAY_4_struct.moviemvidatfile_byte4_35, (uint8_t*)a1x, 10) != 10)
 					sub_53CC0_close_movie();
-				if (a1x->str_0x6E3E_byte0 == 12)
-					a1x->str_0x6E3E_byte0 = 0;
+				if (a1x->PlayerAction_byte0 == 12)
+					a1x->PlayerAction_byte0 = 0;
 			}
 		}
 	}

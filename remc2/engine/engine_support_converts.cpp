@@ -458,8 +458,8 @@ void convert_struct_to_array_0x6E8E(type_entity_0x6E8E* input, uint8_t* output) 
 }
 
 void convert_struct_to_array_0x6E3E(type_str_0x6E3E* input, uint8_t* output) {//10 lenght
-	//int8_t str_0x6E3E_byte0;//0x6E3E-28222//D41A0_BYTESTR_0.array_0x6E3E[xx].str_0x6E3E_byte0
-	memcpy(output + 0, &input->str_0x6E3E_byte0, 1);
+	//int8_t PlayerAction_byte0;//0x6E3E-28222//D41A0_BYTESTR_0.array_0x6E3E[xx].PlayerAction_byte0
+	memcpy(output + 0, &input->PlayerAction_byte0, 1);
 	//int8_t str_0x6E3E_byte1;//0x6E3F-28223
 	memcpy(output + 1, &input->str_0x6E3E_byte1, 1);
 	//int8_t str_0x6E3E_byte2;//0x6E40-28224

@@ -147,7 +147,7 @@ extern uint8_t* x_BYTE_14B4E0_second_heightmap;
 
 #pragma pack (1)
 typedef struct {//lenght 10
-	int8_t str_0x6E3E_byte0;//0x6E3E-28222//D41A0_BYTESTR_0.array_0x6E3E[xx].str_0x6E3E_byte0
+	int8_t PlayerAction_byte0;//0x6E3E-28222//D41A0_BYTESTR_0.array_0x6E3E[xx].PlayerAction_byte0
 	int8_t str_0x6E3E_byte1;//0x6E3F-28223
 	int8_t str_0x6E3E_byte2;//0x6E40-28224
 	int8_t roll;//0x6E41-28225

@@ -18,7 +18,8 @@ struct InputTurn
 	int16_t SpellIndexRight_0x453_1107 = 0;
 	int8_t SubSpellIndexLeft_1109 = 0;
 	int8_t SubSpellIndexRight_1110 = 0;
-	int16_t CastleEntityIdx_58 = 0;
+	int32_t Life_8x0 = 0;
+	int8_t PlayerAction_byte0 = 0;
 };
 
 struct InputPlayer
