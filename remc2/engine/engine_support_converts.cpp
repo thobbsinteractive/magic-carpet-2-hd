@@ -27,13 +27,13 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int32_t dword_0x0_0;
 	memcpy(output + 0x0, &input->dword_0x0_0, 4);
 	//int16_t word_0x4_4;
-	memcpy(output + 0x4, &input->word_0x4_4, 2);
+	memcpy(output + 0x4, &input->Roll_4, 2);
 	//int16_t word_0x6_6;
-	memcpy(output + 0x6, &input->word_0x6_6, 2);
+	memcpy(output + 0x6, &input->Pitch_6, 2);
 	//uint8_t stuba[4];
 	memset(output + 0xa, 0, 4);
 	//int16_t word_0xc_12;//final speed
-	memcpy(output + 0xc, &input->word_0xc_12, 2);
+	memcpy(output + 0xc, &input->Speed_12, 2);
 	//int16_t word_0xe_14;
 	memcpy(output + 0xe, &input->word_0xe_14, 2);
 	//int16_t word_0x10_16;
@@ -465,9 +465,9 @@ void convert_struct_to_array_0x6E3E(type_str_0x6E3E* input, uint8_t* output) {//
 	//int8_t str_0x6E3E_byte2;//0x6E40-28224
 	memcpy(output + 2, &input->str_0x6E3E_byte2, 1);
 	//int8_t str_0x6E3E_byte3;//0x6E41-28225
-	memcpy(output + 3, &input->roll, 1);
+	memcpy(output + 3, &input->Roll_3, 1);
 	//int8_t str_0x6E3E_byte4;//0x6E42-28226
-	memcpy(output + 4, &input->pitch, 1);
+	memcpy(output + 4, &input->Pitch_4, 1);
 	//int8_t str_0x6E3E_byte5;//0x6E43-28227
 	memcpy(output + 5, &input->str_0x6E3E_byte5, 1);
 	//uint16_t str_0x6E3E_word6;//0x6E44-28228

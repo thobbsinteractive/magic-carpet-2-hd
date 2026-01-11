@@ -2267,8 +2267,8 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 		if (invertXAxis)
 			roll = roll * -1;
 
-		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].roll = roll;
-		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].pitch = pitch;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].Roll_3 = roll;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].Pitch_4 = pitch;
 		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_word6 = unk_18058Cstr.x_DWORD_180590;
 		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_word8 = unk_18058Cstr.x_DWORD_180594;
 	}

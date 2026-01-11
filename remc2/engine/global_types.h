@@ -230,10 +230,10 @@ type_str_611;
 
 typedef struct Type_str_164 {//size 1136
 	int32_t dword_0x0_0;
-	int16_t word_0x4_4;
-	int16_t word_0x6_6;
+	int16_t Roll_4;
+	int16_t Pitch_6;
 	uint8_t stuba[4];
-	int16_t word_0xc_12;//final speed
+	int16_t Speed_12;//final speed
 	int16_t word_0xe_14;
 	int16_t word_0x10_16;
 	//int8_t byte_0x11_17;

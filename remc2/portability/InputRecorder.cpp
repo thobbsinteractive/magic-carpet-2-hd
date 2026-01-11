@@ -95,7 +95,7 @@ InputTurn* InputRecorder::GetCurrentPlayerActions(int level, int playerIdx, int 
 	return m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn);
 }
 
-void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, int32_t dword_0x0_0, int16_t word_0x4_4, int16_t word_0x6_6, int16_t word_0x18_24_next_entity, int16_t word_0x1A_26, int16_t SpellIndexLeft_0x451_1105, int16_t SpellIndexRight_0x453_1107, int8_t SubSpellIndexLeft_1109, int8_t SubSpellIndexRight_1110, int32_t life_8x0, int8_t PlayerAction_byte0)
+void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, int32_t dword_0x0_0, int16_t roll_4, int16_t pitch_6, int16_t speed_12, int16_t word_0x18_24_next_entity, int16_t word_0x1A_26, int16_t SpellIndexLeft_0x451_1105, int16_t SpellIndexRight_0x453_1107, int8_t SubSpellIndexLeft_1109, int8_t SubSpellIndexRight_1110, int32_t life_8x0, int8_t PlayerAction_byte0)
 {
 	if (!m_IsRecording)
 		return;
@@ -120,8 +120,9 @@ void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint
 	}
 	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Turn = turn;
 	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->dword_0x0_0 = dword_0x0_0;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->word_0x4_4 = word_0x4_4;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->word_0x6_6 = word_0x6_6;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Roll_4 = roll_4;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Pitch_6 = pitch_6;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Speed_12 = speed_12;
 	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->word_0x18_24_next_entity = word_0x18_24_next_entity;
 	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->word_0x1A_26 = word_0x1A_26;
 	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SpellIndexLeft_0x451_1105 = SpellIndexLeft_0x451_1105;
