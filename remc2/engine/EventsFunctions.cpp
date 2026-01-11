@@ -22773,12 +22773,12 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 			{
 				int bitmapIndex;
 				if (drawNext2 && manaPart)
-					bitmapIndex = 161;
+					bitmapIndex = SPELL_ICON2_PANEL2_WITH_FRAME;
 				else
-					bitmapIndex = 162;
+					bitmapIndex = SPELL_ICON2_PANEL2_WITH_FRAME_DARK;
 				DrawBitmap_2BB40(posX + posSubMenuSpellX, posY2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex], scale);
 				DrawBitmap_2BB40(posX + posSubMenuSpellX + 6, posY2 + 10, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[subSpellIndex2 + SPELL_BACKGROUND_NUMBER1], scale);
-				int bitmapIndex2 = subSpellIndex2 + 3 * spellIndex + 179;
+				int bitmapIndex2 = subSpellIndex2 + 3 * spellIndex + SPELL_SUB_FIREBALL1_SMALL;
 				if (drawNext2)
 					DrawBitmap_2BB40(posX + posSubMenuSpellX + (18 * scale), posY2 + (6 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex2], scale);
 				else
