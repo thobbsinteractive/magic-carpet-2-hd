@@ -126,8 +126,7 @@ typedef struct {//lenght 18
 }type_str_0x1AC_428;
 
 typedef struct {
-	uint8_t byte[26];
-	//uint16_t word_2279;
+	uint8_t subSpellIndex[26];
 }
 type_8_1a;
 
@@ -209,8 +208,8 @@ typedef struct {//begin 611//str_611
 	int8_t byte_0x455_1109;//498
 	int8_t byte_0x456_1110;//499
 	int8_t byte_0x457_1111;//500//byte_0x83D_2BDE //select spell/type spell
-	int8_t byte_0x458_1112;//501//byte_0x83E_2BDE
-	int8_t byte_0x459_1113;//502
+	int8_t spellIndex_0x458_1112;//501//byte_0x83E_2BDE
+	int8_t subSpellIndex_0x459_1113;//502
 	int8_t byte_0x45A_1114;
 	int8_t byte_0x45B_1115;
 }

@@ -3960,7 +3960,7 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 	{
 		if (a1x->byte_0x3DF_2BE4_12221 == 5 || a1x->byte_0x3DF_2BE4_12221 == 8)
 		{
-			selectedSpellIndex = a1x->dword_0x3E6_2BE4_12228.str_611.byte_0x458_1112;
+			selectedSpellIndex = a1x->dword_0x3E6_2BE4_12228.str_611.spellIndex_0x458_1112;
 			if (selectedSpellIndex < 13)
 				spellIdxX = selectedSpellIndex;
 			else
@@ -3995,7 +3995,7 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 					}
 
 					//Calucation Spell Sub Category position
-					subCategoryIndex = a1x->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.byte[spellIndex_D94FF[a1x->dword_0x3E6_2BE4_12228.str_611.byte_0x458_1112]];
+					subCategoryIndex = a1x->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.subSpellIndex[spellIndex_D94FF[a1x->dword_0x3E6_2BE4_12228.str_611.spellIndex_0x458_1112]];
 
 					posX = posX + (subCategoryWidth * subCategoryIndex
 						+ (subCategoryWidth / 2)
@@ -4022,7 +4022,7 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 				posY = (spellIconHeight / 2)
 					+ helpHeight
 					- 2 * spellIconHeight
-					+ spellIconHeight * (a1x->dword_0x3E6_2BE4_12228.str_611.byte_0x458_1112 >= 13);
+					+ spellIconHeight * (a1x->dword_0x3E6_2BE4_12228.str_611.spellIndex_0x458_1112 >= 13);
 
 				if (unk_18058Cstr.x_WORD_1805C2_joystick != 7 && unk_18058Cstr.x_WORD_1805C2_joystick != 1 && unk_18058Cstr.x_WORD_1805C2_joystick != 2)
 				{

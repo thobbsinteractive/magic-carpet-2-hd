@@ -237,7 +237,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	//uint8_t stubf[1];
 	uint16_t setting_45w;
 	uint8_t stubg[3];
-	int8_t byteindex_50;//0x32//x_D41A0_BYTEARRAY_4_struct.byteindex_50
+	int8_t spellOnCursor_50;//0x32//x_D41A0_BYTEARRAY_4_struct.byteindex_50
 	uint8_t byteindex_51;//0x33//x_D41A0_BYTEARRAY_4_struct.byteindex_51
 	uint8_t byteindex_52;//0x34//x_D41A0_BYTEARRAY_4_struct.byteindex_52
 	uint8_t byteindex_53;//0x35//x_D41A0_BYTEARRAY_4_struct.byteindex_53
