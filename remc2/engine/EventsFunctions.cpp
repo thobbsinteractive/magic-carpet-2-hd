@@ -22582,7 +22582,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 	int xDiff;
 	int subSpellPos;
 	int16_t posEndX;
-	int manaAll;
+	int manaCost;
 	__int16 spellIndex2;
 	__int16 xAdd2;
 	bool drawNext;
@@ -22668,12 +22668,12 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 						}
 						if (drawNext && x_D41A0_BYTEARRAY_4_struct.byteindex_50 == spellIconIndex)
 						{
-							manaAll = GetSpellManaCost_6D710(playerEntity, spellIndex2, subSpellIndex);
-							if (manaAll > 0)
+							manaCost = GetSpellManaCost_6D710(playerEntity, spellIndex2, subSpellIndex);
+							if (manaCost > 0)
 							{
 								DrawBitmap_2BB40(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_BAR], scale);
-								DrawLine_2BC80(posX + posIconsX + (6 * scale), posIconsY + (28 * scale), (36 * scale) * (playerEntity->mana_0x90_144 % manaAll) / manaAll, (4 * scale), color1);
-								int manaPosX = playerEntity->mana_0x90_144 / manaAll;
+								DrawLine_2BC80(posX + posIconsX + (6 * scale), posIconsY + (28 * scale), (36 * scale) * (playerEntity->mana_0x90_144 % manaCost) / manaCost, (4 * scale), color1);
+								int manaPosX = playerEntity->mana_0x90_144 / manaCost;
 								for (int x = 0; x < 36 && manaPosX > 0; x += 2)
 								{
 									int y = 0;
@@ -22827,7 +22827,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 					DrawLine_2BC80(posX + posSubMenuSpellX + (6 * scale), posY2 + (28 * scale), posEndX, (2 * scale), (*xadataclrd0dat.colorPalette_var28)[3840]);
 			}
 			subSpellIndex2++;
-			LOWORD(posSubMenuSpellX) = posSubMenuIconWidth + posSubMenuSpellX;
+			posSubMenuSpellX += posSubMenuIconWidth;
 			continue;
 		}
 	}
