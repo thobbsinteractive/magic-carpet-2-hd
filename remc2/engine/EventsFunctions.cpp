@@ -22421,8 +22421,8 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 		//v2 += 2124;
 		v2x++;
 	}
-	v3 = v1 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[85].height_5 * scale);
-	posX = (helpWidth - (v1 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[86].width_4 * scale) + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[85].width_4) * scale)) / 2;
+	v3 = v1 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE].height_5 * scale);
+	posX = (helpWidth - (v1 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_MINI].width_4 * scale) + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_MINI].width_4) * scale)) / 2;
 	posY = (helpHeight - v3) / 2;
 	v25 = 0;
 	//i=x_D41A0_BYTEARRAY_0 + 11230
@@ -22437,12 +22437,12 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 		{
 			textColourIdx = playersColors_E88E0x[GetTrueWizardNumber_61790(v25)][1];
 			playerColourIdx = playersColors_E88E0x[GetTrueWizardNumber_61790(v25)][0];
-			DrawBitmap_2BB40(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[85], scale);
+			DrawBitmap_2BB40(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE], scale);
 			DrawLine_2BC80(
 				posX + (4 * scale),
 				posY + (4 * scale),
-				((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[85].width_4 * scale) - (8 * scale),
-				((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[85].height_5 * scale) - (8 * scale),
+				((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE].width_4 * scale) - (8 * scale),
+				((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE].height_5 * scale) - (8 * scale),
 				playerColourIdx);
 			v22 = (signed __int16)(posX + (8 * scale));
 			DrawText_2BC10(D41A0_0.array_0x2BDE[ix].WizardName_0x39f_2BFA_12157, posX + (8 * scale), posY + (6 * scale), textColourIdx, scale);
@@ -22455,7 +22455,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 				str_unk_1804B0ar.word_0x98 = posY + (30 * scale);
 			}
 			//HIWORD(v11) = HIWORD(**filearray_2aa18c[6]);
-			blackBarX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[85].width_4 * scale) + posX;
+			blackBarX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE].width_4 * scale) + posX;
 			if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 && D41A0_0.word_0xe > 1u && !str_unk_1804B0ar.byte_0xa8)
 			{
 				str_unk_1804B0ar.dword_0x82 = 9377 * str_unk_1804B0ar.dword_0x82 + 9439;
@@ -22482,24 +22482,24 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 					barY = posY + (4 * scale);
 					if (j == v25)
 					{
-						DrawBitmap_2BB40(blackBarX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[86], scale);
+						DrawBitmap_2BB40(blackBarX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_MINI], scale);
 						DrawLine_2BC80(
 							barX,
 							barY,
-							((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[86].width_4 * scale) - (8 * scale),
-							((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[86].height_5 * scale) - (8 * scale),
+							((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_MINI].width_4 * scale) - (8 * scale),
+							((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_MINI].height_5 * scale) - (8 * scale),
 							(*xadataclrd0dat.colorPalette_var28)[0]);
 					}
 					else
 					{
 						textColourIdx = playersColors_E88E0x[GetTrueWizardNumber_61790(j)][1];
 						playerColourIdx = playersColors_E88E0x[GetTrueWizardNumber_61790(j)][0];
-						DrawBitmap_2BB40(blackBarX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[86], scale);
+						DrawBitmap_2BB40(blackBarX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_MINI], scale);
 						DrawLine_2BC80(
 							barX,
 							barY,
-							((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[86].width_4 * scale) - (8 * scale),
-							((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[86].height_5 * scale) - (8 * scale),
+							((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_MINI].width_4 * scale) - (8 * scale),
+							((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_MINI].height_5 * scale) - (8 * scale),
 							playerColourIdx);
 						sprintf(printbuffer, "%03d", v23x->dword_0xA4_164x->word_0x26_38[j]);
 						DrawText_2BC10(printbuffer, blackBarX + (8 * scale), posY + (10 * scale), textColourIdx, scale);
@@ -22510,11 +22510,11 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 						}
 					}
 					//HIWORD(v18) = HIWORD(**filearray_2aa18c[6]);
-					blackBarX += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[86].width_4 * scale;
+					blackBarX += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_MINI].width_4 * scale;
 				}
 			}
 			//HIWORD(v19) = HIWORD(**filearray_2aa18c[6]);
-			posY += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[86].height_5 * scale;
+			posY += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_MINI].height_5 * scale;
 		}
 		v25++;
 	}
@@ -22609,7 +22609,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 	posIconsY2 = posY - (2 * spellIconHeight);
 	spellIconWidth = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale;
 	spellIconIndex = 0;
-	xAdd2 = spellIconWidth - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[149].width_4 * scale);
+	xAdd2 = spellIconWidth - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TOP_LEFT_CORNER].width_4 * scale);
 	posIconsY = posY - (2 * spellIconHeight);
 	uint8_t iconXIdx = 0;
 	uint8_t iconYIdx = 0;
@@ -22671,7 +22671,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 							manaAll = sub_6D710(playerEntity, spellIndex2, subSpellIndex);
 							if (manaAll > 0)
 							{
-								DrawBitmap_2BB40(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[87], scale);
+								DrawBitmap_2BB40(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_BAR], scale);
 								DrawLine_2BC80(posX + posIconsX + (6 * scale), posIconsY + (28 * scale), (36 * scale) * (playerEntity->mana_0x90_144 % manaAll) / manaAll, (4 * scale), color1);
 								int manaPosX = playerEntity->mana_0x90_144 / manaAll;
 								for (int x = 0; x < 36 && manaPosX > 0; x += 2)
@@ -22691,22 +22691,22 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 							if (drawNext)
 								bitmap = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL];
 							else
-								bitmap = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[91];
+								bitmap = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL2];
 
 							ptrDrawBitmap_F01E8(posX + posIconsX, posIconsY, bitmap, scale);
 						}
 						if (drawNext)
-							DrawBitmap_2BB40(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[spellIndex2 + 97], scale);
+							DrawBitmap_2BB40(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[spellIndex2 + SPELL_FIREBALL_SMALL], scale);
 						else
-							GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[spellIndex2 + 97], scale);
+							GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[spellIndex2 + SPELL_FIREBALL_SMALL], scale);
 					}
 					if (skipToLabel43 || x_D41A0_BYTEARRAY_4_struct.byteindex_50 == spellIconIndex)
 					{
 						uint8_t bitmapType = playerEntity->dword_0xA4_164x->str_611.array_0x3B5_949x.byte[spellIndex2];
 						if (bitmapType == 1)
-							GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[149], scale);
+							GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TOP_LEFT_CORNER], scale);
 						else if (bitmapType == 2)
-							GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX + xAdd2, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[150], scale);
+							GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX + xAdd2, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TOP_RIGHT_CORNER], scale);
 					}
 				}
 				else
@@ -22715,7 +22715,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 
 					if (playerEntity->dword_0xA4_164x->str_611.array_0x3E9_1001x.byte[spellIndex2] || playerEntity->dword_0xA4_164x->str_611.array_0x403_1027x.byte[spellIndex2])
 					{
-						GameBitmap::DrawColourizedBitmap(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[spellIndex2 + 97], 0xA6u, scale);
+						GameBitmap::DrawColourizedBitmap(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[spellIndex2 + SPELL_FIREBALL_SMALL], 0xA6u, scale);
 					}
 				}
 			}
@@ -22739,8 +22739,8 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 	{
 		spellIndex = spellIndex_D94FF[selectedSpellIndex];
 		signed __int16 spellIndex3 = playerEntity->dword_0xA4_164x->str_611.array_0x41D_1053z.byte[spellIndex];
-		__int16 xAdd = 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
-		__int16 posY2 = posIconsY2 - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].height_5 * scale);
+		__int16 xAdd = 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale);
+		__int16 posY2 = posIconsY2 - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].height_5 * scale);
 		posSubMenuSpellX = spellIconWidth / 2 + spellIconWidth * (playerEntity->dword_0xA4_164x->str_611.byte_0x458_1112 % 13) + posIconsXStart - xAdd / 2;
 		if (posSubMenuSpellX <= (640 * scale) - xAdd)
 		{
@@ -22752,7 +22752,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 			posSubMenuSpellX = (640 * scale) - xAdd;
 		}
 		int subSpellIndex2 = 0;
-		posSubMenuIconWidth = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale;
+		posSubMenuIconWidth = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale;
 		while (2)
 		{
 			if (subSpellIndex2 >= 3)
@@ -22768,7 +22768,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 			}
 			if (subSpellIndex2 > spellIndex3)
 			{
-				DrawBitmap_2BB40(posX + posSubMenuSpellX, posY2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163], scale);
+				DrawBitmap_2BB40(posX + posSubMenuSpellX, posY2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2], scale);
 			}
 			else
 			{
@@ -22778,7 +22778,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 				else
 					bitmapIndex = 162;
 				DrawBitmap_2BB40(posX + posSubMenuSpellX, posY2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex], scale);
-				DrawBitmap_2BB40(posX + posSubMenuSpellX + 6, posY2 + 10, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[subSpellIndex2 + 165], scale);
+				DrawBitmap_2BB40(posX + posSubMenuSpellX + 6, posY2 + 10, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[subSpellIndex2 + SPELL_BACKGROUND_NUMBER1], scale);
 				int bitmapIndex2 = subSpellIndex2 + 3 * spellIndex + 179;
 				if (drawNext2)
 					DrawBitmap_2BB40(posX + posSubMenuSpellX + (18 * scale), posY2 + (6 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex2], scale);
@@ -22786,7 +22786,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 					GameBitmap::DrawTransparentBitmap_2DE80(posX + posSubMenuSpellX + (18 * scale), posY2 + (6 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex2], scale);
 			}
 			if (subSpellIndex2 == playerEntity->dword_0xA4_164x->str_611.byte_0x459_1113)
-				DrawBitmap_2BB40(posX + posSubMenuSpellX, posY2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[164], scale);
+				DrawBitmap_2BB40(posX + posSubMenuSpellX, posY2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_GOLD_FRAME], scale);
 
 			if (subSpellIndex2 <= spellIndex3 && subSpellIndex2 < 2)
 			{
@@ -50150,28 +50150,28 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 			if (!DefaultResolutions())
 				maxScreenHeight = screenHeight_180624;
 		}
-		sizeFromYEnd = maxScreenHeight - 2 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].height_5 * scale);
+		sizeFromYEnd = maxScreenHeight - 2 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].height_5 * scale);
 		spellIndex = spellIndex_D94FF[locEvent1->dword_0xA4_164x->str_611.byte_0x458_1112];
 		isStandardSpell = locEvent1->dword_0xA4_164x->str_611.array_0x333_819x.word[spellIndex] != 0;
 		if (D41A0_0.terrain_2FECE.MapType != MapType_t::Cave && spellIndex == 25)
 			isStandardSpell = false;
 		spellType = locEvent1->dword_0xA4_164x->str_611.array_0x41D_1053z.byte[spellIndex];
 		spellPos = locEvent1->dword_0xA4_164x->str_611.byte_0x458_1112;
-		posX1 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4 * scale) / 2 + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4 * scale) * (spellPos % 13) + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[88].width_4 * scale);
-		sizeFromYEndPlus = sizeFromYEnd - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].height_5 * scale);
-		posY1 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].height_5 * scale) / 2 + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].height_5 * scale) * (spellPos / 13) + sizeFromYEnd;
-		posX2 = posX1 - 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale) / 2;
-		if (posX2 <= (640 * scale) - 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4) * scale)
+		posX1 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale) / 2 + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale) * (spellPos % 13) + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[EDGE_PANEL].width_4 * scale);
+		sizeFromYEndPlus = sizeFromYEnd - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].height_5 * scale);
+		posY1 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].height_5 * scale) / 2 + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].height_5 * scale) * (spellPos / 13) + sizeFromYEnd;
+		posX2 = posX1 - 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale) / 2;
+		if (posX2 <= (640 * scale) - 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4) * scale)
 		{
 			if (posX2 < 0)
 				posX2 = 0;
 		}
 		else
 		{
-			posX2 = (640 * scale) - 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
+			posX2 = (640 * scale) - 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale);
 		}
 		bool endLoop = 0;
-		int posX3 = posX2 + 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale) / 2;
+		int posX3 = posX2 + 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale) / 2;
 		if (!DefaultResolutions())
 		{
 			int xKoef = (screenWidth_18062C - (640 * scale)) / 2;
@@ -50183,7 +50183,7 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 		{
 			typeA = 2;
 			typeC = 1;
-			posY2 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].height_5 * scale) / 2 + sizeFromYEndPlus;
+			posY2 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].height_5 * scale) / 2 + sizeFromYEndPlus;
 			switch (str_unk_1804B0ar.byte_0xa4)
 			{
 			case 0: //Selected Spell Name
@@ -50209,7 +50209,7 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 					endLoop = true;
 					str_E2A74[SPELL_EXPERIENCE_POINTS].axis_2[3] = posX2 + (33 * scale);
 					if (spellType > 0)
-						str_E2A74[SPELL_EXPERIENCE_POINTS].axis_2[3] = posX2 + (33 * scale) + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
+						str_E2A74[SPELL_EXPERIENCE_POINTS].axis_2[3] = posX2 + (33 * scale) + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale);
 					str_E2A74[SPELL_EXPERIENCE_POINTS].axis_2[4] = sizeFromYEndPlus + (29 * scale);
 				}
 				break;
@@ -50222,9 +50222,9 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 						{
 							hintIndex = NOT_ENOUGH_CASTLED_MANA_TO_USE;
 							hintText[0] = str_E2A74[NOT_ENOUGH_CASTLED_MANA_TO_USE].axis_2[1];
-							str_E2A74[NOT_ENOUGH_CASTLED_MANA_TO_USE].axis_2[3] = posX2 + j * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale) + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale) / 2;
+							str_E2A74[NOT_ENOUGH_CASTLED_MANA_TO_USE].axis_2[3] = posX2 + j * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale) + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale) / 2;
 							endLoop = true;
-							str_E2A74[NOT_ENOUGH_CASTLED_MANA_TO_USE].axis_2[4] = sizeFromYEndPlus + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].height_5 * scale) / 2;
+							str_E2A74[NOT_ENOUGH_CASTLED_MANA_TO_USE].axis_2[4] = sizeFromYEndPlus + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].height_5 * scale) / 2;
 						}
 					}
 				}
@@ -50234,7 +50234,7 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 				{
 					hintIndex = ACHIEVED_SPELL_LEVEL;
 					hintText[0] = str_E2A74[ACHIEVED_SPELL_LEVEL].axis_2[1];
-					str_E2A74[ACHIEVED_SPELL_LEVEL].axis_2[3] = (((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale) / 2) + posX2 + spellType * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
+					str_E2A74[ACHIEVED_SPELL_LEVEL].axis_2[3] = (((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale) / 2) + posX2 + spellType * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
 					endLoop = true;
 					str_E2A74[ACHIEVED_SPELL_LEVEL].axis_2[4] = posY2;
 				}
@@ -50247,7 +50247,7 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 						hintIndex = SPELL_RECHARGE_AND_SHOTS;
 						hintText[0] = str_E2A74[SPELL_RECHARGE_AND_SHOTS].axis_2[1];
 						str_E2A74[SPELL_RECHARGE_AND_SHOTS].axis_2[3] = posX1;
-						str_E2A74[SPELL_RECHARGE_AND_SHOTS].axis_2[4] = posY1 + (((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].height_5 * scale) - (my_sign32(((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].height_5 * scale)) * 8)) >> 2;
+						str_E2A74[SPELL_RECHARGE_AND_SHOTS].axis_2[4] = posY1 + (((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].height_5 * scale) - (my_sign32(((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].height_5 * scale)) * 8)) >> 2;
 					}
 				}
 				break;
@@ -50256,7 +50256,7 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 				{
 					hintIndex = SELECTED_SPELL_LEVEL;
 					hintText[0] = str_E2A74[SELECTED_SPELL_LEVEL].axis_2[1];
-					str_E2A74[SELECTED_SPELL_LEVEL].axis_2[3] = (((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale) / 2) + posX2 + locEvent1->dword_0xA4_164x->str_611.byte_0x459_1113 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
+					str_E2A74[SELECTED_SPELL_LEVEL].axis_2[3] = (((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale) / 2) + posX2 + locEvent1->dword_0xA4_164x->str_611.byte_0x459_1113 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
 					endLoop = true;
 					str_E2A74[SELECTED_SPELL_LEVEL].axis_2[4] = posY2;
 				}
@@ -50280,7 +50280,7 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 							hintIndex = NOT_ENOUGH_MANA_TO_CAST;
 							hintText[0] = str_E2A74[NOT_ENOUGH_MANA_TO_CAST].axis_2[1];
 							str_E2A74[NOT_ENOUGH_MANA_TO_CAST].axis_2[3] = posX1;
-							str_E2A74[NOT_ENOUGH_MANA_TO_CAST].axis_2[4] = posY1 + (((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].height_5 * scale) - (my_sign32(((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].height_5 * scale)) * 8)) >> 2;
+							str_E2A74[NOT_ENOUGH_MANA_TO_CAST].axis_2[4] = posY1 + (((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].height_5 * scale) - (my_sign32(((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].height_5 * scale)) * 8)) >> 2;
 						}
 					}
 				}
@@ -50693,7 +50693,7 @@ int ReadGameUserInputs_89D10()//26ad10
 			{
 				if (v31 == 3)
 				{
-					if (82 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].width_4 <= unk_18058Cstr.x_DWORD_1805B0_mouse.x)
+					if (82 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].width_4 <= unk_18058Cstr.x_DWORD_1805B0_mouse.x)
 					{
 						if (unk_18058Cstr.x_DWORD_1805B0_mouse.x >= 384)
 						{
@@ -50703,16 +50703,16 @@ int ReadGameUserInputs_89D10()//26ad10
 								v49 = 480;
 							posY = v49 - 72;
 							if (v49 - 46 >= unk_18058Cstr.x_DWORD_1805B0_mouse.y)
-								v50 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[260].width_4;
+								v50 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL2].width_4;
 							else
-								v50 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[158].width_4;
+								v50 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_MINISQUARE1].width_4;
 							v42 = (signed int)v50 >> 2;
-							v9 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[158].height_5 >> 1) + posY + 26;
-							v51 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[260].height_5 >> 1) + 4 + posY;
+							v9 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_MINISQUARE1].height_5 >> 1) + posY + 26;
+							v51 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL2].height_5 >> 1) + 4 + posY;
 							posX = 0;
 							posY = v51;
 							v41 = screenWidth_18062C;
-							v43 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[260].height_5;
+							v43 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL2].height_5;
 						}
 						else
 						{
@@ -50721,13 +50721,13 @@ int ReadGameUserInputs_89D10()//26ad10
 							else
 								v47 = 480;
 							posY = v47 - 72;
-							v48 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[155].height_5 >> 1) + 32 + v47 - 72;
+							v48 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_MINISQUARE1_WITH_FRAME].height_5 >> 1) + 32 + v47 - 72;
 							posX = 0;
 							posY = v48;
 							v41 = screenWidth_18062C;
 							v9 = v48;
-							v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[155].width_4 >> 2;
-							v43 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[155].height_5 >> 1;
+							v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_MINISQUARE1_WITH_FRAME].width_4 >> 2;
+							v43 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_MINISQUARE1_WITH_FRAME].height_5 >> 1;
 						}
 					}
 					else
@@ -50737,14 +50737,14 @@ int ReadGameUserInputs_89D10()//26ad10
 						else
 							v44 = 480;
 						posY = v44 - 72;
-						v45 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].height_5 >> 1) + 28 + v44 - 72;
+						v45 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].height_5 >> 1) + 28 + v44 - 72;
 						posY = v45;
-						posX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].width_4 >> 1) + 4;
-						v46 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].height_5;
+						posX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].width_4 >> 1) + 4;
+						v46 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].height_5;
 						v9 = v45 + v46;
 						v43 = v46 >> 1;
-						v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].width_4 >> 2;
-						v41 = posX + screenWidth_18062C - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].width_4 >> 1);
+						v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].width_4 >> 2;
+						v41 = posX + screenWidth_18062C - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].width_4 >> 1);
 					}
 					goto LABEL_301;
 				}
@@ -50757,15 +50757,15 @@ int ReadGameUserInputs_89D10()//26ad10
 				{
 					if (v33 <= 2u)
 					{
-						height = 3 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4;
+						height = 3 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4;
 						v37 = v34->byte_0x458_1112;
 						if (v37 < 13)
 							v38 = v37;
 						else
 							v38 = v37 - 13;
-						v39 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4
-							+ (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].width_4 * v38
-							+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].width_4 >> 1)
+						v39 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4
+							+ (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].width_4 * v38
+							+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].width_4 >> 1)
 							- (height >> 1);
 						posX = v39;
 						if (screenWidth_18062C - height >= v39)
@@ -50783,11 +50783,11 @@ int ReadGameUserInputs_89D10()//26ad10
 						else
 							v40 = 480;
 						v9 = v40
-							- 2 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5
-							- ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5 >> 1);
+							- 2 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5
+							- ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5 >> 1);
 						posY = v9;
-						v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[164].width_4 >> 2;
-						v43 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[164].height_5 >> 1;
+						v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_GOLD_FRAME].width_4 >> 2;
+						v43 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_GOLD_FRAME].height_5 >> 1;
 					}
 					else
 					{
@@ -50807,25 +50807,25 @@ int ReadGameUserInputs_89D10()//26ad10
 						v35 = 400;
 					else
 						v35 = 480;
-					v9 = v35 - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5 >> 1);
+					v9 = v35 - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5 >> 1);
 					if (x_WORD_180660_VGA_type_resolution & 1)
 						v36 = 400;
 					else
 						v36 = 480;
-					posY = v36 - 2 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5;
-					posY += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5 >> 1;
-					v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].width_4 >> 2;
-					v43 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5 >> 1;
+					posY = v36 - 2 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5;
+					posY += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5 >> 1;
+					v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].width_4 >> 2;
+					v43 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5 >> 1;
 				}
 				goto LABEL_301;
 			}
 			if (x_D41A0_BYTEARRAY_4_struct.SelectedMenuItem_38546)
 			{
 				GetOkayCancelButtonPositions_30BE0(&posX, &posY);
-				posX += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[258].width_4 >> 1;
-				v52 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[258].height_5 >> 1) + posY;
+				posX += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL1].width_4 >> 1;
+				v52 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL1].height_5 >> 1) + posY;
 				posY = v52;
-				v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[258].width_4;
+				v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL1].width_4;
 				v9 = v52;
 				v41 = v42 + posX;
 				v43 = 0;
@@ -50854,18 +50854,18 @@ int ReadGameUserInputs_89D10()//26ad10
 			}
 			else if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 			{
-				height = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[175].width_4;
-				width = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[179].height_5
-					+ (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[177].height_5
-					+ (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[176].height_5
-					+ (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[175].height_5;
-				posY = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[175].height_5 >> 1) + (400 - width) / 2 - 60;
-				posX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[175].width_4 >> 2) + (screenWidth_18062C - height) / 2;
-				v55 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[175].height_5;
+				height = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MENU_ICON_LOAD].width_4;
+				width = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_SUB_FIREBALL1_SMALL].height_5
+					+ (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MUSIC_ICON].height_5
+					+ (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SOUND_ICON].height_5
+					+ (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MENU_ICON_LOAD].height_5;
+				posY = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MENU_ICON_LOAD].height_5 >> 1) + (400 - width) / 2 - 60;
+				posX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MENU_ICON_LOAD].width_4 >> 2) + (screenWidth_18062C - height) / 2;
+				v55 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MENU_ICON_LOAD].height_5;
 				v9 = width + posY - v55;
 				v43 = v55 >> 2;
-				v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[175].width_4 >> 2;
-				v41 = height + posX - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[175].width_4 >> 1);
+				v42 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MENU_ICON_LOAD].width_4 >> 2;
+				v41 = height + posX - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MENU_ICON_LOAD].width_4 >> 1);
 			}
 			else
 			{
@@ -51021,7 +51021,7 @@ int ReadGameUserInputs_89D10()//26ad10
 		{
 			if (v3 == 3)
 			{
-				if (82 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].width_4 <= unk_18058Cstr.x_DWORD_1805B0_mouse.x) // fix it
+				if (82 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].width_4 <= unk_18058Cstr.x_DWORD_1805B0_mouse.x) // fix it
 				{
 					if (unk_18058Cstr.x_DWORD_1805B0_mouse.x >= 384)
 					{
@@ -51031,16 +51031,16 @@ int ReadGameUserInputs_89D10()//26ad10
 							v18 = 480;
 						posY = v18 - 72;
 						if (v18 - 46 >= unk_18058Cstr.x_DWORD_1805B0_mouse.y)
-							v19 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[260].width_4;
+							v19 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL2].width_4;
 						else
-							v19 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[158].width_4;
+							v19 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL1].width_4;
 						v11 = (signed int)v19 >> 2;
-						v9 = posY + 26 + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[158].height_5 >> 1);
-						v20 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[260].height_5 >> 1) + 4 + posY;
+						v9 = posY + 26 + ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL1].height_5 >> 1);
+						v20 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL2].height_5 >> 1) + 4 + posY;
 						posX = 0;
 						posY = v20;
 						v7 = screenWidth_18062C;
-						v12 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[260].height_5;
+						v12 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL2].height_5;
 					}
 					else
 					{
@@ -51049,12 +51049,12 @@ int ReadGameUserInputs_89D10()//26ad10
 						else
 							v17 = 480;
 						posY = v17 - 72;
-						v9 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[155].height_5 >> 1) + 32 + v17 - 72;
+						v9 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_MINISQUARE1_WITH_FRAME].height_5 >> 1) + 32 + v17 - 72;
 						posX = 0;
 						posY = v9;
 						v7 = screenWidth_18062C;
-						v11 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[155].width_4 >> 2;
-						v12 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[155].height_5 >> 1;
+						v11 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_MINISQUARE1_WITH_FRAME].width_4 >> 2;
+						v12 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_MINISQUARE1_WITH_FRAME].height_5 >> 1;
 					}
 				}
 				else
@@ -51064,13 +51064,13 @@ int ReadGameUserInputs_89D10()//26ad10
 					else
 						v15 = 480;
 					posY = v15 - 72;
-					posY = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].height_5 >> 1) + 28 + v15 - 72;
-					posX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].width_4 >> 1) + 4;
-					v16 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].height_5;
+					posY = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].height_5 >> 1) + 28 + v15 - 72;
+					posX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].width_4 >> 1) + 4;
+					v16 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].height_5;
 					v9 = posY + v16;
 					v12 = v16 >> 1;
-					v11 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].width_4 >> 2;
-					v7 = posX + screenWidth_18062C - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[156].width_4 >> 1);
+					v11 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].width_4 >> 2;
+					v7 = posX + screenWidth_18062C - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL_WITH_FRAME].width_4 >> 1);
 				}
 				goto LABEL_138;
 			}
@@ -51087,28 +51087,28 @@ int ReadGameUserInputs_89D10()//26ad10
 					v8 = 400;
 				else
 					v8 = 480;
-				v9 = v8 - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5 >> 1);
+				v9 = v8 - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5 >> 1);
 				if (x_WORD_180660_VGA_type_resolution & 1)
 					v10 = 400;
 				else
 					v10 = 480;
-				posY = v10 - 2 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5;
-				posY += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5 >> 1;
-				v11 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].width_4 >> 2;
-				v12 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5 >> 1;
+				posY = v10 - 2 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5;
+				posY += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5 >> 1;
+				v11 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].width_4 >> 2;
+				v12 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5 >> 1;
 				goto LABEL_138;
 			}
 			if (v6 <= 2u)
 			{
-				height = 3 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[164].width_4;
+				height = 3 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_GOLD_FRAME].width_4;
 				LOBYTE(v13) = v5->byte_0x458_1112;
 				if ((char)v13 < 13)
 					v13 = (char)v13;
 				else
 					v13 = (char)v13 - 13;
-				posX = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].width_4 * v13
-					+ (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4
-					+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].width_4 >> 1)
+				posX = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].width_4 * v13
+					+ (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4
+					+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].width_4 >> 1)
 					- (height >> 1);
 				if (screenWidth_18062C - height >= posX)
 				{
@@ -51125,11 +51125,11 @@ int ReadGameUserInputs_89D10()//26ad10
 				else
 					v14 = 480;
 				v9 = v14
-					- 2 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5
-					- ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[90].height_5 >> 1);
+					- 2 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5
+					- ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_FRAME].height_5 >> 1);
 				posY = v9;
-				v11 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[164].width_4 >> 2;
-				v12 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[164].height_5 >> 1;
+				v11 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_GOLD_FRAME].width_4 >> 2;
+				v12 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_GOLD_FRAME].height_5 >> 1;
 				goto LABEL_138;
 			}
 			goto LABEL_137;
@@ -51137,10 +51137,10 @@ int ReadGameUserInputs_89D10()//26ad10
 		if (x_D41A0_BYTEARRAY_4_struct.SelectedMenuItem_38546)
 		{
 			GetOkayCancelButtonPositions_30BE0(&posX, &posY);
-			posX += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[258].width_4 >> 1;
-			v21 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[258].height_5 >> 1) + posY;
+			posX += (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL1].width_4 >> 1;
+			v21 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL1].height_5 >> 1) + posY;
 			posY = v21;
-			v11 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[258].width_4;
+			v11 = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_BUTTON_CANCEL1].width_4;
 			v9 = v21;
 			v7 = v11 + posX;
 			v12 = 0;
