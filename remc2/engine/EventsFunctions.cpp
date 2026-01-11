@@ -22557,19 +22557,18 @@ void ColorizeScreen_2E790(int posX, int posY, int width, int height, uint8_t col
 	}
 }
 
-// spellbook menu
 //----- (0002ECC0) --------------------------------------------------------
 void DrawBottomSpellsMenu_2ECC0()//20fcc0
 {
-	__int16 posIconsY; // si
-	int16_t posIconsX; // di
-	int16_t selectedSpellIndex; // eax
-	int16_t posSubMenuSpellX; // esi
-	int16_t posIconsXStart; // [esp+2Ch] [ebp-44h]
-	int16_t spellIconWidth; // [esp+34h] [ebp-3Ch]
-	int16_t spellIconHeight; // [esp+44h] [ebp-2Ch]
-	int16_t posSubMenuIconWidth; // [esp+54h] [ebp-1Ch]
-	int16_t spellIconIndex; // [esp+5Ch] [ebp-14h]
+	__int16 posIconsY;
+	int16_t posIconsX;
+	int16_t selectedSpellIndex;
+	int16_t posSubMenuSpellX;
+	int16_t posIconsXStart;
+	int16_t spellIconWidth;
+	int16_t spellIconHeight;
+	int16_t posSubMenuIconWidth;
+	int16_t spellIconIndex;
 
 	int posIconsY2;
 	bool drawBitmap;
