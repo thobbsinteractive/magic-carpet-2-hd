@@ -29,5 +29,5 @@ void SetStagetagForTermod_49830(Type_Level_2FECE* terrain);
 void SetSpell_6D5E0(type_event_0x6E8E* event, int spellId);
 void sub_712F0();
 void sub_71A70_setTmaps(MapType_t a1);
-int sub_6D710(type_event_0x6E8E* a1, unsigned __int8 a2, unsigned __int8 a3);
+int GetSpellManaCost_6D710(type_event_0x6E8E* event, uint8 spellIndex, uint8 subSpellIndex);
 void sub_83CC0(char a1);

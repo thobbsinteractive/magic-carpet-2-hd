@@ -964,7 +964,7 @@ void SetSpell_6D5E0(type_event_0x6E8E* entity, int spellId)//24e5e0
 		//fix
 		entity->manaRegen_0x88_136 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[locSpellId].maxManaLimit_A;
 		//fix
-		int mana = sub_6D710(ENTITY_EA3E4[entity->parentId_0x28_40], entity->model_0x40_64, locSpellId);
+		int mana = GetSpellManaCost_6D710(ENTITY_EA3E4[entity->parentId_0x28_40], entity->model_0x40_64, locSpellId);
 		entity->maxMana_0x8C_140 = mana;
 		if (entity->word_0x30_48)
 			mana /= entity->word_0x30_48;
@@ -1153,25 +1153,22 @@ type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C2
 }
 
 //----- (0006D710) --------------------------------------------------------
-int sub_6D710(type_event_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//24e710
+int GetSpellManaCost_6D710(type_event_0x6E8E* event, uint8 spellIndex, uint8 subSpellIndex)//24e710
 {
-	signed int v3; // ecx
-	int result; // eax
-	//int v5; // edx
-	type_event_0x6E8E* v6x; // ebx
-	int v7; // edx
-	int v8; // eax
-
-	v3 = 0;
-	//result = *(x_DWORD *)&(*xadataspellsdat.colorPalette_var28)[80 * a2 + 6 + 26 * a3];
-	result = SPELLS_BEGIN_BUFFER_str[a2].subspell[a3].manaCost_6;
-	if (a2 == 2 && a1x > ENTITY_EA3E4[0])
+	bool add3000 = false;
+	int result = SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[subSpellIndex].manaCost_6;
+	if (spellIndex == 2 && event > ENTITY_EA3E4[0])
 	{
-		//v5 = a1x->dword_0xA4_164;
-		v6x = ENTITY_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
-		if (v6x <= ENTITY_EA3E4[0])
-			goto LABEL_23;
-		switch (v6x->dword_0x10_16)
+		type_event_0x6E8E* entity2 = ENTITY_EA3E4[event->dword_0xA4_164x->word_0x3A_58];
+		if (entity2 <= ENTITY_EA3E4[0])
+		{
+			if (event->dword_0xA4_164x->byte_0x1BE_446)
+				add3000 = 3000;
+			if (add3000)
+				result += 3000;
+			return result;
+		}
+		switch (entity2->dword_0x10_16)
 		{
 		case 0:
 			result = 1000;
@@ -1198,43 +1195,36 @@ int sub_6D710(type_event_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//2
 			result = 300000000;
 			break;
 		}
-		if (v6x->dword_0x10_16 >= 7)
-			goto LABEL_25;
-		if (a3 >= 1u)
+		if (entity2->dword_0x10_16 >= 7)
 		{
-			if (a3 <= 1u)
-			{
-				v7 = 320 * result;
-				v8 = 320 * result;
-			}
-			else
-			{
-				if (a3 != 2)
-					goto LABEL_21;
-				v8 = 384 * result;
-				v7 = v8;
-			}
-			//result = (v8 - (__CFSHL__(v7 >> 31, 8) + (v7 >> 31 << 8))) >> 8;
-			result = (v7 - (my_sign32(v7) << 8) + my_sign32(v7)) >> 8;
-		}
-	LABEL_21:
-		if (v6x->dword_0x10_16)
-		{
-		LABEL_25:
-			if (v3)
+			if (add3000)
 				result += 3000;
 			return result;
 		}
-		//v5 = a1x->dword_0xA4_164;
-	LABEL_23:
-		if (a1x->dword_0xA4_164x->byte_0x1BE_446)
-			v3 = 1;
-		goto LABEL_25;
+		switch (subSpellIndex)
+		{
+			case 1:
+				result = ((320 * result) - (my_sign32(320 * result) << 8) + my_sign32(320 * result)) >> 8;
+				break;
+
+			case 2:
+				result = ((384 * result) - (my_sign32(384 * result) << 8) + my_sign32(384 * result)) >> 8;
+				break;
+		}
+		if (entity2->dword_0x10_16)
+		{
+			if (add3000)
+				result += 3000;
+			return result;
+		}
+		if (event->dword_0xA4_164x->byte_0x1BE_446)
+			add3000 = true;
+		if (add3000)
+			result += 3000;
+		return result;
 	}
 	return result;
 }
-// 13880: using guessed type int /*__fastcall*/ nullsub_1(x_DWORD);
-// EA3E4: using guessed type int ENTITY_EA3E4[];
 
 //----- (00083CC0) --------------------------------------------------------
 void sub_83CC0(char a1)//264cc0

@@ -22668,7 +22668,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 						}
 						if (drawNext && x_D41A0_BYTEARRAY_4_struct.byteindex_50 == spellIconIndex)
 						{
-							manaAll = sub_6D710(playerEntity, spellIndex2, subSpellIndex);
+							manaAll = GetSpellManaCost_6D710(playerEntity, spellIndex2, subSpellIndex);
 							if (manaAll > 0)
 							{
 								DrawBitmap_2BB40(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_BAR], scale);
@@ -22764,7 +22764,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 				&& SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[subSpellIndex2].maxManaLimit_A <= ENTITY_EA3E4[entityIndex]->mana_0x90_144)
 			{
 				drawNext2 = true;
-				manaPart = playerEntity->mana_0x90_144 / sub_6D710(playerEntity, spellIndex, subSpellIndex2);
+				manaPart = playerEntity->mana_0x90_144 / GetSpellManaCost_6D710(playerEntity, spellIndex, subSpellIndex2);
 			}
 			if (subSpellIndex2 > spellIndex3)
 			{
