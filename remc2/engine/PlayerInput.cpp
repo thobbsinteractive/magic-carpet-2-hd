@@ -2248,15 +2248,15 @@ int SelectSpell_6D4F0(type_str_611* a1x, int16_t mouseX)//24e4f0
 			posXOffSet = ((screenWidth_18062C - (640 * scale)) / 2);
 		}
 
-	subCategoryTotalWidth = 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
-	spellMenuXPos = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4 * scale) / 2
-		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[88].width_4 * scale)
-		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4 * scale) * (a1x->byte_0x458_1112 % 13)
+	subCategoryTotalWidth = 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale);
+	spellMenuXPos = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale) / 2
+		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[EDGE_PANEL].width_4 * scale)
+		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale) * (a1x->byte_0x458_1112 % 13)
 		- subCategoryTotalWidth / 2;
 
-	spellMenuXPos16 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4 * scale) / 2
-		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[88].width_4 * scale)
-		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4 * scale) * (a1x->byte_0x458_1112 % 13)
+	spellMenuXPos16 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale) / 2
+		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[EDGE_PANEL].width_4 * scale)
+		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale) * (a1x->byte_0x458_1112 % 13)
 		- subCategoryTotalWidth / 2;
 
 	if (spellMenuXPos <= (640 * scale) - subCategoryTotalWidth)
@@ -2750,8 +2750,8 @@ int sub_906B4()//fix bios graphics//2716b4
 //----- (0002FFE0) --------------------------------------------------------
 void GetPauseMenuCoordinates_2FFE0(int16_t* posX, int16_t* posY, int16_t* width, int16_t* height, uint8_t scale)//210fe0
 {
-	*width = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[178].width_4 * scale) + (2 * scale);
-	*height = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[178].height_5 * scale);
+	*width = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SHOW_ICON].width_4 * scale) + (2 * scale);
+	*height = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SHOW_ICON].height_5 * scale);
 	int32_t locHeight = (400 - 4 * *height) / 2 - 60;
 	int32_t locWidth = (640 - *width) / 2;
 	if (x_WORD_180660_VGA_type_resolution != 1)
