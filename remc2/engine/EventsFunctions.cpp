@@ -22584,7 +22584,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 	int manaCost;
 	__int16 spellIndex2;
 	__int16 xAdd2;
-	bool drawNext;
+	bool canSummon;
 	type_event_0x6E8E* playerEntity = ENTITY_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
 	uint8 color0 = playersColors_E88E0x[GetTrueWizardNumber_61790(playerEntity->dword_0xA4_164x->playerColorIndex_0x38_56)][0];
 	uint8 color1 = playersColors_E88E0x[GetTrueWizardNumber_61790(playerEntity->dword_0xA4_164x->playerColorIndex_0x38_56)][1];
@@ -22658,14 +22658,14 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 					}
 					if (!skipToLabel43)
 					{
-						drawNext = false;
+						canSummon = false;
 						if (!SPELLS_BEGIN_BUFFER_str[spellIndex2].subspell[subSpellIndex].maxManaLimit_A
 							|| ((entityIndex = playerEntity->dword_0xA4_164x->word_0x3A_58) != 0
 								&& SPELLS_BEGIN_BUFFER_str[spellIndex2].subspell[subSpellIndex].maxManaLimit_A <= ENTITY_EA3E4[entityIndex]->mana_0x90_144))
 						{
-							drawNext = true;
+							canSummon = true;
 						}
-						if (drawNext && x_D41A0_BYTEARRAY_4_struct.byteindex_50 == spellIconIndex)
+						if (canSummon && x_D41A0_BYTEARRAY_4_struct.byteindex_50 == spellIconIndex)
 						{
 							manaCost = GetSpellManaCost_6D710(playerEntity, spellIndex2, subSpellIndex);
 							if (manaCost > 0)
@@ -22687,14 +22687,14 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 						}
 						else
 						{
-							if (drawNext)
+							if (canSummon)
 								bitmap = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL];
 							else
 								bitmap = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL2];
 
 							ptrDrawBitmap_F01E8(posX + posIconsX, posIconsY, bitmap, scale);
 						}
-						if (drawNext)
+						if (canSummon)
 							DrawBitmap_2BB40(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[spellIndex2 + SPELL_FIREBALL_SMALL], scale);
 						else
 							GameBitmap::DrawTransparentBitmap_2DE80(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[spellIndex2 + SPELL_FIREBALL_SMALL], scale);
@@ -22711,7 +22711,6 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 				else
 				{
 					ptrDrawBitmap_F01E8(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL], scale);
-
 					if (playerEntity->dword_0xA4_164x->str_611.array_0x3E9_1001x.byte[spellIndex2] || playerEntity->dword_0xA4_164x->str_611.array_0x403_1027x.byte[spellIndex2])
 					{
 						GameBitmap::DrawColourizedBitmap(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[spellIndex2 + SPELL_FIREBALL_SMALL], 0xA6u, scale);
@@ -22757,12 +22756,12 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 			if (subSpellIndex2 >= 3)
 				break;
 			int manaPart = 0;
-			bool drawNext2 = false;
+			bool canSubSummon = false;
 			if (!SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[subSpellIndex2].maxManaLimit_A
 				|| (entityIndex = playerEntity->dword_0xA4_164x->word_0x3A_58) != 0
 				&& SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[subSpellIndex2].maxManaLimit_A <= ENTITY_EA3E4[entityIndex]->mana_0x90_144)
 			{
-				drawNext2 = true;
+				canSubSummon = true;
 				manaPart = playerEntity->mana_0x90_144 / GetSpellManaCost_6D710(playerEntity, spellIndex, subSpellIndex2);
 			}
 			if (subSpellIndex2 > spellIndex3)
@@ -22772,14 +22771,14 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 			else
 			{
 				int bitmapIndex;
-				if (drawNext2 && manaPart)
+				if (canSubSummon && manaPart)
 					bitmapIndex = SPELL_ICON2_PANEL2_WITH_FRAME;
 				else
 					bitmapIndex = SPELL_ICON2_PANEL2_WITH_FRAME_DARK;
 				DrawBitmap_2BB40(posX + posSubMenuSpellX, posY2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex], scale);
 				DrawBitmap_2BB40(posX + posSubMenuSpellX + 6, posY2 + 10, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[subSpellIndex2 + SPELL_BACKGROUND_NUMBER1], scale);
 				int bitmapIndex2 = subSpellIndex2 + 3 * spellIndex + SPELL_SUB_FIREBALL1_SMALL;
-				if (drawNext2)
+				if (canSubSummon)
 					DrawBitmap_2BB40(posX + posSubMenuSpellX + (18 * scale), posY2 + (6 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex2], scale);
 				else
 					GameBitmap::DrawTransparentBitmap_2DE80(posX + posSubMenuSpellX + (18 * scale), posY2 + (6 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[bitmapIndex2], scale);
