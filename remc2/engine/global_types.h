@@ -205,8 +205,8 @@ typedef struct {//begin 611//str_611
 	type_8_1a array_0x437_1079x;//468//size?? //table of spell indexes//byte_0x81D_2BDE
 	int16_t leftSpellIndex_0x451_1105;//494 act left spell index//word_0x837_2BDE
 	int16_t rightSpellIndex_0x453_1107;//496 act right spell index//word_0x839_2BDE
-	int8_t byte_0x455_1109;//498
-	int8_t byte_0x456_1110;//499
+	int8_t leftSubSpellIndex_0x455_1109;//498
+	int8_t rightSubSpellIndex_0x456_1110;//499
 	int8_t byte_0x457_1111;//500//byte_0x83D_2BDE //select spell/type spell
 	int8_t spellIndex_0x458_1112;//501//byte_0x83E_2BDE
 	int8_t subSpellIndex_0x459_1113;//502
