@@ -67,7 +67,7 @@ extern int test_regression_level;
 // functions
 void MenusAndIntros_76930(int a2, uint16_t a3, bool skipMenus = false);
 void InitLanguage_76A40();
-void Intros_76D10(char a1);
+void Intros_76D10(char introType);
 void sub_76CF0();
 void MainMenu_76FA0();
 bool NewGameDialog_77350(type_WORD_E1F84* a1x);

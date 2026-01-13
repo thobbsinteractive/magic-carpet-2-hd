@@ -831,14 +831,10 @@ void sub_76CF0()
 // E29D8: using guessed type __int16 x_WORD_E29D8;
 
 //----- (00076D10) --------------------------------------------------------
-void Intros_76D10(char a1)//257d10
+void Intros_76D10(char introType)//257d10
 {
-	//int v1; // eax
-	//signed int v2; // eax
-	//signed int v3; // eax
 	char dataPath[MAX_PATH];
 
-	//x_DWORD_17DE48c = x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226;
 	x_DWORD_17DE38str.x_DWORD_17DE54 = &x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[301787];
 	x_DWORD_17DE38str.x_DWORD_17DEC0 = (bitmap_pos_struct2_t*)&x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[308527];
 	x_DWORD_17DE38str.x_DWORD_17DEC4 = (bitmap_pos_struct2_t*)&x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[310159];
@@ -873,13 +869,13 @@ void Intros_76D10(char a1)//257d10
 		ShowWelcomeScreen_83850();//frog logo and wait
 #endif
 		PlayInfoFmv(1, 1, str_E17CC_0, introPath);//257160 intro .. 2b27cc
-		/*v1 = */sub_2EB40();
+		sub_2EB40();
 		x_BYTE_D41C1 = 0;
 		x_BYTE_D41C0 = 0;
 		while (sub_9A10A_check_keyboard(/*v1*/))
 		{
 			LastPressedKey_1806E4 = 0;
-			/*v1 = */sub_7A060_get_mouse_and_keyboard_events();
+			sub_7A060_get_mouse_and_keyboard_events();
 		}
 		j___delay(50);
 		sprintf(introPath, "%s/%s", cdDataPath.c_str(), "INTRO/INTRO2.DAT");
@@ -898,37 +894,18 @@ void Intros_76D10(char a1)//257d10
 	}
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 	EndSample_8D8F0();
-	StopMusic_8E020();//?ac_sound_stop_music
+	StopMusic_8E020();
 	sub_7B5D0();
-	//v2 = 0;
 	x_WORD_E29D8 = 4;
 	x_BYTE_D41C0 = 0;
 	x_BYTE_D41C1 = 0;
-	//v3 = sub_9A10A_check_keyboard(/*v2*/);
-	if (sub_9A10A_check_keyboard(/*v2*/))
-		/*v3 = */sub_7A060_get_mouse_and_keyboard_events();
+	if (sub_9A10A_check_keyboard())
+		sub_7A060_get_mouse_and_keyboard_events();
 	x_DWORD_17DE38str.x_BYTE_17DF11_last_key_status = 0;
 	x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
 	if (!a1)
-		/*v3 = */LoadAndSetGraphicsAndPalette_7AC00();
-	//return v3;
+		LoadAndSetGraphicsAndPalette_7AC00();
 }
-// 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// 9A122: using guessed type x_DWORD j___delay(x_DWORD);
-// D41A4: using guessed type int x_DWORD_D41A4;
-// D41C0: using guessed type char x_BYTE_D41C0;
-// D41C1: using guessed type char x_BYTE_D41C1;
-// E29D8: using guessed type __int16 x_WORD_E29D8;
-// E3798: using guessed type char x_BYTE_E3798_sound_active2;
-// EB394: using guessed type int **filearray_2aa18c[0];
-// 17DE48: using guessed type int x_DWORD_17DE48;
-// 17DE54: using guessed type int (int)x_DWORD_17DE54;
-// 17DEC0: using guessed type int (int)x_DWORD_17DEC0;
-// 17DEC4: using guessed type int (int)x_DWORD_17DEC4;
-// 17DF10: using guessed type char x_BYTE_17DF10_get_key_scancode;
-// 17DF11: using guessed type char x_BYTE_17DF11_last_key_status;
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
-// 1806E4: using guessed type char x_BYTE_1806E4;
 
 //----- (00076FA0) --------------------------------------------------------
 void MainMenu_76FA0()//257fa0
