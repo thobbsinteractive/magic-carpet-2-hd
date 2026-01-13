@@ -5,7 +5,7 @@
 GameRenderInterface* m_ptrGameRender;
 
 uint8_t loc_A0000_vga_buffer[307200];
-TColor x_DWORD_EA3B8x[256]; // weak?x_DWORD_E9C4C_langindexbuffer[475]
+TColor tempPalette_EA3B8x[256]; // weak?x_DWORD_E9C4C_langindexbuffer[475]
 int16_t x_WORD_180662_graphics_handle; // weak
 bitmap_pos_struct2_t* x_DWORD_D4188 = 0; // weak
 bitmap_pos_struct2_t* x_DWORD_D418C = 0; // weak

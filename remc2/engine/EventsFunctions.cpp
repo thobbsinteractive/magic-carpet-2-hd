@@ -32064,7 +32064,7 @@ void PaletteChanges_47760()//228760
 			break;
 		}
 		}
-		qmemcpy((void*)x_DWORD_EA3B8x, (void*)*DefaultPal, 0x300u);
+		qmemcpy((void*)tempPalette_EA3B8x, (void*)*DefaultPal, 0x300u);
 		sub_47650(0x300);
 		sub_90D27();
 		uiBackGroundColorIdx_EB3A8 = (*DefaultPal)[0].red;

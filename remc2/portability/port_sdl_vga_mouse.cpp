@@ -606,7 +606,6 @@ void VGA_Set_Palette(Uint8* Palettebuffer) {
 		colors[i].g = 4 * Palettebuffer[i * 3 + 1];
 		colors[i].b = 4 * Palettebuffer[i * 3 + 2];
 	}
-
 	SetPalette(colors);
 }
 

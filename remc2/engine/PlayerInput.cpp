@@ -2539,7 +2539,7 @@ void sub_47650(int  /*a1*//*, int a2*/)//228650
 
 	int v8 = 0;
 
-	qmemcpy((void*)*xadatapald0dat2.colorPalette_var28, (void*)x_DWORD_EA3B8x, 0x300u);
+	qmemcpy((void*)*xadatapald0dat2.colorPalette_var28, (void*)tempPalette_EA3B8x, 0x300u);
 	v2 = D41A0_0.terrain_2FECE.MapType;
 	if (v2 == MapType_t::Day)
 		v8 = x_D41A0_BYTEARRAY_4_struct.brightness_11;
