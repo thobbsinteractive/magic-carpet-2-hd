@@ -653,7 +653,6 @@ void MenusAndIntros_76930(bool skipMenus)//257930
 {
 	//1 -351660
 	x_BYTE_E29DF_skip_screen = x_BYTE_D41AD_skip_screen;
-
 	if (skipMenus)
 	{
 		x_BYTE_D41AD_skip_screen = 1;
@@ -664,7 +663,7 @@ void MenusAndIntros_76930(bool skipMenus)//257930
 		m_ExitMenuLoop_E29DC = 0;
 	}
 
-	if (x_BYTE_D41AD_skip_screen == 1 || x_WORD_E29D8)
+	if (x_BYTE_D41AD_skip_screen == 1 || (nextMenu_E29D8!= MenuItem::InitLanguage))
 	{
 		sub_82670();
 		LoadAndSetGraphicsAndPalette_7AC00();
@@ -672,7 +671,7 @@ void MenusAndIntros_76930(bool skipMenus)//257930
 	if (x_BYTE_D41AD_skip_screen == 1)
 	{
 		InitLanguage_76A40();
-		x_WORD_E29D8 = 4;
+		nextMenu_E29D8 = MenuItem::MainMenu;
 	}
 	memset(&x_DWORD_17DE38str, 0, sizeof(type_x_DWORD_17DE38str));
 	x_DWORD_17DE38str.x_DWORD_17DEE0_filedesc = NULL;
@@ -683,28 +682,28 @@ void MenusAndIntros_76930(bool skipMenus)//257930
 	{
 		g_state_monitor.Update();
 		//2b39d8
-		switch (x_WORD_E29D8)
+		switch (nextMenu_E29D8)
 		{
-		case 0:
-			InitLanguage_76A40();//257A40 //asi inicializace + rovnou i nastaveni jazyka
+		case MenuItem::InitLanguage:
+			InitLanguage_76A40();//257A40
 			break;
-		case 1:
-			sub_76CF0();//257cf0 nastavi x_WORD_E29D8 na 3
+		case MenuItem::SetToIntro:
+			SetToIntro_76CF0();//257cf0 nastavi x_WORD_E29D8 na 3
 			break;
-		case 2:
-			_wcpp_1_unwind_leave__131(/*v3*/);//257d00 asi konec
+		case MenuItem::LeaveX:
+			_wcpp_1_unwind_leave__131();//257d00 asi konec
 			break;
-		case 3:
+		case MenuItem::Intros:
 			Intros_76D10(0);//257d10
-			x_WORD_E29D8 = 4;
+			nextMenu_E29D8 = MenuItem::MainMenu;
 			break;
-		case 4:
+		case MenuItem::MainMenu:
 			MainMenu_76FA0();//257fa0
 			break;
-		case 5:
+		case MenuItem::Exit:
 			m_ExitMenuLoop_E29DC = 1;
 			break;
-		case 12:
+		case MenuItem::LangSettings:
 			LanguageSettingDialog_779E0(0);//2589e0
 			break;
 		default:
@@ -798,15 +797,14 @@ void InitLanguage_76A40()//257A40
 	}
 	if (x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2 || !soundAble_E3798)
 		x_BYTE_D41C0 = 1;
-	x_WORD_E29D8 = 1;
+	nextMenu_E29D8 = MenuItem::SetToIntro;
 }
 
 //----- (00076CF0) --------------------------------------------------------
-void sub_76CF0()
+void SetToIntro_76CF0()
 {
-	x_WORD_E29D8 = 3;
+	nextMenu_E29D8 = MenuItem::Intros;
 }
-// E29D8: using guessed type __int16 x_WORD_E29D8;
 
 //----- (00076D10) --------------------------------------------------------
 void Intros_76D10(char introType)//257d10
@@ -872,7 +870,7 @@ void Intros_76D10(char introType)//257d10
 	EndSample_8D8F0();
 	StopMusic_8E020();
 	sub_7B5D0();
-	x_WORD_E29D8 = 4;
+	nextMenu_E29D8 = MenuItem::MainMenu;
 	x_BYTE_D41C0 = 0;
 	x_BYTE_D41C1 = 0;
 	if (sub_9A10A_check_keyboard())
@@ -2310,7 +2308,7 @@ void LoadAndSetGraphicsAndPalette_7AC00()//25BC00
 }
 
 //----- (0007ADE0) --------------------------------------------------------
-int sub_7ADE0(char a1)//25bde0
+void sub_7ADE0(char a1)//25bde0
 {
 	char v1; // al
 	unsigned __int8 v2; // al
@@ -2318,12 +2316,6 @@ int sub_7ADE0(char a1)//25bde0
 
 	if (a1 == 1)
 	{
-		/*if (x_DWORD_E9C3C)
-		{
-			sub_83E80_freemem4(x_DWORD_E9C3C);
-			x_DWORD_E9C3C = 0;
-		}
-		*/
 		//fix
 		if (pre_x_DWORD_E9C3C)
 		{
@@ -2336,14 +2328,10 @@ int sub_7ADE0(char a1)//25bde0
 		sub_6EBF0(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);
 		x_WORD_180660_VGA_type_resolution = 1;
 		x_WORD_E29DA_type_resolution = 1;
-		/*
-		x_DWORD_E9C3C = (uint8_t*)sub_83CD0_malloc2(64000);
-		*/
 		//fix
 		pre_x_DWORD_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
 		x_DWORD_E9C3C = &pre_x_DWORD_E9C3C[2000000];
 		//fix
-		//sub_6EB90(&*filearray_2aa18c[0]);
 		CreateIndexes_6EB90(&(filearray_2aa18c[filearrayindex_POINTERSDATTAB]));
 		memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
 		if (x_WORD_180660_VGA_type_resolution & 1)
@@ -2372,7 +2360,6 @@ int sub_7ADE0(char a1)//25bde0
 		sub_8CEDF_install_mouse();
 	}
 	sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
-	return 0;//fix it sub_8CD27_set_cursor((uint8_t**)**filearray_2aa18c[0]);
 }
 
 //----- (0007BEC0) --------------------------------------------------------
@@ -4653,33 +4640,20 @@ void sub_82510(/*__int16 a1*//*, int *a2*/)//263510
 void sub_82670()//263670
 {
 	__int16 v0; // si
-	//x_WORD *v1; // eax
 	int16_t v1x;
 	uint8_t* v2; // eax
-	//int8_t* v3; // ebx
 	int v3x;
 	__int16 v4; // cx
 	Type_SecretMapScreenPortals_E2970* v5x; // edi
-	//int v7; // eax
-	//char v10; // [esp+0h] [ebp-54h]
 	unsigned __int8 v11; // [esp+50h] [ebp-4h]
-
-	//fix it
-	//v7 = 0;
-	//fix it
 
 	v0 = 0;
 	v11 = x_WORD_180660_VGA_type_resolution;
-
 	char dataPath[MAX_PATH];
-
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
-
-	//LOWORD(v1) = (unsigned __int8)x_WORD_180660_VGA_type_resolution;
 	LastPressedKey_1806E4 = 0;
 	if (!x_BYTE_E29E1)
 	{
-		//LOWORD(v1) = (uint16)x_D41A0_BYTEARRAY_4;
 		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
 		{
 			v2 = x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226;
@@ -4690,17 +4664,10 @@ void sub_82670()//263670
 			x_DWORD_17DE38str.x_DWORD_17DEC4 = (bitmap_pos_struct2_t*)((uint8_t*)v2 + 310159);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)(v2 + 301787), 0x164FCD, 860);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC0, 0x165329, 548);
-
-			//sub_7AA70_load_and_decompres_dat_file(0, 0, 0, 0);//can remove this?
-
-			//if (*(x_BYTE *)(2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0 + 11232) & 2 || x_D41A0_BYTEARRAY_4_struct.levelnumber_43 > 0x18u)
 			if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2 || x_D41A0_BYTEARRAY_4_struct.levelnumber_43w > 0x18u)
 			{
-				//v3 = byte_E16E0;//str_E16E0
 				v3x = 0;
-				//LOWORD(v1) = 1;
 				v1x = 1;
-				//while (*((x_BYTE*)v3 + 4))
 				while (str_E16E0[v3x].byte_4)
 				{
 					if (x_D41A0_BYTEARRAY_4_struct.levelnumber_43w + 1 == str_E16E0[v3x].byte_4)
@@ -4712,23 +4679,18 @@ void sub_82670()//263670
 						}
 						break;
 					}
-					//v3 += 7;
 					v3x++;
 					v1x++;
 				}
 				if (!v0)
 				{
-					//LOWORD(v1) = (uint16)x_D41A0_BYTEARRAY_4;
 					v4 = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
 					if ((unsigned __int16)v4 > 0x18u)
 					{
-						//v1 = sub_824E0(v4);
 						v5x = sub_824E0(v4);
 						if (v5x)
 						{
-							//v3 = byte_E16E0;
 							v3x = 0;
-							//LOWORD(v1) = 1;
 							v1x = 1;
 							while (str_E16E0[v3x].byte_4)
 							{
@@ -4741,8 +4703,6 @@ void sub_82670()//263670
 									}
 									break;
 								}
-								//v3 = (void **)((char *)v3 + 7);
-								//v3 += 7;
 								v3x++;
 								v1x++;
 							}
@@ -4779,11 +4739,6 @@ void sub_82670()//263670
 						sub_8CEDF_install_mouse();
 						sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 					}
-					/*if (x_WORD_180660_VGA_type_resolution & 1)
-						sub_98709_create_index_dattab_power(x_DWORD_17DEC0, x_DWORD_17DEC4, x_DWORD_17DE54, (new bitmap_pos_struct_t));
-					else
-						sub_9874D_create_index_dattab(x_DWORD_17DEC0, x_DWORD_17DEC4, x_DWORD_17DE54, (new bitmap_pos_struct_t));*/
-
 					if (x_WORD_180660_VGA_type_resolution & 1)
 					{
 						sub_98709_create_index_dattab_power(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
@@ -4792,16 +4747,11 @@ void sub_82670()//263670
 					{
 						sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
 					}
-
 					char cutScenePath[MAX_PATH];
 					sprintf(cutScenePath, "%s/INTRO/CUT%d.DAT", cdDataPath.c_str(), str_E16E0[v3x].byte_6);
 					sprintf(printbuffer, "%s", cutScenePath);
 
 					PlayInfoFmv(0, 1, str_E16E0[v3x].pSoundEvent_0, cutScenePath);
-					
-					/*sprintf(printbuffer, "intro\\cut4.dat");
-					sub_76160_play_intro(0, 1, 0 + (uint8_t*)array_E1328);*/
-
 					sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 					EndSample_8D8F0();
 					StopMusic_8E020();
@@ -4815,7 +4765,6 @@ void sub_82670()//263670
 						sub_90478_VGA_Blit320();
 					else
 						sub_75200_VGA_Blit640(480);
-					//LOWORD(v1) = v11;
 					if (v11 != x_WORD_180660_VGA_type_resolution)
 					{
 						sub_54600_mouse_reset();
@@ -4832,7 +4781,6 @@ void sub_82670()//263670
 						else
 							sub_90E07_VGA_set_video_mode_640x480_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
 						sub_8CEDF_install_mouse();
-						// fix it//LOWORD(v1) = sub_8CD27_set_cursor((uint8_t**)*filearray_2aa18c[0]);
 						sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 					}
 				}
@@ -4840,7 +4788,6 @@ void sub_82670()//263670
 		}
 	}
 	x_BYTE_D41C1 = 0;
-	//return (signed __int16)v1;
 }
 
 //----- (00083250) --------------------------------------------------------

@@ -2984,7 +2984,7 @@ type_x_BYTE_E25ED_2BB str_BYTE_E25ED_a3[3] = {//set joy
 { 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000 }
 };
 
-int16_t x_WORD_E29D8 = 0; // weak//2b39d8
+MenuItem nextMenu_E29D8 = MenuItem::InitLanguage; // weak//2b39d8
 __int16 x_WORD_E29DA_type_resolution = 0; // weak
 int16_t m_ExitMenuLoop_E29DC = 0; // weak
 char x_BYTE_E29DF_skip_screen = 0; // weak
@@ -31739,7 +31739,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 					break;//must be here
 				}
 			}
-			x_WORD_E29D8 = 4;
+			nextMenu_E29D8 = MenuItem::MainMenu;
 			skipMenus = false;
 			setLevel = -1;
 			customLevelPath = "";
@@ -31747,7 +31747,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 
 		if (CommandLineParams.DoTestRenderers()) {
 			if (renderer_tests_quit) {
-				x_WORD_E29D8 = 5; // exit menu loop	
+				nextMenu_E29D8 = MenuItem::Exit; // exit menu loop	
 				break;
 			}
 		}
