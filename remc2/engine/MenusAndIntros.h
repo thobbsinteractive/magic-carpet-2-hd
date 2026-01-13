@@ -69,7 +69,7 @@ void MenusAndIntros_76930(int a2, uint16_t a3, bool skipMenus = false);
 void InitLanguage_76A40();
 void Intros_76D10(char a1);
 void sub_76CF0();
-void MainMenu_76FA0(/*int a1,*/ int a2, uint16_t a3);
+void MainMenu_76FA0();
 bool NewGameDialog_77350(type_WORD_E1F84* a1x);
 char LanguageSettingDialog_779E0(type_WORD_E1F84* a1x);
 char LoadGameDialog_780F0(type_WORD_E1F84* a1x);

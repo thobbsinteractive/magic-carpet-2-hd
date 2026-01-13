@@ -711,7 +711,7 @@ void MenusAndIntros_76930(int /*a2*/, uint16_t a3, bool skipMenus)//257930
 			x_WORD_E29D8 = 4;
 			break;
 		case 4:
-			MainMenu_76FA0(v4, a3);//257fa0 main menu loop
+			MainMenu_76FA0();//257fa0 main menu loop
 			break;
 		case 5:
 			m_ExitMenuLoop_E29DC = 1;
@@ -931,63 +931,14 @@ void Intros_76D10(char a1)//257d10
 // 1806E4: using guessed type char x_BYTE_1806E4;
 
 //----- (00076FA0) --------------------------------------------------------
-void MainMenu_76FA0(/*int a1, */int  /*a2*/, uint16_t a3x)//257fa0
+void MainMenu_76FA0()//257fa0
 {
-	//void (*v3)(); // eax
-	__int16 v4; // dx
-	//int result; // eax
-	//int v6; // eax
-	//int v7; // edx
-	//int v8; // edx
-	//int v9; // edx
-	unsigned __int16 v10; // di
-	//int v11; // eax
-	unsigned __int16 v12; // si
-	int v13; // eax
-	//int v14; // edx
-	uint8_t* v15; // esi
-	//int v16; // edx
-	//int v17; // eax
-	char v18; // dh
-	//__int16 v19; // ax
-	//int v20; // edx
-	//uint8_t* v21; // eax
-	//int v22; // edx
-	//int v23; // edx
-	//__int16 v24; // [esp+0h] [ebp-24h]
-	//__int16 v25; // [esp+Ch] [ebp-18h]
-	int v26; // [esp+1Ch] [ebp-8h]
-	int v27; // [esp+20h] [ebp-4h]
-
-	//int16_t a3t;
-
-	//fix it
-	v4 = 0;
-	//fix it
-
-	//fix it
-	//v7 = 0;
-	//v8 = 0;
-	//v9 = 0;
-	//v16 = 0;
-	//v20 = 0;
-	//v22 = 0;
-	//v23 = 0;
-	//fix it
-
 	//fixed
-	//x_WORD_180660_VGA_type_resolution = 8;
-	//sub_6EB90(posistruct7);
-	//sub_6EBF0(&filearray_2aa18c[filearrayindex_HFONT3DATTAB]);
 	help_VGA_type_resolution = 0;
 	//fixed
+	bool onlyBlit = false;
+	uint16_t introIndex = 1;
 
-	//memset(pdwScreenBuffer_351628, 0, 640*480);//fixed
-
-	/*memset(&v24, 0, 28);
-	v24 = 0x3301;
-	v25 = 0;
-	int386(0x21, (REGS*)&v24, (REGS*)&v24);//get set ctrl break*/
 	sub_86860_speak_Sound(x_WORD_1803EC);//267860
 	LoadSound_84300(0);//265300
 	memset(&x_DWORD_17DBB8, 0, 16);
@@ -997,11 +948,7 @@ void MainMenu_76FA0(/*int a1, */int  /*a2*/, uint16_t a3x)//257fa0
 	SetCenterScreenForFlyAssistant_6EDB0();
 	StopMusic_8E020();//26f020
 	StartMusic_8E160(4, 0x7Fu);//26f160
-	/*sub_75420();//256420
-	v3 = dos_getvect(9);*/
-	a3x = 256;
-	x_WORD_17DE26 = v4;
-	//x_DWORD_17DE22 = v3;
+	x_WORD_17DE26 = 0;
 	VGA_cleanKeyBuffer();
 	if (x_BYTE_E29E1 || x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10 || (NewGameDialog_77350(0), !m_ExitMenuLoop_E29DC))
 	{
@@ -1014,54 +961,48 @@ void MainMenu_76FA0(/*int a1, */int  /*a2*/, uint16_t a3x)//257fa0
 		//fix
 
 		sub_8CD27_set_cursor(xy_DWORD_17DED4_spritestr[39]);
-		//v6 = x_D41A0_BYTEARRAY_4;
-		x_DWORD_17DE38str.x_BYTE_17DF13 = x_D41A0_BYTEARRAY_4_struct.showHelp_10;
-		//v6 = x_DWORD_17DE38str.x_BYTE_17DF13;
+		x_DWORD_17DE38str.showHelp_17DF13 = x_D41A0_BYTEARRAY_4_struct.showHelp_10;
 		x_DWORD_17DBB8[0] = j___clock();
-		v26 = j___clock();
-		v10 = x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx;
-		//v11 = x_BYTE_17DF10_get_key_scancode;
-		v12 = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
-		v27 = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
+		int lastTime = j___clock();
+		int16_t tempMousePosX = x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx;
+		int16_t tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
+		int scanCode = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
 		while (!m_ExitMenuLoop_E29DC)
 		{
 			g_state_monitor.Update();
 
 			SetFrameStart(std::chrono::system_clock::now());
-			v13 = j___clock();
-			if ((v10 == x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx) && (v12 == x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony) && (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == v27))
+			//v13 = j___clock();
+			if ((tempMousePosX == x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx) && (tempMousePosY == x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony) && (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == scanCode))
 			{
-				if ((v13 - v26) / 0x64u > 0x3C)//after any time run intro
+				if ((j___clock() - lastTime) / 100 > 60)//after 1 min run intro
 				{
-					v15 = x_DWORD_E9C38_smalltit;
+					uint8_t* tempSmalltit = x_DWORD_E9C38_smalltit;
 					x_DWORD_E9C38_smalltit = x_DWORD_17DE38str.x_DWORD_17DE44;
-					PlayIntros_83250(SBYTE1(a3x));
-					x_DWORD_E9C38_smalltit = v15;
-					BYTE1(a3x) = (BYTE1(a3x) == 1) + 1;
-					v12 = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
-					v10 = x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx;
+					PlayIntros_83250(introIndex);
+					x_DWORD_E9C38_smalltit = tempSmalltit;
+					introIndex = (introIndex == 1) + 1;//alternate 1 and 2
+					tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
+					tempMousePosX = x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx;
 					x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
-					v27 = 0;
-					v26 = j___clock();
+					scanCode = 0;
+					lastTime = j___clock();
 					StopMusic_8E020();
-					LOBYTE(a3x) = 0;
+					onlyBlit = 0;
 					StartMusic_8E160(4, 0x7Fu);
 				}
 			}
 			else
 			{
-				v12 = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
-				v10 = x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx;
-				v27 = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
-				v26 = j___clock();
+				tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
+				tempMousePosX = x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx;
+				scanCode = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
+				lastTime = j___clock();
 			}
 			if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 59)
 			{
-				//v17 = x_D41A0_BYTEARRAY_4;
-				v18 = x_D41A0_BYTEARRAY_4_struct.showHelp_10;
-				x_D41A0_BYTEARRAY_4_struct.showHelp_10 = v18 != 1;
-				x_DWORD_17DE38str.x_BYTE_17DF13 = v18 != 1;
-				//*(x_BYTE *)(v17 + 38402) = 1;
+				x_D41A0_BYTEARRAY_4_struct.showHelp_10 = x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1;
+				x_DWORD_17DE38str.showHelp_17DF13 = x_D41A0_BYTEARRAY_4_struct.showHelp_10;
 				x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
 			}
 			if (x_WORD_180660_VGA_type_resolution & 1)
@@ -1069,19 +1010,17 @@ void MainMenu_76FA0(/*int a1, */int  /*a2*/, uint16_t a3x)//257fa0
 			else
 				CopyScreen(x_DWORD_E9C38_smalltit, pdwScreenBuffer_351628, 640, 480);
 
-			/*v19 = */sub_7C120_draw_bitmap_640(185, 232, xy_DWORD_17DED4_spritestr[66]);//adress 25827a
-			//ax,ebx,a3
-			//6038,100,4?
+			sub_7C120_draw_bitmap_640(185, 232, xy_DWORD_17DED4_spritestr[66]);//adress 25827a
 			DrawMenuAnimations_7AB00();//25bb00
-			if (DrawAndServe_7B250(/*(int)v21, v22*/))//25c250
+			if (DrawAndServe_7B250())//25c250
 			{
-				v12 = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
-				v10 = x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx;
-				LOBYTE(a3x) = 0;
-				v27 = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
-				v26 = j___clock();
+				tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
+				tempMousePosX = x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx;
+				onlyBlit = false;
+				scanCode = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
+				lastTime = j___clock();
 			}
-			if (LOBYTE(a3x))
+			if (onlyBlit)
 			{
 				if (x_WORD_180660_VGA_type_resolution & 1)
 					sub_90478_VGA_Blit320(menuFps);
@@ -1090,35 +1029,23 @@ void MainMenu_76FA0(/*int a1, */int  /*a2*/, uint16_t a3x)//257fa0
 			}
 			else
 			{
-				LOBYTE(a3x) = 1;
+				onlyBlit = true;
 				//34ee38 20 0
 				sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x20u, 0);//tady
 			}
-			/*v11 = */sub_7A060_get_mouse_and_keyboard_events();
-
-			//test_x_D41A0_BYTEARRAY_0();
+			sub_7A060_get_mouse_and_keyboard_events();
 		}
 		sub_41BC0();
-
-		//x_D41A0_BYTEARRAY_0[8592] = 0;
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
-
-		//dos_setvect(9, x_DWORD_17DE22, x_WORD_17DE26);
 		sub_753D0();
-		//result = (int)x_DWORD_17DE44;
 		x_DWORD_E9C38_smalltit = x_DWORD_17DE38str.x_DWORD_17DE44;
 	}
 	else
 	{
 		sub_41BC0();
-
-		//x_D41A0_BYTEARRAY_0[8592] = 0;
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
-
-		//dos_setvect(9, x_DWORD_17DE22, x_WORD_17DE26);
-		/*result = */sub_753D0();
+		sub_753D0();
 	}
-	//  return result;
 }
 
 //----- (00077350) --------------------------------------------------------
@@ -1179,7 +1106,7 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 			SetFrameStart(std::chrono::system_clock::now());
 			if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 59)
 			{
-				x_DWORD_17DE38str.x_BYTE_17DF13 = x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1;
+				x_DWORD_17DE38str.showHelp_17DF13 = x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1;
 				x_D41A0_BYTEARRAY_4_struct.showHelp_10 = x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1;
 				x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
 			}
@@ -6523,11 +6450,11 @@ char MultiplayerMenu_7DE80(type_WORD_E1F84* a2x)//25ee80
 			x_DWORD_17DE38str.networkSession_17DEFA = (unsigned __int8)x_BYTE_E29DF_skip_screen;
 			ResetMouse_7B5A0();
 			if (1 == x_D41A0_BYTEARRAY_4_struct.showHelp_10)
-				v24 = x_DWORD_17DE38str.x_BYTE_17DF13;
+				v24 = x_DWORD_17DE38str.showHelp_17DF13;
 			sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 			a2x->dword_4 = sub_77680() != 0;
 			if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 == 1)
-				x_DWORD_17DE38str.x_BYTE_17DF13 = v24;
+				x_DWORD_17DE38str.showHelp_17DF13 = v24;
 		}
 		else
 		{
@@ -6554,7 +6481,7 @@ int DrawScrollDialog_7BF20(type_str_word_26* a1x)//25cf20
 	if (!a1x->x1_26_0)
 		return 0;
 	if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 == 1)
-		x_DWORD_17DE38str.x_BYTE_17DF13 = 0;
+		x_DWORD_17DE38str.showHelp_17DF13 = 0;
 	GetFont_6FC50(1);
 	if (!a1x->click_40_7)
 	{
@@ -6593,7 +6520,7 @@ int DrawScrollDialog_7BF20(type_str_word_26* a1x)//25cf20
 	int16_t result = a1x->click_40_7;
 	a1x->click_40_7 = 0;
 	if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 == 1)
-		x_DWORD_17DE38str.x_BYTE_17DF13 = 1;
+		x_DWORD_17DE38str.showHelp_17DF13 = 1;
 	return result;
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
@@ -7061,7 +6988,7 @@ char DrawAndServe_7B250(/*int a1, int a2*//*, __int16 a3*/)//25c250
 		}
 	}
 LABEL_28:
-	if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1 || !x_DWORD_17DE38str.x_BYTE_17DF13 || m_ExitMenuLoop_E29DC)
+	if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1 || !x_DWORD_17DE38str.showHelp_17DF13 || m_ExitMenuLoop_E29DC)
 		return 0;
 	//a3 = x_BYTE_17DBC6;
 	if (x_BYTE_17DBC6 == 2)
