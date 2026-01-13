@@ -6787,29 +6787,16 @@ char /*__fastcall*/ sub_77680()//258680
 }
 
 //----- (0007B250) --------------------------------------------------------
-char DrawAndServe_7B250(/*int a1, int a2*//*, __int16 a3*/)//25c250
+char DrawAndServe_7B250()//25c250
 {
-	//uint8_t* i; // esi
-	int iy;
+	//int iy;
 	char result; // al
-	//uint8_t* j; // esi
 	int jx;
 	char v6; // ah
-	//__int16 v7; // bx
-	//uint8_t* v8; // esi
-	//uint8_t* v9; // edi
 	int v9y;
-	//uint8_t* v10; // edi
 	int v10x;
-	//int v11; // eax
-	//int v12; // edx
 	int v13; // eax
-	type_E24BCx v14arx[2]; // [esp+0h] [ebp-24h]
-	//uint8_t v15[2]; // [esp+10h] [ebp-14h]//v14ar[16]
-
-	//fix it
-	//v12 = 0;
-	//fix it
+	type_E24BCx v14arx[2];
 
 	if (CommandLineParams.ModeTestRegressionsGame()) {
 		str_E1BAC[0].dword_0 = 0x258350;
@@ -6819,36 +6806,34 @@ char DrawAndServe_7B250(/*int a1, int a2*//*, __int16 a3*/)//25c250
 	if (CommandLineParams.ModeTestNetwork()) {
 		if (first_enter)
 		{
-			//str_E1BAC[2].dword_0 = 0x25EE80;
 			str_E1BAC[2].selected_8 = 1;
 		}
 	}
 
-	//for (i = off_E1BAC; *((int16_t*)i + 5); i += 44)
-	for (iy = 0; str_E1BAC[iy].xmin_10; iy++)
+	for (int i = 0; str_E1BAC[i].xmin_10; i++)
 	{
-		if (str_E1BAC[iy].selected_8 && str_E1BAC[iy].dword_0)
+		if (str_E1BAC[i].selected_8 && str_E1BAC[i].dword_0)
 		{
-			if (DrawAndServe_pre_sub_7B250(str_E1BAC[iy].dword_0, &str_E1BAC[iy]))
+			if (DrawAndServe_pre_sub_7B250(str_E1BAC[i].dword_0, &str_E1BAC[i]))
 			{
-				str_E1BAC[iy].selected_8 = 0;
+				str_E1BAC[i].selected_8 = 0;
 				ResetMouse_7B5A0();
 			}
-			if (str_E1BAC[iy].dword_4)
+			if (str_E1BAC[i].dword_4)
 			{
-				str_E1BAC[iy].selected_8 = 0;
+				str_E1BAC[i].selected_8 = 0;
 				SetCenterScreenForFlyAssistant_6EDB0();
 				sub_7A110_load_hscreen(x_WORD_180660_VGA_type_resolution, 4);
 				ResetMouse_7B5A0();
 				sub_8CD27_set_cursor(xy_DWORD_17DED4_spritestr[39]);
-				if (str_E1BAC[iy].dword_4 == 2)
-					str_E1BAC[iy].dword_4 = 0;
+				if (str_E1BAC[i].dword_4 == 2)
+					str_E1BAC[i].dword_4 = 0;
 				return 1;
 			}
 			return 0;
 		}
 	}
-	//for (j = off_E1BAC; *((int16_t*)j + 5); j += 44)//clear/set off_E1BAC
+	//clear/set off_E1BAC
 	for (jx = 0; str_E1BAC[jx].xmin_10; jx++)//clear/set off_E1BAC
 	{
 		str_E1BAC[jx].selected_8 = 0;
@@ -6863,65 +6848,51 @@ char DrawAndServe_7B250(/*int a1, int a2*//*, __int16 a3*/)//25c250
 	}
 	else
 	{
-		//j = str_E1BAC;
-		jx = 0;
-		if (str_E1BAC[jx].xmin_10)
+		for (jx = 0; str_E1BAC[jx].xmin_10; jx++)
 		{
-			while (!InRegion_7B200(&str_E1BAC[jx], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony) || !str_E1BAC[jx].canSelect_23)
+			if (InRegion_7B200(&str_E1BAC[jx], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony)
+				&& str_E1BAC[jx].canSelect_23)
 			{
-				//j += 44;
-				jx++;
-				if (!str_E1BAC[jx].xmin_10)
-					goto LABEL_28;
-			}
-			if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)
-			{
-				sub_8F100_sound_proc19(0, 14, 127, 64, 0x64u, 0, 3u);
-				str_E1BAC[jx].selected_8 = 1;
-				ResetMouse_7B5A0();
-			}
-			else
-			{
-				str_E1BAC[jx].gold_color_24 = 1;
-				x_BYTE_17DBC6 = 1;
+				if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)
+				{
+					sub_8F100_sound_proc19(0, 14, 127, 64, 0x64u, 0, 3u);
+					str_E1BAC[jx].selected_8 = 1;
+					ResetMouse_7B5A0();
+				}
+				else
+				{
+					str_E1BAC[jx].gold_color_24 = 1;
+					x_BYTE_17DBC6 = 1;
+				}
+				break;
 			}
 		}
 	}
-LABEL_28:
 	if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1 || !x_DWORD_17DE38str.showHelp_17DF13 || m_ExitMenuLoop_E29DC)
 		return 0;
-	//a3 = x_BYTE_17DBC6;
 	if (x_BYTE_17DBC6 == 2)
 	{
 		x_DWORD_17DBB8[1] = j___clock();
 		if ((x_DWORD_17DBB8[1] - x_DWORD_17DBB8[0]) / 0x64u > 1)
 		{
 			x_WORD_17DBC4++;
-			//v7 = unk_E25DC[2 + 18 * (x_WORD_17DBC4++ + 1)];
 			if (!str_E25DC[x_WORD_17DBC4].word_2)
 				x_WORD_17DBC4 = 0;
 			x_DWORD_17DBB8[0] = x_DWORD_17DBB8[1];
 		}
 		memset(v14arx, 0, 36);
-		/*v8 = &unk_E25DC[18 * x_WORD_17DBC4];
-		qmemcpy(v14arx, v8, 0x10u+2u);*/
 		v14arx[0] = str_E25DC[x_WORD_17DBC4];
-		//qmemcpy(&v14ar[16], v8 + 0x10, 2u);
-		//v9 = str_E1BAC;
 		v9y = 0;
 		sub_7E840_draw_textbox_with_line(v14arx, 80, 89);
-		//if (!*(int16_t*)&off_E1BAC[10])
 		if (!str_E1BAC[0].xmin_10)
 			return 0;
 		do
 		{
-			//if (v9[22] == x_BYTE_E25ED_0x[18 * x_WORD_17DBC4])
 			if (str_E1BAC[v9y].byte_22 == str_BYTE_E25ED_0x[x_WORD_17DBC4].byte_0)
 			{
 				str_E1BAC[v9y].gold_color_24 = 1;//turn on gold selection
 				return 0;
 			}
-			//v9 += 44;
 			v9y++;
 		} while (str_E1BAC[v9y].xmin_10);
 		result = 0;
@@ -6938,22 +6909,17 @@ LABEL_28:
 			}
 			return 0;
 		}
-		//v10 = (uint8_t*)&unk_E25DC;//2b35dc
 		v10x = 0;
-		//if (*((int16_t*)&unk_E25DC + 1))
 		if (str_E25DC[v10x].word_2)
 		{
 			while (str_E25DC[v10x].byte_17 != str_E1BAC[jx].byte_22)
 			{
-				//v10 += 9;
 				v10x++;
 				if (!str_E25DC[v10x].word_2)
 					return 0;
 			}
 			memset(v14arx, 0, 36);
-			//qmemcpy(v14arx, v10, 0x10u+2u);
 			v14arx[0] = str_E25DC[v10x];
-			//qmemcpy(&v14ar[16], v10 + 8, 2u);
 			sub_7E840_draw_textbox_with_line(v14arx, 80, 89);
 			v13 = j___clock();
 			x_DWORD_17DBB8[1] = v13;
@@ -6968,21 +6934,6 @@ LABEL_28:
 	}
 	return result;
 }
-// 8C250: using guessed type x_DWORD memset(x_DWORD, x_DWORD, x_DWORD);
-// 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
-// D41A4: using guessed type int x_DWORD_D41A4;
-// E25DE: using guessed type __int16 x_WORD_E25DE[];
-// E29DC: using guessed type __int16 x_WORD_E29DC;
-// 17DBB8: using guessed type int x_DWORD_17DBB8;
-// 17DBBC: using guessed type int x_DWORD_17DBBC;
-// 17DBC4: using guessed type __int16 x_WORD_17DBC4;
-// 17DBC6: using guessed type char x_BYTE_17DBC6;
-// 17DED4: using guessed type int (int)x_DWORD_17DED4;
-// 17DEE4: using guessed type int x_DWORD_17DEE4_mouse_position;
-// 17DEEE: using guessed type __int16 x_WORD_17DEEE_mouse_buttons;
-// 17DF10: using guessed type char x_BYTE_17DF10_get_key_scancode;
-// 17DF13: using guessed type char x_BYTE_17DF13;
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (0007C390) --------------------------------------------------------
 signed int sub_7C390()//25d390

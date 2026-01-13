@@ -128,7 +128,7 @@ int DrawScrollDialog_7BF20(type_str_word_26* a1x);
 void sub_8C0E0(unsigned __int8(/*__fastcall*/ *a1)(signed int));
 int DrawScrollDialog2_7B660(int a1, int a2, __int16 a3, type_str_word_26* a4x, char* a5, char a6);
 char /*__fastcall*/ sub_77680();
-char DrawAndServe_7B250(/*int a1, int a2*//*, __int16 a3*/);
+char DrawAndServe_7B250();
 signed int sub_7C390();
 void sub_7C710();
 void SetMultiplayerColors_7D310();
