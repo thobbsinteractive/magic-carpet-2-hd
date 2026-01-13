@@ -3812,7 +3812,7 @@ uint8_t* sub_4E320(uint8_t* a1)//22f320
 
 
 zm2nu hledat zde:
-void sub_47320_in_game_loop(signed int a1)//228320
+void InGameLoop_47320(signed int a1)//228320
 debugcounter== b
 -----
 32c4e0+ d94f*2
@@ -6536,7 +6536,7 @@ versus
 26 - 355168
 32 - 355174
 
-void sub_47320_in_game_loop(signed int a1)//228320
+void InGameLoop_47320(signed int a1)//228320
 test
 
 

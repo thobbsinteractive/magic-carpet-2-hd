@@ -189,7 +189,7 @@ void editor_run()
 	main_x(/*int argc, char** argv*/);
 	//pdwScreenBuffer_351628= back_pdwScreenBuffer_351628;
 	
-	//sub_47320_in_game_loop(0);//run game	
+	//InGameLoop_47320(0);//run game	
 
 	//restore D41A0_BYTESTR_0
 }

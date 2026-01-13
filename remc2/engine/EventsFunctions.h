@@ -468,7 +468,7 @@ void sub_44EE0_smooth_tiles(/*int a1, */uaxis_2d a2);
 void sub_54600_mouse_reset();
 void LevelInitGame_56A30(int16_t level = -1, std::string customLevelPath = "");
 void sub_5B870_copy_sentence(char* langbuffer, char** langindexbuffer, uint32_t count);
-void sub_47320_in_game_loop(signed int a1);
+void InGameLoop_47320(signed int a1);
 void sub_56D60(unsigned int a1, char a2);
 void SetCenterScreenForFlyAssistant_6EDB0();
 int NetworkInitConnection_7308F(char* a2, __int16 a3);

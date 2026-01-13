@@ -762,7 +762,7 @@ void AddBuildingToTerrain_46570(uaxis_2d axis1, uaxis_2d axis2);
 void sub_46820_simple_timer(uint32_t user);
 // int sub_46830_main_loop(signed __int16 *a1, signed int a2, unsigned __int16 a3);
 void sub_46F50_sound_proc7();
-// int sub_47320_in_game_loop(signed int a1);
+// int InGameLoop_47320(signed int a1);
 //void sub_473B0();
 //int sub_473E0();
 // void sub_47560_draw_and_events_in_game(int a1, int a2, x_BYTE *a3, signed int a4, __int16 a5);
@@ -31658,7 +31658,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 						}
 					}
 				}
-				sub_47320_in_game_loop(a2);
+				InGameLoop_47320(a2);
 				if (m_ptrGameRender != nullptr)
 				{
 					delete m_ptrGameRender;
@@ -31771,13 +31771,8 @@ int debug_first_run = 0;
 int debugcounter_228320 = 0;
 
 //----- (00047320) --------------------------------------------------------
-void sub_47320_in_game_loop(signed int a1)//228320
+void InGameLoop_47320(signed int a1)//228320
 {
-	uint32_t v1; // ebx
-	int v2; // esi
-	unsigned int v3; // esi
-	//int v4; // edx
-	//uint8_t* index; // eax
 	/*
 	debugnextlevel++;
 
@@ -31800,7 +31795,7 @@ void sub_47320_in_game_loop(signed int a1)//228320
 	debugcounter_228320++;
 	*/
 	x_D41A0_BYTEARRAY_4_struct.byteindex_51 = 0;
-	v1 = 0;
+	uint32_t gameTurn = 0;
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
 	while (1)
 	{
@@ -31829,12 +31824,8 @@ void sub_47320_in_game_loop(signed int a1)//228320
 
 		//debug
 
-		//v4 = 2124 * D41A0_BYTESTR_0.word_0xc;
-		//index = 2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0;
 		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 || D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 8)
 			break;
-		v2 = x_DWORD_17DB54_game_turn2;//0xded
-
 		/*
 		//savetext
 		FILE* filesavetext;
@@ -31845,16 +31836,13 @@ void sub_47320_in_game_loop(signed int a1)//228320
 		//savetext
 		*/
 
-		DrawAndEventsInGame_47560(/*2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0, 2124 * D41A0_BYTESTR_0.word_0xc,*/ v1, a1, x_DWORD_17DB54_game_turn2);
-		v3 = v2 + 5;
-		/*while (v3 > x_DWORD_17DB54_game_turn2)
-			;*/ // timer only for origin sound
-		if (v1 < 2)
+		DrawAndEventsInGame_47560(a1, x_DWORD_17DB54_game_turn2);
+		if (gameTurn < 2)
 		{
 			StopMusic_8E020();
-			if (v1 == 1)
+			if (gameTurn == 1)
 				StartMusic_8E160(D41A0_0.maptypeMusic_0x235, 0x7Fu);
-			v1++;
+			gameTurn++;
 		}
 
 		// force special settings for renderer tests			
@@ -31907,7 +31895,7 @@ void intervalsave(int index) {
 
 //long debugcounter_47560_2=0;
 //----- (00047560) --------------------------------------------------------
-void DrawAndEventsInGame_47560(uint32_t a3, signed int a4, __int16 a5)//228560
+void DrawAndEventsInGame_47560(signed int a4, __int16 a5)//228560
 {
 	SetFrameStart(std::chrono::system_clock::now());
 	if ((CommandLineParams.DoDebugafterload() == 1) && (count_begin == 1))
