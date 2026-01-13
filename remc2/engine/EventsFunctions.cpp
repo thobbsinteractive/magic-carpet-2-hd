@@ -31583,7 +31583,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 		*/
 		//!!!!test area1
 
-		MenusAndIntros_76930(v5, 0, skipMenus /*a1*/);//set language, intro, menu, atd. //257930
+		MenusAndIntros_76930(skipMenus);//set language, intro, menu, atd. //257930
 
 		if (!D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234)
 		{

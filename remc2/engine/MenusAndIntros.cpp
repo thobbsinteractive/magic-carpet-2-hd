@@ -649,16 +649,9 @@ void sub_2EB40()//20fb40
 
 
 //----- (00076930) --------------------------------------------------------
-void MenusAndIntros_76930(int /*a2*/, uint16_t a3, bool skipMenus)//257930
+void MenusAndIntros_76930(bool skipMenus)//257930
 {
-	//int v3; // eax
-	int v4; // edx
-
-	//fix it
-	v4 = 0;
-	//fix it
-
-	//x_BYTE_E29DE = x_WORD_180660_VGA_type_resolution;//1 -351660
+	//1 -351660
 	x_BYTE_E29DF_skip_screen = x_BYTE_D41AD_skip_screen;
 
 	if (skipMenus)
@@ -683,61 +676,46 @@ void MenusAndIntros_76930(int /*a2*/, uint16_t a3, bool skipMenus)//257930
 	}
 	memset(&x_DWORD_17DE38str, 0, sizeof(type_x_DWORD_17DE38str));
 	x_DWORD_17DE38str.x_DWORD_17DEE0_filedesc = NULL;
-	sub_7BEC0();//25CEC0 // fix this structure
+	sub_7BEC0();//25CEC0
 	SetCenterScreenForFlyAssistant_6EDB0();//24FDB0
-	/*v3 = */WriteConfigDat_81DB0();//262DB0
-
-	//test_x_D41A0_BYTEARRAY_0();
-
+	WriteConfigDat_81DB0();//262DB0
 	do
 	{
 		g_state_monitor.Update();
-
-		//x_WORD_E29D8 - prvni pruchod -0
-		//v3 = x_WORD_E29D8;//2b39d8
+		//2b39d8
 		switch (x_WORD_E29D8)
 		{
 		case 0:
-			/*v3 = */InitLanguage_76A40();//257A40 //asi inicializace + rovnou i nastaveni jazyka
+			InitLanguage_76A40();//257A40 //asi inicializace + rovnou i nastaveni jazyka
 			break;
 		case 1:
 			sub_76CF0();//257cf0 nastavi x_WORD_E29D8 na 3
 			break;
 		case 2:
-			/*v3 = */_wcpp_1_unwind_leave__131(/*v3*/);//257d00 asi konec
+			_wcpp_1_unwind_leave__131(/*v3*/);//257d00 asi konec
 			break;
 		case 3:
-			Intros_76D10(0);//257d10 intro
+			Intros_76D10(0);//257d10
 			x_WORD_E29D8 = 4;
 			break;
 		case 4:
-			MainMenu_76FA0();//257fa0 main menu loop
+			MainMenu_76FA0();//257fa0
 			break;
 		case 5:
 			m_ExitMenuLoop_E29DC = 1;
 			break;
 		case 12:
-			LanguageSettingDialog_779E0(0);//2589e0 asi herni smycka
+			LanguageSettingDialog_779E0(0);//2589e0
 			break;
 		default:
 			break;
 		}
 	} while (!m_ExitMenuLoop_E29DC);
-	sub_7ADE0(x_BYTE_E29DE);//zase nejaka inicializace
+	sub_7ADE0(x_BYTE_E29DE);
 	if (x_BYTE_E29E1)
 		x_BYTE_E29E1 = 0;
-	WriteConfigDat_81DB0();//neco
+	WriteConfigDat_81DB0();
 }
-// 76D00: using guessed type int /*__fastcall*/ _wcpp_1_unwind_leave__131(x_DWORD);
-// 8C250: using guessed type x_DWORD memset(x_DWORD, x_DWORD, x_DWORD);
-// D41AD: using guessed type char x_BYTE_D41AD_skip_screen;
-// E29D8: using guessed type __int16 x_WORD_E29D8;
-// E29DC: using guessed type __int16 x_WORD_E29DC;
-// E29DE: using guessed type char x_BYTE_E29DE;
-// E29E1: using guessed type char x_BYTE_E29E1;
-// 17DE38: using guessed type int x_DWORD_17DE38;
-// 17DEE0: using guessed type int x_DWORD_17DEE0_filedesc;
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00076A40) --------------------------------------------------------
 void InitLanguage_76A40()//257A40
@@ -834,11 +812,9 @@ void sub_76CF0()
 void Intros_76D10(char introType)//257d10
 {
 	char dataPath[MAX_PATH];
-
 	x_DWORD_17DE38str.x_DWORD_17DE54 = &x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[301787];
 	x_DWORD_17DE38str.x_DWORD_17DEC0 = (bitmap_pos_struct2_t*)&x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[308527];
 	x_DWORD_17DE38str.x_DWORD_17DEC4 = (bitmap_pos_struct2_t*)&x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[310159];
-
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
 	sub_7AA70_load_and_decompres_dat_file(dataPath, &x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[301787], 0x164FCD, 0x35C);
 	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC0, 0x165329, 0x224);
@@ -862,7 +838,7 @@ void Intros_76D10(char introType)//257d10
 	sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 	char introPath[MAX_PATH];
 	sprintf(introPath, "%s/%s", cdDataPath.c_str(), "INTRO/INTRO.DAT");
-	switch (a1)
+	switch (introType)
 	{
 	case 0:
 #ifndef debug_hide_graphics
@@ -903,7 +879,7 @@ void Intros_76D10(char introType)//257d10
 		sub_7A060_get_mouse_and_keyboard_events();
 	x_DWORD_17DE38str.x_BYTE_17DF11_last_key_status = 0;
 	x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
-	if (!a1)
+	if (!introType)
 		LoadAndSetGraphicsAndPalette_7AC00();
 }
 

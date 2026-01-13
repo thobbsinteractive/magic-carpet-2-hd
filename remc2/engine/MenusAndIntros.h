@@ -65,7 +65,7 @@ extern type_unk_18058Cstr unk_18058Cstr;
 extern int test_regression_level;
 
 // functions
-void MenusAndIntros_76930(int a2, uint16_t a3, bool skipMenus = false);
+void MenusAndIntros_76930(bool skipMenus = false);
 void InitLanguage_76A40();
 void Intros_76D10(char introType);
 void sub_76CF0();
