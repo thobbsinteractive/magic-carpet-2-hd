@@ -238,7 +238,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	uint16_t setting_45w;
 	uint8_t stubg[3];
 	int8_t spellOnCursor_50;//0x32//x_D41A0_BYTEARRAY_4_struct.byteindex_50
-	uint8_t byteindex_51;//0x33//x_D41A0_BYTEARRAY_4_struct.byteindex_51
+	uint8_t paletteMod_51;//0x33//x_D41A0_BYTEARRAY_4_struct.byteindex_51
 	uint8_t byteindex_52;//0x34//x_D41A0_BYTEARRAY_4_struct.byteindex_52
 	uint8_t byteindex_53;//0x35//x_D41A0_BYTEARRAY_4_struct.byteindex_53
 	uint8_t stubh[3];
@@ -256,10 +256,10 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	uint8_t byteindex_177;//0xb1//x_D41A0_BYTEARRAY_4_struct.byteindex_177
 	uint8_t speedIndex;//0xb2//x_D41A0_BYTEARRAY_4_struct.byteindex_178
 	uint8_t SelectedLangIndex;
-	uint8_t byteindex_180;//0xb4//x_D41A0_BYTEARRAY_4_struct.byteindex_180
+	uint8_t paletteSubMod_180;//0xb4//x_D41A0_BYTEARRAY_4_struct.byteindex_180
 	uint8_t moveSpeedFlag_181;//0xb5//x_D41A0_BYTEARRAY_4_struct.byteindex_181
 	uint8_t byteindex_183;//0xb7//x_D41A0_BYTEARRAY_4_struct.byteindex_183
-	uint16_t byteindex_184w;//0xb8//x_D41A0_BYTEARRAY_4_struct.byteindex_184
+	uint16_t paletteCount_184w;//0xb8//x_D41A0_BYTEARRAY_4_struct.byteindex_184
 	//uint8_t stubj[1];
 	uint8_t byteindex_186;//0xba//x_D41A0_BYTEARRAY_4_struct.byteindex_186
 	uint8_t stubk[1];

@@ -1243,7 +1243,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		}
 		return;
 	case 6:
-		if (x_D41A0_BYTEARRAY_4_struct.byteindex_51 < 3u || x_D41A0_BYTEARRAY_4_struct.byteindex_180)
+		if (x_D41A0_BYTEARRAY_4_struct.paletteMod_51 < 3u || x_D41A0_BYTEARRAY_4_struct.paletteSubMod_180)
 			return;
 		x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
 		v17 = D41A0_0.terrain_2FECE.MapType;
@@ -2569,7 +2569,7 @@ void sub_47650(int  /*a1*//*, int a2*/)//228650
 		v3++;
 	}
 	//result = (int)x_D41A0_BYTEARRAY_4;
-	x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 1;
+	x_D41A0_BYTEARRAY_4_struct.paletteSubMod_180 = 1;
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
@@ -2662,7 +2662,7 @@ void sub_46B40()//227b40
 
 	sub_8CEDF_install_mouse();
 	sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
-	x_D41A0_BYTEARRAY_4_struct.byteindex_51 = 2;
+	x_D41A0_BYTEARRAY_4_struct.paletteMod_51 = 2;
 	if (x_WORD_180660_VGA_type_resolution == 1)
 		FontType_D419D = 1;
 	else

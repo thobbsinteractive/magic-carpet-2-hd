@@ -1066,7 +1066,7 @@ int sub_38B90(type_event_0x6E8E* a1);
 unsigned int sub_38D80(type_event_0x6E8E* a1);
 int sub_38E20(type_event_0x6E8E* a1);
 int sub_38E40(type_event_0x6E8E* a1);
-int sub_38E70(type_event_0x6E8E* a1);
+void sub_38E70(type_event_0x6E8E* event);
 int sub_38F70(type_event_0x6E8E* a1);
 void sub_39040(type_event_0x6E8E* a1);
 void sub_396A0(type_event_0x6E8E* a1);
