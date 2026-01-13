@@ -38349,8 +38349,11 @@ void PlayerEvents_51BB0()//232bb0
 
 			if (action != nullptr)
 			{
-				if (action->PlayerAction_byte0 == 0xF)
+				if (action->PlayerAction_byte0 == 0xF || action->PlayerAction_byte0 == 0x27)
+				{
 					D41A0_0.array_0x6E3E[i].PlayerAction_byte0 = action->PlayerAction_byte0;
+					D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1 = action->str_0x6E3E_byte1;
+				}
 				actEvent->life_0x8 = action->Life_8x0;
 			}
 		}
@@ -38843,7 +38846,6 @@ void PlayerEvents_51BB0()//232bb0
 			actEvent->dword_0xA4_164x->dword_0x0_0 = action->dword_0x0_0;
 			actEvent->dword_0xA4_164x->Roll_4 = action->Roll_4;
 			actEvent->dword_0xA4_164x->Pitch_6 = action->Pitch_6;
-			actEvent->dword_0xA4_164x->Speed_12 = action->Speed_12;
 			actEvent->dword_0xA4_164x->word_0x18_24_next_entity = action->word_0x18_24_next_entity;
 			actEvent->dword_0xA4_164x->word_0x1A_26 = action->word_0x1A_26;
 			actEvent->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105 = action->SpellIndexLeft_0x451_1105;
@@ -38859,7 +38861,6 @@ void PlayerEvents_51BB0()//232bb0
 				actEvent->dword_0xA4_164x->dword_0x0_0,
 				actEvent->dword_0xA4_164x->Roll_4,
 				actEvent->dword_0xA4_164x->Pitch_6,
-				actEvent->dword_0xA4_164x->Speed_12,
 				actEvent->dword_0xA4_164x->word_0x18_24_next_entity,
 				actEvent->dword_0xA4_164x->word_0x1A_26,
 				actEvent->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105,
@@ -38867,7 +38868,8 @@ void PlayerEvents_51BB0()//232bb0
 				actEvent->dword_0xA4_164x->str_611.SubSpellIndexLeft_1109,
 				actEvent->dword_0xA4_164x->str_611.SubSpellIndexRight_1110,
 				actEvent->life_0x8,
-				D41A0_0.array_0x6E3E[i].PlayerAction_byte0);
+				D41A0_0.array_0x6E3E[i].PlayerAction_byte0,
+				D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1);
 		}
 
 		sub_57B20(&D41A0_0.array_0x2BDE[i], Entities_EA3E4[D41A0_0.array_0x2BDE[i].PlayerEntityIdx_2BE4_11240]);
