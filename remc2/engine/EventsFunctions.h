@@ -1580,4 +1580,8 @@ void UpdateEntities_57730();
 int ReadGameUserInputs_89D10();
 void PaletteChanges_47760();
 void sub_715B0();
+void sub_84B80();
+void sub_58F00_game_objectives();
+void sub_57570();
+void sub_575C0();
 #endif
