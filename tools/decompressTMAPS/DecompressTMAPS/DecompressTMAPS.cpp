@@ -121,6 +121,8 @@ static const uint16 crc_table[] = {
 	0x8201, 0x42C0, 0x4380, 0x8341, 0x4100, 0x81C1, 0x8081, 0x4040
 };
 
+bool nornc = false;
+
 uint16 crc_block(uint8* buf, size_t offset, int size)
 {
 	uint16 crc = 0;
@@ -1638,7 +1640,11 @@ int main(int argc, char** argv) {
 
 	for (auto p = params.cbegin(); p != params.cend(); ++p) {
 		const auto param = *p;
-		if ((param == "-p") || (param == "--pallet")) 
+		if (param == "-nornc")
+		{
+			nornc = true;			
+		}
+		else if ((param == "-p") || (param == "--pallet")) 
 		{
 			palletPath = *(++p);
 			if (!fs::exists(palletPath))
@@ -1760,14 +1766,19 @@ int main(int argc, char** argv) {
 		printf("-p PALD-0.DAT -t TMAPS0-0.DAT -f 0 -o out-day\n");
 		printf("For cave levels:\n");
 		printf("-p PALC-0.DAT -t TMAPS2-0.DAT -f 2 -o out-cave\n");
-		//printf("-p in/PALN-0.DAT -t in/MSPRN0-0.DAT -f 2 -o out-MSPRN\n");
+		printf("For nornc files:\n");
+		printf("-nornc -p PALN-0.DAT -t MSPRN0-0.DAT -f 2 -o out-MSPRN\n");
+		//printf("-p in/PALN-0.DAT -t in/TMAPS1-0.DAT -f 2 -o out-night\n");
+		//printf("-nornc -p in/PALN-0.DAT -t in/MSPRN0-0.DAT -f 2 -o out-MSPRN\n");
 		return -1;
 	}
 
 	try
 	{
-		//return sub_main(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
-		return sub_mainNoRNC(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
+		if(nornc)
+			return sub_mainNoRNC(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
+		else
+			return sub_main(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
 	}
 	catch (std::exception& e)
 	{

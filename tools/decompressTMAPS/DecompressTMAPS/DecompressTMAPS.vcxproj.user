@@ -5,7 +5,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommandArguments>-p in/PALN-0.DAT -t in/HSPRN0-0.DAT -f 2 -o out-HSPRN</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-nornc -p in/PALN-0.DAT -t in/MSPRN0-0.DAT -f 2 -o out-MSPRN</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>
