@@ -95,7 +95,7 @@ InputTurn* InputRecorder::GetCurrentPlayerActions(int level, int playerIdx, int 
 	return m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn);
 }
 
-void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, int32_t dword_0x0_0, int16_t roll_4, int16_t pitch_6, int16_t word_0x18_24_next_entity, int16_t word_0x1A_26, int16_t SpellIndexLeft_0x451_1105, int16_t SpellIndexRight_0x453_1107, int8_t SubSpellIndexLeft_1109, int8_t SubSpellIndexRight_1110, int32_t life_8x0, int8_t PlayerAction_byte0, int8_t str_0x6E3E_byte1)
+void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, uint64_t sizeBytes, uint8_t* buffer)
 {
 	if (!m_IsRecording)
 		return;
@@ -119,18 +119,10 @@ void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint
 		m_InputEvents->at(level)->Players->at(playerIdx)->Turns->insert({ turn, { new InputTurn() } });
 	}
 	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Turn = turn;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->dword_0x0_0 = dword_0x0_0;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Roll_4 = roll_4;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Pitch_6 = pitch_6;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->word_0x18_24_next_entity = word_0x18_24_next_entity;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->word_0x1A_26 = word_0x1A_26;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SpellIndexLeft_0x451_1105 = SpellIndexLeft_0x451_1105;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SpellIndexRight_0x453_1107 = SpellIndexRight_0x453_1107;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SubSpellIndexLeft_1109 = SubSpellIndexLeft_1109;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SubSpellIndexRight_1110 = SubSpellIndexRight_1110;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Life_8x0 = life_8x0;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->PlayerAction_byte0 = PlayerAction_byte0;
-	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->str_0x6E3E_byte1 = str_0x6E3E_byte1;
+
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SizeBytes = sizeBytes;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Bytes = new uint8_t[sizeBytes];
+	memcpy(m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Bytes, buffer, sizeBytes);
 }
 
 bool InputRecorder::SaveRecordingToFile(const char* outputFileName)
@@ -175,8 +167,12 @@ bool InputRecorder::SaveRecordingToFile(const char* outputFileName)
 				fwrite(&playerIndex, sizeof(uint16_t), 1, eventsFile);
 				fwrite(&turnCount, sizeof(uint32_t), 1, eventsFile);
 
-				for (int i = 0; i < playerTurns->size();i++)
-					fwrite((uint8_t*)playerTurns->at(i), sizeof(InputTurn), 1, eventsFile);
+				for (int i = 0; i < playerTurns->size(); i++)
+				{
+					auto turn = playerTurns->at(i);
+					fwrite(turn, 8, 1, eventsFile);
+					fwrite(turn->Bytes, playerTurns->at(i)->SizeBytes, 1, eventsFile);
+				}
 				
 				playerTurns->clear();
 			}
@@ -242,7 +238,9 @@ bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 				for (int i = 0; i < turnCount; i++)
 				{
 					InputTurn* turn = new InputTurn();
-					fread(turn, sizeof(InputTurn), 1, eventsFile);
+					fread(turn, 8, 1, eventsFile);
+					turn->Bytes = new uint8_t[turn->SizeBytes];
+					fread(turn->Bytes, turn->SizeBytes, 1, eventsFile);
 					m_InputEvents->at(level)->Players->at(playerIdx)->Turns->insert({ turn->Turn, turn });
 				}
 			}

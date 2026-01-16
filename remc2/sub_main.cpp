@@ -38322,6 +38322,7 @@ void PlayerEvents_51BB0()//232bb0
 		if (playerFound)
 			ReceiveSendAll_7438A((uint8_t*)&D41A0_0.array_0x2BDE[0], sizeof(type_str_0x2BDE));
 	}
+
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248++;
 	x_D41A0_BYTEARRAY_4_struct.byteindex_26++;//232c9e
 	x_D41A0_BYTEARRAY_4_struct.setting_30++;
@@ -38336,26 +38337,22 @@ void PlayerEvents_51BB0()//232bb0
 	}
 	for (int i = 0; i < D41A0_0.NumberOfPlayers_0xe; i++)
 	{
+		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
+		{
+			sub_19760_set_message("Playing", 3u, 50);
+			memcpy(&D41A0_0.array_0x6E3E[i], m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248)->Bytes, m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248)->SizeBytes);
+		}
+		else if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
+		{
+			sub_19760_set_message("Recording", 3u, 50);
+			m_InputRecorder->RecordPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248, sizeof(type_str_0x6E3E), (uint8_t*)&D41A0_0.array_0x6E3E[i]);
+		}
+		
 		//adress 233d56
 		actEvent = Entities_EA3E4[D41A0_0.array_0x2BDE[i].PlayerEntityIdx_2BE4_11240];
 		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x20)
 		{
 			sub_53A40(&D41A0_0.array_0x6E3E[i]);
-		}
-
-		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
-		{
-			auto action = m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
-
-			if (action != nullptr)
-			{
-				if (action->PlayerAction_byte0 == 0xF || action->PlayerAction_byte0 == 0x27)
-				{
-					D41A0_0.array_0x6E3E[i].PlayerAction_byte0 = action->PlayerAction_byte0;
-					D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1 = action->str_0x6E3E_byte1;
-				}
-				actEvent->life_0x8 = action->Life_8x0;
-			}
 		}
 
 		switch (D41A0_0.array_0x6E3E[i].PlayerAction_byte0)
@@ -38837,40 +38834,6 @@ void PlayerEvents_51BB0()//232bb0
 		actEvent->dword_0xA4_164x->dword_0x0_0 = D41A0_0.array_0x6E3E[i].str_0x6E3E_byte5;
 		actEvent->dword_0xA4_164x->word_0x18_24_next_entity = D41A0_0.array_0x6E3E[i].str_0x6E3E_word6;
 		actEvent->dword_0xA4_164x->word_0x1A_26 = D41A0_0.array_0x6E3E[i].str_0x6E3E_word8;
-
-		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
-		{
-			sub_19760_set_message("Playing", 3u, 50);
-
-			auto action = m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
-			actEvent->dword_0xA4_164x->dword_0x0_0 = action->dword_0x0_0;
-			actEvent->dword_0xA4_164x->Roll_4 = action->Roll_4;
-			actEvent->dword_0xA4_164x->Pitch_6 = action->Pitch_6;
-			actEvent->dword_0xA4_164x->word_0x18_24_next_entity = action->word_0x18_24_next_entity;
-			actEvent->dword_0xA4_164x->word_0x1A_26 = action->word_0x1A_26;
-			actEvent->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105 = action->SpellIndexLeft_0x451_1105;
-			actEvent->dword_0xA4_164x->str_611.SubSpellIndexLeft_1109 = action->SubSpellIndexLeft_1109;
-			actEvent->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107 = action->SpellIndexRight_0x453_1107;
-			actEvent->dword_0xA4_164x->str_611.SubSpellIndexRight_1110 = action->SubSpellIndexRight_1110;
-		}
-		else if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
-		{
-			sub_19760_set_message("Recording", 3u, 50);
-
-			m_InputRecorder->RecordPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248,
-				actEvent->dword_0xA4_164x->dword_0x0_0,
-				actEvent->dword_0xA4_164x->Roll_4,
-				actEvent->dword_0xA4_164x->Pitch_6,
-				actEvent->dword_0xA4_164x->word_0x18_24_next_entity,
-				actEvent->dword_0xA4_164x->word_0x1A_26,
-				actEvent->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105,
-				actEvent->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107,
-				actEvent->dword_0xA4_164x->str_611.SubSpellIndexLeft_1109,
-				actEvent->dword_0xA4_164x->str_611.SubSpellIndexRight_1110,
-				actEvent->life_0x8,
-				D41A0_0.array_0x6E3E[i].PlayerAction_byte0,
-				D41A0_0.array_0x6E3E[i].str_0x6E3E_byte1);
-		}
 
 		sub_57B20(&D41A0_0.array_0x2BDE[i], Entities_EA3E4[D41A0_0.array_0x2BDE[i].PlayerEntityIdx_2BE4_11240]);
 		if (D41A0_0.array_0x2BDE[i].byte_0x846_2BDE)
