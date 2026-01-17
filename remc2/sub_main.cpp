@@ -22580,7 +22580,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 						str_unk_1804B0ar.byte_0xa8 = 1;
 					v15++;
 				}
-				if (!D41A0_0.array_0x2BDE[str_unk_1804B0ar.byte_0xa8].byte_0x006_2BE4_11236)
+				if (str_unk_1804B0ar.byte_0xa8 > -1 && !D41A0_0.array_0x2BDE[str_unk_1804B0ar.byte_0xa8].byte_0x006_2BE4_11236)
 					str_unk_1804B0ar.byte_0xa8 = 0;
 			}
 			for (j = 0; j < 8; j++)
