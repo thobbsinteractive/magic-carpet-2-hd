@@ -998,11 +998,11 @@ void sub_71890()//252890
 	//char result; // al
 	int v0y = 0;
 	memset(m_LevelSpriteList_F5340, 0, 504);
-    while (str_WORD_D951C[v0y].speed_6 || str_WORD_D951C[v0y].rotSpeed_8)
+    while (particlesParameters_D951C[v0y].speed_6 || particlesParameters_D951C[v0y].rotSpeed_8)
     {
-        if (str_WORD_D951C[v0y].byte_11 == -1)
+        if (particlesParameters_D951C[v0y].byte_11 == -1)
         {
-            m_LevelSpriteList_F5340[str_WORD_D951C[v0y].word_0] = str_WORD_D951C[v0y].byte_11;
+            m_LevelSpriteList_F5340[particlesParameters_D951C[v0y].word_0] = particlesParameters_D951C[v0y].byte_11;
         }
         v0y++;
     }

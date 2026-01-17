@@ -19,6 +19,6 @@ typedef struct {//lenght 14
 type_WORD_D951C;
 #pragma pack (pop)
 
-extern type_WORD_D951C str_WORD_D951C[347];
+extern type_WORD_D951C particlesParameters_D951C[347];
 
 #endif //TYPE_WORD_D951C_H

@@ -1957,7 +1957,7 @@ uint16_t GameRenderOriginal::sub_3FD60(int a2x)
 					{
 						str_F2C20ar.dword0x00 = 0;
 					}
-					v9x = &str_WORD_D951C[v41x->word_0x5A_90];
+					v9x = &particlesParameters_D951C[v41x->word_0x5A_90];
 					v10 = v6 * str_F2C20ar.dword0x18 / v40;
 					v11 = str_F2C20ar.dword0x18 * v42 / v40 + str_F2C20ar.dword0x22;
 					str_F2C20ar.dword0x04_screenY = ((v10 * str_F2C20ar.cos_0x11 - str_F2C20ar.sin_0x0d * v11) >> 16) + str_F2C20ar.dword0x24;
@@ -3154,13 +3154,7 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 		//adress 21f370
 
 		v3x = ENTITY_EA3E4[result];
-		str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90];
 		str_F2C20ar.dword0x14x = v3x;
-		if ((str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90].word_0 == 57) || (str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90].word_0 == 63))
-		{
-			str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90].word_0++;
-			str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90].word_0--;
-		}
 		if (!(v3x->struct_byte_0xc_12_15.byte[0] & 0x21))
 		{
 			v4 = v3x->axis_0x4C_76.y;
@@ -3181,7 +3175,7 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 							str_F2C20ar.dword0x00 = 0x2000;
 						else
 							str_F2C20ar.dword0x00 = v6 < str_F2C20ar.dword0x16 ? 32 * (str_F2C20ar.dword0x16 - (v99 * v99 + v5 * v5)) / str_F2C20ar.dword0x12 << 8 : 0;
-						v7x = &str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90];
+						v7x = &particlesParameters_D951C[str_F2C20ar.dword0x14x->word_0x5A_90];
 						if (!v7x->byte_10)
 						{
 							v8 = v5 * str_F2C20ar.dword0x18 / v99;
@@ -3517,7 +3511,7 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 				{
 					str_F2C20ar.dword0x00 = 0;
 				}
-				v52x = &str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90];
+				v52x = &particlesParameters_D951C[str_F2C20ar.dword0x14x->word_0x5A_90];
 				v53 = v49 * str_F2C20ar.dword0x18 / v100;
 				v54 = str_F2C20ar.dword0x18 * (v48 - str_F2C20ar.dword0x20) / v100 + str_F2C20ar.dword0x22;
 				str_F2C20ar.dword0x04_screenY = ((v53 * str_F2C20ar.cos_0x11 - str_F2C20ar.sin_0x0d * v54) >> 16) + str_F2C20ar.dword0x24;
