@@ -3370,7 +3370,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	for (int i = 0; i < 0x14d; i++)to->stub3c[i] = from->stub3c[i];
 	for (int i = 0; i < 0x6ff; i++)to->stub3d[i] = from->stub3d[i];
 	for (int i = 0; i < 8; i++)to->array_0x2BDE[i] = from->array_0x2BDE[i];
-	for (int i = 0; i < 8; i++)to->array_0x6E3E[i] = from->array_0x6E3E[i];
+	for (int i = 0; i < 8; i++)to->playerInputs_0x6E3E[i] = from->playerInputs_0x6E3E[i];
 	for (int i = 0; i < 0x3e8; i++) {
 		to->struct_0x6E8E[i].next_0 = (_entity_0x6E8E*)from->struct_0x6E8E[i].next_0;
 		to->struct_0x6E8E[i].maxLife_0x4 = from->struct_0x6E8E[i].dword_0x4;
@@ -3563,7 +3563,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 	for (int i = 0; i < 0x14d; i++)to->stub3c[i] = from->stub3c[i];
 	for (int i = 0; i < 0x6ff; i++)to->stub3d[i] = from->stub3d[i];
 	for (int i = 0; i < 8; i++)to->array_0x2BDE[i] = from->array_0x2BDE[i];
-	for (int i = 0; i < 8; i++)to->array_0x6E3E[i] = from->array_0x6E3E[i];
+	for (int i = 0; i < 8; i++)to->playerInputs_0x6E3E[i] = from->playerInputs_0x6E3E[i];
 	for (int i = 0; i < 0x3e8; i++) {
 		to->struct_0x6E8E[i].next_0 = ((uint8_t*)from->struct_0x6E8E[i].next_0 - Zero_pointer);
 		to->struct_0x6E8E[i].dword_0x4 = from->struct_0x6E8E[i].maxLife_0x4;

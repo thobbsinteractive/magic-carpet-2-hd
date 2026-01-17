@@ -147,7 +147,7 @@ extern uint8_t* x_BYTE_14B4E0_second_heightmap;
 
 #pragma pack (1)
 typedef struct {//lenght 10
-	int8_t PlayerAction_byte0;//0x6E3E-28222//D41A0_BYTESTR_0.array_0x6E3E[xx].PlayerAction_byte0
+	int8_t PlayerAction_byte0;//0x6E3E-28222//D41A0_BYTESTR_0.playerInputs_0x6E3E[xx].PlayerAction_byte0
 	int8_t str_0x6E3E_byte1;//0x6E3F-28223
 	int8_t str_0x6E3E_byte2;//0x6E40-28224
 	int8_t Roll_3;//0x6E41-28225
@@ -155,7 +155,7 @@ typedef struct {//lenght 10
 	int8_t str_0x6E3E_byte5;//0x6E43-28227
 	uint16_t str_0x6E3E_word6;//0x6E44-28228
 	uint16_t str_0x6E3E_word8;//0x6E46-28230
-}type_str_0x6E3E;
+}PlayerInput_0x6E3E;
 /*
 3-bit-28225
 4-bit-28226
@@ -1212,7 +1212,7 @@ typedef struct {//lenght 224791
 	std::array<uint8_t, 333> stub3c;
 	std::array<uint8_t, 1791> stub3d;
 	std::array<type_str_0x2BDE, 8> array_0x2BDE;
-	type_str_0x6E3E array_0x6E3E[8];//28222	lenght 0xa size 0x8// game events
+	PlayerInput_0x6E3E playerInputs_0x6E3E[8];//28222	lenght 0xa size 0x8// game events
 	type_entity_0x6E8E struct_0x6E8E[1000];//28302 a8*3e8
 	Type_Level_2FECE terrain_2FECE;// a1 = &x_D41A0_BYTEARRAY_0[0x2FECE/*196302*/];//fix - size 0x6604u//compress level
 	type_str_0x364D2 str_0x364D2;//lenght 108
@@ -1371,7 +1371,7 @@ typedef struct {//lenght 224791
 	uint8_t stub3c[333];
 	uint8_t stub3d[1791];
 	type_str_0x2BDE array_0x2BDE[8];
-	type_str_0x6E3E array_0x6E3E[8];
+	PlayerInput_0x6E3E playerInputs_0x6E3E[8];
 	type_shadow_entity_0x6E8E struct_0x6E8E[1000];
 	Type_CompressedLevel_2FECE str_2FECE;
 	type_str_0x364D2 str_0x364D2;
