@@ -371,7 +371,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	axis_3d axis_0x4C_76;//position//ACTUAL X Y Z
 	axis_4d array_0x52_82;
 	int16_t word_0x5A_90;
-	int8_t byte_0x5C_92;
+	int8_t animationFrame_0x5C_92;
 	int8_t byte_0x5D_93;
 	type_str_0x5E_94 str_0x5E_94;
 

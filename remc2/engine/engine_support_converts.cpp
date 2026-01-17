@@ -426,7 +426,7 @@ void convert_struct_to_array_0x6E8E(type_event_0x6E8E* input, uint8_t* output) {
 	//int16_t word_0x5A_90;
 	memcpy(output + 90, &input->word_0x5A_90, 2);
 	//int8_t byte_0x5C_92;
-	memcpy(output + 92, &input->byte_0x5C_92, 1);
+	memcpy(output + 92, &input->animationFrame_0x5C_92, 1);
 	//int8_t byte_0x5D_93;
 	memcpy(output + 93, &input->byte_0x5D_93, 1);
 	//type_str_0x5E_94 str_0x5E_94;

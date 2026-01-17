@@ -17855,7 +17855,7 @@ void sub_271D0(type_event_0x6E8E* a1x)//2081d0
 	{
 		v2x = ENTITY_EA3E4[a1x->word_0x96_150];
 		v3 = v2x->subSpellIndex_0x2A_42;
-		v4 = (v3 + sub_273C0(v2x->byte_0x5C_92, v2x->word_0x36_54, a1x->byte_0x46_70, v2x->byte_0x46_70)) & 0x7FF;
+		v4 = (v3 + sub_273C0(v2x->animationFrame_0x5C_92, v2x->word_0x36_54, a1x->byte_0x46_70, v2x->byte_0x46_70)) & 0x7FF;
 		a1x->word_0x2C_44 = v4;
 		v5x = ENTITY_EA3E4[a1x->word_0x32_50];
 		if (v5x)
@@ -17889,31 +17889,31 @@ void sub_272C0(type_event_0x6E8E* a1x)//2082c0
 
 	if (a1x->byte_0x46_70 >= 11)
 	{
-		v1 = sub_27430(a1x->byte_0x5C_92);
-		v2 = a1x->byte_0x5C_92;
+		v1 = sub_27430(a1x->animationFrame_0x5C_92);
+		v2 = a1x->animationFrame_0x5C_92;
 		v9 = v1;
 		if (v2 && v2 < 0x10u)
 			PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 48);
 		if (a1x->word_0x36_54 & 1)
 		{
-			v3 = v9 + a1x->byte_0x5C_92;
-			a1x->byte_0x5C_92 = v3;
+			v3 = v9 + a1x->animationFrame_0x5C_92;
+			a1x->animationFrame_0x5C_92 = v3;
 			if (v3 > 0x64u)
 			{
 				v4 = a1x->word_0x36_54;
-				a1x->byte_0x5C_92 = 100;
+				a1x->animationFrame_0x5C_92 = 100;
 				a1x->word_0x36_54 = v4 & 0xFE;
 			}
 		}
-		else if (a1x->byte_0x5C_92 > v9)
+		else if (a1x->animationFrame_0x5C_92 > v9)
 		{
-			a1x->byte_0x5C_92 -= v9;
+			a1x->animationFrame_0x5C_92 -= v9;
 		}
 		else
 		{
 			v5 = a1x->word_0x36_54 | 1;
 			a1x->word_0x36_54 = v5;
-			a1x->byte_0x5C_92 = 0;
+			a1x->animationFrame_0x5C_92 = 0;
 			a1x->word_0x36_54 = v5 ^ 2;
 		}
 	}
@@ -18975,7 +18975,7 @@ LABEL_11:
 	if (v3 != a1x->word_0x5A_90)
 	{
 		a1x->word_0x5A_90 = v3;
-		a1x->byte_0x5C_92 = 0;
+		a1x->animationFrame_0x5C_92 = 0;
 		//a1x->byte_0x5D_93 = x_BYTE_D8A2E[(unsigned __int8)x_WORD_D951C[6 + 7 * v3]];
 		a1x->byte_0x5D_93 = x_BYTE_D8A2E[str_WORD_D951C[v3].byte_12];
 
@@ -21017,7 +21017,7 @@ void sub_2AED0(type_event_0x6E8E* a1x, int a2)//20bed0
 	if (a2 != a1x->word_0x5A_90)
 	{
 		a1x->word_0x5A_90 = a2;
-		a1x->byte_0x5C_92 = 0;
+		a1x->animationFrame_0x5C_92 = 0;
 		//LOBYTE(v2) = x_BYTE_D8A2E[(unsigned __int8)x_WORD_D951C[6+7 * a2]];
 		//a1x->byte_0x5D_93 = x_BYTE_D8A2E[(unsigned __int8)x_WORD_D951C[6 + 7 * a2]];
 		a1x->byte_0x5D_93 = x_BYTE_D8A2E[str_WORD_D951C[a2].byte_12];
@@ -32976,7 +32976,7 @@ void SetEvent144_49C70(type_event_0x6E8E* event)//22ac70
 void SetEntityIndex_49C90(type_event_0x6E8E* event, int16_t entityIndex)//22ac90
 {
 	event->word_0x5A_90 = entityIndex;
-	event->byte_0x5C_92 = 0;
+	event->animationFrame_0x5C_92 = 0;
 	event->byte_0x5D_93 = x_BYTE_D8A2E[str_WORD_D951C[entityIndex].byte_12];
 }
 
@@ -34546,7 +34546,7 @@ type_event_0x6E8E* sub_4CA00(axis_3d* position)//22da00
 	v1x->byte_0x38_56 = 3;
 	v1x->playerEntityIndex_0x94_148 = 0;
 	v1x->array_0x52_82.yaw = 0;
-	v1x->byte_0x5C_92 = 0;
+	v1x->animationFrame_0x5C_92 = 0;
 	v1x->word_0x2C_44 = 11;
 	v1x->subSpellIndex_0x2A_42 = 0;
 	v1x->word_0x36_54 = 0;
@@ -40602,8 +40602,8 @@ int sub_58440(axis_3d* a1, axis_3d* a2)//239440
 //----- (000585A0) --------------------------------------------------------
 void sub_585A0(type_event_0x6E8E* a1x)//2395a0
 {
-	if (a1x->byte_0x5C_92 < a1x->byte_0x5D_93)
-		a1x->byte_0x5C_92++;
+	if (a1x->animationFrame_0x5C_92 < a1x->byte_0x5D_93)
+		a1x->animationFrame_0x5C_92++;
 }
 
 //----- (000585D0) --------------------------------------------------------
@@ -64093,7 +64093,7 @@ void sub_66180(type_event_0x6E8E* a1x)//247180
 			resultx->id_0x1A_26 = a1x->id_0x1A_26;
 			v3 = a1x->yaw_0x1C_28;
 			resultx->life_0x8 = 4;
-			resultx->byte_0x5C_92 = 3;
+			resultx->animationFrame_0x5C_92 = 3;
 			resultx->yaw_0x1C_28 = v3;
 		}
 		if (v1x)

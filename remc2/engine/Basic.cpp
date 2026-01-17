@@ -3094,7 +3094,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 		to->struct_0x6E8E[i].axis_0x4C_76 = from->struct_0x6E8E[i].array_0x4C_76;
 		to->struct_0x6E8E[i].array_0x52_82 = from->struct_0x6E8E[i].array_0x52_82;
 		to->struct_0x6E8E[i].word_0x5A_90 = from->struct_0x6E8E[i].word_0x5A_90;
-		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
+		to->struct_0x6E8E[i].animationFrame_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
 		to->struct_0x6E8E[i].byte_0x5D_93 = from->struct_0x6E8E[i].byte_0x5D_93;
 		to->struct_0x6E8E[i].str_0x5E_94 = from->struct_0x6E8E[i].str_0x5E_94;
 		to->struct_0x6E8E[i].actSpeed_0x82_130 = from->struct_0x6E8E[i].word_0x82_130;
@@ -3287,7 +3287,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 		to->struct_0x6E8E[i].array_0x4C_76 = from->struct_0x6E8E[i].axis_0x4C_76;
 		to->struct_0x6E8E[i].array_0x52_82 = from->struct_0x6E8E[i].array_0x52_82;
 		to->struct_0x6E8E[i].word_0x5A_90 = from->struct_0x6E8E[i].word_0x5A_90;
-		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
+		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].animationFrame_0x5C_92;
 		to->struct_0x6E8E[i].byte_0x5D_93 = from->struct_0x6E8E[i].byte_0x5D_93;
 		to->struct_0x6E8E[i].str_0x5E_94 = from->struct_0x6E8E[i].str_0x5E_94;
 		to->struct_0x6E8E[i].word_0x82_130 = from->struct_0x6E8E[i].actSpeed_0x82_130;
