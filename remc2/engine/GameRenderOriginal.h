@@ -66,8 +66,8 @@ private:
 	char notDay_D4320 = 0;
 	char x_BYTE_F2CC6 = 0;
 	int16_t yaw_F2CC0 = 0;
-	int16_t x_WORD_F2CC2 = 0;
-	int16_t x_WORD_F2CC4 = 0;
+	int16_t cameraY_F2CC2 = 0;
+	int16_t cameraX_F2CC4 = 0;
 	uint8_t* x_DWORD_DE55C_ActTexture = 0;
 
 	void DrawSky_40950(int16_t roll);

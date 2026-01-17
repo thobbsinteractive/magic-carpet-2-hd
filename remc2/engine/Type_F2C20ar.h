@@ -24,7 +24,7 @@ typedef struct {
 	int32_t dword0x0c_realHeight;
 	int32_t sin_0x0d;
 	int32_t dword0x0e_ptrScreenRenderBufferStart;
-	int32_t dword0x0f;
+	int32_t cos2_0x0f;
 	int32_t dword0x10;
 	int32_t cos_0x11;
 	int32_t dword0x12;
@@ -32,7 +32,7 @@ typedef struct {
 	type_event_0x6E8E* dword0x14x;
 	int32_t dword0x15_tileRenderCutOffDistance;
 	int32_t dword0x16;
-	int32_t dword0x17;
+	int32_t sin2_0x17;
 	int32_t dword0x18;
 	int32_t Height_0x19;
 	uint8_t* pbyte0x1a;

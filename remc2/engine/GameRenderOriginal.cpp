@@ -585,19 +585,19 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 	shadows_F2CC7 = D41A0_0.m_GameSettings.m_Graphics.m_wShadows;//21d080
 	notDay_D4320 = D41A0_0.terrain_2FECE.MapType != MapType_t::Day;
 	str_F2C20ar.dword0x10 = (signed int)(unsigned __int16)viewPort.Height_DE568 >> 1;
-	x_WORD_F2CC4 = posX;
+	cameraX_F2CC4 = posX;
 	yaw_F2CC0 = yaw & 0x7FF;
-	x_WORD_F2CC2 = posY;
+	cameraY_F2CC2 = posY;
 	v9 = (yaw & 0x7FF) + 256;
 	str_F2C20ar.dword0x20 = posZ;
 	v10 = Maths::sin_DB750[256 + v9];
 	str_F2C20ar.dword0x24 = x_DWORD_D4324 + ((signed int)(unsigned __int16)viewPort.Width_DE564 >> 1);
-	str_F2C20ar.dword0x0f = v10;
+	str_F2C20ar.cos2_0x0f = v10;
 	v11 = Maths::sin_DB750[v9 - 256];
 	v12 = ((((yaw & 0x7FF) + 256) & 0x1FF) - 256) & 0x7FF;
 	v248x[32] = (v9 >> 9) & 3;
 	v248x[30] = Maths::sin_DB750[512 + v12];
-	str_F2C20ar.dword0x17 = v11;
+	str_F2C20ar.sin2_0x17 = v11;
 	v13 = Maths::sin_DB750[v12];
 	SetBillboards_3B560(-roll & 0x7FF);//21d1aa
 	str_F2C20ar.dword0x18 = 7
@@ -1936,12 +1936,12 @@ uint16_t GameRenderOriginal::sub_3FD60(int a2x)
 			v41x = v3x;
 			if (!(v3x->struct_byte_0xc_12_15.byte[0] & 0x21))
 			{
-				v4 = (signed __int16)(v3x->axis_0x4C_76.x - x_WORD_F2CC4);
-				v5 = (signed __int16)(x_WORD_F2CC2 - v3x->axis_0x4C_76.y);
+				v4 = (signed __int16)(v3x->axis_0x4C_76.x - cameraX_F2CC4);
+				v5 = (signed __int16)(cameraY_F2CC2 - v3x->axis_0x4C_76.y);
 				v42 = -v3x->axis_0x4C_76.z - str_F2C20ar.dword0x20;
-				v6 = (v4 * str_F2C20ar.dword0x0f - v5 * str_F2C20ar.dword0x17) >> 16;
-				v40 = (str_F2C20ar.dword0x17 * v4 + str_F2C20ar.dword0x0f * v5) >> 16;
-				v7 = (str_F2C20ar.dword0x17 * v4 + str_F2C20ar.dword0x0f * v5) >> 16;
+				v6 = (v4 * str_F2C20ar.cos2_0x0f - v5 * str_F2C20ar.sin2_0x17) >> 16;
+				v40 = (str_F2C20ar.sin2_0x17 * v4 + str_F2C20ar.cos2_0x0f * v5) >> 16;
+				v7 = (str_F2C20ar.sin2_0x17 * v4 + str_F2C20ar.cos2_0x0f * v5) >> 16;
 				v8 = v40 * v40 + v6 * v6;
 				if (v7 > 64 && v8 < str_F2C20ar.dword0x15_tileRenderCutOffDistance)
 				{
@@ -3154,20 +3154,26 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 		//adress 21f370
 
 		v3x = ENTITY_EA3E4[result];
+		str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90];
 		str_F2C20ar.dword0x14x = v3x;
+		if ((str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90].word_0 == 57) || (str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90].word_0 == 63))
+		{
+			str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90].word_0++;
+			str_WORD_D951C[str_F2C20ar.dword0x14x->word_0x5A_90].word_0--;
+		}
 		if (!(v3x->struct_byte_0xc_12_15.byte[0] & 0x21))
 		{
 			v4 = v3x->axis_0x4C_76.y;
-			v96 = (signed __int16)(v3x->axis_0x4C_76.x - x_WORD_F2CC4);
-			v97 = (signed __int16)(x_WORD_F2CC2 - v4);
+			v96 = (signed __int16)(v3x->axis_0x4C_76.x - cameraX_F2CC4);
+			v97 = (signed __int16)(cameraY_F2CC2 - v4);
 			if (shadows_F2CC7)
 			{
 				if (!Str_E9C38_smalltit[a2x].textAtyp_43 && !(v3x->struct_byte_0xc_12_15.word[1] & 0x808))
 				{
 					//adress 21f40c
 					v98 = sub_B5C60_getTerrainAlt2(v3x->axis_0x4C_76.x, v4) - str_F2C20ar.dword0x20;
-					v5 = (str_F2C20ar.dword0x0f * v96 - str_F2C20ar.dword0x17 * v97) >> 16;
-					v99 = (str_F2C20ar.dword0x17 * v96 + str_F2C20ar.dword0x0f * v97) >> 16;
+					v5 = (str_F2C20ar.cos2_0x0f * v96 - str_F2C20ar.sin2_0x17 * v97) >> 16;
+					v99 = (str_F2C20ar.sin2_0x17 * v96 + str_F2C20ar.cos2_0x0f * v97) >> 16;
 					v6 = v99 * v99 + v5 * v5;
 					if (v99 > 64 && v6 < str_F2C20ar.dword0x15_tileRenderCutOffDistance)
 					{
@@ -3460,8 +3466,8 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 				v48 = str_F2C20ar.dword0x14x->axis_0x4C_76.z;
 			else
 				v48 = str_F2C20ar.dword0x14x->axis_0x4C_76.z - 160;
-			v100 = (str_F2C20ar.dword0x17 * v96 + str_F2C20ar.dword0x0f * v97) >> 16;
-			v49 = (str_F2C20ar.dword0x0f * v96 - str_F2C20ar.dword0x17 * v97) >> 16;
+			v100 = (str_F2C20ar.sin2_0x17 * v96 + str_F2C20ar.cos2_0x0f * v97) >> 16;
+			v49 = (str_F2C20ar.cos2_0x0f * v96 - str_F2C20ar.sin2_0x17 * v97) >> 16;
 			if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] & 0x20)
 			{
 				v50x = &str_D404C[str_F2C20ar.dword0x14x->byte_0x3B_59];
