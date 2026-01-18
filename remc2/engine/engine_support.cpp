@@ -2434,14 +2434,14 @@ void set_x_D41A0_BYTEARRAY_0_0x2BDE(int number, uint8_t value) {
 	D41A0_BYTESTR_0.array_0x2BDE[number].byte_0x002_2BE0_11232 = value;
 };
 
-//array_0x6E3E
+//playerInputs_0x6E3E
 int8_t get_x_D41A0_BYTEARRAY_0_0x6E3E(int index, int subindex) {
-	testbyte(&x_D41A0_BYTEARRAY_0[0x6E3E+ index*0xa+ subindex], (uint8_t*)&D41A0_BYTESTR_0.array_0x6E3E[index]);
-	return D41A0_BYTESTR_0.array_0x6E3E[index][subindex];
+	testbyte(&x_D41A0_BYTEARRAY_0[0x6E3E+ index*0xa+ subindex], (uint8_t*)&D41A0_BYTESTR_0.playerInputs_0x6E3E[index]);
+	return D41A0_BYTESTR_0.playerInputs_0x6E3E[index][subindex];
 };
 void set_x_D41A0_BYTEARRAY_0_0x6E3E(int index, int subindex, int8_t value) {
 	x_D41A0_BYTEARRAY_0[0x6E3E + index*0xa+ subindex] = value;
-	D41A0_BYTESTR_0.array_0x6E3E[index][subindex] = value;
+	D41A0_BYTESTR_0.playerInputs_0x6E3E[index][subindex] = value;
 };
 
 type_entity_0x6E8E* get_x_D41A0_BYTEARRAY_0_0x6E8E_adr() {

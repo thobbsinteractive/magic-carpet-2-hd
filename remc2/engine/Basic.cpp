@@ -3255,7 +3255,7 @@ void sub_99AEB_create_index_dattab_minus(uint8_t* tabbuffer, uint8_t* tabbuffere
 signed int GetTrueWizardNumber_61790(signed int inputnumber)//242790
 {
 	signed int outputNumber = inputnumber;
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
+	if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 	{
 		switch (D41A0_0.array_0x2BDE[inputnumber].dword_0x3E6_2BE4_12228.byte_0x1C0_448)
 		{
@@ -3341,7 +3341,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	to->dword_0x4 = from->dword_0x4;
 	to->rand_0x8 = from->dword_0x8;
 	to->LevelIndex_0xc = from->word_0xc;
-	to->word_0xe = from->word_0xe;
+	to->NumberOfPlayers_0xe = from->word_0xe;
 	for (int i = 0; i < 0x1d; i++)to->array_0x10[i] = from->array_0x10[i];
 	to->dword_0x2d = from->dword_0x2d;
 	to->word_0x31 = from->word_0x31;
@@ -3370,7 +3370,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	for (int i = 0; i < 0x14d; i++)to->stub3c[i] = from->stub3c[i];
 	for (int i = 0; i < 0x6ff; i++)to->stub3d[i] = from->stub3d[i];
 	for (int i = 0; i < 8; i++)to->array_0x2BDE[i] = from->array_0x2BDE[i];
-	for (int i = 0; i < 8; i++)to->array_0x6E3E[i] = from->array_0x6E3E[i];
+	for (int i = 0; i < 8; i++)to->playerInputs_0x6E3E[i] = from->playerInputs_0x6E3E[i];
 	for (int i = 0; i < 0x3e8; i++) {
 		to->struct_0x6E8E[i].next_0 = (_entity_0x6E8E*)from->struct_0x6E8E[i].next_0;
 		to->struct_0x6E8E[i].maxLife_0x4 = from->struct_0x6E8E[i].dword_0x4;
@@ -3534,7 +3534,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 	to->dword_0x4 = from->dword_0x4;
 	to->dword_0x8 = from->rand_0x8;
 	to->word_0xc = from->LevelIndex_0xc;
-	to->word_0xe = from->word_0xe;
+	to->word_0xe = from->NumberOfPlayers_0xe;
 	for (int i = 0; i < 0x1d; i++)to->array_0x10[i] = from->array_0x10[i];
 	to->dword_0x2d = from->dword_0x2d;
 	to->word_0x31 = from->word_0x31;
@@ -3563,7 +3563,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 	for (int i = 0; i < 0x14d; i++)to->stub3c[i] = from->stub3c[i];
 	for (int i = 0; i < 0x6ff; i++)to->stub3d[i] = from->stub3d[i];
 	for (int i = 0; i < 8; i++)to->array_0x2BDE[i] = from->array_0x2BDE[i];
-	for (int i = 0; i < 8; i++)to->array_0x6E3E[i] = from->array_0x6E3E[i];
+	for (int i = 0; i < 8; i++)to->playerInputs_0x6E3E[i] = from->playerInputs_0x6E3E[i];
 	for (int i = 0; i < 0x3e8; i++) {
 		to->struct_0x6E8E[i].next_0 = ((uint8_t*)from->struct_0x6E8E[i].next_0 - Zero_pointer);
 		to->struct_0x6E8E[i].dword_0x4 = from->struct_0x6E8E[i].maxLife_0x4;
