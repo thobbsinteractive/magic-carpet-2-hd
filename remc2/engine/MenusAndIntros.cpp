@@ -632,18 +632,18 @@ void /*__fastcall*/ _wcpp_1_unwind_leave__131() {//257d00
 }
 
 //----- (0002EB40) --------------------------------------------------------
-void sub_2EB40()//20fb40
+void StopSubtitles_2EB40()//20fb40
 {
 	//int result; // eax
 
 	//BYTE1(result) = 0;
-	x_BYTE_D41CE = 0;
-	x_BYTE_D41C1 = 0;
+	SubtitlesOn_D41CE = 0;
+	DisplaySubtitles_D41C1 = 0;
 	x_DWORD_D41D0 = 0;
 	//return result;
 }
-// D41C1: using guessed type char x_BYTE_D41C1;
-// D41CE: using guessed type char x_BYTE_D41CE;
+// D41C1: using guessed type char DisplaySubtitles_D41C1;
+// D41CE: using guessed type char SubtitlesOn_D41CE;
 // D41D0: using guessed type int x_DWORD_D41D0;
 
 
@@ -818,7 +818,7 @@ void InitLanguage_76A40()//257A40
 		}
 	}
 	if (x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2 || !soundAble_E3798)
-		x_BYTE_D41C0 = 1;
+		DisplaySubtitles_D41C0 = 1;
 	x_WORD_E29D8 = 1;
 }
 
@@ -851,16 +851,16 @@ void Intros_76D10(char a1)//257d10
 	else
 		sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
 
-	sub_2EB40();
+	StopSubtitles_2EB40();
 	if (soundAble_E3798 && x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex == 2)
 	{
-		x_BYTE_D41C1 = 0;
-		x_BYTE_D41C0 = 0;
+		DisplaySubtitles_D41C1 = 0;
+		DisplaySubtitles_D41C0 = 0;
 	}
 	else
 	{
-		x_BYTE_D41C0 = 1;
-		x_BYTE_D41C1 = 1;
+		DisplaySubtitles_D41C0 = 1;
+		DisplaySubtitles_D41C1 = 1;
 	}
 	SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
 	char introPath[MAX_PATH];
@@ -872,9 +872,9 @@ void Intros_76D10(char a1)//257d10
 		ShowWelcomeScreen_83850();//frog logo and wait
 #endif
 		PlayInfoFmv(1, 1, str_E17CC_0, introPath);//257160 intro .. 2b27cc
-		/*v1 = */sub_2EB40();
-		x_BYTE_D41C1 = 0;
-		x_BYTE_D41C0 = 0;
+		/*v1 = */StopSubtitles_2EB40();
+		DisplaySubtitles_D41C1 = 0;
+		DisplaySubtitles_D41C0 = 0;
 		while (sub_9A10A_check_keyboard(/*v1*/))
 		{
 			LastPressedKey_1806E4 = 0;
@@ -888,8 +888,8 @@ void Intros_76D10(char a1)//257d10
 		break;
 	case 2:
 		LastPressedKey_1806E4 = 0;
-		x_BYTE_D41C1 = 0;
-		x_BYTE_D41C0 = 0;
+		DisplaySubtitles_D41C1 = 0;
+		DisplaySubtitles_D41C0 = 0;
 		sprintf(introPath, "%s/%s", cdDataPath.c_str(), "INTRO/INTRO2.DAT");
 	LABEL_17:
 		PlayInfoFmv(1, 1, str_E17CC_0x160, introPath);//E192C
@@ -901,8 +901,8 @@ void Intros_76D10(char a1)//257d10
 	sub_7B5D0();
 	//v2 = 0;
 	x_WORD_E29D8 = 4;
-	x_BYTE_D41C0 = 0;
-	x_BYTE_D41C1 = 0;
+	DisplaySubtitles_D41C0 = 0;
+	DisplaySubtitles_D41C1 = 0;
 	//v3 = sub_9A10A_check_keyboard(/*v2*/);
 	if (sub_9A10A_check_keyboard(/*v2*/))
 		/*v3 = */sub_7A060_get_mouse_and_keyboard_events();
@@ -915,8 +915,8 @@ void Intros_76D10(char a1)//257d10
 // 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
 // 9A122: using guessed type x_DWORD j___delay(x_DWORD);
 // D41A4: using guessed type int x_DWORD_D41A4;
-// D41C0: using guessed type char x_BYTE_D41C0;
-// D41C1: using guessed type char x_BYTE_D41C1;
+// D41C0: using guessed type char DisplaySubtitles_D41C0;
+// D41C1: using guessed type char DisplaySubtitles_D41C1;
 // E29D8: using guessed type __int16 x_WORD_E29D8;
 // E3798: using guessed type char x_BYTE_E3798_sound_active2;
 // EB394: using guessed type int **filearray_2aa18c[0];
@@ -4802,7 +4802,7 @@ void sub_82670()//263670
 		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 		{
 			v2 = x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226;
-			x_BYTE_D41C1 = 0;
+			DisplaySubtitles_D41C1 = 0;
 			x_DWORD_17DE38str.x_DWORD_17DE48c = v2;
 			x_DWORD_17DE38str.x_DWORD_17DE54 = (uint8_t*)v2 + 301787;
 			x_DWORD_17DE38str.x_DWORD_17DEC0 = (bitmap_pos_struct2_t*)((uint8_t*)v2 + 308527);
@@ -4872,14 +4872,14 @@ void sub_82670()//263670
 				{
 					if (x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex == 2 && soundAble_E3798 || v0 >= 6)
 					{
-						x_BYTE_D41C1 = 0;
-						x_BYTE_D41C0 = 0;
+						DisplaySubtitles_D41C1 = 0;
+						DisplaySubtitles_D41C0 = 0;
 					}
 					else
 					{
-						sub_2EB40();
-						x_BYTE_D41C1 = 1;
-						x_BYTE_D41C0 = 1;
+						StopSubtitles_2EB40();
+						DisplaySubtitles_D41C1 = 1;
+						DisplaySubtitles_D41C0 = 1;
 					}
 					SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
 					memset((void*)pdwScreenBuffer_351628, 0, 640 * 480);
@@ -4958,7 +4958,7 @@ void sub_82670()//263670
 			}
 		}
 	}
-	x_BYTE_D41C1 = 0;
+	DisplaySubtitles_D41C1 = 0;
 	//return (signed __int16)v1;
 }
 

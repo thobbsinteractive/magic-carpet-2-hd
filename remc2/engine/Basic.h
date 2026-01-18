@@ -186,9 +186,9 @@ extern float m_fFps; // The frames rendered per second. Needs to be stored to be
 
 extern int readFileStatus_E3E2C;
 
-extern char x_BYTE_D41C1; // weak
+extern char DisplaySubtitles_D41C1; // weak
 
-extern char x_BYTE_D41CE; // weak
+extern char SubtitlesOn_D41CE; // weak
 
 extern char* x_DWORD_D41D0; // weak
 
@@ -545,7 +545,7 @@ int32_t /*__cdecl*/ x_tolower(int32_t);// weak
 
 //graphics basics - move it later to basic graphics
 void sub_2EC30_clear_img_mem();
-void sub_2EB60();
+void StartSubtitles_2EB60();
 void sub_2EBB0_draw_text_with_border_630x340(char* textString);
 int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8);//560cb0
 void sub_7C120_draw_bitmap_640(int16_t posx, int16_t posy, bitmap_pos_struct_t tempstr);
