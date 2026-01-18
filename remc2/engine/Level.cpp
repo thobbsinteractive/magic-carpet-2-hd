@@ -283,7 +283,7 @@ bool LoadLevel_555D0(uint8_t fileindex, int levelindex)//2365d0
 	type_str_0x21B6 temp0x21B6;
 
 	bool readSuccess = false;
-	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
+	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 	{
 		tempGr = D41A0_0.m_GameSettings.m_Graphics;
 		tempDisp = D41A0_0.m_GameSettings.m_Display;
@@ -398,7 +398,7 @@ bool LoadLevelSLEV_55A10(uint8_t savefileindex)//236a10
 bool SaveLevel_55080(uint8_t savefileindex, int32_t LevelNumber, char* savefileindex2)//236080 //filenameindex added for debugging
 {
 	bool success = false;
-	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
+	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 	{
 		sub_71930();
 		sub_55100(1);
@@ -693,7 +693,7 @@ void sub_57680_FixPointersAfterLoad()//238680
 		#endif
 	}
 
-	for (int v0 = 0; v0 < D41A0_0.word_0xe; v0++)
+	for (int v0 = 0; v0 < D41A0_0.NumberOfPlayers_0xe; v0++)
 	{
 		Entities_EA3E4[D41A0_0.array_0x2BDE[v0].PlayerEntityIdx_2BE4_11240]->dword_0xA4_164x = &D41A0_0.array_0x2BDE[v0].dword_0x3E6_2BE4_12228;
 	}
@@ -774,10 +774,10 @@ void sub_55AB0(type_str_0x2BDE* playStr)//236ab0
 			}
 		}
 	}
-	if (playStr->dword_0x3E6_2BE4_12228.str_611.word_0x451_1105 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[playStr->dword_0x3E6_2BE4_12228.str_611.word_0x451_1105])
-		playStr->dword_0x3E6_2BE4_12228.str_611.word_0x451_1105 = -1;
-	if (playStr->dword_0x3E6_2BE4_12228.str_611.word_0x453_1107 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[playStr->dword_0x3E6_2BE4_12228.str_611.word_0x453_1107])
-		playStr->dword_0x3E6_2BE4_12228.str_611.word_0x453_1107 = -1;
+	if (playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexLeft_0x451_1105 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexLeft_0x451_1105])
+		playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexLeft_0x451_1105 = -1;
+	if (playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexRight_0x453_1107 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexRight_0x453_1107])
+		playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexRight_0x453_1107 = -1;
 }
 
 //----- (00071990) --------------------------------------------------------
@@ -1201,7 +1201,7 @@ int sub_6D710(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//
 	if (a2 == 2 && a1x > Entities_EA3E4[0])
 	{
 		//v5 = a1x->dword_0xA4_164;
-		v6x = Entities_EA3E4[a1x->dword_0xA4_164x->word_0x3A_58];
+		v6x = Entities_EA3E4[a1x->dword_0xA4_164x->CastleEntityIdx_58];
 		if (v6x <= Entities_EA3E4[0])
 			goto LABEL_23;
 		switch (v6x->dword_0x10_16)
