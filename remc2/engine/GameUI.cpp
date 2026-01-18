@@ -3909,8 +3909,8 @@ void sub_1A280()//1fb280
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x02;//sound
 	if (musicActive_E37FD)
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x04;//music
-	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40)
-		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x08;//speek
+	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED)
+		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x08;//speech
 	if (D41A0_0.byte_0x36DEA_fly_asistant)
 		x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x10u;//fly
 	x_D41A0_BYTEARRAY_4_struct.dwordindex_188 |= 0x20;//bright

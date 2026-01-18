@@ -88,7 +88,7 @@ char sub_7E820(type_WORD_E1F84* a1x);
 int NewGameDraw_7EAE0(__int16* a1, __int16* a2, __int16* a3, __int16* a4, int8_t* a5, x_WORD* a6);
 int LoadLanguageFile(bitmap_pos_struct2_t** a1x, bitmap_pos_struct2_t** a2x, uint8_t* a3, char* langfilename, bitmap_pos_struct_t* a3dattabindex);
 int sub_7F960(bitmap_pos_struct2_t* a1x, bitmap_pos_struct2_t* a2x, uint8_t* a3, char* langcountstring, bitmap_pos_struct_t* a3dattabindex);
-void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3);
+void PresentLevelDescription_80C30(__int16 posX, __int16 posY, __int16 a3);
 bool sub_80D40_move_graphics_and_play_sounds(__int16 a2, __int16 a3, __int16 a4, __int16 a5, char a6);
 void NewGameSubdraw_81760(/*type_unk_E17CC_str_0x194* a1*/);
 void WriteConfigDat_81DB0();

@@ -40789,7 +40789,7 @@ void ProcessCommandLine_56210(int argc, char** argv)//237210
 	if (x_BYTE_355244_spellsedit)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x10u;
 	if (!x_BYTE_35522C_nocd && cdSpeechEnabled_E2A28)
-		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x40u;
+		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= SPEECH_ENABLED;
 	if (LoadSetLevel_355240)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x80u;
 	if (x_BYTE_355214)
@@ -42587,7 +42587,7 @@ void sub_59820()//23a820
 				D41A0_0.byte_0x36E02 = 0;
 				return;
 			}
-			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40)
+			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED)
 			{
 				if (v3 < 7u)
 				{
