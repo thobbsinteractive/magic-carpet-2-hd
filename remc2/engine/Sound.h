@@ -58,6 +58,8 @@ extern uint8_t* x_DWORD_1821B8[];
 extern uint8_t* x_DWORD_1821D0[];
 extern uint8_t* x_DWORD_1821E8[];
 
+extern type_E37A0_sound_buffer2* soundIndex_E37A0;
+
 void InitSound_8D290();
 void sub_8D800_sound_proc2();
 void EndSample_8D8F0();
