@@ -420,6 +420,7 @@ type_WORD_E1F84;
 //		 } NCB;
 
 extern char x_BYTE_D4B80;
+extern InputRecorder* m_InputRecorder;
 
 void j___delay(x_DWORD); // weak
 
@@ -475,7 +476,7 @@ void NetworkUpdateConnections2_74374();
 int16_t GetIndexNetwork2_74515();
 void sub_7A060_get_mouse_and_keyboard_events();
 void sub_7AA70_load_and_decompres_dat_file(const char* a1, uint8_t* a2, int a3, int a4);
-void GameEvents_51BB0();
+void PlayerEvents_51BB0();
 void DrawAndEventsInGame_47560(uint32_t a3, signed int a4, int16_t a5);
 
 //x_DWORD /*__cdecl*/ toupper(x_DWORD); //weak
@@ -1587,5 +1588,11 @@ void StopCdPlayBackAndFadeUp_59AF0();
 int FadeDownSoundVolume_59A50();
 uint32_t FadeUpSoundVolume_59B50(uint32_t interval);
 void RestoreSoundVolume_59BF0();
+
+void StartRecording(const char* outputFileName);
+void StopRecording();
+void StartPlayback(const char* inputFileName);
+void StopPlayback();
+bool IsRecordingOrPlaying();
 
 #endif //SUB_MAIN_ACTIVE

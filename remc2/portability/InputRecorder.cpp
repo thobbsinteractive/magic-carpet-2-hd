@@ -6,9 +6,9 @@ using namespace std;
 InputRecorder::InputRecorder(const char* filePath)
 {
 	m_FilePath = filePath;
-	m_InputEvents = new std::map<uint32_t, std::vector<InputEvent*>*>();
-	std::function<void(GameState)> stateChangeCallBack = [this](GameState a) { this->PlayPause(a); };
-	EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAME_STATE_CHANGE, stateChangeCallBack));
+	m_InputEvents = new std::map<uint16_t, InputEvent*>();
+	//std::function<void(GameState)> stateChangeCallBack = [this](GameState a) { this->PlayPause(a); };
+	//EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAME_STATE_CHANGE, stateChangeCallBack));
 }
 
 InputRecorder::~InputRecorder()
@@ -30,20 +30,29 @@ void InputRecorder::PlayPause(const GameState state)
 
 void InputRecorder::StartRecording()
 {
-	m_Tick = 0;
-	m_Iteration = 0;
-	ClearInputEvents();
 	m_IsRecording = true;
 }
 
 void InputRecorder::ClearInputEvents()
 {
-	map<uint32_t, std::vector<InputEvent*>*>::iterator it;
-	for (it = m_InputEvents->begin(); it != m_InputEvents->end(); it++)
+	map<uint16_t, InputEvent*>::iterator levelIt;
+	map<uint16_t, InputPlayer*>::iterator playIt;
+	map<uint32_t, InputTurn*>::iterator turnIt;
+
+	for (levelIt = m_InputEvents->begin(); levelIt != m_InputEvents->end(); levelIt++)
 	{
-		for (int i = 0; i < it->second->size(); i++)
-			delete it->second->at(i);
-		it->second->clear();
+
+		for (playIt = levelIt->second->Players->begin(); playIt != levelIt->second->Players->end(); playIt++)
+		{
+			for (turnIt = playIt->second->Turns->begin(); turnIt != playIt->second->Turns->end(); turnIt++)
+			{
+				delete turnIt->second;
+			}
+			playIt->second->Turns->clear();
+			delete playIt->second;
+		}
+		levelIt->second->Players->clear();
+		delete levelIt->second;
 	}
 	m_InputEvents->clear();
 }
@@ -53,8 +62,6 @@ bool InputRecorder::StopRecording()
 	m_IsRecording = false;
 	if (SaveRecordingToFile(m_FilePath.c_str()))
 	{
-		m_Tick = 0;
-		m_Iteration = 0;
 		ClearInputEvents();
 		return true;
 	}
@@ -69,8 +76,6 @@ void InputRecorder::PauseRecording(bool pause)
 
 bool InputRecorder::StartPlayback()
 {
-	m_Tick = 0;
-	m_Iteration = 0;
 	if (LoadRecordingFile(m_FilePath.c_str()))
 		m_IsPlaying = true;
 
@@ -82,76 +87,98 @@ void InputRecorder::StopPlayback()
 	m_IsPlaying = false;
 }
 
-void InputRecorder::IncrementTick()
+InputTurn* InputRecorder::GetCurrentPlayerActions(int level, int playerIdx, int turn)
 {
-	if (!m_IsRecording && !m_IsPlaying)
-		return;
-
-	m_Tick++;
-	m_Iteration = 0;
-	if (m_Tick > m_InputEvents->rbegin()->first)
-	{
-		StopPlayback();
-	}
-}
-
-std::vector<InputEvent*>* InputRecorder::GetCurrentInputEvents()
-{
-	if (!m_IsPlaying || m_InputEvents->count(m_Tick) == 0)
+	if (!m_IsPlaying || m_InputEvents->count(level) == 0 || m_InputEvents->at(level)->Players->count(playerIdx) == 0 || m_InputEvents->at(level)->Players->at(playerIdx)->Turns->count(turn) == 0)
 		return nullptr;
 
-	return m_InputEvents->at(m_Tick);
+	return m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn);
 }
 
-void InputRecorder::RecordKeyPress(bool keyPressed, uint16_t scanCodeChar)
+void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, uint64_t sizeBytes, uint8_t* buffer)
 {
 	if (!m_IsRecording)
 		return;
 
-	if (m_InputEvents->count(m_Tick) == 0) {
-		m_InputEvents->insert(std::pair<int, std::vector<InputEvent*>*>(m_Tick, new std::vector<InputEvent*>()));
+	if (m_InputEvents->count(level) == 0) 
+	{
+		m_InputEvents->insert(std::pair<uint16_t, InputEvent*>(level, new InputEvent()));
+		m_InputEvents->at(level)->Header = new InputEventHeader();
+		m_InputEvents->at(level)->Header->Level = level;
+		m_InputEvents->at(level)->Players = new std::map<uint16_t, InputPlayer*>();
 	}
-	m_InputEvents->at(m_Tick)->push_back(new InputEvent());
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->tick = m_Tick;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->iteration = m_Iteration;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->isKeyPress = true;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->keyPressed = keyPressed;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->scanCodeChar = scanCodeChar;
-	m_Iteration++;
-}
-
-void InputRecorder::RecordMouseInput(uint32_t mouse_buttons, int16_t mouse_x, int16_t mouse_y)
-{
-	if (!m_IsRecording)
-		return;
-
-	if (m_InputEvents->count(m_Tick) == 0) {
-		m_InputEvents->insert(std::pair<int, std::vector<InputEvent*>*>(m_Tick, new std::vector<InputEvent*>()));
+	if (m_InputEvents->at(level)->Players->count(playerIdx) == 0)
+	{
+		m_InputEvents->at(level)->Players->insert(std::pair<uint16_t, InputPlayer*>(playerIdx, new InputPlayer()));
+		m_InputEvents->at(level)->Players->at(playerIdx) = new InputPlayer();
+		m_InputEvents->at(level)->Players->at(playerIdx)->PlayerIdx = playerIdx;
+		m_InputEvents->at(level)->Players->at(playerIdx)->Turns = new std::map<uint32_t, InputTurn*>();
 	}
-	m_InputEvents->at(m_Tick)->push_back(new InputEvent());
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->tick = m_Tick;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->iteration = m_Iteration;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->isMouse = true;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->mouse_buttons = mouse_buttons;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->mouse_x = mouse_x;
-	m_InputEvents->at(m_Tick)->at(m_Iteration)->mouse_y = mouse_y;
-	m_Iteration++;
+	if (m_InputEvents->at(level)->Players->at(playerIdx)->Turns->count(turn) == 0)
+	{
+		m_InputEvents->at(level)->Players->at(playerIdx)->Turns->insert({ turn, { new InputTurn() } });
+	}
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Turn = turn;
+
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->SizeBytes = sizeBytes;
+	m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Bytes = new uint8_t[sizeBytes];
+	memcpy(m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn)->Bytes, buffer, sizeBytes);
 }
 
 bool InputRecorder::SaveRecordingToFile(const char* outputFileName)
 {
 	try
 	{
+		if (m_InputEvents == nullptr || m_InputEvents->empty())
+			return false;
+
 		FILE* eventsFile = fopen(outputFileName, "wb");
 		if (!eventsFile)
 			return false;
 
-		map<uint32_t, std::vector<InputEvent*>*>::iterator it;
-		for (it = m_InputEvents->begin(); it != m_InputEvents->end(); it++)
+		std::string fileSignature = "MC2-HD-Recording";
+
+		fwrite((uint8_t*)fileSignature.c_str(), fileSignature.length() * sizeof(char), 1, eventsFile);
+
+		std::vector<InputTurn*>* playerTurns = new std::vector<InputTurn*>();
+
+		map<uint16_t, InputEvent*>::iterator levelIt;
+		map<uint16_t, InputPlayer*>::iterator playIt;
+		map<uint32_t, InputTurn*>::iterator turnIt;
+
+		for (levelIt = m_InputEvents->begin(); levelIt != m_InputEvents->end(); levelIt++)
 		{
-			for (int i = 0; i < it->second->size(); i++)
-				fwrite((uint8_t*)it->second->at(i), sizeof(InputEvent), 1, eventsFile);
+			int level = levelIt->first;
+			auto* inputEventHeader = new InputEventHeader();
+			inputEventHeader->Level = level;
+			inputEventHeader->PlayerCount = levelIt->second->Players->size();
+			
+			fwrite((uint8_t*)inputEventHeader, sizeof(InputEventHeader), 1, eventsFile);
+
+			for (playIt = levelIt->second->Players->begin(); playIt != levelIt->second->Players->end(); playIt++)
+			{
+				uint16_t playerIndex = playIt->first;
+				for (turnIt = playIt->second->Turns->begin(); turnIt != playIt->second->Turns->end(); turnIt++)
+				{
+					playerTurns->push_back(turnIt->second);
+				}
+				uint32_t turnCount = playerTurns->size();
+
+				fwrite(&playerIndex, sizeof(uint16_t), 1, eventsFile);
+				fwrite(&turnCount, sizeof(uint32_t), 1, eventsFile);
+
+				for (int i = 0; i < playerTurns->size(); i++)
+				{
+					auto turn = playerTurns->at(i);
+					fwrite(turn, 8, 1, eventsFile);
+					fwrite(turn->Bytes, playerTurns->at(i)->SizeBytes, 1, eventsFile);
+				}
+				
+				playerTurns->clear();
+			}
+			delete inputEventHeader;
 		}
+		delete playerTurns;
 		return fclose(eventsFile) == 0;
 	}
 	catch (exception ex)
@@ -168,26 +195,55 @@ bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 		if (eventsFile == nullptr)
 			return false;
 
-		uint32_t tick = 0;
-		uint16_t iteration = 0;
-		while (fread(&tick, sizeof(InputEvent::tick), 1, eventsFile))
+		uint16_t level = 0;
+		uint16_t playerCount = 0;
+
+		char* fileSignature = new char[17];
+
+		fread(fileSignature, sizeof(char), 16, eventsFile);
+		fileSignature[16] = NULL;
+
+		if (strcmp(fileSignature, m_FileSignature.c_str()) != 0)
+			return false;
+
+		while (fread(&level, sizeof(InputEventHeader::Level), 1, eventsFile))
 		{
-			fread(&iteration, sizeof(InputEvent::iteration), 1, eventsFile);
-			if (iteration == 0)
+			fread(&playerCount, sizeof(InputEventHeader::PlayerCount), 1, eventsFile);
+
+			if (m_InputEvents->count(level) == 0)
 			{
-				m_InputEvents->insert(std::pair<uint32_t, std::vector<InputEvent*>*>(tick, new std::vector<InputEvent*>()));
+				m_InputEvents->insert(std::pair<uint16_t, InputEvent*>(level, new InputEvent()));
+				m_InputEvents->at(level)->Header = new InputEventHeader();
+				m_InputEvents->at(level)->Header->Level = level;
+				m_InputEvents->at(level)->Header->PlayerCount = playerCount;
+				m_InputEvents->at(level)->Players = new std::map<uint16_t, InputPlayer*>();
 			}
-			m_InputEvents->at(tick)->push_back(new InputEvent());
-			m_InputEvents->at(tick)->at(iteration)->tick = tick;
-			m_InputEvents->at(tick)->at(iteration)->iteration = iteration;
-			fread(&m_InputEvents->at(tick)->at(iteration)->isMouse, sizeof(InputEvent::isMouse), 1, eventsFile);
-			fseek(eventsFile, 1, SEEK_CUR); //padding
-			fread(&m_InputEvents->at(tick)->at(iteration)->mouse_buttons, sizeof(InputEvent::mouse_buttons), 1, eventsFile);
-			fread(&m_InputEvents->at(tick)->at(iteration)->mouse_x, sizeof(InputEvent::mouse_x), 1, eventsFile);
-			fread(&m_InputEvents->at(tick)->at(iteration)->mouse_y, sizeof(InputEvent::mouse_y), 1, eventsFile);
-			fread(&m_InputEvents->at(tick)->at(iteration)->isKeyPress, sizeof(InputEvent::isKeyPress), 1, eventsFile);
-			fread(&m_InputEvents->at(tick)->at(iteration)->keyPressed, sizeof(InputEvent::keyPressed), 1, eventsFile);
-			fread(&m_InputEvents->at(tick)->at(iteration)->scanCodeChar, sizeof(InputEvent::scanCodeChar), 1, eventsFile);
+
+
+			uint16_t playerIdx = 0;
+			uint32_t turnCount = 0;
+			while (playerCount--)
+			{
+				fread(&playerIdx, sizeof(InputPlayer::PlayerIdx), 1, eventsFile);
+				fread(&turnCount, sizeof(InputPlayer::TurnCount), 1, eventsFile);
+
+				if (m_InputEvents->at(level)->Players->count(playerIdx) == 0)
+				{
+					m_InputEvents->at(level)->Players->insert(std::pair<uint16_t, InputPlayer*>(playerIdx, new InputPlayer()));
+					m_InputEvents->at(level)->Players->at(playerIdx)->PlayerIdx = playerIdx;
+					m_InputEvents->at(level)->Players->at(playerIdx)->TurnCount = turnCount;
+					m_InputEvents->at(level)->Players->at(playerIdx)->Turns = new std::map<uint32_t, InputTurn*>();
+				}
+
+				for (int i = 0; i < turnCount; i++)
+				{
+					InputTurn* turn = new InputTurn();
+					fread(turn, 8, 1, eventsFile);
+					turn->Bytes = new uint8_t[turn->SizeBytes];
+					fread(turn->Bytes, turn->SizeBytes, 1, eventsFile);
+					m_InputEvents->at(level)->Players->at(playerIdx)->Turns->insert({ turn->Turn, turn });
+				}
+			}
 		}
 		return fclose(eventsFile) == 0;
 	}
