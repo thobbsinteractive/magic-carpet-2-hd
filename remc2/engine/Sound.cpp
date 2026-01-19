@@ -5079,7 +5079,7 @@ int sub_8F0AB(FILE* a1, /*int a2,*/ int a3)//26f0ab
 //----- (0008F100) --------------------------------------------------------
 void sub_8F100_sound_proc19(uint32_t flags, __int16 index, int volume, int volumePan, unsigned __int16 playRate, char loopCount, unsigned __int8 playType)//270100
 {
-	bool bool1; // [esp+0h] [ebp-18h]
+	bool bool1;
 
 	HSAMPLE* soundBuffer1 = nullptr;
 	HSAMPLE* soundBuffer2 = nullptr;
@@ -5184,14 +5184,14 @@ void sub_8F100_sound_proc19(uint32_t flags, __int16 index, int volume, int volum
 		Logger->trace("sub_8F100_sound_proc19:44mhz:");
 		Logger->trace("sub_8F100_sound_proc19:rate:{}", (*soundBuffer1)->playback_rate_15);
 	}
-
-	AilStartSample_93B50(*soundBuffer1);
+	
 	(*soundBuffer1)->flags_14 = flags;
 	(*soundBuffer1)->vol_scale_18[0][0] = index;
 	(*soundBuffer1)->status_1 = volume;
 	(*soundBuffer1)->len_4_5[1] = volumePan;
 	(*soundBuffer1)->vol_scale_18[0][2] = 0;
 	(*soundBuffer1)->vol_scale_18[0][3] = 0;
+	AilStartSample_93B50(*soundBuffer1);
 }
 
 //----- (0008F420) --------------------------------------------------------
