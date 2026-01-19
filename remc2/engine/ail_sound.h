@@ -119,6 +119,7 @@ int32_t sam_var[1000];
    void* start_44mhz;//8
    uint8_t mark44mark[sample_mark];
    //Mix_Chunk chunk;
+   int32_t vol_scale_18_0_0;
 }
 SAMPLE;
 typedef MSS_STRUCT _SAMPLE * HSAMPLE;           // Handle to sample
