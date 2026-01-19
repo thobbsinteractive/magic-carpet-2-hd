@@ -136,7 +136,7 @@ int AilLockChannel_97F90(MDI_DRIVER* a1);
 void AilReleaseChannel_980D0(HMDIDRIVER mdi, int a2);
 void AilMapSequenceChannel_98170(HSEQUENCE a1, int a2, int a3);
 void AilSendChannelVoiceMessage_98360(HMDIDRIVER mdi, HSEQUENCE hSequence, int32_t status, int32_t data_1, int32_t data_2);
-bool LoadSound_84300(uint8_t soundIndex);
+bool LoadSounds_84300(uint8_t soundBank);
 void LoadSoundDataFromBuffer_844A0(uint16_t count);
 bool ReadAndDecompressSound(FILE* file, uint8_t soundIndex2);
 bool AilApiReadIni_9E3A0(AIL_INI* INI, char* filename);

@@ -27,7 +27,7 @@ int numOfLoadedSounds_E37A4 = 0;
 //int8_t* str2_E37A4_sound_buffer3 = 0; // weak
 uint8_t* soundBuffer1_E37A8 = nullptr; // weak
 uint8_t defaultSoundIndex_E37AC = 0;
-int8_t actualSound_E37AD = -1; // weak
+int8_t actualSoundBank_E37AD = -1; // weak
 char x_BYTE_E37AE = 0; // weak
 int defaultVolume_E37B0 = 127; // weak
 __int16 soundFreqType2_E37B4 = 1644; // weak
@@ -562,7 +562,7 @@ void sub_8D800_sound_proc2()//26E800
 
 	while (runAgain)
 	{
-		runAgain = LoadSound_84300(defaultSoundIndex_E37AC);
+		runAgain = LoadSounds_84300(defaultSoundIndex_E37AC);
 		if (runAgain)
 		{
 			switch (soundFreqType_E37B6)
@@ -1765,15 +1765,15 @@ __int16 sub_98AE9(__int16* a1, int a2)//279ae9
 }
 
 //----- (00084300) --------------------------------------------------------
-bool LoadSound_84300(uint8_t soundIndex)//265300
+bool LoadSounds_84300(uint8_t soundBank)//265300
 {
 	FILE* file;
 	long sizeOfFile;
 	int16_t lastSoundBank[6];
 	int32_t lastSoundBankPos;
-	uint8_t soundIndex2 = 0;
+	uint8_t soundQuality = 0;
 
-	if (soundAble_E3798 && actualSound_E37AD != soundIndex)
+	if (soundAble_E3798 && actualSoundBank_E37AD != soundBank)
 	{
 		if (soundActiveH_E2A14)
 			EndSample_8D8F0();
@@ -1792,36 +1792,36 @@ bool LoadSound_84300(uint8_t soundIndex)//265300
 			switch (soundFreqType_E37B6)
 			{
 				case 800:
-					soundIndex2 = 5;//800
+					soundQuality = 5;//800
 					break;
 				case 811:
-					soundIndex2 = 4;//811
+					soundQuality = 4;//811
 					break;
 				case 822:
-					soundIndex2 = 3;//822
+					soundQuality = 3;//822
 					break;
 				case 1611:
-					soundIndex2 = 2;//1611
+					soundQuality = 2;//1611
 					break;
 				case 1622:
-					soundIndex2 = 1;//1622
+					soundQuality = 1;//1622
 					break;
 				case 1644:
-					soundIndex2 = 0;//1644
+					soundQuality = 0;//1644
 					break;
 			}
-			if ((soundIndex + 1) > lastSoundBank[soundIndex2])
+			if ((soundBank + 1) > lastSoundBank[soundQuality])
 			{
 				DataFileIO::Close(file);
 				return true;
 			}
-			DataFileIO::Seek(file, 96 * soundIndex, 1);//seek to finded sound
-			if (!ReadAndDecompressSound(file, soundIndex2))
+			DataFileIO::Seek(file, 96 * soundBank, 1);//seek to finded sound
+			if (!ReadAndDecompressSound(file, soundQuality))
 			{
 				DataFileIO::Close(file);
 				return true;
 			}
-			actualSound_E37AD = soundIndex;
+			actualSoundBank_E37AD = soundBank;
 			DataFileIO::Close(file);
 		}
 	}
@@ -1870,7 +1870,7 @@ bool ReadAndDecompressSound(FILE* file, uint8_t soundIndex2)//2654f0
 			FreeMem_83E80(soundBuffer1_E37A8);
 			FreeMem_83E80((uint8_t*)soundIndex_E37A0);
 			soundActiveL_E2A14 = 0;
-			actualSound_E37AD = -1;
+			actualSoundBank_E37AD = -1;
 			return false;
 		}
 		soundBufferLen_E2A18 = soundBank2[soundIndex2].dword_12 + 256;

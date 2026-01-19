@@ -122,7 +122,7 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 'E':
 		case 'e':
 			EndSample_8D8F0();
-			LoadSound_84300(pSoundEvent[x_WORD_D4004].index);
+			LoadSounds_84300(pSoundEvent[x_WORD_D4004].index);
 			break;
 		case 'F':
 		case 'f':

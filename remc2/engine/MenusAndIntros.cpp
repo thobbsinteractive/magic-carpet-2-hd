@@ -891,7 +891,7 @@ void MainMenu_76FA0()//257fa0
 	uint16_t introIndex = 1;
 
 	sub_86860_speak_Sound(x_WORD_1803EC);//267860
-	LoadSound_84300(0);//265300
+	LoadSounds_84300(0);//265300
 	memset(&x_DWORD_17DBB8, 0, 16);
 	x_BYTE_17DBC6 = 2;
 	x_DWORD_17DE38str.x_WORD_17DF04 = -1;
@@ -4826,7 +4826,7 @@ void PlayIntros_83250(char a1)//264250
 	sub_8CD27_set_cursor(xy_DWORD_17DED4_spritestr[39]);
 	x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons = 0;
 	x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
-	LoadSound_84300(0);
+	LoadSounds_84300(0);
 }
 
 //----- (000833C0) --------------------------------------------------------
