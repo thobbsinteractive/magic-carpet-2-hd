@@ -5523,9 +5523,8 @@ void WriteWaveToFile(wav_t* wav, const char* name)
 }
 
 //----- (0006E450) --------------------------------------------------------
-void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
+void PrepareEventSound_6E450(__int16 entityIndex, __int16 a2, __int16 soundIndex)//24f450
 {
-	type_event_0x6E8E* v3x; // edx
 	axis_3d* v4x; // esi
 	unsigned int v5; // eax
 	__int16 v6; // ax
@@ -5536,11 +5535,8 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
 	int v11; // edx
 	int v12; // edi
 	unsigned int v13; // eax
-	unsigned int v14; // edx
 	__int16 v21; // [esp+0h] [ebp-24h]
-	type_event_0x6E8E* v22x; // [esp+4h] [ebp-20h]
 	signed int v23; // [esp+8h] [ebp-1Ch]
-	int v24; // [esp+Ch] [ebp-18h]
 	unsigned int v25; // [esp+10h] [ebp-14h]
 	type_event_0x6E8E* v26x; // [esp+14h] [ebp-10h]
 	unsigned __int16 v27; // [esp+18h] [ebp-Ch]
@@ -5549,27 +5545,24 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
 
 	v29 = 0;
 	v21 = 0;
-	v24 = D41A0_0.rand_0x8;
 	if (!soundActive_E3799 || !soundAble_E3798)
 		return;
-	v3x = ENTITY_EA3E4[a1];
-	v22x = v3x;
-	if (v3x <= ENTITY_EA3E4[0])
+	if (ENTITY_EA3E4[entityIndex] <= ENTITY_EA3E4[0])
 	{
 		v10 = 0x7FFF;
 		LOWORD(v12) = 0x7FFF;
 	}
 	else
 	{
-		if (v3x->struct_byte_0xc_12_15.byte[0] < 0)
+		if (ENTITY_EA3E4[entityIndex]->struct_byte_0xc_12_15.byte[0] < 0)
 			return;
-		v4x = &v3x->axis_0x4C_76;
+		v4x = &ENTITY_EA3E4[entityIndex]->axis_0x4C_76;
 		if ((unsigned int)sub_584D0_SQdistX_SQdistY(
 			&ENTITY_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]->axis_0x4C_76,
-			&v3x->axis_0x4C_76) > 0x9000000)
+			&ENTITY_EA3E4[entityIndex]->axis_0x4C_76) > 0x9000000)
 			return;
 		v26x = ENTITY_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
-		v29 = v22x->id_0x1A_26;
+		v29 = ENTITY_EA3E4[entityIndex]->id_0x1A_26;
 		v5 = Maths::sub_58490_radix_3d_2(&v26x->axis_0x4C_76, v4x);
 		v25 = v5;
 		v23 = v5;
@@ -5600,64 +5593,51 @@ void PrepareEventSound_6E450(__int16 a1, __int16 a2, __int16 a3)//24f450
 		{
 			LOWORD(v12) = 0x7FFF;
 		}
-		if ((unsigned __int16)a3 >= 0x2Au)
+		if (soundIndex >= 0x2Au)
 		{
-			v13 = 9377 * v24 + 9439;
-			if ((unsigned __int16)a3 <= 0x2Cu)
+			v13 = 9377 * D41A0_0.rand_0x8 + 9439;
+			if (soundIndex <= 0x2Cu)
 			{
-				v14 = v13 % 0x1E - 15;
+				v21 = v13 % 0x1E - 15;
 			}
-			else
+			else if (soundIndex == 46)
 			{
-				if (a3 != 46)
-					goto LABEL_29;
-				v14 = v13 % 0x14;
-				if (v22x->actionIndex_0x45_69 == 14)
-					LOWORD(v14) = v14 + 10;
+				if (ENTITY_EA3E4[entityIndex]->actionIndex_0x45_69 == 14)
+					v21 = v13 % 0x14 + 10;
 				else
-					LOWORD(v14) = v14 - 10;
-			}
-			v21 = v14;
+					v21 = v13 % 0x14 - 10;				
+			}			
 		}
 	}
-LABEL_29:
-	if ((unsigned __int16)a3 < 0x2Au)
+	switch (soundIndex)
 	{
-		if ((unsigned __int16)a3 < 0x20u)
-		{
-			if (a3 != 7)
-				goto LABEL_46;
-			goto LABEL_45;
-		}
-		if ((unsigned __int16)a3 <= 0x20u || a3 == 38)
-		{
-		LABEL_45:
+		case 7:
+		case 32:
+		case 38:
+		case 42:
+		case 43:
+		case 44:
+		case 46:
+		case 47:
+		case 49:
+		case 50:
+		case 51:
+		case 52:
+		case 53:
+		case 58:
+		case 59:
+		case 62:
 			v29 = 0;
-			goto LABEL_46;
-		}
+			break;
 	}
-	else
-	{
-		if ((unsigned __int16)a3 <= 0x2Cu)
-			goto LABEL_45;
-		if ((unsigned __int16)a3 >= 0x31u)
-		{
-			if ((unsigned __int16)a3 > 0x35u && ((unsigned __int16)a3 < 0x3Au || (unsigned __int16)a3 > 0x3Bu && a3 != 62))
-				goto LABEL_46;
-			goto LABEL_45;
-		}
-		if ((unsigned __int16)a3 >= 0x2Eu && (unsigned __int16)a3 <= 0x2Fu)
-			goto LABEL_45;
-	}
-LABEL_46:
-	switch (a3)
+	switch (soundIndex)
 	{
 	case 1:
 	case 2:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			sub_8F100_sound_proc19(0, a3, 0, 64, 0x64u, -1, 2u);
-			sub_8F710_sound_proc21(0, a3, 70, 2u, 0);
+			sub_8F100_sound_proc19(0, soundIndex, 0, 64, 0x64u, -1, 2u);
+			sub_8F710_sound_proc21(0, soundIndex, 70, 2u, 0);
 		}
 		break;
 	case 3:
@@ -5691,20 +5671,20 @@ LABEL_46:
 	case 61:
 	case 63:
 	case 64:
-		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		if (sub_6EA90(v10, str_F4FE0[soundIndex].word_2))
 		{
-			str_F4FE0[a3].word_2 = v10;
-			str_F4FE0[a3].word_1 = v12;
-			str_F4FE0[a3].word_5 = v21;
-			str_F4FE0[a3].word_0 = 1;
-			str_F4FE0[a3].word_3 = v29;
+			str_F4FE0[soundIndex].word_2 = v10;
+			str_F4FE0[soundIndex].word_1 = v12;
+			str_F4FE0[soundIndex].word_5 = v21;
+			str_F4FE0[soundIndex].word_0 = 1;
+			str_F4FE0[soundIndex].word_3 = v29;
 		}
 		break;
 	case 5:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			sub_8F100_sound_proc19(0, a3, 0, 64, 0x64u, -1, 2u);
-			sub_8F710_sound_proc21(0, a3, 120, 2u, 0);
+			sub_8F100_sound_proc19(0, soundIndex, 0, 64, 0x64u, -1, 2u);
+			sub_8F710_sound_proc21(0, soundIndex, 120, 2u, 0);
 		}
 		break;
 	case 7:
@@ -5725,76 +5705,76 @@ LABEL_46:
 	case 58:
 	case 59:
 	case 62:
-		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		if (sub_6EA90(v10, str_F4FE0[soundIndex].word_2))
 		{
-			str_F4FE0[a3].word_2 = v10;
-			str_F4FE0[a3].word_1 = v12;
-			str_F4FE0[a3].word_5 = v21;
-			str_F4FE0[a3].word_0 = 3;
-			str_F4FE0[a3].word_3 = v29;
+			str_F4FE0[soundIndex].word_2 = v10;
+			str_F4FE0[soundIndex].word_1 = v12;
+			str_F4FE0[soundIndex].word_5 = v21;
+			str_F4FE0[soundIndex].word_0 = 3;
+			str_F4FE0[soundIndex].word_3 = v29;
 		}
 		break;
 	case 14:
 	case 29:
-		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		if (sub_6EA90(v10, str_F4FE0[soundIndex].word_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
-				str_F4FE0[a3].word_2 = v10;
-				str_F4FE0[a3].word_1 = v12;
-				str_F4FE0[a3].word_5 = v21;
-				str_F4FE0[a3].word_3 = 0;
-				str_F4FE0[a3].word_0 = 1;
+				str_F4FE0[soundIndex].word_2 = v10;
+				str_F4FE0[soundIndex].word_1 = v12;
+				str_F4FE0[soundIndex].word_5 = v21;
+				str_F4FE0[soundIndex].word_3 = 0;
+				str_F4FE0[soundIndex].word_0 = 1;
 			}
 			else if (a2 == -1)
 			{
-				str_F4FE0[a3].word_2 = v10;
-				str_F4FE0[a3].word_1 = v12;
-				str_F4FE0[a3].word_5 = v21;
-				str_F4FE0[a3].word_3 = v29;
-				str_F4FE0[a3].word_0 = 1;
+				str_F4FE0[soundIndex].word_2 = v10;
+				str_F4FE0[soundIndex].word_1 = v12;
+				str_F4FE0[soundIndex].word_5 = v21;
+				str_F4FE0[soundIndex].word_3 = v29;
+				str_F4FE0[soundIndex].word_0 = 1;
 			}
 		}
 		break;
 	case 31:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			sub_8F100_sound_proc19(0, a3, 0, 64, 0x64u, -1, 2u);
-			sub_8F710_sound_proc21(0, a3, 85, 2u, 0);
+			sub_8F100_sound_proc19(0, soundIndex, 0, 64, 0x64u, -1, 2u);
+			sub_8F710_sound_proc21(0, soundIndex, 85, 2u, 0);
 		}
 		break;
 	case 47:
 	case 49:
-		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		if (sub_6EA90(v10, str_F4FE0[soundIndex].word_2))
 		{
-			str_F4FE0[a3].word_2 = v10;
-			str_F4FE0[a3].word_1 = v12;
-			str_F4FE0[a3].word_5 = v21;
-			str_F4FE0[a3].word_3 = v29;
-			str_F4FE0[a3].word_0 = 4;
+			str_F4FE0[soundIndex].word_2 = v10;
+			str_F4FE0[soundIndex].word_1 = v12;
+			str_F4FE0[soundIndex].word_5 = v21;
+			str_F4FE0[soundIndex].word_3 = v29;
+			str_F4FE0[soundIndex].word_0 = 4;
 		}
 		break;
 	case 54:
 	case 55:
 	case 56:
 	case 57:
-		if (sub_6EA90(v10, str_F4FE0[a3].word_2))
+		if (sub_6EA90(v10, str_F4FE0[soundIndex].word_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
-				str_F4FE0[a3].word_2 = v10;
-				str_F4FE0[a3].word_1 = v12;
-				str_F4FE0[a3].word_5 = v21;
-				str_F4FE0[a3].word_3 = 0;
-				str_F4FE0[a3].word_0 = 3;
+				str_F4FE0[soundIndex].word_2 = v10;
+				str_F4FE0[soundIndex].word_1 = v12;
+				str_F4FE0[soundIndex].word_5 = v21;
+				str_F4FE0[soundIndex].word_3 = 0;
+				str_F4FE0[soundIndex].word_0 = 3;
 			}
 			else if (a2 == -1)
 			{
-				str_F4FE0[a3].word_2 = v10;
-				str_F4FE0[a3].word_1 = v12;
-				str_F4FE0[a3].word_5 = v21;
-				str_F4FE0[a3].word_3 = v29;
-				str_F4FE0[a3].word_0 = 3;
+				str_F4FE0[soundIndex].word_2 = v10;
+				str_F4FE0[soundIndex].word_1 = v12;
+				str_F4FE0[soundIndex].word_5 = v21;
+				str_F4FE0[soundIndex].word_3 = v29;
+				str_F4FE0[soundIndex].word_0 = 3;
 			}
 		}
 		break;
@@ -5803,11 +5783,11 @@ LABEL_46:
 	case 67:
 	case 68:
 	case 69:
-		str_F4FE0[a3].word_2 = v10;
-		str_F4FE0[a3].word_1 = v12;
-		str_F4FE0[a3].word_0 = 3;
-		str_F4FE0[a3].word_5 = v21;
-		str_F4FE0[a3].word_3 = v29;
+		str_F4FE0[soundIndex].word_2 = v10;
+		str_F4FE0[soundIndex].word_1 = v12;
+		str_F4FE0[soundIndex].word_0 = 3;
+		str_F4FE0[soundIndex].word_5 = v21;
+		str_F4FE0[soundIndex].word_3 = v29;
 		break;
 	default:
 		return;
