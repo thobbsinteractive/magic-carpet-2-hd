@@ -5091,7 +5091,6 @@ void sub_8F100_sound_proc19(uint32_t flags, __int16 index, int volume, int volum
 	{
 		return;
 	}
-	if ((index - 1) != 8)return;
 	bool1 = false;
 	switch (playType)
 	{
