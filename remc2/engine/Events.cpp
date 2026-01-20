@@ -2816,7 +2816,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 				 char sub_59610(uint8_t** a1, __int16 a2)//23a610
 				 char sub_596C0(x_WORD *a1, __int16 a2)//23a6c0
 				 void sub_59760(uint8_t* a1, uint8_t* a2)//23a760
-				 void sub_59820()//23a820
+				 void PresentObjective_59820()//23a820
 
 				 int FadeDownSoundVolume_59A50()//23aa50
 				 void StopCdPlayBackAndFadeUp_59AF0()//23aaf0

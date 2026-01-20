@@ -1284,7 +1284,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 			return;
 		//v16 = x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24;
 		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED)
-			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= 0xBF;
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= SPEECH_DISABLED;
 		else
 			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= SPEECH_ENABLED;
 		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED) == 0) + 469], 3u, 50);
