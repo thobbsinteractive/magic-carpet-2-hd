@@ -5086,11 +5086,12 @@ void sub_8F100_sound_proc19(uint32_t flags, __int16 index, int volume, int volum
 
 	if (!soundAble_E3798
 		|| !soundActive_E3799
-		|| index > (signed int)indexLoadedSound_180B50
+		|| index - 1 > (signed int)indexLoadedSound_180B50
 		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[index -1].filename_0, "null.wav"))
 	{
 		return;
 	}
+	if ((index - 1) != 8)return;
 	bool1 = false;
 	switch (playType)
 	{
@@ -5113,7 +5114,7 @@ void sub_8F100_sound_proc19(uint32_t flags, __int16 index, int volume, int volum
 			soundBuffer2 = nullptr;
 			for (int j = 0; j < x_DWORD_180B4C_end_sound_buffer3_endindex; j++)
 			{
-				if (SoundBuffer3_180750[j]->flags_14 == flags && SoundBuffer3_180750[j]->vol_scale_18[0][0] == index && AilSampleStatus_94010(SoundBuffer3_180750[j]) != 2)
+				if (SoundBuffer3_180750[j]->flags_14 == flags && SoundBuffer3_180750[j]->vol_scale_18[0][0] == index -1 && AilSampleStatus_94010(SoundBuffer3_180750[j]) != 2)
 				{
 					soundBuffer2 = &SoundBuffer3_180750[j];
 					break;
@@ -5138,7 +5139,7 @@ void sub_8F100_sound_proc19(uint32_t flags, __int16 index, int volume, int volum
 			bool1 = false;
 			for (int l = 0; l < x_DWORD_180B4C_end_sound_buffer3_endindex; l++)
 			{
-				if (SoundBuffer3_180750[l]->flags_14 == flags && SoundBuffer3_180750[l]->vol_scale_18[0][0] == index)
+				if (SoundBuffer3_180750[l]->flags_14 == flags && SoundBuffer3_180750[l]->vol_scale_18[0][0] == index - 1)
 				{
 					soundBuffer1 = &SoundBuffer3_180750[l];
 					soundBuffer2 = nullptr;
@@ -5184,10 +5185,10 @@ void sub_8F100_sound_proc19(uint32_t flags, __int16 index, int volume, int volum
 		Logger->trace("sub_8F100_sound_proc19:44mhz:");
 		Logger->trace("sub_8F100_sound_proc19:rate:{}", (*soundBuffer1)->playback_rate_15);
 	}
-	(*soundBuffer1)->vol_scale_18_0_0 = index;
+	(*soundBuffer1)->vol_scale_18_0_0 = index-1;
 	AilStartSample_93B50(*soundBuffer1);
 	(*soundBuffer1)->flags_14 = flags;
-	(*soundBuffer1)->vol_scale_18[0][0] = index;
+	(*soundBuffer1)->vol_scale_18[0][0] = index-1;
 	(*soundBuffer1)->status_1 = volume;
 	(*soundBuffer1)->len_4_5[1] = volumePan;
 	(*soundBuffer1)->vol_scale_18[0][2] = 0;
