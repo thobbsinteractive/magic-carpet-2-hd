@@ -883,7 +883,6 @@ void InitStages_58940(/*uint8_t* a1*/);
 void sub_58DA0(type_entity_0x30311* a1, type_entity_0x6E8E* a2);
 void sub_58F00_game_objectives();
 void sub_59760(type_entity_0x6E8E* a1, type_entity_0x6E8E* a2);
-void PresentObjective_59820();
 void sub_5B7A0_prepare_textures();
 void sub_5B840_load_Palette_and_help_Palette();
 //char sub_5B8D0_initialize();
