@@ -1,8 +1,6 @@
 $REMC2_EXECUTABLE = "$PSScriptRoot/../Release/remc2.exe"
 $CONFIG_FILE_PATH = "$PSScriptRoot/playthough-config.json"
 $DEMO_FILE_PATH = "$PSScriptRoot/Levels-1-5-Recording.bin"
-    
-Read-Host -Prompt "Press ENTER to start" | Out-Null
 
 Write-Output "Running playthough demo levels 1-5"
 Write-Output $REMC2_EXECUTABLE

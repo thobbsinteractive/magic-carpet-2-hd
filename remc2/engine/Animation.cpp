@@ -24,7 +24,7 @@ __int16 x_WORD_F42AE; // weak
 
 __int16 x_WORD_F42A8; // weak
 
-char x_BYTE_D41C0 = 0; // weak
+char DisplaySubtitles_D41C0 = 0; // weak
 
 int x_DWORD_17D730; // weak
 
@@ -193,8 +193,8 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 			sub_2EBB0_draw_text_with_border_630x340(x_DWORD_E9C4C_langindexbuffer[pSoundEvent[x_WORD_D4004].index]);
 			break;
 		case 'V':
-			if (x_BYTE_D41C0)
-				sub_2EB60();
+			if (DisplaySubtitles_D41C0)
+				StartSubtitles_2EB60();
 			break;
 		case 'X':
 		case 'x':
@@ -357,7 +357,7 @@ void /*__fastcall*/ sub_75E70()//256e70
 		sub_9A0FC_wait_to_screen_beam();
 	}
 
-	if (x_BYTE_D41C1)
+	if (DisplaySubtitles_D41C1)
 	{
 		pdwScreenBuffer_351628 += 0x26C0;
 		sub_90478_VGA_Blit320(fmvFps);
@@ -373,11 +373,11 @@ void /*__fastcall*/ sub_75E70()//256e70
 //----- (0002EC60) --------------------------------------------------------
 void sub_2EC60()//20fc60
 {
-	if (x_BYTE_D41CE)
+	if (SubtitlesOn_D41CE)
 	{
 		sub_2EC30_clear_img_mem();
-		x_BYTE_D41C1 = 0;
-		x_BYTE_D41CE = 0;
+		DisplaySubtitles_D41C1 = 0;
+		SubtitlesOn_D41CE = 0;
 		x_DWORD_D41D0 = 0;
 	}
 }

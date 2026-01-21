@@ -97,10 +97,10 @@ extern axis_2d x_WORD_E3760_mouse;
 
 //basic graphics
 
-char x_BYTE_D41CE = 0; // weak
+char SubtitlesOn_D41CE = 0; // weak
 uint8_t* x_DWORD_F01E4; // weak
 uint16_t x_WORD_F01F4; // weak
-char x_BYTE_D41C1 = 0; // weak
+char DisplaySubtitles_D41C1 = 0; // weak
 char* x_DWORD_D41D0 = 0; // weak
 __int16 x_WORD_E36D4 = 0; // weak
 char x_BYTE_EB3B6; // weak
@@ -716,19 +716,19 @@ x_DWORD x_tolower(x_DWORD) { stub_fix_it(); return 0; };// weak
 
 void sub_2EC30_clear_img_mem()//20fc30
 {
-	if (x_BYTE_D41CE)
+	if (SubtitlesOn_D41CE)
 		memset((void*)x_DWORD_F01E4, 0, x_WORD_F01F4);
 }
 
 //----- (0002EB60) --------------------------------------------------------
-void sub_2EB60()//20fb60
+void StartSubtitles_2EB60()//20fb60
 {
 	//int result; // eax
 
-	if (!x_BYTE_D41CE)
+	if (!SubtitlesOn_D41CE)
 	{
-		x_BYTE_D41CE = 1;
-		x_BYTE_D41C1 = 1;
+		SubtitlesOn_D41CE = 1;
+		DisplaySubtitles_D41C1 = 1;
 		x_DWORD_F01E4 = &pdwScreenBuffer_351628[64320];//line 320x201 - after normal image
 		x_WORD_F01F4 = 0x3200;//320*40
 		sub_2EC30_clear_img_mem();
@@ -739,7 +739,7 @@ void sub_2EB60()//20fb60
 //----- (0002EBB0) --------------------------------------------------------
 void sub_2EBB0_draw_text_with_border_630x340(char* textString)//20fbb0
 {
-	if (x_BYTE_D41CE)
+	if (SubtitlesOn_D41CE)
 	{
 		x_DWORD_D41D0 = textString;
 		x_WORD_E36D4 = 64;
@@ -1433,7 +1433,7 @@ void sub_2EC90(char a1)//20fc90
 {
 	//char result; // al
 
-	if (x_BYTE_D41CE)
+	if (SubtitlesOn_D41CE)
 	{
 		//result = a1;
 		x_BYTE_EB3B6 = a1;
@@ -1442,7 +1442,7 @@ void sub_2EC90(char a1)//20fc90
 	}
 	//return result;
 }
-// D41CE: using guessed type char x_BYTE_D41CE;
+// D41CE: using guessed type char SubtitlesOn_D41CE;
 // D41D0: using guessed type int x_DWORD_D41D0;
 // EB3B6: using guessed type char x_BYTE_EB3B6;
 

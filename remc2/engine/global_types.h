@@ -181,7 +181,9 @@ enum class spell {
 typedef enum
 {
 	CHEATS_ENABLED = 0x80u,
-	MULTIPLAYER_MODE = 0x10u
+	MULTIPLAYER_MODE = 0x10u,
+	SPEECH_ENABLED = 0x40,
+	SPEECH_DISABLED = 0xBF,
 } Setting;
 
 typedef struct {//begin 611//str_611

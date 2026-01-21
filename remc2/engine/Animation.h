@@ -23,7 +23,7 @@ extern __int16 x_WORD_F42AE; // weak
 extern __int16 x_WORD_F42A8; // weak
 extern TColor* x_DWORD_E12F4x; // weak
 extern int16_t x_WORD_17DB48; // weak
-extern char x_BYTE_D41C0; // weak
+extern char DisplaySubtitles_D41C0; // weak
 
 void PlayInfoFmv(__int16 a1, __int16 a2, Type_SoundEvent_E17CC* pSoundEvent, char* path);//257160
 void FlvInitSet_473B0();

@@ -23,6 +23,7 @@ Mix_Chunk* m_ptrSpeechChunk;
 int m_ptrSpeechBytesOffSet;
 
 bool fixspeedsound = false;
+bool autoShowObjectivesForForeignLanguages = false;
 int maxSimultaniousSounds = 10;
 
 int32_t last_sequence_num = 0;

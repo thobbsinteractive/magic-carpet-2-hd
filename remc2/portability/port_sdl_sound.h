@@ -199,6 +199,7 @@ extern bool oggmusic;
 extern char oggmusicFolder[512];
 extern bool oggmusicalternative;
 extern bool fixspeedsound;
+extern bool autoShowObjectivesForForeignLanguages;
 extern int maxSimultaniousSounds;
 extern char speechFolder[512];
 
