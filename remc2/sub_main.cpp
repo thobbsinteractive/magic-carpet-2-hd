@@ -42616,7 +42616,7 @@ void PresentObjective_59820()//23a820
 						x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 8;
 						PlayCDTrackSegmentForSecretLevel_86F20(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E4_2BE4_12226);
 						FadeDownSoundVolume_59A50();
-						if (x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2)
+						if (autoShowObjectivesForForeignLanguages && x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2)
 							D41A0_0.byte_counter_current_objective_box_0x36E04 = 200;
 						return;
 					}
@@ -42642,7 +42642,7 @@ void PresentObjective_59820()//23a820
 							x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 8;
 							PlayCDTrackSegmentNumber_86EB0(levelIdx_v8, v9, true);
 							FadeDownSoundVolume_59A50();
-							if (x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2)
+							if (autoShowObjectivesForForeignLanguages && x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2)
 								D41A0_0.byte_counter_current_objective_box_0x36E04 = 200;
 							return;
 						}
