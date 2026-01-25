@@ -52,6 +52,24 @@ typedef struct {
 	uint8_t data[];
 }TcolNext;
 
+#pragma pack (1)
+typedef struct //lenght 24
+{
+	int16_t field_0;
+	int16_t field_1;
+	int16_t field_2;
+	int16_t field_3;
+	int16_t field_4;
+	int16_t field_5;
+	int16_t field_6;
+	int16_t field_7;
+	int16_t field_8;
+	int16_t field_9;
+	int16_t field_10;
+	int16_t field_11;
+} type_animStruct;
+#pragma pack (16)
+
 #pragma pack (push,1)
 typedef struct//lenght 613 // end 17E09D
 {
@@ -130,7 +148,7 @@ typedef struct//lenght 613 // end 17E09D
 	//__int16 x_WORD_17E080; // weak unk_17E078x[8]
 	//char x_BYTE_17E082; // weak unk_17E078x[10]
 	//char x_BYTE_17E083; // weak unk_17E078x[11]
-	int16_t unk_17E084x[12]; // weak [11]
+	type_animStruct unk_17E084x; // weak [11]
 	char x_BYTE_17E09C; // weak
 } type_x_DWORD_17DE38str;
 #pragma pack (pop)

@@ -26,9 +26,9 @@ typedef struct //lenght 50
 	int16_t x_WORD_17DB8C; // weak 28
 	int8_t x_BYTE_17DB8E; // weak 30
 	int8_t x_BYTE_17DB8F; // weak 31
-	int16_t unk_17DB90; // weak 32
-	std::array<uint8_t, 6> unk_17DB92; // weak 32
-	std::array<uint8_t, 16> fill3; // fill
+	type_animStruct unk_17DB90; // weak 32
+	//std::array<uint8_t, 6> unk_17DB92; // weak 32
+	//std::array<uint8_t, 16> fill3; // fill
 } type_x_DWORD_17DB70str;
 #pragma pack (16)
 
@@ -96,7 +96,7 @@ int16_t TestMouseRegions_7E1F0();
 signed int sub_7E620(type_WORD_E1F84* a1x);
 char sub_7E800(type_WORD_E1F84* a1x);
 char sub_7E820(type_WORD_E1F84* a1x);
-int NewGameDraw_7EAE0(__int16* a1, __int16* a2, __int16* a3, __int16* a4, int8_t* a5, x_WORD* a6);
+int NewGameDraw_7EAE0(__int16* a1, __int16* a2, __int16* a3, __int16* a4, int8_t* a5, type_animStruct* a6);
 int LoadLanguageFile(bitmap_pos_struct2_t** a1x, bitmap_pos_struct2_t** a2x, uint8_t* a3, char* langfilename, bitmap_pos_struct_t* a3dattabindex);
 int sub_7F960(bitmap_pos_struct2_t* a1x, bitmap_pos_struct2_t* a2x, uint8_t* a3, char* langcountstring, bitmap_pos_struct_t* a3dattabindex);
 void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3);
