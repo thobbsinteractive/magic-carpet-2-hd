@@ -58,7 +58,7 @@ typedef struct //lenght 24
 	int16_t diffX_0;
 	int16_t diffY_1;
 	int16_t absDiffX2_2;
-	int16_t absDiffY_3;
+	int16_t absDiffY2_3;
 	int16_t maxX_4;
 	int16_t maxY_5;
 	int16_t beginX_6;
@@ -68,6 +68,24 @@ typedef struct //lenght 24
 	int16_t stateX_10;
 	int16_t stateY_11;
 } type_animStruct;
+#pragma pack (16)
+
+#pragma pack (1)
+typedef struct //lenght 24
+{
+	int16_t actX_0;
+	int16_t actY_1;
+	int16_t beginX_2;
+	int16_t beginY_3;
+	int16_t maxX_4;
+	int16_t maxY_5;
+	int16_t begin_6;
+	int16_t act_7;
+	int16_t act2_8;
+	int16_t begin2_9;
+	int16_t stateX_10;
+	int16_t stateY_11;
+} type_animStruct2;
 #pragma pack (16)
 
 #pragma pack (push,1)
