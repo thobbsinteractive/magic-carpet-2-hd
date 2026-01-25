@@ -55,18 +55,18 @@ typedef struct {
 #pragma pack (1)
 typedef struct //lenght 24
 {
-	int16_t field_0;
-	int16_t field_1;
-	int16_t field_2;
-	int16_t field_3;
-	int16_t field_4;
-	int16_t field_5;
-	int16_t field_6;
-	int16_t field_7;
-	int16_t field_8;
+	int16_t diffX_0;
+	int16_t diffY_1;
+	int16_t absDiffX2_2;
+	int16_t absDiffY_3;
+	int16_t maxX_4;
+	int16_t maxY_5;
+	int16_t beginX_6;
+	int16_t beginY_7;
+	int16_t secondAdd_8;
 	int16_t field_9;
-	int16_t field_10;
-	int16_t field_11;
+	int16_t stateX_10;
+	int16_t stateY_11;
 } type_animStruct;
 #pragma pack (16)
 

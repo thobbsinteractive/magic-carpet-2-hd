@@ -46689,113 +46689,113 @@ void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)/
 }
 
 //----- (0007E8D0) --------------------------------------------------------
-void CreateAnimObjectInArea_7E8D0(type_animStruct* animStruct, __int16 x1, __int16 y1, __int16 x2, __int16 y2, __int16 a6, __int16 a7)//25f8d0
+void CreateAnimObject_7E8D0(type_animStruct* animStruct, __int16 x1, __int16 y1, __int16 x2, __int16 y2, __int16 countX, __int16 countY)//25f8d0
 {
-	animStruct->field_0 = x1 - x2;
-	animStruct->field_1 = y1 - y2;
-	animStruct->field_2 = 2 * abs(animStruct->field_0);
-	animStruct->field_3 = 2 * abs(animStruct->field_1);
-	if (animStruct->field_0 >= 0)
+	animStruct->diffX_0 = x1 - x2;
+	animStruct->diffY_1 = y1 - y2;
+	animStruct->absDiffX2_2 = 2 * abs(animStruct->diffX_0);
+	animStruct->absDiffY_3 = 2 * abs(animStruct->diffY_1);
+	if (animStruct->diffX_0 >= 0)
 	{
-		if (animStruct->field_0)
-			animStruct->field_4 = a6;
+		if (animStruct->diffX_0)
+			animStruct->maxX_4 = countX;
 		else
-			animStruct->field_4 = 0;
+			animStruct->maxX_4 = 0;
 	}
 	else
 	{
-		animStruct->field_4 = -a6;
+		animStruct->maxX_4 = -countX;
 	}
-	if (animStruct->field_1 >= 0)
+	if (animStruct->diffY_1 >= 0)
 	{
-		if (animStruct->field_1)
-			animStruct->field_5 = a7;
+		if (animStruct->diffY_1)
+			animStruct->maxY_5 = countY;
 		else
-			animStruct->field_5 = 0;
+			animStruct->maxY_5 = 0;
 	}
 	else
 	{
-		animStruct->field_5 = -a7;
+		animStruct->maxY_5 = -countY;
 	}
-	animStruct->field_6 = x1;
-	animStruct->field_7 = y1;
-	if (animStruct->field_2 <= animStruct->field_3)
+	animStruct->beginX_6 = x1;
+	animStruct->beginY_7 = y1;
+	if (animStruct->absDiffX2_2 <= animStruct->absDiffY_3)
 	{
-		animStruct->field_8 = animStruct->field_2 - (animStruct->field_3 >> 1);
+		animStruct->secondAdd_8 = animStruct->absDiffX2_2 - (animStruct->absDiffY_3 >> 1);
 	}
 	else
 	{
-		animStruct->field_8 = (animStruct->field_3 - animStruct->field_2) >> 1;
+		animStruct->secondAdd_8 = (animStruct->absDiffY_3 - animStruct->absDiffX2_2) >> 1;
 	}
 	animStruct->field_9 = 0;
-	if (x2 >= animStruct->field_6)
+	if (x2 >= animStruct->beginX_6)
 	{
-		if (x2 > animStruct->field_6)
-			animStruct->field_10 = 1;
+		if (x2 > animStruct->beginX_6)
+			animStruct->stateX_10 = 1;
 	}
 	else
 	{
-		animStruct->field_10 = 2;
+		animStruct->stateX_10 = 2;
 	}
-	if (y2 >= animStruct->field_7)
+	if (y2 >= animStruct->beginY_7)
 	{
-		if (y2 > animStruct->field_7)
-			animStruct->field_11 = 1;
+		if (y2 > animStruct->beginY_7)
+			animStruct->stateY_11 = 1;
 	}
 	else
 	{
-		animStruct->field_11 = 2;
+		animStruct->stateY_11 = 2;
 	}
 }
 
 //----- (0007E9D0) --------------------------------------------------------
-bool AnimObjectInArea_7E9D0(x_WORD* x1, x_WORD* y1, type_animStruct* animStruct)//25f9d0
+bool MoveAnimObject_7E9D0(x_WORD* x1, x_WORD* y1, type_animStruct* animStruct)//25f9d0
 {
 	__int16 field;
-	if (animStruct->field_2 <= animStruct->field_3)
+	if (animStruct->absDiffX2_2 <= animStruct->absDiffY_3)
 	{
-		if (*y1 == animStruct->field_7)
+		if (*y1 == animStruct->beginY_7)
 			return true;
-		if (animStruct->field_8 >= 0)
+		if (animStruct->secondAdd_8 >= 0)
 		{
-			*x1 += animStruct->field_4;
-			animStruct->field_8 -= animStruct->field_3;
+			*x1 += animStruct->maxX_4;
+			animStruct->secondAdd_8 -= animStruct->absDiffY_3;
 		}
-		*y1 += animStruct->field_5;
-		field = animStruct->field_2;
+		*y1 += animStruct->maxY_5;
+		field = animStruct->absDiffX2_2;
 	}
 	else
 	{
-		if (*x1 == animStruct->field_6)
+		if (*x1 == animStruct->beginX_6)
 			return true;
-		if (animStruct->field_8 >= 0)
+		if (animStruct->secondAdd_8 >= 0)
 		{
-			*y1 += animStruct->field_5;
-			animStruct->field_8 -= animStruct->field_2;
+			*y1 += animStruct->maxY_5;
+			animStruct->secondAdd_8 -= animStruct->absDiffX2_2;
 		}
-		*x1 += animStruct->field_4;
-		field = animStruct->field_3;
+		*x1 += animStruct->maxX_4;
+		field = animStruct->absDiffY_3;
 	}
-	animStruct->field_8 += field;
-	if (animStruct->field_10 == 1)
+	animStruct->secondAdd_8 += field;
+	if (animStruct->stateX_10 == 1)
 	{
-		if (*x1 < animStruct->field_6)
-			*x1 = animStruct->field_6;
+		if (*x1 < animStruct->beginX_6)
+			*x1 = animStruct->beginX_6;
 	}
-	else if (animStruct->field_10 == 2)
+	else if (animStruct->stateX_10 == 2)
 	{
-		if (*x1 > animStruct->field_6)
-			*x1 = animStruct->field_6;
+		if (*x1 > animStruct->beginX_6)
+			*x1 = animStruct->beginX_6;
 	}
-	if (animStruct->field_11 == 1)
+	if (animStruct->stateY_11 == 1)
 	{
-		if (*y1 < animStruct->field_7)
-			*y1 = animStruct->field_7;
+		if (*y1 < animStruct->beginY_7)
+			*y1 = animStruct->beginY_7;
 	}
-	else if (animStruct->field_11 == 2)
+	else if (animStruct->stateY_11 == 2)
 	{
-		if (*y1 > animStruct->field_7)
-			*y1 = animStruct->field_7;
+		if (*y1 > animStruct->beginY_7)
+			*y1 = animStruct->beginY_7;
 	}
 	return false;
 }
