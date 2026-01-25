@@ -4,6 +4,7 @@
 
 #include "kiss_sdl.h"
 #include "../remc2/sub_main.h"
+#include "../remc2/engine/EventsFunctions.h"
 
 void editor_run();
 

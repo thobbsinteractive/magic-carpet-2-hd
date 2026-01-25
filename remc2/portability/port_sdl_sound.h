@@ -28,16 +28,16 @@
 
 #pragma pack (1)
 typedef struct {//lenght 32 - this is may be format of wav sound file
-	uint8_t* wavData_0;//data of wav//18
-	int8_t stub_4[4];//22
-	int32_t wavSize_8;//24
-	int16_t word_12;//28
-	int8_t filename_14[18];//first 18 chars - name//30
+	int8_t filename_0[18];//first 18 chars - name//30
+	uint8_t* wavData_18;//data of wav//18
+	int8_t stub_22[4];//22
+	int32_t wavSize_26;//24
+	int16_t word_30;//28	
 }
 sub2type_E37A0_sound_buffer2;
 
 typedef struct {//lenght 2072
-	int8_t stub[10];
+	int8_t stub[24];
 	sub2type_E37A0_sound_buffer2 wavs_10[96];
 }
 sub1type_E37A0_sound_buffer2;
@@ -52,22 +52,21 @@ typedef struct {//lenght 3100
 	int8_t byte_6;
 	int8_t byte_7;
 	sub1type_E37A0_sound_buffer2 str_8;//2072 lenght
-	int8_t next_str[10];
 }
 type_E37A0_sound_buffer2;
 
 //shadow type_E37A0_sound_buffer2
 typedef struct {//lenght 32 - this is may be format of wav sound file
-	int32_t wavData_0;//data of wav//18
-	int8_t stub_4[4];//22
-	int32_t wavSize_8;//24
-	int16_t word_12;//28
-	int8_t filename_14[18];//first 18 chars - name//30
+	int8_t filename_0[18];//first 18 chars - name//30
+	int32_t wavData_18;//data of wav//18
+	int8_t stub_22[4];//22
+	int32_t wavSize_26;//24
+	int16_t word_30;//28
 }
 shadow_sub2type_E37A0_sound_buffer2;
 
 typedef struct {//lenght 2072
-	int8_t stub[10];
+	int8_t stub[24];
 	shadow_sub2type_E37A0_sound_buffer2 wavs_10[96];
 }
 shadow_sub1type_E37A0_sound_buffer2;
@@ -82,7 +81,6 @@ typedef struct {//lenght 3100
 	int8_t byte_6;
 	int8_t byte_7;
 	shadow_sub1type_E37A0_sound_buffer2 str_8;//2072 lenght
-	int8_t next_str[10];
 }
 shadow_type_E37A0_sound_buffer2;
 //shadow type_E37A0_sound_buffer2

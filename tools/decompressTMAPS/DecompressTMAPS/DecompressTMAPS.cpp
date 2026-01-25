@@ -121,6 +121,8 @@ static const uint16 crc_table[] = {
 	0x8201, 0x42C0, 0x4380, 0x8341, 0x4100, 0x81C1, 0x8081, 0x4040
 };
 
+bool nornc = false;
+
 uint16 crc_block(uint8* buf, size_t offset, int size)
 {
 	uint16 crc = 0;
@@ -687,7 +689,7 @@ signed int sub_5C3D0_file_decompress(Bit8u* input, Bit8u* output)//23d3d0
 	//char v6; // [esp+3h] [ebp-5h]
 	//char v7; // [esp+4h] [ebp-4h]
 
-	char RNSSING[5] = "RNC\x1";
+	char RNSSING[] = "RNC\x1";
 	//v3 = 82;
 	//v4 = 78;
 	//v6 = 1;
@@ -1638,7 +1640,11 @@ int main(int argc, char** argv) {
 
 	for (auto p = params.cbegin(); p != params.cend(); ++p) {
 		const auto param = *p;
-		if ((param == "-p") || (param == "--pallet")) 
+		if (param == "-nornc")
+		{
+			nornc = true;			
+		}
+		else if ((param == "-p") || (param == "--pallet")) 
 		{
 			palletPath = *(++p);
 			if (!fs::exists(palletPath))
@@ -1760,18 +1766,1422 @@ int main(int argc, char** argv) {
 		printf("-p PALD-0.DAT -t TMAPS0-0.DAT -f 0 -o out-day\n");
 		printf("For cave levels:\n");
 		printf("-p PALC-0.DAT -t TMAPS2-0.DAT -f 2 -o out-cave\n");
+		printf("For nornc files:\n");
+		printf("-nornc -p PALN-0.DAT -t MSPRN0-0.DAT -f 2 -o out-MSPRN\n");
+		//printf("-p in/PALN-0.DAT -t in/TMAPS1-0.DAT -f 2 -o out-night\n");
+		//printf("-nornc -p in/PALN-0.DAT -t in/MSPRN0-0.DAT -f 2 -o out-MSPRN\n");
 		return -1;
 	}
 
 	try
 	{
-		return sub_main(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
+		if(nornc)
+			return sub_mainNoRNC(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
+		else
+			return sub_main(palletPath.c_str(), tmapsDat.c_str(), tmapsTab.c_str(), folderPath.c_str(), max_images, imageType, padding, caveSprites, outputPath.c_str());
 	}
 	catch (std::exception& e)
 	{
 		printf(e.what());
 		return -100;
 	}
+}
+
+uint8_t pdwScreenBuffer_351628[100000];
+int16_t x_WORD_180660_VGA_type_resolution = 8;
+int x_DWORD_18063C_sprite_sizex = 0;
+uint32_t screenHeight_180624=320;
+uint32_t screenWidth_18062C=200;
+int x_DWORD_180644_map_resolution2_y=200;
+int x_DWORD_180648_map_resolution2_x=320;
+int x_DWORD_180630_screen_height=200; // weak
+int x_DWORD_180634_screen_width=320; // weak
+__int16 x_WORD_E36D4 = 64;
+int x_DWORD_180650_positiony=0;
+int x_DWORD_E3890 = 0;
+
+typedef          __int64 ll;
+typedef unsigned __int64 ull;
+typedef ull             uint64;
+typedef ll              int64;
+template<class T> int8 __SETS__(T x)
+{
+	if (sizeof(T) == 1)
+		return int8(x) < 0;
+	if (sizeof(T) == 2)
+		return int16(x) < 0;
+	if (sizeof(T) == 4)
+		return int32(x) < 0;
+	return int64(x) < 0;
+}
+template<class T, class U> int8 __OFADD__(T x, U y)
+{
+	if (sizeof(T) < sizeof(U))
+	{
+		U x2 = x;
+		int8 sx = __SETS__(x2);
+		return ((1 ^ sx) ^ __SETS__(y)) & (sx ^ __SETS__(x2 + y));
+	}
+	else
+	{
+		T y2 = y;
+		int8 sx = __SETS__(x);
+		return ((1 ^ sx) ^ __SETS__(y2)) & (sx ^ __SETS__(x + y2));
+	}
+}
+template<class T, class U> int8 __OFSUB__(T x, U y)
+{
+	if (sizeof(T) < sizeof(U))
+	{
+		U x2 = x;
+		int8 sx = __SETS__(x2);
+		return (sx ^ __SETS__(y)) & (sx ^ __SETS__(x2 - y));
+	}
+	else
+	{
+		T y2 = y;
+		int8 sx = __SETS__(x);
+		return (sx ^ __SETS__(y2)) & (sx ^ __SETS__(x - y2));
+	}
+}
+template<class T>  int16 __PAIR__(int8  high, T low) { return (((int16)high) << sizeof(high) * 8) | uint8(low); }
+template<class T>  int32 __PAIR__(int16 high, T low) { return (((int32)high) << sizeof(high) * 8) | uint16(low); }
+template<class T>  int64 __PAIR__(int32 high, T low) { return (((int64)high) << sizeof(high) * 8) | uint32(low); }
+template<class T> uint16 __PAIR__(uint8  high, T low) { return (((uint16)high) << sizeof(high) * 8) | uint8(low); }
+template<class T> uint32 __PAIR__(uint16 high, T low) { return (((uint32)high) << sizeof(high) * 8) | uint16(low); }
+template<class T> uint64 __PAIR__(uint32 high, T low) { return (((uint64)high) << sizeof(high) * 8) | uint32(low); }
+
+uint8_t x_BYTE_F6EE0_tablesx[83456];
+
+void GameBitmapDrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, uint32_t stride, int16_t posX, int16_t posY, uint8_t posHeight, uint8_t scale)
+{
+	ptrScreenBuffer = (stride * posY + posX + ptrScreenBuffer);
+	int8_t width = 0;
+	int8_t posWidth = 0;
+	int8_t startOffsetX = -1;
+	uint8_t pixel = 0;
+	uint8_t* ptrScreenBufferLineStart = ptrScreenBuffer;
+	int lineStartBytes = 0;
+	int countBytes = 0;
+	int scaledLinesDrawn = 0;
+
+	do
+	{
+		while (1)
+		{
+			while (1)
+			{
+				startOffsetX = *ptrBitmapData++;
+				countBytes++;
+
+				//Is width byte
+				if (startOffsetX)
+					break;
+
+				//Move row
+				if (scaledLinesDrawn < scale - 1)
+				{
+					int lineLengthBytes = countBytes - lineStartBytes;
+					ptrBitmapData -= lineLengthBytes;
+					countBytes -= lineLengthBytes;
+					scaledLinesDrawn++;
+				}
+				else
+				{
+					posHeight--;
+					scaledLinesDrawn = 0;
+					lineStartBytes = countBytes;
+				}
+
+				ptrScreenBufferLineStart += stride;
+				ptrScreenBuffer = ptrScreenBufferLineStart;
+				if (!posHeight)
+					return;
+			}
+
+			//Is width byte
+			if ((startOffsetX & 0x80u) == 0)
+			{
+				//Start Drawing
+				break;
+			}
+			//Is a change of start coordinate
+			int offset = (char)startOffsetX;
+			ptrScreenBuffer -= offset * scale;
+			if (!posHeight)
+				return;
+		}
+
+		posWidth = startOffsetX;
+		width = startOffsetX;
+
+		//Draw line
+		if (scale > 1)
+		{
+			do
+			{
+				pixel = *ptrBitmapData++;
+				countBytes++;
+
+				for (int s = 0; s < scale; s++)
+				{
+					*ptrScreenBuffer++ = pixel;
+				}
+				posWidth--;
+			} while (posWidth);
+		}
+		else
+		{
+			qmemcpy(ptrScreenBuffer, ptrBitmapData, width);
+			ptrBitmapData += width;
+			ptrScreenBuffer += width;
+			countBytes += width;
+		}
+	} while (posHeight);
+};
+
+void GameBitmapDrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, uint32_t stride, int16_t posX, int16_t posY, uint16_t width, uint16_t height, uint8_t v134)
+{
+	ptrScreenBuffer = (stride * posY + posX + ptrScreenBuffer);
+	uint8_t pixel;
+	int32_t startOffsetX;
+	int32_t posWidth;
+	uint8_t* ptrScreenBufferLineStart = ptrScreenBuffer;
+
+	do
+	{
+		while (1)
+		{
+			while (1)
+			{
+				startOffsetX = *ptrBitmapData++;
+
+				//Is width byte
+				if ((startOffsetX & 0x80u) == 0)
+				{
+					//Start Drawing
+					break;
+				}
+				ptrScreenBuffer += startOffsetX;
+				width = width - startOffsetX;
+			}
+			if (!startOffsetX)
+				break;
+			posWidth = startOffsetX;
+
+			//Draw Line
+			do
+			{
+				pixel = *ptrBitmapData++;
+				width = width + 1;
+				if ((width & 0x80u) == 0)
+					*ptrScreenBuffer = pixel;
+				--ptrScreenBuffer;
+				--posWidth;
+			} while (posWidth);
+		}
+		ptrScreenBufferLineStart += stride;
+		ptrScreenBuffer = ptrScreenBufferLineStart;
+		width = __PAIR__(height, v134) - 256;
+	} while (height);
+};
+
+void GameBitmapDrawColourizedBitmap(uint8_t* ptrBitmapData, uint8_t colour, uint8_t* ptrScreenBuffer, uint32_t stride, int16_t posX, int16_t posY, uint8_t posHeight, uint8_t scale)
+{
+	ptrScreenBuffer = (stride * posY + posX + ptrScreenBuffer);
+	int8_t width = 0;
+	int8_t posWidth = 0;
+	int8_t startOffsetX = -1;
+	uint8_t pixel = 0;
+	uint8_t* ptrScreenBufferLineStart = ptrScreenBuffer;
+	int lineStartBytes = 0;
+	int countBytes = 0;
+	int scaledLinesDrawn = 0;
+
+	do
+	{
+		while (1)
+		{
+			while (1)
+			{
+				startOffsetX = *ptrBitmapData++;
+				countBytes++;
+
+				//Is width byte
+				if (startOffsetX)
+					break;
+
+				//Move row
+				if (scaledLinesDrawn < scale - 1)
+				{
+					int lineLengthBytes = countBytes - lineStartBytes;
+					ptrBitmapData -= lineLengthBytes;
+					countBytes -= lineLengthBytes;
+					scaledLinesDrawn++;
+				}
+				else
+				{
+					posHeight--;
+					scaledLinesDrawn = 0;
+					lineStartBytes = countBytes;
+				}
+
+				ptrScreenBufferLineStart += stride;
+				ptrScreenBuffer = ptrScreenBufferLineStart;
+				if (!posHeight)
+					return;
+			}
+
+			//Is width byte
+			if ((startOffsetX & 0x80u) == 0)
+			{
+				//Start Drawing
+				break;
+			}
+			//Is a change of start coordinate
+			int offset = (char)startOffsetX;
+			ptrScreenBuffer -= offset * scale;
+			if (!posHeight)
+				return;
+		}
+
+		posWidth = startOffsetX;
+		width = startOffsetX;
+
+		//Draw line
+		if (scale > 1)
+		{
+			do
+			{
+				pixel = *ptrBitmapData++;
+				countBytes++;
+
+				for (int s = 0; s < scale; s++)
+				{
+					*ptrScreenBuffer++ = colour;
+				}
+				posWidth--;
+			} while (posWidth);
+		}
+		else
+		{
+			memset(ptrScreenBuffer, colour, width);
+			ptrBitmapData += width;
+			ptrScreenBuffer += width;
+			countBytes += width;
+		}
+	} while (posHeight);
+};
+
+void GameBitmapDrawColourizedBitmap(int16_t posX, int16_t posY, bitmap_pos_struct_t a3, uint8_t colour, uint8_t scale)
+{
+	if (x_WORD_180660_VGA_type_resolution == 1)
+	{
+		GameBitmapDrawColourizedBitmap(a3.data, colour, pdwScreenBuffer_351628, screenWidth_18062C, posX / 2, posY / 2, a3.height_5 / 2, 1);
+	}
+	else
+	{
+		GameBitmapDrawColourizedBitmap(a3.data, colour, pdwScreenBuffer_351628, screenWidth_18062C, posX, posY, a3.height_5, scale);
+	}
+}
+
+void GameBitmapDrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_pos_struct_t a3, uint8_t scale)//20ee80
+{
+	int32_t startOffsetX; // eax
+	int16_t posHeight; // bx
+	uint8_t* ptrScreenBuffer;
+	uint8_t* ptrBitmapData = nullptr; // edx
+	uint8_t* ptrBitmapPixel = nullptr; // esi
+	int32_t posWidth; // ecx
+	int v15; // [esp+0h] [ebp-Ch]
+	int32_t width; // [esp+0h] [ebp-Ch]
+	uint8_t* ptrScreenBufferLineStart; // [esp+4h] [ebp-8h]
+
+	if (x_WORD_180660_VGA_type_resolution == 1)
+	{
+		posHeight = a3.height_5 / 2;
+		startOffsetX = posY / 2 * screenWidth_18062C + posX / 2;
+		ptrScreenBuffer = (startOffsetX + pdwScreenBuffer_351628);
+		ptrBitmapData = a3.data;
+		for (ptrScreenBufferLineStart = startOffsetX + pdwScreenBuffer_351628; posHeight; ptrBitmapData += v15)
+		{
+			while (1)
+			{
+				while (1)
+				{
+					LOBYTE(startOffsetX) = *ptrBitmapData++;
+					if ((x_BYTE)startOffsetX)
+						break;
+					posHeight--;
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					if (!posHeight)
+						return;
+				}
+				if ((startOffsetX & 0x80u) == 0)
+					break;
+				ptrScreenBuffer -= (char)startOffsetX;
+				if (!posHeight)
+					return;
+			}
+			startOffsetX = (char)startOffsetX;//20ef1f
+			ptrBitmapPixel = ptrBitmapData;
+			posWidth = startOffsetX;
+			v15 = (char)startOffsetX;
+			HIWORD(startOffsetX) = 0;
+			do
+			{
+				LOBYTE(startOffsetX) = *ptrBitmapPixel++;
+				HIBYTE(startOffsetX) = *ptrScreenBuffer;
+				LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
+				*ptrScreenBuffer++ = startOffsetX;
+				posWidth--;
+			} while (posWidth);
+		}
+	}
+	else
+	{
+		if (a3.height_5)
+		{
+			startOffsetX = posX + screenWidth_18062C * posY;
+			posHeight = a3.height_5;
+
+			ptrScreenBuffer = (startOffsetX + pdwScreenBuffer_351628);
+			ptrScreenBufferLineStart = (startOffsetX + pdwScreenBuffer_351628);
+			ptrBitmapData = a3.data;
+			int lineStartBytes = 0;
+			int countBytes = 0;
+			int scaledLinesDrawn = 0;
+
+			do
+			{
+				while (1)
+				{
+					while (1)
+					{
+						LOBYTE(startOffsetX) = *ptrBitmapData++;
+						countBytes++;
+
+						//If it has value
+						if ((x_BYTE)startOffsetX)
+							break;
+
+						//Move row
+						if (scaledLinesDrawn < scale - 1)
+						{
+							int lineLengthBytes = countBytes - lineStartBytes;
+							ptrBitmapData -= lineLengthBytes;
+							countBytes -= lineLengthBytes;
+							scaledLinesDrawn++;
+						}
+						else
+						{
+							posHeight--;
+							scaledLinesDrawn = 0;
+							lineStartBytes = countBytes;
+						}
+
+						ptrScreenBufferLineStart += screenWidth_18062C;
+						ptrScreenBuffer = ptrScreenBufferLineStart;
+						if (!posHeight)
+							return;
+					}
+
+					//Is width byte
+					if ((startOffsetX & 0x80u) == 0)
+					{
+						//Start Drawing
+						break;
+					}
+					//Is a change of start coordinate
+					int offset = (char)startOffsetX;
+					ptrScreenBuffer -= offset * scale;
+					if (!posHeight)
+						return;
+				}
+				posWidth = LOBYTE(startOffsetX);
+				width = LOBYTE(startOffsetX);
+				ptrBitmapPixel = ptrBitmapData;
+				HIWORD(startOffsetX) = 0;
+				//Draw line
+				do
+				{
+					for (int s = 0; s < scale; s++)
+					{
+						LOBYTE(startOffsetX) = *ptrBitmapPixel;
+						HIBYTE(startOffsetX) = *ptrScreenBuffer;
+						LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
+						*ptrScreenBuffer++ = startOffsetX;
+					}
+					ptrBitmapPixel++;
+					countBytes++;
+					posWidth--;
+				} while (posWidth);
+				ptrBitmapData += width;
+			} while (posHeight);
+		}
+	}
+};
+
+void GameBitmapDrawMenuGraphic(uint16_t width, uint16_t height, uint8_t scale, uint8_t* ptrSrc, uint8_t* ptrDest)
+{
+	int lineCount = 0;
+	int index = 0;
+	int lineStartIndex = 0;
+	int byteCount = 0;
+	int32_t pixel = 0;
+
+	while (lineCount < height)
+	{
+		while (lineCount < height)
+		{
+			LOBYTE(pixel) = ptrSrc[index];
+			index++;
+			if ((char)pixel)
+				break;
+
+			//line ended, move row
+			lineStartIndex += width;
+			byteCount = lineStartIndex;
+			lineCount++;
+		}
+
+		if (lineCount < height)
+		{
+			if ((pixel & 0x80u) == 0)
+			{
+				uint16_t lnWidth = (char)pixel * scale;
+
+				//Draw line
+				for (int x = 0; x < lnWidth; x++)
+				{
+					ptrDest[byteCount] = ptrSrc[index];
+					byteCount++;
+					index++;
+				}
+			}
+			else
+			{
+				byteCount -= (char)pixel * scale;
+			}
+		}
+	}
+};
+
+void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, int tilex, uint8_t* texture, uint8_t setbyte, char a6, uint8_t scale)//270935
+{
+	uint8_t* ptrScreenBuffer;
+	uint8_t* ptrScreenBufferLineStart;
+	uint8_t* pixel_buffer_index; // edi
+	int32_t startOffsetX;
+	int32_t posWidth;
+	uint8_t pixel; // al
+
+	char v12; // al
+	char v13; // al
+	int v15; // ecx
+	char v18; // al
+	char v19; // al
+	char v20; // al
+	unsigned int v29; // ecx
+	uint8_t* v32; // edi
+	char v33; // al
+	char* v34; // esi
+	int v35; // ebp
+	int v37; // ecx
+	int v40; // eax
+	int v42; // ecx
+	unsigned __int8 i; // dl
+	char v44; // al
+	char v45; // al
+	unsigned __int8 v46; // of
+	char v47; // dl
+	unsigned __int8 v48; // al
+	char v50; // al
+	char v51; // dl
+	char v52; // al
+	char v53; // dl
+	unsigned int v54; // ebx
+	const void* v55; // esi
+	unsigned int v62; // ecx
+	uint8_t* v65; // edi
+	char v66; // al
+	char* v67; // esi
+	uint8_t v69l;
+	uint8_t v69h;
+	int8_t v72l; // ecx
+	char v73; // al
+	char v74; // al
+	bool v75; // zf
+	bool v76; // sf
+	char v77; // al
+	char v78; // al
+	int v79; // ebx
+	int v85; // ebx
+	x_BYTE* v86; // edi
+	int v87; // ecx
+	int v92; // ecx
+	int v93; // ebx
+	char v96; // al
+	int v106; // ecx
+	int v107; // ebx
+	char v110; // al
+	int v112; // ecx
+	int v113; // ebx
+	char v116; // al
+	unsigned int v117; // ebx
+	x_BYTE* v118; // edi
+	x_BYTE* v119; // edx
+	int v120; // ecx
+	char v121; // al
+	char v122; // al
+	char v123; // al
+	char v124; // al
+	int v125; // eax
+	int v126; // edi
+	int v128; // eax
+	int v129; // eax
+	int v130; // eax
+	char* v131; // [esp-4h] [ebp-Ch]
+	uint8_t v132; // [esp+2h] [ebp-6h]
+	unsigned __int8 v133; // [esp+2h] [ebp-6h]
+	unsigned __int8 v134; // [esp+2h] [ebp-6h]
+	unsigned __int8 v135; // [esp+2h] [ebp-6h]
+	unsigned __int8 v137; // [esp+2h] [ebp-6h]
+	unsigned __int8 v138; // [esp+2h] [ebp-6h]
+	unsigned __int8 v139; // [esp+2h] [ebp-6h]
+	char v140; // [esp+3h] [ebp-5h]
+	char v141; // [esp+3h] [ebp-5h]
+
+	if (!(height))//453558
+		return;
+	pixel_buffer_index = pdwScreenBuffer_351628 + x_DWORD_18063C_sprite_sizex + screenWidth_18062C * x_DWORD_180650_positiony;
+	if (x_WORD_180660_VGA_type_resolution & 1)//if 320x200 is resolved, the value is halved
+	{
+		width /= 2;
+		height /= 2;
+		tilex /= 2;
+		tiley /= 2;
+	}
+	if (tiley < 0)
+	{
+		if (x_WORD_E36D4 & 2)
+		{
+			v128 = tiley + height;
+			v46 = __OFADD__(1, v128);
+			v129 = v128 + 1;
+			if (((v129 < 0) ^ v46) | (v129 == 0))
+				return;
+			tiley = -1;
+			height = v129;
+		}
+		else
+		{
+			v130 = tiley + height;
+			if (((tiley + height < 0) ^ __OFADD__(tiley, height)) | (tiley + height == 0))
+				return;
+			height += tiley;
+			v130 = 0;
+			do
+			{
+				while (1)
+				{
+					v130 = *texture++;
+					if (!v130)
+						break;
+					if ((v130 & 0x80u) == 0)
+						texture += v130;
+				}
+				tiley++;
+			} while (tiley);
+		}
+	}
+	else if (tiley + height >= x_DWORD_180644_map_resolution2_y)
+	{
+		if (x_WORD_E36D4 & 2)
+		{
+			if (tiley + 1 >= x_DWORD_180644_map_resolution2_y)
+				return;
+			v125 = height + tiley + 1 - x_DWORD_180644_map_resolution2_y;
+			height = x_DWORD_180644_map_resolution2_y - (tiley + 1);
+			v126 = v125;
+			startOffsetX = 0;
+			do
+			{
+				while (1)
+				{
+					startOffsetX = *texture++;
+					if (!startOffsetX)
+						break;
+					if ((startOffsetX & 0x80u) == 0)
+						texture += startOffsetX;
+				}
+				--v126;
+			} while (v126);
+			pixel_buffer_index = pdwScreenBuffer_351628;
+		}
+		else
+		{
+			if (x_DWORD_180644_map_resolution2_y <= tiley)
+				return;
+			height = x_DWORD_180644_map_resolution2_y - tiley;
+		}
+	}
+	if (tilex >= 0)
+	{
+		if (tilex + width >= x_DWORD_180648_map_resolution2_x)
+		{
+			if (x_WORD_E36D4)
+			{
+				if (x_WORD_E36D4 & 1)
+				{
+					if (x_WORD_E36D4 & 2)
+					{
+						if (x_DWORD_180634_screen_width - tilex >= 0)
+						{
+							v79 = width + tilex;
+							ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + v79 + pixel_buffer_index);
+							posWidth = 0;
+							v79 = x_DWORD_180634_screen_width - v79 - 2;
+							width = v79;
+							v133 = v79;
+							startOffsetX = -1;
+							ptrScreenBufferLineStart = ptrScreenBuffer;
+							do
+							{
+								while (1)
+								{
+									while (1)
+									{
+										startOffsetX = *texture++;
+										if ((startOffsetX & 0x80u) == 0)
+											break;
+										ptrScreenBuffer += startOffsetX;
+										width = width - startOffsetX;
+									}
+									if (!startOffsetX)
+										break;
+									posWidth = startOffsetX;
+									do
+									{
+										pixel = *texture++;
+										width = width + 1;
+										if ((width & 0x80u) == 0)
+											*ptrScreenBuffer = pixel;
+										--ptrScreenBuffer;
+										--posWidth;
+									} while (posWidth);
+								}
+								ptrScreenBufferLineStart -= screenWidth_18062C;
+								ptrScreenBuffer = ptrScreenBufferLineStart;
+								width = __PAIR__(height, v133) - 256;
+							} while (height);
+						}
+					}
+					else if (x_DWORD_180634_screen_width - tilex >= 0)
+					{
+						v85 = width + tilex;
+						v86 = (x_BYTE*)(screenWidth_18062C * tiley + v85 + pixel_buffer_index);
+						v87 = 0;
+						v85 = x_DWORD_180634_screen_width - v85 - 2;
+						width = v85;
+						v134 = v85;
+						GameBitmapDrawBitmap(texture, pixel_buffer_index, screenWidth_18062C, v85, tiley, width, height, v134);
+					}
+				}
+				else if (x_WORD_E36D4 & 2)
+				{
+					ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + tilex + pixel_buffer_index);
+					v92 = 0;
+					v93 = x_DWORD_180634_screen_width - tilex;
+					if (v93 >= 0)
+					{
+						width = v93;
+						v135 = v93;
+						startOffsetX = -1;
+						ptrScreenBufferLineStart = ptrScreenBuffer;
+						do
+						{
+							while (1)
+							{
+								while (1)
+								{
+									startOffsetX = *texture++;
+									if ((startOffsetX & 0x80u) == 0)
+										break;
+									ptrScreenBuffer -= startOffsetX;
+									width = startOffsetX + width;
+								}
+								if (!startOffsetX)
+									break;
+								v92 = startOffsetX;
+								do
+								{
+									v96 = *texture++;
+									width = width - 1;
+									if ((width & 0x80u) == 0)
+										*ptrScreenBuffer++ = v96;
+									--v92;
+								} while (v92);
+							}
+							ptrScreenBufferLineStart -= screenWidth_18062C;
+							ptrScreenBuffer = ptrScreenBufferLineStart;
+							width = __PAIR__(height, v135) - 256;
+						} while (width);
+					}
+				}
+			}
+			else
+			{
+				if (x_DWORD_180634_screen_width - tilex >= 0)
+				{
+					ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
+					v69l = x_DWORD_180634_screen_width - tilex;
+					v69h = height;//ebx
+					v132 = v69l;//ebp-6
+					ptrScreenBufferLineStart = ptrScreenBuffer;//edx edi
+					v72l = 0;//ecx
+					do
+					{
+						while (1)
+						{
+							while (1)
+							{
+								v73 = *texture++;
+								if (v73 >= 0)
+									break;
+								v46 = __OFADD__(v73, v69l);//fix
+								v75 = v73 + v69l == 0;//fix
+								v76 = (char)(v73 + v69l) < 0;//fix
+								v69l = v73 + v69l;//fix
+								if (!((v76 ^ v46) | v75))
+								{
+									ptrScreenBuffer -= v73;
+									v77 = *texture++;
+									v72l = v77;
+									do
+									{
+										v78 = *texture++;
+										v69l--;
+										if ((v69l & 0x80u) == 0)//fix
+											*ptrScreenBuffer++ = v78;
+										v72l--;
+									} while (v72l);
+								}
+							}
+							if (!v73)
+								break;
+							v72l = v73;
+							do
+							{
+								v74 = *texture++;
+								v69l--;
+								if ((v69l & 0x80u) == 0)//fix
+									*ptrScreenBuffer++ = v74;
+								v72l--;
+							} while (v72l);
+						}
+						ptrScreenBufferLineStart += screenWidth_18062C;
+						ptrScreenBuffer = ptrScreenBufferLineStart;
+
+						v69l = /*(v69l&0xff00)+*/v132;//fix
+						v69h--;
+					} while (v69h);//fix
+				}
+			}
+		}
+		else if (x_WORD_E36D4 & 1)
+		{
+			if (x_WORD_E36D4 & 2)
+			{
+				ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + width + tilex + pixel_buffer_index);
+				posWidth = 0;
+				startOffsetX = -1;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
+				do
+				{
+					while (1)
+					{
+						while (1)
+						{
+							startOffsetX = *texture++;
+
+							//Is width byte
+							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
+								break;
+							}
+							ptrScreenBuffer += startOffsetX;
+							v12 = *texture++;
+							posWidth = v12;
+							do
+							{
+								v13 = *texture++;
+								*ptrScreenBuffer-- = v13;
+								--posWidth;
+							} while (posWidth);
+						}
+						if (!startOffsetX)
+							break;
+						posWidth = startOffsetX;
+						do
+						{
+							pixel = *texture++;
+							*ptrScreenBuffer-- = pixel;
+							--posWidth;
+						} while (posWidth);
+					}
+					ptrScreenBufferLineStart -= screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--height;
+				} while (height);
+			}
+			else
+			{
+				ptrScreenBuffer = (screenWidth_18062C * tiley + width + tilex + pixel_buffer_index);
+				v15 = 0;
+				startOffsetX = -1;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
+				do
+				{
+					while (1)
+					{
+						while (1)
+						{
+							startOffsetX = *texture++;
+							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
+								break;
+							}
+							ptrScreenBuffer += startOffsetX;
+							v19 = *texture++;
+							v15 = v19;
+							do
+							{
+								v20 = *texture++;
+								*ptrScreenBuffer-- = v20;
+								--v15;
+							} while (v15);
+						}
+						if (!startOffsetX)
+							break;
+						v15 = startOffsetX;
+						do
+						{
+							v18 = *texture++;
+							*ptrScreenBuffer-- = v18;
+							--v15;
+						} while (v15);
+					}
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--height;
+				} while (height);
+			}
+		}
+		else if (x_WORD_E36D4)
+		{
+			if (x_WORD_E36D4 & 2)
+			{
+				ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + tilex + pixel_buffer_index);
+				v29 = 0;
+				startOffsetX = -1;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
+				do
+				{
+					while (1)
+					{
+						while (1)
+						{
+							startOffsetX = *texture++;
+							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
+								break;
+							}
+							v32 = &ptrScreenBuffer[-startOffsetX];
+							v33 = *texture;
+							v34 = (char*)(texture + 1);
+							v29 = v33;
+							qmemcpy(v32, v34, v29);
+							texture = (uint8_t*)&v34[v29];
+							ptrScreenBuffer = &v32[v29];
+							v29 = 0;
+						}
+						if (!startOffsetX)
+							break;
+						v29 = startOffsetX;
+						qmemcpy(ptrScreenBuffer, texture, v29);
+						texture += v29;
+						ptrScreenBuffer += v29;
+						v29 = 0;
+					}
+					ptrScreenBufferLineStart -= screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--height;
+				} while (height);
+			}
+			else if (x_WORD_E36D4 & 4)
+			{
+				v35 = x_DWORD_E3890;
+				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
+				v37 = 0;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
+				do
+				{
+					while (1)
+					{
+						while (1)
+						{
+							startOffsetX = *texture++;
+							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
+								break;
+							}
+							ptrScreenBuffer -= (char)startOffsetX;
+						}
+						if (!startOffsetX)
+							break;
+						v37 = startOffsetX;
+						v40 = startOffsetX;
+						do
+						{
+							v40 = *texture++;
+							v40 = *ptrScreenBuffer;
+							*ptrScreenBuffer++ = *(x_BYTE*)(v40 + v35);
+							--v37;
+						} while (v37);
+					}
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--height;
+				} while (height);
+			}
+			else if (x_WORD_E36D4 & 8)
+			{
+				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
+				v42 = 0;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
+				v140 = height;
+				for (i = setbyte; ; i = setbyte)
+				{
+					while (1)
+					{
+						while (1)
+						{
+							v44 = *texture++;
+							if (v44 >= 0)
+								break;
+							v42 = (unsigned __int8)-v44;
+							do
+							{
+								v46 = __OFSUB__(i--, 1);
+								if (((i & 0x80u) != 0) ^ v46)
+								{
+									i = setbyte;
+									++ptrScreenBuffer;
+								}
+								--v42;
+							} while (v42);
+						}
+						if (!v44)
+							break;
+						LOBYTE(v42) = v44;
+						do
+						{
+							v45 = *texture++;
+							v46 = __OFSUB__(i--, 1);
+							if (((i & 0x80u) != 0) ^ v46)
+							{
+								i = setbyte;
+								*ptrScreenBuffer++ = v45;
+							}
+							--v42;
+						} while (v42);
+					}
+					if (!--v140)
+						break;
+					v47 = a6;
+					while (--v47 >= 0)
+					{
+						while (1)
+						{
+							do
+								v48 = *texture++;
+							while ((v48 & 0x80u) != 0);
+							if (!v48)
+								break;
+							texture += v48;
+						}
+					}
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+				}
+			}
+			else if (x_WORD_E36D4 & 0x20)
+			{
+				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
+				ptrScreenBufferLineStart = ptrScreenBuffer;
+				v141 = height;
+				do
+				{
+					while (1)
+					{
+						while (1)
+						{
+							v50 = *texture++;
+							if (v50 >= 0)
+								break;
+							ptrScreenBuffer += (setbyte * -v50);
+						}
+						if (!v50)
+							break;
+						v51 = v50;
+						do
+						{
+							v52 = *texture++;
+							memset(ptrScreenBuffer, v52, setbyte);
+							ptrScreenBuffer += setbyte;
+							v46 = __OFSUB__(v51--, 1);
+						} while (!(((v51 < 0) ^ v46) | (v51 == 0)));
+					}
+					v53 = a6 - 1;
+					if (a6 > 1)
+					{
+						v131 = (char*)texture;
+						v54 = ptrScreenBuffer - ptrScreenBufferLineStart;
+						do
+						{
+							v55 = ptrScreenBufferLineStart;
+							ptrScreenBufferLineStart += screenWidth_18062C;
+							qmemcpy(ptrScreenBufferLineStart, (void*)v55, v54);
+							v46 = __OFSUB__(v53--, 1);
+						} while (!(((v53 < 0) ^ v46) | (v53 == 0)));
+						texture = (uint8_t*)v131;
+					}
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--v141;
+				} while (v141);
+			}
+			else if (x_WORD_E36D4 & 0x40)
+			{
+				GameBitmapDrawColourizedBitmap(texture, setbyte, pixel_buffer_index, screenWidth_18062C, tilex, tiley, height, scale);
+			}
+			else
+			{
+				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
+				v62 = 0;
+				startOffsetX = -1;
+				ptrScreenBufferLineStart = ptrScreenBuffer;
+				do
+				{
+					while (1)
+					{
+						while (1)
+						{
+							startOffsetX = *texture++;
+							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
+								break;
+							}
+							v65 = &ptrScreenBuffer[-startOffsetX];
+							v66 = *texture;
+							v67 = (char*)(texture + 1);
+							v62 = v66;
+							qmemcpy(v65, v67, v62);
+							texture = (uint8_t*)&v67[v62];
+							ptrScreenBuffer = &v65[v62];
+							v62 = 0;
+						}
+						if (!startOffsetX)
+							break;
+						v62 = startOffsetX;
+						qmemcpy(ptrScreenBuffer, texture, v62);
+						texture += v62;
+						ptrScreenBuffer += v62;
+						v62 = 0;
+					}
+					ptrScreenBufferLineStart += screenWidth_18062C;
+					ptrScreenBuffer = ptrScreenBufferLineStart;
+					--height;
+				} while (height);
+			}
+		}
+		else
+		{
+			GameBitmapDrawBitmap(texture, pixel_buffer_index, screenWidth_18062C, tilex, tiley, height, scale);
+		}
+		return;
+	}
+	if (!(x_WORD_E36D4 & 1))
+	{
+		if (!(x_WORD_E36D4 & 2))
+			return;
+		v117 = -tilex;
+		if (width <= v117)
+			return;
+		v118 = (x_BYTE*)(screenWidth_18062C * (height + tiley) + pixel_buffer_index);
+		v117 = height;
+		v119 = v118;
+		v139 = v117;
+		v120 = 0;
+		while (1)
+		{
+			while (1)
+			{
+				while (1)
+				{
+					v121 = *texture++;
+					if (v121 < 0)
+						break;
+					if (v121)
+					{
+						v120 = v121;
+						do
+						{
+							v122 = *texture++;
+							v117 = v117 - 1;
+							if ((v117 & 0x80u) != 0)
+								*v118++ = v122;
+							v120--;
+						} while (v120);
+					}
+					else
+					{
+						v119 -= screenWidth_18062C;
+						v118 = v119;
+						v117 = __PAIR__(v117, v139) - 256;
+						if (!v117)
+							return;
+					}
+				}
+				if ((char)v117 > 0)
+					break;
+			LABEL_225:
+				v118 -= v121;
+				v123 = *texture++;
+				v120 = v123;
+				do
+				{
+					v124 = *texture++;
+					v117 = v117 - 1;
+					if ((v117 & 0x80u) != 0)
+						*v118++ = v124;
+					v120--;
+				} while (v120);
+			}
+			v117 = v121 + v117;
+			if ((v117 & 0x80u) != 0)
+			{
+				v121 = v117;
+				goto LABEL_225;
+			}
+		}
+	}
+	if (x_WORD_E36D4 & 2)
+	{
+		ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + width + tilex + pixel_buffer_index);
+		v106 = 0;
+		v107 = width + tilex + 1;
+		if (v107 >= 0)
+		{
+			width = v107;
+			v137 = v107;
+			ptrScreenBufferLineStart = ptrScreenBuffer;
+			startOffsetX = -1;
+			do
+			{
+				while (1)
+				{
+					while (1)
+					{
+						startOffsetX = *texture++;
+						if ((startOffsetX & 0x80u) == 0)
+						{
+							//Start Drawing
+							break;
+						}
+						ptrScreenBuffer += startOffsetX;
+						width = startOffsetX + width;
+					}
+					if (!startOffsetX)
+						break;
+					v106 = startOffsetX;
+					do
+					{
+						v110 = *texture++;
+						width = width - 1;
+						if ((width & 0x80u) == 0)
+							*ptrScreenBuffer = v110;
+						ptrScreenBuffer--;
+						v106--;
+					} while (v106);
+				}
+				ptrScreenBufferLineStart -= screenWidth_18062C;
+				ptrScreenBuffer = ptrScreenBufferLineStart;
+				width = __PAIR__(height, v137) - 256;
+			} while (height);
+		}
+	}
+	else
+	{
+		ptrScreenBuffer = (screenWidth_18062C * tiley + width + tilex + pixel_buffer_index);
+		v112 = 0;
+		v113 = width + tilex + 1;
+		if (v113 >= 0)
+		{
+			width = v113;
+			v138 = v113;
+			ptrScreenBufferLineStart = ptrScreenBuffer;
+			startOffsetX = -1;
+			do
+			{
+				while (1)
+				{
+					while (1)
+					{
+						startOffsetX = *texture++;
+						if ((startOffsetX & 0x80u) == 0)
+						{
+							//Start Drawing
+							break;
+						}
+						ptrScreenBuffer += startOffsetX;
+						width = startOffsetX + width;
+					}
+					if (!startOffsetX)
+						break;
+					posWidth = startOffsetX;
+					do
+					{
+						v116 = *texture++;
+						width = width - 1;
+						if ((width & 0x80u) == 0)
+							*ptrScreenBuffer = v116;
+						ptrScreenBuffer--;
+						posWidth--;
+					} while (posWidth);
+				}
+				ptrScreenBufferLineStart += screenWidth_18062C;
+				ptrScreenBuffer = ptrScreenBufferLineStart;
+				width = __PAIR__(width, v138) - 256;
+			} while (height);
+		}
+	}
+}
+
+
+int sub_mainNoRNC(const char palfilename[], const char tmapsdatfilename[], const char tmapstabfilename[], const char tmapsstr[], int max_images, ImageType imageType, int padding, bool caveSprites, const char outputPath[])
+{
+	std::vector<std::string> filesToDelete;
+	double colourMultiplier = 4;
+
+	FILE* fptrTMAPSdata;
+	fopen_s(&fptrTMAPSdata, tmapsdatfilename, "rb");
+	fseek(fptrTMAPSdata, 0L, SEEK_END);
+	long sz = ftell(fptrTMAPSdata);
+	fseek(fptrTMAPSdata, 0L, SEEK_SET);
+	Bit8u* contentTMAPSdat = (Bit8u*)malloc(sz * sizeof(char*));
+	fread(contentTMAPSdat, sz, 1, fptrTMAPSdata);
+	fclose(fptrTMAPSdata);
+
+	FILE* fptrTMAPStab;
+	fopen_s(&fptrTMAPStab, tmapstabfilename, "rb");
+	fseek(fptrTMAPStab, 0L, SEEK_END);
+	long sztab = ftell(fptrTMAPStab);
+	fseek(fptrTMAPStab, 0L, SEEK_SET);
+	bitmap_pos_struct_tm* contentTMAPStab = (bitmap_pos_struct_tm*)malloc(sztab * sizeof(char*));
+	fread(contentTMAPStab, sztab, 1, fptrTMAPStab);
+	fclose(fptrTMAPStab);
+
+	int count = sztab / sizeof(bitmap_pos_struct_t);
+
+	//Bit8u buffer[100000];
+	//Bit8u prevbuffer[100000];
+
+	int indextab = 0;
+	int index = 0;
+
+	//int dword_0xE6_heapsize_230 = 0x400000;
+	//Bit8u* pointer_0xE2_heapbuffer_226 = (Bit8u*)sub_83CD0_malloc2(dword_0xE6_heapsize_230);
+	//x_DWORD_E9C28_str = sub_71B40(dword_0xE6_heapsize_230, 0x1F8u, (type_x_DWORD_E9C28_str*)pointer_0xE2_heapbuffer_226);
+	//TMAPS00TAB_BEGIN_BUFFER = contentTMAPStab;
+	//x_DWORD_E9C08x = sub_72120(0x1F8u);
+
+	char outname[512];
+	char outnameAlpha[512];
+	char title[512];
+
+	Bit8u pallettebuffer[768];
+	FILE* palfile = nullptr;
+
+	fopen_s(&palfile, palfilename, "rb");
+	fread(pallettebuffer, 768, 1, palfile);
+	fclose(palfile);
+
+	while (index < count)
+	{
+		int begin = contentTMAPStab[index].data;
+		int end = contentTMAPStab[index+1].data;
+		int size = end - begin;
+		
+		Bit8u* stmpdat = &contentTMAPSdat[begin];
+
+		int width = contentTMAPStab[index].width_4;
+		int height = contentTMAPStab[index].height_5;
+
+		//buffer = stmpdat;
+		//memcpy(pdwScreenBuffer_351628, stmpdat, size);
+		bitmap_pos_struct_t a3;
+		a3.data = (uint8*)contentTMAPStab[index].data;
+		a3.width_4 = contentTMAPStab[index].width_4;
+		a3.height_5 = contentTMAPStab[index].height_5;
+		//GameBitmapDrawTransparentBitmap_2DE80(0, 0, a3, 0);//20ee80
+		memset(pdwScreenBuffer_351628, 0, 100000);
+		GameBitmapDrawMenuGraphic(contentTMAPStab[index].width_4, contentTMAPStab[index].height_5, 1, stmpdat, pdwScreenBuffer_351628);
+		//sub_8F935_bitmap_draw_final(contentTMAPStab[index].width_4*2, contentTMAPStab[index].height_5*2, 0, 0, stmpdat, 0, 0, 1);
+
+		if (imageType == ImageType::bmp)
+		{
+			sprintf_s(outname, "%s\\%s%03i-00.bmp", outputPath, tmapsstr, index);
+			BitmapIO::WriteRGBAImageBufferAsImageBMP(outname, width, height, pallettebuffer, pdwScreenBuffer_351628, colourMultiplier);
+		}
+
+		if (imageType == ImageType::png)
+		{
+			if (isOther(other_folder, index))
+				sprintf_s(outname, "%s\\%s%03i-00-other", outputPath, tmapsstr, index);
+			else
+				sprintf_s(outname, "%s\\%s%03i-00", outputPath, tmapsstr, index);
+
+			sprintf_s(title, "%s%03i", tmapsstr, index);
+			BitmapIO::WritePosistructToPng(pallettebuffer, pdwScreenBuffer_351628, width, height, outname, title, padding, colourMultiplier);
+		}
+
+		if (imageType == ImageType::pnga)
+		{
+			sprintf_s(outname, "%s\\%s%03i-00", outputPath, tmapsstr, index);
+			sprintf_s(title, "%s%03i", tmapsstr, index);
+			BitmapIO::WritePosistructToPng(pallettebuffer, pdwScreenBuffer_351628, width, height, outname, title, padding, colourMultiplier);
+			sprintf_s(outname, "%s\\%s%03i-alpha-00", outputPath, tmapsstr, index);
+			BitmapIO::WritePosistructToAlphaPng(pallettebuffer, pdwScreenBuffer_351628, width, height, outname, title, padding);
+		}
+
+		if (caveSprites && index < 452)
+			indextab += 10;
+		else if (!caveSprites)
+			indextab += 10;
+		
+		index++;
+	}
+
+	printf("Extraction Completed\n");
+	return 0;
 }
 
 int sub_main(const char palfilename[], const char tmapsdatfilename[], const char tmapstabfilename[], const char tmapsstr[], int max_images, ImageType imageType, int padding, bool caveSprites, const char outputPath[])

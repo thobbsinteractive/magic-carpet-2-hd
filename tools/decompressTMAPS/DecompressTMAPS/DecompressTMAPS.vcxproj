@@ -102,13 +102,11 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\..\libpng2\libpng-master\projects\vstudio2017\Debug;$(SolutionDir)..\..\zlib\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\libpng2\libpng-master\projects\vstudio2017\Debug;$(SolutionDir)..\..\zlib\lib;C:\prenos\remc2-dev2\remc2\tools\decompressTMAPS\packages\zlib_static.1.2.11.9\build\native\lib\Win32\v142\Debug\MultiThreadedDebug;C:\prenos\remc2-dev2\remc2\tools\decompressTMAPS\packages\libpng_static.1.6.39.2\build\native\lib\Win32\v143\Debug\MultiThreadedDebug</AdditionalLibraryDirectories>
       <AdditionalDependencies>libpng.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
-	  XCOPY "$(SolutionDir)..\..\libpng2\libpng-master\projects\vstudio2017\Debug\libpng.dll" "$(TargetDir)" /D /K /Y
-	  XCOPY "$(SolutionDir)..\..\zlib\bin\zlib1.dll" "$(TargetDir)" /D /K /Y
       </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -129,12 +127,10 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>zlib.lib;libpng.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\..\libpng2\libpng-master\projects\vstudio2017\x64\Debug;$(SolutionDir)..\..\zlib-64\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\libpng2\libpng-master\projects\vstudio2017\x64\Debug;$(SolutionDir)..\..\zlib-64\lib;C:\prenos\remc2-dev2\remc2\tools\decompressTMAPS\packages\zlib_static.1.2.11.9\build\native\lib\x64\v142\Debug\MultiThreadedDebug;C:\prenos\remc2-dev2\remc2\tools\decompressTMAPS\packages\libpng_static.1.6.39.2\build\native\lib\x64\v143\Debug\MultiThreadedDebug</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
-	  XCOPY "$(SolutionDir)..\..\libpng2\libpng-master\projects\vstudio2017\x64\Debug\libpng.dll" "$(TargetDir)" /D /K /Y
-	  XCOPY "$(SolutionDir)..\..\zlib-64\bin\zlib1.dll" "$(TargetDir)" /D /K /Y
       </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -212,7 +208,17 @@
       <DeploymentContent>true</DeploymentContent>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\libpng_static.1.6.39.2\build\native\libpng_static.targets" Condition="Exists('..\packages\libpng_static.1.6.39.2\build\native\libpng_static.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Tenhle projekt odkazuje na balíčky NuGet, které nejsou v tomhle počítači k dispozici. Když je chcete stáhnout, použijte funkci obnovení balíčků NuGet.  Další informace najdete na adrese http://go.microsoft.com/fwlink/?LinkID=322105. Chybějícím souborem je soubor {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\libpng_static.1.6.39.2\build\native\libpng_static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libpng_static.1.6.39.2\build\native\libpng_static.targets'))" />
+  </Target>
 </Project>

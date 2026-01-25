@@ -111,16 +111,15 @@ type_F2C20ar str_F2C20ar;
 int help_VGA_type_resolution = 0;
 
 int16_t x_WORD_180660_VGA_type_resolution; // weak
-uint8_t x_BYTE_E88E0x[32];
+uint8_t playersColors_E88E0x[8][3];
 uint8_t unk_F0A20x[1024];
-char isCaveLevel_D41B6 = 1;
 uint8_t keyColor1_D4B7C = 0xfe; // some key color?
 uint8_t keyColor2_D4B7E = 0x00; // some key color?
 type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
 
 uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
 uint8_t* x_BYTE_F6EE0_tablesx_pre = (uint8_t*)x_BYTE_F6EE0_tablesx;
-uint8_t* x_BYTE_FAEE0_tablesx_pre = (uint8_t*)&x_BYTE_F6EE0_tablesx[16384];
+uint8_t* x_BYTE_FAEE0_tablesx_pre = (uint8_t*)&x_BYTE_F6EE0_tablesx[0x4000];
 
 type_E9C38_smalltit Str_E9C38_smalltit[21 * 40];
 
@@ -131,10 +130,7 @@ uint8_t* ViewPortRenderBufferAltStart_DE554 = 0;
 //language
 char* x_DWORD_E9C4C_langindexbuffer[1000]; // idb
 
-int Int386Request_17FF0C;
-int MscdexCommand_17FF44;
-uint8_t MinTrackIdx_180471;
-uint8_t MaxTrackIdx_180472;
+uint64_t GameTimerTick_17DB54 = 0;
 
 //file
 
@@ -237,113 +233,6 @@ filearray_struct filearray_2aa18c[] = {
 
 filearray_struct x_DWORD_E9B20[4] = { filearray_2aa18c[filearrayindex_FONTS0DATTAB],filearray_2aa18c[filearrayindex_MSPRDDATTAB],
 filearray_2aa18c[filearrayindex_HFONT3DATTAB],filearray_2aa18c[filearrayindex_MSPRDDATTAB] };
-
-type_SPELLS_BEGIN_BUFFER_str SPELLS_BEGIN_BUFFER_str[26] =
-{ {0x03,0x00,{
-{0x000000FA,0x00000064,0x00000000,0x00000000,0x00000000,0x00BA,0x0005,0x00,0x00},
-{0x000000A0,0x000000FA,0x00000000,0x00000190,0x00000096,0x00BB,0x000B,0x01,0x01},
-{0x00000050,0x000005DC,0x000009C4,0x00001388,0x000002EE,0x00BC,0x000F,0x02,0x00}}},
-{0x03,0x00,{
-{0x0000000A,0x00000064,0x00000000,0x00000000,0x00000000,0x00BD,0x0003,0x00,0x00},
-{0x0000000F,0x000000FA,0x00000000,0x0000012C,0x00000032,0x00BE,0x0029,0x01,0x00},
-{0x00000014,0x000003E8,0x000003E8,0x00000384,0x00000096,0x00BF,0x0033,0x02,0x00}}},
-{0x03,0x00,{
-{0x00000000,0x000003E8,0x00000000,0x00000000,0x00000000,0x00C0,0x0065,0x00,0x00},
-{0x00000000,0x000004E2,0x00000000,0x00000019,0x00000004,0x00C1,0x0065,0x01,0x00},
-{0x00000001,0x000007D0,0x00000000,0x0000007D,0x00000006,0x00C2,0x0065,0x02,0x00}}},
-{0x03,0x04,{
-{0x00000002,0x000003E8,0x00000000,0x00000000,0x00000000,0x00C3,0x012D,0x00,0x00},
-{0x00000003,0x000009C4,0x00000000,0x0000008C,0x0000000F,0x00C4,0x01C3,0x00,0x00},
-{0x00000004,0x00001388,0x00000000,0x00000118,0x0000002D,0x00C5,0x01F5,0x00,0x00}}},
-{0x03,0x04,{
-{0x00000064,0x00001388,0x00004E20,0x00000000,0x00000000,0x00C6,0x00C9,0x13,0x00},
-{0x00000064,0x00001D4C,0x00004E20,0x00000050,0x00000014,0x00C8,0x012D,0x19,0x00},
-{0x00000064,0x00003A98,0x000061A8,0x000000F0,0x0000003C,0x00C9,0x01C7,0x10,0x00}}},
-{0x03,0x00,{
-{0x00000001,0x000001F4,0x00000000,0x00000000,0x00000000,0x00CA,0x000B,0x00,0x00},
-{0x00000001,0x000002EE,0x00000000,0x0000012C,0x0000004B,0x00CB,0x0015,0x00,0x00},
-{0x0000000A,0x000005DC,0x00000000,0x00000384,0x0000012C,0x00CC,0x0029,0x00,0x00}}},
-{0x03,0x04,{
-{0x00000064,0x000003E8,0x00000000,0x00000000,0x00000000,0x00CD,0x0065,0x00,0x00},
-{0x00000064,0x000005DC,0x00000000,0x00000078,0x0000001E,0x00CE,0x00C9,0x00,0x00},
-{0x00000064,0x00002710,0x00000000,0x00000118,0x00000046,0x00CF,0x012D,0x01,0x00}}},
-{0x03,0x00,{
-{0x000000C8,0x000001F4,0x000002EE,0x00000000,0x00000000,0x00D0,0x0005,0x00,0x01},
-{0x000000FA,0x000009C4,0x00001388,0x00000258,0x00000096,0x00D1,0x0023,0x01,0x00},
-{0x00000320,0x00002710,0x00004E20,0x00001D4C,0x000001F4,0x00D2,0x002D,0x02,0x00}}},
-{0x03,0x04,{
-{0x00000000,0x000009C4,0x00001388,0x00000000,0x00000000,0x00D3,0x007D,0x00,0x00},
-{0x00000000,0x00000EA6,0x00001D4C,0x00000078,0x0000001E,0x00D4,0x00FB,0x00,0x00},
-{0x00000000,0x00001B58,0x00002710,0x000000F0,0x0000003C,0x00D5,0x007D,0x01,0x00}}},
-{0x03,0x00,{
-{0x000006D6,0x000003E8,0x00001388,0x00000000,0x00000000,0x00D6,0x0009,0x02,0x00},
-{0x00000DAC,0x000005DC,0x00002328,0x00000352,0x00000032,0x00D7,0x0011,0x05,0x00},
-{0x00001B58,0x000007D0,0x00004650,0x0000092E,0x00000096,0x00D8,0x0019,0x0A,0x00}}},
-{0x03,0x00,{
-{0x00000000,0x00001388,0x00001388,0x00000000,0x00000000,0x00D9,0x000B,0x00,0x00},
-{0x00000000,0x00001770,0x00001388,0x000000C8,0x0000001E,0x00DA,0x000B,0x01,0x00},
-{0x00000000,0x00001D4C,0x00001388,0x00000190,0x0000005A,0x00DB,0x0015,0x02,0x00}}},
-{0x03,0x04,{
-{0x00000000,0x000007D0,0x000007D0,0x00000000,0x00000000,0x00DC,0x00B5,0x01,0x00},
-{0x00000000,0x000009C4,0x00000BB8,0x00000064,0x0000001E,0x00DD,0x00B7,0x02,0x00},
-{0x00000000,0x00000BB8,0x00000FA0,0x0000012C,0x0000005A,0x00DE,0x00B7,0x03,0x00}}},
-{0x03,0x04,{
-{0x00000000,0x00000708,0x00000000,0x00000000,0x00000000,0x00DF,0x0097,0x00,0x00},
-{0x00000000,0x00000960,0x00002710,0x00000078,0x0000001E,0x00E0,0x0105,0x00,0x00},
-{0x00000000,0x00001388,0x00002710,0x00000168,0x0000003C,0x00E1,0x0169,0x00,0x00}}},
-{0x03,0x00,{
-{0x000007D0,0x000001F4,0x00002710,0x00000000,0x00000000,0x00E2,0x0005,0x00,0x00},
-{0x00000FA0,0x000003E8,0x00003A98,0x00000190,0x00000064,0x00E3,0x0007,0x00,0x00},
-{0x0000000A,0x000004B0,0x00002EE0,0x00000320,0x000000C8,0x00E4,0x0015,0x01,0x00}}},
-{0x03,0x04,{
-{0x00001432,0x000009C4,0x00002710,0x00000000,0x00000000,0x00E5,0x00C3,0x00,0x00},
-{0x00001E28,0x00000DAC,0x00003A98,0x00000064,0x00000032,0x00E6,0x018B,0x01,0x00},
-{0x00001E28,0x00001388,0x00004E20,0x000000C8,0x00000064,0x00E7,0x025B,0x02,0x00}}},
-{0x03,0x00,{
-{0x00000014,0x00001388,0x00002710,0x00000000,0x00000000,0x00E8,0x001F,0x3C,0x00},
-{0x00000028,0x00001D4C,0x00004E20,0x000003E8,0x00000028,0x00E9,0x0029,0x50,0x00},
-{0x00000032,0x00002710,0x00009C40,0x000007D0,0x00000064,0x00EA,0x003D,0x78,0x00}}},
-{0x03,0x00,{
-{0x00000032,0x00001770,0x00003A98,0x00000000,0x00000000,0x00EB,0x001F,0x06,0x00},
-{0x00000064,0x00002328,0x00007530,0x000005DC,0x00000028,0x00EC,0x0029,0x0C,0x00},
-{0x0000012C,0x00002EE0,0x0000EA60,0x00000BB8,0x00000050,0x00ED,0x0033,0x18,0x00}}},
-{0x03,0x00,{
-{0x00000050,0x00002710,0x00004650,0x00000000,0x00000000,0x00EE,0x0015,0x10,0x00},
-{0x00000078,0x00002EE0,0x00008CA0,0x00000708,0x0000003C,0x00EF,0x001F,0x20,0x00},
-{0x00000140,0x00003A98,0x00011940,0x00000E10,0x00000078,0x00F0,0x0029,0x40,0x00}}},
-{0x03,0x00,{
-{0x00000078,0x00002EE0,0x00004E20,0x00000000,0x00000000,0x00F1,0x003F,0x07,0x00},
-{0x000000F0,0x00003A98,0x00009C40,0x000007D0,0x00000028,0x00F2,0x0049,0x09,0x00},
-{0x000001E0,0x00004650,0x00013880,0x00000FA0,0x00000050,0x00F3,0x0053,0x0B,0x00}}},
-{0x03,0x00,{
-{0x00000064,0x00002710,0x00004E20,0x00000000,0x00000000,0x00F4,0x012B,0x13,0x00},
-{0x00000064,0x00004E20,0x00009C40,0x00000050,0x00000028,0x00F6,0x018F,0x19,0x00},
-{0x00000064,0x00009C40,0x00015F90,0x000000A0,0x00000050,0x00F7,0x01F3,0x10,0x00}}},
-{0x03,0x00,{
-{0x000002EE,0x00003A98,0x00007530,0x00000000,0x00000000,0x00F8,0x001F,0x10,0x00},
-{0x000005DC,0x00004E20,0x0000EA60,0x000009C4,0x00000019,0x00F9,0x0033,0x1A,0x00},
-{0x00000BB8,0x00007530,0x00015F90,0x00001388,0x00000032,0x00FA,0x003D,0x28,0x00}}},
-{0x03,0x00,{
-{0x00000064,0x000007D0,0x00000000,0x00000000,0x00000000,0x00FB,0x001F,0x05,0x00},
-{0x00000064,0x000009C4,0x000009C4,0x000000C8,0x00000032,0x00FC,0x0033,0x0A,0x00},
-{0x000000C8,0x00001388,0x00002710,0x00000190,0x00000064,0x00FD,0x003D,0x0A,0x00}}},
-{0x03,0x00,{
-{0x000000FA,0x000003E8,0x00001388,0x00000000,0x00000000,0x00FE,0x001F,0x00,0x00},
-{0x000001F4,0x000005DC,0x00002710,0x00000050,0x0000001E,0x00FF,0x001F,0x01,0x00},
-{0x000003E8,0x000007D0,0x00002710,0x000000A0,0x0000003C,0x0100,0x001F,0x02,0x00}}},
-{0x03,0x00,{
-{0x000003E8,0x00002710,0x00004E20,0x00000000,0x00000000,0x0101,0x002F,0x00,0x00},
-{0x00001388,0x00002EE0,0x00004E20,0x00000078,0x0000001E,0x0102,0x0043,0x01,0x00},
-{0x00002710,0x00005DC0,0x0000EA60,0x000000F0,0x0000003C,0x0103,0x0057,0x02,0x00}}},
-{0x03,0x00,{
-{0x00000262,0x00002710,0x00004E20,0x00000000,0x00000000,0x0104,0x002B,0x10,0x00},
-{0x0000044C,0x00004650,0x00008CA0,0x0000005A,0x0000001E,0x0105,0x0021,0x1A,0x00},
-{0x00000A96,0x00007530,0x00015F90,0x00000118,0x00000046,0x0106,0x0021,0x20,0x00}}},
-{0x03,0x00,{
-{0x00000064,0x00002AF8,0x00004A38,0x00000000,0x00000000,0x0107,0x001F,0x00,0x00},
-{0x00000082,0x000032C8,0x00009470,0x000000C8,0x00000028,0x0108,0x0029,0x01,0x00},
-{0x00000186,0x00006590,0x0000DAC0,0x00000190,0x00000078,0x0109,0x0033,0x02,0x00}}}
-};
 
 uint8_t* SPELLS_BEGIN_BUFFER_ptr = (uint8_t*)SPELLS_BEGIN_BUFFER_str;
 uint8_t* LANG_BEGIN_BUFFER = 0;
@@ -448,19 +337,9 @@ Pathstruct xadatatables = { "",(uint8_t**)&x_DWORD_D41BC_langbuffer,&LANG_BEGIN_
 //zero
 //#define psxazero14 47
 
-int GameTimerTick_17DB54; // weak
-uint32_t PitFrequency_F4240 = 1193182; //PIT Frequency
-
-bool IsDefaultResolution(int width, int height)
-{
-	if ((width <= 640) && (height <= 480))
-		return true;
-	return false;
-}
-
 bool DefaultResolutions()
 {
-	if (IsDefaultResolution(screenWidth_18062C, screenHeight_180624))
+	if ((screenWidth_18062C <= 640) && (screenHeight_180624 <= 480))
 		return true;
 	return false;
 }
@@ -1296,7 +1175,7 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 //----- (0007C120) --------------------------------------------------------
 void sub_7C120_draw_bitmap_640(int16_t posx, int16_t posy, bitmap_pos_struct_t tempstr)//25d120
 {
-	sub_2BB40_draw_bitmap(posx, posy, tempstr);//ebp
+	DrawBitmap_2BB40(posx, posy, tempstr);//ebp
 }
 
 //----- (0005BE80) --------------------------------------------------------
@@ -1573,47 +1452,24 @@ uint8_t GetLetterHeight_6FC30()//250c30
 // EA3D4: using guessed type int x_DWORD_EA3D4;
 
 //----- (0002BB40) --------------------------------------------------------
-void sub_2BB40_draw_bitmap(int16_t posx, int16_t posy, bitmap_pos_struct_t tempposstr, uint8_t scale)//20cb40
+void DrawBitmap_2BB40(int16_t posx, int16_t posy, bitmap_pos_struct_t tempposstr, uint8_t scale)//20cb40
 {
-	//a3=48c80f-> 48ae47002633
-
-  //void (*v3)(__int16, __int16, Pathstruct); // eax
-  //int result; // eax
-	uint8_t* temp_screen_buffer; // edi
-  //int (*v6)(__int16, __int16, Pathstruct); // [esp+0h] [ebp-4h]
-//123 cd 48c80f
-
-  /*Pathstruct tempstruct;
-  uint8_t* tempcharstar;
-  tempstruct.colorPalette_var28 = &tempcharstar;//this fix
-  *tempstruct.colorPalette_var28 = bitmap;//this fix */ //fix this
-
-  //push [ebp+18] -cd- pote ecx
-  //push [ebp+14] -123- pote ebx
-
+	uint8_t* temp_screen_buffer;
 	if (x_WORD_180660_VGA_type_resolution & 1)
-		sub_8F8B0_draw_bitmap320(posx, posy, tempposstr);
+		drawBitmap320_8F8B0(posx, posy, tempposstr);
 	else
-		sub_8F8E8_draw_bitmap640(posx, posy, tempposstr, scale);
-	//v6 = v3;
-	//v3(a1, a2, a3);
-	//result = (int)x_D41A0_BYTEARRAY_0;
+		drawBitmap640_8F8E8(posx, posy, tempposstr, scale);
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 	{
 		temp_screen_buffer = pdwScreenBuffer_351628;
 		pdwScreenBuffer_351628 = x_DWORD_E9C3C;
 		if (x_WORD_180660_VGA_type_resolution & 1)
-			sub_8F8B0_draw_bitmap320(posx, posy, tempposstr);
+			drawBitmap320_8F8B0(posx, posy, tempposstr);
 		else
-			sub_8F8E8_draw_bitmap640(posx, posy, tempposstr, scale);
+			drawBitmap640_8F8E8(posx, posy, tempposstr, scale);
 		pdwScreenBuffer_351628 = temp_screen_buffer;
 	}
-	//return result;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// E9C3C: using guessed type int x_DWORD_E9C3C;
-// 180628: using guessed type int pdwScreenBuffer_351628;
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00075D70) --------------------------------------------------------
 void sub_75D70(uint8_t* a1y, uint32_t a2)//256d70
@@ -1706,9 +1562,9 @@ void VGA_CalculateAndPrintFps(int x, int y, float timeDelta)
 
 void VGA_DrawPlayerCoordData(int x, int y)
 {
-	if (Entities_EA3E4 != nullptr && Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240] != nullptr) {
+	if (Entities_EA3E4 != nullptr && Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240] != nullptr) {
 
-		int16_t index = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00e_2BDE_11244 + 1;
+		int16_t index = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1;
 		axis_3d axisData = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[index].axis_2BDE_11695;
 		axis_4d rotData = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[index].rotation__2BDE_11701;
 
@@ -1922,8 +1778,8 @@ void sub_8CACD_draw_cursor2()//26dacd
 // E3768: using guessed type int x_DWORD_E3768;
 
 //----- (0008F8B0) --------------------------------------------------------
-//void sub_8F8B0_draw_bitmap320(__int16 a1, __int16 a2, Pathstruct a3)//2708B0
-void sub_8F8B0_draw_bitmap320(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale)//2708B0
+//void drawBitmap320_8F8B0(__int16 a1, __int16 a2, Pathstruct a3)//2708B0
+void drawBitmap320_8F8B0(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale)//2708B0
 {
 	//int v4; // [esp+4h] [ebp-4h]
 
@@ -1937,8 +1793,8 @@ void sub_8F8B0_draw_bitmap320(int16_t posx, int16_t posy, bitmap_pos_struct_t te
 // 180628: using guessed type int pdwScreenBuffer_351628;
 
 //----- (0008F8E8) --------------------------------------------------------
-//void sub_8F8E8_draw_bitmap640(__int16 a1, __int16 a2, uint8_t* a3)//2708e8
-void sub_8F8E8_draw_bitmap640(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale)//2708e8
+//void drawBitmap640_8F8E8(__int16 a1, __int16 a2, uint8_t* a3)//2708e8
+void drawBitmap640_8F8E8(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale)//2708e8
 {
 	//int v4; // [esp+4h] [ebp-4h]
 
@@ -3120,142 +2976,10 @@ void sub_8F920(uint8_t a1byte1, uint8_t a1byte2, int16_t posx, int16_t posy, uin
 	sub_8F935_bitmap_draw_final(a1byte1, a1byte2, posx, posy, a4, a5, a6, 1);//270935
 }
 
-//----- (00098709) --------------------------------------------------------
-void sub_98709_create_index_dattab_power(bitmap_pos_struct2_t* tabbuffer, bitmap_pos_struct2_t* tabbufferend, uint8_t* datbuffer, bitmap_pos_struct_t* dattabindex)//279709
-{
-	//int length = (tabbufferend - ((uint8_t*)tabbuffer)) / 6;
-	//int length = tabbufferend - tabbuffer;
-	for (int i = 0; i < tabbufferend - tabbuffer; i++)
-	{
-		//int index = tabbuffer[i].data;
-		dattabindex[i].data = (datbuffer + tabbuffer[i].data_0);
-		dattabindex[i].width_4 = tabbuffer[i].width_4 * 2;
-		dattabindex[i].height_5 = tabbuffer[i].height_5 * 2;
-	}
-}
-
-void sub_98709_create_index_dattab_power_add(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t* datbuffer, bitmap_pos_struct_t* dattabindex, int add)//279709
-{
-	for (uint32_t i = 0; i < (tabbufferend - (tabbuffer + add)) / 6; i++)
-	{
-#ifdef x32_BIT_ENVIRONMENT
-		dattabindex[i].data = (uint8_t*)(*(uint32_t*)((tabbuffer + add) + 6 * i)) + reinterpret_cast<int32_t>(datbuffer);
-#endif //x32_BIT_ENVIRONMENT
-#ifdef x64_BIT_ENVIRONMENT
-		dattabindex[i].data = (uint8_t*)(*(uint32_t*)((tabbuffer + add) + 6 * i)) + (int32_t)reinterpret_cast<int64_t>(datbuffer);
-#endif //x64_BIT_ENVIRONMENT		
-		dattabindex[i].width_4 = (tabbuffer + add)[6 * i + 4] * 2;
-		dattabindex[i].height_5 = (tabbuffer + add)[6 * i + 5] * 2;
-	}
-}
-
-//----- (0009874D) --------------------------------------------------------
-void sub_9874D_create_index_dattab(bitmap_pos_struct2_t* tabbuffer, bitmap_pos_struct2_t* tabbufferend, uint8_t* datbuffer, bitmap_pos_struct_t* dattabindex)//27974d
-{
-	//uint32_t testadr = *(uint32_t*)tabbuffer;
-	/*if (testadr == 0x9999)
-	{
-		for (uint32_t i = 0;i < (tabbufferend - tabbuffer) / 6;i++)
-		{
-			dattabindex[i].data += (int32_t)datbuffer;
-		}
-	}
-	else*/
-	{
-		/*for (uint32_t i = 0; i < (tabbufferend - tabbuffer) / 6; i++)
-		{
-#ifdef TEST_x64
-	allert_error();
-#endif
-#ifdef COMPILE_FOR_64BIT // FIXME: 64bit
-			std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
-#else
-			dattabindex[i].data = (uint8_t*)(*(uint32_t*)(tabbuffer + 6 * i)) + (int32_t)datbuffer;
-#endif
-			dattabindex[i].width = tabbuffer[6 * i + 4];
-			dattabindex[i].height = tabbuffer[6 * i + 5];
-		}*/
-		for (uint32_t i = 0; i < tabbufferend - tabbuffer; i++)
-		{
-			dattabindex[i].data = (datbuffer + tabbuffer[i].data_0);
-			dattabindex[i].width_4 = tabbuffer[i].width_4;
-			dattabindex[i].height_5 = tabbuffer[i].height_5;
-		}
-
-		//testadr = 0x9999;
-		//memcpy(tabbuffer, &testadr, 4);
-	}
-}
-
-void sub_9874D_create_index_dattab_add(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t* datbuffer, bitmap_pos_struct_t* dattabindex, int add)//27974d
-{
-	for (uint32_t i = 0; i < (tabbufferend - (tabbuffer + add)) / 6; i++)
-	{
-#ifdef x32_BIT_ENVIRONMENT
-		dattabindex[i].data = (uint8_t*)(*(uint32_t*)((tabbuffer + add) + 6 * i)) + reinterpret_cast<int32_t>(datbuffer);
-#endif //x32_BIT_ENVIRONMENT
-#ifdef x64_BIT_ENVIRONMENT
-		dattabindex[i].data = (uint8_t*)(*(uint32_t*)((tabbuffer + add) + 6 * i)) + (int32_t)reinterpret_cast<int64_t>(datbuffer);
-#endif //x64_BIT_ENVIRONMENT			
-		dattabindex[i].width_4 = (tabbuffer + add)[6 * i + 4];
-		dattabindex[i].height_5 = (tabbuffer + add)[6 * i + 5];
-	}
-}
-
-//----- (00099A77) --------------------------------------------------------
-void sub_99A77_create_index_dattab_div(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t*  /*datbuffer*/, bitmap_pos_struct_t* dattabindex)//280a77
-{
-	//uint32_t testadr = *(uint32_t*)tabbuffer;
-	/*if (testadr == 0x9999)
-	{
-		for (uint32_t i = 0;i < (tabbufferend - tabbuffer) / 6;i++)
-		{
-			dattabindex[i].data -= (int32_t)datbuffer;
-			dattabindex[i].width /= 2;
-			dattabindex[i].height /= 2;
-		}
-	}
-	else*/
-	{
-		for (uint32_t i = 0; i < (tabbufferend - tabbuffer) / 6; i++)
-		{
-			dattabindex[i].data = (uint8_t*)(*(uint32_t*)(tabbuffer + 6 * i))/* + (int32_t)datbuffer*/;//fixed
-			dattabindex[i].width_4 = tabbuffer[6 * i + 4] / 2;
-			dattabindex[i].height_5 = tabbuffer[6 * i + 5] / 2;
-		}
-		//testadr = 0x9999;
-		//memcpy(tabbuffer, &testadr, 4);
-	}
-}
-
-//----- (00099AEB) --------------------------------------------------------
-void sub_99AEB_create_index_dattab_minus(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t*  /*datbuffer*/, bitmap_pos_struct_t* dattabindex)//280aeb
-{
-	//uint32_t testadr = *(uint32_t*)tabbuffer;
-	/*if (testadr == 0x9999)
-	{
-		for (uint32_t i = 0;i < (tabbufferend - tabbuffer) / 6;i++)
-		{
-			dattabindex[i].data -= (int32_t)datbuffer;
-		}
-	}
-	else*/
-	{
-		for (uint32_t i = 0; i < (tabbufferend - tabbuffer) / 6; i++)
-		{
-			dattabindex[i].data = (uint8_t*)(*(uint32_t*)(tabbuffer + 6 * i))/* + (int32_t)datbuffer*/;//fixed
-			dattabindex[i].width_4 = tabbuffer[6 * i + 4];
-			dattabindex[i].height_5 = tabbuffer[6 * i + 5];
-		}
-		//testadr = 0x9999;
-		//memcpy(tabbuffer, &testadr, 4);
-	}
-}
-
 signed int GetTrueWizardNumber_61790(signed int inputnumber)//242790
 {
 	signed int outputNumber = inputnumber;
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
+	if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
 	{
 		switch (D41A0_0.array_0x2BDE[inputnumber].dword_0x3E6_2BE4_12228.byte_0x1C0_448)
 		{
@@ -3290,58 +3014,12 @@ signed int GetTrueWizardNumber_61790(signed int inputnumber)//242790
 	return outputNumber;
 }
 
-void DecompressLevel_2FECE(Type_CompressedLevel_2FECE* from, Type_Level_2FECE* to) {
-	to->word_2FECE = from->word_2FECE;
-	to->word_2FED0 = from->word_2FED0;
-	to->byte_0x2FED2 = from->byte_0x2FED2;
-	to->byte_0x2FED3 = from->byte_0x2FED3;
-	to->MapType = (from->MapType == 2) ? MapType_t::Cave : (from->MapType == 1) ? MapType_t::Night : MapType_t::Day;
-	to->word_0x2FED5 = from->word_0x2FED5;
-	to->word_0x2FED7 = from->word_0x2FED7;
-	for (int i = 0; i < 8; i++)to->player_0x2FED9[i] = from->array_0x2FED9[i];
-	for (int i = 0; i < 4; i++)to->stubb[i] = from->stubb[i];
-	to->seed_0x2FEE5 = from->word_0x2FEE5;
-	for (int i = 0; i < 2; i++)to->stubb2[i] = from->stubb2[i];
-	to->offset_0x2FEE9 = from->word_0x2FEE9;
-	for (int i = 0; i < 2; i++)to->stubc[i] = from->stubc[i];
-	to->raise_0x2FEED = from->word_0x2FEED;
-	for (int i = 0; i < 2; i++)to->stubc2[i] = from->stubc2[i];
-	to->gnarl_0x2FEF1 = from->word_0x2FEF1;
-	for (int i = 0; i < 2; i++)to->stubc3[i] = from->stubc3[i];
-	to->river_0x2FEF5 = from->word_0x2FEF5;
-	to->lriver_0x2FEF9 = from->word_0x2FEF9;
-	for (int i = 0; i < 2; i++)to->stube[i] = from->stube[i];
-	to->source_0x2FEFD = from->word_0x2FEFD;
-	for (int i = 0; i < 2; i++)to->stubf[i] = from->stubf[i];
-	to->snLin_0x2FF01 = from->word_0x2FF01;
-	for (int i = 0; i < 2; i++)to->stubg[i] = from->stubg[i];
-	to->snFlt_0x2FF05 = from->word_0x2FF05;
-	for (int i = 0; i < 2; i++)to->stubh[i] = from->stubh[i];
-	to->bhLin_0x2FF09 = from->word_0x2FF09;
-	for (int i = 0; i < 2; i++)to->stubi[i] = from->stubi[i];
-	to->bhFlt_0x2FF0D = from->word_0x2FF0D;
-	for (int i = 0; i < 2; i++)to->stubj[i] = from->stubj[i];
-	to->rkSte_0x2FF11 = from->word_0x2FF11;
-	for (int i = 0; i < 1022; i++)to->stubk[i] = from->stubk[i];
-	for (int i = 0; i < 1200; i++)to->entity_0x30311[i] = from->array_0x30311[i];
-	to->next_0x360D1 = from->next_0x360D1;
-	for (int i = 0; i < 8; i++)to->next_0x360D2[i] = from->next_0x360D2[i];
-	for (int i = 0; i < 8; i++)to->stages_0x36442[i] = from->str_0x36442[i];
-	for (int i = 0; i < 11; i++)
-	{
-		to->StageVars_0x3647A[i].index_0x3647A_0 = from->array_0x3647A[i].str_0x3647A_byte_0;
-		to->StageVars_0x3647A[i].stage_0x3647A_1 = from->array_0x3647A[i].str_0x3647A_byte_1;
-		to->StageVars_0x3647A[i].str_0x3647A_2 = from->array_0x3647A[i].str_0x3647A_2;
-		to->StageVars_0x3647A[i].str_0x3647C_4.axis = from->array_0x3647A[i].str_0x3647C_4.axis;
-	}
-}
-
 void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type_D41A0_BYTESTR_0* to) {
 	for (int i = 0; i < 4; i++)to->stub0[i] = from->stub0[i];
 	to->dword_0x4 = from->dword_0x4;
 	to->rand_0x8 = from->dword_0x8;
 	to->LevelIndex_0xc = from->word_0xc;
-	to->NumberOfPlayers_0xe = from->word_0xe;
+	to->NumberOfPlayers_0xe = from->NumberOfPlayers_0xe;
 	for (int i = 0; i < 0x1d; i++)to->array_0x10[i] = from->array_0x10[i];
 	to->dword_0x2d = from->dword_0x2d;
 	to->word_0x31 = from->word_0x31;
@@ -3370,9 +3048,9 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	for (int i = 0; i < 0x14d; i++)to->stub3c[i] = from->stub3c[i];
 	for (int i = 0; i < 0x6ff; i++)to->stub3d[i] = from->stub3d[i];
 	for (int i = 0; i < 8; i++)to->array_0x2BDE[i] = from->array_0x2BDE[i];
-	for (int i = 0; i < 8; i++)to->playerInputs_0x6E3E[i] = from->playerInputs_0x6E3E[i];
+	for (int i = 0; i < 8; i++)to->array_0x6E3E[i] = from->array_0x6E3E[i];
 	for (int i = 0; i < 0x3e8; i++) {
-		to->struct_0x6E8E[i].next_0 = (_entity_0x6E8E*)from->struct_0x6E8E[i].next_0;
+		to->struct_0x6E8E[i].next_0 = (_str_0x6E8E*)from->struct_0x6E8E[i].next_0;
 		to->struct_0x6E8E[i].maxLife_0x4 = from->struct_0x6E8E[i].dword_0x4;
 		to->struct_0x6E8E[i].life_0x8 = from->struct_0x6E8E[i].dword_0x8;
 		to->struct_0x6E8E[i].struct_byte_0xc_12_15 = from->struct_0x6E8E[i].struct_byte_0xc_12_15;
@@ -3381,14 +3059,14 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 		to->struct_0x6E8E[i].oldMapEntity_0x16_22 = from->struct_0x6E8E[i].word_0x16_22;
 		to->struct_0x6E8E[i].nextEntity_0x18_24 = from->struct_0x6E8E[i].word_0x18_24_next_entity;
 		to->struct_0x6E8E[i].id_0x1A_26 = from->struct_0x6E8E[i].word_0x1A_26;
-		to->struct_0x6E8E[i].word_0x1C_28 = from->struct_0x6E8E[i].word_0x1C_28;
-		to->struct_0x6E8E[i].word_0x1E_30 = from->struct_0x6E8E[i].word_0x1E_30;
-		to->struct_0x6E8E[i].word_0x20_32 = from->struct_0x6E8E[i].word_0x20_32;
-		to->struct_0x6E8E[i].word_0x22_34 = from->struct_0x6E8E[i].word_0x22_34;
+		to->struct_0x6E8E[i].yaw_0x1C_28 = from->struct_0x6E8E[i].word_0x1C_28;
+		to->struct_0x6E8E[i].pitch_0x1E_30 = from->struct_0x6E8E[i].word_0x1E_30;
+		to->struct_0x6E8E[i].roll_0x20_32 = from->struct_0x6E8E[i].word_0x20_32;
+		to->struct_0x6E8E[i].fov_0x22_34 = from->struct_0x6E8E[i].word_0x22_34;
 		to->struct_0x6E8E[i].word_0x24_36 = from->struct_0x6E8E[i].word_0x24_36;
 		to->struct_0x6E8E[i].word_0x26_38 = from->struct_0x6E8E[i].word_0x26_38;
 		to->struct_0x6E8E[i].parentId_0x28_40 = from->struct_0x6E8E[i].word_0x28_40;
-		to->struct_0x6E8E[i].word_0x2A_42 = from->struct_0x6E8E[i].word_0x2A_42;
+		to->struct_0x6E8E[i].subSpellIndex_0x2A_42 = from->struct_0x6E8E[i].word_0x2A_42;
 		to->struct_0x6E8E[i].word_0x2C_44 = from->struct_0x6E8E[i].word_0x2C_44;
 		to->struct_0x6E8E[i].word_0x2E_46 = from->struct_0x6E8E[i].word_0x2E_46;
 		to->struct_0x6E8E[i].word_0x30_48 = from->struct_0x6E8E[i].word_0x30_48;
@@ -3400,7 +3078,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 		to->struct_0x6E8E[i].byte_0x3A_58 = from->struct_0x6E8E[i].byte_0x3A_58;
 		to->struct_0x6E8E[i].byte_0x3B_59 = from->struct_0x6E8E[i].byte_0x3B_59;
 		to->struct_0x6E8E[i].byte_0x3C_60 = from->struct_0x6E8E[i].byte_0x3C_60;
-		to->struct_0x6E8E[i].byte_0x3D_61 = from->struct_0x6E8E[i].byte_0x3D_61;
+		to->struct_0x6E8E[i].fontTypeIndex_0x3D_61 = from->struct_0x6E8E[i].byte_0x3D_61;
 		to->struct_0x6E8E[i].byte_0x3E_62 = from->struct_0x6E8E[i].byte_0x3E_62;
 		to->struct_0x6E8E[i].class_0x3F_63 = from->struct_0x6E8E[i].type_0x3F_63;
 		to->struct_0x6E8E[i].model_0x40_64 = from->struct_0x6E8E[i].subtype_0x40_64;
@@ -3408,34 +3086,34 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 		to->struct_0x6E8E[i].xsubtype_0x42_66 = from->struct_0x6E8E[i].byte_0x42_66;
 		to->struct_0x6E8E[i].byte_0x43_67 = from->struct_0x6E8E[i].byte_0x43_67;
 		to->struct_0x6E8E[i].byte_0x44_68 = from->struct_0x6E8E[i].byte_0x44_68;
-		to->struct_0x6E8E[i].state_0x45_69 = from->struct_0x6E8E[i].byte_0x45_69;
+		to->struct_0x6E8E[i].actionIndex_0x45_69 = from->struct_0x6E8E[i].byte_0x45_69;
 		to->struct_0x6E8E[i].byte_0x46_70 = from->struct_0x6E8E[i].byte_0x46_70;
 		to->struct_0x6E8E[i].byte_0x47_71_xx = from->struct_0x6E8E[i].byte_0x47_71_xx;
 		to->struct_0x6E8E[i].StageVar1_0x48_72 = from->struct_0x6E8E[i].byte_0x48_72;
 		to->struct_0x6E8E[i].StageVar2_0x49_73 = from->struct_0x6E8E[i].byte_0x49_73;
 		to->struct_0x6E8E[i].word_0x4A_74 = from->struct_0x6E8E[i].word_0x4A_74;
-		to->struct_0x6E8E[i].position_0x4C_76 = from->struct_0x6E8E[i].position_0x4C_76;
+		to->struct_0x6E8E[i].axis_0x4C_76 = from->struct_0x6E8E[i].array_0x4C_76;
 		to->struct_0x6E8E[i].array_0x52_82 = from->struct_0x6E8E[i].array_0x52_82;
 		to->struct_0x6E8E[i].word_0x5A_90 = from->struct_0x6E8E[i].word_0x5A_90;
-		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
+		to->struct_0x6E8E[i].animationFrame_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
 		to->struct_0x6E8E[i].byte_0x5D_93 = from->struct_0x6E8E[i].byte_0x5D_93;
 		to->struct_0x6E8E[i].str_0x5E_94 = from->struct_0x6E8E[i].str_0x5E_94;
 		to->struct_0x6E8E[i].actSpeed_0x82_130 = from->struct_0x6E8E[i].word_0x82_130;
 		to->struct_0x6E8E[i].minSpeed_0x84_132 = from->struct_0x6E8E[i].word_0x84_132;
 		to->struct_0x6E8E[i].maxSpeed_0x86_134 = from->struct_0x6E8E[i].word_0x86_134;
-		to->struct_0x6E8E[i].dword_0x88_136 = from->struct_0x6E8E[i].dword_0x88_136;
+		to->struct_0x6E8E[i].manaRegen_0x88_136 = from->struct_0x6E8E[i].dword_0x88_136;
 		to->struct_0x6E8E[i].maxMana_0x8C_140 = from->struct_0x6E8E[i].dword_0x8C_140;
 		to->struct_0x6E8E[i].mana_0x90_144 = from->struct_0x6E8E[i].dword_0x90_144;
-		to->struct_0x6E8E[i].word_0x94_148 = from->struct_0x6E8E[i].word_0x94_148;
+		to->struct_0x6E8E[i].playerEntityIndex_0x94_148 = from->struct_0x6E8E[i].playerEntityIndex_0x94_148;
 		to->struct_0x6E8E[i].word_0x96_150 = from->struct_0x6E8E[i].word_0x96_150;
 		to->struct_0x6E8E[i].word_0x98_152 = from->struct_0x6E8E[i].word_0x98_152;
-		to->struct_0x6E8E[i].word_0x9A_154x = from->struct_0x6E8E[i].word_0x9A_154x;
+		to->struct_0x6E8E[i].axis_0x9A_154x = from->struct_0x6E8E[i].axis_0x9A_154x;
 		to->struct_0x6E8E[i].dword_0xA0_160x = (type_str_160*)from->struct_0x6E8E[i].dword_0xA0_160x;
 		to->struct_0x6E8E[i].dword_0xA4_164x = (type_str_164*)from->struct_0x6E8E[i].dword_0xA4_164x;
 	}
 
 	to->terrain_2FECE.word_2FECE = from->str_2FECE.word_2FECE;
-	to->terrain_2FECE.word_2FED0 = from->str_2FECE.word_2FED0;
+	to->terrain_2FECE.levelID_2FED0 = from->str_2FECE.levelID_2FED0;
 	to->terrain_2FECE.byte_0x2FED2 = from->str_2FECE.byte_0x2FED2;
 	to->terrain_2FECE.byte_0x2FED3 = from->str_2FECE.byte_0x2FED3;
 	to->terrain_2FECE.MapType = (from->str_2FECE.MapType == 2) ? MapType_t::Cave : (from->str_2FECE.MapType == 1) ? MapType_t::Night : MapType_t::Day;
@@ -3534,7 +3212,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 	to->dword_0x4 = from->dword_0x4;
 	to->dword_0x8 = from->rand_0x8;
 	to->word_0xc = from->LevelIndex_0xc;
-	to->word_0xe = from->NumberOfPlayers_0xe;
+	to->NumberOfPlayers_0xe = from->NumberOfPlayers_0xe;
 	for (int i = 0; i < 0x1d; i++)to->array_0x10[i] = from->array_0x10[i];
 	to->dword_0x2d = from->dword_0x2d;
 	to->word_0x31 = from->word_0x31;
@@ -3563,7 +3241,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 	for (int i = 0; i < 0x14d; i++)to->stub3c[i] = from->stub3c[i];
 	for (int i = 0; i < 0x6ff; i++)to->stub3d[i] = from->stub3d[i];
 	for (int i = 0; i < 8; i++)to->array_0x2BDE[i] = from->array_0x2BDE[i];
-	for (int i = 0; i < 8; i++)to->playerInputs_0x6E3E[i] = from->playerInputs_0x6E3E[i];
+	for (int i = 0; i < 8; i++)to->array_0x6E3E[i] = from->array_0x6E3E[i];
 	for (int i = 0; i < 0x3e8; i++) {
 		to->struct_0x6E8E[i].next_0 = ((uint8_t*)from->struct_0x6E8E[i].next_0 - Zero_pointer);
 		to->struct_0x6E8E[i].dword_0x4 = from->struct_0x6E8E[i].maxLife_0x4;
@@ -3574,14 +3252,14 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 		to->struct_0x6E8E[i].word_0x16_22 = from->struct_0x6E8E[i].oldMapEntity_0x16_22;
 		to->struct_0x6E8E[i].word_0x18_24_next_entity = from->struct_0x6E8E[i].nextEntity_0x18_24;
 		to->struct_0x6E8E[i].word_0x1A_26 = from->struct_0x6E8E[i].id_0x1A_26;
-		to->struct_0x6E8E[i].word_0x1C_28 = from->struct_0x6E8E[i].word_0x1C_28;
-		to->struct_0x6E8E[i].word_0x1E_30 = from->struct_0x6E8E[i].word_0x1E_30;
-		to->struct_0x6E8E[i].word_0x20_32 = from->struct_0x6E8E[i].word_0x20_32;
-		to->struct_0x6E8E[i].word_0x22_34 = from->struct_0x6E8E[i].word_0x22_34;
+		to->struct_0x6E8E[i].word_0x1C_28 = from->struct_0x6E8E[i].yaw_0x1C_28;
+		to->struct_0x6E8E[i].word_0x1E_30 = from->struct_0x6E8E[i].pitch_0x1E_30;
+		to->struct_0x6E8E[i].word_0x20_32 = from->struct_0x6E8E[i].roll_0x20_32;
+		to->struct_0x6E8E[i].word_0x22_34 = from->struct_0x6E8E[i].fov_0x22_34;
 		to->struct_0x6E8E[i].word_0x24_36 = from->struct_0x6E8E[i].word_0x24_36;
 		to->struct_0x6E8E[i].word_0x26_38 = from->struct_0x6E8E[i].word_0x26_38;
 		to->struct_0x6E8E[i].word_0x28_40 = from->struct_0x6E8E[i].parentId_0x28_40;
-		to->struct_0x6E8E[i].word_0x2A_42 = from->struct_0x6E8E[i].word_0x2A_42;
+		to->struct_0x6E8E[i].word_0x2A_42 = from->struct_0x6E8E[i].subSpellIndex_0x2A_42;
 		to->struct_0x6E8E[i].word_0x2C_44 = from->struct_0x6E8E[i].word_0x2C_44;
 		to->struct_0x6E8E[i].word_0x2E_46 = from->struct_0x6E8E[i].word_0x2E_46;
 		to->struct_0x6E8E[i].word_0x30_48 = from->struct_0x6E8E[i].word_0x30_48;
@@ -3593,7 +3271,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 		to->struct_0x6E8E[i].byte_0x3A_58 = from->struct_0x6E8E[i].byte_0x3A_58;
 		to->struct_0x6E8E[i].byte_0x3B_59 = from->struct_0x6E8E[i].byte_0x3B_59;
 		to->struct_0x6E8E[i].byte_0x3C_60 = from->struct_0x6E8E[i].byte_0x3C_60;
-		to->struct_0x6E8E[i].byte_0x3D_61 = from->struct_0x6E8E[i].byte_0x3D_61;
+		to->struct_0x6E8E[i].byte_0x3D_61 = from->struct_0x6E8E[i].fontTypeIndex_0x3D_61;
 		to->struct_0x6E8E[i].byte_0x3E_62 = from->struct_0x6E8E[i].byte_0x3E_62;
 		to->struct_0x6E8E[i].type_0x3F_63 = from->struct_0x6E8E[i].class_0x3F_63;
 		to->struct_0x6E8E[i].subtype_0x40_64 = from->struct_0x6E8E[i].model_0x40_64;
@@ -3601,34 +3279,34 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 		to->struct_0x6E8E[i].byte_0x42_66 = from->struct_0x6E8E[i].xsubtype_0x42_66;
 		to->struct_0x6E8E[i].byte_0x43_67 = from->struct_0x6E8E[i].byte_0x43_67;
 		to->struct_0x6E8E[i].byte_0x44_68 = from->struct_0x6E8E[i].byte_0x44_68;
-		to->struct_0x6E8E[i].byte_0x45_69 = from->struct_0x6E8E[i].state_0x45_69;
+		to->struct_0x6E8E[i].byte_0x45_69 = from->struct_0x6E8E[i].actionIndex_0x45_69;
 		to->struct_0x6E8E[i].byte_0x46_70 = from->struct_0x6E8E[i].byte_0x46_70;
 		to->struct_0x6E8E[i].byte_0x47_71_xx = from->struct_0x6E8E[i].byte_0x47_71_xx;
 		to->struct_0x6E8E[i].byte_0x48_72 = from->struct_0x6E8E[i].StageVar1_0x48_72;
 		to->struct_0x6E8E[i].byte_0x49_73 = from->struct_0x6E8E[i].StageVar2_0x49_73;
 		to->struct_0x6E8E[i].word_0x4A_74 = from->struct_0x6E8E[i].word_0x4A_74;
-		to->struct_0x6E8E[i].position_0x4C_76 = from->struct_0x6E8E[i].position_0x4C_76;
+		to->struct_0x6E8E[i].array_0x4C_76 = from->struct_0x6E8E[i].axis_0x4C_76;
 		to->struct_0x6E8E[i].array_0x52_82 = from->struct_0x6E8E[i].array_0x52_82;
 		to->struct_0x6E8E[i].word_0x5A_90 = from->struct_0x6E8E[i].word_0x5A_90;
-		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
+		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].animationFrame_0x5C_92;
 		to->struct_0x6E8E[i].byte_0x5D_93 = from->struct_0x6E8E[i].byte_0x5D_93;
 		to->struct_0x6E8E[i].str_0x5E_94 = from->struct_0x6E8E[i].str_0x5E_94;
 		to->struct_0x6E8E[i].word_0x82_130 = from->struct_0x6E8E[i].actSpeed_0x82_130;
 		to->struct_0x6E8E[i].word_0x84_132 = from->struct_0x6E8E[i].minSpeed_0x84_132;
 		to->struct_0x6E8E[i].word_0x86_134 = from->struct_0x6E8E[i].maxSpeed_0x86_134;
-		to->struct_0x6E8E[i].dword_0x88_136 = from->struct_0x6E8E[i].dword_0x88_136;
+		to->struct_0x6E8E[i].dword_0x88_136 = from->struct_0x6E8E[i].manaRegen_0x88_136;
 		to->struct_0x6E8E[i].dword_0x8C_140 = from->struct_0x6E8E[i].maxMana_0x8C_140;
 		to->struct_0x6E8E[i].dword_0x90_144 = from->struct_0x6E8E[i].mana_0x90_144;
-		to->struct_0x6E8E[i].word_0x94_148 = from->struct_0x6E8E[i].word_0x94_148;
+		to->struct_0x6E8E[i].playerEntityIndex_0x94_148 = from->struct_0x6E8E[i].playerEntityIndex_0x94_148;
 		to->struct_0x6E8E[i].word_0x96_150 = from->struct_0x6E8E[i].word_0x96_150;
 		to->struct_0x6E8E[i].word_0x98_152 = from->struct_0x6E8E[i].word_0x98_152;
-		to->struct_0x6E8E[i].word_0x9A_154x = from->struct_0x6E8E[i].word_0x9A_154x;
+		to->struct_0x6E8E[i].axis_0x9A_154x = from->struct_0x6E8E[i].axis_0x9A_154x;
 		to->struct_0x6E8E[i].dword_0xA0_160x = ((uint8_t*)from->struct_0x6E8E[i].dword_0xA0_160x - Zero_pointer);
 		to->struct_0x6E8E[i].dword_0xA4_164x = ((uint8_t*)from->struct_0x6E8E[i].dword_0xA4_164x - Zero_pointer);
 	}
 
 	to->str_2FECE.word_2FECE = from->terrain_2FECE.word_2FECE;
-	to->str_2FECE.word_2FED0 = from->terrain_2FECE.word_2FED0;
+	to->str_2FECE.levelID_2FED0 = from->terrain_2FECE.levelID_2FED0;
 	to->str_2FECE.byte_0x2FED2 = from->terrain_2FECE.byte_0x2FED2;
 	to->str_2FECE.byte_0x2FED3 = from->terrain_2FECE.byte_0x2FED3;
 	to->str_2FECE.MapType = static_cast<std::underlying_type<MapType_t>::type>(from->terrain_2FECE.MapType);
@@ -3746,18 +3424,3 @@ unsigned long _clock()
 unsigned long j___clock() {
 	return _clock();
 }; // weak
-
-void SetPlayerLocation(uint16_t x, uint16_t y, int16_t z, int16_t pitch, int16_t roll, int16_t yaw)
-{
-	if (Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240] != nullptr)
-	{
-		auto ptrPlayerEntity = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-		ptrPlayerEntity->position_0x4C_76.x = x;
-		ptrPlayerEntity->position_0x4C_76.y = y;
-		ptrPlayerEntity->position_0x4C_76.z = z;
-
-		ptrPlayerEntity->array_0x52_82.pitch = pitch;
-		ptrPlayerEntity->array_0x52_82.roll = roll;
-		ptrPlayerEntity->array_0x52_82.yaw = yaw;
-	}
-}

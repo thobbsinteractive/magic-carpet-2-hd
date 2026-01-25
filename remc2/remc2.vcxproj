@@ -9,6 +9,14 @@
       <Configuration>Debug-Deploy-Enhanced-Assets</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug-nonASA|Win32">
+      <Configuration>Debug-nonASA</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug-nonASA|x64">
+      <Configuration>Debug-nonASA</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -41,6 +49,13 @@
     <CharacterSet>Unicode</CharacterSet>
     <EnableASAN>true</EnableASAN>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>true</EnableASAN>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Deploy-Enhanced-Assets|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -60,6 +75,13 @@
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <EnableASAN>true</EnableASAN>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Deploy-Enhanced-Assets|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -82,6 +104,9 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Deploy-Enhanced-Assets|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -89,6 +114,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Deploy-Enhanced-Assets|x64'" Label="PropertySheets">
@@ -102,11 +130,19 @@
     <LinkIncremental>true</LinkIncremental>
     <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Deploy-Enhanced-Assets|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|x64'">
     <LinkIncremental>true</LinkIncremental>
     <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
   </PropertyGroup>
@@ -320,12 +356,16 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="build_config.h" />
     <ClInclude Include="engine\Animation.h" />
     <ClInclude Include="engine\Basic.h" />
+    <ClInclude Include="engine\BasicMini.h" />
+    <ClInclude Include="engine\BasicTerrain.h" />
     <ClInclude Include="engine\CommandLineParser.h" />
     <ClInclude Include="engine\Compare.h" />
     <ClInclude Include="engine\Event.h" />
     <ClInclude Include="engine\EventDispatcher.h" />
+    <ClInclude Include="engine\EventsFunctions.h" />
     <ClInclude Include="engine\EventType.h" />
     <ClInclude Include="engine\GameBitmap.h" />
     <ClInclude Include="engine\GameState.h" />
@@ -351,6 +391,9 @@
     <ClInclude Include="engine\ProjectionPolygon.h" />
     <ClInclude Include="engine\Scene.h" />
     <ClInclude Include="engine\WavIndexes.h" />
+    <ClInclude Include="engine\ReadAndDecompress.h" />
+    <ClInclude Include="engine\ScreenBuff.h" />
+    <ClInclude Include="engine\Spells.h" />
     <ClInclude Include="engine\TypeConfigDat.h" />
     <ClInclude Include="engine\Rectangle.h" />
     <ClInclude Include="engine\Type_BigSpritesBuffer.h" />
@@ -370,8 +413,8 @@
     <ClInclude Include="engine\Unk_D4A30.h" />
     <ClInclude Include="engine\Type_Unk_F0E20x.h" />
     <ClInclude Include="engine\Type_WORD_D951C.h" />
+    <ClInclude Include="engine\UVTable_D4350.h" />
     <ClInclude Include="engine\ViewPort.h" />
-    <ClInclude Include="engine\XUnk_D4350.h" />
     <ClInclude Include="engine\RenderThread.h" />
     <ClInclude Include="engine\GameUI.h" />
     <ClInclude Include="engine\Events.h" />
@@ -391,6 +434,7 @@
     <ClInclude Include="portability\SfxEffectWrapper.h" />
     <ClInclude Include="utilities\BitmapIO.h" />
     <ClInclude Include="utilities\DataFileIO.h" />
+    <ClInclude Include="utilities\DataFileRNC.h" />
     <ClInclude Include="utilities\StateMonitor.h" />
     <ClInclude Include="utilities\RendererTests.h" />
     <ClInclude Include="engine\ail_sound.h" />
@@ -402,6 +446,7 @@
     <ClInclude Include="portability\dirent-x.h" />
     <ClInclude Include="portability\bitmap_pos_struct.h" />
     <ClInclude Include="portability\port_filesystem.h" />
+    <ClInclude Include="portability\port_inputs.h" />
     <ClInclude Include="portability\port_outputs.h" />
     <ClInclude Include="portability\port_sdl_sound.h" />
     <ClInclude Include="portability\port_sdl_vga_mouse.h" />
@@ -417,19 +462,32 @@
   <ItemGroup>
     <ClCompile Include="engine\Animation.cpp" />
     <ClCompile Include="engine\Basic.cpp" />
+    <ClCompile Include="engine\BasicMini.cpp" />
+    <ClCompile Include="engine\BasicTerrain.cpp" />
     <ClCompile Include="engine\CommandLineParser.cpp" />
     <ClCompile Include="engine\Compare.cpp" />
     <ClCompile Include="engine\EventDispatcher.cpp" />
+    <ClCompile Include="engine\CompareMaps.cpp" />
+    <ClCompile Include="engine\ConvertMapInfo.cpp" />
+    <ClCompile Include="engine\DatTabIndexes.cpp" />
+    <ClCompile Include="engine\EventsFunctions.cpp" />
     <ClCompile Include="engine\GameBitmap.cpp" />
     <ClCompile Include="engine\GameRenderGL.cpp" />
     <ClCompile Include="engine\GameRenderHD.cpp" />
     <ClCompile Include="engine\GameRenderNG.cpp" />
+    <ClCompile Include="engine\LevelInit.cpp" />
+    <ClCompile Include="engine\LevelStructs.cpp" />
     <ClCompile Include="engine\MenusAndIntros.cpp" />
     <ClCompile Include="engine\GameRenderOriginal.cpp" />
     <ClCompile Include="engine\Graphics.cpp" />
+    <ClCompile Include="engine\MouseOnOff.cpp" />
     <ClCompile Include="engine\Network.cpp" />
+    <ClCompile Include="engine\PrintMessages.cpp" />
     <ClCompile Include="engine\ProjectionPolygon.cpp" />
+    <ClCompile Include="engine\ReadAndDecompress.cpp" />
+    <ClCompile Include="engine\ScreenBuff.cpp" />
     <ClCompile Include="engine\Sound.cpp" />
+    <ClCompile Include="engine\Spells.cpp" />
     <ClCompile Include="engine\Terrain.cpp" />
     <ClCompile Include="engine\TextureMaps.cpp" />
     <ClCompile Include="engine\Type_D404C.cpp" />
@@ -440,8 +498,8 @@
     <ClCompile Include="engine\Unk_D47E0.cpp" />
     <ClCompile Include="engine\Unk_D4A30.cpp" />
     <ClCompile Include="engine\Type_WORD_D951C.cpp" />
+    <ClCompile Include="engine\UVTable_D4350.cpp" />
     <ClCompile Include="engine\ViewPort.cpp" />
-    <ClCompile Include="engine\XUnk_D4350.cpp" />
     <ClCompile Include="engine\RenderThread.cpp" />
     <ClCompile Include="engine\GameUI.cpp" />
     <ClCompile Include="engine\Events.cpp" />
@@ -457,6 +515,7 @@
     <ClCompile Include="portability\port_show_perifery.cpp" />
     <ClCompile Include="utilities\BitmapIO.cpp" />
     <ClCompile Include="utilities\DataFileIO.cpp" />
+    <ClCompile Include="utilities\DataFileRNC.cpp" />
     <ClCompile Include="utilities\StateMonitor.cpp" />
     <ClCompile Include="utilities\RendererTests.cpp" />
     <ClCompile Include="engine\engine_support.cpp" />
@@ -464,6 +523,7 @@
     <ClCompile Include="engine\read_config.cpp" />
     <ClCompile Include="sub_main.cpp" />
     <ClCompile Include="portability\port_filesystem.cpp" />
+    <ClCompile Include="portability\port_inputs.cpp" />
     <ClCompile Include="portability\port_outputs.cpp" />
     <ClCompile Include="portability\port_sdl_sound.cpp" />
     <ClCompile Include="portability\port_sdl_vga_mouse.cpp" />
@@ -472,8 +532,10 @@
     <ClCompile Include="remc2.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-Deploy-Enhanced-Assets|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-Deploy-Enhanced-Assets|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

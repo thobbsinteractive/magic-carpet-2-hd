@@ -2,7 +2,9 @@
 
 #include <vector>
 #include <algorithm>
+#ifdef REMC2_CODE
 #include <fmt/core.h>
+#endif //REMC2_CODE
 
 #include "../portability/port_filesystem.h"
 
@@ -12,6 +14,7 @@ StateMonitor::StateMonitor() {
 }
 
 StateMonitor::~StateMonitor() {
+#ifdef REMC2_CODE
     if (!m_initialized) {
         return;
     }
@@ -19,6 +22,7 @@ StateMonitor::~StateMonitor() {
     SDL_DestroyWindow(m_window);
     m_renderer = nullptr;
     m_window = nullptr;
+#endif //REMC2_CODE
 }
 
 // Comparator function to sort pairs 
@@ -28,6 +32,7 @@ bool cmp(pair<string, ObservedChange>& a, pair<string, ObservedChange>& b)
 } 
  
 void StateMonitor::Init() {
+#ifdef REMC2_CODE
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     uint32_t redMask = 0xff000000;
     uint32_t greenMask = 0x00ff0000;
@@ -59,6 +64,7 @@ void StateMonitor::Init() {
     m_font = TTF_OpenFont(GetSubDirectoryPath("font/UbuntuMono-B.ttf").c_str(), 18);
 
     m_initialized = true;
+#endif //REMC2_CODE
 }
 
 void StateMonitor::Update() {
@@ -90,6 +96,7 @@ void StateMonitor::Update() {
 }
 
 void StateMonitor::Redraw(const vector<pair<string, ObservedChange> >& changes) {
+#ifdef REMC2_CODE
     SDL_RenderClear(m_renderer);
 
     SDL_Rect rect = {0, 0, STATE_MONITOR_WIDTH, STATE_MONITOR_HEIGHT};
@@ -120,6 +127,7 @@ void StateMonitor::Redraw(const vector<pair<string, ObservedChange> >& changes) 
 	SDL_UpdateTexture(m_texture, nullptr, m_surface->pixels, m_surface->pitch);
     SDL_RenderCopy(m_renderer, m_texture, &rect, &rect);
     SDL_RenderPresent(m_renderer);
+#endif //REMC2_CODE
 }
 
 void StateMonitor::RegisterChange(const string& key, const string& old_value, const string& new_value) {
@@ -162,6 +170,7 @@ void StateMonitor::RegisterChange(const string& key, const string& old_value, co
 
 
 void StateMonitor::MonitorD41A0() {
+#ifdef REMC2_CODE
     // compare D41A0_0 with with last state if different, add to observed changes
 	// uint8_t stub0[4];
     MONITOR_STRUCT_VARIABLE_HEX(D41A0_0, dword_0x4);
@@ -231,10 +240,12 @@ void StateMonitor::MonitorD41A0() {
 
     // shallow copy of D41A0_0
     m_last_states.D41A0_0 = D41A0_0;
+#endif //REMC2_CODE
 }
 
 extern type_x_DWORD_17DB70str x_DWORD_17DB70str;
 void StateMonitor::Monitor17DB70str() {
+#ifdef REMC2_CODE
     MONITOR_STRUCT_VARIABLE_HEX(x_DWORD_17DB70str, x_DWORD_17DB70);
     MONITOR_STRUCT_VARIABLE_HEX(x_DWORD_17DB70str, x_WORD_17DB74);
     MONITOR_STRUCT_VARIABLE_HEX(x_DWORD_17DB70str, unk_17DB76_posx);
@@ -257,6 +268,7 @@ void StateMonitor::Monitor17DB70str() {
 
     // shallow copy of x_DWORD_17DB70str
     m_last_states.x_DWORD_17DB70str = x_DWORD_17DB70str;
+#endif //REMC2_CODE
 }
 
 extern std::array<type_D4C52ar, 17> str_D4C48ar;
@@ -269,6 +281,7 @@ void StateMonitor::Monitor_str_D4C48ar() {
             m_last_states.str_D4C48ar[i].dword_10 != str_D4C48ar[i].dword_10 ||
             m_last_states.str_D4C48ar[i].dword_14 != str_D4C48ar[i].dword_14;
         if (different) {
+#ifdef REMC2_CODE
             RegisterChange(
                 fmt::format("str_D4C48ar[{}]", i),
                 fmt::format("{:x} {:x} {:x} {:x} {:x}", 
@@ -284,6 +297,7 @@ void StateMonitor::Monitor_str_D4C48ar() {
                     reinterpret_cast<std::uintptr_t>(str_D4C48ar[i].dword_10), 
                     reinterpret_cast<std::uintptr_t>(str_D4C48ar[i].dword_14))
             );
+#endif //REMC2_CODE
         }
     }
 

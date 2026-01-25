@@ -1,4 +1,4 @@
-﻿find  351660;
+find  351660;
 
 x_WORD_180662(351662)// neni treba
 
@@ -2161,7 +2161,7 @@ x_DWORD_180B48 = sub_93330_AIL_install_DIG_driver_file(/*(int)a1, */unk_180AB0, 
 	unk_180AB0 -filename
 	v6
 
-void sub_8F710_sound_proc21(int a1, __int16 a2, signed int a3, unsigned __int8 a4, char a5)
+void Update_Playing_Sample_Status_8F710(int a1, __int16 a2, signed int a3, unsigned __int8 a4, char a5)
 int **PlaySample_8F100(int *a1, __int16 a2, int a3, int a4, unsigned __int16 a5, char a6, unsigned __int8 a7)//270100 -asi pley sound
 signed int sub_916F0_sound_proc24()
 
@@ -2195,7 +2195,7 @@ int sub_A4920()
 sub_938C0_AIL_set_sample_file(*v14, (uint8_t*)*(x_DWORD *)(x_DWORD_E37A0_sound_buffer2 + 32 * a2 + 18), 1);
 -cycle
 
-void sub_8F710_sound_proc21(int a1, __int16 a2, signed int a3, unsigned __int8 a4, char a5)
+void Update_Playing_Sample_Status_8F710(int a1, __int16 a2, signed int a3, unsigned __int8 a4, char a5)
 -unk_180750_sound_buffer3 - nektere nejsou inicializovany
 
 unkstr1* sub_A2070(unkstr1* a1)//283070
@@ -2467,7 +2467,7 @@ sub_5BF50_load_psxdata -23cf50
 *pstr[ c].colorPalette_var28
 
 find
-x_WORD_17B4E0 - 34c4e0
+rand2_17B4E0 - 34c4e0
 sub_44E40 - 225e40
 f33b - ok
 
@@ -2489,7 +2489,7 @@ call 24fb90 - sub_6EB90
 2bb3bc + 6 * 11
 
 find
-x_DWORD_EA3E4 -  2bb3e4
+Entities_EA3E4 -  2bb3e4
 x_DWORD_EA3E8 -  2bb3e8
 sub_5C330();//23D330
 
@@ -2624,7 +2624,7 @@ call 265250
 call 228160
 
 			sub_47FC0(v7);//vga smaltitle
-			sub_56A30_init_game_level(a3);
+			LevelInitGame_56A30(a3);
 			sub_47160();
 
 find 363286 ->c6ce3500
@@ -2679,10 +2679,10 @@ je
 
 
 signed int sub_5C8D0(int a1)//23d8d0
-x_DWORD_EA3E4[ 98] not 363286 ->c6ce35
+Entities_EA3E4[ 98] not 363286 ->c6ce35
 238989
 void sub_57730()//238730
-	for (j = &x_DWORD_EA3E4[1]; j < &x_DWORD_EA3E4[ 3e8]; j += 168)
+	for (j = &Entities_EA3E4[1]; j < &Entities_EA3E4[ 3e8]; j += 168)
 
 3632d2->804d80de
 238e40
@@ -2732,7 +2732,7 @@ unsigned int sub_43970(unsigned int a1)//224970
 void sub_37240(uint8_t* a1)//218240
 
 229c84
-__int16 sub_48B90(int a1)//229b90
+__int16 SetHeightmapByBuilding_48B90(int a1)//229b90
 
 sub_44D00();//225d00
 
@@ -2908,7 +2908,7 @@ comp2 = compare_with_snapshot((char*)"0160-00229B94", x_BYTE_11B4E0
 signed int sub_5C8D0(uint8_t* a1)//23d8d0
 363286->35cec6
 versus
-x_DWORD_EA3E4[*(uint16_t*)(2124 * x_D41A0_BYTEARRAY_4_struct.byteindex_12 + x_D41A0_BYTEARRAY_0 + 11240)];
+Entities_EA3E4[*(uint16_t*)(2124 * x_D41A0_BYTEARRAY_4_struct.byteindex_12 + x_D41A0_BYTEARRAY_0 + 11240)];
 238989 in void sub_57730()//238730
 
 find
@@ -2933,7 +2933,7 @@ find 3618f2
 adress 22b137 -2c01 - uint8_t* sub_4A050()//22b050 - asi ok
 adress 22fc77 -7b03 - uint8_t* sub_4EC10(int a1)//22fc10
 
-(int)x_DWORD_EA3E4
+(int)Entities_EA3E4
 
 sub_498A0();//22a383 - problem - test it
 
@@ -2966,7 +2966,7 @@ uint8_t* sub_4B490(int a1)//22c490
 uint8_t* sub_4A190(uint8_t* a1, int a2, int a3)//22b190
 void sub_4A310(unsigned __int16 *a1)//22b310
 void sub_4A1E0(int a1, char a2)//22b1e0
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30(unsigned int a1)//237a30
 
 36193e
 
@@ -3013,7 +3013,7 @@ unsigned int sub_6F150(uint8_t* a1)//250150 - kontrola
 find 363286
 238989 void sub_57730()//238730
 [2a51a4]
-*(uint32_t*)&x_DWORD_EA3E4[ 98]
+*(uint32_t*)&Entities_EA3E4[ 98]
 363286
 
 void sub_5C8D0(uint8_t* a1)//23d8d0
@@ -3041,7 +3041,7 @@ find 3618ee->0000007b0300007a03
 
 sub_47320(a2);
 
-sub_47560(index, v4, v1, a1, x_DWORD_17DB54_game_turn2);
+sub_47560(index, v4, v1, a1, GameTimerTick_17DB54);
 sub_57730();
 
 find
@@ -3145,7 +3145,7 @@ tj.
 
 test
 int sub_2BE30()//20ce30
-		v3 = x_DWORD_EA3E4[*(unsigned __int16 *)(2124 * x_D41A0_BYTEARRAY_4_struct.byteindex_12 + x_D41A0_BYTEARRAY_0 + 11240)];
+		v3 = Entities_EA3E4[*(unsigned __int16 *)(2124 * x_D41A0_BYTEARRAY_4_struct.byteindex_12 + x_D41A0_BYTEARRAY_0 + 11240)];
 		20ced9
 
 		problem je zde:
@@ -3184,7 +3184,7 @@ call 281863
 size_t sub_988A7_read(FILE* a1, uint8_t* a2, int a3)//2798a7
 int sub_53E60_readfile_and_decompress(const char* path, uint8_t** a2)//234E60
 void sub_54800_read_and_decompress_tables(uint8_t a1)//235800
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30(unsigned int a1)//237a30
 
 2c7ee0+ 14300
 x_BYTE_F6EE0_tables
@@ -3541,13 +3541,13 @@ v18
 38cf50+f6=38d046->4c79
 24203d call uint8_t* sub_61000(uint8_t* a1)//242000
 241f00 call void sub_60F00()//241f00
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30(unsigned int a1)//237a30
 
 void sub_60F00()//241f00
 
-find init x_DWORD_EA3E4 versus 2bb3e4
+find init Entities_EA3E4 versus 2bb3e4
 
-x_DWORD_EA3E4[ 3e8]
+Entities_EA3E4[ 3e8]
 2bb3e4
 [2bb3e8]
 [2bc384]->385f06
@@ -3799,7 +3799,7 @@ addprocedurestop( 21f1b5,  2, true, true,  2c3c3000);
 problem in 
 3640f6
 versus
-x_DWORD_EA3E4[ ae]+ 56
+Entities_EA3E4[ ae]+ 56
 + 16 ,  2c,  50,  56
 
  56
@@ -3812,7 +3812,7 @@ uint8_t* sub_4E320(uint8_t* a1)//22f320
 
 
 zm2nu hledat zde:
-void sub_47320_in_game_loop(signed int a1)//228320
+void InGameLoop_47320(signed int a1)//228320
 debugcounter== b
 -----
 32c4e0+ d94f*2
@@ -3845,7 +3845,7 @@ versus
 ---
 3640f6+ 50 - 9c107d
 versus
-x_DWORD_EA3E4[ ae]+ 50 88107d
+Entities_EA3E4[ ae]+ 50 88107d
 if (debugcounter5 >=  0a)
 
 
@@ -3875,7 +3875,7 @@ versus
 
 363286
 versus
-x_DWORD_EA3E4[ 98]
+Entities_EA3E4[ 98]
 + 1c-00000000 -void sub_5D530(uint8_t* a1)//*(x_DWORD *)(a1 + 160)//23e530
 + 3c-00009903 -sub_57730(); pod
 
@@ -3968,7 +3968,7 @@ v63 = (uint8_t*)(*(int(**)(uint8_t*))((char *)&off_D781E + 14 * v112))(v113 + 76
 ---------------------------------------------------
 358ffc
 versus
-*(int32_t*)(*x_DWORD_EA3E4+ 63c0+164)
+*(int32_t*)(*Entities_EA3E4+ 63c0+164)
 ------------------------------------
 35ce76
 versus
@@ -4060,14 +4060,14 @@ versus
 12b2
 
 22b046 call void sub_49F90()//22af90
-*(x_DWORD *)(v7 + 582) = (int32_t)x_DWORD_EA3E4[v3]
+*(x_DWORD *)(v7 + 582) = (int32_t)Entities_EA3E4[v3]
 
 unk_D83AC - zrusit - sloucit
 
 ---x_D41A0_BYTEARRAY_0+ 12aa // 356038+ 12aa
 7e versus 00
 22b046 call void sub_49F90()//22af90
-*(x_DWORD *)(v7 + 582) = (int32_t)x_DWORD_EA3E4[v3]
+*(x_DWORD *)(v7 + 582) = (int32_t)Entities_EA3E4[v3]
 2360e4 call char sub_55080(unsigned __int8 a1, int a2)//236080
 238663 call void sub_57640()//238640
 2288a1 void sub_47760(/*int a1,*/uint32_t user/* int a2, int a3*/)//228760
@@ -4110,7 +4110,7 @@ x_D41A0_BYTEARRAY_0+ d886// 356038+ d886
 
 238e42 d60f
 238e42 d60f19
-238e42 561019 call void sub_57CF0(uint8_t* a1, uint8_t* a2)//238cf0
+238e42 561019 call void CopyEntityPosition_57CF0(uint8_t* a1, uint8_t* a2)//238cf0
 190
 
 x_D41A0_BYTEARRAY_0+ d570// 356038+ d570
@@ -4179,7 +4179,7 @@ c203 - 1fc9d8 call sub_1B8C0(uint8_t* a1)//1fc8c0
 1ff2cf - char sub_1E1C0(uint8_t* a1, __int16 a2)//1ff1c0
 1ff02e - char sub_1E020(uint8_t* a1, __int16 a2)//1ff020
 
-porovnat x_DWORD_EA3E4 tj 2bb3e4
+porovnat Entities_EA3E4 tj 2bb3e4
 
 void sub_41A90_VGA_Palette_install(uint8_t* buffer)//222a90
 271c10 call int16_t sub_90B27_VGA_pal_fadein_fadeout(uint8_t *newpalbuffer, uint8_t shadow_levels, bool singlestep)//271B27 init and nightfall
@@ -4397,7 +4397,7 @@ char x_BYTE_18069C; // weak
 x_DWORD_180730_cursor_data
 82c714
 270aa0 call void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tiley, int tilex, uint8_t* texture, uint8_t setbyte, char a6)//270935
-2708d7 call void sub_8F8B0_draw_bitmap320(int16_t posx, int16_t posy, posistruct temppstr)//2708B0
+2708d7 call void drawBitmap320_8F8B0(int16_t posx, int16_t posy, posistruct temppstr)//2708B0
 26de71 call void sub_8CD27_set_cursor(posistruct a2)//26dd27
 1f9c2c call void sub_18BB0()//1f9bb0
 
@@ -4419,7 +4419,7 @@ void sub_693F0(uint8_t* a1)//24a3f0
 
 2482e0
 
-filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct[x_BYTE_D419E]
+filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct[CursorGraphicsIndex_D419E]
 
 x_D41A0_BYTEARRAY_0[8589]->28
 versus
@@ -4437,7 +4437,7 @@ versus
 2bc3a8
 
 compare - *(int16_t*)&x_D41A0_BYTEARRAY_0[12] ==1
-x_DWORD_EA3E4[*(unsigned __int16 *)(2124 * *(int16_t*)&x_D41A0_BYTEARRAY_0[12] + x_D41A0_BYTEARRAY_0 + 11240)]
+Entities_EA3E4[*(unsigned __int16 *)(2124 * *(int16_t*)&x_D41A0_BYTEARRAY_0[12] + x_D41A0_BYTEARRAY_0 + 11240)]
 
 void sub_752C0()//2562c0
 
@@ -4538,7 +4538,7 @@ LABEL_215:
 		**(x_DWORD **)(v113 + 164) = *(unsigned __int8 *)(HIDWORD(v102) + 5);
 		*(x_WORD *)(*(x_DWORD *)(v113 + 164) + 24) = *(x_WORD *)(v114 + 6);
 		*(x_WORD *)(*(x_DWORD *)(v113 + 164) + 26) = *(x_WORD *)(v114 + 8);
-		v103 = x_DWORD_EA3E4[*(unsigned __int16 *)(v18 + 10)];
+		v103 = Entities_EA3E4[*(unsigned __int16 *)(v18 + 10)];
 		sub_57B20(v18, v103);
 		if (*(x_BYTE *)(v18 + 2118))
 			sub_55C60(a1, (int)v103, v18);
@@ -4551,7 +4551,7 @@ LABEL_215:
 
 v18 = x_D41A0_BYTEARRAY_0 + 11230; - projektily?
 
-x_DWORD_EA3E4[ 25a1]
+Entities_EA3E4[ 25a1]
 
 --------------------------
 pdwScreenBuffer_351628+ 2168( 00)
@@ -4580,7 +4580,7 @@ x_DWORD_F2C20ar[ 04] - X
 x_DWORD_F2C20ar
 
 
-x_DWORD_EA3E4[ ce]- 1c, 20, 4c, 50
+Entities_EA3E4[ ce]- 1c, 20, 4c, 50
 versus
 3655f6- 1c, 20, 4c, 50
  00 00 00 00 0A 00 00 00 09 00 00 00 06 00 00 00
@@ -4797,13 +4797,13 @@ x_BYTE_12B4E0(0x1e)
 versus
 0x2fc4e0(0x20)
 
-char sub_46570(unsigned __int16 a1, __int16 a2)//227570
+char AddBuildingToTerrain_46570(unsigned __int16 a1, __int16 a2)//227570
 void sub_37BC0(uint8_t* a1)//218bc0
 
 2276b8 -2401
 
 ---------------
-sub_46570
+AddBuildingToTerrain_46570
 0100-ok
 2500-ok
 2501-ok
@@ -4844,7 +4844,7 @@ x_BYTE_12B4E0+0xfe(0x1f)
 versus
 0x2fc4e0+0xfe(0x20)
 
-2277bf - call char sub_46570(unsigned __int16 a1, __int16 a2)//227570
+2277bf - call char AddBuildingToTerrain_46570(unsigned __int16 a1, __int16 a2)//227570
 eax=ffff
 alah=0000
 218f79 - call void sub_37BC0(uint8_t* a1)//218bc0
@@ -4860,7 +4860,7 @@ versus
 x_BYTE_10B4E0(0x1)
 versus
 0x2dc4e0(0x0)
-char sub_46570(unsigned __int16 a1, __int16 a2)//227570
+char AddBuildingToTerrain_46570(unsigned __int16 a1, __int16 a2)//227570
 0101 =1
 0124 =v14
 
@@ -5133,7 +5133,7 @@ LOBYTE(unk_18058Cstr.x_DWORD_18059C) = unk_18058Cstr.x_DWORD_18059C | 0x10;
 
 
 draw spell:
-sub_2BB40_draw_bitmap(a1, a2, filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct[(*(char *)(a3 + 64) + 123)]);
+DrawBitmap_2BB40(a1, a2, filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct[(*(char *)(a3 + 64) + 123)]);
 
 x_WORD_D93C0_bldgprmbuffer[0x13f+v54]
 versus
@@ -5186,7 +5186,7 @@ versus
 *(int32_t*)&x_D41A0_BYTEARRAY_0[0x341c]
 -selected bottom spell
 
-sub_692A0(x_DWORD_EA3E4[0xc4e0/168]);
+sub_692A0(Entities_EA3E4[0xc4e0/168]);
 +64
 +69
 
@@ -5255,7 +5255,7 @@ sub_A5040(x_DWORD *a1)//286040
 									v7 = (int)x_D41A0_BYTEARRAY_0;
 									if ((unsigned int)(100
 										* (*(x_DWORD *)(v6 + 316)
-											+ *(x_DWORD *)(x_DWORD_EA3E4[*(unsigned __int16 *)(v6 + 58)] + 144))
+											+ *(x_DWORD *)(Entities_EA3E4[*(unsigned __int16 *)(v6 + 58)] + 144))
 										/ v18) >= *(x_DWORD *)(x_D41A0_BYTEARRAY_0 + 10 * v3 + 222546))
 									{
 										v0[v3 + 3] = 2;
@@ -5278,7 +5278,7 @@ versus
 *(int32_t*)(v6 + 316)//0x13c
 
 
-sub_56A30_init_game_level
+LevelInitGame_56A30
 
 
 x_D41A0_BYTEARRAY_0 + 28222
@@ -5678,7 +5678,7 @@ x_BYTE_11B4E0[0xdf4d]
 
 test
 
-sub_56A30_init_game_level
+LevelInitGame_56A30
 
 (uint8_t*)&D41A0_BYTESTR_0+0x795e
 
@@ -5764,7 +5764,7 @@ D41A0_BYTESTR_0.struct_0x6E8E[1]
 &x_D41A0_BYTEARRAY_0[28302+168+63]
 
 (x_D41A0_BYTEARRAY_0 + 4 * 0x3e6+ 582) ==&x_D41A0_BYTEARRAY_0[28302+168]
-x_DWORD_EA3E4[1]
+Entities_EA3E4[1]
 6e54fb0b
 versus
 D41A0_BYTESTR_0.pointers_0x246[0x3e6]
@@ -5892,7 +5892,7 @@ test char sub_1DDA0(type_str_0x6E8E* a1x, __int16 a2)//1feda0
 (uint8_t*)&D41A0_BYTESTR_0+0xd496 0x00
 (uint8_t*)x_D41A0_BYTEARRAY_0+0xd496 0x40
 
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 
 (uint8_t*)x_BYTE_10B4E0+0xbcae 0x25
 (uint8_t*)x_BYTE_10B4E0+0xbcae 0x00
@@ -5903,11 +5903,11 @@ void sub_462A0(unsigned __int16 a1, __int16 a2)//2272a0
 void sub_37240(type_str_0x6E8E* a1x)//218240
 test begin
 
-sub_57CF0
+CopyEntityPosition_57CF0
 -more count than 35
 
 zde:
-sub_57CF0(a1x, &x_WORD_EB398ar);
+CopyEntityPosition_57CF0(a1x, &x_WORD_EB398ar);
 
 je to ok, je jen ulozen maly vzorek
 
@@ -5976,12 +5976,12 @@ for (jy = &D41A0_BYTESTR_0.struct_0x6E8E[1]; jy <= &D41A0_BYTESTR_0.struct_0x6E8
  D41A0_BYTESTR_0.array_0x6E3E[0].str_0x6E3E_byte0
  D41A0_BYTESTR_0.array_0x6E3E[0].str_0x6E3E_byte5
 
- &x_DWORD_EA3E4[0]->array_0x4C_76
+ &Entities_EA3E4[0]->array_0x4C_76
 
  v113x->dword_0xA4_164x->word_0x6_6 = v102;//fix - test it
 
- D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].struct_0x1d1_2BDE_11695[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].word_0x00e_2BDE_11244+1].axis_2BDE_11695
- &x_DWORD_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[0].word_0x00a_2BE4_11240]->array_0x4C_76
+ D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].struct_0x1d1_2BDE_11695[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].ActPlayerIndex_0x00e_2BDE_11244+1].axis_2BDE_11695
+ &Entities_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[0].playerIndex_0x00a_2BE4_11240]->array_0x4C_76
  &x_WORD_EB398ar
 
  a1x->dword_0xA4_164x->word_0x1A6_422
@@ -6037,21 +6037,21 @@ krok 0xc8
 0x356038 +0x91a6
 
 test
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
-sub_57CF0 - 00 - ok
-sub_57CF0 - 16 - ok
-sub_57CF0 - 2f - ok
-sub_57CF0 - 48 - ok
-sub_57CF0 - 61 - ok
-sub_57CF0 - 7a - ok
-sub_57CF0 - 93 - ok
-sub_57CF0 - ab - ok
-sub_57CF0 - c1 - ok
-sub_57CF0 - c3 - ok
-sub_57CF0 - c6 - ok
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+CopyEntityPosition_57CF0 - 00 - ok
+CopyEntityPosition_57CF0 - 16 - ok
+CopyEntityPosition_57CF0 - 2f - ok
+CopyEntityPosition_57CF0 - 48 - ok
+CopyEntityPosition_57CF0 - 61 - ok
+CopyEntityPosition_57CF0 - 7a - ok
+CopyEntityPosition_57CF0 - 93 - ok
+CopyEntityPosition_57CF0 - ab - ok
+CopyEntityPosition_57CF0 - c1 - ok
+CopyEntityPosition_57CF0 - c3 - ok
+CopyEntityPosition_57CF0 - c6 - ok
 sub_57D70_clean_event - cb
-sub_57CF0 - d0
-sub_57CF0 - d0ff x c2 238d31
+CopyEntityPosition_57CF0 - d0
+CopyEntityPosition_57CF0 - d0ff x c2 238d31
 
 signed int sub_1B8C0(type_str_0x6E8E* a1x)//1fc8c0
 
@@ -6184,8 +6184,8 @@ pdwScreenBuffer_351628+0x1a4d 0x23
  x_BYTE_E7EE0x+0x28 0x38 38f9d402
  0x2b8ee0+0x28 0x80
  
- D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].struct_0x1d1_2BDE_11695[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].word_0x00e_2BDE_11244+1].axis_2BDE_11695.x=0x73a0
- D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].struct_0x1d1_2BDE_11695[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].word_0x00e_2BDE_11244+1].axis_2BDE_11695.y=0xd5e6
+ D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].struct_0x1d1_2BDE_11695[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].ActPlayerIndex_0x00e_2BDE_11244+1].axis_2BDE_11695.x=0x73a0
+ D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].struct_0x1d1_2BDE_11695[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].ActPlayerIndex_0x00e_2BDE_11244+1].axis_2BDE_11695.y=0xd5e6
 
 
 (uint8_t*)&D41A0_BYTESTR_0+0x3659d 0x00
@@ -6200,7 +6200,7 @@ pdwScreenBuffer_351628+0x1a4d 0x23
 (uint8_t*)x_D41A0_BYTEARRAY_0+0xf6f6 0x14
 0x356038 +0x12b2
 
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30(unsigned int a1)//237a30
 
 0xc1aa
 0xd542
@@ -6276,7 +6276,7 @@ void sub_30D50(type_str_0x6E8E* a1x, uint8_t v2, uint8_t v4)//211d50
 
 20c
 
-axis_3d word_0x9A_154x;//154 - mozna dat jako int16_t
+axis_3d axis_0x9A_154x;//154 - mozna dat jako int16_t
 
 0x18e
 
@@ -6356,8 +6356,8 @@ versus
 
 5959580d
 270aa0 - sub_8F935_bitmap_draw_final
-270914 - sub_8F8E8_draw_bitmap640
-20cb72 - sub_2BB40_draw_bitmap
+270914 - drawBitmap640_8F8E8
+20cb72 - DrawBitmap_2BB40
 25d136 - sub_7C120_draw_bitmap_640
 263e43 - sub_82C20
 
@@ -6380,7 +6380,7 @@ pdwScreenBuffer_351628+0x5d3 0x78
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x3999 0xc5
 0x356038 +0x3999
 
-void sub_56A30_init_game_level(unsigned int a1)//237a30
+void LevelInitGame_56A30(unsigned int a1)//237a30
 
  step 0x0
 (uint8_t*)&D41A0_BYTESTR_0+0x39e2 0x1f
@@ -6437,7 +6437,7 @@ pdwScreenBuffer_351628+0x3688 0xe3
  32C4E0+0x18802
 
  test here:
- v6 = sub_581E0_maybe_tan2(&a1x->word_0x9A_154x, &ix->array_0x4C_76);
+ v6 = sub_581E0_maybe_tan2(&a1x->axis_0x9A_154x, &ix->array_0x4C_76);
 
 step 0xa1f
 (uint8_t*)&D41A0_BYTESTR_0+0x39d1 0x06
@@ -6536,7 +6536,7 @@ versus
 26 - 355168
 32 - 355174
 
-void sub_47320_in_game_loop(signed int a1)//228320
+void InGameLoop_47320(signed int a1)//228320
 test
 
 
@@ -6704,7 +6704,7 @@ step 1
 238e3c
 void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
 238d1d
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 1fca1e
 signed int sub_1B8C0(type_str_0x6E8E* a1x)//1fc8c0
 1ff2cf
@@ -6722,7 +6722,7 @@ step 1
 0x356038 +0x8f66
 
 
-x_DWORD_EA3E4[50]->dword_0xA0_160x
+Entities_EA3E4[50]->dword_0xA0_160x
 
 void sub_57680()//238680
 indexx->dword_0xA0_160x += (int)i;
@@ -6750,7 +6750,7 @@ a1x->dword_0xA0_160x->word_160_0x10_16
 versus
 2a98da+10
 
-&x_DWORD_EA3E4[1]->dword_0xA0_160x
+&Entities_EA3E4[1]->dword_0xA0_160x
 
 (uint8_t*)&D41A0_BYTESTR_0+0x8f66 0xff
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x8f66 0x58
@@ -6765,7 +6765,7 @@ x_BYTE_10B4E0+0x0 00
 versus
 2dc4e0+0x0 2c
 
-&x_DWORD_EA3E4[0x74]->dword_0xA4_164x
+&Entities_EA3E4[0x74]->dword_0xA4_164x
 
 while (v0 < D41A0_BYTESTR_0.word_0xe)
 
@@ -6847,7 +6847,7 @@ v3[3] - v5[3]
 20ed51
 20d2f9 - void sub_2D710_draw_top_menu(type_str_0x6E8E* a1x)//20e710
 
-if (v2x > x_DWORD_EA3E4[0] && v2x->dword_0x10_16)
+if (v2x > Entities_EA3E4[0] && v2x->dword_0x10_16)
 
 type_str_0x6E8E* sub_146C0(type_str_0x6E8E* a1x, unsigned __int8 a2)//1f56c0
 type_str_0x6E8E* sub_15760(type_str_0x6E8E* a1x, unsigned __int8 a2)//1f6760
@@ -6873,7 +6873,7 @@ sub_55080(0, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w,(char*)"")
 
 D41A0_BYTESTR_0.dword_0x36DF6 = (uint32_t)&unk_D7BD6[0x7d6];
 
-x_DWORD_EA3E4[0x18]->dword_0xA4_164x->word_0x242_578 - nelze precist
+Entities_EA3E4[0x18]->dword_0xA4_164x->word_0x242_578 - nelze precist
 
 (uint8_t*)&D41A0_BYTESTR_0+0x315a 0x04
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x315a 0x03
@@ -6898,7 +6898,7 @@ void sub_2D710_draw_top_menu(type_str_0x6E8E* a1x)//20e710
 0x356038 +0x315a
 
 a1x->dword_0xA4_164x->byte_0x195_405
-x_DWORD_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].word_0x00a_2BE4_11240]->dword_0xA4_164x
+Entities_EA3E4[D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].playerIndex_0x00a_2BE4_11240]->dword_0xA4_164x
 je
 (uint8_t*)&D41A0_BYTESTR_0+0x315a
 
@@ -6914,7 +6914,7 @@ a1x->dword_0xA4_164x->byte_0x196_406
  x_WORD_15B4E0+0xebb2 0x86
  32c4e0+0xebb2 0x86
  238e3c - void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- 238d18 - void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ 238d18 - void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  2413bc - int sub_5FF50(type_str_0x6E8E* a1x)//240f50
 
  (uint8_t*)&D41A0_BYTESTR_0+0x2fe8 0xba
@@ -6968,7 +6968,7 @@ v113x->dword_0xA4_164x->word_0x4_4 = ((v100x - ((v100x>>31) << 2)) - cftemp) >> 
 
  238ec4
  238d0e void sub_57E50(type_str_0x6E8E* a1x)//238e50
- 2053d8 void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ 2053d8 void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 
 
 
@@ -6976,7 +6976,7 @@ v113x->dword_0xA4_164x->word_0x4_4 = ((v100x - ((v100x>>31) << 2)) - cftemp) >> 
 
  void sub_7DD70()//25ed70 - must rewrite
  sub_81CA0 - must rewrite
- void sub_56C00_sound_proc2(int a1)//237c00 - must rewrite
+ void LevelInit_56C00(int a1)//237c00 - must rewrite
 
 (uint8_t*)&D41A0_BYTESTR_0+0x3479 0x1
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x3479 0x0
@@ -7018,7 +7018,7 @@ versus
 
  238e3c
  238d18 void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- 240f05 void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ 240f05 void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  24095c void sub_5FD00(type_str_0x6E8E* a1x)//240d00
 
  debugcounter_238CF0 ==0xfd
@@ -7104,7 +7104,7 @@ x_BYTE_13B4E0+0xe683(0x15)
 versus
 0x30c4e0+0xe683(0x35)
 
-sub_46570 - step 1
+AddBuildingToTerrain_46570 - step 1
 
 pointer_0xE2_heapbuffer_226
 
@@ -7273,9 +7273,9 @@ sub_6EB90(&filearray_2aa18c[filearrayindex_BUILD00DATTAB]);//24fb90 adress 0x23c
 &v37x->dword_0xA4_164x->str_611.byte_0x458_1112 -selected
 &v37x->dword_0xA4_164x->str_611.byte_0x459_1113 -selected
 
-&v37x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[v54]]
+&v37x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[spellIndex_D94FF[v54]]
 
-v79x->array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2]] = D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2;
+v79x->array_0x437_1079x.byte[spellIndex_D94FF[D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2]] = D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2;
 
 x_BYTE_10B4E0 + 0x5050 (0x3)
 versus
@@ -7584,7 +7584,7 @@ int sub_34520(type_str_0x6E8E* a1x)//215520
 
 https://philippegroarke.com/posts/2018/c++_ui_solutions/
 
-char sub_46570(unsigned __int16 a1, __int16 a2)//227570
+char AddBuildingToTerrain_46570(unsigned __int16 a1, __int16 a2)//227570
 rewrite
 
 test
@@ -7782,14 +7782,14 @@ versus
  zkontrolovat my_sign16
 
  problem zde:
- for (iix = x_D41A0_BYTEARRAY_4_struct.dword_38519; iix > x_DWORD_EA3E4[0]; iix = iix->next_0)
+ for (iix = x_D41A0_BYTEARRAY_4_struct.dword_38519; iix > Entities_EA3E4[0]; iix = iix->next_0)
  76 8a 36 00 40 9c 00 00 6e 8e 00 00 0e 00 00 00
  03 00 00 00 28 8a 00 00 02 00 13 01 00 00 00 00
 
  test abs
 
  v3x->dword_0xA4_164x->str_611.array_0x2CB_715x.dword[a2]
- x_DWORD_EA3E4[0x109]->dword_0xA4_164x->str_611.array_0x2CB_715x.dword[9]
+ Entities_EA3E4[0x109]->dword_0xA4_164x->str_611.array_0x2CB_715x.dword[9]
  versus 92
  359xxx+9*4+2cb=3592eb
 
@@ -7909,7 +7909,7 @@ x_WORD_15B4E0+0x15d28 0x4e
 238e3c
 void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
 238cf0
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 
 (uint8_t*)&D41A0_BYTESTR_0+0x8 0x7c
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x8 0xef
@@ -7926,7 +7926,7 @@ versus
 238e40
 238d70 void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
 238cf0
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 23adc0
 char sub_59DC0(type_str_0x6E8E* a1x)//23adc0
 
@@ -7966,7 +7966,7 @@ adress 230fb0
 void sub_159E0()//1f69e0
 
 v2x->dword_0xA4_164x->word_0x242_578
-x_DWORD_EA3E4[0xb]->dword_0xA4_164x->word_0x242_578
+Entities_EA3E4[0xb]->dword_0xA4_164x->word_0x242_578
 versus
 035d6a2->2c75e28
 281f26
@@ -7983,20 +7983,20 @@ memory_readable
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x4aac 0x97
 0x356038 +0x4aac
 
-x_DWORD_EA3E4[i] = &D41A0_BYTESTR_0.struct_0x6E8E[i]
+Entities_EA3E4[i] = &D41A0_BYTESTR_0.struct_0x6E8E[i]
 &D41A0_BYTESTR_0.struct_0x6E8E[0]
 
-x_DWORD_EA3E4[0xb]->dword_0xA4_164x tj.
+Entities_EA3E4[0xb]->dword_0xA4_164x tj.
 D41A0_BYTESTR_0.struct_0x6E8E[0xb].dword_0xA4_164x
 
 unk_F42B0x
 0x2c75e28-D41A0_BYTESTR_0.dword_0x36DF6
 
-	for (int indexx = 1; x_DWORD_EA3E4[indexx] < x_DWORD_EA3E4[0x3e8]; indexx++)
-		//if (memory_readable(x_DWORD_EA3E4[indexx]->dword_0xA4_164x,4))
+	for (int indexx = 1; Entities_EA3E4[indexx] < Entities_EA3E4[0x3e8]; indexx++)
+		//if (memory_readable(Entities_EA3E4[indexx]->dword_0xA4_164x,4))
 		{
-			if ((uint32_t)x_DWORD_EA3E4[indexx]->dword_0xA4_164x == 0x2c75e28)//0x014F82E8//0x2c75e28-(uint32_t)&D41A0_BYTESTR_0
-				x_DWORD_EA3E4[indexx]->dword_0xA4_164x = unk_F42B0x;
+			if ((uint32_t)Entities_EA3E4[indexx]->dword_0xA4_164x == 0x2c75e28)//0x014F82E8//0x2c75e28-(uint32_t)&D41A0_BYTESTR_0
+				Entities_EA3E4[indexx]->dword_0xA4_164x = unk_F42B0x;
 		}
 
 adress 2321e6
@@ -8128,7 +8128,7 @@ result-*(uint32_t *)(a1 + 2)
 *(uint32_t *)(a1 + 2)+0x3544
 *(uint32_t *)(x_DWORD_E9C08 + 2)+0x3544
 
-&(x_DWORD_E9C08x->dword_2[488])
+&(animations_E9C08x->dword_2[488])
 
 in init mao
 type_animations1* sub_721C0_initTmap(type_E9C08* a1x, int *a2, __int16 a3)//2531c0
@@ -8278,7 +8278,7 @@ x_WORD_15B4E0+0x7718 0x19
  32c4e0+0x7718 0x19
 
  238ec4 void sub_57D70_clean_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- 238d28 void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ 238d28 void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  1fca1e signed int sub_1B8C0(type_str_0x6E8E* a1x)//1fc8c0
 
  (uint8_t*)&D41A0_BYTESTR_0+0x6Ff4 a6
@@ -8295,7 +8295,7 @@ x_WORD_15B4E0+0xe0e0 0xa7
 
  for(int ea=0;ea<0x3E9;ea++)
 	
- save x_DWORD_EA3E4
+ save Entities_EA3E4
 
  (uint8_t*)&x_WORD_15B4E0_source+0xdcdc 0xa6
 x_WORD_15B4E0+0xdcdc 0x02
@@ -8339,7 +8339,7 @@ x_WORD_15B4E0+0x6104 0xa5
 
  238e3c
  sub_57D70_actualize_event(a1x, a2x);
- void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 
 (uint8_t*)&x_WORD_15B4E0_source+0x5d04 79
 x_WORD_15B4E0+0x5d04 0xa5
@@ -8422,9 +8422,9 @@ versus
 versus
 0x30c4e0+0x4185(0x40)
 
-x_WORD_17B4E0 ?? 0xae5b0500
+rand2_17B4E0 ?? 0xae5b0500
 
-&x_WORD_17B4E0 34c4e0
+&rand2_17B4E0 34c4e0
 0x2368e2
 
 22743c
@@ -8452,24 +8452,24 @@ x_WORD_15B4E0+0x12a50 0x05
  32c4e0+0xb12a 0x05
 
  void sub_57D70_actualize_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  sequence 00238CF0
 
  SPELLS_BEGIN_BUFFER_str
 
 ((uint8_t*)SPELLS_BEGIN_BUFFER_str)+80*4+22
 ((uint8_t*)SPELLS_BEGIN_BUFFER_DA818)+80*4+22
-compare void sub_5C0A0()//23d0a0
+compare void SetDefaultSpells_5C0A0()//23d0a0
 
 spell 4
 
-x_DWORD_EA3E4[1]->dword_0xA4_164x->str_611.word_0x451_110
+Entities_EA3E4[1]->dword_0xA4_164x->str_611.word_0x451_110
 
 &D41A0_BYTESTR_0.array_0x2BDE[0].dword_0x3E6_2BE4_12228.str_611.array_0x333_819x
 aa misto 01
 
 
-&x_DWORD_EA3E4[0xab]->dword_0x88_136
+&Entities_EA3E4[0xab]->dword_0x88_136
 
 (uint8_t*)&D41A0_BYTESTR_0+0x6f46 00
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x6f46 0x17
@@ -8482,7 +8482,7 @@ aa misto 01
 20c95d
 
 problem je zde
-a1x->dword_0x10_16 = *(unsigned __int16 *)(sub_724F0(x_DWORD_E9C08x, v5) + 16);
+a1x->dword_0x10_16 = *(unsigned __int16 *)(GetAnimationByIndex_724F0(animations_E9C08x, v5) + 16);
 
 x_DWORD_F66F0x[0x137]
 *(uint8_t * *)x_DWORD_F66F0x[0x137]
@@ -8519,7 +8519,7 @@ int sub_34910(type_str_0x6E8E* a1x)//215910
 
 test
 
-void sub_46570(uaxis_2d a1x, uaxis_2d a2x)//227570
+void AddBuildingToTerrain_46570(uaxis_2d a1x, uaxis_2d a2x)//227570
 
 2276b8
 
@@ -8575,11 +8575,11 @@ void sub_57730()//238730
 
 a1x->word_0x96_150 - nemuze byt 0x6e0
 
-&x_DWORD_EA3E4[140]->word_0x96_150
+&Entities_EA3E4[140]->word_0x96_150
 
-&x_DWORD_EA3E4[140]->word_0x26_38
+&Entities_EA3E4[140]->word_0x26_38
 
-&x_DWORD_EA3E4[140]->str_0x5E_94.word_0x62_98
+&Entities_EA3E4[140]->str_0x5E_94.word_0x62_98
 
 test void sub_2CB30(type_str_0x6E8E* a1x, __int16 a2, int a3, __int16 a4)//20db30
 
@@ -8617,7 +8617,7 @@ versus
 v41x.word = v37x.word;//adress 218389
 9b
 
-void sub_48B90(int a1)//229b90
+void SetHeightmapByBuilding_48B90(int a1)//229b90
 
 (uint8_t*)&x_BYTE_11B4E0_height+0xebe7 - 0x77
 versus
@@ -8693,7 +8693,7 @@ versus
 229c84 -95 9a a1 a1
         94 9a 9f a0
 		94 99 9d 9f
-void sub_48B90(uaxis_2d a1x)//229b90
+void SetHeightmapByBuilding_48B90(uaxis_2d a1x)//229b90
 
 00001C3D
 
@@ -8791,7 +8791,7 @@ x_WORD_180660_VGA_type_resolution
 
  238e3c
  void sub_57D70_actualize_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  1fca19
  signed int sub_1B8C0(type_str_0x6E8E* a1x)//1fc8c0
   void sub_1DDA0(type_str_0x6E8E* a1x, __int16 a2)//1feda0
@@ -8800,7 +8800,7 @@ x_WORD_180660_VGA_type_resolution
 
  v3x->word_0x96_150
 
- &x_DWORD_EA3E4[0xe4]->word_0x96_150
+ &Entities_EA3E4[0xe4]->word_0x96_150
 
  void sub_66FD0(type_str_0x6E8E* a1x)//247fd0
 
@@ -8822,7 +8822,7 @@ x_WORD_15B4E0+0x3f12 0x34
  238e3c
 
  void sub_57D70_actualize_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
- void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 signed int sub_68E50(type_str_0x6E8E* a1x, type_str_0x6E8E* a2x, type_str_0x6E8E* a3x)//249e50
  void sub_69640(type_str_0x6E8E* a1x)//24a640//spell posses
 
@@ -8844,12 +8844,12 @@ void sub_5F380(type_str_0x6E8E* a1x)//240380
 void sub_5E010(type_str_0x6E8E* a1x)//23f010
 void sub_57730()//238730
 
-x_DWORD_EA3E4[0x101]->word_0x2E_46
+Entities_EA3E4[0x101]->word_0x2E_46
 
-&x_DWORD_EA3E4[0xff]->array_0x4C_76
+&Entities_EA3E4[0xff]->array_0x4C_76
 36766a
 
-&x_DWORD_EA3E4[0xff]->array_0x4C_76
+&Entities_EA3E4[0xff]->array_0x4C_76
 &v4x->array_0x4C_76
 35f132
 
@@ -8995,7 +8995,7 @@ x_WORD_15B4E0+0xcffe 0x2f
 
  238e3c
 void sub_57D70_actualize_event(type_str_0x6E8E* a1x, axis_3d* a2x)//238d70 // register object on axis
-void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
 0x238cf3
 0x238a8a
 
@@ -9022,7 +9022,7 @@ x_WORD_15B4E0+0x1c2a 0x00
 
  238ec4
  void sub_57E50(type_str_0x6E8E* a1x)//238e50
- void sub_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
+ void CopyEntityPosition_57CF0(type_str_0x6E8E* a1x, axis_3d* a2x)//238cf0
  a8a
 
  (uint8_t*)&D41A0_BYTESTR_0+0x118dd 0x09
@@ -9204,7 +9204,7 @@ versus
 0x360a7e
 
 0x012e5e4e
-x_DWORD_EA3E4[0x58]
+Entities_EA3E4[0x58]
 
 
 
@@ -9213,7 +9213,7 @@ x_DWORD_EA3E4[0x58]
 0x2bb3e4
 0x2bb544+c
 
-versus x_DWORD_EA3E4[0x5B] -ma byt
+versus Entities_EA3E4[0x5B] -ma byt
 
 x_D41A0_BYTEARRAY_4_struct.dword_38519
 
@@ -9401,9 +9401,9 @@ x_BYTE_10B4E0_terraintype+0x0 01
 versus
 2dc4e0+0x0 cd
 
-x_DWORD_EA3E4[0x59]
+Entities_EA3E4[0x59]
 ix->word_0x16_22 ==0
-x_DWORD_EA3E4[0]
+Entities_EA3E4[0]
 ix->word_0x16_22 ==0
 
 x_WORD_15B4E0_source[0xf552] nesmi byt 0
@@ -9647,9 +9647,9 @@ D41A0_BYTESTR_0.array_0x6E3E[D41A0_BYTESTR_0.word_0xc].str_0x6E3E_byte0
 
 case 0x2A:
 //v97 = v113x->dword_0xA4_164;
-//a1 = x_DWORD_EA3E4[0];
-v98x = x_DWORD_EA3E4[v113x->dword_0xA4_164x->word_0x3A_58];
-if (v98x > x_DWORD_EA3E4[0])
+//a1 = Entities_EA3E4[0];
+v98x = Entities_EA3E4[v113x->dword_0xA4_164x->word_0x3A_58];
+if (v98x > Entities_EA3E4[0])
 {
 	if (v98x->dword_0x10_16 == 1)
 		v113x->dword_0xA4_164x->byte_0x1BE_446 = 1;
@@ -9667,7 +9667,7 @@ byte_0x45_69 == 6
 
 switch (D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte0)
 
-v98x = x_DWORD_EA3E4[v113x->dword_0xA4_164x->word_0x3A_58];
+v98x = Entities_EA3E4[v113x->dword_0xA4_164x->word_0x3A_58];
 
 BIG_SPRITES_BUFFERx[8].actdata
 
@@ -9710,7 +9710,7 @@ sub_4A1E0(a1x->word_0x1A_26, 1);
 
  if (*(x_WORD *)(0x36543 + v6 + 1) < 28)
 
- v1x->word_0x94_148 = 0;
+ v1x->playerEntityIndex_0x94_148 = 0;
 
  if (!_stricmp(v11, "!"))
 

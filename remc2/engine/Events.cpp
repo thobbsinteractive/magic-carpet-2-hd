@@ -5,8 +5,11 @@
 #include "PlayerInput.h"
 #include "Terrain.h"
 #include "Type_D93C0_Bldgprmbuffer.h"
+#include "LevelInit.h"
+#include "DatTabIndexes.h"
 
 #include "../sub_main.h"  // FIXME: only temporary until dependencies are untangled
+#include "EventsFunctions.h"
 
 
 // void sub_49090(Type_Level_2FECE* a1, Type_Level_2FECE* a2); // FIXME: investigate this function: the type of param 2 is wrong - this was the original declaration but the fucntion definition was as below with another type
@@ -301,14 +304,14 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 		case 0x02:
 		case 0x0E:
 		{			
-			PlayerPosition_EB398.x = entity->axis2d_4.x << 8;//adress 22a7b0
-			PlayerPosition_EB398.y = entity->axis2d_4.y << 8;
-			z_temp = getTerrainAlt_10C40(&PlayerPosition_EB398);
-			PlayerPosition_EB398.z = z_temp;
+			predictedAxis_EB398ar.x = entity->axis2d_4.x << 8;//adress 22a7b0
+			predictedAxis_EB398ar.y = entity->axis2d_4.y << 8;
+			z_temp = getTerrainAlt_10C40(&predictedAxis_EB398ar);
+			predictedAxis_EB398ar.z = z_temp;
 			temp_adress = str_x_DWORD_D4C52ar_0x2F22[entity->subtype_0x30311].address_6;
 			if (temp_adress)
 			{
-				event = pre_sub_4A190_axis_3d(temp_adress, &PlayerPosition_EB398);
+				event = pre_sub_4A190_axis_3d(temp_adress, &predictedAxis_EB398ar);
 				if (event)
 				{
 					event->word_0x2C_44 = entity->par1_14;
@@ -333,27 +336,27 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 				}
 				case 0x2D:
 				{
-					PlayerPosition_EB398.x = entity->axis2d_4.x << 8;//adress 22a5af
-					PlayerPosition_EB398.y = entity->axis2d_4.y << 8;
-					z_temp = getTerrainAlt_10C40(&PlayerPosition_EB398);
-					PlayerPosition_EB398.z = z_temp;
+					predictedAxis_EB398ar.x = entity->axis2d_4.x << 8;//adress 22a5af
+					predictedAxis_EB398ar.y = entity->axis2d_4.y << 8;
+					z_temp = getTerrainAlt_10C40(&predictedAxis_EB398ar);
+					predictedAxis_EB398ar.z = z_temp;
 					temp_adress = str_x_DWORD_D4C52ar_0x1D26[entity->subtype_0x30311].address_6;
 					if (temp_adress)
 					{
-						event = pre_sub_4A190_axis_3d(temp_adress, &PlayerPosition_EB398);//(*(int(**)(int))((char *)&off_D697E + 14 * v4))((int)PlayerPosition_EB398);
+						event = pre_sub_4A190_axis_3d(temp_adress, &predictedAxis_EB398ar);//(*(int(**)(int))((char *)&off_D697E + 14 * v4))((int)x_WORD_EB398ar);
 						if (event)
 							sub_49A30(event, entity->par1_14);
 					}
 					return;
 				}
 			}
-			PlayerPosition_EB398.x = entity->axis2d_4.x << 8;
-			PlayerPosition_EB398.y = entity->axis2d_4.y << 8;
-			PlayerPosition_EB398.z = getTerrainAlt_10C40(&PlayerPosition_EB398);
+			predictedAxis_EB398ar.x = entity->axis2d_4.x << 8;
+			predictedAxis_EB398ar.y = entity->axis2d_4.y << 8;
+			predictedAxis_EB398ar.z = getTerrainAlt_10C40(&predictedAxis_EB398ar);
 			temp_adress = str_x_DWORD_D4C52ar_0x1D26[entity->subtype_0x30311].address_6;
 			if (temp_adress)
 			{
-				event = pre_sub_4A190_axis_3d(temp_adress, &PlayerPosition_EB398);
+				event = pre_sub_4A190_axis_3d(temp_adress, &predictedAxis_EB398ar);
 				if (event)
 				{
 					switch (entity->subtype_0x30311)
@@ -361,11 +364,11 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 						case 0x09:
 						case 0x0B:
 						case 0x0F: {
-							event->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)sub_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].dword_2;
+							event->subSpellIndex_0x2A_42 = SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].subSpellIndex_2;
 							if (entity->subtype_0x30311 == 0x09)//9
-								event->maxLife_0x4 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)sub_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].byte_0x1A;
+								event->maxLife_0x4 = SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].life_0x1A;
 							else
-								event->life_0x8 = SPELLS_BEGIN_BUFFER_str[(unsigned __int8)sub_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].byte_0x1A;
+								event->life_0x8 = SPELLS_BEGIN_BUFFER_str[GetSpellIndex_6E020(entity->subtype_0x30311)].subspell[entity->par1_14].life_0x1A;
 							break;
 						}
 						case 0x52:
@@ -377,14 +380,14 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 						}
 						case 0x53:
 						{
-							event->word_0x9A_154x.x = entity->word_10;
+							event->axis_0x9A_154x.x = entity->word_10;
 							break;
 						}
 						case 0x54:
 						case 0x55:
 						{
-							event->word_0x9A_154x.x = entity->word_10;
-							event->position_0x4C_76.z = entity->par3_18;
+							event->axis_0x9A_154x.x = entity->word_10;
+							event->axis_0x4C_76.z = entity->par3_18;
 							break;
 						}
 						case 0x58:
@@ -429,7 +432,7 @@ void ApplyEvents_498A0()//22a8a0
 					{
 						if (D41A0_0.struct_0x6E8E[iy].model_0x40_64 == 2 && !D41A0_0.struct_0x6E8E[iy].life_0x8)
 						{
-							v6 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].state_0x45_69];
+							v6 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].actionIndex_0x45_69];
 							runagain = true;
 							if (v6->address_6 && v6->dword_10)
 							{
@@ -439,7 +442,7 @@ void ApplyEvents_498A0()//22a8a0
 					}
 					else//all without 0xA and 0xE
 					{
-						SetEntity04_57F10(&D41A0_0.struct_0x6E8E[iy]);
+						DisableEntityDrawing04_57F10(&D41A0_0.struct_0x6E8E[iy]);
 					}
 					//all without 0xA
 					if (D41A0_0.struct_0x6E8E[iy].struct_byte_0xc_12_15.byte[1] & 4)//all without 0xE
@@ -454,13 +457,13 @@ void ApplyEvents_498A0()//22a8a0
 					{
 						if (v4 > 0xBu && v4 != 0xFu)//T=0xA ST=0xC,0xD,0xE,0x10,0x11,0x12..0x1A
 						{
-							SetEntity04_57F10(&D41A0_0.struct_0x6E8E[iy]);
+							DisableEntityDrawing04_57F10(&D41A0_0.struct_0x6E8E[iy]);
 							D41A0_0.struct_0x6E8E[iy].byte_0x3E_62++;
 							if (D41A0_0.struct_0x6E8E[iy].struct_byte_0xc_12_15.byte[1] & 4)
 								sub_57F20(&D41A0_0.struct_0x6E8E[iy]);
 							continue;
 						}
-						v5 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].state_0x45_69];//ok
+						v5 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].actionIndex_0x45_69];//ok
 						runagain = true;
 						if (v5->address_6 && v5->dword_10)
 						{
@@ -473,7 +476,7 @@ void ApplyEvents_498A0()//22a8a0
 					}
 					if (v4 == 0x9)//0xA,0x9
 					{
-						v5 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].state_0x45_69];//ok
+						v5 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].actionIndex_0x45_69];//ok
 						runagain = true;
 						if (v5->address_6 && v5->dword_10)
 						{
@@ -489,7 +492,7 @@ void ApplyEvents_498A0()//22a8a0
 				{
 					if (v4 <= 0x20)
 					{
-						v5 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].state_0x45_69];//ok
+						v5 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].actionIndex_0x45_69];//ok
 						runagain = true;
 						if (v5->address_6 && v5->dword_10)
 						{
@@ -504,13 +507,13 @@ void ApplyEvents_498A0()//22a8a0
 					{
 						if (v4 > 0x33 && (v4 < 0x50 || v4 > 0x55 && v4 != 0x58))
 						{
-							SetEntity04_57F10(&D41A0_0.struct_0x6E8E[iy]);
+							DisableEntityDrawing04_57F10(&D41A0_0.struct_0x6E8E[iy]);
 							D41A0_0.struct_0x6E8E[iy].byte_0x3E_62++;
 							if (D41A0_0.struct_0x6E8E[iy].struct_byte_0xc_12_15.byte[1] & 4)
 								sub_57F20(&D41A0_0.struct_0x6E8E[iy]);
 							continue;
 						}
-						v5 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].state_0x45_69];//ok
+						v5 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].actionIndex_0x45_69];//ok
 						runagain = true;
 						if (v5->address_6 && v5->dword_10)
 						{
@@ -523,14 +526,14 @@ void ApplyEvents_498A0()//22a8a0
 					}
 					if (v4 == 0x2D)
 					{
-						if (D41A0_0.struct_0x6E8E[iy].state_0x45_69 != 0x33)
+						if (D41A0_0.struct_0x6E8E[iy].actionIndex_0x45_69 != 0x33)
 						{
 							D41A0_0.struct_0x6E8E[iy].byte_0x3E_62++;
 							if (D41A0_0.struct_0x6E8E[iy].struct_byte_0xc_12_15.byte[1] & 4)
 								sub_57F20(&D41A0_0.struct_0x6E8E[iy]);
 							continue;
 						}
-						v5 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].state_0x45_69];//ok
+						v5 = &str_D4C48ar[D41A0_0.struct_0x6E8E[iy].class_0x3F_63].dword_10[D41A0_0.struct_0x6E8E[iy].actionIndex_0x45_69];//ok
 						runagain = true;
 						if (v5->address_6 && v5->dword_10)
 						{
@@ -542,7 +545,7 @@ void ApplyEvents_498A0()//22a8a0
 						continue;
 					}
 				}
-				SetEntity04_57F10(&D41A0_0.struct_0x6E8E[iy]);
+				DisableEntityDrawing04_57F10(&D41A0_0.struct_0x6E8E[iy]);
 				D41A0_0.struct_0x6E8E[iy].byte_0x3E_62++;
 				if (D41A0_0.struct_0x6E8E[iy].struct_byte_0xc_12_15.byte[1] & 4)
 					sub_57F20(&D41A0_0.struct_0x6E8E[iy]);
@@ -563,7 +566,7 @@ type_entity_0x6E8E* NewEvent_4A050()//22b050
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->maxLife_0x4 = 300;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->struct_byte_0xc_12_15.dword = 8;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->actSpeed_0x82_130 = 16;
-		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->word_0x2A_42 = 100;
+		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->subSpellIndex_0x2A_42 = 100;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->id_0x1A_26 = D41A0_0.pointers_0x246[D41A0_0.dword_0x35] - D41A0_0.struct_0x6E8E;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->xtype_0x41_65 = -1;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->xsubtype_0x42_66 = -1;
@@ -583,13 +586,13 @@ type_entity_0x6E8E* NewEvent_4A050()//22b050
 		x_D41A0_BYTEARRAY_4_struct.dword_38519 = 0;
 		x_D41A0_BYTEARRAY_4_struct.dword_38531 = 0;
 		x_D41A0_BYTEARRAY_4_struct.dword_38535 = 0;
-		sub_57E50(D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]);
+		SetMapEntity_57E50(D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]);
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->class_0x3F_63 = 0;
 		memset(D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6], 0, sizeof(type_entity_0x6E8E));
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->maxLife_0x4 = 300;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->struct_byte_0xc_12_15.dword = 8;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->actSpeed_0x82_130 = 16;
-		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->word_0x2A_42 = 100;
+		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->subSpellIndex_0x2A_42 = 100;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->id_0x1A_26 = D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6] - D41A0_0.struct_0x6E8E;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->xtype_0x41_65 = -1;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->xsubtype_0x42_66 = -1;
@@ -608,6 +611,11 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 {
 	if (CommandLineParams.DoShowNewProcedures()) {
 		test_pre_sub_4a190(adress);//for debug
+	}
+	if (particlesParameters_D951C[a1_6E8E->word_0x5A_90].word_0 == 58)
+	{
+		int xxx = 1;
+		xxx++;
 	}
 	switch (adress)
 	{
@@ -870,7 +878,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 	}
 
 	case 0x1f9bb0: {
-		PauseUnpauseGame_18BB0();
+		sub_18BB0();
 		break;
 	}
 	case 0x1f9da0: {
@@ -975,7 +983,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 	case 0x1fb8a0: {
-		HandleArrowKeyPresses_1A8A0();
+		sub_1A8A0();
 		break;
 	}
 	case 0x1fb970: {
@@ -1015,7 +1023,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		allert_error();
 		break;
 	case 0x1fc5f0: {
-		sub_1B5F0();
+		KillAllCreatures_1B5F0();
 		break;
 	}
 	case 0x1fc6b0: {
@@ -1053,11 +1061,11 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 	}
 
 	case 0x1fd890: {
-		sub_1C890(a1_6E8E, 0);
+		PreKillEntity_1C890(a1_6E8E, 0);
 		break;
 	}
 	case 0x1fd930: {
-		sub_1C930(a1_6E8E);
+		KillEntity_1C930(a1_6E8E);
 		break;
 	}
 	case 0x1fd980: {
@@ -1246,12 +1254,12 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 	case 0x2004f0: {//begin of goat kill
-		KillGoat_1F4F0(a1_6E8E);
+		PreKillGoat_1F4F0(a1_6E8E);
 		break;
 	}
 
 	case 0x200510: {//end of goat kill
-		TransformGoatToMana_1F510(a1_6E8E);
+		KillGoat_1F510(a1_6E8E);
 		break;
 	}
 	case 0x200530: {
@@ -2243,7 +2251,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 				 /*case 0x20cb40: {
-					 sub_2BB40_draw_bitmap((int16_t)a1,0,(bitmap_pos_struct_t)0);
+					 DrawBitmap_2BB40((int16_t)a1,0,(bitmap_pos_struct_t)0);
 
 					 break;
 				 }*/
@@ -2591,7 +2599,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 	case 0x217920: {
-		sub_36920(a1_6E8E);
+		SetManaSphereColorAndRot_36920(a1_6E8E);
 		break;
 	}
 	case 0x2179f0: {
@@ -2601,7 +2609,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_369F0((int)a1_6E8E);
+		GetManaSphereColorIndexFromEntityId_369F0((int)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -2613,7 +2621,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_36A50((int)a1_6E8E);
+		GetManaSphereIndexFromId_36A50((int)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -2624,7 +2632,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 	}
 
 	case 0x217ba0: {
-		sub_36BA0(a1_6E8E, 0);
+		TransformEntityToManaSphere_36BA0(a1_6E8E, false);
 		break;
 	}
 	case 0x217d50: {
@@ -2661,7 +2669,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 	case 0x219270: {
-		sub_38270(a1_6E8E);
+		GetRandManaSphere_38270(a1_6E8E);
 		break;
 	}
 
@@ -2670,7 +2678,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 	case 0x2195c0: {
-		sub_385C0_remove_castle_stage(a1_6E8E);
+		RemoveCastleStage_385C0(a1_6E8E);
 		break;
 	}
 	case 0x2199f0: {//cast castleII 2
@@ -2772,14 +2780,14 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 	}
 
 	case 0x232bb0: {
-		PlayerEvents_51BB0();
+		GameEvents_51BB0();
 		break;
 	}
 	case 0x233d70: {
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_52D70((unsigned short)a1_6E8E, 0);
+		ShowMessage_52D70((unsigned short)a1_6E8E, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;
@@ -2801,13 +2809,13 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		DecompressLevels_533B0((short)a1_6E8E, 0);
+		LevelDecompress_533B0((short)a1_6E8E, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;
 	}
 	case 0x234590: {
-		sub_53590((Type_Level_2FECE*)a1_6E8E);
+		SetLevelId_53590((Type_Level_2FECE*)a1_6E8E);
 		break;
 	}
 
@@ -2816,12 +2824,12 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 				 char sub_59610(uint8_t** a1, __int16 a2)//23a610
 				 char sub_596C0(x_WORD *a1, __int16 a2)//23a6c0
 				 void sub_59760(uint8_t* a1, uint8_t* a2)//23a760
-				 void PresentObjective_59820()//23a820
+				 void sub_59820()//23a820
 
-				 int FadeDownSoundVolume_59A50()//23aa50
-				 void StopCdPlayBackAndFadeUp_59AF0()//23aaf0
-				 void FadeUpSoundVolume_59B50(HMDIDRIVER user)//23ab50
-				 void RestoreSoundVolume_59BF0()//23abf0
+				 int sub_59A50_sound_proc8()//23aa50
+				 void sub_59AF0_sound_proc9()//23aaf0
+				 void sub_59B50_sound_proc10(HMDIDRIVER user)//23ab50
+				 void sub_59BF0_sound_proc11_volume()//23abf0
 				 */
 
 	case 0x23ac40: {
@@ -2863,7 +2871,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 	case 0x23f660: {
-		sub_5E660(a1_6E8E);
+		DisableEntitesDrawing_5E660(a1_6E8E);
 		break;
 	}
 	case 0x23f6c0: {
@@ -3015,7 +3023,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_616D0((int)a1_6E8E);
+		TransformPlayerColorIndex_616D0((int)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -3046,7 +3054,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		DrawMinimapEntites_61880((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		DrawMinimapEntites_61880((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3059,7 +3067,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_61A00_draw_minimap_entites_b((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		sub_61A00_draw_minimap_entites_b((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3072,7 +3080,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_627F0_draw_minimap_entites_a((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		sub_627F0_draw_minimap_entites_a((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3803,11 +3811,11 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 	case 0x24e710: {
-		sub_6D710(a1_6E8E, 0, 0);
+		GetSpellManaCost_6D710(a1_6E8E, 0, 0);
 		break;
 	}
 	case 0x24e830: {
-		sub_6D830(a1_6E8E, 0);
+		CopyAxisForSpellWithLife_6D830(a1_6E8E, 0);
 		break;
 	}
 	case 0x24e880: {
@@ -3864,7 +3872,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_6E020((unsigned short)a1_6E8E);
+		GetSpellIndex_6E020((unsigned short)a1_6E8E);
 		stub_fix_it();//bad retyping
 #endif
 		break;
@@ -3879,7 +3887,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 	}
 
 	case 0x24f150: {
-		PlayEntitySounds_6E150();
+		sub_6E150();
 		break;
 	}
 	case 0x24f450: {
@@ -3898,7 +3906,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		ShouldUpdateSound_6EA90((int)a1_6E8E, 0);
+		sub_6EA90((int)a1_6E8E, 0);
 		allert_error();
 #endif
 		break;
@@ -4311,7 +4319,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 				 /*case 0x22db60: {
-					 sub_4CB60((type_entity_0x6E8E*)a1);
+					 sub_4CB60((type_str_0x6E8E*)a1);
 					 return fix_it_4A190();
 					 break;
 				 }*/
@@ -4576,7 +4584,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 				 /*case 0x230c10: {
-					 return sub_4F1C0((type_entity_0x6E8E*)a1);
+					 return sub_4F1C0((type_str_0x6E8E*)a1);
 					 break;
 				 }*/
 	case 0x2302a0: {
@@ -4584,7 +4592,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 				 /*case 0x230440: {
-					 return sub_4F440((type_entity_0x6E8E*)a1);
+					 return sub_4F440((type_str_0x6E8E*)a1);
 					 break;
 				 }*/
 	case 0x2305f0: {
@@ -4697,15 +4705,15 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 	case 0x231080: {//creating mana sphere
-		return sub_50080(a1_axis3d);
+		return CreateManaSphere512_50080(a1_axis3d);
 		break;
 	}
 	case 0x2310a0: {
-		return sub_500A0(a1_axis3d);
+		return CreateManaSphere2560_500A0(a1_axis3d);
 		break;
 	}
 	case 0x2310c0: {
-		return sub_500C0(a1_axis3d, 0);//fix it
+		return CreateManaSphere_500C0(a1_axis3d, 0);//fix it
 		break;
 	}
 	case 0x231130: {
@@ -5119,7 +5127,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 }
 
 //----- (0004A190) --------------------------------------------------------
-type_entity_0x6E8E* IfSubtypeCallAxisEvent_4A190(axis_3d* position, int type, int subtype)//22b190
+type_entity_0x6E8E* IfSubtypeCallCreatingManaSphere_4A190(axis_3d* position, int type, int subtype)//22b190
 {
 	if (str_D4C48ar[type].dword_14[subtype].dword_10 && str_D4C48ar[type].dword_14[subtype].word_4 == subtype)
 		return pre_sub_4A190_axis_3d(str_D4C48ar[type].dword_14[subtype].address_6, position);
@@ -5127,14 +5135,14 @@ type_entity_0x6E8E* IfSubtypeCallAxisEvent_4A190(axis_3d* position, int type, in
 }
 
 //----- (00057E50) --------------------------------------------------------
-void sub_57E50(type_entity_0x6E8E* entity)//238e50
+void SetMapEntity_57E50(type_entity_0x6E8E* entity)//238e50
 {
 	if (entity->struct_byte_0xc_12_15.byte[0] & 4)
 	{
 		if (entity->nextEntity_0x18_24)
 			D41A0_0.struct_0x6E8E[entity->nextEntity_0x18_24].oldMapEntity_0x16_22 = entity->oldMapEntity_0x16_22;
 		else
-			mapEntityIndex_15B4E0[(entity->position_0x4C_76.x >> 8) + ((entity->position_0x4C_76.y >> 8) << 8)] = entity->oldMapEntity_0x16_22;
+			mapEntityIndex_15B4E0[(entity->axis_0x4C_76.x >> 8) + ((entity->axis_0x4C_76.y >> 8) << 8)] = entity->oldMapEntity_0x16_22;
 		if (entity->oldMapEntity_0x16_22)
 			D41A0_0.struct_0x6E8E[entity->oldMapEntity_0x16_22].nextEntity_0x18_24 = entity->nextEntity_0x18_24;
 		entity->struct_byte_0xc_12_15.byte[0] &= 0xFBu;
@@ -5147,7 +5155,7 @@ void sub_57F20(type_entity_0x6E8E* entity)//238f20
 	int32_t v1; // edx
 	signed int v2; // ecx
 	int v3x;
-	sub_57E50(entity);
+	SetMapEntity_57E50(entity);
 	if (entity->struct_byte_0xc_12_15.byte[2] & 2)
 	{
 		v1 = 0;
@@ -5180,14 +5188,14 @@ signed int sub_69250(type_entity_0x6E8E* a1x)//24a250
 {
 	signed int result; // eax
 	type_entity_0x6E8E* resultx;
-	result = sub_68FF0(a1x, a1x->model_0x40_64, a1x->state_0x45_69 - 2);
+	result = sub_68FF0(a1x, a1x->model_0x40_64, a1x->actionIndex_0x45_69 - 2);
 	if (result)
 	{
-		resultx = arsub_2a881e[a1x->model_0x40_64](&a1x->position_0x4C_76);
-		//resultx = pre_sub_4A190(0x2a881e + 14 * a1x->byte_0x40_64, (int16_t*)&a1x->position_0x4C_76,2);//result = (*(int(**)(uint8_t*))((char *)&off_D781E + 14 * *(char *)(a1 + 64)))(a1 + 76);
+		resultx = arsub_2a881e[a1x->model_0x40_64](&a1x->axis_0x4C_76);
+		//resultx = pre_sub_4A190(0x2a881e + 14 * a1x->byte_0x40_64, (int16_t*)&a1x->array_0x4C_76,2);//result = (*(int(**)(uint8_t*))((char *)&off_D781E + 14 * *(char *)(a1 + 64)))(a1 + 76);
 		//v63 = (uint8_t*)pre_sub_4A190(0x232530 + 14 * v112, v113 + 76);//v63 = (uint8_t*)(*(int(**)(uint8_t*))((char *)&off_D781E + 14 * v112))(v113 + 76);
 		if (resultx)
-			resultx->state_0x45_69 += 2;
+			resultx->actionIndex_0x45_69 += 2;
 	}
 	return result;
 }
@@ -5359,23 +5367,23 @@ void sub_48400(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 			for (i = v6 - result; v18; v28 = 0)
 			{
 				sub_483A0(posX2, posY2, posX, posY);
-				v22x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 27);
+				v22x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 27);
 				if (v20 >= 0)
 				{
-					v22x->state_0x45_69 = 28;
+					v22x->actionIndex_0x45_69 = 28;
 					v23 = v20 + v28;
 				}
 				else
 				{
-					v22x->state_0x45_69 = 27;
+					v22x->actionIndex_0x45_69 = 27;
 					v23 = -v20 - v28;
 				}
 				v22x->dword_0x10_16 = v23;
 				sub_483A0(posX2, (unsigned __int16)(v20 + v28 + posY2), posX, posY);
 				v18--;
 				posY2 += v20 + v28;
-				v24x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 27);
-				v24x->state_0x45_69 = 29;
+				v24x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 27);
+				v24x->actionIndex_0x45_69 = 29;
 				v24x->dword_0x10_16 = i + v30;
 				result = 0;
 				posX2 += i + v30;
@@ -5395,20 +5403,20 @@ void sub_48400(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 				do
 				{
 					sub_483A0(posX2, posY2, posX, posY);
-					v13x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 27);
-					v13x->state_0x45_69 = 29;
+					v13x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 27);
+					v13x->actionIndex_0x45_69 = 29;
 					v13x->dword_0x10_16 = v25 + v29;
 					posX2 += v25 + v29;
 					sub_483A0(posX2, posY2, posX, posY);
-					v14x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 27);
+					v14x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 27);
 					if (v12 >= 0)
 					{
-						v14x->state_0x45_69 = 28;
+						v14x->actionIndex_0x45_69 = 28;
 						v15 = v12 + v27;
 					}
 					else
 					{
-						v14x->state_0x45_69 = 27;
+						v14x->actionIndex_0x45_69 = 27;
 						v15 = -v12 - v27;
 					}
 					v14x->dword_0x10_16 = v15;
@@ -5470,23 +5478,23 @@ void sub_48690(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 		v14 = Xdir;
 		v15 = 0;
 	}
-	PlayerPosition_EB398.x = posX2 << 8;
-	PlayerPosition_EB398.y = posY2 << 8;
-	v10x = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 30);
+	predictedAxis_EB398ar.x = posX2 << 8;
+	predictedAxis_EB398ar.y = posY2 << 8;
+	v10x = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 30);
 	if (v10x)
 	{
 		v10x->dword_0x10_16 = maxabsdist;
-		v10x->word_0x1C_28 = Xdir;
-		v10x->word_0x1E_30 = Ydir;
+		v10x->yaw_0x1C_28 = Xdir;
+		v10x->pitch_0x1E_30 = Ydir;
 	}
-	PlayerPosition_EB398.x = (maxabsdist * Xdir + posX2) << 8;
-	PlayerPosition_EB398.y = (maxabsdist * Ydir + posY2) << 8;
-	resultx = IfSubtypeCallAxisEvent_4A190(&PlayerPosition_EB398, 10, 30);
+	predictedAxis_EB398ar.x = (maxabsdist * Xdir + posX2) << 8;
+	predictedAxis_EB398ar.y = (maxabsdist * Ydir + posY2) << 8;
+	resultx = IfSubtypeCallCreatingManaSphere_4A190(&predictedAxis_EB398ar, 10, 30);
 	if (resultx)
 	{
 		resultx->dword_0x10_16 = distXYdiff;
-		resultx->word_0x1C_28 = v14;
-		resultx->word_0x1E_30 = v15;
+		resultx->yaw_0x1C_28 = v14;
+		resultx->pitch_0x1E_30 = v15;
 	}
 }
 
@@ -5509,10 +5517,10 @@ void sub_487D0(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	v11x.y = posY << 8;
 	v5 = Maths::sub_581E0_maybe_tan2(&v8x, &v11x);
 	v6 = Maths::EuclideanDistXYZ_58490(&v8x, &v11x);
-	resultx = IfSubtypeCallAxisEvent_4A190(&v8x, 10, 32);
+	resultx = IfSubtypeCallCreatingManaSphere_4A190(&v8x, 10, 32);
 	if (resultx)
 	{
-		resultx->word_0x1C_28 = v5;
+		resultx->yaw_0x1C_28 = v5;
 		resultx->life_0x8 = (signed int)v6 >> 8;
 		resultx->byte_0x46_70 = a5;
 	}
@@ -5539,12 +5547,12 @@ void sub_48880(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	v12x.y = posY << 8;
 	v4 = Maths::sub_581E0_maybe_tan2(&v9x, &v12x);
 	v5 = Maths::EuclideanDistXYZ_58490(&v9x, &v12x);
-	resultx = IfSubtypeCallAxisEvent_4A190(&v9x, 10, 51);
+	resultx = IfSubtypeCallCreatingManaSphere_4A190(&v9x, 10, 51);
 	//v7x = resultx;
 	if (resultx)
 	{
 		v8 = resultx->actSpeed_0x82_130;
-		resultx->word_0x1C_28 = v4;
+		resultx->yaw_0x1C_28 = v4;
 		//result = (uint8_t*)(v5 / v8);
 		resultx->life_0x8 = (v5 / v8);
 	}
@@ -5670,17 +5678,17 @@ void sub_48930(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	else
 		result = 0;
 
-	//result = pre_sub_4A190(v8x, (int16_t*)& PlayerPosition_EB398, 81);
+	//result = pre_sub_4A190(v8x, (int16_t*)& x_WORD_EB398ar, 81);
 
 	//v8x = *(uint32_t*) & (x_DWORD_D4C52ar[(0x2a8b7a + v13 * 14 - 0x2a5c52)]);
-	//v14x = pre_sub_4A190(v8x, (int16_t*)& PlayerPosition_EB398, 1); //(*(int(**)(int))((char *)&off_D7B7A + 14 * v13))((int)PlayerPosition_EB398);
+	//v14x = pre_sub_4A190(v8x, (int16_t*)& x_WORD_EB398ar, 1); //(*(int(**)(int))((char *)&off_D7B7A + 14 * v13))((int)x_WORD_EB398ar);
 
 	if (result)
 	{
 		/* *(_DWORD*)(result + 154) = *(_DWORD*)&v8;
 		*(_WORD*)(result + 158) = v10;
 		*(_BYTE*)(result + 70) = a5;*/
-		result->word_0x9A_154x = v8x;
+		result->axis_0x9A_154x = v8x;
 		result->byte_0x46_70 = a5;
 	}
 }
@@ -5714,12 +5722,12 @@ int sub_483A0(__int16 a1, int a2, char a3, char a4)//2293a0
 	v7 = mapHeightmap_11B4E0[v6];
 	if (v7 > (unsigned __int8)v5)
 		LOBYTE(v5) = mapHeightmap_11B4E0[v6];
-	PlayerPosition_EB398.x = a1 << 8;
+	predictedAxis_EB398ar.x = a1 << 8;
 	result = a2 << 8;
-	PlayerPosition_EB398.z = 32 * v5;
-	PlayerPosition_EB398.y = (x_WORD)a2 << 8;
+	predictedAxis_EB398ar.z = 32 * v5;
+	predictedAxis_EB398ar.y = (x_WORD)a2 << 8;
 	return result;
 }
 // EB398: using guessed type __int16 x_WORD_EB398;
-// EB39A: using guessed type __int16 PlayerPosition_EB398[1];
-// EB39C: using guessed type __int16 PlayerPosition_EB398[2];
+// EB39A: using guessed type __int16 x_WORD_EB398ar[1];
+// EB39C: using guessed type __int16 x_WORD_EB398ar[2];

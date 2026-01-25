@@ -1,23 +1,12 @@
 #pragma once
 
-#if (!defined(WIN32) && !defined(__linux__)) || defined(COMPILE_FOR_64BIT)
-  #define TEST_x64//only for x64 testing
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <cstdint>
-#include <functional>
-#include <chrono>
-
-#include "stdint.h"
+#include "BasicMini.h"
+#include "Spells.h"
+#include "LevelStructs.h"
 
 #ifdef _MSC_VER
 #include <direct.h>  
 #include <io.h>  
-#include <windows.h>
 #include "../portability/dirent-x.h"
 #else
 #include "dirent.h"
@@ -28,7 +17,6 @@
 #include "../portability/port_filesystem.h"
 #include "engine_support.h"
 #include "read_config.h"
-#include "defs.h"
 
 #include "../utilities/DataFileIO.h"
 #include "../engine/ViewPort.h"
@@ -125,7 +113,7 @@ typedef struct//lenght 613 // end 17E09D
 	char x_BYTE_17DF10_get_key_scancode; // weak
 	char x_BYTE_17DF11_last_key_status; // weak
 	char stuba[1];
-	char x_BYTE_17DF13; // weak
+	char showHelp_17DF13; // weak
 	char xx_BYTE_17DF14[8][43]; // 43*8, used for load_dialog_dialog
 	//char x_BYTE_17DF3C[400]; // fix it -  weak//&x_BYTE_17DF14[40]
 	//char x_BYTE_17DF3D[400]; // fix it -  weak//&x_BYTE_17DF14[41]
@@ -152,9 +140,8 @@ typedef struct//lenght 613 // end 17E09D
 
 extern type_str_unk_1804B0ar str_unk_1804B0ar;
 extern __int16 x_WORD_180660_VGA_type_resolution;
-extern uint8_t x_BYTE_E88E0x[32];
+extern uint8_t playersColors_E88E0x[8][3];
 extern uint8_t unk_F0A20x[1024];//2c1a20
-extern char isCaveLevel_D41B6;
 extern uint8_t keyColor1_D4B7C; // weak
 extern uint8_t keyColor2_D4B7E; // weak
 extern type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
@@ -163,11 +150,17 @@ extern uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff
 extern uint8_t* x_BYTE_F6EE0_tablesx_pre;
 extern uint8_t* x_BYTE_FAEE0_tablesx_pre;
 
+extern int iScreenWidth_DE560; // weak //screen X // DE560
+
 extern std::array<uint8_t*, 256> x_DWORD_DDF50_texture_adresses; /*= { 0,32 }*/ // weak
 
 extern type_E9C38_smalltit Str_E9C38_smalltit[21 * 40];
 
 extern type_F2C20ar str_F2C20ar;
+
+extern uint8_t* ViewPortRenderBufferStart_DE558;
+
+extern uint8_t* ViewPortRenderBufferAltStart_DE554;
 
 extern std::string gameDataPath;
 extern std::string cdDataPath;
@@ -185,27 +178,17 @@ extern int m_iFrameCount; // The number of frames that have occurred.
 extern float m_fFps; // The frames rendered per second. Needs to be stored to be shown every frame.
 
 extern int readFileStatus_E3E2C;
-
 extern char DisplaySubtitles_D41C1; // weak
-
 extern char SubtitlesOn_D41CE; // weak
-
 extern char* x_DWORD_D41D0; // weak
-
 extern uint8_t* x_DWORD_17DB50; // weak
-
 extern int x_DWORD_E3890;
-
 extern int x_DWORD_E3768; // weak
-
 extern char x_BYTE_E3766; // weak
-
 extern int16_t unk_1806EC; // weak
-
 extern uint16_t x_WORD_18072C_cursor_sizex; // weak
 extern uint16_t x_WORD_18072E_cursor_sizey; // weak
 extern uint8_t* x_DWORD_180730_cursor_data; // weak//351730
-
 extern char* x_DWORD_D41BC_langbuffer; // fix it
 extern char* x_DWORD_D41BC_langbuffer; // fix it
 extern int x_DWORD_18073A; // weak
@@ -219,14 +202,7 @@ extern __int16 x_WORD_18074C_mouse_left2_button; // weak//35174c
 //basic graphics
 extern type_x_DWORD_17DE38str x_DWORD_17DE38str;
 extern uint8_t* x_DWORD_E9C38_smalltit;
-
-extern int Int386Request_17FF0C;
-extern int MscdexCommand_17FF44;
-extern uint8_t MinTrackIdx_180471;
-extern uint8_t MaxTrackIdx_180472;
-
 extern TColor unk_17D838x[]; // weak
-
 extern uint8_t x_BYTE_D41B5_texture_size;
 
 #pragma pack (push,1)
@@ -236,26 +212,6 @@ typedef struct {
 	uint8_t** dat_buffer;
 	bitmap_pos_struct_t** posistruct;
 } filearray_struct;
-
-typedef struct {//lenght 26
-	int32_t dword_2;
-	int32_t dword_6;
-	int32_t dword_A;
-	int32_t dword_E;
-	int32_t dword_0x12;
-	int16_t word_0x16x;
-	int16_t word_0x18;
-	int8_t byte_0x1A;
-	uint8_t byte_0x1B;
-}
-type_SPELLS_BEGIN_BUFFER_str_sub;
-
-typedef struct {//lenght 80
-	int8_t byte_0;
-	uint8_t byte_1;
-	type_SPELLS_BEGIN_BUFFER_str_sub subspell[3];
-}
-type_SPELLS_BEGIN_BUFFER_str;
 
 typedef struct {//lenght 10
 	int32_t dword_0;
@@ -293,7 +249,7 @@ extern TColor* str_PALDATA_BEGIN_BUFFER;//2bb3c8
 extern TColor* str_PALMEM_BEGIN_BUFFER;//6d654d
 extern uint8_t* POINTERSDAT_BEGIN_BUFFER;//2bc390
 extern bitmap_pos_struct2_t* POINTERSTAB_BEGIN_BUFFER;//2bc394
-extern bitmap_pos_struct2_t* POINTERSTAB_END_BUFFER;//2bc388*/
+extern bitmap_pos_struct2_t* POINTERSTAB_END_BUFFER;//2bc388
 
 extern uint8_t* BUILD00DAT_BEGIN_BUFFER;
 extern bitmap_pos_struct2_t* BUILD00TAB_BEGIN_BUFFER;
@@ -498,7 +454,7 @@ extern type_TMAPS00TAB_BEGIN_BUFFER* str_TMAPS00TAB_BEGIN_BUFFER;
 
 extern uint8_t* Zero_pointer;
 
-extern int GameTimerTick_17DB54; // weak
+extern uint64_t GameTimerTick_17DB54; // weak
 
 extern uint32_t PitFrequency_F4240;
 
@@ -557,7 +513,7 @@ uint32_t sub_7FAE0_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsig
 void sub_90478_VGA_Blit320(uint8_t maxFps = 0);
 void sub_75200_VGA_Blit640(uint16_t height, uint8_t maxFps = 0);
 uint8_t GetLetterHeight_6FC30();
-void sub_2BB40_draw_bitmap(int16_t posx, int16_t posy, bitmap_pos_struct_t temposstr, uint8_t scale = 1);
+void DrawBitmap_2BB40(int16_t posx, int16_t posy, bitmap_pos_struct_t temposstr, uint8_t scale = 1);
 
 void GetFont_6FC50(__int16 a1);//250c50
 uint8_t GetLetterWidth_6FC10();
@@ -574,8 +530,8 @@ void LockFps(uint8_t maxFps);
 void sub_6EF10_set_mouse_minmax(__int16 a1, signed __int16 a2, __int16 a3, signed __int16 a4);
 void sub_7FB90_draw_text(char* a1, int16_t a2, int16_t a3, uint8_t a4);
 void sub_8CACD_draw_cursor2();
-void sub_8F8B0_draw_bitmap320(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);
-void sub_8F8E8_draw_bitmap640(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);
+void drawBitmap320_8F8B0(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);
+void drawBitmap640_8F8E8(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);
 void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx);
 void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx);
 void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t color, uint8_t scale = 1);//250940
@@ -584,15 +540,8 @@ void DrawCursor_8C635();
 void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, int tilex, uint8_t* texture, uint8_t setbyte, char a6, uint8_t scale);
 void sub_8F920(uint8_t a1byte1, uint8_t a1byte2, int16_t posx, int16_t posy, uint8_t* a4, unsigned __int8 a5, char a6);
 
-void sub_99A77_create_index_dattab_div(uint8_t* a1, uint8_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4);
-void sub_99AEB_create_index_dattab_minus(uint8_t* a1, uint8_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4);
-void sub_98709_create_index_dattab_power(bitmap_pos_struct2_t* a1, bitmap_pos_struct2_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4);
-void sub_98709_create_index_dattab_power_add(uint8_t* a1, uint8_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4, int add);
-void sub_9874D_create_index_dattab(bitmap_pos_struct2_t* a1, bitmap_pos_struct2_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4);
-void sub_9874D_create_index_dattab_add(uint8_t* a1, uint8_t* a2, uint8_t* a3, bitmap_pos_struct_t* a4, int add);
 signed int GetTrueWizardNumber_61790(signed int inputnumber);
 
-void DecompressLevel_2FECE(Type_CompressedLevel_2FECE* from, Type_Level_2FECE* to);
 void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type_D41A0_BYTESTR_0* to);
 void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D41A0_BYTESTR_0* to);
 void Convert_to_shadow_str_E2A74(const type_array_str_E2A74 &from, type_shadow_str_E2A74* to);

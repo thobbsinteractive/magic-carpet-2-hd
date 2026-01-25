@@ -8,6 +8,7 @@
 #include "MenusAndIntros.h"
 #include "PlayerInput.h"
 #include "Terrain.h"
+#include "DatTabIndexes.h"
 
 
 void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* textureBuffer);
@@ -228,9 +229,7 @@ bool SaveLevelSMAP_55320(uint8_t savefileindex, char* savefileindex2)//236320 //
 {
 	FILE* savesmapfile; // eax
 	size_t writedsize; // [esp+40h] [ebp-8h]
-	
 	Logger->debug("InGameSave-begin");
-
 	sprintf(printbuffer, "%s/%s/%s%d%s.DAT", gameDataPath.c_str(), "SAVE", "SMAP", savefileindex + 1, savefileindex2);
 	savesmapfile = DataFileIO::CreateOrOpenFile(printbuffer, 546);
 	if (savesmapfile)
@@ -241,12 +240,10 @@ bool SaveLevelSMAP_55320(uint8_t savefileindex, char* savefileindex2)//236320 //
 		DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)mapAngle_13B4E0, 0x10000);
 		DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)x_BYTE_14B4E0_second_heightmap, 0x10000);
 		DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)mapEntityIndex_15B4E0, 0x20000);
-		writedsize = DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)x_BYTE_F2CD0x, 4802) != 4802;
+		writedsize = DataFileIO::WriteFile_98CAA(savesmapfile, (uint8_t*)building_F2CD0x, 4802) != 4802;
 		DataFileIO::Close(savesmapfile);
 	}
-
 	Logger->debug("InGameSave-end-{}", writedsize);
-
 	return (writedsize == 0);
 }
 // 10000: using guessed type void /*__noreturn*/ sub_10000();
@@ -351,7 +348,7 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex)//2368e0
 	//        was before: debugafterload = 1;
 	//        cannot be: CommandLineParams.DoDebugafterload() = 1;
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0x3d;//fix same run after load
-	x_WORD_17B4E0 = 0x21ed;//fix random variable for debugging
+	rand2_17B4E0 = 0x21ed;//fix random variable for debugging
 
 	sprintf(printbuffer, "%s/%s/%s%d.DAT", gameDataPath.c_str(), "SAVE", "SMAP", savefileindex + 1);
 	FILE* loadfile = DataFileIO::CreateOrOpenFile(printbuffer, 512);
@@ -363,7 +360,7 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex)//2368e0
 		DataFileIO::Read(loadfile, (uint8_t*)mapAngle_13B4E0, 0x10000);
 		DataFileIO::Read(loadfile, (uint8_t*)x_BYTE_14B4E0_second_heightmap, 0x10000);
 		DataFileIO::Read(loadfile, (uint8_t*)mapEntityIndex_15B4E0, 0x20000);
-		int truesize = DataFileIO::Read(loadfile, (uint8_t*)x_BYTE_F2CD0x, 4802) == 4802;
+		int truesize = DataFileIO::Read(loadfile, (uint8_t*)building_F2CD0x, 4802) == 4802;
 		DataFileIO::Close(loadfile);
 		if (truesize) {
 			Logger->debug("InGameLoad-end-ok\n");
@@ -590,15 +587,15 @@ void sub_55100(char a1)//236100
 					if (v2 == -1)
 					{
 						int diff = D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E - D41A0_0.struct_0x6E8E;
-						int sizediff = diff * sizeof(type_shadow_entity_0x6E8E);
+						int sizediff = diff * sizeof(type_shadow_str_0x6E8E);
 						if (((char*)D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_entity_0x6E8E) > 0)
 							allert_error();
 						D41A0_0.stages_0x3654C[v4].str_36552_un.dword = sizediff;
 					}
 					else
 					{
-						int count = D41A0_0.stages_0x3654C[v4].str_36552_un.dword / sizeof(type_shadow_entity_0x6E8E);
-						int countadd = D41A0_0.stages_0x3654C[v4].str_36552_un.dword % sizeof(type_shadow_entity_0x6E8E);
+						int count = D41A0_0.stages_0x3654C[v4].str_36552_un.dword / sizeof(type_shadow_str_0x6E8E);
+						int countadd = D41A0_0.stages_0x3654C[v4].str_36552_un.dword % sizeof(type_shadow_str_0x6E8E);
 						if (countadd > 0)allert_error();
 						D41A0_0.stages_0x3654C[v4].str_36552_un.ptr0x6E8E = &D41A0_0.struct_0x6E8E[count];
 					}
@@ -627,15 +624,15 @@ void sub_55100(char a1)//236100
 					if (v2 == -1)
 					{
 						int diff = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E - D41A0_0.struct_0x6E8E;
-						int sizediff = diff * sizeof(type_shadow_entity_0x6E8E);
+						int sizediff = diff * sizeof(type_shadow_str_0x6E8E);
 						if (((char*)D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_entity_0x6E8E) > 0)
 							allert_error();
 						D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword = sizediff;
 					}
 					else
 					{
-						int count = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword / sizeof(type_shadow_entity_0x6E8E);
-						int countadd = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword % sizeof(type_shadow_entity_0x6E8E);
+						int count = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword / sizeof(type_shadow_str_0x6E8E);
+						int countadd = D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.dword % sizeof(type_shadow_str_0x6E8E);
 						if (countadd > 0)allert_error();
 						D41A0_0.StageVars2_0x365F4[i].str_0x3647C_4.pointer_0x6E8E = &D41A0_0.struct_0x6E8E[count];
 					}
@@ -657,15 +654,15 @@ void sub_55100(char a1)//236100
 			if (v2 == -1)
 			{
 				int diff = D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E - D41A0_0.struct_0x6E8E;
-				int sizediff = diff * sizeof(type_shadow_entity_0x6E8E);
+				int sizediff = diff * sizeof(type_shadow_str_0x6E8E);
 				if (((char*)D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E - (char*)D41A0_0.struct_0x6E8E) % sizeof(type_entity_0x6E8E) > 0)
 					allert_error();
 				D41A0_0.str_0x3664C[j].event_A.dword = sizediff;//0x36656
 			}
 			else
 			{
-				int count = D41A0_0.str_0x3664C[j].event_A.dword / sizeof(type_shadow_entity_0x6E8E);
-				int countadd = D41A0_0.str_0x3664C[j].event_A.dword % sizeof(type_shadow_entity_0x6E8E);
+				int count = D41A0_0.str_0x3664C[j].event_A.dword / sizeof(type_shadow_str_0x6E8E);
+				int countadd = D41A0_0.str_0x3664C[j].event_A.dword % sizeof(type_shadow_str_0x6E8E);
 				if (countadd > 0)allert_error();
 				D41A0_0.str_0x3664C[j].event_A.pointer_0x6E8E = &D41A0_0.struct_0x6E8E[count];//0x36656
 			}
@@ -695,7 +692,7 @@ void sub_57680_FixPointersAfterLoad()//238680
 
 	for (int v0 = 0; v0 < D41A0_0.NumberOfPlayers_0xe; v0++)
 	{
-		Entities_EA3E4[D41A0_0.array_0x2BDE[v0].PlayerEntityIdx_2BE4_11240]->dword_0xA4_164x = &D41A0_0.array_0x2BDE[v0].dword_0x3E6_2BE4_12228;
+		Entities_EA3E4[D41A0_0.array_0x2BDE[v0].playerIndex_0x00a_2BE4_11240]->dword_0xA4_164x = &D41A0_0.array_0x2BDE[v0].dword_0x3E6_2BE4_12228;
 	}
 	for (int indexx = 1; Entities_EA3E4[indexx] < Entities_EA3E4[1000]; indexx++)
 		if (Entities_EA3E4[indexx]->class_0x3F_63)
@@ -751,26 +748,26 @@ void sub_55AB0(type_str_0x2BDE* playStr)//236ab0
 {
 	for (int i = 0; i < 26; i++)
 	{
-		if (playStr->dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.byte[x_BYTE_D94FF_spell_index[i]] || playStr->dword_0x3E6_2BE4_12228.str_611.array_0x403_1027x.byte[x_BYTE_D94FF_spell_index[i]])
+		if (playStr->dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.subSpellIndex[spellIndex_D94FF[i]] || playStr->dword_0x3E6_2BE4_12228.str_611.array_0x403_1027x.subSpellIndex[spellIndex_D94FF[i]])
 		{
-			if (!playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]])
+			if (!playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[spellIndex_D94FF[i]])
 			{
-				type_entity_0x6E8E* tempEvent = IfSubtypeCallAxisEvent_4A190(&Entities_EA3E4[playStr->PlayerEntityIdx_2BE4_11240]->position_0x4C_76, 15, x_BYTE_D94FF_spell_index[i]);
+				type_entity_0x6E8E* tempEvent = IfSubtypeCallCreatingManaSphere_4A190(&Entities_EA3E4[playStr->playerIndex_0x00a_2BE4_11240]->axis_0x4C_76, 15, spellIndex_D94FF[i]);
 				if (tempEvent)
 				{
-					playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]] = tempEvent - D41A0_0.struct_0x6E8E;
-					tempEvent->parentId_0x28_40 = Entities_EA3E4[playStr->PlayerEntityIdx_2BE4_11240] - D41A0_0.struct_0x6E8E;
+					playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[spellIndex_D94FF[i]] = tempEvent - D41A0_0.struct_0x6E8E;
+					tempEvent->parentId_0x28_40 = Entities_EA3E4[playStr->playerIndex_0x00a_2BE4_11240] - D41A0_0.struct_0x6E8E;
 					tempEvent->struct_byte_0xc_12_15.byte[0] |= 1u;
-					SetSpell_6D5E0(tempEvent, playStr->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[i]]);
+					SetSpell_6D5E0(tempEvent, playStr->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.subSpellIndex[spellIndex_D94FF[i]]);
 				}
 			}
 		}
 		else
 		{
-			if (playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]])
+			if (playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[spellIndex_D94FF[i]])
 			{
-				playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]] = 0;
-				sub_57F20(Entities_EA3E4[playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[x_BYTE_D94FF_spell_index[i]]]);
+				playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[spellIndex_D94FF[i]] = 0;
+				sub_57F20(Entities_EA3E4[playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[spellIndex_D94FF[i]]]);
 			}
 		}
 	}
@@ -793,7 +790,7 @@ void sub_71990()//252990
 		sub_712F0();
 	for(int i=0;i<504;i++)
 		if (!D41A0_0.array_0x39[i])
-			sub_70D20(i);
+			ResetTmap_70D20(i);
 	for (i = 2; i && !v6_return; i--)
 	{
 		for (j = 0; j < 504 && !v6_return; j++)
@@ -843,23 +840,6 @@ void SetStagetagForTermod_49830(Type_Level_2FECE* terrain)//22a830 //set v1x->wo
 		entity++;
 	} while (entity < &terrain->entity_0x30311[1200]);
 }
-
-//----- (0006EB90) --------------------------------------------------------
-void CreateIndexes_6EB90(filearray_struct* a1)//24fb90
-{
-	for (uint32_t i = 0; (a1[i].begin_buffer) != &ZERO_BUFFER_PST2; i++)
-	{
-		if (x_WORD_180660_VGA_type_resolution & 1)
-			sub_98709_create_index_dattab_power(*a1[i].begin_buffer, *a1[i].end_buffer, *a1[i].dat_buffer, *a1[i].posistruct);//279709 //1a6f44,1a6f86,1a6578
-		  //result = sub_98709_create_index_dattab_power(**i, *i[1], *i[2]);
-		  //1a6f44 000000000000020000000c0d92000000
-		  //1a6f86 00000000000000000000000000000000
-		  //1a6578 0b0005a1a1a1a1a10005a1b413aaa100
-		else
-			sub_9874D_create_index_dattab(*a1[i].begin_buffer, *a1[i].end_buffer, *a1[i].dat_buffer, *a1[i].posistruct);
-	}
-}
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00046F80) --------------------------------------------------------
 void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* textureBuffer)//227f80
@@ -964,37 +944,34 @@ void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* text
 }
 
 //----- (0006D5E0) --------------------------------------------------------
-void SetSpell_6D5E0(type_entity_0x6E8E* entity, char spell)//24e5e0
+void SetSpell_6D5E0(type_entity_0x6E8E* entity, int spellId)//24e5e0
 {
-	int v2y; // eax
-	int8_t actspell;
-
-	actspell = spell;
-	if (spell > SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].byte_0 - 1)
-		actspell = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].byte_0 - 1;
+	int locSpellId = spellId;
+	if (locSpellId > SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].byte_0 - 1)
+		locSpellId = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].byte_0 - 1;
 	if (entity->word_0x2E_46)
 	{
-		entity->word_0x2C_44 = actspell + 1;
+		entity->word_0x2C_44 = locSpellId + 1;
 	}
 	else
 	{
-		entity->byte_0x46_70 = actspell;
-		entity->word_0x2A_42 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].dword_2;
-		entity->word_0x30_48 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].word_0x18;
-		entity->byte_0x3B_59 = (SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].byte_0x1B & 1) == 0;
+		entity->byte_0x46_70 = locSpellId;
+		entity->subSpellIndex_0x2A_42 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[locSpellId].subSpellIndex_2;
+		entity->word_0x30_48 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[locSpellId].word_0x18;
+		entity->byte_0x3B_59 = (SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[locSpellId].fontType_0x1B & 1) == 0;
 		entity->byte_0x3C_60 = 0;
-		entity->byte_0x3D_61 = 0;
+		entity->fontTypeIndex_0x3D_61 = 0;
 		//fix
-		entity->dword_0x88_136 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[actspell].dword_A;
+		entity->manaRegen_0x88_136 = SPELLS_BEGIN_BUFFER_str[entity->model_0x40_64].subspell[locSpellId].maxManaLimit_A;
 		//fix
-		v2y = sub_6D710(Entities_EA3E4[entity->parentId_0x28_40], entity->model_0x40_64, actspell);
-		entity->maxMana_0x8C_140 = v2y;
+		int mana = GetSpellManaCost_6D710(Entities_EA3E4[entity->parentId_0x28_40], entity->model_0x40_64, locSpellId);
+		entity->maxMana_0x8C_140 = mana;
 		if (entity->word_0x30_48)
-			v2y /= entity->word_0x30_48;
-		entity->mana_0x90_144 = v2y;		
-		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x20)
+			mana /= entity->word_0x30_48;
+		entity->mana_0x90_144 = mana;
+		if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x20)
 		{
-			entity->dword_0x88_136 = 0;
+			entity->manaRegen_0x88_136 = 0;
 			entity->mana_0x90_144 = 1;
 		}
 	}
@@ -1005,7 +982,7 @@ void sub_712F0()//2522f0
 {
 	x_DWORD_E9C28_str = sub_71B40(x_D41A0_BYTEARRAY_4_struct.dword_0xE6_heapsize_230, 504, (type_x_DWORD_E9C28_str*)x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226);
 	if (x_DWORD_E9C28_str)
-		x_DWORD_E9C08x = sub_72120(0x1F8u);
+		animations_E9C08x = sub_72120(0x1F8u);
 	sub_70A60_open_tmaps();
 	sub_71A70_setTmaps(D41A0_0.terrain_2FECE.MapType);
 	memset(str_DWORD_F66F0x, 0, 504 * sizeof(type_particle_str**));
@@ -1021,11 +998,11 @@ void sub_71890()//252890
 	//char result; // al
 	int v0y = 0;
 	memset(m_LevelSpriteList_F5340, 0, 504);
-    while (str_WORD_D951C[v0y].speed_6 || str_WORD_D951C[v0y].rotSpeed_8)
+    while (particlesParameters_D951C[v0y].speed_6 || particlesParameters_D951C[v0y].rotSpeed_8)
     {
-        if (str_WORD_D951C[v0y].byte_11 == -1)
+        if (particlesParameters_D951C[v0y].byte_11 == -1)
         {
-            m_LevelSpriteList_F5340[str_WORD_D951C[v0y].word_0] = str_WORD_D951C[v0y].byte_11;
+            m_LevelSpriteList_F5340[particlesParameters_D951C[v0y].word_0] = particlesParameters_D951C[v0y].byte_11;
         }
         v0y++;
     }
@@ -1117,24 +1094,17 @@ type_E9C08* sub_72120(unsigned __int16 a1)//253120
 //----- (00071B40) --------------------------------------------------------
 type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C28_str* a3y)//252b40
 {
-	unsigned __int16 v3; // di
-	int v4; // eax
 	int v5; // eax
 	int v6; // edx
-	type_x_DWORD_E9C28_str* v7y; // esi
-	//int v8; // eax
-	type_x_DWORD_E9C28_str* v10y; // ebx
+	type_x_DWORD_E9C28_str* result; // esi
+	//type_x_DWORD_E9C28_str* v10y; // ebx
 	uint8_t* v11x; // eax
 	uint8_t* v12x; // eax
 	uint8_t* v13x; // eax
-	int v14; // [esp+0h] [ebp-Ch]
-	//allert_error();//test a3y->dword_0 and a1
-	v3 = a2;
+	unsigned __int16 index = a2;
 	if (a3y)
 	{
-		v4 = 14 * a2;
-		v14 = v4;
-		v5 = 4 * a2 + v4 + 26;
+		v5 = sizeof(subtype_x_DWORD_E9C28_str*) * a2 + (sizeof(subtype_x_DWORD_E9C28_str) * a2) + sizeof(type_x_DWORD_E9C28_str);
 		v6 = a1 - v5;
 		if (a1 == v5)
 			return 0;
@@ -1142,69 +1112,63 @@ type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C2
 		a3y->word_24 = 2;
 		a3y->dword_0 = v6;
 		a3y->dword_4 = v6;
-		v7y = a3y;
+		result = a3y;
 		a3y->word_22 = a2;
-		a3y->str_8_data = (subtype_x_DWORD_E9C28_str*)a3y->data;
-		//v8 = v14 + a3x + 26;
-		a3y->dword_12x = (subtype_x_DWORD_E9C28_str**)((uint8_t*)a3y->data+v14);// (uint32_t)(v14 + (uint8_t*)a3y + 26);//must fix for 64 bit version - data
-		a3y->dword_16x = (uint32_t*)((uint8_t*)a3y->data+(v14 + 4 * a2));//(uint32_t)(4 * a2 + (v14 + (uint8_t*)a3y + 26));//must fix for 64 bit version - data
-		while (--v3 != 0xffff)
-			//*(x_DWORD*)(a3y->dword_8_data + 14 * v3 + 4) = 0;
-			a3y->str_8_data[v3].dword_4 = 0;
+		a3y->str_8_data = a3y->data;
+		a3y->dword_12x = (subtype_x_DWORD_E9C28_str**)&a3y->data[a2];
+		a3y->dword_16x = (uint32_t*)((uint8_t*)a3y->data+((sizeof(subtype_x_DWORD_E9C28_str) * a2) + sizeof(subtype_x_DWORD_E9C28_str*) * a2));
+		while (--index != 0xffff)
+			a3y->str_8_data[index].dword_4 = 0;
 	}
 	else
 	{
-		v10y = (type_x_DWORD_E9C28_str*)Malloc_83CD0(26);
-		v7y = v10y;
-		if (!v10y
-			|| (v11x = (uint8_t*)Malloc_83CD0(a1), (v10y->dword_16x = (uint32_t*)v11x) == 0)
-			|| (v12x = (uint8_t*)Malloc_83CD0(14 * a2), (v10y->str_8_data = (subtype_x_DWORD_E9C28_str*)v12x) == 0)
-			|| (v13x = (uint8_t*)Malloc_83CD0(4 * a2), (v10y->dword_12x = (subtype_x_DWORD_E9C28_str**)v13x) == 0))
+		result = (type_x_DWORD_E9C28_str*)Malloc_83CD0(26);
+		//result = v10y;
+		if (!result
+			|| (v11x = (uint8_t*)Malloc_83CD0(a1), (result->dword_16x = (uint32_t*)v11x) == 0)
+			|| (v12x = (uint8_t*)Malloc_83CD0(sizeof(subtype_x_DWORD_E9C28_str) * a2), (result->str_8_data = (subtype_x_DWORD_E9C28_str*)v12x) == 0)
+			|| (v13x = (uint8_t*)Malloc_83CD0(sizeof(subtype_x_DWORD_E9C28_str*) * a2), (result->dword_12x = (subtype_x_DWORD_E9C28_str**)v13x) == 0))
 		{
-			if (v10y)
+			if (result)
 			{
-				if (v10y->dword_16x)
+				if (result->dword_16x)
 				{
-					if (v10y->str_8_data)
-						FreeMem_83E80((uint8_t*)v10y->str_8_data);
-					FreeMem_83E80((uint8_t*)v10y->dword_16x);
+					if (result->str_8_data)
+						FreeMem_83E80((uint8_t*)result->str_8_data);
+					FreeMem_83E80((uint8_t*)result->dword_16x);
 				}
-				FreeMem_83E80((uint8_t*)v10y);
+				FreeMem_83E80((uint8_t*)result);
 			}
 			exit(1);
 		}
-		v10y->word_20 = 0;
-		v10y->word_24 = 1;
-		v10y->word_22 = a2;
-		v10y->dword_0 = a1;
-		v10y->dword_4 = a1;
-		while (--v3 != 0xffff)
-			//*(x_DWORD*)(v10y->dword_8_data + 14 * v3 + 4) = 0;
-			v10y->str_8_data[v3].dword_4 = 0;
+		result->word_20 = 0;
+		result->word_24 = 1;
+		result->word_22 = a2;
+		result->dword_0 = a1;
+		result->dword_4 = a1;
+		while (--index != 0xffff)
+			result->str_8_data[index].dword_4 = 0;
 	}
-	return v7y;
+	return result;
 }
 
 //----- (0006D710) --------------------------------------------------------
-int sub_6D710(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//24e710
+int GetSpellManaCost_6D710(type_entity_0x6E8E* event, uint8 spellIndex, uint8 subSpellIndex)//24e710
 {
-	signed int v3; // ecx
-	int result; // eax
-	//int v5; // edx
-	type_entity_0x6E8E* v6x; // ebx
-	int v7; // edx
-	int v8; // eax
-
-	v3 = 0;
-	//result = *(x_DWORD *)&(*xadataspellsdat.colorPalette_var28)[80 * a2 + 6 + 26 * a3];
-	result = SPELLS_BEGIN_BUFFER_str[a2].subspell[a3].dword_6;
-	if (a2 == 2 && a1x > Entities_EA3E4[0])
+	bool add3000 = false;
+	int result = SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[subSpellIndex].manaCost_6;
+	if (spellIndex == 2 && event > Entities_EA3E4[0])
 	{
-		//v5 = a1x->dword_0xA4_164;
-		v6x = Entities_EA3E4[a1x->dword_0xA4_164x->CastleEntityIdx_58];
-		if (v6x <= Entities_EA3E4[0])
-			goto LABEL_23;
-		switch (v6x->dword_0x10_16)
+		type_entity_0x6E8E* entity2 = Entities_EA3E4[event->dword_0xA4_164x->CastleEntityIndex_0x3A_58];
+		if (entity2 <= Entities_EA3E4[0])
+		{
+			if (event->dword_0xA4_164x->byte_0x1BE_446)
+				add3000 = 3000;
+			if (add3000)
+				result += 3000;
+			return result;
+		}
+		switch (entity2->dword_0x10_16)
 		{
 		case 0:
 			result = 1000;
@@ -1231,43 +1195,36 @@ int sub_6D710(type_entity_0x6E8E* a1x, unsigned __int8 a2, unsigned __int8 a3)//
 			result = 300000000;
 			break;
 		}
-		if (v6x->dword_0x10_16 >= 7)
-			goto LABEL_25;
-		if (a3 >= 1u)
+		if (entity2->dword_0x10_16 >= 7)
 		{
-			if (a3 <= 1u)
-			{
-				v7 = 320 * result;
-				v8 = 320 * result;
-			}
-			else
-			{
-				if (a3 != 2)
-					goto LABEL_21;
-				v8 = 384 * result;
-				v7 = v8;
-			}
-			//result = (v8 - (__CFSHL__(v7 >> 31, 8) + (v7 >> 31 << 8))) >> 8;
-			result = (v7 - (my_sign32(v7) << 8) + my_sign32(v7)) >> 8;
-		}
-	LABEL_21:
-		if (v6x->dword_0x10_16)
-		{
-		LABEL_25:
-			if (v3)
+			if (add3000)
 				result += 3000;
 			return result;
 		}
-		//v5 = a1x->dword_0xA4_164;
-	LABEL_23:
-		if (a1x->dword_0xA4_164x->byte_0x1BE_446)
-			v3 = 1;
-		goto LABEL_25;
+		switch (subSpellIndex)
+		{
+			case 1:
+				result = ((320 * result) - (my_sign32(320 * result) << 8) + my_sign32(320 * result)) >> 8;
+				break;
+
+			case 2:
+				result = ((384 * result) - (my_sign32(384 * result) << 8) + my_sign32(384 * result)) >> 8;
+				break;
+		}
+		if (entity2->dword_0x10_16)
+		{
+			if (add3000)
+				result += 3000;
+			return result;
+		}
+		if (event->dword_0xA4_164x->byte_0x1BE_446)
+			add3000 = true;
+		if (add3000)
+			result += 3000;
+		return result;
 	}
 	return result;
 }
-// 13880: using guessed type int /*__fastcall*/ nullsub_1(x_DWORD);
-// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00083CC0) --------------------------------------------------------
 void sub_83CC0(char a1)//264cc0

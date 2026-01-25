@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "../sub_main.h"
+#include "EventsFunctions.h"
 #include "TypeConfigDat.h"
 
 // types
@@ -31,9 +32,20 @@ typedef struct //lenght 50
 } type_x_DWORD_17DB70str;
 #pragma pack (16)
 
+enum class MenuItem : int {
+	InitLanguage = 0,
+	SetToIntro = 1,
+	LeaveX = 2,
+	Intros = 3,
+	MainMenu = 4,
+	Exit = 5,
+	LangSettings = 12
+};
+
 // from sub_main
 extern int8_t LoadLevelNumber_D419C;
 extern char x_BYTE_D41AD_skip_screen;
+extern char x_BYTE_17E09D;
 extern const char* LevelsNames_D9204[61];
 extern char* off_DB558[];
 extern __int16 x_WORD_E131A;
@@ -44,7 +56,7 @@ extern __int16 timeCounter_E2094;
 extern char minTimeCounter_E2096;
 extern char maxTimeCounter_E2097;
 extern type_x_BYTE_E25ED_db_str x_BYTE_E25ED_db_str[16];
-extern int16_t x_WORD_E29D8;
+extern MenuItem nextMenu_E29D8;
 extern int16_t m_ExitMenuLoop_E29DC;
 extern char x_BYTE_E29DF_skip_screen;
 extern char x_BYTE_E29E0;
@@ -64,11 +76,11 @@ extern type_unk_18058Cstr unk_18058Cstr;
 extern int test_regression_level;
 
 // functions
-void MenusAndIntros_76930(int a2, uint16_t a3, bool skipMenus = false);
+void MenusAndIntros_76930(bool skipMenus = false);
 void InitLanguage_76A40();
-void Intros_76D10(char a1);
-void sub_76CF0();
-void MainMenu_76FA0(/*int a1,*/ int a2, uint16_t a3);
+void Intros_76D10(char introType);
+void SetToIntro_76CF0();
+void MainMenu_76FA0();
 bool NewGameDialog_77350(type_WORD_E1F84* a1x);
 char LanguageSettingDialog_779E0(type_WORD_E1F84* a1x);
 char LoadGameDialog_780F0(type_WORD_E1F84* a1x);
@@ -77,7 +89,7 @@ char SetKeysDialog_79610();
 signed int sub_79E10(char* a1, char a2);
 void DrawMenuAnimations_7AB00();
 void LoadAndSetGraphicsAndPalette_7AC00();
-int sub_7ADE0(char a1);
+void sub_7ADE0(char a1);
 void sub_7BEC0();
 void sub_7DA70(__int16 a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int16 a6);
 void sub_7DD70();
@@ -117,7 +129,7 @@ int DrawScrollDialog_7BF20(type_str_word_26* a1x);
 void sub_8C0E0(unsigned __int8(/*__fastcall*/ *a1)(signed int));
 int DrawScrollDialog2_7B660(int a1, int a2, __int16 a3, type_str_word_26* a4x, char* a5, char a6);
 char /*__fastcall*/ sub_77680();
-char DrawAndServe_7B250(/*int a1, int a2*//*, __int16 a3*/);
+char DrawAndServe_7B250();
 signed int sub_7C390();
 void sub_7C710();
 void SetMultiplayerColors_7D310();

@@ -10,10 +10,10 @@
 #include "MenusAndIntros.h"
 #include "Sound.h"
 #include "engine_support.h"
-#include "EventDispatcher.h"
+#include "DatTabIndexes.h"
 
 
-char CURSOR_SPRITE_INDEX_D419E = 0; // weak//2a519e
+char CursorGraphicsIndex_D419E = 0; // weak//2a519e
 char x_BYTE_D47D9 = 0; // weak
 char x_BYTE_E36DC[124] = { 
 0x00,0x27,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x30,0x2D,0x3D,0x08,0x09,
@@ -32,6 +32,7 @@ int x_DWORD_180658; // weak
 int x_DWORD_180638; // weak
 int x_DWORD_180654; // weak
 char x_BYTE_1810A3[320]; // fix it -  weak
+int x_DWORD_17FF10; // weak
 int x_DWORD_17FF14; // weak
 int16_t x_WORD_17FF18; // weak
 int x_DWORD_17FF20; // weak
@@ -39,14 +40,17 @@ int x_DWORD_17FF24; // weak
 int x_DWORD_17FF28 = 0; // weak
 int x_DWORD_17FF38; // weak
 int x_DWORD_17FF40; // weak
+int x_DWORD_17FF44; // weak
 int16_t x_WORD_1811E4[400]; // fix it -  weak
+
 
 char sub_5BF10();
 void sub_70940();
+char sub_86930(unsigned __int16 a1);
 void HandleOptionsMenuButtonClick_19A70();
-void sub_18AA0();
+void SwitchHelpMode_18AA0();
 int SelectSpell_6D4F0(type_str_611* a1, int16_t mouseX);
-void ChangeGameResolution_46B40();
+void sub_46B40();
 void sub_75C50();
 int sub_906B4();
 signed int sub_90668(int a1);
@@ -55,18 +59,18 @@ void sub_90E07_VGA_set_video_mode_alt_and_Palette(TColor* Palette);
 
 int debugcounter_47560 = 0;
 //----- (00017190) --------------------------------------------------------
-void ProcessKeyboardPresses_17190()//1f8190
+void sub_17190_process_keyboard()//1f8190
 {
-	type_entity_0x6E8E* ptrCastleEntity; // edx
+	type_entity_0x6E8E* event; // edx
 
 	if (CommandLineParams.DoOffPause5()) {
 		if (debugcounter_47560 == 5)
 		{
-			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= 0xfe;
+			x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 &= 0xfe;
 			//sub_41B60();
 			/*x_D41A0_BYTEARRAY_4_struct.byteindex_205 = 0;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_206 = 0;
-			SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
+			sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 			SetMenuCursorPosition_52E90(
 				&D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc],
 				D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].MenuState_0x3DF_2BE4_12221,
@@ -82,11 +86,11 @@ void ProcessKeyboardPresses_17190()//1f8190
 
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4) || sub_473E0() == 0)
 	{
-		if (!D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
+		if (!D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 		{
 			if (!(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x20))
 			{
-				ptrCastleEntity = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
+				event = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
 				if (pressedKeys_180664[56])
 				{
 					switch (LastPressedKey_1806E4)
@@ -174,10 +178,10 @@ void ProcessKeyboardPresses_17190()//1f8190
 						{
 							sub_5BF10();
 							pressedKeys_180664[56] = 0;
-							if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x10)
-								x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= 0xEF;
+							if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x10)
+								x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 &= 0xEF;
 							else
-								x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x10;
+								x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 |= 0x10;
 						}
 						LastPressedKey_1806E4 = 0;
 						break;
@@ -210,10 +214,10 @@ void ProcessKeyboardPresses_17190()//1f8190
 						break;
 					}
 					case 0x13: {//r
-						if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 < 0 && !(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
+						if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 < 0 && !(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
 						{
 							D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 0xCu;
-							D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.CastleEntityIdx_58 = 0;
+							D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.CastleEntityIndex_0x3A_58 = 0;
 						}
 						LastPressedKey_1806E4 = 0;
 						break;
@@ -236,12 +240,12 @@ void ProcessKeyboardPresses_17190()//1f8190
 					}
 					case 0x25: {//k
 						if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x8010))
-							ptrCastleEntity->life_0x8 = -1;
+							event->life_0x8 = -1;
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x26: {//l remove castle stage
-						if (ptrCastleEntity->dword_0xA4_164x->CastleEntityIdx_58)
+						if (event->dword_0xA4_164x->CastleEntityIndex_0x3A_58)
 							HandleButtonClick_191B0(42, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
@@ -278,10 +282,10 @@ void ProcessKeyboardPresses_17190()//1f8190
 					case 0x44: {//f10
 						x_D41A0_BYTEARRAY_4_struct.byteindex_205 = (x_D41A0_BYTEARRAY_4_struct.byteindex_205 == 0);
 						x_D41A0_BYTEARRAY_4_struct.byteindex_206 = x_D41A0_BYTEARRAY_4_struct.byteindex_205;
-						if (x_D41A0_BYTEARRAY_4_struct.byteindex_205 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
-							SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
-						if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
-							SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]); //fix it LOBYTE(v0) = sub_8CD27(dword_EB394 + 6 * (unsigned __int8)byte_D419E);
+						if (x_D41A0_BYTEARRAY_4_struct.byteindex_205 && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+							sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //fix it sub_8CD27(dword_EB394);
+						if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206 && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
+							sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CursorGraphicsIndex_D419E]); //fix it LOBYTE(v0) = sub_8CD27(dword_EB394 + 6 * (unsigned __int8)byte_D419E);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
@@ -307,8 +311,8 @@ void ProcessKeyboardPresses_17190()//1f8190
 					switch (LastPressedKey_1806E4)
 					{
 					case 0x19: {//p
-						if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE) && (!IsRecordingOrPlaying()))
-							PauseUnpauseGame_18BB0();
+						if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
+							sub_18BB0();
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
@@ -327,15 +331,14 @@ void ProcessKeyboardPresses_17190()//1f8190
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
+
 					case 0x24: {//j // switch debug info
-						if (CommandLineParams.DoShowInGameDebug())
-						{
-							sub_70940();
-							sub_1A970_change_game_settings(20, 0, 0);
-							LastPressedKey_1806E4 = 0;
-						}
+						sub_70940();
+						sub_1A970_change_game_settings(20, 0, 0);
+						LastPressedKey_1806E4 = 0;
 						break;
 					}
+
 					case 0x3e: {//f4
 						sub_1A970_change_game_settings(4, 0, 0);
 						LastPressedKey_1806E4 = 0;
@@ -362,7 +365,7 @@ void ProcessKeyboardPresses_17190()//1f8190
 						break;
 					}
 					case 0x1f: {//s
-						if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+						if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 							&& x_WORD_180660_VGA_type_resolution & 1
 							&& (unk_18058Cstr.x_WORD_1805C2_joystick == 0x01 || unk_18058Cstr.x_WORD_1805C2_joystick == 0x08 || unk_18058Cstr.x_WORD_1805C2_joystick == 0x0c))
 						{
@@ -399,7 +402,7 @@ void ProcessKeyboardPresses_17190()//1f8190
 }
 
 //----- (00018BB0) --------------------------------------------------------
-void PauseUnpauseGame_18BB0()//1f9bb0
+void sub_18BB0()//1f9bb0
 {
 	//int v0; // eax
 	//char v1; // dl
@@ -409,13 +412,13 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 	//int result; // eax
 
 	//v0 = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
-	//v1 = x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^ 1;
-	x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= 1;
-	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+	//v1 = x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 ^ 1;
+	x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 ^= 1;
+	if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 	{
 		if (D41A0_0.byte_0x36E0B & 2)//if ( *(0x36E09 + x_D41A0_BYTEARRAY_0 + 2) & 2 )
 		{
-			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= 0xFEu;
+			x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 &= 0xFEu;
 		}
 		else
 		{
@@ -423,15 +426,15 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 			v2 = x_D41A0_BYTEARRAY_4_struct.byteindex_206;
 			str_unk_1804B0ar.byte_0xaa = -1;
 			if (!v2 && (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2))
-				SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]);
-			//SetCursor_8CD27(xy_DWORD_17DED4_spritestr[39]);
+				sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CursorGraphicsIndex_D419E]);
+			//sub_8CD27_set_cursor(xy_DWORD_17DED4_spritestr[39]);
 
 			sub_41AF0();
 			if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206)
-				SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]);
+				sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CursorGraphicsIndex_D419E]);
 			SetMenuCursorPosition_52E90(
 				&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc],
-				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221, true, gameUiScale);
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221,	true);
 			if (soundActive_E3799)
 				EndSample_8D8F0();
 			if (musicActive_E37FD)
@@ -447,13 +450,13 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 		//v4 = **filearray_2aa18c[0]; //fix it
 		x_D41A0_BYTEARRAY_4_struct.byteindex_205 = 0;
 		x_D41A0_BYTEARRAY_4_struct.byteindex_206 = 0;
-		SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
+		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 		SetMenuCursorPosition_52E90(
 			&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc],
-			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221, true, gameUiScale);
+			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221, true);
 		if (musicActive_E37FD)
 			StartMusic_8E160(D41A0_0.maptypeMusic_0x235, 0x7Fu);
-		QueryCdAudioStatus_86930(x_WORD_1803EC);
+		sub_86930(x_WORD_1803EC);
 		if (x_D41A0_BYTEARRAY_4_struct.byteindex_225)
 			x_D41A0_BYTEARRAY_4_struct.byteindex_225 = 1;
 	}
@@ -461,7 +464,17 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 	x_D41A0_BYTEARRAY_4_struct.byteindex_208 = DataFileIO::sub_55C00_TestSaveFile2(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w);
 	//return result;
 }
+// D419E: using guessed type char CursorGraphicsIndex_D419E;
+// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
+// D41A4: using guessed type int x_DWORD_D41A4;
+// E3799: using guessed type char x_BYTE_E3799_sound_card;
+// E37FD: using guessed type char x_BYTE_E37FD;
+// EB394: using guessed type int **filearray_2aa18c[0];
+// 1803EC: using guessed type __int16 x_WORD_1803EC;
+// 18055A: using guessed type char x_BYTE_18055A;
+// 1805C2: using guessed type __int16 x_WORD_1805C2_joystick;
 
+//----- (00017A00) --------------------------------------------------------
 void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 {
 	type_entity_0x6E8E* v8x; // ebx
@@ -474,7 +487,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 	char v21; // dl
 	char v23; // al
 	type_entity_0x6E8E* v24x; // ebx
-	char v27; // al
+	unsigned char v27; // al
 	signed int v28; // eax
 	int v29; // eax
 	int v30; // ecx
@@ -482,35 +495,22 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 	char v33; // [esp+0h] [ebp-8h]
 	char v34; // [esp+4h] [ebp-4h]
 
-	// fix if begin
-	//v14 = 0;
-	// end
-
-	if ((uint8_t)LastPressedKey_1806E4 >= 0x80u)
+	if (LastPressedKey_1806E4 >= 0x80u)
 		LastPressedKey_1806E4 = 0;
-	//result = 2124 * D41A0_BYTESTR_0.word_0xc;
-	//v4 = x_D41A0_BYTEARRAY_0[result];
 	if (!(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x20))
 	{
 		switch (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221)
 		{
 		case 0:
 		case 4:
-			//keys and buttons
-			if (D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
+			if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 				goto LABEL_292;
-			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+			if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 				ReadPauseMenuEvents_197F0();
-			ProcessKeyboardPresses_17190();//test FnX
-			//v5 = x_D41A0_BYTEARRAY_0;
-			//v6 = D41A0_BYTESTR_0.word_0xc;
-			//v7 = 5 * D41A0_BYTESTR_0.word_0xc;
-
-			v8x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-			//LOBYTE(v6) = unk_18058Cstr.MouseButtonState_18059C;
-
-			D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte5 = 0;
-			if (unk_18058Cstr.MouseButtonState_18059C & 0x10)
+			sub_17190_process_keyboard();//test FnX
+			v8x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
+			D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].entityIndex_0x6E3E_byte5 = 0;
+			if (unk_18058Cstr.x_DWORD_18059C & 0x10)
 			{
 				if (v8x->life_0x8 >= 0)
 					HandleButtonClick_191B0(20, 5);
@@ -518,41 +518,41 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			else if (pressedKeys_180664[56] || pressedKeys_180664[x_BYTE_EB39E_keys[9]])
 			{
 				switch (LastPressedKey_1806E4) {
-				case 0x13://r
-				case 0x19://p
-				case 0x1f: {//s
-					LastPressedKey_1806E4 = 0;
-					break;
-				}
-				case 0x21: {//f
-					HandleButtonClick_191B0(4, 32);
-					LastPressedKey_1806E4 = 0;
-					break;
-				}
+					case 0x13://r
+					case 0x19://p
+					case 0x1f: {//s
+						LastPressedKey_1806E4 = 0;
+						break;
+					}
+					case 0x21: {//f
+						HandleButtonClick_191B0(4, 32);
+						LastPressedKey_1806E4 = 0;
+						break;
+					}
 				}
 
-				if (unk_18058Cstr.MouseButtonState_18059C & 1)
+				if (unk_18058Cstr.x_DWORD_18059C & 1)
 				{
 					sub_18DA0(v8x, 1, 1);
-					unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
+					unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 				}
-				else if (unk_18058Cstr.MouseButtonState_18059C & 2)
+				else if (unk_18058Cstr.x_DWORD_18059C & 2)
 				{
 					sub_18DA0(v8x, 2, 1);
-					unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
+					unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 				}
 			}
 			else if (pressedKeys_180664[42] || pressedKeys_180664[x_BYTE_EB39E_keys[8]]) //LShift or RShift
 			{
-				if (unk_18058Cstr.MouseButtonState_18059C & 1)
+				if (unk_18058Cstr.x_DWORD_18059C & 1)
 				{
 					sub_18DA0(v8x, 1, 0);
-					unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
+					unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 				}
-				else if (unk_18058Cstr.MouseButtonState_18059C & 2)
+				else if (unk_18058Cstr.x_DWORD_18059C & 2)
 				{
 					sub_18DA0(v8x, 2, 0);
-					unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
+					unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 				}
 			}
 			else
@@ -562,7 +562,6 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				case 0x1a: {//[
 					if (!D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 					{
-						//v9 = *(x_BYTE *)(x_D41A0_BYTEARRAY_0 + 8589);
 						if (D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize < 40)
 						{
 							D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize++;
@@ -575,7 +574,6 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				case 0x1b: {//]
 					if (!D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 					{
-						//v10 = x_D41A0_BYTEARRAY_0[8589];
 						if (D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize > 17)
 						{
 							D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize--;// = v10 - 1;
@@ -588,7 +586,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				case 0x17://i
 					if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte4_25 & 2))
 					{
-						v11 = v8x->state_0x45_69;
+						v11 = v8x->actionIndex_0x45_69;
 						if (v11 != 2 && v11 != 3)
 							HandleButtonClick_191B0(16, 0);
 					}
@@ -604,21 +602,21 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 					LastPressedKey_1806E4 = 0;
 					break;
 				}
-				if ((unk_18058Cstr.MouseButtonState_18059C & 1 && unk_18058Cstr.MouseButtonState_18059C & 2) && !disableLRButtonsMenuOpen)
+				if (unk_18058Cstr.x_DWORD_18059C & 1 && unk_18058Cstr.x_DWORD_18059C & 2)
 				{
 					if (v8x->life_0x8 >= 0)
-						HandleButtonClick_191B0(20, 6); //Mouse Open Map
-					unk_18058Cstr.MouseButtonState_18059C &= 0xFC;
+						HandleButtonClick_191B0(20, 6);
+					unk_18058Cstr.x_DWORD_18059C &= 0xFC;
 				}
 				if (LastPressedKey_1806E4 == x_BYTE_EB39E_keys[4])
 				{
 					if (v8x->life_0x8 >= 0)
-						HandleButtonClick_191B0(20, 6); //Keyboard Open Map
+						HandleButtonClick_191B0(20, 6);
 					LastPressedKey_1806E4 = 0;
 				}
-				if ((unsigned __int8)LastPressedKey_1806E4 >= 2u)//2-9
+				if (LastPressedKey_1806E4 >= 2u)//2-9
 				{
-					if ((unsigned __int8)LastPressedKey_1806E4 <= 9u)
+					if (LastPressedKey_1806E4 <= 9u)
 					{
 						HandleButtonClick_191B0(43, LastPressedKey_1806E4 - 2);
 						LastPressedKey_1806E4 = 0;
@@ -640,28 +638,28 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				}
 				sub_18F80(v8x);
 			}
-			if (LastPressedKey_1806E4 && x_BYTE_E36DC[(unsigned __int8)LastPressedKey_1806E4] == 8)
+			if (LastPressedKey_1806E4 && x_BYTE_E36DC[LastPressedKey_1806E4] == 8)
 			{
 				HandleButtonClick_191B0(39, 1);
 				LastPressedKey_1806E4 = 0;
 			}
-			HandleArrowKeyPresses_1A8A0();
+			sub_1A8A0();
 			ComputeMousePlayerMovement_17060(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y);
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 1:
-			ProcessKeyboardPresses_17190();
-			if ((!(unk_18058Cstr.MouseButtonState_18059C & 1) || !(unk_18058Cstr.MouseButtonState_18059C & 2)) && LastPressedKey_1806E4 != 0x1c)
+			sub_17190_process_keyboard();
+			if ((!(unk_18058Cstr.x_DWORD_18059C & 1) || !(unk_18058Cstr.x_DWORD_18059C & 2)) && LastPressedKey_1806E4 != 0x1c)
 				goto LABEL_296;
 			LastPressedKey_1806E4 = 0;
-			unk_18058Cstr.MouseButtonState_18059C &= 0xFC;
+			unk_18058Cstr.x_DWORD_18059C &= 0xFC;
 			HandleButtonClick_191B0(20, 0);
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 3:
-			if (!LastPressedKey_1806E4 || (unsigned __int8)LastPressedKey_1806E4 >= 0x80u)
+			if (!LastPressedKey_1806E4 || LastPressedKey_1806E4 >= 0x80u)
 				goto LABEL_216;
-			if ((unsigned __int8)LastPressedKey_1806E4 < 0x1Cu)
+			if (LastPressedKey_1806E4 < 0x1Cu)
 			{
 				if (LastPressedKey_1806E4 == 1)
 				{
@@ -670,14 +668,14 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				}
 				goto LABEL_206;
 			}
-			if ((unsigned __int8)LastPressedKey_1806E4 <= 0x1Cu)
+			if (LastPressedKey_1806E4 <= 0x1Cu)
 			{
 				HandleButtonClick_191B0(19, 0);
 				goto LABEL_215;
 			}
-			if ((unsigned __int8)LastPressedKey_1806E4 < 0x3Bu)
+			if (LastPressedKey_1806E4 < 0x3Bu)
 				goto LABEL_206;
-			if ((unsigned __int8)LastPressedKey_1806E4 <= 0x42u)
+			if (LastPressedKey_1806E4 <= 0x42u)
 			{
 				if (pressedKeys_180664[42] || pressedKeys_180664[54]) //LShift or RShift
 				{
@@ -685,7 +683,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				}
 				else if (LastPressedKey_1806E4 == 0x3b) //F1
 				{
-					sub_18AA0();
+					SwitchHelpMode_18AA0();
 				}
 				LastPressedKey_1806E4 = 0;
 			}
@@ -694,20 +692,18 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				if (LastPressedKey_1806E4 != 0x43)
 				{
 				LABEL_206:
-					v27 = x_BYTE_E36DC[(unsigned __int8)LastPressedKey_1806E4];
-					if ((unsigned __int8)v27 >= 0x41u && (unsigned __int8)v27 <= 0x5Au
-						|| (unsigned __int8)v27 >= 0x61u && (unsigned __int8)v27 <= 0x7Au
-						|| (unsigned __int8)v27 >= 0x30u && (unsigned __int8)v27 <= 0x39u
+					v27 = x_BYTE_E36DC[LastPressedKey_1806E4];
+					if (v27 >= 0x41u && v27 <= 0x5Au
+						|| v27 >= 0x61u && v27 <= 0x7Au
+						|| v27 >= 0x30u && v27 <= 0x39u
 						|| v27 == 8
 						|| v27 == 32)
 					{
-						HandleButtonClick_191B0(17, x_BYTE_E36DC[(unsigned __int8)LastPressedKey_1806E4]);
+						HandleButtonClick_191B0(17, x_BYTE_E36DC[LastPressedKey_1806E4]);
 					}
 					goto LABEL_215;
 				}
-				//v25 = x_D41A0_BYTEARRAY_0[result + 12223] + 1;
-				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E1_2BE4_12223++;// = v25;
-				//v26 = D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].byte_0x3E1_2BE4_12223;
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E1_2BE4_12223++;
 				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E1_2BE4_12223 >= 4)
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E1_2BE4_12223 = 0;
 				HandleButtonClick_191B0(36, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E1_2BE4_12223);
@@ -734,17 +730,17 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 									&& unk_18058Cstr.x_DWORD_1805B0_mouse.x < 620
 									&& v29 + 4 <= unk_18058Cstr.x_DWORD_1805B0_mouse.y
 									&& v29 + 22 > unk_18058Cstr.x_DWORD_1805B0_mouse.y
-									&& unk_18058Cstr.MouseButtonState_18059C & 1)
+									&& unk_18058Cstr.x_DWORD_18059C & 1)
 								{
 									HandleButtonClick_191B0(18, 0);
 								}
 							}
-							else if (unk_18058Cstr.MouseButtonState_18059C & 1)
+							else if (unk_18058Cstr.x_DWORD_18059C & 1)
 							{
 								HandleButtonClick_191B0(44, 0);
 							}
 						}
-						else if (unk_18058Cstr.MouseButtonState_18059C & 1)
+						else if (unk_18058Cstr.x_DWORD_18059C & 1)
 						{
 							HandleButtonClick_191B0(19, 0);
 						}
@@ -756,7 +752,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 						{
 							if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 								str_unk_1804B0ar.byte_0xa9 = 99;
-							if (unk_18058Cstr.MouseButtonState_18059C & 1)
+							if (unk_18058Cstr.x_DWORD_18059C & 1)
 								HandleButtonClick_191B0(36, 1);
 							goto LABEL_292;
 						}
@@ -764,7 +760,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 						{
 							if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 								str_unk_1804B0ar.byte_0xa9 = 100;
-							if (unk_18058Cstr.MouseButtonState_18059C & 1)
+							if (unk_18058Cstr.x_DWORD_18059C & 1)
 								HandleButtonClick_191B0(36, 2);
 							goto LABEL_292;
 						}
@@ -772,7 +768,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 							goto LABEL_292;
 						if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 							str_unk_1804B0ar.byte_0xa9 = 101;
-						if (!(unk_18058Cstr.MouseButtonState_18059C & 1))
+						if (!(unk_18058Cstr.x_DWORD_18059C & 1))
 							goto LABEL_292;
 						v32 = 3;
 					}
@@ -780,7 +776,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 					{
 						if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 							str_unk_1804B0ar.byte_0xa9 = 98;
-						if (!(unk_18058Cstr.MouseButtonState_18059C & 1))
+						if (!(unk_18058Cstr.x_DWORD_18059C & 1))
 							goto LABEL_292;
 						v32 = 0;
 					}
@@ -789,7 +785,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				}
 				if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 					str_unk_1804B0ar.byte_0xa9 = 102;
-				if (unk_18058Cstr.MouseButtonState_18059C & 1)
+				if (unk_18058Cstr.x_DWORD_18059C & 1)
 				{
 					v30 = (unk_18058Cstr.x_DWORD_1805B0_mouse.x - 384) / 34;
 					if (v30 >= D41A0_0.LevelIndex_0xc)
@@ -801,51 +797,47 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			{
 				if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 					str_unk_1804B0ar.byte_0xa9 = 97;
-				if (unk_18058Cstr.MouseButtonState_18059C & 1)
+				if (unk_18058Cstr.x_DWORD_18059C & 1)
 					HandleButtonClick_191B0(
 						35,
 						4 * ((unk_18058Cstr.x_DWORD_1805B0_mouse.y - (v29 + 28)) / 20)
 						+ ((unk_18058Cstr.x_DWORD_1805B0_mouse.x - 4 - (__CFSHL__((unk_18058Cstr.x_DWORD_1805B0_mouse.x - 4) >> 31, 4) + 16 * ((unk_18058Cstr.x_DWORD_1805B0_mouse.x - 4) >> 31))) >> 4));
 			}
 		LABEL_292:
-			unk_18058Cstr.MouseButtonState_18059C &= 0xFC;
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			unk_18058Cstr.x_DWORD_18059C &= 0xFC;
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 5:
 		case 8:
 			v33 = 0;
 			v34 = 0;
-			v12x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-			ProcessKeyboardPresses_17190();
+			v12x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
+			sub_17190_process_keyboard();
 			if (v12x->life_0x8 < 0)
 			{
 				v33 = 1;
 			}
 			else
 			{
-				//v15 = (uint8_t*)v12x->dword_0xA4_164;
 				v16 = v12x->dword_0xA4_164x->str_611.byte_0x457_1111;
-				//a1 = &v15[611];
 				if (v16)
 				{
 					if (v16 <= 2u)
 					{
-						if ((v16 != 1 || unk_18058Cstr.MouseButtonState_18059C & 4) && (v12x->dword_0xA4_164x->str_611.byte_0x457_1111 != 2 || unk_18058Cstr.MouseButtonState_18059C & 8))
+						if ((v16 != 1 || unk_18058Cstr.x_DWORD_18059C & 4) && (v12x->dword_0xA4_164x->str_611.byte_0x457_1111 != 2 || unk_18058Cstr.x_DWORD_18059C & 8))
 						{
 							v23 = SelectSpell_6D4F0(&v12x->dword_0xA4_164x->str_611, unk_18058Cstr.x_DWORD_1805B0_mouse.x);
-							v12x->dword_0xA4_164x->str_611.byte_0x459_1113 = v23;
+							v12x->dword_0xA4_164x->str_611.subSpellIndex_0x459_1113 = v23;
 							HandleButtonClick_191B0(41, v23);
 						}
 						else
 						{
 							if (v12x->dword_0xA4_164x->str_611.byte_0x457_1111 == 1)
-								//D41A0_BYTESTR_0.playerInputs_0x6E3E[D41A0_BYTESTR_0.word_0xc].PlayerAction_byte0
-								D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = 31;
+								D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = 31;
 							else
-								D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = 32;
-							//v22 = x_D41A0_BYTEARRAY_0;
-							D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = v12x->dword_0xA4_164x->str_611.byte_0x458_1112;
-							D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = v12x->dword_0xA4_164x->str_611.byte_0x459_1113;
+								D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = 32;
+							D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = v12x->dword_0xA4_164x->str_611.spellIndex_0x458_1112;
+							D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = v12x->dword_0xA4_164x->str_611.subSpellIndex_0x459_1113;
 							v12x->dword_0xA4_164x->str_611.byte_0x457_1111 = 0;
 							MoveCursorToSelectedSpell_6D200(&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc]);
 						}
@@ -855,57 +847,56 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				{
 					v34 = 1;
 					v17 = SelectSpellCategory_6D420(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y);
-					v12x->dword_0xA4_164x->str_611.byte_0x458_1112 = v17;
-					v18 = x_BYTE_D94FF_spell_index[v17];
+					v12x->dword_0xA4_164x->str_611.spellIndex_0x458_1112 = v17;
+					v18 = spellIndex_D94FF[v17];
 					v19 = 1;
 					if (!v12x->dword_0xA4_164x->str_611.array_0x333_819x.word[v18] || !isCaveLevel_D41B6 && v18 == 25)
 						v19 = 0;
 					if (!v19)
 						goto LABEL_122;
 					sub_6D4C0(&v12x->dword_0xA4_164x->str_611);
-					if (!(unk_18058Cstr.MouseButtonState_18059C & 1) && !(unk_18058Cstr.MouseButtonState_18059C & 2))
+					if (!(unk_18058Cstr.x_DWORD_18059C & 1) && !(unk_18058Cstr.x_DWORD_18059C & 2))
 						goto LABEL_122;
 					if (pressedKeys_180664[42] || pressedKeys_180664[x_BYTE_EB39E_keys[7]])
 					{
 						HandleButtonClick_191B0(38, v18);
-						//v20 = (int)x_D41A0_BYTEARRAY_0;
-						D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 0;
-						v21 = v12x->dword_0xA4_164x->str_611.array_0x3B5_949x.byte[v18];
+						D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 0;
+						v21 = v12x->dword_0xA4_164x->str_611.array_0x3B5_949x.subSpellIndex[v18];
 						if (v21)
 						{
-							if (unk_18058Cstr.MouseButtonState_18059C & 1)
+							if (unk_18058Cstr.x_DWORD_18059C & 1)
 							{
 								if (v21 != 1)
-									D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 1;
+									D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 1;
 								goto LABEL_122;
 							}
 							if (v21 == 2)
 								goto LABEL_122;
 						}
-						else if (unk_18058Cstr.MouseButtonState_18059C & 1)
+						else if (unk_18058Cstr.x_DWORD_18059C & 1)
 						{
-							D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 1;
+							D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 1;
 							goto LABEL_122;
 						}
-						D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 2;
+						D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 2;
 						goto LABEL_122;
 					}
-					if (unk_18058Cstr.MouseButtonState_18059C & 1 && unk_18058Cstr.MouseButtonState_18059C & 2)
+					if (unk_18058Cstr.x_DWORD_18059C & 1 && unk_18058Cstr.x_DWORD_18059C & 2)
 					{
 						HandleButtonClick_191B0(6, 64);
-						D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = v12x->dword_0xA4_164x->str_611.byte_0x458_1112;
+						D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = v12x->dword_0xA4_164x->str_611.spellIndex_0x458_1112;
 					}
 					else
 					{
-						v12x->dword_0xA4_164x->str_611.byte_0x457_1111 = ((unk_18058Cstr.MouseButtonState_18059C & 1) == 0) + 1;
+						v12x->dword_0xA4_164x->str_611.byte_0x457_1111 = ((unk_18058Cstr.x_DWORD_18059C & 1) == 0) + 1;
 						MoveCursorToSelectedSpell_6D200(&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc]);
-						HandleButtonClick_191B0(40, v12x->dword_0xA4_164x->str_611.byte_0x458_1112);
-						D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = v12x->dword_0xA4_164x->str_611.byte_0x457_1111;
+						HandleButtonClick_191B0(40, v12x->dword_0xA4_164x->str_611.spellIndex_0x458_1112);
+						D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = v12x->dword_0xA4_164x->str_611.byte_0x457_1111;
 					}
 				}
 			}
 		LABEL_122:
-			if (!(unk_18058Cstr.MouseButtonState_18059C & 0x10) && !(unk_18058Cstr.MouseButtonState_18059C & 4) && !(unk_18058Cstr.MouseButtonState_18059C & 8))
+			if (!(unk_18058Cstr.x_DWORD_18059C & 0x10) && !(unk_18058Cstr.x_DWORD_18059C & 4) && !(unk_18058Cstr.x_DWORD_18059C & 8))
 				v33 = 1;
 			if (v33)
 			{
@@ -929,26 +920,26 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				}
 				if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 2
 					&& v34
-					&& !D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
+					&& !D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 				{
-					HandleButtonClick_191B0(40, v12x->dword_0xA4_164x->str_611.byte_0x458_1112);
-					D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 0;
+					HandleButtonClick_191B0(40, v12x->dword_0xA4_164x->str_611.spellIndex_0x458_1112);
+					D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = 0;
 				}
 			}
 			ComputeMousePlayerMovement_17060(v12x->dword_0xA4_164x->position_backup_20.x, v12x->dword_0xA4_164x->position_backup_20.y);
 			LastPressedKey_1806E4 = 0;
-			unk_18058Cstr.MouseButtonState_18059C &= 0xFC;
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			unk_18058Cstr.x_DWORD_18059C &= 0xFC;
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 6:
 		case 7:
-			v24x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+			v24x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
+			if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 				ReadPauseMenuEvents_197F0();
-			ProcessKeyboardPresses_17190();
-			if (((unk_18058Cstr.MouseButtonState_18059C & 1 && unk_18058Cstr.MouseButtonState_18059C & 2) && !disableLRButtonsMenuOpen) || LastPressedKey_1806E4 == x_BYTE_EB39E_keys[4] || v24x->life_0x8 < 0)
+			sub_17190_process_keyboard();
+			if (unk_18058Cstr.x_DWORD_18059C & 1 && unk_18058Cstr.x_DWORD_18059C & 2 || LastPressedKey_1806E4 == x_BYTE_EB39E_keys[4] || v24x->life_0x8 < 0)
 			{
-				HandleButtonClick_191B0(20, 0); // Close Map
+				HandleButtonClick_191B0(20, 0);
 			}
 			else if (LastPressedKey_1806E4 == 1)
 			{
@@ -957,21 +948,21 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			}
 			else
 			{
-				if (unk_18058Cstr.MouseButtonState_18059C & 0x10)
+				if (unk_18058Cstr.x_DWORD_18059C & 0x10)
 				{
 					HandleButtonClick_191B0(20, 8);
 				}
 				else if (pressedKeys_180664[56] || pressedKeys_180664[x_BYTE_EB39E_keys[9]] || pressedKeys_180664[x_BYTE_EB39E_keys[6]])
 				{
-					if (unk_18058Cstr.MouseButtonState_18059C & 1)
+					if (unk_18058Cstr.x_DWORD_18059C & 1)
 					{
 						sub_18DA0(v24x, 1, 1);
-						unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
+						unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 					}
-					else if (unk_18058Cstr.MouseButtonState_18059C & 2)
+					else if (unk_18058Cstr.x_DWORD_18059C & 2)
 					{
 						sub_18DA0(v24x, 2, 1);
-						unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
+						unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 					}
 					else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 != 7)
 					{
@@ -980,15 +971,15 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				}
 				else if (pressedKeys_180664[42] || pressedKeys_180664[x_BYTE_EB39E_keys[8]])
 				{
-					if (unk_18058Cstr.MouseButtonState_18059C & 1)
+					if (unk_18058Cstr.x_DWORD_18059C & 1)
 					{
 						sub_18DA0(v24x, 1, 0);
-						unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
+						unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 					}
-					else if (unk_18058Cstr.MouseButtonState_18059C & 2)
+					else if (unk_18058Cstr.x_DWORD_18059C & 2)
 					{
 						sub_18DA0(v24x, 2, 0);
-						unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
+						unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 					}
 				}
 				else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 != 6)
@@ -1016,21 +1007,21 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 				HandleButtonClick_191B0(39, 1);
 				LastPressedKey_1806E4 = 0;
 			}
-			HandleArrowKeyPresses_1A8A0();
+			sub_1A8A0();
 			ComputeMousePlayerMovement_17060(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y);
 			LastPressedKey_1806E4 = 0;
-			unk_18058Cstr.MouseButtonState_18059C &= 0xFC;
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			unk_18058Cstr.x_DWORD_18059C &= 0xFC;
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 9:
 		case 0xB:
 			ReadOptionMenuEvents_19AB0();
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 0xA:
 		case 0xC:
 			AdjustVolume_1A070(a2, a3);
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 0xD:
 		case 0xE:
@@ -1038,72 +1029,44 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			goto LABEL_296;
 		default:
 		LABEL_296:
-			/*LOBYTE(result) = (uint8_t)*/sub_1A7A0_fly_asistant();
+			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		}
 	}
 	if (LastPressedKey_1806E4)
 	{
-		//LOBYTE(result) = x_BYTE_1806E4;
-		if ((unsigned __int8)LastPressedKey_1806E4 >= 1u)
+		if (LastPressedKey_1806E4 >= 1u)
 		{
-			if ((unsigned __int8)LastPressedKey_1806E4 <= 1u)
+			if (LastPressedKey_1806E4 <= 1u)
 			{
-				/*LOBYTE(result) = */sub_18B30();
+				sub_18B30();
 			}
 			else if (LastPressedKey_1806E4 == 0x19)
 			{
-				//LOBYTE(result) = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
-				if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE) && (!IsRecordingOrPlaying()))
-					PauseUnpauseGame_18BB0();
+				if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
+					sub_18BB0();
 			}
 		}
 		LastPressedKey_1806E4 = 0;
 	}
 LABEL_306:
-	if (!(unk_18058Cstr.MouseButtonState_18059C & 1))
+	if (!(unk_18058Cstr.x_DWORD_18059C & 1))
 		x_WORD_180746_mouse_left_button = 0;
-	if (!(unk_18058Cstr.MouseButtonState_18059C & 2))
+	if (!(unk_18058Cstr.x_DWORD_18059C & 2))
 		x_WORD_180744_mouse_right_button = 0;
-	//return result;
 }
-// 6D5D0: using guessed type int /*__fastcall*/ _wcpp_1_unwind_leave__120(x_DWORD, x_DWORD, x_DWORD);
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// D41B6: using guessed type char x_BYTE_D41B6;
-// EA3E4: using guessed type int Entities_EA3E4[];
-// EB3A2: using guessed type char x_BYTE_EB3A2;
-// EB3A4: using guessed type char x_BYTE_EB3A4;
-// EB3A5: using guessed type char x_BYTE_EB3A5;
-// EB3A6: using guessed type char x_BYTE_EB3A6;
-// EB3A7: using guessed type char x_BYTE_EB3A7;
-// 180559: using guessed type char x_BYTE_180559;
-// 18059C: using guessed type int MouseButtonState_18059C;
-// 1805B0: using guessed type int x_DWORD_1805B0_mouse.x;
-// 1805B4: using guessed type int x_DWORD_1805B0_mouse.y;
-// 1805C0: using guessed type __int16 x_WORD_1805C0_arrow_keys;
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
-// 18068E: using guessed type char x_BYTE_18068E;
-// 180693: using guessed type char x_BYTE_180693;
-// 180696: using guessed type char x_BYTE_180696;
-// 18069A: using guessed type char x_BYTE_18069A;
-// 18069C: using guessed type char x_BYTE_18069C;
-// 1806E4: using guessed type char x_BYTE_1806E4;
-// 180744: using guessed type __int16 x_WORD_180744_mouse_right_button;
-// 180746: using guessed type __int16 x_WORD_180746_mouse_left_button;
 
 //----- (000191B0) --------------------------------------------------------
-void HandleButtonClick_191B0(int16_t a1, char a2)//1fa1b0 //set spell, destroy castle sub_191B0(0x2a, 0x00)
+void HandleButtonClick_191B0(int16_t hiSetting, char loSetting)//1fa1b0 //set spell, destroy castle sub_191B0(0x2a, 0x00)
 {
-	type_entity_0x6E8E* v10x; // ebx
-
-	switch (a1)
+	switch (hiSetting)
 	{
 	case 0:
 	case 1:
 	case 2:
 	case 26:
-		goto LABEL_23;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
+		return;
 	case 3:
 	case 7:
 	case 8:
@@ -1112,25 +1075,17 @@ void HandleButtonClick_191B0(int16_t a1, char a2)//1fa1b0 //set spell, destroy c
 	case 11:
 		return;
 	case 4:
-		//v4 = &x_D41A0_BYTEARRAY_0[10 * D41A0_BYTESTR_0.word_0xc];
-		if (D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 != a1 && D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
+		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 != hiSetting && D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 			return;
-		//v5 = (int)x_D41A0_BYTEARRAY_0;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = a1;
-		//result = a2;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 |= a2;
-		//x_D41A0_BYTEARRAY_0 = x_D41A0_BYTEARRAY_0;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 |= loSetting;
 		return;
 	case 5:
-	case 6:
-		//v6 = &x_D41A0_BYTEARRAY_0[10 * D41A0_BYTESTR_0.word_0xc];
-		if (D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 != a1 && D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
+	case 6://set Palyer movement
+		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 != hiSetting && D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 			return;
-		//v7 = (int)x_D41A0_BYTEARRAY_0;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = a1;
-		//result = a2;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte5 |= a2;
-		//x_D41A0_BYTEARRAY_0 = v2;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].entityIndex_0x6E3E_byte5 |= loSetting;
 		return;
 	case 12:
 	case 13:
@@ -1141,80 +1096,64 @@ void HandleButtonClick_191B0(int16_t a1, char a2)//1fa1b0 //set spell, destroy c
 	case 29:
 	case 42:
 	case 44:
-		//v15 = &x_D41A0_BYTEARRAY_0[10 * D41A0_BYTESTR_0.word_0xc];
-		if (D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 != a1 && D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
+		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 != hiSetting && D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 			return;
-	LABEL_23:
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = a1;
-		//x_D41A0_BYTEARRAY_0 = v2;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
 		return;
 	case 15:
-		//v8 = &x_D41A0_BYTEARRAY_0[10 * D41A0_BYTESTR_0.word_0xc];
-		if (D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 != a1 && D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
+		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 != hiSetting && D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 			return;
-		//v9 = D41A0_BYTESTR_0.word_0xc;
-		v10x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-		if (v10x->life_0x8 >= 0 || v10x->state_0x45_69 != 3)
+		if (Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]->life_0x8 >= 0 || Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]->actionIndex_0x45_69 != 3)
 			return;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = a1;
-		//x_D41A0_BYTEARRAY_0 = v2;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
 		return;
 	case 27:
-		//v11 = &x_D41A0_BYTEARRAY_0[10 * D41A0_BYTESTR_0.word_0xc];
-		if (D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 != a1 && D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
+		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 != hiSetting && D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 			return;
-		//v12 = D41A0_BYTESTR_0.word_0xc;
 		if (!(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2))
 			return;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = a1;
-		//x_D41A0_BYTEARRAY_0 = v2;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
 		return;
 	case 28:
-		//v13 = &x_D41A0_BYTEARRAY_0[10 * D41A0_BYTESTR_0.word_0xc];
-		if (D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 != a1 && D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
+		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 != hiSetting && D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 			return;
-		//v14 = D41A0_BYTESTR_0.word_0xc;
 		if (!(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 4))
 			return;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = a1;
-		//x_D41A0_BYTEARRAY_0 = v2;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
 		return;
 	case 30:
 		if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 < 0
-			|| (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[0] == 99)
-			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[1] == 104
-			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[2] == 114
-			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[3] == 111
-			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[4] == 110
-			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[5] == 105
-			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[6] == 99
-			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[7] == 108
-			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[8] == 101)
+			|| (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[0] == 'c')//cheat ?
+			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[1] == 'h'
+			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[2] == 'r'
+			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[3] == 'o'
+			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[4] == 'n'
+			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[5] == 'i'
+			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[6] == 'c'
+			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[7] == 'l'
+			&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157[8] == 'e')
 		{
-			//v17 = &x_D41A0_BYTEARRAY_0[10 * D41A0_BYTESTR_0.word_0xc];
-			if (D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 == a1 || !D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
-				goto LABEL_39;
+			if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 == hiSetting || !D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
+			{
+				D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
+				D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = loSetting;
+				return;
+			}
 		}
 		return;
 	case 39:
-		goto LABEL_39;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = loSetting;
+		return;
 	default:
-		//v18 = &x_D41A0_BYTEARRAY_0[10 * D41A0_BYTESTR_0.word_0xc];
-		if (D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 == a1 || !D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
+		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 == hiSetting || !D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 		{
-		LABEL_39:
-			D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = a1;
-			//result = a2;
-			D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = a2;
+			D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
+			D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = loSetting;
 		}
-		//LABEL_40:
-			//x_D41A0_BYTEARRAY_0 = v2;
 		return;
 	}
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0001A970) --------------------------------------------------------
 void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
@@ -1250,7 +1189,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 	switch (a1)
 	{
 	case 1:
-		sub_18AA0();
+		SwitchHelpMode_18AA0();
 		return;
 	case 2:
 		if (!soundAble_E3798)
@@ -1259,7 +1198,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		//Sound On / Sound Off
 
 		EndSample_8D8F0();
-		StopCdPlayback_86860(x_WORD_1803EC);
+		sub_86860_speak_Sound(x_WORD_1803EC);
 		soundActive_E3799 ^= 1u;
 		return;
 	case 3:
@@ -1280,18 +1219,18 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		}
 		return;
 	case 4:
-		if (!cdSpeechEnabled_E2A28)
+		if (!x_BYTE_E2A28_speek)
 			return;
-		//v16 = x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24;
-		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED)
-			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= SPEECH_DISABLED;
+		//v16 = x_D41A0_BYTEARRAY_4_struct.setting_byte3_24;
+		if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x40)
+			x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 &= 0xBF;
 		else
-			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= SPEECH_ENABLED;
-		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED) == 0) + 469], 3u, 50);
+			x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 |= 0x40;
+		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[((x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x40) == 0) + 469], 3u, 50);
 		//	Speech On /	Speech Off
 		return;
 	case 5:
-		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
+		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
 		{
 			D41A0_0.byte_0x36DEA_fly_asistant = 0;
 		}
@@ -1304,7 +1243,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		}
 		return;
 	case 6:
-		if (x_D41A0_BYTEARRAY_4_struct.byteindex_51 < 3u || x_D41A0_BYTEARRAY_4_struct.byteindex_180)
+		if (x_D41A0_BYTEARRAY_4_struct.paletteMod_51 < 3u || x_D41A0_BYTEARRAY_4_struct.paletteSubMod_180)
 			return;
 		x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
 		v17 = D41A0_0.terrain_2FECE.MapType;
@@ -1419,9 +1358,9 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		}
 		return;// result;
 	case 7:
-		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE || IsRecordingOrPlaying())
+		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10)
 			return;
-		v13x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
+		v13x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
 		if (v13x <= Entities_EA3E4[0] || v13x->life_0x8 < 0)
 			return;
 		if (CommandLineParams.DoAlternativeGamespeedControl()) {
@@ -1462,8 +1401,8 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 					return;
 				sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[383], 3u, 50);//speed super fast
 			}
-			v13x->dword_0xA4_164x->word_0x155_341 = 0;
-			v13x->dword_0xA4_164x->word_0x157_343 = 0;
+			v13x->dword_0xA4_164x->roll_0x155_341 = 0;
+			v13x->dword_0xA4_164x->pitch_0x157_343 = 0;
 			//result = 0;
 		}
 		return;// result;
@@ -1561,7 +1500,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		if (!D41A0_0.str_0x21B2.cresolution_0x21B4 || D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 			return;
 		sub_41BC0();
-		ChangeGameResolution_46B40();
+		sub_46B40();
 		return;
 	case 17:
 		//v25 = x_D41A0_BYTEARRAY_4_struct.byteindex_207 == 0;
@@ -1619,6 +1558,21 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		return;
 	}
 }
+// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
+// D41A4: using guessed type int x_DWORD_D41A4;
+// D41A8: using guessed type char *off_D41A8;
+// E2A28: using guessed type char x_BYTE_E2A28;
+// E3798: using guessed type char x_BYTE_E3798_sound_active2;
+// E3799: using guessed type char x_BYTE_E3799_sound_card;
+// E37FC: using guessed type char x_BYTE_E37FC;
+// E37FD: using guessed type char x_BYTE_E37FD;
+// EA240: using guessed type int x_DWORD_EA240;
+// EA244: using guessed type int x_DWORD_EA244;
+// EA248: using guessed type int x_DWORD_EA248;
+// EA26C: using guessed type int x_DWORD_EA26C;
+// EA270: using guessed type int x_DWORD_EA270;
+// EA3E4: using guessed type int Entities_EA3E4[];
+// 1803EC: using guessed type __int16 x_WORD_1803EC;
 
 //----- (00041AF0) --------------------------------------------------------
 void sub_41AF0()//222af0
@@ -1670,9 +1624,9 @@ void sub_70940()//251940
 	int v9; // [esp+8h] [ebp-8h]
 	char v10; // [esp+Ch] [ebp-4h]
 
-	v0x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
-	v1 = (v0x->position_0x4C_76.x + 128) >> 8;
-	v9 = (v0x->position_0x4C_76.y + 128) >> 8;
+	v0x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
+	v1 = (v0x->axis_0x4C_76.x + 128) >> 8;
+	v9 = (v0x->axis_0x4C_76.y + 128) >> 8;
 	result = AddE7EE0x_10080(0, 128);
 	v3 = result;
 	if (result)
@@ -1711,7 +1665,7 @@ bitmap_pos_struct_t pathstr_to_posistr(Pathstruct in)
 	return out;
 };
 //----- (0008CD27) --------------------------------------------------------
-void SetCursor_8CD27(bitmap_pos_struct_t a2)//26dd27
+void sub_8CD27_set_cursor(bitmap_pos_struct_t a2)//26dd27
 {
 	//a2
 	// 446f1a00 80 52 35 00 e0 9e 2b
@@ -1766,7 +1720,7 @@ void SetCursor_8CD27(bitmap_pos_struct_t a2)//26dd27
 		//printf("%d",i);
 	}
 	if (a2.data)
-		sub_8F8B0_draw_bitmap320(0, 0, a2);//2708B0 super inicializace //a2 ma byt 86 nebo a1 nema nikam ukazovat
+		drawBitmap320_8F8B0(0, 0, a2);//2708B0 super inicializace //a2 ma byt 86 nebo a1 nema nikam ukazovat
 	pdwScreenBuffer_351628 = temp_screen_buffer;
 	screenWidth_18062C = v3;
 	//x_WORD_E36D4 = x_WORD_E36D4;//355230
@@ -1792,16 +1746,49 @@ void sub_417D0_install_pal_and_mouse_minmax2()//2227d0
 	sub_6EF10_set_mouse_minmax(0, 640, 0, 800);
 }
 
-//----- (00086930) -------------------------------------------------------
+//----- (00086930) --------------------------------------------------------
+char sub_86930(unsigned __int16 a1)//267930 see:https://github.com/videogamepreservation/descent2/blob/master/SOURCE/BIOS/DPMI.C
+{
+	//int v2; // esi
+	//__int16 v3; // ax
+
+	if (!x_BYTE_E2A28_speek)
+		return 0;
+	/*if (!x_DWORD_E2A6C || !x_DWORD_E2A70)
+		return 0;
+	v2 = 16 * x_DWORD_E2A70;
+	*(x_BYTE*)v2 = 13;
+	v3 = x_DWORD_E2A70;
+	*(x_BYTE*)(v2 + 1) = 0;
+	*(x_BYTE*)(v2 + 2) = -120;
+	*(x_WORD*)(v2 + 3) = 0;*/
+	//x_WORD_17FF4A = v3;
+	x_DWORD_17FF38 = 0;
+	x_DWORD_17FF10 = 47;
+	x_DWORD_17FF14 = 0;
+	x_DWORD_17FF20 = x_DWORD_17FF28;
+	x_DWORD_17FF40 = a1;
+	//x_DWORD_17FF0C = 0x300;
+	x_DWORD_17FF44 = 0x1510;
+//removed int386(0x31, (REGS*)&x_DWORD_17FF0C, (REGS*)&x_DWORD_17FF0C);
+	/**unk_180460ar = *(x_DWORD*)v2;
+	v2 += 4;
+	*((x_DWORD*)unk_180460ar + 1) = *(x_DWORD*)v2;
+	v2 += 4;
+	*((x_DWORD*)unk_180460ar + 2) = *(x_DWORD*)v2;
+	*((x_BYTE*)unk_180460ar + 12) = *(x_BYTE*)(v2 + 4);*/
+	return x_WORD_180463;
+}
 // E2A28: using guessed type char x_BYTE_E2A28;
 // E2A6C: using guessed type int x_DWORD_E2A6C;
 // E2A70: using guessed type int x_DWORD_E2A70;
-// 17FF0C: using guessed type int Int386Request_17FF0C;
+// 17FF0C: using guessed type int x_DWORD_17FF0C;
 // 17FF10: using guessed type int x_DWORD_17FF10;
 // 17FF14: using guessed type int x_DWORD_17FF14;
 // 17FF20: using guessed type int x_DWORD_17FF20;
 // 17FF38: using guessed type int x_DWORD_17FF38;
 // 17FF40: using guessed type int x_DWORD_17FF40;
+// 17FF44: using guessed type int x_DWORD_17FF44;
 // 17FF4A: using guessed type __int16 x_WORD_17FF4A;
 // 180463: using guessed type __int16 x_WORD_180463;
 
@@ -1826,7 +1813,7 @@ void ReadPauseMenuEvents_197F0()//1fa7f0
 			scale = gameUiScale;
 		}
 
-	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+	if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 	{
 		v1 = x_D41A0_BYTEARRAY_4_struct.byteindex_225;
 		str_unk_1804B0ar.byte_0xaa = -1;
@@ -1834,11 +1821,11 @@ void ReadPauseMenuEvents_197F0()//1fa7f0
 		{
 			if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 == 7)
 			{
-				SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
+				sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 			}
 			else if (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2)
 			{
-				SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]);
+				sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CursorGraphicsIndex_D419E]);
 			}
 			if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206)
 			{
@@ -1866,7 +1853,7 @@ void ReadPauseMenuEvents_197F0()//1fa7f0
 							v2 = 3;
 						}
 						str_unk_1804B0ar.byte_0xaa = v2;
-						if (unk_18058Cstr.MouseButtonState_18059C & 1 || unk_18058Cstr.MouseButtonState_18059C & 2)
+						if (unk_18058Cstr.x_DWORD_18059C & 1 || unk_18058Cstr.x_DWORD_18059C & 2)
 						{
 							switch (v2)
 							{
@@ -1951,11 +1938,11 @@ char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 			{
 				v6 = 0;
 			}
-			v7 = x_BYTE_D94FF_spell_index[v6];
+			v7 = spellIndex_D94FF[v6];
 			if (v3x->array_0x333_819x.word[v7])
 			{
 				//v8 = v3 + v7;
-				if (v3x->array_0x3B5_949x.byte[v7] == 2)
+				if (v3x->array_0x3B5_949x.subSpellIndex[v7] == 2)
 					break;
 			}
 			if (a3)
@@ -1969,10 +1956,10 @@ char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 		}
 		a1x->dword_0xA4_164x->str_611.byte_0x45B_1115 = v6;
 		//v9 = (int)x_D41A0_BYTEARRAY_0;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = 32;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = v7;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = 32;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = v7;
 		//LOBYTE(v6) = v3x->array_0x437_1079[v7]; //*(x_BYTE *)(v8 + 468);
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = v3x->array_0x437_1079x.byte[v7]; //*(x_BYTE *)(v8 + 468);
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = v3x->array_0x437_1079x.subSpellIndex[v7]; //*(x_BYTE *)(v8 + 468);
 	}
 	else
 	{
@@ -1993,11 +1980,11 @@ char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 			{
 				v6 = 0;
 			}
-			v13 = x_BYTE_D94FF_spell_index[v6];
+			v13 = spellIndex_D94FF[v6];
 			if (v3x->array_0x333_819x.word[v13])
 			{
 				//v14 = v3 + v13;
-				if (v3x->array_0x3B5_949x.byte[v13] == 1)
+				if (v3x->array_0x3B5_949x.subSpellIndex[v13] == 1)
 					break;
 			}
 			if (a3)
@@ -2011,10 +1998,10 @@ char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 		}
 		a1x->dword_0xA4_164x->str_611.byte_0x45A_1114 = v6;
 		//v15 = (int)x_D41A0_BYTEARRAY_0;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0 = 31;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = v13;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = 31;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 = v13;
 		//LOBYTE(v6) = *(x_BYTE *)(v14 + 468);//v3x->str_611.array_0x437_1079[v13]
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = v3x->array_0x437_1079x.byte[v13];
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte2 = v3x->array_0x437_1079x.subSpellIndex[v13];
 	}
 	return v6;
 }
@@ -2023,47 +2010,32 @@ char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 //----- (00018B30) --------------------------------------------------------
 void sub_18B30()//1f9b30
 {
-	//uint8_t* v0; // eax
-	unsigned __int8 v1; // dh
-	//v0 = &x_D41A0_BYTEARRAY_0[2124 * D41A0_BYTESTR_0.word_0xc];
 	if (!(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x20))
 	{
-		v1 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221;
-		if (v1 != 13 && v1 != 14)
+		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 != 13 && D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 != 14)
 		{
-			if (v1 < 6u || v1 > 8u && (v1 < 0xBu || v1 > 0xCu))
+			if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 < 6u || D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 > 8u && (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 < 0xBu || D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 > 0xCu))
 				HandleButtonClick_191B0(20, 13);
 			else
 				HandleButtonClick_191B0(20, 14);
-			//LOBYTE(v0) = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 			x_D41A0_BYTEARRAY_4_struct.SelectedMenuItem_38546 = 1;
 		}
 		else
 		{
 			HandleButtonClick_191B0(29, 0);
-			/*LOBYTE(v0) = */HandleButtonClick_191B0(27, 0);
+			HandleButtonClick_191B0(27, 0);
 		}
 	}
-	//return v0;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
 
 int debugcounter_1fb7a0 = 0;
 //----- (0001A7A0) --------------------------------------------------------
 void sub_1A7A0_fly_asistant()//1fb7a0 // fly asistant
 {
-	//uint8_t* result; // eax
-	//int v1; // ebx
-	char v2; // cl
-	//uint8_t* v3; // edx
-	//__int16 v4; // dx
-	//int v5; // eax
-
 	if (CommandLineParams.DoFixMouse()) {
 		if (CommandLineParams.DoDebugafterload())
 		{
-			unk_18058Cstr.MouseButtonState_18059C = 0;
+			unk_18058Cstr.x_DWORD_18059C = 0;
 			x_WORD_18074C_mouse_left2_button = 0;
 			if (debugcounter_1fb7a0 < 1000) {
 				unk_18058Cstr.x_DWORD_1805B8_mouse_position_x = 0x128;
@@ -2074,48 +2046,38 @@ void sub_1A7A0_fly_asistant()//1fb7a0 // fly asistant
 	}
 
 	if (CommandLineParams.DoFixFlyasistant()) {
-		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+		if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 1)
 			return;
 	}
 
-	//result = x_D41A0_BYTEARRAY_0;
 	if (D41A0_0.byte_0x36DEA_fly_asistant)
 	{
-		//v1 = D41A0_BYTESTR_0.word_0xc;
-		v2 = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221;
-		if (v2 != 5 && v2 != 8 && v2 != 3 && !x_D41A0_BYTEARRAY_4_struct.byteindex_225)
+		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 != 5 && D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 != 8 && D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 != 3 && !x_D41A0_BYTEARRAY_4_struct.byteindex_225)
 		{
 			if (D41A0_0.word_0x36DEC_mousex != unk_18058Cstr.x_DWORD_1805B8_mouse_position_x
 				|| D41A0_0.word_0x36DEE_mousey != unk_18058Cstr.x_DWORD_1805BC_mouse_position_y
-				|| D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0
-				|| D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte5)
+				|| D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0
+				|| D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].entityIndex_0x6E3E_byte5)
 			{
-				;// v5 = (int)x_D41A0_BYTEARRAY_0;
+				;
 			}
 			else
 			{
-				//v4 = *(x_WORD *)(0x36DEC + x_D41A0_BYTEARRAY_0 + 4) + 1;
-				D41A0_0.word_0x36DF0_mousexx++;// = v4;
+				D41A0_0.word_0x36DF0_mousexx++;
 				if (D41A0_0.word_0x36DF0_mousexx <= 0x30)
 				{
 					D41A0_0.word_0x36DEC_mousex = unk_18058Cstr.x_DWORD_1805B8_mouse_position_x;
 					D41A0_0.word_0x36DEE_mousey = unk_18058Cstr.x_DWORD_1805BC_mouse_position_y;
-					return;// result;
+					return;
 				}
 				HandleButtonClick_191B0(39, 0);
-				//v5 = (int)x_D41A0_BYTEARRAY_0;
 			}
 			D41A0_0.word_0x36DF0_mousexx = 0;
 			D41A0_0.word_0x36DEC_mousex = unk_18058Cstr.x_DWORD_1805B8_mouse_position_x;
 			D41A0_0.word_0x36DEE_mousey = unk_18058Cstr.x_DWORD_1805BC_mouse_position_y;
 		}
 	}
-	//return result;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// 1805B8: using guessed type int x_DWORD_1805B8_mouse_position_x;
-// 1805BC: using guessed type int x_DWORD_1805BC_mouse_position_y;
 
 //----- (00019A70) --------------------------------------------------------
 void HandleOptionsMenuButtonClick_19A70()//1faa70
@@ -2129,13 +2091,6 @@ void HandleOptionsMenuButtonClick_19A70()//1faa70
 //----- (00018F80) --------------------------------------------------------
 void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 {
-	//int v1; // eax
-	int v2; // edx
-	type_entity_0x6E8E* v3x; // eax
-	//uint8_t* v4; // eax
-	type_entity_0x6E8E* v4x; // eax
-	int v5; // edx
-
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 1)
 		HandleButtonClick_191B0(6, 1);
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 2)
@@ -2144,90 +2099,67 @@ void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 		HandleButtonClick_191B0(6, 4);
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 8)
 		HandleButtonClick_191B0(6, 8);
-	//v1 = a1x->dword_0xA4_164;
-	v2 = a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105;
-	if (v2 == -1)
+	if (a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105 == -1)
 	{
-		unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
+		unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 	}
 	else
 	{
-		v3x = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v2]];
-		if (v3x->byte_0x3B_59 == 1)
+		if (Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105]]->byte_0x3B_59 == 1)
 		{
-			if (unk_18058Cstr.MouseButtonState_18059C & 1)
+			if (unk_18058Cstr.x_DWORD_18059C & 1)
 			{
 				HandleButtonClick_191B0(6, 16);
-				unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
+				unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 			}
 		}
-		else if (unk_18058Cstr.MouseButtonState_18059C & 1 || unk_18058Cstr.MouseButtonState_18059C & 4 && v3x->word_0x2E_46 > 0)
+		else if (unk_18058Cstr.x_DWORD_18059C & 1 || unk_18058Cstr.x_DWORD_18059C & 4 && Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105]]->word_0x2E_46 > 0)
 		{
 			HandleButtonClick_191B0(6, 16);
-			unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
+			unk_18058Cstr.x_DWORD_18059C &= 0xFE;
 		}
 	}
-	//v4 = (uint8_t*)a1x->dword_0xA4_164;
-	v5 = a1x->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107;
-	if (v5 == -1)
+	if (a1x->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107 == -1)
 	{
-		unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
+		unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 	}
 	else
 	{
-		v4x = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[v5]];
-		if (v4x->byte_0x3B_59 == 1)
+		if (Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107]]->byte_0x3B_59 == 1)
 		{
-			if (unk_18058Cstr.MouseButtonState_18059C & 2)
+			if (unk_18058Cstr.x_DWORD_18059C & 2)
 			{
-				/*LOBYTE(v4) = */HandleButtonClick_191B0(6, 32);
-				unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
+				HandleButtonClick_191B0(6, 32);
+				unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 			}
 		}
-		else if (unk_18058Cstr.MouseButtonState_18059C & 2 || unk_18058Cstr.MouseButtonState_18059C & 8 && a1x->dword_0xA4_164x->word_0x26_38[4] > 0)
+		else if (unk_18058Cstr.x_DWORD_18059C & 2 || unk_18058Cstr.x_DWORD_18059C & 8 && a1x->dword_0xA4_164x->word_0x26_38[4] > 0)
 		{
-			/*LOBYTE(v4) = */HandleButtonClick_191B0(6, 32);
-			unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
+			HandleButtonClick_191B0(6, 32);
+			unk_18058Cstr.x_DWORD_18059C &= 0xFD;
 		}
 	}
-	//return v4;
 }
-// EA3E4: using guessed type int Entities_EA3E4[];
-// 18059C: using guessed type int MouseButtonState_18059C;
-// 1805C0: using guessed type __int16 x_WORD_1805C0_arrow_keys;
 
 //----- (0001A8A0) --------------------------------------------------------
-void HandleArrowKeyPresses_1A8A0()//1fb8a0
+void sub_1A8A0()//1fb8a0
 {
-	//char v0; // dh
-	//int result; // eax
-	//char v2; // bh
-	//char v3; // cl
-
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 4)
 	{
 		if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 8)
 		{
-			//v0 = x_D41A0_BYTEARRAY_4_struct.byteindex_183;
 			if (!(x_D41A0_BYTEARRAY_4_struct.byteindex_183 & 1) && !(x_D41A0_BYTEARRAY_4_struct.byteindex_183 & 2))
 				HandleButtonClick_191B0(6, 128);
 		}
 	}
-	//result = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
-	//v2 = x_D41A0_BYTEARRAY_4_struct.byteindex_183 & 0xFC;
-	//v3 = unk_18058Cstr.x_WORD_1805C0_arrow_keys;
 	x_D41A0_BYTEARRAY_4_struct.byteindex_183 &= 0xFC;
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 4)
 		x_D41A0_BYTEARRAY_4_struct.byteindex_183 |= 1;
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 8)
 	{
-		//result = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 		x_D41A0_BYTEARRAY_4_struct.byteindex_183 |= 2;
 	}
-	//return result;
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
-// 1805C0: using guessed type __int16 x_WORD_1805C0_arrow_keys;
 
 //----- (00017060) --------------------------------------------------------
 void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
@@ -2249,8 +2181,8 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 		}
 		else
 		{
-			roll = ((x << 7) - ((gameResWidth / 2) << 7)) / (gameResWidth / 2);
-			pitch = ((y << 7) - ((gameResHeight / 2) << 7)) / -(gameResHeight / 2);
+			roll = ((x << 7) - 40960) / 320;
+			pitch = ((y << 7) - 30720) / -240;
 		}
 		if (roll < -127)
 			roll = -127;
@@ -2260,29 +2192,17 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 			pitch = -127;
 		if (pitch > 127)
 			pitch = 127;
-
-		if (!invertYAxis)
-			pitch = pitch * -1;
-
-		if (invertXAxis)
-			roll = roll * -1;
-
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].Roll_3 = roll;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].Pitch_4 = pitch;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_word6 = unk_18058Cstr.x_DWORD_180590;
-		D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_word8 = unk_18058Cstr.x_DWORD_180594;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].roll = roll;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].pitch = pitch;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].nextEntity_0x6E3E_word6 = unk_18058Cstr.x_DWORD_180590;
+		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].entityIndex2_0x6E3E_word8 = unk_18058Cstr.x_DWORD_180594;
 	}
 }
 
 //----- (00018AA0) --------------------------------------------------------
-void sub_18AA0()//1f9aa0
+void SwitchHelpMode_18AA0()//1f9aa0
 {
-	//int result; // eax
-	char v1; // bl
-	char v2; // bh
-
-	//result = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
-	v1 = 1;
+	bool switchHelpMode = true;
 	if (x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 	{
 		x_D41A0_BYTEARRAY_4_struct.showHelp_10 = 0;
@@ -2292,28 +2212,22 @@ void sub_18AA0()//1f9aa0
 		SetTextBoxMinMaxSizes_87090();
 		if (str_unk_1804B0ar.byte_0xa2)
 		{
-			//result = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 			x_D41A0_BYTEARRAY_4_struct.showHelp_10 = 1;
 		}
 		else
 		{
-			v1 = 0;
-			/*result = */sub_19760_set_message("No Help Data", 3u, 50);
+			switchHelpMode = false;
+			sub_19760_set_message("No Help Data", 3u, 50);
 		}
 	}
-	if (v1)
+	if (switchHelpMode)
 	{
 		str_unk_1804B0ar.byte_0xaa = -1;
-		v2 = x_D41A0_BYTEARRAY_4_struct.showHelp_10;
 		x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
-		/*result = */sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[(v2 == 0) + 400], 3u, 50);
+		sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[(x_D41A0_BYTEARRAY_4_struct.showHelp_10 == 0) + 400], 3u, 50);
 		//Help Mode On / Help Mode Off
 	}
-	//return result;
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
-// 180552: using guessed type char x_BYTE_180552;
-// 18055A: using guessed type char x_BYTE_18055A;
 
 //----- (0006D4F0) --------------------------------------------------------
 int SelectSpell_6D4F0(type_str_611* a1x, int16_t mouseX)//24e4f0
@@ -2334,15 +2248,15 @@ int SelectSpell_6D4F0(type_str_611* a1x, int16_t mouseX)//24e4f0
 			posXOffSet = ((screenWidth_18062C - (640 * scale)) / 2);
 		}
 
-	subCategoryTotalWidth = 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
-	spellMenuXPos = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4 * scale) / 2
-		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[88].width_4 * scale)
-		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4 * scale) * (a1x->byte_0x458_1112 % 13)
+	subCategoryTotalWidth = 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale);
+	spellMenuXPos = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale) / 2
+		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[EDGE_PANEL].width_4 * scale)
+		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale) * (a1x->spellIndex_0x458_1112 % 13)
 		- subCategoryTotalWidth / 2;
 
-	spellMenuXPos16 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4 * scale) / 2
-		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[88].width_4 * scale)
-		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[89].width_4 * scale) * (a1x->byte_0x458_1112 % 13)
+	spellMenuXPos16 = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale) / 2
+		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[EDGE_PANEL].width_4 * scale)
+		+ ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale) * (a1x->spellIndex_0x458_1112 % 13)
 		- subCategoryTotalWidth / 2;
 
 	if (spellMenuXPos <= (640 * scale) - subCategoryTotalWidth)
@@ -2355,7 +2269,7 @@ int SelectSpell_6D4F0(type_str_611* a1x, int16_t mouseX)//24e4f0
 		spellMenuXPos16 = (640 * scale) - subCategoryTotalWidth;
 	}
 	subCategoryIdx = ((mouseX - posXOffSet) - spellMenuXPos16) / ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[163].width_4 * scale);
-	maxIdx = a1x->array_0x41D_1053z.byte[x_BYTE_D94FF_spell_index[a1x->byte_0x458_1112]];
+	maxIdx = a1x->array_0x41D_1053z.subSpellIndex[spellIndex_D94FF[a1x->spellIndex_0x458_1112]];
 
 	if ((signed __int16)subCategoryIdx > maxIdx)
 		return maxIdx;
@@ -2416,11 +2330,8 @@ int SelectSpellCategory_6D420(int16_t posX, int16_t posY)//24e420
 //----- (0006D4C0) --------------------------------------------------------
 char sub_6D4C0(type_str_611* a1x)//24e4c0
 {
-	char result; // al
-
-	result = a1x->array_0x437_1079x.byte[x_BYTE_D94FF_spell_index[a1x->byte_0x458_1112]];
-	a1x->byte_0x459_1113 = result;
-	return result;
+	a1x->subSpellIndex_0x459_1113 = a1x->array_0x437_1079x.subSpellIndex[spellIndex_D94FF[a1x->spellIndex_0x458_1112]];
+	return a1x->subSpellIndex_0x459_1113;
 }
 
 //----- (00019AB0) --------------------------------------------------------
@@ -2443,7 +2354,7 @@ void ReadOptionMenuEvents_19AB0()//1faab0
 		}
 
 	if (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2)
-		SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]); //fix it
+		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CursorGraphicsIndex_D419E]); //fix it
 	if (LastPressedKey_1806E4 == 1)
 	{
 		sub_18B30();
@@ -2451,7 +2362,7 @@ void ReadOptionMenuEvents_19AB0()//1faab0
 		sub_19A50();
 		return;
 	}
-	if (!(unk_18058Cstr.MouseButtonState_18059C & 1) && !(unk_18058Cstr.MouseButtonState_18059C & 2) && LastPressedKey_1806E4 != 0x1c && LastPressedKey_1806E4 != 0x20)
+	if (!(unk_18058Cstr.x_DWORD_18059C & 1) && !(unk_18058Cstr.x_DWORD_18059C & 2) && LastPressedKey_1806E4 != 0x1c && LastPressedKey_1806E4 != 0x20)
 	{
 		sub_19A50();
 		return;
@@ -2468,7 +2379,7 @@ void ReadOptionMenuEvents_19AB0()//1faab0
 			HandleButtonClick_191B0(20, 0);
 		else
 			HandleButtonClick_191B0(20, 6);
-		SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
+		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 		LastPressedKey_1806E4 = 0;
 		sub_19A50();
 		return;
@@ -2485,7 +2396,7 @@ void ReadOptionMenuEvents_19AB0()//1faab0
 			&& menuBtnPosY <= unk_18058Cstr.x_DWORD_1805B0_mouse.y
 			&& menuBtnPosY + (OPTIONS_MENU_BTN_HEIGHT * scale) > unk_18058Cstr.x_DWORD_1805B0_mouse.y)
 		{
-			sub_1A970_change_game_settings(btnIndex + 1, (unk_18058Cstr.MouseButtonState_18059C & 1) == 0, 1);
+			sub_1A970_change_game_settings(btnIndex + 1, (unk_18058Cstr.x_DWORD_18059C & 1) == 0, 1);
 			sub_1A280();
 			sub_19A50();
 			return;
@@ -2532,7 +2443,7 @@ void ReadOkayCancelButtonEvents_19E00()//1fae00
 		}
 		LastPressedKey_1806E4 = 0;
 	}
-	else if (unk_18058Cstr.MouseButtonState_18059C & 1 || unk_18058Cstr.MouseButtonState_18059C & 2)
+	else if (unk_18058Cstr.x_DWORD_18059C & 1 || unk_18058Cstr.x_DWORD_18059C & 2)
 	{
 		if (okButtonX > unk_18058Cstr.x_DWORD_1805B0_mouse.x || okButtonX + (50 * scale) <= unk_18058Cstr.x_DWORD_1805B0_mouse.x || okButtonY > unk_18058Cstr.x_DWORD_1805B0_mouse.y || okButtonY + (32 * scale) <= unk_18058Cstr.x_DWORD_1805B0_mouse.y)
 		{
@@ -2561,7 +2472,7 @@ void ReadOkayCancelButtonEvents_19E00()//1fae00
 					sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], "OK");//Load Level
 				else
 					sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], x_DWORD_E9C4C_langindexbuffer[429]);//429 - Failed
-				sub_52D70(0, printbuffer);
+				ShowMessage_52D70(0, printbuffer);
 			}
 			selectSpell = true;
 			break;
@@ -2570,7 +2481,7 @@ void ReadOkayCancelButtonEvents_19E00()//1fae00
 				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[424], "OK");//Save Level
 			else
 				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[424], x_DWORD_E9C4C_langindexbuffer[429]);//429 - Failed
-			sub_52D70(0, printbuffer);
+			ShowMessage_52D70(0, printbuffer);
 			selectSpell = true;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_208 = DataFileIO::sub_55C00_TestSaveFile2(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w);
 			break;
@@ -2628,7 +2539,7 @@ void sub_47650(int  /*a1*//*, int a2*/)//228650
 
 	int v8 = 0;
 
-	qmemcpy((void*)*xadatapald0dat2.colorPalette_var28, (void*)x_DWORD_EA3B8x, 0x300u);
+	qmemcpy((void*)*xadatapald0dat2.colorPalette_var28, (void*)tempPalette_EA3B8x, 0x300u);
 	v2 = D41A0_0.terrain_2FECE.MapType;
 	if (v2 == MapType_t::Day)
 		v8 = x_D41A0_BYTEARRAY_4_struct.brightness_11;
@@ -2658,7 +2569,7 @@ void sub_47650(int  /*a1*//*, int a2*/)//228650
 		v3++;
 	}
 	//result = (int)x_D41A0_BYTEARRAY_4;
-	x_D41A0_BYTEARRAY_4_struct.byteindex_180 = 1;
+	x_D41A0_BYTEARRAY_4_struct.paletteSubMod_180 = 1;
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
@@ -2667,14 +2578,14 @@ void sub_47650(int  /*a1*//*, int a2*/)//228650
 // EA3D8: using guessed type int *xadatapald0dat2.colorPalette_var28;
 
 //----- (00046B40) --------------------------------------------------------
-void ChangeGameResolution_46B40()//227b40
+void sub_46B40()//227b40
 {
 	char v1; // al
 	unsigned __int8 v2; // al
 	unsigned __int8 v3; // al
 
-	int16_t v0_tempmousex = 320;
-	int16_t v0_tempmousey = 200;
+	int16_t v0_tempmousex = x_WORD_E3760_mouse.x;
+	int16_t v0_tempmousey = x_WORD_E3760_mouse.y;
 
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 	sub_417A0_install_pal_and_mouse_minmax();
@@ -2727,7 +2638,6 @@ void ChangeGameResolution_46B40()//227b40
 	}
 	memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
 	sub_41A90_VGA_Palette_install((TColor*)*xadatapald0dat2.colorPalette_var28);
-
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_90D6E_VGA_set_video_mode_320x200_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
 	else
@@ -2737,8 +2647,6 @@ void ChangeGameResolution_46B40()//227b40
 			screenWidth_18062C = gameResWidth;
 			screenHeight_180624 = gameResHeight;
 			sub_90E07_VGA_set_video_mode_alt_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
-			v0_tempmousex = gameResWidth / 2;
-			v0_tempmousey = gameResHeight / 2;
 		}
 		else
 			sub_90E07_VGA_set_video_mode_640x480_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
@@ -2753,17 +2661,13 @@ void ChangeGameResolution_46B40()//227b40
 		ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, screenWidth_18062C, screenHeight_180624, v3);
 
 	sub_8CEDF_install_mouse();
-	SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
-	x_D41A0_BYTEARRAY_4_struct.byteindex_51 = 2;
+	sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
+	x_D41A0_BYTEARRAY_4_struct.paletteMod_51 = 2;
 	if (x_WORD_180660_VGA_type_resolution == 1)
-		x_BYTE_D419D_fonttype = 1;
+		FontType_D419D = 1;
 	else
-		x_BYTE_D419D_fonttype = 3;
-
+		FontType_D419D = 3;
 	SetMousePositionInMemory_5BDC0(v0_tempmousex, v0_tempmousey);
-
-	if (EventDispatcher::I != nullptr)
-		EventDispatcher::I->DispatchEvent(EventType::E_RESOLUTION_CHANGE, screenWidth_18062C, screenHeight_180624);
 }
 
 //----- (00075C50) --------------------------------------------------------
@@ -2846,8 +2750,8 @@ int sub_906B4()//fix bios graphics//2716b4
 //----- (0002FFE0) --------------------------------------------------------
 void GetPauseMenuCoordinates_2FFE0(int16_t* posX, int16_t* posY, int16_t* width, int16_t* height, uint8_t scale)//210fe0
 {
-	*width = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[178].width_4 * scale) + (2 * scale);
-	*height = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[178].height_5 * scale);
+	*width = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SHOW_ICON].width_4 * scale) + (2 * scale);
+	*height = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SHOW_ICON].height_5 * scale);
 	int32_t locHeight = (400 - 4 * *height) / 2 - 60;
 	int32_t locWidth = (640 - *width) / 2;
 	if (x_WORD_180660_VGA_type_resolution != 1)
@@ -2894,8 +2798,8 @@ signed int sub_10130(int a1, x_DWORD* a2, x_DWORD* a3)//1f1130
 //----- (00019A50) --------------------------------------------------------
 void sub_19A50()//1faa50
 {
-	if (unk_18058Cstr.MouseButtonState_18059C & 1 || unk_18058Cstr.MouseButtonState_18059C & 2)
-		unk_18058Cstr.MouseButtonState_18059C &= 0xFC;
+	if (unk_18058Cstr.x_DWORD_18059C & 1 || unk_18058Cstr.x_DWORD_18059C & 2)
+		unk_18058Cstr.x_DWORD_18059C &= 0xFC;
 }
 
 //----- (00090668) --------------------------------------------------------

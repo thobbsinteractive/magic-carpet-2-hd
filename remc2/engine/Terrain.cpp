@@ -1,8 +1,7 @@
 #include "Terrain.h"
-#include "engine_support.h"
-#include "CommandLineParser.h"
 
-uint16_t x_WORD_17B4E0; // 34c4e0
+uint16_t rand2_17B4E0; // 34c4e0
+bool lowDiffHeightmap_D47DC = true;
 
 uint8_t mapTerrainType_10B4E0[65536]; // 256x256 //map array1
 uint8_t mapHeightmap_11B4E0[65536]; // 256x256 //map array2 // heightmap
@@ -10,155 +9,19 @@ uint8_t mapShading_12B4E0[65536]; // 256x256 //map array3
 uint8_t mapAngle_13B4E0[65536]; // 256x256 //map array4 // water //!!! find all comparation, change to int8_t and test it !!!
 int16_t mapEntityIndex_15B4E0[65536]; // 256x256 //map array5
 
-char x_BYTE_F2CD0x[2800][2]; // 233cd0//4802 //4816 // size has to be 2 * (7^4 + 7^3 + 7^2 + 7^1) = 2 * (2401 + 343 + 49 + 7) = 2*2800 as seen in sub_462A0_orig
+char building_F2CD0x[2800][2]; // 233cd0//4802 //4816 // size has to be 2 * (7^4 + 7^3 + 7^2 + 7^1) = 2 * (2401 + 343 + 49 + 7) = 2*2800 as seen in sub_462A0_orig
+//0-terrainTileType, 1-rotationTile
 
-uint8_t x_BYTE_D41B7 = 44; // weak
-
-//for debuging
-int countcompindexes = 0;
-
-type_compstr compstr[100];
-int getcompstrindex(uint32_t address) {
-	int findindex = -1;
-	for (int i = 0; i < countcompindexes; i++)
-	{
-		if (compstr[i].adress == address)
-		{
-			findindex = i;
-			break;
-		}
-	}
-	return findindex;
-};
-
-int getcompindex(uint32_t adress) {
-
-	int findindex = getcompstrindex(adress);
-
-	if (findindex > -1)
-	{
-		compstr[findindex].index++;
-		return compstr[findindex].index;
-	}
-	else
-	{
-		compstr[countcompindexes].adress = adress;
-		countcompindexes++;
-		return 0;
-	}
-};
-
-
-type_compstr lastcompstr;
-void add_compare(uint32_t adress, bool debugafterload, int stopstep, bool skip, int exitindex, int skip2) {
-	uint8_t origbyte20 = 0;
-	uint8_t remakebyte20 = 0;
-	int comp20;
-
-	char buffer1[500];
-	sprintf(buffer1, "%08X-002DC4E0", adress);
-	char buffer2[500];
-	sprintf(buffer2, "%08X-00356038", adress);
-	char buffer3[500];
-	sprintf(buffer3, "%08X-002B3A74", adress);
-	char buffer4[500];
-	sprintf(buffer4, "%08X-003AA0A4", adress);
-
-	if (debugafterload)
-	{
-		int index = getcompindex(adress);
-		if (index >= skip2)
-		{
-			if (index >= stopstep)
-			{
-				if (index >= exitindex)
-				{
-					int i = getcompstrindex(adress);
-					if (i > -1)
-					{
-						compstr[i].index = 0;
-					}
-					End_thread(20);
-				}
-				if (!skip)
-				{
-					comp20 = compare_with_sequence(buffer1, (uint8_t*)mapTerrainType_10B4E0, 0x2dc4e0, index - skip2, 0x70000, 0x10000, &origbyte20, &remakebyte20, 0, (exitindex != 1000000));
-					comp20 = compare_with_sequence(buffer1, (uint8_t*)mapHeightmap_11B4E0, 0x2dc4e0, index - skip2, 0x70000, 0x10000, &origbyte20, &remakebyte20, 0x10000, (exitindex != 1000000));
-					comp20 = compare_with_sequence(buffer1, (uint8_t*)mapShading_12B4E0, 0x2dc4e0, index - skip2, 0x70000, 0x10000, &origbyte20, &remakebyte20, 0x20000, (exitindex != 1000000));
-					comp20 = compare_with_sequence(buffer1, (uint8_t*)mapAngle_13B4E0, 0x2dc4e0, index - skip2, 0x70000, 0x10000, &origbyte20, &remakebyte20, 0x30000, (exitindex != 1000000));
-					comp20 = compare_with_sequence(buffer1, (uint8_t*)mapEntityIndex_15B4E0, 0x2dc4e0, index - skip2, 0x70000, 0x20000, &origbyte20, &remakebyte20, 0x50000, (exitindex != 1000000));
-
-#ifdef TEST_x64
-					type_shadow_D41A0_BYTESTR_0 shadow_D41A0_BYTESTR_0;
-					Convert_to_shadow_D41A0_BYTESTR_0(&D41A0_0, &shadow_D41A0_BYTESTR_0);
-					comp20 = compare_with_sequence_D41A0(buffer2, (uint8_t*)&shadow_D41A0_BYTESTR_0, 0x356038, index - skip2, 224790, &origbyte20, &remakebyte20, 0, (exitindex != 1000000));
-#else
-					comp20 = compare_with_sequence_D41A0(buffer2, (uint8_t*)&D41A0_0, 0x356038, index, 224790, &origbyte20, &remakebyte20, 0, (exitindex != 1000000));
-#endif
-
-					// FIXME: skip the test of str_E2A74 for the moment as there are differences with the memimage that need to be clarified
-					//type_shadow_str_E2A74 shadow_str_E2A74[0x69];
-					//Convert_to_shadow_str_E2A74(str_E2A74, shadow_str_E2A74);
-					//comp20 = compare_with_sequence_array_E2A74(buffer3, (uint8_t*)&shadow_str_E2A74, 0x2b3a74, index - skip2, 0xc4e, 0xc4e, &origbyte20, &remakebyte20, 0, (exitindex != 1000000));
-
-					//screen
-					//comp20 = compare_with_sequence(buffer4, pdwScreenBuffer_351628, 0x3aa0a4, index, 320 * 200, 320 * 200, &origbyte20, &remakebyte20);
-				}
-				//if(debugcounter_271478>5)
-				//comp20 = compare_with_sequence(buffer4, pdwScreenBuffer_351628, 0x3aa0a4, index, 320 * 200, 320 * 200, &origbyte20, &remakebyte20);
-				if (stopstep > -1)
-				{
-					comp20 = index;
-				}
-
-				lastcompstr.index = index;
-				lastcompstr.adress = adress;
-			}
-		}
-	}
-};
-//for debuging
-
-void add_compare2(uint32_t adress, uint8_t* memadress,uint32_t dosmemadress, uint32_t size,bool debugafterload, int stopstep, bool skip, int exitindex) {
-	uint8_t origbyte20 = 0;
-	uint8_t remakebyte20 = 0;
-	int comp20;
-
-	char buffer1[500];
-	sprintf(buffer1, "%08X-08X", adress, dosmemadress);
-
-	if (debugafterload)
-	{
-		int index = getcompindex(adress);
-		if (index >= stopstep)
-		{
-			if (index >= exitindex)
-				exit(exitindex);
-			if (!skip)
-			{
-				comp20 = compare_with_sequence(buffer1, memadress, dosmemadress, index, size, size, &origbyte20, &remakebyte20);
-			}
-			if (stopstep > -1)
-			{
-				comp20 = index;
-			}
-
-			lastcompstr.index = index;
-			lastcompstr.adress = adress;
-		}
-	}
-};
-//for debuging
-
+uint8_t MapBasicHeight_D41B7 = 44; // weak
 
 int debugcounter_224959 = 0;
 //----- (00043830) --------------------------------------------------------
 void GenerateLevelMap_43830(Type_Level_2FECE* a2x)//224830
 {
-	x_WORD_17B4E0 = a2x->seed_0x2FEE5;
+	rand2_17B4E0 = a2x->seed_0x2FEE5;
 	D41A0_0.rand_0x8 = a2x->seed_0x2FEE5;
 	memset((void*)mapEntityIndex_15B4E0, 0, 0x20000);
-	sub_B5E70_decompress_terrain_map_level(x_WORD_17B4E0, a2x->offset_0x2FEE9, a2x->raise_0x2FEED, a2x->gnarl_0x2FEF1);
+	sub_B5E70_decompress_terrain_map_level(rand2_17B4E0, a2x->offset_0x2FEE9, a2x->raise_0x2FEED, a2x->gnarl_0x2FEF1);
 
 	sub_44DB0_truncTerrainHeight(mapEntityIndex_15B4E0, mapHeightmap_11B4E0);//225db0 //trunc and create
 
@@ -326,8 +189,8 @@ void sub_44E40(int count, uint8_t minSmooth)//225e40
 	{
 		for (i = 0; i < 1000; i++)
 		{
-			x_WORD_17B4E0 = 9377 * x_WORD_17B4E0 + 9439;
-			index.word = x_WORD_17B4E0 % 0xffffu;
+			rand2_17B4E0 = 9377 * rand2_17B4E0 + 9439;
+			index.word = rand2_17B4E0 % 0xffffu;
 			if ((mapHeightmap_11B4E0[index.word] > minSmooth) && mapAngle_13B4E0[index.word])
 			{
 				sub_44EE0_smooth_tiles(index);
@@ -1239,13 +1102,13 @@ void sub_44580()//225580
 					actBufPos = &pdwScreenBuffer_351628[25 * (49 * j + 7 * k + l + 343 * i)];
 					if (*actBufPos)
 					{
-						x_BYTE_F2CD0x[index][0] = actBufPos[1];
-						x_BYTE_F2CD0x[index][1] = actBufPos[13];
+						building_F2CD0x[index][0] = actBufPos[1];
+						building_F2CD0x[index][1] = actBufPos[13];
 					}
 					else
 					{
-						x_BYTE_F2CD0x[index][0] = 1;
-						x_BYTE_F2CD0x[index][1] = 0;
+						building_F2CD0x[index][0] = 1;
+						building_F2CD0x[index][1] = 0;
 					}
 					index++;
 				}
@@ -1275,11 +1138,11 @@ void sub_44580()//225580
 			actBufEnt = pdwScreenBuffer_351628[25 * (343 * point1 + 49 * point2 + point4 + 7 * point3)];
 			if (actBufEnt)
 			{
-				x_WORD_17B4E0 = 9377 * x_WORD_17B4E0 + 9439;
-				if (x_WORD_17B4E0 % (actBufEnt + 1) >= actBufEnt)
+				rand2_17B4E0 = 9377 * rand2_17B4E0 + 9439;
+				if (rand2_17B4E0 % (actBufEnt + 1) >= actBufEnt)
 					actBufPos = &pdwScreenBuffer_351628[25 * (343 * point1 + 49 * point2 + point4 + 7 * point3)];
 				else
-					actBufPos = &pdwScreenBuffer_351628[x_WORD_17B4E0 % (actBufEnt + 1) + 25 * (343 * point1 + 49 * point2 + point4 + 7 * point3)];
+					actBufPos = &pdwScreenBuffer_351628[rand2_17B4E0 % (actBufEnt + 1) + 25 * (343 * point1 + 49 * point2 + point4 + 7 * point3)];
 				mapTerrainType_10B4E0[uindex.word] = actBufPos[1];
 				mapAngle_13B4E0[uindex.word] = (mapAngle_13B4E0[uindex.word] & 7) + actBufPos[13];
 			}
@@ -1300,10 +1163,10 @@ void sub_43B40()//224b40
 	{
 		index.word = i;
 		locHeight = mapHeightmap_11B4E0[index.word];
-		if (locHeight > x_BYTE_D41B7)
-			locHeight = x_BYTE_D41B7;
-		x_BYTE_14B4E0_second_heightmap[index.word] = x_BYTE_D41B7 - locHeight;
-		if (x_BYTE_D41B7 - locHeight > mapHeightmap_11B4E0[index.word])
+		if (locHeight > MapBasicHeight_D41B7)
+			locHeight = MapBasicHeight_D41B7;
+		x_BYTE_14B4E0_second_heightmap[index.word] = MapBasicHeight_D41B7 - locHeight;
+		if (MapBasicHeight_D41B7 - locHeight > mapHeightmap_11B4E0[index.word])
 		{
 			mapAngle_13B4E0[index.word] &= 0xF7u;
 		}
@@ -1387,7 +1250,7 @@ void sub_44D00()//225d00
 
 	uaxis_2d tempIndex;
 	uaxis_2d index;
-	x_WORD_17B4E0 = 0;
+	rand2_17B4E0 = 0;
 	for (int i = 0; i < 256 * 256; i++)
 	{
 		index.word = i;
@@ -1401,10 +1264,10 @@ void sub_44D00()//225d00
 		index._axis_2d.y++;
 		if (tempIndex._axis_2d.x == 32)
 		{
-			tempIndex.word = 9377 * x_WORD_17B4E0 + 9439;
-			x_WORD_17B4E0 = tempIndex.word;
-			tempIndex._axis_2d.y = (x_WORD_17B4E0 / 9u) >> 8;
-			tempIndex._axis_2d.x = x_WORD_17B4E0 % 9 + 28;
+			tempIndex.word = 9377 * rand2_17B4E0 + 9439;
+			rand2_17B4E0 = tempIndex.word;
+			tempIndex._axis_2d.y = (rand2_17B4E0 / 9u) >> 8;
+			tempIndex._axis_2d.x = rand2_17B4E0 % 9 + 28;
 		}
 		else if ((int8_t)tempIndex._axis_2d.x >= 28)
 		{
@@ -2120,15 +1983,15 @@ void sub_462A0(uaxis_2d inAxis2dA, uaxis_2d inAxis2dB)//2272a0
 				point4 = mapAngle_13B4E0[tempAxis.word];
 				tempAxis._axis_2d.y--;
 				terModIndex = (point4 & 7) + 7 * (point3 & 7) + 49 * (point2 & 7) + 343 * (point1 & 7);
-				mapTerrainType_10B4E0[tempAxis.word] = x_BYTE_F2CD0x[terModIndex][0];
-				if (x_BYTE_F2CD0x[terModIndex][0] >= 8u)
+				mapTerrainType_10B4E0[tempAxis.word] = building_F2CD0x[terModIndex][0];
+				if (building_F2CD0x[terModIndex][0] >= 8u)
 				{
-					nextAngle = x_BYTE_F2CD0x[terModIndex][1] + (mapAngle_13B4E0[tempAxis.word] & 0x87);
+					nextAngle = building_F2CD0x[terModIndex][1] + (mapAngle_13B4E0[tempAxis.word] & 0x87);
 				}
 				else
 				{
-					x_WORD_17B4E0 = 9377 * x_WORD_17B4E0 + 9439;
-					nextAngle = (mapAngle_13B4E0[tempAxis.word] & 0x87) + 16 * (x_WORD_17B4E0 % 7u);
+					rand2_17B4E0 = 9377 * rand2_17B4E0 + 9439;
+					nextAngle = (mapAngle_13B4E0[tempAxis.word] & 0x87) + 16 * (rand2_17B4E0 % 7u);
 				}
 				mapAngle_13B4E0[tempAxis.word] = nextAngle;
 			}

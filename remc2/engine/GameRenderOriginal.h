@@ -17,7 +17,7 @@
 #include "Type_E9C38_Smalltit.h"
 #include "Type_Unk_F0E20x.h"
 #include "Type_WORD_D951C.h"
-#include "XUnk_D4350.h"
+#include "UVTable_D4350.h"
 #include "Type_D404C.h"
 #include "Type_D94F0_Bldgprmbuffer.h"
 #include "Type_D93C0_Bldgprmbuffer.h"
@@ -66,8 +66,8 @@ private:
 	char notDay_D4320 = 0;
 	char x_BYTE_F2CC6 = 0;
 	int16_t yaw_F2CC0 = 0;
-	int16_t x_WORD_F2CC2 = 0;
-	int16_t x_WORD_F2CC4 = 0;
+	int16_t cameraY_F2CC2 = 0;
+	int16_t cameraX_F2CC4 = 0;
 	uint8_t* x_DWORD_DE55C_ActTexture = 0;
 
 	void DrawSky_40950(int16_t roll);

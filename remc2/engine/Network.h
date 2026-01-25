@@ -15,6 +15,7 @@ extern int NetworkPort;
 extern int ServerPort;
 extern char serverIP[256];
 extern uint8_t x_BYTE_E131C[8];
+extern uint8_t connected_E12A6;
 
 void NetworkDisallocation_72D04();
 // int sub_72DDE(signed __int16 *a1, int a2);
@@ -56,5 +57,7 @@ void DrawNetworkLevelName_7D1F0();
 signed int sub_7D230(char a1, unsigned __int8 a2, unsigned __int8 a3);
 
 void SetPaletteColor_7CDC0(unsigned __int8 a1, unsigned __int8 a2);
+
+uint8_t NetworkAddName_74767(/*signed __int16* a1,*/ myNCB* a2x, char* a3);
 
 #endif //MAIN_NETWORK

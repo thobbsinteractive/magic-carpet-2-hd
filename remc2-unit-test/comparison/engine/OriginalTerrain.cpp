@@ -206,7 +206,7 @@ void sub_44EE0_smooth_tiles_orig(uaxis_2d a2x, uint8_t mapTerrainType_10B4E0[], 
 	} while (index);//delete type
 }
 
-void sub_44E40_orig(int a1, uint8_t a2, uint16_t x_WORD_17B4E0, uint8_t mapTerrainType_10B4E0[], uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[])//225e40
+void sub_44E40_orig(int a1, uint8_t a2, uint16_t rand2_17B4E0, uint8_t mapTerrainType_10B4E0[], uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[])//225e40
 {
 	int v2; // edi
 	uint16_t v3; // si
@@ -234,8 +234,8 @@ LABEL_12:
 		while (1)
 		{
 			//v8 = -1;
-			v5 = 9377 * x_WORD_17B4E0 + 9439;
-			x_WORD_17B4E0 = v5;
+			v5 = 9377 * rand2_17B4E0 + 9439;
+			rand2_17B4E0 = v5;
 			v6x.word = v5 % 0xffffu;
 			v7 = v5 % 0xffffu;
 			v8 = mapHeightmap_11B4E0[v7] + 0xff00;
@@ -321,7 +321,7 @@ int sub_B5D68_orig(__int16 a1, __int16 a2, uint8_t* x_BYTE_14B4E0_second_heightm
 	return result;
 }
 
-void sub_45DC0_orig(uint8_t a2, uaxis_2d a3x, unsigned __int8 a4, MapType_t mapType, bool lowDiffHeightmap_D47DC, char isCaveLevel_D41B6, uint16_t* x_WORD_17B4E0, char x_BYTE_F2CD0x[][2], uint8_t mapTerrainType_10B4E0[], uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[], uint8_t mapShading_12B4E0[], uint8_t* x_BYTE_14B4E0_second_heightmap)//226dc0
+void sub_45DC0_orig(uint8_t a2, uaxis_2d a3x, unsigned __int8 a4, MapType_t mapType, bool lowDiffHeightmap_D47DC, char isCaveLevel_D41B6, uint16_t* rand2_17B4E0, char building_F2CD0x[][2], uint8_t mapTerrainType_10B4E0[], uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[], uint8_t mapShading_12B4E0[], uint8_t* x_BYTE_14B4E0_second_heightmap)//226dc0
 {
 	uaxis_2d v4x; // bx
 	uaxis_2d v5x; // eax
@@ -485,10 +485,10 @@ void sub_45DC0_orig(uint8_t a2, uaxis_2d a3x, unsigned __int8 a4, MapType_t mapT
 		return;
 	}
 	mapAngle_13B4E0[a3x.word] = a4 | mapAngle_13B4E0[a3x.word] & 0xF0;
-	sub_462A0_orig(a3x, a3x, isCaveLevel_D41B6, mapType, x_WORD_17B4E0, x_BYTE_F2CD0x, mapTerrainType_10B4E0, mapHeightmap_11B4E0, mapAngle_13B4E0, mapShading_12B4E0, x_BYTE_14B4E0_second_heightmap);
+	sub_462A0_orig(a3x, a3x, isCaveLevel_D41B6, mapType, rand2_17B4E0, building_F2CD0x, mapTerrainType_10B4E0, mapHeightmap_11B4E0, mapAngle_13B4E0, mapShading_12B4E0, x_BYTE_14B4E0_second_heightmap);
 }
 
-void sub_462A0_orig(uaxis_2d a1x, uaxis_2d a2x, char isCaveLevel_D41B6, MapType_t mapType, uint16_t* x_WORD_17B4E0, char x_BYTE_F2CD0x[][2], uint8_t mapTerrainType_10B4E0[], uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[], uint8_t mapShading_12B4E0[], uint8_t* x_BYTE_14B4E0_second_heightmap)//2272a0
+void sub_462A0_orig(uaxis_2d a1x, uaxis_2d a2x, char isCaveLevel_D41B6, MapType_t mapType, uint16_t* rand2_17B4E0, char building_F2CD0x[][2], uint8_t mapTerrainType_10B4E0[], uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[], uint8_t mapShading_12B4E0[], uint8_t* x_BYTE_14B4E0_second_heightmap)//2272a0
 {
 	uaxis_2d v2x; // cx
 	bool v3; // zf
@@ -569,16 +569,16 @@ void sub_462A0_orig(uaxis_2d a1x, uaxis_2d a2x, char isCaveLevel_D41B6, MapType_
 				v10 = mapAngle_13B4E0[v5x.word] & 7;
 				v5x._axis_2d.y--;
 				v11index = v10 + 7 * v9 + v8;
-				mapTerrainType_10B4E0[v5x.word] = x_BYTE_F2CD0x[v11index][0];
-				if (x_BYTE_F2CD0x[v11index][0] >= 8u)
+				mapTerrainType_10B4E0[v5x.word] = building_F2CD0x[v11index][0];
+				if (building_F2CD0x[v11index][0] >= 8u)
 				{
-					v4y = x_BYTE_F2CD0x[v11index][1] + (mapAngle_13B4E0[v5x.word] & 0x87);
+					v4y = building_F2CD0x[v11index][1] + (mapAngle_13B4E0[v5x.word] & 0x87);
 				}
 				else
 				{
 					v12 = mapAngle_13B4E0[v5x.word] & 0x87;
-					*x_WORD_17B4E0 = 9377 * *x_WORD_17B4E0 + 9439;
-					v4y = v12 + 16 * (*x_WORD_17B4E0 % 7u);
+					*rand2_17B4E0 = 9377 * *rand2_17B4E0 + 9439;
+					v4y = v12 + 16 * (*rand2_17B4E0 % 7u);
 				}
 				mapAngle_13B4E0[v5x.word] = v4y;
 			}
@@ -939,7 +939,7 @@ void sub_44D00_orig(MapType_t mapType, uint8_t mapHeightmap_11B4E0[], uint8_t ma
 	char v5; // dl
 
 	v0x.word = 0;
-	uint16_t x_WORD_17B4E0 = 0;
+	uint16_t rand2_17B4E0 = 0;
 	do
 	{
 		//adress 225d0f
@@ -956,12 +956,12 @@ void sub_44D00_orig(MapType_t mapType, uint8_t mapHeightmap_11B4E0[], uint8_t ma
 		v0x._axis_2d.y++;
 		if (indexx._axis_2d.x == 32)
 		{
-			indexx.word = 9377 * x_WORD_17B4E0 + 9439;
+			indexx.word = 9377 * rand2_17B4E0 + 9439;
 			//LOWORD(index) += 9439;
-			x_WORD_17B4E0 = indexx.word;
+			rand2_17B4E0 = indexx.word;
 			//v4x.word = indexx.word;
-			indexx._axis_2d.y = (x_WORD_17B4E0 / 9u) >> 8;
-			indexx._axis_2d.x = x_WORD_17B4E0 % 9 + 28;
+			indexx._axis_2d.y = (rand2_17B4E0 / 9u) >> 8;
+			indexx._axis_2d.x = rand2_17B4E0 % 9 + 28;
 		}
 		else if ((int8_t)indexx._axis_2d.x >= 28)
 		{
@@ -1281,7 +1281,7 @@ unsigned int sub_439A0_orig(unsigned __int16 a2, uint8_t mapHeightmap_11B4E0[], 
 }
 
 //----- (00043B40) --------------------------------------------------------
-void sub_43B40_orig(uint8_t x_BYTE_D41B7, uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[], uint8_t* x_BYTE_14B4E0_second_heightmap)//224b40
+void sub_43B40_orig(uint8_t MapBasicHeight_D41B7, uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[], uint8_t* x_BYTE_14B4E0_second_heightmap)//224b40
 {
 	uint16_t v0; // dx
 	uint8_t v1; // eax
@@ -1293,10 +1293,10 @@ void sub_43B40_orig(uint8_t x_BYTE_D41B7, uint8_t mapHeightmap_11B4E0[], uint8_t
 	do
 	{
 		v1 = mapHeightmap_11B4E0[v0];
-		if (v1 > x_BYTE_D41B7)
-			v1 = x_BYTE_D41B7;
-		v2 = x_BYTE_D41B7 - v1;
-		x_BYTE_14B4E0_second_heightmap[v0] = x_BYTE_D41B7 - v1;
+		if (v1 > MapBasicHeight_D41B7)
+			v1 = MapBasicHeight_D41B7;
+		v2 = MapBasicHeight_D41B7 - v1;
+		x_BYTE_14B4E0_second_heightmap[v0] = MapBasicHeight_D41B7 - v1;
 		v3 = mapHeightmap_11B4E0[v0];
 		if (v2 > v3)
 		{
@@ -1359,7 +1359,7 @@ void sub_43BB0_orig(uint8_t mapHeightmap_11B4E0[], uint8_t mapAngle_13B4E0[], ui
 	} while (v3);
 }
 
-void sub_44580_orig(uint8_t* pdwScreenBuffer_351628, uint16_t &x_WORD_17B4E0, char x_BYTE_F2CD0x[][2], uint8_t mapTerrainType_10B4E0[], uint8_t mapAngle_13B4E0[])//225580
+void sub_44580_orig(uint8_t* pdwScreenBuffer_351628, uint16_t &rand2_17B4E0, char building_F2CD0x[][2], uint8_t mapTerrainType_10B4E0[], uint8_t mapAngle_13B4E0[])//225580
 {
 	uint8_t* v0; // eax
 	unsigned __int16 v1; // bx
@@ -1599,7 +1599,7 @@ void sub_44580_orig(uint8_t* pdwScreenBuffer_351628, uint16_t &x_WORD_17B4E0, ch
 		v2++;
 		v89 += 4;
 	}
-	//v72 = x_BYTE_F2CD0x;//adress 225afd
+	//v72 = building_F2CD0x;//adress 225afd
 	v72x = 0;
 	for (i = 0; i < 7; i++)
 	{
@@ -1612,13 +1612,13 @@ void sub_44580_orig(uint8_t* pdwScreenBuffer_351628, uint16_t &x_WORD_17B4E0, ch
 					v77 = &v90[25 * (49 * j + 7 * k + l + 343 * i)];
 					if (v77[0])
 					{
-						x_BYTE_F2CD0x[v72x][0] = v77[1];
-						x_BYTE_F2CD0x[v72x][1] = v77[13];
+						building_F2CD0x[v72x][0] = v77[1];
+						building_F2CD0x[v72x][1] = v77[13];
 					}
 					else
 					{
-						x_BYTE_F2CD0x[v72x][0] = 1;
-						x_BYTE_F2CD0x[v72x][1] = 0;
+						building_F2CD0x[v72x][0] = 1;
+						building_F2CD0x[v72x][1] = 0;
 					}
 					//v72 += 2;
 					v72x++;
@@ -1644,8 +1644,8 @@ void sub_44580_orig(uint8_t* pdwScreenBuffer_351628, uint16_t &x_WORD_17B4E0, ch
 			HIBYTE(v78)--;
 			if (v85)
 			{
-				x_WORD_17B4E0 = 9377 * x_WORD_17B4E0 + 9439;
-				v86 = x_WORD_17B4E0 % (v85 + 1);
+				rand2_17B4E0 = 9377 * rand2_17B4E0 + 9439;
+				v86 = rand2_17B4E0 % (v85 + 1);
 				if (v86 >= v85)
 					v86 = 0;
 				v87 = (v86 + 25 * v84 + v90);
