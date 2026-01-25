@@ -46694,7 +46694,7 @@ void CreateAnimObject_7E8D0(type_animStruct* animStruct, __int16 x1, __int16 y1,
 	animStruct->diffX_0 = x1 - x2;
 	animStruct->diffY_1 = y1 - y2;
 	animStruct->absDiffX2_2 = 2 * abs(animStruct->diffX_0);
-	animStruct->absDiffY_3 = 2 * abs(animStruct->diffY_1);
+	animStruct->absDiffY2_3 = 2 * abs(animStruct->diffY_1);
 	if (animStruct->diffX_0 >= 0)
 	{
 		if (animStruct->diffX_0)
@@ -46719,13 +46719,13 @@ void CreateAnimObject_7E8D0(type_animStruct* animStruct, __int16 x1, __int16 y1,
 	}
 	animStruct->beginX_6 = x1;
 	animStruct->beginY_7 = y1;
-	if (animStruct->absDiffX2_2 <= animStruct->absDiffY_3)
+	if (animStruct->absDiffX2_2 <= animStruct->absDiffY2_3)
 	{
-		animStruct->secondAdd_8 = animStruct->absDiffX2_2 - (animStruct->absDiffY_3 >> 1);
+		animStruct->secondAdd_8 = animStruct->absDiffX2_2 - (animStruct->absDiffY2_3 >> 1);
 	}
 	else
 	{
-		animStruct->secondAdd_8 = (animStruct->absDiffY_3 - animStruct->absDiffX2_2) >> 1;
+		animStruct->secondAdd_8 = (animStruct->absDiffY2_3 - animStruct->absDiffX2_2) >> 1;
 	}
 	animStruct->field_9 = 0;
 	if (x2 >= animStruct->beginX_6)
@@ -46752,14 +46752,14 @@ void CreateAnimObject_7E8D0(type_animStruct* animStruct, __int16 x1, __int16 y1,
 bool MoveAnimObject_7E9D0(x_WORD* x1, x_WORD* y1, type_animStruct* animStruct)//25f9d0
 {
 	__int16 field;
-	if (animStruct->absDiffX2_2 <= animStruct->absDiffY_3)
+	if (animStruct->absDiffX2_2 <= animStruct->absDiffY2_3)
 	{
 		if (*y1 == animStruct->beginY_7)
 			return true;
 		if (animStruct->secondAdd_8 >= 0)
 		{
 			*x1 += animStruct->maxX_4;
-			animStruct->secondAdd_8 -= animStruct->absDiffY_3;
+			animStruct->secondAdd_8 -= animStruct->absDiffY2_3;
 		}
 		*y1 += animStruct->maxY_5;
 		field = animStruct->absDiffX2_2;
@@ -46774,7 +46774,7 @@ bool MoveAnimObject_7E9D0(x_WORD* x1, x_WORD* y1, type_animStruct* animStruct)//
 			animStruct->secondAdd_8 -= animStruct->absDiffX2_2;
 		}
 		*x1 += animStruct->maxX_4;
-		field = animStruct->absDiffY_3;
+		field = animStruct->absDiffY2_3;
 	}
 	animStruct->secondAdd_8 += field;
 	if (animStruct->stateX_10 == 1)

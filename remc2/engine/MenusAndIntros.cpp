@@ -268,7 +268,7 @@ typedef struct {//lenght 69
 	int16_t word_14;//14	
 	int8_t byte_16;//16
 	uint8_t stub_17;//17
-	int16_t array_word_18[12];////18
+	type_animStruct2 array_word_18;////18
 	int8_t byte_42;//42
 	int8_t byte_43;//43
 	uint8_t byte_44;//44
@@ -278,17 +278,17 @@ type_WORD_E20A4;
 #pragma pack (16)
 
 type_WORD_E20A4 str_WORD_E20A4[12] = {
-{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0025,0x02,0x00,0x0025,0x03,0x00,{0x0000,0x0000,0x0180,0x0000,0x021F,0x03C0,0x008C,0x0091,0x008C,0x008C,0x0091,0x0032},0x01,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
-{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0025,0x02,0x00,0x0025,0x03,0x00,{0x0000,0x0000,0x018B,0x000A,0x0226,0x03CA,0x008C,0x0091,0x008C,0x008C,0x0091,0x0032},0x01,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
-{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0025,0x02,0x00,0x0025,0x03,0x00,{0x0000,0x0000,0x0190,0x0006,0x022B,0x03D4,0x008C,0x0091,0x008C,0x008C,0x0091,0x0032},0x01,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
-{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0027,0x02,0x00,0x0027,0x03,0x00,{0x0000,0x0000,0x0001,0x00BE,0x04FC,0x0134,0x00CE,0x00D3,0x00CE,0x00CE,0x00D3,0x0028},0x01,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
-{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0025,0x02,0x00,0x0025,0x03,0x00,{0x0000,0x0000,0x01CB,0x0000,0x04FE,0x03C0,0x0092,0x0097,0x0092,0x0092,0x0097,0x0014},0x01,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
-{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x0253,0x0000,0x023A,0x027C,0x0115,0x011C,0x0115,0x005D,0x0067,0x0000},0x02,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
-{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x0262,0x0072,0x0262,0x0072,0x0129,0x0130,0x0129,0x0129,0x0130,0x0000},0x03,0x00,0x18,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
-{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x0165,0x0000,0x011F,0x0290,0x006B,0x0072,0x006B,0x005D,0x0067,0x000F},0x01,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
-{0x00000000,0x00,0x00,0x00,0x00,0x02,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x03AB,0x0000,0x036F,0x0266,0x006B,0x0072,0x006B,0x005D,0x0067,0x000F},0x01,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
-{0x00000000,0x00,0x00,0x00,0x00,0x03,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x01AF,0x0000,0x0169,0x0200,0x006B,0x0072,0x006B,0x005D,0x0067,0x000B},0x01,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
-{0x00000000,0x00,0x00,0x00,0x00,0x04,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x01C7,0x0000,0x018B,0x0072,0x006B,0x0072,0x006B,0x005D,0x0067,0x0012},0x01,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},
+{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0025,0x02,0x00,0x0025,0x03,0x00,{0x0000,0x0000,0x0180,0x0000,0x021F,0x03C0,0x008C,0x0091,0x008C,0x008C,0x0091,0x0032},0x01,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//dragon
+{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0025,0x02,0x00,0x0025,0x03,0x00,{0x0000,0x0000,0x018B,0x000A,0x0226,0x03CA,0x008C,0x0091,0x008C,0x008C,0x0091,0x0032},0x01,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//dragon
+{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0025,0x02,0x00,0x0025,0x03,0x00,{0x0000,0x0000,0x0190,0x0006,0x022B,0x03D4,0x008C,0x0091,0x008C,0x008C,0x0091,0x0032},0x01,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//dragon
+{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0027,0x02,0x00,0x0027,0x03,0x00,{0x0000,0x0000,0x0001,0x00BE,0x04FC,0x0134,0x00CE,0x00D3,0x00CE,0x00CE,0x00D3,0x0028},0x01,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//dragon2
+{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0025,0x02,0x00,0x0025,0x03,0x00,{0x0000,0x0000,0x01CB,0x0000,0x04FE,0x03C0,0x0092,0x0097,0x0092,0x0092,0x0097,0x0014},0x01,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//dragon3
+{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x0253,0x0000,0x023A,0x027C,0x0115,0x011C,0x0115,0x005D,0x0067,0x0000},0x02,0x00,0x03,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//sea beast
+{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x0262,0x0072,0x0262,0x0072,0x0129,0x0130,0x0129,0x0129,0x0130,0x0000},0x03,0x00,0x18,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//vulcan
+{0x00000000,0x00,0x00,0x00,0x00,0x01,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x0165,0x0000,0x011F,0x0290,0x006B,0x0072,0x006B,0x005D,0x0067,0x000F},0x01,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//explosion
+{0x00000000,0x00,0x00,0x00,0x00,0x02,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x03AB,0x0000,0x036F,0x0266,0x006B,0x0072,0x006B,0x005D,0x0067,0x000F},0x01,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//explosion
+{0x00000000,0x00,0x00,0x00,0x00,0x03,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x01AF,0x0000,0x0169,0x0200,0x006B,0x0072,0x006B,0x005D,0x0067,0x000B},0x01,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//explosion
+{0x00000000,0x00,0x00,0x00,0x00,0x04,0x00,0x0009,0x02,0x00,0x0003,0x03,0x00,{0x0000,0x0000,0x01C7,0x0000,0x018B,0x0072,0x006B,0x0072,0x006B,0x005D,0x0067,0x0012},0x01,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}},//explosion
 {0x00000000,0x00,0x00,0x00,0x00,0x00,0x00,0x0000,0x00,0x00,0x0000,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000},0x00,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}}};
 
 type_E24BCx str_E2516[5] = {
@@ -4917,7 +4917,7 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 
 	int time = j___clock();
 	int index = 0;
-	for (result = str_WORD_E20A4[0].array_word_18[2]; result; result = str_WORD_E20A4[index].array_word_18[2])
+	for (result = str_WORD_E20A4[0].array_word_18.beginX_2; result; result = str_WORD_E20A4[index].array_word_18.beginX_2)
 	{
 		if (str_WORD_E20A4[index].byte_42 == 1)
 		{
@@ -4928,34 +4928,34 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 				str_WORD_E20A4[index].byte_43++;
 				break;
 			case 1u:
-				if ((time - str_WORD_E20A4[index].time_0) / 0x64u > str_WORD_E20A4[index].array_word_18[11])
+				if ((time - str_WORD_E20A4[index].time_0) / 0x64u > str_WORD_E20A4[index].array_word_18.stateY_11)
 					str_WORD_E20A4[index].byte_43++;
 				break;
 			case 2u:
-				str_WORD_E20A4[index].array_word_18[0] = str_WORD_E20A4[index].array_word_18[2];
-				str_WORD_E20A4[index].array_word_18[1] = str_WORD_E20A4[index].array_word_18[3];
-				CreateAnimObject_7E8D0(&str_WORD_E20A4[index].array_word_45, str_WORD_E20A4[index].array_word_18[4], str_WORD_E20A4[index].array_word_18[5], str_WORD_E20A4[index].array_word_18[2], str_WORD_E20A4[index].array_word_18[3], 2, 2);
-				str_WORD_E20A4[index].array_word_18[7] = str_WORD_E20A4[index].array_word_18[6];
+				str_WORD_E20A4[index].array_word_18.actX_0 = str_WORD_E20A4[index].array_word_18.beginX_2;
+				str_WORD_E20A4[index].array_word_18.actY_1 = str_WORD_E20A4[index].array_word_18.beginY_3;
+				CreateAnimObject_7E8D0(&str_WORD_E20A4[index].array_word_45, str_WORD_E20A4[index].array_word_18.maxX_4, str_WORD_E20A4[index].array_word_18.maxY_5, str_WORD_E20A4[index].array_word_18.beginX_2, str_WORD_E20A4[index].array_word_18.beginY_3, 2, 2);
+				str_WORD_E20A4[index].array_word_18.act_7 = str_WORD_E20A4[index].array_word_18.begin_6;
 				str_WORD_E20A4[index].byte_43++;
 				sub_8F100_sound_proc19(0, str_WORD_E20A4[index].word_10, x_BYTE_E1324, 64, 0x64u, 0, str_WORD_E20A4[index].byte_12);
 				break;
 			case 3u:
 				for (int i = 0; i < 4; i++)
 				{
-					objectResult = MoveAnimObject_7E9D0(&str_WORD_E20A4[index].array_word_18[0], &str_WORD_E20A4[index].array_word_18[1], &str_WORD_E20A4[index].array_word_45);
+					objectResult = MoveAnimObject_7E9D0(&str_WORD_E20A4[index].array_word_18.actX_0, &str_WORD_E20A4[index].array_word_18.actY_1, &str_WORD_E20A4[index].array_word_45);
 				}
 				if ((unsigned int)(time - str_WORD_E20A4[index].time_0) >> 3 >= 1)
 				{
-					if (str_WORD_E20A4[index].array_word_18[8] <= str_WORD_E20A4[index].array_word_18[7] - 1)
-						++str_WORD_E20A4[index].array_word_18[8];
+					if (str_WORD_E20A4[index].array_word_18.act2_8 <= str_WORD_E20A4[index].array_word_18.act_7 - 1)
+						str_WORD_E20A4[index].array_word_18.act2_8++;
 					else
-						str_WORD_E20A4[index].array_word_18[8] = str_WORD_E20A4[index].array_word_18[6];
+						str_WORD_E20A4[index].array_word_18.act2_8 = str_WORD_E20A4[index].array_word_18.begin_6;
 					str_WORD_E20A4[index].time_0 = time;
 				}
-				sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18[0] - a5, str_WORD_E20A4[index].array_word_18[1] - a6, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18[8]]);
+				sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18.actX_0 - a5, str_WORD_E20A4[index].array_word_18.actY_1 - a6, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18.act2_8]);
 				if (objectResult)
 				{
-					str_WORD_E20A4[index].array_word_18[8] = str_WORD_E20A4[index].array_word_18[9];
+					str_WORD_E20A4[index].array_word_18.act2_8 = str_WORD_E20A4[index].array_word_18.begin2_9;
 					str_WORD_E20A4[index].time_0 = time;
 					str_WORD_E20A4[index].byte_43++;
 					sub_8F100_sound_proc19(0, str_WORD_E20A4[index].word_14, x_BYTE_E1324, 64, 0x64u, 0, str_WORD_E20A4[index].byte_16);
@@ -4965,20 +4965,20 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 				objectResult = false;
 				if ((unsigned int)(time - str_WORD_E20A4[index].time_0) >> 3 >= 1)
 				{
-					if (str_WORD_E20A4[index].array_word_18[8] <= str_WORD_E20A4[index].array_word_18[10] - 1)
+					if (str_WORD_E20A4[index].array_word_18.act2_8 <= str_WORD_E20A4[index].array_word_18.stateX_10 - 1)
 					{
-						str_WORD_E20A4[index].array_word_18[8]++;
+						str_WORD_E20A4[index].array_word_18.act2_8++;
 					}
 					else
 					{
 						objectResult = true;
-						str_WORD_E20A4[index].array_word_18[8] = str_WORD_E20A4[index].array_word_18[10];
+						str_WORD_E20A4[index].array_word_18.act2_8 = str_WORD_E20A4[index].array_word_18.stateX_10;
 					}
 					str_WORD_E20A4[index].time_0 = time;
 				}
 				if (!objectResult)
 				{
-					sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18[0] - a5, str_WORD_E20A4[index].array_word_18[1] - a6, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18[8]]);
+					sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18.actX_0 - a5, str_WORD_E20A4[index].array_word_18.actY_1 - a6, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18.act2_8]);
 				}
 				else
 				{
@@ -5005,30 +5005,30 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 						str_WORD_E20A4[index].byte_43++;
 						break;
 					case 1:
-						str_WORD_E20A4[index].array_word_18[0] = str_WORD_E20A4[index].array_word_18[2];
-						str_WORD_E20A4[index].array_word_18[1] = str_WORD_E20A4[index].array_word_18[3];
-						CreateAnimObject_7E8D0(&str_WORD_E20A4[index].array_word_45, str_WORD_E20A4[index].array_word_18[4], str_WORD_E20A4[index].array_word_18[5], str_WORD_E20A4[index].array_word_18[2], str_WORD_E20A4[index].array_word_18[3], 2, 2);
-						str_WORD_E20A4[index].array_word_18[8] = str_WORD_E20A4[index].array_word_18[6];
+						str_WORD_E20A4[index].array_word_18.actX_0 = str_WORD_E20A4[index].array_word_18.beginX_2;
+						str_WORD_E20A4[index].array_word_18.actY_1 = str_WORD_E20A4[index].array_word_18.beginY_3;
+						CreateAnimObject_7E8D0(&str_WORD_E20A4[index].array_word_45, str_WORD_E20A4[index].array_word_18.maxX_4, str_WORD_E20A4[index].array_word_18.maxY_5, str_WORD_E20A4[index].array_word_18.beginX_2, str_WORD_E20A4[index].array_word_18.beginY_3, 2, 2);
+						str_WORD_E20A4[index].array_word_18.act2_8 = str_WORD_E20A4[index].array_word_18.begin_6;
 						str_WORD_E20A4[index].byte_43++;
 						sub_8F100_sound_proc19(0, str_WORD_E20A4[index].word_10, x_BYTE_E1324, 64, 0x64u, 0, str_WORD_E20A4[index].byte_12);
 						break;
 					case 2:
 						for (int j = 0; j < 4; j++)
 						{
-							objectResult = MoveAnimObject_7E9D0(str_WORD_E20A4[index].array_word_18, &str_WORD_E20A4[index].array_word_18[1], &str_WORD_E20A4[index].array_word_45);
+							objectResult = MoveAnimObject_7E9D0(&str_WORD_E20A4[index].array_word_18.actX_0, &str_WORD_E20A4[index].array_word_18.actY_1, &str_WORD_E20A4[index].array_word_45);
 						}
 						if ((unsigned int)(time - str_WORD_E20A4[index].time_0) >> 3 >= 1)
 						{
-							if (str_WORD_E20A4[index].array_word_18[8] <= str_WORD_E20A4[index].array_word_18[7] - 1)
-								str_WORD_E20A4[index].array_word_18[8]++;
+							if (str_WORD_E20A4[index].array_word_18.act2_8 <= str_WORD_E20A4[index].array_word_18.act_7 - 1)
+								str_WORD_E20A4[index].array_word_18.act2_8++;
 							else
-								str_WORD_E20A4[index].array_word_18[8] = str_WORD_E20A4[index].array_word_18[6];
+								str_WORD_E20A4[index].array_word_18.act2_8 = str_WORD_E20A4[index].array_word_18.begin_6;
 							str_WORD_E20A4[index].time_0 = time;
 						}
-						sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18[0] - a5, str_WORD_E20A4[index].array_word_18[1] - a6, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18[8]]);
+						sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18.actX_0 - a5, str_WORD_E20A4[index].array_word_18.actY_1 - a6, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18.act2_8]);
 						if (objectResult)
 						{
-							str_WORD_E20A4[index].array_word_18[8] = str_WORD_E20A4[index].array_word_18[9];
+							str_WORD_E20A4[index].array_word_18.act2_8 = str_WORD_E20A4[index].array_word_18.begin2_9;
 							str_WORD_E20A4[index].time_0 = time;
 							str_WORD_E20A4[index].byte_43++;
 							sub_8F100_sound_proc19(0, str_WORD_E20A4[index].word_14, x_BYTE_E1324, 64, 0x64u, 0, str_WORD_E20A4[index].byte_16);
@@ -5038,20 +5038,20 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 						objectResult = false;
 						if ((unsigned int)(time - str_WORD_E20A4[index].time_0) >> 3 >= 1)
 						{
-							if (str_WORD_E20A4[index].array_word_18[8] <= str_WORD_E20A4[index].array_word_18[10] - 1)
+							if (str_WORD_E20A4[index].array_word_18.act2_8 <= str_WORD_E20A4[index].array_word_18.stateX_10 - 1)
 							{
-								str_WORD_E20A4[index].array_word_18[8]++;
+								str_WORD_E20A4[index].array_word_18.act2_8++;
 							}
 							else
 							{
 								objectResult = true;
-								str_WORD_E20A4[index].array_word_18[8] = str_WORD_E20A4[index].array_word_18[9];
+								str_WORD_E20A4[index].array_word_18.act2_8 = str_WORD_E20A4[index].array_word_18.begin2_9;
 							}
 							str_WORD_E20A4[index].time_0 = time;
 						}
 						if (!objectResult)
 						{
-							sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18[0] - a5, str_WORD_E20A4[index].array_word_18[1] - a6, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18[8]]);
+							sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18.actX_0 - a5, str_WORD_E20A4[index].array_word_18.actY_1 - a6, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18.act2_8]);
 						}
 						else
 						{
@@ -5087,10 +5087,10 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 				}
 				else if (str_WORD_E20A4[index].byte_43 <= 1u)
 				{
-					str_WORD_E20A4[index].array_word_18[0] = str_WORD_E20A4[index].array_word_18[2];
-					str_WORD_E20A4[index].array_word_18[1] = str_WORD_E20A4[index].array_word_18[3];
-					CreateAnimObject_7E8D0(&str_WORD_E20A4[index].array_word_45, str_WORD_E20A4[index].array_word_18[4], str_WORD_E20A4[index].array_word_18[5], str_WORD_E20A4[index].array_word_18[2], str_WORD_E20A4[index].array_word_18[3], 2, 2);
-					str_WORD_E20A4[index].array_word_18[8] = str_WORD_E20A4[index].array_word_18[6];
+					str_WORD_E20A4[index].array_word_18.actX_0 = str_WORD_E20A4[index].array_word_18.beginX_2;
+					str_WORD_E20A4[index].array_word_18.actY_1 = str_WORD_E20A4[index].array_word_18.beginY_3;
+					CreateAnimObject_7E8D0(&str_WORD_E20A4[index].array_word_45, str_WORD_E20A4[index].array_word_18.maxX_4, str_WORD_E20A4[index].array_word_18.maxY_5, str_WORD_E20A4[index].array_word_18.beginX_2, str_WORD_E20A4[index].array_word_18.beginY_3, 2, 2);
+					str_WORD_E20A4[index].array_word_18.act2_8 = str_WORD_E20A4[index].array_word_18.begin_6;
 					str_WORD_E20A4[index].byte_43++;
 					sub_8F100_sound_proc19(0, str_WORD_E20A4[index].word_10, (unsigned __int8)x_BYTE_E1324, 64, 0x64u, 0, str_WORD_E20A4[index].byte_12);
 				}
@@ -5098,14 +5098,14 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 				{
 					for (int k = 0; k < 4; k++)
 					{
-						objectResult = MoveAnimObject_7E9D0(str_WORD_E20A4[index].array_word_18, &str_WORD_E20A4[index].array_word_18[1], &str_WORD_E20A4[index].array_word_45);
+						objectResult = MoveAnimObject_7E9D0(&str_WORD_E20A4[index].array_word_18.actX_0, &str_WORD_E20A4[index].array_word_18.actY_1, &str_WORD_E20A4[index].array_word_45);
 					}
 					if ((unsigned int)(time - str_WORD_E20A4[index].time_0) >> 3 >= 1)
 					{
-						if (str_WORD_E20A4[index].array_word_18[8] <= str_WORD_E20A4[index].array_word_18[7] - 1)
-							++str_WORD_E20A4[index].array_word_18[8];
+						if (str_WORD_E20A4[index].array_word_18.act2_8 <= str_WORD_E20A4[index].array_word_18.act_7 - 1)
+							++str_WORD_E20A4[index].array_word_18.act2_8;
 						else
-							str_WORD_E20A4[index].array_word_18[8] = str_WORD_E20A4[index].array_word_18[6];
+							str_WORD_E20A4[index].array_word_18.act2_8 = str_WORD_E20A4[index].array_word_18.begin_6;
 						str_WORD_E20A4[index].time_0 = time;
 					}
 					if (mapScreenPortals_E17CC[24].activated_18 == 1)
@@ -5118,7 +5118,7 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 						screenWidth_18062C = 1280;
 						x_DWORD_180644_map_resolution2_y = 960;
 						screenHeight_180624 = 960;
-						sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18[0], str_WORD_E20A4[index].array_word_18[1], xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18[8]]);
+						sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18.actX_0, str_WORD_E20A4[index].array_word_18.actY_1, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18.act2_8]);
 						screenWidth_18062C = tempWidth;
 						screenHeight_180624 = tempHeight;
 						x_DWORD_180648_map_resolution2_x = tempWidth;
@@ -5127,7 +5127,7 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 					}
 					else
 					{
-						sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18[0] - a5, str_WORD_E20A4[index].array_word_18[1] - a6, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18[8]]);
+						sub_7C120_draw_bitmap_640(str_WORD_E20A4[index].array_word_18.actX_0 - a5, str_WORD_E20A4[index].array_word_18.actY_1 - a6, xy_DWORD_17DED4_spritestr[str_WORD_E20A4[index].array_word_18.act2_8]);
 					}
 				}
 			}
