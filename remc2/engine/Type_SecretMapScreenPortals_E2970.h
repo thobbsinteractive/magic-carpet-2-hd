@@ -8,10 +8,10 @@
 #pragma pack (1)
 typedef struct {//lenght 17
 	int32_t dword_0;
-	uint16_t word_4;
+	uint16_t index_4;
 	uint16_t levelNumber_6;//level number
-	uint16_t word_8;
-	uint16_t word_10;
+	uint16_t posX_8;
+	uint16_t posY_10;
 	uint16_t activated_12; //3-hidden 1-activated
 	uint16_t word_14;
 	uint8_t byte_16;
