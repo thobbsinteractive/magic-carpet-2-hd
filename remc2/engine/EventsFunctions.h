@@ -604,7 +604,7 @@ void sub_ACF1A(int8_t* a1, int a2, int* a3);
 void sub_B5F8F(__int16 a1, uint16_t* a2, int32_t a3, __int16* a4);
 int sub_BD320(int result, int8_t* a2, int8_t* a3, int a4, int a5, uint8_t* a6);
 void sub_B5EFA(__int16 a1, uint16_t* a2, int32_t a3, __int16* a4);
-Type_SecretMapScreenPortals_E2970* sub_824B0(__int16 a1);
+Type_SecretMapScreenPortals_E2970* GetSecretAndActivedPortal_824B0(__int16 actLevel);
 
 void sub_101C0();
 void sub_5BCC0_set_any_variables1();

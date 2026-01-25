@@ -31708,7 +31708,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 					}
 					if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
 					{
-						v13 = sub_824B0(a3);
+						v13 = GetSecretAndActivedPortal_824B0(a3);
 						if (v13)
 						{
 							count_begin++;//for debug
@@ -47166,12 +47166,12 @@ void sub_81CA0(int  /*a1*/, int  /*a2*/, __int16 a3, __int16 a4, type_x_BYTE_E25
 // 17DEEE: using guessed type __int16 x_WORD_17DEEE_mouse_buttons;
 
 //----- (000824B0) --------------------------------------------------------
-Type_SecretMapScreenPortals_E2970* sub_824B0(__int16 a1)//2634b0
+Type_SecretMapScreenPortals_E2970* GetSecretAndActivedPortal_824B0(__int16 actLevel)//2634b0
 {
 	int ri = 0;
 	if (!secretMapScreenPortals_E2970[ri].activated_12)
 		return 0;
-	while (a1 != secretMapScreenPortals_E2970[ri].word_4)
+	while (actLevel != secretMapScreenPortals_E2970[ri].index_4)
 	{
 		ri++;
 		if (!secretMapScreenPortals_E2970[ri].activated_12)
