@@ -101,7 +101,7 @@ int LoadLanguageFile(bitmap_pos_struct2_t** a1x, bitmap_pos_struct2_t** a2x, uin
 int sub_7F960(bitmap_pos_struct2_t* a1x, bitmap_pos_struct2_t* a2x, uint8_t* a3, char* langcountstring, bitmap_pos_struct_t* a3dattabindex);
 void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3);
 bool sub_80D40_move_graphics_and_play_sounds(__int16 a2, __int16 a3, __int16 a4, __int16 a5, char a6);
-void NewGameSubdraw_81760(/*type_unk_E17CC_str_0x194* a1*/);
+void MapMenuPortalsDraw_81760();
 void WriteConfigDat_81DB0();
 void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6);
 Type_SecretMapScreenPortals_E2970* sub_824E0(__int16 a1);

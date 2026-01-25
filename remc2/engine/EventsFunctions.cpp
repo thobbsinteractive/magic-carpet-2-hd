@@ -46689,7 +46689,7 @@ void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)/
 }
 
 //----- (0007E8D0) --------------------------------------------------------
-void sub_7E8D0(x_WORD* a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int16 a6, __int16 a7)//25f8d0
+void AnimObjectInArea2_7E8D0(x_WORD* a1, __int16 x1, __int16 y1, __int16 x2, __int16 y2, __int16 a6, __int16 a7)//25f8d0
 {
 	__int16 v7; // dx
 	__int16 v8; // dx
@@ -46699,8 +46699,8 @@ void sub_7E8D0(x_WORD* a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int
 	__int16 v12; // di
 	__int16 v13; // dx
 
-	a1[0] = a2 - a4;
-	a1[1] = a3 - a5;
+	a1[0] = x1 - x2;
+	a1[1] = y1 - y2;
 	a1[2] = 2 * abs(a1[0]);
 	v7 = a1[0];
 	a1[3] = 2 * abs(a1[1]);
@@ -46727,25 +46727,23 @@ void sub_7E8D0(x_WORD* a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int
 	{
 		a1[5] = -a7;
 	}
-	a1[6] = a2;
-	a1[7] = a3;
+	a1[6] = x1;
+	a1[7] = y1;
 	v9 = a1[3];
 	v10 = a1[2];
 	if (v10 <= v9)
 	{
-		//result = v10 - (v9 >> 1);
 		a1[8] = v10 - (v9 >> 1);
 	}
 	else
 	{
-		//result = v10 >> 1;
 		a1[8] = (v9 - v10) >> 1;
 	}
 	v12 = a1[6];
 	a1[9] = 0;
-	if (a4 >= v12)
+	if (x2 >= v12)
 	{
-		if (a4 > v12)
+		if (x2 > v12)
 			a1[10] = 1;
 	}
 	else
@@ -46753,20 +46751,19 @@ void sub_7E8D0(x_WORD* a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int
 		a1[10] = 2;
 	}
 	v13 = a1[7];
-	if (a5 >= v13)
+	if (y2 >= v13)
 	{
-		if (a5 > v13)
+		if (y2 > v13)
 			a1[11] = 1;
 	}
 	else
 	{
 		a1[11] = 2;
 	}
-	//  return result;
 }
 
 //----- (0007E9D0) --------------------------------------------------------
-bool sub_7E9D0(x_WORD* a1, x_WORD* a2, x_WORD* a3)//25f9d0
+bool AnimObjectInArea_7E9D0(x_WORD* x1, x_WORD* y1, x_WORD* a3)//25f9d0
 {
 	__int16 v4; // cx
 	unsigned __int16 v5; // cx
@@ -46778,26 +46775,26 @@ bool sub_7E9D0(x_WORD* a1, x_WORD* a2, x_WORD* a3)//25f9d0
 
 	if (a3[2] <= a3[3])
 	{
-		if (a2[0] == a3[7])
+		if (*y1 == a3[7])
 			return true;
 		if (a3[8] >= 0)
 		{
-			a1[0] += a3[4];
+			*x1 += a3[4];
 			a3[8] -= a3[3];
 		}
-		a2[0] += a3[5];
+		*y1 += a3[5];
 		v4 = a3[2];
 	}
 	else
 	{
-		if (a1[0] == a3[6])
+		if (*x1 == a3[6])
 			return true;
 		if (a3[8] >= 0)
 		{
-			a2[0] += a3[5];
+			*y1 += a3[5];
 			a3[8] -= a3[2];
 		}
-		a1[0] += a3[4];
+		*x1 += a3[4];
 		v4 = a3[3];
 	}
 	a3[8] += v4;
@@ -46807,14 +46804,14 @@ bool sub_7E9D0(x_WORD* a1, x_WORD* a2, x_WORD* a3)//25f9d0
 		if (v5 <= 1u)
 		{
 			v6 = a3[6];
-			if (a1[0] < v6)
-				a1[0] = v6;
+			if (*x1 < v6)
+				*x1 = v6;
 		}
 		else if (v5 == 2)
 		{
 			v7 = a3[6];
-			if (a1[0] > v7)
-				a1[0] = v7;
+			if (*x1 > v7)
+				*x1 = v7;
 		}
 	}
 	v8 = a3[11];
@@ -46823,14 +46820,14 @@ bool sub_7E9D0(x_WORD* a1, x_WORD* a2, x_WORD* a3)//25f9d0
 		if (v8 <= 1u)
 		{
 			v9 = a3[7];
-			if (a2[0] < v9)
-				a2[0] = v9;
+			if (*y1 < v9)
+				*y1 = v9;
 		}
 		else if (v8 == 2)
 		{
 			v10 = a3[7];
-			if (a2[0] > v10)
-				a2[0] = v10;
+			if (*y1 > v10)
+				*y1 = v10;
 		}
 	}
 	return false;
@@ -46856,7 +46853,7 @@ void sub_81260(int  /*a1*/, int  /*a2*/, int8_t* a3, __int16 a4, __int16 a5)//26
 // 17DED4: using guessed type int (int)x_DWORD_17DED4;
 
 //----- (000812D0) --------------------------------------------------------
-int sub_812D0_drawDotBitmap(__int16 a1, __int16 a2)//2622d0
+int DrawMapObject_812D0(__int16 a1, __int16 a2)//2622d0
 {
 	uint8_t* temp_screen_buffer; // edi
 	__int16 v3; // si
