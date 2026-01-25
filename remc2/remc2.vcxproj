@@ -446,7 +446,6 @@
     <ClInclude Include="portability\dirent-x.h" />
     <ClInclude Include="portability\bitmap_pos_struct.h" />
     <ClInclude Include="portability\port_filesystem.h" />
-    <ClInclude Include="portability\port_inputs.h" />
     <ClInclude Include="portability\port_outputs.h" />
     <ClInclude Include="portability\port_sdl_sound.h" />
     <ClInclude Include="portability\port_sdl_vga_mouse.h" />
@@ -523,7 +522,6 @@
     <ClCompile Include="engine\read_config.cpp" />
     <ClCompile Include="sub_main.cpp" />
     <ClCompile Include="portability\port_filesystem.cpp" />
-    <ClCompile Include="portability\port_inputs.cpp" />
     <ClCompile Include="portability\port_outputs.cpp" />
     <ClCompile Include="portability\port_sdl_sound.cpp" />
     <ClCompile Include="portability\port_sdl_vga_mouse.cpp" />

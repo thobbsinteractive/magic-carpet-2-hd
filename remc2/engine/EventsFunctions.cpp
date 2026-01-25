@@ -44453,7 +44453,7 @@ void sub_6E150()//24f150
 			case 4:
 				//v2 = str_F4FE0[v0].word_2;
 				if (str_F4FE0[v0].word_2 == 512)
-					sub_8F420_sound_proc20(0, v0);
+					AilEndSamplePlayingByIndex_8F420(0, v0);
 				else
 					sub_8F100_sound_proc19(0, v0, (signed int)str_F4FE0[v0].word_2 >> 8, 64, 0x64u, -1, 2u);
 				//v3 = 3 * v0;

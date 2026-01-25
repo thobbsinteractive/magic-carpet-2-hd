@@ -5202,7 +5202,7 @@ void AilEndSamplePlayingByIndex_8F420(int flags, __int16 wavIndex)//270420
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->vol_scale_18[0][0] == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != 2)
 			{
 				AilEndSample_93D00(SoundBuffer3_180750[i]);
 				return;
@@ -5672,7 +5672,7 @@ void PrepareEventSound_6E450(__int16 entityIndex, __int16 a2, __int16 soundIndex
 	case 61:
 	case 63:
 	case 64:
-		if (sub_6EA90(v10, str_F4FE0[soundIndex].word_2))
+		if (ShouldUpdateSound_6EA90(v10, str_F4FE0[soundIndex].word_2))
 		{
 			str_F4FE0[soundIndex].word_2 = v10;
 			str_F4FE0[soundIndex].word_1 = v12;
@@ -5706,7 +5706,7 @@ void PrepareEventSound_6E450(__int16 entityIndex, __int16 a2, __int16 soundIndex
 	case 58:
 	case 59:
 	case 62:
-		if (sub_6EA90(v10, str_F4FE0[soundIndex].word_2))
+		if (ShouldUpdateSound_6EA90(v10, str_F4FE0[soundIndex].word_2))
 		{
 			str_F4FE0[soundIndex].word_2 = v10;
 			str_F4FE0[soundIndex].word_1 = v12;
@@ -5717,7 +5717,7 @@ void PrepareEventSound_6E450(__int16 entityIndex, __int16 a2, __int16 soundIndex
 		break;
 	case 14:
 	case 29:
-		if (sub_6EA90(v10, str_F4FE0[soundIndex].word_2))
+		if (ShouldUpdateSound_6EA90(v10, str_F4FE0[soundIndex].word_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{
@@ -5746,7 +5746,7 @@ void PrepareEventSound_6E450(__int16 entityIndex, __int16 a2, __int16 soundIndex
 		break;
 	case 47:
 	case 49:
-		if (sub_6EA90(v10, str_F4FE0[soundIndex].word_2))
+		if (ShouldUpdateSound_6EA90(v10, str_F4FE0[soundIndex].word_2))
 		{
 			str_F4FE0[soundIndex].word_2 = v10;
 			str_F4FE0[soundIndex].word_1 = v12;
@@ -5759,7 +5759,7 @@ void PrepareEventSound_6E450(__int16 entityIndex, __int16 a2, __int16 soundIndex
 	case 55:
 	case 56:
 	case 57:
-		if (sub_6EA90(v10, str_F4FE0[soundIndex].word_2))
+		if (ShouldUpdateSound_6EA90(v10, str_F4FE0[soundIndex].word_2))
 		{
 			if (a2 == D41A0_0.LevelIndex_0xc)
 			{

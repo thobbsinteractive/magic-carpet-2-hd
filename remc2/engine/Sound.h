@@ -74,7 +74,7 @@ void GetMusicSequenceCount();
 bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber);
 int sub_8F0AB(FILE* a1, int a3);
 void sub_8F100_sound_proc19(uint32_t a1, __int16 index, int volume, int a4, unsigned __int16 a5, char a6, unsigned __int8 a7);
-void sub_8F420_sound_proc20(int a1, __int16 a2);
+void AilEndSamplePlayingByIndex_8F420(int a1, __int16 a2);
 void sub_8F710_sound_proc21(int flags, __int16 index, int loopCount, unsigned __int8 initTimers, char volScale);
 void StopTimer_8F850();
 void InitSoundAndMusic_90FD0();
@@ -263,4 +263,4 @@ void PrepareEventSound_6E450(__int16 entityIndex, __int16 a2, __int16 soundIndex
 void ChangeSoundLevel_19CA0(uint8_t option);
 int sub_582B0(__int16 a1, __int16 a2);
 int sub_582F0(int a1, __int16 a2);
-bool sub_6EA90(int a1, int a2);
+bool ShouldUpdateSound_6EA90(int a1, int a2);
