@@ -1600,4 +1600,5 @@ void RestoreSoundVolume_59BF0();
 void sub_46DD0_init_sound_and_music();
 uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
 void PresentObjective_59820();
+signed int sub_5C3D0_file_decompress(uint8_t* a1, uint8_t* a2);
 #endif
