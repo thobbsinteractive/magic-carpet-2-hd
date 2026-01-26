@@ -55,6 +55,18 @@ typedef struct {
 #pragma pack (1)
 typedef struct //lenght 24
 {
+	int32_t field_0;
+	int16_t field_4;
+	int16_t field_6;
+	int16_t spriteIndex_8;
+	int8_t firstSpriteIndex_10;
+	int8_t lastSpriteIndex_11;
+} type_animStruct3;
+#pragma pack (16)
+
+#pragma pack (1)
+typedef struct //lenght 24
+{
 	int16_t diffX_0;
 	int16_t diffY_1;
 	int16_t absDiffX2_2;
@@ -154,13 +166,13 @@ typedef struct//lenght 613 // end 17E09D
 	//char x_BYTE_17DF3C[400]; // fix it -  weak//&x_BYTE_17DF14[40]
 	//char x_BYTE_17DF3D[400]; // fix it -  weak//&x_BYTE_17DF14[41]
 	//char x_BYTE_17DF3E[400]; // idb//&x_BYTE_17DF14[42]
-	__int16 x_WORD_17E06C; // weak
-	__int16 x_WORD_17E06E; // weak
+	__int16 x_17E06C; // weak
+	__int16 y_17E06E; // weak
 	__int16 x_WORD_17E070; // weak
 	__int16 x_WORD_17E072; // weak
-	__int16 x_WORD_17E074; // weak
-	__int16 x_WORD_17E076; // weak
-	int8_t unk_17E078x[12]; // weak [11]
+	__int16 x2_17E074; // weak
+	__int16 y2_17E076; // weak
+	type_animStruct3 unk_17E078x; // weak [11]
 	//__int16 x_WORD_17E07C; // weak unk_17E078x[4]
 	//__int16 x_WORD_17E07E; // weak unk_17E078x[6]
 	//__int16 x_WORD_17E080; // weak unk_17E078x[8]
