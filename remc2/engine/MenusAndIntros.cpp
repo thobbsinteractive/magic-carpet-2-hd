@@ -1470,7 +1470,7 @@ signed int sub_7E640(type_WORD_E1F84* a1x)//25f640
 		for (ix = 0; mapScreenPortals_E17CC[ix].viewPortPosX_4; ix++)
 		{
 			//*(i - 3) = 70; //6
-			mapScreenPortals_E17CC[ix].word_16 = 70;
+			mapScreenPortals_E17CC[ix].spriteIndex_16 = 70;
 			//i += 11;
 			//*((x_BYTE *)i - 4) = 2; //4
 			mapScreenPortals_E17CC[ix].activated_18 = 2;
@@ -1485,7 +1485,7 @@ signed int sub_7E640(type_WORD_E1F84* a1x)//25f640
 			//*(x_WORD *)((char *)j - 5) = 3;
 			secretMapScreenPortals_E2970[jj].activated_12 = 3;
 			//*(x_WORD *)((char *)j - 3) = 70;
-			secretMapScreenPortals_E2970[jj].word_14 = 70;
+			secretMapScreenPortals_E2970[jj].spriteIndex_14 = 70;
 		}
 		memset(&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.str_611, 0, sizeof(type_str_611));
 		sub_86860_speak_Sound(x_WORD_1803EC);
@@ -1604,9 +1604,9 @@ char LoadGameDialog_780F0(type_WORD_E1F84* a1x)//0x2590f0
 						DataFileIO::Read(FILE, readbuffer, 17);
 						secretMapScreenPortals_E2970[ii].activated_12 = *(uint16_t*)(readbuffer + 12);
 						if (secretMapScreenPortals_E2970[ii].activated_12 == 1)
-							secretMapScreenPortals_E2970[ii].word_14 = 305;
+							secretMapScreenPortals_E2970[ii].spriteIndex_14 = 305;
 						else
-							secretMapScreenPortals_E2970[ii].word_14 = 270;
+							secretMapScreenPortals_E2970[ii].spriteIndex_14 = 270;
 					}
 					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.m_GameSettings, 16);
 					DataFileIO::Read(FILE, (uint8_t*)&numLevelsCompleted, 4);
@@ -2422,14 +2422,14 @@ void sub_7DD70()//25ed70
 		v3 = mapScreenPortals_E17CC[resulty].activated_18;
 		mapScreenPortals_E17CC[resulty].word_20 = 0;
 		if (v3 == 2)
-			mapScreenPortals_E17CC[resulty].word_16 = 70;
+			mapScreenPortals_E17CC[resulty].spriteIndex_16 = 70;
 		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2
 			&& x_D41A0_BYTEARRAY_4_struct.levelnumber_43w == v2)
 		{
 			mapScreenPortals_E17CC[resulty].activated_18 = 1;
 		}
 		if (mapScreenPortals_E17CC[resulty].activated_18 == 1)
-			mapScreenPortals_E17CC[resulty].word_16 = 37;
+			mapScreenPortals_E17CC[resulty].spriteIndex_16 = 37;
 		//resultx += 22;
 		mapScreenPortals_E17CC[resulty].byte_19 = 0;
 		resulty++;
@@ -2446,16 +2446,16 @@ void sub_7DD70()//25ed70
 				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
 				{
 					secretMapScreenPortals_E2970[ir].activated_12 = 1;
-					secretMapScreenPortals_E2970[ir].word_14 = 305;
+					secretMapScreenPortals_E2970[ir].spriteIndex_14 = 305;
 				}
 				else if (secretMapScreenPortals_E2970[ir].activated_12 == 3)
 				{
 					secretMapScreenPortals_E2970[ir].activated_12 = 2;
-					secretMapScreenPortals_E2970[ir].word_14 = 70;
+					secretMapScreenPortals_E2970[ir].spriteIndex_14 = 70;
 				}
 				mapScreenPortals_E17CC[secretMapScreenPortals_E2970[ir].index_4].activated_18 = 1;
 				//result = 22 * secretMapScreenPortals_E2970[ir].word_4;
-				mapScreenPortals_E17CC[secretMapScreenPortals_E2970[ir].index_4].word_16 = 37;
+				mapScreenPortals_E17CC[secretMapScreenPortals_E2970[ir].index_4].spriteIndex_16 = 37;
 				break;
 			}
 		}
@@ -3034,12 +3034,10 @@ int debugcounter_7D400 = 0;
 //----- (0007D400) --------------------------------------------------------
 void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e400
 {
-	//int v4x;
-	int v5; // edx
-	//int ix;
-	unsigned __int8 v8; // al
-	char v9; // cl
-	unsigned __int16 v11; // ax
+	//int v5; // edx
+	//unsigned __int8 v8; // al
+	//char v9; // cl
+	//unsigned __int16 v11; // ax
 	int v12; // edx
 	char v13; // dl
 	int v14; // edx
@@ -3052,17 +3050,15 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 	int v22x;
 	__int16 v23; // bx
 	type_E24BCx v25x[2];
-	int8_t v33x[22];
+	Type_MapScreenPortals_E17CC mapPortal;
 	bitmap_pos_struct2_t* v37x; // [esp+3Ch] [ebp-18h]
-	//uint8_t* v38; // [esp+40h] [ebp-14h]
 	bitmap_pos_struct2_t* v38x; // [esp+40h] [ebp-14h]
 	bitmap_pos_struct_t* v38s;
-	//int v39; // [esp+44h] [ebp-10h]
-	int v40x;
-	int v41x;
+	//int v40x;
+	//int v41x;
 
 	//fix it
-	v5 = 0;
+	//v5 = 0;
 	v12 = 0;
 	v14 = 0;
 	v15 = 0;
@@ -3070,8 +3066,8 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 
 	debugcounter_7D400++;
 
-	v41x = -1;
-	v40x = -1;
+	int index2 = -1;
+	int index3 = -1;
 	int time = j___clock();
 	for (int i = 0; x_BYTE_E26C8_str[i].word_8; i++)
 	{
@@ -3081,100 +3077,94 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 	//VGA_Debug_Blit(640, 480, pdwScreenBuffer_351628);
 	for (int i = 0; mapScreenPortals_E17CC[i].viewPortPosX_4; i++)//draw new game flag
 	{
-		v8 = mapScreenPortals_E17CC[i].activated_18;
-		if (v8 >= 1u)
+		if (mapScreenPortals_E17CC[i].activated_18 == 1)
 		{
-			if (v8 <= 1u)
+			index2 = i;
+			DrawFrameAnim_7E5A0(posx, posy, &mapScreenPortals_E17CC[i], 37, 43);
+		}
+		else if (mapScreenPortals_E17CC[i].activated_18 == 2)
+		{
+			if (a4 == 3 || a4 == 5)
 			{
-				v41x = i;
-				sub_7E5A0_pre_draw(posx, posy, (uint8_t*)&mapScreenPortals_E17CC[i], 37, 43);
-			}
-			else if (v8 == 2)
-			{
-				LOBYTE(v5) = a4;
-				if (a4 == 3 || a4 == 5)
+				index3 = i;
+				if (mapScreenPortals_E17CC[i].byte_19)
 				{
-					v9 = mapScreenPortals_E17CC[i].byte_19;
-					v40x = i;
-					if (v9)
+					if (mapScreenPortals_E17CC[i].byte_19 == 1)
 					{
-						if (v9 == 1)
+						if (DrawFrameAnim_7E5A0(posx, posy, &mapScreenPortals_E17CC[i], 70, 83))
 						{
-							if (sub_7E5A0_pre_draw(posx, posy, (uint8_t*)&mapScreenPortals_E17CC[i], 70, 83))
-							{
-								mapScreenPortals_E17CC[i].word_16 = 33;
-								mapScreenPortals_E17CC[i].byte_19 = 2;
-							}
-						}
-						else
-						{
-							sub_7E5A0_pre_draw(posx, posy, (uint8_t*)&mapScreenPortals_E17CC[i], 33, 35);
+							mapScreenPortals_E17CC[i].spriteIndex_16 = 33;
+							mapScreenPortals_E17CC[i].byte_19 = 2;
 						}
 					}
 					else
 					{
-						//Play Level Portal Opening Sound
-						sub_8F100_sound_proc19(0, 41, 127, 64, 0x64u, 0, 2u);
-						mapScreenPortals_E17CC[i].byte_19 = 1;
+						DrawFrameAnim_7E5A0(posx, posy, &mapScreenPortals_E17CC[i], 33, 35);
 					}
+				}
+				else
+				{
+					//Play Level Portal Opening Sound
+					sub_8F100_sound_proc19(0, 41, 127, 64, 0x64u, 0, 2u);
+					mapScreenPortals_E17CC[i].byte_19 = 1;
 				}
 			}
 		}
 		if (mapScreenPortals_E17CC[i].activated_18 == 2)
 			break;
 	}
-	for (int jjx = 0; secretMapScreenPortals_E2970[jjx].activated_12; jjx++)
+	for (int i = 0; secretMapScreenPortals_E2970[i].activated_12; i++)
 	{
-		v11 = secretMapScreenPortals_E2970[jjx].activated_12;
-		if (v11 < 1u)
+		if (secretMapScreenPortals_E2970[i].activated_12 < 1u)
 			continue;
-		if (v11 <= 1u)
+		if (secretMapScreenPortals_E2970[i].activated_12 == 1u)
 		{
-			memset(v33x, 0, 22);
-			*(int32_t*)v33x = secretMapScreenPortals_E2970[jjx].dword_0;
-			LOWORD(*(x_DWORD*)&v33x[16]) = secretMapScreenPortals_E2970[jjx].word_14;
-			*(int16_t*)&v33x[12] = secretMapScreenPortals_E2970[jjx].posX_8;
-			*(int16_t*)&v33x[14] = secretMapScreenPortals_E2970[jjx].posY_10;
-			sub_7E5A0_pre_draw(posx, posy, (uint8_t*)v33x, 305, 311);
-		LABEL_40:
-			secretMapScreenPortals_E2970[jjx].dword_0 = *(x_DWORD*)v33x;
-			secretMapScreenPortals_E2970[jjx].word_14 = *(x_DWORD*)&v33x[16];
+			memset(&mapPortal, 0, 22);
+			mapPortal.time_0 = secretMapScreenPortals_E2970[i].time_0;
+			mapPortal.spriteIndex_16 = secretMapScreenPortals_E2970[i].spriteIndex_14;
+			mapPortal.portalPosX_12 = secretMapScreenPortals_E2970[i].posX_8;
+			mapPortal.portalPosY_14 = secretMapScreenPortals_E2970[i].posY_10;
+			DrawFrameAnim_7E5A0(posx, posy, &mapPortal, 305, 311);
+			secretMapScreenPortals_E2970[i].time_0 = mapPortal.time_0;
+			secretMapScreenPortals_E2970[i].spriteIndex_14 = mapPortal.spriteIndex_16;
 			continue;
 		}
-		if (v11 == 2 && a4 == 3)
+		if (secretMapScreenPortals_E2970[i].activated_12 == 2 && a4 == 3)
 		{
-			v13 = secretMapScreenPortals_E2970[jjx].byte_16;
+			v13 = secretMapScreenPortals_E2970[i].byte_16;
 			if (!v13)
 			{
 				sub_8F100_sound_proc19(0, 41, 127, 64, 0x64u, 0, 2u);
-				secretMapScreenPortals_E2970[jjx].byte_16 = 1;
+				secretMapScreenPortals_E2970[i].byte_16 = 1;
 				continue;
 			}
 			if (v13 != 1)
 			{
-				memset(v33x, 0, 22);
-				*(x_DWORD*)v33x = secretMapScreenPortals_E2970[jjx].dword_0;
-				LOWORD(*(x_DWORD*)&v33x[16]) = secretMapScreenPortals_E2970[jjx].word_14;
-				*(int16_t*)&v33x[12] = secretMapScreenPortals_E2970[jjx].posX_8;
-				*(int16_t*)&v33x[14] = secretMapScreenPortals_E2970[jjx].posY_10;
-				sub_7E5A0_pre_draw(posx, posy, (uint8_t*)v33x, 270, 272);
-				goto LABEL_40;
+				memset(&mapPortal, 0, 22);
+				mapPortal.time_0 = secretMapScreenPortals_E2970[i].time_0;
+				mapPortal.spriteIndex_16 = secretMapScreenPortals_E2970[i].spriteIndex_14;
+				mapPortal.portalPosX_12 = secretMapScreenPortals_E2970[i].posX_8;
+				mapPortal.portalPosY_14 = secretMapScreenPortals_E2970[i].posY_10;
+				DrawFrameAnim_7E5A0(posx, posy, &mapPortal, 270, 272);
+				secretMapScreenPortals_E2970[i].time_0 = mapPortal.time_0;
+				secretMapScreenPortals_E2970[i].spriteIndex_14 = mapPortal.spriteIndex_16;
+				continue;
 			}
-			memset(v33x, 0, 22);
-			*(x_DWORD*)v33x = secretMapScreenPortals_E2970[jjx].dword_0;
-			LOWORD(*(x_DWORD*)&v33x[16]) = secretMapScreenPortals_E2970[jjx].word_14;
-			*(int16_t*)&v33x[12] = secretMapScreenPortals_E2970[jjx].posX_8;
-			*(int16_t*)&v33x[14] = secretMapScreenPortals_E2970[jjx].posY_10;
-			if (sub_7E5A0_pre_draw(posx, posy, (uint8_t*)v33x, 70, 83))
+			memset(&mapPortal, 0, 22);
+			mapPortal.time_0 = secretMapScreenPortals_E2970[i].time_0;
+			mapPortal.spriteIndex_16 = secretMapScreenPortals_E2970[i].spriteIndex_14;
+			mapPortal.portalPosX_12 = secretMapScreenPortals_E2970[i].posX_8;
+			mapPortal.portalPosY_14 = secretMapScreenPortals_E2970[i].posY_10;
+			if (DrawFrameAnim_7E5A0(posx, posy, &mapPortal, 70, 83))
 			{
-				secretMapScreenPortals_E2970[jjx].word_14 = 270;
-				secretMapScreenPortals_E2970[jjx].byte_16 = 2;
+				secretMapScreenPortals_E2970[i].spriteIndex_14 = 270;
+				secretMapScreenPortals_E2970[i].byte_16 = 2;
 			}
 			else
 			{
-				secretMapScreenPortals_E2970[jjx].word_14 = *(x_DWORD*)&v33x[16];
+				secretMapScreenPortals_E2970[i].spriteIndex_14 = mapPortal.spriteIndex_16;
 			}
-			secretMapScreenPortals_E2970[jjx].dword_0 = *(x_DWORD*)v33x;
+			secretMapScreenPortals_E2970[i].time_0 = mapPortal.time_0;
 		}
 	}
 	if (a4 == 3 && x_D41A0_BYTEARRAY_4_struct.showHelp_10 == 1)
@@ -3189,7 +3179,7 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 		{
 			if (!x_DWORD_17DB70str.x_WORD_17DB74)
 			{
-				v16 = v40x != -1;
+				v16 = index3 != -1;
 				v17 = v16 + 1;
 				x_DWORD_17DB70str.x_WORD_17DB74 = v17;
 				x_DWORD_17DB70str.time_17DB70 = j___clock();
@@ -3197,20 +3187,20 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 		}
 		else if (x_DWORD_17DB70str.x_WORD_17DB74 == 1u)
 		{
-			if (v41x != -1)
+			if (index2 != -1)
 			{
 				if (3 == x_DWORD_17DB70str.x_BYTE_17DB8F)
 				{
 					memset(v25x, 0, 36);
 					v25x[0]= str_E24F2[0];
-					v25x[0].word_2 = mapScreenPortals_E17CC[v41x].portalPosX_12 - 80 - posx;
-					v25x[0].word_4 = mapScreenPortals_E17CC[v41x].portalPosY_14 - 60 - posy;
-					v25x[0].word_6 = mapScreenPortals_E17CC[v41x].portalPosX_12 + 16 - posx;
-					v25x[0].word_8 = mapScreenPortals_E17CC[v41x].portalPosY_14 - 60 - posy;
-					v25x[0].word_12 = mapScreenPortals_E17CC[v41x].portalPosX_12 + 16 - posx;
-					v25x[0].word_14 = mapScreenPortals_E17CC[v41x].portalPosY_14 - 4 - posy;
+					v25x[0].word_2 = mapScreenPortals_E17CC[index2].portalPosX_12 - 80 - posx;
+					v25x[0].word_4 = mapScreenPortals_E17CC[index2].portalPosY_14 - 60 - posy;
+					v25x[0].word_6 = mapScreenPortals_E17CC[index2].portalPosX_12 + 16 - posx;
+					v25x[0].word_8 = mapScreenPortals_E17CC[index2].portalPosY_14 - 60 - posy;
+					v25x[0].word_12 = mapScreenPortals_E17CC[index2].portalPosX_12 + 16 - posx;
+					v25x[0].word_14 = mapScreenPortals_E17CC[index2].portalPosY_14 - 4 - posy;
 					v25x[0].word_0 = 464;
-					v18x = v40x;
+					v18x = index3;
 					sub_7E840_draw_textbox_with_line(v25x, 238, 264);
 					if (v18x != -1)
 					{
@@ -3225,20 +3215,20 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 		}
 		else if (x_DWORD_17DB70str.x_WORD_17DB74 == 2)
 		{
-			if (v40x != -1)
+			if (index3 != -1)
 			{
 				if (x_DWORD_17DB70str.x_BYTE_17DB8F == 3)
 				{
 					memset(v25x, 0, 36);
-					v25x[0].word_2 = mapScreenPortals_E17CC[v40x].portalPosX_12 - 80 - posx;
-					v25x[0].word_4 = mapScreenPortals_E17CC[v40x].portalPosY_14 - 60 - posy;
-					v25x[0].word_6 = mapScreenPortals_E17CC[v40x].portalPosX_12 + 16 - posx;
-					v25x[0].word_8 = mapScreenPortals_E17CC[v40x].portalPosY_14 - 60 - posy;
-					v25x[0].word_12 = mapScreenPortals_E17CC[v40x].portalPosX_12 + 16 - posx;
-					v25x[0].word_14 = mapScreenPortals_E17CC[v40x].portalPosY_14 - 4 - posy;
+					v25x[0].word_2 = mapScreenPortals_E17CC[index3].portalPosX_12 - 80 - posx;
+					v25x[0].word_4 = mapScreenPortals_E17CC[index3].portalPosY_14 - 60 - posy;
+					v25x[0].word_6 = mapScreenPortals_E17CC[index3].portalPosX_12 + 16 - posx;
+					v25x[0].word_8 = mapScreenPortals_E17CC[index3].portalPosY_14 - 60 - posy;
+					v25x[0].word_12 = mapScreenPortals_E17CC[index3].portalPosX_12 + 16 - posx;
+					v25x[0].word_14 = mapScreenPortals_E17CC[index3].portalPosY_14 - 4 - posy;
 					v25x[0].word_0 = 465;
 					sub_7E840_draw_textbox_with_line(v25x, 238, 264);
-					if (v41x != -1)
+					if (index2 != -1)
 					{
 						if ((time - x_DWORD_17DB70str.time_17DB70) / 0x64u > 8)
 						{
@@ -3288,16 +3278,15 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 		}
 		return;
 	}
-	if ((v41x != -1) && (v40x != -1))
+	if ((index2 != -1) && (index3 != -1))
 	{
-		SetAnimationVariables_7DA70(mapScreenPortals_E17CC[v41x].portalPosX_12, mapScreenPortals_E17CC[v41x].portalPosY_14, mapScreenPortals_E17CC[v40x].portalPosX_12, mapScreenPortals_E17CC[v40x].portalPosY_14, posx, posy);
+		SetAnimationVariables_7DA70(mapScreenPortals_E17CC[index2].portalPosX_12, mapScreenPortals_E17CC[index2].portalPosY_14, mapScreenPortals_E17CC[index3].portalPosX_12, mapScreenPortals_E17CC[index3].portalPosY_14, posx, posy);
 		return;
 	}
-	if ((v41x != -1) && (v40x != -1))
+	if ((index2 != -1) && (index3 != -1))
 		return;
-
-	if (v41x >= 0) {
-		SetAnimationVariables_7DA70(mapScreenPortals_E17CC[v41x].portalPosX_12, mapScreenPortals_E17CC[v41x].portalPosY_14, mapScreenPortals_E17CC[23].portalPosX_12, mapScreenPortals_E17CC[23].portalPosY_14, posx, posy);
+	if (index2 >= 0) {
+		SetAnimationVariables_7DA70(mapScreenPortals_E17CC[index2].portalPosX_12, mapScreenPortals_E17CC[index2].portalPosY_14, mapScreenPortals_E17CC[23].portalPosX_12, mapScreenPortals_E17CC[23].portalPosY_14, posx, posy);
 	}
 }
 

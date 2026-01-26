@@ -46611,33 +46611,26 @@ char sub_7C200(unsigned __int8 a1)//25d200
 }
 
 //----- (0007E5A0) --------------------------------------------------------
-signed int sub_7E5A0_pre_draw(__int16 a3, __int16 a4, uint8_t* a5, __int16 a6, __int16 a7)//25f5a0
+bool DrawFrameAnim_7E5A0(__int16 posx, __int16 posy, Type_MapScreenPortals_E17CC* mapPortal, __int16 beginIndex, __int16 endIndex)//25f5a0
 {
-	int v7; // edx
-	signed int v8; // esi
-	__int16 v9; // ax
-
-	v7 = j___clock();
-	v8 = 0;
-	if ((unsigned int)(v7 - *(x_DWORD*)a5) >> 3 >= 1)
+	int actTime = j___clock();
+	bool result = false;
+	if ((actTime - mapPortal->time_0) >> 3 >= 1)
 	{
-		v9 = *(x_WORD*)(a5 + 16);
-		if (v9 <= a7)
+		if (mapPortal->spriteIndex_16 <= endIndex)
 		{
-			*(x_WORD*)(a5 + 16) = v9 + 1;
+			mapPortal->spriteIndex_16++;
 		}
 		else
 		{
-			v8 = 1;
-			*(x_WORD*)(a5 + 16) = a6;
+			result = true;
+			mapPortal->spriteIndex_16 = beginIndex;
 		}
-		*(x_DWORD*)a5 = v7;
+		mapPortal->time_0 = actTime;
 	}
-	sub_7C120_draw_bitmap_640(*(x_WORD*)(a5 + 12) - a3, *(x_WORD*)(a5 + 14) - a4, xy_DWORD_17DED4_spritestr[*(signed __int16*)(a5 + 16)]);
-	return v8;
+	sub_7C120_draw_bitmap_640(mapPortal->portalPosX_12 - posx, mapPortal->portalPosY_14 - posy, xy_DWORD_17DED4_spritestr[mapPortal->spriteIndex_16]);
+	return result;
 }
-// 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
-// 17DED4: using guessed type int (int)x_DWORD_17DED4;
 
 //----- (0007E840) --------------------------------------------------------
 void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)//25f840
