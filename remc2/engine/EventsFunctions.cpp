@@ -46229,7 +46229,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 	x_DWORD_17DE38str.x_DWORD_17DEE0_filedesc = NULL;
 	x_DWORD_17DE38str.x_DWORD_17DEDC = 0;
 	x_DWORD_17DE38str.x_DWORD_17DE48c = x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226;
-	sub_7B5D0();//25c5d0
+	FadeClearBlit_7B5D0();//25c5d0
 
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
 
@@ -46471,18 +46471,14 @@ void ResetMouse_7B5A0()
 // 18074C: using guessed type __int16 x_WORD_18074C_mouse_left2_button;
 
 //----- (0007B5D0) --------------------------------------------------------
-void sub_7B5D0()
+void FadeClearBlit_7B5D0()
 {
-	//int v0; // eax
-
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
-	/*v0 = (int)*/memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
-	//BYTE1(v0) = x_WORD_180660_VGA_type_resolution;
+	memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		ClearGraphicsBuffer_72883(pdwScreenBuffer_351628, 320, 200, 0);
 	else
 		ClearGraphicsBuffer_72883(pdwScreenBuffer_351628, 640, 480, 0);
-
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_90478_VGA_Blit320(menuFps);
 	else
@@ -46501,14 +46497,10 @@ void ClearScrollDialogVars_7C020(type_str_word_26* a1x)//25d020
 }
 
 //----- (0007C050) --------------------------------------------------------
-signed int /*__fastcall*/ sub_7C050_get_keyboard_keys1()//25d050
+signed int sub_7C050_get_keyboard_keys1()//25d050
 {
 	uint8_t v2; // bl
 	long v3; // eax
-	//uint8_t v3h;
-	//uint8_t v4; // dx
-	//uint8_t v4h;
-	//uint8_t a1h;
 	long v5; // esi
 	bool ctrl_or_alt_pressed; // zf
 	signed int result; // eax

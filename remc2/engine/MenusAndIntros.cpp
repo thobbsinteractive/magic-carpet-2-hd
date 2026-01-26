@@ -502,7 +502,7 @@ std::array<type_MainMenuAnimations_E1748, 4> MainMenuAnimations_E1748x {{ // men
 
 
 #pragma pack (1)
-struct
+struct // size 16
 {
 	uint32_t unk_17DBA8; // weak 40
 	uint32_t unk_17DBAC; //1(+4)
@@ -869,7 +869,7 @@ void Intros_76D10(char introType)//257d10
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 	EndSample_8D8F0();
 	StopMusic_8E020();
-	sub_7B5D0();
+	FadeClearBlit_7B5D0();
 	nextMenu_E29D8 = MenuItem::MainMenu;
 	x_BYTE_D41C0 = 0;
 	x_BYTE_D41C1 = 0;
@@ -1002,16 +1002,15 @@ void MainMenu_76FA0()//257fa0
 //----- (00077350) --------------------------------------------------------
 bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 {
-	unsigned __int16 v1; // bx
-	bool result=false; // al
+	bool result=false;
 
-	v1 = 0;
+	int endAction = 0;
 	map_not_moving_WORD_E29D6 = false;
 	if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2 && x_D41A0_BYTEARRAY_4_struct.levelnumber_43w == 24) {
 		// show credits after finishing the last level
-		sub_833C0();
+		ShowEndCredits_833C0();
 	}
-	memset((void*)&unk_17DBA8str, 0, 16);
+	memset((void*)&unk_17DBA8str, 0, sizeof(unk_17DBA8str));
 	unk_17DBA8str.x_BYTE_17DBB6 = 2;
 	if (x_BYTE_D419C_level_num <= -1)
 	{
@@ -1022,7 +1021,7 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 		x_DWORD_17DE38str.x_BYTE_17E09C = 0;
 		x_DWORD_17DE38str.unk_17E078x.firstSpriteIndex_10 = 13;
 		x_DWORD_17DE38str.x_17E06C = 0;
-		memset((void*)&x_DWORD_17DB70str, 0, 56);
+		memset((void*)&x_DWORD_17DB70str, 0, sizeof(type_x_DWORD_17DB70str));
 		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
 			x_DWORD_17DB70str.x_BYTE_17DB8F = 4;
 		else
@@ -1050,7 +1049,7 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 		SetCenterScreenForFlyAssistant_6EDB0();
 		sub_8CD27_set_cursor(xy_DWORD_17DED4_spritestr[239]);
 		x_DWORD_17DB70str.x_WORD_17DB8A = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
-		while (!v1)
+		while (!endAction)
 		{
 			g_state_monitor.Update();
 
@@ -1061,7 +1060,7 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 				x_D41A0_BYTEARRAY_4_struct.showHelp_10 = x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1;
 				x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
 			}
-			v1 = NewGameDraw_7EAE0(
+			endAction = NewGameDraw_7EAE0(
 				&x_DWORD_17DB70str.unk_17DB76_posx,
 				&x_DWORD_17DB70str.unk_17DB78_posy,
 				&x_DWORD_17DB70str.unk_17DB7E,
@@ -1078,7 +1077,7 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 					x_D41A0_BYTEARRAY_4_struct.setting_38545 |= 0x10u;
 				if (x_D41A0_BYTEARRAY_4_struct.levelnumber_43w == 24)
 					x_D41A0_BYTEARRAY_4_struct.setting_38545 |= 0x20u;
-				v1 = 1;
+				endAction = 1;
 			}
 			if (x_WORD_180660_VGA_type_resolution & 1)
 				sub_90478_VGA_Blit320(menuFps);
@@ -1090,18 +1089,15 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 		D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] = 0;
 		EndSample_8D8F0();
 		map_not_moving_WORD_E29D6 = false;
-		if (v1 >= 1u)
+		if (endAction == 1)
 		{
-			if (v1 <= 1u)
-			{
-				m_ExitMenuLoop_E29DC = 1;
-				if (a1x)
-					a1x->dword_4 = 0;
-			}
-			else if (v1 == 2 && a1x)
-			{
-				a1x->dword_4 = 1;
-			}
+			m_ExitMenuLoop_E29DC = 1;
+			if (a1x)
+				a1x->dword_4 = 0;
+		}
+		else if (endAction == 2 && a1x)
+		{
+			a1x->dword_4 = 1;
 		}
 		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 		sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
@@ -4424,7 +4420,7 @@ void sub_82670()//263670
 					sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 					EndSample_8D8F0();
 					StopMusic_8E020();
-					sub_7B5D0();
+					FadeClearBlit_7B5D0();
 					if (x_WORD_180660_VGA_type_resolution & 1)
 						ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, 0);
 					else
@@ -4462,8 +4458,6 @@ void sub_82670()//263670
 //----- (00083250) --------------------------------------------------------
 void PlayIntros_83250(char a1)//264250
 {
-	//int v1; // eax
-
 	sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 	memset((void*)pdwScreenBuffer_351628, 0, 307200);
 	if (x_WORD_180660_VGA_type_resolution != 1)
@@ -4478,7 +4472,6 @@ void PlayIntros_83250(char a1)//264250
 	Intros_76D10(a1);
 	sub_54600_mouse_reset();
 	memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
-	//BYTE1(v1) = x_WORD_180660_VGA_type_resolution;
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, 0);
 	else
@@ -4499,7 +4492,7 @@ void PlayIntros_83250(char a1)//264250
 }
 
 //----- (000833C0) --------------------------------------------------------
-void sub_833C0()//2643c0
+void ShowEndCredits_833C0()//2643c0
 {
 	char dataPath[MAX_PATH];
 
@@ -4513,7 +4506,7 @@ void sub_833C0()//2643c0
 	x_DWORD_17DE38str.x_DWORD_17DEE0_filedesc = NULL;
 	x_DWORD_17DE38str.x_DWORD_17DEDC = 0;
 	x_DWORD_17DE38str.x_DWORD_17DE48c = x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226;
-	sub_7B5D0();
+	FadeClearBlit_7B5D0();
 	x_DWORD_17DE38str.x_DWORD_17DE54 = x_DWORD_17DE38str.x_DWORD_17DE48c + 0x49ADB;
 	x_DWORD_17DE38str.x_DWORD_17DEC4 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4D313);
 	x_DWORD_17DE38str.x_DWORD_17DE58 = x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4D313;
@@ -6304,7 +6297,7 @@ char /*__fastcall*/ sub_77680()//258680
 				sub_75200_VGA_Blit640(480);
 			sub_7A060_get_mouse_and_keyboard_events();
 		}
-		sub_7B5D0();
+		FadeClearBlit_7B5D0();
 		sub_7AA70_load_and_decompres_dat_file(0, 0, 0, 0);
 		sub_7C710();
 		result = 1;

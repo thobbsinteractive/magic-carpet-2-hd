@@ -109,7 +109,7 @@ void sub_82510(/*__int16 a1*//*, int *a2*/);
 void sub_82670();
 void DrawEndGameTable_82C20(__int16 a1);
 void PlayIntros_83250(char a1);
-void sub_833C0();
+void ShowEndCredits_833C0();
 void ShowWelcomeScreen_83850();
 void DrawNetGameMapBackground_85C8B(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
 bool DrawAndServe_pre_sub_7B250(uint32_t var, type_WORD_E1F84* var2x);
