@@ -7,6 +7,19 @@
 #include "TypeConfigDat.h"
 
 // types
+
+#pragma pack(1)
+typedef struct // size 16
+{
+	uint32_t unk_17DBA8; // weak 40
+	uint32_t unk_17DBAC; //1(+4)
+	uint32_t unk_17DBB0; //2(+8)
+	uint16_t unk_17DBB4; //3(+12)
+	uint8_t x_BYTE_17DBB5; //(+14)
+	uint8_t x_BYTE_17DBB6; //(+15)
+} Type_unk_17DBA8str; //16
+#pragma pack(16)
+
 #pragma pack (1)
 typedef struct //lenght 56
 {
@@ -73,8 +86,10 @@ extern uint8_t unk_180560x[44];
 extern type_unk_18058Cstr unk_18058Cstr;
 
 extern int test_regression_level;
-
 extern Type_SoundEvent_E17CC str_E17CC_0[];
+extern bool map_not_moving_WORD_E29D6;
+extern Type_unk_17DBA8str unk_17DBA8str;
+extern type_x_DWORD_17DB70str x_DWORD_17DB70str;
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);

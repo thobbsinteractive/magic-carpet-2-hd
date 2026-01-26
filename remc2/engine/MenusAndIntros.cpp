@@ -500,22 +500,7 @@ std::array<type_MainMenuAnimations_E1748, 4> MainMenuAnimations_E1748x {{ // men
 }};
 //unk_E1784x[3] // removed - referenced from menu animations but never in any code path
 
-
-#pragma pack (1)
-struct // size 16
-{
-	uint32_t unk_17DBA8; // weak 40
-	uint32_t unk_17DBAC; //1(+4)
-	uint32_t unk_17DBB0; //2(+8)
-	uint16_t unk_17DBB4; //3(+12)
-	uint8_t x_BYTE_17DBB5; //(+14)
-	uint8_t x_BYTE_17DBB6; //(+15)
-} unk_17DBA8str;//16
-#pragma pack (16)
-
-#pragma pack (1)
 type_x_DWORD_17DB70str x_DWORD_17DB70str;
-#pragma pack (16)
 
 #pragma pack (1)
 struct//lenght 13
@@ -527,6 +512,8 @@ struct//lenght 13
 	int8_t x_BYTE_17DE34; // weak x_DWORD_17DE28str+12
 } x_DWORD_17DE28str;
 #pragma pack (16)
+
+Type_unk_17DBA8str unk_17DBA8str;
 
 bool map_not_moving_WORD_E29D6 = false; // used to set/reset map move acceleration
 char x_BYTE_E29DE = 1; // weak
