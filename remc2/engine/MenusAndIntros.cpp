@@ -5122,22 +5122,17 @@ void DrawEndGameTable_82C20(__int16 a1)//263c20
 }
 
 //----- (00085C8B) --------------------------------------------------------
-void DrawNetGameMapBackground_85C8B(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6)//266c8b
+void DrawNetGameMapBackground_85C8B(uint8_t* source, uint8_t* dest, int beginX, int beginY, int width, int height)//266c8b
 {
-	int v6; // edx
-	char* v7; // edi
-	char* v8; // esi
-
-	v6 = a6;
-	v7 = (char*)a2;
-	v8 = (char*)(a3 + 1280 * a4 + a1);
+	int destIndex = 0;
+	int sourceIndex = beginX + 1280 * beginY;
 	do
 	{
-		qmemcpy(v7, v8, 4 * a5);
-		v7 += 4 * a5;
-		v8 += 4 * a5 + 640;
-		--v6;
-	} while (v6);
+		qmemcpy(&dest[destIndex], &source[sourceIndex], 4 * width);
+		destIndex += 4 * width;
+		sourceIndex += 4 * width + 640;
+		height--;
+	} while (height);
 }
 
 bool DrawAndServe_pre_sub_7B250(uint32_t var, type_WORD_E1F84* var2x)
