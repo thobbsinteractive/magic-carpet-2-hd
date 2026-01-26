@@ -1102,53 +1102,35 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 }
 
 //----- (0007E0E0) --------------------------------------------------------
-signed int sub_7E0E0_mouse_events()//25f0e0
+signed int MouseEvents_7E0E0()//25f0e0
 {
-	int v0; // esi
-	//x_WORD *v2; // ebx
-	int v3; // edx
-
-	v0 = 0;
+	int spriteIndex; // edx
+	int result = 0;
 	if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 1)
 		return 2;
-	//v2 = x_WORD_E1F84;
-	//uint32_t i = 0;
 	int ix = 0;
 	if (!(str_WORD_E1F84[0].xmin_10 + (str_WORD_E1F84[0].ymin_12 << 16)))
 		return 0;
 	do
 	{
-		if (!(x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1) || v0)
-		{//[34eee6] [34eee4] 2b2fb0
+		if (!(x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1) || result)
+		{
 			if (str_WORD_E1F84[ix].gold_color_24 && InRegion_7B200(&str_WORD_E1F84[ix], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))//confirm language
-				v3 = str_WORD_E1F84[ix].byte_20;
+				spriteIndex = str_WORD_E1F84[ix].byte_20;
 			else
-				v3 = str_WORD_E1F84[ix].byte_21;
-			/*
-			[34eed4]+69+48c73d
-			cd
-			123
-			*/
-			//x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[0x4D54A + 164829 - 1]
-			//je asi &x_DWORD_17DED4[6 * v3]
-			//123 cd
-			DrawBitmap_2BB40(str_WORD_E1F84[ix].xmin_10, str_WORD_E1F84[ix].ymin_12, xy_DWORD_17DED4_spritestr[v3]);
+				spriteIndex = str_WORD_E1F84[ix].byte_21;
+			DrawBitmap_2BB40(str_WORD_E1F84[ix].xmin_10, str_WORD_E1F84[ix].ymin_12, xy_DWORD_17DED4_spritestr[spriteIndex]);
 		}
 		else if (InRegion_7B200(&str_WORD_E1F84[ix], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))//change language
 		{
 			sub_8F100_sound_proc19(0, 14, 127, 64, 0x64u, 0, 3u);
 			DrawBitmap_2BB40(str_WORD_E1F84[ix].xmin_10, str_WORD_E1F84[ix].ymin_12, xy_DWORD_17DED4_spritestr[str_WORD_E1F84[ix].xmin_10 & 0xff]);//asi vykresleni stisknuteho tlacitka
-			v0 = str_WORD_E1F84[ix].byte_22;
+			result = str_WORD_E1F84[ix].byte_22;
 		}
-		//i += 22;
 		ix++;
 	} while (str_WORD_E1F84[ix].xmin_10);
-	return v0;
+	return result;
 }
-// 17DED4: using guessed type int (int)x_DWORD_17DED4;
-// 17DEE4: using guessed type int x_DWORD_17DEE4_mouse_position;
-// 17DEEE: using guessed type __int16 x_WORD_17DEEE_mouse_buttons;
-// 17DF10: using guessed type char x_BYTE_17DF10_get_key_scancode;
 
 //----- (0007E1F0) --------------------------------------------------------
 int16_t TestMouseRegions_7E1F0()//25f1f0
@@ -1293,7 +1275,7 @@ char LanguageSettingDialog_779E0(type_WORD_E1F84* a1y)//2589E0
 				CopyScreen(x_DWORD_E9C38_smalltit, pdwScreenBuffer_351628, 320, 200);
 			else
 				CopyScreen(x_DWORD_E9C38_smalltit, pdwScreenBuffer_351628, 640, 480);//write default screan 27b144  adress 258c99
-			mouseClick = sub_7E0E0_mouse_events();//25f0e0 adress 258ca1 - change button, return click
+			mouseClick = MouseEvents_7E0E0();//25f0e0 adress 258ca1 - change button, return click
 			DrawBitmap_2BB40(263, 134, langDatTab[1]);//20cb40 adress 258cba - change flag
 			if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 == 1)//is 1 not zero!
 			{
