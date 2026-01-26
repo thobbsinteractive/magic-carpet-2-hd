@@ -982,7 +982,7 @@ void MainMenu_76FA0()//257fa0
 			{
 				onlyBlit = true;
 				//34ee38 20 0
-				sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x20u, 0);//tady
+				sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.palette_17DE38x, 0x20u, 0);//tady
 			}
 			sub_7A060_get_mouse_and_keyboard_events();
 		}
@@ -1034,17 +1034,17 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 		sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 		if (x_WORD_180660_VGA_type_resolution & 1)
 		{
-			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 0, 0));
+			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0, 0, 0));
 		}
 		else
 		{
-			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 0, 0));
+			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0, 0, 0));
 		}
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			sub_90478_VGA_Blit320();
 		else
 			sub_75200_VGA_Blit640(480);
-		sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.x_DWORD_17DE38x);
+		sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
 		sub_7DD70();
 		x_DWORD_17DE38str.x_WORD_17DEEC = 0;
 		SetCenterScreenForFlyAssistant_6EDB0();
@@ -1343,7 +1343,7 @@ char LanguageSettingDialog_779E0(type_WORD_E1F84* a1y)//2589E0
 			}
 			else
 			{
-				sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x20u, 0);//271b27
+				sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.palette_17DE38x, 0x20u, 0);//271b27
 				frame++;
 			}
 			sub_7A060_get_mouse_and_keyboard_events();//25b060 adress 258ddf
@@ -1424,9 +1424,9 @@ char LanguageSettingDialog_779E0(type_WORD_E1F84* a1y)//2589E0
 		char dataPath[MAX_PATH];
 		sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
 
-		sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 768);
+		sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0, 768);
 		sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE40, x_DWORD_17DE38str.x_DWORD_17DEDC, 168081);
-		sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.x_DWORD_17DE38x);
+		sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
 		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);//maybe xadatapointerstab
 		sub_8CD27_set_cursor(xy_DWORD_17DED4_spritestr[39]);
 		if (x_WORD_180660_VGA_type_resolution & 1)
@@ -1548,8 +1548,8 @@ char LoadGameDialog_780F0(type_WORD_E1F84* a1x)//0x2590f0
 	v44 = 0;
 	v55 = 0;
 	//v1 = a1x->word_26;
-	uint8_t pal_selected_text = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
-	uint8_t pal_text = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x16u, 0x10u, 9u);
+	uint8_t pal_selected_text = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
+	uint8_t pal_text = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x16u, 0x10u, 9u);
 	if (x_DWORD_17DE38str.x_WORD_17DF04 == -1)
 	{
 		for (im = 0; im < 8; im++)
@@ -1999,7 +1999,7 @@ char SetKeysDialog_79610()//25a610
 			sub_75200_VGA_Blit640(480, menuFps);
 		if (!v41)
 		{
-			sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x20u, 0);
+			sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.palette_17DE38x, 0x20u, 0);
 			v41 = 1;
 		}
 		if ((v36 - v35) > 0xA)
@@ -2038,11 +2038,11 @@ char SetKeysDialog_79610()//25a610
 	char dataPath[MAX_PATH];
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
 
-	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 768);
+	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0, 768);
 	sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE40, x_DWORD_17DE38str.x_DWORD_17DEDC, 168081);
 	sub_7AA70_load_and_decompres_dat_file(0, 0, 0, 0);
 	sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
-	sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.x_DWORD_17DE38x);
+	sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
 	sub_8CD27_set_cursor(xy_DWORD_17DED4_spritestr[39]);
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		CopyScreen((void*)pdwScreenBuffer_351628, (void*)x_DWORD_E9C38_smalltit, 320, 200);
@@ -2792,8 +2792,8 @@ char SaveGameDialog_78730(type_WORD_E1F84* a1x)//259730
 	//fix it
 
 	result = 0;
-	v68 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
-	v67 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x16u, 0x10u, 9u);
+	v68 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
+	v67 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x16u, 0x10u, 9u);
 	//v1 = a1x->word_26;//a1 + 13;
 	if (x_DWORD_17DE38str.x_WORD_17DF04 == -1)
 	{
@@ -3847,7 +3847,7 @@ void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3)//261c30
 			}
 		}
 		GetFont_6FC50(1);
-		v7 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
+		v7 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
 		v8 = (signed __int16)(posX + a3 - 3 * GetLetterWidth_6FC10());
 		v9 = GetLetterWidth_6FC10();
 		sub_7FCB0_draw_text_with_border(/*v3,*/ x_DWORD_E9C4C_langindexbuffer[23 + v3], (signed __int16)(posX + 4 * v9), v8, posY, 5, v7, 1);
@@ -4501,51 +4501,19 @@ void PlayIntros_83250(char a1)//264250
 //----- (000833C0) --------------------------------------------------------
 void sub_833C0()//2643c0
 {
-	//uint8_t* v0; // eax
-	//uint8_t* v1; // eax
-	//int v2; // edx
-	signed int v3; // eax
-	signed int v4; // esi
-	int v5; // ebx
-	//int v6; // eax
-	//int v7; // edx
-	int v8; // eax
-	unsigned int v9; // eax
-	int v10; // edi
-	char* v11; // ecx
-	int v12; // eax
-	//int v13; // edx
-	int v14; // eax
-	unsigned __int8 v15; // al
-	//int v16; // eax
-	//int v17; // eax
-	int v18; // [esp+0h] [ebp-14h]
-	int v19; // [esp+8h] [ebp-Ch]
-	signed __int16 v20; // [esp+Ch] [ebp-8h]
-	int i; // [esp+10h] [ebp-4h]
-
 	char dataPath[MAX_PATH];
 
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
 
-	//fix it
-	//v2 = 0;
-	//v6 = 0;
-	//v7 = 0;
-	//v13 = 0;
-	//fix it
-
-	v19 = 0;
-	v20 = 0;
-	x_DWORD_17DE38str.x_DWORD_17DE38x = (TColor*)*xadatapald0dat2.colorPalette_var28;
+	int index2 = 0;
+	bool noFade = false;
+	x_DWORD_17DE38str.palette_17DE38x = (TColor*)*xadatapald0dat2.colorPalette_var28;
 	x_DWORD_17DE38str.x_WORD_17DEEC = 0;
 	x_DWORD_17DE38str.x_DWORD_17DE40 = pdwScreenBuffer_351628;
 	x_DWORD_17DE38str.x_DWORD_17DEE0_filedesc = NULL;
-	//v0 = x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226;
 	x_DWORD_17DE38str.x_DWORD_17DEDC = 0;
 	x_DWORD_17DE38str.x_DWORD_17DE48c = x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226;
 	sub_7B5D0();
-
 	x_DWORD_17DE38str.x_DWORD_17DE54 = x_DWORD_17DE38str.x_DWORD_17DE48c + 0x49ADB;
 	x_DWORD_17DE38str.x_DWORD_17DEC4 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4D313);
 	x_DWORD_17DE38str.x_DWORD_17DE58 = x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4D313;
@@ -4555,30 +4523,23 @@ void sub_833C0()//2643c0
 	x_DWORD_17DE38str.x_DWORD_17DED8 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4FA72);
 	x_DWORD_17DE38str.x_DWORD_17DE60 = x_DWORD_17DE38str.x_DWORD_17DE44;
 	x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map = x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4FA72;
-	//v1 = (0x12C000 + x_DWORD_17DE48c + 326258);//fix it
 	x_DWORD_17DE38str.x_DWORD_17DE3C = (TcolNext*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x17BA72);
 	x_DWORD_17DE38str.x_DWORD_17DEC0 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4CCAD);
 	x_DWORD_17DE38str.x_DWORD_17DE5C_border_bitmap = x_DWORD_17DE38str.x_DWORD_17DE48c + 0x17FA72;
-	v3 = j___clock();
-	v4 = v3;
-	while (sub_9A10A_check_keyboard(/*v3*/))
+	int time = j___clock();
+	while (sub_9A10A_check_keyboard())
 	{
 		LastPressedKey_1806E4 = 0;
-		/*LOBYTE(v3) = */sub_7A060_get_mouse_and_keyboard_events();
+		sub_7A060_get_mouse_and_keyboard_events();
 	}
 	sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
 	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE54, 0x1641FC, 1214);
 	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC0, 0x1646BA, 589);
 	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE58, 0x164907, 1191);
 	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC8, 0x164DAE, 543);
-	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0x178B5F, 768);
+	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0x178B5F, 768);
 	sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map, 0x16554D, 79378);
 	sub_7AA70_load_and_decompres_dat_file(0, 0, 0, 0);
-	/*if (x_WORD_180660_VGA_type_resolution & 1)
-		sub_98709_create_index_dattab_power((uint8_t*)(int)x_DWORD_17DEC0, (uint8_t*)(int)x_DWORD_17DEC4, (uint8_t*)(int)x_DWORD_17DE54, (new bitmap_pos_struct_t));
-	else
-		sub_9874D_create_index_dattab((uint8_t*)(int)x_DWORD_17DEC0, (uint8_t*)(int)x_DWORD_17DEC4, (uint8_t*)(int)x_DWORD_17DE54, (new bitmap_pos_struct_t));
-	*/
 	if (x_WORD_180660_VGA_type_resolution & 1)
 	{
 		sub_98709_create_index_dattab_power(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
@@ -4587,11 +4548,6 @@ void sub_833C0()//2643c0
 	{
 		sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
 	}
-
-	/*if (x_WORD_180660_VGA_type_resolution & 1)
-		sub_98709_create_index_dattab_power((uint8_t*)x_DWORD_17DEC8, (uint8_t*)x_DWORD_17DECC, (uint8_t*)x_DWORD_17DE58, (new bitmap_pos_struct_t));
-	else
-		sub_9874D_create_index_dattab((uint8_t*)x_DWORD_17DEC8, (uint8_t*)x_DWORD_17DECC, (uint8_t*)x_DWORD_17DE58, (new bitmap_pos_struct_t));*/
 	if (x_WORD_180660_VGA_type_resolution & 1)
 	{
 		sub_98709_create_index_dattab_power(x_DWORD_17DE38str.x_DWORD_17DEC8, x_DWORD_17DE38str.x_DWORD_17DECC, x_DWORD_17DE38str.x_DWORD_17DE58, xy_DWORD_17DEC8_spritestr);
@@ -4600,12 +4556,8 @@ void sub_833C0()//2643c0
 	{
 		sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC8, x_DWORD_17DE38str.x_DWORD_17DECC, x_DWORD_17DE38str.x_DWORD_17DE58, xy_DWORD_17DEC8_spritestr);
 	}
-
 	x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
-	//v5 = (int)x_DWORD_17DEC0 + 6;
 	x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons = 0;
-	//x_DWORD_17DEC0 += 6;
-
 	if (x_WORD_180660_VGA_type_resolution & 1)
 	{
 		sub_98709_create_index_dattab_power_add((uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC0, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr, 6);
@@ -4614,52 +4566,45 @@ void sub_833C0()//2643c0
 	{
 		sub_9874D_create_index_dattab_add((uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC0, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr, 6);
 	}
-	//x_DWORD_17DE38str.x_DWORD_17DEC0 += 6;
 	x_DWORD_17DE38str.x_DWORD_17DEC0++;
-
 	while (!x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode && !x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons)
 	{
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			CopyScreen((void*)x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map, (void*)pdwScreenBuffer_351628, 320, 200);
 		else
 			CopyScreen((void*)x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map, (void*)pdwScreenBuffer_351628, 640, 480);
-		v8 = j___clock();
-		v5 = v19;
-		v18 = v8;
-		for (i = 0; ; i += xy_DWORD_17DEC0_spritestr[65].height_5 + 2)
+		int time2 = j___clock();
+		int index1;
+		index1 = index2;
+		for (int i = 0; ; i += xy_DWORD_17DEC0_spritestr[65].height_5 + 2)
 		{
-			v9 = (v18 - v4) / 0x64u;
-			v10 = (signed __int16)v5;
-			v11 = (char*)off_DB558[v10];
-			if (v11 == NULL)//end of sequence
+			int timeDiff = (time2 - time) / 100;
+			int index3 = index1;
+			if (off_DB558[index3] == NULL)//end of sequence
 			{
-				if (v9 > 5)
+				if (timeDiff > 5)
 				{
-					v12 = j___clock();
-					v5 = 0;
-					v4 = v12;
-					v19 = 0;
+					index1 = 0;
+					time = j___clock();
+					index2 = 0;
 				}
-				goto LABEL_24;
-			}
-			if (!_stricmp(v11, "!"))
 				break;
-			v15 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
-			sub_7FCB0_draw_text_with_border(/*v5,*/ off_DB558[v10], 10, 620, (signed __int16)(i + 200), 5, v15, 0);
-			//HIWORD(v16) = HIWORD(x_DWORD_17DEC0);
-			//LOWORD(v16) = xy_DWORD_17DEC0_spritestr[65].height;
-			v5++;
+			}
+			if (!_stricmp(off_DB558[index3], "!"))
+				break;
+			uint8_t colorIndex = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
+			sub_7FCB0_draw_text_with_border(off_DB558[index3], 10, 620, (signed __int16)(i + 200), 5, colorIndex, 0);
+			index1++;
 		}
-		if ((v18 - v4) / 0x64u > 2)
+		if ((time2 - time) / 100 > 2)
 		{
-			v14 = j___clock();
-			v5++;
-			v4 = v14;
-			v19 = v5;
+			index1++;
+			time = j___clock();
+			index2 = index1;
 		}
-	LABEL_24:
+
 		sub_7A060_get_mouse_and_keyboard_events();
-		if (v20)
+		if (noFade)
 		{
 			if (x_WORD_180660_VGA_type_resolution & 1)
 				sub_90478_VGA_Blit320();
@@ -4668,13 +4613,12 @@ void sub_833C0()//2643c0
 		}
 		else
 		{
-			sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x20u, 0);
-			v20 = 1;
+			sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.palette_17DE38x, 0x20u, 0);
+			noFade = true;
 		}
 	}
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
-	/*v17 = (int)*/memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
-	//LOBYTE(v17) = x_WORD_180660_VGA_type_resolution;
+	memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, 0);
 	else
@@ -5422,11 +5366,11 @@ LABEL_13:
 	_strupr(x_DWORD_17DE38str.x_DWORD_17DE50);
 	GetFont_6FC50(1);
 	v9 = GetLetterHeight_6FC30() + v5;
-	v10 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x16u, 0x10u, 9u);
+	v10 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x16u, 0x10u, 9u);
 	v11 = sub_6FC80_pre_draw_text((char*)x_DWORD_17DE38str.x_DWORD_17DE50, v29, v27, v9, v10);
 	if ((v26 - x_DWORD_17DE38str.x_DWORD_17DED0) / 0xCu >= 1)
 	{
-		v12 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x16u, 0x10u, 9u);
+		v12 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x16u, 0x10u, 9u);
 		DrawText_2BC10((char*)"_", v11 + 2, v9, v12);
 		x_DWORD_17DE38str.x_DWORD_17DED0 = v26;
 	}
@@ -5575,8 +5519,8 @@ char SetJoystickDialog_79160(type_WORD_E1F84* locEvent)//25a160
 
 	int lastSelected = 0;
 	result = 0;
-	color1 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
-	color2 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 0, 0);
+	color1 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
+	color2 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0, 0, 0);
 	switch (locEvent->byte_25)
 	{
 	case 0:
@@ -5915,11 +5859,11 @@ char MultiplayerMenu_7DE80(type_WORD_E1F84* a2x)//25ee80
 		sprintf(printbuffer, "%d", (unsigned __int8)x_BYTE_E29DF_skip_screen);
 		GetFont_6FC50(1);
 		v12 = GetLetterHeight_6FC30() + v8;
-		v14 = sub_6FC80_pre_draw_text(printbuffer, v22, v20, v12, getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 0, 0));
+		v14 = sub_6FC80_pre_draw_text(printbuffer, v22, v20, v12, getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0, 0, 0));
 		if ((v3 - x_DWORD_17DE38str.x_DWORD_17DED0) / 0xCu >= 1)
 		{
 			GetFont_6FC50(1);
-			DrawText_2BC10((char*)"_", v14 - 2, v12, getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 0, 0));
+			DrawText_2BC10((char*)"_", v14 - 2, v12, getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0, 0, 0));
 			x_DWORD_17DE38str.x_DWORD_17DED0 = v3;
 		}
 	}
@@ -6084,11 +6028,11 @@ int DrawScrollDialog2_7B660(int a1, int a2, __int16 a3, type_str_word_26* a4x, c
 		sub_7C120_draw_bitmap_640(a1, a2, xy_DWORD_17DED4_spritestr[x_DWORD_17DE38str.x_WORD_17DF06]);//unknown draw
 		goto LABEL_31;
 	}
-	v45 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x25u, 0x1Fu, 0x19u);
+	v45 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x25u, 0x1Fu, 0x19u);
 	//v38 = (signed __int16)a2;
 	//v41 = (signed __int16)a1;
 	sub_7C120_draw_bitmap_640(a1, a2, xy_DWORD_17DED4_spritestr[x_DWORD_17DE38str.x_WORD_17DF06]);//top scroll border
-	v7 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x2Au, 0x24u, 0x1Du);
+	v7 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x2Au, 0x24u, 0x1Du);
 	sub_7C140_draw_text_background(
 		(a1 + 10),
 		a2 + xy_DWORD_17DED4_spritestr[x_DWORD_17DE38str.x_WORD_17DF06].height_5 - 2,
@@ -6227,7 +6171,7 @@ int DrawScrollDialog2_7B660(int a1, int a2, __int16 a3, type_str_word_26* a4x, c
 	v46 = xy_DWORD_17DED4_spritestr[x_DWORD_17DE38str.x_WORD_17DF06].height_5 + 2 + a2;
 	if (a5)
 	{
-		v31 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x16u, 0x10u, 9u);
+		v31 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x16u, 0x10u, 9u);
 		//"Exit Game" 16a 1c6 28 1 4c//adress 25cc27
 		sub_7FCB0_draw_text_with_border(/*v30,*/ a5, a1 + 10, v30, v46, 1, v31, 0);
 	}
@@ -6350,7 +6294,7 @@ char /*__fastcall*/ sub_77680()//258680
 			}
 			if (!a3b)
 			{
-				sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.x_DWORD_17DE38x, 0x20u, 0);
+				sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.palette_17DE38x, 0x20u, 0);
 				a3b = 1;
 				sub_8CD27_set_cursor(xy_DWORD_17DED4_spritestr[15]);
 			}
@@ -6622,7 +6566,7 @@ signed int sub_7C390()//25d390
 			}
 		}
 		if (v4 || x_DWORD_17DE38str.x_WORD_17DF00 != x_DWORD_17DE38str.x_WORD_17DEFE)
-			sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.x_DWORD_17DE38x);
+			sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
 		x_DWORD_E9C38_smalltit = v6x;
 		result = v3;
 	}
@@ -6733,20 +6677,20 @@ void PaletteMulti_7C9D0(signed __int16 a1)//25d9d0
 		v1 = 255;
 	for (int ic = 159; ic < 255; ic++)
 	{
-		x_DWORD_17DE38str.x_DWORD_17DE38x[ic].red -= (v1 * x_DWORD_17DE38str.x_DWORD_17DE38x[ic].red) >> 8;
-		x_DWORD_17DE38str.x_DWORD_17DE38x[ic].green -= (v1 * x_DWORD_17DE38str.x_DWORD_17DE38x[ic].green) >> 8;
-		x_DWORD_17DE38str.x_DWORD_17DE38x[ic].blue -= (v1 * x_DWORD_17DE38str.x_DWORD_17DE38x[ic].blue) >> 8;
+		x_DWORD_17DE38str.palette_17DE38x[ic].red -= (v1 * x_DWORD_17DE38str.palette_17DE38x[ic].red) >> 8;
+		x_DWORD_17DE38str.palette_17DE38x[ic].green -= (v1 * x_DWORD_17DE38str.palette_17DE38x[ic].green) >> 8;
+		x_DWORD_17DE38str.palette_17DE38x[ic].blue -= (v1 * x_DWORD_17DE38str.palette_17DE38x[ic].blue) >> 8;
 	}
 
-	x_DWORD_17DE38str.x_DWORD_17DE38x[149].red -= (v1 * x_DWORD_17DE38str.x_DWORD_17DE38x[149].red) >> 8;
-	x_DWORD_17DE38str.x_DWORD_17DE38x[149].green -= (v1 * x_DWORD_17DE38str.x_DWORD_17DE38x[149].green) >> 8;
-	x_DWORD_17DE38str.x_DWORD_17DE38x[149].blue -= (v1 * x_DWORD_17DE38str.x_DWORD_17DE38x[149].blue) >> 8;
+	x_DWORD_17DE38str.palette_17DE38x[149].red -= (v1 * x_DWORD_17DE38str.palette_17DE38x[149].red) >> 8;
+	x_DWORD_17DE38str.palette_17DE38x[149].green -= (v1 * x_DWORD_17DE38str.palette_17DE38x[149].green) >> 8;
+	x_DWORD_17DE38str.palette_17DE38x[149].blue -= (v1 * x_DWORD_17DE38str.palette_17DE38x[149].blue) >> 8;
 
-	x_DWORD_17DE38str.x_DWORD_17DE38x[148].red -= (v1 * x_DWORD_17DE38str.x_DWORD_17DE38x[148].red) >> 8;
-	x_DWORD_17DE38str.x_DWORD_17DE38x[148].green -= (v1 * x_DWORD_17DE38str.x_DWORD_17DE38x[148].green) >> 8;
-	x_DWORD_17DE38str.x_DWORD_17DE38x[148].blue -= (v1 * x_DWORD_17DE38str.x_DWORD_17DE38x[148].blue) >> 8;
+	x_DWORD_17DE38str.palette_17DE38x[148].red -= (v1 * x_DWORD_17DE38str.palette_17DE38x[148].red) >> 8;
+	x_DWORD_17DE38str.palette_17DE38x[148].green -= (v1 * x_DWORD_17DE38str.palette_17DE38x[148].green) >> 8;
+	x_DWORD_17DE38str.palette_17DE38x[148].blue -= (v1 * x_DWORD_17DE38str.palette_17DE38x[148].blue) >> 8;
 	//sub_9A0FC_wait_to_screen_beam();
-	sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.x_DWORD_17DE38x);
+	sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
 	fix_sub_9A0FC_wait_to_screen_beam();
 }
 
@@ -6806,46 +6750,46 @@ void PaletteCopy_7C800(signed __int16 a1)//25d800
 		v1 = 255;
 	for (int v3c = 159; v3c < 255; v3c++)
 	{
-		if (x_DWORD_17DE38str.x_DWORD_17DE38x[v3c].red < x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].red)
-			x_DWORD_17DE38str.x_DWORD_17DE38x[v3c].red = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].red * v1) >> 8;
+		if (x_DWORD_17DE38str.palette_17DE38x[v3c].red < x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].red)
+			x_DWORD_17DE38str.palette_17DE38x[v3c].red = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].red * v1) >> 8;
 		else
-			x_DWORD_17DE38str.x_DWORD_17DE38x[v3c].red = x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].red;
-		if (x_DWORD_17DE38str.x_DWORD_17DE38x[v3c].green < x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].green)
-			x_DWORD_17DE38str.x_DWORD_17DE38x[v3c].green = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].green * v1) >> 8;
+			x_DWORD_17DE38str.palette_17DE38x[v3c].red = x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].red;
+		if (x_DWORD_17DE38str.palette_17DE38x[v3c].green < x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].green)
+			x_DWORD_17DE38str.palette_17DE38x[v3c].green = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].green * v1) >> 8;
 		else
-			x_DWORD_17DE38str.x_DWORD_17DE38x[v3c].green = x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].green;
-		if (x_DWORD_17DE38str.x_DWORD_17DE38x[v3c].blue < x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].blue)
-			x_DWORD_17DE38str.x_DWORD_17DE38x[v3c].blue = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].blue * v1) >> 8;
+			x_DWORD_17DE38str.palette_17DE38x[v3c].green = x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].green;
+		if (x_DWORD_17DE38str.palette_17DE38x[v3c].blue < x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].blue)
+			x_DWORD_17DE38str.palette_17DE38x[v3c].blue = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].blue * v1) >> 8;
 		else
-			x_DWORD_17DE38str.x_DWORD_17DE38x[v3c].blue = x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].blue;
+			x_DWORD_17DE38str.palette_17DE38x[v3c].blue = x_DWORD_17DE38str.x_DWORD_17DE3C->c[v3c].blue;
 	}
-	if (x_DWORD_17DE38str.x_DWORD_17DE38x[148].red < x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].red)
-		x_DWORD_17DE38str.x_DWORD_17DE38x[148].red = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].red * v1) >> 8;
+	if (x_DWORD_17DE38str.palette_17DE38x[148].red < x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].red)
+		x_DWORD_17DE38str.palette_17DE38x[148].red = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].red * v1) >> 8;
 	else
-		x_DWORD_17DE38str.x_DWORD_17DE38x[148].red = x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].red;
-	if (x_DWORD_17DE38str.x_DWORD_17DE38x[148].green < x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].green)
-		x_DWORD_17DE38str.x_DWORD_17DE38x[148].green = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].green * v1) >> 8;
+		x_DWORD_17DE38str.palette_17DE38x[148].red = x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].red;
+	if (x_DWORD_17DE38str.palette_17DE38x[148].green < x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].green)
+		x_DWORD_17DE38str.palette_17DE38x[148].green = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].green * v1) >> 8;
 	else
-		x_DWORD_17DE38str.x_DWORD_17DE38x[148].green = x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].green;
-	if (x_DWORD_17DE38str.x_DWORD_17DE38x[148].blue < x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].blue)
-		x_DWORD_17DE38str.x_DWORD_17DE38x[148].blue = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].blue * v1) >> 8;
+		x_DWORD_17DE38str.palette_17DE38x[148].green = x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].green;
+	if (x_DWORD_17DE38str.palette_17DE38x[148].blue < x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].blue)
+		x_DWORD_17DE38str.palette_17DE38x[148].blue = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].blue * v1) >> 8;
 	else
-		x_DWORD_17DE38str.x_DWORD_17DE38x[148].blue = x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].blue;
+		x_DWORD_17DE38str.palette_17DE38x[148].blue = x_DWORD_17DE38str.x_DWORD_17DE3C->c[148].blue;
 
-	if (x_DWORD_17DE38str.x_DWORD_17DE38x[149].red < x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].red)
-		x_DWORD_17DE38str.x_DWORD_17DE38x[149].red = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].red * v1) >> 8;
+	if (x_DWORD_17DE38str.palette_17DE38x[149].red < x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].red)
+		x_DWORD_17DE38str.palette_17DE38x[149].red = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].red * v1) >> 8;
 	else
-		x_DWORD_17DE38str.x_DWORD_17DE38x[149].red = x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].red;
-	if (x_DWORD_17DE38str.x_DWORD_17DE38x[149].green < x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].green)
-		x_DWORD_17DE38str.x_DWORD_17DE38x[149].green = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].green * v1) >> 8;
+		x_DWORD_17DE38str.palette_17DE38x[149].red = x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].red;
+	if (x_DWORD_17DE38str.palette_17DE38x[149].green < x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].green)
+		x_DWORD_17DE38str.palette_17DE38x[149].green = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].green * v1) >> 8;
 	else
-		x_DWORD_17DE38str.x_DWORD_17DE38x[149].green = x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].green;
-	if (x_DWORD_17DE38str.x_DWORD_17DE38x[149].blue < x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].blue)
-		x_DWORD_17DE38str.x_DWORD_17DE38x[149].blue = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].blue * v1) >> 8;
+		x_DWORD_17DE38str.palette_17DE38x[149].green = x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].green;
+	if (x_DWORD_17DE38str.palette_17DE38x[149].blue < x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].blue)
+		x_DWORD_17DE38str.palette_17DE38x[149].blue = (x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].blue * v1) >> 8;
 	else
-		x_DWORD_17DE38str.x_DWORD_17DE38x[149].blue = x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].blue;
+		x_DWORD_17DE38str.palette_17DE38x[149].blue = x_DWORD_17DE38str.x_DWORD_17DE3C->c[149].blue;
 	//sub_9A0FC_wait_to_screen_beam();
-	sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.x_DWORD_17DE38x);
+	sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
 	fix_sub_9A0FC_wait_to_screen_beam();
 }
 

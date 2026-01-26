@@ -824,7 +824,7 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 		v10 = xy_DWORD_17DED4_spritestr[a8].height_5;//adress 260da7
 		v11 = v10 + a5;
 		v98 += v10;
-		v12 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 0, 0/*v86*/);
+		v12 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0, 0, 0/*v86*/);
 		v86 = v12;
 		v13 = 6 * (a8 - 1);
 		v14 = xy_DWORD_17DED4_spritestr[v13 / 6].height_5;
@@ -952,7 +952,7 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 					{
 						if (!a6)
 						{
-							v27 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 0, 0/*v86*/);
+							v27 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0, 0, 0/*v86*/);
 							v86 = v27;
 							v28 = 6 * (a8 - 1);
 							v29 = xy_DWORD_17DED4_spritestr[v28 / 6].height_5;
@@ -1123,7 +1123,7 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 		{
 			if (!a6)
 			{
-				v45 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 0, 0/*v86*/);
+				v45 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0, 0, 0/*v86*/);
 				v86 = v45;
 				v46 = 6 * (a8 - 1);
 				v47 = xy_DWORD_17DED4_spritestr[v46 / 6].height_5;
@@ -1138,7 +1138,7 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 				//HIWORD(v50) = HIWORD(xy_DWORD_17DED4_spritestr);
 				v50 = xy_DWORD_17DED4_spritestr[v46 / 6].height_5;
 				v51 = v50 + a1;
-				v52 = getPaletteIndex_5BE80(x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 0, 0/*v86*/);//?
+				v52 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0, 0, 0/*v86*/);//?
 				v86 = v52;
 				v53 = xy_DWORD_17DED4_spritestr[v46 / 6].height_5;
 				v54 = v91;

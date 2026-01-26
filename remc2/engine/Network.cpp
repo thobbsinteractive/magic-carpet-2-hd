@@ -1113,11 +1113,11 @@ bool SetMultiplayerColors_7CE50()//25de50
 			case 1://end of select character
 				for (colorIndex = 134; colorIndex < 148; colorIndex++)
 				{
-					x_DWORD_17DE38str.x_DWORD_17DE38x[colorIndex].red = 0;
-					x_DWORD_17DE38str.x_DWORD_17DE38x[colorIndex].green = 0;
-					x_DWORD_17DE38str.x_DWORD_17DE38x[colorIndex].blue = 0;
+					x_DWORD_17DE38str.palette_17DE38x[colorIndex].red = 0;
+					x_DWORD_17DE38str.palette_17DE38x[colorIndex].green = 0;
+					x_DWORD_17DE38str.palette_17DE38x[colorIndex].blue = 0;
 				}
-				sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.x_DWORD_17DE38x);
+				sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
 
 				x_DWORD_17DE38str.array_BYTE_17DE68x[i].connected_0 = 0;
 				NetworkSomeChange_73AA1(i);

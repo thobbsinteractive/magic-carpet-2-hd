@@ -46223,7 +46223,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 	char dataPath[MAX_PATH];
 	//int v2; // eax
 
-	x_DWORD_17DE38str.x_DWORD_17DE38x = (TColor*)*xadatapald0dat2.colorPalette_var28;
+	x_DWORD_17DE38str.palette_17DE38x = (TColor*)*xadatapald0dat2.colorPalette_var28;
 	x_DWORD_17DE38str.x_WORD_17DEEC = 0;
 	x_DWORD_17DE38str.x_DWORD_17DE40 = pdwScreenBuffer_351628;
 	x_DWORD_17DE38str.x_DWORD_17DEE0_filedesc = NULL;
@@ -46250,7 +46250,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157,
 				0x20u);
 			x_DWORD_E9C38_smalltit = (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE50 + 32;
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 768);
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0, 768);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_E9C38_smalltit, x_DWORD_17DE38str.x_DWORD_17DEDC, 168081);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE48c, x_DWORD_17DE38str.x_DWORD_17DEDC, 102213);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DED4, x_DWORD_17DE38str.x_DWORD_17DEDC, 411);//19b
@@ -46288,7 +46288,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC0, 0x1646BA, 589);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE58, 0x164907, 1191);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC8, 0x164DAE, 543);//xx
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0x13A9CA, 768);//ok
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0x13A9CA, 768);//ok
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map, 0xB2C47, 0x87D83);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE48c, 0x783BD, 103577);//ok
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DED4, 0x91856, 1027);
@@ -46329,7 +46329,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			x_DWORD_17DE38str.x_DWORD_17DE4C = x_DWORD_17DE38str.x_DWORD_17DE48c + 51639;
 			x_DWORD_17DE38str.x_DWORD_17DEC0 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 49041);
 			x_DWORD_17DE38str.x_DWORD_17DE50 = (char*)x_DWORD_17DE38str.x_DWORD_17DE48c + 68023;
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0x42471, 768);
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0x42471, 768);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226, x_DWORD_17DE38str.x_DWORD_17DEDC, 82233);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE48c, 0x568AA, 21216);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DED4, 375690, 148);
@@ -46348,7 +46348,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			break;
 		case 12:
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_E9C38_smalltit, 0x91C59, 134382);
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0xB2947, 768);
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0xB2947, 768);
 			break;
 		case 14:
 			/*
@@ -46373,7 +46373,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			sub_7AA70_load_and_decompres_dat_file(dataPath, &x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[0x4D54A], 168849, 102213);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DED4, 271062, 411);//19b
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226, 0x91C59, 134382);
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0xB2947, 768);
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0xB2947, 768);
 			if (x_WORD_180660_VGA_type_resolution & 1) {
 				sub_98709_create_index_dattab_power(x_DWORD_17DE38str.x_DWORD_17DED4, x_DWORD_17DE38str.x_DWORD_17DED8, &x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[0x4D54A], xy_DWORD_17DED4_spritestr);
 				sub_98709_create_index_dattab_power(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
@@ -46413,7 +46413,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			break;
 		case 15:
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_E9C38_smalltit, 0x145210, 126188);
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0x163EFC, 0x300);
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0x163EFC, 0x300);
 			break;
 		default:
 			return;

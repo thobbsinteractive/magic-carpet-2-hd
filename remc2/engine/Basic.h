@@ -103,7 +103,7 @@ typedef struct //lenght 24
 #pragma pack (push,1)
 typedef struct//lenght 613 // end 17E09D
 {
-	TColor* x_DWORD_17DE38x; // weak
+	TColor* palette_17DE38x; // weak
 	TcolNext* x_DWORD_17DE3C; // weak//1
 	uint8_t* x_DWORD_17DE40; // weak//2
 	uint8_t* x_DWORD_17DE44; // weak//3
