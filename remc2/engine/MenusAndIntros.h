@@ -8,7 +8,7 @@
 
 // types
 #pragma pack (1)
-typedef struct //lenght 50
+typedef struct //lenght 56
 {
 	uint32_t time_17DB70; // weak
 	int16_t x_WORD_17DB74; // weak 4
