@@ -1031,7 +1031,7 @@ bool NewGameDialog_77350(type_WORD_E1F84* a1x)//258350
 		else
 			sub_75200_VGA_Blit640(480);
 		sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
-		sub_7DD70();
+		PortalsUpdate_7DD70();
 		x_DWORD_17DE38str.x_WORD_17DEEC = 0;
 		SetCenterScreenForFlyAssistant_6EDB0();
 		sub_8CD27_set_cursor(xy_DWORD_17DED4_spritestr[239]);
@@ -2371,39 +2371,24 @@ void sub_7BEC0()//25cec0
 // D41A4: using guessed type int x_DWORD_D41A4;
 
 //----- (0007DD70) --------------------------------------------------------
-void sub_7DD70()//25ed70
+void PortalsUpdate_7DD70()//25ed70
 {
-	//int v0; // esi
-	int resulty; // eax
-	__int16 v2; // dx
-	char v3; // bl
-
-	//v0 = (int)x_D41A0_BYTEARRAY_4;
-	//resultx = (int)unk_E17CC_0x194;
-	resulty = 0;
-	v2 = 0;
-	while (mapScreenPortals_E17CC[resulty].viewPortPosX_4)
+	for (int levelIndex = 0; mapScreenPortals_E17CC[levelIndex].viewPortPosX_4; levelIndex++)
 	{
-		v3 = mapScreenPortals_E17CC[resulty].activated_18;
-		mapScreenPortals_E17CC[resulty].word_20 = 0;
-		if (v3 == 2)
-			mapScreenPortals_E17CC[resulty].spriteIndex_16 = 70;
+		mapScreenPortals_E17CC[levelIndex].word_20 = 0;
+		if (mapScreenPortals_E17CC[levelIndex].activated_18 == 2)
+			mapScreenPortals_E17CC[levelIndex].spriteIndex_16 = 70;
 		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2
-			&& x_D41A0_BYTEARRAY_4_struct.levelnumber_43w == v2)
+			&& x_D41A0_BYTEARRAY_4_struct.levelnumber_43w == levelIndex)
 		{
-			mapScreenPortals_E17CC[resulty].activated_18 = 1;
+			mapScreenPortals_E17CC[levelIndex].activated_18 = 1;
 		}
-		if (mapScreenPortals_E17CC[resulty].activated_18 == 1)
-			mapScreenPortals_E17CC[resulty].spriteIndex_16 = 37;
-		//resultx += 22;
-		mapScreenPortals_E17CC[resulty].byte_19 = 0;
-		resulty++;
-		v2++;
-		//*(x_BYTE *)(resultx - 3) = 0;
+		if (mapScreenPortals_E17CC[levelIndex].activated_18 == 1)
+			mapScreenPortals_E17CC[levelIndex].spriteIndex_16 = 37;
+		mapScreenPortals_E17CC[levelIndex].byte_19 = 0;
 	}
 	if (x_D41A0_BYTEARRAY_4_struct.levelnumber_43w > 0x18u)
 	{
-		//for (result = (int)x_WORD_E2970; *(x_WORD *)(result + 12); result += 17)
 		for (int ir = 0; secretMapScreenPortals_E2970[ir].activated_12; ir++)
 		{
 			if (x_D41A0_BYTEARRAY_4_struct.levelnumber_43w == secretMapScreenPortals_E2970[ir].levelNumber_6)
@@ -2419,14 +2404,11 @@ void sub_7DD70()//25ed70
 					secretMapScreenPortals_E2970[ir].spriteIndex_14 = 70;
 				}
 				mapScreenPortals_E17CC[secretMapScreenPortals_E2970[ir].index_4].activated_18 = 1;
-				//result = 22 * secretMapScreenPortals_E2970[ir].word_4;
 				mapScreenPortals_E17CC[secretMapScreenPortals_E2970[ir].index_4].spriteIndex_16 = 37;
 				break;
 			}
 		}
 	}
-	//x_D41A0_BYTEARRAY_4 = (uint8_t*)v0;
-	//return result;
 }
 
 int pre_sub_7E320(uint32_t adress, type_WORD_E1F84* a1x)

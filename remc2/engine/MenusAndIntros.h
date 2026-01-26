@@ -108,7 +108,7 @@ void LoadAndSetGraphicsAndPalette_7AC00();
 void sub_7ADE0(char a1);
 void sub_7BEC0();
 void SetAnimationVariables_7DA70(__int16 a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int16 a6);
-void sub_7DD70();
+void PortalsUpdate_7DD70();
 int16_t TestMouseRegions_7E1F0();
 signed int sub_7E620(type_WORD_E1F84* a1x);
 char sub_7E800(type_WORD_E1F84* a1x);
