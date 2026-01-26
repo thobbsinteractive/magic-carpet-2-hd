@@ -46611,7 +46611,7 @@ char sub_7C200(unsigned __int8 a1)//25d200
 }
 
 //----- (0007E5A0) --------------------------------------------------------
-signed int sub_7E5A0_pre_draw(int  /*a1*/, int  /*a2*/, __int16 a3, __int16 a4, uint8_t* a5, __int16 a6, __int16 a7)//25f5a0
+signed int sub_7E5A0_pre_draw(__int16 a3, __int16 a4, uint8_t* a5, __int16 a6, __int16 a7)//25f5a0
 {
 	int v7; // edx
 	signed int v8; // esi
@@ -46801,23 +46801,19 @@ bool MoveAnimObject_7E9D0(x_WORD* x1, x_WORD* y1, type_animStruct* animStruct)//
 }
 
 //----- (00081260) --------------------------------------------------------
-void sub_81260(int  /*a1*/, int  /*a2*/, int8_t* a3, __int16 a4, __int16 a5)//262260
+void MoveAnimIndex_81260(type_animStruct3* animStruct, __int16 x1, __int16 y1)//262260
 {
-	int v5; // ecx
-
-	v5 = j___clock();
-	if ((unsigned int)(v5 - *(x_DWORD*)a3) >> 4 >= 1)
+	int time = j___clock();
+	if ((unsigned int)(time - animStruct->field_0) >> 4 >= 1)
 	{
-		if (*(signed __int16*)(a3 + 8) <= *(unsigned __int8*)(a3 + 11) - 1)
-			++*(x_WORD*)(a3 + 8);
+		if (animStruct->spriteIndex_8 <= animStruct->lastSpriteIndex_11 - 1)
+			animStruct->spriteIndex_8++;
 		else
-			*(x_WORD*)(a3 + 8) = *(unsigned __int8*)(a3 + 10);
-		*(x_DWORD*)a3 = v5;
+			animStruct->spriteIndex_8 = animStruct->firstSpriteIndex_10;
+		animStruct->field_0 = time;
 	}
-	sub_7C120_draw_bitmap_640(a4, a5, xy_DWORD_17DED4_spritestr[*(signed __int16*)(a3 + 8)]);
+	sub_7C120_draw_bitmap_640(x1, y1, xy_DWORD_17DED4_spritestr[animStruct->spriteIndex_8]);
 }
-// 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
-// 17DED4: using guessed type int (int)x_DWORD_17DED4;
 
 //----- (000812D0) --------------------------------------------------------
 int DrawMapObject_812D0(__int16 a1, __int16 a2)//2622d0
@@ -47099,7 +47095,7 @@ void sub_81360_draw_bitmap_line(int16_t minx, int16_t miny, int16_t maxx, int16_
 // 17DED4: using guessed type int (int)x_DWORD_17DED4;
 
 //----- (00081CA0) --------------------------------------------------------
-void sub_81CA0(int  /*a1*/, int  /*a2*/, __int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5x)//262ca0
+void sub_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5x)//262ca0
 {
 	unsigned __int8 v6; // dl
 	//int v8; // eax

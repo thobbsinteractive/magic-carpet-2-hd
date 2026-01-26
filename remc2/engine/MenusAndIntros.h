@@ -10,7 +10,7 @@
 #pragma pack (1)
 typedef struct //lenght 50
 {
-	uint32_t x_DWORD_17DB70; // weak
+	uint32_t time_17DB70; // weak
 	int16_t x_WORD_17DB74; // weak 4
 	int16_t unk_17DB76_posx; // weak 6
 	int16_t unk_17DB78_posy; // weak 8
@@ -90,7 +90,7 @@ void DrawMenuAnimations_7AB00();
 void LoadAndSetGraphicsAndPalette_7AC00();
 void sub_7ADE0(char a1);
 void sub_7BEC0();
-void sub_7DA70(__int16 a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int16 a6);
+void SetAnimationVariables_7DA70(__int16 a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int16 a6);
 void sub_7DD70();
 int16_t TestMouseRegions_7E1F0();
 signed int sub_7E620(type_WORD_E1F84* a1x);
