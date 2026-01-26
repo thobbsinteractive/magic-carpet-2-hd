@@ -25,6 +25,18 @@ extern TColor* x_DWORD_E12F4x; // weak
 extern int16_t x_WORD_17DB48; // weak
 extern char x_BYTE_D41C0; // weak
 
+extern __int16 x_WORD_E12FC;
+extern __int16 x_WORD_D4004;
+extern __int16 x_WORD_17DB58;
+extern uint16_t ActualKeyframe_17DB60;
+extern FILE* x_DWORD_17DB38_intro_file_handle;
+extern uint8_t unk_17DB40[];
+extern int16_t LastKeyframe_17DB46;
+extern int16_t x_WORD_17DB4A;
+extern int x_DWORD_E1300;
+extern __int16 x_WORD_17DB5A;
+extern __int16 x_WORD_17DB5C;
+
 void PlayInfoFmv(__int16 a1, __int16 a2, Type_SoundEvent_E17CC* pSoundEvent, char* path);//257160
 void FlvInitSet_473B0();
 void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent);

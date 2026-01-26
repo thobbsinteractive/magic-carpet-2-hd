@@ -1584,4 +1584,5 @@ void sub_84B80();
 void sub_58F00_game_objectives();
 void sub_57570();
 void sub_575C0();
+signed int sub_5C3D0_file_decompress(uint8_t* a1, uint8_t* a2);
 #endif
