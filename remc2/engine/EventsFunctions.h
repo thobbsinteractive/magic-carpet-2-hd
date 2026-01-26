@@ -240,17 +240,17 @@ typedef struct {
 } type_MainMenuAnimations_E1748;
 
 typedef struct {//lenght 30
-	int32_t dword_0;
-	int32_t dword_4;
-	int16_t word_8;
-	int16_t word_10;
-	int16_t word_12;
-	int16_t word_14;
-	int16_t word_16;
-	int16_t word_18;
+	int32_t time1_0;
+	int32_t time2_4;
+	int16_t x1_8;
+	int16_t y1_10;
+	int16_t firstFrame_12;
+	int16_t lastFrame_14;
+	int16_t frameIndex_16;
+	int16_t time3_18;
 	int8_t byte_20;
 	int8_t byte_21;
-	int16_t word_22;
+	int16_t time4_22;
 	int16_t word_24;
 	int16_t word_26;
 	//int8_t stuba[1];
@@ -510,7 +510,7 @@ char sub_7C200(uint8_t a1);
 void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3);
 void CreateAnimObject_7E8D0(type_animStruct* animStruct, __int16 x1, __int16 y1, __int16 x2, __int16 y2, __int16 countX, __int16 countY);
 bool MoveAnimObject_7E9D0(x_WORD* x1, x_WORD* y1, type_animStruct* a3);
-void sub_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5);
+void DrawAnimSprite_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5);
 bool DrawFrameAnim_7E5A0(__int16 posx, __int16 posy, Type_MapScreenPortals_E17CC* mapPortal, __int16 beginIndex, __int16 endIndex);
 void MoveAnimIndex_81260(type_animStruct3* animStruct, __int16 x1, __int16 y1);
 int DrawMapObject_812D0(__int16 a1, __int16 a2);

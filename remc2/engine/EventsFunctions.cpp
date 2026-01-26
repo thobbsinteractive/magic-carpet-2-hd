@@ -47066,56 +47066,51 @@ void sub_81360_draw_bitmap_line(int16_t minx, int16_t miny, int16_t maxx, int16_
 // 17DED4: using guessed type int (int)x_DWORD_17DED4;
 
 //----- (00081CA0) --------------------------------------------------------
-void sub_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5x)//262ca0
+void DrawAnimSprite_81CA0(__int16 posx, __int16 posy, type_x_BYTE_E25ED_db_str* a5x)//262ca0
 {
-	unsigned __int8 v6; // dl
-	//int v8; // eax
-
-	unsigned int vclock = j___clock();
-	v6 = a5x->byte_20;
-	if (v6 < 1u)
+	int time = j___clock();
+	if (a5x->byte_20 == 0)
 	{
-		if (!v6)
+		if (!a5x->byte_20)
 		{
 			a5x->byte_20 = 2;
-			a5x->dword_0 = vclock;
-			a5x->dword_4 = vclock;
+			a5x->time1_0 = time;
+			a5x->time2_4 = time;
 		}
 	}
-	else if (v6 <= 1u)
+	else if (a5x->byte_20 == 1)
 	{
-		if ((vclock - a5x->dword_4) >> 3 >= 1)
+		if ((time - a5x->time2_4) >> 3 >= 1)
 		{
-			if (a5x->word_16 <= a5x->word_14 - 2)
+			if (a5x->frameIndex_16 <= a5x->lastFrame_14 - 2)
 			{
-				a5x->word_16++;
+				a5x->frameIndex_16++;
 			}
 			else
 			{
 				if (a5x->byte_21 == 1)
 				{
-					//v8 = a5x->word_22;
 					a5x->byte_20 = 0;
 				}
-				a5x->word_16 = a5x->word_12;
+				a5x->frameIndex_16 = a5x->firstFrame_12;
 			}
-			a5x->dword_4 = vclock;
+			a5x->time2_4 = time;
 		}
 		sub_7C120_draw_bitmap_640(
-			a5x->word_8 - a3,
-			a5x->word_10 - a4,
-			xy_DWORD_17DED4_spritestr[a5x->word_16]);
+			a5x->x1_8 - posx,
+			a5x->y1_10 - posy,
+			xy_DWORD_17DED4_spritestr[a5x->frameIndex_16]);
 		if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)
-			a5x->word_16++;
+			a5x->frameIndex_16++;
 	}
-	else if (v6 == 2)
+	else if (a5x->byte_20 == 2)
 	{
-		vclock = (vclock - a5x->dword_0) / 0x64;
-		if (vclock > a5x->word_18)
+		time = (time - a5x->time1_0) / 0x64;
+		if (time > a5x->time3_18)
 		{
-			vclock = a5x->word_22;
+			time = a5x->time4_22;
 			a5x->byte_20 = 1;
-			if (vclock != -1)
+			if (time != -1)
 				sub_8F100_sound_proc19(
 					0,
 					a5x->word_24,
@@ -47127,10 +47122,6 @@ void sub_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5x)//262ca0
 		}
 	}
 }
-// 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
-// E1324: using guessed type char x_BYTE_E1324;
-// 17DED4: using guessed type int (int)x_DWORD_17DED4;
-// 17DEEE: using guessed type __int16 x_WORD_17DEEE_mouse_buttons;
 
 //----- (000824B0) --------------------------------------------------------
 Type_SecretMapScreenPortals_E2970* GetSecretAndActivedPortal_824B0(__int16 actLevel)//2634b0

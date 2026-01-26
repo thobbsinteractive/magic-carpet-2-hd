@@ -2989,10 +2989,10 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 	int index2 = -1;
 	int index3 = -1;
 	int time = j___clock();
-	for (int i = 0; x_BYTE_E26C8_str[i].word_8; i++)
+	for (int i = 0; x_BYTE_E26C8_str[i].x1_8; i++)
 	{
-		if (mapScreenPortals_E17CC[24].activated_18 != 1 || x_BYTE_E26C8_str[i].word_12 != 85 && x_BYTE_E26C8_str[i].word_12 != 86)
-			sub_81CA0(posx, posy, &x_BYTE_E26C8_str[i]);		
+		if (mapScreenPortals_E17CC[24].activated_18 != 1 || x_BYTE_E26C8_str[i].firstFrame_12 != 85 && x_BYTE_E26C8_str[i].firstFrame_12 != 86)
+			DrawAnimSprite_81CA0(posx, posy, &x_BYTE_E26C8_str[i]);		
 	}
 	//VGA_Debug_Blit(640, 480, pdwScreenBuffer_351628);
 	for (int i = 0; mapScreenPortals_E17CC[i].viewPortPosX_4; i++)//draw new game flag
