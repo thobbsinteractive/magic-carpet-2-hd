@@ -477,7 +477,7 @@ void NetworkUpdateConnections2_74374();
 int16_t GetIndexNetwork2_74515();
 void sub_7A060_get_mouse_and_keyboard_events();
 void sub_7AA70_load_and_decompres_dat_file(const char* a1, uint8_t* a2, int a3, int a4);
-void GameEvents_51BB0();
+void PlayerEvents_51BB0();
 //x_DWORD /*__cdecl*/ toupper(x_DWORD); //weak
 void sub_55C60(type_str_0x2BDE* loc0x2BDE);
 int32_t /*__cdecl*/ fix_filelength(int32_t);// weak

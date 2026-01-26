@@ -51,6 +51,7 @@ after NetworkCancel_748F7 not changed
 
 #include <filesystem>
 
+InputRecorder* m_InputRecorder = nullptr;
 Scene m_CurrentScene = Scene::PREAMBLE_MENU;
 #include "./engine/EventsFunctions.h"
 
@@ -749,9 +750,29 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 			x_BYTE_D41AD_skip_screen = config_skip_screen;
 		}
 
+		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
+			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
+		{
+			StartPlayback(CommandLineParams.GetPlaybackPath().c_str());
+		}
+		else if (CommandLineParams.GetRecordingPath().length() > 0)
+		{
+			StartRecording(CommandLineParams.GetRecordingPath().c_str());
+		}
+
 		Initialize();//236FDC - 23C8D0//rozdil 1E1000
 
 		sub_46830_main_loop(/*0, */v3, v4);//227830
+
+		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
+			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
+		{
+			StopPlayback();
+		}
+		else if (CommandLineParams.GetRecordingPath().length() > 0)
+		{
+			StopRecording();
+		}
 
 		sub_5BC20();//23CC20 //remove devices?
 		sub_56730_clean_memory();//237730
@@ -787,4 +808,50 @@ Scene GetCurrentScene()
 void SetCurrentScene(const Scene scene)
 {
 	m_CurrentScene = scene;
+}
+
+void StartRecording(const char* outputFileName)
+{
+	if (m_InputRecorder != nullptr)
+		delete m_InputRecorder;
+
+	m_InputRecorder = new InputRecorder(outputFileName);
+	m_InputRecorder->StartRecording();
+}
+
+void StopRecording()
+{
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
+	{
+		m_InputRecorder->StopRecording();
+		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
+	}
+}
+
+void StartPlayback(const char* inputFileName)
+{
+	if (m_InputRecorder != nullptr)
+	{
+		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
+	}
+
+	m_InputRecorder = new InputRecorder(inputFileName);
+	m_InputRecorder->StartPlayback();
+}
+
+void StopPlayback()
+{
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying)
+	{
+		m_InputRecorder->StopPlayback();
+		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
+	}
+}
+
+bool IsRecordingOrPlaying()
+{
+	return (m_InputRecorder != nullptr && (m_InputRecorder->m_IsPlaying || m_InputRecorder->m_IsRecording));
 }

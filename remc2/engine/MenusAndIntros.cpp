@@ -904,7 +904,7 @@ void MainMenu_76FA0()//257fa0
 	StartMusic_8E160(4, 0x7Fu);//26f160
 	x_WORD_17DE26 = 0;
 	VGA_cleanKeyBuffer();
-	if (x_BYTE_E29E1 || x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10 || (NewGameDialog_77350(0), !m_ExitMenuLoop_E29DC))
+	if (x_BYTE_E29E1 || x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE || (NewGameDialog_77350(0), !m_ExitMenuLoop_E29DC))
 	{
 		x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 &= 0xEFu;
 		sub_7A110_load_hscreen(x_WORD_180660_VGA_type_resolution, 4);
@@ -4657,7 +4657,7 @@ void sub_82670()//263670
 	LastPressedKey_1806E4 = 0;
 	if (!x_BYTE_E29E1)
 	{
-		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
+		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 		{
 			v2 = x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226;
 			DisplaySubtitles_D41C1 = 0;

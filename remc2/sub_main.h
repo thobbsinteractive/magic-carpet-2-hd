@@ -71,6 +71,8 @@ x_DWORD * sub_A5850(int a1, char a2, unsigned int a3, signed int a4, int a5);*/
 #ifndef SUB_MAIN_ACTIVE
 #define SUB_MAIN_ACTIVE
 
+extern InputRecorder* m_InputRecorder;
+
 void begin_plugin();
 void preconvert();
 void initposistruct();
@@ -93,6 +95,12 @@ Scene GetCurrentScene();
 void SetCurrentScene(const Scene scene);
 uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::string& subDir);
 void Initialize();
+
+void StartRecording(const char* outputFileName);
+void StopRecording();
+void StartPlayback(const char* inputFileName);
+void StopPlayback();
+bool IsRecordingOrPlaying();
 
 int sub_main(int argc, char** argv, char** envp);
 #endif //SUB_MAIN_ACTIVE

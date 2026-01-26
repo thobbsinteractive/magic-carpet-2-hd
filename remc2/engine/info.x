@@ -4399,7 +4399,7 @@ x_DWORD_180730_cursor_data
 270aa0 call void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tiley, int tilex, uint8_t* texture, uint8_t setbyte, char a6)//270935
 2708d7 call void drawBitmap320_8F8B0(int16_t posx, int16_t posy, posistruct temppstr)//2708B0
 26de71 call void sub_8CD27_set_cursor(posistruct a2)//26dd27
-1f9c2c call void sub_18BB0()//1f9bb0
+1f9c2c call void PauseUnpauseGame_18BB0()//1f9bb0
 
 ca5d45-d1ae42 13 15
 fc5135
@@ -5973,8 +5973,8 @@ for (jy = &D41A0_BYTESTR_0.struct_0x6E8E[1]; jy <= &D41A0_BYTESTR_0.struct_0x6E8
 
  sub_57FA0 - move player
 
- D41A0_BYTESTR_0.array_0x6E3E[0].str_0x6E3E_byte0
- D41A0_BYTESTR_0.array_0x6E3E[0].str_0x6E3E_byte5
+ D41A0_BYTESTR_0.playerInputs_0x6E3E[0].PlayerAction_byte0
+ D41A0_BYTESTR_0.playerInputs_0x6E3E[0].str_0x6E3E_byte5
 
  &Entities_EA3E4[0]->array_0x4C_76
 
@@ -6687,7 +6687,7 @@ versus
 sub_17060_compute_mouse_relative_pos - move mouse
 
 if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
-							sub_18BB0();
+							PauseUnpauseGame_18BB0();
 						x_BYTE_1806E4 = 0;
 
 debugcounter_47560
@@ -6946,7 +6946,7 @@ x_WORD_EB398ar = a1x->array_0x4C_76;
 v113x->dword_0xA4_164x->word_0x4_4 = ((v100x - ((v100x>>31) << 2)) - cftemp) >> 2;
 		//v113x->dword_0xA4_164x->word_0x4_4 = (signed int)(v100 - (__CFSHL__(HIDWORD(v100), 2) + 4 * HIDWORD(v100))) >> 2;
 		//v101 = v113x->dword_0xA4_164;
-		v102x = 2 * D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte4 - v113x->dword_0xA4_164x->word_0x157_343;
+		v102x = 2 * D41A0_BYTESTR_0.playerInputs_0x6E3E[v114x].str_0x6E3E_byte4 - v113x->dword_0xA4_164x->word_0x157_343;
 		cftemp = 0;
 		if ((v102x >> 30) & 1)cftemp = 1;
 		v102x = ((v102x - ((v102x >> 31) << 2)) - cftemp) >> 2;
@@ -7262,7 +7262,7 @@ sub_2BC10_draw_text(v11x, v9, v13, v8); ?
 sub_2BC10_draw_text(printbuffer, v4x, v2, (*xadataclrd0dat.colorPalette_var28)[0xf00]);
 
 v83 = D41A0_BYTESTR_0.array_0x2BDE[v18x].array_0x01c_2BFA_11258;
-v84 = x_DWORD_E9C4C_langindexbuffer[*(int16_t*)&x_DWORD_DA750ar[0xde+2*40 * v82 + 13 * D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2]];
+v84 = x_DWORD_E9C4C_langindexbuffer[*(int16_t*)&x_DWORD_DA750ar[0xde+2*40 * v82 + 13 * D41A0_BYTESTR_0.playerInputs_0x6E3E[v114x].str_0x6E3E_byte2]];
 strcpy(v83,v84);
 
 //fixing
@@ -7275,7 +7275,7 @@ sub_6EB90(&filearray_2aa18c[filearrayindex_BUILD00DATTAB]);//24fb90 adress 0x23c
 
 &v37x->dword_0xA4_164x->str_611.array_0x437_1079x.byte[spellIndex_D94FF[v54]]
 
-v79x->array_0x437_1079x.byte[spellIndex_D94FF[D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2]] = D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte2;
+v79x->array_0x437_1079x.byte[spellIndex_D94FF[D41A0_BYTESTR_0.playerInputs_0x6E3E[v114x].str_0x6E3E_byte2]] = D41A0_BYTESTR_0.playerInputs_0x6E3E[v114x].str_0x6E3E_byte2;
 
 x_BYTE_10B4E0 + 0x5050 (0x3)
 versus
@@ -7310,7 +7310,7 @@ x_WORD_15B4E0+0xb12a 0x05
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x2fc4 0x0
 0x356038+0x2fc4
 
-D41A0_BYTESTR_0.array_0x6E3E[0].str_0x6E3E_byte5
+D41A0_BYTESTR_0.playerInputs_0x6E3E[0].str_0x6E3E_byte5
 &unk_18058Cstr.x_DWORD_18059C
 
 (uint8_t*)&D41A0_BYTESTR_0+0x2c18 0x65
@@ -8096,7 +8096,7 @@ versus
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x2fc4 0x0
 0x356038 +0x2fc4
 
-v113x->dword_0xA4_164x->dword_0x0_0 = D41A0_BYTESTR_0.array_0x6E3E[0].str_0x6E3E_byte5;
+v113x->dword_0xA4_164x->dword_0x0_0 = D41A0_BYTESTR_0.playerInputs_0x6E3E[0].str_0x6E3E_byte5;
 
 void sub_18F80(type_str_0x6E8E* a1x)//1f9f80
 
@@ -9058,7 +9058,7 @@ type_str_0x6E8E* sub_4A050_new_event()//22b050
 
 0x2a26
 0x2a6c
-D41A0_BYTESTR_0.array_0x6E3E[0].str_0x6E3E_byte0==0x2a
+D41A0_BYTESTR_0.playerInputs_0x6E3E[0].PlayerAction_byte0==0x2a
 
  (uint8_t*)&D41A0_BYTESTR_0+0x18568 0xfd
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x18568 0x65
@@ -9643,7 +9643,7 @@ void sub_12500(type_str_0x6E8E* a1x)//1f3500
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x3c6e 0x01
 0x356038 +0x3c6e
 
-D41A0_BYTESTR_0.array_0x6E3E[D41A0_BYTESTR_0.word_0xc].str_0x6E3E_byte0
+D41A0_BYTESTR_0.playerInputs_0x6E3E[D41A0_BYTESTR_0.word_0xc].PlayerAction_byte0
 
 case 0x2A:
 //v97 = v113x->dword_0xA4_164;
@@ -9665,7 +9665,7 @@ case 0x240ca0: {
 byte_0x3F_63 == 3
 byte_0x45_69 == 6
 
-switch (D41A0_BYTESTR_0.array_0x6E3E[v114x].str_0x6E3E_byte0)
+switch (D41A0_BYTESTR_0.playerInputs_0x6E3E[v114x].PlayerAction_byte0)
 
 v98x = Entities_EA3E4[v113x->dword_0xA4_164x->word_0x3A_58];
 
