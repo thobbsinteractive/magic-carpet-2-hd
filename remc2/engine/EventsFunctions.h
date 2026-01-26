@@ -265,14 +265,14 @@ extern __int16 x_WORD_E29DA_type_resolution; // weak
 
 #pragma pack (1)
 typedef struct {//lenght 18
-	int16_t word_0;
-	int16_t word_2;
-	int16_t word_4;
-	int16_t word_6;
-	int16_t word_8;
+	int16_t textIndex_0;
+	int16_t minx2_2;
+	int16_t miny2_4;
+	int16_t minx_6;
+	int16_t miny_8;
 	int16_t word_10;
-	int16_t word_12;
-	int16_t word_14;
+	int16_t maxx_12;
+	int16_t maxy_14;
 	int8_t byte_16;
 	int8_t byte_17;
 }

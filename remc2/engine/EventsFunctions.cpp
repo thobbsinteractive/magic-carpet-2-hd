@@ -46635,27 +46635,15 @@ bool DrawFrameAnim_7E5A0(__int16 posx, __int16 posy, Type_MapScreenPortals_E17CC
 //----- (0007E840) --------------------------------------------------------
 void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)//25f840
 {
-	//uint16_t* v3; // ebx
-	int v3x;
-	signed __int16 v5; // si
-	//signed __int16 v6; // di
-
-	//v3 = a1;
-	v3x = 0;
-	if (!a1x[v3x].word_2)
+	int i = 0;
+	if (!a1x[i].minx2_2)
 		return;
 	do
 	{
-		if (a1x[v3x].word_2)
+		if (a1x[i].minx2_2)
 		{
-			v5 = a1x[v3x].word_2;
-			//v6 = v3[1];
-			//zatim nic
-			//18d 12a 141 ec - 18d 12a 141 ec -1
-			//c4 26 11b 6a - c4 26 11b 6a -0 - chybi ocasek
-			sub_81360_draw_bitmap_line(a1x[v3x].word_6/* + (v3[4] << 16)*/, a1x[v3x].word_8, a1x[v3x].word_12/* + (v3[7] << 16)*/, a1x[v3x].word_14, a3);//262360
-			//pridany tecky
-			sub_7FCB0_draw_text_with_border(/*v3[0],*/ x_DWORD_E9C4C_langindexbuffer[a1x[v3x].word_0], v5, (v5 + 180), a1x[v3x].word_4, 0, 0, a2);//260cb0
+			sub_81360_draw_bitmap_line(a1x[i].minx_6, a1x[i].miny_8, a1x[i].maxx_12, a1x[i].maxy_14, a3);//262360
+			sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[a1x[i].textIndex_0], a1x[i].minx2_2, (a1x[i].minx2_2 + 180), a1x[i].miny2_4, 0, 0, a2);//260cb0
 			/*
 			Save Current Game
 			Exit Game
@@ -46674,11 +46662,9 @@ void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)/
 			Configure Keyboard controls
 
 			*/
-			//pridan ramecek s textem
 		}
-		//v3 += 9;
-		v3x++;
-	} while (a1x[v3x].word_2);
+		i++;
+	} while (a1x[i].minx2_2);
 }
 
 //----- (0007E8D0) --------------------------------------------------------
