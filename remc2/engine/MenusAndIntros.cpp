@@ -2378,7 +2378,7 @@ void PortalsUpdate_7DD70()//25ed70
 	}
 }
 
-int GetMapManuDialogIndex_7E320(uint32_t adress, type_WORD_E1F84* a1x)
+int GetMapMenuDialogIndex_7E320(uint32_t adress, type_WORD_E1F84* a1x)
 {
 	switch (adress)
 	{
@@ -2516,7 +2516,7 @@ signed int DrawBitmapAndPlaySound_7E320()//25f320
 		do //adress 25f57c
 		{
 			if (str_E23E0[index].selected_8 && str_E23E0[index].dword_0) {
-				uint8_t dialogIndex = GetMapManuDialogIndex_7E320(str_E23E0[index].dword_0, &str_E23E0[index]);
+				uint8_t dialogIndex = GetMapMenuDialogIndex_7E320(str_E23E0[index].dword_0, &str_E23E0[index]);
 				if (!dialogIndex)//
 					return 1;
 				str_E23E0[index].selected_8 = 0;
