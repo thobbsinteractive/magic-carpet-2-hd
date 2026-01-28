@@ -3681,61 +3681,39 @@ int sub_7F960(bitmap_pos_struct2_t* a1x, bitmap_pos_struct2_t* a2x, uint8_t* a3,
 // 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00080C30) --------------------------------------------------------
-void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3)//261c30
+void DrawText_80C30(__int16 posX, __int16 posY, __int16 addWidth)//261c30
 {
-	signed int v3; // ebx
-	//char *v4; // eax
-	int v4x;
-	signed int v5; // edx
-	//int16_t* i; // eax
-	unsigned __int8 v7; // ST14_1
-	int v8; // ST08_4
-	__int16 v9; // ax
-
-	v3 = -1;
-	//v4 = (char *)unk_E17CC_0x194;
-	v4x = 0;
-	v5 = 0;
-	while (mapScreenPortals_E17CC[v4x].viewPortPosX_4)
+	int index2 = -1;
+	for (int i=0; mapScreenPortals_E17CC[i].viewPortPosX_4;i++)
 	{
-		if (mapScreenPortals_E17CC[v4x].activated_18 == 2)
+		if (mapScreenPortals_E17CC[i].activated_18 == 2)
 		{
-			v3 = v5;
+			index2 = i;
 			break;
 		}
-		//v4 += 22;
-		v4x++;
-		v5++;
 	}
 	if (posY + posX > 0)
 	{
-		//for (i = x_WORD_E2970; *(int32_t*)&i[6]; i = (x_WORD *)((char *)i + 17))
 		for (int ii = 0; secretMapScreenPortals_E2970[ii].activated_12; ii++)
 		{
-			if (secretMapScreenPortals_E2970[ii].activated_12 != 3 && v3 == secretMapScreenPortals_E2970[ii].index_4)
+			if (secretMapScreenPortals_E2970[ii].activated_12 != 3 && index2 == secretMapScreenPortals_E2970[ii].index_4)
 			{
 				x_DWORD_17DE28str.x_BYTE_17DE34 = 3;
 				return;
 			}
 		}
 		GetFont_6FC50(1);
-		v7 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
-		v8 = (signed __int16)(posX + a3 - 3 * GetLetterWidth_6FC10());
-		v9 = GetLetterWidth_6FC10();
-		sub_7FCB0_draw_text_with_border(/*v3,*/ x_DWORD_E9C4C_langindexbuffer[23 + v3], (signed __int16)(posX + 4 * v9), v8, posY, 5, v7, 1);
+		uint8_t colorIndex = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
+		sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[23 + index2], posX + 4 * GetLetterWidth_6FC10(), posX + addWidth - 3 * GetLetterWidth_6FC10(), posY, 5, colorIndex, 1);
 		//"You must explore the outer Netherworlds while you learn its magic. Your first destination is the ancient city of Jahwl."+
 	}
 	if (x_DWORD_17DE28str.x_BYTE_17DE34 != 3 && x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x40 && !x_BYTE_17E09D)
 	{
 		x_BYTE_17E09D = 1;
-		if ((signed __int16)v3 != -1)
-			sub_86EB0(v3, 0, 0);
+		if (index2 != -1)
+			sub_86EB0(index2, 0, 0);
 	}
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
-// 17DE34: using guessed type char x_BYTE_17DE34;
-// 17DE38: using guessed type int x_DWORD_17DE38;
-// 17E09D: using guessed type char x_BYTE_17E09D;
 
 //----- (00080D40) --------------------------------------------------------
 bool sub_80D40_move_graphics_and_play_sounds(__int16 a2, __int16 a3, __int16 a4, __int16 a5, char a6)//261d40

@@ -558,7 +558,7 @@ int32_t /*__cdecl*/ x_tolower(int32_t);// weak
 void sub_2EC30_clear_img_mem();
 void sub_2EB60();
 void sub_2EBB0_draw_text_with_border_630x340(char* textString);
-int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8);//560cb0
+void sub_7FCB0_draw_text_with_border(char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8);//560cb0
 void sub_7C120_draw_bitmap_640(int16_t posx, int16_t posy, bitmap_pos_struct_t tempstr);
 uint8_t getPaletteIndex_5BE80(TColor* a1x, uint8_t a2, uint8_t a3, uint8_t a4);
 void sub_7C140_draw_text_background(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5);

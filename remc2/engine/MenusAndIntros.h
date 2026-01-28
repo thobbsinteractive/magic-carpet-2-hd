@@ -129,12 +129,12 @@ extern Type_SoundEvent_E17CC str_E17CC_0[];
 extern bool map_not_moving_WORD_E29D6;
 extern Type_unk_17DBA8str unk_17DBA8str;
 extern type_x_DWORD_17DB70str x_DWORD_17DB70str;
-
 extern type_x_BYTE_E25ED_db_str x_BYTE_E26C8_str[];
 extern type_E24BCx str_E24F2[];
-
 extern Type_DWORD_17DE28str x_DWORD_17DE28str;
 extern type_WORD_E20A4 str_WORD_E20A4[];
+extern type_WORD_E1F84 str_E23E0[];
+extern type_E24BCx str_E2516[];
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -208,3 +208,4 @@ void sub_41BC0();
 void sub_2EB40();
 void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
 signed int DrawBitmapAndPlaySound_7E320();
+int GetMapMenuDialogIndex_7E320(uint32_t adress, type_WORD_E1F84* a1x);

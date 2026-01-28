@@ -630,7 +630,7 @@ void sub_2EBB0_draw_text_with_border_630x340(char* textString)//20fbb0
 }
 
 //----- (0007FCB0) --------------------------------------------------------
-int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8)//260cb0
+void sub_7FCB0_draw_text_with_border(char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8)//260cb0
 {
 	int v8; // esi
 	signed __int16 j; // di
@@ -1159,16 +1159,15 @@ int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* textString, int32_t a3, in
 			sub_7FAE0_draw_text(v87, v99, a4, v98, 0/*v86*/);//draw text(with palette?) 
 		}
 	}
-	if (a6)
-		return v98 - v102;
+	//if (a6)
+	//	return;
 	//HIWORD(v84) = HIWORD(xy_DWORD_17DED4_spritestr);
-	v84 = xy_DWORD_17DED4_spritestr[(a8 + 2)].height_5;
+	//v84 = xy_DWORD_17DED4_spritestr[(a8 + 2)].height_5;
 
 	//debug
 	//compare_with_snapshot((char*)"0x45678", (uint8_t*)&v8, 0x4589, 4);
 	//debug
 
-	return a1 - v102 + v84;
 }
 
 //----- (0007C120) --------------------------------------------------------
