@@ -131,8 +131,8 @@ void SetAnimationVariables_7DA70(__int16 a1, __int16 a2, __int16 a3, __int16 a4,
 void PortalsUpdate_7DD70();
 int16_t TestMouseRegions_7E1F0();
 signed int sub_7E620(type_WORD_E1F84* a1x);
-char sub_7E800(type_WORD_E1F84* a1x);
-char sub_7E820(type_WORD_E1F84* a1x);
+char SaveGameDialog_7E800(type_WORD_E1F84* a1x);
+char LoadGameDialog_7E820(type_WORD_E1F84* a1x);
 int NewGameDraw_7EAE0(__int16* posx, __int16* posy, __int16* a3, __int16* a4, int8_t* a5, type_animStruct* animStruct);
 int LoadLanguageFile(bitmap_pos_struct2_t** a1x, bitmap_pos_struct2_t** a2x, uint8_t* a3, char* langfilename, bitmap_pos_struct_t* a3dattabindex);
 int sub_7F960(bitmap_pos_struct2_t* a1x, bitmap_pos_struct2_t* a2x, uint8_t* a3, char* langcountstring, bitmap_pos_struct_t* a3dattabindex);
@@ -182,4 +182,4 @@ void sub_85BF5(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
 void sub_41BC0();
 void sub_2EB40();
 void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
-signed int sub_7E320_draw_bitmaps_and_play_sounds();
+signed int DrawBitmapAndPlaySound_7E320();

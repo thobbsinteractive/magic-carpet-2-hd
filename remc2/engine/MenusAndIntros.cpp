@@ -2402,15 +2402,15 @@ void PortalsUpdate_7DD70()//25ed70
 	}
 }
 
-int pre_sub_7E320(uint32_t adress, type_WORD_E1F84* a1x)
+int GetMapManuDialogIndex_7E320(uint32_t adress, type_WORD_E1F84* a1x)
 {
 	switch (adress)
 	{
 	case 0x25f800: {
-		return sub_7E800(a1x);//25f800
+		return SaveGameDialog_7E800(a1x);//25f800
 	}
 	case 0x25f820: {
-		return sub_7E820(a1x);//25f800
+		return LoadGameDialog_7E820(a1x);//25f800
 	}
 	case 0x25f640: {
 		return sub_7E640(a1x);//25f800
@@ -2524,126 +2524,84 @@ void SetAnimationVariables_7DA70(__int16 x1, __int16 y1, __int16 x2, __int16 y2,
 }
 
 //----- (0007E320) --------------------------------------------------------
-signed int sub_7E320_draw_bitmaps_and_play_sounds(/*__int16 a1, int a2*/)//25f320
+signed int DrawBitmapAndPlaySound_7E320()//25f320
 {
-	int ix;
-	int v3x;
-	int jx;
-	int ky;
-	int v9; // edx
-	int v11y;
-	bitmap_pos_struct_t* v12; // edi
-	bitmap_pos_struct2_t* v13x; // esi
-	type_E24BCx v14x[2];
-
-	for (ix = 0; str_E23E0[ix].byte_25; ix++)//draw buttons
+	type_E24BCx textBoxStr[2];
+	for (int i = 0; str_E23E0[i].byte_25; i++) //draw buttons
 	{
-		if (str_E23E0[ix].canSelect_23)
-		{
-			//a2 = str_E23E0[ix].byte_21;
-			sub_7C120_draw_bitmap_640(str_E23E0[ix].xmin_10, str_E23E0[ix].ymin_12, xy_DWORD_17DED4_spritestr[str_E23E0[ix].byte_21]);
+		if (str_E23E0[i].canSelect_23) {
+			sub_7C120_draw_bitmap_640(str_E23E0[i].xmin_10, str_E23E0[i].ymin_12, xy_DWORD_17DED4_spritestr[str_E23E0[i].byte_21]);
 		}
 	}
 	if (x_DWORD_17DB70str.x_BYTE_17DB8E)
 		return 0;
-	v3x = 0;
-	if (str_E23E0[v3x].byte_25)
-	{
-		do//adress 25f57c
+	int index = 0;
+	if (str_E23E0[index].byte_25) {
+		do //adress 25f57c
 		{
-			if (str_E23E0[v3x].selected_8 && str_E23E0[v3x].dword_0)
-			{
-				uint8_t v5 = pre_sub_7E320(str_E23E0[v3x].dword_0, &str_E23E0[v3x]);
-				if (!v5)
+			if (str_E23E0[index].selected_8 && str_E23E0[index].dword_0) {
+				uint8_t dialogIndex = GetMapManuDialogIndex_7E320(str_E23E0[index].dword_0, &str_E23E0[index]);
+				if (!dialogIndex)//
 					return 1;
-				str_E23E0[v3x].selected_8 = 0;
+				str_E23E0[index].selected_8 = 0;
 				ResetMouse_7B5A0();
-				return v5;
+				return dialogIndex;
 			}
-			v3x++;
-		} while (str_E23E0[v3x].byte_25);
-		jx = 0;
-		if (!str_E23E0[0].byte_25)
-		{
-			ky = 0;
-			goto LABEL_34;
-		}
-		goto LABEL_17;
+			index++;
+		} while (str_E23E0[index].byte_25);
 	}
-	for (jx = 0; str_E23E0[jx].byte_25; jx++ )
-	{
-	LABEL_17:
-		if (str_E23E0[jx].canSelect_23 && str_E23E0[jx].gold_color_24)
-			sub_7C120_draw_bitmap_640(str_E23E0[jx].xmin_10, str_E23E0[jx].ymin_12, xy_DWORD_17DED4_spritestr[str_E23E0[jx].byte_20]);
-		
-		str_E23E0[jx].selected_8 = 0;
-		str_E23E0[jx].gold_color_24 = 0;		
+	for (int i = 0; str_E23E0[i].byte_25; i++) {
+		if (str_E23E0[i].canSelect_23 && str_E23E0[i].gold_color_24)
+			sub_7C120_draw_bitmap_640(str_E23E0[i].xmin_10, str_E23E0[i].ymin_12, xy_DWORD_17DED4_spritestr[str_E23E0[i].byte_20]);
+		str_E23E0[i].selected_8 = 0;
+		str_E23E0[i].gold_color_24 = 0;
 	}
-	for (ky = 0; ; ky++)
-	{
-	LABEL_34:
-		if (!str_E23E0[ky].byte_25)
-		{
+	for (int i = 0;; i++) {
+		if (!str_E23E0[i].byte_25) {
 			sub_82510();
 			return 0;
 		}
-		if (str_E23E0[ky].canSelect_23)
-		{
-			v9 = str_E23E0[ky].byte_20;
-			str_E23E0[ky].sizex_14 = xy_DWORD_17DED4_spritestr[v9].width_4;
-			str_E23E0[ky].sizey_16 = xy_DWORD_17DED4_spritestr[v9].height_5;
-			if (InRegion_7B200(&str_E23E0[ky], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))
-				break;
+		if (str_E23E0[i].canSelect_23) {
+			str_E23E0[i].sizex_14 = xy_DWORD_17DED4_spritestr[str_E23E0[i].byte_20].width_4;
+			str_E23E0[i].sizey_16 = xy_DWORD_17DED4_spritestr[str_E23E0[i].byte_20].height_5;
+			if (InRegion_7B200(&str_E23E0[i], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony)) {
+				if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1) {
+					str_E23E0[i].selected_8 = 1;
+					ResetMouse_7B5A0();
+					sub_8F100_sound_proc19(0, 14, 127, 64, 0x64u, 0, 3u);
+				}
+				else {
+					str_E23E0[i].gold_color_24 = 1;
+					if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1)
+						return 0;
+					int index2 = 0;
+					if (!str_E2516[index2].minx2_2)
+						return 0;
+					do //adress 25f4e7
+					{
+						if (str_E2516[index2].byte_17 == str_E23E0[i].byte_22) {
+							memset(textBoxStr, 0, 36);
+							textBoxStr[0] = str_E2516[index2];
+							bitmap_pos_struct_t* tempSpriteStr = xy_DWORD_17DEC0_spritestr;
+							bitmap_pos_struct2_t* tempx_DWORD_17DEC4 = x_DWORD_17DE38str.x_DWORD_17DEC4;
+							xy_DWORD_17DEC0_spritestr = xy_DWORD_17DEC8_spritestr;
+							x_DWORD_17DE38str.x_DWORD_17DEC4 = x_DWORD_17DE38str.x_DWORD_17DECC;
+							sub_7E840_draw_textbox_with_line(textBoxStr, 238, 264);
+							xy_DWORD_17DEC0_spritestr = tempSpriteStr;
+							x_DWORD_17DE38str.x_DWORD_17DEC4 = tempx_DWORD_17DEC4;
+							return 0;
+						}
+						index2++;
+					} while (str_E2516[index2].minx2_2);
+					return 0;
+				}
+			}
 		}
-	LABEL_33:
-		;
 	}
-	if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)
-	{
-		str_E23E0[ky].selected_8 = 1;
-		ResetMouse_7B5A0();
-		sub_8F100_sound_proc19(0, 14, 127, 64, 0x64u, 0, 3u);
-		goto LABEL_33;
-	}
-	str_E23E0[ky].gold_color_24 = 1;
-	if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1)
-		return 0;
-	v11y = 0;
-	if (!str_E2516[v11y].minx2_2)
-		return 0;
-	do//adress 25f4e7
-	{
-		if (str_E2516[v11y].byte_17 == str_E23E0[ky].byte_22)
-		{
-			memset(v14x, 0, 36);
-			v14x[0] = str_E2516[v11y];
-			v12 = xy_DWORD_17DEC0_spritestr;
-			v13x = x_DWORD_17DE38str.x_DWORD_17DEC4;
-
-			xy_DWORD_17DEC0_spritestr = xy_DWORD_17DEC8_spritestr;
-			x_DWORD_17DE38str.x_DWORD_17DEC4 = x_DWORD_17DE38str.x_DWORD_17DECC;
-			sub_7E840_draw_textbox_with_line(v14x, 238, 264);
-			xy_DWORD_17DEC0_spritestr = v12;
-			x_DWORD_17DE38str.x_DWORD_17DEC4 = v13x;
-			return 0;
-		}
-		v11y++;
-	} while (str_E2516[v11y].minx2_2);
-	return 0;
 }
-// 8C250: using guessed type x_DWORD memset(x_DWORD, x_DWORD, x_DWORD);
-// D41A4: using guessed type int x_DWORD_D41A4;
-// 17DB8E: using guessed type char x_BYTE_17DB8E;
-// 17DEC0: using guessed type int (int)x_DWORD_17DEC0;
-// 17DEC4: using guessed type int (int)x_DWORD_17DEC4;
-// 17DEC8: using guessed type int x_DWORD_17DEC8;
-// 17DECC: using guessed type int x_DWORD_17DECC;
-// 17DED4: using guessed type int (int)x_DWORD_17DED4;
-// 17DEE4: using guessed type int x_DWORD_17DEE4_mouse_position;
-// 17DEEE: using guessed type __int16 x_WORD_17DEEE_mouse_buttons;
 
 //----- (0007E800) --------------------------------------------------------
-char sub_7E800(type_WORD_E1F84* a1x)//25f800
+char SaveGameDialog_7E800(type_WORD_E1F84* a1x)//25f800
 {
 	char result; // al
 
@@ -2958,7 +2916,7 @@ char SaveGameDialog_78730(type_WORD_E1F84* a1x)//259730
 // 17DF11: using guessed type char x_BYTE_17DF11_last_key_status;
 
 //----- (0007E820) --------------------------------------------------------
-char sub_7E820(type_WORD_E1F84* a1x)//25f820
+char LoadGameDialog_7E820(type_WORD_E1F84* a1x)//25f820
 {
 	char result; // al
 
@@ -3461,7 +3419,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* portPosX, __int16* 
 				DrawEndGameTable_82C20(x_DWORD_17DB70str.x_WORD_17DB8C);
 			}
 		}
-		result2 = sub_7E320_draw_bitmaps_and_play_sounds();
+		result2 = DrawBitmapAndPlaySound_7E320();
 		if (!x_DWORD_17DB70str.x_BYTE_17DB8E && !result && !result2)
 		{
 			if (*a5 == 3)

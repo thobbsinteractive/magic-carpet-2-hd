@@ -2396,7 +2396,7 @@ sub_7FCB0_draw_text_with_border(v3, x_DWORD_E9C4C_langindexbuffer[23 + v3], (sig
 
 3800000
 
-signed int sub_7E320_draw_bitmaps_and_play_sounds(__int16 a1, int a2)//25f320
+signed int DrawBitmapAndPlaySound_7E320(__int16 a1, int a2)//25f320
 helps
 
 int sub_82510(__int16 a1, int *a2)//263510
@@ -2554,8 +2554,8 @@ void sub_5C950(uint8_t* a1, uint8_t* a2)//23d950
 unsigned int sub_7277A(unsigned int a1)//25377a
 
 result = sub_78730_save_game_dialog(a1);
-char sub_7E800(x_WORD *a1)//25f800
-signed int sub_7E320_draw_bitmaps_and_play_sounds(__int16 a1, int a2)//25f320
+char SaveGameDialog_7E800(x_WORD *a1)//25f800
+signed int DrawBitmapAndPlaySound_7E320(__int16 a1, int a2)//25f320
 
 355184 -> 60592c+2->1b
 v58=200
