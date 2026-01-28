@@ -60,6 +60,30 @@ typedef struct //lenght 13
 } Type_DWORD_17DE28str;
 #pragma pack(16)
 
+#pragma pack (1)
+typedef struct {//lenght 69
+	int32_t time_0;//0
+	uint8_t stub_4;//4
+	uint8_t stub_5;//5
+	uint8_t stub_6;//6
+	uint8_t stub_7;//7
+	uint8_t stub_8;//8
+	uint8_t stub_9;//9
+	int16_t word_10;//10	
+	int8_t byte_12;//12
+	uint8_t stub_13;//13
+	int16_t word_14;//14	
+	int8_t byte_16;//16
+	uint8_t stub_17;//17
+	type_animStruct2 array_word_18;////18
+	int8_t byte_42;//42
+	int8_t byte_43;//43
+	uint8_t byte_44;//44
+	type_animStruct array_word_45;//45
+}
+type_WORD_E20A4;
+#pragma pack (16)
+
 enum class MenuItem : int {
 	InitLanguage = 0,
 	SetToIntro = 1,
@@ -110,6 +134,7 @@ extern type_x_BYTE_E25ED_db_str x_BYTE_E26C8_str[];
 extern type_E24BCx str_E24F2[];
 
 extern Type_DWORD_17DE28str x_DWORD_17DE28str;
+extern type_WORD_E20A4 str_WORD_E20A4[];
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
