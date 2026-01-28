@@ -7,8 +7,25 @@
 #include "TypeConfigDat.h"
 
 // types
+
+extern int16_t MOUSE_MIN;
+extern int16_t MOUSE_MAX_X;
+extern int16_t MOUSE_MAX_Y;
+
+#pragma pack(1)
+typedef struct // size 16
+{
+	uint32_t unk_17DBA8; // weak 40
+	uint32_t unk_17DBAC; //1(+4)
+	uint32_t unk_17DBB0; //2(+8)
+	uint16_t unk_17DBB4; //3(+12)
+	uint8_t x_BYTE_17DBB5; //(+14)
+	uint8_t x_BYTE_17DBB6; //(+15)
+} Type_unk_17DBA8str; //16
+#pragma pack(16)
+
 #pragma pack (1)
-typedef struct //lenght 50
+typedef struct //lenght 56
 {
 	uint32_t time_17DB70; // weak
 	int16_t x_WORD_17DB74; // weak 4
@@ -31,6 +48,17 @@ typedef struct //lenght 50
 	//std::array<uint8_t, 16> fill3; // fill
 } type_x_DWORD_17DB70str;
 #pragma pack (16)
+
+#pragma pack(1)
+typedef struct //lenght 13
+{
+	int32_t time_17DE28; // weak x_DWORD_17DE28str
+	int32_t time2_17DE2C; // weak x_DWORD_17DE28str+4
+	int16_t x_WORD_17DE30_posx; // weak x_DWORD_17DE28str+8
+	int16_t x_WORD_17DE32_posy; // weak x_DWORD_17DE28str+10
+	int8_t DisplayLevelDescriptionText_17DE34; // weak x_DWORD_17DE28str+12
+} Type_DWORD_17DE28str;
+#pragma pack(16)
 
 enum class MenuItem : int {
 	InitLanguage = 0,
@@ -72,6 +100,15 @@ extern uint8_t unk_180560x[44];
 extern type_unk_18058Cstr unk_18058Cstr;
 
 extern int test_regression_level;
+extern Type_SoundEvent_E17CC str_E17CC_0[];
+extern bool map_not_moving_WORD_E29D6;
+extern Type_unk_17DBA8str unk_17DBA8str;
+extern type_x_DWORD_17DB70str x_DWORD_17DB70str;
+
+extern type_x_BYTE_E25ED_db_str x_BYTE_E26C8_str[];
+extern type_E24BCx str_E24F2[];
+
+extern Type_DWORD_17DE28str x_DWORD_17DE28str;
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -90,7 +127,7 @@ void LoadAndSetGraphicsAndPalette_7AC00();
 void sub_7ADE0(char a1);
 void sub_7BEC0();
 void SetAnimationVariables_7DA70(__int16 a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int16 a6);
-void sub_7DD70();
+void PortalsUpdate_7DD70();
 int16_t TestMouseRegions_7E1F0();
 signed int sub_7E620(type_WORD_E1F84* a1x);
 char sub_7E800(type_WORD_E1F84* a1x);
@@ -141,5 +178,7 @@ void CleanRecByColor_85C42(uint8_t* a1, int a2, int a3, int a4, int a5, unsigned
 void DrawNetworkLevelName_7D380();
 void PaletteCopy_7C800(signed __int16 a1);
 void sub_85BF5(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
-
 void sub_41BC0();
+void sub_2EB40();
+void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
+signed int sub_7E320_draw_bitmaps_and_play_sounds();
