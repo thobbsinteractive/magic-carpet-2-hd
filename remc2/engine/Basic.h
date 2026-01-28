@@ -150,17 +150,11 @@ extern uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff
 extern uint8_t* x_BYTE_F6EE0_tablesx_pre;
 extern uint8_t* x_BYTE_FAEE0_tablesx_pre;
 
-extern int iScreenWidth_DE560; // weak //screen X // DE560
-
 extern std::array<uint8_t*, 256> x_DWORD_DDF50_texture_adresses; /*= { 0,32 }*/ // weak
 
 extern type_E9C38_smalltit Str_E9C38_smalltit[21 * 40];
 
 extern type_F2C20ar str_F2C20ar;
-
-extern uint8_t* ViewPortRenderBufferStart_DE558;
-
-extern uint8_t* ViewPortRenderBufferAltStart_DE554;
 
 extern std::string gameDataPath;
 extern std::string cdDataPath;

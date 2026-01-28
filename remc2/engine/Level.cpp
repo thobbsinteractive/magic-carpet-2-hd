@@ -969,7 +969,7 @@ void SetSpell_6D5E0(type_entity_0x6E8E* entity, int spellId)//24e5e0
 		if (entity->word_0x30_48)
 			mana /= entity->word_0x30_48;
 		entity->mana_0x90_144 = mana;
-		if (x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0x20)
+		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x20)
 		{
 			entity->manaRegen_0x88_136 = 0;
 			entity->mana_0x90_144 = 1;

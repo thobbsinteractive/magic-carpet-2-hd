@@ -50,10 +50,10 @@ after NetworkCancel_748F7 not changed
 #endif //__linux__
 
 #include <filesystem>
+#include "./engine/EventsFunctions.h"
 
 InputRecorder* m_InputRecorder = nullptr;
 Scene m_CurrentScene = Scene::PREAMBLE_MENU;
-#include "./engine/EventsFunctions.h"
 
 //int test_regression_level = 1;
 //first multi is 50(51) 10
@@ -594,9 +594,9 @@ void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)
 		{
 			sub_86860_speak_Sound(x_WORD_1803EC);
 			sub_86BD0_freemem1();
-			//v6 = x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0xBF;
+			//v6 = x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0xBF;
 			x_BYTE_E2A28_speek = soundAble_E3798;
-			(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24) &= 0xBF;
+			(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24) &= 0xBF;
 		}
 	}
 	sub_83CC0(21);
@@ -786,6 +786,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 					EndLibNetServer();*/
 			}
 		}
+		delete EventDispatcher::I;
 	}
 	catch (const thread_exit_exception& e)
 	{

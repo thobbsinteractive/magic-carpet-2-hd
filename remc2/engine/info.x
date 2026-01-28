@@ -2,7 +2,7 @@ find  351660;
 
 x_WORD_180662(351662)// neni treba
 
-void sub_46B40()
+void ChangeGameResolution_46B40()
 
 signed int sub_5BF50()//23cf50
 
@@ -5581,7 +5581,7 @@ filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct[54].width
 228302 - void sub_47160()//228160
 
 test 
-void sub_46B40()//227b40
+void ChangeGameResolution_46B40()//227b40
 
 
 set font
@@ -8812,7 +8812,7 @@ void sub_674C0(type_str_0x6E8E* a1x)//2484c0
 
 void sub_1A7A0_fly_asistant()//1fb7a0 // fly asistant
 
-x_D41A0_BYTEARRAY_4_struct.setting_byte3_24
+x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24
 
 #define FIX_FLYASISTANT
 
