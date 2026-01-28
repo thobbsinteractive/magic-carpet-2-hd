@@ -9,9 +9,9 @@
 #include "PlayerInput.h"
 #include "DatTabIndexes.h"
 
-constexpr int16_t MOUSE_MIN = 0;
-constexpr int16_t MOUSE_MAX_X = 638;
-constexpr int16_t MOUSE_MAX_Y = 478;
+int16_t MOUSE_MIN = 0;
+int16_t MOUSE_MAX_X = 638;
+int16_t MOUSE_MAX_Y = 478;
 
 #ifdef __linux__
 void _strupr(char* s)
@@ -502,16 +502,7 @@ std::array<type_MainMenuAnimations_E1748, 4> MainMenuAnimations_E1748x {{ // men
 
 type_x_DWORD_17DB70str x_DWORD_17DB70str;
 
-#pragma pack (1)
-struct//lenght 13
-{
-	int32_t time_17DE28; // weak x_DWORD_17DE28str
-	int32_t time2_17DE2C; // weak x_DWORD_17DE28str+4
-	int16_t x_WORD_17DE30_posx; // weak x_DWORD_17DE28str+8
-	int16_t x_WORD_17DE32_posy; // weak x_DWORD_17DE28str+10
-	int8_t x_BYTE_17DE34; // weak x_DWORD_17DE28str+12
-} x_DWORD_17DE28str;
-#pragma pack (16)
+Type_DWORD_17DE28str x_DWORD_17DE28str;
 
 Type_unk_17DBA8str unk_17DBA8str;
 

@@ -8,6 +8,10 @@
 
 // types
 
+extern int16_t MOUSE_MIN;
+extern int16_t MOUSE_MAX_X;
+extern int16_t MOUSE_MAX_Y;
+
 #pragma pack(1)
 typedef struct // size 16
 {
@@ -44,6 +48,17 @@ typedef struct //lenght 56
 	//std::array<uint8_t, 16> fill3; // fill
 } type_x_DWORD_17DB70str;
 #pragma pack (16)
+
+#pragma pack(1)
+typedef struct //lenght 13
+{
+	int32_t time_17DE28; // weak x_DWORD_17DE28str
+	int32_t time2_17DE2C; // weak x_DWORD_17DE28str+4
+	int16_t x_WORD_17DE30_posx; // weak x_DWORD_17DE28str+8
+	int16_t x_WORD_17DE32_posy; // weak x_DWORD_17DE28str+10
+	int8_t x_BYTE_17DE34; // weak x_DWORD_17DE28str+12
+} Type_DWORD_17DE28str;
+#pragma pack(16)
 
 enum class MenuItem : int {
 	InitLanguage = 0,
@@ -90,6 +105,11 @@ extern Type_SoundEvent_E17CC str_E17CC_0[];
 extern bool map_not_moving_WORD_E29D6;
 extern Type_unk_17DBA8str unk_17DBA8str;
 extern type_x_DWORD_17DB70str x_DWORD_17DB70str;
+
+extern type_x_BYTE_E25ED_db_str x_BYTE_E26C8_str[];
+extern type_E24BCx str_E24F2[];
+
+extern Type_DWORD_17DE28str x_DWORD_17DE28str;
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -159,7 +179,7 @@ void CleanRecByColor_85C42(uint8_t* a1, int a2, int a3, int a4, int a5, unsigned
 void DrawNetworkLevelName_7D380();
 void PaletteCopy_7C800(signed __int16 a1);
 void sub_85BF5(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
-
 void sub_41BC0();
-
 void sub_2EB40();
+void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
+signed int sub_7E320_draw_bitmaps_and_play_sounds();
