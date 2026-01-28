@@ -20,7 +20,7 @@
     <ClCompile Include="utilities\MathUT.cpp">
       <Filter>utilities</Filter>
     </ClCompile>
-    <ClCompile Include="engine\GameRenderHD.cpp">
+    <ClCompile Include="GameRenderHD.cpp">
       <Filter>engine</Filter>
     </ClCompile>
   </ItemGroup>
