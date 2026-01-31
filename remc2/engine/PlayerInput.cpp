@@ -334,9 +334,12 @@ void ProcessKeyboardPresses_17190()//1f8190
 					}
 
 					case 0x24: {//j // switch debug info
-						sub_70940();
-						sub_1A970_change_game_settings(20, 0, 0);
-						LastPressedKey_1806E4 = 0;
+						if (CommandLineParams.DoShowInGameDebug())
+						{
+							sub_70940();
+							sub_1A970_change_game_settings(20, 0, 0);
+							LastPressedKey_1806E4 = 0;
+						}
 						break;
 					}
 
