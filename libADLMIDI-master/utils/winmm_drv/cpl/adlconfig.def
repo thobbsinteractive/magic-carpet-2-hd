@@ -1,0 +1,5 @@
+LIBRARY "libadlconfig.cpl"
+
+EXPORTS
+    CPlApplet
+    ToolDlgProc
