@@ -794,7 +794,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 	}
 	catch (const std::exception& e)
 	{
-		Logger->critical("Critial Error: {}", e.what());
+		Logger->critical("Critical Error: {}", e.what());
 		exitCode = -1;
 	}
 	Logger->info("Exited Game");
