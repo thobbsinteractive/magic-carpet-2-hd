@@ -3054,7 +3054,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		DrawMinimapEntites_61880((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0);
+		DrawMinimapEntites_61880((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3067,7 +3067,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_61A00_draw_minimap_entites_b((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0);
+		sub_61A00_draw_minimap_entites_b((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3080,7 +3080,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_627F0_draw_minimap_entites_a((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0);
+		sub_627F0_draw_minimap_entites_a((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
