@@ -3041,7 +3041,7 @@ find 3618ee->0000007b0300007a03
 
 sub_47320(a2);
 
-sub_47560(index, v4, v1, a1, GameTimerTick_17DB54);
+sub_47560(index, v4, v1, a1, GameTimerTurn_17DB54);
 sub_57730();
 
 find

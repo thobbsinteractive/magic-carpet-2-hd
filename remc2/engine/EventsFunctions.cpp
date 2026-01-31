@@ -31432,7 +31432,7 @@ void AddBuildingToTerrain_46570(uaxis_2d axis1, uaxis_2d axis2)//227570
 //----- (00046820) --------------------------------------------------------
 void sub_46820_simple_timer(HMDIDRIVER  /*user*/)//227820
 {
-	GameTimerTick_17DB54++;
+	GameTimerTurn_17DB54++;
 	//return 0;
 }
 // 17DB54: using guessed type int x_DWORD_17DB54_game_turn2;
@@ -31822,8 +31822,7 @@ void InGameLoop_47320(signed int a1)//228320
 		//x_DWORD_DDF50_texture_adresses
 		//savetext
 		*/
-
-		DrawAndEventsInGame_47560(a1, GameTimerTick_17DB54);
+		DrawAndEventsInGame_47560(a1, GameTimerTurn_17DB54);
 		if (gameTurn < 2)
 		{
 			StopMusic_8E020();
@@ -31883,7 +31882,7 @@ void intervalsave(int index) {
 
 //long debugcounter_47560_2=0;
 //----- (00047560) --------------------------------------------------------
-void DrawAndEventsInGame_47560(signed int a4, __int16 a5)//228560
+void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
 {
 	SetFrameStart(std::chrono::system_clock::now());
 	if ((CommandLineParams.DoDebugafterload() == 1) && (count_begin == 1))
@@ -31921,7 +31920,7 @@ void DrawAndEventsInGame_47560(signed int a4, __int16 a5)//228560
 			}
 		}
 	}
-	MouseAndKeysEvents_17A00(a4, a5);
+	MouseAndKeysEvents_17A00(a4, turn);
 	if (CommandLineParams.DoIntervalSave()) {
 		//save in interval
 		int interval = 1;
@@ -31997,9 +31996,9 @@ void DrawAndEventsInGame_47560(signed int a4, __int16 a5)//228560
 					allert_error();
 		}
 	}
-	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTimerTick_17DB54 - x_D41A0_BYTEARRAY_4_struct.byteindex_196;
+	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTimerTurn_17DB54 - x_D41A0_BYTEARRAY_4_struct.byteindex_196;
 	DrawGameDebugText_6FEC0();
-	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTimerTick_17DB54;
+	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTimerTurn_17DB54;
 	if (x_D41A0_BYTEARRAY_4_struct.paletteMod_51 >= 3u)
 		sub_40F80();
 }
@@ -37916,7 +37915,7 @@ void PlayerEvents_51BB0()//232bb0
 					break;
 				}
 			}
-			SetMenuCursorPosition_52E90(&D41A0_0.array_0x2BDE[i], D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte1, true);
+			SetMenuCursorPosition_52E90(&D41A0_0.array_0x2BDE[i], D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte1, true, gameUiScale);
 			break;
 		case 0x17:
 			if (D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte2 != -1)
@@ -44557,12 +44556,6 @@ void SetCenterScreenForFlyAssistant_6EDB0()//24FDB0
 		display_h = 480;
 	}
 
-	if (x_WORD_180660_VGA_type_resolution & 8) {//fix
-		// 640x480 virtual screen
-		display_w = 640;
-		display_h = 480;
-	}
-
 	new_x = display_w >> 1;
 	new_y = display_h >> 1;
 
@@ -44879,7 +44872,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 		v35 = GetLetterHeight_6FC30() + v34;
 		DrawText_2BC10((char*)"Game turn", 320, v35, (*xadataclrd0dat.colorPalette_var28)[3840]);
 		v36 = GetLetterHeight_6FC30() + v35;
-		sprintf(printbuffer, "%d %d", D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248, GameTimerTick_17DB54);
+		sprintf(printbuffer, "%d %d", D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248, GameTimerTurn_17DB54);
 		DrawText_2BC10(printbuffer, 320, v36, (*xadataclrd0dat.colorPalette_var28)[15]);
 		v37 = GetLetterHeight_6FC30() + v36;
 		DrawText_2BC10((char*)"Thing", 320, v37, (*xadataclrd0dat.colorPalette_var28)[3840]);
@@ -45013,7 +45006,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 // E9C1C: using guessed type int x_DWORD_E9C1C;
 // E9C20: using guessed type int x_DWORD_E9C20;
 // E9C24: using guessed type int x_DWORD_E9C24_fps;
-// 17DB54: using guessed type int GameTimerTick_17DB54;
+// 17DB54: using guessed type int GameTimerTurn_17DB54;
 // 17E0A4: using guessed type int x_DWORD_17E0A4[];
 // 17ECA0: using guessed type int x_DWORD_17ECA0;
 // 17FEA4: using guessed type int x_DWORD_17FEA4_mem_free;

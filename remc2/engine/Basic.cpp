@@ -130,7 +130,7 @@ uint8_t* ViewPortRenderBufferAltStart_DE554 = 0;
 //language
 char* x_DWORD_E9C4C_langindexbuffer[1000]; // idb
 
-uint64_t GameTimerTick_17DB54 = 0;
+int16_t GameTimerTurn_17DB54 = 0;
 
 //file
 

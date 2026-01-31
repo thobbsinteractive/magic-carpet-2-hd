@@ -593,7 +593,7 @@ void sub_75CB0()//256cb0
 	}
 	else
 	{
-		while (GameTimerTick_17DB54 < x_DWORD_E3844)
+		while (GameTimerTurn_17DB54 < x_DWORD_E3844)
 		{
 			if (x_WORD_E12FE && sub_473E0())
 			{
@@ -606,12 +606,12 @@ void sub_75CB0()//256cb0
 				return;
 			}
 		}
-		GameTimerTick_17DB54 = 0;
+		GameTimerTurn_17DB54 = 0;
 	}
 }
 // E12FE: using guessed type __int16 x_WORD_E12FE;
 // E3844: using guessed type int x_DWORD_E3844;
-// 17DB54: using guessed type int GameTimerTick_17DB54;
+// 17DB54: using guessed type int GameTimerTurn_17DB54;
 // 17DB5A: using guessed type __int16 x_WORD_17DB5A;
 // 17DB5C: using guessed type __int16 x_WORD_17DB5C;
 // 1806E4: using guessed type char x_BYTE_1806E4;

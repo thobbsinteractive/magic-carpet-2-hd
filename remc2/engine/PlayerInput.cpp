@@ -438,7 +438,7 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 				SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]);
 			SetMenuCursorPosition_52E90(
 				&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc],
-				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221,	true);
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221, true, gameUiScale);
 			if (soundActive_E3799)
 				EndSample_8D8F0();
 			if (musicActive_E37FD)
@@ -457,7 +457,7 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 		SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
 		SetMenuCursorPosition_52E90(
 			&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc],
-			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221, true);
+			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221, true, gameUiScale);
 		if (musicActive_E37FD)
 			StartMusic_8E160(D41A0_0.maptypeMusic_0x235, 0x7Fu);
 		sub_86930(x_WORD_1803EC);
@@ -479,7 +479,7 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 // 1805C2: using guessed type __int16 x_WORD_1805C2_joystick;
 
 //----- (00017A00) --------------------------------------------------------
-void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
+void MouseAndKeysEvents_17A00(signed int a2, int16_t turn)//1f8a00
 {
 	type_entity_0x6E8E* v8x; // ebx
 	char v11; // dh
@@ -1024,7 +1024,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t a3)//1f8a00
 			goto LABEL_306;
 		case 0xA:
 		case 0xC:
-			AdjustVolume_1A070(a2, a3);
+			AdjustVolume_1A070(a2, turn);
 			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 0xD:
