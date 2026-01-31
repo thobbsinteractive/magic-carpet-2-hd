@@ -1661,7 +1661,7 @@ if ( !byte_E3766 )
 	 35172c;
 
 	pozor na toto:
-	sub_8CD27_set_cursor(*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct/*filearray_2aa18c[0]*/);//26dd27
+	SetCursor_8CD27(*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct/*filearray_2aa18c[0]*/);//26dd27
   x_WORD_17DEEC = 0;
 
   	//[34eed4]+de? =48c81b ->3abe47001315
@@ -1695,7 +1695,7 @@ if ( !byte_E3766 )
 	2a51a4
 
 	fix cursor:
-	/* sub_8CD27_set_cursor((uint8_t**)**filearray_2aa18c[0]); fix it*/
+	/* SetCursor_8CD27((uint8_t**)**filearray_2aa18c[0]); fix it*/
 
 	int v8; // [esp+10h] [ebp-4h] - musi byt asi vstup
 
@@ -1842,11 +1842,11 @@ problem:
       v21 = sub_7AB00(v19, v20, (int16_t*)a3x, 4u);
       if ( sub_7B250((int)v21, v22, a3x) )
 
-sub_8CD27_set_cursor(*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct);//anything with vga, maybe mouse cursor//26dd27 //xadatapointersdat asi 1a6f44
-sub_8CD27_set_cursor(*filearray_2aa18c[0].posistruct);
-sub_8CD27_set_cursor(x_DWORD_17DED4_spritestr[234]);
+SetCursor_8CD27(*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct);//anything with vga, maybe mouse cursor//26dd27 //xadatapointersdat asi 1a6f44
+SetCursor_8CD27(*filearray_2aa18c[0].posistruct);
+SetCursor_8CD27(x_DWORD_17DED4_spritestr[234]);
 
-	  ;// fix it! sub_8CD27_set_cursor((uint8_t**)x_DWORD_180720); - not fixed
+	  ;// fix it! SetCursor_8CD27((uint8_t**)x_DWORD_180720); - not fixed
 x_BYTE_E25ED - 2b35ed
 
 x_DWORD_E3768 2b4768 - tlacitka
@@ -4398,7 +4398,7 @@ x_DWORD_180730_cursor_data
 82c714
 270aa0 call void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t tiley, int tilex, uint8_t* texture, uint8_t setbyte, char a6)//270935
 2708d7 call void drawBitmap320_8F8B0(int16_t posx, int16_t posy, posistruct temppstr)//2708B0
-26de71 call void sub_8CD27_set_cursor(posistruct a2)//26dd27
+26de71 call void SetCursor_8CD27(posistruct a2)//26dd27
 1f9c2c call void PauseUnpauseGame_18BB0()//1f9bb0
 
 ca5d45-d1ae42 13 15
@@ -4419,7 +4419,7 @@ void sub_693F0(uint8_t* a1)//24a3f0
 
 2482e0
 
-filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct[CursorGraphicsIndex_D419E]
+filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct[CURSOR_SPRITE_INDEX_D419E]
 
 x_D41A0_BYTEARRAY_0[8589]->28
 versus

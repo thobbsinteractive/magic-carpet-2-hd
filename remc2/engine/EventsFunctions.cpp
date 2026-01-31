@@ -8746,7 +8746,7 @@ void AdjustVolume_1A070(signed int a1, __int16 a2)//1fb070
 	}
 
 	if (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2)
-		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CursorGraphicsIndex_D419E]); //fixit
+		SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]); //fixit
 	GetPauseMenuCoordinates_2FFE0(&posX, &posY, &width, &height, scale);
 	v2 = x_D41A0_BYTEARRAY_4_struct.byte_38591;
 	if (v2 >= 1u)
@@ -8810,7 +8810,7 @@ LABEL_12:
 	{
 		x_D41A0_BYTEARRAY_4_struct.byte_38591 = pressedKeys_180664[47];
 		HandleButtonClick_191B0(20, x_D41A0_BYTEARRAY_4_struct.byte_38544);
-		sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);//fix it
+		SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
 		SetMousePositionInMemory_5BDC0(posX + a2, posY + 5 * height / 2);
 		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 		{
@@ -22828,7 +22828,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 		|| unk_18058Cstr.x_WORD_1805C2_joystick == 11
 		|| unk_18058Cstr.x_WORD_1805C2_joystick == 5)
 	{
-		DrawBitmap_2BB40(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[CursorGraphicsIndex_D419E]);
+		DrawBitmap_2BB40(unk_18058Cstr.x_DWORD_1805B0_mouse.x, unk_18058Cstr.x_DWORD_1805B0_mouse.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]);
 	}
 	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::SPELL_MENU);
 }
@@ -31891,9 +31891,9 @@ void DrawAndEventsInGame_47560(signed int a4, __int16 a5)//228560
 		sub_715B0();//nothing draw //animate sprites
 	}
 	ReadGameUserInputs_89D10();//get keys
+
 	if (CommandLineParams.DoAutoChangeRes()) {
-		if ((windowResWidth >= 640) && (windowResHeight >= 480))
-			//if (true)
+		if ((gameResWidth >= 640) && (gameResHeight >= 480))
 		{
 			if (resindex_begin == 1)
 			{
@@ -43172,7 +43172,7 @@ void Initialize()//23c8d0
 
 	//nema to byt buffer obrazovky?! ---
 
-	sub_8CD27_set_cursor((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);//anything with vga, maybe mouse cursor//26dd27 //xadatapointersdat asi 1a6f44
+	SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);//anything with vga, maybe mouse cursor//26dd27 //xadatapointersdat asi 1a6f44
 	//1a6f44->1a6578 00 00 pointer->0b0005a1a1a1a1a10005a1b413aaa1
 	//nastavi se zde:sub_6EB90(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);//24fb90
 
@@ -52319,7 +52319,7 @@ signed int sub_8CEDF_install_mouse()//26dedf
 	for (i = 0; i < 4096; i++)
 		*(x_BYTE*)(i + x_DWORD_180730_cursor_data) = -2;
 	if (x_DWORD_180720)
-		;// fix it! sub_8CD27_set_cursor((uint8_t**)x_DWORD_180720);
+		;// fix it! SetCursor_8CD27((uint8_t**)x_DWORD_180720);
 	//v2 = 2;
 //removed int386(0x33, (REGS*)&v2, (REGS*)&v1);//hide mouse
 	if (x_WORD_180660_VGA_type_resolution & 8)
