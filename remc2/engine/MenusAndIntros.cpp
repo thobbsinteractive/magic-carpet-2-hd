@@ -4000,7 +4000,6 @@ void MapMenuPortalsDraw_81760()//262760
 			}
 			if (mapScreenPortals_E17CC[k].activated_18 == 2)
 				break;
-			k++;
 		}
 		if (k < 24 && activated1)
 		{
