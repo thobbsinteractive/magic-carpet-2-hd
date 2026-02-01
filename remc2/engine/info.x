@@ -2080,7 +2080,7 @@ sub_931F0_AIL_install_DIG_INI
 int sub_92190_AIL_read_INI(uint8_t* a1, char* a2)//AIL_read_INI // 273190
 
 
-int *sub_A2EA0(int a1, const void *a2) //
+int *CreateDigDriver_A2EA0(int a1, const void *a2) //
 	int sub_A2C80(int *a1, const void *a2) // problem s a2
 
 sub_91A80_AIL_set_preference
@@ -2101,7 +2101,7 @@ sub_93330_AIL_install_DIG_driver_file
 
 1a7758
 
-fix sub_A2EA0
+fix CreateDigDriver_A2EA0
 -kde se vzal?
 
 	  /*
@@ -2124,12 +2124,12 @@ fix sub_A2EA0
 v8 = sub_93010_AIL_install_driver(/*a1, */v6, v3); - sledovat
 	AIL_DRIVER* sub_9E720_AIL_API_install_driver(/*int a1, */uint8_t* driver_image, int32_t n_bytes)//27f720
 
-	v7 = sub_A2EA0(v8, IO);
+	v7 = CreateDigDriver_A2EA0(v8, IO);
 
 	nesmi vratit null:
 	sub_93330_AIL_install_DIG_driver_file(/*a1, */a2.driver_name, a2.IO);
 	musi neco vratit:
-	int *sub_A2EA0(AIL_DRIVER* a1, IO_PARMS IO)//283ea0
+	int *CreateDigDriver_A2EA0(AIL_DRIVER* a1, IO_PARMS IO)//283ea0
 
 kde se bere:
   *(x_DWORD *)(a1 + 84);//21
@@ -6880,7 +6880,7 @@ Entities_EA3E4[0x18]->dword_0xA4_164x->word_0x242_578 - nelze precist
 0x356038 +0x315a
 
 250d3f
-void sub_6FDA0()//fix//250da0
+void SetProgrammableIntervalTimer_6FDA0()//fix//250da0
 
 void sub_2D710_draw_top_menu(type_str_0x6E8E* a1x)//20e710
 x_DWORD_F01E8(v12, 2, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[41]);

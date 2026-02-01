@@ -493,8 +493,8 @@ void SOUND_set_sample_volume(HSAMPLE S, int32_t volume) {
 	if (master_volume == -1)
 		master_volume = 127;
 
-	GameChunks[S->index_sample].volume = volume;
-	Mix_Volume(S->index_sample, (int)((GameChunks[S->index_sample].volume * master_volume) / 127));
+	GameChunks[S->channel].volume = volume;
+	Mix_Volume(S->channel, (int)((GameChunks[S->channel].volume * master_volume) / 127));
 #endif//SOUND_SDLMIXER
 }
 
@@ -503,12 +503,12 @@ void SOUND_set_sample_volume_panning(HSAMPLE S, int32_t panning) {
 	auto left = uint8_t(255.0f * ((float)(127 - panning) / 127));// * masterPercent);
 	auto right = uint8_t(255.0f * ((float)panning / 127));// * masterPercent);
 
-	Mix_SetPanning(S->index_sample, left, right);
+	Mix_SetPanning(S->channel, left, right);
 }
 
 void SetSamplePosition(HSAMPLE S, int16_t angle, uint8_t distance) 
 {
-	Mix_SetPosition(S->index_sample, angle, distance);
+	Mix_SetPosition(S->channel, angle, distance);
 }
 
 void SOUND_start_sample(HSAMPLE S) {
@@ -538,11 +538,11 @@ void SOUND_start_sample(HSAMPLE S) {
 		// read your float32 data into cvt.buf here.
 		SDL_ConvertAudio(&cvt);*/
 
-		GameChunks[S->index_sample].abuf = /*sample->abuf;//*/ (uint8_t*)S->start_44mhz;
+		GameChunks[S->channel].abuf = /*sample->abuf;//*/ (uint8_t*)S->start_44mhz;
 		if (fixspeedsound)
-			GameChunks[S->index_sample].alen = /*sample->alen;//*/S->len_4_5[0] * 16;
+			GameChunks[S->channel].alen = /*sample->alen;//*/S->len_4_5[0] * 16;
 		else
-			GameChunks[S->index_sample].alen = /*sample->alen;//*/S->len_4_5[0] * 8;
+			GameChunks[S->channel].alen = /*sample->alen;//*/S->len_4_5[0] * 8;
 			if (debug_first_sound) {
 				Logger->trace("SOUND_start_sample-hq:{}", S->start_44mhz);
 				debug_first_sound = false;
@@ -554,18 +554,18 @@ void SOUND_start_sample(HSAMPLE S) {
 			Logger->trace("SOUND_start_sample:{}", S->start_44mhz);
 			debug_first_sound = false;
 		}
-		GameChunks[S->index_sample].abuf = (uint8_t*)S->start_2_3[0];
-		GameChunks[S->index_sample].alen = S->len_4_5[0];
+		GameChunks[S->channel].abuf = (uint8_t*)S->start_2_3[0];
+		GameChunks[S->channel].alen = S->len_4_5[0];
 	}
 	
-	GameChunks[S->index_sample].volume = S->volume_16;
-	GameChunkHSamples[S->index_sample] = S;
+	GameChunks[S->channel].volume = S->volume_16;
+	GameChunkHSamples[S->channel] = S;
 
 	float percentage = (float)S->playback_rate_15 / (float)22050;
 	if (percentage != 1.0f)
 		SOUND_ChangeSamplePlaybackRate(S, percentage);
 
-	Mix_PlayChannel(S->index_sample, &GameChunks[S->index_sample], S->loop_count_12);
+	Mix_PlayChannel(S->channel, &GameChunks[S->channel], S->loop_count_12);
 	Mix_ChannelFinished(ChannelFinished);
 
 #endif//SOUND_SDLMIXER
@@ -605,7 +605,7 @@ uint32_t SOUND_sample_status(HSAMPLE S) {
 	if (unitTests)return 0;
 	
 #ifdef SOUND_SDLMIXER
-	if (Mix_Playing(S->index_sample)==0) return 2;
+	if (Mix_Playing(S->channel)==0) return 2;
 #endif//SOUND_SDLMIXER
 #ifdef SOUND_OPENAL
 	return 2;
@@ -663,13 +663,13 @@ void SOUND_StopTimer(int timerIdx)
 
 void SOUND_end_sample(HSAMPLE S) {
 #ifdef SOUND_SDLMIXER
-	Mix_HaltChannel(S->index_sample);
+	Mix_HaltChannel(S->channel);
 
-	if (GameChunks.count(S->index_sample) == 0)
+	if (GameChunks.count(S->channel) == 0)
 		return;
 
-	GameChunks.erase(S->index_sample);
-	GameChunkHSamples.erase(S->index_sample);
+	GameChunks.erase(S->channel);
+	GameChunkHSamples.erase(S->channel);
 
 #endif//SOUND_SDLMIXER
 };
@@ -682,7 +682,7 @@ void SOUND_finalize(int channel) {
 	HSAMPLE S = GameChunkHSamples[channel];
 	if (S)
 	{
-		S->index_sample = -1;
+		S->channel = -1;
 
 		if (S->status_1 != 1)
 		{
@@ -692,6 +692,7 @@ void SOUND_finalize(int channel) {
 			}
 		}
 		S->vol_scale_18[0][0] = 0;
+		S->id_9 = 0;
 		S->flags_14 = 0;
 		S->vol_scale_18[0][2] = 0;
 		S->vol_scale_18[0][3] = 0;
@@ -753,9 +754,9 @@ Mix_HookMusicFinished(void (SDLCALL *music_finished)(void));
 void SOUND_ChangeSamplePlaybackRate(HSAMPLE S, float percent)
 {
 	if (hqsound)
-		RegisterEffect(S->index_sample, &GameChunks[S->index_sample], percent, 44100, 2, AUDIO_S16);
+		RegisterEffect(S->channel, &GameChunks[S->channel], percent, 44100, 2, AUDIO_S16);
 	else
-		RegisterEffect(S->index_sample, &GameChunks[S->index_sample], percent, 22050, 2, AUDIO_U8);
+		RegisterEffect(S->channel, &GameChunks[S->channel], percent, 22050, 2, AUDIO_U8);
 }
 
 void RegisterEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format)

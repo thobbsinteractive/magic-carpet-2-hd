@@ -536,7 +536,7 @@ void  sub_841CE(__int16 a1);//ShowPerifery
 //sub_B5128 ShowPerifery
 //sub_B51B3 ShowPerifery
 //sub_B522B ShowPerifery
-//sub_6FDA0 ShowPerifery
+//SetProgrammableIntervalTimer_6FDA0 ShowPerifery
 //sub_90530 ShowPerifery
 //sub_B5015 ShowPerifery
 //sub_840B8 ShowPerifery
@@ -1288,8 +1288,11 @@ void sub_6DC40_improve_ability(unsigned __int8 a1);
 type_entity_0x6E8E* sub_6DCA0(type_entity_0x6E8E* a1, axis_3d* a2, unsigned __int16 a3, type_SPELLS_BEGIN_BUFFER_str_sub* a4, __int16 a5, char a6);
 void sub_6E090(type_str_611* a1, int a2);
 void sub_6E0D0();
-void sub_6E150();
-void EndLoop_6EAB0(int a1, __int16 a2, __int16 a3);
+void RestartOrIfNotExistingPlaySample_75110(int16_t flags, int16_t wavIndex, int16_t volume, uint16_t volumePan, int16_t playRate);
+void IfNotPlayingPlaySample_75160(int16_t flags, int16_t wavIndex, int16_t volume, uint16_t volumePan, int16_t playRate);
+void AlwaysPlaySample_751B0(int16_t flags, int16_t wavIndex, int16_t volume, uint16_t volumePan, int16_t playRate);
+void PlayEntitySounds_6E150();
+void EndLoop_6EAB0(int a1, __int16 a2, __int16 index);
 void SetMousePosition_6EDE0(int16_t posX, int16_t posY);
 type_entity_0x6E8E* AddSwitch0B_00_6F030(type_entity_0x6E8E* a1);
 type_entity_0x6E8E* CheckpointArrived_6F070(type_entity_0x6E8E* a1);
@@ -1586,4 +1589,11 @@ void sub_84B80();
 void sub_58F00_game_objectives();
 void sub_57570();
 void sub_575C0();
+void SetProgrammableIntervalTimer_6FDA0();
+void ClearProgrammableIntervalTimer_6FE20();
+uint32_t FadeDownSoundVolume_59A50();
+uint32_t FadeUpSound_59B50(uint32_t interval);
+void RestoreSoundVolume_59BF0();
+void sub_46DD0_init_sound_and_music();
+uint32_t sub_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
 #endif

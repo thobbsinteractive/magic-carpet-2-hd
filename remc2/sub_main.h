@@ -89,8 +89,6 @@ char LoadFilesFromCDAndGameData(const char* cdPath, const char* gamePath, const 
 bool sub_53F60(const char* a1);
 void sub_8C2CD();
 void NetworkAllocation2_5C430();
-void sub_46DD0_init_sound_and_music();
-void sub_6FDA0();
 Scene GetCurrentScene();
 void SetCurrentScene(const Scene scene);
 uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::string& subDir);
