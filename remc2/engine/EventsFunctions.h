@@ -423,7 +423,6 @@ extern char x_BYTE_D4B50;
 extern char x_BYTE_D4B51;
 extern char x_BYTE_DB734;
 
-void sub_86BD0_freemem1();
 void j___delay(x_DWORD); // weak
 
 void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const std::string& filename = "BufferOut.bmp");
@@ -541,8 +540,7 @@ void  sub_841CE(__int16 a1);//ShowPerifery
 //sub_B5015 ShowPerifery
 //sub_840B8 ShowPerifery
 
-char sub_86860_speak_Sound(unsigned __int16 a1);
-void sub_86EB0(unsigned __int8 a1, unsigned __int8 a2, char a3);
+void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, bool paletteFlash);
 int16_t sub_89B60_aplicate_setting(uint8_t a1);
 //void __writeeflags(unsigned Value);
 int32_t /*__cdecl*/ gets(int32_t);// weak
@@ -1591,9 +1589,14 @@ void sub_57570();
 void sub_575C0();
 void SetProgrammableIntervalTimer_6FDA0();
 void ClearProgrammableIntervalTimer_6FE20();
+void PlayCDTrackSegmentForSecretLevel_86F20(char a1);
+void PlayCDTrackSegmentWithPaletteFlash_86F70(uint8_t trackIdx, int32_t startPosMs, int32_t lengthMs);
+void PlayCDTrackSegment_86FF0(uint8_t trackIdx, int32_t startPosMs, int32_t lengthMs);
+void StopCdPlayBackAndFadeUp_59AF0();
 uint32_t FadeDownSoundVolume_59A50();
-uint32_t FadeUpSound_59B50(uint32_t interval);
+uint32_t FadeUpSoundVolume_59B50(uint32_t interval);
 void RestoreSoundVolume_59BF0();
 void sub_46DD0_init_sound_and_music();
-uint32_t sub_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
+uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
+void sub_59820();
 #endif

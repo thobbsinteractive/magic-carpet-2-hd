@@ -119,7 +119,7 @@ type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
 
 uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
 uint8_t* x_BYTE_F6EE0_tablesx_pre = (uint8_t*)x_BYTE_F6EE0_tablesx;
-uint8_t* x_BYTE_FAEE0_tablesx_pre = (uint8_t*)&x_BYTE_F6EE0_tablesx[0x4000];
+uint8_t* x_BYTE_FAEE0_tablesx_pre = (uint8_t*)&x_BYTE_F6EE0_tablesx[16384];
 
 type_E9C38_smalltit Str_E9C38_smalltit[21 * 40];
 
@@ -132,6 +132,11 @@ char* x_DWORD_E9C4C_langindexbuffer[1000]; // idb
 
 int16_t GameTimerTurn_17DB54 = 0;
 uint32_t PitFrequency_F4240 = 1193182; //PIT Frequency
+
+int Int386Request_17FF0C;
+int MscdexCommand_17FF44;
+uint8_t MinTrackIdx_180471;
+uint8_t MaxTrackIdx_180472;
 
 //file
 
@@ -3100,7 +3105,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 		to->struct_0x6E8E[i].StageVar1_0x48_72 = from->struct_0x6E8E[i].byte_0x48_72;
 		to->struct_0x6E8E[i].StageVar2_0x49_73 = from->struct_0x6E8E[i].byte_0x49_73;
 		to->struct_0x6E8E[i].word_0x4A_74 = from->struct_0x6E8E[i].word_0x4A_74;
-		to->struct_0x6E8E[i].axis_0x4C_76 = from->struct_0x6E8E[i].array_0x4C_76;
+		to->struct_0x6E8E[i].position_0x4C_76 = from->struct_0x6E8E[i].array_0x4C_76;
 		to->struct_0x6E8E[i].array_0x52_82 = from->struct_0x6E8E[i].array_0x52_82;
 		to->struct_0x6E8E[i].word_0x5A_90 = from->struct_0x6E8E[i].word_0x5A_90;
 		to->struct_0x6E8E[i].animationFrame_0x5C_92 = from->struct_0x6E8E[i].byte_0x5C_92;
@@ -3293,7 +3298,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 		to->struct_0x6E8E[i].byte_0x48_72 = from->struct_0x6E8E[i].StageVar1_0x48_72;
 		to->struct_0x6E8E[i].byte_0x49_73 = from->struct_0x6E8E[i].StageVar2_0x49_73;
 		to->struct_0x6E8E[i].word_0x4A_74 = from->struct_0x6E8E[i].word_0x4A_74;
-		to->struct_0x6E8E[i].array_0x4C_76 = from->struct_0x6E8E[i].axis_0x4C_76;
+		to->struct_0x6E8E[i].array_0x4C_76 = from->struct_0x6E8E[i].position_0x4C_76;
 		to->struct_0x6E8E[i].array_0x52_82 = from->struct_0x6E8E[i].array_0x52_82;
 		to->struct_0x6E8E[i].word_0x5A_90 = from->struct_0x6E8E[i].word_0x5A_90;
 		to->struct_0x6E8E[i].byte_0x5C_92 = from->struct_0x6E8E[i].animationFrame_0x5C_92;

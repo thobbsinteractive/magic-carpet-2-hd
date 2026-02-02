@@ -88,7 +88,7 @@ private:
 	uint16_t sub_3FD60(int a2x);
 	void sub_88740(type_entity_0x6E8E* a1x, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);
-	void DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1x, __int16 a2, int a3, __int16 a4);
+	void DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1x, int16_t a2, int a3, int16_t a4);
 
 public:
 	~GameRenderNG();

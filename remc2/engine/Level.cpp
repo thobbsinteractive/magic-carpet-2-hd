@@ -752,7 +752,7 @@ void sub_55AB0(type_str_0x2BDE* playStr)//236ab0
 		{
 			if (!playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[spellIndex_D94FF[i]])
 			{
-				type_entity_0x6E8E* tempEvent = IfSubtypeCallCreatingManaSphere_4A190(&Entities_EA3E4[playStr->playerIndex_0x00a_2BE4_11240]->axis_0x4C_76, 15, spellIndex_D94FF[i]);
+				type_entity_0x6E8E* tempEvent = IfSubtypeCallCreatingManaSphere_4A190(&Entities_EA3E4[playStr->playerIndex_0x00a_2BE4_11240]->position_0x4C_76, 15, spellIndex_D94FF[i]);
 				if (tempEvent)
 				{
 					playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.word[spellIndex_D94FF[i]] = tempEvent - D41A0_0.struct_0x6E8E;

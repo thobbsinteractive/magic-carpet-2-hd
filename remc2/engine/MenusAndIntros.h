@@ -45,7 +45,6 @@ enum class MenuItem : int {
 // from sub_main
 extern int8_t LoadLevelNumber_D419C;
 extern char x_BYTE_D41AD_skip_screen;
-extern char x_BYTE_17E09D;
 extern const char* LevelsNames_D9204[61];
 extern char* off_DB558[];
 extern __int16 x_WORD_E131A;
@@ -63,7 +62,6 @@ extern char x_BYTE_E29E0;
 extern uint8_t* pre_x_DWORD_E9C3C;
 extern uint8_t x_BYTE_EB39E_keys[10];
 extern uint8_t uiBackGroundColorIdx_EB3A8;
-
 extern int32_t x_DWORD_17DBB8[4];
 extern char x_BYTE_17DBC6;
 extern uint32_t x_DWORD_17DBC8x[125];
