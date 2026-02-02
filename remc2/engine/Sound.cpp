@@ -51,7 +51,7 @@ char x_BYTE_E3815 = 0; // weak
 char x_BYTE_E3816 = 0; // weak
 char x_BYTE_E3817 = 1; // weak
 char x_BYTE_E3818 = 0; // weak
-char pcSpeakerSoundDev_E3819 = 0; // weak
+char UpdateMusicTimer_E3819 = 0; // weak
 char x_BYTE_E381A = -1; // weak
 __int16 x_WORD_E381C = 0; // weak
 __int16 x_WORD_E381E = 0; // weak
@@ -827,7 +827,7 @@ void StopMusic_8E020()//26f020
 	{
 		if (x_BYTE_E3818)
 			AilReleaseTimer_92DC0(MusicTimerIdx_180C80);
-		pcSpeakerSoundDev_E3819 = 0;
+		UpdateMusicTimer_E3819 = 0;
 		x_BYTE_E3818 = 0;
 		x_BYTE_E3817 = 1;
 		x_BYTE_E3816 = 0;
@@ -848,7 +848,7 @@ void StartMusic_8E160(int track, int volume)//26f160
 	{
 		if (x_BYTE_E3818)
 			AilReleaseTimer_92DC0(MusicTimerIdx_180C80);
-		pcSpeakerSoundDev_E3819 = 0;
+		UpdateMusicTimer_E3819 = 0;
 		x_BYTE_E3818 = 0;
 		x_BYTE_E3817 = 1;
 		x_BYTE_E3816 = 0;
@@ -1270,7 +1270,7 @@ int32_t AilSetSampleFile_938C0(HSAMPLE S, uint8_t* pWavData, int32_t block)//274
 			dbgfprintf(ailDebufFile_181BF0, "\0xfa\0");
 		dbgfprintf(ailDebufFile_181BF0, "Result = %d\n", result);
 	}
-	++ailIndent_181C04;
+	--ailIndent_181C04;
 	return result;
 }
 
@@ -2053,22 +2053,31 @@ bool ReadAndDecompressSound(FILE* file, uint8_t soundIndex2)//2654f0
 	soundIndex_E37A0->byte_5 = shadow_str_E37A0_sound_buffer2->byte_5;
 	soundIndex_E37A0->byte_6 = shadow_str_E37A0_sound_buffer2->byte_6;
 	soundIndex_E37A0->byte_7 = shadow_str_E37A0_sound_buffer2->byte_7;
-	for(int i = 0; i < 24; i++)
-		soundIndex_E37A0->str_8.stub[i] = shadow_str_E37A0_sound_buffer2->str_8.stub[i];
+
+	// Add null wavs in first index
+	soundIndex_E37A0->str_8.wavs_10[0].wavData_18 = NULL;
+	for (int j = 0; j < 4; j++)
+		soundIndex_E37A0->str_8.wavs_10[0].stub_22[j] = 0;
+
+	soundIndex_E37A0->str_8.wavs_10[0].wavSize_26 = 0;
+	soundIndex_E37A0->str_8.wavs_10[0].word_30 = 0;
+
+	for (int j = 0; j < 18; j++)
+		soundIndex_E37A0->str_8.wavs_10[0].filename_0[j] = 0;
 
 	for (int i = 0; i < 95; i++)
 	{
-		soundIndex_E37A0->str_8.wavs_10[i].wavData_18 = (uint8_t*)shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].wavData_18;
+		soundIndex_E37A0->str_8.wavs_10[i+1].wavData_18 = (uint8_t*)shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].wavData_18;
 		for (int j = 0; j < 4; j++)
 		{
-			soundIndex_E37A0->str_8.wavs_10[i].stub_22[j] = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].stub_22[j];
+			soundIndex_E37A0->str_8.wavs_10[i+1].stub_22[j] = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].stub_22[j];
 		}
 
-		soundIndex_E37A0->str_8.wavs_10[i].wavSize_26 = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].wavSize_26;
-		soundIndex_E37A0->str_8.wavs_10[i].word_30 = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].word_30;
+		soundIndex_E37A0->str_8.wavs_10[i+1].wavSize_26 = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].wavSize_26;
+		soundIndex_E37A0->str_8.wavs_10[i+1].word_30 = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].word_30;
 		for (int j = 0; j < 18; j++)
 		{
-			soundIndex_E37A0->str_8.wavs_10[i].filename_0[j] = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].filename_0[j];
+			soundIndex_E37A0->str_8.wavs_10[i+1].filename_0[j] = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].filename_0[j];
 		}
 	}
 
@@ -2322,7 +2331,7 @@ int sub_9EE70()
 	{
 		AilInitSample_93830(mainSample_181E10);
 		AilRegisterEosCallback_95140(mainSample_181E10, sub_9EE70);
-		AilSetSampleFile_938C0(mainSample_181E10, soundIndex_E37A0->str_8.wavs_10[AilSampleUserData_95480(mainSample_181E10, x_DWORD_E3E40)-1].wavData_18, 1);
+		AilSetSampleFile_938C0(mainSample_181E10, soundIndex_E37A0->str_8.wavs_10[AilSampleUserData_95480(mainSample_181E10, x_DWORD_E3E40)].wavData_18, 1);
 		x_DWORD_E3E40++;
 		AilStartSample_93B50(mainSample_181E10);
 	}
@@ -5286,7 +5295,7 @@ void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePa
 	if (!soundAble_E3798
 		|| !soundActive_E3799
 		|| wavIndex > (signed int)MaxLoadedWavIndex_180B50
-		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[wavIndex - 1].filename_0, "null.wav"))
+		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[wavIndex].filename_0, "null.wav"))
 	{
 		return;
 	}
@@ -5312,7 +5321,7 @@ void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePa
 		//Look for existing playing sound using flags, id and not stopped
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex -1 && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
 			{
 				ptrExistingPlayingSample = &SoundBuffer3_180750[i];
 				break;
@@ -5372,12 +5381,12 @@ void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePa
 		//Initialize new from wavs
 		AilInitSample_93830(*ptrExistingStoppedSample);
 		if (debug_first_sound) {
-			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[wavIndex -1].wavData_18;
+			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_18;
 			Logger->trace("PlaySample_8F100:buff:");
 			for (int i = 0; i < 100; i++)
 				Logger->trace("{}", debug_sound_buff[i]);
 		}
-		AilSetSampleFile_938C0(*ptrExistingStoppedSample, soundIndex_E37A0->str_8.wavs_10[wavIndex -1].wavData_18, 1);
+		AilSetSampleFile_938C0(*ptrExistingStoppedSample, soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_18, 1);
 	}
 	AilSetSampleVolume_93E30(*ptrExistingStoppedSample, volume);
 	AilSetSampleVolumePan_93ED0(*ptrExistingStoppedSample, volumePan);
@@ -5609,7 +5618,7 @@ bool AilReadIniFile_92190(AIL_INI* INI, char* filename)//273190
 //----- (00099970) --------------------------------------------------------
 void UpdateMusic_99970(char a1, unsigned __int8 a2)//27a970
 {
-	if (pcSpeakerSoundDev_E3819 && musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && AilSequenceStatus_96170(m_hMusicSequence) != 2 && x_BYTE_E3817 != a1)
+	if (UpdateMusicTimer_E3819 && musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && AilSequenceStatus_96170(m_hMusicSequence) != 2 && x_BYTE_E3817 != a1)
 	{
 		if (x_BYTE_E3818)
 			AilReleaseTimer_92DC0(MusicTimerIdx_180C80);
@@ -5975,10 +5984,7 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 			EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
 			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
 			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
-			if (MaxSoundBufferChannels_E3794 > 10)
-				EntitySounds_F4FE0[wavIndex].playType_0 = 2;
-			else
-				EntitySounds_F4FE0[wavIndex].playType_0 = 3;
+			EntitySounds_F4FE0[wavIndex].playType_0 = 3;
 			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
 		}
 		break;
