@@ -5786,21 +5786,6 @@ void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePa
 	(*ptrExistingStoppedSample)->vol_scale_18[0][3] = 0;
 }
 
-void AilEndAllSamples_8F420(int flags, __int16 wavIndex)//270420
-{
-	if (soundAble_E3798 && soundActive_E3799)
-	{
-		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
-		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
-			{
-				AilEndSample_93D00(SoundBuffer3_180750[i]);
-				return;
-			}
-		}
-	}
-}
-
 void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale)//270710
 {
 	if (soundAble_E3798 && soundActive_E3799 && wavIndex <= MaxLoadedWavIndex_180B50)
@@ -5890,6 +5875,31 @@ int32_t StopTimer_8F850(uint32_t interval)
 		}
 	}
 	return 0;
+}
+
+void SetSamplePositionFromPlayer(uint32_t flags, int16_t wavIndex, axis_3d_32 entityPosition)
+{
+	int16_t rotationIndex = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1;
+	axis_4d rotData = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[rotationIndex].rotation__2BDE_11701;
+	auto playerYawDeg = Maths::ConvertYawToDegrees(rotData.yaw);
+	auto rotatedCoords = Maths::RotateZ({ (float)entityPosition.x, (float)entityPosition.y, (float)entityPosition.z }, -playerYawDeg);
+	float angleDeg = Maths::MeasureYawAngleDegrees(rotatedCoords);
+
+	float dinstancePercent = (float)Maths::EuclideanDistXYFromZero(&entityPosition) / (float)MaxSoundDistance;
+	if (dinstancePercent > 1)
+		dinstancePercent = 1;
+
+	if (soundAble_E3798 && soundActive_E3799)
+	{
+		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
+		{
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			{
+				SetSamplePosition(SoundBuffer3_180750[i], (int16_t)angleDeg, (uint8_t)(255 * dinstancePercent));
+				return;
+			}
+		}
+	}
 }
 
 //----- (0008F420) --------------------------------------------------------
@@ -6187,10 +6197,14 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 	type_entity_0x6E8E* ptrEntity_v22x; // [esp+4h] [ebp-20h]
 	signed int v23; // [esp+8h] [ebp-1Ch]
 	unsigned int v25; // [esp+10h] [ebp-14h]
-	type_entity_0x6E8E* ptrEntity_v26x; // [esp+14h] [ebp-10h]
+	type_entity_0x6E8E* ptrPlayerEntity_v26x; // [esp+14h] [ebp-10h]
 	unsigned __int16 v27; // [esp+18h] [ebp-Ch]
 	__int16 v28; // [esp+1Ch] [ebp-8h]
 	_int16 flags_v29; // [esp+20h] [ebp-4h]
+	axis_3d_32 positionFromPlayer;
+	positionFromPlayer.x = 0;
+	positionFromPlayer.y = 0;
+	positionFromPlayer.z = 0;
 
 	flags_v29 = 0;
 	playRate_v21 = 0;
@@ -6210,21 +6224,22 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 		v4x = &ptrEntity_v3x->position_0x4C_76;
 		if ((unsigned int)Maths::EuclideanDistXY_584D0(
 			&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]->position_0x4C_76,
-			&ptrEntity_v3x->position_0x4C_76) > 0x9000000)
+			&ptrEntity_v3x->position_0x4C_76) > MaxSoundDistance)
 			return;
-		ptrEntity_v26x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
+		ptrPlayerEntity_v26x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
 		flags_v29 = ptrEntity_v22x->id_0x1A_26;
-		v5 = Maths::EuclideanDistXYZ_58490(&ptrEntity_v26x->position_0x4C_76, v4x);
+		v5 = Maths::EuclideanDistXYZ_58490(&ptrPlayerEntity_v26x->position_0x4C_76, v4x);
+		positionFromPlayer = Maths::RelativeXYZCoordinate(&ptrEntity_v3x->position_0x4C_76, &ptrPlayerEntity_v26x->position_0x4C_76);
 		v25 = v5;
 		v23 = v5;
-		v6 = Maths::sub_581E0_maybe_tan2(&ptrEntity_v26x->position_0x4C_76, v4x);
+		v6 = Maths::sub_581E0_maybe_tan2(&ptrPlayerEntity_v26x->position_0x4C_76, v4x);
 		v28 = v6;
-		v7 = sub_582B0(ptrEntity_v26x->yaw_0x1C_28, v6);
+		v7 = sub_582B0(ptrPlayerEntity_v26x->yaw_0x1C_28, v6);
 		v27 = v7;
 		v8 = 12288 * (512 - v7 / 2 + 512);
 		v9 = (v8 - (__CFSHL__(v8 >> 31, 10) + (v8 >> 31 << 10))) >> 10;
 		volume_v10 = v9 ? (signed int)(0x7FFF * (v9 - v25)) / v9 : 0x7FFF;
-		v11 = (signed __int16)sub_582F0(ptrEntity_v26x->yaw_0x1C_28, v28);
+		v11 = (signed __int16)sub_582F0(ptrPlayerEntity_v26x->yaw_0x1C_28, v28);
 		if (volume_v10 < 512)
 			return;
 		if (volume_v10 > 0x7FFF)
@@ -6329,6 +6344,7 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
 			EntitySounds_F4FE0[wavIndex].playType_0 = 1;
 			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+			EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 		}
 		break;
 	case Fire_5:
@@ -6363,6 +6379,7 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
 			EntitySounds_F4FE0[wavIndex].playType_0 = 3;
 			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+			EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 		}
 		break;
 	case Select_14:
@@ -6376,6 +6393,7 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[wavIndex].flags_3 = 0;
 				EntitySounds_F4FE0[wavIndex].playType_0 = 1;
+				EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 			}
 			else if (a2 == -1)
 			{
@@ -6384,6 +6402,7 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
 				EntitySounds_F4FE0[wavIndex].playType_0 = 1;
+				EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 			}
 		}
 		break;
@@ -6403,6 +6422,7 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
 			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
 			EntitySounds_F4FE0[wavIndex].playType_0 = 4;
+			EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 		}
 		break;
 	case Hit1_54:
@@ -6418,6 +6438,7 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[wavIndex].flags_3 = 0;
 				EntitySounds_F4FE0[wavIndex].playType_0 = 3;
+				EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 			}
 			else if (a2 == -1)
 			{
@@ -6426,6 +6447,7 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
 				EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
 				EntitySounds_F4FE0[wavIndex].playType_0 = 3;
+				EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 			}
 		}
 		break;
@@ -6439,6 +6461,7 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 		EntitySounds_F4FE0[wavIndex].playType_0 = 3;
 		EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
 		EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+		EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 		break;
 	default:
 		return;

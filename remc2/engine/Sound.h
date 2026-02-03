@@ -16,6 +16,7 @@ typedef struct {//lenght 12
 	int16_t flags_3;
 	int16_t word_4;
 	int16_t playRate_5;
+	axis_3d_32 positionFromPlayer;
 }type_F4FE0;
 
 typedef struct {
@@ -69,6 +70,7 @@ const uint32_t AilSampleStarted = 4;
 const uint8_t AlwaysPlaySample = 1;
 const uint8_t IfNotPlayingPlaySample = 2;
 const uint8_t RestartOrIfNotExistingPlaySample = 3;
+const uint32_t MaxSoundDistance = 0x9000000;
 
 extern type_E37A0_sound_buffer2* soundIndex_E37A0;
 
@@ -86,7 +88,8 @@ void GetMusicSequenceCount();
 bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber);
 int sub_8F0AB(FILE* a1, int a3);
 void PlaySample_8F100(uint32_t a1, int16_t wavIndex, int volume, int volumePan, uint16_t playRate, int8_t loopCount, uint8_t playType);
-void AilEndAllSamples_8F420(int flags, __int16 wavIndex);
+void SetSamplePositionFromPlayer(uint32_t flags, int16_t wavIndex, axis_3d_32 entityPosition);
+void AilEndSamplePlayingByIndex_8F420(int flags, __int16 wavIndex);
 void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale);
 int32_t StopTimer_8F850(uint32_t interval);
 void InitSoundAndMusic_90FD0();
@@ -142,7 +145,6 @@ void AilSetTimerPeriod_A1840(int timerIdx, unsigned long hertz);
 void AilSetTimerPeriod_92890(int timerIdx, unsigned long microseconds);
 void SetTimerPeriod_A1810(int timerIdx, unsigned long microseconds);
 void AilStartTimer_92BA0(int timerIdx);
-void AilEndSamplePlayingByIndex_8F420(int flags, __int16 wavIndex);
 void StartTimer_A1768(int timerIdx);
 void AilReleaseTimer_92DC0(int timerIdx);
 void ReleaseTimer_A171D(int timerIdx);
