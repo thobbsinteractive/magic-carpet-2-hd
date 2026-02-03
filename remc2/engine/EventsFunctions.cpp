@@ -31868,7 +31868,7 @@ void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
 	}
 	sub_84B80();//prepare lightting
 	sub_58F00_game_objectives();//nothing draw
-	sub_59820();//nothing draw
+	PresentObjective_59820();//nothing draw
 	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
 		sub_57570();//nothing draw
 	sub_575C0();//nothing draw
@@ -39346,7 +39346,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 	if (x_BYTE_355244_spellsedit)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x10u;
 	if (!x_BYTE_35522C_nocd && cdSpeechEnabled_E2A28)
-		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x40u;
+		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= SPEECH_ENABLED;
 	if (x_BYTE_355240_load_set_level)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x80u;
 	if (x_BYTE_355214)
@@ -41046,7 +41046,7 @@ void sub_59760(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//23a760
 }
 
 //----- (00059820) --------------------------------------------------------
-void sub_59820()//23a820
+void PresentObjective_59820()//23a820
 {
 	unsigned __int8 v3; // ch
 	char v4; // cl
@@ -41073,7 +41073,7 @@ void sub_59820()//23a820
 				D41A0_0.byte_0x36E02 = 0;
 				return;
 			}
-			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40)
+			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED)
 			{
 				if (v3 < 7u)
 				{
@@ -41103,6 +41103,8 @@ void sub_59820()//23a820
 						x_D41A0_BYTEARRAY_4_struct.paletteSubMod_180 = 8;
 						PlayCDTrackSegmentForSecretLevel_86F20(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3E4_2BE4_12226);
 						FadeDownSoundVolume_59A50();
+						if (autoShowObjectivesForForeignLanguages && x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2)
+							D41A0_0.byte_counter_current_objective_box_0x36E04 = 200;
 						return;
 					}
 					if (D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.ObjectiveText_1)
@@ -41127,6 +41129,8 @@ void sub_59820()//23a820
 							x_D41A0_BYTEARRAY_4_struct.paletteSubMod_180 = 8;
 							PlayCDTrackSegmentNumber_86EB0(v8, v9, 1);
 							FadeDownSoundVolume_59A50();
+							if (autoShowObjectivesForForeignLanguages && x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2)
+								D41A0_0.byte_counter_current_objective_box_0x36E04 = 200;
 							return;
 						}
 					}
@@ -43139,7 +43143,7 @@ void sub_46DD0_init_sound_and_music()
 			CloseCdDriver_85F00();
 			//v6 = x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0xBF;
 			cdSpeechEnabled_E2A28 = soundAble_E3798;
-			(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24) &= 0xBF;
+			(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24) &= SPEECH_DISABLED;
 		}
 	}
 	sub_83CC0(21);

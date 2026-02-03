@@ -528,7 +528,7 @@ struct//lenght 13
 	int32_t x_DWORD_17DE2C; // weak x_DWORD_17DE28str+4
 	int16_t x_WORD_17DE30_posx; // weak x_DWORD_17DE28str+8
 	int16_t x_WORD_17DE32_posy; // weak x_DWORD_17DE28str+10
-	int8_t x_BYTE_17DE34; // weak x_DWORD_17DE28str+12
+	int8_t DisplayLevelDescriptionText_17DE34; // weak x_DWORD_17DE28str+12
 } x_DWORD_17DE28str;
 #pragma pack (16)
 
@@ -637,7 +637,7 @@ void /*__fastcall*/ _wcpp_1_unwind_leave__131() {//257d00
 }
 
 //----- (0002EB40) --------------------------------------------------------
-void sub_2EB40()//20fb40
+void StopSubtitles_2EB40()//20fb40
 {
 	//int result; // eax
 
@@ -826,7 +826,7 @@ void Intros_76D10(char introType)//257d10
 	else
 		sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
 
-	sub_2EB40();
+	StopSubtitles_2EB40();
 	if (soundAble_E3798 && x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex == 2)
 	{
 		DisplaySubtitles_D41C1 = 0;
@@ -847,7 +847,7 @@ void Intros_76D10(char introType)//257d10
 		ShowWelcomeScreen_83850();//frog logo and wait
 #endif
 		PlayInfoFmv(1, 1, str_E17CC_0, introPath);//257160 intro .. 2b27cc
-		sub_2EB40();
+		StopSubtitles_2EB40();
 		DisplaySubtitles_D41C1 = 0;
 		DisplaySubtitles_D41C0 = 0;
 		while (sub_9A10A_check_keyboard(/*v1*/))
@@ -3530,7 +3530,11 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 						{
 							x_DWORD_17DE28str.x_WORD_17DE30_posx = *posx;
 							x_DWORD_17DE28str.x_WORD_17DE32_posy = *posy;
-							x_DWORD_17DE28str.x_BYTE_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40) != 0) + 1;
+							x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED) != 0) + 1;
+							if (autoShowObjectivesForForeignLanguages &&
+								x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2 &&
+								x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 == 2)
+								x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 -= 1;
 							x_DWORD_17DE28str.x_DWORD_17DE28 = j___clock();
 						}
 					}
@@ -3553,7 +3557,11 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 					{
 						x_DWORD_17DE28str.x_WORD_17DE30_posx = *posx;
 						x_DWORD_17DE28str.x_WORD_17DE32_posy = *posy;
-						x_DWORD_17DE28str.x_BYTE_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40) != 0) + 1;
+						x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED) != 0) + 1;
+						if (autoShowObjectivesForForeignLanguages &&
+							x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2 &&
+							x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 == 2)
+							x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 -= 1;
 						x_DWORD_17DE28str.x_DWORD_17DE28 = j___clock();
 					}
 					break;
@@ -3574,7 +3582,11 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 			memset(&x_DWORD_17DE28str, 0, 13);
 			x_DWORD_17DE28str.x_WORD_17DE30_posx = *posx;
 			x_DWORD_17DE28str.x_WORD_17DE32_posy = *posy;
-			x_DWORD_17DE28str.x_BYTE_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40) != 0) + 1;
+			x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 = ((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED) != 0) + 1;
+			if (autoShowObjectivesForForeignLanguages &&
+				x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2 &&
+				x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 == 2)
+				x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 -= 1;
 			x_DWORD_17DE28str.x_DWORD_17DE28 = j___clock();
 		}
 		goto LABEL_92;
@@ -3734,24 +3746,24 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 			{
 				if (x_DWORD_17DE38str.x_BYTE_17DF11_last_key_status == 111 || x_DWORD_17DE38str.x_BYTE_17DF11_last_key_status == 79)
 				{
-					v42 = x_DWORD_17DE28str.x_BYTE_17DE34;
-					if (x_DWORD_17DE28str.x_BYTE_17DE34 == 1)
+					v42 = x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34;
+					if (x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 == 1)
 					{
 						v39 = x_DWORD_17DE28str.x_DWORD_17DE2C;
 						x_DWORD_17DE28str.x_DWORD_17DE28 = x_DWORD_17DE28str.x_DWORD_17DE2C;
-						x_DWORD_17DE28str.x_BYTE_17DE34 = 2;
+						x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 = 2;
 						IsPlayingCDTrack_17E09D = v42;
 					}
-					else if (x_DWORD_17DE28str.x_BYTE_17DE34 == 2)
+					else if (x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 == 2)
 					{
 						v39 = j___clock();
 						x_DWORD_17DE28str.x_DWORD_17DE2C = v39;
-						x_DWORD_17DE28str.x_BYTE_17DE34 = 1;
+						x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 = 1;
 						x_DWORD_17DE28str.x_DWORD_17DE28 = v39;
 						IsPlayingCDTrack_17E09D = 0;
 					}
 				}
-				if (x_DWORD_17DE28str.x_BYTE_17DE34 == 1)
+				if (x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 == 1)
 				{
 					v43 = j___clock();
 					x_DWORD_17DE28str.x_DWORD_17DE2C = v43;
@@ -3759,7 +3771,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 					if ((v43 - x_DWORD_17DE28str.x_DWORD_17DE28) / 0x64u > 0xF)
 					{
 						x_DWORD_17DE28str.x_DWORD_17DE28 = v43;
-						x_DWORD_17DE28str.x_BYTE_17DE34 = 2;
+						x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 = 2;
 					}
 					if (x_DWORD_17DE28str.x_WORD_17DE32_posy < MOUSE_MAX_Y)
 						v54 = 280;
@@ -3768,7 +3780,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* a3, __int16* a4, in
 					//adress 2602a0
 					PresentLevelDescription_80C30(130, v54, 380);//divny text
 				}
-				else if (x_DWORD_17DE28str.x_BYTE_17DE34 <= 2u || x_DWORD_17DE28str.x_BYTE_17DE34 == 3)
+				else if (x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 <= 2u || x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 == 3)
 				{
 					//adress 2602a7
 					PresentLevelDescription_80C30(0, 0, 0);
@@ -4087,7 +4099,7 @@ void PresentLevelDescription_80C30(__int16 posX, __int16 posY, __int16 a3)//261c
 		{
 			if (secretMapScreenPortals_E2970[ii].activated_12 != 3 && levelIdx_v3 == secretMapScreenPortals_E2970[ii].word_4)
 			{
-				x_DWORD_17DE28str.x_BYTE_17DE34 = 3;
+				x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 = 3;
 				return;
 			}
 		}
@@ -4098,7 +4110,7 @@ void PresentLevelDescription_80C30(__int16 posX, __int16 posY, __int16 a3)//261c
 		sub_7FCB0_draw_text_with_border(/*v3,*/ x_DWORD_E9C4C_langindexbuffer[23 + levelIdx_v3], (signed __int16)(posX + 4 * v9), v8, posY, 5, v7, 1);
 		//"You must explore the outer Netherworlds while you learn its magic. Your first destination is the ancient city of Jahwl."+
 	}
-	if (x_DWORD_17DE28str.x_BYTE_17DE34 != 3 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40 && !IsPlayingCDTrack_17E09D)
+	if (x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 != 3 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40 && !IsPlayingCDTrack_17E09D)
 	{
 		IsPlayingCDTrack_17E09D = 1;
 		if ((signed __int16)levelIdx_v3 != -1)
@@ -4106,7 +4118,7 @@ void PresentLevelDescription_80C30(__int16 posX, __int16 posY, __int16 a3)//261c
 	}
 }
 // D41A4: using guessed type int x_DWORD_D41A4;
-// 17DE34: using guessed type char x_BYTE_17DE34;
+// 17DE34: using guessed type char DisplayLevelDescriptionText_17DE34;
 // 17DE38: using guessed type int x_DWORD_17DE38;
 // 17E09D: using guessed type char x_BYTE_17E09D;
 
@@ -4722,7 +4734,7 @@ void sub_82670()//263670
 					}
 					else
 					{
-						sub_2EB40();
+						StopSubtitles_2EB40();
 						DisplaySubtitles_D41C1 = 1;
 						DisplaySubtitles_D41C0 = 1;
 					}

@@ -1599,5 +1599,5 @@ uint32_t FadeUpSoundVolume_59B50(uint32_t interval);
 void RestoreSoundVolume_59BF0();
 void sub_46DD0_init_sound_and_music();
 uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
-void sub_59820();
+void PresentObjective_59820();
 #endif
