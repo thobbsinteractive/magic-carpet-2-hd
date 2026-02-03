@@ -4579,7 +4579,7 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 				str_WORD_E20A4[index].array_word_18.actX_0 = str_WORD_E20A4[index].array_word_18.beginX_2;
 				str_WORD_E20A4[index].array_word_18.actY_1 = str_WORD_E20A4[index].array_word_18.beginY_3;
 				CreateAnimObject_7E8D0(&str_WORD_E20A4[index].array_word_45, str_WORD_E20A4[index].array_word_18.maxX_4, str_WORD_E20A4[index].array_word_18.maxY_5, str_WORD_E20A4[index].array_word_18.beginX_2, str_WORD_E20A4[index].array_word_18.beginY_3, 2, 2);
-				str_WORD_E20A4[index].array_word_18.act_7 = str_WORD_E20A4[index].array_word_18.begin_6;
+				str_WORD_E20A4[index].array_word_18.act2_8 = str_WORD_E20A4[index].array_word_18.begin_6;
 				str_WORD_E20A4[index].byte_43++;
 				sub_8F100_sound_proc19(0, str_WORD_E20A4[index].word_10, x_BYTE_E1324, 64, 0x64u, 0, str_WORD_E20A4[index].byte_12);
 				break;
@@ -4588,7 +4588,7 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 				{
 					objectResult = MoveAnimObject_7E9D0(&str_WORD_E20A4[index].array_word_18.actX_0, &str_WORD_E20A4[index].array_word_18.actY_1, &str_WORD_E20A4[index].array_word_45);
 				}
-				if ((unsigned int)(time - str_WORD_E20A4[index].time_0) >> 3 >= 1)
+				if (time - str_WORD_E20A4[index].time_0  >= 8)
 				{
 					if (str_WORD_E20A4[index].array_word_18.act2_8 <= str_WORD_E20A4[index].array_word_18.act_7 - 1)
 						str_WORD_E20A4[index].array_word_18.act2_8++;
@@ -4715,7 +4715,7 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6)//262ee0
 		else if (str_WORD_E20A4[index].byte_42 == 3)
 		{
 			int i=0;
-			for (int i = 0; mapScreenPortals_E17CC[i].viewPortPosX_4 && mapScreenPortals_E17CC[i].activated_18 != 2; i++)
+			for (i = 0; mapScreenPortals_E17CC[i].viewPortPosX_4 && mapScreenPortals_E17CC[i].activated_18 != 2; i++)
 				;
 			if (i)
 				i--;
