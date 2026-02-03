@@ -4601,7 +4601,7 @@ void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6) //262ee0
 				break;
 			case 4u:
 				objectResult = false;
-				if (time - str_WORD_E20A4[index].time_0) >= 8) {
+				if (time - str_WORD_E20A4[index].time_0 >= 8) {
 					if (str_WORD_E20A4[index].array_word_18.act2_8 <= str_WORD_E20A4[index].array_word_18.stateX_10 - 1) {
 						str_WORD_E20A4[index].array_word_18.act2_8++;
 					}
