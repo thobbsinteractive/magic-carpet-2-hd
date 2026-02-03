@@ -932,14 +932,11 @@ void sub_848A0();
 void sub_84EA0(uaxis_2d a1x, type_str_0x3664C* a2, char a3, __int16 a4);
 int sub_84FB0_3dim_scalar(axis_3d* a1, axis_3d* a2);
 int sub_85060(int a1);
-void sub_85070();
 int sub_85B20_copy_bitmap(x_BYTE* a1, x_WORD* a2, unsigned __int16 a3);
 __int16 sub_85F00_free_memory(__int16 a1);
 int sub_85F60(int a1);
 void sub_86460(uint16_t a1);
 //void sub_86550();
-void sub_86A00_some_allocs();
-void sub_86FF0(unsigned __int8 a1, __int16 a2, __int16 a3);
 char sub_871E0();
 void sub_872A0();
 void sub_87A30();
@@ -991,8 +988,6 @@ char sub_904C0(float a1);
 //void sub_905EC_any_graphics_command2(char a1);
 //int sub_90810();
 void sub_90D27();
-int sub_90EA0(int a1, char* a2);
-void sub_99080(char a1);
 int sub_9937E_set_video_mode(__int16 a1);
 // int sub_994BA_cursor_move(__int16 a1);
 signed int sub_9951B(__int16 a1);
@@ -1043,9 +1038,6 @@ int sub_B14F8(int* a1, int a2);
 void sub_BD1B6(uint8_t* a1);
 void sub_BD2CB(uint8_t* a1);
 void sub_BD3DD();
-
-//-------------------------------------------------------------------------
-// Data declarations
 
 uint8_t algn_4BB85[11] = { 0x8d, 0x80, 0x00, 0x00, 0x00, 0x00, 0x8d, 0x52, 0x00, 0x8b, 0x00 };
 
@@ -39318,7 +39310,8 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 		argnumber++;
 	}
 	if (!x_BYTE_35522C_nocd)//if cd
-		sub_86A00_some_allocs();//fix it -not at now
+		InitialiseCdAudio_86A00();
+
 	//x_D41A0_BYTEARRAY_0 = (uint8_t*)sub_83CD0_malloc2(0x36e17);//2A51A0
 	/*if (!x_D41A0_BYTEARRAY_0)
 	{
@@ -48165,7 +48158,7 @@ bool sub_85FD0()//266fd0
 */
 
 //----- (00086A00) --------------------------------------------------------
-void sub_86A00_some_allocs()//267a00
+void InitialiseCdAudio_86A00()//267a00
 {
 	//int result; // eax
 	int v1; // ebx

@@ -540,6 +540,7 @@ void  sub_841CE(__int16 a1);//ShowPerifery
 //sub_B5015 ShowPerifery
 //sub_840B8 ShowPerifery
 
+void InitialiseCdAudio_86A00();
 void PlayCDTrackSegmentNumber_86EB0(uint8_t trackIdx, uint8_t segmentIdx, bool paletteFlash);
 int16_t sub_89B60_aplicate_setting(uint8_t a1);
 //void __writeeflags(unsigned Value);
