@@ -55,23 +55,6 @@ after NetworkCancel_748F7 not changed
 InputRecorder* m_InputRecorder = nullptr;
 Scene m_CurrentScene = Scene::PREAMBLE_MENU;
 
-//int test_regression_level = 1;
-//first multi is 50(51) 10
-//first hide level is 30(31) 5
-
-//adress 2285ff
-
-//int save_debugcounter = 0;
-
-#define FIX_SetHeightmapByBuilding_48B90// - when set game have error, but compactible with original
-
-//(set in bool sub_558E0_InGameLoad(uint8_t fileindex)//2368e0)
-//int count_begin = 1;//1
-//int stage__4A190_0x6E8E = 0;
-//int debugnextlevel = 0;
-
-//bool config_EDITOR = false;
-
 void preconvert() {
 	/*
 	int16_t word_0;

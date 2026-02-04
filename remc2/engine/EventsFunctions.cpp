@@ -49,7 +49,7 @@ int test_regression_level = 1;
 
 int save_debugcounter = 0;
 
-//#define FIX_SetHeightmapByBuilding_48B90// - when set game have error, but compactible with original
+#define FIX_SetHeightmapByBuilding_48B90// - when set game have error, but compactible with original
 
 //(set in bool sub_558E0_InGameLoad(uint8_t fileindex)//2368e0)
 int count_begin = 1;//1
