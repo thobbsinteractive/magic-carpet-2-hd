@@ -5,4 +5,4 @@
 #include "../remc2/engine/MenusAndIntros.h"
 #include "../remc2/engine/Network.h"
 
-int run_regtest(int level);
+int run_regtest(int level, bool afterload = false, int index = 1);
