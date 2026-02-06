@@ -11,9 +11,10 @@ int CountFailedRegressionTests() {
 
 	Logger->info("--- Afterload regressions tests ---");
 
-	if (run_regtest(1,true,1) != 0) numFailedTests++;			
+	// run_regtest(level,afterload,index)
+	if (run_regtest(1,true,1) != 0) numFailedTests++;
 
-	Logger->info("--- Level regressions tests ---");
+	Logger->info("\n--- Level regressions tests ---");
 	for (int i = 1; i <= 25; i++)
 		if (i != 22 && i != 25)
 			if (run_regtest(i) != 0)
@@ -54,7 +55,7 @@ int main(int argc, char** argv)
 	else
 	{
 		Logger->error("{} tests failed!", numFailedTests);
-	}
+	}	
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 	return numFailedTests;
