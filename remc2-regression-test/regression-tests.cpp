@@ -3,7 +3,7 @@
 int run_regtest(int level, bool afterload, int index)//236F70
 {
 	int exitCode = 0;
-	Logger->info("Testing Level {}", level);
+	Logger->info("Testing aftreload {} for Level {}", level, index);
 
 	unitTests = true;
 	std::string locUnitTestsPath;
@@ -70,15 +70,15 @@ int run_regtest(int level, bool afterload, int index)//236F70
 	support_end();
 	if (locEndTestsCode == 20)
 		if(afterload)
-			Logger->info("Test aftreload {} for Level {} - OK", level, index);
+			Logger->info("Test aftreload {} for Level {} - OK\n\n", level, index);
 		else
-			Logger->info("Test Level {} - OK", level);
+			Logger->info("Test Level {} - OK\n\n", level);
 	else
 	{
 		if (afterload)
-			Logger->info("Test aftreload {} for Level {} - FAILED", level, index);
+			Logger->info("Test aftreload {} for Level {} - FAILED\n\n", level, index);
 		else
-			Logger->error("Test Level {} - FAILED", level);
+			Logger->error("Test Level {} - FAILED\n\n", level);
 		exitCode = -1;
 	}
 	return exitCode;
