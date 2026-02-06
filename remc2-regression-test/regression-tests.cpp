@@ -1,18 +1,22 @@
 #include "regression-tests.h"
 
-int run_regtest(int level)//236F70
+int run_regtest(int level, bool afterload, int index)//236F70
 {
 	int exitCode = 0;
 	Logger->info("Testing Level {}", level);
 
 	unitTests = true;
-	std::string locUnitTestsPath = get_exe_path() + "/memimages/regressions/level" + std::to_string(level);
+	std::string locUnitTestsPath;
+	if(afterload)
+		locUnitTestsPath = get_exe_path() + "/memimages/regressions/afterloadtest" + std::to_string(index);
+	else
+		locUnitTestsPath = get_exe_path() + "/memimages/regressions/level" + std::to_string(level);
 	unitTestsPath = locUnitTestsPath;
 	int locEndTestsCode;
 	endTestsCode = &locEndTestsCode;
 
-	int argc = 7;
-	char* argv[7];
+	int argc = 8;
+	char* argv[8];
 	char arg1[] = "remc2";
 	char arg2[] = "--mode_test_regressions_game";
 	char arg3[] = "--text_output_to_console";
@@ -23,6 +27,11 @@ int run_regtest(int level)//236F70
 
 	std::string path = get_exe_path() + "/regression-config.json";
 	char* arg7 = &path[0];
+
+	char arg8[100] = "";
+	if(!afterload)
+		strcpy(arg8, "--debug_sequences2");
+
 	char* envp[] = { nullptr };
 	argv[0] = arg1;
 	argv[1] = arg2;
@@ -31,6 +40,7 @@ int run_regtest(int level)//236F70
 	argv[4] = arg5;
 	argv[5] = arg6;
 	argv[6] = arg7;
+	argv[7] = arg8;
 
 	for (int i = 0; i < 100; i++)
 	{
@@ -59,10 +69,16 @@ int run_regtest(int level)//236F70
 
 	support_end();
 	if (locEndTestsCode == 20)
-		Logger->info("Test Level {} - OK", level);
+		if(afterload)
+			Logger->info("Test aftreload {} for Level {} - OK", level, index);
+		else
+			Logger->info("Test Level {} - OK", level);
 	else
 	{
-		Logger->error("Test Level {} - FAILED", level);
+		if (afterload)
+			Logger->info("Test aftreload {} for Level {} - FAILED", level, index);
+		else
+			Logger->error("Test Level {} - FAILED", level);
 		exitCode = -1;
 	}
 	return exitCode;
