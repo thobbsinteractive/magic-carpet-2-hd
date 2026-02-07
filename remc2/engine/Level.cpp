@@ -10,6 +10,7 @@
 #include "Terrain.h"
 #include "DatTabIndexes.h"
 
+bool IsAfterLoad = false;
 
 void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* textureBuffer);
 void sub_71890();
@@ -264,7 +265,7 @@ bool SaveLevelSVER_55450(uint8_t savefileindex, int32_t levelNumber, char* savef
 }
 
 //----- (000555D0) --------------------------------------------------------
-bool LoadLevel_555D0(uint8_t fileindex, int levelindex)//2365d0
+bool LoadLevel_555D0(uint8_t fileindex, int levelindex, bool regressionTest)//2365d0
 {	
 	int temp0x219A;
 	int temp0x219E;
@@ -278,6 +279,8 @@ bool LoadLevel_555D0(uint8_t fileindex, int levelindex)//2365d0
 	type_str_0x21AE temp0x21AE;
 	type_str_0x21B2 temp0x21B2;
 	type_str_0x21B6 temp0x21B6;
+
+	IsAfterLoad = true;
 
 	bool readSuccess = false;
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x10))
@@ -294,18 +297,18 @@ bool LoadLevel_555D0(uint8_t fileindex, int levelindex)//2365d0
 		temp0x21AE = D41A0_0.str_0x21AE;
 		temp0x21B2 = D41A0_0.str_0x21B2;
 		temp0x21B6 = D41A0_0.str_0x21B6;
-		readSuccess = DataFileIO::sub_55750_TestExistingSaveFile(fileindex, levelindex);
+		readSuccess = DataFileIO::sub_55750_TestExistingSaveFile(fileindex, levelindex, regressionTest);
 		//adress  23662a
 		if (readSuccess)
 		{
-			readSuccess = LoadLevelSMAP_558E0(fileindex);
+			readSuccess = LoadLevelSMAP_558E0(fileindex/*, regressionTest*/);
 			if (readSuccess)
 			{
 				qmemcpy(
 					&x_D41A0_BYTEARRAY_4_struct.byteindex_256ar,
 					&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc],
 					0x84Cu);
-				readSuccess = LoadLevelSLEV_55A10(fileindex);
+				readSuccess = LoadLevelSLEV_55A10(fileindex/*, regressionTest*/);
 				if (readSuccess)
 				{
 					sub_55100(2);

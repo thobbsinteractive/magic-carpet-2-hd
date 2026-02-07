@@ -19,6 +19,9 @@ int run_regtest(int level, bool afterload, int index)//236F70
 	char* argv[8];
 	char arg1[] = "remc2";
 	char arg2[] = "--mode_test_regressions_game";
+	if (afterload)
+		strcpy(arg2, "--mode_debug_afterload");
+
 	char arg3[] = "--text_output_to_console";
 	char arg4[] = "--set_level";
 	char arg5[4];
@@ -29,8 +32,8 @@ int run_regtest(int level, bool afterload, int index)//236F70
 	char* arg7 = &path[0];
 
 	char arg8[100] = "";
-	if(!afterload)
-		strcpy(arg8, "--debug_sequences2");
+	if(afterload)
+		strcpy(arg8, "--debugafterload");
 
 	char* envp[] = { nullptr };
 	argv[0] = arg1;

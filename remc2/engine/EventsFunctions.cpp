@@ -31788,6 +31788,13 @@ void InGameLoop_47320(signed int a1)//228320
 		g_state_monitor.Update();
 
 		//debug
+		if (CommandLineParams.ModeDebugAfterload())
+		{
+			if (debug_first_run == 5)
+				LoadLevel_555D0(0u, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w,true);
+			if(!CommandLineParams.DoRightButton())
+				debug_first_run++;
+		}
 		if (CommandLineParams.DoRightButton()) {
 			if (CommandLineParams.DoDebugafterload())
 			{
@@ -31963,7 +31970,7 @@ void DrawAndEventsInGame_47560(signed int a4, __int16 a5)//228560
 	//adress 2285ff
 	//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
 	if (CommandLineParams.DoTestRegression()) {
-		add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), -1, false, 20);
+		add_compare(0x002285FF, CommandLineParams.ModeDebugAfterload() && IsAfterLoad, -1, false, 20);
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
 	if (CommandLineParams.DoDebugSequences2()) {
@@ -44543,11 +44550,12 @@ void SetCenterScreenForFlyAssistant_6EDB0()//24FDB0
 		display_h = 480;
 	}
 
+	/*
 	if (x_WORD_180660_VGA_type_resolution & 8) {//fix
 		// 640x480 virtual screen
 		display_w = 640;
 		display_h = 480;
-	}
+	}*/
 
 	new_x = display_w >> 1;
 	new_y = display_h >> 1;
