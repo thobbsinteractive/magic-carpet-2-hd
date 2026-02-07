@@ -28,7 +28,7 @@ spdlog::logger* Logger = nullptr;
 
 const char* GetStringFromLoggingLevel(spdlog::level::level_enum level)
 {
-	const char* level_enum_str[] = { "trace", "debug", "info", "warn", "err", "critical" };
+	const char* level_enum_str[] = { "Trace", "Debug", "Info", "Warn", "Err", "Critical" };
 	return level_enum_str[level];
 }
 

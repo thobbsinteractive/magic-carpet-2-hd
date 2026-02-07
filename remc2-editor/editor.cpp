@@ -4,6 +4,7 @@
 
 #include "../remc2/engine/Level.h"
 #include "../remc2/engine/Events.h"
+#include "../remc2/engine/DatTabIndexes.h"
 
 bool changed = false;
 
@@ -125,7 +126,7 @@ void terrain_recalculate();
 int main_x(/*int argc, char** argv*/);
 
 void loadlevel(int levelnumber) {
-	DecompressLevels_533B0(levelnumber, &D41A0_0.terrain_2FECE);
+	LevelDecompress_533B0(levelnumber, &D41A0_0.terrain_2FECE);
 	memcpy(temparray_0x30311, D41A0_0.terrain_2FECE.entity_0x30311,sizeof(type_entity_0x30311)*0x4b0);
 	for(int i=0;i< 0x4b0;i++)
 		temparray_0x30311_inactive[i]=0;
@@ -188,7 +189,7 @@ void editor_run()
 	main_x(/*int argc, char** argv*/);
 	//pdwScreenBuffer_351628= back_pdwScreenBuffer_351628;
 	
-	//sub_47320_in_game_loop(0);//run game	
+	//InGameLoop_47320(0);//run game	
 
 	//restore D41A0_BYTESTR_0
 }
@@ -207,10 +208,10 @@ void terrain_recalculate() {
 	}
 
 
-	x_WORD_17B4E0 = D41A0_0.terrain_2FECE.seed_0x2FEE5;
+	rand2_17B4E0 = D41A0_0.terrain_2FECE.seed_0x2FEE5;
 	D41A0_0.rand_0x8 = D41A0_0.terrain_2FECE.seed_0x2FEE5;
 	memset((void*)mapEntityIndex_15B4E0, 0, 0x20000);
-	sub_B5E70_decompress_terrain_map_level(x_WORD_17B4E0, D41A0_0.terrain_2FECE.offset_0x2FEE9, D41A0_0.terrain_2FECE.raise_0x2FEED, D41A0_0.terrain_2FECE.gnarl_0x2FEF1);
+	sub_B5E70_decompress_terrain_map_level(rand2_17B4E0, D41A0_0.terrain_2FECE.offset_0x2FEE9, D41A0_0.terrain_2FECE.raise_0x2FEED, D41A0_0.terrain_2FECE.gnarl_0x2FEF1);
 	sub_44DB0_truncTerrainHeight(mapEntityIndex_15B4E0, mapHeightmap_11B4E0);//225db0 //trunc and create
 	if (stage > 0)
 	{
@@ -3160,7 +3161,7 @@ int main_x(/*int argc, char** argv*/)
 	kiss_hex4edit_new(&hex4edit12, &window1, &D41A0_0.terrain_2FECE.rkSte_0x2FF11, (char*)"RkSte:", 10, 230, 70);
 
 	kiss_hex4edit_new(&hex4edit13, &window1, &D41A0_0.terrain_2FECE.word_2FECE, (char*)"2FECE:", 250, 10,80);
-	kiss_hex4edit_new(&hex4edit14, &window1, &D41A0_0.terrain_2FECE.word_2FED0, (char*)"2FED0:", 250, 30, 80);
+	kiss_hex4edit_new(&hex4edit14, &window1, &D41A0_0.terrain_2FECE.levelID_2FED0, (char*)"2FED0:", 250, 30, 80);
 	kiss_hex2edit_new(&hex2edit15, &window1, &D41A0_0.terrain_2FECE.byte_0x2FED2, (char*)"2FED2:", 250, 50, 80);
 	kiss_hex2edit_new(&hex2edit16, &window1, &D41A0_0.terrain_2FECE.byte_0x2FED3, (char*)"2FED3:", 250, 70, 80);
 	kiss_hex2edit_new(&hex2edit17, &window1, &D41A0_0.terrain_2FECE.MapType, (char*)"DY/NG/CV:", 250, 90, 80);
@@ -3178,7 +3179,7 @@ int main_x(/*int argc, char** argv*/)
 
 	/*
 	uint16_t word_2FECE;
-	uint16_t word_2FED0;
+	uint16_t levelID_2FED0;
 	uint8_t byte_0x2FED2;//x_D41A0_BYTEARRAY_0[196306] // type of level graphics
 	uint8_t byte_0x2FED3;
 	uint8_t byte_0x2FED4;//x_D41A0_BYTEARRAY_0[196308]//GraphicsType

@@ -10,8 +10,8 @@
 //tabbuffer rewrite tostruct
 //remove index functions
 
-int MaxSoundBufferChannels_E3794 = 10;
 
+int MaxSoundBufferChannels_E3794 = 10; // weak
 bool soundAble_E3798 = true; // weak
 bool soundActive_E3799 = true; // weak
 bool soundLoaded_E379A = true; // weak
@@ -27,7 +27,7 @@ int numOfLoadedSounds_E37A4 = 0;
 //int8_t* str2_E37A4_sound_buffer3 = 0; // weak
 uint8_t* soundBuffer1_E37A8 = nullptr; // weak
 uint8_t defaultSoundIndex_E37AC = 0;
-int8_t actualSound_E37AD = -1; // weak
+int8_t actualSoundBank_E37AD = -1; // weak
 char x_BYTE_E37AE = 0; // weak
 int defaultVolume_E37B0 = 127; // weak
 __int16 soundFreqType2_E37B4 = 1644; // weak
@@ -573,7 +573,7 @@ void sub_8D800_sound_proc2()//26E800
 
 	while (runAgain)
 	{
-		runAgain = LoadSound_84300(defaultSoundIndex_E37AC);
+		runAgain = LoadSounds_84300(defaultSoundIndex_E37AC);
 		if (runAgain)
 		{
 			switch (SoundNumber_E37B6)
@@ -884,8 +884,8 @@ int InitializeCdDriver_85E40()
 {
 	//int16_t result;
 
-	if ( x_CdDriveStatus_E2A24 )
-	  return 1;
+	if (x_CdDriveStatus_E2A24)
+		return 1;
 	//x_DWORD_17FF10 = 4096;//ax
 	Int386Request_17FF0C = 256;//bx - size
 	//int386(49, (REGS*)&Int386Request_17FF0C, (REGS*)&Int386Request_17FF0C);
@@ -1084,7 +1084,7 @@ int CheckCdDrive_86550()
 	//int386(49, (DWORD)&x_WORD_17FF0C, (DWORD)&x_WORD_17FF0C);
 	//return x_WORD_17FF38;
 
-	return AreCdTracksAvailable() == true ? 1: 0;
+	return AreCdTracksAvailable() == true ? 1 : 0;
 }
 
 char sub_86780(uint16_t a1, int  /*a2*/, int  /*a3*/)
@@ -1810,7 +1810,7 @@ void ReleaseTimer_A171D(int timerIdx)
 {
 	PlusE3FF2_91BD0();
 	if (timerIdx != -1)
-		*(int*)((char*)Timers_E3E9C + timerIdx) = 0;	
+		*(int*)((char*)Timers_E3E9C + timerIdx) = 0;
 	SOUND_StopTimer(timerIdx);
 	MinusE3FF2_91BF0();
 }
@@ -2214,7 +2214,6 @@ void AilSendChannelVoiceMessage_98360(HMDIDRIVER mdi, HSEQUENCE hSequence, int32
 	--ailIndent_181C04;
 }
 
-//----- (000986E0) --------------------------------------------------------
 void EndAllSound_986E0()//2796e0
 {
 	EndMusic_99C90();
@@ -2275,15 +2274,15 @@ __int16 sub_98AE9(__int16* a1, int a2)//279ae9
 }
 
 //----- (00084300) --------------------------------------------------------
-bool LoadSound_84300(uint8_t soundIndex)//265300
+bool LoadSounds_84300(uint8_t soundBank)//265300
 {
 	FILE* file;
 	long sizeOfFile;
 	int16_t lastSoundBank[6];
 	int32_t lastSoundBankPos;
-	uint8_t soundIndex2 = 0;
+	uint8_t soundQuality = 0;
 
-	if (soundAble_E3798 && actualSound_E37AD != soundIndex)
+	if (soundAble_E3798 && actualSoundBank_E37AD != soundBank)
 	{
 		if (soundActiveH_E2A14)
 			EndSample_8D8F0();
@@ -2302,36 +2301,36 @@ bool LoadSound_84300(uint8_t soundIndex)//265300
 			switch (SoundNumber_E37B6)
 			{
 				case 800:
-					soundIndex2 = 5;//800
+					soundQuality = 5;//800
 					break;
 				case 811:
-					soundIndex2 = 4;//811
+					soundQuality = 4;//811
 					break;
 				case 822:
-					soundIndex2 = 3;//822
+					soundQuality = 3;//822
 					break;
 				case 1611:
-					soundIndex2 = 2;//1611
+					soundQuality = 2;//1611
 					break;
 				case 1622:
-					soundIndex2 = 1;//1622
+					soundQuality = 1;//1622
 					break;
 				case 1644:
-					soundIndex2 = 0;//1644
+					soundQuality = 0;//1644
 					break;
 			}
-			if ((soundIndex + 1) > lastSoundBank[soundIndex2])
+			if ((soundBank + 1) > lastSoundBank[soundQuality])
 			{
 				DataFileIO::Close(file);
 				return true;
 			}
-			DataFileIO::Seek(file, 96 * soundIndex, 1);//seek to finded sound
-			if (!ReadAndDecompressSound(file, soundIndex2))
+			DataFileIO::Seek(file, 96 * soundBank, 1);//seek to finded sound
+			if (!ReadAndDecompressSound(file, soundQuality))
 			{
 				DataFileIO::Close(file);
 				return true;
 			}
-			actualSound_E37AD = soundIndex;
+			actualSoundBank_E37AD = soundBank;
 			DataFileIO::Close(file);
 		}
 	}
@@ -2341,20 +2340,20 @@ bool LoadSound_84300(uint8_t soundIndex)//265300
 //----- (000844A0) --------------------------------------------------------
 void LoadSoundDataFromBuffer_844A0(uint16_t count)//2654a0
 {
-	int wavIndex = MaxLoadedWavIndex_180B50;
+	int index = MaxLoadedWavIndex_180B50;
 	if (soundIndex_E37A0 && soundBuffer1_E37A8)
 	{
-		for (wavIndex = 0; wavIndex < count; wavIndex++)
+		for (index = 0; index < count; index++)
 		{
 #ifdef x32_BIT_ENVIRONMENT
-			soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0 = reinterpret_cast<uint32_t>(soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0) + soundBuffer1_E37A8;
+			soundIndex_E37A0->str_8.wavs_10[index].wavData_18 = reinterpret_cast<uint32_t>(soundIndex_E37A0->str_8.wavs_10[index].wavData_18) + soundBuffer1_E37A8;
 #endif //x32_BIT_ENVIRONMENT
 #ifdef x64_BIT_ENVIRONMENT
-			soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0 = reinterpret_cast<uint64_t>(soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0) + soundBuffer1_E37A8;
+			soundIndex_E37A0->str_8.wavs_10[index].wavData_18 = reinterpret_cast<uint64_t>(soundIndex_E37A0->str_8.wavs_10[index].wavData_18) + soundBuffer1_E37A8;
 #endif //x64_BIT_ENVIRONMENT
 		}
 	}
-	MaxLoadedWavIndex_180B50 = wavIndex;
+	MaxLoadedWavIndex_180B50 = index;
 }
 
 //----- (000844F0) --------------------------------------------------------
@@ -2380,7 +2379,7 @@ bool ReadAndDecompressSound(FILE* file, uint8_t soundIndex2)//2654f0
 			FreeMem_83E80(soundBuffer1_E37A8);
 			FreeMem_83E80((uint8_t*)soundIndex_E37A0);
 			soundActiveL_E2A14 = 0;
-			actualSound_E37AD = -1;
+			actualSoundBank_E37AD = -1;
 			return false;
 		}
 		soundBufferLen_E2A18 = soundBank2[soundIndex2].dword_12 + 256;
@@ -2410,7 +2409,7 @@ bool ReadAndDecompressSound(FILE* file, uint8_t soundIndex2)//2654f0
 	else
 	{
 		DataFileIO::Read(file, (soundBuffer1_E37A8 + 8), soundBuffer1_E37A8[7] + ((soundBuffer1_E37A8[6] + ((soundBuffer1_E37A8[5] + (soundBuffer1_E37A8[4] << 8)) << 8)) << 8) - 8);
-		DataFileIO::Decompress(soundBuffer1_E37A8, soundBuffer1_E37A8);
+		DataFileRNC::Decompress(soundBuffer1_E37A8, soundBuffer1_E37A8);
 	}
 	DataFileIO::Seek(file, soundBank2[soundIndex2].dword_0, 0);
 	DataFileIO::Read(file, (uint8_t*)shadow_str_E37A0_sound_buffer2, 8);
@@ -2421,7 +2420,7 @@ bool ReadAndDecompressSound(FILE* file, uint8_t soundIndex2)//2654f0
 	else
 	{
 		DataFileIO::Read(file, (uint8_t*)&shadow_str_E37A0_sound_buffer2->str_8, shadow_str_E37A0_sound_buffer2->byte_7 + ((shadow_str_E37A0_sound_buffer2->byte_6 + ((shadow_str_E37A0_sound_buffer2->byte_5 + (shadow_str_E37A0_sound_buffer2->byte_4 << 8)) << 8)) << 8) - 8);
-		DataFileIO::Decompress((uint8_t*)shadow_str_E37A0_sound_buffer2, (uint8_t*)shadow_str_E37A0_sound_buffer2);
+		DataFileRNC::Decompress((uint8_t*)shadow_str_E37A0_sound_buffer2, (uint8_t*)shadow_str_E37A0_sound_buffer2);
 	}
 	soundIndex_E37A0->byte_0 = shadow_str_E37A0_sound_buffer2->byte_0;
 	soundIndex_E37A0->byte_1 = shadow_str_E37A0_sound_buffer2->byte_1;
@@ -2431,27 +2430,34 @@ bool ReadAndDecompressSound(FILE* file, uint8_t soundIndex2)//2654f0
 	soundIndex_E37A0->byte_5 = shadow_str_E37A0_sound_buffer2->byte_5;
 	soundIndex_E37A0->byte_6 = shadow_str_E37A0_sound_buffer2->byte_6;
 	soundIndex_E37A0->byte_7 = shadow_str_E37A0_sound_buffer2->byte_7;
-	for(int i = 0; i < 10; i++)
-		soundIndex_E37A0->str_8.stub[i] = shadow_str_E37A0_sound_buffer2->str_8.stub[i];
 
-	for (int i = 0; i < 96; i++)
+	// Add null wavs in first index
+	soundIndex_E37A0->str_8.wavs_10[0].wavData_18 = NULL;
+	for (int j = 0; j < 4; j++)
+		soundIndex_E37A0->str_8.wavs_10[0].stub_22[j] = 0;
+
+	soundIndex_E37A0->str_8.wavs_10[0].wavSize_26 = 0;
+	soundIndex_E37A0->str_8.wavs_10[0].word_30 = 0;
+
+	for (int j = 0; j < 18; j++)
+		soundIndex_E37A0->str_8.wavs_10[0].filename_0[j] = 0;
+
+	for (int i = 0; i < 95; i++)
 	{
-		soundIndex_E37A0->str_8.wavs_10[i].wavData_0 = (uint8_t*)shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].wavData_0;
+		soundIndex_E37A0->str_8.wavs_10[i+1].wavData_18 = (uint8_t*)shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].wavData_18;
 		for (int j = 0; j < 4; j++)
 		{
-			soundIndex_E37A0->str_8.wavs_10[i].stub_4[j] = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].stub_4[j];
+			soundIndex_E37A0->str_8.wavs_10[i+1].stub_22[j] = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].stub_22[j];
 		}
 
-		soundIndex_E37A0->str_8.wavs_10[i].wavSize_8 = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].wavSize_8;
-		soundIndex_E37A0->str_8.wavs_10[i].word_12 = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].word_12;
+		soundIndex_E37A0->str_8.wavs_10[i+1].wavSize_26 = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].wavSize_26;
+		soundIndex_E37A0->str_8.wavs_10[i+1].word_30 = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].word_30;
 		for (int j = 0; j < 18; j++)
 		{
-			soundIndex_E37A0->str_8.wavs_10[i].filename_14[j] = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].filename_14[j];
+			soundIndex_E37A0->str_8.wavs_10[i+1].filename_0[j] = shadow_str_E37A0_sound_buffer2->str_8.wavs_10[i].filename_0[j];
 		}
 	}
-	
-	for (int i = 0; i < 10; i++)
-		soundIndex_E37A0->next_str[i] = shadow_str_E37A0_sound_buffer2->next_str[i];
+
 	FreeMem_83E80((uint8_t*)shadow_str_E37A0_sound_buffer2);
 	//64xfix
 
@@ -2702,7 +2708,7 @@ int sub_9EE70()
 	{
 		AilInitSample_93830(mainSample_181E10);
 		AilRegisterEosCallback_95140(mainSample_181E10, sub_9EE70);
-		AilSetSampleFile_938C0(mainSample_181E10, soundIndex_E37A0->str_8.wavs_10[AilSampleUserData_95480(mainSample_181E10, x_DWORD_E3E40)].wavData_0, 1);
+		AilSetSampleFile_938C0(mainSample_181E10, soundIndex_E37A0->str_8.wavs_10[AilSampleUserData_95480(mainSample_181E10, x_DWORD_E3E40)].wavData_18, 1);
 		x_DWORD_E3E40++;
 		AilStartSample_93B50(mainSample_181E10);
 	}
@@ -3015,6 +3021,35 @@ void MinusE3FF2_A0EF9()//281ef9
 	x_DWORD_E3FF2--;
 }
 
+//----- (000A102C) --------------------------------------------------------
+char sub_A102C(int a1)//28202c //fix
+{
+	if (CommandLineParams.DoShowDebugPerifery())ShowPerifery();
+
+	unsigned int v1; // et0
+	char result; // al
+	unsigned int v3; // [esp-4h] [ebp-10h]
+	void* retaddr; // [esp+10h] [ebp+4h]
+
+	//fix it
+	retaddr = 0;
+	//fix it
+
+	v1 = x__readeflags();
+	v3 = v1;
+	//_disable();
+	//__outx_BYTE(0x43u, 0x36u);
+	x_DWORD_E3FE6 = a1;
+	//__outx_BYTE(0x40u, a1);
+	result = BYTE1(a1);
+	//__outx_BYTE(0x40u, BYTE1(a1));
+	//_disable();
+	if (BYTE1(retaddr) & 2)
+		;//_enable();
+	x__writeeflags(v3);
+	return result;
+}
+
 //----- (000A105C) --------------------------------------------------------
 char sub_A105C(unsigned int a1)//28205c
 {
@@ -3039,7 +3074,6 @@ char SetProgrammableIntervalTimer_A102C(int a1)
 
 	//eflags = __readeflags();
 	//v3 = eflags;
-	//_disable();
 	// Port 0x43u Mode/Command register (write only, a read is ignored)
 	// 0x36: 0011 0110
 	// 0 = Binary mode
@@ -3061,7 +3095,6 @@ char SetProgrammableIntervalTimer_A102C(int a1)
 	//__writeeflags(v3);
 	return result;
 }
-
 
 //----- (000A108F) --------------------------------------------------------
 void sub_A108F()//28208f
@@ -5560,7 +5593,7 @@ bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber)//26fd00
 		rncsize <<= 8;
 		rncsize += musicData_E3810[7];
 		DataFileIO::Read(filehandle, (uint8_t*)&musicData_E3810[8], rncsize - 8);
-		DataFileIO::Decompress(musicData_E3810, musicData_E3810);
+		DataFileRNC::Decompress(musicData_E3810, musicData_E3810);
 	}
 	else
 	{
@@ -5580,7 +5613,7 @@ bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber)//26fd00
 		rncsize <<= 8;
 		rncsize += shadow_str_E3808_music_header->byte_7;
 		DataFileIO::Read(filehandle, (uint8_t*)(&shadow_str_E3808_music_header->str_8), rncsize - 8);
-		DataFileIO::Decompress((uint8_t*)shadow_str_E3808_music_header, (uint8_t*)shadow_str_E3808_music_header);
+		DataFileRNC::Decompress((uint8_t*)shadow_str_E3808_music_header, (uint8_t*)shadow_str_E3808_music_header);
 	}
 	else
 	{
@@ -5639,16 +5672,69 @@ void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePa
 	if (!soundAble_E3798
 		|| !soundActive_E3799
 		|| wavIndex > (signed int)MaxLoadedWavIndex_180B50
-		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[wavIndex -1].filename_14, "null.wav"))
+		|| !_stricmp((const char*)&soundIndex_E37A0->str_8.wavs_10[wavIndex].filename_0, "null.wav"))
 	{
 		return;
 	}
 
 	switch (playType)
 	{
-		case AlwaysPlaySample:
+	case AlwaysPlaySample:
+	{
+		//Get first stopped buffer place (if available)
+		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 		{
-		    //Get first stopped buffer place (if available)
+			if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
+			{
+				ptrExistingStoppedSample = &SoundBuffer3_180750[i];
+				ptrExistingPlayingSample = nullptr;
+				break;
+			}
+		}
+		break;
+	}
+	case IfNotPlayingPlaySample:
+	{
+		//Look for existing playing sound using flags, id and not stopped
+		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
+		{
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			{
+				ptrExistingPlayingSample = &SoundBuffer3_180750[i];
+				break;
+			}
+		}
+		if (!ptrExistingPlayingSample)
+		{
+			//Nothing found, get first stopped buffer place (if available)
+			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
+			{
+				if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
+				{
+					ptrExistingStoppedSample = &SoundBuffer3_180750[i];
+					break;
+				}
+			}
+		}
+		break;
+	}
+	case RestartOrIfNotExistingPlaySample:
+	{
+		//Get by flag and Id, regardless of status
+		foundExisting = false;
+		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
+		{
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex)
+			{
+				ptrExistingStoppedSample = &SoundBuffer3_180750[i];
+				ptrExistingPlayingSample = nullptr;
+				foundExisting = true;
+				break;
+			}
+		}
+		//Nothing found, get first stopped buffer place (if available)
+		if (!foundExisting)
+		{
 			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
 			{
 				if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
@@ -5658,62 +5744,9 @@ void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePa
 					break;
 				}
 			}
-			break;
 		}
-		case IfNotPlayingPlaySample:
-		{
-		    //Look for existing playing sound using flags, id and not stopped
-			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
-			{
-				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
-				{
-					ptrExistingPlayingSample = &SoundBuffer3_180750[i];
-					break;
-				}
-			}
-			if (!ptrExistingPlayingSample)
-			{
-				//Nothing found, get first stopped buffer place (if available)
-				for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
-				{
-					if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
-					{
-						ptrExistingStoppedSample = &SoundBuffer3_180750[i];
-						break;
-					}
-				}
-			}
-			break;
-		}
-		case RestartOrIfNotExistingPlaySample:
-		{
-			//Get by flag and Id, regardless of status
-			foundExisting = false;
-			for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
-			{
-				if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex)
-				{
-					ptrExistingStoppedSample = &SoundBuffer3_180750[i];
-					ptrExistingPlayingSample = nullptr;
-					foundExisting = true;
-					break;
-				}
-			}
-			//Nothing found, get first stopped buffer place (if available)
-			if (!foundExisting)
-			{
-				for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
-				{
-					if (AilSampleStatus_94010(SoundBuffer3_180750[i]) == AilSampleStopped)
-					{
-						ptrExistingStoppedSample = &SoundBuffer3_180750[i];
-						ptrExistingPlayingSample = nullptr;
-						break;
-					}
-				}
-			}
-			break;
-		}
+		break;
+	}
 	}
 
 	//No existing stopped or existing playing
@@ -5725,12 +5758,12 @@ void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePa
 		//Initialize new from wavs
 		AilInitSample_93830(*ptrExistingStoppedSample);
 		if (debug_first_sound) {
-			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0;
+			uint8_t* debug_sound_buff = soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_18;
 			Logger->trace("PlaySample_8F100:buff:");
 			for (int i = 0; i < 100; i++)
 				Logger->trace("{}", debug_sound_buff[i]);
 		}
-		AilSetSampleFile_938C0(*ptrExistingStoppedSample, soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_0, 1);
+		AilSetSampleFile_938C0(*ptrExistingStoppedSample, soundIndex_E37A0->str_8.wavs_10[wavIndex].wavData_18, 1);
 	}
 	AilSetSampleVolume_93E30(*ptrExistingStoppedSample, volume);
 	AilSetSampleVolumePan_93ED0(*ptrExistingStoppedSample, volumePan);
@@ -5753,48 +5786,6 @@ void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePa
 	(*ptrExistingStoppedSample)->vol_scale_18[0][3] = 0;
 }
 
-void SetSamplePositionFromPlayer(uint32_t flags, int16_t wavIndex, axis_3d_32 entityPosition)
-{
-	int16_t rotationIndex = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x00e_2BDE_11244 + 1;
-	axis_4d rotData = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[rotationIndex].rotation__2BDE_11701;
-	auto playerYawDeg = Maths::ConvertYawToDegrees(rotData.yaw);
-	auto rotatedCoords = Maths::RotateZ({ (float)entityPosition.x, (float)entityPosition.y, (float)entityPosition.z }, -playerYawDeg);
-	float angleDeg = Maths::MeasureYawAngleDegrees(rotatedCoords);
-
-	float dinstancePercent = (float)Maths::EuclideanDistXYFromZero(&entityPosition) / (float)MaxSoundDistance;
-	if (dinstancePercent > 1)
-		dinstancePercent = 1;
-
-	if (soundAble_E3798 && soundActive_E3799)
-	{
-		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
-		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
-			{
-				SetSamplePosition(SoundBuffer3_180750[i], (int16_t)angleDeg, (uint8_t)(255 * dinstancePercent));
-				return;
-			}
-		}
-	}
-}
-
-//----- (0008F420) --------------------------------------------------------
-void AilEndSamplePlayingByIndex_8F420(int flags, __int16 wavIndex)//270420
-{
-	if (soundAble_E3798 && soundActive_E3799)
-	{
-		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
-		{
-			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
-			{
-				AilEndSample_93D00(SoundBuffer3_180750[i]);
-				return;
-			}
-		}
-	}
-}
-
-//----- (0008F710) --------------------------------------------------------
 void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetVolume, unsigned __int8 timerDurationMultiplier, char volScale)//270710
 {
 	if (soundAble_E3798 && soundActive_E3799 && wavIndex <= MaxLoadedWavIndex_180B50)
@@ -5810,12 +5801,15 @@ void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetV
 					SoundBuffer3_180750[i]->vol_scale_18[0][2] = 0;
 					SoundBuffer3_180750[i]->target_volume_6 = targetVolume;
 					SoundBuffer3_180750[i]->vol_scale_18[0][3] = volScale;
+
 					if (targetVolume > SoundBuffer3_180750[i]->status_1)
 						SoundBuffer3_180750[i]->vol_scale_18[0][2] = 1;
 					else
 						SoundBuffer3_180750[i]->vol_scale_18[0][2] = 2;
+
 					if (!TimerFadeSamples_E388D)
 					{
+
 						TimerFadeSamples_E388D = true;
 						if (timerDurationMultiplier <= 4u)
 						{
@@ -5845,7 +5839,7 @@ uint32_t FadeSamples_8F4B0(uint32_t interval)
 				int change = 1;
 
 				if (SoundBuffer3_180750[i]->volume_16 > SoundBuffer3_180750[i]->target_volume_6)
-					change = - 1;
+					change = -1;
 
 				if (SoundBuffer3_180750[i]->volume_16 + change > 127)
 					SetSampleVolume_A3B40(SoundBuffer3_180750[i], 127);
@@ -5863,7 +5857,7 @@ uint32_t FadeSamples_8F4B0(uint32_t interval)
 
 uint32_t SimpleTimer_46820(uint32_t interval)//227820
 {
-	GameTimerTick_17DB54++;
+	GameTimerTurn_17DB54++;
 	return interval;
 }
 
@@ -5881,6 +5875,47 @@ int32_t StopTimer_8F850(uint32_t interval)
 		}
 	}
 	return 0;
+}
+
+void SetSamplePositionFromPlayer(uint32_t flags, int16_t wavIndex, axis_3d_32 entityPosition)
+{
+	int16_t rotationIndex = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1;
+	axis_4d rotData = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[rotationIndex].rotation__2BDE_11701;
+	auto playerYawDeg = Maths::ConvertYawToDegrees(rotData.yaw);
+	auto rotatedCoords = Maths::RotateZ({ (float)entityPosition.x, (float)entityPosition.y, (float)entityPosition.z }, -playerYawDeg);
+	float angleDeg = Maths::MeasureYawAngleDegrees(rotatedCoords);
+
+	float dinstancePercent = (float)Maths::EuclideanDistXYFromZero(&entityPosition) / (float)MaxSoundDistance;
+	if (dinstancePercent > 1)
+		dinstancePercent = 1;
+
+	if (soundAble_E3798 && soundActive_E3799)
+	{
+		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
+		{
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->id_9 == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != AilSampleStopped)
+			{
+				SetSamplePosition(SoundBuffer3_180750[i], (int16_t)angleDeg, (uint8_t)(255 * dinstancePercent));
+				return;
+			}
+		}
+	}
+}
+
+//----- (0008F420) --------------------------------------------------------
+void AilEndSamplePlayingByIndex_8F420(int flags, __int16 wavIndex)//270420
+{
+	if (soundAble_E3798 && soundActive_E3799)
+	{
+		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
+		{
+			if (SoundBuffer3_180750[i]->flags_14 == flags && SoundBuffer3_180750[i]->vol_scale_18[0][0] == wavIndex && AilSampleStatus_94010(SoundBuffer3_180750[i]) != 2)
+			{
+				AilEndSample_93D00(SoundBuffer3_180750[i]);
+				return;
+			}
+		}
+	}
 }
 
 //----- (00091F70) --------------------------------------------------------
@@ -6145,7 +6180,7 @@ void WriteWaveToFile(wav_t* wav, const char* name)
 }
 
 //----- (0006E450) --------------------------------------------------------
-void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex)//24f450
+void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)//24f450
 {
 	type_entity_0x6E8E* ptrEntity_v3x; // edx
 	axis_3d* v4x; // esi
@@ -6158,16 +6193,14 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex)//2
 	int v11; // edx
 	int volumePan_v12; // edi
 	unsigned int v13; // eax
-	unsigned int v14; // edx
 	__int16 playRate_v21; // [esp+0h] [ebp-24h]
 	type_entity_0x6E8E* ptrEntity_v22x; // [esp+4h] [ebp-20h]
 	signed int v23; // [esp+8h] [ebp-1Ch]
-	int v24; // [esp+Ch] [ebp-18h]
 	unsigned int v25; // [esp+10h] [ebp-14h]
 	type_entity_0x6E8E* ptrPlayerEntity_v26x; // [esp+14h] [ebp-10h]
 	unsigned __int16 v27; // [esp+18h] [ebp-Ch]
-	__int16 v28; // [esp+1Ch] [ebp-8h]
-	__int16 flags_v29; // [esp+20h] [ebp-4h]
+	int16_t v28; // [esp+1Ch] [ebp-8h]
+	int16_t flags_v29; // [esp+20h] [ebp-4h]
 	axis_3d_32 positionFromPlayer;
 	positionFromPlayer.x = 0;
 	positionFromPlayer.y = 0;
@@ -6175,10 +6208,9 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex)//2
 
 	flags_v29 = 0;
 	playRate_v21 = 0;
-	v24 = D41A0_0.rand_0x8;
 	if (!soundActive_E3799 || !soundAble_E3798)
 		return;
-	ptrEntity_v3x = Entities_EA3E4[entityIdx];
+	ptrEntity_v3x = Entities_EA3E4[entityIndex];
 	ptrEntity_v22x = ptrEntity_v3x;
 	if (ptrEntity_v3x <= Entities_EA3E4[0])
 	{
@@ -6191,10 +6223,10 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex)//2
 			return;
 		v4x = &ptrEntity_v3x->position_0x4C_76;
 		if ((unsigned int)Maths::EuclideanDistXY_584D0(
-			&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240]->position_0x4C_76,
+			&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]->position_0x4C_76,
 			&ptrEntity_v3x->position_0x4C_76) > MaxSoundDistance)
 			return;
-		ptrPlayerEntity_v26x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].PlayerEntityIdx_2BE4_11240];
+		ptrPlayerEntity_v26x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
 		flags_v29 = ptrEntity_v22x->id_0x1A_26;
 		v5 = Maths::EuclideanDistXYZ_58490(&ptrPlayerEntity_v26x->position_0x4C_76, v4x);
 		positionFromPlayer = Maths::RelativeXYZCoordinate(&ptrEntity_v3x->position_0x4C_76, &ptrPlayerEntity_v26x->position_0x4C_76);
@@ -6202,12 +6234,12 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex)//2
 		v23 = v5;
 		v6 = Maths::sub_581E0_maybe_tan2(&ptrPlayerEntity_v26x->position_0x4C_76, v4x);
 		v28 = v6;
-		v7 = sub_582B0(ptrPlayerEntity_v26x->word_0x1C_28, v6);
+		v7 = sub_582B0(ptrPlayerEntity_v26x->yaw_0x1C_28, v6);
 		v27 = v7;
 		v8 = 12288 * (512 - v7 / 2 + 512);
 		v9 = (v8 - (__CFSHL__(v8 >> 31, 10) + (v8 >> 31 << 10))) >> 10;
 		volume_v10 = v9 ? (signed int)(0x7FFF * (v9 - v25)) / v9 : 0x7FFF;
-		v11 = (signed __int16)sub_582F0(ptrPlayerEntity_v26x->word_0x1C_28, v28);
+		v11 = (signed __int16)sub_582F0(ptrPlayerEntity_v26x->yaw_0x1C_28, v28);
 		if (volume_v10 < 512)
 			return;
 		if (volume_v10 > 0x7FFF)
@@ -6227,63 +6259,49 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex)//2
 		{
 			LOWORD(volumePan_v12) = 0x7FFF;
 		}
-		if ((unsigned __int16)wavIndex >= 0x2Au)
+		if (wavIndex >= 0x2Au)
 		{
-			v13 = 9377 * v24 + 9439;
-			if ((unsigned __int16)wavIndex <= 0x2Cu)
+			v13 = 9377 * D41A0_0.rand_0x8 + 9439;
+			if (wavIndex <= 0x2Cu)
 			{
-				v14 = v13 % 0x1E - 15;
+				playRate_v21 = v13 % 0x1E - 15;
 			}
-			else
+			else if (wavIndex == 46)
 			{
-				if (wavIndex != Goat_46)
-					goto LABEL_29;
-				v14 = v13 % 0x14;
-				if (ptrEntity_v22x->state_0x45_69 == 14)
-					LOWORD(v14) = v14 + 10;
+				if (Entities_EA3E4[entityIndex]->actionIndex_0x45_69 == 14)
+					playRate_v21 = v13 % 0x14 + 10;
 				else
-					LOWORD(v14) = v14 - 10;
-			}
-			playRate_v21 = v14;
+					playRate_v21 = v13 % 0x14 - 10;
+			}			
 		}
 	}
-LABEL_29:
-	if ((unsigned __int16)wavIndex < 0x2Au)
+	switch (wavIndex)
 	{
-		if ((unsigned __int16)wavIndex < 0x20u)
-		{
-			if (wavIndex != Caveman_7)
-				goto LABEL_46;
-			goto LABEL_45;
-		}
-		if ((unsigned __int16)wavIndex <= 0x20u || wavIndex == DeepOne_38)
-		{
-		LABEL_45:
+		case Caveman_7:
+		case Spider_32:
+		case DeepOne_38:
+		case Devil_42:
+		case Arrow2_34:
+		case FireFly2_44:
+		case Goat_46:
+		case DoorC2_47:
+		case Tornado_49:
+		case Gloop1_50:
+		case Gloop2_51:
+		case Gloop3_52:
+		case Gloop4_53:
+		case MadDog_58:
+		case MdWeller_59:
+		case Zombie_62:
 			flags_v29 = 0;
-			goto LABEL_46;
-		}
+			break;
 	}
-	else
-	{
-		if ((unsigned __int16)wavIndex <= 0x2Cu)
-			goto LABEL_45;
-		if ((unsigned __int16)wavIndex >= 0x31u)
-		{
-			if ((unsigned __int16)wavIndex > 0x35u && ((unsigned __int16)wavIndex < 0x3Au || (unsigned __int16)wavIndex > 0x3Bu && wavIndex != Zombie_62))
-				goto LABEL_46;
-			goto LABEL_45;
-		}
-		if ((unsigned __int16)wavIndex >= 0x2Eu && (unsigned __int16)wavIndex <= 0x2Fu)
-			goto LABEL_45;
-	}
-LABEL_46:
 	switch (wavIndex)
 	{
 	case Ocean_1:
 	case Crickets_2:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			//Terrain background sound
 			PlaySample_8F100(0, wavIndex, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			Update_Playing_Sample_Status_8F710(0, wavIndex, 70, 2u, 0);
 		}
@@ -6332,7 +6350,6 @@ LABEL_46:
 	case Fire_5:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			//Fire sound
 			PlaySample_8F100(0, wavIndex, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			Update_Playing_Sample_Status_8F710(0, wavIndex, 120, 2u, 0);
 		}
@@ -6392,7 +6409,6 @@ LABEL_46:
 	case Market_31:
 		if (a2 == D41A0_0.LevelIndex_0xc)
 		{
-			//Building Sound
 			PlaySample_8F100(0, wavIndex, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			Update_Playing_Sample_Status_8F710(0, wavIndex, 85, 2u, 0);
 		}

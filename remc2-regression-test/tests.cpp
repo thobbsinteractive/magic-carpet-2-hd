@@ -27,7 +27,7 @@ int CountFailedRegressionTests() {
 	//   size of struct_0x6E8E[1000] is 0x29040 = 168000
 	//   168 byte per element
 	//   -> diff in the 23rd element struct_0x6E8E[22] at position 140
-	//       -> maxMana_0x8C_140 and word_0x94_148
+	//       -> maxMana_0x8C_140 and playerEntityIndex_0x94_148
 
 	// diff in level 25
 	// byte_counter_current_objective_box_0x36E04 = 0 instead of 200

@@ -2,8 +2,12 @@
 #ifndef BitmapIO_H
 #define BitmapIO_H
 
+#include "../build_config.h"
+
 #include <cstdint>
+#ifdef REMC2_CODE
 #include <png.h>
+#endif //REMC2_CODE
 #include "../portability/port_filesystem.h"
 
 class BitmapIO
@@ -12,7 +16,9 @@ private:
 	static unsigned char* CreateBitBitmapFileHeader(int fileHeaderSize, int infoHeaderSize, int height, int stride);
 	static unsigned char* CreateBitBitmapInfoHeader(int infoHeaderSize, int width, int height, int bytesPerPixel);	
 	static void WriteImagePNG(const char* filename, int width, int height, uint8_t* buffer, char* title);
+#ifdef REMC2_CODE
 	static void setRGBA(png_byte* ptr, uint8_t* val);
+#endif //REMC2_CODE
 	static uint8_t MultiplyValue(uint8_t orig, double multiplier);
 
 public:

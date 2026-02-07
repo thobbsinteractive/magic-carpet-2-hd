@@ -123,6 +123,7 @@ int32_t sam_var[1000];
    void* start_44mhz;//8
    uint8_t mark44mark[sample_mark];
    //Mix_Chunk chunk;
+   int32_t vol_scale_18_0_0;
 }
 SAMPLE;
 typedef MSS_STRUCT _SAMPLE * HSAMPLE;           // Handle to sample
@@ -288,7 +289,7 @@ typedef struct                            // XMIDI sequence state table
 
 	/*438*/int32_t     user_data[8];               // Miscellaneous user data
 	/*446*/int32_t     system_data[8];               // Miscellaneous system data
-	
+
 	int32_t seq_40;
 
 	int32_t seq_101[NUM_CHANS];
@@ -297,8 +298,8 @@ typedef struct                            // XMIDI sequence state table
 	int32_t seq_277[NUM_CHANS];
 
 
-	
-	
+
+
 	int32_t seq_341;
 	int32_t seq_342[MAX_NOTES];
 	int32_t seq_374[MAX_NOTES];

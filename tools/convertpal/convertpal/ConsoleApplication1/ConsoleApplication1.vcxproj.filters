@@ -23,10 +23,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\..\..\libpng2\libpng-master\projects\vstudio2017\Debug\libpng15.lib">
-      <Filter>Zdrojové soubory\libs</Filter>
-    </Library>
-    <Library Include="..\..\..\..\zlib\lib\zlib.lib">
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\packages\zlib_static.1.2.11.9\build\native\lib\x64\v142\Debug\MultiThreadedDebug\zlib.lib">
       <Filter>Zdrojové soubory\libs</Filter>
     </Library>
   </ItemGroup>

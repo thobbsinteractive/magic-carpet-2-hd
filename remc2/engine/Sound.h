@@ -6,6 +6,7 @@
 #include "../utilities/Wave.h"
 #include "../engine/CommandLineParser.h"
 #include "../portability/port_show_perifery.h"
+#include "../portability/port_sdl_sound.h"
 
 #pragma pack (1)
 typedef struct {//lenght 12
@@ -71,6 +72,8 @@ const uint8_t IfNotPlayingPlaySample = 2;
 const uint8_t RestartOrIfNotExistingPlaySample = 3;
 const uint32_t MaxSoundDistance = 0x9000000;
 
+extern type_E37A0_sound_buffer2* soundIndex_E37A0;
+
 void InitSound_8D290();
 void sub_8D800_sound_proc2();
 void EndSample_8D8F0();
@@ -104,6 +107,21 @@ void EndSounds_99C10();
 void EndMusic_99C90();
 HDIGDRIVER AilInstallDigDriverFile_93330(char* filename, IO_PARMS* IO);
 char sub_9AE90(int eax0, int edx0, char* ebx0, int* a1, int8_t* a2, int a3, int a4);
+
+int InitializeCdDriver_85E40();
+int QueryInstalledCdDrives_86010();
+void CloseCdDriver_85F00();
+bool CheckReadyCdDriveIsReady_85FD0();
+int16_t SendCdDriveCommand_85EB0(int16_t command);
+bool StopCdPlayback_86860(uint16_t a1);
+int16_t QueryCdTracks_86270(uint16_t a1);
+int CheckCdDrive_86550();
+char QueryCdAudioStatus_86930(uint16_t a1);
+char sub_86780(uint16_t a1, int  /*a2*/, int  /*a3*/);
+void sub_86460(uint16_t a1);
+int16_t GetCdTrackStatus_86180(uint16_t a1);
+int16_t QueryCdTrack_86370(uint16_t a1, char  /*a2*/);
+
 int AilInstallDigIni_931F0(HDIGDRIVER* a2, char* digPath);
 HMDIDRIVER AilInstakkMidiDriverFile_95850(char* filename, IO_PARMS* IO);
 int32_t AilInstallMidiIni_95710(HMDIDRIVER* mdi, char* fileName);
@@ -162,7 +180,9 @@ int AilLockChannel_97F90(MDI_DRIVER* a1);
 void AilReleaseChannel_980D0(HMDIDRIVER mdi, int a2);
 void AilMapSequenceChannel_98170(HSEQUENCE a1, int a2, int a3);
 void AilSendChannelVoiceMessage_98360(HMDIDRIVER mdi, HSEQUENCE hSequence, int32_t status, int32_t data_1, int32_t data_2);
-bool LoadSound_84300(uint8_t soundIndex);
+void EndAllSound_986E0();
+void SetMusicVolume_98790(int milliseconds, int volume);
+bool LoadSounds_84300(uint8_t soundBank);
 void LoadSoundDataFromBuffer_844A0(uint16_t count);
 bool ReadAndDecompressSound(FILE* file, uint8_t soundIndex2);
 bool AilApiReadIni_9E3A0(AIL_INI* INI, char* filename);
@@ -291,18 +311,4 @@ void PrepareEventSound_6E450(int16_t entityIdx, int16_t a2, int16_t wavIndex);
 void ChangeSoundLevel_19CA0(uint8_t option);
 int sub_582B0(__int16 a1, __int16 a2);
 int sub_582F0(int a1, __int16 a2);
-bool ShouldUpdateSound_6EA90(int volume1, int volume2);
-
-int InitializeCdDriver_85E40();
-int QueryInstalledCdDrives_86010();
-void CloseCdDriver_85F00();
-bool CheckReadyCdDriveIsReady_85FD0();
-int16_t SendCdDriveCommand_85EB0(int16_t command);
-bool StopCdPlayback_86860(uint16_t a1);
-int16_t QueryCdTracks_86270(uint16_t a1);
-int CheckCdDrive_86550();
-char QueryCdAudioStatus_86930(uint16_t a1);
-char sub_86780(uint16_t a1, int  /*a2*/, int  /*a3*/);
-void sub_86460(uint16_t a1);
-int16_t GetCdTrackStatus_86180(uint16_t a1);
-int16_t QueryCdTrack_86370(uint16_t a1, char  /*a2*/);
+bool ShouldUpdateSound_6EA90(int a1, int a2);
