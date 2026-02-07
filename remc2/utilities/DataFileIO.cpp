@@ -164,7 +164,7 @@ bool DataFileIO::sub_55C00_TestSaveFile2(int16_t a1)//236c00
 }
 
 //----- (00055750) --------------------------------------------------------
-bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelindex)//236750 //load in game
+bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelindex, bool regressionTest)//236750 //load in game
 {
 	FILE* saveslevfile;
 	int32_t readState;
@@ -173,6 +173,16 @@ bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelinde
 	FILE* savesmapfile;
 	uint32_t filesize;
 	bool result = false;
+	char path[512] = "%s/%s/%s";
+	if (regressionTest)
+	{
+		sprintf(path, "%sregressions", CommandLineParams.GetMemimagesPath());
+		if (unitTests)
+		{
+			sprintf(path, "%s", unitTestsPath.c_str());
+		}
+	}
+
 	sprintf(printbuffer, "%s/%s/%s%d.DAT", gameDataPath.c_str(), "SAVE", "SVER", fileindex + 1);
 	if (DataFileIO::ReadFileAndDecompress(printbuffer, &readbuffer) == 8 && *(uint32_t*)&readbuffer[4] == levelindex && *(uint32_t*)&readbuffer[0] == 0xf)
 	{

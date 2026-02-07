@@ -31702,6 +31702,13 @@ void InGameLoop_47320(signed int a1)//228320
 		g_state_monitor.Update();
 
 		//debug
+		if (CommandLineParams.ModeDebugAfterload())
+		{
+			if (debug_first_run == 5)
+				LoadLevel_555D0(0u, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w,true);
+			if(!CommandLineParams.DoRightButton())
+				debug_first_run++;
+		}
 		if (CommandLineParams.DoRightButton()) {
 			if (CommandLineParams.DoDebugafterload())
 			{
@@ -31877,7 +31884,7 @@ void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
 	//adress 2285ff
 	//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
 	if (CommandLineParams.DoTestRegression()) {
-		add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), -1, false, 20);
+		add_compare(0x002285FF, CommandLineParams.ModeDebugAfterload() && IsAfterLoad, -1, false, 20);
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
 	if (CommandLineParams.DoDebugSequences2()) {
@@ -44669,8 +44676,6 @@ void ClearProgrammableIntervalTimer_6FE20()//fix//250e20
 	{
 		//v0 = x_D41A0_BYTEARRAY_4_struct.dwordindex_2380;
 		/*__outx_BYTE(0x43u, 0x36u);
-
-		//Clear reload values
 		__outx_BYTE(0x40u, 0);
 		__outx_BYTE(0x40u, 0);
 		v1 = dos_setvect(8, x_DWORD_F5330, (unsigned __int16)x_WORD_F5334);*/

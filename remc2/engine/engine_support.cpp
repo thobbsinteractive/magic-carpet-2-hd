@@ -1313,7 +1313,7 @@ uint32_t compare_with_sequence(const char* filename, const uint8_t* adress, uint
 	if (unitTests)
 	{
 		finddir2 = "";
-		finddir=unitTestsPath;
+		finddir = unitTestsPath;
 	}
 	std::string findname = finddir2 + finddir + std::string("/sequence-") + filename + ".bin";
 	fptestepc = fopen(findname.c_str(), "rb");
