@@ -51,6 +51,7 @@ class CommandLineParser {
         bool DoShowDebugPerifery() const { return m_show_debug_perifery; };
         bool DoTextOutputToConsole() const { return m_text_output_to_console;};
         bool DoStateMonitor() const { return m_state_monitor;};
+        bool DoKillMoveAndRotation() const { return m_kill_move_and_rotation; };
 
         // settings
         std::string GetMemimagesPath() const {return m_memimages_path;};
@@ -102,6 +103,7 @@ class CommandLineParser {
         bool m_show_debug_perifery;
         bool m_text_output_to_console;
         bool m_state_monitor;
+        bool m_kill_move_and_rotation;
 
         std::string m_memimages_path;
         std::string m_config_file_path;

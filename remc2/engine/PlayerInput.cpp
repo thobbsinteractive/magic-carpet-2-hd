@@ -1081,7 +1081,7 @@ void HandleButtonClick_191B0(int16_t hiSetting, char loSetting)//1fa1b0 //set sp
 		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte1 |= loSetting;
 		return;
 	case 5:
-	case 6://set Palyer movement
+	case 6://set Player movement
 		if (D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 != hiSetting && D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0)
 			return;
 		D41A0_0.array_0x6E3E[D41A0_0.LevelIndex_0xc].str_0x6E3E_byte0 = hiSetting;
