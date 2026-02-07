@@ -31970,9 +31970,10 @@ void DrawAndEventsInGame_47560(signed int a4, __int16 a5)//228560
 	//adress 2285ff
 	//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
 	if (CommandLineParams.DoTestRegression()) {
-		add_compare(0x002285FF, CommandLineParams.ModeDebugAfterload() && IsAfterLoad, -1, false, 20);
+		add_compare(0x002285FF, CommandLineParams.DoDebugafterload()||(CommandLineParams.ModeDebugAfterload() && IsAfterLoad), -1, false, 20);
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
+
 	if (CommandLineParams.DoDebugSequences2()) {
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
 	}
