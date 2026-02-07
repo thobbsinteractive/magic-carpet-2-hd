@@ -31702,13 +31702,6 @@ void InGameLoop_47320(signed int a1)//228320
 		g_state_monitor.Update();
 
 		//debug
-		if (CommandLineParams.ModeDebugAfterload())
-		{
-			if (debug_first_run == 5)
-				LoadLevel_555D0(0u, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w,true);
-			if(!CommandLineParams.DoRightButton())
-				debug_first_run++;
-		}
 		if (CommandLineParams.DoRightButton()) {
 			if (CommandLineParams.DoDebugafterload())
 			{
@@ -31849,6 +31842,15 @@ void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
 		//save in interval
 		save_debugcounter++;
 	}
+	//debug
+	if (CommandLineParams.ModeDebugAfterload())
+	{
+		if (debug_first_run == 5)
+			LoadLevel_555D0(0u, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, true);
+		if (!CommandLineParams.DoRightButton())
+			debug_first_run++;
+	}
+	//debug
 	//adress 228583
 	if (CommandLineParams.DoDebugSequences2()) {
 		//add_compare(0x228583, CommandLineParams.DoDebugafterload());
@@ -38170,6 +38172,18 @@ void PlayerEvents_51BB0()//232bb0
 		actEvent->dword_0xA4_164x->entityIndex_0x0 = D41A0_0.playerInputs_0x6E3E[i].entityIndex_0x6E3E_byte5;
 		actEvent->dword_0xA4_164x->nextEntity_0x18_24 = D41A0_0.playerInputs_0x6E3E[i].nextEntity_0x6E3E_word6;
 		actEvent->dword_0xA4_164x->entityIndex2_0x1A_26 = D41A0_0.playerInputs_0x6E3E[i].entityIndex2_0x6E3E_word8;
+
+		if (CommandLineParams.DoKillMoveAndRotation()&&(D41A0_0.LevelIndex_0xc==i))
+		{
+			actEvent->dword_0xA4_164x->entityIndex_0x0 = 0;
+			actEvent->dword_0xA4_164x->speed_0xc_12 = 0;
+			actEvent->dword_0xA4_164x->pitchDelta_0x6_6 = 0;
+			actEvent->dword_0xA4_164x->rollDelta_0x4_4 = 0;
+			actEvent->dword_0xA4_164x->fov_0x22_34 = 0;
+			actEvent->dword_0xA4_164x->yaw_0x1E_30 = 0;
+			actEvent->dword_0xA4_164x->roll_0x155_341 = 0;
+		}
+
 		sub_57B20(&D41A0_0.array_0x2BDE[i], Entities_EA3E4[D41A0_0.array_0x2BDE[i].playerIndex_0x00a_2BE4_11240]);
 		if (D41A0_0.array_0x2BDE[i].byte_0x846_2BDE)
 			sub_55C60(&D41A0_0.array_0x2BDE[i]);
