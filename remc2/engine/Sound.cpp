@@ -6199,8 +6199,8 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 	unsigned int v25; // [esp+10h] [ebp-14h]
 	type_entity_0x6E8E* ptrPlayerEntity_v26x; // [esp+14h] [ebp-10h]
 	unsigned __int16 v27; // [esp+18h] [ebp-Ch]
-	__int16 v28; // [esp+1Ch] [ebp-8h]
-	_int16 flags_v29; // [esp+20h] [ebp-4h]
+	int16_t v28; // [esp+1Ch] [ebp-8h]
+	int16_t flags_v29; // [esp+20h] [ebp-4h]
 	axis_3d_32 positionFromPlayer;
 	positionFromPlayer.x = 0;
 	positionFromPlayer.y = 0;
