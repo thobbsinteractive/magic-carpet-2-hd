@@ -921,6 +921,7 @@ signed int /*__fastcall*/ ReadKeyboardKeysInMenu_7C050();
 // int sub_7FCB0_draw_text_with_border(int a1, x_BYTE *a2, int a3, int a4, int a5, char a6, unsigned __int8 a7, __int16 a8);
 // int sub_81260(int a1, int a2, int a3, __int16 a4, __int16 a5);
 void sub_81360_draw_bitmap_line(int16_t a1, int16_t a2, int16_t a3, int16_t a4, __int16 a5);
+// unsigned int sub_81CA0(int a1, int a2, __int16 a3, __int16 a4, int a5);
 void sub_82AB0(unsigned __int8 a1);
 void sub_83B50();
 //char sub_83E00(int a1, int a2);
@@ -47030,7 +47031,7 @@ void sub_81360_draw_bitmap_line(int16_t minx, int16_t miny, int16_t maxx, int16_
 // 17DED4: using guessed type int (int)x_DWORD_17DED4;
 
 //----- (00081CA0) --------------------------------------------------------
-void DrawAnimSprite_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5x)//262ca0
+void sub_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5x)//262ca0
 {
 	unsigned __int8 v6; // dl
 	//int v8; // eax
@@ -47061,12 +47062,12 @@ void DrawAnimSprite_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5x)
 					//v8 = a5x->word_22;
 					a5x->byte_20 = 0;
 				}
-				a5x->word_16 = a5x->firstFrame_12;
+				a5x->word_16 = a5x->word_12;
 			}
 			a5x->dword_4 = vclock;
 		}
 		sub_7C120_draw_bitmap_640(
-			a5x->x1_8 - a3,
+			a5x->word_8 - a3,
 			a5x->word_10 - a4,
 			xy_DWORD_17DED4_spritestr[a5x->word_16]);
 		if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)
