@@ -265,7 +265,7 @@ bool SaveLevelSVER_55450(uint8_t savefileindex, int32_t levelNumber, char* savef
 }
 
 //----- (000555D0) --------------------------------------------------------
-bool LoadLevel_555D0(uint8_t fileindex, int levelindex, bool regressionTest)//2365d0
+bool LoadLevel_555D0(uint8_t fileindex, int levelindex, bool loadRegressionTest)//2365d0
 {	
 	int temp0x219A;
 	int temp0x219E;
@@ -297,18 +297,18 @@ bool LoadLevel_555D0(uint8_t fileindex, int levelindex, bool regressionTest)//23
 		temp0x21AE = D41A0_0.str_0x21AE;
 		temp0x21B2 = D41A0_0.str_0x21B2;
 		temp0x21B6 = D41A0_0.str_0x21B6;
-		readSuccess = DataFileIO::sub_55750_TestExistingSaveFile(fileindex, levelindex, regressionTest);
+		readSuccess = DataFileIO::sub_55750_TestExistingSaveFile(fileindex, levelindex, loadRegressionTest);
 		//adress  23662a
 		if (readSuccess)
 		{
-			readSuccess = LoadLevelSMAP_558E0(fileindex/*, regressionTest*/);
+			readSuccess = LoadLevelSMAP_558E0(fileindex, loadRegressionTest);
 			if (readSuccess)
 			{
 				qmemcpy(
 					&x_D41A0_BYTEARRAY_4_struct.byteindex_256ar,
 					&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc],
 					0x84Cu);
-				readSuccess = LoadLevelSLEV_55A10(fileindex/*, regressionTest*/);
+				readSuccess = LoadLevelSLEV_55A10(fileindex, loadRegressionTest);
 				if (readSuccess)
 				{
 					sub_55100(2);
@@ -339,7 +339,7 @@ bool LoadLevel_555D0(uint8_t fileindex, int levelindex, bool regressionTest)//23
 }
 
 //----- (000558E0) --------------------------------------------------------
-bool LoadLevelSMAP_558E0(uint8_t savefileindex)//2368e0
+bool LoadLevelSMAP_558E0(uint8_t savefileindex, bool loadRegressionTest)//2368e0
 {
 	Logger->debug("InGameLoad-begin\n");
 
@@ -353,7 +353,18 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex)//2368e0
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0x3d;//fix same run after load
 	rand2_17B4E0 = 0x21ed;//fix random variable for debugging
 
-	sprintf(printbuffer, "%s/%s/%s%d.DAT", gameDataPath.c_str(), "SAVE", "SMAP", savefileindex + 1);
+	char path[512];
+	sprintf(path, "%s/%s", gameDataPath.c_str(), "SAVE");
+	if (loadRegressionTest)
+	{
+		sprintf(path, "%sregressions", CommandLineParams.GetMemimagesPath());
+		if (unitTests)
+		{
+			sprintf(path, "%s", unitTestsPath.c_str());
+		}
+	}
+
+	sprintf(printbuffer, "%s/%s%d.DAT", path, "SMAP", savefileindex + 1);
 	FILE* loadfile = DataFileIO::CreateOrOpenFile(printbuffer, 512);
 	if (loadfile)
 	{
@@ -375,10 +386,22 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex)//2368e0
 }
 
 //----- (00055A10) --------------------------------------------------------
-bool LoadLevelSLEV_55A10(uint8_t savefileindex)//236a10
+bool LoadLevelSLEV_55A10(uint8_t savefileindex, bool loadRegressionTest)//236a10
 {
 	bool success = false;
-	sprintf(printbuffer, "%s/%s/%s%d.DAT", gameDataPath.c_str(), "SAVE", "SLEV", savefileindex + 1);
+
+	char path[512];
+	sprintf(path, "%s/%s", gameDataPath.c_str(), "SAVE");
+	if (loadRegressionTest)
+	{
+		sprintf(path, "%sregressions", CommandLineParams.GetMemimagesPath());
+		if (unitTests)
+		{
+			sprintf(path, "%s", unitTestsPath.c_str());
+		}
+	}
+
+	sprintf(printbuffer, "%s/%s%d.DAT", path, "SLEV", savefileindex + 1);
 	//x64 fix
 	uint8_t* D41A0_pointer;
 	type_shadow_D41A0_BYTESTR_0 shadow_D41A0_BYTESTR_0;

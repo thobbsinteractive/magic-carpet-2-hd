@@ -13,9 +13,9 @@ extern bool IsAfterLoad;
 bool SaveLevelSLEV_55250(uint8_t savefileindex, char* filenameindex);//SLEV1
 bool SaveLevelSMAP_55320(uint8_t savefileindex, char* filenameindex);
 bool SaveLevelSVER_55450(uint8_t savefileindex, int32_t a2, char* filenameindex);
-bool LoadLevel_555D0(uint8_t fileindex, int levelindex, bool regressionTest=false);
-bool LoadLevelSMAP_558E0(uint8_t savefileindex);
-bool LoadLevelSLEV_55A10(uint8_t savefileindex);
+bool LoadLevel_555D0(uint8_t fileindex, int levelindex, bool loadRegressionTest =false);
+bool LoadLevelSMAP_558E0(uint8_t savefileindex, bool loadRegressionTest = false);
+bool LoadLevelSLEV_55A10(uint8_t savefileindex, bool loadRegressionTest = false);
 bool SaveLevel_55080(uint8_t savefileindex, int32_t LevelNumber, char* filenameindex);
 void sub_49270_generate_level_features(Type_Level_2FECE* terrain);
 void sub_47160();
