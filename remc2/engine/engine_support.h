@@ -220,7 +220,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	uint8_t stubb[2];
 	uint8_t setting_byte1_22;//x_D41A0_BYTEARRAY_4_struct.setting_byte1_22
 	int8_t setting_byte2_23;//0x17//x_D41A0_BYTEARRAY_4_struct.setting_byte2_23
-	uint8_t setting_byte3_24;//cheats? 0x20==free spell//x_D41A0_BYTEARRAY_4_struct.setting_byte3_24
+	uint8_t OptionsSettingFlag_24;//cheats? 0x20==free spell//x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24
 	//spell on - 0x20
 	uint8_t setting_byte4_25;//cheats? 0x1==Invincability 0x8==tester 0x40==music
 	//invincability - 1;
@@ -327,13 +327,13 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	//uint8_t byteindex_8618;//0x21aa//x_D41A0_BYTEARRAY_4_struct.byteindex_8618
 	//uint8_t setting_38545;
 	uint8_t stubu[36000];
-	type_event_0x6E8E* dwordindex_38396;//0x95FC//x_D41A0_BYTEARRAY_4_struct.dwordindex_38396
+	type_entity_0x6E8E* dwordindex_38396;//0x95FC//x_D41A0_BYTEARRAY_4_struct.dwordindex_38396
 	uint8_t leftSpellPlayerIndex_38400;//0x9600//x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400
 	uint8_t rightSpellPlayerIndex_38401;//0x9601//x_D41A0_BYTEARRAY_4_struct.rightSpellPlayerIndex_38401
 
 	uint8_t setting_38402;//0x9602//x_D41A0_BYTEARRAY_4_struct.setting_38402
 
-	type_event_0x6E8E* bytearray_38403x[30];//array 116//0x9603//x_D41A0_BYTEARRAY_4_struct.bytearray_38403
+	type_entity_0x6E8E* bytearray_38403x[30];//array 116//0x9603//x_D41A0_BYTEARRAY_4_struct.bytearray_38403
 	/*
 	creatures
 		8-dead
@@ -352,7 +352,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	//bytearray_38535=bytearray_38403[132]//0x965b//x_D41A0_BYTEARRAY_4_struct.bytearray_38403[132]
 
 	//endarray - dword_38519
-	type_event_0x6E8E* dword_38519;//0x9677//x_D41A0_BYTEARRAY_4_struct.dword_38519
+	type_entity_0x6E8E* dword_38519;//0x9677//x_D41A0_BYTEARRAY_4_struct.dword_38519
 	/*
 	entite
 	8-dead
@@ -363,10 +363,10 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 		3-ballon
 	144-mana
 	*/
-	type_event_0x6E8E* dword_38523;//0x967b//x_D41A0_BYTEARRAY_4_struct.dword_38523
-	type_event_0x6E8E* dword_38527;//0x967F//x_D41A0_BYTEARRAY_4_struct.dword_38527
-	type_event_0x6E8E* dword_38531;//0x9683//x_D41A0_BYTEARRAY_4_struct.dword_38531
-	type_event_0x6E8E* dword_38535;//x_D41A0_BYTEARRAY_4_struct.dword_38535
+	type_entity_0x6E8E* dword_38523;//0x967b//x_D41A0_BYTEARRAY_4_struct.dword_38523
+	type_entity_0x6E8E* dword_38527;//0x967F//x_D41A0_BYTEARRAY_4_struct.dword_38527
+	type_entity_0x6E8E* dword_38531;//0x9683//x_D41A0_BYTEARRAY_4_struct.dword_38531
+	type_entity_0x6E8E* dword_38535;//x_D41A0_BYTEARRAY_4_struct.dword_38535
 	uint8_t stubv[5];
 	uint8_t byte_38544;//x_D41A0_BYTEARRAY_4_struct.byte_38544
 	uint8_t setting_38545;//0x9691//x_D41A0_BYTEARRAY_4_struct.setting_38545
@@ -417,7 +417,7 @@ typedef struct {//lenght 30
 	std::array<int16_t, 5> axis_2; // 1=textIndex 3=lineX1, 4=lineY1
 	//int16_t axis_4[3];//?? str_E2A74[].axis_2[0]
 	//int16_t stuba;
-	type_event_0x6E8E* dword_12;//str_E2A74[].dword_12
+	type_entity_0x6E8E* dword_12;//str_E2A74[].dword_12
 	int32_t dword_16;
 	int32_t dword_20;//str_E2A74[].dword_20
 	int32_t dword_24;//str_E2A74[].dword_24
@@ -469,7 +469,7 @@ uint32_t compare_with_sequence_array_E2A74(const char* filename, uint8_t* adress
 uint32_t compare_with_sequence_x_DWORD_F2C20ar(const char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, int* posdiff);
 uint32_t compare_with_sequence_array_222BD3(const char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, int* posdiff);
 uint32_t compare_with_sequence_D41A0_4(const char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, long offset = 0);
-uint32_t compare_with_sequence_EA3E4(const char* filename, type_event_0x6E8E** adress, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte);
+uint32_t compare_with_sequence_EA3E4(const char* filename, type_entity_0x6E8E** adress, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte);
 uint32_t compare_0x6E8E(const char* filename, uint8_t* adress, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, long offset = 0);
 void writehex(uint8_t* buffer, uint32_t count);
 

@@ -50,25 +50,10 @@ after NetworkCancel_748F7 not changed
 #endif //__linux__
 
 #include <filesystem>
-
 #include "./engine/EventsFunctions.h"
 
-//int test_regression_level = 1;
-//first multi is 50(51) 10
-//first hide level is 30(31) 5
-
-//adress 2285ff
-
-//int save_debugcounter = 0;
-
-#define FIX_SetHeightmapByBuilding_48B90// - when set game have error, but compactible with original
-
-//(set in bool sub_558E0_InGameLoad(uint8_t fileindex)//2368e0)
-//int count_begin = 1;//1
-//int stage__4A190_0x6E8E = 0;
-//int debugnextlevel = 0;
-
-//bool config_EDITOR = false;
+InputRecorder* m_InputRecorder = nullptr;
+Scene m_CurrentScene = Scene::PREAMBLE_MENU;
 
 void preconvert() {
 	/*
@@ -540,96 +525,18 @@ void NetworkAllocation2_5C430()//23d430
 {
 	x_D41A0_BYTEARRAY_4_struct.isNetwork_216w = NetworkAllocation_74556();//255556 push ebp 355250
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
-
-//----- (00046DD0) --------------------------------------------------------
-void /*__fastcall*/ sub_46DD0_init_sound_and_music(/*int a1, int a2, char* a3*/)//227DD0
-{
-	//char* v3; // eax
-	//int v4; // edx
-	//char v5; // bl
-	//char v6; // dl
-	//char v8[512]; // [esp+0h] [ebp-40h]
-	// fix if begin
-	//v4 = 0;
-	// end
-
-	sub_83CC0(20);
-	if (!x_BYTE_D4B50)
-	{
-		x_BYTE_D4B50 = 1;
-		if ((x_D41A0_BYTEARRAY_4_struct.setting_byte1_22) & 0x40)//fix it
-		{
-			PrintTextMessage_70910((char*)"Sound Disabled\0");
-			musicActive_E37FD = false;
-			soundActive_E3799 = false;
-			musicAble_E37FC = false;
-			soundAble_E3798 = false;
-		}
-		else
-		{
-			sprintf(printbuffer, "%s/%s", gameDataPath.c_str(), "sound");
-			PrintTextMessage_70910((char*)"Initialise Sound\0");
-			InitSoundAndMusic_90FD0(/*v3*//*v3, v4, a3*/); //fix it sound off here!
-			if (!soundActiveL_E2A14)
-				myprintf("ERROR: NOT ENOUGH MEMORY FOR SOUNDS\n");
-			if ((x_D41A0_BYTEARRAY_4_struct.setting_byte4_25) & 0x40)//fix it
-				InitMusicBank_8EAD0(1);
-		}
-		if (soundAble_E3798 || musicAble_E37FC)
-		{
-			//x_DWORD_F42A4_sound_timer = sub_92600_AIL_register_timer(sub_46820_simple_timer);
-			//sub_92930_AIL_set_timer_frequency(x_DWORD_F42A4_sound_timer, 0x78u);
-			//sub_92BA0_AIL_start_timer(x_DWORD_F42A4_sound_timer);
-			x_BYTE_D4B51 = 1;
-		}
-		else
-		{
-			sub_6FDA0();
-		}
-		//v5 = x_BYTE_E3798_sound_active2;
-		if (!soundAble_E3798 && !musicAble_E37FC && x_BYTE_E2A28_speek)
-		{
-			sub_86860_speak_Sound(x_WORD_1803EC);
-			sub_86BD0_freemem1();
-			//v6 = x_D41A0_BYTEARRAY_4_struct.setting_byte3_24 & 0xBF;
-			x_BYTE_E2A28_speek = soundAble_E3798;
-			(x_D41A0_BYTEARRAY_4_struct.setting_byte3_24) &= 0xBF;
-		}
-	}
-	sub_83CC0(21);
-}
-
-//----- (0006FDA0) --------------------------------------------------------
-void sub_6FDA0()//fix//250da0
-{
-	//int v0; // eax
-	//void(*v1)(); // eax
-	//__int16 v2; // dx
-	//int result; // eax
-
-	//fix it
-	//v2 = 0;
-	//fix it
-
-	//v0 = (int)x_D41A0_BYTEARRAY_4;
-	x_D41A0_BYTEARRAY_4_struct.dwordindex_2388 = 10022;
-	x_D41A0_BYTEARRAY_4_struct.dwordindex_2392 = 0;
-	//v1 = dos_getvect(8);
-	//x_WORD_F5334 = v2;
-	//x_DWORD_F5330 = v1;
-	/* __outx_BYTE(0x43u, 0x36u);
-	 __outx_BYTE(0x40u, x_D41A0_BYTEARRAY_4[0x954]);
-	 __outx_BYTE(0x40u, x_D41A0_BYTEARRAY_4[0x954] >> 8);*/
-	 //BYTE1(result) = 1;
-	x_BYTE_DB734 = 1;
-	//return result;
-}
 
 //----- (00055F70) --------------------------------------------------------
 int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 {
+	std::function<void(Scene)> sceneChangeCallBack = SetCurrentScene;
+
 	int exitCode = 0;
+
+#ifndef _MSC_VER
+	SetTimeStart();
+#endif
+
 	try
 	{
 		begin_plugin();
@@ -659,17 +566,32 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		//skip signal(4, 1);//236FB5 - 279DC0
 		//skip signal(6, 1);//236FC1 - 279DC0
 
-		printf("Reading Ini file\n");
-		if (!readini()) exit(1);
+		std::cout << "Initializing logger...\n";
 
-		spdlog::level::level_enum level = spdlog::level::info;
+		spdlog::level::level_enum level = GetLoggingLevelFromString(CommandLineParams.GetLogLevelStr().c_str());
 
 #ifdef _DEBUG
 		level = GetLoggingLevelFromString("Debug");
-#else
-		level = GetLoggingLevelFromString(loggingLevel.c_str());
 #endif
+
 		InitializeLogging(level);
+
+		Logger->info("Reading config.json file");
+
+		try
+		{
+			SetConfig();
+		}
+		catch (const std::exception& e)
+		{
+			Logger->critical("Error reading config.json file: {}", e.what());
+			return -1;
+		}
+
+		EventDispatcher::I = new EventDispatcher();
+
+		EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, sceneChangeCallBack));
+		EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::STARTED);
 
 		if (assignToSpecificCores)
 		{
@@ -731,9 +653,29 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 			x_BYTE_D41AD_skip_screen = config_skip_screen;
 		}
 
+		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
+			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
+		{
+			StartPlayback(CommandLineParams.GetPlaybackPath().c_str());
+		}
+		else if (CommandLineParams.GetRecordingPath().length() > 0)
+		{
+			StartRecording(CommandLineParams.GetRecordingPath().c_str());
+		}
+
 		Initialize();//236FDC - 23C8D0//rozdil 1E1000
 
 		sub_46830_main_loop(/*0, */v3, v4);//227830
+
+		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
+			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
+		{
+			StopPlayback();
+		}
+		else if (CommandLineParams.GetRecordingPath().length() > 0)
+		{
+			StopRecording();
+		}
 
 		sub_5BC20();//23CC20 //remove devices?
 		sub_56730_clean_memory();//237730
@@ -747,6 +689,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 					EndLibNetServer();*/
 			}
 		}
+		delete EventDispatcher::I;
 	}
 	catch (const thread_exit_exception& e)
 	{
@@ -754,9 +697,65 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 	}
 	catch (const std::exception& e)
 	{
-		Logger->critical("Critial Error: {}", e.what());
+		Logger->critical("Critical Error: {}", e.what());
 		exitCode = -1;
 	}
 	Logger->info("Exited Game");
 	return exitCode;
+}
+
+Scene GetCurrentScene()
+{
+	return m_CurrentScene;
+}
+
+void SetCurrentScene(const Scene scene)
+{
+	m_CurrentScene = scene;
+}
+
+void StartRecording(const char* outputFileName)
+{
+	if (m_InputRecorder != nullptr)
+		delete m_InputRecorder;
+
+	m_InputRecorder = new InputRecorder(outputFileName);
+	m_InputRecorder->StartRecording();
+}
+
+void StopRecording()
+{
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
+	{
+		m_InputRecorder->StopRecording();
+		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
+	}
+}
+
+void StartPlayback(const char* inputFileName)
+{
+	if (m_InputRecorder != nullptr)
+	{
+		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
+	}
+
+	m_InputRecorder = new InputRecorder(inputFileName);
+	m_InputRecorder->StartPlayback();
+}
+
+void StopPlayback()
+{
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying)
+	{
+		m_InputRecorder->StopPlayback();
+		delete m_InputRecorder;
+		m_InputRecorder = nullptr;
+	}
+}
+
+bool IsRecordingOrPlaying()
+{
+	return (m_InputRecorder != nullptr && (m_InputRecorder->m_IsPlaying || m_InputRecorder->m_IsRecording));
 }

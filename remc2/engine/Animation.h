@@ -17,13 +17,25 @@ typedef struct {//lenght 7
 Type_SoundEvent_E17CC;
 #pragma pack (16)
 
-extern int x_DWORD_17DB54_game_turn2; // weak
+
 extern int x_DWORD_EA3B4; // weak?x_DWORD_E9C4C_langindexbuffer[474]
 extern __int16 x_WORD_F42AE; // weak
 extern __int16 x_WORD_F42A8; // weak
 extern TColor* x_DWORD_E12F4x; // weak
 extern int16_t x_WORD_17DB48; // weak
-extern char x_BYTE_D41C0; // weak
+extern char DisplaySubtitles_D41C0; // weak
+
+extern __int16 x_WORD_E12FC;
+extern __int16 x_WORD_D4004;
+extern __int16 x_WORD_17DB58;
+extern uint16_t ActualKeyframe_17DB60;
+extern FILE* x_DWORD_17DB38_intro_file_handle;
+extern uint8_t unk_17DB40[];
+extern int16_t LastKeyframe_17DB46;
+extern int16_t x_WORD_17DB4A;
+extern int x_DWORD_E1300;
+extern __int16 x_WORD_17DB5A;
+extern __int16 x_WORD_17DB5C;
 
 extern __int16 x_WORD_E12FC;
 extern __int16 x_WORD_D4004;

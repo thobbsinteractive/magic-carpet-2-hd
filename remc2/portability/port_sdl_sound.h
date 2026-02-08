@@ -5,19 +5,13 @@
 //#define SOUND_OPENAL
 
 #include "bitmap_pos_struct.h"
+#include "SfxEffectWrapper.h"
+#include <SDL2/SDL.h>
 
 #define SOUND_SDLMIXER
 
-#ifdef _MSC_VER
-	#include "SDL2/SDL.h"
 #ifdef SOUND_SDLMIXER
-	#include "SDL2/SDL_mixer.h"
-#endif
-#else
-    #include "SDL2/SDL.h"
-#ifdef SOUND_SDLMIXER
-	#include "SDL2/SDL_mixer.h"
-#endif
+	#include <SDL2/SDL_mixer.h>
 #endif
 
 #ifdef SOUND_OPENAL
@@ -25,7 +19,6 @@
 	#include <alc.h>
 #endif//SOUND_OPENAL
 
-//#include "music_timidity.h"
 #include "xmi2mid.h"
 #include <time.h>       /* time */
 #include <string>
@@ -173,6 +166,15 @@ typedef struct {//lenght 224
 	shadow_sub1type_E3808_music_header str_8;//216 lenght
 }
 shadow_type_E3808_music_header;
+
+typedef struct
+{
+	int Id;
+	SDL_TimerID SdlId;
+	uint32_t IntervalMs;
+	SDL_TimerCallback Callback;
+} Mix_Timer;
+
 //shadow shadow_type_E3808_music_header
 #pragma pack (16)
 
@@ -195,6 +197,12 @@ extern bool oggmusic;
 extern char oggmusicFolder[512];
 extern bool oggmusicalternative;
 extern bool fixspeedsound;
+extern bool autoShowObjectivesForForeignLanguages;
+extern int maxSimultaniousSounds;
+extern char speechFolder[512];
+
+extern Mix_Chunk* m_ptrSpeechChunk;
+extern int m_ptrSpeechBytesOffSet;
 
 bool init_sound();
 //bool load_sound_files();
@@ -230,7 +238,27 @@ uint32_t SOUND_sample_status(HSAMPLE S);
 void SOUND_set_sample_volume(HSAMPLE S, int32_t volume);
 void SOUND_set_sequence_volume(int32_t volume, int32_t  milliseconds);
 void SOUND_set_master_volume(int32_t volume);
+void SOUND_set_sample_volume_panning(HSAMPLE S, int32_t panning);
+void SetSamplePosition(HSAMPLE S, int16_t angle, uint8_t distance);
 void SOUND_UPDATE();
+void ChannelFinished(int channel);
+
+void SOUND_RegisterTimer(int timerIdx, uint32_t(*callback)(uint32_t));
+void SOUND_SetTimerPeriod(int timerIdx, uint32_t intervalMs);
+void SOUND_StartTimer(int timerIdx);
+void SOUND_StopTimer(int timerIdx);
+void SOUND_ChangeSamplePlaybackRate(HSAMPLE S, float percent);
+
+bool PlayCdTrackSegment(uint8_t trackIdx, int32_t startPosSec, int32_t lengthMs);
+bool IsCdTrackPlaying();
+bool EndPlayingCdTrackSegment();
+bool ClearCdTrackSegment();
+bool AreCdTracksAvailable();
+int GetCdTrackCount();
+
+void RegisterEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);
+template <typename T> void LoadAudioEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);
+
 //void test_midi_play(uint8_t* data, uint8_t* header, int32_t track_number);
 #ifdef SOUND_OPENAL
 //void ALSOUND_load_wav(char* alBuffer, long alBufferLen);

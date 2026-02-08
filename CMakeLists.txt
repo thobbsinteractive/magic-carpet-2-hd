@@ -28,7 +28,6 @@ find_package(PNG REQUIRED)
 find_package(Boost REQUIRED system CONFIG)
 find_package(fmt REQUIRED)
 
-
 ################################################################################
 # Global configuration types
 ################################################################################
@@ -55,12 +54,14 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS_XBOX_RELEASE "")
 else()
     set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-    #add_compile_options(-fpermissive)
+    add_compile_options(-fpermissive)
     add_compile_options(-Wno-narrowing)
     add_compile_options(-Wall)
     add_compile_options(-Wextra)
     add_compile_options(-pedantic)
     add_compile_options(-Wno-unknown-pragmas)
+	add_compile_options(${SPDLOG_CFLAGS_OTHER})
+		
     if (USE_SANITIZERS)
         add_compile_options(-fsanitize=address)
         add_compile_options(-fsanitize=pointer-compare)

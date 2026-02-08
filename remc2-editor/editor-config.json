@@ -1,0 +1,13 @@
+{
+	"settings": [
+		{
+			"name": "Main",
+			"version":  "1.0",
+			"isActive": true,
+			"paths": {
+				"gameFolder": "NETHERW",
+				"cdFolder": "CD_Files"
+			}
+		}
+	]
+}

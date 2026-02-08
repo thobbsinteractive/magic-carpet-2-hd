@@ -1010,7 +1010,7 @@ uint32_t compare_0x6E8E(const char* filename, uint8_t* adress, uint32_t count, u
 	return(i);
 };
 
-uint32_t compare_with_sequence_EA3E4(const char* filename, type_event_0x6E8E** adress, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte) {
+uint32_t compare_with_sequence_EA3E4(const char* filename, type_entity_0x6E8E** adress, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte) {
 	std::string finddir;
 	uint8_t* buffer = (uint8_t*)malloc(size * 0x3E9);
 	FILE* fptestepc;
@@ -2226,7 +2226,7 @@ void clean_x_D41A0_BYTEARRAY_0_0x2BDE(int number) {
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x002_2BE0_11232 = 0;//2	//11232 - byte //2
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x003_2BE0_11233_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x004_2BE0_11234 = 0;//2	//11234 - byte //4
-		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x005_2BE0_11235_xx = 0;
+		D41A0_BYTESTR_0.array_0x2BDE[i].ShowDebugTextFlag_0x005_2BE0_11235_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x006_2BE4_11236 = 0;//6	//11236 - byte //6
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x007_2BE4_11237_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x008_2BE4_11238_xx = 0;
@@ -2242,7 +2242,7 @@ void clean_x_D41A0_BYTEARRAY_0_0x2BDE(int number) {
 			D41A0_BYTESTR_0.array_0x2BDE[i].stub2[j];
 		for (int j = 0; j < 64; j++)
 			D41A0_BYTESTR_0.array_0x2BDE[i].WizardName_0x39f_2BFA_12157[j];//927//12157 - byte(11230+927) 100% jmeno
-		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x3DF_2BE4_12221 = 0;//991//12221 - byte
+		D41A0_BYTESTR_0.array_0x2BDE[i].MenuState_0x3DF_2BE4_12221 = 0;//991//12221 - byte
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x3E1_2BE4_12223 = 0;//993//12223 - byte
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x3E2_2BE4_12224 = 0;//994//12224 - byte
@@ -2432,14 +2432,14 @@ void set_x_D41A0_BYTEARRAY_0_0x2BDE(int number, uint8_t value) {
 	D41A0_BYTESTR_0.array_0x2BDE[number].byte_0x002_2BE0_11232 = value;
 };
 
-//array_0x6E3E
+//playerInputs_0x6E3E
 int8_t get_x_D41A0_BYTEARRAY_0_0x6E3E(int index, int subindex) {
-	testbyte(&x_D41A0_BYTEARRAY_0[0x6E3E+ index*0xa+ subindex], (uint8_t*)&D41A0_BYTESTR_0.array_0x6E3E[index]);
-	return D41A0_BYTESTR_0.array_0x6E3E[index][subindex];
+	testbyte(&x_D41A0_BYTEARRAY_0[0x6E3E+ index*0xa+ subindex], (uint8_t*)&D41A0_BYTESTR_0.playerInputs_0x6E3E[index]);
+	return D41A0_BYTESTR_0.playerInputs_0x6E3E[index][subindex];
 };
 void set_x_D41A0_BYTEARRAY_0_0x6E3E(int index, int subindex, int8_t value) {
 	x_D41A0_BYTEARRAY_0[0x6E3E + index*0xa+ subindex] = value;
-	D41A0_BYTESTR_0.array_0x6E3E[index][subindex] = value;
+	D41A0_BYTESTR_0.playerInputs_0x6E3E[index][subindex] = value;
 };
 
 type_str_0x6E8E* get_x_D41A0_BYTEARRAY_0_0x6E8E_adr() {

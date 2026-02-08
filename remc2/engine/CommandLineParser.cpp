@@ -42,14 +42,17 @@ void CommandLineParser::Init(int argc, char **argv) {
     m_rotate_player = false;
     m_set_objective = false;
     m_set_level = -1;
-	m_custom_level_path = "";
+    m_custom_level_path = "";
+    m_record_file = "";
+    m_play_file = "";
     m_test_network_chng1 = false;
     m_show_debug_messages1 = false;
     m_show_debug_perifery = false;
     m_text_output_to_console = false;
     m_state_monitor = false;
+    m_enable_in_game_debug = false;
+    m_log_level_str = "Info";
     m_kill_move_and_rotation = false;
-
     m_memimages_path = "../remc2/memimages/";
     m_config_file_path = "";
 
@@ -191,6 +194,7 @@ void CommandLineParser::InterpretParams() {
         else if (param == "--show_debug_show_perifery")         m_show_debug_perifery = true;
         else if (param == "--text_output_to_console")           m_text_output_to_console = true;
         else if (param == "--state_monitor")                    m_state_monitor = true;
+        else if (param == "--enable_in_game_debug")             m_enable_in_game_debug = true;
         else if (param == "--kill_move_and_rotation")           m_kill_move_and_rotation = true;
         else if (param == "--memimages_path") {
             m_memimages_path = *(++p);
@@ -209,5 +213,17 @@ void CommandLineParser::InterpretParams() {
 		else if (param == "--custom_level") {
 			m_custom_level_path = *(++p);
 		}
+		else if (param == "-l" || param == "--log_level") {
+			m_log_level_str = *(++p);
+		}
+		else if (param == "--record_file") {
+			m_record_file = *(++p);
+		}
+		else if (param == "--play_file") {
+			m_play_file = *(++p);
+		}
     }
+#ifdef _DEBUG
+	m_enable_in_game_debug = true;
+#endif
 }

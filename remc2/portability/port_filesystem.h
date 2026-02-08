@@ -2,6 +2,8 @@
 #ifndef PORT_FILESYSTEM_H
 #define PORT_FILESYSTEM_H
 
+#define FMT_HEADER_ONLY
+
 #include <cstdint>
 #include <stdio.h>
 #include <stdlib.h>  

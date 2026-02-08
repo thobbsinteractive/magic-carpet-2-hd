@@ -591,7 +591,7 @@ namespace MyNetworkLib {
 
 		unsigned int stamp = 0;
 
-		asio::io_service io_service_TCP;
+		asio::io_context io_service_TCP;
 		asio::ip::tcp::socket* sockptr_TCP;
 
 		std::vector<TypeIpPort> registered;
@@ -671,11 +671,11 @@ namespace MyNetworkLib {
 #ifdef TEST_NETWORK_MESSAGES
 		debug_net_printf("Send message: %s ip: %s port: %d\n", message.c_str(), destination_ip.c_str(), port);
 #endif //TEST_NETWORK_MESSAGES
-		asio::io_service io_service;
+		asio::io_context io_service;
 		asio::ip::udp::socket socket(io_service);
 		// Create the remote endpoint using the destination ip address and
 		// the target port number.  This is not a broadcast
-		auto remote = asio::ip::udp::endpoint(asio::ip::address::from_string(destination_ip), port);
+		auto remote = asio::ip::udp::endpoint(asio::ip::make_address(clHost), port);
 		try {
 			// Open the socket, socket's destructor will
 			// automatically close it.
@@ -1207,7 +1207,7 @@ namespace MyNetworkLib {
 	void NetworkClass::Receiver2() {
 		asio::io_context io_context;
 		asio::ip::udp adress_type = asio::ip::udp::v6();
-		if (asio::ip::address::from_string(clHost).is_v4())
+		if (asio::ip::make_address(clHost).is_v4())
 			asio::ip::udp adress_type = asio::ip::udp::v4();
 		asio::ip::udp::socket socket(io_context, asio::ip::udp::endpoint(adress_type, clPort));
 		while (HandleReceiver2On)

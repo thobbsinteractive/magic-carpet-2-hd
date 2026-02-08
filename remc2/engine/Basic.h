@@ -192,23 +192,17 @@ extern uint8_t playersColors_E88E0x[8][3];
 extern uint8_t unk_F0A20x[1024];//2c1a20
 extern uint8_t keyColor1_D4B7C; // weak
 extern uint8_t keyColor2_D4B7E; // weak
-extern type_event_0x6E8E* ENTITY_EA3E4[1001];//2bb3e4
+extern type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
 
 extern uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
 extern uint8_t* x_BYTE_F6EE0_tablesx_pre;
 extern uint8_t* x_BYTE_FAEE0_tablesx_pre;
-
-extern int iScreenWidth_DE560; // weak //screen X // DE560
 
 extern std::array<uint8_t*, 256> x_DWORD_DDF50_texture_adresses; /*= { 0,32 }*/ // weak
 
 extern type_E9C38_smalltit Str_E9C38_smalltit[21 * 40];
 
 extern type_F2C20ar str_F2C20ar;
-
-extern uint8_t* ViewPortRenderBufferStart_DE558;
-
-extern uint8_t* ViewPortRenderBufferAltStart_DE554;
 
 extern std::string gameDataPath;
 extern std::string cdDataPath;
@@ -226,27 +220,17 @@ extern int m_iFrameCount; // The number of frames that have occurred.
 extern float m_fFps; // The frames rendered per second. Needs to be stored to be shown every frame.
 
 extern int readFileStatus_E3E2C;
-
-extern char x_BYTE_D41C1; // weak
-
-extern char x_BYTE_D41CE; // weak
-
+extern char DisplaySubtitles_D41C1; // weak
+extern char SubtitlesOn_D41CE; // weak
 extern char* x_DWORD_D41D0; // weak
-
 extern uint8_t* x_DWORD_17DB50; // weak
-
 extern int x_DWORD_E3890;
-
 extern int x_DWORD_E3768; // weak
-
 extern char x_BYTE_E3766; // weak
-
 extern int16_t unk_1806EC; // weak
-
 extern uint16_t x_WORD_18072C_cursor_sizex; // weak
 extern uint16_t x_WORD_18072E_cursor_sizey; // weak
 extern uint8_t* x_DWORD_180730_cursor_data; // weak//351730
-
 extern char* x_DWORD_D41BC_langbuffer; // fix it
 extern char* x_DWORD_D41BC_langbuffer; // fix it
 extern int x_DWORD_18073A; // weak
@@ -261,8 +245,12 @@ extern __int16 x_WORD_18074C_mouse_left2_button; // weak//35174c
 extern type_x_DWORD_17DE38str x_DWORD_17DE38str;
 extern uint8_t* x_DWORD_E9C38_smalltit;
 
-extern TColor unk_17D838x[]; // weak
+extern int Int386Request_17FF0C;
+extern int MscdexCommand_17FF44;
+extern uint8_t MinTrackIdx_180471;
+extern uint8_t MaxTrackIdx_180472;
 
+extern TColor unk_17D838x[]; // weak
 extern uint8_t x_BYTE_D41B5_texture_size;
 
 #pragma pack (push,1)
@@ -514,7 +502,12 @@ extern type_TMAPS00TAB_BEGIN_BUFFER* str_TMAPS00TAB_BEGIN_BUFFER;
 
 extern uint8_t* Zero_pointer;
 
+extern int16_t GameTimerTurn_17DB54; // weak
+
+extern uint32_t PitFrequency_F4240;
+
 bool DefaultResolutions();
+bool IsDefaultResolution(int width, int height);
 
 void FreeMem_83E80(uint8_t* a1);
 
@@ -556,7 +549,7 @@ int32_t /*__cdecl*/ x_tolower(int32_t);// weak
 
 //graphics basics - move it later to basic graphics
 void sub_2EC30_clear_img_mem();
-void sub_2EB60();
+void StartSubtitles_2EB60();
 void sub_2EBB0_draw_text_with_border_630x340(char* textString);
 void sub_7FCB0_draw_text_with_border(char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8);//560cb0
 void sub_7C120_draw_bitmap_640(int16_t posx, int16_t posy, bitmap_pos_struct_t tempstr);
@@ -591,7 +584,7 @@ void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX,
 void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx);
 void sub_6F940_sub_draw_text(const char* textbuffer, int posx, int posy, uint8_t color, uint8_t scale = 1);//250940
 void sub_72C40_draw_bitmap_640_setcolor(int16_t posx, int16_t posy, bitmap_pos_struct_t a3, uint8_t color, uint8_t scale = 1);
-void sub_8C635_draw_cursor();
+void DrawCursor_8C635();
 void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, int tilex, uint8_t* texture, uint8_t setbyte, char a6, uint8_t scale);
 void sub_8F920(uint8_t a1byte1, uint8_t a1byte2, int16_t posx, int16_t posy, uint8_t* a4, unsigned __int8 a5, char a6);
 
@@ -603,3 +596,5 @@ void Convert_to_shadow_str_E2A74(const type_array_str_E2A74 &from, type_shadow_s
 
 void sub_417A0_install_pal_and_mouse_minmax();
 unsigned long j___clock();
+
+void SetPlayerLocation(uint16_t x, uint16_t y, int16_t z, int16_t pitch, int16_t roll, int16_t yaw);

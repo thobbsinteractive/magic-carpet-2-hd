@@ -1,5 +1,5 @@
 $REMC2_EXECUTABLE = "$PSScriptRoot/../Release/remc2.exe"
-$CONFIG_FILE_PATH = "$PSScriptRoot/renderer-config.ini"
+$CONFIG_FILE_PATH = "$PSScriptRoot/renderer-config.json"
 
 function Test-Level {
     param (
@@ -15,7 +15,6 @@ function Test-Level {
         Write-Output "test level $level ok"
     } else {
         Write-Output "test level $level failed"
-		Read-Host -Prompt "Press Enter to exit"
     }
 }
 
@@ -25,3 +24,5 @@ for ($i = 0; $i -le 3; $i++) {
 		Test-Level -level $i
 	}
 }
+
+Read-Host -Prompt "Press ENTER or CTRL+C to exit" | Out-Null

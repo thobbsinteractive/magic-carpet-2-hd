@@ -43,8 +43,8 @@ constexpr std::array WizardsNames_D93A0 {
 
 void sub_2BD10_draw_line(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5);
 
-void DrawTopStatusBar_2D710(type_event_0x6E8E* a1, uint8_t scale = 1);
-void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_event_0x6E8E* playerEvent, bool drawNextBitmap, uint8_t scale = 1);
+void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1, uint8_t scale = 1);
+void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_entity_0x6E8E* playerEvent, bool drawNextBitmap, uint8_t scale = 1);
 
 void ComputeTextboxSizes_89830(Type_TextBox_1804B0* textbox, uint8_t scale = 1);
 void ComputeTextboxLine_898A0(Type_TextBox_1804B0* textbox);
@@ -55,7 +55,7 @@ int16_t GetHelpPopupIndex_88450();
 void GetHintText_89AC0(char* buffer, int helpIndex);
 
 void sub_41B60();
-void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t type, bool useSound);
+void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatus, bool useSound, uint8_t scale = 1);
 void sub_53120();
 void SetHelpPopupTextAndCoords_884D0(int16_t helpIdx, int16_t a2, int16_t* popupSrcPos, char a4, char a5, uint8_t scale = 1);
 void SetHelpPopupCoords_87580();
@@ -68,7 +68,6 @@ void SetSoundEffectAndMusicLevelCoordinates_19D60(signed int volume);
 
 void DrawPauseMenuPopUps_87860();
 void sub_87C10();
-void DrawAndEventsInGame_47560(signed int a4, int16_t a5);
 void DrawBottomSpellsMenu_2ECC0();
 void ColorizeScreen_2E790(int posX, int posY, int width, int height, uint8_t color);
 void DrawChatMenu_2F6B0();
@@ -79,11 +78,11 @@ void DrawCurrentObjectiveTextbox_30630(uint8_t scale = 1);
 void GetFont_6FC50(int16_t a1);
 void DrawInGameOptionsMenu_30050(uint8_t scale = 1);
 char sub_595C0(int16_t a1);
-char sub_59610(type_event_0x6E8E** a1, int16_t a2);
+char sub_59610(type_entity_0x6E8E** a1, int16_t a2);
 bool sub_596C0(axis_3d* a1, int16_t a2);
-char sub_63570(type_event_0x6E8E* a1, type_event_0x6E8E* a2);
+char sub_63570(type_entity_0x6E8E* a1, type_entity_0x6E8E* a2);
 void DrawMinimap_63600(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10);
-void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling);
+void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
 int TransformPlayerColorIndex_616D0(int index);
 void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling);
 char sub_64CE0_draw_follow_rectangle(v51x_struct* a1);
@@ -95,10 +94,10 @@ void DrawVolumeSettings_303D0(uint8_t scale = 1);
 
 void sub_63670_draw_minimap_a(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10);
 void sub_63C90_draw_minimap_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10);
-void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling);
-void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling);
+void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
+void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
 
-void sub_885E0(type_event_0x6E8E* a1, int16_t posX, int16_t posY, uint16_t a4);
+void sub_885E0(type_entity_0x6E8E* a1, int16_t posX, int16_t posY, uint16_t a4);
 
 void ComputeTextboxSizesFromTextWords_89420(Type_TextBox_1804B0* textbox, const char* text, uint8_t scale = 1);
 void ConstrainTextboxSizes_89520(Type_TextBox_1804B0* textbox, uint8_t scale = 1);

@@ -1,7 +1,7 @@
 /*****************************************************************************
  * libadlmidi.c: Software MIDI synthesizer using OPL3 Synth emulation
  *****************************************************************************
- * Copyright © 2015-2018 Vitaly Novichkov
+ * Copyright © 2015-2025 Vitaly Novichkov
  * $Id$
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 #include <vlc_plugin.h>
 #include <vlc_codec.h>
 #include <vlc_dialog.h>
-#include <libvlc_version.h>
+#include <vlc/libvlc_version.h>
 
 #include <unistd.h>
 
@@ -35,6 +35,10 @@
 #endif
 
 #include <adlmidi.h>
+
+#define ENABLE_CODEC_TEXT N_("Enable this synthesizer")
+#define ENABLE_CODEC_LONGTEXT N_( \
+    "Enable using of this synthesizer, otherwise, other MIDI synthesizers will be used")
 
 #define FMBANK_TEXT N_("Custom bank file")
 #define FMBANK_LONGTEXT N_( \
@@ -73,11 +77,54 @@
 #define VOLUME_MODEL_LONGTEXT N_( \
     "Declares volume scaling model which will affect volume levels.")
 
+#define CHANNEL_ALLOCATION_TEXT N_("Channel allocation mode")
+#define CHANNEL_ALLOCATION_LONGTEXT N_( \
+    "Declares the method of chip channel allocation for new notes.")
+
 #define FULL_RANGE_CC74_TEXT N_("Full-range of brightness")
 #define FULL_RANGE_CC74_LONGTEXT N_( \
     "Scale range of CC-74 \"Brightness\" with full 0~127 range. By default is only 0~64 affects the sounding.")
 
-static const int volume_models_values[] = { 0, 1, 2, 3, 4, 5 };
+#define ENABLE_AUTO_ARPEGGIO_TEXT N_("Enable auto-arpeggio")
+#define ENABLE_AUTO_ARPEGGIO_LONGTEXT N_( \
+    "Enables an automatical arpeggio to keep chords playing when there is no enough free physical voices of chips.")
+
+
+#ifdef ADLMIDI_ENABLE_HW_SERIAL
+
+#define SERIAL_ENABLE_TEXT N_("Enable Serial hardware mode [EXPERIMENTAL]")
+#define SERIAL_ENABLE_LONGTEXT N_( \
+    "Use the hardware OPL3 chip via Serial port.\n\nNote: In the VLC this feature is EXPERIMENTAL and has some deffects like a short tempo boost at begining.")
+
+#define SERIAL_NAME_TEXT N_("Serial device name")
+#if defined(_WIN32)
+#   define SERIAL_NAME_LONGTEXT N_( "Name of the Serial device to use. (For example, COM1, COM2, COM3, etc.)")
+#elif defined(__APPLE__)
+#   define SERIAL_NAME_LONGTEXT N_( "Name of the Serial device to use. (For example, \"cu.usbmodem2401\", etc.)")
+#else
+#   define SERIAL_NAME_LONGTEXT N_( "Name of the Serial device to use. (For example, ttyACM0, ttyACM1, etc.)")
+#endif
+
+#define SERIAL_BAUD_TEXT N_("Serial baud speed")
+#define SERIAL_BAUD_LONGTEXT N_( \
+    "The baud speed value of the Serial device.")
+
+#define SERIAL_PROTO_TEXT N_("Serial protocol")
+#define SERIAL_PROTO_LONGTEXT N_( \
+    "The protocol to use the Serial device.")
+
+static const int serial_protos_values[] = { 1, 2, 3 };
+static const char * const serial_protos_descriptions[] =
+    {
+        N_("Arduino OPL2"),
+        N_("NukeYkt OPL3"),
+        N_("RetroWave OPL3"),
+        NULL
+};
+#endif // ADLMIDI_ENABLE_HW_SERIAL
+
+
+static const int volume_models_values[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 static const char * const volume_models_descriptions[] =
 {
     N_("Auto (defined by bank)"),
@@ -85,7 +132,23 @@ static const char * const volume_models_descriptions[] =
     N_("OPL3 Native"),
     N_("DMX"),
     N_("Apogee Sound System"),
-    N_("Win9x driver"),
+    N_("Win9x SB16 driver"),
+    N_("DMX (Fixed AM)"),
+    N_("Apogee Sound System (Fixed AM)"),
+    N_("Audio Interfaces Library (AIL)"),
+    N_("Win9x Generic FM driver"),
+    N_("HMI Sound Operating System"),
+    N_("HMI Sound Operating System (Old)"),
+    NULL
+};
+
+static const int channel_alloc_values[] = { -1, 0, 1, 2 };
+static const char * const channel_alloc_descriptions[] =
+{
+    N_("Auto (defined by bank)"),
+    N_("By sounding delays"),
+    N_("Released channel of same instrument"),
+    N_("Any released channel"),
     NULL
 };
 
@@ -93,12 +156,86 @@ static const char * const volume_models_descriptions[] =
 #define EMULATOR_TYPE_LINGTEXT N_( \
     "OPL3 Emulator that will be used to generate final sound.")
 
-static const int emulator_type_values[] = { 0, 1, 2 };
+static const int emulator_type_values[] =
+{
+#ifndef ADLMIDI_DISABLE_NUKED_EMULATOR
+    (int)ADLMIDI_EMU_NUKED,
+    (int)ADLMIDI_EMU_NUKED_174,
+#endif
+
+#ifndef ADLMIDI_DISABLE_DOSBOX_EMULATOR
+    (int)ADLMIDI_EMU_DOSBOX,
+#endif
+
+#ifndef ADLMIDI_DISABLE_OPAL_EMULATOR
+    (int)ADLMIDI_EMU_OPAL,
+#endif
+
+#ifndef ADLMIDI_DISABLE_JAVA_EMULATOR
+    (int)ADLMIDI_EMU_JAVA,
+#endif
+
+#ifndef ADLMIDI_DISABLE_ESFMU_EMULATOR
+    (int)ADLMIDI_EMU_ESFMu,
+#endif
+
+#ifndef ADLMIDI_DISABLE_MAME_OPL2_EMULATOR
+    (int)ADLMIDI_EMU_MAME_OPL2,
+#endif
+
+#ifndef ADLMIDI_DISABLE_YMFM_EMULATOR
+    (int)ADLMIDI_EMU_YMFM_OPL2,
+    (int)ADLMIDI_EMU_YMFM_OPL3,
+#endif
+
+#ifdef ADLMIDI_ENABLE_OPL2_LLE_EMULATOR
+    (int)ADLMIDI_EMU_NUKED_OPL2_LLE,
+#endif
+
+#ifdef ADLMIDI_ENABLE_OPL3_LLE_EMULATOR
+    (int)ADLMIDI_EMU_NUKED_OPL3_LLE,
+#endif
+};
 static const char * const emulator_type_descriptions[] =
 {
+#ifndef ADLMIDI_DISABLE_NUKED_EMULATOR
     N_("Nuked OPL3 1.8"),
     N_("Nuked OPL3 1.7.4 (Optimized)"),
+#endif
+
+#ifndef ADLMIDI_DISABLE_DOSBOX_EMULATOR
     N_("DOSBox"),
+#endif
+
+#ifndef ADLMIDI_DISABLE_OPAL_EMULATOR
+    N_("Opal"),
+#endif
+
+#ifndef ADLMIDI_DISABLE_JAVA_EMULATOR
+    N_("Java OPL3"),
+#endif
+
+#ifndef ADLMIDI_DISABLE_ESFMU_EMULATOR
+    N_("ESFMu"),
+#endif
+
+#ifndef ADLMIDI_DISABLE_MAME_OPL2_EMULATOR
+    N_("MAME OPL2"),
+#endif
+
+#ifndef ADLMIDI_DISABLE_YMFM_EMULATOR
+    N_("YMFM OPL2"),
+    N_("YMFM OPL3"),
+#endif
+
+#ifdef ADLMIDI_ENABLE_OPL2_LLE_EMULATOR
+    N_("Nuked OPL2-LLE [!EXTRA HEAVY!]"),
+#endif
+
+#ifdef ADLMIDI_ENABLE_OPL3_LLE_EMULATOR
+    N_("Nuked OPL3-LLE [!EXTRA HEAVY!]"),
+#endif
+
     NULL
 };
 
@@ -122,6 +259,9 @@ vlc_module_begin ()
     set_subcategory (SUBCAT_INPUT_ACODEC)
     set_callbacks (Open, Close)
 
+    add_bool( CONFIG_PREFIX "enable", true, ENABLE_CODEC_TEXT,
+              ENABLE_CODEC_LONGTEXT, false )
+
     embedded_bank_count = adl_getBanksCount();
     for (embedded_bank_i = 0; embedded_bank_i < embedded_bank_count; embedded_bank_i++)
         embedded_bank_values[embedded_bank_i] = embedded_bank_i;
@@ -138,7 +278,10 @@ vlc_module_begin ()
     add_integer (CONFIG_PREFIX "volume-model", 0, VOLUME_MODEL_TEXT, VOLUME_MODEL_LONGTEXT, false )
         change_integer_list( volume_models_values, volume_models_descriptions )
 
-    add_integer (CONFIG_PREFIX "emulator-type", 0, EMULATOR_TYPE_TEXT, EMULATOR_TYPE_LINGTEXT, true)
+    add_integer (CONFIG_PREFIX "channel-allocation", -1, CHANNEL_ALLOCATION_TEXT, CHANNEL_ALLOCATION_LONGTEXT, false )
+        change_integer_list( channel_alloc_values, channel_alloc_descriptions )
+
+    add_integer (CONFIG_PREFIX "emulator-type", 0, EMULATOR_TYPE_TEXT, EMULATOR_TYPE_LINGTEXT, false)
         change_integer_list( emulator_type_values, emulator_type_descriptions )
 
     add_integer (CONFIG_PREFIX "emulated-chips", 6, EMULATED_CHIPS_TEXT, EMULATED_CHIPS_LONGTEXT, true)
@@ -148,10 +291,24 @@ vlc_module_begin ()
         change_integer_range (22050, 96000)
 
     add_bool( CONFIG_PREFIX "full-range-brightness", false, FULL_RANGE_CC74_TEXT,
-              FULL_RANGE_CC74_LONGTEXT, false )
+              FULL_RANGE_CC74_LONGTEXT, true )
 
-    add_bool( CONFIG_PREFIX "full-panning", false, FULL_PANNING_TEXT,
-              FULL_PANNING_LONGTEXT, false )
+    add_bool( CONFIG_PREFIX "enable-auto-arpeggio", true, ENABLE_AUTO_ARPEGGIO_TEXT,
+              ENABLE_AUTO_ARPEGGIO_LONGTEXT, true )
+
+    add_bool( CONFIG_PREFIX "full-panning", true, FULL_PANNING_TEXT,
+              FULL_PANNING_LONGTEXT, true )
+
+#ifdef ADLMIDI_ENABLE_HW_SERIAL
+    add_bool(CONFIG_PREFIX "serial-enable", false, SERIAL_ENABLE_TEXT, SERIAL_ENABLE_LONGTEXT, true)
+    add_string(CONFIG_PREFIX "serial-name", "", SERIAL_NAME_TEXT, SERIAL_NAME_LONGTEXT, true)
+    add_integer(CONFIG_PREFIX "serial-baud", 115200, SERIAL_BAUD_TEXT, SERIAL_BAUD_LONGTEXT, true)
+        change_integer_range (9600, 115200)
+
+    add_integer (CONFIG_PREFIX "serial-proto", 3, SERIAL_PROTO_TEXT, SERIAL_PROTO_LONGTEXT, false)
+        change_integer_list( serial_protos_values, serial_protos_descriptions )
+#endif
+
 
 vlc_module_end ()
 
@@ -162,6 +319,7 @@ struct decoder_sys_t
     int               sample_rate;
     int               soundfont;
     date_t            end_date;
+    int               is_serial;
 };
 
 static const struct ADLMIDI_AudioFormat g_output_format =
@@ -185,6 +343,9 @@ static int Open (vlc_object_t *p_this)
     if (p_dec->fmt_in.i_codec != VLC_CODEC_MIDI)
         return VLC_EGENERIC;
 
+    if (!var_InheritBool(p_this, CONFIG_PREFIX "enable"))
+        return VLC_EGENERIC;
+
     decoder_sys_t *p_sys = malloc (sizeof (*p_sys));
     if (unlikely(p_sys == NULL))
         return VLC_ENOMEM;
@@ -192,15 +353,29 @@ static int Open (vlc_object_t *p_this)
     p_sys->sample_rate = var_InheritInteger (p_this, CONFIG_PREFIX "sample-rate");
     p_sys->synth = adl_init( p_sys->sample_rate );
 
-    adl_switchEmulator(p_sys->synth, var_InheritInteger(p_this, CONFIG_PREFIX "emulator-type"));
-
-    adl_setNumChips(p_sys->synth, var_InheritInteger(p_this, CONFIG_PREFIX "emulated-chips"));
+    if(var_InheritBool(p_this, CONFIG_PREFIX "serial-enable"))
+    {
+        adl_switchSerialHW(p_sys->synth,
+            var_InheritString(p_this, CONFIG_PREFIX "serial-name"),
+            var_InheritInteger(p_this, CONFIG_PREFIX "serial-baud"),
+            var_InheritInteger(p_this, CONFIG_PREFIX "serial-proto")
+        );
+        p_sys->is_serial = 1;
+    }
+    else
+    {
+        adl_switchEmulator(p_sys->synth, var_InheritInteger(p_this, CONFIG_PREFIX "emulator-type"));
+        adl_setNumChips(p_sys->synth, var_InheritInteger(p_this, CONFIG_PREFIX "emulated-chips"));
+        adl_setSoftPanEnabled(p_sys->synth, var_InheritBool(p_this, CONFIG_PREFIX "full-panning"));
+        p_sys->is_serial = 0;
+    }
 
     adl_setVolumeRangeModel(p_sys->synth, var_InheritInteger(p_this, CONFIG_PREFIX "volume-model"));
-
-    adl_setSoftPanEnabled(p_sys->synth, var_InheritBool(p_this, CONFIG_PREFIX "full-panning"));
+    adl_setChannelAllocMode(p_sys->synth, var_InheritInteger(p_this, CONFIG_PREFIX "channel-allocation"));
 
     adl_setFullRangeBrightness(p_sys->synth, var_InheritBool(p_this, CONFIG_PREFIX "full-range-brightness"));
+
+    adl_setAutoArpeggio(p_sys->synth, var_InheritBool(p_this, CONFIG_PREFIX "enable-auto-arpeggio"));
 
     char *bank_path = var_InheritString (p_this, CONFIG_PREFIX "custombank");
     if (bank_path != NULL)
@@ -244,6 +419,9 @@ static void Close (vlc_object_t *p_this)
 {
     decoder_sys_t *p_sys = ((decoder_t *)p_this)->p_sys;
 
+    if(p_sys->is_serial)
+        adl_panic(p_sys->synth);
+
     adl_close(p_sys->synth);
     free (p_sys);
 }
@@ -264,12 +442,14 @@ static void Flush (decoder_t *p_dec)
 #if (LIBVLC_VERSION_MAJOR >= 3)
 static int DecodeBlock (decoder_t *p_dec, block_t *p_block)
 {
+    size_t it;
     decoder_sys_t *p_sys = p_dec->p_sys;
     block_t *p_out = NULL;
 
 #else
 static block_t *DecodeBlock (decoder_t *p_dec, block_t **pp_block)
 {
+    size_t it;
     block_t *p_block;
     decoder_sys_t *p_sys = p_dec->p_sys;
     block_t *p_out = NULL;
@@ -369,8 +549,11 @@ static block_t *DecodeBlock (decoder_t *p_dec, block_t **pp_block)
             break;
     }
 
-    unsigned samples =
-        (p_block->i_pts - date_Get (&p_sys->end_date)) * 441 / 10000;
+    unsigned samples = (p_block->i_pts - date_Get (&p_sys->end_date)) * 441 / 10000;
+#ifdef ADLMIDI_ENABLE_HW_SERIAL
+    double delay = ((p_block->i_pts - date_Get (&p_sys->end_date)) / 1000000.0) / 2.0;
+#endif
+
     if (samples == 0)
         goto drop;
 
@@ -384,10 +567,28 @@ static block_t *DecodeBlock (decoder_t *p_dec, block_t **pp_block)
         goto drop;
 
     p_out->i_pts = date_Get (&p_sys->end_date );
-    samples = adl_generateFormat(p_sys->synth, (int)samples * 2,
-                                 (ADL_UInt8*)p_out->p_buffer,
-                                 (ADL_UInt8*)(p_out->p_buffer + g_output_format.containerSize),
-                                 &g_output_format);
+
+#ifdef ADLMIDI_ENABLE_HW_SERIAL
+    if(p_sys->is_serial)
+    {
+        if(delay > 0.0)
+            adl_tickIterators(p_sys->synth, delay);
+
+        for (it = 0; it < samples * 2; ++it)
+            ((float*)p_out->p_buffer)[it] = 0.0f;
+    }
+    else
+#endif
+    {
+        samples = adl_generateFormat(p_sys->synth, (int)samples * 2,
+                                     (ADL_UInt8*)p_out->p_buffer,
+                                     (ADL_UInt8*)(p_out->p_buffer + g_output_format.containerSize),
+                                     &g_output_format);
+
+        for (it = 0; it < samples; ++it)
+            ((float*)p_out->p_buffer)[it] *= 2.0f;
+    }
+
     samples /= 2;
     p_out->i_length = date_Increment (&p_sys->end_date, samples) - p_out->i_pts;
 

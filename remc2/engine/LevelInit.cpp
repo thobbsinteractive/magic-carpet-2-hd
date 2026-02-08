@@ -21,13 +21,13 @@ void LevelInit_56C00(Type_Level_2FECE* levelData)//237c00
 		SPELLS_BEGIN_BUFFER_str[19].subspell[0].hintText_0x16x = 244;
 		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 0;
 		LoadSounds_84300(0);
-		CursorGraphicsIndex_D419E = 1;
+		CURSOR_SPRITE_INDEX_D419E = 1;
 	}
 	else if (levelData->MapType == MapType_t::Night)
 	{
 		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 = 0;
 		LoadSounds_84300(1u);
-		CursorGraphicsIndex_D419E = 9;
+		CURSOR_SPRITE_INDEX_D419E = 9;
 	}
 	else if (levelData->MapType == MapType_t::Cave)
 	{
@@ -35,7 +35,7 @@ void LevelInit_56C00(Type_Level_2FECE* levelData)//237c00
 		isCaveLevel_D41B6 = 1;
 		MapBasicHeight_D41B7 = levelData->byte_0x2FED3;
 		LoadSounds_84300(2u);
-		CursorGraphicsIndex_D419E = 10;
+		CURSOR_SPRITE_INDEX_D419E = 10;
 	}
 	SetDefaultSpells_5C0A0();
 	D41A0_0.byte_0x36E02 = 1;
