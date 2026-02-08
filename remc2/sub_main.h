@@ -32,6 +32,8 @@
 #include "engine/GameBitmapIndexes.h"
 #include "engine/GameUiConstants.h"
 #include "engine/LangTextIndexes.h"
+#include "engine/GameState.h"
+#include "engine/MenuState.h"
 
 #include "engine/Terrain.h"
 
@@ -69,6 +71,8 @@ x_DWORD * sub_A5850(int a1, char a2, unsigned int a3, signed int a4, int a5);*/
 #ifndef SUB_MAIN_ACTIVE
 #define SUB_MAIN_ACTIVE
 
+extern InputRecorder* m_InputRecorder;
+
 void begin_plugin();
 void preconvert();
 void initposistruct();
@@ -78,7 +82,6 @@ int sub_8B5A0();
 int sub_8B770();
 int sub_9B234(int* a1);
 void sub_75900();
-
 int sub_53CF0_access(const char* a1);
 void sub_560D0_create_sound_dir();
 bool sub_53EF0_fileexist(const char* path, const char* path2);
@@ -86,12 +89,16 @@ char LoadFilesFromCDAndGameData(const char* cdPath, const char* gamePath, const 
 bool sub_53F60(const char* a1);
 void sub_8C2CD();
 void NetworkAllocation2_5C430();
-void sub_46DD0_init_sound_and_music();
-void sub_6FDA0();
-
+Scene GetCurrentScene();
+void SetCurrentScene(const Scene scene);
 uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::string& subDir);
-
 void Initialize();
+
+void StartRecording(const char* outputFileName);
+void StopRecording();
+void StartPlayback(const char* inputFileName);
+void StopPlayback();
+bool IsRecordingOrPlaying();
 
 int sub_main(int argc, char** argv, char** envp);
 #endif //SUB_MAIN_ACTIVE

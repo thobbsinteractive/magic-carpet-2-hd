@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017-2018 Vitaly Novichkov (Wohlstand)
+ * Copyright (c) 2017-2025 Vitaly Novichkov (Wohlstand)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,6 +39,12 @@ class OPLChipBase
 {
 public:
     enum { nativeRate = 49716 };
+    enum ChipType
+    {
+        CHIPTYPE_OPL3 = 0,
+        CHIPTYPE_OPL2 = 1,
+        CHIPTYPE_ESFM = 2
+    };
 protected:
     uint32_t m_id;
     uint32_t m_rate;
@@ -67,6 +73,7 @@ public:
     virtual void nativePreGenerate() = 0;
     virtual void nativePostGenerate() = 0;
     virtual void nativeGenerate(int16_t *frame) = 0;
+    virtual void resampledGenerate(int32_t *frame) = 0;
 
     virtual void generate(int16_t *output, size_t frames) = 0;
     virtual void generateAndMix(int16_t *output, size_t frames) = 0;
@@ -74,6 +81,12 @@ public:
     virtual void generateAndMix32(int32_t *output, size_t frames) = 0;
 
     virtual const char* emulatorName() = 0;
+    virtual ChipType chipType() = 0;
+    /**
+     * @brief Does emulator has the per-channel full-panning extension?
+     * @return true if emulator has this extension, false if emulator has only original behaviour
+     */
+    virtual bool hasFullPanning() = 0;
 private:
     OPLChipBase(const OPLChipBase &c);
     OPLChipBase &operator=(const OPLChipBase &c);
@@ -109,7 +122,7 @@ private:
     void nativeTick(int16_t *frame);
     void setupResampler(uint32_t rate);
     void resetResampler();
-    void resampledGenerate(int32_t *output);
+    void resampledGenerate(int32_t *output) override;
 #if defined(ADLMIDI_ENABLE_HQ_RESAMPLER)
     VResampler *m_resampler;
 #else

@@ -56,7 +56,7 @@ typedef struct //lenght 13
 	int32_t time2_17DE2C; // weak x_DWORD_17DE28str+4
 	int16_t x_WORD_17DE30_posx; // weak x_DWORD_17DE28str+8
 	int16_t x_WORD_17DE32_posy; // weak x_DWORD_17DE28str+10
-	int8_t x_BYTE_17DE34; // weak x_DWORD_17DE28str+12
+	int8_t DisplayLevelDescriptionText_17DE34; // weak x_DWORD_17DE28str+12
 } Type_DWORD_17DE28str;
 #pragma pack(16)
 
@@ -95,7 +95,7 @@ enum class MenuItem : int {
 };
 
 // from sub_main
-extern char x_BYTE_D419C_level_num;
+extern int8_t LoadLevelNumber_D419C;
 extern char x_BYTE_D41AD_skip_screen;
 extern const char* LevelsNames_D9204[61];
 extern char* off_DB558[];
@@ -114,12 +114,11 @@ extern char x_BYTE_E29E0;
 extern uint8_t* pre_x_DWORD_E9C3C;
 extern uint8_t x_BYTE_EB39E_keys[10];
 extern uint8_t uiBackGroundColorIdx_EB3A8;
-
 extern int32_t x_DWORD_17DBB8[4];
 extern char x_BYTE_17DBC6;
 extern uint32_t x_DWORD_17DBC8x[125];
 extern uint32_t x_DWORD_17DDBCx[26];
-extern char x_BYTE_17E09D;
+extern char IsPlayingCDTrack_17E09D;
 extern int16_t x_WORD_1803EC;
 extern uint8_t unk_180560x[44];
 extern type_unk_18058Cstr unk_18058Cstr;
@@ -161,7 +160,7 @@ char LoadGameDialog_7E820(type_WORD_E1F84* a1x);
 int NewGameDraw_7EAE0(__int16* posx, __int16* posy, __int16* a3, __int16* a4, int8_t* a5, type_animStruct* animStruct);
 int LoadLanguageFile(bitmap_pos_struct2_t** a1x, bitmap_pos_struct2_t** a2x, uint8_t* a3, char* langfilename, bitmap_pos_struct_t* a3dattabindex);
 int sub_7F960(bitmap_pos_struct2_t* a1x, bitmap_pos_struct2_t* a2x, uint8_t* a3, char* langcountstring, bitmap_pos_struct_t* a3dattabindex);
-void DrawText_80C30(__int16 posX, __int16 posY, __int16 a3);
+void PresentLevelDescription_80C30(__int16 posX, __int16 posY, __int16 a3);
 bool sub_80D40_move_graphics_and_play_sounds(__int16 a2, __int16 a3, __int16 a4, __int16 a5, char a6);
 void MapMenuPortalsDraw_81760();
 void WriteConfigDat_81DB0();

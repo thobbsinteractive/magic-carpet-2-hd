@@ -42,6 +42,12 @@ typedef struct {
 }axis_2d_32;
 
 typedef struct {
+	int32_t x;
+	int32_t y;
+	int32_t z;
+}axis_3d_32;
+
+typedef struct {
 	uint16_t x;
 	uint16_t y;
 	int16_t z;
@@ -171,6 +177,14 @@ enum class spell_t {
 	cave_in = 25
 };
 
+typedef enum
+{
+	CHEATS_ENABLED = 0x80u,
+	MULTIPLAYER_MODE = 0x10u,
+	SPEECH_ENABLED = 0x40,
+	SPEECH_DISABLED = 0xBF,
+} Setting;
+
 typedef struct {//begin 611//str_611
 	type_32_1a array_0x263_611x;//size??//dword_0x649_2BDE
 	std::array<int32_t,NUMBER_OF_SPELLS> spellsExperience_0x2CB_715x;//104//size?? spell experience, one dword per spell, 26*4=104 bytes
@@ -203,10 +217,10 @@ typedef struct {//begin 611//str_611
 	type_8_1a array_0x403_1027x;//416//size??//byte_0x7E9_2BDE
 	type_8_1a array_0x41D_1053z;//442//size??//byte_0x803_2BDE
 	type_8_1a array_0x437_1079x;//468//size?? //table of spell indexes//byte_0x81D_2BDE
-	int16_t leftSpellIndex_0x451_1105;//494 act left spell index//word_0x837_2BDE
-	int16_t rightSpellIndex_0x453_1107;//496 act right spell index//word_0x839_2BDE
-	int8_t leftSubSpellIndex_0x455_1109;//498
-	int8_t rightSubSpellIndex_0x456_1110;//499
+	int16_t SpellIndexLeft_0x451_1105;//494 act left spell index//word_0x837_2BDE
+	int16_t SpellIndexRight_0x453_1107;//496 act right spell index//word_0x839_2BDE
+	int8_t SubSpellIndexLeft_1109;//498
+	int8_t SubSpellIndexRight_1110;//499
 	int8_t byte_0x457_1111;//500//byte_0x83D_2BDE //select spell/type spell
 	int8_t spellIndex_0x458_1112;//501//byte_0x83E_2BDE
 	int8_t subSpellIndex_0x459_1113;//502
@@ -237,7 +251,7 @@ typedef struct Type_str_164 {//size 1136
 	//int16_t word_0x2E_46;//word_0x26_38[4]
 	int16_t word_0x36_54;
 	int16_t playerColorIndex_0x38_56;
-	int16_t word_0x3A_58;
+	int16_t CastleEntityIndex_0x3A_58;
 	uint16_t array_0x3C_60[16];//size??
 	std::array<uint16_t, 103> array_0x5C_92; // size?? at least index 33 is accessed in level 19
 	int32_t dword_0x12A_298;
@@ -264,16 +278,16 @@ typedef struct Type_str_164 {//size 1136
 	int32_t dword_0x169_361;
 	int32_t dword_0x16D_365;
 	uint8_t stubg[4];
-	int32_t dword_0x175_373;
-	int32_t dword_0x179_377;
-	int32_t dword_0x17D_381;
-	int32_t dword_0x181_385;
+	int32_t creaturesKilledPercent_373;
+	int32_t spellsCollectedPercent_377;
+	int32_t hitAccuracyPercent_381;
+	int32_t manaCollectedPercent_385;
 	int32_t dword_0x185_389;
-	int32_t dword_0x189_393;//clock
+	int32_t time_393;//clock
 	int32_t dword_0x18D_397;
 	uint8_t stubi[4];
 	int8_t byte_0x195_405;
-	int8_t byte_0x196_406;
+	int8_t PlayerHitFrameTime_406;
 	int8_t byte_0x197_407;
 	uint8_t stubj[2];
 	int32_t dword_0x19A_410;
@@ -368,7 +382,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	int8_t StageVar1_0x48_72;//72
 	int8_t StageVar2_0x49_73;//70
 	int16_t word_0x4A_74;
-	axis_3d axis_0x4C_76;//position//ACTUAL X Y Z
+	axis_3d position_0x4C_76;//position//ACTUAL X Y Z
 	axis_4d array_0x52_82;
 	int16_t word_0x5A_90;
 	int8_t animationFrame_0x5C_92;
@@ -389,8 +403,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	type_str_160* dword_0xA0_160x;//160 //special settings
 	//uint16_t word_0xA2_162;//162
 	type_str_164* dword_0xA4_164x;//100 // adress of xx
-}
-type_event_0x6E8E;
+} type_entity_0x6E8E;
 
 #pragma pack (1)
 typedef struct {

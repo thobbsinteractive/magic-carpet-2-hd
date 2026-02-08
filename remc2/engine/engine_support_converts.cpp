@@ -64,7 +64,7 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	//int16_t word_0x38_56;
 	memcpy(output + 0x36, &input->playerColorIndex_0x38_56, 2);
 	//int16_t word_0x3A_58;
-	memcpy(output + 0x3a, &input->word_0x3A_58, 2);
+	memcpy(output + 0x3a, &input->CastleEntityIndex_0x3A_58, 2);
 	//uint16_t array_0x3C_60[16];//size??
 	for (int i = 0; i < 16; i++)
 		memcpy(output + 0x3c + 2 * i, &input->array_0x3C_60[i], 2);
@@ -122,26 +122,26 @@ void convert_struct_to_array_164(type_str_164* input, uint8_t* output) {
 	memcpy(output + 0x16d, &input->dword_0x16D_365, 4);
 	//uint8_t stubg[4];
 	memset(output + 0x171, 0, 4);
-	//int32_t dword_0x175_373;
-	memcpy(output + 0x175, &input->dword_0x175_373, 4);
-	//int32_t dword_0x179_377;
-	memcpy(output + 0x179, &input->dword_0x179_377, 4);
-	//int32_t dword_0x17D_381;
-	memcpy(output + 0x17d, &input->dword_0x17D_381, 4);
-	//int32_t dword_0x181_385;
-	memcpy(output + 0x181, &input->dword_0x181_385, 4);
+	//int32_t creaturesKilledPercent_373;
+	memcpy(output + 0x175, &input->creaturesKilledPercent_373, 4);
+	//int32_t spellsCollectedPercent_377;
+	memcpy(output + 0x179, &input->spellsCollectedPercent_377, 4);
+	//int32_t hitAccuracyPercent_381;
+	memcpy(output + 0x17d, &input->hitAccuracyPercent_381, 4);
+	//int32_t manaCollectedPercent_385;
+	memcpy(output + 0x181, &input->manaCollectedPercent_385, 4);
 	//int32_t dword_0x185_389;
 	memcpy(output + 0x185, &input->dword_0x185_389, 4);
-	//int32_t dword_0x189_393;
-	memcpy(output + 0x189, &input->dword_0x189_393, 4);
+	//int32_t time_393;
+	memcpy(output + 0x189, &input->time_393, 4);
 	//int32_t dword_0x18D_397;
 	memcpy(output + 0x18d, &input->dword_0x18D_397, 4);
 	//uint8_t stubi[4];
 	memset(output + 0x191, 0, 4);
 	//int8_t byte_0x195_405;
 	memcpy(output + 0x195, &input->byte_0x195_405, 1);
-	//int8_t byte_0x196_406;
-	memcpy(output + 0x196, &input->byte_0x196_406, 1);
+	//int8_t PlayerHitFrameTime_406;
+	memcpy(output + 0x196, &input->PlayerHitFrameTime_406, 1);
 	//int8_t byte_0x197_407;
 	memcpy(output + 0x197, &input->byte_0x197_407, 1);
 	//uint8_t stubj[2];
@@ -241,8 +241,8 @@ void convert_struct_to_array_0x2BDE(type_str_0x2BDE* input, uint8_t* output) {
 	memcpy(output + 0x0, &input->dw_w_b_0_2BDE_11230, 4);
 	//uint8_t byte_0x004_2BE0_11234;//2	//11234 - byte //4
 	memcpy(output + 0x4, &input->byte_0x004_2BE0_11234, 1);
-	//uint8_t byte_0x005_2BE0_11235;//5
-	memcpy(output + 0x5, &input->byte_0x005_2BE0_11235, 1);
+	//uint8_t ShowDebugTextFlag_0x005_2BE0_11235;//5
+	memcpy(output + 0x5, &input->ShowDebugTextFlag_0x005_2BE0_11235, 1);
 	//uint8_t byte_0x006_2BE4_11236;//6	//11236 - byte //6
 	memcpy(output + 0x6, &input->byte_0x006_2BE4_11236, 1);
 	//int16_t word_0x007_2BE4_11237;//index of player
@@ -259,8 +259,8 @@ void convert_struct_to_array_0x2BDE(type_str_0x2BDE* input, uint8_t* output) {
 	memcpy(output + 0xe, &input->ActPlayerIndex_0x00e_2BDE_11244, 2);
 	//int16_t word_0x010_2BDE_11246; //16	
 	memcpy(output + 0x10, &input->word_0x010_2BDE_11246, 2);
-	//int32_t dword_0x012_2BE0_11248;//18 ??
-	memcpy(output + 0x12, &input->dword_0x012_2BE0_11248, 4);
+	//int32_t Turn_2BE0_11248;//18 ??
+	memcpy(output + 0x12, &input->Turn_2BE0_11248, 4);
 	//uint8_t byte_0x016_2BE0_11252_xx;//22
 	memcpy(output + 0x16, &input->byte_0x016_2BE0_11252_xx, 1);
 	//uint8_t byte_0x017_2BE0_11253_xx;//23	
@@ -281,8 +281,8 @@ void convert_struct_to_array_0x2BDE(type_str_0x2BDE* input, uint8_t* output) {
 		convert_struct_to_array_0x1d1_2BDE_11695(&input->struct_0x1d1_2BDE_11695[i], output + 0x1d1+i*14);
 	//char WizardName_0x39f_2BFA_12157[64];//927//12157 - byte(11230+927) 100% name
 	memcpy(output + 0x39f, input->WizardName_0x39f_2BFA_12157, 0x40);
-	//uint8_t byte_0x3DF_2BE4_12221;//991//12221 - byte
-	memcpy(output + 0x3df, &input->byte_0x3DF_2BE4_12221, 1);
+	//uint8_t MenuState_0x3DF_2BE4_12221;//991//12221 - byte
+	memcpy(output + 0x3df, &input->MenuState_0x3DF_2BE4_12221, 1);
 	//uint8_t byte_0x3E0_2BE4_12222;//992//12222 - byte
 	memcpy(output + 0x3e0, &input->byte_0x3E0_2BE4_12222, 1);
 	//uint8_t byte_0x3E1_2BE4_12223;//993//12223 - byte - ok
@@ -336,7 +336,7 @@ void convert_struct_to_array_0x5E_94(type_str_0x5E_94* input, uint8_t* output) {
 	memcpy(output + 0x22, &input->word_0x80_128, 2);
 }
 
-void convert_struct_to_array_0x6E8E(type_event_0x6E8E* input, uint8_t* output) {
+void convert_struct_to_array_0x6E8E(type_entity_0x6E8E* input, uint8_t* output) {
 	//struct _str_0x6E8E* next_0;
 	memcpy(output + 0, &input->next_0, 4);
 	//int32_t dword_0x4;//4 //?bitmap//LIVE
@@ -457,9 +457,9 @@ void convert_struct_to_array_0x6E8E(type_event_0x6E8E* input, uint8_t* output) {
 	memcpy(output + 164, &input->dword_0xA4_164x, 4);
 }
 
-void convert_struct_to_array_0x6E3E(type_str_0x6E3E* input, uint8_t* output) {//10 lenght
-	//int8_t str_0x6E3E_byte0;//0x6E3E-28222//D41A0_BYTESTR_0.array_0x6E3E[xx].str_0x6E3E_byte0
-	memcpy(output + 0, &input->str_0x6E3E_byte0, 1);
+void convert_struct_to_playerInputs_0x6E3E(Type_PlayerInput_0x6E3E* input, uint8_t* output) {//10 lenght
+	//int8_t PlayerAction_byte0;//0x6E3E-28222//D41A0_BYTESTR_0.playerInputs_0x6E3E[xx].PlayerAction_byte0
+	memcpy(output + 0, &input->PlayerAction_byte0, 1);
 	//int8_t str_0x6E3E_byte1;//0x6E3F-28223
 	memcpy(output + 1, &input->str_0x6E3E_byte1, 1);
 	//int8_t str_0x6E3E_byte2;//0x6E40-28224
@@ -675,7 +675,7 @@ void convert_struct_to_array_D41A0_0(type_D41A0_BYTESTR_0* input,uint8_t* output
 	//int16_t word_0xc;//player_index?
 	memcpy(output + 0xc, &input->LevelIndex_0xc, 2);
 	//int16_t word_0xe;
-	memcpy(output + 0xe, &input->word_0xe, 2);
+	memcpy(output + 0xe, &input->NumberOfPlayers_0xe, 2);
 	//uint8_t array_0x10[29]; //0x10, next 0x2d(45)
 	memcpy(output + 0x10, &input->array_0x10[0], 0x1d);
 	//int32_t dword_0x2d;//45
@@ -742,9 +742,9 @@ void convert_struct_to_array_D41A0_0(type_D41A0_BYTESTR_0* input,uint8_t* output
 	//type_str_0x2BDE array_0x2BDE[8]; //0x84c*0x8 ??
 	for (int i = 0; i < 0x8; i++)
 		convert_struct_to_array_0x2BDE(&input->array_0x2BDE[i], output + 0x2bde + i * 0x84C);
-	//type_str_0x6E3E array_0x6E3E[8];//28222	lenght 0xa size 0x8// game events
+	//Type_PlayerInput_0x6E3E playerInputs_0x6E3E[8];//28222	lenght 0xa size 0x8// game events
 	for (int i = 0; i < 0x8; i++)
-		convert_struct_to_array_0x6E3E(&input->array_0x6E3E[i], output + 0x6e3e + i * 10);
+		convert_struct_to_playerInputs_0x6E3E(&input->playerInputs_0x6E3E[i], output + 0x6e3e + i * 10);
 	//type_str_0x6E8E struct_0x6E8E[1000];//28302 a8*3e8 
 	for (int i = 0; i < 0x8; i++)
 		convert_struct_to_array_0x6E8E(&input->struct_0x6E8E[i], output + 0x6e8e + i * 0xa8);

@@ -287,7 +287,7 @@ int debugcounter_22a540 = 0;
 void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)//22a540
 {
 	int16_t z_temp; // ax
-	type_event_0x6E8E* event; // eax
+	type_entity_0x6E8E* event; // eax
 	uint32_t temp_adress;
 
 	if (CommandLineParams.DoDebugSequences()) {
@@ -387,7 +387,7 @@ void PrepareEvents_49540(Type_Level_2FECE* terrain, type_entity_0x30311* entity)
 						case 0x55:
 						{
 							event->axis_0x9A_154x.x = entity->word_10;
-							event->axis_0x4C_76.z = entity->par3_18;
+							event->position_0x4C_76.z = entity->par3_18;
 							break;
 						}
 						case 0x58:
@@ -558,11 +558,11 @@ void ApplyEvents_498A0()//22a8a0
 // D4C52: using guessed type int x_DWORD_D4C52;
 
 //----- (0004A050) --------------------------------------------------------
-type_event_0x6E8E* NewEvent_4A050()//22b050
+type_entity_0x6E8E* NewEvent_4A050()//22b050
 {
 	if (D41A0_0.dword_0x35 >= 0)
 	{
-		memset(D41A0_0.pointers_0x246[D41A0_0.dword_0x35], 0, sizeof(type_event_0x6E8E));
+		memset(D41A0_0.pointers_0x246[D41A0_0.dword_0x35], 0, sizeof(type_entity_0x6E8E));
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->maxLife_0x4 = 300;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->struct_byte_0xc_12_15.dword = 8;
 		D41A0_0.pointers_0x246[D41A0_0.dword_0x35]->actSpeed_0x82_130 = 16;
@@ -580,7 +580,7 @@ type_event_0x6E8E* NewEvent_4A050()//22b050
 	}
 	if (D41A0_0.dword_0x11e6 >= 0)
 	{
-		memset(x_D41A0_BYTEARRAY_4_struct.bytearray_38403x, 0, sizeof(type_event_0x6E8E*) * 29);//type_event_0x6E8E*
+		memset(x_D41A0_BYTEARRAY_4_struct.bytearray_38403x, 0, sizeof(type_entity_0x6E8E*) * 29);//type_entity_0x6E8E*
 		x_D41A0_BYTEARRAY_4_struct.dword_38523 = 0;
 		x_D41A0_BYTEARRAY_4_struct.dword_38527 = 0;
 		x_D41A0_BYTEARRAY_4_struct.dword_38519 = 0;
@@ -588,7 +588,7 @@ type_event_0x6E8E* NewEvent_4A050()//22b050
 		x_D41A0_BYTEARRAY_4_struct.dword_38535 = 0;
 		SetMapEntity_57E50(D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]);
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->class_0x3F_63 = 0;
-		memset(D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6], 0, sizeof(type_event_0x6E8E));
+		memset(D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6], 0, sizeof(type_entity_0x6E8E));
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->maxLife_0x4 = 300;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->struct_byte_0xc_12_15.dword = 8;
 		D41A0_0.dword_0x11EA[D41A0_0.dword_0x11e6]->actSpeed_0x82_130 = 16;
@@ -607,7 +607,7 @@ type_event_0x6E8E* NewEvent_4A050()//22b050
 	return 0;
 }
 
-void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b190
+void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b190
 {
 	if (CommandLineParams.DoShowNewProcedures()) {
 		test_pre_sub_4a190(adress);//for debug
@@ -878,7 +878,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	}
 
 	case 0x1f9bb0: {
-		sub_18BB0();
+		PauseUnpauseGame_18BB0();
 		break;
 	}
 	case 0x1f9da0: {
@@ -983,7 +983,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 		break;
 	}
 	case 0x1fb8a0: {
-		sub_1A8A0();
+		HandleArrowKeyPresses_1A8A0();
 		break;
 	}
 	case 0x1fb970: {
@@ -2780,7 +2780,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	}
 
 	case 0x232bb0: {
-		GameEvents_51BB0();
+		PlayerEvents_51BB0();
 		break;
 	}
 	case 0x233d70: {
@@ -2826,8 +2826,8 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 				 void sub_59760(uint8_t* a1, uint8_t* a2)//23a760
 				 void sub_59820()//23a820
 
-				 int sub_59A50_sound_proc8()//23aa50
-				 void sub_59AF0_sound_proc9()//23aaf0
+				 int FadeDownSoundVolume_59A50()//23aa50
+				 void StopCdPlayBackAndFadeUp_59AF0()//23aaf0
 				 void sub_59B50_sound_proc10(HMDIDRIVER user)//23ab50
 				 void sub_59BF0_sound_proc11_volume()//23abf0
 				 */
@@ -3054,7 +3054,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		DrawMinimapEntites_61880((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0);
+		DrawMinimapEntites_61880((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3067,7 +3067,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_61A00_draw_minimap_entites_b((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0);
+		sub_61A00_draw_minimap_entites_b((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3080,7 +3080,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_627F0_draw_minimap_entites_a((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0);
+		sub_627F0_draw_minimap_entites_a((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3887,7 +3887,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	}
 
 	case 0x24f150: {
-		sub_6E150();
+		PlayEntitySounds_6E150();
 		break;
 	}
 	case 0x24f450: {
@@ -3906,7 +3906,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_6EA90((int)a1_6E8E, 0);
+		ShouldUpdateSound_6EA90((int)a1_6E8E, 0);
 		allert_error();
 #endif
 		break;
@@ -3918,7 +3918,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_6EAB0((int)a1_6E8E, 0, 0);
+		EndLoop_6EAB0((int)a1_6E8E, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -4138,7 +4138,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_event_0x6E8E* a1_6E8E)//pre 22b1
 	//return 0;
 }
 
-type_event_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//pre 22b190
+type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//pre 22b190
 {
 	if (CommandLineParams.DoShowNewProcedures()) {
 		test_pre_sub_4a190(adress);//for debug
@@ -5127,7 +5127,7 @@ type_event_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//p
 }
 
 //----- (0004A190) --------------------------------------------------------
-type_event_0x6E8E* IfSubtypeCallCreatingManaSphere_4A190(axis_3d* position, int type, int subtype)//22b190
+type_entity_0x6E8E* IfSubtypeCallCreatingManaSphere_4A190(axis_3d* position, int type, int subtype)//22b190
 {
 	if (str_D4C48ar[type].dword_14[subtype].dword_10 && str_D4C48ar[type].dword_14[subtype].word_4 == subtype)
 		return pre_sub_4A190_axis_3d(str_D4C48ar[type].dword_14[subtype].address_6, position);
@@ -5135,14 +5135,14 @@ type_event_0x6E8E* IfSubtypeCallCreatingManaSphere_4A190(axis_3d* position, int 
 }
 
 //----- (00057E50) --------------------------------------------------------
-void SetMapEntity_57E50(type_event_0x6E8E* entity)//238e50
+void SetMapEntity_57E50(type_entity_0x6E8E* entity)//238e50
 {
 	if (entity->struct_byte_0xc_12_15.byte[0] & 4)
 	{
 		if (entity->nextEntity_0x18_24)
 			D41A0_0.struct_0x6E8E[entity->nextEntity_0x18_24].oldMapEntity_0x16_22 = entity->oldMapEntity_0x16_22;
 		else
-			mapEntityIndex_15B4E0[(entity->axis_0x4C_76.x >> 8) + ((entity->axis_0x4C_76.y >> 8) << 8)] = entity->oldMapEntity_0x16_22;
+			mapEntityIndex_15B4E0[(entity->position_0x4C_76.x >> 8) + ((entity->position_0x4C_76.y >> 8) << 8)] = entity->oldMapEntity_0x16_22;
 		if (entity->oldMapEntity_0x16_22)
 			D41A0_0.struct_0x6E8E[entity->oldMapEntity_0x16_22].nextEntity_0x18_24 = entity->nextEntity_0x18_24;
 		entity->struct_byte_0xc_12_15.byte[0] &= 0xFBu;
@@ -5150,7 +5150,7 @@ void SetMapEntity_57E50(type_event_0x6E8E* entity)//238e50
 }
 
 //----- (00057F20) --------------------------------------------------------
-void sub_57F20(type_event_0x6E8E* entity)//238f20
+void sub_57F20(type_entity_0x6E8E* entity)//238f20
 {
 	int32_t v1; // edx
 	signed int v2; // ecx
@@ -5184,14 +5184,14 @@ void sub_57F20(type_event_0x6E8E* entity)//238f20
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 
 //----- (00069250) --------------------------------------------------------
-signed int sub_69250(type_event_0x6E8E* a1x)//24a250
+signed int sub_69250(type_entity_0x6E8E* a1x)//24a250
 {
 	signed int result; // eax
-	type_event_0x6E8E* resultx;
+	type_entity_0x6E8E* resultx;
 	result = sub_68FF0(a1x, a1x->model_0x40_64, a1x->actionIndex_0x45_69 - 2);
 	if (result)
 	{
-		resultx = arsub_2a881e[a1x->model_0x40_64](&a1x->axis_0x4C_76);
+		resultx = arsub_2a881e[a1x->model_0x40_64](&a1x->position_0x4C_76);
 		//resultx = pre_sub_4A190(0x2a881e + 14 * a1x->byte_0x40_64, (int16_t*)&a1x->array_0x4C_76,2);//result = (*(int(**)(uint8_t*))((char *)&off_D781E + 14 * *(char *)(a1 + 64)))(a1 + 76);
 		//v63 = (uint8_t*)pre_sub_4A190(0x232530 + 14 * v112, v113 + 76);//v63 = (uint8_t*)(*(int(**)(uint8_t*))((char *)&off_D781E + 14 * v112))(v113 + 76);
 		if (resultx)
@@ -5317,8 +5317,8 @@ void sub_48400(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	int v10; // eax
 	int v11; // edi
 	int v12; // esi
-	type_event_0x6E8E* v13x; // eax
-	type_event_0x6E8E* v14x; // eax
+	type_entity_0x6E8E* v13x; // eax
+	type_entity_0x6E8E* v14x; // eax
 	int v15; // ebx
 	int v16; // edx
 	int v17; // eax
@@ -5326,9 +5326,9 @@ void sub_48400(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	int v19; // eax
 	int v20; // esi
 	int v21; // ecx
-	type_event_0x6E8E* v22x; // eax
+	type_entity_0x6E8E* v22x; // eax
 	int v23; // ebx
-	type_event_0x6E8E* v24x; // eax
+	type_entity_0x6E8E* v24x; // eax
 	int v25; // [esp+8h] [ebp-Ch]
 	int i; // [esp+8h] [ebp-Ch]
 	int v27; // [esp+Ch] [ebp-8h]
@@ -5441,8 +5441,8 @@ void sub_48690(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	int Ydist; // eax
 	signed __int16 Ydir; // bx
 	int maxabsdist; // edi
-	type_event_0x6E8E* v10x; // eax
-	type_event_0x6E8E* resultx; // eax
+	type_entity_0x6E8E* v10x; // eax
+	type_entity_0x6E8E* resultx; // eax
 	int distXYdiff; // [esp+0h] [ebp-14h]
 	signed __int16 v14; // [esp+8h] [ebp-Ch]
 	signed __int16 v15; // [esp+Ch] [ebp-8h]
@@ -5503,7 +5503,7 @@ void sub_487D0(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 {
 	__int16 v5; // si
 	unsigned __int16 v6; // bx
-	type_event_0x6E8E* resultx; // eax
+	type_entity_0x6E8E* resultx; // eax
 	axis_3d v8x; // [esp+0h] [ebp-10h]
 	//__int16 v9; // [esp+2h] [ebp-Eh]
 	//__int16 v10; // [esp+4h] [ebp-Ch]
@@ -5516,7 +5516,7 @@ void sub_487D0(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	v11x.x = posX << 8;
 	v11x.y = posY << 8;
 	v5 = Maths::sub_581E0_maybe_tan2(&v8x, &v11x);
-	v6 = Maths::sub_58490_radix_3d_2(&v8x, &v11x);
+	v6 = Maths::EuclideanDistXYZ_58490(&v8x, &v11x);
 	resultx = IfSubtypeCallCreatingManaSphere_4A190(&v8x, 10, 32);
 	if (resultx)
 	{
@@ -5531,7 +5531,7 @@ void sub_48880(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 {
 	__int16 v4; // si
 	unsigned __int16 v5; // di
-	type_event_0x6E8E* resultx; // eax
+	type_entity_0x6E8E* resultx; // eax
 	//int v7; // ebx
 	int v8; // ecx
 	axis_3d v9x; // [esp+0h] [ebp-10h]
@@ -5546,7 +5546,7 @@ void sub_48880(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uin
 	v12x.x = posX << 8;
 	v12x.y = posY << 8;
 	v4 = Maths::sub_581E0_maybe_tan2(&v9x, &v12x);
-	v5 = Maths::sub_58490_radix_3d_2(&v9x, &v12x);
+	v5 = Maths::EuclideanDistXYZ_58490(&v9x, &v12x);
 	resultx = IfSubtypeCallCreatingManaSphere_4A190(&v9x, 10, 51);
 	//v7x = resultx;
 	if (resultx)
@@ -5564,7 +5564,7 @@ int debugcounter_229930 = 0;
 //uint16_t last_a1x = 0;
 void sub_48930(uint16_t posX2, uint16_t posY2, uint16_t posX, uint16_t posY, uint8_t a5)//229930
 {
-	type_event_0x6E8E* result; // eax
+	type_entity_0x6E8E* result; // eax
 	__int16 v6; // [esp+0h] [ebp-10h]
 	__int16 v7; // [esp+2h] [ebp-Eh]
 	axis_3d v8x; // [esp+8h] [ebp-8h]

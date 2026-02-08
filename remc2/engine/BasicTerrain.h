@@ -55,7 +55,7 @@ type_str_0x36442;
 typedef union {
 	uint32_t dword;
 	axis_2du axis;
-	type_event_0x6E8E* pointer_0x6E8E;
+	type_entity_0x6E8E* pointer_0x6E8E;
 }
 un1;
 

@@ -12,10 +12,19 @@
 #include <unistd.h>
 #endif // win32
 
+#ifndef WIN32
+extern timeval timeStart;
+#endif
+
 void mydelay(int timems);
 unsigned long mygethundredths();
 unsigned long mygetthousandths();
 unsigned long mygetsecond();
+
 double clockToMilliseconds(clock_t ticks);
+#ifndef _MSC_VER
+timeval GetTimeStart();
+void SetTimeStart();
+#endif
 
 #endif //PORT_TIME

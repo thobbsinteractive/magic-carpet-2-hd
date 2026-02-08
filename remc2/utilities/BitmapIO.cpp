@@ -1,6 +1,7 @@
 #include "BitmapIO.h"
 
 #include <stdio.h>
+#include <iostream>
 
 const int BitmapIO::TRUECOLOR_BYTES_PER_PIXEL = 3;
 const int BitmapIO::RGBA_BYTES_PER_PIXEL = 4;
@@ -340,7 +341,7 @@ finalise:
 	if (row != NULL) free(row);
 
 	//return code;
-	printf("img: %s created\n", filename);
+	std::cout << "img: " << filename << " created\n";
 }
 
 void BitmapIO::setRGBA(png_byte* ptr, uint8_t* val)

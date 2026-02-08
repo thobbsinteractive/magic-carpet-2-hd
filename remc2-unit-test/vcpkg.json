@@ -1,20 +1,20 @@
 {
     "name": "remc2-unit-test",
-    "version": "0.9.4",
+    "version": "0.9.9",
     "dependencies": [
 		"rapidjson",
 		"spdlog",
-		"libogg",
-		"libpng",
 		"sdl2",
 		"sdl2-mixer",
-		"sdl2-ttf"
+		"sdl2-ttf",
+		"libadlmidi",
+		"gtest"
     ],
-	"builtin-baseline": "f6a5d4e8eb7476b8d7fc12a56dff300c1c986131",
-	"overrides": [
+    "builtin-baseline": "ef7dbf94b9198bc58f45951adcf1f041fcbc5ea0",
+    "overrides": [
         {
             "name": "sdl2",
-            "version": "2.0.14#4"
+            "version": "2.32.8"
         }
     ]
 }

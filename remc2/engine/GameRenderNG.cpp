@@ -128,7 +128,7 @@ GameRenderNG::~GameRenderNG()
 		v52 = D41A0_0.m_GameSettings.m_Display.xxxx_0x2191;
 		if (x_WORD_180660_VGA_type_resolution == 1)
 		{
-			if (!D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x3DF_2BE4_12221)
+			if (!D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221)
 			{
 				if (x_D41A0_BYTEARRAY_4_struct.m_wHighSpeedSystem)
 				{
@@ -136,7 +136,7 @@ GameRenderNG::~GameRenderNG()
 					{
 						if (D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize == 40)
 						{
-							v34 = ENTITY_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]->actSpeed_0x82_130;
+							v34 = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]->actSpeed_0x82_130;
 							if ((signed int)((HIDWORD(v34) ^ v34) - HIDWORD(v34)) > 80)
 								D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 = 1;
 						}
@@ -279,10 +279,10 @@ void GameRenderNG::DrawSky_40950(int16_t roll)
 	// prepare sky texture lookup table
 	for (uint16_t width = 0; width < viewPort.Width_DE564; width++)
 	{
-		errLine[width].x = (errorX >> 16) - oldErrorX;
-		errLine[width].y = (errorY >> 16) - oldErrorY;
-		oldErrorX = (errorX >> 16);
-		oldErrorY = (errorY >> 16);
+		errLine[width].x = BYTE2(errorX) - oldErrorX;
+		errLine[width].y = BYTE2(errorY) - oldErrorY;
+		oldErrorX = BYTE2(errorX);
+		oldErrorY = BYTE2(errorY);
 		errorY += sinRoll;
 		errorX += cosRoll;
 	}
@@ -297,8 +297,8 @@ void GameRenderNG::DrawSky_40950(int16_t roll)
 	{
 		uint8* viewPortLineRenderBufferStart = viewPortRenderBufferStart;
 		
-		uint32 texturePixelIndexX = (beginX >> 16);
-		uint32 texturePixelIndexY = (beginY >> 16);
+		uint32 texturePixelIndexX = BYTE2(beginX);
+		uint32 texturePixelIndexY = BYTE2(beginY);
 		if (skyTextSize == 0x100)
 		{
 			texturePixelIndexX %= (skyTextSize - 1);
@@ -819,8 +819,8 @@ void GameRenderNG::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					tempSinXSin = 0;
 					if (!mapTerrainType_10B4E0[yawXY.word])
 					{
-						//v38 = 32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248;
-						tempSinXSin = pow((Maths::sin_DB750[(32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 + (yawXY._axis_2d.y << 7)) & 0x7FF] >> 8), 2);
+						//v38 = 32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248;
+						tempSinXSin = pow((Maths::sin_DB750[(32 * D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 + (yawXY._axis_2d.y << 7)) & 0x7FF] >> 8), 2);
 						Str_E9C38_smalltit[index2].alt_4 -= tempSinXSin >> 13;
 						if (tempMapShading >= 14464)
 							tempSinXSin = 0;
@@ -1260,8 +1260,8 @@ void GameRenderNG::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 						tempY = 128;
 					Str_E9C38_smalltit[index2].pnt1_16 = str_F2C20ar.dword0x18 * Str_E9C38_smalltit[index2].x_0 / tempY;
 					Str_E9C38_smalltit[index2].alt_4 = 32 * mapHeightmap_11B4E0[yawXY.word] - posZ;
-					//v112 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6;
-					tempSinXSin = pow((Maths::sin_DB750[((D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6)+(yawXY._axis_2d.y << 7)) & 0x7FF] >> 8), 2);
+					//v112 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 << 6;
+					tempSinXSin = pow((Maths::sin_DB750[((D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 << 6)+(yawXY._axis_2d.y << 7)) & 0x7FF] >> 8), 2);
 					Str_E9C38_smalltit[index2].inverse_alt_8 = -(mapHeightmap_11B4E0[yawXY.word] * ((tempSinXSin >> 4) + 0x8000) >> 10) - posZ;
 					tempSinXSin = 0;
 					allert_error();//test  next ifs
@@ -1334,8 +1334,8 @@ void GameRenderNG::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					//v200 = yawXY.word;
 					Str_E9C38_smalltit[index2].pnt1_16 = str_F2C20ar.dword0x18 * Str_E9C38_smalltit[index2].x_0 / tempY;
 					Str_E9C38_smalltit[index2].alt_4 = 32 * mapHeightmap_11B4E0[yawXY.word] - posZ;
-					//v201 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6;
-					tempSinXSin = pow(Maths::sin_DB750[((D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x012_2BE0_11248 << 6) + (yawXY._axis_2d.y << 7)) & 0x7FF] >> 8,2);
+					//v201 = (unsigned __int16)D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 << 6;
+					tempSinXSin = pow(Maths::sin_DB750[((D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248 << 6) + (yawXY._axis_2d.y << 7)) & 0x7FF] >> 8,2);
 					allert_error();//test next if
 					if (!(mapAngle_13B4E0[yawXY.word] & 8))
 					{
@@ -1541,7 +1541,7 @@ int32_t* GameRenderNG::x_DWORD_DB350_ret(uint32_t address) {
 uint16_t GameRenderNG::sub_3FD60(int a2x)
 {
 	unsigned __int16 result; // ax
-	type_event_0x6E8E* v3x; // eax
+	type_entity_0x6E8E* v3x; // eax
 	int v4; // edx
 	int v5; // eax
 	int v6; // ecx
@@ -1575,7 +1575,7 @@ uint16_t GameRenderNG::sub_3FD60(int a2x)
 	int v38; // eax
 	unsigned __int8 v39; // al
 	int v40; // [esp+0h] [ebp-Ch]
-	type_event_0x6E8E* v41x; // [esp+4h] [ebp-8h]
+	type_entity_0x6E8E* v41x; // [esp+4h] [ebp-8h]
 	int v42; // [esp+8h] [ebp-4h]
 
 	//fix
@@ -1617,13 +1617,13 @@ uint16_t GameRenderNG::sub_3FD60(int a2x)
 
 		if (result < 0x3E8u)
 		{
-			v3x = ENTITY_EA3E4[result];
+			v3x = Entities_EA3E4[result];
 			v41x = v3x;
 			if (!(v3x->struct_byte_0xc_12_15.byte[0] & 0x21))
 			{
-				v4 = (signed __int16)(v3x->axis_0x4C_76.x - cameraX_F2CC4);
-				v5 = (signed __int16)(cameraY_F2CC2 - v3x->axis_0x4C_76.y);
-				v42 = -v3x->axis_0x4C_76.z - str_F2C20ar.dword0x20;
+				v4 = (signed __int16)(v3x->position_0x4C_76.x - cameraX_F2CC4);
+				v5 = (signed __int16)(cameraY_F2CC2 - v3x->position_0x4C_76.y);
+				v42 = -v3x->position_0x4C_76.z - str_F2C20ar.dword0x20;
 				v6 = (v4 * str_F2C20ar.cos2_0x0f - v5 * str_F2C20ar.sin2_0x17) >> 16;
 				v40 = (str_F2C20ar.sin2_0x17 * v4 + str_F2C20ar.cos2_0x0f * v5) >> 16;
 				v7 = (str_F2C20ar.sin2_0x17 * v4 + str_F2C20ar.cos2_0x0f * v5) >> 16;
@@ -1903,10 +1903,10 @@ uint16_t GameRenderNG::sub_3FD60(int a2x)
 	return result;
 }
 
-void GameRenderNG::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t posY)
+void GameRenderNG::sub_88740(type_entity_0x6E8E* a1x, int16_t posX, int16_t posY)
 {
 	int v3; // esi
-	type_event_0x6E8E* v4x; // edx
+	type_entity_0x6E8E* v4x; // edx
 	unsigned __int8 v5; // al
 	unsigned __int8 v6; // al
 	unsigned __int8 v7; // al
@@ -1919,7 +1919,7 @@ void GameRenderNG::sub_88740(type_event_0x6E8E* a1x, int16_t posX, int16_t posY)
 	v3 = 0;
 	if (str_unk_1804B0ar.PopupStatusByte_0x9e & 1)
 		return;
-	v4x = ENTITY_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
+	v4x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
 	v5 = a1x->class_0x3F_63;
 	if (v5 < 5u)
 	{
@@ -2029,7 +2029,7 @@ LABEL_48:
 		else
 		{
 			v18 = 0;
-			v13 = Maths::sub_58490_radix_3d_2(&v4x->axis_0x4C_76, &a1x->axis_0x4C_76);
+			v13 = Maths::EuclideanDistXYZ_58490(&v4x->position_0x4C_76, &a1x->position_0x4C_76);
 			if (!str_E2A74[v3].dword_12 || v13 < str_E2A74[v3].dword_20 && v13 > 1024)
 				v18 = 1;
 			if (v18)
@@ -2627,7 +2627,7 @@ void GameRenderNG::SetBillboards_3B560(int16_t roll)
 	}
 }
 
-void GameRenderNG::DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1x, __int16 a2, int a3, __int16 a4)//20db30 //maybe draw sorcerer name
+void GameRenderNG::DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1x, int16_t a2, int a3, int16_t a4)//20db30 //maybe draw sorcerer name
 {
 	char* v5; // esi
 	int v9x; // eax
@@ -2731,7 +2731,7 @@ void GameRenderNG::DrawSorcererNameAndHealthBar_2CB30(type_event_0x6E8E* a1x, __
 void GameRenderNG::DrawSprites_3E360(int a2x)//21f360
 {
 	unsigned __int16 result; // ax
-	type_event_0x6E8E* v3x; // eax
+	type_entity_0x6E8E* v3x; // eax
 	__int16 v4; // cx
 	int v5; // ecx
 	int v6; // edx
@@ -2800,7 +2800,7 @@ void GameRenderNG::DrawSprites_3E360(int a2x)//21f360
 	int v86; // eax
 	unsigned __int16 v88; // ax
 	int v89; // eax
-	type_event_0x6E8E* v90x; // ebx
+	type_entity_0x6E8E* v90x; // ebx
 	__int16 v91; // cx
 	unsigned __int8 v92; // al
 	char v93; // cl
@@ -2833,19 +2833,19 @@ void GameRenderNG::DrawSprites_3E360(int a2x)//21f360
 	{
 		//adress 21f370
 
-		v3x = ENTITY_EA3E4[result];
+		v3x = Entities_EA3E4[result];
 		str_F2C20ar.dword0x14x = v3x;
 		if (!(v3x->struct_byte_0xc_12_15.byte[0] & 0x21))
 		{
-			v4 = v3x->axis_0x4C_76.y;
-			v96 = (signed __int16)(v3x->axis_0x4C_76.x - cameraX_F2CC4);
+			v4 = v3x->position_0x4C_76.y;
+			v96 = (signed __int16)(v3x->position_0x4C_76.x - cameraX_F2CC4);
 			v97 = (signed __int16)(cameraY_F2CC2 - v4);
 			if (shadows_F2CC7)
 			{
 				if (!Str_E9C38_smalltit[a2x].textAtyp_43 && !(v3x->struct_byte_0xc_12_15.word[1] & 0x808))
 				{
 					//adress 21f40c
-					v98 = sub_B5C60_getTerrainAlt2(v3x->axis_0x4C_76.x, v4) - str_F2C20ar.dword0x20;
+					v98 = sub_B5C60_getTerrainAlt2(v3x->position_0x4C_76.x, v4) - str_F2C20ar.dword0x20;
 					v5 = (str_F2C20ar.cos2_0x0f * v96 - str_F2C20ar.sin2_0x17 * v97) >> 16;
 					v99 = (str_F2C20ar.sin2_0x17 * v96 + str_F2C20ar.cos2_0x0f * v97) >> 16;
 					v6 = v99 * v99 + v5 * v5;
@@ -3137,15 +3137,15 @@ void GameRenderNG::DrawSprites_3E360(int a2x)//21f360
 				}
 			}
 			if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] >= 0)
-				v48 = str_F2C20ar.dword0x14x->axis_0x4C_76.z;
+				v48 = str_F2C20ar.dword0x14x->position_0x4C_76.z;
 			else
-				v48 = str_F2C20ar.dword0x14x->axis_0x4C_76.z - 160;
+				v48 = str_F2C20ar.dword0x14x->position_0x4C_76.z - 160;
 			v100 = (str_F2C20ar.sin2_0x17 * v96 + str_F2C20ar.cos2_0x0f * v97) >> 16;
 			v49 = (str_F2C20ar.cos2_0x0f * v96 - str_F2C20ar.sin2_0x17 * v97) >> 16;
 			if (str_F2C20ar.dword0x14x->struct_byte_0xc_12_15.byte[3] & 0x20)
 			{
 				v50x = &str_D404C[str_F2C20ar.dword0x14x->byte_0x3B_59];
-				switch ((((ENTITY_EA3E4[str_F2C20ar.dword0x14x->word_0x32_50]->yaw_0x1C_28
+				switch ((((Entities_EA3E4[str_F2C20ar.dword0x14x->word_0x32_50]->yaw_0x1C_28
 					- (unsigned __int16)yaw_F2CC0) >> 3) & 0xF0) >> 4)
 				{
 				case 0:
@@ -3464,13 +3464,13 @@ void GameRenderNG::DrawSprites_3E360(int a2x)//21f360
 						v93 = v90x->struct_byte_0xc_12_15.byte[3];
 						if (v93 & 2)
 						{
-							v94 = playersColors_E88E0x[ENTITY_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->playerColorIndex_0x38_56][2];
+							v94 = playersColors_E88E0x[Entities_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->playerColorIndex_0x38_56][2];
 							str_F2C20ar.dword0x01_rotIdx = 4;
 							str_F2C20ar.dword0x07 = v94;
 						}
 						else if (v93 & 4)
 						{
-							v95 = playersColors_E88E0x[ENTITY_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->playerColorIndex_0x38_56][2];
+							v95 = playersColors_E88E0x[Entities_EA3E4[v90x->parentId_0x28_40]->dword_0xA4_164x->playerColorIndex_0x38_56][2];
 							str_F2C20ar.dword0x01_rotIdx = 5;
 							str_F2C20ar.dword0x07 = v95;
 						}

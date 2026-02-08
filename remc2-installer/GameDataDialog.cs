@@ -564,7 +564,7 @@ namespace WixSharpSetup
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            using (var fbd = new FolderBrowserDialog())
+            using (var fbd = new System.Windows.Forms.FolderBrowserDialog())
             {
                 fbd.SelectedPath = this.txtPath.Text;
                 DialogResult result = fbd.ShowDialog();

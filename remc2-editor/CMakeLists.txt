@@ -6,10 +6,6 @@ set(SOURCE_FILES_EDITOR
     "editor.cpp"
     "editor_main.cpp"
     "editor.h"
-    "../inih/ini.c"
-    "../inih/ini.h"
-    "../inih/INIReader.cpp"
-    "../inih/INIReader.h"
     "../remc2/engine/Animation.cpp"
     "../remc2/engine/Animation.h"
     "../remc2/engine/Basic.cpp"
@@ -32,6 +28,9 @@ set(SOURCE_FILES_EDITOR
     "../remc2/engine/GameUI.h"
     "../remc2/engine/Events.cpp"
     "../remc2/engine/Events.h"
+    "../remc2/engine/Event.h"
+    "../remc2/engine/EventDispatcher.cpp"
+    "../remc2/engine/EventDispatcher.h"
     "../remc2/engine/Level.cpp"
     "../remc2/engine/Level.h"
     "../remc2/engine/LevelStructs.cpp"
@@ -76,10 +75,15 @@ set(SOURCE_FILES_EDITOR
     "../remc2/engine/engine_support.h"
     "../remc2/engine/read_config.cpp"
     "../remc2/engine/read_config.h"
+    "../remc2/engine/InputEvent.h"
+    "../remc2/portability/Config.cpp"
+    "../remc2/portability/Config.h"
     "../remc2/portability/fcaseopen.cpp"
     "../remc2/portability/fcaseopen.h"
     "../remc2/portability/port_filesystem.cpp"
     "../remc2/portability/port_filesystem.h"
+    "../remc2/portability/InputRecorder.cpp"
+    "../remc2/portability/InputRecorder.h"
     "../remc2/portability/port_net.cpp"
     "../remc2/portability/port_net.h"
     "../remc2/portability/port_outputs.cpp"
@@ -141,7 +145,7 @@ set(SOURCE_FILES_EDITOR
     "kiss_general.cpp"
     "kiss_draw.cpp"
 )
-#foreach(FILE_ENTRY ${SOURCE_FILES_ENGINE} ${SOURCE_FILES__portability} ${SOURCE_FILES__libs__inih})
+#foreach(FILE_ENTRY ${SOURCE_FILES_ENGINE} ${SOURCE_FILES__portability})
 #  list(APPEND SOURCE_FILES_EDITOR "../remc2/${FILE_ENTRY}")
 #endforeach()
 source_group("Source Files Editor" FILES ${SOURCE_FILES_EDITOR} )
@@ -152,8 +156,8 @@ add_executable(${EDITOR_TARGET} ${SOURCE_FILES_EDITOR})
 
 target_link_libraries(${EDITOR_TARGET} PUBLIC 
     SDL2::SDL2
-	SDL2_mixer::SDL2_mixer
-	SDL2_ttf::SDL2_ttf
+    SDL2_mixer::SDL2_mixer
+    SDL2_ttf::SDL2_ttf
     SDL2_image::SDL2_image
     ${PNG_LIBRARY}
     findfirst
@@ -163,8 +167,7 @@ target_link_libraries(${EDITOR_TARGET} PUBLIC
 target_include_directories(${EDITOR_TARGET} PUBLIC
     "../kiss_sdl-master"
     "../findfirst"
-	"../spdlog/include"
-    "../inih"
+    "../spdlog/include"
 )
 add_compile_definitions(COMPILE_FOR_64BIT)
 
@@ -177,7 +180,7 @@ install(
 )
 install(
     FILES 
-    ${CMAKE_SOURCE_DIR}/remc2-editor/editor-config.ini
+    ${CMAKE_SOURCE_DIR}/remc2-editor/editor-config.json
     DESTINATION bin
 )
 install(

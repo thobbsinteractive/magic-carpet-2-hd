@@ -1,8 +1,8 @@
 /*
- * libADLMIDI is a free MIDI to WAV conversion library with OPL3 emulation
+ * libADLMIDI is a free Software MIDI synthesizer library with OPL3 emulation
  *
  * Original ADLMIDI code: Copyright (c) 2010-2014 Joel Yliluoma <bisqwit@iki.fi>
- * ADLMIDI Library API:   Copyright (c) 2015-2018 Vitaly Novichkov <admin@wohlnet.ru>
+ * ADLMIDI Library API:   Copyright (c) 2015-2025 Vitaly Novichkov <admin@wohlnet.ru>
  *
  * Library is based on the ADLMIDI, a MIDI player for Linux and Windows with OPL3 emulation:
  * http://iki.fi/bisqwit/source/adlmidi.html
@@ -60,16 +60,14 @@ typedef int32_t ssize_t;
 #endif
 
 #if defined(__DJGPP__) || (defined(__WATCOMC__) && (defined(__DOS__) || defined(__DOS4G__) || defined(__DOS4GNZ__)))
-#define ADLMIDI_HW_OPL
-#include <conio.h>
-#ifdef __DJGPP__
-#include <pc.h>
-#include <dpmi.h>
-#include <go32.h>
-#include <sys/farptr.h>
-#include <dos.h>
-#endif
-
+#   include <conio.h>
+#   ifdef __DJGPP__
+#       include <pc.h>
+#       include <dpmi.h>
+#       include <go32.h>
+#       include <sys/farptr.h>
+#       include <dos.h>
+#   endif
 #endif
 
 #include <vector>
@@ -144,14 +142,11 @@ class OPLChipBase;
 
 typedef class OPL3 Synth;
 
-#include "adldata.hh"
+#include "oplinst.h"
+#include "adlmidi_db.h"
 
 #define ADLMIDI_BUILD
 #include "adlmidi.h"    //Main API
-
-#ifndef ADLMIDI_DISABLE_CPP_EXTRAS
-#include "adlmidi.hpp"  //Extra C++ API
-#endif
 
 #include "adlmidi_ptr.hpp"
 
@@ -159,7 +154,7 @@ class MIDIplay;
 
 #define ADL_UNUSED(x) (void)x
 
-#ifdef ADLMIDI_HW_OPL
+#ifdef ENABLE_HW_OPL_DOS
 #define ADL_MAX_CHIPS 1
 #define ADL_MAX_CHIPS_STR "1" //Why not just "#MaxCards" ? Watcom fails to pass this with "syntax error" :-P
 #else
@@ -216,6 +211,12 @@ inline int32_t adl_cvtU32(int32_t x)
     return (uint32_t)adl_cvtS32(x) - (uint32_t)INT32_MIN;
 }
 
+template<typename T>
+void adl_fill_vector(std::vector<T > &v, const T &value)
+{
+    for(typename std::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
+        *it = value;
+}
 
 #if defined(ADLMIDI_AUDIO_TICK_HANDLER)
 extern void adl_audioTickHandler(void *instance, uint32_t chipId, uint32_t rate);
@@ -228,5 +229,9 @@ extern void adl_audioTickHandler(void *instance, uint32_t chipId, uint32_t rate)
  * @return Always 0
  */
 extern int adlCalculateFourOpChannels(MIDIplay *play, bool silent = false);
+
+#ifndef DISABLE_EMBEDDED_BANKS
+extern void adlFromInstrument(const BanksDump::InstrumentEntry &instIn, OplInstMeta &instOut);
+#endif
 
 #endif // ADLMIDI_PRIVATE_HPP

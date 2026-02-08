@@ -16,22 +16,36 @@ https://github.com/thobbsinteractive/magic-carpet-2-hd/releases/latest
 - 5: Click the Start menu shortcut "Magic Carpet 2 HD" to run the game.
 - 6: Any errors will be output to "log.txt"
 
+#### Basic Controls ####
+Controls can be redefined in the Config.json file, however here are the defaults:
+</br>
+Forward = W</br>
+Backwards = S</br>
+Move Left = A</br>
+Move Right = D</br>
+Open Spell Menu = LCtrl / Mouse 4</br>
+Open Map = Tab / Middle Mouse</br>
+
 #### Command Line Args ####
 You can use the following arguments:</br>
 To jump to a selected Level use:</br>
 --set_level [0-25]</br>
 To run a level you have created using the editor:</br>
 --custom_level "[Path to .mc2 file]"</br>
+To record a playthough (only works for x86):</br>
+--record_file "[File Path]"</br>
+To playback a playthough (only works for x86):</br>
+--play_file "[File Path]"</br></br>
+To change the log level of the game:</br>
+--log_level [Info, Debug, Trace (will impact performance)]</br>
+To run the game with option to show in game debug info (press "J" to show):</br>
+--enable_in_game_debug</br>
 
 ## FAQ ##
 https://github.com/thobbsinteractive/magic-carpet-2-hd/wiki/FAQ
 
 ## For more information on Magic Carpet 2 ##
 Moburma has been tirelessly working to document cut levels, level data structures and missing graphics at: https://tcrf.net/Magic_Carpet_2:_The_Netherworlds
-
-## Using this engine ##
-This engine will be partially used in the MagicBalls project. It will be a mix of remc2 and the Godot engine.
-[https://github.com/turican0/MagicBalls](https://github.com/turican0/MagicBalls)
 
 ## My intention is to make a patch for Magic Carpet 1 and 2 (GOG editions) that initially will:
 - Add more screen resolution options
@@ -43,8 +57,8 @@ This engine will be partially used in the MagicBalls project. It will be a mix o
 
 |Branch|Windows|Linux|
 |------|:-----:|:---:|
-|master|[![MSBuild CI](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/msbuild.yml/badge.svg?branch=master)](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/msbuild.yml)|[![Linux 64bit CI](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/linux64bit.yml/badge.svg?branch=master)](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/linux64bit.yml)|
-|development|[![MSBuild CI](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/msbuild.yml/badge.svg?branch=development)](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/msbuild.yml)|[![Linux 64bit CI](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/linux64bit.yml/badge.svg?branch=development)](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/linux64bit.yml)|
+|master|[![MSBuild CI](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/msbuild.yml/badge.svg?branch=master)](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/msbuild.yml)|[![Linux 64bit CI](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/linux.yml/badge.svg?branch=master)](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/linux.yml)|
+|development|[![MSBuild CI](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/msbuild.yml/badge.svg?branch=development)](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/msbuild.yml)|[![Linux 64bit CI](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/linux.yml/badge.svg?branch=development)](https://github.com/thobbsinteractive/magic-carpet-2-hd/actions/workflows/linux.yml)|
 
 #### STATUS: Code now runs and all of MC2 (in both Windows and Linux) seems to be playable. Anyone with the GOG edition can download this repo, extract the Game Assets (from a legal GOG copy of the game) and run it. ####
 
@@ -68,9 +82,10 @@ This engine will be partially used in the MagicBalls project. It will be a mix o
 There are two ways to build the Linux binary.
 - Building a native binary
   1. Pull the development branch using GitHub (this is much easier if you install Visual Studio Code and install C++ Extension, cmake, cmake tools). When pulling the branch either do a recursive clone of the repository or ensure that after the pull you run: `git submodule init` and `git submodule update`
-  2. Make sure that you have `CMake`, `make` and a recent `GCC` installed
+  2. Once pulled, within the `magic-carpet-2-hd/` directory pull the `findfirst` repo.
+  3. Make sure that you have `CMake`, `make` and a recent `GCC` installed
      - To install them on Debian/Pi OS: `sudo apt install -y cmake`  
-  3. Make sure that you have the following dependencies as development packages (the exact names depend on your distro)
+  4. Make sure that you have the following dependencies as development packages (the exact names depend on your distro)
   - SDL2
   - SDL2_mixer
   - SDL2_image
@@ -79,7 +94,8 @@ There are two ways to build the Linux binary.
   - boost
   - boost-system
   - spdlog
-    - To install them on Debian/Pi OS: `sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libpng-dev libpng++-dev libboost-system-dev libspdlog-dev` 
+  - rapidjson-dev
+    - To install them on Debian/Pi OS: `sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libpng-dev libpng++-dev libboost-system-dev libspdlog-dev rapidjson-dev` 
   4. Build the code
   ```bash
   export BUILDTYPE=Debug # or Release
@@ -126,6 +142,8 @@ In order to run the game you need to own a copy of Magic Carpet 2. We provide a 
   bash check_install.sh -s [directory where GOG installed MC2] -d [destination directory]
   # for example :
   bash check_install.sh -s "${HOME}/.wine/drive_c/games/Magic Carpet 2/" -d "build/${BUILDTYPE}/inst/bin/NETHERW"
+  # or :
+  bash check_install.sh -s "/mnt/c/Program Files (x86)/GOG Galaxy/Games/Magic Carpet 2/" -d "build/${BUILDTYPE}/inst/bin/NETHRW"
   ```
   Please note that if you have used any other method to get the assets, at least run a check to make sure that remc2 has access to every file it needs:
   ```
@@ -149,7 +167,7 @@ In order to run the game you need to own a copy of Magic Carpet 2. We provide a 
 
 #### Configuring `remc2`
 
-Some settings can be configured via the file `config.ini`. An example for this file can be found in the root directory of the `remc2` repository.
+Some settings can be configured via the file `config.json`. An example for this file can be found in the root directory of the `remc2` repository.
 The game will search for this file in the following locations and this particular order. For the flatpak only the first two locations can be used.
 1. `$XDG_CONFIG_HOME/remc2`
 2. `$HOME/.config/remc2`

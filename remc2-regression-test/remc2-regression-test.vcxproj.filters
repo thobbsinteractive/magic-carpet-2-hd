@@ -8,7 +8,6 @@
     <ClInclude Include="Regression-tests.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="regression-config.ini" />
     <None Include="memimages\regressions\level1\sequence-002285FF-002B3A74.bin">
       <Filter>Resources\memimages\regressions\level1</Filter>
     </None>
@@ -459,6 +458,7 @@
     <None Include="memimages\regressions\level25\sequence-002285FF-00356038.bin">
       <Filter>Resources\memimages\regressions\level25</Filter>
     </None>
+    <None Include="regression-config.json" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">

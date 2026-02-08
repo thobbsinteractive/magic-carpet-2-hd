@@ -735,7 +735,7 @@ uint16_t Maths::x_WORD_DE350[257] = { //speed table3//2af350 tang?
 		0x00FA,0x00FB,0x00FC,0x00FC,0x00FD,0x00FE,0x00FE,0x00FF,
 		0x0100};
 
-unsigned int Maths::sub_58490_radix_3d_2(axis_3d* a1, axis_3d* a2)//239490
+unsigned int Maths::EuclideanDistXYZ_58490(axis_3d* a1, axis_3d* a2)//239490
 {
 	uint32_t radix = ((int16_t)(a2->x - a1->x)) * ((int16_t)(a2->x - a1->x)) + ((int16_t)(a2->y - a1->y)) * ((int16_t)(a2->y - a1->y));
 	return Maths::sub_7277A_radix_3d(radix);
@@ -757,7 +757,7 @@ unsigned int Maths::sub_7277A_radix_3d(unsigned int a1)//25377a
 int16_t Maths::sub_58210_radix_tan(axis_3d* a1, axis_3d* a2)//239210
 {
 	int16_t v2; // ax
-	v2 = sub_58490_radix_3d_2(a1, a2);//
+	v2 = EuclideanDistXYZ_58490(a1, a2);//
 	return sub_72633_maybe_tan(a1->z - a2->z, -v2);
 }
 
@@ -1040,8 +1040,79 @@ uint16_t Maths::CurveCoords(uint16_t x, uint16_t y, std::vector<Maths::Zone>& zo
 }
 
 //----- (000584D0) --------------------------------------------------------
-int sub_584D0_SQdistX_SQdistY(axis_3d* a1, axis_3d* a2)//2394d0
+uint32_t Maths::EuclideanDistXY_584D0(axis_3d* a1, axis_3d* a2)//2394d0
 {
 	return (int16_t)(a2->x - a1->x) * (int16_t)(a2->x - a1->x)
 		+ (int16_t)(a2->y - a1->y) * (int16_t)(a2->y - a1->y);
+}
+
+uint32_t Maths::EuclideanDistXYFromZero(axis_3d_32* a1)
+{
+	return (int16_t)(a1->x) * (int16_t)(a1->x)
+		+ (int16_t)(a1->y) * (int16_t)(a1->y);
+}
+
+axis_3d_32 Maths::RelativeXYZCoordinate(axis_3d* a1, axis_3d* a2)
+{
+	axis_3d_32 position;
+	position.x = (int32_t)a1->x - (int32_t)a2->x;
+	position.y = (int32_t)a1->y - (int32_t)a2->y;
+	position.z = (int32_t)a1->z - (int32_t)a2->z;
+	return position;
+}
+
+float Maths::ConvertYawToDegrees(int16_t yaw)
+{
+	auto degreesYaw = 360.0f * ((float)yaw / 0x7ff);
+	return degreesYaw;
+}
+
+/// <summary>
+/// Magic Carpet uses a Z-Up coordinate system
+/// 
+/// Z+  Y-
+/// |  /
+/// | /
+/// |/_____ X+
+/// 
+/// </summary>
+/// <param name="v"></param>
+/// <param name="angle"></param>
+/// <returns></returns>
+Maths::Vec3 Maths::RotateX(const Vec3& v, float angle) {
+	float rad = angle * M_PI / 180.0f;
+	float cosA = cos(rad);
+	float sinA = sin(rad);
+
+	return { v.x, (v.y * cosA) + (v.z * -sinA), (v.y * sinA) + (v.z * cosA) };
+}
+
+Maths::Vec3 Maths::RotateY(const Vec3& v, float angle) {
+	float rad = angle * M_PI / 180.0f;
+	float cosA = cos(rad);
+	float sinA = sin(rad);
+	return { (v.x * cosA) + (v.z * sinA), v.y, (v.x * -sinA) + (v.z * cosA) };
+}
+
+Maths::Vec3 Maths::RotateZ(const Vec3& v, float angle) {
+	float rad = angle * M_PI / 180.0f;
+	float cosA = cos(rad);
+	float sinA = sin(rad);
+	return { (v.x * cosA) + (v.y * -sinA), (v.x * sinA) + (v.y * cosA), v.z };
+}
+
+/// <summary>
+/// Measures angle to point from 0,0,0
+/// </summary>
+/// <param name="v"></param>
+/// <returns></returns>
+float Maths::MeasureYawAngleDegrees(const Vec3& v)
+{
+	float angleRad = std::atan2(v.x, -v.y);
+
+	// Convert to degrees
+	float angleDeg = angleRad * 180.0 / M_PI;
+
+	// Convert from [-180, 180] to [0, 360)
+	return ((int)angleDeg + 360) % 360;
 }

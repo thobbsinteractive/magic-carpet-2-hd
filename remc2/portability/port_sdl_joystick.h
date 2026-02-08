@@ -2,11 +2,8 @@
 #ifndef PORT_SDL_JOYSTICK_H
 #define PORT_SDL_JOYSTICK_H
 
-#define  SCENE_PREAMBLE_MENU  0x1
-#define         SCENE_FLIGHT  0x2
-#define    SCENE_FLIGHT_MENU  0x3
-#define     SCENE_SPELL_MENU  0x4
-#define           SCENE_DEAD  0x5
+#include "../engine/Scene.h"
+#include "../engine/globals.h"
 
 ///< gamepad_event_t flags
 #define      GP_BTN_RELEASED  0x40
@@ -29,12 +26,13 @@ struct gamepad_event {
 };
 typedef struct gamepad_event gamepad_event_t;
 
-void set_scene(const uint8_t scene_id);
+void set_scene(const Scene scene_id);
 void joystick_set_env(const int32_t x, const int32_t y);
 void gamepad_sdl_init(void);
 void gamepad_sdl_close(void);
 void gamepad_init(const int gameResWidth, const int gameResHeight);
 void gamepad_poll_data(gamepad_event_t *gpe);
+void OnResolutionChanged(uint32_t width, uint32_t height);
 
 void haptic_run_effect(const int effect_id);
 void haptic_rumble_effect(const float strength, const uint32_t length);

@@ -1,7 +1,7 @@
 /*
  * FileAndMemoryReader - a tiny helper to utify file reading from a disk and memory block
  *
- * Copyright (c) 2015-2018 Vitaly Novichkov <admin@wohlnet.ru>
+ * Copyright (c) 2015-2025 Vitaly Novichkov <admin@wohlnet.ru>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -25,10 +25,6 @@
 #pragma once
 #ifndef FILE_AND_MEM_READER_HHHH
 #define FILE_AND_MEM_READER_HHHH
-
-#ifdef _MSC_VER
-#define _CRT_SECURE_NO_WARNINGS
-#endif
 
 #include <string> // std::string
 #include <cstdio> // std::fopen, std::fread, std::fseek, std::ftell, std::fclose, std::feof
@@ -103,7 +99,7 @@ public:
         wchar_t widePath[MAX_PATH];
         int size = MultiByteToWideChar(CP_UTF8, 0, path, static_cast<int>(std::strlen(path)), widePath, MAX_PATH);
         widePath[size] = '\0';
-#pragma warning(suppress : 4996) /*m_fp =*/ m_fp=_wfopen(widePath, L"rb");
+        m_fp = _wfopen(widePath, L"rb");
 #endif
         m_file_name = path;
         m_mp = NULL;
@@ -114,15 +110,15 @@ public:
     /**
      * @brief Open file from memory block
      * @param mem Pointer to the memory block
-     * @param lenght Size of given block
+     * @param length Size of given block
      */
-    void openData(const void *mem, size_t lenght)
+    void openData(const void *mem, size_t length)
     {
         if(m_fp)
             this->close();//Close previously opened file first!
         m_fp = NULL;
         m_mp = mem;
-        m_mp_size = lenght;
+        m_mp_size = length;
         m_mp_tell = 0;
     }
 
@@ -144,6 +140,7 @@ public:
         {
             switch(rel_to)
             {
+            default:
             case SET:
                 m_mp_tell = static_cast<size_t>(pos);
                 break;

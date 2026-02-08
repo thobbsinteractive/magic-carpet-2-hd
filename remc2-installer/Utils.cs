@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using remc2_installer;
 using System.IO;
 using System.Linq;
 
@@ -75,8 +77,52 @@ public static class Utils
 				}
 			}
 		}
-
 		return keepBaseDir;
+	}
+
+	public static bool SetEnhancedTextures(string inputFile, string outputFilePath, bool enhancedTextures)
+	{
+		var json = File.ReadAllText(inputFile);
+		if (json != null)
+		{
+			bool updated = false;
+
+			var config = JsonConvert.DeserializeObject<Config>(json);
+
+			foreach (var setting in config.settings)
+			{
+				if (setting.isActive)
+				{
+					setting.graphics.gameDetail.useEnhancedGraphics = enhancedTextures;
+					updated = true;
+					break;
+				}
+			}
+
+			if (updated)
+			{
+				json = SerializeObject<Config>(config);
+				File.WriteAllText(outputFilePath, json);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static string SerializeObject<t>(t arg)
+	{
+		var sw = new StringWriter();
+
+		using (var jsonWriter = new JsonTextWriter(sw))
+		{
+			jsonWriter.Formatting = Formatting.Indented;
+			jsonWriter.IndentChar = '\t';
+			jsonWriter.Indentation = 1;
+
+			var jsonSerializer = new JsonSerializer();
+			jsonSerializer.Serialize(jsonWriter, arg);
+		}
+		return sw.ToString();
 	}
 }
 

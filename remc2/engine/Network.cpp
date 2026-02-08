@@ -1149,8 +1149,8 @@ bool SetMultiplayerColors_7CE50()//25de50
 			case 5://start multiplayer level
 				D41A0_0.LevelIndex_0xc = x_DWORD_17DE38str.serverIndex_17DEFC;
 				x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].selectedLevel_10;
-				x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 |= 0x10;
-				D41A0_0.word_0xe = x_DWORD_17DE38str.x_WORD_17DEFE;
+				x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 |= Setting::MULTIPLAYER_MODE;
+				D41A0_0.NumberOfPlayers_0xe = x_DWORD_17DE38str.x_WORD_17DEFE;
 				NetworkCancelAll_7449C();
 				m_ExitMenuLoop_E29DC = 1;
 				result = true;
