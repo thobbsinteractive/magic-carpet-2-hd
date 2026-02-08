@@ -38,15 +38,14 @@
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <EnableASAN>true</EnableASAN>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|Win32'" Label="Configuration">
-    <EnableASAN>true</EnableASAN>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|Win32'">
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <EnableASAN>true</EnableASAN>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|x64'" Label="Configuration">
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|x64'">
     <EnableASAN>false</EnableASAN>
-    <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
@@ -56,11 +55,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|x64'">
-    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
@@ -72,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="comparison\engine\OriginalTerrain.cpp" />
-	<ClCompile Include="engine\GameRenderHD.cpp" />
+    <ClCompile Include="engine\GameRenderHD.cpp" />
     <ClCompile Include="engine\SetRenderViewPortSize_40C50UT.cpp" />
     <ClCompile Include="engine\TerrainUT.cpp" />
     <ClCompile Include="portability\fcaseopenUT.cpp" />
@@ -98,8 +100,8 @@
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CopyFileToFolders Include="..\asan\clang_rt.asan_dynamic-i386.dll" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|Win32'">
-    <CopyFileToFolders Include="..\asan\clang_rt.asan_dynamic-i386.dll" />
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <CopyFileToFolders Include="..\asan\clang_rt.asan_dynamic-x86_64.dll" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
@@ -122,7 +124,7 @@
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-	  <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -147,7 +149,7 @@
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-	  <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -169,13 +171,13 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-	  <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)remc2\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-	  <AdditionalDependencies>Config;ScreenBuff;UVTable_D4350;Unk_D4A30;Unk_D47E0;Type_WORD_D951C;Type_D404C;Compare;CompareMaps;ConvertMapInfo;PrintMessages;MouseOnOff;ReadAndDecompress;DatTabIndexes;Type_D94F0_Bldgprmbuffer;Type_D93C0_Bldgprmbuffer;Type_SecretMapScreenPortals_E2970;Type_MapScreenPortals_E17CC;MenusAndIntros;ProjectionPolygon;Network;port_net;RenderThread;Graphics;GameRenderOriginal;GameRenderHD;GameRenderNG;GameBitmap;TextureMaps;Maths;Animation;Sound;CommandLineParser;RendererTests;PlayerInput;Player;Spells;EventsFunctions;LevelInit;Level;LevelStructs;Events;EventDispatcher;GameUI;StateMonitor;read_config;Basic;BasicTerrain;BitmapIO;DataFileIO;DataFileRNC;InputRecorder;port_outputs;sub_main;port_sdl_sound;port_sdl_vga_mouse;port_sdl_joystick;dirent;fcaseopen;port_filesystem;port_show_perifery;port_time;engine_support;Terrain;ViewPort;xmi2mid;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Config;ScreenBuff;UVTable_D4350;Unk_D4A30;Unk_D47E0;Type_WORD_D951C;Type_D404C;Compare;CompareMaps;ConvertMapInfo;PrintMessages;MouseOnOff;ReadAndDecompress;DatTabIndexes;Type_D94F0_Bldgprmbuffer;Type_D93C0_Bldgprmbuffer;Type_SecretMapScreenPortals_E2970;Type_MapScreenPortals_E17CC;MenusAndIntros;ProjectionPolygon;Network;port_net;RenderThread;Graphics;GameRenderOriginal;GameRenderHD;GameRenderNG;GameBitmap;TextureMaps;Maths;Animation;Sound;CommandLineParser;RendererTests;PlayerInput;Player;Spells;EventsFunctions;LevelInit;Level;LevelStructs;Events;EventDispatcher;GameUI;StateMonitor;read_config;Basic;BasicTerrain;BitmapIO;DataFileIO;DataFileRNC;InputRecorder;port_outputs;sub_main;port_sdl_sound;port_sdl_vga_mouse;port_sdl_joystick;dirent;fcaseopen;port_filesystem;port_show_perifery;port_time;engine_support;Terrain;ViewPort;xmi2mid;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|x64'">
@@ -184,25 +186,20 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)remc2\$(Platform)\Debug-nonASA;$(SolutionDir)remc2\$(Platform)\Debug-noASA;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <SupportJustMyCode>true</SupportJustMyCode>
-      <SDLCheck>true</SDLCheck>
-      <OmitFramePointers>false</OmitFramePointers>
-      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)remc2\x64\Debug-nonASA;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-	  <AdditionalDependencies>Config;ScreenBuff;UVTable_D4350;Unk_D4A30;Unk_D47E0;Type_WORD_D951C;Type_D404C;Compare;CompareMaps;ConvertMapInfo;PrintMessages;MouseOnOff;ReadAndDecompress;DatTabIndexes;Type_D94F0_Bldgprmbuffer;Type_D93C0_Bldgprmbuffer;Type_SecretMapScreenPortals_E2970;Type_MapScreenPortals_E17CC;MenusAndIntros;ProjectionPolygon;Network;port_net;RenderThread;Graphics;GameRenderOriginal;GameRenderHD;GameRenderNG;GameBitmap;TextureMaps;Maths;Animation;Sound;CommandLineParser;RendererTests;PlayerInput;Player;Spells;EventsFunctions;LevelInit;Level;LevelStructs;Events;EventDispatcher;GameUI;StateMonitor;read_config;Basic;BasicTerrain;BitmapIO;DataFileIO;DataFileRNC;InputRecorder;port_outputs;sub_main;port_sdl_sound;port_sdl_vga_mouse;port_sdl_joystick;dirent;fcaseopen;port_filesystem;port_show_perifery;port_time;engine_support;Terrain;ViewPort;xmi2mid;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Config;ScreenBuff;UVTable_D4350;Unk_D4A30;Unk_D47E0;Type_WORD_D951C;Type_D404C;Compare;CompareMaps;ConvertMapInfo;PrintMessages;MouseOnOff;ReadAndDecompress;DatTabIndexes;Type_D94F0_Bldgprmbuffer;Type_D93C0_Bldgprmbuffer;Type_SecretMapScreenPortals_E2970;Type_MapScreenPortals_E17CC;MenusAndIntros;ProjectionPolygon;Network;port_net;RenderThread;Graphics;GameRenderOriginal;GameRenderHD;GameRenderNG;GameBitmap;TextureMaps;Maths;Animation;Sound;CommandLineParser;RendererTests;PlayerInput;Player;Spells;EventsFunctions;LevelInit;Level;LevelStructs;Events;EventDispatcher;GameUI;StateMonitor;read_config;Basic;BasicTerrain;BitmapIO;DataFileIO;DataFileRNC;InputRecorder;port_outputs;sub_main;port_sdl_sound;port_sdl_vga_mouse;port_sdl_joystick;dirent;fcaseopen;port_filesystem;port_show_perifery;port_time;engine_support;Terrain;ViewPort;xmi2mid;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

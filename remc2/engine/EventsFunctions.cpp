@@ -22386,7 +22386,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 						str_unk_1804B0ar.byte_0xa8 = 1;
 					v15++;
 				}
-				if (!D41A0_0.array_0x2BDE[str_unk_1804B0ar.byte_0xa8].byte_0x006_2BE4_11236)
+				if (str_unk_1804B0ar.byte_0xa8 > -1 && !D41A0_0.array_0x2BDE[str_unk_1804B0ar.byte_0xa8].byte_0x006_2BE4_11236)
 					str_unk_1804B0ar.byte_0xa8 = 0;
 			}
 			for (j = 0; j < 8; j++)
@@ -31621,7 +31621,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 					}
 					if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
 					{
-						v13 = sub_824B0(a3);
+						v13 = GetSecretAndActivedPortal_824B0(a3);
 						if (v13)
 						{
 							count_begin++;//for debug
@@ -46188,13 +46188,13 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 	char dataPath[MAX_PATH];
 	//int v2; // eax
 
-	x_DWORD_17DE38str.x_DWORD_17DE38x = (TColor*)*xadatapald0dat2.colorPalette_var28;
+	x_DWORD_17DE38str.palette_17DE38x = (TColor*)*xadatapald0dat2.colorPalette_var28;
 	x_DWORD_17DE38str.x_WORD_17DEEC = 0;
 	x_DWORD_17DE38str.x_DWORD_17DE40 = pdwScreenBuffer_351628;
 	x_DWORD_17DE38str.x_DWORD_17DEE0_filedesc = NULL;
 	x_DWORD_17DE38str.x_DWORD_17DEDC = 0;
 	x_DWORD_17DE38str.x_DWORD_17DE48c = x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226;
-	sub_7B5D0();//25c5d0
+	FadeClearBlit_7B5D0();//25c5d0
 
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
 
@@ -46215,7 +46215,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].WizardName_0x39f_2BFA_12157,
 				0x20u);
 			x_DWORD_E9C38_smalltit = (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE50 + 32;
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0, 768);
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0, 768);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_E9C38_smalltit, x_DWORD_17DE38str.x_DWORD_17DEDC, 168081);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE48c, x_DWORD_17DE38str.x_DWORD_17DEDC, 102213);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DED4, x_DWORD_17DE38str.x_DWORD_17DEDC, 411);//19b
@@ -46253,7 +46253,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC0, 0x1646BA, 589);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE58, 0x164907, 1191);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC8, 0x164DAE, 543);//xx
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0x13A9CA, 768);//ok
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0x13A9CA, 768);//ok
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map, 0xB2C47, 0x87D83);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE48c, 0x783BD, 103577);//ok
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DED4, 0x91856, 1027);
@@ -46294,7 +46294,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			x_DWORD_17DE38str.x_DWORD_17DE4C = x_DWORD_17DE38str.x_DWORD_17DE48c + 51639;
 			x_DWORD_17DE38str.x_DWORD_17DEC0 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 49041);
 			x_DWORD_17DE38str.x_DWORD_17DE50 = (char*)x_DWORD_17DE38str.x_DWORD_17DE48c + 68023;
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0x42471, 768);
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0x42471, 768);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226, x_DWORD_17DE38str.x_DWORD_17DEDC, 82233);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE48c, 0x568AA, 21216);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DED4, 375690, 148);
@@ -46313,7 +46313,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			break;
 		case 12:
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_E9C38_smalltit, 0x91C59, 134382);
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0xB2947, 768);
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0xB2947, 768);
 			break;
 		case 14:
 			/*
@@ -46338,7 +46338,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			sub_7AA70_load_and_decompres_dat_file(dataPath, &x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[0x4D54A], 168849, 102213);
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DED4, 271062, 411);//19b
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226, 0x91C59, 134382);
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0xB2947, 768);
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0xB2947, 768);
 			if (x_WORD_180660_VGA_type_resolution & 1) {
 				sub_98709_create_index_dattab_power(x_DWORD_17DE38str.x_DWORD_17DED4, x_DWORD_17DE38str.x_DWORD_17DED8, &x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[0x4D54A], xy_DWORD_17DED4_spritestr);
 				sub_98709_create_index_dattab_power(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
@@ -46378,7 +46378,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			break;
 		case 15:
 			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_E9C38_smalltit, 0x145210, 126188);
-			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE38x, 0x163EFC, 0x300);
+			sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0x163EFC, 0x300);
 			break;
 		default:
 			return;
@@ -46436,18 +46436,14 @@ void ResetMouse_7B5A0()
 // 18074C: using guessed type __int16 x_WORD_18074C_mouse_left2_button;
 
 //----- (0007B5D0) --------------------------------------------------------
-void sub_7B5D0()
+void FadeClearBlit_7B5D0()
 {
-	//int v0; // eax
-
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
-	/*v0 = (int)*/memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
-	//BYTE1(v0) = x_WORD_180660_VGA_type_resolution;
+	memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		ClearGraphicsBuffer_72883(pdwScreenBuffer_351628, 320, 200, 0);
 	else
 		ClearGraphicsBuffer_72883(pdwScreenBuffer_351628, 640, 480, 0);
-
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_90478_VGA_Blit320(menuFps);
 	else
@@ -46470,10 +46466,6 @@ signed int ReadKeyboardKeysInMenu_7C050()//25d050
 {
 	uint8_t v2; // bl
 	long v3; // eax
-	//uint8_t v3h;
-	//uint8_t v4; // dx
-	//uint8_t v4h;
-	//uint8_t a1h;
 	long v5; // esi
 	bool ctrl_or_alt_pressed; // zf
 	signed int result; // eax
@@ -46576,58 +46568,39 @@ char sub_7C200(unsigned __int8 a1)//25d200
 }
 
 //----- (0007E5A0) --------------------------------------------------------
-signed int sub_7E5A0_pre_draw(int  /*a1*/, int  /*a2*/, __int16 a3, __int16 a4, uint8_t* a5, __int16 a6, __int16 a7)//25f5a0
+bool DrawFrameAnim_7E5A0(__int16 posx, __int16 posy, Type_MapScreenPortals_E17CC* mapPortal, __int16 beginIndex, __int16 endIndex)//25f5a0
 {
-	int v7; // edx
-	signed int v8; // esi
-	__int16 v9; // ax
-
-	v7 = j___clock();
-	v8 = 0;
-	if ((unsigned int)(v7 - *(x_DWORD*)a5) >> 3 >= 1)
+	int actTime = j___clock();
+	bool result = false;
+	if ((actTime - mapPortal->time_0) >> 3 >= 1)
 	{
-		v9 = *(x_WORD*)(a5 + 16);
-		if (v9 <= a7)
+		if (mapPortal->spriteIndex_16 <= endIndex)
 		{
-			*(x_WORD*)(a5 + 16) = v9 + 1;
+			mapPortal->spriteIndex_16++;
 		}
 		else
 		{
-			v8 = 1;
-			*(x_WORD*)(a5 + 16) = a6;
+			result = true;
+			mapPortal->spriteIndex_16 = beginIndex;
 		}
-		*(x_DWORD*)a5 = v7;
+		mapPortal->time_0 = actTime;
 	}
-	sub_7C120_draw_bitmap_640(*(x_WORD*)(a5 + 12) - a3, *(x_WORD*)(a5 + 14) - a4, xy_DWORD_17DED4_spritestr[*(signed __int16*)(a5 + 16)]);
-	return v8;
+	sub_7C120_draw_bitmap_640(mapPortal->portalPosX_12 - posx, mapPortal->portalPosY_14 - posy, xy_DWORD_17DED4_spritestr[mapPortal->spriteIndex_16]);
+	return result;
 }
-// 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
-// 17DED4: using guessed type int (int)x_DWORD_17DED4;
 
 //----- (0007E840) --------------------------------------------------------
 void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)//25f840
 {
-	//uint16_t* v3; // ebx
-	int v3x;
-	signed __int16 v5; // si
-	//signed __int16 v6; // di
-
-	//v3 = a1;
-	v3x = 0;
-	if (!a1x[v3x].word_2)
+	int i = 0;
+	if (!a1x[i].minx2_2)
 		return;
 	do
 	{
-		if (a1x[v3x].word_2)
+		if (a1x[i].minx2_2)
 		{
-			v5 = a1x[v3x].word_2;
-			//v6 = v3[1];
-			//zatim nic
-			//18d 12a 141 ec - 18d 12a 141 ec -1
-			//c4 26 11b 6a - c4 26 11b 6a -0 - chybi ocasek
-			sub_81360_draw_bitmap_line(a1x[v3x].word_6/* + (v3[4] << 16)*/, a1x[v3x].word_8, a1x[v3x].word_12/* + (v3[7] << 16)*/, a1x[v3x].word_14, a3);//262360
-			//pridany tecky
-			sub_7FCB0_draw_text_with_border(/*v3[0],*/ x_DWORD_E9C4C_langindexbuffer[a1x[v3x].word_0], v5, (v5 + 180), a1x[v3x].word_4, 0, 0, a2);//260cb0
+			sub_81360_draw_bitmap_line(a1x[i].minx_6, a1x[i].miny_8, a1x[i].maxx_12, a1x[i].maxy_14, a3);//262360
+			sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[a1x[i].textIndex_0], a1x[i].minx2_2, (a1x[i].minx2_2 + 180), a1x[i].miny2_4, 0, 0, a2);//260cb0
 			/*
 			Save Current Game
 			Exit Game
@@ -46646,182 +46619,140 @@ void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)/
 			Configure Keyboard controls
 
 			*/
-			//pridan ramecek s textem
 		}
-		//v3 += 9;
-		v3x++;
-	} while (a1x[v3x].word_2);
+		i++;
+	} while (a1x[i].minx2_2);
 }
 
 //----- (0007E8D0) --------------------------------------------------------
-void sub_7E8D0(x_WORD* a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int16 a6, __int16 a7)//25f8d0
+void CreateAnimObject_7E8D0(type_animStruct* animStruct, __int16 x1, __int16 y1, __int16 x2, __int16 y2, __int16 countX, __int16 countY)//25f8d0
 {
-	__int16 v7; // dx
-	__int16 v8; // dx
-	__int16 v9; // dx
-	__int16 v10; // ax
-	//int result; // eax
-	__int16 v12; // di
-	__int16 v13; // dx
-
-	a1[0] = a2 - a4;
-	a1[1] = a3 - a5;
-	a1[2] = 2 * abs(a1[0]);
-	v7 = a1[0];
-	a1[3] = 2 * abs(a1[1]);
-	if (v7 >= 0)
+	animStruct->diffX_0 = x1 - x2;
+	animStruct->diffY_1 = y1 - y2;
+	animStruct->absDiffX2_2 = 2 * abs(animStruct->diffX_0);
+	animStruct->absDiffY2_3 = 2 * abs(animStruct->diffY_1);
+	if (animStruct->diffX_0 >= 0)
 	{
-		if (v7)
-			a1[4] = a6;
+		if (animStruct->diffX_0)
+			animStruct->maxX_4 = countX;
 		else
-			a1[4] = 0;
+			animStruct->maxX_4 = 0;
 	}
 	else
 	{
-		a1[4] = -a6;
+		animStruct->maxX_4 = -countX;
 	}
-	v8 = a1[1];
-	if (v8 >= 0)
+	if (animStruct->diffY_1 >= 0)
 	{
-		if (v8)
-			a1[5] = a7;
+		if (animStruct->diffY_1)
+			animStruct->maxY_5 = countY;
 		else
-			a1[5] = 0;
+			animStruct->maxY_5 = 0;
 	}
 	else
 	{
-		a1[5] = -a7;
+		animStruct->maxY_5 = -countY;
 	}
-	a1[6] = a2;
-	a1[7] = a3;
-	v9 = a1[3];
-	v10 = a1[2];
-	if (v10 <= v9)
+	animStruct->beginX_6 = x1;
+	animStruct->beginY_7 = y1;
+	if (animStruct->absDiffX2_2 <= animStruct->absDiffY2_3)
 	{
-		//result = v10 - (v9 >> 1);
-		a1[8] = v10 - (v9 >> 1);
+		animStruct->secondAdd_8 = animStruct->absDiffX2_2 - (animStruct->absDiffY2_3 >> 1);
 	}
 	else
 	{
-		//result = v10 >> 1;
-		a1[8] = (v9 - v10) >> 1;
+		animStruct->secondAdd_8 = (animStruct->absDiffY2_3 - animStruct->absDiffX2_2) >> 1;
 	}
-	v12 = a1[6];
-	a1[9] = 0;
-	if (a4 >= v12)
+	animStruct->field_9 = 0;
+	if (x2 >= animStruct->beginX_6)
 	{
-		if (a4 > v12)
-			a1[10] = 1;
+		if (x2 > animStruct->beginX_6)
+			animStruct->stateX_10 = 1;
 	}
 	else
 	{
-		a1[10] = 2;
+		animStruct->stateX_10 = 2;
 	}
-	v13 = a1[7];
-	if (a5 >= v13)
+	if (y2 >= animStruct->beginY_7)
 	{
-		if (a5 > v13)
-			a1[11] = 1;
+		if (y2 > animStruct->beginY_7)
+			animStruct->stateY_11 = 1;
 	}
 	else
 	{
-		a1[11] = 2;
+		animStruct->stateY_11 = 2;
 	}
-	//  return result;
 }
 
 //----- (0007E9D0) --------------------------------------------------------
-bool sub_7E9D0(x_WORD* a1, x_WORD* a2, x_WORD* a3)//25f9d0
+bool MoveAnimObject_7E9D0(x_WORD* x1, x_WORD* y1, type_animStruct* animStruct)//25f9d0
 {
-	__int16 v4; // cx
-	unsigned __int16 v5; // cx
-	__int16 v6; // si
-	__int16 v7; // di
-	unsigned __int16 v8; // dx
-	__int16 v9; // cx
-	__int16 v10; // si
-
-	if (a3[2] <= a3[3])
+	__int16 field;
+	if (animStruct->absDiffX2_2 <= animStruct->absDiffY2_3)
 	{
-		if (a2[0] == a3[7])
+		if (*y1 == animStruct->beginY_7)
 			return true;
-		if (a3[8] >= 0)
+		if (animStruct->secondAdd_8 >= 0)
 		{
-			a1[0] += a3[4];
-			a3[8] -= a3[3];
+			*x1 += animStruct->maxX_4;
+			animStruct->secondAdd_8 -= animStruct->absDiffY2_3;
 		}
-		a2[0] += a3[5];
-		v4 = a3[2];
+		*y1 += animStruct->maxY_5;
+		field = animStruct->absDiffX2_2;
 	}
 	else
 	{
-		if (a1[0] == a3[6])
+		if (*x1 == animStruct->beginX_6)
 			return true;
-		if (a3[8] >= 0)
+		if (animStruct->secondAdd_8 >= 0)
 		{
-			a2[0] += a3[5];
-			a3[8] -= a3[2];
+			*y1 += animStruct->maxY_5;
+			animStruct->secondAdd_8 -= animStruct->absDiffX2_2;
 		}
-		a1[0] += a3[4];
-		v4 = a3[3];
+		*x1 += animStruct->maxX_4;
+		field = animStruct->absDiffY2_3;
 	}
-	a3[8] += v4;
-	v5 = a3[10];
-	if (v5 >= 1u)
+	animStruct->secondAdd_8 += field;
+	if (animStruct->stateX_10 == 1)
 	{
-		if (v5 <= 1u)
-		{
-			v6 = a3[6];
-			if (a1[0] < v6)
-				a1[0] = v6;
-		}
-		else if (v5 == 2)
-		{
-			v7 = a3[6];
-			if (a1[0] > v7)
-				a1[0] = v7;
-		}
+		if (*x1 < animStruct->beginX_6)
+			*x1 = animStruct->beginX_6;
 	}
-	v8 = a3[11];
-	if (v8 >= 1u)
+	else if (animStruct->stateX_10 == 2)
 	{
-		if (v8 <= 1u)
-		{
-			v9 = a3[7];
-			if (a2[0] < v9)
-				a2[0] = v9;
-		}
-		else if (v8 == 2)
-		{
-			v10 = a3[7];
-			if (a2[0] > v10)
-				a2[0] = v10;
-		}
+		if (*x1 > animStruct->beginX_6)
+			*x1 = animStruct->beginX_6;
+	}
+	if (animStruct->stateY_11 == 1)
+	{
+		if (*y1 < animStruct->beginY_7)
+			*y1 = animStruct->beginY_7;
+	}
+	else if (animStruct->stateY_11 == 2)
+	{
+		if (*y1 > animStruct->beginY_7)
+			*y1 = animStruct->beginY_7;
 	}
 	return false;
 }
 
 //----- (00081260) --------------------------------------------------------
-void sub_81260(int  /*a1*/, int  /*a2*/, int8_t* a3, __int16 a4, __int16 a5)//262260
+void MoveAnimIndex_81260(type_animStruct3* animStruct, __int16 x1, __int16 y1)//262260
 {
-	int v5; // ecx
-
-	v5 = j___clock();
-	if ((unsigned int)(v5 - *(x_DWORD*)a3) >> 4 >= 1)
+	int time = j___clock();
+	if ((unsigned int)(time - animStruct->field_0) >> 4 >= 1)
 	{
-		if (*(signed __int16*)(a3 + 8) <= *(unsigned __int8*)(a3 + 11) - 1)
-			++*(x_WORD*)(a3 + 8);
+		if (animStruct->spriteIndex_8 <= animStruct->lastSpriteIndex_11 - 1)
+			animStruct->spriteIndex_8++;
 		else
-			*(x_WORD*)(a3 + 8) = *(unsigned __int8*)(a3 + 10);
-		*(x_DWORD*)a3 = v5;
+			animStruct->spriteIndex_8 = animStruct->firstSpriteIndex_10;
+		animStruct->field_0 = time;
 	}
-	sub_7C120_draw_bitmap_640(a4, a5, xy_DWORD_17DED4_spritestr[*(signed __int16*)(a3 + 8)]);
+	sub_7C120_draw_bitmap_640(x1, y1, xy_DWORD_17DED4_spritestr[animStruct->spriteIndex_8]);
 }
-// 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
-// 17DED4: using guessed type int (int)x_DWORD_17DED4;
 
 //----- (000812D0) --------------------------------------------------------
-int sub_812D0_drawDotBitmap(__int16 a1, __int16 a2)//2622d0
+int DrawMapObject_812D0(__int16 a1, __int16 a2)//2622d0
 {
 	uint8_t* temp_screen_buffer; // edi
 	__int16 v3; // si
@@ -47100,56 +47031,51 @@ void sub_81360_draw_bitmap_line(int16_t minx, int16_t miny, int16_t maxx, int16_
 // 17DED4: using guessed type int (int)x_DWORD_17DED4;
 
 //----- (00081CA0) --------------------------------------------------------
-void sub_81CA0(int  /*a1*/, int  /*a2*/, __int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5x)//262ca0
+void DrawAnimSprite_81CA0(__int16 posx, __int16 posy, type_x_BYTE_E25ED_db_str* a5x)//262ca0
 {
-	unsigned __int8 v6; // dl
-	//int v8; // eax
-
-	unsigned int vclock = j___clock();
-	v6 = a5x->byte_20;
-	if (v6 < 1u)
+	int time = j___clock();
+	if (a5x->byte_20 == 0)
 	{
-		if (!v6)
+		if (!a5x->byte_20)
 		{
 			a5x->byte_20 = 2;
-			a5x->dword_0 = vclock;
-			a5x->dword_4 = vclock;
+			a5x->time1_0 = time;
+			a5x->time2_4 = time;
 		}
 	}
-	else if (v6 <= 1u)
+	else if (a5x->byte_20 == 1)
 	{
-		if ((vclock - a5x->dword_4) >> 3 >= 1)
+		if ((time - a5x->time2_4) >> 3 >= 1)
 		{
-			if (a5x->word_16 <= a5x->word_14 - 2)
+			if (a5x->frameIndex_16 <= a5x->lastFrame_14 - 2)
 			{
-				a5x->word_16++;
+				a5x->frameIndex_16++;
 			}
 			else
 			{
 				if (a5x->byte_21 == 1)
 				{
-					//v8 = a5x->word_22;
 					a5x->byte_20 = 0;
 				}
-				a5x->word_16 = a5x->word_12;
+				a5x->frameIndex_16 = a5x->firstFrame_12;
 			}
-			a5x->dword_4 = vclock;
+			a5x->time2_4 = time;
 		}
 		sub_7C120_draw_bitmap_640(
-			a5x->word_8 - a3,
-			a5x->word_10 - a4,
-			xy_DWORD_17DED4_spritestr[a5x->word_16]);
+			a5x->x1_8 - posx,
+			a5x->y1_10 - posy,
+			xy_DWORD_17DED4_spritestr[a5x->frameIndex_16]);
 		if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)
-			a5x->word_16++;
+			a5x->frameIndex_16++;
 	}
-	else if (v6 == 2)
+	else if (a5x->byte_20 == 2)
 	{
-		vclock = (vclock - a5x->dword_0) / 0x64;
-		if (vclock > a5x->word_18)
+		time = (time - a5x->time1_0) / 0x64;
+		if (time > a5x->time3_18)
 		{
-			vclock = a5x->word_22;
+			time = a5x->time4_22;
 			a5x->byte_20 = 1;
-			if (vclock != -1)
+			if (time != -1)
 				PlaySample_8F100(
 					0,
 					a5x->word_24,
@@ -47161,18 +47087,14 @@ void sub_81CA0(int  /*a1*/, int  /*a2*/, __int16 a3, __int16 a4, type_x_BYTE_E25
 		}
 	}
 }
-// 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
-// E1324: using guessed type char x_BYTE_E1324;
-// 17DED4: using guessed type int (int)x_DWORD_17DED4;
-// 17DEEE: using guessed type __int16 x_WORD_17DEEE_mouse_buttons;
 
 //----- (000824B0) --------------------------------------------------------
-Type_SecretMapScreenPortals_E2970* sub_824B0(__int16 a1)//2634b0
+Type_SecretMapScreenPortals_E2970* GetSecretAndActivedPortal_824B0(__int16 actLevel)//2634b0
 {
 	int ri = 0;
 	if (!secretMapScreenPortals_E2970[ri].activated_12)
 		return 0;
-	while (a1 != secretMapScreenPortals_E2970[ri].word_4)
+	while (actLevel != secretMapScreenPortals_E2970[ri].index_4)
 	{
 		ri++;
 		if (!secretMapScreenPortals_E2970[ri].activated_12)

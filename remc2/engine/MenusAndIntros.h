@@ -7,10 +7,27 @@
 #include "TypeConfigDat.h"
 
 // types
-#pragma pack (1)
-typedef struct //lenght 50
+
+extern int16_t MOUSE_MIN;
+extern int16_t MOUSE_MAX_X;
+extern int16_t MOUSE_MAX_Y;
+
+#pragma pack(1)
+typedef struct // size 16
 {
-	uint32_t x_DWORD_17DB70; // weak
+	uint32_t unk_17DBA8; // weak 40
+	uint32_t unk_17DBAC; //1(+4)
+	uint32_t unk_17DBB0; //2(+8)
+	uint16_t unk_17DBB4; //3(+12)
+	uint8_t x_BYTE_17DBB5; //(+14)
+	uint8_t x_BYTE_17DBB6; //(+15)
+} Type_unk_17DBA8str; //16
+#pragma pack(16)
+
+#pragma pack (1)
+typedef struct //lenght 56
+{
+	uint32_t time_17DB70; // weak
 	int16_t x_WORD_17DB74; // weak 4
 	int16_t unk_17DB76_posx; // weak 6
 	int16_t unk_17DB78_posy; // weak 8
@@ -26,10 +43,45 @@ typedef struct //lenght 50
 	int16_t x_WORD_17DB8C; // weak 28
 	int8_t x_BYTE_17DB8E; // weak 30
 	int8_t x_BYTE_17DB8F; // weak 31
-	int16_t unk_17DB90; // weak 32
-	std::array<uint8_t, 6> unk_17DB92; // weak 32
-	std::array<uint8_t, 16> fill3; // fill
+	type_animStruct unk_17DB90; // weak 32
+	//std::array<uint8_t, 6> unk_17DB92; // weak 32
+	//std::array<uint8_t, 16> fill3; // fill
 } type_x_DWORD_17DB70str;
+#pragma pack (16)
+
+#pragma pack(1)
+typedef struct //lenght 13
+{
+	int32_t time_17DE28; // weak x_DWORD_17DE28str
+	int32_t time2_17DE2C; // weak x_DWORD_17DE28str+4
+	int16_t x_WORD_17DE30_posx; // weak x_DWORD_17DE28str+8
+	int16_t x_WORD_17DE32_posy; // weak x_DWORD_17DE28str+10
+	int8_t DisplayLevelDescriptionText_17DE34; // weak x_DWORD_17DE28str+12
+} Type_DWORD_17DE28str;
+#pragma pack(16)
+
+#pragma pack (1)
+typedef struct {//lenght 69
+	int32_t time_0;//0
+	uint8_t stub_4;//4
+	uint8_t stub_5;//5
+	uint8_t stub_6;//6
+	uint8_t stub_7;//7
+	uint8_t stub_8;//8
+	uint8_t stub_9;//9
+	int16_t word_10;//10	
+	int8_t byte_12;//12
+	uint8_t stub_13;//13
+	int16_t word_14;//14	
+	int8_t byte_16;//16
+	uint8_t stub_17;//17
+	type_animStruct2 array_word_18;////18
+	int8_t byte_42;//42
+	int8_t byte_43;//43
+	uint8_t byte_44;//44
+	type_animStruct array_word_45;//45
+}
+type_WORD_E20A4;
 #pragma pack (16)
 
 enum class MenuItem : int {
@@ -72,6 +124,16 @@ extern uint8_t unk_180560x[44];
 extern type_unk_18058Cstr unk_18058Cstr;
 
 extern int test_regression_level;
+extern Type_SoundEvent_E17CC str_E17CC_0[];
+extern bool map_not_moving_WORD_E29D6;
+extern Type_unk_17DBA8str unk_17DBA8str;
+extern type_x_DWORD_17DB70str x_DWORD_17DB70str;
+extern type_x_BYTE_E25ED_db_str x_BYTE_E26C8_str[];
+extern type_E24BCx str_E24F2[];
+extern Type_DWORD_17DE28str x_DWORD_17DE28str;
+extern type_WORD_E20A4 str_WORD_E20A4[];
+extern type_WORD_E1F84 str_E23E0[];
+extern type_E24BCx str_E2516[];
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -89,26 +151,26 @@ void DrawMenuAnimations_7AB00();
 void LoadAndSetGraphicsAndPalette_7AC00();
 void sub_7ADE0(char a1);
 void sub_7BEC0();
-void sub_7DA70(__int16 a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int16 a6);
-void sub_7DD70();
+void SetAnimationVariables_7DA70(__int16 a1, __int16 a2, __int16 a3, __int16 a4, __int16 a5, __int16 a6);
+void PortalsUpdate_7DD70();
 int16_t TestMouseRegions_7E1F0();
 signed int sub_7E620(type_WORD_E1F84* a1x);
-char sub_7E800(type_WORD_E1F84* a1x);
-char sub_7E820(type_WORD_E1F84* a1x);
-int NewGameDraw_7EAE0(__int16* a1, __int16* a2, __int16* a3, __int16* a4, int8_t* a5, x_WORD* a6);
+char SaveGameDialog_7E800(type_WORD_E1F84* a1x);
+char LoadGameDialog_7E820(type_WORD_E1F84* a1x);
+int NewGameDraw_7EAE0(__int16* posx, __int16* posy, __int16* a3, __int16* a4, int8_t* a5, type_animStruct* animStruct);
 int LoadLanguageFile(bitmap_pos_struct2_t** a1x, bitmap_pos_struct2_t** a2x, uint8_t* a3, char* langfilename, bitmap_pos_struct_t* a3dattabindex);
 int sub_7F960(bitmap_pos_struct2_t* a1x, bitmap_pos_struct2_t* a2x, uint8_t* a3, char* langcountstring, bitmap_pos_struct_t* a3dattabindex);
 void PresentLevelDescription_80C30(__int16 posX, __int16 posY, __int16 a3);
 bool sub_80D40_move_graphics_and_play_sounds(__int16 a2, __int16 a3, __int16 a4, __int16 a5, char a6);
-void NewGameSubdraw_81760(/*type_unk_E17CC_str_0x194* a1*/);
+void MapMenuPortalsDraw_81760();
 void WriteConfigDat_81DB0();
 void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6);
-Type_SecretMapScreenPortals_E2970* sub_824E0(__int16 a1);
+Type_SecretMapScreenPortals_E2970* GetSecretAndActivedPortal2_824E0(__int16 a1);
 void sub_82510(/*__int16 a1*//*, int *a2*/);
 void sub_82670();
 void DrawEndGameTable_82C20(__int16 a1);
 void PlayIntros_83250(char a1);
-void sub_833C0();
+void ShowEndCredits_833C0();
 void ShowWelcomeScreen_83850();
 void DrawNetGameMapBackground_85C8B(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
 bool DrawAndServe_pre_sub_7B250(uint32_t var, type_WORD_E1F84* var2x);
@@ -141,5 +203,8 @@ void CleanRecByColor_85C42(uint8_t* a1, int a2, int a3, int a4, int a5, unsigned
 void DrawNetworkLevelName_7D380();
 void PaletteCopy_7C800(signed __int16 a1);
 void sub_85BF5(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
-
 void sub_41BC0();
+void sub_2EB40();
+void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
+signed int DrawBitmapAndPlaySound_7E320();
+int GetMapMenuDialogIndex_7E320(uint32_t adress, type_WORD_E1F84* a1x);
