@@ -348,7 +348,7 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex, bool loadRegressionTest)//2368e0
 		sprintf(path, "%sregressions", CommandLineParams.GetMemimagesPath().c_str());
 		if (unitTests)
 		{
-			sprintf(path, "%s", unitTestsPath.c_str());
+			sprintf(path, "%s/SAVE", unitTestsPath.c_str());
 		}
 	}
 
@@ -385,7 +385,7 @@ bool LoadLevelSLEV_55A10(uint8_t savefileindex, bool loadRegressionTest)//236a10
 		sprintf(path, "%sregressions", CommandLineParams.GetMemimagesPath().c_str());
 		if (unitTests)
 		{
-			sprintf(path, "%s", unitTestsPath.c_str());
+			sprintf(path, "%s/SAVE", unitTestsPath.c_str());
 		}
 	}
 

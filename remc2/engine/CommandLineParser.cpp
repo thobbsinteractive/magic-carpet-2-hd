@@ -13,7 +13,7 @@ void CommandLineParser::Init(int argc, char **argv) {
     m_mode_release_game = false;
     m_mode_playing_game = false;
     m_mode_test_regressions_game = false;
-    m_mode_debug_afterload = false;
+	m_mode_debug_afterload = 0;
     m_mode_debug_onstart = false;
     m_mode_test_network = false;
 
@@ -126,7 +126,12 @@ void CommandLineParser::InterpretParams() {
             //m_disable_graphics_enhance = true;
         }
         else if (param == "--mode_debug_afterload") { //this is setting is for compare data with dosbox afterload(can fix mouse move, and etc.)
-            m_mode_debug_afterload = true;
+			std::string saveIndexStr = *(++p);
+			uint16_t saveIndex = std::stoi(saveIndexStr);
+			if (saveIndex > -1)
+			{
+				m_mode_debug_afterload = saveIndex;
+			}
             m_detect_dword_a = true;
             m_copy_skip_config = true;
             m_debug_sequences2 = true;
@@ -136,6 +141,7 @@ void CommandLineParser::InterpretParams() {
             m_debugafterload = false;
             m_disable_graphics_enhance = true;
             m_hide_graphics = false;
+			m_kill_move_and_rotation = true;
         }
         else if (param == "--mode_debug_onstart") { //this is setting is for compare data with dosbox(can fix mouse move, and etc.)
             m_mode_debug_onstart = true;

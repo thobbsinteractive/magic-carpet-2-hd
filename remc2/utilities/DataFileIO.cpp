@@ -180,7 +180,7 @@ bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelinde
 		sprintf(path, "%sregressions", CommandLineParams.GetMemimagesPath().c_str());
 		if (unitTests)
 		{
-			sprintf(path, "%s", unitTestsPath.c_str());
+			sprintf(path, "%s/SAVE", unitTestsPath.c_str());
 		}
 	}
 

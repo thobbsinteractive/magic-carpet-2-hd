@@ -31479,6 +31479,93 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 
 		MenusAndIntros_76930(skipMenus);//set language, intro, menu, atd. //257930
 
+		//debug
+		if (CommandLineParams.ModeDebugAfterload())
+		{
+			//Load Saved Game File
+			uint32_t numLevelsCompleted = 0;
+			int index = CommandLineParams.ModeDebugAfterload();
+			type_WORD_E1F84* a1x = &str_E23E0[index];
+			uint32_t dword_0 = 0;
+			int v44 = 0;
+			x_DWORD_17DE38str.x_WORD_17DF04 = index - 1;
+
+			char path[512];
+			sprintf(path, "%s", unitTestsPath.c_str());
+			std::string loadFilePath = GetSaveGameFile(path, x_DWORD_17DE38str.x_WORD_17DF04);
+			FILE* FILE = DataFileIO::CreateOrOpenFile(loadFilePath.c_str(), 512);
+			if (FILE != NULL)
+			{
+				DataFileIO::Read(FILE, (uint8_t*)&dword_0, 4);
+				if (dword_0 == 0xFFFFFFF7u)
+				{
+					//if (a1x->byte_25)
+					//	sub_7E640(0);
+					DataFileIO::Read(FILE, (uint8_t*)&x_DWORD_17DE38str.xx_BYTE_17DF14[(x_DWORD_17DE38str.x_WORD_17DF04 - 1)][0], 20);
+					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.player_name_57ar, 32);
+					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.savestring_89, 32);
+
+					//Load completed Secret Portals
+					for (int ii = 0; ii < 6; ii++)
+					{
+						DataFileIO::Read(FILE, readbuffer, 17);
+						secretMapScreenPortals_E2970[ii].activated_12 = *(uint16_t*)(readbuffer + 12);
+						if (secretMapScreenPortals_E2970[ii].activated_12 == 1)
+							secretMapScreenPortals_E2970[ii].spriteIndex_14 = 305;
+						else
+							secretMapScreenPortals_E2970[ii].spriteIndex_14 = 270;
+					}
+					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.m_GameSettings, 16);
+					DataFileIO::Read(FILE, (uint8_t*)&numLevelsCompleted, 4);
+					DataFileIO::Read(FILE, (uint8_t*)&v44, 4);
+					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.str_611, 505);
+					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DBC8x, 500);
+					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DDBCx, 100);
+					DataFileIO::Close(FILE);
+					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
+
+					int i = 0;
+					//Reset all Portals to inactive
+					while (mapScreenPortals_E17CC[i].viewPortPosX_4)
+					{
+						mapScreenPortals_E17CC[i].activated_18 = 2;
+						i++;
+					}
+
+					i = 0;
+					//Load completed Portals
+					while (i < numLevelsCompleted && mapScreenPortals_E17CC[i].viewPortPosX_4)
+					{
+						mapScreenPortals_E17CC[i].activated_18 = 1;
+						i++;
+					}
+
+					i = 0;
+					//Set current level number
+					while (mapScreenPortals_E17CC[i].viewPortPosX_4)
+					{
+						if (mapScreenPortals_E17CC[i].activated_18 == 1)
+							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = i;
+						i++;
+					}
+					x_DWORD_17DB70str.x_BYTE_17DB8F = 1;
+					memset(&x_DWORD_17DE28str, 0, 13);
+					x_DWORD_17DB70str.x_WORD_17DB8A = -1;
+					if (a1x->byte_25)
+					{
+						MapMenuPortalsDraw_81760();
+					}
+					else
+					{
+						x_DWORD_17DE38str.x_WORD_17DF04 = -1;
+						NewGameDialog_77350(a1x);
+						a1x->dword_4 = 2;
+					}
+				}
+			}
+		}
+		//debug
+
 		if (!D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234)
 		{
 			Logger->debug("sub_46830_main_loop:before load scr");
@@ -31829,6 +31916,27 @@ void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
 		}
 	}
 	MouseAndKeysEvents_17A00(a4, turn);
+	//debug
+	if (CommandLineParams.ModeDebugAfterload())
+	{
+		if (debug_first_run == 5)
+		{
+			//loadD41A0();
+			//x_D41A0_BYTEARRAY_4_struct.langIndex_4 = 1;
+			//InitLanguage_76A40_mod_only_language();
+			if (LoadLevel_555D0(0u, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, true))
+				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], "OK");//Load Level
+			else
+				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], x_DWORD_E9C4C_langindexbuffer[429]);//429 - Failed
+			ShowMessage_52D70(0, printbuffer);
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= 1;
+		}
+		if (debug_first_run == 6)
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= 1;
+		if (!CommandLineParams.DoRightButton())
+			debug_first_run++;
+	}
+	//debug
 	if (CommandLineParams.DoIntervalSave()) {
 		//save in interval
 		int interval = 1;
@@ -31837,15 +31945,6 @@ void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
 		//save in interval
 		save_debugcounter++;
 	}
-	//debug
-	if (CommandLineParams.ModeDebugAfterload())
-	{
-		if (debug_first_run == 5)
-			LoadLevel_555D0(0u, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, true);
-		if (!CommandLineParams.DoRightButton())
-			debug_first_run++;
-	}
-	//debug
 	//adress 228583
 	if (CommandLineParams.DoDebugSequences2()) {
 		//add_compare(0x228583, CommandLineParams.DoDebugafterload());
@@ -38175,7 +38274,7 @@ void PlayerEvents_51BB0()//232bb0
 			actEvent->dword_0xA4_164x->pitchDelta_0x6_6 = 0;
 			actEvent->dword_0xA4_164x->rollDelta_0x4_4 = 0;
 			actEvent->dword_0xA4_164x->fov_0x22_34 = 0;
-			actEvent->dword_0xA4_164x->yaw_0x1E_30 = 0;
+			//actEvent->dword_0xA4_164x->yaw_0x1E_30 = 0;
 			actEvent->dword_0xA4_164x->roll_0x155_341 = 0;
 		}
 

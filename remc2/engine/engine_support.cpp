@@ -670,6 +670,10 @@ int test_0x6E8E_id_pointer(uint32_t adress) {
 	return 0;
 }
 int test_D41A0_id_pointer(uint32_t adress) {
+	if ((adress >= 0x2bfa) && (adress < 0x2bfa + 49))return 2;//text
+	if ((adress >= 0x2f79) && (adress < 0x2f79 + 1))return 2;//text
+	if ((adress >= 0x2fbd) && (adress < 0x2fbd + 1))return 2;//handle click button
+
 	if ((adress >= 0x2fc4) && (adress < 0x2fc5))return 2;//event
 
 	if ((adress >= 0x2fd8) && (adress < 0x2fdc))return 2; // mouse position: position_backup_20 in dword_0x3E6_2BE4_12228 in array_0x2BDE
