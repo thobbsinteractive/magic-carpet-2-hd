@@ -4846,23 +4846,23 @@ void DrawEndGameTable_82C20(__int16 a1) //263c20
 			beginX2 = width4 + 2;
 			if (texts[k]) {
 				if (x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2)
-					sub_7FB90_draw_text(texts[k], x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, k * xy_DWORD_17DEC0_spritestr[65].height_5 + beginX2, 0);
+					DrawText_7FB90(texts[k], x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, k * xy_DWORD_17DEC0_spritestr[65].height_5 + beginX2, 0);
 				else {
 					if (k == 1 || k == 4)
-						sub_7FB90_draw_text(texts[k], x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, xy_DWORD_17DEC0_spritestr[65].height_5 * k + width4 + 2, 0);
+						DrawText_7FB90(texts[k], x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, xy_DWORD_17DEC0_spritestr[65].height_5 * k + width4 + 2, 0);
 					else if (k <= 2)
-						sub_7FB90_draw_text((char*)"Hit Accuracy", x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + k * xy_DWORD_17DEC0_spritestr[65].height_5, 0);
+						DrawText_7FB90((char*)"Hit Accuracy", x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + k * xy_DWORD_17DEC0_spritestr[65].height_5, 0);
 					else//k==3
-						sub_7FB90_draw_text((char*)"Mana Collected", x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + 4 * xy_DWORD_17DEC0_spritestr[65].height_5, 0);
+						DrawText_7FB90((char*)"Mana Collected", x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + 4 * xy_DWORD_17DEC0_spritestr[65].height_5, 0);
 				}
 				sprintf(printbuffer, "%3d%%", v30x[1 + k]);
-				sub_7FB90_draw_text(printbuffer, x3 + frameWidth - 8 * xy_DWORD_17DEC0_spritestr[65].width_4, width4 + 2 + k * xy_DWORD_17DEC0_spritestr[65].height_5, 0);
+				DrawText_7FB90(printbuffer, x3 + frameWidth - 8 * xy_DWORD_17DEC0_spritestr[65].width_4, width4 + 2 + k * xy_DWORD_17DEC0_spritestr[65].height_5, 0);
 			}
 		}
 		beginX2 = width4 + 2;
-		sub_7FB90_draw_text(texts[5], x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + 6 * xy_DWORD_17DEC0_spritestr[65].height_5, 0); //fixed 65
+		DrawText_7FB90(texts[5], x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + 6 * xy_DWORD_17DEC0_spritestr[65].height_5, 0); //fixed 65
 		sprintf(printbuffer, "%02d:%02d:%02d", v30x[6] / 3600, v30x[6] % 3600 / 60, v30x[6] % 3600 % 60);
-		sub_7FB90_draw_text(printbuffer, x3 + frameWidth - 14 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + 6 * xy_DWORD_17DEC0_spritestr[65].height_5, 0); //fixed 65
+		DrawText_7FB90(printbuffer, x3 + frameWidth - 14 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + 6 * xy_DWORD_17DEC0_spritestr[65].height_5, 0); //fixed 65
 	}
 }
 

@@ -576,7 +576,7 @@ void VGA_DrawPlayerCoordData(int x, int y);
 void VGA_BlitAny(uint8_t maxFps = 0);
 void LockFps(uint8_t maxFps);
 void sub_6EF10_set_mouse_minmax(__int16 a1, signed __int16 a2, __int16 a3, signed __int16 a4);
-void sub_7FB90_draw_text(char* a1, int16_t a2, int16_t a3, uint8_t a4);
+void DrawText_7FB90(char* a1, int16_t a2, int16_t a3, uint8_t a4);
 void sub_8CACD_draw_cursor2();
 void drawBitmap320_8F8B0(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);
 void drawBitmap640_8F8E8(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);

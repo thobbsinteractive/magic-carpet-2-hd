@@ -1353,7 +1353,7 @@ uint32_t sub_7FAE0_draw_text(char* text, int16_t a2, int16_t a3, int16_t posy, u
 	else
 	{
 		posx = v6 / 2 + a2 - xy_DWORD_17DEC0_spritestr[65].width_4 * helpstrlen / 2;
-		sub_7FB90_draw_text(text, posx, posy, a5);//"clisk here to" 13d 138 0
+		DrawText_7FB90(text, posx, posy, a5);//"clisk here to" 13d 138 0
 	}
 	return posx + xy_DWORD_17DEC0_spritestr[65].width_4 * strlen(text);
 }
@@ -1670,43 +1670,28 @@ void sub_6EF10_set_mouse_minmax(__int16 a1, signed __int16 a2, __int16 a3, signe
 }
 
 //----- (0007FB90) --------------------------------------------------------
-void sub_7FB90_draw_text(char* textbuffer, int16_t posx, int16_t posy, uint8_t color)//260b90
+void DrawText_7FB90(char* textbuffer, int16_t posx, int16_t posy, uint8_t color)//260b90
 {
-	uint8_t* temptextbuffer; // esi
-	int16_t tempposx; // ebx
-	int16_t tempposy; // di
-	char v7; // ax
-	int v8; // eax
-	//int result; // eax
-	int v10; // [esp+0h] [ebp-4h]
-
-	temptextbuffer = (uint8_t*)textbuffer;
-	tempposx = posx;
-	tempposy = posy;
+	uint8_t* temptextbuffer = (uint8_t*)textbuffer;
+	int16_t tempposx = posx;
+	int16_t tempposy = posy;
 	if (color)
 		x_WORD_E36D4 = 64;
-	/*if ((posx & 0x8000u) != 0)
-		tempposx = 0;*///fix
-	v10 = tempposx;
 	while (temptextbuffer[0] && tempposx < 640)
 	{
-		v7 = temptextbuffer[0];
-		if (v7 < 0xAu)//formating char
+		if (temptextbuffer[0] < 0xAu) //formating char
 		{
 			if (!temptextbuffer[0])
 			{
 				temptextbuffer++;
 				continue;
-			}//goto LABEL_21;
-			if (v7 == 0x9u)//tab char
+			}
+			if (temptextbuffer[0] == 0x9u) //tab char
 			{
-				v8 = xy_DWORD_17DEC0_spritestr[65].width_4;
-				tempposx += v8;
+				tempposx += xy_DWORD_17DEC0_spritestr[65].width_4;
 				temptextbuffer++;
 				continue;
 			}
-			//goto LABEL_20;
-	  //LABEL_16:
 			if (temptextbuffer[0])//not end char
 			{
 				if (color)
@@ -1714,27 +1699,25 @@ void sub_7FB90_draw_text(char* textbuffer, int16_t posx, int16_t posy, uint8_t c
 				else
 					sub_7C120_draw_bitmap_640(tempposx, tempposy, xy_DWORD_17DEC0_spritestr[temptextbuffer[0]]);
 			}
-			v8 = xy_DWORD_17DEC0_spritestr[65].width_4;
-			tempposx += v8;
+			tempposx += xy_DWORD_17DEC0_spritestr[65].width_4;
 			temptextbuffer++;
 			continue;
-			//goto LABEL_20;
 		}
-		if (v7 <= 0xAu) // formating char
+		if (temptextbuffer[0] <= 0xAu) // formating char
 		{
-			tempposx = v10;
+			tempposx = posx;
 			tempposy += xy_DWORD_17DEC0_spritestr[65].height_5;
 			{
 				temptextbuffer++;
 				continue;
-			}//goto LABEL_21;
+			}
 		}
-		if (v7 == 0xDu) // formating char cariage return
+		if (temptextbuffer[0] == 0xDu) // formating char cariage return
 		{
 			temptextbuffer++;
 			continue;
-		}//goto LABEL_21;
-		if ((v7 < 0xDu) || (v7 != 32)) // formating char
+		}
+		if ((temptextbuffer[0] < 0xDu) || (temptextbuffer[0] != 32)) // formating char
 		{
 			if (temptextbuffer[0])//not end char
 			{
@@ -1743,39 +1726,15 @@ void sub_7FB90_draw_text(char* textbuffer, int16_t posx, int16_t posy, uint8_t c
 				else
 					sub_7C120_draw_bitmap_640(tempposx, tempposy, xy_DWORD_17DEC0_spritestr[temptextbuffer[0]]);
 			}
-			v8 = xy_DWORD_17DEC0_spritestr[65].width_4;
-			tempposx += v8;
+			tempposx += xy_DWORD_17DEC0_spritestr[65].width_4;
 			temptextbuffer++;
 			continue;
-		}//goto LABEL_16;
-		/*
-		if ( v7 != 32 )//not space
-		{
-			if (temptextbuffer[0])//not end char
-			{
-				if (a4)
-					sub_72C40_draw_bitmap_640_setcolor(tempposx, tempposy, xy_DWORD_17DEC0_spritestr[temptextbuffer[0]], a4);
-				else
-					sub_7C120_draw_bitmap_640(tempposx, tempposy, xy_DWORD_17DEC0_spritestr[temptextbuffer[0]]);
-			}
-			v8 = xy_DWORD_17DEC0_spritestr[65].sizex;
-			tempposx += v8;
-			temptextbuffer++;
-			continue;
-		}//goto LABEL_16;*/
-		//LABEL_20:
-			//HIWORD(v8) = HIWORD(x_DWORD_17DEC0);
-		v8 = xy_DWORD_17DEC0_spritestr[65].width_4;
-		tempposx += v8;
-		//LABEL_21:
+		}
+		tempposx += xy_DWORD_17DEC0_spritestr[65].width_4;
 		temptextbuffer++;
 	}
-	//result = v5;
 	x_WORD_E36D4 = 0;
-	//return result;
 }
-// E36D4: using guessed type __int16 x_WORD_E36D4;
-// 17DEC0: using guessed type int (int)x_DWORD_17DEC0;
 
 //----- (0008CACD) --------------------------------------------------------
 void sub_8CACD_draw_cursor2()//26dacd

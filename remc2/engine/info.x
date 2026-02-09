@@ -2381,7 +2381,7 @@ sub edi,eax - 1da
 
 
 a pak tento -color ma byt nula
-void sub_7FB90_draw_text(char* textbuffer, int16_t posx, int16_t posy, uint8_t color)
+void DrawText_7FB90(char* textbuffer, int16_t posx, int16_t posy, uint8_t color)
 
 xy_DWORD_17DEC0_spritestr[0]
 se neshoduje s [34eec0]->4531c7 + 394 = 453351
