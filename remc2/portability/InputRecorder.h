@@ -4,7 +4,7 @@
 #include <map>
 #include <fstream>
 #include <vector>
-#include "../engine/InputEvent.h"
+#include "../engine/RecordedEvent.h"
 #include "../engine/GameState.h"
 
 class InputRecorder
@@ -12,7 +12,7 @@ class InputRecorder
 private:
 	const std::string m_FileSignature = "MC2-HD-Recording";
 	std::string m_FilePath;
-	std::map<uint16_t, InputEvent*>* m_InputEvents;
+	std::map<uint16_t, RecordedEvent*>* m_InputEvents;
 
 public:
 	bool m_IsRecording = false;
@@ -30,7 +30,7 @@ public:
 	bool StartPlayback();
 	void StopPlayback();
 
-	InputTurn* GetCurrentPlayerActions(int level, int playerIdx, int turn);
+	RecordedEventTurn* GetCurrentPlayerActions(int level, int playerIdx, int turn);
 	void RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, uint64_t sizeBytes, uint8_t* buffer);
 
 	bool SaveRecordingToFile(const char* outputFileName);
