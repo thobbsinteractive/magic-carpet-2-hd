@@ -916,7 +916,7 @@ signed int /*__fastcall*/ ReadKeyboardKeysInMenu_7C050();
 //int32_t sub_A7C20_AIL_API_init_sequence(HSEQUENCE hSequence, void* start, int32_t sequence_num, uint32_t track);
 // signed int sub_7E5A0_pre_draw(int a1, int a2, __int16 a3, __int16 a4, int a5, __int16 a6, __int16 a7);
 //int sub_7F7D0(uint8_t** a1, uint8_t** a2, uint8_t* a3, char* a4);
-//uint32_t sub_7FAE0_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
+//uint32_t DrawText_7FAE0(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
 //void DrawText_7FB90(char* a1, int16_t a2, int16_t a3, uint8_t a4);
 // int sub_7FCB0_draw_text_with_border(int a1, x_BYTE *a2, int a3, int a4, int a5, char a6, unsigned __int8 a7, __int16 a8);
 // int sub_81260(int a1, int a2, int a3, __int16 a4, __int16 a5);

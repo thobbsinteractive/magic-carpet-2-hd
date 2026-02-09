@@ -950,11 +950,11 @@ void sub_7FCB0_draw_text_with_border(char* textString, int32_t a3, int32_t a4, i
 								v42 = xy_DWORD_17DED4_spritestr[274].height_5;
 								a1 += v42;
 								//2613b3
-								sub_7FAE0_draw_text(v87, v41, a4, v98, 0/*v86*/);
+								DrawText_7FAE0(v87, v41, a4, v98, 0/*v86*/);
 							}
 							else
 							{
-								sub_7FAE0_draw_text(v87, v99, a4, v98, v86);
+								DrawText_7FAE0(v87, v99, a4, v98, v86);
 							}
 						}
 						else
@@ -979,7 +979,7 @@ void sub_7FCB0_draw_text_with_border(char* textString, int32_t a3, int32_t a4, i
 							a1 += v30;
 						}
 						//"click here" 12a 1e2 138 00
-						sub_7FAE0_draw_text(v87, v99, a4, v98, 0/*v86*/);//adress 261197 (80197)
+						DrawText_7FAE0(v87, v99, a4, v98, 0/*v86*/);//adress 261197 (80197)
 					}
 					if (a6 && a6 != 4 && a6 != 5)
 					{
@@ -1121,11 +1121,11 @@ void sub_7FCB0_draw_text_with_border(char* textString, int32_t a3, int32_t a4, i
 						v83 = v82 + a3;
 						sub_7C120_draw_bitmap_640(v83, a1, xy_DWORD_17DED4_spritestr[275]);
 					}
-					sub_7FAE0_draw_text(v87, v99 + xy_DWORD_17DED4_spritestr[275].width_4, a4, v98, 0);
+					DrawText_7FAE0(v87, v99 + xy_DWORD_17DED4_spritestr[275].width_4, a4, v98, 0);
 				}
 				else
 				{
-					sub_7FAE0_draw_text(v87, v99, a4, v98, v86);
+					DrawText_7FAE0(v87, v99, a4, v98, v86);
 				}
 			}
 			else
@@ -1170,7 +1170,7 @@ void sub_7FCB0_draw_text_with_border(char* textString, int32_t a3, int32_t a4, i
 					v56 += v103;
 				}
 			}
-			sub_7FAE0_draw_text(v87, v99, a4, v98, 0/*v86*/);//draw text(with palette?) 
+			DrawText_7FAE0(v87, v99, a4, v98, 0/*v86*/);//draw text(with palette?) 
 		}
 	}
 	//if (a6)
@@ -1338,26 +1338,22 @@ void sub_2EC90(char a1)//20fc90
 // EB3B6: using guessed type char x_BYTE_EB3B6;
 
 //----- (0007FAE0) --------------------------------------------------------
-uint32_t sub_7FAE0_draw_text(char* text, int16_t a2, int16_t a3, int16_t posy, uint8_t a5)//260ae0
+uint32_t DrawText_7FAE0(char* text, int16_t x, int16_t width, int16_t posy, uint8_t color)//260ae0
 {
-	uint32_t helpstrlen; // kr04_4
-	int16_t v6; // bx
-	int32_t posx; // ebx
-
-	helpstrlen = strlen(text);
-	v6 = a3 - a2;//ebx[ebx+1c] - 1e2 edx[ebp+18] - 12a
+	int32_t posx;
+	uint32_t helpstrlen = strlen(text);
+	int16_t revWidth = width - x;
 	if (helpstrlen == 1)
 	{
-		posx = a2 + v6 / 2;
+		posx = x + revWidth / 2;
 	}
 	else
 	{
-		posx = v6 / 2 + a2 - xy_DWORD_17DEC0_spritestr[65].width_4 * helpstrlen / 2;
-		DrawText_7FB90(text, posx, posy, a5);//"clisk here to" 13d 138 0
+		posx = revWidth / 2 + x - xy_DWORD_17DEC0_spritestr[65].width_4 * helpstrlen / 2;
+		DrawText_7FB90(text, posx, posy, color); //"click here to" 13d 138 0
 	}
 	return posx + xy_DWORD_17DEC0_spritestr[65].width_4 * strlen(text);
 }
-// 17DEC0: using guessed type int (int)x_DWORD_17DEC0;
 
 //int debugcounter_271478 = 0;
 //----- (00090478) --------------------------------------------------------

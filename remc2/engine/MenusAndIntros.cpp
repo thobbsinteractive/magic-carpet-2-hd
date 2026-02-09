@@ -4839,7 +4839,7 @@ void DrawEndGameTable_82C20(__int16 a1) //263c20
 			sub_7C120_draw_bitmap_640(j + beginX, y2, xy_DWORD_17DED4_spritestr[275]);
 		int width4 = 2 * xy_DWORD_17DED4_spritestr[274].width_4 + x2;
 		int x3 = xy_DWORD_17DEC0_spritestr[65].width_4 + beginX;
-		sub_7FAE0_draw_text(texts[0], x3, frameWidth - xy_DWORD_17DEC0_spritestr[65].width_4 + x3, width4, 0);
+		DrawText_7FAE0(texts[0], x3, frameWidth - xy_DWORD_17DEC0_spritestr[65].width_4 + x3, width4, 0);
 		width4 += 5;
 		int beginX2;
 		for (int k = 1; k < 5; k++) {
@@ -6237,7 +6237,7 @@ signed int sub_7C390()//25d390
 		}
 		sub_7C140_draw_text_background(382, 18, 16, 16, 0);
 		sprintf((char* const)x_DWORD_17DE38str.x_DWORD_17DE50, "%d", (unsigned __int16)x_DWORD_17DE38str.networkSession_17DEFA);
-		sub_7FAE0_draw_text((char*)x_DWORD_17DE38str.x_DWORD_17DE50, 382, 398, 18, 0);
+		DrawText_7FAE0((char*)x_DWORD_17DE38str.x_DWORD_17DE50, 382, 398, 18, 0);
 		DrawNetworkLevelName_7D380();
 		SetMultiplayerColors_7D310();
 		v4 = 0;
@@ -6422,7 +6422,7 @@ void DrawNetworkLevelName_7D380()//25e380
 	GetFont_6FC50(1);
 	int v0 = x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].selectedLevel_10;
 	sprintf(printbuffer, "%d. %s", v0 - 49, LevelsNames_D9204[v0]);
-	sub_7FAE0_draw_text(printbuffer, 246, 355, 14, 0);
+	DrawText_7FAE0(printbuffer, 246, 355, 14, 0);
 }
 
 //----- (0007C800) --------------------------------------------------------
