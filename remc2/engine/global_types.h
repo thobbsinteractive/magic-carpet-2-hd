@@ -137,7 +137,7 @@ typedef struct {
 type_8_1a;
 
 typedef struct {
-	int16_t word[26];
+	int16_t SpellEnabled[26];
 	//uint16_t word_2279;
 }
 type_16_1a;

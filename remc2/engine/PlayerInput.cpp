@@ -842,7 +842,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t turn)//1f8a00
 					v12x->dword_0xA4_164x->str_611.spellIndex_0x458_1112 = v17;
 					v18 = spellIndex_D94FF[v17];
 					v19 = 1;
-					if (!v12x->dword_0xA4_164x->str_611.array_0x333_819x.word[v18] || !isCaveLevel_D41B6 && v18 == 25)
+					if (!v12x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[v18] || !isCaveLevel_D41B6 && v18 == 25)
 						v19 = 0;
 					if (!v19)
 						goto LABEL_122;
@@ -1870,7 +1870,7 @@ char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 				v6 = 0;
 			}
 			v7 = spellIndex_D94FF[v6];
-			if (v3x->array_0x333_819x.word[v7])
+			if (v3x->array_0x333_819x.SpellEnabled[v7])
 			{
 				//v8 = v3 + v7;
 				if (v3x->array_0x3B5_949x.subSpellIndex[v7] == 2)
@@ -1912,7 +1912,7 @@ char sub_18DA0(type_entity_0x6E8E* a1x, char a2, char a3)//1f9da0
 				v6 = 0;
 			}
 			v13 = spellIndex_D94FF[v6];
-			if (v3x->array_0x333_819x.word[v13])
+			if (v3x->array_0x333_819x.SpellEnabled[v13])
 			{
 				//v14 = v3 + v13;
 				if (v3x->array_0x3B5_949x.subSpellIndex[v13] == 1)
@@ -2036,7 +2036,7 @@ void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 	}
 	else
 	{
-		if (Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105]]->byte_0x3B_59 == 1)
+		if (Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105]]->byte_0x3B_59 == 1)
 		{
 			if (unk_18058Cstr.MouseButtonState_18059C & 1)
 			{
@@ -2044,7 +2044,7 @@ void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 				unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
 			}
 		}
-		else if (unk_18058Cstr.MouseButtonState_18059C & 1 || unk_18058Cstr.MouseButtonState_18059C & 4 && Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105]]->word_0x2E_46 > 0)
+		else if (unk_18058Cstr.MouseButtonState_18059C & 1 || unk_18058Cstr.MouseButtonState_18059C & 4 && Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105]]->word_0x2E_46 > 0)
 		{
 			HandleButtonClick_191B0(6, 16);
 			unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
@@ -2056,7 +2056,7 @@ void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 	}
 	else
 	{
-		if (Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[a1x->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107]]->byte_0x3B_59 == 1)
+		if (Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[a1x->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107]]->byte_0x3B_59 == 1)
 		{
 			if (unk_18058Cstr.MouseButtonState_18059C & 2)
 			{
