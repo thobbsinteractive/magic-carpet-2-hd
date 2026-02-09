@@ -6,7 +6,7 @@ using namespace std;
 InputRecorder::InputRecorder(const char* filePath)
 {
 	m_FilePath = filePath;
-	m_InputEvents = new std::map<uint16_t, InputEvent*>();
+	m_InputEvents = new std::map<uint16_t, RecordedEvent*>();
 	//std::function<void(GameState)> stateChangeCallBack = [this](GameState a) { this->PlayPause(a); };
 	//EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAME_STATE_CHANGE, stateChangeCallBack));
 }
@@ -35,7 +35,7 @@ void InputRecorder::StartRecording()
 
 void InputRecorder::ClearInputEvents()
 {
-	map<uint16_t, InputEvent*>::iterator levelIt;
+	map<uint16_t, RecordedEvent*>::iterator levelIt;
 	map<uint16_t, InputPlayer*>::iterator playIt;
 	map<uint32_t, InputTurn*>::iterator turnIt;
 
@@ -102,7 +102,7 @@ void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint
 
 	if (m_InputEvents->count(level) == 0) 
 	{
-		m_InputEvents->insert(std::pair<uint16_t, InputEvent*>(level, new InputEvent()));
+		m_InputEvents->insert(std::pair<uint16_t, RecordedEvent*>(level, new RecordedEvent()));
 		m_InputEvents->at(level)->Header = new InputEventHeader();
 		m_InputEvents->at(level)->Header->Level = level;
 		m_InputEvents->at(level)->Players = new std::map<uint16_t, InputPlayer*>();
@@ -142,7 +142,7 @@ bool InputRecorder::SaveRecordingToFile(const char* outputFileName)
 
 		std::vector<InputTurn*>* playerTurns = new std::vector<InputTurn*>();
 
-		map<uint16_t, InputEvent*>::iterator levelIt;
+		map<uint16_t, RecordedEvent*>::iterator levelIt;
 		map<uint16_t, InputPlayer*>::iterator playIt;
 		map<uint32_t, InputTurn*>::iterator turnIt;
 
@@ -212,7 +212,7 @@ bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 
 			if (m_InputEvents->count(level) == 0)
 			{
-				m_InputEvents->insert(std::pair<uint16_t, InputEvent*>(level, new InputEvent()));
+				m_InputEvents->insert(std::pair<uint16_t, RecordedEvent*>(level, new RecordedEvent()));
 				m_InputEvents->at(level)->Header = new InputEventHeader();
 				m_InputEvents->at(level)->Header->Level = level;
 				m_InputEvents->at(level)->Header->PlayerCount = playerCount;
