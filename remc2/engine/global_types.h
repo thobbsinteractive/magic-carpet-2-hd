@@ -132,7 +132,7 @@ typedef struct {//lenght 18
 }type_str_0x1AC_428;
 
 typedef struct {
-	uint8_t subSpellIndex[26];
+	uint8_t SpellIndex[26];
 }
 type_8_1a;
 

@@ -4002,7 +4002,7 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 					}
 
 					//Calucation Spell Sub Category position
-					subCategoryIndex = a1x->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.subSpellIndex[spellIndex_D94FF[a1x->dword_0x3E6_2BE4_12228.str_611.spellIndex_0x458_1112]];
+					subCategoryIndex = a1x->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.SpellIndex[spellIndex_D94FF[a1x->dword_0x3E6_2BE4_12228.str_611.spellIndex_0x458_1112]];
 
 					posX = posX + (subCategoryWidth * subCategoryIndex
 						+ (subCategoryWidth / 2)
