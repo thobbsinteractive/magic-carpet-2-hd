@@ -17,7 +17,7 @@ int run_regtest(int level, bool afterload, int index, int saveIndex)//236F70
 
 	int argc = 0;
 	char* argv[9];
-	std::string path = get_exe_path() + "/regression-config.ini";
+	std::string path = get_exe_path() + "/regression-config.json";
 	if (afterload)
 	{
 		argc = 9;
