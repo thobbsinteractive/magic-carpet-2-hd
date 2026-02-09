@@ -12,56 +12,44 @@ int run_regtest(int level, bool afterload, int index, int saveIndex)//236F70
 	else
 		locUnitTestsPath = get_exe_path() + "/memimages/regressions/level" + std::to_string(level);
 	unitTestsPath = locUnitTestsPath;
-	int locEndTestsCode;
+	int locEndTestsCode = 0;
 	endTestsCode = &locEndTestsCode;
 
-	int argc = 0;
-	char* argv[9];
+	std::vector<std::string> args;
+	args.reserve(9);
+
 	std::string path = get_exe_path() + "/regression-config.json";
+
+	args.emplace_back("remc2");
+
 	if (afterload)
 	{
-		argc = 9;
-		char arg1[] = "remc2";
-		char arg2[] = "--mode_test_regressions_game";
-		strcpy(arg2, "--mode_debug_afterload");
-		char arg3[4];
-		sprintf(arg3, "%d", saveIndex);
-		char arg4[] = "--text_output_to_console";
-		char arg5[] = "--set_level";
-		char arg6[4];
-		sprintf(arg6, "%d", level - 1);
-		char arg7[] = "--config_file_path";
-		char* arg8 = &path[0];
-		char arg9[] = "--debugafterload";
-		argv[0] = arg1;
-		argv[1] = arg2;
-		argv[2] = arg3;
-		argv[3] = arg4;
-		argv[4] = arg5;
-		argv[5] = arg6;
-		argv[6] = arg7;
-		argv[7] = arg8;
-		argv[8] = arg9;
+		args.emplace_back("--mode_debug_afterload");
+		args.emplace_back(std::to_string(saveIndex));
+		args.emplace_back("--text_output_to_console");
+		args.emplace_back("--set_level");
+		args.emplace_back(std::to_string(level - 1));
+		args.emplace_back("--config_file_path");
+		args.emplace_back(path);
+		args.emplace_back("--debugafterload");
 	}
 	else
 	{
-		argc = 7;
-		char arg1[] = "remc2";
-		char arg2[] = "--mode_test_regressions_game";
-		char arg3[] = "--text_output_to_console";
-		char arg4[] = "--set_level";
-		char arg5[4];
-		sprintf(arg5, "%d", level - 1);
-		char arg6[] = "--config_file_path";
-		char* arg7 = &path[0];
-		argv[0] = arg1;
-		argv[1] = arg2;
-		argv[2] = arg3;
-		argv[3] = arg4;
-		argv[4] = arg5;
-		argv[5] = arg6;
-		argv[6] = arg7;
+		args.emplace_back("--mode_test_regressions_game");
+		args.emplace_back("--text_output_to_console");
+		args.emplace_back("--set_level");
+		args.emplace_back(std::to_string(level - 1));
+		args.emplace_back("--config_file_path");
+		args.emplace_back(path);
 	}
+
+	std::vector<char*> argv;
+	argv.reserve(args.size());
+	for (auto& s : args)
+		argv.push_back(s.data());   // C++17+, null-terminated
+
+	int argc = static_cast<int>(argv.size());
+
 	char* envp[] = { nullptr };
 
 	for (int i = 0; i < 100; i++)
@@ -70,7 +58,7 @@ int run_regtest(int level, bool afterload, int index, int saveIndex)//236F70
 		compstr[i].index = 0;
 	}
 
-	CommandLineParams.Init(argc, argv);
+	CommandLineParams.Init(argc, argv.data());
 	support_begin();
 	x_BYTE_D4B80 = 0;
 	CleanF5538_716A0();
@@ -80,7 +68,7 @@ int run_regtest(int level, bool afterload, int index, int saveIndex)//236F70
 
 	try
 	{
-		sub_main(argc, argv, envp);
+		sub_main(argc, argv.data(), envp);
 	}
 	catch (const thread_exit_exception& e) {}
 	catch (const std::exception& e)
