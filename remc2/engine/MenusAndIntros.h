@@ -134,6 +134,7 @@ extern Type_DWORD_17DE28str x_DWORD_17DE28str;
 extern type_WORD_E20A4 str_WORD_E20A4[];
 extern type_WORD_E1F84 str_E23E0[];
 extern type_E24BCx str_E2516[];
+extern Type_SoundEvent_E17CC str_E17CC_0x160[];
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
