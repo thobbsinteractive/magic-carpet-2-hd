@@ -1,22 +1,10 @@
 #include "Level.h"
 
-#include "Animation.h"
-#include "Basic.h"
-#include "Events.h"
-#include "GameUI.h"
-#include "Graphics.h"
-#include "MenusAndIntros.h"
-#include "PlayerInput.h"
-#include "Terrain.h"
-#include "DatTabIndexes.h"
-
 bool IsAfterLoad = false;
 
 void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* textureBuffer);
 void sub_71890();
 void sub_718F0();
-type_E9C08* sub_72120(unsigned __int16 a1);
-type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C28_str* a3);
 
 
 char x_BYTE_E29E8 = 1; // weak

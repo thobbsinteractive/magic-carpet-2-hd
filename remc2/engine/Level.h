@@ -4,6 +4,15 @@
 #include "engine_support.h"
 #include "Basic.h"
 
+#include "Animation.h"
+#include "Basic.h"
+#include "Events.h"
+#include "GameUI.h"
+#include "Graphics.h"
+#include "MenusAndIntros.h"
+#include "PlayerInput.h"
+#include "Terrain.h"
+#include "DatTabIndexes.h"
 
 extern type_str_164 unk_F42B0x[1136];
 extern type_str_160 str_D7BD6[157];
@@ -32,3 +41,5 @@ void sub_712F0();
 void sub_71A70_setTmaps(MapType_t a1);
 int GetSpellManaCost_6D710(type_entity_0x6E8E* event, uint8 spellIndex, uint8 subSpellIndex);
 void sub_83CC0(char a1);
+type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C28_str* a3);
+type_E9C08* sub_72120(unsigned __int16 a1);
