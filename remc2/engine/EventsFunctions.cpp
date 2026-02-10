@@ -59997,20 +59997,21 @@ void sub_5D530(type_entity_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 		altDiff = -256;
 	if (altDiff > 256)
 		altDiff = 256;
-	a1x->pitch_0x1E_30 = a1x->dword_0xA4_164x->pitch_0x157_343 & 0x7ffu;
-	if (a1x->pitch_0x1E_30 > 1024)
-		a1x->pitch_0x1E_30 -= 2048;
-	if (a1x->actSpeed_0x82_130 >= 0 || a1x->pitch_0x1E_30 <= 0)
+	int16_t tempPitch = a1x->dword_0xA4_164x->pitch_0x157_343 & 0x7ffu;
+	a1x->pitch_0x1E_30 = tempPitch;
+	if (tempPitch > 1024)
+		tempPitch -= 2048;
+	if (a1x->actSpeed_0x82_130 >= 0 || tempPitch <= 0)
 	{
-		if (a1x->actSpeed_0x82_130 < 0 && a1x->pitch_0x1E_30 < 0)
+		if (a1x->actSpeed_0x82_130 < 0 && tempPitch < 0)
 			a1x->dword_0xA4_164x->pitch_0x24_36 = a1x->dword_0xA4_164x->pitch_0x157_343;
-		else if (a1x->actSpeed_0x82_130 > 0 && a1x->pitch_0x1E_30 < 0)
-			a1x->dword_0xA4_164x->pitch_0x24_36 = ((a1x->pitch_0x1E_30 * -altDiff - (my_sign32(a1x->pitch_0x1E_30 * -altDiff) * 255)) >> 8);
-		else if (a1x->actSpeed_0x82_130 > 0 && a1x->pitch_0x1E_30 > 0)
+		else if (a1x->actSpeed_0x82_130 > 0 && tempPitch < 0)
+			a1x->dword_0xA4_164x->pitch_0x24_36 = ((tempPitch * -altDiff - (my_sign32(a1x->pitch_0x1E_30 * -altDiff) * 255)) >> 8);
+		else if (a1x->actSpeed_0x82_130 > 0 && tempPitch > 0)
 			a1x->dword_0xA4_164x->pitch_0x24_36 = a1x->dword_0xA4_164x->pitch_0x157_343;
 	}
 	else
-		a1x->dword_0xA4_164x->pitch_0x24_36 = ((a1x->pitch_0x1E_30 * -altDiff - (my_sign32(a1x->pitch_0x1E_30 * -altDiff) * 255)) >> 8);
+		a1x->dword_0xA4_164x->pitch_0x24_36 = ((tempPitch * -altDiff - (my_sign32(a1x->pitch_0x1E_30 * -altDiff) * 255)) >> 8);
 	a1x->dword_0xA4_164x->pitch_0x24_36 &= 0x7ffu;
 	if (a1x->dword_0xA4_164x->moveSpeed_0x14C_332)
 	{
