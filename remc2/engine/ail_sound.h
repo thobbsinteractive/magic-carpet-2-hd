@@ -109,6 +109,7 @@ int32_t playback_rate_15 = 0;
 int32_t volume_16 = 0;
 int32_t pan_17 = 0;
 int32_t vol_scale_18[2][256];
+int32_t id2_19;//index sound for MagicBalls
 //uint32_t sam_varw18x[256];
 //int8_t sam_varb20 = 0;//maybe sam_varw18x[0][1]?
 //int8_t sam_varb21 = 0;//maybe sam_varw18x[0][2]?
