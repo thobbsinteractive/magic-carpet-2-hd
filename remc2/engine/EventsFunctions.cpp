@@ -62032,9 +62032,10 @@ void sub_60780(type_entity_0x6E8E* locEvent, type_entity_0x6E8E* locEvent2, int 
 	}
 	if (locEvent2)
 	{
+		short originalWord46 = locEvent2->word_0x2E_46;
 		locEvent2->word_0x2E_46 = 0;
 		SetSpell_6D5E0(locEvent2, locEvent2->byte_0x46_70);
-		locEvent2->word_0x2E_46 = locEvent2->word_0x2E_46;
+		locEvent2->word_0x2E_46 = originalWord46;
 	}
 	locEvent->maxMana_0x8C_140 = number2;
 }
