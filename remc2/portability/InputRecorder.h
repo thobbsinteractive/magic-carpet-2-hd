@@ -12,7 +12,7 @@ class InputRecorder
 private:
 	const std::string m_FileSignature = "MC2-HD-Recording";
 	std::string m_FilePath;
-	std::map<uint16_t, InputEvent*>* m_InputEvents;
+	std::map<uint16_t, RecordedEvent*>* m_InputEvents;
 
 public:
 	bool m_IsRecording = false;

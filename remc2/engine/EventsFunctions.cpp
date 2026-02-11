@@ -766,10 +766,8 @@ void sub_46F50_sound_proc7();
 //void sub_473B0();
 //int sub_473E0();
 // void sub_47560_draw_and_events_in_game(int a1, int a2, x_BYTE *a3, signed int a4, __int16 a5);
-void sub_47FC0_load_screen(bool isSecretLevel);
 void sub_480A0_set_clear_Palette(/*int a1, int a2, int a3*/);
 void sub_48120();
-void sub_48350();
 int sub_48990(char a1, char a2, char a3, char a4);
 // __int16 sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6);
 void SetHeightmapByBuildingArea_48B50(uint8 x, uint8 y, int height, int width);
@@ -801,7 +799,6 @@ void sub_539A0_load_bldgprm();
 void sub_53A40(Type_PlayerInput_0x6E3E* a1);
 void sub_53C70();
 void sub_53CA0();
-void sub_53CC0_close_movie();
 uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::string& subDir);
 
 void sub_54960();
@@ -865,7 +862,6 @@ void sub_5DE30(type_entity_0x6E8E* a1);
 //void sub_6FC50(__int16 a1);
 //unsigned int sub_6FC80_pre_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
 void DrawGameDebugText_6FEC0();
-void sub_713A0();
 //int sub_71410_process_tmaps_process_tmaps();
 void sub_716C0(unsigned __int16 a1, unsigned __int16 a2, unsigned __int16 a3);
 void SetF5538ByStrTMAP00TAB_71730(unsigned __int16 a1);
@@ -910,14 +906,13 @@ int sub_7677C();
 __int16 sub_7678D();
 int sub_76840();
 //char sub_7A060_get_mouse_and_keyboard_events();
-signed int /*__fastcall*/ ReadKeyboardKeysInMenu_7C050();
 //void sub_7C120_draw_bitmap_640(int16_t posx, int16_t posy, bitmap_pos_struct_t tempstr);
 //void sub_7C140_draw_text_background(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5);
 //int32_t sub_A7C20_AIL_API_init_sequence(HSEQUENCE hSequence, void* start, int32_t sequence_num, uint32_t track);
 // signed int sub_7E5A0_pre_draw(int a1, int a2, __int16 a3, __int16 a4, int a5, __int16 a6, __int16 a7);
 //int sub_7F7D0(uint8_t** a1, uint8_t** a2, uint8_t* a3, char* a4);
-//uint32_t sub_7FAE0_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
-//void sub_7FB90_draw_text(char* a1, int16_t a2, int16_t a3, uint8_t a4);
+//uint32_t DrawText_7FAE0(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
+//void DrawText_7FB90(char* a1, int16_t a2, int16_t a3, uint8_t a4);
 // int sub_7FCB0_draw_text_with_border(int a1, x_BYTE *a2, int a3, int a4, int a5, char a6, unsigned __int8 a7, __int16 a8);
 // int sub_81260(int a1, int a2, int a3, __int16 a4, __int16 a5);
 void sub_81360_draw_bitmap_line(int16_t a1, int16_t a2, int16_t a3, int16_t a4, __int16 a5);
@@ -31485,6 +31480,93 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 
 		MenusAndIntros_76930(skipMenus);//set language, intro, menu, atd. //257930
 
+		//debug
+		if (CommandLineParams.ModeDebugAfterload())
+		{
+			//Load Saved Game File
+			uint32_t numLevelsCompleted = 0;
+			int index = CommandLineParams.ModeDebugAfterload();
+			type_WORD_E1F84* a1x = &str_E23E0[index];
+			uint32_t dword_0 = 0;
+			int v44 = 0;
+			x_DWORD_17DE38str.x_WORD_17DF04 = index - 1;
+
+			char path[512];
+			sprintf(path, "%s", unitTestsPath.c_str());
+			std::string loadFilePath = GetSaveGameFile(path, x_DWORD_17DE38str.x_WORD_17DF04);
+			FILE* FILE = DataFileIO::CreateOrOpenFile(loadFilePath.c_str(), 512);
+			if (FILE != NULL)
+			{
+				DataFileIO::Read(FILE, (uint8_t*)&dword_0, 4);
+				if (dword_0 == 0xFFFFFFF7u)
+				{
+					//if (a1x->byte_25)
+					//	sub_7E640(0);
+					DataFileIO::Read(FILE, (uint8_t*)&x_DWORD_17DE38str.xx_BYTE_17DF14[(x_DWORD_17DE38str.x_WORD_17DF04 - 1)][0], 20);
+					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.player_name_57ar, 32);
+					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.savestring_89, 32);
+
+					//Load completed Secret Portals
+					for (int ii = 0; ii < 6; ii++)
+					{
+						DataFileIO::Read(FILE, readbuffer, 17);
+						secretMapScreenPortals_E2970[ii].activated_12 = *(uint16_t*)(readbuffer + 12);
+						if (secretMapScreenPortals_E2970[ii].activated_12 == 1)
+							secretMapScreenPortals_E2970[ii].spriteIndex_14 = 305;
+						else
+							secretMapScreenPortals_E2970[ii].spriteIndex_14 = 270;
+					}
+					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.m_GameSettings, 16);
+					DataFileIO::Read(FILE, (uint8_t*)&numLevelsCompleted, 4);
+					DataFileIO::Read(FILE, (uint8_t*)&v44, 4);
+					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.str_611, 505);
+					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DBC8x, 500);
+					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DDBCx, 100);
+					DataFileIO::Close(FILE);
+					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
+
+					int i = 0;
+					//Reset all Portals to inactive
+					while (mapScreenPortals_E17CC[i].viewPortPosX_4)
+					{
+						mapScreenPortals_E17CC[i].activated_18 = 2;
+						i++;
+					}
+
+					i = 0;
+					//Load completed Portals
+					while (i < numLevelsCompleted && mapScreenPortals_E17CC[i].viewPortPosX_4)
+					{
+						mapScreenPortals_E17CC[i].activated_18 = 1;
+						i++;
+					}
+
+					i = 0;
+					//Set current level number
+					while (mapScreenPortals_E17CC[i].viewPortPosX_4)
+					{
+						if (mapScreenPortals_E17CC[i].activated_18 == 1)
+							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = i;
+						i++;
+					}
+					x_DWORD_17DB70str.x_BYTE_17DB8F = 1;
+					memset(&x_DWORD_17DE28str, 0, 13);
+					x_DWORD_17DB70str.x_WORD_17DB8A = -1;
+					if (a1x->byte_25)
+					{
+						MapMenuPortalsDraw_81760();
+					}
+					else
+					{
+						x_DWORD_17DE38str.x_WORD_17DF04 = -1;
+						NewGameDialog_77350(a1x);
+						a1x->dword_4 = 2;
+					}
+				}
+			}
+		}
+		//debug
+
 		if (!D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234)
 		{
 			Logger->debug("sub_46830_main_loop:before load scr");
@@ -31835,6 +31917,27 @@ void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
 		}
 	}
 	MouseAndKeysEvents_17A00(a4, turn);
+	//debug
+	if (CommandLineParams.ModeDebugAfterload())
+	{
+		if (debug_first_run == 5)
+		{
+			//loadD41A0();
+			//x_D41A0_BYTEARRAY_4_struct.langIndex_4 = 1;
+			//InitLanguage_76A40_mod_only_language();
+			if (LoadLevel_555D0(0u, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, true))
+				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], "OK");//Load Level
+			else
+				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], x_DWORD_E9C4C_langindexbuffer[429]);//429 - Failed
+			ShowMessage_52D70(0, printbuffer);
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= 1;
+		}
+		if (debug_first_run == 6)
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= 1;
+		if (!CommandLineParams.DoRightButton())
+			debug_first_run++;
+	}
+	//debug
 	if (CommandLineParams.DoIntervalSave()) {
 		//save in interval
 		int interval = 1;
@@ -31881,6 +31984,11 @@ void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
 		add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), -1, false, 20);
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
+	if (CommandLineParams.ModeDebugAfterload()) {
+		add_compare(0x002285FF, IsAfterLoad, -1, false, 20);
+		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
+	}
+
 	if (CommandLineParams.DoDebugSequences2()) {
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
 	}
@@ -38159,6 +38267,18 @@ void PlayerEvents_51BB0()//232bb0
 		actEvent->dword_0xA4_164x->entityIndex_0x0 = D41A0_0.playerInputs_0x6E3E[i].entityIndex_0x6E3E_byte5;
 		actEvent->dword_0xA4_164x->nextEntity_0x18_24 = D41A0_0.playerInputs_0x6E3E[i].nextEntity_0x6E3E_word6;
 		actEvent->dword_0xA4_164x->entityIndex2_0x1A_26 = D41A0_0.playerInputs_0x6E3E[i].entityIndex2_0x6E3E_word8;
+
+		if (CommandLineParams.DoKillMoveAndRotation()&&(D41A0_0.LevelIndex_0xc==i))
+		{
+			actEvent->dword_0xA4_164x->entityIndex_0x0 = 0;
+			actEvent->dword_0xA4_164x->speed_0xc_12 = 0;
+			actEvent->dword_0xA4_164x->pitchDelta_0x6_6 = 0;
+			actEvent->dword_0xA4_164x->rollDelta_0x4_4 = 0;
+			actEvent->dword_0xA4_164x->fov_0x22_34 = 0;
+			//actEvent->dword_0xA4_164x->yaw_0x1E_30 = 0;
+			actEvent->dword_0xA4_164x->roll_0x155_341 = 0;
+		}
+
 		sub_57B20(&D41A0_0.array_0x2BDE[i], Entities_EA3E4[D41A0_0.array_0x2BDE[i].playerIndex_0x00a_2BE4_11240]);
 		if (D41A0_0.array_0x2BDE[i].byte_0x846_2BDE)
 			sub_55C60(&D41A0_0.array_0x2BDE[i]);
@@ -44670,8 +44790,6 @@ void ClearProgrammableIntervalTimer_6FE20()//fix//250e20
 	{
 		//v0 = x_D41A0_BYTEARRAY_4_struct.dwordindex_2380;
 		/*__outx_BYTE(0x43u, 0x36u);
-
-		//Clear reload values
 		__outx_BYTE(0x40u, 0);
 		__outx_BYTE(0x40u, 0);
 		v1 = dos_setvect(8, x_DWORD_F5330, (unsigned __int16)x_WORD_F5334);*/
@@ -59880,20 +59998,21 @@ void sub_5D530(type_entity_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 		altDiff = -256;
 	if (altDiff > 256)
 		altDiff = 256;
-	a1x->pitch_0x1E_30 = a1x->dword_0xA4_164x->pitch_0x157_343 & 0x7ffu;
-	if (a1x->pitch_0x1E_30 > 1024)
-		a1x->pitch_0x1E_30 -= 2048;
-	if (a1x->actSpeed_0x82_130 >= 0 || a1x->pitch_0x1E_30 <= 0)
+	int16_t tempPitch = a1x->dword_0xA4_164x->pitch_0x157_343 & 0x7ffu;
+	a1x->pitch_0x1E_30 = tempPitch;
+	if (tempPitch > 1024)
+		tempPitch -= 2048;
+	if (a1x->actSpeed_0x82_130 >= 0 || tempPitch <= 0)
 	{
-		if (a1x->actSpeed_0x82_130 < 0 && a1x->pitch_0x1E_30 < 0)
+		if (a1x->actSpeed_0x82_130 < 0 && tempPitch < 0)
 			a1x->dword_0xA4_164x->pitch_0x24_36 = a1x->dword_0xA4_164x->pitch_0x157_343;
-		else if (a1x->actSpeed_0x82_130 > 0 && a1x->pitch_0x1E_30 < 0)
-			a1x->dword_0xA4_164x->pitch_0x24_36 = ((a1x->pitch_0x1E_30 * -altDiff - (my_sign32(a1x->pitch_0x1E_30 * -altDiff) * 255)) >> 8);
-		else if (a1x->actSpeed_0x82_130 > 0 && a1x->pitch_0x1E_30 > 0)
+		else if (a1x->actSpeed_0x82_130 > 0 && tempPitch < 0)
+			a1x->dword_0xA4_164x->pitch_0x24_36 = ((tempPitch * -altDiff - (my_sign32(a1x->pitch_0x1E_30 * -altDiff) * 255)) >> 8);
+		else if (a1x->actSpeed_0x82_130 > 0 && tempPitch > 0)
 			a1x->dword_0xA4_164x->pitch_0x24_36 = a1x->dword_0xA4_164x->pitch_0x157_343;
 	}
 	else
-		a1x->dword_0xA4_164x->pitch_0x24_36 = ((a1x->pitch_0x1E_30 * -altDiff - (my_sign32(a1x->pitch_0x1E_30 * -altDiff) * 255)) >> 8);
+		a1x->dword_0xA4_164x->pitch_0x24_36 = ((tempPitch * -altDiff - (my_sign32(a1x->pitch_0x1E_30 * -altDiff) * 255)) >> 8);
 	a1x->dword_0xA4_164x->pitch_0x24_36 &= 0x7ffu;
 	if (a1x->dword_0xA4_164x->moveSpeed_0x14C_332)
 	{
@@ -61914,9 +62033,10 @@ void sub_60780(type_entity_0x6E8E* locEvent, type_entity_0x6E8E* locEvent2, int 
 	}
 	if (locEvent2)
 	{
+		short originalWord46 = locEvent2->word_0x2E_46;
 		locEvent2->word_0x2E_46 = 0;
 		SetSpell_6D5E0(locEvent2, locEvent2->byte_0x46_70);
-		locEvent2->word_0x2E_46 = locEvent2->word_0x2E_46;
+		locEvent2->word_0x2E_46 = originalWord46;
 	}
 	locEvent->maxMana_0x8C_140 = number2;
 }

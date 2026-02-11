@@ -13,7 +13,7 @@ void CommandLineParser::Init(int argc, char **argv) {
     m_mode_release_game = false;
     m_mode_playing_game = false;
     m_mode_test_regressions_game = false;
-    m_mode_debug_afterload = false;
+	m_mode_debug_afterload = 0;
     m_mode_debug_onstart = false;
     m_mode_test_network = false;
 
@@ -42,17 +42,17 @@ void CommandLineParser::Init(int argc, char **argv) {
     m_rotate_player = false;
     m_set_objective = false;
     m_set_level = -1;
-	m_custom_level_path = "";
-	m_record_file = "";
-	m_play_file = "";
+    m_custom_level_path = "";
+    m_record_file = "";
+    m_play_file = "";
     m_test_network_chng1 = false;
     m_show_debug_messages1 = false;
     m_show_debug_perifery = false;
     m_text_output_to_console = false;
     m_state_monitor = false;
     m_enable_in_game_debug = false;
-	m_log_level_str = "Info";
-
+    m_log_level_str = "Info";
+    m_kill_move_and_rotation = false;
     m_memimages_path = "../remc2/memimages/";
     m_config_file_path = "";
 
@@ -126,7 +126,12 @@ void CommandLineParser::InterpretParams() {
             //m_disable_graphics_enhance = true;
         }
         else if (param == "--mode_debug_afterload") { //this is setting is for compare data with dosbox afterload(can fix mouse move, and etc.)
-            m_mode_debug_afterload = true;
+			std::string saveIndexStr = *(++p);
+			uint16_t saveIndex = std::stoi(saveIndexStr);
+			if (saveIndex > -1)
+			{
+				m_mode_debug_afterload = saveIndex;
+			}
             m_detect_dword_a = true;
             m_copy_skip_config = true;
             m_debug_sequences2 = true;
@@ -136,6 +141,7 @@ void CommandLineParser::InterpretParams() {
             m_debugafterload = false;
             m_disable_graphics_enhance = true;
             m_hide_graphics = false;
+			m_kill_move_and_rotation = true;
         }
         else if (param == "--mode_debug_onstart") { //this is setting is for compare data with dosbox(can fix mouse move, and etc.)
             m_mode_debug_onstart = true;
@@ -195,6 +201,7 @@ void CommandLineParser::InterpretParams() {
         else if (param == "--text_output_to_console")           m_text_output_to_console = true;
         else if (param == "--state_monitor")                    m_state_monitor = true;
         else if (param == "--enable_in_game_debug")             m_enable_in_game_debug = true;
+        else if (param == "--kill_move_and_rotation")           m_kill_move_and_rotation = true;
         else if (param == "--memimages_path") {
             m_memimages_path = *(++p);
         }

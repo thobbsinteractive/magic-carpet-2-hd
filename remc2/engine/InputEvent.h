@@ -20,7 +20,7 @@ struct InputPlayer
 	std::map<uint32_t, InputTurn*>* Turns = nullptr;
 };
 
-struct InputEvent
+struct RecordedEvent
 {
 	InputEventHeader* Header = nullptr;
 	std::map<uint16_t, InputPlayer*>* Players = nullptr;

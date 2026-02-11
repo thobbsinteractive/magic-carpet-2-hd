@@ -134,6 +134,10 @@ extern Type_DWORD_17DE28str x_DWORD_17DE28str;
 extern type_WORD_E20A4 str_WORD_E20A4[];
 extern type_WORD_E1F84 str_E23E0[];
 extern type_E24BCx str_E2516[];
+extern Type_SoundEvent_E17CC str_E17CC_0x160[];
+extern int16_t x_WORD_17DE26;
+extern char x_BYTE_E29DE;
+extern char x_BYTE_E29E1;
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -204,7 +208,7 @@ void DrawNetworkLevelName_7D380();
 void PaletteCopy_7C800(signed __int16 a1);
 void sub_85BF5(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
 void sub_41BC0();
-void sub_2EB40();
+void StopSubtitles_2EB40();
 void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
 signed int DrawBitmapAndPlaySound_7E320();
 int GetMapMenuDialogIndex_7E320(uint32_t adress, type_WORD_E1F84* a1x);

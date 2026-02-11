@@ -422,6 +422,7 @@ extern POSITION x_DWORD_F4720;
 extern char x_BYTE_D4B50;
 extern char x_BYTE_D4B51;
 extern char x_BYTE_DB734;
+extern int resindex_begin;
 
 void j___delay(x_DWORD); // weak
 
@@ -1601,4 +1602,9 @@ void sub_46DD0_init_sound_and_music();
 uint32_t FadePalettes_86EA0(/*int a1, int a2, int a3*/uint32_t interval);
 void PresentObjective_59820();
 signed int sub_5C3D0_file_decompress(uint8_t* a1, uint8_t* a2);
+void sub_47FC0_load_screen(bool isSecretLevel);
+void sub_48350();
+void sub_53CC0_close_movie();
+void sub_713A0();
+signed int ReadKeyboardKeysInMenu_7C050();
 #endif
