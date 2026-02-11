@@ -4,7 +4,7 @@
 #include <map>
 #include <fstream>
 #include <vector>
-#include "../engine/InputEvent.h"
+#include "../engine/RecordedEvent.h"
 #include "../engine/GameState.h"
 
 class InputRecorder
@@ -30,7 +30,7 @@ public:
 	bool StartPlayback();
 	void StopPlayback();
 
-	InputTurn* GetCurrentPlayerActions(int level, int playerIdx, int turn);
+	RecordedEventTurn* GetCurrentPlayerActions(int level, int playerIdx, int turn);
 	void RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, uint64_t sizeBytes, uint8_t* buffer);
 
 	bool SaveRecordingToFile(const char* outputFileName);

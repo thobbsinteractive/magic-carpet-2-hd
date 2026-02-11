@@ -110,7 +110,7 @@ set(SOURCE_FILES_ENGINE
     "engine/read_config.cpp"
     "engine/read_config.h"
     "engine/sub_main_mouse.h"
-    "engine/InputEvent.h"
+    "engine/RecordedEvent.h"
     "sub_main.cpp"
     "sub_main.h"
     "utilities/BitmapIO.cpp"
