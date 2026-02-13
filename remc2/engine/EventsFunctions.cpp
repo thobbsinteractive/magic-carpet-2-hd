@@ -22374,6 +22374,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 				v14 = v13 + str_unk_1804B0ar.dword_0x82;
 				v15 = 1;
 				str_unk_1804B0ar.dword_0x82 = v14;
+				//Find next alive player
 				while (v15 < 8 && !D41A0_0.array_0x2BDE[v15].byte_0x006_2BE4_11236)
 				{
 					v16 = D41A0_0.NumberOfPlayers_0xe;
