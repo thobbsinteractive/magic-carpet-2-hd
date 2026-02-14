@@ -31416,27 +31416,13 @@ uint8_t testarraymain[168] = {
 int resindex_begin = 0;
 
 //----- (00046830) --------------------------------------------------------
-void sub_46830_main_loop(unsigned __int16 a3)//227830
+void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 {//graphics already inited
-  //int result; // eax
-
-  //int8_t* v4; // eax
-	int v5; // edx
-	bool isSecretLevel; // al
+	bool isSecretLevel;
 	bool skipMenus = false;
 	int16_t setLevel = -1;
 	std::string customLevelPath = "";
-	//unsigned __int8 v8; // dl
-	unsigned __int8 v9; // al
-	unsigned __int8 v10; // al
-	//uint8_t* v11; // eax
-	//char v12; // ch
-	Type_SecretMapScreenPortals_E2970* v13; // eax
 
-	// fix if begin
-	v5 = 0;
-	// end
-	//x_D41A0_BYTEARRAY_0_to_x_D41A0_BYTESTR_0();//fixing x_D41A0_BYTEARRAY_0
 	if (CommandLineParams.DoDebugSequences()) {
 		/*uint8_t origbyte20 = 0;
 		uint8_t remakebyte20 = 0;
@@ -31447,8 +31433,6 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0;//2a51a4
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 0;
-	//	  * (_BYTE *)(2124 * *(signed __int16 *)(dword_D41A0 + 12) + dword_D41A0 + 11234) = 0;
-	//x_D41A0_BYTEARRAY_0[2124 * D41A0_BYTESTR_0.word_0xc + 11234] = 0;//fix it
 
 	setLevel = CommandLineParams.GetSetLevel();
 	customLevelPath = CommandLineParams.GetCustomLevelPath();
@@ -31463,15 +31447,11 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 	{
 		g_state_monitor.Update();
 
-		//result = (int)x_D41A0_BYTEARRAY_0;
-		//D41A0_BYTESTR_0.array_0x2BE2[D41A0_BYTESTR_0.word_12]
 		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234)
 		{
-			//x_D41A0_BYTESTR_0_to_x_D41A0_BYTEARRAY_0();//fixing x_D41A0_BYTEARRAY_0
 			return;
 		}
 		sub_48350(); //fix it //229350
-		//v4=0; //fix it
 		//!!!!test area1
 		//adress 22787a
 		/*uint8_t origbyte3, remakebyte3;
@@ -31491,7 +31471,6 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 			uint32_t dword_0 = 0;
 			int v44 = 0;
 			x_DWORD_17DE38str.x_WORD_17DF04 = index - 1;
-
 			char path[512];
 			sprintf(path, "%s", unitTestsPath.c_str());
 			std::string loadFilePath = GetSaveGameFile(path, x_DWORD_17DE38str.x_WORD_17DF04);
@@ -31501,12 +31480,9 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 				DataFileIO::Read(FILE, (uint8_t*)&dword_0, 4);
 				if (dword_0 == 0xFFFFFFF7u)
 				{
-					//if (a1x->byte_25)
-					//	sub_7E640(0);
 					DataFileIO::Read(FILE, (uint8_t*)&x_DWORD_17DE38str.xx_BYTE_17DF14[(x_DWORD_17DE38str.x_WORD_17DF04 - 1)][0], 20);
 					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.player_name_57ar, 32);
 					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.savestring_89, 32);
-
 					//Load completed Secret Portals
 					for (int ii = 0; ii < 6; ii++)
 					{
@@ -31525,7 +31501,6 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DDBCx, 100);
 					DataFileIO::Close(FILE);
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
-
 					int i = 0;
 					//Reset all Portals to inactive
 					while (mapScreenPortals_E17CC[i].viewPortPosX_4)
@@ -31533,7 +31508,6 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 						mapScreenPortals_E17CC[i].activated_18 = 2;
 						i++;
 					}
-
 					i = 0;
 					//Load completed Portals
 					while (i < numLevelsCompleted && mapScreenPortals_E17CC[i].viewPortPosX_4)
@@ -31541,7 +31515,6 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 						mapScreenPortals_E17CC[i].activated_18 = 1;
 						i++;
 					}
-
 					i = 0;
 					//Set current level number
 					while (mapScreenPortals_E17CC[i].viewPortPosX_4)
@@ -31571,16 +31544,11 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 		if (!D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234)
 		{
 			Logger->debug("sub_46830_main_loop:before load scr");
-
 			isSecretLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w > 24 && x_D41A0_BYTEARRAY_4_struct.levelnumber_43w < 50;
 			sub_47FC0_load_screen(isSecretLevel);//vga smaltitle
-
 			Logger->debug("sub_46830_main_loop:load scr passed");
-
 			LevelInitGame_56A30(setLevel, customLevelPath);
-
 			Logger->debug("sub_46830_main_loop:init game level passed");
-
 			if (CommandLineParams.DoAutoChangeRes()) {
 				resindex_begin = 0;
 			}
@@ -31609,7 +31577,6 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 			{
 				if (musicAble_E37FC && musicActive_E37FD && m_iNumberOfTracks)
 				{
-					//v8 = x_D41A0_BYTEARRAY_0[196308];
 					switch (D41A0_0.terrain_2FECE.MapType) {
 					case MapType_t::Day:
 						D41A0_0.maptypeMusic_0x235 = 2;
@@ -31650,21 +31617,13 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 				sub_53CC0_close_movie();
 				EndSample_8D8F0();
 				StopMusic_8E020();
-				StopCdPlayback_86860(x_WORD_1803EC);//get graphics parametres?
+				StopCdPlayback_86860(x_WORD_1803EC);
 				RestoreSoundVolume_59BF0();
 				sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 				if (x_WORD_180660_VGA_type_resolution & 1)
-				{
-					v9 = getPaletteIndex_5BE80((TColor*)*xadatapald0dat2.colorPalette_var28, 0, 0, 0);
-					//a1 = (signed __int16 *)pdwScreenBuffer_351628;
-					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, v9);
-				}
+					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, getPaletteIndex_5BE80((TColor*)*xadatapald0dat2.colorPalette_var28, 0, 0, 0));
 				else
-				{
-					v10 = getPaletteIndex_5BE80((TColor*)*xadatapald0dat2.colorPalette_var28, 0, 0, 0);
-					//a3 = (int)pdwScreenBuffer_351628;
-					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, v10);
-				}
+					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, getPaletteIndex_5BE80((TColor*)*xadatapald0dat2.colorPalette_var28, 0, 0, 0));
 				if (x_WORD_180660_VGA_type_resolution & 1)
 					sub_90478_VGA_Blit320(maxGameFps);
 				else
@@ -31675,11 +31634,9 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 					sub_6DB50(1, 0);
 				}
 				sub_713A0();
-				//v11 = 2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0;
-				//v12 = D41A0_BYTESTR_0.array_0x2BE0[D41A0_BYTESTR_0.word_12].byte_0;
 				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 4)
 				{
-					sub_56D60(a3, 0);
+					sub_56D60(actLevel, 0);
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] = 4;
 				}
 				else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
@@ -31690,14 +31647,12 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 				}
 				else
 				{
-					//LOBYTE(a1) = v12 | 8;
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 8;
 				}
-				//BYTE1(a1) = D41A0_BYTESTR_0.array_0x2BE0[D41A0_BYTESTR_0.word_12].byte_0;
 				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x10)
 				{
-					a3 = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
-					if (a3 >= 0x18u)
+					actLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
+					if (actLevel >= 0x18u)
 					{
 						if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
 							CollectLevelStats_5C530();
@@ -31705,14 +31660,14 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 					}
 					if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
 					{
-						v13 = GetSecretAndActivedPortal_824B0(a3);
-						if (v13)
+						Type_SecretMapScreenPortals_E2970* secretsPortals = GetSecretAndActivedPortal_824B0(actLevel);
+						if (secretsPortals)
 						{
 							count_begin++;//for debug
 
-							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = v13->levelNumber_6;
+							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = secretsPortals->levelNumber_6;
 							sub_47FC0_load_screen(true);
-							LevelInitGame_56A30(a3);
+							LevelInitGame_56A30(actLevel);
 							sub_47160();
 						}
 					}
@@ -31735,7 +31690,6 @@ void sub_46830_main_loop(unsigned __int16 a3)//227830
 			}
 		}
 	}
-	//x_D41A0_BYTESTR_0_to_x_D41A0_BYTEARRAY_0();//fixing x_D41A0_BYTEARRAY_0
 }
 
 //----- (00046F50) --------------------------------------------------------
