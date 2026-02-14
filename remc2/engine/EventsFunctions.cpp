@@ -8641,7 +8641,7 @@ void SetSoundEffectAndMusicLevelCoordinates_19D60(signed int volume)//1fad60
 }
 
 //----- (0001A070) --------------------------------------------------------
-void AdjustVolume_1A070(signed int a1, __int16 a2)//1fb070
+void AdjustVolume_1A070(__int16 a2)//1fb070
 {
 	unsigned __int8 v2; // al
 	int v3; // eax
@@ -8657,6 +8657,8 @@ void AdjustVolume_1A070(signed int a1, __int16 a2)//1fb070
 	int16_t posY; // [esp+8h] [ebp-8h]
 	int16_t posX; // [esp+Ch] [ebp-4h]
 	uint8_t scale = 1;
+
+	signed int a1 = 0;
 
 	if (!DefaultResolutions())
 	{
@@ -31414,7 +31416,7 @@ uint8_t testarraymain[168] = {
 int resindex_begin = 0;
 
 //----- (00046830) --------------------------------------------------------
-void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//227830
+void sub_46830_main_loop(unsigned __int16 a3)//227830
 {//graphics already inited
   //int result; // eax
 
@@ -31639,7 +31641,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 						}
 					}
 				}
-				InGameLoop_47320(a2);
+				InGameLoop_47320();
 				if (m_ptrGameRender != nullptr)
 				{
 					delete m_ptrGameRender;
@@ -31750,7 +31752,7 @@ int debug_first_run = 0;
 int debugcounter_228320 = 0;
 
 //----- (00047320) --------------------------------------------------------
-void InGameLoop_47320(signed int a1)//228320
+void InGameLoop_47320()//228320
 {
 	/*
 	debugnextlevel++;
@@ -31817,7 +31819,7 @@ void InGameLoop_47320(signed int a1)//228320
 		//x_DWORD_DDF50_texture_adresses
 		//savetext
 		*/
-		DrawAndEventsInGame_47560(a1, GameTimerTurn_17DB54);
+		DrawAndEventsInGame_47560(GameTimerTurn_17DB54);
 		if (gameTurn < 2)
 		{
 			StopMusic_8E020();
@@ -31877,7 +31879,7 @@ void intervalsave(int index) {
 
 //long debugcounter_47560_2=0;
 //----- (00047560) --------------------------------------------------------
-void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
+void DrawAndEventsInGame_47560(int16_t turn)//228560
 {
 	SetFrameStart(std::chrono::system_clock::now());
 	if ((CommandLineParams.DoDebugafterload() == 1) && (count_begin == 1))
@@ -31915,7 +31917,7 @@ void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
 			}
 		}
 	}
-	MouseAndKeysEvents_17A00(a4, turn);
+	MouseAndKeysEvents_17A00(turn);
 	//debug
 	if (CommandLineParams.ModeDebugAfterload())
 	{

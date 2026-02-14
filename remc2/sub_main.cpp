@@ -545,15 +545,9 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		*xadataclrd0dat.colorPalette_var28 = (uint8_t*)malloc(4096);//fix it
 
-		//*xadataspellsdat.colorPalette_var28 = (uint8_t*)malloc(50000);
-
-		signed int v3; // edi
 		unsigned __int16 v4; // si
-		//skip __int16 v6; // [esp+0h] [ebp-1Ch]
-		//__int16 v7; // [esp+Ch] [ebp-10h]
 
 		//fix it
-		v3 = 0;
 		v4 = 0;
 		//fix it
 
@@ -648,7 +642,6 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 				InitNetworkInfo();
 		}
 
-		//-init 0x2a51a4 je nekde tu
 		if (CommandLineParams.DoCopySkipConfig()) {
 			x_BYTE_D41AD_skip_screen = config_skip_screen;
 		}
@@ -665,7 +658,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		Initialize();//236FDC - 23C8D0//rozdil 1E1000
 
-		sub_46830_main_loop(/*0, */v3, v4);//227830
+		sub_46830_main_loop(v4);//227830
 
 		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
 			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
