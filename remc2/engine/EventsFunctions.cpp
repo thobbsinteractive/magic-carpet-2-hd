@@ -37777,12 +37777,14 @@ void PlayerEvents_51BB0()//232bb0
 	{
 		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
 		{
-			sub_19760_set_message("Playing", 3u, 50);
+			std::string msg = "Playing Turn: " + std::to_string(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
+			sub_19760_set_message(msg.c_str(), 3u, 50);
 			memcpy(&D41A0_0.playerInputs_0x6E3E[i], m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248)->Bytes, m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248)->SizeBytes);
 		}
 		else if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
 		{
-			sub_19760_set_message("Recording", 3u, 50);
+			std::string msg = "Recording Turn: " + std::to_string(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
+			sub_19760_set_message(msg.c_str(), 3u, 50);
 			m_InputRecorder->RecordPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248, sizeof(Type_PlayerInput_0x6E3E), (uint8_t*)&D41A0_0.playerInputs_0x6E3E[i]);
 		}
 
