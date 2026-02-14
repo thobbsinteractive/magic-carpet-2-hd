@@ -309,7 +309,7 @@ void ProcessKeyboardPresses_17190()//1f8190
 					switch (LastPressedKey_1806E4)
 					{
 					case 0x19: {//p
-						if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
+						if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE) && (!IsRecordingOrPlaying()))
 							PauseUnpauseGame_18BB0();
 						LastPressedKey_1806E4 = 0;
 						break;
