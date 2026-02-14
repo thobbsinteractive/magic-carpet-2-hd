@@ -94,6 +94,14 @@ enum class MenuItem : int {
 	LangSettings = 12
 };
 
+#pragma pack (1)
+typedef struct {//lenght 18
+	uint8_t byte_0;
+	uint8_t stub[17];
+}
+type_BYTE_E25ED_0x;
+#pragma pack (16)
+
 // from sub_main
 extern int8_t LoadLevelNumber_D419C;
 extern char x_BYTE_D41AD_skip_screen;
@@ -138,6 +146,10 @@ extern Type_SoundEvent_E17CC str_E17CC_0x160[];
 extern int16_t x_WORD_17DE26;
 extern char x_BYTE_E29DE;
 extern char x_BYTE_E29E1;
+extern bool first_enter;
+extern int16_t x_WORD_17DBC4;
+extern typeTextBoxtextBoxStr_E24BCx textBoxStr_E25DC[];
+extern type_BYTE_E25ED_0x str_BYTE_E25ED_0x[];
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
