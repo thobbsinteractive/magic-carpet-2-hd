@@ -31466,21 +31466,21 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 		{
 			//Load Saved Game File
 			uint32_t numLevelsCompleted = 0;
-			int index = CommandLineParams.ModeDebugAfterload();
-			type_WORD_E1F84* a1x = &str_E23E0[index];
-			uint32_t dword_0 = 0;
-			int v44 = 0;
-			x_DWORD_17DE38str.x_WORD_17DF04 = index - 1;
+			int locSavedGameIndex = CommandLineParams.ModeDebugAfterload();
+			type_menuButtons_E1F84* buttonStr = &mapMenuButtons_E23E0[1];
+			x_DWORD_17DE38str.savedGameIndex_17DF04 = locSavedGameIndex - 1;
 			char path[512];
 			sprintf(path, "%s", unitTestsPath.c_str());
-			std::string loadFilePath = GetSaveGameFile(path, x_DWORD_17DE38str.x_WORD_17DF04);
+			std::string loadFilePath = GetSaveGameFile(path, x_DWORD_17DE38str.savedGameIndex_17DF04);
 			FILE* FILE = DataFileIO::CreateOrOpenFile(loadFilePath.c_str(), 512);
 			if (FILE != NULL)
 			{
-				DataFileIO::Read(FILE, (uint8_t*)&dword_0, 4);
-				if (dword_0 == 0xFFFFFFF7u)
+				uint32_t fileSing = 0;
+				int unknownVar = 0;
+				DataFileIO::Read(FILE, (uint8_t*)&fileSing, 4);
+				if (fileSing == 0xFFFFFFF7u)
 				{
-					DataFileIO::Read(FILE, (uint8_t*)&x_DWORD_17DE38str.xx_BYTE_17DF14[(x_DWORD_17DE38str.x_WORD_17DF04 - 1)][0], 20);
+					DataFileIO::Read(FILE, (uint8_t*)&x_DWORD_17DE38str.xx_BYTE_17DF14[(x_DWORD_17DE38str.savedGameIndex_17DF04 - 1)][0], 20);
 					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.player_name_57ar, 32);
 					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.savestring_89, 32);
 					//Load completed Secret Portals
@@ -31495,7 +31495,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 					}
 					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.m_GameSettings, 16);
 					DataFileIO::Read(FILE, (uint8_t*)&numLevelsCompleted, 4);
-					DataFileIO::Read(FILE, (uint8_t*)&v44, 4);
+					DataFileIO::Read(FILE, (uint8_t*)&unknownVar, 4);
 					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.str_611, 505);
 					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DBC8x, 500);
 					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DDBCx, 100);
@@ -31526,15 +31526,15 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 					x_DWORD_17DB70str.x_BYTE_17DB8F = 1;
 					memset(&x_DWORD_17DE28str, 0, 13);
 					x_DWORD_17DB70str.x_WORD_17DB8A = -1;
-					if (a1x->byte_25)
+					if (buttonStr->byte_25)
 					{
 						MapMenuPortalsDraw_81760();
 					}
 					else
 					{
-						x_DWORD_17DE38str.x_WORD_17DF04 = -1;
-						NewGameDialog_77350(a1x);
-						a1x->dword_4 = 2;
+						x_DWORD_17DE38str.savedGameIndex_17DF04 = -1;
+						NewGameDialog_77350(buttonStr);
+						buttonStr->dword_4 = 2;
 					}
 				}
 			}

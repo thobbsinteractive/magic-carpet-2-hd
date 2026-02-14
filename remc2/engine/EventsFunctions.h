@@ -394,7 +394,7 @@ typedef struct {//lenght 44
 	//int16_t click_40;//7
 	//int16_t nocl_42;
 }
-type_WORD_E1F84;
+type_menuButtons_E1F84;
 #pragma pack (16)
 
 // typedef struct NCB{
