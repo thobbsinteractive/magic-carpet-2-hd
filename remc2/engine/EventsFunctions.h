@@ -277,7 +277,7 @@ typedef struct {//lenght 18
 	int8_t byte_16;
 	int8_t byte_17;
 }
-type_E24BCx;
+typeTextBoxtextBoxStr_E24BCx;
 #pragma pack (16)
 
 
@@ -509,7 +509,7 @@ void ResetMouse_7B5A0();
 void FadeClearBlit_7B5D0();
 void ClearScrollDialogVars_7C020(type_str_word_26* a1x);
 char sub_7C200(uint8_t a1);
-void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3);
+void sub_7E840_draw_textbox_with_line(typeTextBoxtextBoxStr_E24BCx* testBoxStr, __int16 borderColor, __int16 lineColor);
 void CreateAnimObject_7E8D0(type_animStruct* animStruct, __int16 x1, __int16 y1, __int16 x2, __int16 y2, __int16 countX, __int16 countY);
 bool MoveAnimObject_7E9D0(x_WORD* x1, x_WORD* y1, type_animStruct* a3);
 void DrawAnimSprite_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5);

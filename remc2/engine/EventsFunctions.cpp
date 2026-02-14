@@ -106,10 +106,10 @@ x_WORD_E1F84 - ok, rewrited to str_WORD_E1F84
 x_WORD_E2008 - ok, rewrited to str_WORD_E2008 //type_WORD_E1F84
 x_WORD_E20A4 - ok, rewrites to str_WORD_E20A4
 off_E23E0 - ok, rewrited to str_E23E0
-unk_E24BCx - ok, rewrited to str_E24BCx
+unk_E24BCx - ok, rewrited to textBoxStr_E24BCx
 x_WORD_E24BE ok ? only for clock? remove it?
-unk_E24F2 - ok, rewrited to str_E24F2
-unk_E2516 - ok, rewrited to str_E2516 and str_E2570
+unk_E24F2 - ok, rewrited to textBoxStr_E24F2
+unk_E2516 - ok, rewrited to textBoxStr_E2516 and textBoxStr_E2570
 unk_E25DC - ok, rewrited to unk_E25DC
 x_BYTE_E25ED_0x - ok, rewrited to str_BYTE_E25ED_0x
 x_BYTE_E25ED_a3 - ok, rewrited to str_BYTE_E25ED_a3
@@ -140,7 +140,7 @@ level1 - can not build castle (fix wall detections)
 must revide sub_loc_1B54A and etc - some events must be fixed
 must revide sub_loc_1B37D((type_E17CC_0*)a1_6E8E);//FIX ME
 must revide PlayInfoFmv(0, 1, str_E16E0[v3x].dword_0 - 0x2b2328 + (uint8_t*)array_E1328, cutScenePath);//FIXME
-must revide if (str_E23E0[v6y].byte_23 && str_E23E0[v6y].byte_22 == str_E2516[unk_17DBA8str.unk_17DBB4+1].byte_17)// x_BYTE_E2527[18 * *((signed __int16 *)a2 + 6)] )
+must revide if (str_E23E0[v6y].byte_23 && str_E23E0[v6y].byte_22 == textBoxStr_E2516[unk_17DBA8str.unk_17DBB4+1].byte_17)// x_BYTE_E2527[18 * *((signed __int16 *)a2 + 6)] )
 must revide sub_7E9D0(&str_WORD_E20A4[v7y].word_18, &str_WORD_E20A4[v7y].word_20, str_WORD_E20A4[v7y].array_word_45);
 must revide qmemcpy(x_BYTE_E1B9C, &x_DWORD_17DE38str.x_BYTE_17DE68x[11 * sub_74515() + 1], sizeof(x_BYTE_E1B9C));
 fix this (uint8_t*)&mapScreenPortals_E17CC[ix]
@@ -3547,7 +3547,7 @@ uint8_t x_WORD_17D70Aar[7]; // weak//
 
 char byte_17D711; // weak
 
-int32_t x_DWORD_17DBB8[4]; // weak//x_DWORD_17DBB8[0]
+int32_t times_17DBB8[4]; // weak//times_17DBB8[0]
 char x_BYTE_17DBC6; // weak
 uint32_t x_DWORD_17DBC8x[125];
 
@@ -46664,17 +46664,17 @@ bool DrawFrameAnim_7E5A0(__int16 posx, __int16 posy, Type_MapScreenPortals_E17CC
 }
 
 //----- (0007E840) --------------------------------------------------------
-void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)//25f840
+void sub_7E840_draw_textbox_with_line(typeTextBoxtextBoxStr_E24BCx* testBoxStr, __int16 borderColor, __int16 lineColor)//25f840
 {
 	int i = 0;
-	if (!a1x[i].minx2_2)
+	if (!testBoxStr[i].minx2_2)
 		return;
 	do
 	{
-		if (a1x[i].minx2_2)
+		if (testBoxStr[i].minx2_2)
 		{
-			sub_81360_draw_bitmap_line(a1x[i].minx_6, a1x[i].miny_8, a1x[i].maxx_12, a1x[i].maxy_14, a3);//262360
-			sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[a1x[i].textIndex_0], a1x[i].minx2_2, (a1x[i].minx2_2 + 180), a1x[i].miny2_4, 0, 0, a2);//260cb0
+			sub_81360_draw_bitmap_line(testBoxStr[i].minx_6, testBoxStr[i].miny_8, testBoxStr[i].maxx_12, testBoxStr[i].maxy_14, lineColor);//262360
+			sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[testBoxStr[i].textIndex_0], testBoxStr[i].minx2_2, (testBoxStr[i].minx2_2 + 180), testBoxStr[i].miny2_4, 0, 0, borderColor);//260cb0
 			/*
 			Save Current Game
 			Exit Game
@@ -46695,7 +46695,7 @@ void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)/
 			*/
 		}
 		i++;
-	} while (a1x[i].minx2_2);
+	} while (testBoxStr[i].minx2_2);
 }
 
 //----- (0007E8D0) --------------------------------------------------------

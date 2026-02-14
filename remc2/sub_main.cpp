@@ -76,7 +76,7 @@ type_D404C str_D404C[5];
 
 uint8_t ar_D404C[22 * 5]//particles table*/
 /*
-//type_E24BCx str_E24BCx[32];
+//type_E24BCx textBoxStr_E24BCx[32];
 memcpy((type_E17CC_0*)str_E1328, array_E1328 , 0x100*sizeof(type_E17CC_0));
 char outname[512];
 char buffer[512];
