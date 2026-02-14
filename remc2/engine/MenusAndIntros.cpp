@@ -804,7 +804,7 @@ void Intros_76D10(char introType)//257d10
 		StopSubtitles_2EB40();
 		DisplaySubtitles_D41C1 = 0;
 		DisplaySubtitles_D41C0 = 0;
-		while (sub_9A10A_check_keyboard(/*v1*/))
+		while (sub_9A10A_check_keyboard())
 		{
 			LastPressedKey_1806E4 = 0;
 			sub_7A060_get_mouse_and_keyboard_events();
