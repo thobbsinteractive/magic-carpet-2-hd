@@ -811,7 +811,8 @@ void Intros_76D10(char introType)//257d10
 		}
 		j___delay(50);
 		sprintf(introPath, "%s/%s", cdDataPath.c_str(), "INTRO/INTRO2.DAT");
-		goto LABEL_17;
+		PlayInfoFmv(1, 1, str_E17CC_0x160, introPath);//E192C
+		break;
 	case 1:
 		PlayInfoFmv(1, 1, str_E17CC_0, introPath);
 		break;
@@ -820,7 +821,6 @@ void Intros_76D10(char introType)//257d10
 		DisplaySubtitles_D41C1 = 0;
 		DisplaySubtitles_D41C0 = 0;
 		sprintf(introPath, "%s/%s", cdDataPath.c_str(), "INTRO/INTRO2.DAT");
-	LABEL_17:
 		PlayInfoFmv(1, 1, str_E17CC_0x160, introPath);//E192C
 		break;
 	}
