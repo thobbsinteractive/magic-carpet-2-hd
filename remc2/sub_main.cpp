@@ -545,11 +545,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		*xadataclrd0dat.colorPalette_var28 = (uint8_t*)malloc(4096);//fix it
 
-		unsigned __int16 v4; // si
-
-		//fix it
-		v4 = 0;
-		//fix it
+		unsigned __int16 actLevel = 0;
 
 		//skip memset(&v6, 0, 28);//236F7F - 26D250
 		//v7 = 0;
@@ -658,7 +654,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		Initialize();//236FDC - 23C8D0//rozdil 1E1000
 
-		sub_46830_main_loop(v4);//227830
+		sub_46830_main_loop(actLevel);//227830
 
 		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
 			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
