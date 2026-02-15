@@ -1607,4 +1607,5 @@ void sub_48350();
 void sub_53CC0_close_movie();
 void sub_713A0();
 signed int ReadKeyboardKeysInMenu_7C050();
+void sub_848A0();
 #endif

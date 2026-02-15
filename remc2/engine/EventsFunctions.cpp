@@ -923,7 +923,6 @@ void sub_83B50();
 void GetSystemSpeed();
 void AddEvent2_847D0(type_entity_0x6E8E* a1, char a2, char a3, char a4);
 void sub_84880(type_str_0x3664C* a1);
-void sub_848A0();
 void sub_84EA0(uaxis_2d a1x, type_str_0x3664C* a2, char a3, __int16 a4);
 int sub_84FB0_3dim_scalar(axis_3d* a1, axis_3d* a2);
 int sub_85060(int a1);
