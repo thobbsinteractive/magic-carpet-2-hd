@@ -4490,45 +4490,22 @@ void ShowEndCredits_833C0()//2643c0
 //----- (00083850) --------------------------------------------------------
 void ShowWelcomeScreen_83850()//264850
 {
-	//signed int v0; // eax
-	signed int v1; // ebx
-	//int v2; // edx
-	//int v3; // edx
-	int v4; // esi
-	int v5; // eax
-	//int v6; // eax
-	//signed int v7; // eax
-
 	char dataPath[MAX_PATH];
-
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
-
-	//fix it
-	//v2 = 0;
-	//v3 = 0;
-	//v7 = 0;
-
-	//fix it
-
 	sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_E9C38_smalltit, 0x178E5F, 0x32B9);
 	sub_7AA70_load_and_decompres_dat_file(dataPath, *xadatapald0dat2.colorPalette_var28, 0x17C118, 0x300);
 	sub_7AA70_load_and_decompres_dat_file(cdDataPath.c_str(), nullptr, 0, 0);
-	//v0 = (int)sub_7AA70_load_and_decompres_dat_file(0, 0, 0, 0); //fix it
-	//v0 = 0;//fix it
-	v1 = 0;
-	v5 = j___clock();
-	v4 = v5;
-	//BYTE1(v5) = 0;
+	bool afterFade = false;
+	int time = j___clock();
 	LastPressedKey_1806E4 = 0;
-	while (!LastPressedKey_1806E4 && !x_WORD_180746_mouse_left_button && !x_WORD_180744_mouse_right_button && (j___clock() - v4) / 0x64u <= 0x14)
+	while (!LastPressedKey_1806E4 && !x_WORD_180746_mouse_left_button && !x_WORD_180744_mouse_right_button && (j___clock() - time) / 100 <= 20)
 	{
 		SetFrameStart(std::chrono::system_clock::now());
-
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			CopyScreen(x_DWORD_E9C38_smalltit, pdwScreenBuffer_351628, 320, 200);
 		else
 			CopyScreen(x_DWORD_E9C38_smalltit, pdwScreenBuffer_351628, 640, 480);
-		if (v1)
+		if (afterFade)
 		{
 			if (x_WORD_180660_VGA_type_resolution & 1)
 				sub_90478_VGA_Blit320(menuFps);
@@ -4537,26 +4514,25 @@ void ShowWelcomeScreen_83850()//264850
 		}
 		else
 		{
-			v1 = 1;
-			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, 0);//fix
-			sub_75200_VGA_Blit640(480, menuFps);//fix
+			afterFade = true;
+			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, 0);
+			sub_75200_VGA_Blit640(480, menuFps);
 			sub_90B27_VGA_pal_fadein_fadeout((TColor*)*xadatapald0dat2.colorPalette_var28, 0x20u, 0);
 		}
 	}
-	/*LOWORD(v6) = */sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
+	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		ClearGraphicsBuffer_72883(pdwScreenBuffer_351628, 320, 200, 0);
 	else
 		ClearGraphicsBuffer_72883(pdwScreenBuffer_351628, 640, 480, 0);
-
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_90478_VGA_Blit320(menuFps);
 	else
 		sub_75200_VGA_Blit640(480, menuFps);
-	while (sub_9A10A_check_keyboard(/*v7*/))
+	while (sub_9A10A_check_keyboard())
 	{
 		LastPressedKey_1806E4 = 0;
-		/*v7 = */sub_7A060_get_mouse_and_keyboard_events();
+		sub_7A060_get_mouse_and_keyboard_events();
 	}
 	j___delay(50);
 }
