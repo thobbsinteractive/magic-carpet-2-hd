@@ -785,13 +785,13 @@ void Intros_76D10(char introType)//257d10
 	}
 	SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);  //Set cursor to Null (Don't Draw)
 	char introPath[MAX_PATH];
-	sprintf(introPath, "%s/%s", cdDataPath.c_str(), "INTRO/INTRO.DAT");
 	switch (introType)
 	{
 	case 0:
 #ifndef debug_hide_graphics
 		ShowWelcomeScreen_83850();//frog logo and wait
 #endif
+		sprintf(introPath, "%s/%s", cdDataPath.c_str(), "INTRO/INTRO.DAT");
 		PlayInfoFmv(1, 1, str_E17CC_0, introPath);//257160 intro .. 2b27cc
 		StopSubtitles_2EB40();
 		DisplaySubtitles_D41C1 = 0;
@@ -806,6 +806,7 @@ void Intros_76D10(char introType)//257d10
 		PlayInfoFmv(1, 1, str_E17CC_0x160, introPath);//E192C
 		break;
 	case 1:
+		sprintf(introPath, "%s/%s", cdDataPath.c_str(), "INTRO/INTRO.DAT");
 		PlayInfoFmv(1, 1, str_E17CC_0, introPath);
 		break;
 	case 2:
