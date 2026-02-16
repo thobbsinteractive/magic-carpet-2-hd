@@ -533,9 +533,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 	int exitCode = 0;
 
-#ifndef _MSC_VER
 	SetTimeStart();
-#endif
 
 	try
 	{
