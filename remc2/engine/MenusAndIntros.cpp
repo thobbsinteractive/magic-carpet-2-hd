@@ -4918,28 +4918,22 @@ bool DrawAndServe_pre_sub_7B250(uint32_t var, type_menuButtons_E1F84* var2x)
 }
 
 //----- (00077980) --------------------------------------------------------
-char ExitDialog_77980(type_menuButtons_E1F84* a1x)//258980
+bool ExitDialog_77980(type_menuButtons_E1F84* menuButton)//258980
 {
-	__int16 v1; // ax
-	char v2; // bl
-	//a1 ma byt 2b2cb4
-	v1 = DrawScrollDialog_7BF20(&a1x->str_26);//draw exit dialog
-	v2 = v1;
-	if (v1 == 1)
+	__int16 exitResult = DrawScrollDialog_7BF20(&menuButton->str_26);//draw exit dialog
+	bool dialogClosed = exitResult;
+	if (exitResult == 1)//Exit Game
 	{
 		m_ExitMenuLoop_E29DC = 1;
-		D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;//duplicate command in other structure
-		//*(x_BYTE *)(2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0 + 11234) = 1;
+		D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;
 	}
-	else if (v1 == 2)
+	else if (exitResult == 2)//no Exit Game
 	{
-		v2 = 1;
-		ClearScrollDialogVars_7C020(&a1x->str_26);
+		dialogClosed = true;
+		ClearScrollDialogVars_7C020(&menuButton->str_26);
 	}
-	return v2;
+	return dialogClosed;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// E29DC: using guessed type __int16 x_WORD_E29DC;
 
 //----- (00078E00) --------------------------------------------------------
 char SetPlayerNameDialog_78E00(/*int a1, int a2, */type_menuButtons_E1F84* a3x)//259e00

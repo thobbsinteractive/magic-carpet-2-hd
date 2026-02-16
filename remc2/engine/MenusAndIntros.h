@@ -190,7 +190,7 @@ void ShowEndCredits_833C0();
 void ShowWelcomeScreen_83850();
 void DrawNetGameMapBackground_85C8B(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
 bool DrawAndServe_pre_sub_7B250(uint32_t var, type_menuButtons_E1F84* var2x);
-char ExitDialog_77980(type_menuButtons_E1F84* a1x);
+bool ExitDialog_77980(type_menuButtons_E1F84* a1x);
 char SetPlayerNameDialog_78E00(/*int a1, int a2, */type_menuButtons_E1F84* a3x);
 int sub_7F6A0(int a1, int a2, __int16 a3, __int16 a4, char* a5, int8_t* a6, unsigned __int8 a7);
 char SetJoystickDialog_79160(type_menuButtons_E1F84* a1x);
