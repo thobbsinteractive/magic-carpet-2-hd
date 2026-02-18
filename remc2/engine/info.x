@@ -4944,7 +4944,7 @@ versus
 void sub_3E360_draw_particles(uint8_t* a1, uint8_t* a2)//21f360
 
 find it
-void sub_18F80(uint8_t* a1)//1f9f80
+void HandleMouseButtons_18F80(uint8_t* a1)//1f9f80
 
 void sub_17060(__int16 a1, __int16 a2)//1f8060
 relativní x a y
@@ -5300,7 +5300,7 @@ rozdil je uz v 35ce76 - 01(06) a 05(20) - kde se to meni?
 27e201 0000447f -> 00000000
 1fa279 00000000 -> 06000000 - mouse 20  take mouse
 1fa279 void sub_191B0(__int16 a1, char a2)//1fa1b0 //set spell
-1fa0a5 void sub_18F80(uint8_t* a1)//1f9f80
+1fa0a5 void HandleMouseButtons_18F80(uint8_t* a1)//1f9f80
 1f8dd8 void sub_17A00_mouse_and_keys_events(uint8_t* a1, signed int a2, __int16 a3)//1f8a00
 
 
@@ -8098,7 +8098,7 @@ versus
 
 v113x->dword_0xA4_164x->dword_0x0_0 = D41A0_BYTESTR_0.playerInputs_0x6E3E[0].str_0x6E3E_byte5;
 
-void sub_18F80(type_str_0x6E8E* a1x)//1f9f80
+void HandleMouseButtons_18F80(type_str_0x6E8E* a1x)//1f9f80
 
 sub_191B0(6, 16);
 

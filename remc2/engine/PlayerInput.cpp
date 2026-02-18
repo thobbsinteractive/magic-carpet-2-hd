@@ -594,11 +594,15 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t turn)//1f8a00
 					LastPressedKey_1806E4 = 0;
 					break;
 				}
-				if (unk_18058Cstr.MouseButtonState_18059C & 1 && unk_18058Cstr.MouseButtonState_18059C & 2 && !disableLRButtonsMenuOpen)
+				if (unk_18058Cstr.MouseButtonState_18059C & 1 && unk_18058Cstr.MouseButtonState_18059C & 2)
 				{
-					if (v8x->life_0x8 >= 0)
+					if (!disableLRButtonsMenuOpen && v8x->life_0x8 >= 0)
 						HandleButtonClick_191B0(20, 6); //Mouse Open Map
-					unk_18058Cstr.MouseButtonState_18059C &= 0xFC;
+
+					if (disableLRButtonsMenuOpen)
+						unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
+					else
+						unk_18058Cstr.MouseButtonState_18059C &= 0xFC;
 				}
 				if (LastPressedKey_1806E4 == x_BYTE_EB39E_keys[4])
 				{
@@ -628,7 +632,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t turn)//1f8a00
 				{
 					ChangeSoundLevel_19CA0(1u);
 				}
-				sub_18F80(v8x);
+				HandleMouseButtons_18F80(v8x);
 			}
 			if (LastPressedKey_1806E4 && x_BYTE_E36DC[LastPressedKey_1806E4] == 8)
 			{
@@ -978,7 +982,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t turn)//1f8a00
 				{
 					HandleButtonClick_191B0(20, 6);
 				}
-				sub_18F80(v24x);
+				HandleMouseButtons_18F80(v24x);
 			}
 			if (LastPressedKey_1806E4 == 0x20)
 			{
@@ -2020,7 +2024,7 @@ void HandleOptionsMenuButtonClick_19A70()//1faa70
 }
 
 //----- (00018F80) --------------------------------------------------------
-void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
+void HandleMouseButtons_18F80(type_entity_0x6E8E* a1x)//1f9f80
 {
 	if (unk_18058Cstr.x_WORD_1805C0_arrow_keys & 1)
 		HandleButtonClick_191B0(6, 1);
@@ -2038,7 +2042,7 @@ void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 	{
 		if (Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[a1x->dword_0xA4_164x->str_611.SpellIndexLeft_0x451_1105]]->byte_0x3B_59 == 1)
 		{
-			if (unk_18058Cstr.MouseButtonState_18059C & 1)
+			if (unk_18058Cstr.MouseButtonState_18059C & 1) //fire left
 			{
 				HandleButtonClick_191B0(6, 16);
 				unk_18058Cstr.MouseButtonState_18059C &= 0xFE;
@@ -2058,7 +2062,7 @@ void sub_18F80(type_entity_0x6E8E* a1x)//1f9f80
 	{
 		if (Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[a1x->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107]]->byte_0x3B_59 == 1)
 		{
-			if (unk_18058Cstr.MouseButtonState_18059C & 2)
+			if (unk_18058Cstr.MouseButtonState_18059C & 2) //fire right
 			{
 				HandleButtonClick_191B0(6, 32);
 				unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
