@@ -31467,7 +31467,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 			uint32_t numLevelsCompleted = 0;
 			int locSavedGameIndex = CommandLineParams.ModeDebugAfterload();
 			type_menuButtons_E1F84* buttonStr = &mapMenuButtons_E23E0[1];
-			x_DWORD_17DE38str.savedGameIndex_17DF04 = locSavedGameIndex - 1;
+			x_DWORD_17DE38str.savedGameIndex_17DF04 = locSavedGameIndex;
 			char path[512];
 			sprintf(path, "%s", unitTestsPath.c_str());
 			std::string loadFilePath = GetSaveGameFile(path, x_DWORD_17DE38str.savedGameIndex_17DF04);
