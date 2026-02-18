@@ -594,9 +594,9 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t turn)//1f8a00
 					LastPressedKey_1806E4 = 0;
 					break;
 				}
-				if (unk_18058Cstr.MouseButtonState_18059C & 1 && unk_18058Cstr.MouseButtonState_18059C & 2 && !disableLRButtonsMenuOpen)
+				if (unk_18058Cstr.MouseButtonState_18059C & 1 && unk_18058Cstr.MouseButtonState_18059C & 2)
 				{
-					if (v8x->life_0x8 >= 0)
+					if (!disableLRButtonsMenuOpen && v8x->life_0x8 >= 0)
 						HandleButtonClick_191B0(20, 6); //Mouse Open Map
 					unk_18058Cstr.MouseButtonState_18059C &= 0xFC;
 				}
