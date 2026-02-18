@@ -495,7 +495,7 @@ engine-memory-0160-00258DDF
 
 x_DWORD_17DEE4 -mouse info
 
-uint32_t /*__cdecl*/ sub_7FAE0_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5)//260ae0
+uint32_t /*__cdecl*/ DrawText_7FAE0(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5)//260ae0
 -problem s a5
 
 *(x_DWORD *)&v86 = (int32)&v87[strlen(v87)]; - fix v87
@@ -1757,7 +1757,7 @@ dalsi cyklus 8c - ok
 sub_76300 - chyba
 
 dosbox - discoverwhich 0 276 174 0
-sub_7FAE0_draw_text(v87, v99, a4, v98, v86);
+DrawText_7FAE0(v87, v99, a4, v98, v86);
 remc2 discoverwhich 0 276 15c 0
 
 x_DWORD_17DEC0
@@ -1822,7 +1822,7 @@ pdwScreenBuffer_351628
 	20fc90 - zde se doplni titulky
 
 dosbox Kafkar	0 276 154 fe
-sub_7FAE0_draw_text(v87, v99, a4, v98, v86);
+DrawText_7FAE0(v87, v99, a4, v98, v86);
 remc2 Kafkar 0 276 154 0
 
 ebp+28 3551cc
@@ -2381,7 +2381,7 @@ sub edi,eax - 1da
 
 
 a pak tento -color ma byt nula
-void sub_7FB90_draw_text(char* textbuffer, int16_t posx, int16_t posy, uint8_t color)
+void DrawText_7FB90(char* textbuffer, int16_t posx, int16_t posy, uint8_t color)
 
 xy_DWORD_17DEC0_spritestr[0]
 se neshoduje s [34eec0]->4531c7 + 394 = 453351
@@ -2419,7 +2419,7 @@ if (a4 == 3 && x_D41A0_BYTEARRAY_4_struct.byteindex_A == 1)
 
 260ae0
 2611b1 - 801b1
-sub_7FAE0_draw_text(v87, v99, a4, v98, 0/*v86*/);//adress 261197 (80197)
+DrawText_7FAE0(v87, v99, a4, v98, 0/*v86*/);//adress 261197 (80197)
 int sub_7FCB0_draw_text_with_border(int a1, uint8_t* a2, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8)//260cb0
 25f8b1 - 7e8b1
 int sub_7E840_draw_textbox_with_line(uint16_t* a1, __int16 a2, __int16 a3)//25f840

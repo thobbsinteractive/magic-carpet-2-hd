@@ -23,7 +23,7 @@ public:
 	static size_t Read(FILE* file, uint8_t* data, uint32_t length);
 	static long FileLengthBytes(FILE* file);
 	static bool sub_55C00_TestSaveFile2(int16_t a1);
-	static bool sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelindex);
+	static bool sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelindex, bool loadRegressionTest = false);
 	static char* sub_90D3F_unload_file_array(int a1);
 	static bool sub_84250_load_file_array(int psindex);
 	static void SetCDFilePaths(const char* cdDataPath, Pathstruct pstr[]);

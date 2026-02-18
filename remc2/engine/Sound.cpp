@@ -5775,6 +5775,7 @@ void PlaySample_8F100(uint32_t flags, int16_t wavIndex, int volume, int volumePa
 		Logger->trace("PlaySample_8F100:rate:{}", (*ptrExistingStoppedSample)->playback_rate_15);
 	}
 
+	(*ptrExistingStoppedSample)->id2_19 = wavIndex;
 	AilStartSample_93B50(*ptrExistingStoppedSample);
 	(*ptrExistingStoppedSample)->flags_14 = flags;
 	(*ptrExistingStoppedSample)->id_9 = wavIndex;

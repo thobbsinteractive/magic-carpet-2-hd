@@ -27,7 +27,7 @@
     <None Remove="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="3.5.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="WixSharp_wix4" Version="2.7.1" />
   </ItemGroup>
   <ItemGroup>

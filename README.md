@@ -212,6 +212,11 @@ e.g. `void sub_19CA0_sound_proc5(unsigned __int8 a1)` was renamed to `void Chang
 - Be careful with making logic changes to the code and Test, Test, Test! I recommend playing the first level all the way though. Then the first Cave level (4) and I also recomend Level 5 as you have a nice mix of AI to kill and a cutscene at level completion.
 - Please build and run the remc2-regression-test project BEFORE making a pull request. This must pass and since it needs the game data cannot be placed in the Github Actions.
 
+## Interesting links ##
+-Blog from the very beginning of this project's development: https://github.com/turican0/remc2/wiki<br>
+-Dosbox version for data comparison: https://github.com/turican0/dosbox-x-remc2<br>
+-A project that uses the same engine but renders the image via the Godot engine: https://github.com/turican0/MagicBalls<br>
+
 ## License ##
 ### Original Source Code is Copyright 1995 Bullfrog Productions ###
 

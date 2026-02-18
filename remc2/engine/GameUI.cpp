@@ -1076,7 +1076,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 	GetFont_6FC50(FontType_D419D);
 	v73 = v15 >> 16;
 	v80x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
-	v16 = v80x->dword_0xA4_164x->str_611.array_0x333_819x.word[12];
+	v16 = v80x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[12];
 	if (v16)
 		v83 = Entities_EA3E4[v16]->word_0x2E_46;
 	//v17 = v80x->dword_0xA4_164;
@@ -1693,7 +1693,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	GetFont_6FC50(FontType_D419D);
 	v87 = v16 >> 16;
 	v102x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
-	v17 = v102x->dword_0xA4_164x->str_611.array_0x333_819x.word[12];
+	v17 = v102x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[12];
 	if (v17)
 		v93 = Entities_EA3E4[v17]->word_0x2E_46;
 	//v18 = v102x->dword_0xA4_164;
@@ -2173,9 +2173,9 @@ char sub_63570(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//244570
 	char v5; // dl
 	uint8_t v6; // al
 
-	v2x = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.word[12]];
+	v2x = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[12]];
 	v3 = 1;
-	v4x = Entities_EA3E4[a2x->dword_0xA4_164x->str_611.array_0x333_819x.word[4]];
+	v4x = Entities_EA3E4[a2x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[4]];
 	v5 = 0;
 	if (v4x > Entities_EA3E4[0] && v4x->word_0x2E_46)
 		v5 = 1;
@@ -4002,7 +4002,7 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 					}
 
 					//Calucation Spell Sub Category position
-					subCategoryIndex = a1x->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.subSpellIndex[spellIndex_D94FF[a1x->dword_0x3E6_2BE4_12228.str_611.spellIndex_0x458_1112]];
+					subCategoryIndex = a1x->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.SpellIndex[spellIndex_D94FF[a1x->dword_0x3E6_2BE4_12228.str_611.spellIndex_0x458_1112]];
 
 					posX = posX + (subCategoryWidth * subCategoryIndex
 						+ (subCategoryWidth / 2)

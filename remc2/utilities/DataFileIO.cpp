@@ -164,7 +164,7 @@ bool DataFileIO::sub_55C00_TestSaveFile2(int16_t a1)//236c00
 }
 
 //----- (00055750) --------------------------------------------------------
-bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelindex)//236750 //load in game
+bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelindex, bool loadRegressionTest)//236750 //load in game
 {
 	FILE* saveslevfile;
 	int32_t readState;
@@ -173,10 +173,21 @@ bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelinde
 	FILE* savesmapfile;
 	uint32_t filesize;
 	bool result = false;
-	sprintf(printbuffer, "%s/%s/%s%d.DAT", gameDataPath.c_str(), "SAVE", "SVER", fileindex + 1);
+	char path[512];
+	sprintf(path, "%s/%s", gameDataPath.c_str(), "SAVE");
+	if (loadRegressionTest)
+	{
+		sprintf(path, "%sregressions", CommandLineParams.GetMemimagesPath().c_str());
+		if (unitTests)
+		{
+			sprintf(path, "%s/SAVE", unitTestsPath.c_str());
+		}
+	}
+
+	sprintf(printbuffer, "%s/%s%d.DAT", path, "SVER", fileindex + 1);
 	if (DataFileIO::ReadFileAndDecompress(printbuffer, &readbuffer) == 8 && *(uint32_t*)&readbuffer[4] == levelindex && *(uint32_t*)&readbuffer[0] == 0xf)
 	{
-		sprintf(printbuffer, "%s/%s/%s%d.DAT", gameDataPath.c_str(), "SAVE", "SLEV", fileindex + 1);
+		sprintf(printbuffer, "%s/%s%d.DAT", path, "SLEV", fileindex + 1);
 		saveslevfile = DataFileIO::CreateOrOpenFile(printbuffer, 512);
 		if (saveslevfile)
 		{
@@ -188,7 +199,7 @@ bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelinde
 			DataFileIO::Close(saveslevfile);
 			if (filesize2 == sizeof(type_shadow_D41A0_BYTESTR_0) && !correctReadState)
 			{
-				sprintf(printbuffer, "%s/%s/%s%d.DAT", gameDataPath.c_str(), "SAVE", "SMAP", fileindex + 1);
+				sprintf(printbuffer, "%s/%s%d.DAT", path, "SMAP", fileindex + 1);
 				savesmapfile = DataFileIO::CreateOrOpenFile(printbuffer, 512);
 				if (savesmapfile)
 				{

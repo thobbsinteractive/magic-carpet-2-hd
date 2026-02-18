@@ -75,7 +75,7 @@ set(SOURCE_FILES_EDITOR
     "../remc2/engine/engine_support.h"
     "../remc2/engine/read_config.cpp"
     "../remc2/engine/read_config.h"
-    "../remc2/engine/InputEvent.h"
+    "../remc2/engine/RecordedEvent.h"
     "../remc2/portability/Config.cpp"
     "../remc2/portability/Config.h"
     "../remc2/portability/fcaseopen.cpp"
