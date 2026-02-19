@@ -59961,7 +59961,7 @@ bool moveTest_5D0A0(type_entity_0x6E8E* a1x)//23e0a0
 }
 
 //----- (0005D530) --------------------------------------------------------
-void sub_5D530(type_entity_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
+void sub_5D530(type_entity_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530 (better break on 23e534)
 {
 	int locIntTemp;
 	int locActSpeed;
@@ -60011,7 +60011,7 @@ void sub_5D530(type_entity_0x6E8E* a1x)//*(x_DWORD *)(a1 + 160)//23e530
 		if (a1x->actSpeed_0x82_130 < 0 && tempPitch < 0)
 			a1x->dword_0xA4_164x->pitch_0x24_36 = a1x->dword_0xA4_164x->pitch_0x157_343;
 		else if (a1x->actSpeed_0x82_130 > 0 && tempPitch < 0)
-			a1x->dword_0xA4_164x->pitch_0x24_36 = ((tempPitch * -altDiff - (my_sign32(a1x->pitch_0x1E_30 * -altDiff) * 255)) >> 8);
+			a1x->dword_0xA4_164x->pitch_0x24_36 = ((tempPitch * -altDiff - (my_sign32(tempPitch * -altDiff) * 255)) >> 8);
 		else if (a1x->actSpeed_0x82_130 > 0 && tempPitch > 0)
 			a1x->dword_0xA4_164x->pitch_0x24_36 = a1x->dword_0xA4_164x->pitch_0x157_343;
 	}
