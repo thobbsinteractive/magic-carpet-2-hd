@@ -410,7 +410,7 @@
     <ClInclude Include="engine\global_types.h" />
     <ClInclude Include="engine\GameBitmapIndexes.h" />
     <ClInclude Include="engine\IEvent.h" />
-    <ClInclude Include="engine\InputEvent.h" />
+    <ClInclude Include="engine\RecordedEvent.h" />
     <ClInclude Include="engine\LangTextIndexes.h" />
     <ClInclude Include="engine\Map.h" />
     <ClInclude Include="engine\MapColourIndexs.h" />

@@ -459,6 +459,48 @@
       <Filter>Resources\memimages\regressions\level25</Filter>
     </None>
     <None Include="regression-config.json" />
+    <None Include="memimages\regressions\afterloadtest1\sequence-002285FF-002B3A74.bin">
+      <Filter>Resources\memimages\regressions\afterloadtest1</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\sequence-002285FF-002DC4E0.bin">
+      <Filter>Resources\memimages\regressions\afterloadtest1</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\sequence-002285FF-003AA0A4.bin">
+      <Filter>Resources\memimages\regressions\afterloadtest1</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\sequence-002285FF-0034C4E0.bin">
+      <Filter>Resources\memimages\regressions\afterloadtest1</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\sequence-002285FF-003514B0.bin">
+      <Filter>Resources\memimages\regressions\afterloadtest1</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\sequence-002285FF-00356038.bin">
+      <Filter>Resources\memimages\regressions\afterloadtest1</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\SAVE\SAVE1.GAM">
+      <Filter>Resources\memimages\regressions\afterloadtest1\SAVE</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\SAVE\SAVE2.GAM">
+      <Filter>Resources\memimages\regressions\afterloadtest1\SAVE</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\SAVE\SLEV1.DAT">
+      <Filter>Resources\memimages\regressions\afterloadtest1\SAVE</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\SAVE\SLEV2.DAT">
+      <Filter>Resources\memimages\regressions\afterloadtest1\SAVE</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\SAVE\SMAP1.DAT">
+      <Filter>Resources\memimages\regressions\afterloadtest1\SAVE</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\SAVE\SMAP2.DAT">
+      <Filter>Resources\memimages\regressions\afterloadtest1\SAVE</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\SAVE\SVER1.DAT">
+      <Filter>Resources\memimages\regressions\afterloadtest1\SAVE</Filter>
+    </None>
+    <None Include="memimages\regressions\afterloadtest1\SAVE\SVER2.DAT">
+      <Filter>Resources\memimages\regressions\afterloadtest1\SAVE</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -544,6 +586,12 @@
     </Filter>
     <Filter Include="Resources\memimages\regressions\level25">
       <UniqueIdentifier>{27646b3f-3491-4127-b277-be0260d8bba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\memimages\regressions\afterloadtest1">
+      <UniqueIdentifier>{315e6b15-7ada-430b-9a0d-1f685b7beeb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\memimages\regressions\afterloadtest1\SAVE">
+      <UniqueIdentifier>{79c567ba-ed9c-458b-a071-d3f4344a6b37}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

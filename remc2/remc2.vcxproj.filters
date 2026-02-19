@@ -315,7 +315,7 @@
     <ClInclude Include="portability\MouseInputMapping.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
-    <ClInclude Include="engine\InputEvent.h">
+    <ClInclude Include="engine\RecordedEvent.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
     <ClInclude Include="engine\MenuState.h">

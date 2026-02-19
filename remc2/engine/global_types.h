@@ -132,12 +132,12 @@ typedef struct {//lenght 18
 }type_str_0x1AC_428;
 
 typedef struct {
-	uint8_t subSpellIndex[26];
+	uint8_t SpellIndex[26];
 }
 type_8_1a;
 
 typedef struct {
-	int16_t word[26];
+	int16_t SpellEnabled[26];
 	//uint16_t word_2279;
 }
 type_16_1a;
