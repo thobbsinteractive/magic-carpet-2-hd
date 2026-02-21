@@ -3137,7 +3137,7 @@ eax+ 333
 tj.
 35932f-> 99
 *(*(int32_t*)(v3 + 164)+ 333)
-235cd9 int sub_54A50(unsigned __int16 a1, int a2)//235a50
+235cd9 int InitialiseSpells_54A50(unsigned __int16 a1, int a2)//235a50
 	*(_WORD *)(a2 + 2103) = result;
 
 *(x_WORD *)(x_D41A0_BYTEARRAY_0 + 11230 + 1817) = 1;
@@ -3411,7 +3411,7 @@ versus
 uint8_t unk_D83AC[100]; // weak//2a93ac
 uint8_t unk_F42B0[ 470]; // weak//2c52b0
 
-235cd1 call int sub_54A50(unsigned __int16 a1, uint8_t* a2)//235a50
+235cd1 call int InitialiseSpells_54A50(unsigned __int16 a1, uint8_t* a2)//235a50
 aaaaa
 
 23dfb1 call void sub_5CF40(uint8_t* a1, char a2)//23df40
@@ -3428,7 +3428,7 @@ unk_F42B0+819
 unk_F42B0 versus 2c52b0
 363286+a4=36332A->358ffc+ 333(35932f)->010001
 
-sub_54A50 a2 versus 358c16
+InitialiseSpells_54A50 a2 versus 358c16
 v0 = x_D41A0_BYTEARRAY_0 + 11230(2BDE)= 358c16;
 versus
 x_D41A0_BYTEARRAY_0=356038
@@ -3439,7 +3439,7 @@ tj.
 x_D41A0_BYTEARRAY_0 + 11230+ 719=x_D41A0_BYTEARRAY_0 + 11230+ 3e6  + 333
 x_D41A0_BYTEARRAY_0 + 11230+ 3e6 je *(int32_t*)(a1 + 164)
 
-void sub_54A50(unsigned __int16 a1, uint8_t* a2)//235a50
+void InitialiseSpells_54A50(unsigned __int16 a1, uint8_t* a2)//235a50
 
 x_WORD_D93C0_bldgprmbuffer[2+ 13d+v5];
 versus
@@ -5606,7 +5606,7 @@ sub_82C20 - draw end level info
 
 fix void sub_53160()//234160
 
-fix void sub_54A50(unsigned __int16 a1, uint8_t* a2)//235a50
+fix void InitialiseSpells_54A50(unsigned __int16 a1, uint8_t* a2)//235a50
 
 (int)&D41A0_BYTESTR_0.array_0x2BDE[0].struct_0x649_2BDE_12839.array_0x7E7_2BDE_13253-(int)&D41A0_BYTESTR_0.array_0x2BDE[0].struct_0x649_2BDE_12839+0x649
 
@@ -5850,7 +5850,7 @@ dword_0x3E6_2BE4_12228 musi byt struktura ne ukazatel
 (uint8_t*)&D41A0_BYTESTR_0+0x3417 0xff
 (uint8_t*)x_D41A0_BYTEARRAY_0+0x3417 0x01
 
-test sub_54A50
+test InitialiseSpells_54A50
 
 x_D41A0_BYTEARRAY_0 + 11230 + 2103
 
@@ -6590,9 +6590,9 @@ versus
 char sub_780F0_load_game_dialog(uint8_t* a1)//0x2590f0
 
 tady se v kopii nastavi -1
-void sub_54A50(unsigned __int16 a1, int v0index/*uint8_t* a2*/)//235a50
+void InitialiseSpells_54A50(unsigned __int16 a1, int v0index/*uint8_t* a2*/)//235a50
 
-sub_54A50
+InitialiseSpells_54A50
 
 1815+2==1817-611 0x719 0x4b6
 2024+1==2025-611 0x7e9 0x586
@@ -6612,7 +6612,7 @@ array_0x367_871x - ok
 
 
 test
-void sub_54A50(unsigned __int16 a1, int v0index/*uint8_t* a2*/)//235a50
+void InitialiseSpells_54A50(unsigned __int16 a1, int v0index/*uint8_t* a2*/)//235a50
 
 (uint8_t*)&x_D41A0_BYTEARRAY_4_struct+0x749 0x00
 versus
