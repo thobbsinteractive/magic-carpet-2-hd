@@ -106,10 +106,10 @@ x_WORD_E1F84 - ok, rewrited to str_WORD_E1F84
 x_WORD_E2008 - ok, rewrited to str_WORD_E2008 //type_WORD_E1F84
 x_WORD_E20A4 - ok, rewrites to str_WORD_E20A4
 off_E23E0 - ok, rewrited to str_E23E0
-unk_E24BCx - ok, rewrited to str_E24BCx
+unk_E24BCx - ok, rewrited to textBoxStr_E24BCx
 x_WORD_E24BE ok ? only for clock? remove it?
-unk_E24F2 - ok, rewrited to str_E24F2
-unk_E2516 - ok, rewrited to str_E2516 and str_E2570
+unk_E24F2 - ok, rewrited to textBoxStr_E24F2
+unk_E2516 - ok, rewrited to textBoxStr_E2516 and textBoxStr_E2570
 unk_E25DC - ok, rewrited to unk_E25DC
 x_BYTE_E25ED_0x - ok, rewrited to str_BYTE_E25ED_0x
 x_BYTE_E25ED_a3 - ok, rewrited to str_BYTE_E25ED_a3
@@ -140,7 +140,7 @@ level1 - can not build castle (fix wall detections)
 must revide sub_loc_1B54A and etc - some events must be fixed
 must revide sub_loc_1B37D((type_E17CC_0*)a1_6E8E);//FIX ME
 must revide PlayInfoFmv(0, 1, str_E16E0[v3x].dword_0 - 0x2b2328 + (uint8_t*)array_E1328, cutScenePath);//FIXME
-must revide if (str_E23E0[v6y].byte_23 && str_E23E0[v6y].byte_22 == str_E2516[unk_17DBA8str.unk_17DBB4+1].byte_17)// x_BYTE_E2527[18 * *((signed __int16 *)a2 + 6)] )
+must revide if (str_E23E0[v6y].byte_23 && str_E23E0[v6y].byte_22 == textBoxStr_E2516[unk_17DBA8str.unk_17DBB4+1].byte_17)// x_BYTE_E2527[18 * *((signed __int16 *)a2 + 6)] )
 must revide sub_7E9D0(&str_WORD_E20A4[v7y].word_18, &str_WORD_E20A4[v7y].word_20, str_WORD_E20A4[v7y].array_word_45);
 must revide qmemcpy(x_BYTE_E1B9C, &x_DWORD_17DE38str.x_BYTE_17DE68x[11 * sub_74515() + 1], sizeof(x_BYTE_E1B9C));
 fix this (uint8_t*)&mapScreenPortals_E17CC[ix]
@@ -923,7 +923,6 @@ void sub_83B50();
 void GetSystemSpeed();
 void AddEvent2_847D0(type_entity_0x6E8E* a1, char a2, char a3, char a4);
 void sub_84880(type_str_0x3664C* a1);
-void sub_848A0();
 void sub_84EA0(uaxis_2d a1x, type_str_0x3664C* a2, char a3, __int16 a4);
 int sub_84FB0_3dim_scalar(axis_3d* a1, axis_3d* a2);
 int sub_85060(int a1);
@@ -3547,7 +3546,7 @@ uint8_t x_WORD_17D70Aar[7]; // weak//
 
 char byte_17D711; // weak
 
-int32_t x_DWORD_17DBB8[4]; // weak//x_DWORD_17DBB8[0]
+int32_t times_17DBB8[4]; // weak//times_17DBB8[0]
 char x_BYTE_17DBC6; // weak
 uint32_t x_DWORD_17DBC8x[125];
 
@@ -8641,7 +8640,7 @@ void SetSoundEffectAndMusicLevelCoordinates_19D60(signed int volume)//1fad60
 }
 
 //----- (0001A070) --------------------------------------------------------
-void AdjustVolume_1A070(signed int a1, __int16 a2)//1fb070
+void AdjustVolume_1A070(__int16 a2)//1fb070
 {
 	unsigned __int8 v2; // al
 	int v3; // eax
@@ -8657,6 +8656,8 @@ void AdjustVolume_1A070(signed int a1, __int16 a2)//1fb070
 	int16_t posY; // [esp+8h] [ebp-8h]
 	int16_t posX; // [esp+Ch] [ebp-4h]
 	uint8_t scale = 1;
+
+	signed int a1 = 0;
 
 	if (!DefaultResolutions())
 	{
@@ -31416,27 +31417,13 @@ uint8_t testarraymain[168] = {
 int resindex_begin = 0;
 
 //----- (00046830) --------------------------------------------------------
-void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//227830
+void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 {//graphics already inited
-  //int result; // eax
-
-  //int8_t* v4; // eax
-	int v5; // edx
-	bool isSecretLevel; // al
+	bool isSecretLevel;
 	bool skipMenus = false;
 	int16_t setLevel = -1;
 	std::string customLevelPath = "";
-	//unsigned __int8 v8; // dl
-	unsigned __int8 v9; // al
-	unsigned __int8 v10; // al
-	//uint8_t* v11; // eax
-	//char v12; // ch
-	Type_SecretMapScreenPortals_E2970* v13; // eax
 
-	// fix if begin
-	v5 = 0;
-	// end
-	//x_D41A0_BYTEARRAY_0_to_x_D41A0_BYTESTR_0();//fixing x_D41A0_BYTEARRAY_0
 	if (CommandLineParams.DoDebugSequences()) {
 		/*uint8_t origbyte20 = 0;
 		uint8_t remakebyte20 = 0;
@@ -31447,8 +31434,6 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0;//2a51a4
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 0;
-	//	  * (_BYTE *)(2124 * *(signed __int16 *)(dword_D41A0 + 12) + dword_D41A0 + 11234) = 0;
-	//x_D41A0_BYTEARRAY_0[2124 * D41A0_BYTESTR_0.word_0xc + 11234] = 0;//fix it
 
 	setLevel = CommandLineParams.GetSetLevel();
 	customLevelPath = CommandLineParams.GetCustomLevelPath();
@@ -31463,15 +31448,11 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 	{
 		g_state_monitor.Update();
 
-		//result = (int)x_D41A0_BYTEARRAY_0;
-		//D41A0_BYTESTR_0.array_0x2BE2[D41A0_BYTESTR_0.word_12]
 		if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234)
 		{
-			//x_D41A0_BYTESTR_0_to_x_D41A0_BYTEARRAY_0();//fixing x_D41A0_BYTEARRAY_0
 			return;
 		}
 		sub_48350(); //fix it //229350
-		//v4=0; //fix it
 		//!!!!test area1
 		//adress 22787a
 		/*uint8_t origbyte3, remakebyte3;
@@ -31486,27 +31467,23 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 		{
 			//Load Saved Game File
 			uint32_t numLevelsCompleted = 0;
-			int index = CommandLineParams.ModeDebugAfterload();
-			type_WORD_E1F84* a1x = &str_E23E0[index];
-			uint32_t dword_0 = 0;
-			int v44 = 0;
-			x_DWORD_17DE38str.x_WORD_17DF04 = index - 1;
-
+			int locSavedGameIndex = CommandLineParams.ModeDebugAfterload();
+			type_menuButtons_E1F84* buttonStr = &mapMenuButtons_E23E0[1];
+			x_DWORD_17DE38str.savedGameIndex_17DF04 = locSavedGameIndex;
 			char path[512];
 			sprintf(path, "%s", unitTestsPath.c_str());
-			std::string loadFilePath = GetSaveGameFile(path, x_DWORD_17DE38str.x_WORD_17DF04);
+			std::string loadFilePath = GetSaveGameFile(path, x_DWORD_17DE38str.savedGameIndex_17DF04);
 			FILE* FILE = DataFileIO::CreateOrOpenFile(loadFilePath.c_str(), 512);
 			if (FILE != NULL)
 			{
-				DataFileIO::Read(FILE, (uint8_t*)&dword_0, 4);
-				if (dword_0 == 0xFFFFFFF7u)
+				uint32_t fileSing = 0;
+				int unknownVar = 0;
+				DataFileIO::Read(FILE, (uint8_t*)&fileSing, 4);
+				if (fileSing == 0xFFFFFFF7u)
 				{
-					//if (a1x->byte_25)
-					//	sub_7E640(0);
-					DataFileIO::Read(FILE, (uint8_t*)&x_DWORD_17DE38str.xx_BYTE_17DF14[(x_DWORD_17DE38str.x_WORD_17DF04 - 1)][0], 20);
+					DataFileIO::Read(FILE, (uint8_t*)&x_DWORD_17DE38str.xx_BYTE_17DF14[(x_DWORD_17DE38str.savedGameIndex_17DF04 - 1)][0], 20);
 					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.player_name_57ar, 32);
 					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.savestring_89, 32);
-
 					//Load completed Secret Portals
 					for (int ii = 0; ii < 6; ii++)
 					{
@@ -31519,13 +31496,12 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 					}
 					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.m_GameSettings, 16);
 					DataFileIO::Read(FILE, (uint8_t*)&numLevelsCompleted, 4);
-					DataFileIO::Read(FILE, (uint8_t*)&v44, 4);
+					DataFileIO::Read(FILE, (uint8_t*)&unknownVar, 4);
 					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.str_611, 505);
 					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DBC8x, 500);
 					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DDBCx, 100);
 					DataFileIO::Close(FILE);
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
-
 					int i = 0;
 					//Reset all Portals to inactive
 					while (mapScreenPortals_E17CC[i].viewPortPosX_4)
@@ -31533,7 +31509,6 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 						mapScreenPortals_E17CC[i].activated_18 = 2;
 						i++;
 					}
-
 					i = 0;
 					//Load completed Portals
 					while (i < numLevelsCompleted && mapScreenPortals_E17CC[i].viewPortPosX_4)
@@ -31541,7 +31516,6 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 						mapScreenPortals_E17CC[i].activated_18 = 1;
 						i++;
 					}
-
 					i = 0;
 					//Set current level number
 					while (mapScreenPortals_E17CC[i].viewPortPosX_4)
@@ -31553,15 +31527,15 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 					x_DWORD_17DB70str.x_BYTE_17DB8F = 1;
 					memset(&x_DWORD_17DE28str, 0, 13);
 					x_DWORD_17DB70str.x_WORD_17DB8A = -1;
-					if (a1x->byte_25)
+					if (buttonStr->byte_25)
 					{
 						MapMenuPortalsDraw_81760();
 					}
 					else
 					{
-						x_DWORD_17DE38str.x_WORD_17DF04 = -1;
-						NewGameDialog_77350(a1x);
-						a1x->dword_4 = 2;
+						x_DWORD_17DE38str.savedGameIndex_17DF04 = -1;
+						NewGameDialog_77350(buttonStr);
+						buttonStr->dword_4 = 2;
 					}
 				}
 			}
@@ -31571,16 +31545,11 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 		if (!D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234)
 		{
 			Logger->debug("sub_46830_main_loop:before load scr");
-
 			isSecretLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w > 24 && x_D41A0_BYTEARRAY_4_struct.levelnumber_43w < 50;
 			sub_47FC0_load_screen(isSecretLevel);//vga smaltitle
-
 			Logger->debug("sub_46830_main_loop:load scr passed");
-
 			LevelInitGame_56A30(setLevel, customLevelPath);
-
 			Logger->debug("sub_46830_main_loop:init game level passed");
-
 			if (CommandLineParams.DoAutoChangeRes()) {
 				resindex_begin = 0;
 			}
@@ -31609,7 +31578,6 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 			{
 				if (musicAble_E37FC && musicActive_E37FD && m_iNumberOfTracks)
 				{
-					//v8 = x_D41A0_BYTEARRAY_0[196308];
 					switch (D41A0_0.terrain_2FECE.MapType) {
 					case MapType_t::Day:
 						D41A0_0.maptypeMusic_0x235 = 2;
@@ -31641,7 +31609,7 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 						}
 					}
 				}
-				InGameLoop_47320(a2);
+				InGameLoop_47320();
 				if (m_ptrGameRender != nullptr)
 				{
 					delete m_ptrGameRender;
@@ -31650,21 +31618,13 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 				sub_53CC0_close_movie();
 				EndSample_8D8F0();
 				StopMusic_8E020();
-				StopCdPlayback_86860(x_WORD_1803EC);//get graphics parametres?
+				StopCdPlayback_86860(x_WORD_1803EC);
 				RestoreSoundVolume_59BF0();
 				sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 				if (x_WORD_180660_VGA_type_resolution & 1)
-				{
-					v9 = getPaletteIndex_5BE80((TColor*)*xadatapald0dat2.colorPalette_var28, 0, 0, 0);
-					//a1 = (signed __int16 *)pdwScreenBuffer_351628;
-					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, v9);
-				}
+					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, getPaletteIndex_5BE80((TColor*)*xadatapald0dat2.colorPalette_var28, 0, 0, 0));
 				else
-				{
-					v10 = getPaletteIndex_5BE80((TColor*)*xadatapald0dat2.colorPalette_var28, 0, 0, 0);
-					//a3 = (int)pdwScreenBuffer_351628;
-					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, v10);
-				}
+					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, getPaletteIndex_5BE80((TColor*)*xadatapald0dat2.colorPalette_var28, 0, 0, 0));
 				if (x_WORD_180660_VGA_type_resolution & 1)
 					sub_90478_VGA_Blit320(maxGameFps);
 				else
@@ -31675,11 +31635,9 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 					sub_6DB50(1, 0);
 				}
 				sub_713A0();
-				//v11 = 2124 * D41A0_BYTESTR_0.word_0xc + x_D41A0_BYTEARRAY_0;
-				//v12 = D41A0_BYTESTR_0.array_0x2BE0[D41A0_BYTESTR_0.word_12].byte_0;
 				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 4)
 				{
-					sub_56D60(a3, 0);
+					sub_56D60(actLevel, 0);
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] = 4;
 				}
 				else if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
@@ -31690,14 +31648,12 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 				}
 				else
 				{
-					//LOBYTE(a1) = v12 | 8;
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 8;
 				}
-				//BYTE1(a1) = D41A0_BYTESTR_0.array_0x2BE0[D41A0_BYTESTR_0.word_12].byte_0;
 				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x10)
 				{
-					a3 = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
-					if (a3 >= 0x18u)
+					actLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
+					if (actLevel >= 0x18u)
 					{
 						if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
 							CollectLevelStats_5C530();
@@ -31705,14 +31661,14 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 					}
 					if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 2)
 					{
-						v13 = GetSecretAndActivedPortal_824B0(a3);
-						if (v13)
+						Type_SecretMapScreenPortals_E2970* secretsPortals = GetSecretAndActivedPortal_824B0(actLevel);
+						if (secretsPortals)
 						{
 							count_begin++;//for debug
 
-							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = v13->levelNumber_6;
+							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = secretsPortals->levelNumber_6;
 							sub_47FC0_load_screen(true);
-							LevelInitGame_56A30(a3);
+							LevelInitGame_56A30(actLevel);
 							sub_47160();
 						}
 					}
@@ -31735,7 +31691,6 @@ void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3)//2
 			}
 		}
 	}
-	//x_D41A0_BYTESTR_0_to_x_D41A0_BYTEARRAY_0();//fixing x_D41A0_BYTEARRAY_0
 }
 
 //----- (00046F50) --------------------------------------------------------
@@ -31752,7 +31707,7 @@ int debug_first_run = 0;
 int debugcounter_228320 = 0;
 
 //----- (00047320) --------------------------------------------------------
-void InGameLoop_47320(signed int a1)//228320
+void InGameLoop_47320()//228320
 {
 	/*
 	debugnextlevel++;
@@ -31819,7 +31774,7 @@ void InGameLoop_47320(signed int a1)//228320
 		//x_DWORD_DDF50_texture_adresses
 		//savetext
 		*/
-		DrawAndEventsInGame_47560(a1, GameTimerTurn_17DB54);
+		DrawAndEventsInGame_47560(GameTimerTurn_17DB54);
 		if (gameTurn < 2)
 		{
 			StopMusic_8E020();
@@ -31879,7 +31834,7 @@ void intervalsave(int index) {
 
 //long debugcounter_47560_2=0;
 //----- (00047560) --------------------------------------------------------
-void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
+void DrawAndEventsInGame_47560(int16_t turn)//228560
 {
 	SetFrameStart(std::chrono::system_clock::now());
 	if ((CommandLineParams.DoDebugafterload() == 1) && (count_begin == 1))
@@ -31917,7 +31872,7 @@ void DrawAndEventsInGame_47560(signed int a4, int16_t turn)//228560
 			}
 		}
 	}
-	MouseAndKeysEvents_17A00(a4, turn);
+	MouseAndKeysEvents_17A00(turn);
 	//debug
 	if (CommandLineParams.ModeDebugAfterload())
 	{
@@ -46713,17 +46668,17 @@ bool DrawFrameAnim_7E5A0(__int16 posx, __int16 posy, Type_MapScreenPortals_E17CC
 }
 
 //----- (0007E840) --------------------------------------------------------
-void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)//25f840
+void sub_7E840_draw_textbox_with_line(typeTextBoxtextBoxStr_E24BCx* testBoxStr, __int16 borderColor, __int16 lineColor)//25f840
 {
 	int i = 0;
-	if (!a1x[i].minx2_2)
+	if (!testBoxStr[i].minx2_2)
 		return;
 	do
 	{
-		if (a1x[i].minx2_2)
+		if (testBoxStr[i].minx2_2)
 		{
-			sub_81360_draw_bitmap_line(a1x[i].minx_6, a1x[i].miny_8, a1x[i].maxx_12, a1x[i].maxy_14, a3);//262360
-			sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[a1x[i].textIndex_0], a1x[i].minx2_2, (a1x[i].minx2_2 + 180), a1x[i].miny2_4, 0, 0, a2);//260cb0
+			sub_81360_draw_bitmap_line(testBoxStr[i].minx_6, testBoxStr[i].miny_8, testBoxStr[i].maxx_12, testBoxStr[i].maxy_14, lineColor);//262360
+			sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[testBoxStr[i].textIndex_0], testBoxStr[i].minx2_2, (testBoxStr[i].minx2_2 + 180), testBoxStr[i].miny2_4, 0, 0, borderColor);//260cb0
 			/*
 			Save Current Game
 			Exit Game
@@ -46744,7 +46699,7 @@ void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3)/
 			*/
 		}
 		i++;
-	} while (a1x[i].minx2_2);
+	} while (testBoxStr[i].minx2_2);
 }
 
 //----- (0007E8D0) --------------------------------------------------------

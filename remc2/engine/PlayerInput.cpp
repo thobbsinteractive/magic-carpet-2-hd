@@ -467,7 +467,7 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 }
 
 //----- (00017A00) --------------------------------------------------------
-void MouseAndKeysEvents_17A00(signed int a2, int16_t turn)//1f8a00
+void MouseAndKeysEvents_17A00(int16_t turn)//1f8a00
 {
 	type_entity_0x6E8E* v8x; // ebx
 	char v11; // dh
@@ -1012,7 +1012,7 @@ void MouseAndKeysEvents_17A00(signed int a2, int16_t turn)//1f8a00
 			goto LABEL_306;
 		case 0xA:
 		case 0xC:
-			AdjustVolume_1A070(a2, turn);
+			AdjustVolume_1A070(turn);
 			sub_1A7A0_fly_asistant();
 			goto LABEL_306;
 		case 0xD:

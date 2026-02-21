@@ -1,22 +1,22 @@
 #include "Animation.h"
 
-__int16 x_WORD_E12FC = 1; // weak
-__int16 x_WORD_D4004 = 0; // weak//index of act key in anim
-__int16 x_WORD_17DB58; // weak
+__int16 redrawTextInVideo_E12FC = 1; // weak
+__int16 soundEventIndex_D4004 = 0; // weak//index of act key in anim
+//__int16 x_WORD_17DB58; // weak
 uint16_t ActualKeyframe_17DB60; // weak
-TColor* x_DWORD_E12F4x = 0; // weak
+TColor* framebuffer_E12F4x = 0; // weak
 FILE* x_DWORD_17DB38_intro_file_handle; // weak
-uint8_t unk_17DB40[12]; // weak
+Type_17DB40 unk_17DB40str; // weak
 
 int16_t LastKeyframe_17DB46; // weak
-int16_t x_WORD_17DB48; // weak
-int16_t x_WORD_17DB4A; // weak
+int16_t height_17DB48; // weak
+int16_t width_17DB4A; // weak
 
-int x_DWORD_E1300 = 0; // weak
+int fileOffset_E1300 = 0; // weak
 
-__int16 x_WORD_17DB5A; // weak
+__int16 stopPlaybackFlag_17DB5A; // weak
 
-__int16 x_WORD_17DB5C; // weak
+__int16 allowSkipVideo_17DB5C; // weak
 
 int x_DWORD_EA3B4; // bool
 
@@ -38,47 +38,39 @@ char x_BYTE_17D738[256]; // idb
 __int16 x_WORD_E12FE = 0; // weak
 
 //----- (00076160) --------------------------------------------------------
-void PlayInfoFmv(__int16 a1, __int16 a2, Type_SoundEvent_E17CC* pSoundEvent, char* path)//sub_76160 - 257160
+void PlayInfoFmv(__int16 allowSkip, __int16 redrawText, Type_SoundEvent_E17CC* pSoundEvent, char* path)//sub_76160 - 257160
 {
-	//fix
-	//memset(&pdwScreenBuffer_351628[320 * 200], 0, 320*200);
-	//fix
-	FILE* tempfile; // eax
-
-	x_WORD_E12FC = a2;
-	x_WORD_D4004 = 0;
-	x_WORD_17DB58 = 0;
+	FILE* tempfile;
+	redrawTextInVideo_E12FC = redrawText;
+	soundEventIndex_D4004 = 0;
+	//x_WORD_17DB58 = 0;//not used
 	ActualKeyframe_17DB60 = 0;
-	x_DWORD_E12F4x = (TColor*)pdwScreenBuffer_351628;
+	framebuffer_E12F4x = (TColor*)pdwScreenBuffer_351628;
 	tempfile = DataFileIO::CreateOrOpenFile(path, 512);
 	x_DWORD_17DB38_intro_file_handle = tempfile;
 	if (tempfile)
 	{
-		DataFileIO::Read(tempfile, unk_17DB40, 12);//ecx=12
-		LastKeyframe_17DB46 = *(int16_t*)&unk_17DB40[6];
-		x_WORD_17DB48 = *(int16_t*)&unk_17DB40[8];
-		x_WORD_17DB4A = *(int16_t*)&unk_17DB40[10];
-
+		DataFileIO::Read(tempfile, (uint8_t*)&unk_17DB40str, sizeof(Type_17DB40));//ecx=12
+		LastKeyframe_17DB46 = unk_17DB40str.frameCount_6;
+		height_17DB48 = unk_17DB40str.height_8;
+		width_17DB4A = unk_17DB40str.width_alt_10;
 		x_WORD_180744_mouse_right_button = 0;
 		x_WORD_180746_mouse_left_button = 0;
-		x_DWORD_E1300 += 12;
+		fileOffset_E1300 += 12;
 		LastPressedKey_1806E4 = 0;
-		x_WORD_17DB5A = 0;
+		stopPlaybackFlag_17DB5A = 0;
 		FlvInitSet_473B0();//2283b0
-		x_WORD_17DB5C = a1;
+		allowSkipVideo_17DB5C = allowSkip;
 		do
 		{
 			SetFrameStart(std::chrono::system_clock::now());
-
-			if (x_WORD_17DB5A)
+			if (stopPlaybackFlag_17DB5A)
 				break;
 			if (ActualKeyframe_17DB60 >= LastKeyframe_17DB46 - 1)//34eb60 a 34eb46
 				break;
 			PlayIntoSoundEvents_1B280(pSoundEvent);
-			sub_75DB0();//256db0 - read header
-
-			sub_75E70();//256e70 - draw intro frame
-
+			ReadFrame_75DB0();//256db0 - read header
+			DrawFrame_75E70();//256e70 - draw intro frame
 			ActualKeyframe_17DB60++;
 		} while (LastPressedKey_1806E4 != 1);//while not key pressed
 		DataFileIO::Close(x_DWORD_17DB38_intro_file_handle);
@@ -98,11 +90,11 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 {
 	while (1)
 	{
-		if (ActualKeyframe_17DB60 != pSoundEvent[x_WORD_D4004].startFrame)
+		if (ActualKeyframe_17DB60 != pSoundEvent[soundEventIndex_D4004].startFrame)
 			break;
-		if (pSoundEvent[x_WORD_D4004].index == -1)
+		if (pSoundEvent[soundEventIndex_D4004].index == -1)
 			break;
-		switch (pSoundEvent[x_WORD_D4004].key_2)
+		switch (pSoundEvent[soundEventIndex_D4004].key_2)
 		{
 		case 'A':
 		case 'a':
@@ -111,27 +103,27 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 'B':
 		case 'b':
 			StopMusic_8E020();
-			InitMusicBank_8EAD0(pSoundEvent[x_WORD_D4004].index);
+			InitMusicBank_8EAD0(pSoundEvent[soundEventIndex_D4004].index);
 			break;
 		case 'D':
 		case 'd':
-			StartMusic_8E160(pSoundEvent[x_WORD_D4004].index, 0x64u);
+			StartMusic_8E160(pSoundEvent[soundEventIndex_D4004].index, 0x64u);
 			break;
 		case 'E':
 		case 'e':
 			EndSample_8D8F0();
-			LoadSounds_84300(pSoundEvent[x_WORD_D4004].index);
+			LoadSounds_84300(pSoundEvent[soundEventIndex_D4004].index);
 			break;
 		case 'F':
 		case 'f':
 			//Stop loop
 			if (soundAble_E3798)
-				Update_Playing_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0, 4u, 1);
+				Update_Playing_Sample_Status_8F710(0, pSoundEvent[soundEventIndex_D4004].index, 0, 4u, 1);
 			break;
 		case 'H':
 		case 'h':
 			if (soundAble_E3798)
-				PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
+				PlaySample_8F100(0, pSoundEvent[soundEventIndex_D4004].index, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			break;
 		case 'K':
 		case 'W':
@@ -140,41 +132,41 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 'L':
 		case 'l':
 			if (x_DWORD_E387C)
-				sub_8F0AB(x_FILE_E3840, /*x_DWORD_E387C, */pSoundEvent[x_WORD_D4004].index);
-			StartMusic_8E160(pSoundEvent[x_WORD_D4004].index, 0x7Fu);
+				sub_8F0AB(x_FILE_E3840, /*x_DWORD_E387C, */pSoundEvent[soundEventIndex_D4004].index);
+			StartMusic_8E160(pSoundEvent[soundEventIndex_D4004].index, 0x7Fu);
 			break;
 		case 'M':
 		case 'Z':
 		case 'm':
 		case 'z':
-			StartMusic_8E160(pSoundEvent[x_WORD_D4004].index, 0x7Fu);
+			StartMusic_8E160(pSoundEvent[soundEventIndex_D4004].index, 0x7Fu);
 			break;
 		case 'O':
 		case 'o':
 			//Materialisation Sound
 			if (soundAble_E3798)
-				Update_Playing_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x7Fu, 2u, 0);
+				Update_Playing_Sample_Status_8F710(0, pSoundEvent[soundEventIndex_D4004].index, 0x7Fu, 2u, 0);
 			break;
 		case 'P':
 		case 'p':
 			//People Sound
 			if (soundAble_E3798)
-				Update_Playing_Sample_Status_8F710(0, pSoundEvent[x_WORD_D4004].index, 0x50u, 2u, 0);
+				Update_Playing_Sample_Status_8F710(0, pSoundEvent[soundEventIndex_D4004].index, 0x50u, 2u, 0);
 			break;
 		case 'Q':
-			sub_2EBB0_draw_text_with_border_630x340(x_DWORD_E9C4C_langindexbuffer[pSoundEvent[x_WORD_D4004].index]);
+			sub_2EBB0_draw_text_with_border_630x340(x_DWORD_E9C4C_langindexbuffer[pSoundEvent[soundEventIndex_D4004].index]);
 			break;
 		case 'R':
 		case 'r':
 			if (soundAble_E3798)
-				PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 127, 64, 0x64u, -1, IfNotPlayingPlaySample);
+				PlaySample_8F100(0, pSoundEvent[soundEventIndex_D4004].index, 127, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			break;
 		case 'S':
 		case 's':
 			if (soundAble_E3798)
 			{
-				if (pSoundEvent[x_WORD_D4004].index)
-					PlaySample_8F100(0, pSoundEvent[x_WORD_D4004].index, 127, 64, 0x64u, 0, IfNotPlayingPlaySample);
+				if (pSoundEvent[soundEventIndex_D4004].index)
+					PlaySample_8F100(0, pSoundEvent[soundEventIndex_D4004].index, 127, 64, 0x64u, 0, IfNotPlayingPlaySample);
 				else
 					EndSample_8D8F0();
 			}
@@ -183,14 +175,14 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		case 't':
 			if (soundAble_E3798)
 			{
-				if (pSoundEvent[x_WORD_D4004].index)
-					AilEndSamplePlayingByIndex_8F420(0, pSoundEvent[x_WORD_D4004].index);
+				if (pSoundEvent[soundEventIndex_D4004].index)
+					AilEndSamplePlayingByIndex_8F420(0, pSoundEvent[soundEventIndex_D4004].index);
 				else
 					EndSample_8D8F0();
 			}
 			break;
 		case 'U':
-			sub_2EBB0_draw_text_with_border_630x340(x_DWORD_E9C4C_langindexbuffer[pSoundEvent[x_WORD_D4004].index]);
+			sub_2EBB0_draw_text_with_border_630x340(x_DWORD_E9C4C_langindexbuffer[pSoundEvent[soundEventIndex_D4004].index]);
 			break;
 		case 'V':
 			if (DisplaySubtitles_D41C0)
@@ -206,27 +198,27 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		default:
 			break;
 		}
-		x_WORD_D4004++;
+		soundEventIndex_D4004++;
 	}
 }
 
 //----- (00075DB0) --------------------------------------------------------
-void sub_75DB0()//256db0
+void ReadFrame_75DB0()//256db0
 {
-	x_DWORD_17D730 = x_DWORD_E1300;
+	x_DWORD_17D730 = fileOffset_E1300;
 	DataFileIO::Read(x_DWORD_17DB38_intro_file_handle, (uint8_t*)x_DWORD_17D720, 16);
 	x_WORD_17D724 = x_DWORD_17D720[1] & 0xffff;
 	x_WORD_17D726 = (x_DWORD_17D720[1] & 0xffff0000) >> 16;
 	while (x_WORD_17D724 != 0xf1fa/*-3590*/)
 		Logger->error("ERROR UNKNOWN FRAME TYPE");
 	DataFileIO::Read(x_DWORD_17DB38_intro_file_handle, x_DWORD_E9C38_smalltit, x_DWORD_17D720[0] - 16);
-	x_DWORD_E1300 += x_DWORD_17D720[0];
+	fileOffset_E1300 += x_DWORD_17D720[0];
 }
 
 int(/*__fastcall*/ *x_DWORD_17DB3C)(); // weak
 
 //----- (00075E70) --------------------------------------------------------
-void /*__fastcall*/ sub_75E70()//256e70
+void /*__fastcall*/ DrawFrame_75E70()//256e70
 {
 	//int v1; // eax
 	unsigned int v2; // ebx
@@ -260,8 +252,8 @@ void /*__fastcall*/ sub_75E70()//256e70
 	if (x_WORD_17D724 == 0xf100)
 	{
 		sub_75D70(0, x_DWORD_17D720[0] - 16);
-		/*v1 = */sub_75DB0();
-		/*a1 = 0;*/sub_75E70(/*v1*/);
+		/*v1 = */ReadFrame_75DB0();
+		/*a1 = 0;*/DrawFrame_75E70(/*v1*/);
 	}
 	else if (x_WORD_17D724 == 0xF1FA)
 	{
@@ -303,7 +295,7 @@ void /*__fastcall*/ sub_75E70()//256e70
 				strcpy(v16, v7);
 				break;
 			case 0xD:
-				memset((void*)x_DWORD_E12F4x, 0, x_WORD_17DB48 * x_WORD_17DB4A);
+				memset((void*)framebuffer_E12F4x, 0, height_17DB48 * width_17DB4A);
 				v7 = (char*)"BLACK ";
 				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
 				strcpy(v16, v7);
@@ -315,7 +307,7 @@ void /*__fastcall*/ sub_75E70()//256e70
 				strcpy(v16, v7);
 				break;
 			case 0x10:
-				sub_75D70((uint8_t*)x_DWORD_E12F4x, x_WORD_17DB4A * x_WORD_17DB48);
+				sub_75D70((uint8_t*)framebuffer_E12F4x, width_17DB4A * height_17DB48);
 				v12 = (char*)"COPY ";
 				v13 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
 				strcpy(v13, v12);
@@ -343,7 +335,7 @@ void /*__fastcall*/ sub_75E70()//256e70
 	if (v23)
 	{
 		//sub_9A0FC_wait_to_screen_beam();//27b0fc
-		if (x_WORD_E12FC)
+		if (redrawTextInVideo_E12FC)
 		{
 			/*uint8_t origbyte = 0;
 			uint8_t remakebyte = 0;
@@ -415,7 +407,7 @@ void sub_76300()//257300
 
 	v0 = 0;
 	sub_75D70((uint8_t*)&v5, 2u);
-	v2 = (uint8_t*)x_DWORD_E12F4x;//2b22f4
+	v2 = (uint8_t*)framebuffer_E12F4x;//2b22f4
 	if (v5 > 0u)
 	{
 		do
@@ -454,15 +446,15 @@ void sub_76300()//257300
 			else if (v9 & 0x4000)
 			{
 				v0--;
-				v2 += x_WORD_17DB48 * (abs(v9) - 1);
+				v2 += height_17DB48 * (abs(v9) - 1);
 			}
 			else
 			{
-				*(x_BYTE*)(v2 + x_WORD_17DB48 - 1) = v9;
+				*(x_BYTE*)(v2 + height_17DB48 - 1) = v9;
 			}
 			//result = x_WORD_17DB48;
 			v0++;
-			v2 += x_WORD_17DB48;
+			v2 += height_17DB48;
 		} while (v0 < v5);
 	}
 	//return result;
@@ -486,7 +478,7 @@ int sub_76430()
 	unsigned __int8 v10; // [esp+14h] [ebp-4h]
 
 	sub_75D70((uint8_t*)&v6, 2u);
-	v0 = x_WORD_17DB48 * v6 + (uint8_t*)x_DWORD_E12F4x;
+	v0 = height_17DB48 * v6 + (uint8_t*)framebuffer_E12F4x;
 	sub_75D70((uint8_t*)&v6, 2u);
 	v5 = 0;
 	result = 0;
@@ -520,7 +512,7 @@ int sub_76430()
 				++v3;
 			}
 			++v5;
-			v0 += (unsigned __int16)x_WORD_17DB48;
+			v0 += (unsigned __int16)height_17DB48;
 			result = v5;
 		} while ((unsigned __int16)v5 < v6);
 	}
@@ -541,17 +533,17 @@ int sub_76540()//257540
 	unsigned __int8 v5; // [esp+4h] [ebp-8h]
 	char v6; // [esp+8h] [ebp-4h]
 
-	v0 = (uint8_t*)x_DWORD_E12F4x;
+	v0 = (uint8_t*)framebuffer_E12F4x;
 	v4 = 0;
 	while (1)
 	{
 		result = v4;
-		if (v4 >= x_WORD_17DB4A)
+		if (v4 >= width_17DB4A)
 			break;
 		v1 = (char*)v0;
 		v2 = 0;
 		sub_75D70(0, 1u);
-		while (v2 < x_WORD_17DB48)
+		while (v2 < height_17DB48)
 		{
 			sub_75D70((uint8_t*)&v6, 1u);
 			if (v6 >= 0)
@@ -571,7 +563,7 @@ int sub_76540()//257540
 			v1 += v6;
 		}
 		++v4;
-		v0 += x_WORD_17DB48;
+		v0 += height_17DB48;
 	}
 	return result;
 }
@@ -585,11 +577,11 @@ void sub_75CB0()//256cb0
 {
 	if (x_WORD_E12FE && sub_473E0())
 	{
-		x_WORD_17DB5A = 1;
+		stopPlaybackFlag_17DB5A = 1;
 	}
-	else if (x_WORD_17DB5C && (LastPressedKey_1806E4 || x_WORD_180746_mouse_left_button || x_WORD_180744_mouse_right_button))
+	else if (allowSkipVideo_17DB5C && (LastPressedKey_1806E4 || x_WORD_180746_mouse_left_button || x_WORD_180744_mouse_right_button))
 	{
-		x_WORD_17DB5A = 1;
+		stopPlaybackFlag_17DB5A = 1;
 	}
 	else
 	{
@@ -597,12 +589,12 @@ void sub_75CB0()//256cb0
 		{
 			if (x_WORD_E12FE && sub_473E0())
 			{
-				x_WORD_17DB5A = 1;
+				stopPlaybackFlag_17DB5A = 1;
 				return;
 			}
-			if (x_WORD_17DB5C && (LastPressedKey_1806E4 || x_WORD_180746_mouse_left_button || x_WORD_180744_mouse_right_button))
+			if (allowSkipVideo_17DB5C && (LastPressedKey_1806E4 || x_WORD_180746_mouse_left_button || x_WORD_180744_mouse_right_button))
 			{
-				x_WORD_17DB5A = 1;
+				stopPlaybackFlag_17DB5A = 1;
 				return;
 			}
 		}
