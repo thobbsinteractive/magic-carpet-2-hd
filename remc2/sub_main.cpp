@@ -76,7 +76,7 @@ type_D404C str_D404C[5];
 
 uint8_t ar_D404C[22 * 5]//particles table*/
 /*
-//type_E24BCx str_E24BCx[32];
+//type_E24BCx textBoxStr_E24BCx[32];
 memcpy((type_E17CC_0*)str_E1328, array_E1328 , 0x100*sizeof(type_E17CC_0));
 char outname[512];
 char buffer[512];
@@ -533,9 +533,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 	int exitCode = 0;
 
-#ifndef _MSC_VER
 	SetTimeStart();
-#endif
 
 	try
 	{
@@ -545,17 +543,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		*xadataclrd0dat.colorPalette_var28 = (uint8_t*)malloc(4096);//fix it
 
-		//*xadataspellsdat.colorPalette_var28 = (uint8_t*)malloc(50000);
-
-		signed int v3; // edi
-		unsigned __int16 v4; // si
-		//skip __int16 v6; // [esp+0h] [ebp-1Ch]
-		//__int16 v7; // [esp+Ch] [ebp-10h]
-
-		//fix it
-		v3 = 0;
-		v4 = 0;
-		//fix it
+		unsigned __int16 actLevel = 0;
 
 		//skip memset(&v6, 0, 28);//236F7F - 26D250
 		//v7 = 0;
@@ -648,7 +636,6 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 				InitNetworkInfo();
 		}
 
-		//-init 0x2a51a4 je nekde tu
 		if (CommandLineParams.DoCopySkipConfig()) {
 			x_BYTE_D41AD_skip_screen = config_skip_screen;
 		}
@@ -665,7 +652,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		Initialize();//236FDC - 23C8D0//rozdil 1E1000
 
-		sub_46830_main_loop(/*0, */v3, v4);//227830
+		sub_46830_main_loop(actLevel);//227830
 
 		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
 			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))

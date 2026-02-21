@@ -152,7 +152,7 @@ typedef struct//lenght 613 // end 17E09D
 	__int16 x_WORD_17DEFE; // weak
 	__int16 x_WORD_17DF00; // weak
 	uint16_t palMulti_17DF02; // weak
-	int16_t x_WORD_17DF04; // selected save game number to load/save (set in load/save_game_dialog)
+	int16_t savedGameIndex_17DF04; // selected save game number to load/save (set in load/save_game_dialog)
 	__int16 x_WORD_17DF06; // weak
 	__int16 x_WORD_17DF08; // weak
 	__int16 x_WORD_17DF0A; // weak

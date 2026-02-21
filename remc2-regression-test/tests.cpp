@@ -12,7 +12,7 @@ int CountFailedRegressionTests() {
 	Logger->info("--- Afterload regressions tests ---");
 
 	// run_regtest(level,afterload,indexOfRegression,indexOfSavePosition)
-	if (run_regtest(2, true, 1, 3) != 0) numFailedTests++;
+	if (run_regtest(2, true, 1, 2) != 0) numFailedTests++;
 
 	Logger->info("\n--- Level regressions tests ---");
 	for (int i = 1; i <= 25; i++)

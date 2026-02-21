@@ -277,7 +277,7 @@ typedef struct {//lenght 18
 	int8_t byte_16;
 	int8_t byte_17;
 }
-type_E24BCx;
+typeTextBoxtextBoxStr_E24BCx;
 #pragma pack (16)
 
 
@@ -394,7 +394,7 @@ typedef struct {//lenght 44
 	//int16_t click_40;//7
 	//int16_t nocl_42;
 }
-type_WORD_E1F84;
+type_menuButtons_E1F84;
 #pragma pack (16)
 
 // typedef struct NCB{
@@ -446,7 +446,7 @@ int16_t sub_16730(/*int a1,*/ type_entity_0x6E8E* a2, char a3); // weak
 int16_t sub_16CA0(baxis_2d* a2, __int16 a3, char a4); // weak
 void sub_17A00(int8_t* a1, signed int a2, __int16 a3); // weak
 int _wcpp_1_unwind_leave__120(int32_t a, int32_t b, int32_t c);// weak
-void AdjustVolume_1A070(signed int a1, __int16 a2);
+void AdjustVolume_1A070(__int16 a2);
 void JUMPOUT(int* adr);
 void JUMPOUT(int32_t cs, int* adr);
 void JUMPOUT(int32_t cs, int a, int* adr);
@@ -469,7 +469,7 @@ void sub_44EE0_smooth_tiles(/*int a1, */uaxis_2d a2);
 void sub_54600_mouse_reset();
 void LevelInitGame_56A30(int16_t level = -1, std::string customLevelPath = "");
 void sub_5B870_copy_sentence(char* langbuffer, char** langindexbuffer, uint32_t count);
-void InGameLoop_47320(signed int a1);
+void InGameLoop_47320();
 void sub_56D60(unsigned int a1, char a2);
 void SetCenterScreenForFlyAssistant_6EDB0();
 int NetworkInitConnection_7308F(char* a2, __int16 a3);
@@ -478,7 +478,7 @@ int16_t GetIndexNetwork2_74515();
 void sub_7A060_get_mouse_and_keyboard_events();
 void sub_7AA70_load_and_decompres_dat_file(const char* a1, uint8_t* a2, int a3, int a4);
 void PlayerEvents_51BB0();
-void DrawAndEventsInGame_47560(signed int a4, int16_t turn);
+void DrawAndEventsInGame_47560(int16_t turn);
 //x_DWORD /*__cdecl*/ toupper(x_DWORD); //weak
 void sub_55C60(type_str_0x2BDE* loc0x2BDE);
 int32_t /*__cdecl*/ fix_filelength(int32_t);// weak
@@ -509,7 +509,7 @@ void ResetMouse_7B5A0();
 void FadeClearBlit_7B5D0();
 void ClearScrollDialogVars_7C020(type_str_word_26* a1x);
 char sub_7C200(uint8_t a1);
-void sub_7E840_draw_textbox_with_line(type_E24BCx* a1x, __int16 a2, __int16 a3);
+void sub_7E840_draw_textbox_with_line(typeTextBoxtextBoxStr_E24BCx* testBoxStr, __int16 borderColor, __int16 lineColor);
 void CreateAnimObject_7E8D0(type_animStruct* animStruct, __int16 x1, __int16 y1, __int16 x2, __int16 y2, __int16 countX, __int16 countY);
 bool MoveAnimObject_7E9D0(x_WORD* x1, x_WORD* y1, type_animStruct* a3);
 void DrawAnimSprite_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5);
@@ -1573,7 +1573,7 @@ void sub_6D8B0(unsigned __int16 a1, unsigned __int16 a2, __int16 a3);
 void CollectLevelStats_5C530();
 void sub_56210_process_command_line(int a1, char** a2);
 void InitNetworkInfo();
-void sub_46830_main_loop(/*int16_t* a1, */signed int a2, unsigned __int16 a3);
+void sub_46830_main_loop(unsigned __int16 a3);
 void sub_5BC20();
 void sub_75AB0();
 void InitStageVars_11EE0();
@@ -1607,4 +1607,5 @@ void sub_48350();
 void sub_53CC0_close_movie();
 void sub_713A0();
 signed int ReadKeyboardKeysInMenu_7C050();
+void sub_848A0();
 #endif
