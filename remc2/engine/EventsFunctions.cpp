@@ -38853,20 +38853,20 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 		setSpell = false;
 		if (D41A0_0.array_0x2BDE[playerIndex].IsAiPlayer_0x009_2BE4_11239 == 1)
 		{
-			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[result] = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x36115x[result];
-			if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
+			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[result] = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].BlockedSpells_0x36115x[result];
+			if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].StartingSpells_0x360E1x[result])
 			{
 				if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[result] == 0)
 					setSpell = true;
 			}
 		}
-		else if (!D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x36115x[result])
+		else if (!D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].BlockedSpells_0x36115x[result])
 		{
 			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 			{
-				if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
+				if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].StartingSpells_0x360E1x[result])
 				{
-					if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x36115x[result] == 0)
+					if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].BlockedSpells_0x36115x[result] == 0)
 						setSpell = true;
 				}
 			}
@@ -38879,9 +38879,9 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 			{
 				setSpell = true;
 			}
-			else if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
+			else if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].StartingSpells_0x360E1x[result])
 			{
-				if (!D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x36115x[result])
+				if (!D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].BlockedSpells_0x36115x[result])
 				{
 					setSpell = true;
 				}

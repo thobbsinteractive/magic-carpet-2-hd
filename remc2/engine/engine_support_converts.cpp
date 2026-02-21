@@ -512,11 +512,11 @@ void convert_struct_to_array_0x360D2(Type_WizardMapSettings_0x360D2* input, uint
 	memcpy(output + 11, &input->Perception_0x360DD, 2);
 	//uint8_t stubd[2];//13
 	memset(output + 13, 0, 2);
-	//uint8_t byte_0x360E1x[26];//15
+	//uint8_t StartingSpells_0x360E1x[26];//15
 	memcpy(output + 15, &input->Perception_0x360DD, 26);
 	//uint8_t byte_0x360FBx[26];//41
 	memcpy(output + 41, &input->Perception_0x360DD, 26);
-	//uint8_t byte_0x36115x[26];//67
+	//uint8_t BlockedSpells_0x36115x[26];//67
 	memcpy(output + 67, &input->Perception_0x360DD, 26);
 	//int16_t word_0x3612F;//93
 	memcpy(output + 93, &input->Life_0x3612F, 2);

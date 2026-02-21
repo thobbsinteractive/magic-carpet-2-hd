@@ -25,9 +25,9 @@ typedef struct {//lenght 110 //word_0x360D2
 	uint8_t stubc[2];
 	int16_t Perception_0x360DD;
 	uint8_t stubd[2];
-	uint8_t byte_0x360E1x[26];
+	uint8_t StartingSpells_0x360E1x[26];
 	uint8_t byte_0x360FBx[26];
-	uint8_t byte_0x36115x[26];
+	uint8_t BlockedSpells_0x36115x[26];
 	int16_t Life_0x3612F;
 	uint8_t stubf[15];
 }
