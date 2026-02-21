@@ -800,9 +800,7 @@ void sub_53A40(Type_PlayerInput_0x6E3E* a1);
 void sub_53C70();
 void sub_53CA0();
 uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::string& subDir);
-
 void sub_54960();
-void InitialiseSpells_54A50(int playerIndex2, int playerIndex);
 bool SaveSMAPSLEVmovie_54D30(__int16 a1);
 bool SaveSMAPSLEVmovie2_54F00(__int16 a1);
 // unsigned int sub_55C60(int a1, int a2, int a3);
@@ -38811,7 +38809,7 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 {
 	int tempPlayerIndex2;
 	int result;
-	bool bool1;
+	bool setSpell;
 
 	//Unset all spells
 	for (int i = 0; i < 26; i++)
@@ -38831,18 +38829,18 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 	for (int i = 0; i < 26; i++)
 	{
 		result = spellIndex_D94FF[i];
-		if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] > 2u)
-			D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] = 2;
+		if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] > 2u)
+			D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] = 2;
 		if (D41A0_0.array_0x2BDE[playerIndex].IsAiPlayer_0x009_2BE4_11239 == 1)
 		{
-			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.SpellIndex[result] = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
+			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.SpellIndex[result] = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
 		}
 		else if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 8 || x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 		{
-			int tempByte0x360FB = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
+			int tempByte0x360FB = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
 			if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.SpellIndex[result] < tempByte0x360FB)
 			{
-				tempByte0x360FB = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
+				tempByte0x360FB = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
 				if (tempByte0x360FB < 0)
 					tempByte0x360FB = 0;
 				if (tempByte0x360FB > 2)
@@ -38852,44 +38850,44 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 			}
 		}
 		D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x39B_923x.SpellIndex[i] = -1;
-		bool1 = false;
+		setSpell = false;
 		if (D41A0_0.array_0x2BDE[playerIndex].IsAiPlayer_0x009_2BE4_11239 == 1)
 		{
-			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[result] = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x36115x[result];
-			if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
+			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[result] = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x36115x[result];
+			if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
 			{
 				if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[result] == 0)
-					bool1 = true;
+					setSpell = true;
 			}
 		}
-		else if (!D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x36115x[result])
+		else if (!D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x36115x[result])
 		{
 			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 			{
-				if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
+				if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
 				{
-					if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x36115x[result] == 0)
-						bool1 = true;
+					if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x36115x[result] == 0)
+						setSpell = true;
 				}
 			}
 			else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 >= 0 && x_D41A0_BYTEARRAY_4_struct.levelnumber_43w)
 			{
 				if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.SpellIndex[result])
-					bool1 = true;
+					setSpell = true;
 			}
 			else if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.SpellIndex[result])
 			{
-				bool1 = true;
+				setSpell = true;
 			}
-			else if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
+			else if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
 			{
-				if (!D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x36115x[result])
+				if (!D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x36115x[result])
 				{
-					bool1 = true;
+					setSpell = true;
 				}
 			}
 		}
-		if (bool1)//adress 235cc3
+		if (setSpell)//adress 235cc3
 		{
 			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[result] = 1;
 			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.SpellIndex[result] = 1;
@@ -43952,11 +43950,11 @@ void sub_5C950(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//23d950
 		if (a1x->IsAiPlayer_0x009_2BE4_11239 == 1)
 		{
 			//v12 = x_D41A0_BYTEARRAY_0;
-			v2x->dword_0xA4_164x->word_0x242_578 = D41A0_0.terrain_2FECE.next_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x360D5;
-			v2x->dword_0xA4_164x->word_0x244_580 = D41A0_0.terrain_2FECE.next_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x360DD;
-			v2x->dword_0xA4_164x->word_0x246_582 = D41A0_0.terrain_2FECE.next_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x360D9;
+			v2x->dword_0xA4_164x->word_0x242_578 = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].Aggression_0x360D5;
+			v2x->dword_0xA4_164x->word_0x244_580 = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].Perception_0x360DD;
+			v2x->dword_0xA4_164x->word_0x246_582 = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].Reflexes_0x360D9;
 			//v13 = v2x->dword_0xA4_164;
-			v14 = D41A0_0.terrain_2FECE.next_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x3612F;
+			v14 = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].Life_0x3612F;
 			if (v14)
 			{
 				v2x->dword_0xA4_164x->word_0x24A_586 = v14;

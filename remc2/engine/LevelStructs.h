@@ -315,7 +315,7 @@ typedef struct {//lenght 0x6604u
 	uint8_t stubk[1022];
 	type_entity_0x30311 array_0x30311[1200];//end(next entity) - 0x360d1
 	uint8_t next_0x360D1;
-	type_str_0x360D2 next_0x360D2[8];//lenght 110  /spells?
+	Type_WizardMapSettings_0x360D2 WizardMapSettings_0x360D2[8];//lenght 110  /spells?
 	type_str_0x36442 str_0x36442[8];//stages(checkpoints)
 	type_shadow_str_0x3647Ac array_0x3647A[11];//8x11
 } Type_CompressedLevel_2FECE;//compress level-shadow

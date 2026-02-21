@@ -5738,7 +5738,7 @@ array_0x7CF_2BDE_13229
 
 v8 is different
 
-(uint8_t*)&D41A0_BYTESTR_0.str_2FECE.next_0x360D2[v4].byte_0x360E1 = 1
+(uint8_t*)&D41A0_BYTESTR_0.str_2FECE.WizardMapSettings_0x360D2[v4].byte_0x360E1 = 1
 versus
 110 * v4 + x_D41A0_BYTEARRAY_0 + 221409 = 0
 

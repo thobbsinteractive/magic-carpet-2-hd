@@ -497,29 +497,29 @@ void convert_struct_to_array_0x30311(type_entity_0x30311* input, uint8_t* output
 	memcpy(output + 18, &input->par3_18, 2);
 }
 
-void convert_struct_to_array_0x360D2(type_str_0x360D2* input, uint8_t* output) {//lenght 110 //word_0x360D2
+void convert_struct_to_array_0x360D2(Type_WizardMapSettings_0x360D2* input, uint8_t* output) {//lenght 110 //word_0x360D2
 	//uint8_t stuba[3];//0
 	memset(output + 0, 0, 2);
 	//int16_t word_0x360D5;//3
-	memcpy(output + 3, &input->word_0x360D5, 2);
+	memcpy(output + 3, &input->Aggression_0x360D5, 2);
 	//uint8_t stubb[2];//5
 	memset(output + 5, 0, 2);
 	//int16_t word_0x360D9;//7
-	memcpy(output + 7, &input->word_0x360D9, 2);
+	memcpy(output + 7, &input->Reflexes_0x360D9, 2);
 	//uint8_t stubc[2];//9
 	memset(output + 9, 0, 2);
 	//int16_t word_0x360DD;//11
-	memcpy(output + 11, &input->word_0x360DD, 2);
+	memcpy(output + 11, &input->Perception_0x360DD, 2);
 	//uint8_t stubd[2];//13
 	memset(output + 13, 0, 2);
 	//uint8_t byte_0x360E1x[26];//15
-	memcpy(output + 15, &input->word_0x360DD, 26);
+	memcpy(output + 15, &input->Perception_0x360DD, 26);
 	//uint8_t byte_0x360FBx[26];//41
-	memcpy(output + 41, &input->word_0x360DD, 26);
+	memcpy(output + 41, &input->Perception_0x360DD, 26);
 	//uint8_t byte_0x36115x[26];//67
-	memcpy(output + 67, &input->word_0x360DD, 26);
+	memcpy(output + 67, &input->Perception_0x360DD, 26);
 	//int16_t word_0x3612F;//93
-	memcpy(output + 93, &input->word_0x3612F, 2);
+	memcpy(output + 93, &input->Life_0x3612F, 2);
 	//uint8_t stubf[15];//95
 	memset(output + 95, 0, 15);
 }
@@ -616,9 +616,9 @@ void convert_struct_to_array_2FECE(Type_Level_2FECE* input, uint8_t* output) {//
 		convert_struct_to_array_0x30311(&input->entity_0x30311[i], output + 1091+i*20);
 	//uint8_t next_0x360D1;//6203
 	memcpy(output + 6203, &input->next_0x360D1, 1);
-	//type_str_0x360D2 next_0x360D2[8];//lenght 110//25092
+	//Type_WizardMapSettings_0x360D2 WizardMapSettings_0x360D2[8];//lenght 110//25092
 	for (int i = 0; i < 0x8; i++)
-		convert_struct_to_array_0x360D2(&input->next_0x360D2[i], output + 1091 + i * 110);
+		convert_struct_to_array_0x360D2(&input->WizardMapSettings_0x360D2[i], output + 1091 + i * 110);
 	//type_str_0x36442 str_0x36442[8];//25972
 	for (int i = 0; i < 0x8; i++)
 		convert_struct_to_array_0x36442(&input->stages_0x36442[i], output + 25972 + i * 7);

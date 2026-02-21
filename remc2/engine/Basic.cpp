@@ -3113,7 +3113,7 @@ void Convert_from_shadow_D41A0_BYTESTR_0(type_shadow_D41A0_BYTESTR_0* from, type
 	for (int i = 0; i < 1022; i++)to->terrain_2FECE.stubk[i] = from->str_2FECE.stubk[i];
 	for (int i = 0; i < 1200; i++)to->terrain_2FECE.entity_0x30311[i] = from->str_2FECE.array_0x30311[i];
 	to->terrain_2FECE.next_0x360D1 = from->str_2FECE.next_0x360D1;
-	for (int i = 0; i < 8; i++)to->terrain_2FECE.next_0x360D2[i] = from->str_2FECE.next_0x360D2[i];
+	for (int i = 0; i < 8; i++)to->terrain_2FECE.WizardMapSettings_0x360D2[i] = from->str_2FECE.WizardMapSettings_0x360D2[i];
 	for (int i = 0; i < 8; i++)to->terrain_2FECE.stages_0x36442[i] = from->str_2FECE.str_0x36442[i];
 	for (int i = 0; i < 11; i++)
 	{
@@ -3306,7 +3306,7 @@ void Convert_to_shadow_D41A0_BYTESTR_0(type_D41A0_BYTESTR_0* from, type_shadow_D
 	for (int i = 0; i < 1022; i++)to->str_2FECE.stubk[i] = from->terrain_2FECE.stubk[i];
 	for (int i = 0; i < 1200; i++)to->str_2FECE.array_0x30311[i] = from->terrain_2FECE.entity_0x30311[i];
 	to->str_2FECE.next_0x360D1 = from->terrain_2FECE.next_0x360D1;
-	for (int i = 0; i < 8; i++)to->str_2FECE.next_0x360D2[i] = from->terrain_2FECE.next_0x360D2[i];
+	for (int i = 0; i < 8; i++)to->str_2FECE.WizardMapSettings_0x360D2[i] = from->terrain_2FECE.WizardMapSettings_0x360D2[i];
 	for (int i = 0; i < 8; i++)to->str_2FECE.str_0x36442[i] = from->terrain_2FECE.stages_0x36442[i];
 	for (int i = 0; i < 11; i++)
 	{
