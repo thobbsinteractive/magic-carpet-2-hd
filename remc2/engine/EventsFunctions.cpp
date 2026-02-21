@@ -802,7 +802,7 @@ void sub_53CA0();
 uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::string& subDir);
 
 void sub_54960();
-void sub_54A50(int playerIndex2, int playerIndex);
+void InitialiseSpells_54A50(int playerIndex2, int playerIndex);
 bool SaveSMAPSLEVmovie_54D30(__int16 a1);
 bool SaveSMAPSLEVmovie2_54F00(__int16 a1);
 // unsigned int sub_55C60(int a1, int a2, int a3);
@@ -38366,8 +38366,8 @@ void sub_53160()//234160
 			v6[1] = v9;
 			v6 += 2;
 		} while (v9);*/
-		///*result = */sub_54A50(v12, x_D41A0_BYTEARRAY_0 + 11230 + 2124 * v0index);
-		sub_54A50(v12, v0index);
+		///*result = */InitialiseSpells_54A50(v12, x_D41A0_BYTEARRAY_0 + 11230 + 2124 * v0index);
+		InitialiseSpells_54A50(v12, v0index);
 		//v0 += 2124;
 		v0index++;
 		//v11 += 10;
@@ -38807,7 +38807,7 @@ void sub_54960()//235960
 
 int debugcounter_235a50 = 0;
 //----- (00054A50) --------------------------------------------------------
-void sub_54A50(int playerIndex2, int playerIndex)//235a50
+void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 {
 	int tempPlayerIndex2;
 	int result;
