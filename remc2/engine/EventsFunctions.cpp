@@ -31436,7 +31436,10 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 	setLevel = CommandLineParams.GetSetLevel();
 	customLevelPath = CommandLineParams.GetCustomLevelPath();
 	if (setLevel > -1 || customLevelPath.length() > 0)
+	{
+		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
 		skipMenus = true;
+	}
 
 	if (CommandLineParams.DoStateMonitor()) {
 		g_state_monitor.Init();
@@ -38860,6 +38863,7 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 					setSpell = true;
 			}
 		}
+		//Else If player is a user and spell is not blocked...
 		else if (!D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].BlockedSpells_0x36115x[result])
 		{
 			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
@@ -38870,7 +38874,8 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 						setSpell = true;
 				}
 			}
-			else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 >= 0 && x_D41A0_BYTEARRAY_4_struct.levelnumber_43w)
+			//If not loading from level prompt and level is > 0
+			else if ((!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & Setting::LEVEL_LOADED_FROM_ARG)) && x_D41A0_BYTEARRAY_4_struct.levelnumber_43w)
 			{
 				if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.SpellIndex[result])
 					setSpell = true;
@@ -38879,6 +38884,7 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 			{
 				setSpell = true;
 			}
+			//Load spells from Map file
 			else if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].StartingSpells_0x360E1x[result])
 			{
 				if (!D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].BlockedSpells_0x36115x[result])
@@ -39426,7 +39432,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 	if (!x_BYTE_35522C_nocd && cdSpeechEnabled_E2A28)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= SPEECH_ENABLED;
 	if (x_BYTE_355240_load_set_level)
-		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x80u;
+		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
 	if (x_BYTE_355214)
 		x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 |= 2u;
 	if (x_BYTE_355224_showversion)
