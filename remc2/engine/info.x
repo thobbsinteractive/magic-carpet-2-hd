@@ -5667,7 +5667,7 @@ versus
 *(x_BYTE *)(x_D41A0_BYTEARRAY_0 + 196308)
 
 diffecence
-v2x = sub_4A190(&v35x, 3, a1x->byte_0x009_2BE4_11239 == 1);
+v2x = sub_4A190(&v35x, 3, a1x->IsAiPlayer_0x009_2BE4_11239 == 1);
 
 D41A0_BYTESTR_0.array_0x2362[0]
 versus

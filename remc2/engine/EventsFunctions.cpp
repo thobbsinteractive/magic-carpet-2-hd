@@ -38316,7 +38316,7 @@ void sub_53160()//234160
 		D41A0_0.array_0x2BDE[v0index].word_0x007_2BE4_11237 = v12;
 		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE) && v12 != D41A0_0.LevelIndex_0xc)
 			//*(x_BYTE *)(v0 + 9) = 1;
-			D41A0_0.array_0x2BDE[v0index].byte_0x009_2BE4_11239 = 1;
+			D41A0_0.array_0x2BDE[v0index].IsAiPlayer_0x009_2BE4_11239 = 1;
 		//*(x_WORD *)(v0 + 16) = 32;
 		D41A0_0.array_0x2BDE[v0index].word_0x010_2BDE_11246 = 32;
 		//*(x_WORD *)(v0 + 477) = 128;
@@ -38833,7 +38833,7 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 		result = spellIndex_D94FF[i];
 		if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] > 2u)
 			D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] = 2;
-		if (D41A0_0.array_0x2BDE[playerIndex].byte_0x009_2BE4_11239 == 1)
+		if (D41A0_0.array_0x2BDE[playerIndex].IsAiPlayer_0x009_2BE4_11239 == 1)
 		{
 			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.SpellIndex[result] = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
 		}
@@ -38853,7 +38853,7 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 		}
 		D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x39B_923x.SpellIndex[i] = -1;
 		bool1 = false;
-		if (D41A0_0.array_0x2BDE[playerIndex].byte_0x009_2BE4_11239 == 1)
+		if (D41A0_0.array_0x2BDE[playerIndex].IsAiPlayer_0x009_2BE4_11239 == 1)
 		{
 			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[result] = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x36115x[result];
 			if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
@@ -43879,12 +43879,12 @@ void sub_5C950(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//23d950
 	v35x.z = v3;
 	if (a2x == Entities_EA3E4[0])
 	{
-		v2x = IfSubtypeCallCreatingManaSphere_4A190(&v35x, 3, a1x->byte_0x009_2BE4_11239 == 1);
+		v2x = IfSubtypeCallCreatingManaSphere_4A190(&v35x, 3, a1x->IsAiPlayer_0x009_2BE4_11239 == 1);
 		v37 = 1;
 	}
 	else
 	{
-		a2x->actionIndex_0x45_69 = a1x->byte_0x009_2BE4_11239 == 1;
+		a2x->actionIndex_0x45_69 = a1x->IsAiPlayer_0x009_2BE4_11239 == 1;
 		//v4 = a2x->dword_0xA4_164;
 		a2x->struct_byte_0xc_12_15.byte[0] &= 0xDFu;
 		//v5 = a2x->dword_0xA4_164x->CastleEntityIndex_0x3A_58;
@@ -43949,7 +43949,7 @@ void sub_5C950(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//23d950
 		default:
 			break;
 		}
-		if (a1x->byte_0x009_2BE4_11239 == 1)
+		if (a1x->IsAiPlayer_0x009_2BE4_11239 == 1)
 		{
 			//v12 = x_D41A0_BYTEARRAY_0;
 			v2x->dword_0xA4_164x->word_0x242_578 = D41A0_0.terrain_2FECE.next_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x360D5;
@@ -60573,7 +60573,7 @@ void sub_5E7C0_multiplayer_test_banished(type_entity_0x6E8E* a1x)//23f7c0
 	a1x->dword_0xA4_164x->moveBoost_0x1E_30 = 0;
 	//v1 = a1x->dword_0xA4_164;
 	//v2 = 2124 * *(signed __int16 *)(v1 + 56);
-	if (D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].byte_0x009_2BE4_11239 == 1)
+	if (D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].IsAiPlayer_0x009_2BE4_11239 == 1)
 	{
 		//v3 = &x_D41A0_BYTEARRAY_0[v2 + 11230];
 		if (a1x->dword_0xA4_164x->CastleEntityIndex_0x3A_58)
