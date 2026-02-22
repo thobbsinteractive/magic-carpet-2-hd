@@ -24,7 +24,7 @@ unsigned long mygetsecond();
 double clockToMilliseconds(clock_t ticks);
 #ifndef _MSC_VER
 timeval GetTimeStart();
-void SetTimeStart();
 #endif
+void SetTimeStart();
 
 #endif //PORT_TIME
