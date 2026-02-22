@@ -800,9 +800,7 @@ void sub_53A40(Type_PlayerInput_0x6E3E* a1);
 void sub_53C70();
 void sub_53CA0();
 uint8_t sub_53D10_create_nether_subdir(const std::string& gameDir, const std::string& subDir);
-
 void sub_54960();
-void sub_54A50(int playerIndex2, int playerIndex);
 bool SaveSMAPSLEVmovie_54D30(__int16 a1);
 bool SaveSMAPSLEVmovie2_54F00(__int16 a1);
 // unsigned int sub_55C60(int a1, int a2, int a3);
@@ -31438,7 +31436,10 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 	setLevel = CommandLineParams.GetSetLevel();
 	customLevelPath = CommandLineParams.GetCustomLevelPath();
 	if (setLevel > -1 || customLevelPath.length() > 0)
+	{
+		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
 		skipMenus = true;
+	}
 
 	if (CommandLineParams.DoStateMonitor()) {
 		g_state_monitor.Init();
@@ -38316,7 +38317,7 @@ void sub_53160()//234160
 		D41A0_0.array_0x2BDE[v0index].word_0x007_2BE4_11237 = v12;
 		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE) && v12 != D41A0_0.LevelIndex_0xc)
 			//*(x_BYTE *)(v0 + 9) = 1;
-			D41A0_0.array_0x2BDE[v0index].byte_0x009_2BE4_11239 = 1;
+			D41A0_0.array_0x2BDE[v0index].IsAiPlayer_0x009_2BE4_11239 = 1;
 		//*(x_WORD *)(v0 + 16) = 32;
 		D41A0_0.array_0x2BDE[v0index].word_0x010_2BDE_11246 = 32;
 		//*(x_WORD *)(v0 + 477) = 128;
@@ -38366,8 +38367,8 @@ void sub_53160()//234160
 			v6[1] = v9;
 			v6 += 2;
 		} while (v9);*/
-		///*result = */sub_54A50(v12, x_D41A0_BYTEARRAY_0 + 11230 + 2124 * v0index);
-		sub_54A50(v12, v0index);
+		///*result = */InitialiseSpells_54A50(v12, x_D41A0_BYTEARRAY_0 + 11230 + 2124 * v0index);
+		InitialiseSpells_54A50(v12, v0index);
 		//v0 += 2124;
 		v0index++;
 		//v11 += 10;
@@ -38807,11 +38808,11 @@ void sub_54960()//235960
 
 int debugcounter_235a50 = 0;
 //----- (00054A50) --------------------------------------------------------
-void sub_54A50(int playerIndex2, int playerIndex)//235a50
+void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 {
 	int tempPlayerIndex2;
 	int result;
-	bool bool1;
+	bool setSpell;
 
 	//Unset all spells
 	for (int i = 0; i < 26; i++)
@@ -38831,18 +38832,18 @@ void sub_54A50(int playerIndex2, int playerIndex)//235a50
 	for (int i = 0; i < 26; i++)
 	{
 		result = spellIndex_D94FF[i];
-		if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] > 2u)
-			D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] = 2;
-		if (D41A0_0.array_0x2BDE[playerIndex].byte_0x009_2BE4_11239 == 1)
+		if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] > 2u)
+			D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360FBx[result] = 2;
+		if (D41A0_0.array_0x2BDE[playerIndex].IsAiPlayer_0x009_2BE4_11239 == 1)
 		{
-			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.SpellIndex[result] = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
+			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.SpellIndex[result] = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
 		}
 		else if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 8 || x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 		{
-			int tempByte0x360FB = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
+			int tempByte0x360FB = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
 			if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.SpellIndex[result] < tempByte0x360FB)
 			{
-				tempByte0x360FB = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
+				tempByte0x360FB = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].byte_0x360FBx[result];
 				if (tempByte0x360FB < 0)
 					tempByte0x360FB = 0;
 				if (tempByte0x360FB > 2)
@@ -38852,44 +38853,47 @@ void sub_54A50(int playerIndex2, int playerIndex)//235a50
 			}
 		}
 		D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x39B_923x.SpellIndex[i] = -1;
-		bool1 = false;
-		if (D41A0_0.array_0x2BDE[playerIndex].byte_0x009_2BE4_11239 == 1)
+		setSpell = false;
+		if (D41A0_0.array_0x2BDE[playerIndex].IsAiPlayer_0x009_2BE4_11239 == 1)
 		{
-			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[result] = D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x36115x[result];
-			if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
+			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[result] = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].BlockedSpells_0x36115x[result];
+			if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].StartingSpells_0x360E1x[result])
 			{
 				if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[result] == 0)
-					bool1 = true;
+					setSpell = true;
 			}
 		}
-		else if (!D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x36115x[result])
+		//Else If player is a user and spell is not blocked...
+		else if (!D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].BlockedSpells_0x36115x[result])
 		{
 			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 			{
-				if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
+				if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].StartingSpells_0x360E1x[result])
 				{
-					if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x36115x[result] == 0)
-						bool1 = true;
+					if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].BlockedSpells_0x36115x[result] == 0)
+						setSpell = true;
 				}
 			}
-			else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 >= 0 && x_D41A0_BYTEARRAY_4_struct.levelnumber_43w)
+			//If not loading from level prompt and level is > 0
+			else if ((!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & Setting::LEVEL_LOADED_FROM_ARG)) && x_D41A0_BYTEARRAY_4_struct.levelnumber_43w)
 			{
 				if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.SpellIndex[result])
-					bool1 = true;
+					setSpell = true;
 			}
 			else if (D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.SpellIndex[result])
 			{
-				bool1 = true;
+				setSpell = true;
 			}
-			else if (D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x360E1x[result])
+			//Load spells from Map file
+			else if (D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].StartingSpells_0x360E1x[result])
 			{
-				if (!D41A0_0.terrain_2FECE.next_0x360D2[tempPlayerIndex2].byte_0x36115x[result])
+				if (!D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[tempPlayerIndex2].BlockedSpells_0x36115x[result])
 				{
-					bool1 = true;
+					setSpell = true;
 				}
 			}
 		}
-		if (bool1)//adress 235cc3
+		if (setSpell)//adress 235cc3
 		{
 			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[result] = 1;
 			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.SpellIndex[result] = 1;
@@ -39428,7 +39432,7 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 	if (!x_BYTE_35522C_nocd && cdSpeechEnabled_E2A28)
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= SPEECH_ENABLED;
 	if (x_BYTE_355240_load_set_level)
-		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= 0x80u;
+		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
 	if (x_BYTE_355214)
 		x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 |= 2u;
 	if (x_BYTE_355224_showversion)
@@ -43879,12 +43883,12 @@ void sub_5C950(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//23d950
 	v35x.z = v3;
 	if (a2x == Entities_EA3E4[0])
 	{
-		v2x = IfSubtypeCallCreatingManaSphere_4A190(&v35x, 3, a1x->byte_0x009_2BE4_11239 == 1);
+		v2x = IfSubtypeCallCreatingManaSphere_4A190(&v35x, 3, a1x->IsAiPlayer_0x009_2BE4_11239 == 1);
 		v37 = 1;
 	}
 	else
 	{
-		a2x->actionIndex_0x45_69 = a1x->byte_0x009_2BE4_11239 == 1;
+		a2x->actionIndex_0x45_69 = a1x->IsAiPlayer_0x009_2BE4_11239 == 1;
 		//v4 = a2x->dword_0xA4_164;
 		a2x->struct_byte_0xc_12_15.byte[0] &= 0xDFu;
 		//v5 = a2x->dword_0xA4_164x->CastleEntityIndex_0x3A_58;
@@ -43949,14 +43953,14 @@ void sub_5C950(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//23d950
 		default:
 			break;
 		}
-		if (a1x->byte_0x009_2BE4_11239 == 1)
+		if (a1x->IsAiPlayer_0x009_2BE4_11239 == 1)
 		{
 			//v12 = x_D41A0_BYTEARRAY_0;
-			v2x->dword_0xA4_164x->word_0x242_578 = D41A0_0.terrain_2FECE.next_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x360D5;
-			v2x->dword_0xA4_164x->word_0x244_580 = D41A0_0.terrain_2FECE.next_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x360DD;
-			v2x->dword_0xA4_164x->word_0x246_582 = D41A0_0.terrain_2FECE.next_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x360D9;
+			v2x->dword_0xA4_164x->word_0x242_578 = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].Aggression_0x360D5;
+			v2x->dword_0xA4_164x->word_0x244_580 = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].Perception_0x360DD;
+			v2x->dword_0xA4_164x->word_0x246_582 = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].Reflexes_0x360D9;
 			//v13 = v2x->dword_0xA4_164;
-			v14 = D41A0_0.terrain_2FECE.next_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x3612F;
+			v14 = D41A0_0.terrain_2FECE.WizardMapSettings_0x360D2[v2x->dword_0xA4_164x->playerColorIndex_0x38_56].Life_0x3612F;
 			if (v14)
 			{
 				v2x->dword_0xA4_164x->word_0x24A_586 = v14;
@@ -60573,7 +60577,7 @@ void sub_5E7C0_multiplayer_test_banished(type_entity_0x6E8E* a1x)//23f7c0
 	a1x->dword_0xA4_164x->moveBoost_0x1E_30 = 0;
 	//v1 = a1x->dword_0xA4_164;
 	//v2 = 2124 * *(signed __int16 *)(v1 + 56);
-	if (D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].byte_0x009_2BE4_11239 == 1)
+	if (D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].IsAiPlayer_0x009_2BE4_11239 == 1)
 	{
 		//v3 = &x_D41A0_BYTEARRAY_0[v2 + 11230];
 		if (a1x->dword_0xA4_164x->CastleEntityIndex_0x3A_58)

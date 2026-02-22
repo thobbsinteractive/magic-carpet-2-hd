@@ -183,6 +183,7 @@ typedef enum
 	MULTIPLAYER_MODE = 0x10u,
 	SPEECH_ENABLED = 0x40,
 	SPEECH_DISABLED = 0xBF,
+	LEVEL_LOADED_FROM_ARG = 0x80u,
 } Setting;
 
 typedef struct {//begin 611//str_611

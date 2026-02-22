@@ -19,19 +19,19 @@ type_entity_0x30311;
 
 typedef struct {//lenght 110 //word_0x360D2
 	uint8_t stuba[3];
-	int16_t word_0x360D5;
+	int16_t Aggression_0x360D5;
 	uint8_t stubb[2];
-	int16_t word_0x360D9;
+	int16_t Reflexes_0x360D9;
 	uint8_t stubc[2];
-	int16_t word_0x360DD;
+	int16_t Perception_0x360DD;
 	uint8_t stubd[2];
-	uint8_t byte_0x360E1x[26];
+	uint8_t StartingSpells_0x360E1x[26];
 	uint8_t byte_0x360FBx[26];
-	uint8_t byte_0x36115x[26];
-	int16_t word_0x3612F;
+	uint8_t BlockedSpells_0x36115x[26];
+	int16_t Life_0x3612F;
 	uint8_t stubf[15];
 }
-type_str_0x360D2;
+Type_WizardMapSettings_0x360D2;
 
 //objective type
 //0 - collect mana
@@ -101,7 +101,7 @@ typedef struct {//lenght 0x6604u
 	uint8_t stubk[1022];
 	type_entity_0x30311 entity_0x30311[1200];//end(next entity) - 0x360d1
 	uint8_t next_0x360D1;
-	type_str_0x360D2 next_0x360D2[8];//lenght 110  /spells?
+	Type_WizardMapSettings_0x360D2 WizardMapSettings_0x360D2[8];//lenght 110  /spells?
 	type_str_0x36442 stages_0x36442[8];//stages(checkpoints)
 	type_str_0x3647Ac StageVars_0x3647A[11];//8x11
 } Type_Level_2FECE;//Uncompressed level
