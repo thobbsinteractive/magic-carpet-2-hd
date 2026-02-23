@@ -31437,7 +31437,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 
 	setLevel = CommandLineParams.GetSetLevel();
 	customLevelPath = CommandLineParams.GetCustomLevelPath();
-	if (setLevel > -1 || customLevelPath.length() > 0)
+	if ((setLevel > -1 || customLevelPath.length() > 0) || CommandLineParams.ModeDebugAfterload())
 		skipMenus = true;
 
 	if (CommandLineParams.DoStateMonitor()) {
@@ -31937,11 +31937,11 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	//adress 2285ff
 	//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
 	if (CommandLineParams.DoTestRegression()) {
-		add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), -1, false, 20);
+		add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), -1, false, CommandLineParams.GetMaxRegressionsSteps());
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
 	if (CommandLineParams.ModeDebugAfterload()) {
-		add_compare(0x002285FF, IsAfterLoad, -1, false, 20);
+		add_compare(0x002285FF, IsAfterLoad || (CommandLineParams.GetPlaybackPath().length() > 0), -1, false, CommandLineParams.GetMaxRegressionsSteps());
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
 

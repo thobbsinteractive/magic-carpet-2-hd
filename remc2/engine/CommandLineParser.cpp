@@ -216,6 +216,14 @@ void CommandLineParser::InterpretParams() {
 				m_set_level = level;
 			}
 		}
+		else if (param == "--set_max_regressions_steps") {
+			std::string levelStr = *(++p);
+			uint16_t level = std::stoi(levelStr);
+			if (level > -1)
+			{
+				m_max_regressions_steps = level;
+			}
+		}
 		else if (param == "--custom_level") {
 			m_custom_level_path = *(++p);
 		}

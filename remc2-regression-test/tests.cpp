@@ -8,12 +8,7 @@
 
 int CountFailedRegressionTests() {
 	int numFailedTests = 0;
-
-	Logger->info("--- Afterload regressions tests ---");
-
-	// run_regtest(level,afterload,indexOfRegression,indexOfSavePosition)
-	if (run_regtest(2, true, 1, 2) != 0) numFailedTests++;
-
+/*
 	Logger->info("\n--- Level regressions tests ---");
 	for (int i = 1; i <= 25; i++)
 		if (i != 22 && i != 25)
@@ -21,6 +16,14 @@ int CountFailedRegressionTests() {
 			{
 				numFailedTests++;
 			}
+
+	Logger->info("--- Afterload regressions tests ---");
+	*/
+	// run_regtest(level,afterload,indexOfRegression,indexOfSavePosition(-1 - no load),isRecorded)
+	if (run_regtest(2, true, 1, 2) != 0) numFailedTests++;
+	if (run_regtest(2, true, 2, 1, "Levels-1-5-Recording.bin", 25) != 0) numFailedTests++;
+	//if (run_regtest(1, true, 2, -1, "c:/prenos/remc2-dev2/remc2/x64/Debug/memimages/regressions/afterloadtest2/Levels-1-5-Recording.bin",25) != 0) numFailedTests++;
+
 
 	// diff in level 22:
 	//   the first frame with a diff has it at 0x7dba and the following bytes:
