@@ -8,7 +8,7 @@
 
 int CountFailedRegressionTests() {
 	int numFailedTests = 0;
-/*
+
 	Logger->info("\n--- Level regressions tests ---");
 	for (int i = 1; i <= 25; i++)
 		if (i != 22 && i != 25)
@@ -18,7 +18,7 @@ int CountFailedRegressionTests() {
 			}
 
 	Logger->info("--- Afterload regressions tests ---");
-	*/
+
 	// run_regtest(level,afterload,indexOfRegression,indexOfSavePosition(-1 - no load),isRecorded)
 	if (run_regtest(2, true, 1, 2) != 0) numFailedTests++;
 	if (run_regtest(2, true, 2, 1, "Levels-1-5-Recording.bin", 25) != 0) numFailedTests++;
