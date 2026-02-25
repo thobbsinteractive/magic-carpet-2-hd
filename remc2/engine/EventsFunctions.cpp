@@ -102,10 +102,10 @@ x_BYTE_E1711 - ok, rewrited to str_BYTE_E1711
 unk_E1748x - ok
 off_E1BAC - rewrited str_E1BAC_0x1b8 str_E1BAC_0x3c4//buttons pos - must fix str_E1BAC_0x3c4
 x_WORD_E1F70 //ok
-x_WORD_E1F84 - ok, rewrited to str_WORD_E1F84
-x_WORD_E2008 - ok, rewrited to str_WORD_E2008 //type_WORD_E1F84
+x_WORD_E1F84 - ok, rewrited to type_menuButtons_E1F84
+x_WORD_E2008 - ok, rewrited to str_WORD_E2008 //type_menuButtons_E1F84
 x_WORD_E20A4 - ok, rewrites to str_WORD_E20A4
-off_E23E0 - ok, rewrited to str_E23E0
+off_E23E0 - ok, rewrited to mapMenuButtons_E23E0
 unk_E24BCx - ok, rewrited to textBoxStr_E24BCx
 x_WORD_E24BE ok ? only for clock? remove it?
 unk_E24F2 - ok, rewrited to textBoxStr_E24F2
@@ -140,7 +140,7 @@ level1 - can not build castle (fix wall detections)
 must revide sub_loc_1B54A and etc - some events must be fixed
 must revide sub_loc_1B37D((type_E17CC_0*)a1_6E8E);//FIX ME
 must revide PlayInfoFmv(0, 1, str_E16E0[v3x].dword_0 - 0x2b2328 + (uint8_t*)array_E1328, cutScenePath);//FIXME
-must revide if (str_E23E0[v6y].byte_23 && str_E23E0[v6y].byte_22 == textBoxStr_E2516[unk_17DBA8str.unk_17DBB4+1].byte_17)// x_BYTE_E2527[18 * *((signed __int16 *)a2 + 6)] )
+must revide if (mapMenuButtons_E23E0[v6y].byte_23 && mapMenuButtons_E23E0[v6y].byte_22 == textBoxStr_E2516[unk_17DBA8str.unk_17DBB4+1].byte_17)// x_BYTE_E2527[18 * *((signed __int16 *)a2 + 6)] )
 must revide sub_7E9D0(&str_WORD_E20A4[v7y].word_18, &str_WORD_E20A4[v7y].word_20, str_WORD_E20A4[v7y].array_word_45);
 must revide qmemcpy(x_BYTE_E1B9C, &x_DWORD_17DE38str.x_BYTE_17DE68x[11 * sub_74515() + 1], sizeof(x_BYTE_E1B9C));
 fix this (uint8_t*)&mapScreenPortals_E17CC[ix]
@@ -148,8 +148,8 @@ fix DrawGameDebugText_6FEC0 v45
 
 //bug hunting - find non click problem
 sub_7BF20_draw_scroll_dialog(signed __int16 *a1) - diference in a1
-problem with set str_E23E0[v3x].word_26
-&str_E23E0[v3x].word_26
+problem with set mapMenuButtons_E23E0[v3x].word_26
+&mapMenuButtons_E23E0[v3x].word_26
 (uint8_t*)&off_E23E0+26
 
 //bug hunting 2 find difference 0x356038+0xd49a
@@ -8655,7 +8655,7 @@ void AdjustVolume_1A070(__int16 a2)//1fb070
 	int16_t posX; // [esp+Ch] [ebp-4h]
 	uint8_t scale = 1;
 
-	signed int a1 = 0;
+	int a1 = 0;
 
 	if (!DefaultResolutions())
 	{
@@ -31440,6 +31440,8 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
 		skipMenus = true;
 	}
+	if (CommandLineParams.ModeDebugAfterload())
+		skipMenus = true;
 
 	if (CommandLineParams.DoStateMonitor()) {
 		g_state_monitor.Init();
@@ -31464,12 +31466,12 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 		MenusAndIntros_76930(skipMenus);//set language, intro, menu, atd. //257930
 
 		//debug
-		if (CommandLineParams.ModeDebugAfterload())
+		if (CommandLineParams.ModeDebugAfterload()>=0)
 		{
 			//Load Saved Game File
 			uint32_t numLevelsCompleted = 0;
 			int locSavedGameIndex = CommandLineParams.ModeDebugAfterload();
-			type_menuButtons_E1F84* buttonStr = &mapMenuButtons_E23E0[1];
+			type_menuButtons_E1F84* buttonStr = &mapMenuButtons_E23E0[locSavedGameIndex];
 			x_DWORD_17DE38str.savedGameIndex_17DF04 = locSavedGameIndex;
 			char path[512];
 			sprintf(path, "%s", unitTestsPath.c_str());
@@ -31875,7 +31877,7 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	}
 	MouseAndKeysEvents_17A00(turn);
 	//debug
-	if (CommandLineParams.ModeDebugAfterload())
+	if (CommandLineParams.ModeDebugAfterload()&&(CommandLineParams.GetPlaybackPath().length()<=0))
 	{
 		if (debug_first_run == 5)
 		{
@@ -31938,11 +31940,11 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	//adress 2285ff
 	//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
 	if (CommandLineParams.DoTestRegression()) {
-		add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), -1, false, 20);
+		add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), -1, false, CommandLineParams.GetMaxRegressionsSteps());
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
 	if (CommandLineParams.ModeDebugAfterload()) {
-		add_compare(0x002285FF, IsAfterLoad, -1, false, 20);
+		add_compare(0x002285FF, IsAfterLoad || (CommandLineParams.GetPlaybackPath().length() > 0), -1, false, CommandLineParams.GetMaxRegressionsSteps());
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
 
@@ -37733,8 +37735,11 @@ void PlayerEvents_51BB0()//232bb0
 	{
 		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
 		{
-			std::string msg = "Playing Turn: " + std::to_string(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
-			sub_19760_set_message(msg.c_str(), 3u, 50);
+			if (!CommandLineParams.ModeDebugAfterload())
+			{
+				std::string msg = "Playing Turn: " + std::to_string(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
+				sub_19760_set_message(msg.c_str(), 3u, 50);
+			}
 			memcpy(&D41A0_0.playerInputs_0x6E3E[i], m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248)->Bytes, m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248)->SizeBytes);
 		}
 		else if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
@@ -37744,13 +37749,13 @@ void PlayerEvents_51BB0()//232bb0
 			m_InputRecorder->RecordPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248, sizeof(Type_PlayerInput_0x6E3E), (uint8_t*)&D41A0_0.playerInputs_0x6E3E[i]);
 		}
 
-		//adress 233d56
+		//adress 232d2f
 		actEvent = Entities_EA3E4[D41A0_0.array_0x2BDE[i].playerIndex_0x00a_2BE4_11240];
 		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x20)
 		{
 			sub_53A40(&D41A0_0.playerInputs_0x6E3E[i]);
 		}
-
+		//adress 233d56
 		switch (D41A0_0.playerInputs_0x6E3E[i].PlayerAction_byte0)
 		{
 		case 1:
@@ -38227,7 +38232,8 @@ void PlayerEvents_51BB0()//232bb0
 		actEvent->dword_0xA4_164x->nextEntity_0x18_24 = D41A0_0.playerInputs_0x6E3E[i].nextEntity_0x6E3E_word6;
 		actEvent->dword_0xA4_164x->entityIndex2_0x1A_26 = D41A0_0.playerInputs_0x6E3E[i].entityIndex2_0x6E3E_word8;
 
-		if (CommandLineParams.DoKillMoveAndRotation()&&(D41A0_0.LevelIndex_0xc==i))
+		if ((CommandLineParams.DoKillMoveAndRotation()&&(D41A0_0.LevelIndex_0xc==i))&&
+			(CommandLineParams.GetPlaybackPath().length() <= 0))
 		{
 			actEvent->dword_0xA4_164x->entityIndex_0x0 = 0;
 			actEvent->dword_0xA4_164x->speed_0xc_12 = 0;
