@@ -38830,7 +38830,8 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 		tempPlayerIndex2 = playerIndex2;
 	int index = 0;
 
-	if (m_InputRecorder->m_IsPlaying)
+	if (m_InputRecorder->m_IsPlaying && 
+		m_InputRecorder->GetCurrentPlayer(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, playerIndex) != nullptr)
 	{
 		auto currentPlayer = m_InputRecorder->GetCurrentPlayer(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, playerIndex);
 
