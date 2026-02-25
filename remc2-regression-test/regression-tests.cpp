@@ -1,14 +1,19 @@
 #include "regression-tests.h"
 
-int run_regtest(int level, bool afterload, int index, int saveIndex)//236F70
+int run_regtest(int level, bool afterload, int index, int saveIndex, const char* recordName, int maxSteps)//236F70
 {
 	int exitCode = 0;
 	Logger->info("Testing aftreload {} for Level {}", index, level);
 
 	unitTests = true;
 	std::string locUnitTestsPath;
+	std::string recordPath = "";
 	if (afterload)
+	{
 		locUnitTestsPath = get_exe_path() + "/memimages/regressions/afterloadtest" + std::to_string(index);
+		if(strlen(recordName) > 0)
+			recordPath = get_exe_path() + "/memimages/regressions/afterloadtest" + std::to_string(index) + "/" + recordName;
+	}
 	else
 		locUnitTestsPath = get_exe_path() + "/memimages/regressions/level" + std::to_string(level);
 	unitTestsPath = locUnitTestsPath;
@@ -16,7 +21,7 @@ int run_regtest(int level, bool afterload, int index, int saveIndex)//236F70
 	endTestsCode = &locEndTestsCode;
 
 	std::vector<std::string> args;
-	args.reserve(9);
+	args.reserve(14);
 
 	std::string path = get_exe_path() + "/regression-config.json";
 
@@ -32,6 +37,14 @@ int run_regtest(int level, bool afterload, int index, int saveIndex)//236F70
 		args.emplace_back("--config_file_path");
 		args.emplace_back(path);
 		args.emplace_back("--debugafterload");
+		//args.emplace_back("--is_recorded_regtest");
+		if (recordPath != "")
+		{
+			args.emplace_back("--play_file");
+			args.emplace_back(recordPath);
+		}
+		args.emplace_back("--set_max_regressions_steps");
+		args.emplace_back(std::to_string(maxSteps));
 	}
 	else
 	{
@@ -41,6 +54,8 @@ int run_regtest(int level, bool afterload, int index, int saveIndex)//236F70
 		args.emplace_back(std::to_string(level - 1));
 		args.emplace_back("--config_file_path");
 		args.emplace_back(path);
+		args.emplace_back("--set_max_regressions_steps");
+		args.emplace_back(std::to_string(maxSteps));
 	}
 
 	std::vector<char*> argv;
