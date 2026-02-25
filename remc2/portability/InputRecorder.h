@@ -30,8 +30,11 @@ public:
 	bool StartPlayback();
 	void StopPlayback();
 
+	RecordedEventPlayer* GetCurrentPlayer(int level, int playerIdx);
 	RecordedEventTurn* GetCurrentPlayerActions(int level, int playerIdx, int turn);
+
 	void RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, uint64_t sizeBytes, uint8_t* buffer);
+	void RecordPlayerSpells(int level, int playerIdx, int16_t* spellsEnabled, uint8_t* spellIndexes, uint8_t* spellLevels, int32_t* spellsExperience);
 
 	bool SaveRecordingToFile(const char* outputFileName);
 	bool LoadRecordingFile(const char* inputFileName);

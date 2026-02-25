@@ -8465,7 +8465,7 @@ spell 4
 
 Entities_EA3E4[1]->dword_0xA4_164x->str_611.word_0x451_110
 
-&D41A0_BYTESTR_0.array_0x2BDE[0].dword_0x3E6_2BE4_12228.str_611.array_0x333_819x
+&D41A0_BYTESTR_0.array_0x2BDE[0].dword_0x3E6_2BE4_12228.str_611.SpellsEnabled_0x333_819x
 aa misto 01
 
 
