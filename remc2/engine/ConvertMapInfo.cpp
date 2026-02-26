@@ -34,7 +34,7 @@ void DecompressLevel_2FECE(Type_CompressedLevel_2FECE* from, Type_Level_2FECE* t
 	for (int i = 0; i < 1022; i++)to->stubk[i] = from->stubk[i];
 	for (int i = 0; i < 1200; i++)to->entity_0x30311[i] = from->array_0x30311[i];
 	to->next_0x360D1 = from->next_0x360D1;
-	for (int i = 0; i < 8; i++)to->next_0x360D2[i] = from->next_0x360D2[i];
+	for (int i = 0; i < 8; i++)to->WizardMapSettings_0x360D2[i] = from->WizardMapSettings_0x360D2[i];
 	for (int i = 0; i < 8; i++)to->stages_0x36442[i] = from->str_0x36442[i];
 	for (int i = 0; i < 11; i++)
 	{

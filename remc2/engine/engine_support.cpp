@@ -2234,7 +2234,7 @@ void clean_x_D41A0_BYTEARRAY_0_0x2BDE(int number) {
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x006_2BE4_11236 = 0;//6	//11236 - byte //6
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x007_2BE4_11237_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x008_2BE4_11238_xx = 0;
-		D41A0_BYTESTR_0.array_0x2BDE[i].byte_0x009_2BE4_11239_xx = 0;
+		D41A0_BYTESTR_0.array_0x2BDE[i].IsAiPlayer_0x009_2BE4_11239_xx = 0;
 		D41A0_BYTESTR_0.array_0x2BDE[i].playerIndex_0x00a_2BE4_11240 = 0;//10 //11240 - word - index z EA3E4 //0xa
 		for (int j = 0; j < 16; j++)
 			D41A0_BYTESTR_0.array_0x2BDE[i].stub[j]=0;
@@ -2280,13 +2280,13 @@ void set_x_D41A0_BYTEARRAY_0_0x2BDE_0x7(int number, int16_t value) {
 };
 
 int8_t get_x_D41A0_BYTEARRAY_0_0x2BDE_0x9(int number) {
-	testbyte(&x_D41A0_BYTEARRAY_0[0x2BDE + 2124 * number + 0x9], (uint8_t*)&D41A0_BYTESTR_0.array_0x2BDE[number].byte_0x009_2BE4_11239);
-	return D41A0_BYTESTR_0.array_0x2BDE[number].byte_0x009_2BE4_11239;
+	testbyte(&x_D41A0_BYTEARRAY_0[0x2BDE + 2124 * number + 0x9], (uint8_t*)&D41A0_BYTESTR_0.array_0x2BDE[number].IsAiPlayer_0x009_2BE4_11239);
+	return D41A0_BYTESTR_0.array_0x2BDE[number].IsAiPlayer_0x009_2BE4_11239;
 };
 
 void set_x_D41A0_BYTEARRAY_0_0x2BDE_0x9(int number, int8_t value) {
 	*(int8_t*)&x_D41A0_BYTEARRAY_0[0x2BDE + 2124 * number + 0x9] = value;
-	D41A0_BYTESTR_0.array_0x2BDE[number].byte_0x009_2BE4_11239 = value;
+	D41A0_BYTESTR_0.array_0x2BDE[number].IsAiPlayer_0x009_2BE4_11239 = value;
 };
 void set_x_D41A0_BYTEARRAY_0_0x2BDE_0xe(int number, int16_t value) {
 	*(int16_t*)&x_D41A0_BYTEARRAY_0[0x2BDE + 2124 * number + 0xe] = value;

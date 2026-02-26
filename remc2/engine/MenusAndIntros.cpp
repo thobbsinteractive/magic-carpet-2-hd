@@ -1018,6 +1018,9 @@ bool NewGameDialog_77350(type_menuButtons_E1F84* a1x)//258350
 				&x_DWORD_17DB70str.unk_17DB80,
 				&x_DWORD_17DB70str.x_BYTE_17DB8F,
 				&x_DWORD_17DB70str.unk_17DB90);
+			if (CommandLineParams.ModeDebugAfterload()) {
+				endAction = 1;
+			}
 			if (CommandLineParams.ModeTestRegressionsGame()) {
 				x_DWORD_17DB70str.x_BYTE_17DB8E = 1;
 				x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = test_regression_level;
