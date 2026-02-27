@@ -1968,7 +1968,7 @@ int debugcounter_1fb7a0 = 0;
 void sub_1A7A0_fly_asistant()//1fb7a0 // fly asistant
 {
 	if (CommandLineParams.DoFixMouse()) {
-		if (CommandLineParams.DoDebugafterload())
+		if (CommandLineParams.ModeRegressionsTestType()!=-1)
 		{
 			unk_18058Cstr.MouseButtonState_18059C = 0;
 			x_WORD_18074C_mouse_left2_button = 0;

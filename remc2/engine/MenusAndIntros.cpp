@@ -1018,10 +1018,10 @@ bool NewGameDialog_77350(type_menuButtons_E1F84* a1x)//258350
 				&x_DWORD_17DB70str.unk_17DB80,
 				&x_DWORD_17DB70str.x_BYTE_17DB8F,
 				&x_DWORD_17DB70str.unk_17DB90);
-			if (CommandLineParams.ModeDebugAfterload()) {
+			if (CommandLineParams.ModeRegressionsTestType()!=-1) {
 				endAction = 1;
 			}
-			if (CommandLineParams.ModeTestRegressionsGame()) {
+			if (CommandLineParams.ModeRegressionsTestType()==0) {
 				x_DWORD_17DB70str.x_BYTE_17DB8E = 1;
 				x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = test_regression_level;
 				if (mapScreenPortals_E17CC[test_regression_level].activated_18 == 1)
@@ -5967,7 +5967,7 @@ bool DrawAndServe_7B250()//25c250
 {
 	typeTextBoxtextBoxStr_E24BCx textBoxStr[2];
 
-	if (CommandLineParams.ModeTestRegressionsGame()) {
+	if (CommandLineParams.ModeRegressionsTestType()==0) {
 		str_E1BAC[0].dword_0 = 0x258350;
 		str_E1BAC[0].selected_8 = 1;
 	}
