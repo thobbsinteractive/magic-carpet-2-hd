@@ -31435,13 +31435,12 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 
 	setLevel = CommandLineParams.GetSetLevel();
 	customLevelPath = CommandLineParams.GetCustomLevelPath();
-	if (setLevel > -1 || customLevelPath.length() > 0)
+	if ((setLevel > -1 || customLevelPath.length() > 0) || CommandLineParams.ModeRegressionsTestType() != -1)
 	{
-		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
+		if(CommandLineParams.ModeRegressionsTestType()==-1)
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
 		skipMenus = true;
 	}
-	if ((setLevel > -1 || customLevelPath.length() > 0) || CommandLineParams.ModeRegressionsTestType()!=-1)
-		skipMenus = true;
 
 	if (CommandLineParams.DoStateMonitor()) {
 		g_state_monitor.Init();
