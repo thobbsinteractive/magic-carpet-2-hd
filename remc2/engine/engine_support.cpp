@@ -1122,7 +1122,7 @@ uint32_t compare_with_sequence_D41A0_4(const char* filename, uint8_t* adress, ui
 	free(buffer);
 	fclose(fptestepc);
 	if (i < size) {
-		Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}", __FUNCTION__, __LINE__, i);
+		Logger->error("Compare error: {}, byte: {}/{:#x}, step: {}/{:#x}, {:#x}/{:#x}", __FUNCTION__, i, i, count, count, buffer[i], adress[i]);
 		allert_error();
 	}
 	return(i);
@@ -1359,7 +1359,7 @@ uint32_t compare_with_sequence(const char* filename, const uint8_t* adress, uint
 	}
 
 	if (i < size2) {
-		Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}", __FUNCTION__, __LINE__, i);
+		Logger->error("Compare error: {}, byte: {}/{:#x}, step: {}/{:#x}, {:#x}/{:#x}", __FUNCTION__, i, i, count, count, buffer[i], adress[i]);
 		End_thread(-1);
 	}
 	free(buffer);
