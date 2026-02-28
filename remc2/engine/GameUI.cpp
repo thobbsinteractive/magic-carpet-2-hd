@@ -3216,12 +3216,12 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 	int16_t v1; // ecx
 	int16_t v2; // esi
 	char v3; // ah
-	int v4; // ebx
-	char v5; // al
+	int posX_v4; // ebx
+	char colour_v5; // al
 	int posY_v6; // ecx
 	int screenWidth_v7; // esi
-	int startX_v8; // ecx
-	int v9; // ebx
+	int startY_v8; // ecx
+	int startX_v9; // ebx
 	x_BYTE* v10; // edx
 	x_BYTE* v11; // edx
 	x_BYTE* v12; // edx
@@ -3232,45 +3232,45 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 	v1 = a1->v51y.x - a1->v56xdw_18;
 	v2 = a1->v51y.y - a1->v57xdw_22;
 	v3 = 0;
-	v4 = a1->v60xdw_34 + ((int32_t)(v1 * a1->v54xdw_10 - v2 * a1->v55xdw_14) >> 16);
-	v5 = a1->v64xb_46;
-	if (v4 >= 0 && v4 < a1->v58xdw_26)
+	posX_v4 = a1->v60xdw_34 + ((int32_t)(v1 * a1->v54xdw_10 - v2 * a1->v55xdw_14) >> 16);
+	colour_v5 = a1->v64xb_46;
+	if (posX_v4 >= 0 && posX_v4 < a1->v58xdw_26)
 	{
 		posY_v6 = a1->v61xdw_38 + (int16_t)((a1->v54xdw_10 * v2 + a1->v55xdw_14 * v1) >> 16);
-		if (posY_v6 >= 3 && posY_v6 < a1->v59xdw_30 - 3 && v4 >= x_WORD_F4960[1 + 2 * posY_v6] + 3 && v4 < x_WORD_F4960[2 * posY_v6] - 3)
+		if (posY_v6 >= 3 && posY_v6 < a1->v59xdw_30 - 3 && posX_v4 >= x_WORD_F4960[1 + 2 * posY_v6] + 3 && posX_v4 < x_WORD_F4960[2 * posY_v6] - 3)
 		{
-			a1->v62xw_42 = v4;
+			a1->v62xw_42 = posX_v4;
 			a1->v63xw_44 = posY_v6;
 			v3 = 1;
 			if (!(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 3))
 			{
 				screenWidth_v7 = screenWidth_18062C;
-				startX_v8 = screenWidth_18062C * (posY_v6 - 1);
-				v9 = v4 - 1;
-				v10 = (x_BYTE*)(startX_v8 + v9 + pdwScreenBuffer_351628);
-				v10[0] = v5;
-				v10[1] = v5;
-				v10[2] = v5;
+				startY_v8 = screenWidth_18062C * (posY_v6 - 1);
+				startX_v9 = posX_v4 - 1;
+				v10 = (x_BYTE*)(startY_v8 + startX_v9 + pdwScreenBuffer_351628);
+				v10[0] = colour_v5;
+				v10[1] = colour_v5;
+				v10[2] = colour_v5;
 				v11 = &v10[screenWidth_v7];
-				v11[0] = v5;
-				v11[2] = v5;
+				v11[0] = colour_v5;
+				v11[2] = colour_v5;
 				v12 = &v11[screenWidth_v7];
-				v12[0] = v5;
-				v12[1] = v5;
-				v12[2] = v5;
+				v12[0] = colour_v5;
+				v12[1] = colour_v5;
+				v12[2] = colour_v5;
 				if (1 == D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 				{
-					v13 = (x_BYTE*)(startX_v8 + v9 + x_DWORD_E9C3C);
-					v13[0] = v5;
-					v13[1] = v5;
-					v13[2] = v5;
+					v13 = (x_BYTE*)(startY_v8 + startX_v9 + x_DWORD_E9C3C);
+					v13[0] = colour_v5;
+					v13[1] = colour_v5;
+					v13[2] = colour_v5;
 					v14 = &v13[screenWidth_v7];
-					v14[0] = v5;
-					v14[2] = v5;
+					v14[0] = colour_v5;
+					v14[2] = colour_v5;
 					v15 = &v14[screenWidth_v7];
-					v15[0] = v5;
-					v15[1] = v5;
-					v15[2] = v5;
+					v15[0] = colour_v5;
+					v15[1] = colour_v5;
+					v15[2] = colour_v5;
 				}
 			}
 		}
