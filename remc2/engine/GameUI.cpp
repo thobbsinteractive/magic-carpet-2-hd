@@ -3211,16 +3211,16 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 }
 
 //----- (00064CE0) --------------------------------------------------------
-char DrawObjectiveRectangle_64CE0(v51x_struct* a1)//245ce0
+char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 {
 	int16_t v1; // ecx
 	int16_t v2; // esi
 	char v3; // ah
 	int v4; // ebx
 	char v5; // al
-	int v6; // ecx
-	int v7; // esi
-	int v8; // ecx
+	int posY_v6; // ecx
+	int screenWidth_v7; // esi
+	int startX_v8; // ecx
 	int v9; // ebx
 	x_BYTE* v10; // edx
 	x_BYTE* v11; // edx
@@ -3236,38 +3236,38 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1)//245ce0
 	v5 = a1->v64xb_46;
 	if (v4 >= 0 && v4 < a1->v58xdw_26)
 	{
-		v6 = a1->v61xdw_38 + (int16_t)((a1->v54xdw_10 * v2 + a1->v55xdw_14 * v1) >> 16);
-		if (v6 >= 3 && v6 < a1->v59xdw_30 - 3 && v4 >= x_WORD_F4960[1 + 2 * v6] + 3 && v4 < x_WORD_F4960[2 * v6] - 3)
+		posY_v6 = a1->v61xdw_38 + (int16_t)((a1->v54xdw_10 * v2 + a1->v55xdw_14 * v1) >> 16);
+		if (posY_v6 >= 3 && posY_v6 < a1->v59xdw_30 - 3 && v4 >= x_WORD_F4960[1 + 2 * posY_v6] + 3 && v4 < x_WORD_F4960[2 * posY_v6] - 3)
 		{
 			a1->v62xw_42 = v4;
-			a1->v63xw_44 = v6;
+			a1->v63xw_44 = posY_v6;
 			v3 = 1;
 			if (!(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 3))
 			{
-				v7 = screenWidth_18062C;
-				v8 = screenWidth_18062C * (v6 - 1);
+				screenWidth_v7 = screenWidth_18062C;
+				startX_v8 = screenWidth_18062C * (posY_v6 - 1);
 				v9 = v4 - 1;
-				v10 = (x_BYTE*)(v8 + v9 + pdwScreenBuffer_351628);
+				v10 = (x_BYTE*)(startX_v8 + v9 + pdwScreenBuffer_351628);
 				v10[0] = v5;
 				v10[1] = v5;
 				v10[2] = v5;
-				v11 = &v10[v7];
+				v11 = &v10[screenWidth_v7];
 				v11[0] = v5;
 				v11[2] = v5;
-				v12 = &v11[v7];
+				v12 = &v11[screenWidth_v7];
 				v12[0] = v5;
 				v12[1] = v5;
 				v12[2] = v5;
 				if (1 == D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 				{
-					v13 = (x_BYTE*)(v8 + v9 + x_DWORD_E9C3C);
+					v13 = (x_BYTE*)(startX_v8 + v9 + x_DWORD_E9C3C);
 					v13[0] = v5;
 					v13[1] = v5;
 					v13[2] = v5;
-					v14 = &v13[v7];
+					v14 = &v13[screenWidth_v7];
 					v14[0] = v5;
 					v14[2] = v5;
-					v15 = &v14[v7];
+					v15 = &v14[screenWidth_v7];
 					v15[0] = v5;
 					v15[1] = v5;
 					v15[2] = v5;

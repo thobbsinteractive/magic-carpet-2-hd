@@ -85,7 +85,7 @@ void DrawMinimap_63600(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_
 void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
 int TransformPlayerColorIndex_616D0(int index);
 void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
-char DrawObjectiveRectangle_64CE0(v51x_struct* a1);
+char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale = 1);
 void DrawOkCancelMenu_30A60(int16_t posTextX, int16_t posTextY, uint8_t scale = 1);
 void DrawPauseMenu_2FD90(uint8_t scale = 1);
 void DrawSorcererScores_2D1D0(uint8_t scale = 1);
