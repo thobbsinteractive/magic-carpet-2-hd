@@ -6169,7 +6169,7 @@ pdwScreenBuffer_351628+0x1a4d 0x23
 
  245db2
 
- char sub_64CE0_draw_follow_rectangle(v51x_struct* a1)//245ce0
+ char DrawObjectiveRectangle_64CE0(v51x_struct* a1)//245ce0
 
  debugcounter_644F0==3
 

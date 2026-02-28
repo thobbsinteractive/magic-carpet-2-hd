@@ -2850,7 +2850,7 @@ int debugcounter_644F0 = 0;
 
 
 //----- (000644F0) --------------------------------------------------------
-void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling)//2454f0
+void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale)//2454f0
 {
 	signed int v8; // ebx
 	//__int64 v9; // rtt
@@ -3053,7 +3053,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 		{
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[3840];
 			v51x.v51y = v72x->position_0x4C_76;
-			if (sub_64CE0_draw_follow_rectangle(&v51x))
+			if (DrawObjectiveRectangle_64CE0(&v51x))
 				sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 			v36x = &v72x->position_0x4C_76;
 			v17x = &v72x->position_0x4C_76;
@@ -3062,13 +3062,13 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			goto LABEL_47;
 		}
 		break;
-	case 8:
+	case 8: //Draw Objective Rectangle
 		//LOBYTE(i) = sub_596C0(v65x, D41A0_BYTESTR_0.word_0xc);
 		if (sub_596C0(&v65y, D41A0_0.LevelIndex_0xc))
 		{
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[0xff0];
 			v51x.v51y = v65y;
-			if (sub_64CE0_draw_follow_rectangle(&v51x))
+			if (DrawObjectiveRectangle_64CE0(&v51x))
 				sub_885E0(0, v51x.v62xw_42, v51x.v63xw_44, 0x51u);
 			v36x = &v65y;
 			v17x = &v65y;
@@ -3089,7 +3089,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			if (ix <= Entities_EA3E4[0])
 				break;
 			v51x.v51y = v72x->position_0x4C_76;
-			if (sub_64CE0_draw_follow_rectangle(&v51x))
+			if (DrawObjectiveRectangle_64CE0(&v51x))
 				sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 			v19 = Maths::EuclideanDistXYZ_58490(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 			if (v19 < v8)
@@ -3114,7 +3114,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				if (v72x->byte_0x46_70 == v79)
 				{
 					v51x.v51y = v72x->position_0x4C_76;
-					if (sub_64CE0_draw_follow_rectangle(&v51x))
+					if (DrawObjectiveRectangle_64CE0(&v51x))
 						sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 					v20 = Maths::EuclideanDistXYZ_58490(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 					if (v20 < v8)
@@ -3133,6 +3133,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 	}
 	if (v81)
 	{
+		//Draw Arrow
 		//LOBYTE(i) = (uint8)x_D41A0_BYTEARRAY_4;
 		if (x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0x40)
 		{
@@ -3210,7 +3211,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 }
 
 //----- (00064CE0) --------------------------------------------------------
-char sub_64CE0_draw_follow_rectangle(v51x_struct* a1)//245ce0
+char DrawObjectiveRectangle_64CE0(v51x_struct* a1)//245ce0
 {
 	int16_t v1; // ecx
 	int16_t v2; // esi

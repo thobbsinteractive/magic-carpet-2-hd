@@ -3129,13 +3129,13 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		DrawMinimapMarks_644F0((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0);
+		DrawMinimapMarks_644F0((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
 	}
 	case 0x245ce0: {
-		sub_64CE0_draw_follow_rectangle((v51x_struct*)a1_6E8E);
+		DrawObjectiveRectangle_64CE0((v51x_struct*)a1_6E8E);
 		break;
 	}
 	case 0x245e20: {
