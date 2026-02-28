@@ -13805,7 +13805,7 @@ void sub_222B0(type_entity_0x6E8E* a1x)//2032b0
 			v3 = 1;
 			break;
 		case 2:
-			if (x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 1)
+			if (x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 1)
 				v4 = 512;
 			else
 				v4 = -512;
@@ -22370,7 +22370,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 			if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 && D41A0_0.NumberOfPlayers_0xe > 1u && !str_unk_1804B0ar.byte_0xa8)
 			{
 				str_unk_1804B0ar.dword_0x82 = 9377 * str_unk_1804B0ar.dword_0x82 + 9439;
-				v13 = x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0xFF;
+				v13 = x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 0xFF;
 				str_unk_1804B0ar.byte_0xa8 = str_unk_1804B0ar.dword_0x82 % D41A0_0.NumberOfPlayers_0xe + 1;
 				v14 = v13 + str_unk_1804B0ar.dword_0x82;
 				v15 = 1;
@@ -37722,7 +37722,7 @@ void PlayerEvents_51BB0()//232bb0
 			ReceiveSendAll_7438A((uint8_t*)&D41A0_0.array_0x2BDE[0], sizeof(type_str_0x2BDE));
 	}
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248++;
-	x_D41A0_BYTEARRAY_4_struct.byteindex_26++;//232c9e
+	x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26++;//232c9e
 	x_D41A0_BYTEARRAY_4_struct.setting_30++;
 	if (x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400)
 		x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400--;
@@ -38619,7 +38619,7 @@ void sub_53C70()//234c70
 	//int v1; // edx
 
 	//result = (int)x_D41A0_BYTEARRAY_4;
-	x_D41A0_BYTEARRAY_4_struct.byteindex_26 = 0;
+	x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 = 0;
 	//v1 = x_D41A0_BYTEARRAY_4_struct.setting_byte1_22;
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0;
 	x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 |= 0x1208000;
@@ -39522,7 +39522,7 @@ void ClearSettings_567C0()//2377c0 // clean level
 	//result = (int)x_D41A0_BYTEARRAY_4;
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0;
 	//v1 = *(x_DWORD *)(x_D41A0_BYTEARRAY_4 + 22);
-	x_D41A0_BYTEARRAY_4_struct.byteindex_26 = 0;
+	x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 = 0;
 	x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 &= 0xFFFE3FFF;
 	//return result;
 }
@@ -41033,7 +41033,7 @@ void sub_58F00_game_objectives()//239f00
 							}
 							break;
 						case 9:
-							if (v3 == D41A0_0.struct_0x3659C[v0x].substr_3659C.ObjectiveText_1 && !(x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0xF))
+							if (v3 == D41A0_0.struct_0x3659C[v0x].substr_3659C.ObjectiveText_1 && !(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 0xF))
 							{
 								v8x = x_D41A0_BYTEARRAY_4_struct.dword_38527;
 								v25 = 0;

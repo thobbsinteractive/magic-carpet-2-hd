@@ -788,7 +788,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 //----- (00053120) --------------------------------------------------------
 void sub_53120()//234120
 {
-	if (!(x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 7))
+	if (!(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 7))
 	{
 		if ((x_D41A0_BYTEARRAY_4_struct.byteindex_52 & 3) == 1)
 		{
@@ -3135,7 +3135,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 	{
 		//Draw Arrow
 		//LOBYTE(i) = (uint8)x_D41A0_BYTEARRAY_4;
-		if (x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0x40)
+		if (x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 0x40)
 		{
 			if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[6])
 			{
@@ -3242,7 +3242,7 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1)//245ce0
 			a1->v62xw_42 = v4;
 			a1->v63xw_44 = v6;
 			v3 = 1;
-			if (!(x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 3))
+			if (!(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 3))
 			{
 				v7 = screenWidth_18062C;
 				v8 = screenWidth_18062C * (v6 - 1);
@@ -4659,7 +4659,7 @@ void DrawChatMenu_2F6B0()//2106b0
 	DrawText_2BC10(printbuffer, v8, v7, v42);
 	v10 = 8 * strlen(printbuffer) + v8;
 	v11 = v7 + 2;
-	if (x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 8)
+	if (x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 8)
 		v12 = v43;
 	else
 		v12 = v47;
