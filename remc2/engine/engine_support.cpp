@@ -480,6 +480,531 @@ uint8_t test_str_E2A74[] = {
 0x3F,0x00,0x0F,0x00,0x3F,0x00,0x2F,0x00,0x3F,0x00,0x1F,0x00,0x7F,0x00,0x3F,0x00
 };*/
 
+
+
+
+struct FieldRange {
+	size_t      off;        // first byte of field
+	size_t      size;       // size in bytes
+	const char* name;       // field path (may contain %zu for array indices)
+	// For array fields we store the element size so we can compute the index.
+	size_t      elem;       // 0 = scalar; >0 = element size for index calc
+};
+
+// Helper: build the table once (lazy-init via static local)
+static const std::vector<FieldRange>& field_table()
+{
+	using S = type_shadow_D41A0_BYTESTR_0;
+	using BDE = type_str_0x2BDE;
+	using S164 = type_str_164;
+	using S611 = type_str_611;
+	using ENT = type_shadow_str_0x6E8E;
+	using LEV = Type_CompressedLevel_2FECE;
+	using ENT2 = type_entity_0x30311;
+	using WIZ = Type_WizardMapSettings_0x360D2;
+	using STA = type_str_0x36442;
+	using SV = type_str_0x3647Ac;
+	using SC = type_shadow_str_3654C;
+	using S59 = type_substr_3659C;
+	using SH = type_shadow_str_0x3647Ac;
+	using S3664 = type_shadow_str_0x3664C;
+	using PI = Type_PlayerInput_0x6E3E;
+
+#define BASE(field)   offsetof(S, field)
+#define BDEBASE(i,f)  (offsetof(S,array_0x2BDE) + (i)*sizeof(BDE) + offsetof(BDE,f))
+#define S164BASE(i,f) (offsetof(S,array_0x2BDE) + (i)*sizeof(BDE) + offsetof(BDE,dword_0x3E6_2BE4_12228) + offsetof(S164,f))
+#define S611BASE(i,f) (S164BASE(i,str_611) + offsetof(S611,f))
+#define ENTBASE(i,f)  (offsetof(S,struct_0x6E8E) + (i)*sizeof(ENT) + offsetof(ENT,f))
+#define LEVBASE(f)    (offsetof(S,str_2FECE) + offsetof(LEV,f))
+#define ENT2BASE(k,f) (LEVBASE(array_0x30311) + (k)*sizeof(ENT2) + offsetof(ENT2,f))
+#define WIZBASE(k,f)  (LEVBASE(WizardMapSettings_0x360D2) + (k)*sizeof(WIZ) + offsetof(WIZ,f))
+#define STABASE(k,f)  (LEVBASE(str_0x36442) + (k)*sizeof(STA) + offsetof(STA,f))
+#define SVBASE(k,f)   (LEVBASE(array_0x3647A) + (k)*sizeof(SV) + offsetof(SV,f))
+#define SCBASE(i,f)   (offsetof(S,struct_0x3654C) + (i)*sizeof(SC) + offsetof(SC,f))
+#define S59BASE(i,f)  (offsetof(S,struct_0x3659C) + (i)*sizeof(type_str_3659C) + offsetof(type_str_3659C,substr_3659C) + offsetof(S59,f))
+#define SHBASE(i,f)   (offsetof(S,array_0x365F4) + (i)*sizeof(SH) + offsetof(SH,f))
+#define S3664BASE(i,f)(offsetof(S,str_0x3664C) + (i)*sizeof(S3664) + offsetof(S3664,f))
+#define PIBASE(i,f)   (offsetof(S,playerInputs_0x6E3E) + (i)*sizeof(PI) + offsetof(PI,f))
+
+	static std::vector<FieldRange> tbl;
+	if (!tbl.empty()) return tbl;
+
+	// ── Top-level scalars ───────────────────────────────────────────────────
+	tbl.push_back({ BASE(stub0),             sizeof(S::stub0[0]),          "stub0[%zu]",             1 });
+	tbl.push_back({ BASE(dword_0x4),         sizeof(S::dword_0x4),         "dword_0x4",              0 });
+	tbl.push_back({ BASE(dword_0x8),         sizeof(S::dword_0x8),         "dword_0x8",              0 });
+	tbl.push_back({ BASE(word_0xc),          sizeof(S::word_0xc),          "word_0xc",               0 });
+	tbl.push_back({ BASE(NumberOfPlayers_0xe),sizeof(S::NumberOfPlayers_0xe),"NumberOfPlayers_0xe",  0 });
+	tbl.push_back({ BASE(array_0x10),        1,                            "array_0x10[%zu]",        1 });
+	tbl.push_back({ BASE(dword_0x2d),        sizeof(S::dword_0x2d),        "dword_0x2d",             0 });
+	tbl.push_back({ BASE(word_0x31),         sizeof(S::word_0x31),         "word_0x31",              0 });
+	tbl.push_back({ BASE(word_0x33),         sizeof(S::word_0x33),         "word_0x33",              0 });
+	tbl.push_back({ BASE(dword_0x35),        sizeof(S::dword_0x35),        "dword_0x35",             0 });
+	tbl.push_back({ BASE(array_0x39),        1,                            "array_0x39[%zu]",        1 });
+	tbl.push_back({ BASE(dword_0x235),       sizeof(S::dword_0x235),       "dword_0x235",            0 });
+	tbl.push_back({ BASE(byte_0x239),        sizeof(S::byte_0x239),        "byte_0x239",             0 });
+	tbl.push_back({ BASE(dword_0x23a),       sizeof(S::dword_0x23a),       "dword_0x23a",            0 });
+	tbl.push_back({ BASE(dword_0x23e),       sizeof(S::dword_0x23e),       "dword_0x23e",            0 });
+	tbl.push_back({ BASE(dword_0x242),       sizeof(S::dword_0x242),       "dword_0x242",            0 });
+	tbl.push_back({ BASE(pointers_0x246),    sizeof(uint32_t),             "pointers_0x246[%zu]",    sizeof(uint32_t) });
+	tbl.push_back({ BASE(dword_0x11e6),      sizeof(S::dword_0x11e6),      "dword_0x11e6",           0 });
+	tbl.push_back({ BASE(dword_0x11EA),      sizeof(uint32_t),             "dword_0x11EA[%zu]",      sizeof(uint32_t) });
+
+	// ── GameSettings ────────────────────────────────────────────────────────
+#define GS(f,sz) tbl.push_back({BASE(m_GameSettings)+offsetof(GameSettingsStruct_t,f), sz, "m_GameSettings." #f, 0})
+	GS(m_Graphics.m_wReflections, 1); GS(m_Graphics.m_wShadows, 1);
+	GS(m_Graphics.m_wSky, 1);         GS(m_Graphics.m_wViewPortSize, 1);
+	GS(m_Display.m_wMiniMap, 1);      GS(m_Display.m_wTopBar, 1);
+	GS(m_Display.m_uiScreenSize, 1);  GS(m_Display.xxxx_0x2191, 1);
+	GS(str_0x2192.xxxx_0x2192, 1);    GS(str_0x2192.xxxx_0x2193, 1);
+	GS(str_0x2192.m_wResolution, 1);  GS(str_0x2192.shadows_0x2195, 1);
+	GS(str_0x2196.m_wDynamicLighting, 1); GS(str_0x2196.setting_0x2197, 1);
+	GS(str_0x2196.transparency_0x2198, 1); GS(str_0x2196.flat_0x2199, 1);
+#undef GS
+
+	tbl.push_back({ BASE(dword_0x219A),4,"dword_0x219A",0 });
+	tbl.push_back({ BASE(dword_0x219E),4,"dword_0x219E",0 });
+	tbl.push_back({ BASE(dword_0x21A2),4,"dword_0x21A2",0 });
+	tbl.push_back({ BASE(dword_0x21A6),4,"dword_0x21A6",0 });
+
+#define ST(base,f,sz,nm) tbl.push_back({BASE(base)+offsetof(decltype(S::base),f), sz, nm, 0})
+	ST(str_0x21AA, creflections_0x21AA, 1, "str_0x21AA.creflections_0x21AA");
+	ST(str_0x21AA, cshadows_0x21AB, 1, "str_0x21AA.cshadows_0x21AB");
+	ST(str_0x21AA, csky_0x21AC, 1, "str_0x21AA.csky_0x21AC");
+	ST(str_0x21AA, calter_0x21AD, 1, "str_0x21AA.calter_0x21AD");
+	ST(str_0x21AE, xxxx_0x21AE, 1, "str_0x21AE.xxxx_0x21AE");
+	ST(str_0x21AE, xxxx_0x21AF, 1, "str_0x21AE.xxxx_0x21AF");
+	ST(str_0x21AE, xxxx_0x21B0, 1, "str_0x21AE.xxxx_0x21B0");
+	ST(str_0x21AE, xxxx_0x21B1, 1, "str_0x21AE.xxxx_0x21B1");
+	ST(str_0x21B2, xxxx_0x21B2, 1, "str_0x21B2.xxxx_0x21B2");
+	ST(str_0x21B2, xxxx_0x21B3, 1, "str_0x21B2.xxxx_0x21B3");
+	ST(str_0x21B2, cresolution_0x21B4, 1, "str_0x21B2.cresolution_0x21B4");
+	ST(str_0x21B2, xxxx_0x21B5, 1, "str_0x21B2.xxxx_0x21B5");
+	ST(str_0x21B6, clights_0x21B6, 1, "str_0x21B6.clights_0x21B6");
+	ST(str_0x21B6, csetting_0x21B7, 1, "str_0x21B6.csetting_0x21B7");
+	ST(str_0x21B6, ctransparency_0x21B8, 1, "str_0x21B6.ctransparency_0x21B8");
+	ST(str_0x21B6, cflat_0x21B9, 1, "str_0x21B6.cflat_0x21B9");
+#undef ST
+
+	tbl.push_back({ BASE(stub3b), 1, "stub3b[%zu]", 1 });
+	// array_0x2362[8] axis_3d  (each axis_3d = 6 bytes: x,y each 2B, z 2B)
+	for (int i = 0; i < 8; i++) {
+		size_t b = BASE(array_0x2362) + i * sizeof(axis_3d);
+		char nm[64];
+		snprintf(nm, sizeof(nm), "array_0x2362[%d].x", i); tbl.push_back({ b + 0,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "array_0x2362[%d].y", i); tbl.push_back({ b + 2,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "array_0x2362[%d].z", i); tbl.push_back({ b + 4,2,strdup(nm),0 });
+	}
+	tbl.push_back({ BASE(stub3c), 1, "stub3c[%zu]", 1 });
+	tbl.push_back({ BASE(stub3d), 1, "stub3d[%zu]", 1 });
+
+	// ── array_0x2BDE[8] ─────────────────────────────────────────────────────
+	for (int i = 0; i < 8; i++) {
+		char nm[256];
+#define BDESC(f,sz) do { \
+    snprintf(nm,sizeof(nm),"array_0x2BDE[%d]." #f, i); \
+    tbl.push_back({BDEBASE(i,f), sz, strdup(nm), 0}); \
+} while(0)
+		BDESC(dw_w_b_0_2BDE_11230, 4);
+		BDESC(byte_0x004_2BE0_11234, 1); BDESC(ShowDebugTextFlag_0x005_2BE0_11235, 1);
+		BDESC(byte_0x006_2BE4_11236, 1); BDESC(word_0x007_2BE4_11237, 2);
+		BDESC(IsAiPlayer_0x009_2BE4_11239, 1); BDESC(playerIndex_0x00a_2BE4_11240, 2);
+		BDESC(byte_0x00c_2BE0_11242_xx, 1); BDESC(byte_0x00d_2BE0_11243_xx, 1);
+		BDESC(ActPlayerIndex_0x00e_2BDE_11244, 2); BDESC(word_0x010_2BDE_11246, 2);
+		BDESC(Turn_2BE0_11248, 4); BDESC(byte_0x016_2BE0_11252_xx, 1);
+		BDESC(byte_0x017_2BE0_11253_xx, 1); BDESC(dword_0x018_2BDE_11254, 4);
+
+		// char array_0x01c_2BFA_11258[49]
+		for (int k = 0; k < 49; k++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].array_0x01c_2BFA_11258[%d]", i, k);
+			tbl.push_back({ BDEBASE(i,array_0x01c_2BFA_11258) + k,1,strdup(nm),0 });
+		}
+		BDESC(word_0x04d_2C2B_11307, 2); BDESC(word_0x04f_2C2D_11309, 2);
+
+		// names_81[8][48]
+		for (int r = 0; r < 8; r++) for (int c = 0; c < 48; c++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].names_81[%d][%d]", i, r, c);
+			tbl.push_back({ BDEBASE(i,names_81) + r * 48 + c,1,strdup(nm),0 });
+		}
+
+		// struct_0x1d1_2BDE_11695[33]
+		for (int j = 0; j < 33; j++) {
+			size_t jb = BDEBASE(i, struct_0x1d1_2BDE_11695) + j * sizeof(type_struct_0x1d1_2BDE_11695);
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].struct_0x1d1_2BDE_11695[%d].axis_2BDE_11695.x", i, j); tbl.push_back({ jb + offsetof(type_struct_0x1d1_2BDE_11695,axis_2BDE_11695) + 0,2,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].struct_0x1d1_2BDE_11695[%d].axis_2BDE_11695.y", i, j); tbl.push_back({ jb + offsetof(type_struct_0x1d1_2BDE_11695,axis_2BDE_11695) + 2,2,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].struct_0x1d1_2BDE_11695[%d].axis_2BDE_11695.z", i, j); tbl.push_back({ jb + offsetof(type_struct_0x1d1_2BDE_11695,axis_2BDE_11695) + 4,2,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].struct_0x1d1_2BDE_11695[%d].rotation__2BDE_11701.yaw", i, j);   tbl.push_back({ jb + offsetof(type_struct_0x1d1_2BDE_11695,rotation__2BDE_11701) + 0,2,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].struct_0x1d1_2BDE_11695[%d].rotation__2BDE_11701.pitch", i, j); tbl.push_back({ jb + offsetof(type_struct_0x1d1_2BDE_11695,rotation__2BDE_11701) + 2,2,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].struct_0x1d1_2BDE_11695[%d].rotation__2BDE_11701.roll", i, j);  tbl.push_back({ jb + offsetof(type_struct_0x1d1_2BDE_11695,rotation__2BDE_11701) + 4,2,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].struct_0x1d1_2BDE_11695[%d].rotation__2BDE_11701.fov", i, j);   tbl.push_back({ jb + offsetof(type_struct_0x1d1_2BDE_11695,rotation__2BDE_11701) + 6,2,strdup(nm),0 });
+		}
+
+		// WizardName[64]
+		for (int k = 0; k < 64; k++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].WizardName_0x39f_2BFA_12157[%d]", i, k);
+			tbl.push_back({ BDEBASE(i,WizardName_0x39f_2BFA_12157) + k,1,strdup(nm),0 });
+		}
+		BDESC(MenuState_0x3DF_2BE4_12221, 1); BDESC(byte_0x3E0_2BE4_12222, 1);
+		BDESC(byte_0x3E1_2BE4_12223, 1);      BDESC(byte_0x3E2_2BE4_12224, 1);
+		BDESC(byte_0x3E3_2BE4_12225, 1);      BDESC(byte_0x3E4_2BE4_12226, 1);
+		snprintf(nm, sizeof(nm), "array_0x2BDE[%d].stub3[0]", i);
+		tbl.push_back({ BDEBASE(i,stub3),1,strdup(nm),0 });
+
+		// type_str_164 dword_0x3E6_2BE4_12228
+#define S164SC(f,sz) do { \
+    snprintf(nm,sizeof(nm),"array_0x2BDE[%d].dword_0x3E6_2BE4_12228." #f, i); \
+    tbl.push_back({S164BASE(i,f), sz, strdup(nm), 0}); \
+} while(0)
+		S164SC(entityIndex_0x0, 4); S164SC(rollDelta_0x4_4, 2); S164SC(pitchDelta_0x6_6, 2);
+		S164SC(speed_0xc_12, 2); S164SC(word_0xe_14, 2); S164SC(strafeSpeed_0x10_16, 2);
+		S164SC(position_backup_20.x, 2); S164SC(position_backup_20.y, 2);
+		S164SC(nextEntity_0x18_24, 2); S164SC(entityIndex2_0x1A_26, 2);
+		S164SC(moveBoost_0x1E_30, 2); S164SC(yaw_0x1E_30, 2);
+		S164SC(fov_0x22_34, 2); S164SC(pitch_0x24_36, 2);
+		for (int k = 0; k < 8; k++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.word_0x26_38[%d]", i, k);
+			tbl.push_back({ S164BASE(i,word_0x26_38) + k * 2,2,strdup(nm),0 });
+		}
+		S164SC(word_0x36_54, 2); S164SC(playerColorIndex_0x38_56, 2); S164SC(CastleEntityIndex_0x3A_58, 2);
+		for (int k = 0; k < 16; k++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.array_0x3C_60[%d]", i, k);
+			tbl.push_back({ S164BASE(i,array_0x3C_60) + k * 2,2,strdup(nm),0 });
+		}
+		for (int k = 0; k < 103; k++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.array_0x5C_92[%d]", i, k);
+			tbl.push_back({ S164BASE(i,array_0x5C_92) + k * 2,2,strdup(nm),0 });
+		}
+		S164SC(dword_0x12A_298, 4); S164SC(dword_0x12E_302, 4); S164SC(dword_0x13C_316, 4);
+		S164SC(dword_0x142_322, 4); S164SC(word_0x146_326, 2); S164SC(word_0x148_328, 2);
+		S164SC(word_0x14A_330, 2); S164SC(moveSpeed_0x14C_332, 1); S164SC(moveSpeedCounter_0x14D_333, 1);
+		S164SC(mobilizeCounter_0x14E_334, 1); S164SC(mobilizeCounter2_0x150_336, 1);
+		S164SC(byte_0x150_336, 4); S164SC(byte_0x154_340, 1);
+		S164SC(roll_0x155_341, 2); S164SC(pitch_0x157_343, 2); S164SC(word_0x159_345, 2);
+		for (int k = 0; k < 8; k++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.array_0x15B_347[%d]", i, k);
+			tbl.push_back({ S164BASE(i,array_0x15B_347) + k,1,strdup(nm),0 });
+		}
+		S164SC(lifeRegen_0x163_355, 2); S164SC(dword_0x165_357, 4); S164SC(dword_0x169_361, 4);
+		S164SC(dword_0x16D_365, 4); S164SC(creaturesKilledPercent_373, 4);
+		S164SC(spellsCollectedPercent_377, 4); S164SC(hitAccuracyPercent_381, 4);
+		S164SC(manaCollectedPercent_385, 4); S164SC(dword_0x185_389, 4);
+		S164SC(time_393, 4); S164SC(dword_0x18D_397, 4);
+		S164SC(byte_0x195_405, 1); S164SC(PlayerHitFrameTime_406, 1); S164SC(byte_0x197_407, 1);
+		S164SC(dword_0x19A_410, 4); S164SC(maxDistance_0x19E_414, 4);
+		S164SC(word_0x1A2_418, 2); S164SC(word_0x1A4_420, 2);
+		S164SC(xAdd_0x1A6_422, 2); S164SC(yAdd_0x1A8_424, 2); S164SC(zAdd_0x1AA_426, 2);
+		S164SC(str_0x1AC_428.word_0, 2);
+		for (int k = 0; k < 8; k++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_0x1AC_428.word_2BDE_12658[%d]", i, k);
+			tbl.push_back({ S164BASE(i,str_0x1AC_428.word_2BDE_12658) + k * 2,2,strdup(nm),0 });
+		}
+		S164SC(byte_0x1BE_446, 1); S164SC(byte_0x1BF_447, 1); S164SC(byte_0x1C0_448, 1);
+		S164SC(byte_0x1C1_449, 1); S164SC(word_0x1C2_450, 2);
+		for (int k = 0; k < 32; k++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.array_0x1FC_508[%d]", i, k);
+			tbl.push_back({ S164BASE(i,array_0x1FC_508) + k * 2,2,strdup(nm),0 });
+		}
+		S164SC(word_0x242_578, 2); S164SC(word_0x244_580, 2); S164SC(word_0x246_582, 2);
+		S164SC(word_0x248_584, 2); S164SC(word_0x24A_586, 2); S164SC(word_0x24C_588, 2);
+		for (int k = 0; k < 19; k++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.array_0x24E_590[%d]", i, k);
+			tbl.push_back({ S164BASE(i,array_0x24E_590) + k,1,strdup(nm),0 });
+		}
+		S164SC(byte_0x261_609, 1); S164SC(waterCounter_0x262_610, 1);
+
+		// str_611
+#define S611SC(f,sz) do { \
+    snprintf(nm,sizeof(nm),"array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611." #f, i); \
+    tbl.push_back({S611BASE(i,f), sz, strdup(nm), 0}); \
+} while(0)
+		for (int k = 0; k < 26; k++) {
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x263_611x.dword[%d]", i, k);
+			tbl.push_back({ S611BASE(i,array_0x263_611x) + k * 4,4,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.spellsExperience_0x2CB_715x[%d]", i, k);
+			tbl.push_back({ S611BASE(i,spellsExperience_0x2CB_715x) + k * 4,4,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[%d]", i, k);
+			tbl.push_back({ S611BASE(i,array_0x333_819x) + k * 2,2,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x367_871x.SpellEnabled[%d]", i, k);
+			tbl.push_back({ S611BASE(i,array_0x367_871x) + k * 2,2,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x39B_923x.SpellIndex[%d]", i, k);
+			tbl.push_back({ S611BASE(i,array_0x39B_923x) + k,1,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x3B5_949x.SpellIndex[%d]", i, k);
+			tbl.push_back({ S611BASE(i,array_0x3B5_949x) + k,1,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[%d]", i, k);
+			tbl.push_back({ S611BASE(i,array_0x3CF_975x) + k,1,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.SpellIndex[%d]", i, k);
+			tbl.push_back({ S611BASE(i,array_0x3E9_1001x) + k,1,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x403_1027x.SpellIndex[%d]", i, k);
+			tbl.push_back({ S611BASE(i,array_0x403_1027x) + k,1,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.SpellIndex[%d]", i, k);
+			tbl.push_back({ S611BASE(i,array_0x41D_1053z) + k,1,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.SpellIndex[%d]", i, k);
+			tbl.push_back({ S611BASE(i,array_0x437_1079x) + k,1,strdup(nm),0 });
+		}
+		S611SC(SpellIndexLeft_0x451_1105, 2); S611SC(SpellIndexRight_0x453_1107, 2);
+		S611SC(SubSpellIndexLeft_1109, 1);    S611SC(SubSpellIndexRight_1110, 1);
+		S611SC(byte_0x457_1111, 1); S611SC(spellIndex_0x458_1112, 1);
+		S611SC(subSpellIndex_0x459_1113, 1); S611SC(byte_0x45A_1114, 1); S611SC(byte_0x45B_1115, 1);
+#undef S611SC
+		S164SC(str_611_byte_0x45C_1116, 1); S164SC(str_611_byte_0x45D_1117, 1);
+		S164SC(str_611_byte_0x45E_1118, 1); S164SC(str_611_byte_0x45E_1119, 1);
+#undef S164SC
+
+		BDESC(byte_0x846_2BDE, 1); BDESC(byte_0x847_2BDE, 1);
+		BDESC(word_0x848_2BDE, 2); BDESC(word_0x84A_2BDE, 2);
+#undef BDESC
+	}
+
+	// ── playerInputs_0x6E3E[8] ──────────────────────────────────────────────
+	for (int i = 0; i < 8; i++) {
+		char nm[128];
+#define PISC(f,sz) do { snprintf(nm,sizeof(nm),"playerInputs_0x6E3E[%d]." #f,i); tbl.push_back({PIBASE(i,f),sz,strdup(nm),0}); } while(0)
+		PISC(PlayerAction_byte0, 1); PISC(str_0x6E3E_byte1, 1); PISC(str_0x6E3E_byte2, 1);
+		PISC(roll, 1); PISC(pitch, 1); PISC(entityIndex_0x6E3E_byte5, 1);
+		PISC(nextEntity_0x6E3E_word6, 2); PISC(entityIndex2_0x6E3E_word8, 2);
+#undef PISC
+	}
+
+	// ── struct_0x6E8E[1000] ─────────────────────────────────────────────────
+	for (int i = 0; i < 1000; i++) {
+		char nm[128];
+#define ESC(f,sz) do { snprintf(nm,sizeof(nm),"struct_0x6E8E[%d]." #f,i); tbl.push_back({ENTBASE(i,f),sz,strdup(nm),0}); } while(0)
+		ESC(next_0, 4); ESC(dword_0x4, 4); ESC(dword_0x8, 4);
+		ESC(struct_byte_0xc_12_15, 4); ESC(dword_0x10_16, 4);
+		ESC(word_0x14_20, 2); ESC(word_0x16_22, 2); ESC(word_0x18_24_next_entity, 2); ESC(word_0x1A_26, 2);
+		ESC(word_0x1C_28, 2); ESC(word_0x1E_30, 2); ESC(word_0x20_32, 2); ESC(word_0x22_34, 2);
+		ESC(word_0x24_36, 2); ESC(word_0x26_38, 2); ESC(word_0x28_40, 2); ESC(word_0x2A_42, 2);
+		ESC(word_0x2C_44, 2); ESC(word_0x2E_46, 2); ESC(word_0x30_48, 2); ESC(word_0x32_50, 2);
+		ESC(word_0x34_52, 2); ESC(word_0x36_54, 2);
+		ESC(byte_0x38_56, 1); ESC(byte_0x39_57, 1); ESC(byte_0x3A_58, 1); ESC(byte_0x3B_59, 1);
+		ESC(byte_0x3C_60, 1); ESC(byte_0x3D_61, 1); ESC(byte_0x3E_62, 1); ESC(type_0x3F_63, 1);
+		ESC(subtype_0x40_64, 1); ESC(byte_0x41_65, 1); ESC(byte_0x42_66, 1); ESC(byte_0x43_67, 1);
+		ESC(byte_0x44_68, 1); ESC(byte_0x45_69, 1); ESC(byte_0x46_70, 1); ESC(byte_0x47_71_xx, 1);
+		ESC(byte_0x48_72, 1); ESC(byte_0x49_73, 1); ESC(word_0x4A_74, 2);
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].array_0x4C_76.x", i); tbl.push_back({ ENTBASE(i,array_0x4C_76) + 0,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].array_0x4C_76.y", i); tbl.push_back({ ENTBASE(i,array_0x4C_76) + 2,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].array_0x4C_76.z", i); tbl.push_back({ ENTBASE(i,array_0x4C_76) + 4,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].array_0x52_82.yaw", i);   tbl.push_back({ ENTBASE(i,array_0x52_82) + 0,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].array_0x52_82.pitch", i); tbl.push_back({ ENTBASE(i,array_0x52_82) + 2,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].array_0x52_82.roll", i);  tbl.push_back({ ENTBASE(i,array_0x52_82) + 4,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].array_0x52_82.fov", i);   tbl.push_back({ ENTBASE(i,array_0x52_82) + 6,2,strdup(nm),0 });
+		ESC(word_0x5A_90, 2); ESC(byte_0x5C_92, 1); ESC(byte_0x5D_93, 1);
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.dword_0x5E_94", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,dword_0x5E_94),4,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x62_98", i);   tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x62_98),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.dword_0x64_100", i); tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,dword_0x64_100),4,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x68_104", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x68_104),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.dword_0x70_112", i); tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,dword_0x70_112),4,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x74_116", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x74_116),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x76_118", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x76_118),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x78_120", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x78_120),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x7A_122", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x7A_122),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x7C_124", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x7C_124),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x80_128", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x80_128),2,strdup(nm),0 });
+		ESC(word_0x82_130, 2); ESC(word_0x84_132, 2); ESC(word_0x86_134, 2);
+		ESC(dword_0x88_136, 4); ESC(dword_0x8C_140, 4); ESC(dword_0x90_144, 4);
+		ESC(playerEntityIndex_0x94_148, 2); ESC(word_0x96_150, 2); ESC(word_0x98_152, 2);
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].axis_0x9A_154x.x", i); tbl.push_back({ ENTBASE(i,axis_0x9A_154x) + 0,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].axis_0x9A_154x.y", i); tbl.push_back({ ENTBASE(i,axis_0x9A_154x) + 2,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].axis_0x9A_154x.z", i); tbl.push_back({ ENTBASE(i,axis_0x9A_154x) + 4,2,strdup(nm),0 });
+		ESC(dword_0xA0_160x, 4); ESC(dword_0xA4_164x, 4);
+#undef ESC
+	}
+
+	// ── str_2FECE ───────────────────────────────────────────────────────────
+#define LSC(f,sz) tbl.push_back({LEVBASE(f),sz,"str_2FECE." #f,0})
+	LSC(word_2FECE, 2); LSC(levelID_2FED0, 2); LSC(byte_0x2FED2, 1); LSC(byte_0x2FED3, 1);
+	tbl.push_back({ LEVBASE(MapType),1,"str_2FECE.MapType",0 });
+	LSC(word_0x2FED5, 2); LSC(word_0x2FED7, 2);
+	for (int k = 0; k < 8; k++) {
+		char nm[64]; snprintf(nm, sizeof(nm), "str_2FECE.array_0x2FED9[%d]", k);
+		tbl.push_back({ LEVBASE(array_0x2FED9) + k,1,strdup(nm),0 });
+	}
+	LSC(word_0x2FEE5, 2); LSC(word_0x2FEE9, 2); LSC(word_0x2FEED, 2); LSC(word_0x2FEF1, 2);
+	LSC(word_0x2FEF5, 4); LSC(word_0x2FEF9, 2); LSC(word_0x2FEFD, 2); LSC(word_0x2FF01, 2);
+	LSC(word_0x2FF05, 2); LSC(word_0x2FF09, 2); LSC(word_0x2FF0D, 2); LSC(word_0x2FF11, 2);
+#undef LSC
+
+	for (int k = 0; k < 1200; k++) {
+		char nm[128];
+#define XSC(f,sz) do { snprintf(nm,sizeof(nm),"str_2FECE.array_0x30311[%d]." #f,k); tbl.push_back({ENT2BASE(k,f),sz,strdup(nm),0}); } while(0)
+		XSC(type_0x30311, 2); XSC(subtype_0x30311, 2);
+		snprintf(nm, sizeof(nm), "str_2FECE.array_0x30311[%d].axis2d_4.x", k); tbl.push_back({ ENT2BASE(k,axis2d_4) + 0,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "str_2FECE.array_0x30311[%d].axis2d_4.y", k); tbl.push_back({ ENT2BASE(k,axis2d_4) + 2,2,strdup(nm),0 });
+		XSC(DisId, 2); XSC(word_10, 2); XSC(stageTag_12, 2); XSC(par1_14, 2); XSC(par2_16, 2); XSC(par3_18, 2);
+#undef XSC
+	}
+
+	tbl.push_back({ LEVBASE(next_0x360D1),1,"str_2FECE.next_0x360D1",0 });
+
+	for (int k = 0; k < 8; k++) {
+		char nm[128];
+#define WSC(f,sz) do { snprintf(nm,sizeof(nm),"str_2FECE.WizardMapSettings_0x360D2[%d]." #f,k); tbl.push_back({WIZBASE(k,f),sz,strdup(nm),0}); } while(0)
+		WSC(Aggression_0x360D5, 2); WSC(Reflexes_0x360D9, 2); WSC(Perception_0x360DD, 2); WSC(Life_0x3612F, 2);
+		for (int s = 0; s < 26; s++) {
+			snprintf(nm, sizeof(nm), "str_2FECE.WizardMapSettings_0x360D2[%d].StartingSpells_0x360E1x[%d]", k, s);
+			tbl.push_back({ WIZBASE(k,StartingSpells_0x360E1x) + s,1,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "str_2FECE.WizardMapSettings_0x360D2[%d].byte_0x360FBx[%d]", k, s);
+			tbl.push_back({ WIZBASE(k,byte_0x360FBx) + s,1,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "str_2FECE.WizardMapSettings_0x360D2[%d].BlockedSpells_0x36115x[%d]", k, s);
+			tbl.push_back({ WIZBASE(k,BlockedSpells_0x36115x) + s,1,strdup(nm),0 });
+		}
+#undef WSC
+	}
+
+	for (int k = 0; k < 8; k++) {
+		char nm[128];
+		snprintf(nm, sizeof(nm), "str_2FECE.str_0x36442[%d].index_0", k);   tbl.push_back({ STABASE(k,index_0),1,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "str_2FECE.str_0x36442[%d].stage_1", k);   tbl.push_back({ STABASE(k,stage_1),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "str_2FECE.str_0x36442[%d]._axis_2d.x", k); tbl.push_back({ STABASE(k,_axis_2d) + 0,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "str_2FECE.str_0x36442[%d]._axis_2d.y", k); tbl.push_back({ STABASE(k,_axis_2d) + 2,2,strdup(nm),0 });
+	}
+
+	for (int k = 0; k < 11; k++) {
+		char nm[128];
+		snprintf(nm, sizeof(nm), "str_2FECE.array_0x3647A[%d].index_0x3647A_0", k);  tbl.push_back({ SVBASE(k,index_0x3647A_0),1,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "str_2FECE.array_0x3647A[%d].stage_0x3647A_1", k);  tbl.push_back({ SVBASE(k,stage_0x3647A_1),1,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "str_2FECE.array_0x3647A[%d].str_0x3647A_2.word", k); tbl.push_back({ SVBASE(k,str_0x3647A_2),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "str_2FECE.array_0x3647A[%d].str_0x3647C_4.dword", k); tbl.push_back({ SVBASE(k,str_0x3647C_4),4,strdup(nm),0 });
+	}
+
+	// ── str_0x364D2 ─────────────────────────────────────────────────────────
+	tbl.push_back({ BASE(str_0x364D2) + offsetof(type_str_0x364D2,dword_0x364D2),4,"str_0x364D2.dword_0x364D2",0 });
+	for (int i = 0; i < 26; i++) {
+		char nm[64]; snprintf(nm, sizeof(nm), "str_0x364D2.dword_0x364D6[%d]", i);
+		tbl.push_back({ BASE(str_0x364D2) + offsetof(type_str_0x364D2,dword_0x364D6) + i * 4,4,strdup(nm),0 });
+	}
+
+	tbl.push_back({ BASE(word_0x3653E),2,"word_0x3653E",0 });
+	tbl.push_back({ BASE(word_0x36540),2,"word_0x36540",0 });
+	tbl.push_back({ BASE(word_0x36542),2,"word_0x36542",0 });
+	tbl.push_back({ BASE(word_0x36544),2,"word_0x36544",0 });
+	tbl.push_back({ BASE(word_0x36546),2,"word_0x36546",0 });
+	tbl.push_back({ BASE(word_0x36548),2,"word_0x36548",0 });
+	tbl.push_back({ BASE(word_0x3654A),2,"word_0x3654A",0 });
+
+	// ── struct_0x3654C[8] ────────────────────────────────────────────────────
+	for (int i = 0; i < 8; i++) {
+		char nm[128];
+		snprintf(nm, sizeof(nm), "struct_0x3654C[%d].str_3654C_byte0", i); tbl.push_back({ SCBASE(i,str_3654C_byte0),1,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x3654C[%d].str_3654D_byte1", i); tbl.push_back({ SCBASE(i,str_3654D_byte1),1,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x3654C[%d].str_3654E_axis.x", i); tbl.push_back({ SCBASE(i,str_3654E_axis) + 0,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x3654C[%d].str_3654E_axis.y", i); tbl.push_back({ SCBASE(i,str_3654E_axis) + 2,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x3654C[%d].str_36552_un.dword", i); tbl.push_back({ SCBASE(i,str_36552_un),4,strdup(nm),0 });
+	}
+
+	// ── struct_0x3659C[8] ────────────────────────────────────────────────────
+	for (int i = 0; i < 8; i++) {
+		char nm[128];
+		snprintf(nm, sizeof(nm), "struct_0x3659C[%d].substr_3659C.IsLevelEnd_0", i);    tbl.push_back({ S59BASE(i,IsLevelEnd_0),1,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x3659C[%d].substr_3659C.ObjectiveText_1", i); tbl.push_back({ S59BASE(i,ObjectiveText_1),1,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x3659C[%d].substr_3659C.ObjectiveDone_2", i); tbl.push_back({ S59BASE(i,ObjectiveDone_2),1,strdup(nm),0 });
+		for (int k = 0; k < 8; k++) {
+			snprintf(nm, sizeof(nm), "struct_0x3659C[%d].substr_3659C.stage_0x3659F[%d]", i, k);
+			tbl.push_back({ S59BASE(i,stage_0x3659F) + k,1,strdup(nm),0 });
+		}
+	}
+
+	// ── array_0x365F4[11] ────────────────────────────────────────────────────
+	for (int i = 0; i < 11; i++) {
+		char nm[128];
+		snprintf(nm, sizeof(nm), "array_0x365F4[%d].str_0x3647A_byte_0", i); tbl.push_back({ SHBASE(i,str_0x3647A_byte_0),1,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "array_0x365F4[%d].str_0x3647A_byte_1", i); tbl.push_back({ SHBASE(i,str_0x3647A_byte_1),1,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "array_0x365F4[%d].str_0x3647A_2.word", i); tbl.push_back({ SHBASE(i,str_0x3647A_2),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "array_0x365F4[%d].str_0x3647C_4.axis.word", i); tbl.push_back({ SHBASE(i,str_0x3647C_4),2,strdup(nm),0 });
+	}
+
+	// ── str_0x3664C[50] ──────────────────────────────────────────────────────
+	for (int i = 0; i < 50; i++) {
+		char nm[128];
+#define S3SC(f,sz) do { snprintf(nm,sizeof(nm),"str_0x3664C[%d]." #f,i); tbl.push_back({S3664BASE(i,f),sz,strdup(nm),0}); } while(0)
+		S3SC(byte_0, 1); S3SC(byte_1, 1); S3SC(byte_2, 1); S3SC(byte_3, 1);
+		snprintf(nm, sizeof(nm), "str_0x3664C[%d].axis3d_4.x", i); tbl.push_back({ S3664BASE(i,axis3d_4) + 0,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "str_0x3664C[%d].axis3d_4.y", i); tbl.push_back({ S3664BASE(i,axis3d_4) + 2,2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "str_0x3664C[%d].axis3d_4.z", i); tbl.push_back({ S3664BASE(i,axis3d_4) + 4,2,strdup(nm),0 });
+		S3SC(dword_A, 4);
+		for (int k = 0; k < 25; k++) {
+			snprintf(nm, sizeof(nm), "str_0x3664C[%d].array_E[%d]", i, k);
+			tbl.push_back({ S3664BASE(i,array_E) + k,1,strdup(nm),0 });
+		}
+#undef S3SC
+	}
+
+	// ── Tail ─────────────────────────────────────────────────────────────────
+	tbl.push_back({ BASE(byte_0x36DEA_fly_asistant),1,"byte_0x36DEA_fly_asistant",0 });
+	tbl.push_back({ BASE(byte_0x36DEB_xx),1,"byte_0x36DEB_xx",0 });
+	tbl.push_back({ BASE(word_0x36DEC_mousex),2,"word_0x36DEC_mousex",0 });
+	tbl.push_back({ BASE(word_0x36DEE_mousey),2,"word_0x36DEE_mousey",0 });
+	tbl.push_back({ BASE(word_0x36DF0_mousexx),2,"word_0x36DF0_mousexx",0 });
+	tbl.push_back({ BASE(dword_0x36DF2),4,"dword_0x36DF2",0 });
+	tbl.push_back({ BASE(dword_0x36DF6),4,"dword_0x36DF6",0 });
+	tbl.push_back({ BASE(word_0x36DFA),2,"word_0x36DFA",0 });
+	tbl.push_back({ BASE(word_0x36DFC),2,"word_0x36DFC",0 });
+	tbl.push_back({ BASE(word_0x36DFE),2,"word_0x36DFE",0 });
+	tbl.push_back({ BASE(byte_0x36E00),1,"byte_0x36E00",0 });
+	tbl.push_back({ BASE(byte_0x36E01),1,"byte_0x36E01",0 });
+	tbl.push_back({ BASE(byte_0x36E02),1,"byte_0x36E02",0 });
+	tbl.push_back({ BASE(byte_0x36E03),1,"byte_0x36E03",0 });
+	tbl.push_back({ BASE(byte_counter_current_objective_box_0x36E04),1,"byte_counter_current_objective_box_0x36E04",0 });
+	for (int i = 0; i < 6; i++) {
+		char nm[64]; snprintf(nm, sizeof(nm), "stub3k[%d]", i);
+		tbl.push_back({ BASE(stub3k) + i,1,strdup(nm),0 });
+	}
+	tbl.push_back({ BASE(byte_0x36E0B),1,"byte_0x36E0B",0 });
+	for (int i = 0; i < 11; i++) {
+		char nm[64]; snprintf(nm, sizeof(nm), "stubend[%d]", i);
+		tbl.push_back({ BASE(stubend) + i,1,strdup(nm),0 });
+	}
+
+#undef BASE
+#undef BDEBASE
+#undef S164BASE
+#undef S611BASE
+#undef ENTBASE
+#undef LEVBASE
+#undef ENT2BASE
+#undef WIZBASE
+#undef STABASE
+#undef SVBASE
+#undef SCBASE
+#undef S59BASE
+#undef SHBASE
+#undef S3664BASE
+#undef PIBASE
+
+	return tbl;
+}
+
+
+static std::string compare_shadow_D41A0(size_t byteIndex)
+{
+	const auto& tbl = field_table();
+
+	// Best-match: find the entry whose range [off, off+size) contains byteIndex.
+	// For variable-length array entries (elem>0) size holds the element size,
+	// and the entry covers exactly that one element – each element was inserted
+	// individually so the simple range check always works correctly.
+	for (const auto& f : tbl) {
+		size_t entry_size = (f.elem > 0) ? f.elem : f.size;
+		if (byteIndex >= f.off && byteIndex < f.off + entry_size) {
+			if (f.elem > 0) {
+				// name contains %zu placeholder for the index
+				size_t idx = (byteIndex - f.off) / f.elem;
+				char buf[256];
+				snprintf(buf, sizeof(buf), f.name, idx);
+				return buf;
+			}
+			return f.name;
+		}
+	}
+
+	// Fallback: unknown offset
+	char buf[64];
+	snprintf(buf, sizeof(buf), "<unknown offset 0x%zx>", byteIndex);
+	return buf;
+}
+
+
+
 uint8_t* off_D41A8_sky;//graphics buffer// = (uint8_t*)&x_BYTE_14B4E0; // weak
 
 bitmap_pos_struct_t* xy_DWORD_17DED4_spritestr;
@@ -948,7 +1473,11 @@ uint32_t compare_with_sequence_D41A0(const char* filename, uint8_t* adress, uint
 	}
 
 	if (i < size) {
-		Logger->error("Regression compare sequence error @ function {}, line {}, byte: {}",__FUNCTION__ , __LINE__, i);
+		Logger->error("Compare error: {}, byte: {}/{:#x}, step: {}/{:#x}, {:#x}/{:#x}", __FUNCTION__, i, i, count, count, buffer[i], adress[i]);
+		type_shadow_D41A0_BYTESTR_0* adressD41A0 = (type_shadow_D41A0_BYTESTR_0*)adress;
+		type_shadow_D41A0_BYTESTR_0* bufferD41A0 = (type_shadow_D41A0_BYTESTR_0*)buffer;
+		Logger->error("Difference in: shadow_D41A0_BYTESTR_0.{}", compare_shadow_D41A0(i));
+
 		// print the next 10 bytes of buffer and adress
 		for (int j = 0; (j < 10) && (i+j < size); j++)
 		{
