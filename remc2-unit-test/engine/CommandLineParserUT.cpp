@@ -7,7 +7,8 @@ TEST (CommandLineParser, DebugParameters) {
     int args = 3;
     char *with_test_reg_game_group[] = {
         (char*)"exe filename",
-        (char*)"--mode_test_regressions_game",
+        (char*)"--mode_test_regressions",
+        (char*)"2",
         (char*)"dummy",
         nullptr
     };
@@ -26,7 +27,7 @@ TEST (CommandLineParser, DebugParameters) {
 
     CommandLineParams.Init(args, with_test_reg_game_group);
 
-    EXPECT_EQ (true, CommandLineParams.ModeTestRegressionsGame());
+    EXPECT_EQ (2, CommandLineParams.ModeRegressionsTestType());
     EXPECT_EQ (true, CommandLineParams.DoCopySkipConfig());      // set by mode
     EXPECT_EQ (true, CommandLineParams.DoFixMouse());            // set by mode
     EXPECT_EQ (false, CommandLineParams.DoLoadEditedLevel());    // not set by mode
