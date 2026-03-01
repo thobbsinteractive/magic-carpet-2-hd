@@ -96,6 +96,7 @@ void sub_63670_draw_minimap_a(int16_t x, int16_t y, int16_t posX, int16_t posY, 
 void sub_63C90_draw_minimap_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10);
 void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
 void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
+uint8_t CalculateScaleOffset(uint8_t scale);
 
 void sub_885E0(type_entity_0x6E8E* a1, int16_t posX, int16_t posY, uint16_t a4);
 

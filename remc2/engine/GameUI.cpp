@@ -933,6 +933,13 @@ int TransformPlayerColorIndex_616D0(int index)//2426d0
 	return index2;
 }
 
+uint8_t CalculateScaleOffset(uint8_t scale)
+{
+	if (scale > 2)
+		return (uint8_t)std::floor(((double)scale - 1) / 2);
+	return 0;
+}
+
 int debugcounter2 = 0;
 //----- (00061A00) --------------------------------------------------------
 void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale)//242a00
@@ -1410,6 +1417,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 			v52 = (int16_t)(jy->position_0x4C_76.x - posX);
 			v53 = (int16_t)(jy->position_0x4C_76.y - posY);
 			posx = v82 + ((v52 * v73 - v53 * v86) >> 16);
+			posx -= CalculateScaleOffset(scale);
 			if (posx >= 0 && posx < width)
 			{//24324e
 				posy = ((v73 * v53 + v86 * v52) >> 16) + v76;
