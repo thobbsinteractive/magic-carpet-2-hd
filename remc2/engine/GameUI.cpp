@@ -79,7 +79,7 @@ char* x_InterlockedExchange(char**  Target, char*  Value)
 };
 
 //----- (0002BD10) --------------------------------------------------------
-void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t color, uint8_t scale)//20cd10
+void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t color, uint8_t thickness)//20cd10
 {
 	std::function<void(uint16_t, uint16_t, uint16_t, uint16_t, uint8_t)> func_draw;
 
@@ -2884,7 +2884,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 	int v27; // ecx
 	uint32_t v28; // ebx
 	int v29; // eax
-	uint8_t v30; // cl
+	uint8_t colour_v30; // cl
 	signed int v31; // ebx
 	int v32; // eax
 	int v33; // edi
@@ -3162,21 +3162,21 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				v23 >>= 16;
 				v24 = -v22 >> 16;
 				v25 = width / 2 + ((v23 * v71 - v24 * (int16_t)((int16_t)v67x.y - posY)) >> 16);
-				v37x[7] = 13;
-				v37x[13] = 13;
-				v37x[19] = 13;
-				v37x[37] = 13;
-				v37x[6] = 9;
+				v37x[7] = 13 * scale;
+				v37x[13] = 13 * scale;
+				v37x[19] = 13 * scale;
+				v37x[37] = 13 * scale;
+				v37x[6] = 9 * scale;
 				v77 = height / 2 + ((v71 * v24 + (int16_t)((int16_t)v67x.y - posY) * v23) >> 16);
 				v37x[0] = 0;
 				v37x[1] = 0;
-				v37x[12] = -9;
-				v37x[30] = -4;
-				v37x[36] = -4;
-				v37x[25] = 23;
-				v37x[31] = 23;
-				v37x[18] = 4;
-				v37x[24] = 4;
+				v37x[12] = -9 * scale;
+				v37x[30] = -4 * scale;
+				v37x[36] = -4 * scale;
+				v37x[25] = 23 * scale;
+				v37x[31] = 23 * scale;
+				v37x[18] = 4 * scale;
+				v37x[24] = 4 * scale;
 				v26 = 1;
 				v78 = ((x_WORD)v78 - (x_WORD)v82) & 0x7FF;
 				v27 = Maths::sin_DB750[v78];
@@ -3197,7 +3197,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 					v25 *= 2;
 					v77 *= 2;
 				}
-				v30 = (*xadataclrd0dat.colorPalette_var28)[3840];
+				colour_v30 = (*xadataclrd0dat.colorPalette_var28)[3840];
 				v31 = 0;
 				while (v31 < 7)
 				{
@@ -3208,13 +3208,13 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				}
 				//adress 245be1
 				//v34 = v30;
-				DrawLine_2BD10(v37x[0], v37x[1], v37x[6], v37x[7], v30);
-				DrawLine_2BD10(v37x[6], v37x[7], v37x[18], v37x[19], v30);
-				DrawLine_2BD10(v37x[18], v37x[19], v37x[24], v37x[25], v30);
-				DrawLine_2BD10(v37x[24], v37x[25], v37x[30], v37x[31], v30);
-				DrawLine_2BD10(v37x[30], v37x[31], v37x[36], v37x[37], v30);
-				DrawLine_2BD10(v37x[36], v37x[37], v37x[12], v37x[13], v30);
-				DrawLine_2BD10(v37x[12], v37x[13], v37x[0], v37x[1], v30);
+				DrawLine_2BD10(v37x[0], v37x[1], v37x[6], v37x[7], colour_v30);
+				DrawLine_2BD10(v37x[6], v37x[7], v37x[18], v37x[19], colour_v30);
+				DrawLine_2BD10(v37x[18], v37x[19], v37x[24], v37x[25], colour_v30);
+				DrawLine_2BD10(v37x[24], v37x[25], v37x[30], v37x[31], colour_v30);
+				DrawLine_2BD10(v37x[30], v37x[31], v37x[36], v37x[37], colour_v30);
+				DrawLine_2BD10(v37x[36], v37x[37], v37x[12], v37x[13], colour_v30);
+				DrawLine_2BD10(v37x[12], v37x[13], v37x[0], v37x[1], colour_v30);
 			}
 		}
 	}

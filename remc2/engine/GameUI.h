@@ -41,7 +41,7 @@ constexpr std::array WizardsNames_D93A0 {
 };
 
 
-void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t color, uint8_t scale = 1);
+void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t color, uint8_t thickness = 1);
 
 void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1, uint8_t scale = 1);
 void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_entity_0x6E8E* playerEvent, bool drawNextBitmap, uint8_t scale = 1);
