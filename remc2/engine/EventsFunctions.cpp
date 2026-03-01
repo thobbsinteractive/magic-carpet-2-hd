@@ -31876,7 +31876,7 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	}
 	MouseAndKeysEvents_17A00(turn);
 	//debug
-	if (CommandLineParams.DoDebugafterload()&&(CommandLineParams.GetPlaybackPath().length()<=0))
+	if (CommandLineParams.DoDebugafterload())
 	{
 		if (debug_first_run == 5)
 		{
@@ -31943,7 +31943,7 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
 	if (CommandLineParams.ModeRegressionsTestType()>0) {
-		add_compare(0x002285FF, IsAfterLoad || (CommandLineParams.GetPlaybackPath().length() > 0), -1, false, CommandLineParams.GetMaxRegressionsSteps());
+		add_compare(0x002285FF, IsAfterLoad, -1, false, CommandLineParams.GetMaxRegressionsSteps());
 		//add_compare(0x002285FF, IsAfterLoad || (CommandLineParams.GetPlaybackPath().length() > 0), -1, false, CommandLineParams.GetMaxRegressionsSteps(),2140);
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
