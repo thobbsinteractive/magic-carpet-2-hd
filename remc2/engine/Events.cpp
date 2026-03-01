@@ -3059,7 +3059,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_61A00_draw_minimap_entites_b((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		DrawMinimapEntities_B_61A00((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;

@@ -62713,7 +62713,7 @@ void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, 
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 		sub_627F0_draw_minimap_entites_a(x, y, posX, posY, width, height, yaw, scaling, scale);
 	else
-		sub_61A00_draw_minimap_entites_b(x, y, posX, posY, width, height, yaw, scaling, scale);
+		DrawMinimapEntities_B_61A00(x, y, posX, posY, width, height, yaw, scaling, scale);
 }
 
 //----- (00064E20) --------------------------------------------------------

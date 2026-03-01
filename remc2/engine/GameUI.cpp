@@ -942,7 +942,7 @@ uint8_t CalculateScaleOffset(uint8_t scale)
 
 int debugcounter2 = 0;
 //----- (00061A00) --------------------------------------------------------
-void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale)//242a00
+void DrawMinimapEntities_B_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale)//242a00
 {
 	int v8; // edx
 	int v9; // esi
@@ -1421,6 +1421,7 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 			if (posx >= 0 && posx < width)
 			{//24324e
 				posy = ((v73 * v53 + v86 * v52) >> 16) + v76;
+				posy -= CalculateScaleOffset(scale);
 				if (posy >= 0 && posy < height && posx >= x_WORD_F4960[1 + 2 * posy] && posx < x_WORD_F4960[2 * posy])
 				{//adress 24329e 0x1e xx 0x17
 					ptrBlipBufferIdx_v56 = (char*)(posx + ptrMapBufferStart_v84 + posy * screenWidth_18062C);
@@ -3061,7 +3062,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 		{
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[3840];
 			v51x.v51y = v72x->position_0x4C_76;
-			if (DrawObjectiveRectangle_64CE0(&v51x))
+			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
 				sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 			v36x = &v72x->position_0x4C_76;
 			v17x = &v72x->position_0x4C_76;
@@ -3076,7 +3077,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 		{
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[0xff0];
 			v51x.v51y = v65y;
-			if (DrawObjectiveRectangle_64CE0(&v51x))
+			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
 				sub_885E0(0, v51x.v62xw_42, v51x.v63xw_44, 0x51u);
 			v36x = &v65y;
 			v17x = &v65y;
@@ -3088,7 +3089,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			v8 = Maths::EuclideanDistXYZ_58490(v16x, v36x);
 		}
 		break;
-	case 0xA:
+	case 0xA: //Markers around Enemies
 		v18 = D41A0_0.stages_0x3654C[D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.ObjectiveText_1].str_36552_un.dword;
 		v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[3840];
 		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[v18]; ; ix = ix->next_0)
@@ -3097,7 +3098,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			if (ix <= Entities_EA3E4[0])
 				break;
 			v51x.v51y = v72x->position_0x4C_76;
-			if (DrawObjectiveRectangle_64CE0(&v51x))
+			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
 				sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 			v19 = Maths::EuclideanDistXYZ_58490(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 			if (v19 < v8)
@@ -3142,6 +3143,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 	if (v81)
 	{
 		//Draw Arrow
+		
 		//LOBYTE(i) = (uint8)x_D41A0_BYTEARRAY_4;
 		if (x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 0x40)
 		{
@@ -3253,19 +3255,32 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 			if (!(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 3))
 			{
 				screenWidth_v7 = screenWidth_18062C;
-				startY_v8 = screenWidth_18062C * (posY_v6 - 1);
-				startX_v9 = posX_v4 - 1;
-				v10 = (x_BYTE*)(startY_v8 + startX_v9 + pdwScreenBuffer_351628);
-				v10[0] = colour_v5;
-				v10[1] = colour_v5;
-				v10[2] = colour_v5;
-				v11 = &v10[screenWidth_v7];
-				v11[0] = colour_v5;
-				v11[2] = colour_v5;
-				v12 = &v11[screenWidth_v7];
-				v12[0] = colour_v5;
-				v12[1] = colour_v5;
-				v12[2] = colour_v5;
+				startY_v8 = screenWidth_18062C * (posY_v6 - scale);
+				startX_v9 = posX_v4 - scale;
+
+				DrawRectangle(pdwScreenBuffer_351628, posX_v4 - scale - CalculateScaleOffset(scale), posY_v6 - scale - CalculateScaleOffset(scale), 3 * scale, 3 * scale, scale, screenWidth_18062C, colour_v5);
+
+				////left
+				//v10 = (x_BYTE*)(startY_v8 + startX_v9 + pdwScreenBuffer_351628);
+				//for (int x = 0; x < (scale * screenWidth_v7); x++)
+				//	for(int y = 0; y < 3 * scale; y++)
+				//		v10[y] = colour_v5;
+
+				////Middle
+				//v11 = &v10[screenWidth_v7];
+				//v11[0] = colour_v5;
+				//v11[2] = colour_v5;
+
+				////Right
+				//for (int x = 0; x < scale; x++)
+				//	for (int y = 0; y < 3 * scale; y++)
+				//		v10[y] = colour_v5;
+
+				//v12 = &v11[screenWidth_v7];
+				//v12[0] = colour_v5;
+				//v12[1] = colour_v5;
+				//v12[2] = colour_v5;
+
 				if (1 == D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 				{
 					v13 = (x_BYTE*)(startY_v8 + startX_v9 + x_DWORD_E9C3C);
@@ -3284,6 +3299,56 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 		}
 	}
 	return v3;
+}
+
+void DrawRectangle(uint8_t* ptrImageBuffer, int posX, int posY, int width, int height, uint8_t lineThickness, uint32_t pitch, uint8_t colour)
+{
+	uint8_t * ptrImageStart =  (pitch * posY) + posX + ptrImageBuffer;
+
+	//Top
+	for (int y = 0; y < lineThickness; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			*ptrImageStart = colour;
+			ptrImageStart++;
+		}
+		ptrImageStart += (pitch - width);
+	}
+
+	//Middle
+	ptrImageStart = (pitch * (posY + lineThickness)) + posX + ptrImageBuffer;
+	for (int y = 0; y < (height - (2 * lineThickness)); y++)
+	{
+		for (int x = 0; x < lineThickness; x++)
+		{
+			*ptrImageStart = colour;
+			ptrImageStart++;
+		}
+		ptrImageStart += (pitch - lineThickness);
+	}
+	ptrImageStart = (pitch * (posY + lineThickness)) + (posX + (width - lineThickness)) + ptrImageBuffer;
+	for (int y = 0; y < (height - (2 * lineThickness)); y++)
+	{
+		for (int x = 0; x < lineThickness; x++)
+		{
+			*ptrImageStart = colour;
+			ptrImageStart++;
+		}
+		ptrImageStart += (pitch - lineThickness);
+	}
+
+	//Bottom
+	ptrImageStart = (pitch * (posY + height - lineThickness)) + posX + ptrImageBuffer;
+	for (int y = 0; y < lineThickness; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			*ptrImageStart = colour;
+			ptrImageStart++;
+		}
+		ptrImageStart += (pitch - width);
+	}
 }
 
 //----- (00087C10) --------------------------------------------------------
