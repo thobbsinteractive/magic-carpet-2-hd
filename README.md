@@ -8,13 +8,7 @@ Tomas has done amazing work, not only reverse engineering this code but updating
 https://github.com/thobbsinteractive/magic-carpet-2-hd/releases/latest
 
 ### Install Guide for GOG Edition or from Magic Carpet CD ###
-#### Windows ####
-- 1: Purchase a copy of Magic Carpet 2 from GOG here: https://www.gog.com/game/magic_carpet_2_the_netherworlds
-- 2: Install the Game.
-- 3: Download the x86 or x64 MSI file. (x64 is faster but also a little more buggy)
-- 4: Run the MSI file. Follow the on-screen instructions to install.
-- 5: Click the Start menu shortcut "Magic Carpet 2 HD" to run the game.
-- 6: Any errors will be output to "log.txt"
+https://github.com/thobbsinteractive/magic-carpet-2-hd/wiki/Windows-Installation-Guide
 
 #### Basic Controls ####
 Controls can be redefined in the Config.json file, however here are the defaults:
