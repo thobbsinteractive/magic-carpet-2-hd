@@ -41,7 +41,7 @@ constexpr std::array WizardsNames_D93A0 {
 };
 
 
-void sub_2BD10_draw_line(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5);
+void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t color, uint8_t scale = 1);
 
 void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1, uint8_t scale = 1);
 void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_entity_0x6E8E* playerEvent, bool drawNextBitmap, uint8_t scale = 1);
@@ -107,8 +107,8 @@ void DrawTextboxText_895D0(Type_TextBox_1804B0* textbox, const char* text, uint8
 void DrawTextboxFrame_89690(Type_TextBox_1804B0* textbox, uint8_t scale = 1);
 void ComputeFrameSizes_89980(Type_TextBox_1804B0* textbox, uint8_t scale = 1);
 
-void sub_BD524(int16_t a1, int16_t a2, int16_t a3, int16_t a4, char a5);
-void sub_BD542(uint16_t a1, uint16_t a2, uint16_t a3, uint16_t a4, char a5);
+void DrawLine_BD524(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t color);
+void DrawLine_BD542(uint16_t posX1, uint16_t posY1, uint16_t posX2, uint16_t posY2, uint8_t color);
 void sub_548F0(type_str_0x2BDE* a1);
 void sub_1A280();
 int sub_1A4A0();
