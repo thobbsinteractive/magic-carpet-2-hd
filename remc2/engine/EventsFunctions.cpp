@@ -31437,13 +31437,12 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 
 	setLevel = CommandLineParams.GetSetLevel();
 	customLevelPath = CommandLineParams.GetCustomLevelPath();
-	if (setLevel > -1 || customLevelPath.length() > 0)
+	if ((setLevel > -1 || customLevelPath.length() > 0) || CommandLineParams.ModeRegressionsTestType() != -1)
 	{
-		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
+		if(CommandLineParams.ModeRegressionsTestType()==-1)
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
 		skipMenus = true;
 	}
-	if (CommandLineParams.ModeDebugAfterload())
-		skipMenus = true;
 
 	if (CommandLineParams.DoStateMonitor()) {
 		g_state_monitor.Init();
@@ -31468,11 +31467,11 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 		MenusAndIntros_76930(skipMenus);//set language, intro, menu, atd. //257930
 
 		//debug
-		if (CommandLineParams.ModeDebugAfterload()>=0)
+		if (CommandLineParams.ModeRegressionsSaveIndex()>0)
 		{
 			//Load Saved Game File
 			uint32_t numLevelsCompleted = 0;
-			int locSavedGameIndex = CommandLineParams.ModeDebugAfterload();
+			int locSavedGameIndex = CommandLineParams.ModeRegressionsSaveIndex();
 			type_menuButtons_E1F84* buttonStr = &mapMenuButtons_E23E0[locSavedGameIndex];
 			x_DWORD_17DE38str.savedGameIndex_17DF04 = locSavedGameIndex;
 			char path[512];
@@ -31652,9 +31651,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 						sub_6E0D0();
 				}
 				else
-				{
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 8;
-				}
 				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x10)
 				{
 					actLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
@@ -31834,7 +31831,9 @@ void analyzeEntites() {
 void intervalsave(int index) {
 	char outname[512];
 	sprintf(outname, "-%d", index % 5000);
+	type_D41A0_BYTESTR_0 temp0x39 = D41A0_0;
 	SaveLevel_55080(0, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, outname);
+	D41A0_0 = temp0x39;
 };
 
 //long debugcounter_47560_2=0;
@@ -31842,7 +31841,7 @@ void intervalsave(int index) {
 void DrawAndEventsInGame_47560(int16_t turn)//228560
 {
 	SetFrameStart(std::chrono::system_clock::now());
-	if ((CommandLineParams.DoDebugafterload() == 1) && (count_begin == 1))
+	if ((CommandLineParams.ModeRegressionsTestType() != -1) && (count_begin == 1))
 		debugcounter_47560++;
 	PaletteChanges_47760();
 	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
@@ -31879,7 +31878,7 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	}
 	MouseAndKeysEvents_17A00(turn);
 	//debug
-	if (CommandLineParams.ModeDebugAfterload()&&(CommandLineParams.GetPlaybackPath().length()<=0))
+	if (CommandLineParams.DoDebugafterload())
 	{
 		if (debug_first_run == 5)
 		{
@@ -31942,11 +31941,12 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	//adress 2285ff
 	//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
 	if (CommandLineParams.DoTestRegression()) {
-		add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), -1, false, CommandLineParams.GetMaxRegressionsSteps());
+		add_compare(0x002285FF, IsAfterLoad, -1, false, CommandLineParams.GetMaxRegressionsSteps());
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
-	if (CommandLineParams.ModeDebugAfterload()) {
-		add_compare(0x002285FF, IsAfterLoad || (CommandLineParams.GetPlaybackPath().length() > 0), -1, false, CommandLineParams.GetMaxRegressionsSteps());
+	if (CommandLineParams.ModeRegressionsTestType()>0) {
+		add_compare(0x002285FF, IsAfterLoad, -1, false, CommandLineParams.GetMaxRegressionsSteps());
+		//add_compare(0x002285FF, IsAfterLoad || (CommandLineParams.GetPlaybackPath().length() > 0), -1, false, CommandLineParams.GetMaxRegressionsSteps(),2140);
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
 
@@ -37737,7 +37737,7 @@ void PlayerEvents_51BB0()//232bb0
 	{
 		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
 		{
-			if (!CommandLineParams.ModeDebugAfterload())
+			if (CommandLineParams.ModeRegressionsTestType()==-1)
 			{
 				std::string msg = "Playing Turn: " + std::to_string(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
 				sub_19760_set_message(msg.c_str(), 3u, 50);

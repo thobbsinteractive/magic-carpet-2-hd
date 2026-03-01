@@ -12,8 +12,8 @@ void CommandLineParser::Init(int argc, char **argv) {
 
     m_mode_release_game = false;
     m_mode_playing_game = false;
-    m_mode_test_regressions_game = false;
-	m_mode_debug_afterload = 0;
+    m_test_save_index = -1;
+	m_mode_regression_type = -1;
     m_mode_debug_onstart = false;
     m_mode_test_network = false;
 
@@ -72,10 +72,9 @@ void CommandLineParser::InterpretParams() {
     std::vector<std::string> all_modes { 
         "--mode_release_game",
         "--mode_playing_game",
-        "--mode_test_regressions_game",
-        "--mode_debug_afterload",
         "--mode_debug_onstart",
         "--mode_test_network",
+		"--mode_test_regressions",
     };
     auto is_in_all_params = [&all_modes](const std::string &s) {
         return end(all_modes) != std::find(begin(all_modes), end(all_modes), s);
@@ -110,39 +109,75 @@ void CommandLineParser::InterpretParams() {
             m_text_output_to_console = true;
             m_show_debug_messages1 = true;
         }
-        else if (param == "--mode_test_regressions_game") { //this is setting for regressions testing
-            m_mode_test_regressions_game = true;
-            m_no_show_new_procedures = true;
-            m_detect_dword_a = true;
-            m_copy_skip_config = true;
-            m_fix_mouse = true;
-            m_mouse_off2 = true;
-            m_off_pause_5 = true;
-            m_test_regression = true;
-            m_hide_graphics = true;
-            //m_debug_sequences = true;
-            //m_debug_sequences2 = true;
-            m_debugafterload = true;
-            //m_disable_graphics_enhance = true;
-        }
-        else if (param == "--mode_debug_afterload") { //this is setting is for compare data with dosbox afterload(can fix mouse move, and etc.)
+		else if (param == "--mode_test_save_index") {
 			std::string saveIndexStr = *(++p);
 			uint16_t saveIndex = std::stoi(saveIndexStr);
 			if (saveIndex > -1)
 			{
-				m_mode_debug_afterload = saveIndex;
+				m_test_save_index = saveIndex;
 			}
-            m_detect_dword_a = true;
-            m_copy_skip_config = true;
-            m_debug_sequences2 = true;
-            m_fix_mouse = true;
-            m_mouse_off2 = true;
-            m_off_pause_5 = true;
-            m_debugafterload = false;
-            m_disable_graphics_enhance = true;
-            m_hide_graphics = false;
-			m_kill_move_and_rotation = true;
-        }
+		}
+		else if (param == "--mode_test_regressions") {
+			std::string regressionTestTypeStr = *(++p);
+			uint16_t regressionTestType = std::stoi(regressionTestTypeStr);
+			std::string saveIndexStr;
+			uint16_t saveIndex;
+			switch (regressionTestType) {
+			case 0:
+				m_mode_regression_type = 0;
+				m_no_show_new_procedures = true;
+				m_detect_dword_a = true;
+				m_copy_skip_config = true;
+				m_fix_mouse = true;
+				m_mouse_off2 = true;
+				m_off_pause_5 = true;
+				m_test_regression = true;
+				m_hide_graphics = true;
+				//m_debug_sequences = true;
+				//m_debug_sequences2 = true;
+				//m_debugafterload = true;
+				//m_disable_graphics_enhance = true;
+				break;
+			case 1:
+				m_mode_regression_type = 1;
+				m_detect_dword_a = true;
+				m_copy_skip_config = true;
+				m_debug_sequences2 = true;
+				m_fix_mouse = true;
+				m_mouse_off2 = true;
+				m_off_pause_5 = true;
+				m_debugafterload = true;
+				m_disable_graphics_enhance = true;
+				m_hide_graphics = false;
+				m_kill_move_and_rotation = true;
+				break;
+			case 2:
+				m_mode_regression_type = 2;
+				m_detect_dword_a = true;
+				m_copy_skip_config = true;
+				m_debug_sequences2 = true;
+				m_fix_mouse = true;
+				m_mouse_off2 = true;
+				m_off_pause_5 = true;
+				m_disable_graphics_enhance = true;
+				m_hide_graphics = false;
+				m_kill_move_and_rotation = true;
+				break;
+			case 3:
+				m_mode_regression_type = 3;
+				m_detect_dword_a = true;
+				m_copy_skip_config = true;
+				m_debug_sequences2 = true;
+				m_fix_mouse = true;
+				m_mouse_off2 = true;
+				m_off_pause_5 = true;
+				m_debugafterload = true;
+				m_disable_graphics_enhance = true;
+				m_hide_graphics = false;
+				m_kill_move_and_rotation = true;
+				break;
+			}
+		}
         else if (param == "--mode_debug_onstart") { //this is setting is for compare data with dosbox(can fix mouse move, and etc.)
             m_mode_debug_onstart = true;
             m_detect_dword_a = true;

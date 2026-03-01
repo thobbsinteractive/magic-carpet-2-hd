@@ -532,6 +532,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 	std::function<void(Scene)> sceneChangeCallBack = SetCurrentScene;
 
 	int exitCode = 0;
+	if (!CommandLineParams.DoDebugafterload())IsAfterLoad = true;
 
 	SetTimeStart();
 

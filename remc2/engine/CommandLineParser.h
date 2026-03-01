@@ -14,9 +14,9 @@ class CommandLineParser {
         // modes: these control behaviour and set multiple other parameters
         bool ModeReleaseGame() const {return m_mode_release_game;}; //this is standard setting
         bool ModePlayingGame() const {return m_mode_playing_game;}; //this is setting for autosavegame
-        bool ModeTestRegressionsGame() const {return m_mode_test_regressions_game;}; //this is setting for regressions testing
-		int ModeDebugAfterload() const { return m_mode_debug_afterload; }; //this is setting is for compare data with dosbox afterload(can fix mouse move, and etc.)
-        bool ModeDebugOnstart() const {return m_mode_debug_onstart;}; //this is setting is for compare data with dosbox(can fix mouse move, and etc.)
+        int ModeRegressionsSaveIndex() const { return m_test_save_index; }; //this is setting for regressions testing
+		int ModeRegressionsTestType() const { return m_mode_regression_type; }; //this is setting for regressions testing
+		bool ModeDebugOnstart() const {return m_mode_debug_onstart;}; //this is setting is for compare data with dosbox(can fix mouse move, and etc.)
         bool ModeTestNetwork() const {return m_mode_test_network;};
 
         // parameters
@@ -72,10 +72,9 @@ class CommandLineParser {
         // modes: these control behaviour and set multiple other parameters
         bool m_mode_release_game;
         bool m_mode_playing_game;
-        bool m_mode_test_regressions_game;
-        int m_mode_debug_afterload;
         bool m_mode_debug_onstart;
         bool m_mode_test_network;
+		int m_mode_regression_type;
 
         // parameters
         bool m_alternative_gamespeed_control;
@@ -110,6 +109,7 @@ class CommandLineParser {
         bool m_state_monitor;
         bool m_enable_in_game_debug;
         bool m_kill_move_and_rotation;
+		int m_test_save_index;
 
         std::string m_memimages_path;
         std::string m_config_file_path;
