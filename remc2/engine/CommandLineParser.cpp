@@ -252,11 +252,11 @@ void CommandLineParser::InterpretParams() {
 			}
 		}
 		else if (param == "--set_max_regressions_steps") {
-			std::string levelStr = *(++p);
-			uint16_t level = std::stoi(levelStr);
-			if (level > -1)
+			std::string maxStepsStr = *(++p);
+			uint16_t maxSteps = std::stoi(maxStepsStr);
+			if (maxSteps > -1)
 			{
-				m_max_regressions_steps = level;
+				m_max_regressions_steps = maxSteps;
 			}
 		}
 		else if (param == "--custom_level") {
