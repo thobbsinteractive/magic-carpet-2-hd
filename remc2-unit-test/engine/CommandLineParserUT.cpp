@@ -35,7 +35,7 @@ TEST (CommandLineParser, DebugParameters) {
     CommandLineParams.Init(args, without_group);
 
     EXPECT_EQ (true, CommandLineParams.ModeReleaseGame());          // default mode if no other mode is selected
-    EXPECT_EQ (false, CommandLineParams.ModeTestRegressionsGame()); // this mode should not be set
+    EXPECT_EQ (-1, CommandLineParams.ModeRegressionsTestType()); // this mode should not be set
 
     CommandLineParams.Init(args, memimage_check);
 
