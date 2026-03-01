@@ -3254,35 +3254,14 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 			v3 = 1;
 			if (!(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 3))
 			{
-				screenWidth_v7 = screenWidth_18062C;
-				startY_v8 = screenWidth_18062C * (posY_v6 - scale);
-				startX_v9 = posX_v4 - scale;
-
 				DrawRectangle(pdwScreenBuffer_351628, posX_v4 - scale - CalculateScaleOffset(scale), posY_v6 - scale - CalculateScaleOffset(scale), 3 * scale, 3 * scale, scale, screenWidth_18062C, colour_v5);
-
-				////left
-				//v10 = (x_BYTE*)(startY_v8 + startX_v9 + pdwScreenBuffer_351628);
-				//for (int x = 0; x < (scale * screenWidth_v7); x++)
-				//	for(int y = 0; y < 3 * scale; y++)
-				//		v10[y] = colour_v5;
-
-				////Middle
-				//v11 = &v10[screenWidth_v7];
-				//v11[0] = colour_v5;
-				//v11[2] = colour_v5;
-
-				////Right
-				//for (int x = 0; x < scale; x++)
-				//	for (int y = 0; y < 3 * scale; y++)
-				//		v10[y] = colour_v5;
-
-				//v12 = &v11[screenWidth_v7];
-				//v12[0] = colour_v5;
-				//v12[1] = colour_v5;
-				//v12[2] = colour_v5;
 
 				if (1 == D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 				{
+					screenWidth_v7 = screenWidth_18062C;
+					startY_v8 = screenWidth_18062C * (posY_v6 - scale);
+					startX_v9 = posX_v4 - scale;
+
 					v13 = (x_BYTE*)(startY_v8 + startX_v9 + x_DWORD_E9C3C);
 					v13[0] = colour_v5;
 					v13[1] = colour_v5;
