@@ -424,6 +424,8 @@ extern char x_BYTE_D4B51;
 extern char x_BYTE_DB734;
 extern int resindex_begin;
 
+extern int save_debugcounter;
+
 void j___delay(x_DWORD); // weak
 
 void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const char* fileName = "BufferOut.bmp");
@@ -1609,4 +1611,7 @@ void sub_713A0();
 signed int ReadKeyboardKeysInMenu_7C050();
 void sub_848A0();
 void InitialiseSpells_54A50(int playerIndex2, int playerIndex);
+void intervalsave(int index);
+void sub_72350(type_animations1* a1);
+void sub_72550(type_E9C08** a1);
 #endif
