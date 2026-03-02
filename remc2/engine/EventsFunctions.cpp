@@ -5114,10 +5114,10 @@ void sub_12500(type_entity_0x6E8E* a1x)//1f3500
 			switch (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0)
 			{
 			case 1:
-				v1x = abs(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x - a1x->position_0x4C_76.x);
+				v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x - a1x->position_0x4C_76.x);
 				if (v1x <= 2048)
 				{
-					v1x = abs(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y - a1x->position_0x4C_76.y);
+					v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y - a1x->position_0x4C_76.y);
 					if (v1x <= 2048)
 						goto LABEL_44;
 				}
@@ -5158,10 +5158,10 @@ void sub_12500(type_entity_0x6E8E* a1x)//1f3500
 						{
 							if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x || D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y)
 							{
-								v1x = abs(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x - a1x->position_0x4C_76.x);
+								v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x - a1x->position_0x4C_76.x);
 								if (v1x <= 3072)
 								{
-									v1x = abs(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y - a1x->position_0x4C_76.y);
+									v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y - a1x->position_0x4C_76.y);
 									if (v1x <= 3072)
 										goto LABEL_44;
 								}

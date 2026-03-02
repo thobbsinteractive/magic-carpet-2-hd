@@ -1116,3 +1116,8 @@ float Maths::MeasureYawAngleDegrees(const Vec3& v)
 	// Convert from [-180, 180] to [0, 360)
 	return ((int)angleDeg + 360) % 360;
 }
+
+int32_t Maths::Abs16(int16_t value)
+{
+	return abs(value);
+};
