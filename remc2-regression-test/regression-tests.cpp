@@ -1,6 +1,6 @@
 #include "regression-tests.h"
 
-int run_regtest(int level, int testType, int index, int saveIndex, const char* recordName, int maxSteps)//236F70
+int run_regtest(int level, int testType, int index, int saveIndex, const char* recordName, int maxSteps, bool turnOnIntervalSave)//236F70
 {
 	int exitCode = 0;
 	Logger->info("Testing aftreload {} for Level {}", index, level);
@@ -49,7 +49,8 @@ int run_regtest(int level, int testType, int index, int saveIndex, const char* r
 		}
 		args.emplace_back("--set_max_regressions_steps");
 		args.emplace_back(std::to_string(maxSteps));
-		args.emplace_back("");//args.emplace_back("--interval_save");
+		if(turnOnIntervalSave)
+			args.emplace_back("--interval_save");
 	}
 	else
 	{
@@ -63,6 +64,8 @@ int run_regtest(int level, int testType, int index, int saveIndex, const char* r
 		args.emplace_back(path);
 		args.emplace_back("--set_max_regressions_steps");
 		args.emplace_back(std::to_string(maxSteps));
+		if (turnOnIntervalSave)
+			args.emplace_back("--interval_save");
 	}
 
 	std::vector<char*> argv;
