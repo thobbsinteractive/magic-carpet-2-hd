@@ -54988,31 +54988,22 @@ unsigned int sub_6F7C0(type_entity_0x6E8E* a1)//2507c0
 }
 
 //----- (0006F7E0) --------------------------------------------------------
-x_BYTE* sub_6F7E0(type_entity_0x6E8E* a1x)//2507e0
+void sub_6F7E0(type_entity_0x6E8E* entity) //2507e0
 {
-	x_BYTE* result; // eax
-	//unsigned __int16 v2; // dx
-
 	if (x_D41A0_BYTEARRAY_4_struct.setting_38545 & 8)
-		DisableEntityDrawing04_57F10(a1x);
-	result = (x_BYTE*)InitSwitchChainZaxisAndSound_6F850(a1x, 1);
-	if (result)
+		DisableEntityDrawing04_57F10(entity);
+	type_entity_0x6E8E* entity2 = InitSwitchChainZaxisAndSound_6F850(entity, 1);
+	if (entity2)
 	{
-		result[69] = 11;
-		result[70] = 0;
-		DisableEntityDrawing04_57F10(a1x);
-		//result = (x_BYTE *)x_D41A0_BYTEARRAY_0;
-		//v2 = *(x_WORD *)(0x36DFC + x_D41A0_BYTEARRAY_0);
+		entity2->actionIndex_0x45_69 = 11;
+		entity2->byte_0x46_70 = 0;
+		DisableEntityDrawing04_57F10(entity);
 		if (D41A0_0.word_0x36DFC)
 		{
 			Entities_EA3E4[D41A0_0.word_0x36DFC]->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
 		}
 	}
-	return result;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int Entities_EA3E4[];
 
 int debugcounter_249226 = 0;
 

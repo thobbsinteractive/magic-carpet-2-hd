@@ -1333,7 +1333,7 @@ unsigned int sub_6F760(type_entity_0x6E8E* a1);
 unsigned int sub_6F780(type_entity_0x6E8E* a1);
 unsigned int sub_6F7A0(type_entity_0x6E8E* a1);
 unsigned int sub_6F7C0(type_entity_0x6E8E* a1);
-x_BYTE* sub_6F7E0(type_entity_0x6E8E* a1);
+void sub_6F7E0(type_entity_0x6E8E* entity);
 void sub_6F0B0(type_entity_0x6E8E* a1);
 type_entity_0x6E8E* InitSwitchChainZaxisAndSound_6F850(type_entity_0x6E8E* a1, int a2);
 type_entity_0x6E8E* sub_6F8E0(type_entity_0x6E8E* a1, int a2);
