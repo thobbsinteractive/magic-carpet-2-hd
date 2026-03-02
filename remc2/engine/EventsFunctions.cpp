@@ -13805,7 +13805,7 @@ void sub_222B0(type_entity_0x6E8E* a1x)//2032b0
 			v3 = 1;
 			break;
 		case 2:
-			if (x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 1)
+			if (x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 1)
 				v4 = 512;
 			else
 				v4 = -512;
@@ -21680,8 +21680,8 @@ void DrawGameFrame_2BE30()//20CE30
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[actPlayerIndex + 1].rotation__2BDE_11701.roll,
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[actPlayerIndex + 1].rotation__2BDE_11701.fov);
 
-			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenbuffer_buffer_name);
-			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, help_buffer_name);
+			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenbuffer_buffer_name.c_str());
+			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, help_buffer_name.c_str());
 
 			int difference = 0;
 			for (int test_compi = 0; test_compi < screenWidth_18062C * screenHeight_180624; test_compi++) {
@@ -21698,8 +21698,8 @@ void DrawGameFrame_2BE30()//20CE30
 
 				renderer_tests[CommandLineParams.GetSetLevel()].differences += difference;
 				Logger->error("Differences between HD and Original renderer in frame {0}: {1}", renderer_tests_frame_count, difference);
-				WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenBufferName.str());
-				WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, helpScreenBufferName.str());
+				WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenBufferName.str().c_str());
+				WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, helpScreenBufferName.str().c_str());
 			}
 
 			if (typeid(*m_ptrGameRender) == typeid(GameRenderHD))
@@ -21810,7 +21810,8 @@ void DrawGameFrame_2BE30()//20CE30
 					128 * scale,
 					128 * scale,
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1].rotation__2BDE_11701.yaw,
-					256 / scale);
+					256 / scale,
+					scale);
 			}
 
 			GetFont_6FC50(FontType_D419D);
@@ -21972,8 +21973,8 @@ void DrawGameFrame_2BE30()//20CE30
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[actPlayerIndex + 1].rotation__2BDE_11701.roll,
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[actPlayerIndex + 1].rotation__2BDE_11701.fov);
 
-			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenbuffer_buffer_name);
-			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, help_buffer_name);
+			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenbuffer_buffer_name.c_str());
+			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, help_buffer_name.c_str());
 
 			int difference = 0;
 			for (int test_compi = 0; test_compi < screenWidth_18062C * screenHeight_180624; test_compi++) {
@@ -22018,7 +22019,8 @@ void DrawGameFrame_2BE30()//20CE30
 			locViewportPosx - 2,
 			locMinimapHeight,
 			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[actPlayerIndex + 1].rotation__2BDE_11701.yaw,
-			204 / scale);
+			204 / scale,
+			scale);
 		switch (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221)
 		{
 		case (int)MenuState::SHOW_MAP_SORCERER_SCORES:
@@ -22368,7 +22370,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 			if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 && D41A0_0.NumberOfPlayers_0xe > 1u && !str_unk_1804B0ar.byte_0xa8)
 			{
 				str_unk_1804B0ar.dword_0x82 = 9377 * str_unk_1804B0ar.dword_0x82 + 9439;
-				v13 = x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0xFF;
+				v13 = x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 0xFF;
 				str_unk_1804B0ar.byte_0xa8 = str_unk_1804B0ar.dword_0x82 % D41A0_0.NumberOfPlayers_0xe + 1;
 				v14 = v13 + str_unk_1804B0ar.dword_0x82;
 				v15 = 1;
@@ -31435,13 +31437,12 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 
 	setLevel = CommandLineParams.GetSetLevel();
 	customLevelPath = CommandLineParams.GetCustomLevelPath();
-	if (setLevel > -1 || customLevelPath.length() > 0)
+	if ((setLevel > -1 || customLevelPath.length() > 0) || CommandLineParams.ModeRegressionsTestType() != -1)
 	{
-		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
+		if(CommandLineParams.ModeRegressionsTestType()==-1)
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
 		skipMenus = true;
 	}
-	if (CommandLineParams.ModeDebugAfterload())
-		skipMenus = true;
 
 	if (CommandLineParams.DoStateMonitor()) {
 		g_state_monitor.Init();
@@ -31466,11 +31467,11 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 		MenusAndIntros_76930(skipMenus);//set language, intro, menu, atd. //257930
 
 		//debug
-		if (CommandLineParams.ModeDebugAfterload()>=0)
+		if (CommandLineParams.ModeRegressionsSaveIndex()>0)
 		{
 			//Load Saved Game File
 			uint32_t numLevelsCompleted = 0;
-			int locSavedGameIndex = CommandLineParams.ModeDebugAfterload();
+			int locSavedGameIndex = CommandLineParams.ModeRegressionsSaveIndex();
 			type_menuButtons_E1F84* buttonStr = &mapMenuButtons_E23E0[locSavedGameIndex];
 			x_DWORD_17DE38str.savedGameIndex_17DF04 = locSavedGameIndex;
 			char path[512];
@@ -31650,9 +31651,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 						sub_6E0D0();
 				}
 				else
-				{
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 8;
-				}
 				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x10)
 				{
 					actLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
@@ -31832,7 +31831,9 @@ void analyzeEntites() {
 void intervalsave(int index) {
 	char outname[512];
 	sprintf(outname, "-%d", index % 5000);
+	type_D41A0_BYTESTR_0 temp0x39 = D41A0_0;
 	SaveLevel_55080(0, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, outname);
+	D41A0_0 = temp0x39;
 };
 
 //long debugcounter_47560_2=0;
@@ -31840,7 +31841,7 @@ void intervalsave(int index) {
 void DrawAndEventsInGame_47560(int16_t turn)//228560
 {
 	SetFrameStart(std::chrono::system_clock::now());
-	if ((CommandLineParams.DoDebugafterload() == 1) && (count_begin == 1))
+	if ((CommandLineParams.ModeRegressionsTestType() != -1) && (count_begin == 1))
 		debugcounter_47560++;
 	PaletteChanges_47760();
 	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
@@ -31877,7 +31878,7 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	}
 	MouseAndKeysEvents_17A00(turn);
 	//debug
-	if (CommandLineParams.ModeDebugAfterload()&&(CommandLineParams.GetPlaybackPath().length()<=0))
+	if (CommandLineParams.DoDebugafterload())
 	{
 		if (debug_first_run == 5)
 		{
@@ -31940,11 +31941,12 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	//adress 2285ff
 	//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
 	if (CommandLineParams.DoTestRegression()) {
-		add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), -1, false, CommandLineParams.GetMaxRegressionsSteps());
+		add_compare(0x002285FF, IsAfterLoad, -1, false, CommandLineParams.GetMaxRegressionsSteps());
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
-	if (CommandLineParams.ModeDebugAfterload()) {
-		add_compare(0x002285FF, IsAfterLoad || (CommandLineParams.GetPlaybackPath().length() > 0), -1, false, CommandLineParams.GetMaxRegressionsSteps());
+	if (CommandLineParams.ModeRegressionsTestType()>0) {
+		add_compare(0x002285FF, IsAfterLoad, -1, false, CommandLineParams.GetMaxRegressionsSteps());
+		//add_compare(0x002285FF, IsAfterLoad || (CommandLineParams.GetPlaybackPath().length() > 0), -1, false, CommandLineParams.GetMaxRegressionsSteps(),2140);
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
 
@@ -37720,7 +37722,7 @@ void PlayerEvents_51BB0()//232bb0
 			ReceiveSendAll_7438A((uint8_t*)&D41A0_0.array_0x2BDE[0], sizeof(type_str_0x2BDE));
 	}
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248++;
-	x_D41A0_BYTEARRAY_4_struct.byteindex_26++;//232c9e
+	x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26++;//232c9e
 	x_D41A0_BYTEARRAY_4_struct.setting_30++;
 	if (x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400)
 		x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400--;
@@ -37735,7 +37737,7 @@ void PlayerEvents_51BB0()//232bb0
 	{
 		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
 		{
-			if (!CommandLineParams.ModeDebugAfterload())
+			if (CommandLineParams.ModeRegressionsTestType()==-1)
 			{
 				std::string msg = "Playing Turn: " + std::to_string(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
 				sub_19760_set_message(msg.c_str(), 3u, 50);
@@ -38617,7 +38619,7 @@ void sub_53C70()//234c70
 	//int v1; // edx
 
 	//result = (int)x_D41A0_BYTEARRAY_4;
-	x_D41A0_BYTEARRAY_4_struct.byteindex_26 = 0;
+	x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 = 0;
 	//v1 = x_D41A0_BYTEARRAY_4_struct.setting_byte1_22;
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0;
 	x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 |= 0x1208000;
@@ -39520,7 +39522,7 @@ void ClearSettings_567C0()//2377c0 // clean level
 	//result = (int)x_D41A0_BYTEARRAY_4;
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0;
 	//v1 = *(x_DWORD *)(x_D41A0_BYTEARRAY_4 + 22);
-	x_D41A0_BYTEARRAY_4_struct.byteindex_26 = 0;
+	x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 = 0;
 	x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 &= 0xFFFE3FFF;
 	//return result;
 }
@@ -41031,7 +41033,7 @@ void sub_58F00_game_objectives()//239f00
 							}
 							break;
 						case 9:
-							if (v3 == D41A0_0.struct_0x3659C[v0x].substr_3659C.ObjectiveText_1 && !(x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0xF))
+							if (v3 == D41A0_0.struct_0x3659C[v0x].substr_3659C.ObjectiveText_1 && !(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 0xF))
 							{
 								v8x = x_D41A0_BYTEARRAY_4_struct.dword_38527;
 								v25 = 0;
@@ -45441,7 +45443,7 @@ void ClearGraphicsBuffer_72883(void* ptrScreenBuffer, uint16_t width, uint16_t h
 	memset32(ptrScreenBuffer, value, width * height);
 }
 
-void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const std::string& filename)
+void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const char* filename)
 {
 	std::string path = GetSubDirectoryPath("BufferOut");
 	if (myaccess(path.c_str(), 0) < 0)
@@ -45452,7 +45454,7 @@ void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint
 
 	path = GetSubDirectoryFilePath("BufferOut", "PaletteOut.bmp");
 	BitmapIO::WritePaletteAsImageBMP(path.c_str(), 256, ptrPalette);
-	path = GetSubDirectoryFilePath("BufferOut", filename.c_str());
+	path = GetSubDirectoryFilePath("BufferOut", filename);
 	BitmapIO::WriteImageBufferAsImageBMP(path.c_str(), width, height, ptrPalette, ptrBuffer);
 }
 
@@ -62711,7 +62713,7 @@ void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, 
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 		sub_627F0_draw_minimap_entites_a(x, y, posX, posY, width, height, yaw, scaling, scale);
 	else
-		sub_61A00_draw_minimap_entites_b(x, y, posX, posY, width, height, yaw, scaling, scale);
+		DrawMinimapEntities_B_61A00(x, y, posX, posY, width, height, yaw, scaling, scale);
 }
 
 //----- (00064E20) --------------------------------------------------------

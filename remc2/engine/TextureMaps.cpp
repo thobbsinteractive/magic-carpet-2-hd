@@ -400,7 +400,7 @@ void InitTmaps(unsigned __int16 a1)//251f50
 		}
 	}
 
-	v5 = x_D41A0_BYTEARRAY_4_struct.byteindex_26;
+	v5 = x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26;
 	//index = (int)TMAPS00TAB_BEGIN_BUFFER;
 	//str_TMAPS00TAB_BEGIN_BUFFER[a1].word_8
 	v2 = str_TMAPS00TAB_BEGIN_BUFFER[a1].word_8;

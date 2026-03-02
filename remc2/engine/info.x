@@ -3871,7 +3871,7 @@ versus
 62 versus 84
 1309 tj radek 4 sl. 29
 
-24342b call void sub_61A00_draw_minimap_entites_b(int a1, int a2, __int16 a3, __int16 a4, int a5, int a6, __int16 a7, int a8)//242a00
+24342b call void DrawMinimapEntities_B_61A00(int a1, int a2, __int16 a3, __int16 a4, int a5, int a6, __int16 a7, int a8)//242a00
 
 363286
 versus
@@ -3941,7 +3941,7 @@ versus
 62 versus 84
 1309 tj radek 4 sl. 29
 
-24342b call void sub_61A00_draw_minimap_entites_b(int a1, int a2, __int16 a3, __int16 a4, int a5, int a6, __int16 a7, int a8)//242a00
+24342b call void DrawMinimapEntities_B_61A00(int a1, int a2, __int16 a3, __int16 a4, int a5, int a6, __int16 a7, int a8)//242a00
 test druheho pruchodu x_D41A0_BYTEARRAY_0
 
 x_BYTE_E88E0 -- 2b98e0
@@ -4003,7 +4003,7 @@ pdwScreenBuffer_351628+ 51d
 versus
 3aa0a4+ 51d  62(ma byt) versus  84
 
-24342b call void sub_61A00_draw_minimap_entites_b(int a1, int a2, __int16 a3, __int16 a4, int a5, int a6, __int16 a7, int a8)//242a00
+24342b call void DrawMinimapEntities_B_61A00(int a1, int a2, __int16 a3, __int16 a4, int a5, int a6, __int16 a7, int a8)//242a00
 
 x_D41A0_BYTEARRAY_4_struct.byteindex_121[2]
 versus
@@ -4705,7 +4705,7 @@ versus
 
 fix end //end 17B4E0
 
-test  sub_61A00_draw_minimap_entites_b asi 7 pruchod
+test  DrawMinimapEntities_B_61A00 asi 7 pruchod
 
 -------------------
 pdwScreenBuffer_351628+ 0x1415
@@ -5944,7 +5944,7 @@ pdwScreenBuffer_351628+0x4ed 0x34
  pdwScreenBuffer_351628+0x51d 0x33
  0x3aa0a4+0x51d 0x84
 
- sub_61A00_draw_minimap_entites_b
+ DrawMinimapEntities_B_61A00
 
  x_D41A0_BYTEARRAY_0+0x2f71
  (uint8_t*)&D41A0_BYTESTR_0+0x2f71
@@ -6169,7 +6169,7 @@ pdwScreenBuffer_351628+0x1a4d 0x23
 
  245db2
 
- char sub_64CE0_draw_follow_rectangle(v51x_struct* a1)//245ce0
+ char DrawObjectiveRectangle_64CE0(v51x_struct* a1)//245ce0
 
  debugcounter_644F0==3
 

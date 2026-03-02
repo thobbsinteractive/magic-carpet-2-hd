@@ -79,9 +79,9 @@ char* x_InterlockedExchange(char**  Target, char*  Value)
 };
 
 //----- (0002BD10) --------------------------------------------------------
-void sub_2BD10_draw_line(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5)//20cd10
+void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t color, uint8_t thickness)//20cd10
 {
-	std::function<void(uint16_t, uint16_t, uint16_t, uint16_t, char)> func_draw;
+	std::function<void(uint16_t, uint16_t, uint16_t, uint16_t, uint8_t)> func_draw;
 
 	//void* v5; // ebx
 
@@ -89,17 +89,17 @@ void sub_2BD10_draw_line(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t
 	uint8_t* temp_screen_buffer; // ST14_4
 
 	if (x_WORD_180660_VGA_type_resolution & 1)
-		func_draw = &sub_BD524;
+		func_draw = &DrawLine_BD524;
 	else
-		func_draw = &sub_BD542;
-	func_draw(a1, a2, a3, a4, a5);
+		func_draw = &DrawLine_BD542;
+	func_draw(posX1, posY1, posX2, posY2, color);
 
 	//result = (int)x_D41A0_BYTEARRAY_0;
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 	{
 		temp_screen_buffer = pdwScreenBuffer_351628;
 		pdwScreenBuffer_351628 = (uint8_t*)x_DWORD_E9C3C;
-		func_draw(a1, a2, a3, a4, a5);
+		func_draw(posX1, posY1, posX2, posY2, color);
 		//result = v7;
 		pdwScreenBuffer_351628 = temp_screen_buffer;
 	}
@@ -478,8 +478,8 @@ void DrawTextboxLine_89A30(const Type_TextBox_1804B0* textbox)//26aa30
 	int widthFix = ((x_WORD_180660_VGA_type_resolution & 1) != 0) + 1;
 	if (textbox->lineDestX_0x20 != textbox->maxTextboxWidth_0x0 || textbox->lineDestY_0x22 != textbox->maxTextboxHeight_0x2)
 	{
-		sub_2BD10_draw_line(textbox->lineSrcX_0x1c, textbox->lineSrcY_0x1e, textbox->lineDestX_0x20, textbox->lineDestY_0x22, *xadataclrd0dat.colorPalette_var28[0]);
-		sub_2BD10_draw_line(textbox->lineSrcX_0x1c + widthFix, textbox->lineSrcY_0x1e, widthFix + textbox->lineDestX_0x20, textbox->lineDestY_0x22, (*xadataclrd0dat.colorPalette_var28)[3840]);
+		DrawLine_2BD10(textbox->lineSrcX_0x1c, textbox->lineSrcY_0x1e, textbox->lineDestX_0x20, textbox->lineDestY_0x22, *xadataclrd0dat.colorPalette_var28[0]);
+		DrawLine_2BD10(textbox->lineSrcX_0x1c + widthFix, textbox->lineSrcY_0x1e, widthFix + textbox->lineDestX_0x20, textbox->lineDestY_0x22, (*xadataclrd0dat.colorPalette_var28)[3840]);
 	}
 }
 
@@ -788,7 +788,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 //----- (00053120) --------------------------------------------------------
 void sub_53120()//234120
 {
-	if (!(x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 7))
+	if (!(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 7))
 	{
 		if ((x_D41A0_BYTEARRAY_4_struct.byteindex_52 & 3) == 1)
 		{
@@ -933,9 +933,16 @@ int TransformPlayerColorIndex_616D0(int index)//2426d0
 	return index2;
 }
 
+uint8_t CalculateScaleOffset(uint8_t scale)
+{
+	if (scale > 2)
+		return (uint8_t)std::floor(((double)scale - 1) / 2);
+	return 0;
+}
+
 int debugcounter2 = 0;
 //----- (00061A00) --------------------------------------------------------
-void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale)//242a00
+void DrawMinimapEntities_B_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale)//242a00
 {
 	int v8; // edx
 	int v9; // esi
@@ -1410,9 +1417,11 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 			v52 = (int16_t)(jy->position_0x4C_76.x - posX);
 			v53 = (int16_t)(jy->position_0x4C_76.y - posY);
 			posx = v82 + ((v52 * v73 - v53 * v86) >> 16);
+			posx -= CalculateScaleOffset(scale);
 			if (posx >= 0 && posx < width)
 			{//24324e
 				posy = ((v73 * v53 + v86 * v52) >> 16) + v76;
+				posy -= CalculateScaleOffset(scale);
 				if (posy >= 0 && posy < height && posx >= x_WORD_F4960[1 + 2 * posy] && posx < x_WORD_F4960[2 * posy])
 				{//adress 24329e 0x1e xx 0x17
 					ptrBlipBufferIdx_v56 = (char*)(posx + ptrMapBufferStart_v84 + posy * screenWidth_18062C);
@@ -1460,15 +1469,18 @@ void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_
 						}
 						else if (v31 >= 0x3Cu)
 						{
+							//Draw other stuff (ballon icons)
 							DrawBitmap_2BB40(
-								posx - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
-								posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5,
-								(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
+								posx - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2) * scale,
+								posy - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 * scale),
+								(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31], scale);
 						}
 						else
 						{
+							//Draw Flag
+							
 							//DrawBitmap_2BB40(posx, posy - *(uint8_t *)(6 * v31 + **filearray_2aa18c[6] + 5), (uint8_t**)(6 * v31 + **filearray_2aa18c[6]));
-							DrawBitmap_2BB40(posx, posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
+							DrawBitmap_2BB40(posx, posy - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31], scale);
 						}
 					}
 					if (v88)
@@ -2850,7 +2862,7 @@ int debugcounter_644F0 = 0;
 
 
 //----- (000644F0) --------------------------------------------------------
-void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling)//2454f0
+void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale)//2454f0
 {
 	signed int v8; // ebx
 	//__int64 v9; // rtt
@@ -2875,7 +2887,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 	int v27; // ecx
 	uint32_t v28; // ebx
 	int v29; // eax
-	uint8_t v30; // cl
+	uint8_t colour_v30; // cl
 	signed int v31; // ebx
 	int v32; // eax
 	int v33; // edi
@@ -3053,7 +3065,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 		{
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[3840];
 			v51x.v51y = v72x->position_0x4C_76;
-			if (sub_64CE0_draw_follow_rectangle(&v51x))
+			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
 				sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 			v36x = &v72x->position_0x4C_76;
 			v17x = &v72x->position_0x4C_76;
@@ -3062,13 +3074,13 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			goto LABEL_47;
 		}
 		break;
-	case 8:
+	case 8: //Draw Objective Rectangle
 		//LOBYTE(i) = sub_596C0(v65x, D41A0_BYTESTR_0.word_0xc);
 		if (sub_596C0(&v65y, D41A0_0.LevelIndex_0xc))
 		{
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[0xff0];
 			v51x.v51y = v65y;
-			if (sub_64CE0_draw_follow_rectangle(&v51x))
+			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
 				sub_885E0(0, v51x.v62xw_42, v51x.v63xw_44, 0x51u);
 			v36x = &v65y;
 			v17x = &v65y;
@@ -3080,7 +3092,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			v8 = Maths::EuclideanDistXYZ_58490(v16x, v36x);
 		}
 		break;
-	case 0xA:
+	case 0xA: //Markers around Enemies
 		v18 = D41A0_0.stages_0x3654C[D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.ObjectiveText_1].str_36552_un.dword;
 		v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[3840];
 		for (ix = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[v18]; ; ix = ix->next_0)
@@ -3089,7 +3101,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			if (ix <= Entities_EA3E4[0])
 				break;
 			v51x.v51y = v72x->position_0x4C_76;
-			if (sub_64CE0_draw_follow_rectangle(&v51x))
+			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
 				sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 			v19 = Maths::EuclideanDistXYZ_58490(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 			if (v19 < v8)
@@ -3114,7 +3126,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				if (v72x->byte_0x46_70 == v79)
 				{
 					v51x.v51y = v72x->position_0x4C_76;
-					if (sub_64CE0_draw_follow_rectangle(&v51x))
+					if (DrawObjectiveRectangle_64CE0(&v51x, scale))
 						sub_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 					v20 = Maths::EuclideanDistXYZ_58490(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 					if (v20 < v8)
@@ -3133,8 +3145,10 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 	}
 	if (v81)
 	{
+		//Draw Arrow
+		
 		//LOBYTE(i) = (uint8)x_D41A0_BYTEARRAY_4;
-		if (x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0x40)
+		if (x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 0x40)
 		{
 			if (x_D41A0_BYTEARRAY_4_struct.colorIndex_121[6])
 			{
@@ -3151,21 +3165,21 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				v23 >>= 16;
 				v24 = -v22 >> 16;
 				v25 = width / 2 + ((v23 * v71 - v24 * (int16_t)((int16_t)v67x.y - posY)) >> 16);
-				v37x[7] = 13;
-				v37x[13] = 13;
-				v37x[19] = 13;
-				v37x[37] = 13;
-				v37x[6] = 9;
+				v37x[7] = 13 * scale;
+				v37x[13] = 13 * scale;
+				v37x[19] = 13 * scale;
+				v37x[37] = 13 * scale;
+				v37x[6] = 9 * scale;
 				v77 = height / 2 + ((v71 * v24 + (int16_t)((int16_t)v67x.y - posY) * v23) >> 16);
 				v37x[0] = 0;
 				v37x[1] = 0;
-				v37x[12] = -9;
-				v37x[30] = -4;
-				v37x[36] = -4;
-				v37x[25] = 23;
-				v37x[31] = 23;
-				v37x[18] = 4;
-				v37x[24] = 4;
+				v37x[12] = -9 * scale;
+				v37x[30] = -4 * scale;
+				v37x[36] = -4 * scale;
+				v37x[25] = 23 * scale;
+				v37x[31] = 23 * scale;
+				v37x[18] = 4 * scale;
+				v37x[24] = 4 * scale;
 				v26 = 1;
 				v78 = ((x_WORD)v78 - (x_WORD)v82) & 0x7FF;
 				v27 = Maths::sin_DB750[v78];
@@ -3186,7 +3200,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 					v25 *= 2;
 					v77 *= 2;
 				}
-				v30 = (*xadataclrd0dat.colorPalette_var28)[3840];
+				colour_v30 = (*xadataclrd0dat.colorPalette_var28)[3840];
 				v31 = 0;
 				while (v31 < 7)
 				{
@@ -3197,30 +3211,30 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				}
 				//adress 245be1
 				//v34 = v30;
-				sub_2BD10_draw_line(v37x[0], v37x[1], v37x[6], v37x[7], v30);
-				sub_2BD10_draw_line(v37x[6], v37x[7], v37x[18], v37x[19], v30);
-				sub_2BD10_draw_line(v37x[18], v37x[19], v37x[24], v37x[25], v30);
-				sub_2BD10_draw_line(v37x[24], v37x[25], v37x[30], v37x[31], v30);
-				sub_2BD10_draw_line(v37x[30], v37x[31], v37x[36], v37x[37], v30);
-				sub_2BD10_draw_line(v37x[36], v37x[37], v37x[12], v37x[13], v30);
-				sub_2BD10_draw_line(v37x[12], v37x[13], v37x[0], v37x[1], v30);
+				DrawLine_2BD10(v37x[0], v37x[1], v37x[6], v37x[7], colour_v30);
+				DrawLine_2BD10(v37x[6], v37x[7], v37x[18], v37x[19], colour_v30);
+				DrawLine_2BD10(v37x[18], v37x[19], v37x[24], v37x[25], colour_v30);
+				DrawLine_2BD10(v37x[24], v37x[25], v37x[30], v37x[31], colour_v30);
+				DrawLine_2BD10(v37x[30], v37x[31], v37x[36], v37x[37], colour_v30);
+				DrawLine_2BD10(v37x[36], v37x[37], v37x[12], v37x[13], colour_v30);
+				DrawLine_2BD10(v37x[12], v37x[13], v37x[0], v37x[1], colour_v30);
 			}
 		}
 	}
 }
 
 //----- (00064CE0) --------------------------------------------------------
-char sub_64CE0_draw_follow_rectangle(v51x_struct* a1)//245ce0
+char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 {
 	int16_t v1; // ecx
 	int16_t v2; // esi
 	char v3; // ah
-	int v4; // ebx
-	char v5; // al
-	int v6; // ecx
-	int v7; // esi
-	int v8; // ecx
-	int v9; // ebx
+	int posX_v4; // ebx
+	char colour_v5; // al
+	int posY_v6; // ecx
+	int screenWidth_v7; // esi
+	int startY_v8; // ecx
+	int startX_v9; // ebx
 	x_BYTE* v10; // edx
 	x_BYTE* v11; // edx
 	x_BYTE* v12; // edx
@@ -3231,50 +3245,92 @@ char sub_64CE0_draw_follow_rectangle(v51x_struct* a1)//245ce0
 	v1 = a1->v51y.x - a1->v56xdw_18;
 	v2 = a1->v51y.y - a1->v57xdw_22;
 	v3 = 0;
-	v4 = a1->v60xdw_34 + ((int32_t)(v1 * a1->v54xdw_10 - v2 * a1->v55xdw_14) >> 16);
-	v5 = a1->v64xb_46;
-	if (v4 >= 0 && v4 < a1->v58xdw_26)
+	posX_v4 = a1->v60xdw_34 + ((int32_t)(v1 * a1->v54xdw_10 - v2 * a1->v55xdw_14) >> 16);
+	colour_v5 = a1->v64xb_46;
+	if (posX_v4 >= 0 && posX_v4 < a1->v58xdw_26)
 	{
-		v6 = a1->v61xdw_38 + (int16_t)((a1->v54xdw_10 * v2 + a1->v55xdw_14 * v1) >> 16);
-		if (v6 >= 3 && v6 < a1->v59xdw_30 - 3 && v4 >= x_WORD_F4960[1 + 2 * v6] + 3 && v4 < x_WORD_F4960[2 * v6] - 3)
+		posY_v6 = a1->v61xdw_38 + (int16_t)((a1->v54xdw_10 * v2 + a1->v55xdw_14 * v1) >> 16);
+		if (posY_v6 >= 3 && posY_v6 < a1->v59xdw_30 - 3 && posX_v4 >= x_WORD_F4960[1 + 2 * posY_v6] + 3 && posX_v4 < x_WORD_F4960[2 * posY_v6] - 3)
 		{
-			a1->v62xw_42 = v4;
-			a1->v63xw_44 = v6;
+			a1->v62xw_42 = posX_v4;
+			a1->v63xw_44 = posY_v6;
 			v3 = 1;
-			if (!(x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 3))
+			if (!(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 3))
 			{
-				v7 = screenWidth_18062C;
-				v8 = screenWidth_18062C * (v6 - 1);
-				v9 = v4 - 1;
-				v10 = (x_BYTE*)(v8 + v9 + pdwScreenBuffer_351628);
-				v10[0] = v5;
-				v10[1] = v5;
-				v10[2] = v5;
-				v11 = &v10[v7];
-				v11[0] = v5;
-				v11[2] = v5;
-				v12 = &v11[v7];
-				v12[0] = v5;
-				v12[1] = v5;
-				v12[2] = v5;
+				DrawRectangle(pdwScreenBuffer_351628, posX_v4 - scale - CalculateScaleOffset(scale), posY_v6 - scale - CalculateScaleOffset(scale), 3 * scale, 3 * scale, scale, screenWidth_18062C, colour_v5);
+
 				if (1 == D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 				{
-					v13 = (x_BYTE*)(v8 + v9 + x_DWORD_E9C3C);
-					v13[0] = v5;
-					v13[1] = v5;
-					v13[2] = v5;
-					v14 = &v13[v7];
-					v14[0] = v5;
-					v14[2] = v5;
-					v15 = &v14[v7];
-					v15[0] = v5;
-					v15[1] = v5;
-					v15[2] = v5;
+					screenWidth_v7 = screenWidth_18062C;
+					startY_v8 = screenWidth_18062C * (posY_v6 - scale);
+					startX_v9 = posX_v4 - scale;
+
+					v13 = (x_BYTE*)(startY_v8 + startX_v9 + x_DWORD_E9C3C);
+					v13[0] = colour_v5;
+					v13[1] = colour_v5;
+					v13[2] = colour_v5;
+					v14 = &v13[screenWidth_v7];
+					v14[0] = colour_v5;
+					v14[2] = colour_v5;
+					v15 = &v14[screenWidth_v7];
+					v15[0] = colour_v5;
+					v15[1] = colour_v5;
+					v15[2] = colour_v5;
 				}
 			}
 		}
 	}
 	return v3;
+}
+
+void DrawRectangle(uint8_t* ptrImageBuffer, int posX, int posY, int width, int height, uint8_t lineThickness, uint32_t pitch, uint8_t colour)
+{
+	uint8_t * ptrImageStart =  (pitch * posY) + posX + ptrImageBuffer;
+
+	//Top
+	for (int y = 0; y < lineThickness; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			*ptrImageStart = colour;
+			ptrImageStart++;
+		}
+		ptrImageStart += (pitch - width);
+	}
+
+	//Middle
+	ptrImageStart = (pitch * (posY + lineThickness)) + posX + ptrImageBuffer;
+	for (int y = 0; y < (height - (2 * lineThickness)); y++)
+	{
+		for (int x = 0; x < lineThickness; x++)
+		{
+			*ptrImageStart = colour;
+			ptrImageStart++;
+		}
+		ptrImageStart += (pitch - lineThickness);
+	}
+	ptrImageStart = (pitch * (posY + lineThickness)) + (posX + (width - lineThickness)) + ptrImageBuffer;
+	for (int y = 0; y < (height - (2 * lineThickness)); y++)
+	{
+		for (int x = 0; x < lineThickness; x++)
+		{
+			*ptrImageStart = colour;
+			ptrImageStart++;
+		}
+		ptrImageStart += (pitch - lineThickness);
+	}
+
+	//Bottom
+	ptrImageStart = (pitch * (posY + height - lineThickness)) + posX + ptrImageBuffer;
+	for (int y = 0; y < lineThickness; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			*ptrImageStart = colour;
+			ptrImageStart++;
+		}
+		ptrImageStart += (pitch - width);
+	}
 }
 
 //----- (00087C10) --------------------------------------------------------
@@ -3521,13 +3577,13 @@ void ComputeFrameSizes_89980(Type_TextBox_1804B0* textbox, uint8_t scale)//26a98
 }
 
 //----- (000BD524) --------------------------------------------------------
-void sub_BD524(int16_t a1, int16_t a2, int16_t a3, int16_t a4, char a5)//29e524
+void DrawLine_BD524(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t colour)//29e524
 {
-	sub_BD542(a1 / 2, a2 / 2, a3 / 2, a4 / 2, a5);
+	DrawLine_BD542(posX1 / 2, posY1 / 2, posX2 / 2, posY2 / 2, colour);
 }
 
 //----- (000BD542) --------------------------------------------------------
-void sub_BD542(uint16_t a1, uint16_t a2, uint16_t a3, uint16_t a4, char a5)//29e542
+void DrawLine_BD542(uint16_t posX1, uint16_t posY1, uint16_t posX2, uint16_t posY2, uint8_t colour)//29e542
 {
 	int16_t v5; // bx
 	int16_t v6; // cx
@@ -3554,22 +3610,22 @@ void sub_BD542(uint16_t a1, uint16_t a2, uint16_t a3, uint16_t a4, char a5)//29e
 	uint8_t* v27; // [esp+8h] [ebp-4h]
 
 	v27 = &pdwScreenBuffer_351628[x_DWORD_18063C_sprite_sizex + screenWidth_18062C * x_DWORD_180650_positiony];
-	v5 = a2;
-	if ((a2 & 0x8000u) == 0)
+	v5 = posY1;
+	if ((posY1 & 0x8000u) == 0)
 	{
-		v7 = a4;
-		if ((a4 & 0x8000u) == 0)
+		v7 = posY2;
+		if ((posY2 & 0x8000u) == 0)
 		{
-			if (a2 == a4)
+			if (posY1 == posY2)
 			{
-				if ((int16_t)a2 >= (int16_t)x_DWORD_180644_map_resolution2_y)
+				if ((int16_t)posY1 >= (int16_t)x_DWORD_180644_map_resolution2_y)
 					return;
-				v18 = a1;
-				v19 = a3;
-				if (a3 < a1)
+				v18 = posX1;
+				v19 = posX2;
+				if (posX2 < posX1)
 				{
-					LOWORD(v19) = a1;
-					LOWORD(v18) = a3;
+					LOWORD(v19) = posX1;
+					LOWORD(v18) = posX2;
 				}
 				v20 = x_DWORD_180648_map_resolution2_x - 1;
 				if ((v18 & 0x8000u) == 0)
@@ -3590,145 +3646,145 @@ void sub_BD542(uint16_t a1, uint16_t a2, uint16_t a3, uint16_t a4, char a5)//29e
 				LOWORD(v19) = v19 - v18;
 				goto LABEL_54;
 			}
-			if ((int16_t)(a2 - a4) < 0)
+			if ((int16_t)(posY1 - posY2) < 0)
 			{
-				if ((int16_t)a2 >= (int16_t)x_DWORD_180644_map_resolution2_y)
+				if ((int16_t)posY1 >= (int16_t)x_DWORD_180644_map_resolution2_y)
 					return;
-				if ((int16_t)a4 >= (int16_t)x_DWORD_180644_map_resolution2_y)
+				if ((int16_t)posY2 >= (int16_t)x_DWORD_180644_map_resolution2_y)
 					goto LABEL_5;
 			}
 			else
 			{
-				if ((int16_t)a4 >= (int16_t)x_DWORD_180644_map_resolution2_y)
+				if ((int16_t)posY2 >= (int16_t)x_DWORD_180644_map_resolution2_y)
 					return;
-				a4 = a2;
-				a2 = v7;
-				v9 = a1;
-				a1 = a3;
-				a3 = v9;
+				posY2 = posY1;
+				posY1 = v7;
+				v9 = posX1;
+				posX1 = posX2;
+				posX2 = v9;
 				if (v5 >= (int16_t)x_DWORD_180644_map_resolution2_y)
 					goto LABEL_5;
 			}
 			goto LABEL_15;
 		}
-		a4 = a2;
+		posY2 = posY1;
 		v5 = v7;
-		v6 = a2;
-		v8 = a1;
-		a1 = a3;
-		a3 = v8;
+		v6 = posY1;
+		v8 = posX1;
+		posX1 = posX2;
+		posX2 = v8;
 	}
 	else
 	{
-		v6 = a4;
+		v6 = posY2;
 	}
 	if (v6 < 0)
 		return;
-	a1 += (int16_t)-v5 * (int16_t)(a3 - a1) / (int16_t)(v6 - v5);
-	a2 = 0;
-	if ((int16_t)(a4 - x_DWORD_180644_map_resolution2_y) >= 0)
+	posX1 += (int16_t)-v5 * (int16_t)(posX2 - posX1) / (int16_t)(v6 - v5);
+	posY1 = 0;
+	if ((int16_t)(posY2 - x_DWORD_180644_map_resolution2_y) >= 0)
 	{
 	LABEL_5:
-		a3 = a1 + (int16_t)(x_DWORD_180644_map_resolution2_y - a2) * (int16_t)(a3 - a1) / (int16_t)(a4 - a2);
-		a4 = x_DWORD_180644_map_resolution2_y - 1;
+		posX2 = posX1 + (int16_t)(x_DWORD_180644_map_resolution2_y - posY1) * (int16_t)(posX2 - posX1) / (int16_t)(posY2 - posY1);
+		posY2 = x_DWORD_180644_map_resolution2_y - 1;
 	}
 LABEL_15:
-	if ((a1 & 0x8000u) == 0)
+	if ((posX1 & 0x8000u) == 0)
 	{
-		if ((int16_t)(a1 - x_DWORD_180648_map_resolution2_x) < 0)
+		if ((int16_t)(posX1 - x_DWORD_180648_map_resolution2_x) < 0)
 		{
-			if ((a3 & 0x8000u) == 0)
+			if ((posX2 & 0x8000u) == 0)
 			{
-				if ((int16_t)(a3 - x_DWORD_180648_map_resolution2_x) < 0)
+				if ((int16_t)(posX2 - x_DWORD_180648_map_resolution2_x) < 0)
 				{
 					v26 = 1;
-					if (a1 == a3)
+					if (posX1 == posX2)
 					{
-						v21 = a2;
-						v22 = a4;
-						if (a4 >= a2)
+						v21 = posY1;
+						v22 = posY2;
+						if (posY2 >= posY1)
 						{
-							v23 = a4 - a2;
+							v23 = posY2 - posY1;
 						}
 						else
 						{
-							LOWORD(v21) = a4;
-							v23 = a2 - a4;
+							LOWORD(v21) = posY2;
+							v23 = posY1 - posY2;
 						}
-						v24 = (_BYTE*)(v27 + screenWidth_18062C * v21 + a1);
+						v24 = (_BYTE*)(v27 + screenWidth_18062C * v21 + posX1);
 						LOWORD(v22) = v23 + 1;
 						do
 						{
-							*v24 = a5;
+							*v24 = colour;
 							v24 += screenWidth_18062C;
 							--v22;
 						} while (v22);
 						return;
 					}
-					if ((int16_t)(a1 - a3) >= 0)
+					if ((int16_t)(posX1 - posX2) >= 0)
 						v26 = -1;
 				}
 				else
 				{
 					v26 = 1;
-					a4 = a2 + (int16_t)(x_DWORD_180648_map_resolution2_x - a1) * (int16_t)(a4 - a2) / (int16_t)(a3 - a1);
-					a3 = x_DWORD_180648_map_resolution2_x - 1;
+					posY2 = posY1 + (int16_t)(x_DWORD_180648_map_resolution2_x - posX1) * (int16_t)(posY2 - posY1) / (int16_t)(posX2 - posX1);
+					posX2 = x_DWORD_180648_map_resolution2_x - 1;
 				}
 			}
 			else
 			{
 				v26 = -1;
-				a4 = a2 + (int16_t)a1 * (int16_t)(a4 - a2) / (int16_t)(a1 - a3);
-				a3 = 0;
+				posY2 = posY1 + (int16_t)posX1 * (int16_t)(posY2 - posY1) / (int16_t)(posX1 - posX2);
+				posX2 = 0;
 			}
 		}
 		else
 		{
-			if ((int16_t)a3 >= (int16_t)x_DWORD_180648_map_resolution2_x)
+			if ((int16_t)posX2 >= (int16_t)x_DWORD_180648_map_resolution2_x)
 				return;
 			v26 = -1;
-			a2 += (int16_t)(a1 - x_DWORD_180648_map_resolution2_x) * (int16_t)(a4 - a2) / (int16_t)(a1 - a3);
-			a1 = x_DWORD_180648_map_resolution2_x - 1;
-			if ((a3 & 0x8000u) != 0)
+			posY1 += (int16_t)(posX1 - x_DWORD_180648_map_resolution2_x) * (int16_t)(posY2 - posY1) / (int16_t)(posX1 - posX2);
+			posX1 = x_DWORD_180648_map_resolution2_x - 1;
+			if ((posX2 & 0x8000u) != 0)
 			{
-				a4 -= (int16_t)-a3 * (int16_t)(a4 - a2) / (int16_t)(a1 - a3);
-				a3 = 0;
+				posY2 -= (int16_t)-posX2 * (int16_t)(posY2 - posY1) / (int16_t)(posX1 - posX2);
+				posX2 = 0;
 			}
 		}
 	}
 	else
 	{
-		if ((a3 & 0x8000u) != 0)
+		if ((posX2 & 0x8000u) != 0)
 			return;
 		v26 = 1;
-		a2 += (int16_t)-a1 * (int16_t)(a4 - a2) / (int16_t)(a3 - a1);
-		a1 = 0;
-		if ((int16_t)(a3 - x_DWORD_180648_map_resolution2_x) >= 0)
+		posY1 += (int16_t)-posX1 * (int16_t)(posY2 - posY1) / (int16_t)(posX2 - posX1);
+		posX1 = 0;
+		if ((int16_t)(posX2 - x_DWORD_180648_map_resolution2_x) >= 0)
 		{
-			a4 = a2 + (int16_t)x_DWORD_180648_map_resolution2_x * (int16_t)(a4 - a2) / (int16_t)a3;
-			a3 = x_DWORD_180648_map_resolution2_x - 1;
+			posY2 = posY1 + (int16_t)x_DWORD_180648_map_resolution2_x * (int16_t)(posY2 - posY1) / (int16_t)posX2;
+			posX2 = x_DWORD_180648_map_resolution2_x - 1;
 		}
 	}
-	v10 = (_BYTE*)(v27 + screenWidth_18062C * a2 + a1);
+	v10 = (_BYTE*)(v27 + screenWidth_18062C * posY1 + posX1);
 	v11 = v26;
-	v12 = v26 * (a3 - a1);
-	v13 = a4 - a2;
-	if (a4 == a2)
+	v12 = v26 * (posX2 - posX1);
+	v13 = posY2 - posY1;
+	if (posY2 == posY1)
 	{
-		v18 = a1;
-		v19 = a3;
-		if (a3 >= a1)
+		v18 = posX1;
+		v19 = posX2;
+		if (posX2 >= posX1)
 		{
-			LOWORD(v19) = a3 - a1;
+			LOWORD(v19) = posX2 - posX1;
 		}
 		else
 		{
-			LOWORD(v18) = a3;
-			LOWORD(v19) = a1 - a3;
+			LOWORD(v18) = posX2;
+			LOWORD(v19) = posX1 - posX2;
 		}
 	LABEL_54:
 		LOWORD(v19) = v19 + 1;
-		memset((void*)(v27 + screenWidth_18062C * a2 + v18), a5, v19);
+		memset((void*)(v27 + screenWidth_18062C * posY1 + v18), colour, v19);
 		return;
 	}
 	if (v13 <= v12)
@@ -3737,8 +3793,8 @@ LABEL_15:
 	}
 	else
 	{
-		v12 = a4 - a2;
-		v13 = v26 * (a3 - a1);
+		v12 = posY2 - posY1;
+		v13 = v26 * (posX2 - posX1);
 		v26 = screenWidth_18062C;
 		v25 = v11;
 	}
@@ -3746,7 +3802,7 @@ LABEL_15:
 	v15 = 2 * v13;
 	v16 = 2 * v13 - v12;
 	v17 = 2 * (v13 - v12);
-	*v10 = a5;
+	*v10 = colour;
 	do
 	{
 		while (1)
@@ -3755,13 +3811,13 @@ LABEL_15:
 			if (v16 >= 0)
 				break;
 			v16 += v15;
-			*v10 = a5;
+			*v10 = colour;
 			if (!--v14)
 				return;
 		}
 		v10 += v25;
 		v16 += v17;
-		*v10 = a5;
+		*v10 = colour;
 		--v14;
 	} while (v14);
 }
@@ -4658,7 +4714,7 @@ void DrawChatMenu_2F6B0()//2106b0
 	DrawText_2BC10(printbuffer, v8, v7, v42);
 	v10 = 8 * strlen(printbuffer) + v8;
 	v11 = v7 + 2;
-	if (x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 8)
+	if (x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 8)
 		v12 = v43;
 	else
 		v12 = v47;
