@@ -5080,9 +5080,7 @@ void sub_12500(type_entity_0x6E8E* entity)//1f3500
 		case 0x11:
 			do_second_switch = false;
 			if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
-			{
 				entity->actionIndex_0x45_69 = 8 * entity->model_0x40_64 + 7;
-			}
 			break;
 		case 0xF:
 			do_second_switch = false;
@@ -5098,10 +5096,8 @@ void sub_12500(type_entity_0x6E8E* entity)//1f3500
 			{
 			case 1:
 				if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 2048)
-				{
 					if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 2048)
 						run_12410 = true;
-				}
 				break;
 			case 3:
 				if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
@@ -5113,13 +5109,9 @@ void sub_12500(type_entity_0x6E8E* entity)//1f3500
 				else
 				{
 					if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
-					{
 						if (entity->word_0x4A_74)
-						{
 							if (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)
 								entity->word_0x4A_74 = 0;
-						}
-					}
 				}
 				break;
 			case 4:
@@ -5139,16 +5131,10 @@ void sub_12500(type_entity_0x6E8E* entity)//1f3500
 				else
 				{
 					if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 == 9)
-					{
 						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x || D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y)
-						{
 							if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 3072)
-							{
 								if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 3072)
 									run_12410 = true;
-							}
-						}
-					}
 				}
 				break;
 			case 6:
