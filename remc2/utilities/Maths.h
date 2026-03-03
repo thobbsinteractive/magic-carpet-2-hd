@@ -44,6 +44,7 @@ public:
 	static Vec3 RotateY(const Vec3& v, float angle);
 	static Vec3 RotateZ(const Vec3& v, float angle);
 	static float MeasureYawAngleDegrees(const Vec3& v);
+	static int32_t Abs16(int16_t value);
 };
 
 #endif //MATHS_H
