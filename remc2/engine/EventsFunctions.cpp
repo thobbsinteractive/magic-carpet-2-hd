@@ -5063,94 +5063,86 @@ void sub_12500(type_entity_0x6E8E* entity)//1f3500
 	if (CommandLineParams.DoDebugSequences()) {
 		//add_compare(0x1f3504, CommandLineParams.DoDebugafterload(), 0xd7);
 	}
-	bool run_12410 = false;
-	bool do_second_switch = true;
 	if ((entity->actionIndex_0x45_69 & 7) < 4u || (entity->actionIndex_0x45_69 & 7) > 5u)
 	{
 		switch (entity->StageVar2_0x49_73)
 		{
-		case 0xA:
-			do_second_switch = false;
-			if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
-				sub_12330(entity, entity->StageVar1_0x48_72);
-			break;
-		case 0xD:
-		case 0xE:
-		case 0x10:
-		case 0x11:
-			do_second_switch = false;
-			if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
-				entity->actionIndex_0x45_69 = 8 * entity->model_0x40_64 + 7;
-			break;
-		case 0xF:
-			do_second_switch = false;
-			if (entity->actionIndex_0x45_69 & 7)
-				sub_12330(entity, entity->StageVar1_0x48_72);
-			break;
-		}
-		if (do_second_switch)
-		{
-			switch (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0)
-			{
-			case 1:
-				if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 2048)
-					if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 2048)
-						run_12410 = true;
+			case 0xA:
+				if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+					sub_12330(entity, entity->StageVar1_0x48_72);
 				break;
-			case 3:
-				if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
-				{
-					entity->word_0x4A_74 = 0;
-					if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
-						run_12410 = true;
-				}
-				else
-				{
-					if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
-						if (entity->word_0x4A_74)
-							if (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)
-								entity->word_0x4A_74 = 0;
-				}
+			case 0xD:
+			case 0xE:
+			case 0x10:
+			case 0x11:
+				if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+					entity->actionIndex_0x45_69 = 8 * entity->model_0x40_64 + 7;
 				break;
-			case 4:
-			case 5:
-			case 8:
-			case 9:
-				if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
-					run_12410 = true;
-				else if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
+			case 0xF:
+				if (entity->actionIndex_0x45_69 & 7)
+					sub_12330(entity, entity->StageVar1_0x48_72);
+				break;
+			default:
+				switch (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0)
 				{
-					if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 >= 4u
-						&& D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 <= 5u
-						&& entity->word_0x4A_74 != 0
-						&& (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || (Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)))
+					case 1://Send to hidden level portal for example
+						if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 2048)
+							if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 2048)
+								sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						break;
+					case 3:
+						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
+						{
 							entity->word_0x4A_74 = 0;
-				}
-				else
-				{
-					if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 == 9)
-						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x || D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y)
-							if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 3072)
-								if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 3072)
-									run_12410 = true;
-				}
-				break;
-			case 6:
-				entity->word_0x4A_74--;
-				if (!entity->word_0x4A_74)
-					run_12410 = true;
-				break;
-			case 7:
-				if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 0x18)
-				{
-					sub_12870();
-					run_12410 = true;
+							if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+								sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						}
+						else
+						{
+							if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
+								if (entity->word_0x4A_74)
+									if (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)
+										entity->word_0x4A_74 = 0;
+						}
+						break;
+					case 4:
+					case 5:
+					case 8:
+					case 9:
+						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
+							sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						else if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
+						{
+							if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 >= 4u
+								&& D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 <= 5u
+								&& entity->word_0x4A_74 != 0
+								&& (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || (Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)))
+								entity->word_0x4A_74 = 0;
+						}
+						else
+						{
+							if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 == 9)
+								if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x || D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y)
+									if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 3072)
+										if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 3072)
+											sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						}
+						break;
+					case 6:
+						entity->word_0x4A_74--;
+						if (!entity->word_0x4A_74)
+							sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						break;
+					case 7:
+						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 0x18)
+						{
+							sub_12870();
+							sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						}
+						break;
 				}
 				break;
 			}
-			if (run_12410)
-				sub_12410(entity, 8 * entity->model_0x40_64 + 1);
-		}
 	}
 }
 
