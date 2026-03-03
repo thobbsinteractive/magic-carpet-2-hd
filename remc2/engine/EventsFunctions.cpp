@@ -5155,6 +5155,7 @@ void sub_12500(type_entity_0x6E8E* entity)//1f3500
 				entity->word_0x4A_74--;
 				if (!entity->word_0x4A_74)
 					run_12410 = true;
+				break;
 			case 7:
 				if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 0x18)
 				{
