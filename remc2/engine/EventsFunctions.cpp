@@ -5085,7 +5085,7 @@ void sub_12500(type_entity_0x6E8E* entity)//1f3500
 			default:
 				switch (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0)
 				{
-					case 1://Send to hidden level portal for example
+					case 1:
 						if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 2048)
 							if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 2048)
 								sub_12410(entity, 8 * entity->model_0x40_64 + 1);
