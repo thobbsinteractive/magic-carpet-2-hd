@@ -5142,7 +5142,7 @@ void sub_12500(type_entity_0x6E8E* entity)//1f3500
 						break;
 				}
 				break;
-			}
+		}
 	}
 }
 
