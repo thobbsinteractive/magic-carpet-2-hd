@@ -5058,144 +5058,115 @@ void sub_12470(type_entity_0x6E8E* event, char actionIndex)//1f3470
 }
 
 //----- (00012500) --------------------------------------------------------
-void sub_12500(type_entity_0x6E8E* a1x)//1f3500
+void sub_12500(type_entity_0x6E8E* entity)//1f3500
 {
-	//uint8_t* v1; // eax
-	int v1x;
-	type_entity_0x6E8E* v1y;
-	signed __int16 v2; // di
-	__int16 v3; // si
-	//uint8_t* v4; // ecx
-	//__int16 v5; // si
-	char v6; // dl
-	__int16 v7; // dx
-	//int v8; // esi
-	__int16 v9; // cx
-	signed __int16 v11; // [esp+0h] [ebp-4h]
-
 	if (CommandLineParams.DoDebugSequences()) {
 		//add_compare(0x1f3504, CommandLineParams.DoDebugafterload(), 0xd7);
 	}
-
-	v2 = 0;
-	v3 = a1x->actionIndex_0x45_69 & 7;
-	v11 = 1;
-	if ((a1x->actionIndex_0x45_69 & 7) < 4u || (a1x->actionIndex_0x45_69 & 7) > 5u)
+	bool run_12410 = false;
+	bool do_second_switch = true;
+	if ((entity->actionIndex_0x45_69 & 7) < 4u || (entity->actionIndex_0x45_69 & 7) > 5u)
 	{
-		switch (a1x->StageVar2_0x49_73)
+		switch (entity->StageVar2_0x49_73)
 		{
 		case 0xA:
-			v11 = 0;
-			if (v3 != 2 && v3 != 6)
-				sub_12330(a1x, a1x->StageVar1_0x48_72);
+			do_second_switch = false;
+			if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+				sub_12330(entity, entity->StageVar1_0x48_72);
 			break;
 		case 0xD:
 		case 0xE:
 		case 0x10:
 		case 0x11:
-			v11 = 0;
-			if (v3 != 2 && v3 != 6)
+			do_second_switch = false;
+			if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
 			{
-				a1x->actionIndex_0x45_69 = 8 * a1x->model_0x40_64 + 7;
+				entity->actionIndex_0x45_69 = 8 * entity->model_0x40_64 + 7;
 			}
 			break;
 		case 0xF:
-			v11 = 0;
-			if (v3)
-				sub_12330(a1x, a1x->StageVar1_0x48_72);
+			do_second_switch = false;
+			if (entity->actionIndex_0x45_69 & 7)
+				sub_12330(entity, entity->StageVar1_0x48_72);
 			break;
 		default:
 			break;
 		}
-		if (v11)
+		if (do_second_switch)
 		{
-			switch (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0)
+			switch (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0)
 			{
 			case 1:
-				v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x - a1x->position_0x4C_76.x);
-				if (v1x <= 2048)
+				if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 2048)
 				{
-					v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y - a1x->position_0x4C_76.y);
-					if (v1x <= 2048)
-						goto LABEL_44;
+					if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 2048)
+						run_12410 = true;
 				}
-				goto LABEL_45;
+				break;
 			case 3:
-				v1x = D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].stage_0x3647A_1;
-				if (v1x & 4)
+				if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
 				{
-					a1x->word_0x4A_74 = 0;
-					if (v3 != 2 && v3 != 6)
-						goto LABEL_44;
+					entity->word_0x4A_74 = 0;
+					if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+						run_12410 = true;
 				}
-				else if (v1x & 2)
+				else
 				{
-					v9 = a1x->word_0x4A_74;
-					if (v9)
+					if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
 					{
-						v1y = Entities_EA3E4[v9];
-						if (v1y->life_0x8 < 0 || v1y->struct_byte_0xc_12_15.byte[1] & 4)
-							a1x->word_0x4A_74 = 0;
+						if (entity->word_0x4A_74)
+						{
+							if (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)
+								entity->word_0x4A_74 = 0;
+						}
 					}
 				}
-				goto LABEL_45;
+				break;
 			case 4:
 			case 5:
 			case 8:
 			case 9:
-				v6 = D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].stage_0x3647A_1;
-				if (v6 & 4)
+				if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
+					run_12410 = true;
+				else if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
 				{
-					v2 = 1;
+					if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 >= 4u
+						&& D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 <= 5u
+						&& entity->word_0x4A_74 != 0
+						&& (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || (Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)))
+							entity->word_0x4A_74 = 0;
 				}
 				else
 				{
-					if (!(v6 & 2))
+					if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 == 9)
 					{
-						if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 == 9)
+						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x || D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y)
 						{
-							if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x || D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y)
+							if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 3072)
 							{
-								v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x - a1x->position_0x4C_76.x);
-								if (v1x <= 3072)
-								{
-									v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y - a1x->position_0x4C_76.y);
-									if (v1x <= 3072)
-										goto LABEL_44;
-								}
+								if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 3072)
+									run_12410 = true;
 							}
 						}
-						goto LABEL_45;
-					}
-					if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 < 4u
-						|| D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 > 5u
-						|| (v7 = a1x->word_0x4A_74) == 0
-						|| (v1y = Entities_EA3E4[v7], v1y->life_0x8 >= 0) && !(v1y->struct_byte_0xc_12_15.byte[1] & 4))
-					{
-					LABEL_45:
-						if (v2)
-							sub_12410(a1x, 8 * a1x->model_0x40_64 + 1);
-						return;
 					}
 				}
-				a1x->word_0x4A_74 = 0;
-				goto LABEL_45;
+				break;
 			case 6:
-				a1x->word_0x4A_74--;// = v5;
-				if (!a1x->word_0x4A_74)
-					goto LABEL_44;
-				goto LABEL_45;
+				entity->word_0x4A_74--;
+				if (!entity->word_0x4A_74)
+					run_12410 = true;
 			case 7:
-				if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].stage_0x3647A_1 & 0x18)
+				if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 0x18)
 				{
 					sub_12870();
-				LABEL_44:
-					v2 = 1;
+					run_12410 = true;
 				}
-				goto LABEL_45;
+				break;
 			default:
-				goto LABEL_45;
+				break;
 			}
+			if (run_12410)
+				sub_12410(entity, 8 * entity->model_0x40_64 + 1);
 		}
 	}
 }
