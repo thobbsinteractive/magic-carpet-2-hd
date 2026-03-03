@@ -5087,8 +5087,6 @@ void sub_12500(type_entity_0x6E8E* entity)//1f3500
 			if (entity->actionIndex_0x45_69 & 7)
 				sub_12330(entity, entity->StageVar1_0x48_72);
 			break;
-		default:
-			break;
 		}
 		if (do_second_switch)
 		{
@@ -5148,8 +5146,6 @@ void sub_12500(type_entity_0x6E8E* entity)//1f3500
 					sub_12870();
 					run_12410 = true;
 				}
-				break;
-			default:
 				break;
 			}
 			if (run_12410)
