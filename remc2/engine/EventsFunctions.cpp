@@ -31613,6 +31613,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 							count_begin++;//for debug
 
 							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = secretsPortals->levelNumber_6;
+							actLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
 							sub_47FC0_load_screen(true);
 							LevelInitGame_56A30(actLevel);
 							sub_47160();
