@@ -31613,7 +31613,19 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 							count_begin++;//for debug
 
 							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = secretsPortals->levelNumber_6;
+							
+							//fix level number-neoriginal code
 							actLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
+							//fix level number-neoriginal code
+
+							//fix res before secret level-neoriginal code
+							VGA_Resize(320, 200);
+							screenWidth_18062C = 320;
+							screenHeight_180624 = 200;
+							sub_A0D50_set_viewport(0, 0, 320, 200);
+							x_WORD_180660_VGA_type_resolution = 1;
+							//fix res before secret level-neoriginal code
+
 							sub_47FC0_load_screen(true);
 							LevelInitGame_56A30(actLevel);
 							sub_47160();
@@ -31680,6 +31692,19 @@ void InGameLoop_47320()//228320
 	x_D41A0_BYTEARRAY_4_struct.paletteMod_51 = 0;
 	uint32_t gameTurn = 0;
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
+
+	//fix res on begin level for hidden levels-neoriginal code
+	if (((gameResWidth != 320) && (gameResHeight != 200))&&
+		((gameResWidth != 640) && (gameResHeight != 480)))
+	{
+		VGA_Resize(320, 200);
+		screenWidth_18062C = 320;
+		screenHeight_180624 = 200;
+		sub_A0D50_set_viewport(0, 0, 320, 200);
+		x_WORD_180660_VGA_type_resolution = 1;
+		resindex_begin = 0;
+	}
+	//fix res on begin level for hidden levels-neoriginal code
 
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::STARTED);
 
