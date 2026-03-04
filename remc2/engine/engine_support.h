@@ -224,7 +224,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 	//spell on - 0x20
 	uint8_t setting_byte4_25;//cheats? 0x1==Invincability 0x8==tester 0x40==music
 	//invincability - 1;
-	uint8_t byteindex_26 = 0;//x_D41A0_BYTEARRAY_4_struct.byteindex_26
+	uint8_t FrameTimingIndex_26 = 0;//Used to time flashing indicators
 	uint8_t stubc[3];
 	uint8_t setting_30;//x_D41A0_BYTEARRAY_4_struct.setting_30
 	uint8_t stubd[3];
@@ -333,7 +333,7 @@ typedef struct Type_x_D41A0_BYTEARRAY_4_struct {
 
 	uint8_t setting_38402;//0x9602//x_D41A0_BYTEARRAY_4_struct.setting_38402
 
-	type_entity_0x6E8E* bytearray_38403x[30];//array 116//0x9603//x_D41A0_BYTEARRAY_4_struct.bytearray_38403
+	type_entity_0x6E8E* bytearray_38403x[29];//array 116//0x9603//x_D41A0_BYTEARRAY_4_struct.bytearray_38403
 	/*
 	creatures
 		8-dead

@@ -1,6 +1,6 @@
 #include "regression-tests.h"
 
-int run_regtest(int level, bool afterload, int index, int saveIndex, const char* recordName, int maxSteps)//236F70
+int run_regtest(int level, int testType, int index, int saveIndex, const char* recordName, int maxSteps, bool turnOnIntervalSave)//236F70
 {
 	int exitCode = 0;
 	Logger->info("Testing aftreload {} for Level {}", index, level);
@@ -8,7 +8,7 @@ int run_regtest(int level, bool afterload, int index, int saveIndex, const char*
 	unitTests = true;
 	std::string locUnitTestsPath;
 	std::string recordPath = "";
-	if (afterload)
+	if (testType>0)
 	{
 		locUnitTestsPath = get_exe_path() + "/memimages/regressions/afterloadtest" + std::to_string(index);
 		if(strlen(recordName) > 0)
@@ -21,22 +21,26 @@ int run_regtest(int level, bool afterload, int index, int saveIndex, const char*
 	endTestsCode = &locEndTestsCode;
 
 	std::vector<std::string> args;
-	args.reserve(14);
+	args.reserve(20);
 
 	std::string path = get_exe_path() + "/regression-config.json";
 
 	args.emplace_back("remc2");
 
-	if (afterload)
+	if (testType>0)
 	{
-		args.emplace_back("--mode_debug_afterload");
+		//args.emplace_back("--mode_debug_afterload");
+		args.emplace_back("--mode_test_regressions");
+		args.emplace_back(std::to_string(testType));
+		args.emplace_back("--mode_test_save_index");
 		args.emplace_back(std::to_string(saveIndex));
 		args.emplace_back("--text_output_to_console");
 		args.emplace_back("--set_level");
 		args.emplace_back(std::to_string(level - 1));
 		args.emplace_back("--config_file_path");
 		args.emplace_back(path);
-		args.emplace_back("--debugafterload");
+		if ((testType == 1) || (testType == 3))
+			args.emplace_back("--debugafterload");
 		//args.emplace_back("--is_recorded_regtest");
 		if (recordPath != "")
 		{
@@ -45,10 +49,14 @@ int run_regtest(int level, bool afterload, int index, int saveIndex, const char*
 		}
 		args.emplace_back("--set_max_regressions_steps");
 		args.emplace_back(std::to_string(maxSteps));
+		if(turnOnIntervalSave)
+			args.emplace_back("--interval_save");
 	}
 	else
 	{
-		args.emplace_back("--mode_test_regressions_game");
+		//args.emplace_back("--mode_test_regressions_game");
+		args.emplace_back("--mode_test_regressions");
+		args.emplace_back(std::to_string(testType));
 		args.emplace_back("--text_output_to_console");
 		args.emplace_back("--set_level");
 		args.emplace_back(std::to_string(level - 1));
@@ -56,6 +64,8 @@ int run_regtest(int level, bool afterload, int index, int saveIndex, const char*
 		args.emplace_back(path);
 		args.emplace_back("--set_max_regressions_steps");
 		args.emplace_back(std::to_string(maxSteps));
+		if (turnOnIntervalSave)
+			args.emplace_back("--interval_save");
 	}
 
 	std::vector<char*> argv;
@@ -94,13 +104,13 @@ int run_regtest(int level, bool afterload, int index, int saveIndex, const char*
 
 	support_end();
 	if (locEndTestsCode == 20)
-		if (afterload)
+		if (testType > 0)
 			Logger->info("Test aftreload {} for Level {} - OK\n\n", index, level);
 		else
 			Logger->info("Test Level {} - OK\n\n", level);
 	else
 	{
-		if (afterload)
+		if (testType > 0)
 			Logger->info("Test aftreload {} for Level {} - FAILED\n\n", index, level);
 		else
 			Logger->error("Test Level {} - FAILED\n\n", level);

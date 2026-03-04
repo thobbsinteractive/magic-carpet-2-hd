@@ -866,9 +866,7 @@ void SetF5538ByStrTMAP00TAB_71730(unsigned __int16 a1);
 void sub_71780();
 void sub_71AB0(__int16 a1, char a2);
 void sub_720C0(type_x_DWORD_E9C28_str** a1);
-void sub_72350(type_animations1* a1);
 void sub_723B0(type_animations1* a1, char a2);
-void sub_72550(type_E9C08** a1);
 void sub_727F0(unsigned __int8 a1, unsigned __int8 a2, unsigned __int8 a3, unsigned __int8 a4);
 // void /*__spoils<ecx>*/ ClearGraphicsBuffer320(int a1, void *a2, unsigned __int16 a3, char a4);
 // void /*__spoils<ecx>*/ ClearGraphicsBuffer640(int a1, void *a2, unsigned __int16 a3, char a4);
@@ -5060,144 +5058,90 @@ void sub_12470(type_entity_0x6E8E* event, char actionIndex)//1f3470
 }
 
 //----- (00012500) --------------------------------------------------------
-void sub_12500(type_entity_0x6E8E* a1x)//1f3500
+void sub_12500(type_entity_0x6E8E* entity)//1f3500
 {
-	//uint8_t* v1; // eax
-	int v1x;
-	type_entity_0x6E8E* v1y;
-	signed __int16 v2; // di
-	__int16 v3; // si
-	//uint8_t* v4; // ecx
-	//__int16 v5; // si
-	char v6; // dl
-	__int16 v7; // dx
-	//int v8; // esi
-	__int16 v9; // cx
-	signed __int16 v11; // [esp+0h] [ebp-4h]
-
 	if (CommandLineParams.DoDebugSequences()) {
 		//add_compare(0x1f3504, CommandLineParams.DoDebugafterload(), 0xd7);
 	}
-
-	v2 = 0;
-	v3 = a1x->actionIndex_0x45_69 & 7;
-	v11 = 1;
-	if ((a1x->actionIndex_0x45_69 & 7) < 4u || (a1x->actionIndex_0x45_69 & 7) > 5u)
+	if ((entity->actionIndex_0x45_69 & 7) < 4u || (entity->actionIndex_0x45_69 & 7) > 5u)
 	{
-		switch (a1x->StageVar2_0x49_73)
+		switch (entity->StageVar2_0x49_73)
 		{
-		case 0xA:
-			v11 = 0;
-			if (v3 != 2 && v3 != 6)
-				sub_12330(a1x, a1x->StageVar1_0x48_72);
-			break;
-		case 0xD:
-		case 0xE:
-		case 0x10:
-		case 0x11:
-			v11 = 0;
-			if (v3 != 2 && v3 != 6)
-			{
-				a1x->actionIndex_0x45_69 = 8 * a1x->model_0x40_64 + 7;
-			}
-			break;
-		case 0xF:
-			v11 = 0;
-			if (v3)
-				sub_12330(a1x, a1x->StageVar1_0x48_72);
-			break;
-		default:
-			break;
-		}
-		if (v11)
-		{
-			switch (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0)
-			{
-			case 1:
-				v1x = abs(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x - a1x->position_0x4C_76.x);
-				if (v1x <= 2048)
-				{
-					v1x = abs(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y - a1x->position_0x4C_76.y);
-					if (v1x <= 2048)
-						goto LABEL_44;
-				}
-				goto LABEL_45;
-			case 3:
-				v1x = D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].stage_0x3647A_1;
-				if (v1x & 4)
-				{
-					a1x->word_0x4A_74 = 0;
-					if (v3 != 2 && v3 != 6)
-						goto LABEL_44;
-				}
-				else if (v1x & 2)
-				{
-					v9 = a1x->word_0x4A_74;
-					if (v9)
-					{
-						v1y = Entities_EA3E4[v9];
-						if (v1y->life_0x8 < 0 || v1y->struct_byte_0xc_12_15.byte[1] & 4)
-							a1x->word_0x4A_74 = 0;
-					}
-				}
-				goto LABEL_45;
-			case 4:
-			case 5:
-			case 8:
-			case 9:
-				v6 = D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].stage_0x3647A_1;
-				if (v6 & 4)
-				{
-					v2 = 1;
-				}
-				else
-				{
-					if (!(v6 & 2))
-					{
-						if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 == 9)
-						{
-							if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x || D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y)
-							{
-								v1x = abs(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x - a1x->position_0x4C_76.x);
-								if (v1x <= 3072)
-								{
-									v1x = abs(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y - a1x->position_0x4C_76.y);
-									if (v1x <= 3072)
-										goto LABEL_44;
-								}
-							}
-						}
-						goto LABEL_45;
-					}
-					if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 < 4u
-						|| D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 > 5u
-						|| (v7 = a1x->word_0x4A_74) == 0
-						|| (v1y = Entities_EA3E4[v7], v1y->life_0x8 >= 0) && !(v1y->struct_byte_0xc_12_15.byte[1] & 4))
-					{
-					LABEL_45:
-						if (v2)
-							sub_12410(a1x, 8 * a1x->model_0x40_64 + 1);
-						return;
-					}
-				}
-				a1x->word_0x4A_74 = 0;
-				goto LABEL_45;
-			case 6:
-				a1x->word_0x4A_74--;// = v5;
-				if (!a1x->word_0x4A_74)
-					goto LABEL_44;
-				goto LABEL_45;
-			case 7:
-				if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].stage_0x3647A_1 & 0x18)
-				{
-					sub_12870();
-				LABEL_44:
-					v2 = 1;
-				}
-				goto LABEL_45;
+			case 0xA:
+				if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+					sub_12330(entity, entity->StageVar1_0x48_72);
+				break;
+			case 0xD:
+			case 0xE:
+			case 0x10:
+			case 0x11:
+				if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+					entity->actionIndex_0x45_69 = 8 * entity->model_0x40_64 + 7;
+				break;
+			case 0xF:
+				if (entity->actionIndex_0x45_69 & 7)
+					sub_12330(entity, entity->StageVar1_0x48_72);
+				break;
 			default:
-				goto LABEL_45;
-			}
+				switch (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0)
+				{
+					case 1:
+						if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 2048)
+							if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 2048)
+								sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						break;
+					case 3:
+						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
+						{
+							entity->word_0x4A_74 = 0;
+							if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+								sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						}
+						else
+						{
+							if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
+								if (entity->word_0x4A_74)
+									if (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)
+										entity->word_0x4A_74 = 0;
+						}
+						break;
+					case 4:
+					case 5:
+					case 8:
+					case 9:
+						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
+							sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						else if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
+						{
+							if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 >= 4u
+								&& D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 <= 5u
+								&& entity->word_0x4A_74 != 0
+								&& (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || (Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)))
+								entity->word_0x4A_74 = 0;
+						}
+						else
+						{
+							if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 == 9)
+								if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x || D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y)
+									if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 3072)
+										if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 3072)
+											sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						}
+						break;
+					case 6:
+						entity->word_0x4A_74--;
+						if (!entity->word_0x4A_74)
+							sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						break;
+					case 7:
+						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 0x18)
+						{
+							sub_12870();
+							sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						}
+						break;
+				}
+				break;
 		}
 	}
 }
@@ -13805,7 +13749,7 @@ void sub_222B0(type_entity_0x6E8E* a1x)//2032b0
 			v3 = 1;
 			break;
 		case 2:
-			if (x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 1)
+			if (x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 1)
 				v4 = 512;
 			else
 				v4 = -512;
@@ -21680,8 +21624,8 @@ void DrawGameFrame_2BE30()//20CE30
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[actPlayerIndex + 1].rotation__2BDE_11701.roll,
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[actPlayerIndex + 1].rotation__2BDE_11701.fov);
 
-			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenbuffer_buffer_name);
-			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, help_buffer_name);
+			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenbuffer_buffer_name.c_str());
+			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, help_buffer_name.c_str());
 
 			int difference = 0;
 			for (int test_compi = 0; test_compi < screenWidth_18062C * screenHeight_180624; test_compi++) {
@@ -21698,8 +21642,8 @@ void DrawGameFrame_2BE30()//20CE30
 
 				renderer_tests[CommandLineParams.GetSetLevel()].differences += difference;
 				Logger->error("Differences between HD and Original renderer in frame {0}: {1}", renderer_tests_frame_count, difference);
-				WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenBufferName.str());
-				WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, helpScreenBufferName.str());
+				WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenBufferName.str().c_str());
+				WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, helpScreenBufferName.str().c_str());
 			}
 
 			if (typeid(*m_ptrGameRender) == typeid(GameRenderHD))
@@ -21810,7 +21754,8 @@ void DrawGameFrame_2BE30()//20CE30
 					128 * scale,
 					128 * scale,
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1].rotation__2BDE_11701.yaw,
-					256 / scale);
+					256 / scale,
+					scale);
 			}
 
 			GetFont_6FC50(FontType_D419D);
@@ -21972,8 +21917,8 @@ void DrawGameFrame_2BE30()//20CE30
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[actPlayerIndex + 1].rotation__2BDE_11701.roll,
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[actPlayerIndex + 1].rotation__2BDE_11701.fov);
 
-			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenbuffer_buffer_name);
-			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, help_buffer_name);
+			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, pdwScreenBuffer_351628, screenbuffer_buffer_name.c_str());
+			WriteBufferToBMP(screenWidth_18062C, screenHeight_180624, *xadatapald0dat2.colorPalette_var28, help_ScreenBuffer, help_buffer_name.c_str());
 
 			int difference = 0;
 			for (int test_compi = 0; test_compi < screenWidth_18062C * screenHeight_180624; test_compi++) {
@@ -22018,7 +21963,8 @@ void DrawGameFrame_2BE30()//20CE30
 			locViewportPosx - 2,
 			locMinimapHeight,
 			D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].struct_0x1d1_2BDE_11695[actPlayerIndex + 1].rotation__2BDE_11701.yaw,
-			204 / scale);
+			204 / scale,
+			scale);
 		switch (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221)
 		{
 		case (int)MenuState::SHOW_MAP_SORCERER_SCORES:
@@ -22368,7 +22314,7 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 			if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 && D41A0_0.NumberOfPlayers_0xe > 1u && !str_unk_1804B0ar.byte_0xa8)
 			{
 				str_unk_1804B0ar.dword_0x82 = 9377 * str_unk_1804B0ar.dword_0x82 + 9439;
-				v13 = x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0xFF;
+				v13 = x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 0xFF;
 				str_unk_1804B0ar.byte_0xa8 = str_unk_1804B0ar.dword_0x82 % D41A0_0.NumberOfPlayers_0xe + 1;
 				v14 = v13 + str_unk_1804B0ar.dword_0x82;
 				v15 = 1;
@@ -31435,13 +31381,12 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 
 	setLevel = CommandLineParams.GetSetLevel();
 	customLevelPath = CommandLineParams.GetCustomLevelPath();
-	if (setLevel > -1 || customLevelPath.length() > 0)
+	if ((setLevel > -1 || customLevelPath.length() > 0) || CommandLineParams.ModeRegressionsTestType() != -1)
 	{
-		x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
+		if(CommandLineParams.ModeRegressionsTestType()==-1)
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= LEVEL_LOADED_FROM_ARG;
 		skipMenus = true;
 	}
-	if (CommandLineParams.ModeDebugAfterload())
-		skipMenus = true;
 
 	if (CommandLineParams.DoStateMonitor()) {
 		g_state_monitor.Init();
@@ -31466,11 +31411,11 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 		MenusAndIntros_76930(skipMenus);//set language, intro, menu, atd. //257930
 
 		//debug
-		if (CommandLineParams.ModeDebugAfterload()>=0)
+		if (CommandLineParams.ModeRegressionsSaveIndex()>0)
 		{
 			//Load Saved Game File
 			uint32_t numLevelsCompleted = 0;
-			int locSavedGameIndex = CommandLineParams.ModeDebugAfterload();
+			int locSavedGameIndex = CommandLineParams.ModeRegressionsSaveIndex();
 			type_menuButtons_E1F84* buttonStr = &mapMenuButtons_E23E0[locSavedGameIndex];
 			x_DWORD_17DE38str.savedGameIndex_17DF04 = locSavedGameIndex;
 			char path[512];
@@ -31650,9 +31595,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 						sub_6E0D0();
 				}
 				else
-				{
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 8;
-				}
 				if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] & 0x10)
 				{
 					actLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
@@ -31670,6 +31613,19 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 							count_begin++;//for debug
 
 							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = secretsPortals->levelNumber_6;
+							
+							//fix level number-neoriginal code
+							actLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
+							//fix level number-neoriginal code
+
+							//fix res before secret level-neoriginal code
+							VGA_Resize(320, 200);
+							screenWidth_18062C = 320;
+							screenHeight_180624 = 200;
+							sub_A0D50_set_viewport(0, 0, 320, 200);
+							x_WORD_180660_VGA_type_resolution = 1;
+							//fix res before secret level-neoriginal code
+
 							sub_47FC0_load_screen(true);
 							LevelInitGame_56A30(actLevel);
 							sub_47160();
@@ -31736,6 +31692,18 @@ void InGameLoop_47320()//228320
 	x_D41A0_BYTEARRAY_4_struct.paletteMod_51 = 0;
 	uint32_t gameTurn = 0;
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
+
+	//fix res on begin level for hidden levels-neoriginal code
+	if (!IsDefaultResolution(gameResWidth, gameResHeight))
+	{
+		VGA_Resize(320, 200);
+		screenWidth_18062C = 320;
+		screenHeight_180624 = 200;
+		sub_A0D50_set_viewport(0, 0, 320, 200);
+		x_WORD_180660_VGA_type_resolution = 1;
+		resindex_begin = 0;
+	}
+	//fix res on begin level for hidden levels-neoriginal code
 
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::STARTED);
 
@@ -31832,7 +31800,9 @@ void analyzeEntites() {
 void intervalsave(int index) {
 	char outname[512];
 	sprintf(outname, "-%d", index % 5000);
+	type_D41A0_BYTESTR_0 temp0x39 = D41A0_0;
 	SaveLevel_55080(0, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, outname);
+	D41A0_0 = temp0x39;
 };
 
 //long debugcounter_47560_2=0;
@@ -31840,7 +31810,7 @@ void intervalsave(int index) {
 void DrawAndEventsInGame_47560(int16_t turn)//228560
 {
 	SetFrameStart(std::chrono::system_clock::now());
-	if ((CommandLineParams.DoDebugafterload() == 1) && (count_begin == 1))
+	if ((CommandLineParams.ModeRegressionsTestType() != -1) && (count_begin == 1))
 		debugcounter_47560++;
 	PaletteChanges_47760();
 	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
@@ -31877,7 +31847,7 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	}
 	MouseAndKeysEvents_17A00(turn);
 	//debug
-	if (CommandLineParams.ModeDebugAfterload()&&(CommandLineParams.GetPlaybackPath().length()<=0))
+	if (CommandLineParams.DoDebugafterload())
 	{
 		if (debug_first_run == 5)
 		{
@@ -31940,11 +31910,12 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	//adress 2285ff
 	//add_compare(0x002285FF, CommandLineParams.DoDebugafterload());
 	if (CommandLineParams.DoTestRegression()) {
-		add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), -1, false, CommandLineParams.GetMaxRegressionsSteps());
+		add_compare(0x002285FF, IsAfterLoad, -1, false, CommandLineParams.GetMaxRegressionsSteps());
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
-	if (CommandLineParams.ModeDebugAfterload()) {
-		add_compare(0x002285FF, IsAfterLoad || (CommandLineParams.GetPlaybackPath().length() > 0), -1, false, CommandLineParams.GetMaxRegressionsSteps());
+	if (CommandLineParams.ModeRegressionsTestType()>0) {
+		add_compare(0x002285FF, IsAfterLoad, -1, false, CommandLineParams.GetMaxRegressionsSteps());
+		//add_compare(0x002285FF, IsAfterLoad || (CommandLineParams.GetPlaybackPath().length() > 0), -1, false, CommandLineParams.GetMaxRegressionsSteps(),2140);
 		//add_compare(0x002285FF, CommandLineParams.DoDebugafterload(), 6);
 	}
 
@@ -37720,7 +37691,7 @@ void PlayerEvents_51BB0()//232bb0
 			ReceiveSendAll_7438A((uint8_t*)&D41A0_0.array_0x2BDE[0], sizeof(type_str_0x2BDE));
 	}
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248++;
-	x_D41A0_BYTEARRAY_4_struct.byteindex_26++;//232c9e
+	x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26++;//232c9e
 	x_D41A0_BYTEARRAY_4_struct.setting_30++;
 	if (x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400)
 		x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400--;
@@ -37735,7 +37706,7 @@ void PlayerEvents_51BB0()//232bb0
 	{
 		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
 		{
-			if (!CommandLineParams.ModeDebugAfterload())
+			if (CommandLineParams.ModeRegressionsTestType()==-1)
 			{
 				std::string msg = "Playing Turn: " + std::to_string(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
 				sub_19760_set_message(msg.c_str(), 3u, 50);
@@ -38617,7 +38588,7 @@ void sub_53C70()//234c70
 	//int v1; // edx
 
 	//result = (int)x_D41A0_BYTEARRAY_4;
-	x_D41A0_BYTEARRAY_4_struct.byteindex_26 = 0;
+	x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 = 0;
 	//v1 = x_D41A0_BYTEARRAY_4_struct.setting_byte1_22;
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0;
 	x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 |= 0x1208000;
@@ -39543,7 +39514,7 @@ void ClearSettings_567C0()//2377c0 // clean level
 	//result = (int)x_D41A0_BYTEARRAY_4;
 	x_D41A0_BYTEARRAY_4_struct.setting_30 = 0;
 	//v1 = *(x_DWORD *)(x_D41A0_BYTEARRAY_4 + 22);
-	x_D41A0_BYTEARRAY_4_struct.byteindex_26 = 0;
+	x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 = 0;
 	x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 &= 0xFFFE3FFF;
 	//return result;
 }
@@ -41054,7 +41025,7 @@ void sub_58F00_game_objectives()//239f00
 							}
 							break;
 						case 9:
-							if (v3 == D41A0_0.struct_0x3659C[v0x].substr_3659C.ObjectiveText_1 && !(x_D41A0_BYTEARRAY_4_struct.byteindex_26 & 0xF))
+							if (v3 == D41A0_0.struct_0x3659C[v0x].substr_3659C.ObjectiveText_1 && !(x_D41A0_BYTEARRAY_4_struct.FrameTimingIndex_26 & 0xF))
 							{
 								v8x = x_D41A0_BYTEARRAY_4_struct.dword_38527;
 								v25 = 0;
@@ -45464,7 +45435,7 @@ void ClearGraphicsBuffer_72883(void* ptrScreenBuffer, uint16_t width, uint16_t h
 	memset32(ptrScreenBuffer, value, width * height);
 }
 
-void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const std::string& filename)
+void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const char* filename)
 {
 	std::string path = GetSubDirectoryPath("BufferOut");
 	if (myaccess(path.c_str(), 0) < 0)
@@ -45475,7 +45446,7 @@ void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint
 
 	path = GetSubDirectoryFilePath("BufferOut", "PaletteOut.bmp");
 	BitmapIO::WritePaletteAsImageBMP(path.c_str(), 256, ptrPalette);
-	path = GetSubDirectoryFilePath("BufferOut", filename.c_str());
+	path = GetSubDirectoryFilePath("BufferOut", filename);
 	BitmapIO::WriteImageBufferAsImageBMP(path.c_str(), width, height, ptrPalette, ptrBuffer);
 }
 
@@ -55011,31 +54982,22 @@ unsigned int sub_6F7C0(type_entity_0x6E8E* a1)//2507c0
 }
 
 //----- (0006F7E0) --------------------------------------------------------
-x_BYTE* sub_6F7E0(type_entity_0x6E8E* a1x)//2507e0
+void sub_6F7E0(type_entity_0x6E8E* entity) //2507e0
 {
-	x_BYTE* result; // eax
-	//unsigned __int16 v2; // dx
-
 	if (x_D41A0_BYTEARRAY_4_struct.setting_38545 & 8)
-		DisableEntityDrawing04_57F10(a1x);
-	result = (x_BYTE*)InitSwitchChainZaxisAndSound_6F850(a1x, 1);
-	if (result)
+		DisableEntityDrawing04_57F10(entity);
+	type_entity_0x6E8E* entity2 = InitSwitchChainZaxisAndSound_6F850(entity, 1);
+	if (entity2)
 	{
-		result[69] = 11;
-		result[70] = 0;
-		DisableEntityDrawing04_57F10(a1x);
-		//result = (x_BYTE *)x_D41A0_BYTEARRAY_0;
-		//v2 = *(x_WORD *)(0x36DFC + x_D41A0_BYTEARRAY_0);
+		entity2->actionIndex_0x45_69 = 11;
+		entity2->byte_0x46_70 = 0;
+		DisableEntityDrawing04_57F10(entity);
 		if (D41A0_0.word_0x36DFC)
 		{
 			Entities_EA3E4[D41A0_0.word_0x36DFC]->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
 		}
 	}
-	return result;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int Entities_EA3E4[];
 
 int debugcounter_249226 = 0;
 
@@ -62734,7 +62696,7 @@ void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, 
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 		sub_627F0_draw_minimap_entites_a(x, y, posX, posY, width, height, yaw, scaling, scale);
 	else
-		sub_61A00_draw_minimap_entites_b(x, y, posX, posY, width, height, yaw, scaling, scale);
+		DrawMinimapEntities_B_61A00(x, y, posX, posY, width, height, yaw, scaling, scale);
 }
 
 //----- (00064E20) --------------------------------------------------------

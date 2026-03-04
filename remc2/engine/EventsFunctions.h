@@ -424,9 +424,11 @@ extern char x_BYTE_D4B51;
 extern char x_BYTE_DB734;
 extern int resindex_begin;
 
+extern int save_debugcounter;
+
 void j___delay(x_DWORD); // weak
 
-void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const std::string& filename = "BufferOut.bmp");
+void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const char* fileName = "BufferOut.bmp");
 void WriteMenuGraphicToBMP(uint16_t width, uint16_t height, uint8_t scale, uint8_t* ptrPalette, uint8_t* ptrBuffer);
 
 void sub_43C60(unsigned __int8 a1, char a2, int a3, int a4);
@@ -1331,7 +1333,7 @@ unsigned int sub_6F760(type_entity_0x6E8E* a1);
 unsigned int sub_6F780(type_entity_0x6E8E* a1);
 unsigned int sub_6F7A0(type_entity_0x6E8E* a1);
 unsigned int sub_6F7C0(type_entity_0x6E8E* a1);
-x_BYTE* sub_6F7E0(type_entity_0x6E8E* a1);
+void sub_6F7E0(type_entity_0x6E8E* entity);
 void sub_6F0B0(type_entity_0x6E8E* a1);
 type_entity_0x6E8E* InitSwitchChainZaxisAndSound_6F850(type_entity_0x6E8E* a1, int a2);
 type_entity_0x6E8E* sub_6F8E0(type_entity_0x6E8E* a1, int a2);
@@ -1609,4 +1611,7 @@ void sub_713A0();
 signed int ReadKeyboardKeysInMenu_7C050();
 void sub_848A0();
 void InitialiseSpells_54A50(int playerIndex2, int playerIndex);
+void intervalsave(int index);
+void sub_72350(type_animations1* a1);
+void sub_72550(type_E9C08** a1);
 #endif

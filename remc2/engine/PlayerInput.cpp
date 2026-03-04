@@ -1968,7 +1968,7 @@ int debugcounter_1fb7a0 = 0;
 void sub_1A7A0_fly_asistant()//1fb7a0 // fly asistant
 {
 	if (CommandLineParams.DoFixMouse()) {
-		if (CommandLineParams.DoDebugafterload())
+		if (CommandLineParams.ModeRegressionsTestType()!=-1)
 		{
 			unk_18058Cstr.MouseButtonState_18059C = 0;
 			x_WORD_18074C_mouse_left2_button = 0;
@@ -2068,7 +2068,7 @@ void HandleMouseButtons_18F80(type_entity_0x6E8E* a1x)//1f9f80
 				unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
 			}
 		}
-		else if (unk_18058Cstr.MouseButtonState_18059C & 2 || unk_18058Cstr.MouseButtonState_18059C & 8 && a1x->dword_0xA4_164x->word_0x26_38[4] > 0)
+		else if (unk_18058Cstr.MouseButtonState_18059C & 2 || unk_18058Cstr.MouseButtonState_18059C & 8 && Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[a1x->dword_0xA4_164x->str_611.SpellIndexRight_0x453_1107]]->word_0x2E_46 > 0)
 		{
 			HandleButtonClick_191B0(6, 32);
 			unk_18058Cstr.MouseButtonState_18059C &= 0xFD;
