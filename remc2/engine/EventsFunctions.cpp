@@ -38807,7 +38807,7 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 		tempPlayerIndex2 = playerIndex2;
 	int index = 0;
 
-	if (m_InputRecorder->m_IsPlaying && 
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying &&
 		m_InputRecorder->GetCurrentPlayer(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, playerIndex) != nullptr)
 	{
 		auto currentPlayer = m_InputRecorder->GetCurrentPlayer(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, playerIndex);
@@ -38904,7 +38904,7 @@ void InitialiseSpells_54A50(int playerIndex2, int playerIndex)//235a50
 		}
 	}
 
-	if (m_InputRecorder->m_IsRecording)
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
 		m_InputRecorder->RecordPlayerSpells(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, playerIndex,
 			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.SpellsEnabled_0x333_819x.SpellEnabled,
 			D41A0_0.array_0x2BDE[playerIndex].dword_0x3E6_2BE4_12228.str_611.SpellIndexes_0x39B_923x.SpellIndex,

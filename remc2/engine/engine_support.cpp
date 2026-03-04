@@ -719,15 +719,15 @@ static const std::vector<FieldRange>& field_table()
 } while(0)
 		for (int k = 0; k < 26; k++) {
 			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x263_611x.dword[%d]", i, k);
-			tbl.push_back({ S611BASE(i,array_0x263_611x) + k * 4,4,strdup(nm),0 });
+			tbl.push_back({ S611BASE(i,SpellExperience_0x263_611x) + k * 4,4,strdup(nm),0 });
 			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.spellsExperience_0x2CB_715x[%d]", i, k);
 			tbl.push_back({ S611BASE(i,spellsExperience_0x2CB_715x) + k * 4,4,strdup(nm),0 });
 			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[%d]", i, k);
-			tbl.push_back({ S611BASE(i,array_0x333_819x) + k * 2,2,strdup(nm),0 });
+			tbl.push_back({ S611BASE(i,SpellsEnabled_0x333_819x) + k * 2,2,strdup(nm),0 });
 			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x367_871x.SpellEnabled[%d]", i, k);
 			tbl.push_back({ S611BASE(i,array_0x367_871x) + k * 2,2,strdup(nm),0 });
 			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x39B_923x.SpellIndex[%d]", i, k);
-			tbl.push_back({ S611BASE(i,array_0x39B_923x) + k,1,strdup(nm),0 });
+			tbl.push_back({ S611BASE(i,SpellIndexes_0x39B_923x) + k,1,strdup(nm),0 });
 			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x3B5_949x.SpellIndex[%d]", i, k);
 			tbl.push_back({ S611BASE(i,array_0x3B5_949x) + k,1,strdup(nm),0 });
 			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x3CF_975x.SpellIndex[%d]", i, k);
@@ -737,7 +737,7 @@ static const std::vector<FieldRange>& field_table()
 			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x403_1027x.SpellIndex[%d]", i, k);
 			tbl.push_back({ S611BASE(i,array_0x403_1027x) + k,1,strdup(nm),0 });
 			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x41D_1053z.SpellIndex[%d]", i, k);
-			tbl.push_back({ S611BASE(i,array_0x41D_1053z) + k,1,strdup(nm),0 });
+			tbl.push_back({ S611BASE(i,SpellLevels_0x41D_1053z) + k,1,strdup(nm),0 });
 			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.SpellIndex[%d]", i, k);
 			tbl.push_back({ S611BASE(i,array_0x437_1079x) + k,1,strdup(nm),0 });
 		}
