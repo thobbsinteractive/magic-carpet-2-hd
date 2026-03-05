@@ -47863,7 +47863,7 @@ void CopyScreen_85B20(uint8_t* src, uint8_t* dest, uint16_t rows_count) //266b20
 				}
 		}
 		if (dest != loc_A0000_vga_buffer && rows_count >= 400)//clear last 80 rows
-			memset(&dest[rows * 320 * 2], 0, 320 * 160);
+			memset(&dest[rows * 320 * 2], 0, 320 * 2 * 80);
 	}
 }
 
