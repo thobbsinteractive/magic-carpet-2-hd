@@ -1002,8 +1002,6 @@ void DrawMinimapEntities_B_61A00(int16_t x, int16_t y, int16_t posX, int16_t pos
 	int v64; // edi
 	uint8_t* v65; // ST14_4
 	uint8_t v66; // al
-	char* index; // eax
-	int v71 = 0; // ecx
 	int v72; // [esp+0h] [ebp-60h]
 	int v73; // [esp+8h] [ebp-58h]
 	type_entity_0x6E8E* v74x; // [esp+Ch] [ebp-54h]
@@ -1525,22 +1523,61 @@ void DrawMinimapEntities_B_61A00(int16_t x, int16_t y, int16_t posX, int16_t pos
 	}
 
 	//Draw center Cross
-	int crossWidth_v67 = width / 12;
-	index = (char*)&x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93];
-	uint8_t* ptrCrossWest_v68 = (uint8_t*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
-	uint8_t* ptrCrossSouth_v70 = (uint8_t*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
-	uint8_t* ptrCrossEast_v77 = (uint8_t*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
-	uint8_t* ptrCrossNorth_v81 = (uint8_t*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
-	for (*ptrCrossWest_v68 = index[(uint8_t)*ptrCrossWest_v68]; crossWidth_v67; *ptrCrossWest_v68 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + v71])
+	if (scale == 1)
 	{
-		ptrCrossNorth_v81 -= screenWidth_18062C;
-		ptrCrossSouth_v70 += screenWidth_18062C;
-		ptrCrossEast_v77++;
-		*ptrCrossNorth_v81 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossNorth_v81];
-		*ptrCrossEast_v77 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossEast_v77];
-		*ptrCrossSouth_v70 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossSouth_v70];
-		v71 = (uint8_t)*(ptrCrossWest_v68-- - 1);
-		crossWidth_v67--;
+		int v71 = 0;
+		int crossWidth_v67 = width / 12;
+		uint8_t* ptrCrossWest_v68 = (uint8_t*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
+		char* index = (char*)&x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93];
+		uint8_t* ptrCrossSouth_v70 = (uint8_t*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
+		uint8_t* ptrCrossEast_v77 = (uint8_t*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
+		uint8_t* ptrCrossNorth_v81 = (uint8_t*)(screenWidth_18062C * (int)(height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
+
+		for (*ptrCrossWest_v68 = index[(uint8_t)*ptrCrossWest_v68]; crossWidth_v67; *ptrCrossWest_v68 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + v71])
+		{
+			ptrCrossNorth_v81 -= screenWidth_18062C;
+			ptrCrossSouth_v70 += screenWidth_18062C;
+			ptrCrossEast_v77++;
+			*ptrCrossNorth_v81 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossNorth_v81];
+			*ptrCrossEast_v77 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossEast_v77];
+			*ptrCrossSouth_v70 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossSouth_v70];
+			v71 = (uint8_t) * (ptrCrossWest_v68-- - 1);
+			crossWidth_v67--;
+		}
+		return;
+	}
+
+	//Draw center Cross at other scales (2x or greater)
+	int crossWidth_v67 = width / 12;
+
+	uint8_t* crossCenter = (uint8_t*)(screenWidth_18062C * ((int)width / 2) + ((int)(height / 2)) + ptrMapBufferStart_v84 - 1);
+
+	for (int s = 0; s < scale; s++)
+	{
+		uint8_t* ptrCrossWest_v68 = (crossCenter - CalculateScaleOffset(scale)) + (screenWidth_18062C * s);
+		uint8_t* ptrCrossEast_v77 = (crossCenter + (scale - CalculateScaleOffset(scale)) + 1) + (screenWidth_18062C * s);
+
+		for (int i = 0; i < crossWidth_v67; i++)
+		{
+			*ptrCrossWest_v68 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossWest_v68];
+			*ptrCrossEast_v77 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossEast_v77];
+			ptrCrossWest_v68--;
+			ptrCrossEast_v77++;
+		}
+	}
+
+	for (int s = 0; s < scale; s++)
+	{
+		uint8_t* ptrCrossNorth_v81 = (crossCenter - CalculateScaleOffset(scale)) + 1 + s;
+		uint8_t* ptrCrossSouth_v70 = ((crossCenter - CalculateScaleOffset(scale)) + screenWidth_18062C) + 1 + s;
+
+		for (int i = 0; i < crossWidth_v67; i++)
+		{
+			*ptrCrossNorth_v81 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossNorth_v81];
+			*ptrCrossSouth_v70 = x_BYTE_F6EE0_tablesx[0x4000 + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossSouth_v70];
+			ptrCrossNorth_v81 -= screenWidth_18062C;
+			ptrCrossSouth_v70 += screenWidth_18062C;
+		}
 	}
 }
 
