@@ -1550,7 +1550,7 @@ void DrawMinimapEntities_B_61A00(int16_t x, int16_t y, int16_t posX, int16_t pos
 	//Draw center Cross at other scales (2x or greater)
 	int crossWidth_v67 = width / 12;
 
-	uint8_t* crossCenter = (uint8_t*)(screenWidth_18062C * ((int)width / 2) + ((int)(height / 2)) + ptrMapBufferStart_v84 - 1);
+	uint8_t* crossCenter = (uint8_t*)(screenWidth_18062C * ((int)height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
 
 	for (int s = 0; s < scale; s++)
 	{
