@@ -21988,7 +21988,7 @@ void DrawGameFrame_2BE30()//20CE30
 			DrawPauseMenu_2FD90(scale);
 			break;
 		}
-		DrawTextPauseEndOfLevel_2CE30(6, 6);
+		DrawTextPauseEndOfLevel_2CE30(6, 6, scale);
 		if (x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400)
 			DrawSpellIcon_2E260(
 				spellLeftPosX,
