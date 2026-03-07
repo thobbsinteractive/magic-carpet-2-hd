@@ -123,20 +123,20 @@ std::string get_exe_path() {
 #endif
 };
 
-long my_findfirst(char* path, _finddata_t* c_file){
+intptr_t my_findfirst(char* path, _finddata_t* c_file){
 	Logger->debug("my_findfirst:fixed:{}", path);
-	long result= _findfirst(path, c_file);
+	intptr_t result= _findfirst(path, c_file);
 	Logger->debug("my_findfirst:end:{}", result);
 	return result;
 }
 
-long my_findnext(long hFile, _finddata_t* c_file){
-	long result = _findnext(hFile, c_file);
+intptr_t my_findnext(intptr_t hFile, _finddata_t* c_file){
+	intptr_t result = _findnext(hFile, c_file);
 	Logger->debug("my_findnext:end:{}", result);
 	return result;
 }
 
-void my_findclose(long hFile){
+void my_findclose(intptr_t hFile){
 	_findclose(hFile);
 };
 
