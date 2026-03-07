@@ -4935,7 +4935,7 @@ int32_t AilApiInitMusicSequence_A7C20(HSEQUENCE hSequence, void*  start, int32_t
 	hSequence->volume_accum_16 = 0;
 	hSequence->sequence_num = sequence_num;
 	SOUND_init_MIDI_sequence(musicData_E3810, musicHeader_E3808, track - 1);
-	memset(actXmiLoopEvents, 0, sizeof(actXmiLoopEvents));
+	memset(actXmiLoopEvents, 0, sizeof(actXmiLoopEvents) * maxLoopEvents);
 	XMI_FindLoopEvents((char*)start, actXmiLoopEvents, maxLoopEvents);
 	return 1;
 }
