@@ -4820,11 +4820,11 @@ void DrawEndGameTable_82C20(__int16 a1) //263c20
 				if (x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2)
 					DrawText_7FB90(texts[k], x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, k * xy_DWORD_17DEC0_spritestr[65].height_5 + beginX2, 0);
 				else {
-					if (k == 1 || k == 4)
+					if (k == 1 || k == 3)
 						DrawText_7FB90(texts[k], x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, xy_DWORD_17DEC0_spritestr[65].height_5 * k + width4 + 2, 0);
-					else if (k <= 2)
+					else if (k == 2)
 						DrawText_7FB90((char*)"Hit Accuracy", x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + k * xy_DWORD_17DEC0_spritestr[65].height_5, 0);
-					else//k==3
+					else if (k == 4)
 						DrawText_7FB90((char*)"Mana Collected", x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + 4 * xy_DWORD_17DEC0_spritestr[65].height_5, 0);
 				}
 				sprintf(printbuffer, "%3d%%", v30x[1 + k]);
