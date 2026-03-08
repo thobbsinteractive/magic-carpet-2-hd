@@ -485,8 +485,8 @@ char x_BYTE_E29E1 = 1; // weak
 int16_t x_WORD_17DE26; // weak
 
 
-long unknown_libname_2_findfirst(char* path, uint16_t  /*a2*/, _finddata_t* c_file) {//findfirst
-	long hFile;
+intptr_t unknown_libname_2_findfirst(char* path, uint16_t  /*a2*/, _finddata_t* c_file) {//findfirst
+	intptr_t hFile;
 	//char path2[2048] = "\0";
 	//pathfix(path, path2);//only for DOSBOX version
 
@@ -525,7 +525,7 @@ sub_9A1B6(result, (void*)a3, (void*)a3);
 return result;*/
 };// weak
 
-long unknown_libname_3_findnext(_finddata_t* c_file, long hFile) {//258193
+intptr_t unknown_libname_3_findnext(_finddata_t* c_file, intptr_t hFile) {//258193
 	//char path[100];//fix
 	//char filename[100];//fix it
 
@@ -573,7 +573,7 @@ long unknown_libname_3_findnext(_finddata_t* c_file, long hFile) {//258193
 	return 0;
 };// weak
 
-int unknown_libname_4_find_close(struct _finddata_t*  /*c_file*/, long hFile) {//27b1b3
+int unknown_libname_4_find_close(struct _finddata_t*  /*c_file*/, intptr_t hFile) {//27b1b3
 	my_findclose(hFile);
 	return 0;
 };// weak
@@ -1174,8 +1174,8 @@ char LanguageSettingDialog_779E0(type_menuButtons_E1F84* a1y)//2589E0
 	char configFilePath[MAX_PATH];
 	sprintf(configFilePath, "%s/%s", gameDataPath.c_str(), "CONFIG.DAT");
 
-	long langlhandle = 0;
-	long langdhandle = 0;
+	intptr_t langlhandle = 0;
+	intptr_t langdhandle = 0;
 
 	char codeBranch = 2;
 	SetCenterScreenForFlyAssistant_6EDB0();//24fdb0
@@ -4820,11 +4820,11 @@ void DrawEndGameTable_82C20(__int16 a1) //263c20
 				if (x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex != 2)
 					DrawText_7FB90(texts[k], x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, k * xy_DWORD_17DEC0_spritestr[65].height_5 + beginX2, 0);
 				else {
-					if (k == 1 || k == 4)
+					if (k == 1 || k == 3)
 						DrawText_7FB90(texts[k], x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, xy_DWORD_17DEC0_spritestr[65].height_5 * k + width4 + 2, 0);
-					else if (k <= 2)
+					else if (k == 2)
 						DrawText_7FB90((char*)"Hit Accuracy", x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + k * xy_DWORD_17DEC0_spritestr[65].height_5, 0);
-					else//k==3
+					else if (k == 4)
 						DrawText_7FB90((char*)"Mana Collected", x3 + 2 * xy_DWORD_17DEC0_spritestr[65].width_4, beginX2 + 4 * xy_DWORD_17DEC0_spritestr[65].height_5, 0);
 				}
 				sprintf(printbuffer, "%3d%%", v30x[1 + k]);

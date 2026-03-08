@@ -922,7 +922,6 @@ void sub_84880(type_str_0x3664C* a1);
 void sub_84EA0(uaxis_2d a1x, type_str_0x3664C* a2, char a3, __int16 a4);
 int sub_84FB0_3dim_scalar(axis_3d* a1, axis_3d* a2);
 int sub_85060(int a1);
-int sub_85B20_copy_bitmap(x_BYTE* a1, x_WORD* a2, unsigned __int16 a3);
 __int16 sub_85F00_free_memory(__int16 a1);
 int sub_85F60(int a1);
 void sub_86460(uint16_t a1);
@@ -21988,7 +21987,7 @@ void DrawGameFrame_2BE30()//20CE30
 			DrawPauseMenu_2FD90(scale);
 			break;
 		}
-		DrawTextPauseEndOfLevel_2CE30(6, 6);
+		DrawTextPauseEndOfLevel_2CE30(6, 6, scale);
 		if (x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400)
 			DrawSpellIcon_2E260(
 				spellLeftPosX,
@@ -32218,7 +32217,7 @@ void sub_47FC0_load_screen(bool isSecretLevel)//228fc0
 		sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SMATITLE.DAT");
 		DataFileIO::ReadFileAndDecompress(dataPath, &x_DWORD_E9C38_smalltit);
 	}
-	sub_85B20_copy_bitmap((x_BYTE*)x_DWORD_E9C38_smalltit, (x_WORD*)pdwScreenBuffer_351628, 0x190u);
+	CopyScreen_85B20(x_DWORD_E9C38_smalltit, pdwScreenBuffer_351628, 400);
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_90478_VGA_Blit320();
 	else
@@ -47849,137 +47848,24 @@ int sub_85060(int a1)//266060
 }
 
 //----- (00085B20) --------------------------------------------------------
-int sub_85B20_copy_bitmap(x_BYTE* a1, x_WORD* a2, unsigned __int16 a3)//266b20
+void CopyScreen_85B20(uint8_t* src, uint8_t* dest, uint16_t rows_count) //266b20
 {
-	x_BYTE* v3; // esi
-	x_WORD* v4; // edi
-	int result; // eax
-	__int16 v6; // bx
-	signed __int16 v7; // cx
-	__int16 v8; // ax
-	x_BYTE* v9; // esi
-	x_WORD* v10; // edi
-	signed __int16 v11; // cx
-	__int16 v12; // ax
-	x_BYTE* v13; // esi
-	x_WORD* v14; // edi
-	signed int v15; // ecx
-	x_BYTE* v16; // [esp-14h] [ebp-1Ch]
-	int v17; // [esp+4h] [ebp-4h]
-
-	//fix it
-	v17 = 0;
-	//fix it
-
-	v3 = a1;
-	v4 = a2;
-	if (x_WORD_180660_VGA_type_resolution & 1)
-	{
-		CopyScreen(a1, a2, 320, 200);
-		result = v17;
+	if (x_WORD_180660_VGA_type_resolution & 1) {
+		CopyScreen(src, dest, 320, 200);//copy 320x200 to 320x200
 	}
-	else
-	{
-		v6 = a3 >> 1;
-		do
-		{
-			v16 = v3;
-			v7 = 40;
-			do
-			{
-				LOBYTE(v8) = *v3;
-				v9 = v3 + 1;
-				HIBYTE(v8) = v8;
-				*v4 = v8;
-				v10 = v4 + 1;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9;
-				v3 = v9 + 1;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v4 = v10 + 1;
-				--v7;
-			} while (v7);
-			v3 = v16;
-			v11 = 40;
-			do
-			{
-				LOBYTE(v12) = *v3;
-				v13 = v3 + 1;
-				HIBYTE(v12) = v12;
-				*v4 = v12;
-				v14 = v4 + 1;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13;
-				v3 = v13 + 1;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v4 = v14 + 1;
-				v11--;
-			} while (v11);
-			v6--;
-		} while (v6);
-		if (a2 != (int16_t*)&loc_A0000_vga_buffer && a3 >= 0x190u)
-		{
-			v15 = 12800;
-			do
-			{
-				*(x_DWORD*)v4 = 0;
-				v4 += 2;
-				v15--;
-			} while (v15);
+	else {
+		uint16_t rows = rows_count / 2;
+		for (int y = 0; y < rows; y++) {//copy 320x200 to 640x480
+			for (int doubleRowIndex = 0; doubleRowIndex < 2; doubleRowIndex++)
+				for (int x = 0; x < 320; x++) {
+					uint8_t scr_byte = src[y * 320 + x];
+					dest[y * 2 * 320 + doubleRowIndex * 320 + x] = (scr_byte << 8) | scr_byte;//set two bytes
+				}
 		}
-		result = v17;
+		if (dest != loc_A0000_vga_buffer && rows_count >= 400)//clear last 80 rows
+			memset(&dest[rows * 320 * 2], 0, 320 * 2 * 80);
 	}
-	return result;
 }
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00085CC3) --------------------------------------------------------
 void sub_85CC3_draw_round_frame(uint16_t* buffer)//266cc3
