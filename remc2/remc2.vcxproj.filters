@@ -336,6 +336,9 @@
     <ClInclude Include="engine\defs.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
+    <ClInclude Include="engine\XmiInfo.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -550,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="portability\InputRecorder.cpp">
       <Filter>Source Files\portability</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\XmiInfo.cpp">
+      <Filter>Source Files\engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -739,8 +739,8 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 		sub_548F0(playStr);
 		SetSoundEffectAndMusicLevelCoordinates_19D60(newMenuState);
 		break;
-	case 0xD:
-	case 0xE:
+	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		sub_548F0(playStr);
 		SetOkayCancelButtonsCursorPosition_1A030();
 		break;
@@ -751,10 +751,11 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	{
 		if (newMenuState > 5u)
 		{
-			if (newMenuState == 8)
-				useSound = 0;
+			if (newMenuState == (int)MenuState::SHOW_MAP_BOTTOM_MENU)
+				useSound = false;
 		}
-		else
+
+		if (newMenuState == (int)MenuState::SHOW_BOTTOM_MENU || newMenuState == (int)MenuState::SHOW_MAP_BOTTOM_MENU)
 		{
 			playStr->dword_0x3E6_2BE4_12228.str_611.byte_0x457_1111 = 0;
 			MoveCursorToSelectedSpell_6D200(playStr);
@@ -1550,7 +1551,7 @@ void DrawMinimapEntities_B_61A00(int16_t x, int16_t y, int16_t posX, int16_t pos
 	//Draw center Cross at other scales (2x or greater)
 	int crossWidth_v67 = width / 12;
 
-	uint8_t* crossCenter = (uint8_t*)(screenWidth_18062C * ((int)width / 2) + ((int)(height / 2)) + ptrMapBufferStart_v84 - 1);
+	uint8_t* crossCenter = (uint8_t*)(screenWidth_18062C * ((int)height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
 
 	for (int s = 0; s < scale; s++)
 	{
