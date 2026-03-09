@@ -7,6 +7,7 @@
 #include "../engine/CommandLineParser.h"
 #include "../portability/port_show_perifery.h"
 #include "../portability/port_sdl_sound.h"
+#include "XmiInfo.h"
 
 #pragma pack (1)
 typedef struct {//lenght 12

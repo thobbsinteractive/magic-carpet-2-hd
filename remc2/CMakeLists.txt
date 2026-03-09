@@ -78,6 +78,8 @@ set(SOURCE_FILES_ENGINE
     "engine/RenderThread.h"
     "engine/Sound.cpp"
     "engine/Sound.h"
+    "engine/XmiInfo.cpp"
+    "engine/XmiInfo.h"
     "engine/WavIndexes.h"
     "engine/Terrain.cpp"
     "engine/Terrain.h"

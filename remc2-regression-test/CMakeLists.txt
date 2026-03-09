@@ -49,6 +49,8 @@ set(SOURCE_FILES_REGRESSIONTESTS
     "../remc2/engine/RenderThread.h"
     "../remc2/engine/Sound.cpp"
     "../remc2/engine/Sound.h"
+    "../remc2/engine/XmiInfo.cpp"
+    "../remc2/engine/XmiInfo.h"
     "../remc2/engine/Terrain.cpp"
     "../remc2/engine/Terrain.h"
     "../remc2/engine/TextureMaps.cpp"
