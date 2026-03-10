@@ -423,6 +423,10 @@ extern char x_BYTE_D4B50;
 extern char x_BYTE_D4B51;
 extern char x_BYTE_DB734;
 extern int resindex_begin;
+extern int x_DWORD_D41C8;
+extern char x_BYTE_D41C4;
+extern void(*ptrDrawBitmap_F01EC)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale);
+extern char x_BYTE_D41C6_old_graphics_mode;
 
 extern int save_debugcounter;
 
@@ -1615,4 +1619,7 @@ void intervalsave(int index);
 void sub_72350(type_animations1* a1);
 void sub_72550(type_E9C08** a1);
 void CopyScreen_85B20(uint8_t* src, uint8_t* dest, uint16_t rows_count);
+void sub_88580();
+int sub_9025C(__int16 a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int16 a5, __int16 a6);
+int sub_90374(uint16_t viewPortX, uint16_t viewPortY, uint16_t viewPortWidth, uint16_t viewPortHeight, unsigned __int16 a5, __int16 a6);
 #endif
