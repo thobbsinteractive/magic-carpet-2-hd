@@ -9078,7 +9078,7 @@ axis_3d* sub_57FA0(axis_3d* a1, unsigned __int16 a2, __int16 a3, __int16 a4)//23
 
 void sub_1B280_run_intro_events(uint8_t* a1)//1fc280
 void sub_76160_play_intro(__int16 a1, __int16 a2, uint8_t* a3)//257160
-void sub_82670()//263670
+void PlayInGameFmv_82670()//263670
 
 x_BYTE_10B4E0_terraintype
 

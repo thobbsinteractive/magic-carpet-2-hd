@@ -615,7 +615,7 @@ void MenusAndIntros_76930(bool skipMenus)//257930
 
 	if (x_BYTE_D41AD_skip_screen == 1 || (nextMenu_E29D8!= MenuItem::InitLanguage))
 	{
-		sub_82670();
+		PlayInGameFmv_82670();
 		LoadAndSetGraphicsAndPalette_7AC00();
 	}
 	if (x_BYTE_D41AD_skip_screen == 1)
@@ -4168,7 +4168,7 @@ void sub_82510(/*__int16 a1*//*, int *a2*/)//263510
 
 
 //----- (00082670) --------------------------------------------------------
-void sub_82670()//263670
+void PlayInGameFmv_82670()//263670
 {
 	__int16 v0; // si
 	int16_t v1x;

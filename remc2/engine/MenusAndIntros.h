@@ -183,7 +183,7 @@ void WriteConfigDat_81DB0();
 void DrawAndSoundDragonAndFire_81EE0(__int16 a5, __int16 a6);
 Type_SecretMapScreenPortals_E2970* GetSecretAndActivedPortal2_824E0(__int16 a1);
 void sub_82510(/*__int16 a1*//*, int *a2*/);
-void sub_82670();
+void PlayInGameFmv_82670();
 void DrawEndGameTable_82C20(__int16 a1);
 void PlayIntros_83250(char a1);
 void ShowEndCredits_833C0();
