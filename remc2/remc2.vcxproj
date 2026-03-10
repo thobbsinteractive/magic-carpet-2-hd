@@ -452,6 +452,7 @@
     <ClInclude Include="engine\Level.h" />
     <ClInclude Include="engine\Player.h" />
     <ClInclude Include="engine\PlayerInput.h" />
+    <ClInclude Include="engine\XmiInfo.h" />
     <ClInclude Include="portability\Config.h" />
     <ClInclude Include="portability\ConfigToSdlScancodeMapping.h" />
     <ClInclude Include="portability\fcaseopen.h" />
@@ -536,6 +537,7 @@
     <ClCompile Include="engine\Level.cpp" />
     <ClCompile Include="engine\Player.cpp" />
     <ClCompile Include="engine\PlayerInput.cpp" />
+    <ClCompile Include="engine\XmiInfo.cpp" />
     <ClCompile Include="portability\Config.cpp" />
     <ClCompile Include="portability\dirent.c" />
     <ClCompile Include="portability\fcaseopen.cpp" />

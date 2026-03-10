@@ -922,7 +922,6 @@ void sub_84880(type_str_0x3664C* a1);
 void sub_84EA0(uaxis_2d a1x, type_str_0x3664C* a2, char a3, __int16 a4);
 int sub_84FB0_3dim_scalar(axis_3d* a1, axis_3d* a2);
 int sub_85060(int a1);
-int sub_85B20_copy_bitmap(x_BYTE* a1, x_WORD* a2, unsigned __int16 a3);
 __int16 sub_85F00_free_memory(__int16 a1);
 int sub_85F60(int a1);
 void sub_86460(uint16_t a1);
@@ -5058,144 +5057,90 @@ void sub_12470(type_entity_0x6E8E* event, char actionIndex)//1f3470
 }
 
 //----- (00012500) --------------------------------------------------------
-void sub_12500(type_entity_0x6E8E* a1x)//1f3500
+void sub_12500(type_entity_0x6E8E* entity)//1f3500
 {
-	//uint8_t* v1; // eax
-	int v1x;
-	type_entity_0x6E8E* v1y;
-	signed __int16 v2; // di
-	__int16 v3; // si
-	//uint8_t* v4; // ecx
-	//__int16 v5; // si
-	char v6; // dl
-	__int16 v7; // dx
-	//int v8; // esi
-	__int16 v9; // cx
-	signed __int16 v11; // [esp+0h] [ebp-4h]
-
 	if (CommandLineParams.DoDebugSequences()) {
 		//add_compare(0x1f3504, CommandLineParams.DoDebugafterload(), 0xd7);
 	}
-
-	v2 = 0;
-	v3 = a1x->actionIndex_0x45_69 & 7;
-	v11 = 1;
-	if ((a1x->actionIndex_0x45_69 & 7) < 4u || (a1x->actionIndex_0x45_69 & 7) > 5u)
+	if ((entity->actionIndex_0x45_69 & 7) < 4u || (entity->actionIndex_0x45_69 & 7) > 5u)
 	{
-		switch (a1x->StageVar2_0x49_73)
+		switch (entity->StageVar2_0x49_73)
 		{
-		case 0xA:
-			v11 = 0;
-			if (v3 != 2 && v3 != 6)
-				sub_12330(a1x, a1x->StageVar1_0x48_72);
-			break;
-		case 0xD:
-		case 0xE:
-		case 0x10:
-		case 0x11:
-			v11 = 0;
-			if (v3 != 2 && v3 != 6)
-			{
-				a1x->actionIndex_0x45_69 = 8 * a1x->model_0x40_64 + 7;
-			}
-			break;
-		case 0xF:
-			v11 = 0;
-			if (v3)
-				sub_12330(a1x, a1x->StageVar1_0x48_72);
-			break;
-		default:
-			break;
-		}
-		if (v11)
-		{
-			switch (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0)
-			{
-			case 1:
-				v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x - a1x->position_0x4C_76.x);
-				if (v1x <= 2048)
-				{
-					v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y - a1x->position_0x4C_76.y);
-					if (v1x <= 2048)
-						goto LABEL_44;
-				}
-				goto LABEL_45;
-			case 3:
-				v1x = D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].stage_0x3647A_1;
-				if (v1x & 4)
-				{
-					a1x->word_0x4A_74 = 0;
-					if (v3 != 2 && v3 != 6)
-						goto LABEL_44;
-				}
-				else if (v1x & 2)
-				{
-					v9 = a1x->word_0x4A_74;
-					if (v9)
-					{
-						v1y = Entities_EA3E4[v9];
-						if (v1y->life_0x8 < 0 || v1y->struct_byte_0xc_12_15.byte[1] & 4)
-							a1x->word_0x4A_74 = 0;
-					}
-				}
-				goto LABEL_45;
-			case 4:
-			case 5:
-			case 8:
-			case 9:
-				v6 = D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].stage_0x3647A_1;
-				if (v6 & 4)
-				{
-					v2 = 1;
-				}
-				else
-				{
-					if (!(v6 & 2))
-					{
-						if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 == 9)
-						{
-							if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x || D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y)
-							{
-								v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.x - a1x->position_0x4C_76.x);
-								if (v1x <= 3072)
-								{
-									v1x = Maths::Abs16(D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].str_0x3647C_4.axis.y - a1x->position_0x4C_76.y);
-									if (v1x <= 3072)
-										goto LABEL_44;
-								}
-							}
-						}
-						goto LABEL_45;
-					}
-					if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 < 4u
-						|| D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].index_0x3647A_0 > 5u
-						|| (v7 = a1x->word_0x4A_74) == 0
-						|| (v1y = Entities_EA3E4[v7], v1y->life_0x8 >= 0) && !(v1y->struct_byte_0xc_12_15.byte[1] & 4))
-					{
-					LABEL_45:
-						if (v2)
-							sub_12410(a1x, 8 * a1x->model_0x40_64 + 1);
-						return;
-					}
-				}
-				a1x->word_0x4A_74 = 0;
-				goto LABEL_45;
-			case 6:
-				a1x->word_0x4A_74--;// = v5;
-				if (!a1x->word_0x4A_74)
-					goto LABEL_44;
-				goto LABEL_45;
-			case 7:
-				if (D41A0_0.StageVars2_0x365F4[a1x->StageVar1_0x48_72].stage_0x3647A_1 & 0x18)
-				{
-					sub_12870();
-				LABEL_44:
-					v2 = 1;
-				}
-				goto LABEL_45;
+			case 0xA:
+				if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+					sub_12330(entity, entity->StageVar1_0x48_72);
+				break;
+			case 0xD:
+			case 0xE:
+			case 0x10:
+			case 0x11:
+				if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+					entity->actionIndex_0x45_69 = 8 * entity->model_0x40_64 + 7;
+				break;
+			case 0xF:
+				if (entity->actionIndex_0x45_69 & 7)
+					sub_12330(entity, entity->StageVar1_0x48_72);
+				break;
 			default:
-				goto LABEL_45;
-			}
+				switch (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0)
+				{
+					case 1:
+						if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 2048)
+							if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 2048)
+								sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						break;
+					case 3:
+						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
+						{
+							entity->word_0x4A_74 = 0;
+							if ((entity->actionIndex_0x45_69 & 7) != 2 && (entity->actionIndex_0x45_69 & 7) != 6)
+								sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						}
+						else
+						{
+							if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
+								if (entity->word_0x4A_74)
+									if (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)
+										entity->word_0x4A_74 = 0;
+						}
+						break;
+					case 4:
+					case 5:
+					case 8:
+					case 9:
+						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 4)
+							sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						else if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 2)
+						{
+							if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 >= 4u
+								&& D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 <= 5u
+								&& entity->word_0x4A_74 != 0
+								&& (Entities_EA3E4[entity->word_0x4A_74]->life_0x8 < 0 || (Entities_EA3E4[entity->word_0x4A_74]->struct_byte_0xc_12_15.byte[1] & 4)))
+								entity->word_0x4A_74 = 0;
+						}
+						else
+						{
+							if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].index_0x3647A_0 == 9)
+								if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x || D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y)
+									if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.x - entity->position_0x4C_76.x) <= 3072)
+										if (Maths::Abs16(D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].str_0x3647C_4.axis.y - entity->position_0x4C_76.y) <= 3072)
+											sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						}
+						break;
+					case 6:
+						entity->word_0x4A_74--;
+						if (!entity->word_0x4A_74)
+							sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						break;
+					case 7:
+						if (D41A0_0.StageVars2_0x365F4[entity->StageVar1_0x48_72].stage_0x3647A_1 & 0x18)
+						{
+							sub_12870();
+							sub_12410(entity, 8 * entity->model_0x40_64 + 1);
+						}
+						break;
+				}
+				break;
 		}
 	}
 }
@@ -22042,7 +21987,7 @@ void DrawGameFrame_2BE30()//20CE30
 			DrawPauseMenu_2FD90(scale);
 			break;
 		}
-		DrawTextPauseEndOfLevel_2CE30(6, 6);
+		DrawTextPauseEndOfLevel_2CE30(6, 6, scale);
 		if (x_D41A0_BYTEARRAY_4_struct.leftSpellPlayerIndex_38400)
 			DrawSpellIcon_2E260(
 				spellLeftPosX,
@@ -22164,7 +22109,7 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
 		{
 			DrawText_2BC10(x_DWORD_E9C4C_langindexbuffer[425], posX, posY, (*xadataclrd0dat.colorPalette_var28)[240], scale);//Paused!
-			textPosX = (8 * scale) * ((strlen((const char*)x_DWORD_E9C4C_langindexbuffer[425]) + 2) * scale) + posX;//Paused!
+			textPosX = ((8 * scale) * (strlen((const char*)x_DWORD_E9C4C_langindexbuffer[425]) + 2)) + posX;//Paused!
 		}
 
 		if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x20) && D41A0_0.struct_0x3659C[D41A0_0.LevelIndex_0xc].substr_3659C.IsLevelEnd_0)
@@ -31667,6 +31612,19 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 							count_begin++;//for debug
 
 							x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = secretsPortals->levelNumber_6;
+							
+							//fix level number-neoriginal code
+							actLevel = x_D41A0_BYTEARRAY_4_struct.levelnumber_43w;
+							//fix level number-neoriginal code
+
+							//fix res before secret level-neoriginal code
+							VGA_Resize(320, 200);
+							screenWidth_18062C = 320;
+							screenHeight_180624 = 200;
+							sub_A0D50_set_viewport(0, 0, 320, 200);
+							x_WORD_180660_VGA_type_resolution = 1;
+							//fix res before secret level-neoriginal code
+
 							sub_47FC0_load_screen(true);
 							LevelInitGame_56A30(actLevel);
 							sub_47160();
@@ -31733,6 +31691,18 @@ void InGameLoop_47320()//228320
 	x_D41A0_BYTEARRAY_4_struct.paletteMod_51 = 0;
 	uint32_t gameTurn = 0;
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
+
+	//fix res on begin level for hidden levels-neoriginal code
+	if (!IsDefaultResolution(gameResWidth, gameResHeight))
+	{
+		VGA_Resize(320, 200);
+		screenWidth_18062C = 320;
+		screenHeight_180624 = 200;
+		sub_A0D50_set_viewport(0, 0, 320, 200);
+		x_WORD_180660_VGA_type_resolution = 1;
+		resindex_begin = 0;
+	}
+	//fix res on begin level for hidden levels-neoriginal code
 
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::STARTED);
 
@@ -32247,7 +32217,7 @@ void sub_47FC0_load_screen(bool isSecretLevel)//228fc0
 		sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SMATITLE.DAT");
 		DataFileIO::ReadFileAndDecompress(dataPath, &x_DWORD_E9C38_smalltit);
 	}
-	sub_85B20_copy_bitmap((x_BYTE*)x_DWORD_E9C38_smalltit, (x_WORD*)pdwScreenBuffer_351628, 0x190u);
+	CopyScreen_85B20(x_DWORD_E9C38_smalltit, pdwScreenBuffer_351628, 400);
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_90478_VGA_Blit320();
 	else
@@ -47878,137 +47848,24 @@ int sub_85060(int a1)//266060
 }
 
 //----- (00085B20) --------------------------------------------------------
-int sub_85B20_copy_bitmap(x_BYTE* a1, x_WORD* a2, unsigned __int16 a3)//266b20
+void CopyScreen_85B20(uint8_t* src, uint8_t* dest, uint16_t rows_count) //266b20
 {
-	x_BYTE* v3; // esi
-	x_WORD* v4; // edi
-	int result; // eax
-	__int16 v6; // bx
-	signed __int16 v7; // cx
-	__int16 v8; // ax
-	x_BYTE* v9; // esi
-	x_WORD* v10; // edi
-	signed __int16 v11; // cx
-	__int16 v12; // ax
-	x_BYTE* v13; // esi
-	x_WORD* v14; // edi
-	signed int v15; // ecx
-	x_BYTE* v16; // [esp-14h] [ebp-1Ch]
-	int v17; // [esp+4h] [ebp-4h]
-
-	//fix it
-	v17 = 0;
-	//fix it
-
-	v3 = a1;
-	v4 = a2;
-	if (x_WORD_180660_VGA_type_resolution & 1)
-	{
-		CopyScreen(a1, a2, 320, 200);
-		result = v17;
+	if (x_WORD_180660_VGA_type_resolution & 1) {
+		CopyScreen(src, dest, 320, 200);//copy 320x200 to 320x200
 	}
-	else
-	{
-		v6 = a3 >> 1;
-		do
-		{
-			v16 = v3;
-			v7 = 40;
-			do
-			{
-				LOBYTE(v8) = *v3;
-				v9 = v3 + 1;
-				HIBYTE(v8) = v8;
-				*v4 = v8;
-				v10 = v4 + 1;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9++;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v10++;
-				LOBYTE(v8) = *v9;
-				v3 = v9 + 1;
-				HIBYTE(v8) = v8;
-				*v10 = v8;
-				v4 = v10 + 1;
-				--v7;
-			} while (v7);
-			v3 = v16;
-			v11 = 40;
-			do
-			{
-				LOBYTE(v12) = *v3;
-				v13 = v3 + 1;
-				HIBYTE(v12) = v12;
-				*v4 = v12;
-				v14 = v4 + 1;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13++;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v14++;
-				LOBYTE(v12) = *v13;
-				v3 = v13 + 1;
-				HIBYTE(v12) = v12;
-				*v14 = v12;
-				v4 = v14 + 1;
-				v11--;
-			} while (v11);
-			v6--;
-		} while (v6);
-		if (a2 != (int16_t*)&loc_A0000_vga_buffer && a3 >= 0x190u)
-		{
-			v15 = 12800;
-			do
-			{
-				*(x_DWORD*)v4 = 0;
-				v4 += 2;
-				v15--;
-			} while (v15);
+	else {
+		uint16_t rows = rows_count / 2;
+		for (int y = 0; y < rows; y++) {//copy 320x200 to 640x480
+			for (int doubleRowIndex = 0; doubleRowIndex < 2; doubleRowIndex++)
+				for (int x = 0; x < 320; x++) {
+					uint8_t scr_byte = src[y * 320 + x];
+					dest[y * 2 * 320 + doubleRowIndex * 320 + x] = (scr_byte << 8) | scr_byte;//set two bytes
+				}
 		}
-		result = v17;
+		if (dest != loc_A0000_vga_buffer && rows_count >= 400)//clear last 80 rows
+			memset(&dest[rows * 320 * 2], 0, 320 * 2 * 80);
 	}
-	return result;
 }
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 //----- (00085CC3) --------------------------------------------------------
 void sub_85CC3_draw_round_frame(uint16_t* buffer)//266cc3
