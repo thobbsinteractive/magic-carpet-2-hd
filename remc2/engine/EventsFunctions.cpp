@@ -22672,13 +22672,14 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 				{
 					posEndX = 54;
 				}
+				//Draw Experience for Spell
 				if ((posEndX & 0x8000u) != 0)
 					posEndX = 0;
 				if (posEndX > 54)
 					posEndX = 54;
 				DrawLine_2BC80(posX + posSubMenuSpellX + (6 * scale), posY2 + (28 * scale), (54 * scale), (2 * scale), (*xadataclrd0dat.colorPalette_var28)[0]);
 				if (posEndX)
-					DrawLine_2BC80(posX + posSubMenuSpellX + (6 * scale), posY2 + (28 * scale), posEndX, (2 * scale), (*xadataclrd0dat.colorPalette_var28)[3840]);
+					DrawLine_2BC80(posX + posSubMenuSpellX + (6 * scale), posY2 + (28 * scale), (posEndX * scale), (2 * scale), (*xadataclrd0dat.colorPalette_var28)[3840]);
 			}
 			subSpellIndex2++;
 			posSubMenuSpellX += posSubMenuIconWidth;
