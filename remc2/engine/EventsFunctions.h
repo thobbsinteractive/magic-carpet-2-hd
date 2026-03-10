@@ -210,6 +210,16 @@ extern x_WORD __SS__;*/
 //extern char IsTable[];
 
 #pragma pack (1)
+typedef struct {//lenght 7
+	Type_SoundEvent_E17CC* pSoundEvent_0;
+	uint8_t levelNumber_4;
+	uint8_t overplayed_5;
+	uint8_t fileIndex_6;
+}
+Type_CutScene_E16E0;
+#pragma pack (16)
+
+#pragma pack (1)
 typedef struct {//lenght 14
 	uint32_t dword_0;//ok
 	int16_t word_4;//ok
@@ -638,6 +648,8 @@ extern axis_3d predictedAxis_EB398ar;
 extern type_D4C52ar2 str_x_DWORD_D4C52ar_0x2F22[7];
 extern std::array<type_D4C52ar, 17> str_D4C48ar;
 extern type_entity_0x6E8E* (*arsub_2a881e[])(axis_3d*);
+
+extern Type_CutScene_E16E0 cutScene_E16E0[];
 
 void sub_49A30(type_entity_0x6E8E* event, unsigned __int16 a2);
 int GetSpellIndex_6E020(int entitySubtype);
