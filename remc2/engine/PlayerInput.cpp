@@ -2447,9 +2447,9 @@ void sub_19760_set_message(const char* a1, unsigned __int8 a2, __int16 a3)//1fa7
 	//int result; // eax
 
 	//v3 = (char*)a1;
-	//D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].array_0x01c_2BFA_11258
+	//D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].CurrentNotificationText_0x01c_2BFA_11258
 	//v4 = (char*)&x_D41A0_BYTEARRAY_0[2124 * D41A0_BYTESTR_0.word_0xc + 11230 + 28];
-	strcpy(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].array_0x01c_2BFA_11258, a1);
+	strcpy(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].CurrentNotificationText_0x01c_2BFA_11258, a1);
 	/*do
 	{
 		v5 = *v3;
