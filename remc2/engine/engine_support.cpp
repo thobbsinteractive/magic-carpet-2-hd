@@ -614,10 +614,10 @@ static const std::vector<FieldRange>& field_table()
 		BDESC(Turn_2BE0_11248, 4); BDESC(byte_0x016_2BE0_11252_xx, 1);
 		BDESC(byte_0x017_2BE0_11253_xx, 1); BDESC(dword_0x018_2BDE_11254, 4);
 
-		// char array_0x01c_2BFA_11258[49]
+		// char CurrentNotificationText_0x01c_2BFA_11258[49]
 		for (int k = 0; k < 49; k++) {
-			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].array_0x01c_2BFA_11258[%d]", i, k);
-			tbl.push_back({ BDEBASE(i,array_0x01c_2BFA_11258) + k,1,strdup(nm),0 });
+			snprintf(nm, sizeof(nm), "array_0x2BDE[%d].CurrentNotificationText_0x01c_2BFA_11258[%d]", i, k);
+			tbl.push_back({ BDEBASE(i,CurrentNotificationText_0x01c_2BFA_11258) + k,1,strdup(nm),0 });
 		}
 		BDESC(word_0x04d_2C2B_11307, 2); BDESC(word_0x04f_2C2D_11309, 2);
 
@@ -2768,7 +2768,7 @@ void clean_x_D41A0_BYTEARRAY_0_0x2BDE(int number) {
 		for (int j = 0; j < 16; j++)
 			D41A0_BYTESTR_0.array_0x2BDE[i].stub[j]=0;
 		for (int j = 0; j < 49; j++)
-			D41A0_BYTESTR_0.array_0x2BDE[i].array_0x01c_2BFA_11258[j]=0;//28//11258 - byte* jmeno2?
+			D41A0_BYTESTR_0.array_0x2BDE[i].CurrentNotificationText_0x01c_2BFA_11258[j]=0;//28//11258 - byte* jmeno2?
 		D41A0_BYTESTR_0.array_0x2BDE[i].word_0x04d_2C2B_11307 = 0;//77 //11307 - word
 		D41A0_BYTESTR_0.array_0x2BDE[i].word_0x04d_2C2D_11309 = 0;//79 //11309 - word
 		for (int j = 0; j < 846; j++)
