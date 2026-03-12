@@ -1,1 +1,2 @@
 S:\Repositories\remc2\tools\decompressTMAPS\DecompressTMAPS\Debug\DecompressTMAPS.exe
+C:\prenos\remc2-dev2\remc2\tools\decompressTMAPS\DecompressTMAPS\Debug\DecompressTMAPS.exe

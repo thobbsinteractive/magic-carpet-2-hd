@@ -17,9 +17,15 @@ void mydelay(int milliseconds) {
 
 };
 
+long startTime = 0;
+
+unsigned long relativeClock() {
+	return (clock() - startTime);
+}
+
 unsigned long mygethundredths() {
 #ifdef WIN32
-	return clock() / (CLOCKS_PER_SEC/100);
+	return relativeClock() / (CLOCKS_PER_SEC/100);
 #else
 	struct timeval timecheck;
 	gettimeofday(&timecheck, nullptr);
@@ -29,7 +35,7 @@ unsigned long mygethundredths() {
 
 unsigned long mygetthousandths() {
 #ifdef WIN32
-	return clock() / (CLOCKS_PER_SEC/1000);
+	return relativeClock() / (CLOCKS_PER_SEC/1000);
 #else
 	struct timeval timecheck;
 	gettimeofday(&timecheck, nullptr);
@@ -39,7 +45,7 @@ unsigned long mygetthousandths() {
 
 unsigned long mygetsecond() {
 #ifdef WIN32
-	return clock();
+	return relativeClock();
 #else
 	struct timeval timecheck;
 	gettimeofday(&timecheck, nullptr);
@@ -59,9 +65,13 @@ timeval GetTimeStart()
 		SetTimeStart();
 	return timeStart;
 }
+#endif
 
 void SetTimeStart()
 {
+#ifndef _MSC_VER
 	gettimeofday(&timeStart, nullptr);
-}
+#else
+	startTime = clock();
 #endif
+}

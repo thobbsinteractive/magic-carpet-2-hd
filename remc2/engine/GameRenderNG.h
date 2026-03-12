@@ -17,7 +17,7 @@
 #include "Type_E9C38_Smalltit.h"
 #include "Type_Unk_F0E20x.h"
 #include "Type_WORD_D951C.h"
-#include "XUnk_D4350.h"
+#include "UVTable_D4350.h"
 #include "Type_D404C.h"
 #include "Type_D94F0_Bldgprmbuffer.h"
 #include "Type_D93C0_Bldgprmbuffer.h"
@@ -75,8 +75,8 @@ private:
 	char notDay_D4320 = 0;
 	char x_BYTE_F2CC6 = 0;
 	int16_t yaw_F2CC0 = 0;
-	int16_t x_WORD_F2CC2 = 0;
-	int16_t x_WORD_F2CC4 = 0;
+	int16_t cameraY_F2CC2 = 0;
+	int16_t cameraX_F2CC4 = 0;
 	uint8_t* x_DWORD_DE55C_ActTexture = 0;
 
 	void DrawSky_40950(int16_t roll);
@@ -88,7 +88,7 @@ private:
 	uint16_t sub_3FD60(int a2x);
 	void sub_88740(type_entity_0x6E8E* a1x, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);
-	void DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1x, __int16 a2, int a3, __int16 a4);
+	void DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1x, int16_t a2, int a3, int16_t a4);
 
 public:
 	~GameRenderNG();

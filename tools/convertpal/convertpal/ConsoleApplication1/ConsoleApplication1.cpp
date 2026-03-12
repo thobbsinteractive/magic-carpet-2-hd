@@ -14,7 +14,7 @@
 #else
 #endif
 
-//#define PalToPNG
+#define PalToPNG
 
 #define level1
 //#define level25
@@ -388,18 +388,18 @@ void writeBufferToAllTextures(unsigned char* buffer, unsigned char* allTexturesB
 int main(int argc, char* argv[]) {
 #ifdef level1
 	const char* standartpal_filename = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-n.pal";
-	const char* outdata_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl128n0-0.data";
-	const char* orig32_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl32n0-0.data";
+	const char* outdata_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl128n0-0.dat";
+	const char* orig32_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl32n0-0.dat";
 #endif level1
 #ifdef level2
 	const char* standartpal_filename = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-block.pal";
-	const char* outdata_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\block128.data";
-	const char* orig32_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\block32.data";
+	const char* outdata_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\block128.dat";
+	const char* orig32_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\block32.dat";
 #endif level2
 #ifdef level4
 	const char* standartpal_filename = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-c.pal";
-	const char* outdata_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl128c0-0.data";
-	const char* orig32_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl32c0-0.data";
+	const char* outdata_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl128c0-0.dat";
+	const char* orig32_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl32c0-0.dat";
 #endif level4
 #ifdef level25
 	const char* standartpal_filename = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-f.pal";

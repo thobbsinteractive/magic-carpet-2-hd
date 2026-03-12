@@ -8,13 +8,7 @@ Tomas has done amazing work, not only reverse engineering this code but updating
 https://github.com/thobbsinteractive/magic-carpet-2-hd/releases/latest
 
 ### Install Guide for GOG Edition or from Magic Carpet CD ###
-#### Windows ####
-- 1: Purchase a copy of Magic Carpet 2 from GOG here: https://www.gog.com/game/magic_carpet_2_the_netherworlds
-- 2: Install the Game.
-- 3: Download the x86 or x64 MSI file. (x64 is faster but also a little more buggy)
-- 4: Run the MSI file. Follow the on-screen instructions to install.
-- 5: Click the Start menu shortcut "Magic Carpet 2 HD" to run the game.
-- 6: Any errors will be output to "log.txt"
+https://github.com/thobbsinteractive/magic-carpet-2-hd/wiki/Windows-Installation-Guide
 
 #### Basic Controls ####
 Controls can be redefined in the Config.json file, however here are the defaults:
@@ -211,6 +205,11 @@ e.g. `void sub_19CA0_sound_proc5(unsigned __int8 a1)` was renamed to `void Chang
 - For each commit please use the Semantic Commit Messages: https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716
 - Be careful with making logic changes to the code and Test, Test, Test! I recommend playing the first level all the way though. Then the first Cave level (4) and I also recomend Level 5 as you have a nice mix of AI to kill and a cutscene at level completion.
 - Please build and run the remc2-regression-test project BEFORE making a pull request. This must pass and since it needs the game data cannot be placed in the Github Actions.
+
+## Interesting links ##
+-Blog from the very beginning of this project's development: https://github.com/turican0/remc2/wiki<br>
+-Dosbox version for data comparison: https://github.com/turican0/dosbox-x-remc2<br>
+-A project that uses the same engine but renders the image via the Godot engine: https://github.com/turican0/MagicBalls<br>
 
 ## License ##
 ### Original Source Code is Copyright 1995 Bullfrog Productions ###
