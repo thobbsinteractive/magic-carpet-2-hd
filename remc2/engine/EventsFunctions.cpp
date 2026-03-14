@@ -933,7 +933,6 @@ void sub_87B30();
 void sub_87B70();
 // int /*__fastcall*/ _wcpp_1_unwind_leave__132(x_DWORD); weak
 void sub_87BE0();
-void sub_88580();
 void sub_88B20();
 void sub_88B60();
 void sub_88BA0();
@@ -969,8 +968,6 @@ void UpdateMouseEventData_8CB3A(uint32_t mouse_states, int32_t mouse_posx, int32
 // void sub_8F935_bitmap_draw_final(__int16 a1, signed int a2, int a3, char *a4, unsigned __int8 a5, char a6);
 //void sub_90164(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5);
 //void sub_901E4(int16_t a1, int16_t a2, int16_t a3, int16_t a4, unsigned __int16 a5);
-int sub_9025C(__int16 a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int16 a5, __int16 a6);
-int sub_90374(uint16_t viewPortX, uint16_t viewPortY, uint16_t viewPortWidth, uint16_t viewPortHeight, unsigned __int16 a5, __int16 a6);
 //void sub_90478_VGA_Blit320();
 char sub_904C0(float a1);
 //unsigned __int8 sub_90530(int a1, int a2, float a3);

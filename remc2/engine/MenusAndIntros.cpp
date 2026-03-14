@@ -38,16 +38,6 @@ uint8_t* pre_x_DWORD_E9C3C;
 char x_BYTE_E1B9C[8] = { '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0' }; // idb x_WORD_E1964x[0x238+
 char x_BYTE_E1BA4[8] = { '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0' }; // idb x_WORD_E1964x[0x240+
 
-#pragma pack (1)
-typedef struct {//lenght 7
-	Type_SoundEvent_E17CC* pSoundEvent_0;
-	uint8_t levelNumber_4;
-	uint8_t overplayed_5;
-	uint8_t fileIndex_6;
-}
-Type_CutScene_E16E0;
-#pragma pack (16)
-
 Type_SoundEvent_E17CC str_E1328[28] = {
 {0x0000,0x45,0x00000005},
 {0x0000,0x56,0x00000000},
