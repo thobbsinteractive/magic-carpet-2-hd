@@ -933,7 +933,6 @@ void sub_87B30();
 void sub_87B70();
 // int /*__fastcall*/ _wcpp_1_unwind_leave__132(x_DWORD); weak
 void sub_87BE0();
-void sub_88580();
 void sub_88B20();
 void sub_88B60();
 void sub_88BA0();
@@ -969,8 +968,6 @@ void UpdateMouseEventData_8CB3A(uint32_t mouse_states, int32_t mouse_posx, int32
 // void sub_8F935_bitmap_draw_final(__int16 a1, signed int a2, int a3, char *a4, unsigned __int8 a5, char a6);
 //void sub_90164(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5);
 //void sub_901E4(int16_t a1, int16_t a2, int16_t a3, int16_t a4, unsigned __int16 a5);
-int sub_9025C(__int16 a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int16 a5, __int16 a6);
-int sub_90374(uint16_t viewPortX, uint16_t viewPortY, uint16_t viewPortWidth, uint16_t viewPortHeight, unsigned __int16 a5, __int16 a6);
 //void sub_90478_VGA_Blit320();
 char sub_904C0(float a1);
 //unsigned __int8 sub_90530(int a1, int a2, float a3);
@@ -22139,7 +22136,7 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 					D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307--;// = v9 - 1;
 					if (D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307 + 1 <= 0)
 						goto LABEL_24;
-					sprintf(printbuffer, "%s %s", D41A0_0.array_0x2BDE[v7y].WizardName_0x39f_2BFA_12157, D41A0_0.array_0x2BDE[v7y].array_0x01c_2BFA_11258);
+					sprintf(printbuffer, "%s %s", D41A0_0.array_0x2BDE[v7y].WizardName_0x39f_2BFA_12157, D41A0_0.array_0x2BDE[v7y].CurrentNotificationText_0x01c_2BFA_11258);
 					DrawText_2BC10(printbuffer, textPosX, textPosY, (*xadataclrd0dat.colorPalette_var28)[3840], scale);
 					textPosX = posX;
 					LOWORD(v10) = GetLetterHeight_6FC30() * scale;
@@ -22150,7 +22147,7 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 					D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307--;
 					if (D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307 + 1 <= 0)
 						goto LABEL_24;
-					sprintf(printbuffer, "[%s] %s", D41A0_0.array_0x2BDE[v7y].WizardName_0x39f_2BFA_12157, D41A0_0.array_0x2BDE[v7y].array_0x01c_2BFA_11258);
+					sprintf(printbuffer, "[%s] %s", D41A0_0.array_0x2BDE[v7y].WizardName_0x39f_2BFA_12157, D41A0_0.array_0x2BDE[v7y].CurrentNotificationText_0x01c_2BFA_11258);
 					if (D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307 <= 100)
 					{
 						v15 = (*xadataclrd0dat.colorPalette_var28)[3840];
@@ -22173,8 +22170,8 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 						goto LABEL_24;
 					if (D41A0_0.array_0x2BDE[v7y].word_0x04f_2C2D_11309 == 3 || v22 == D41A0_0.LevelIndex_0xc)
 					{
-						//Draw Selected Spell Name
-						sprintf(printbuffer, "%s", D41A0_0.array_0x2BDE[v7y].array_0x01c_2BFA_11258);
+						//Draw Selected Spell Name or Spell upgrade notification
+						sprintf(printbuffer, "%s", D41A0_0.array_0x2BDE[v7y].CurrentNotificationText_0x01c_2BFA_11258);
 						DrawText_2BC10(printbuffer, textPosX, textPosY, (*xadataclrd0dat.colorPalette_var28)[3840], scale);
 						textPosX = posX;
 						LOWORD(v12) = GetLetterHeight_6FC30() * scale;
@@ -22191,7 +22188,7 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 					}
 					else
 					{
-						sprintf(printbuffer, "[%s] %s", D41A0_0.array_0x2BDE[v7y].WizardName_0x39f_2BFA_12157, D41A0_0.array_0x2BDE[v7y].array_0x01c_2BFA_11258);
+						sprintf(printbuffer, "[%s] %s", D41A0_0.array_0x2BDE[v7y].WizardName_0x39f_2BFA_12157, D41A0_0.array_0x2BDE[v7y].CurrentNotificationText_0x01c_2BFA_11258);
 						v18 = 4080 * x_D41A0_BYTEARRAY_4_struct.colorIndex_121[2];
 						DrawText_2BC10(printbuffer, textPosX, textPosY, (*xadataclrd0dat.colorPalette_var28)[16 * ((signed int)(v18 - (__CFSHL__(HIDWORD(v18), 8) + (HIDWORD(v18) << 8))) >> 8)]);
 						textPosX = posX;
@@ -37709,14 +37706,14 @@ void PlayerEvents_51BB0()//232bb0
 			if (CommandLineParams.ModeRegressionsTestType()==-1)
 			{
 				std::string msg = "Playing Turn: " + std::to_string(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
-				sub_19760_set_message(msg.c_str(), 3u, 50);
+				SetCurrentNotificationMessage_19760(msg.c_str(), 3u, 50);
 			}
 			memcpy(&D41A0_0.playerInputs_0x6E3E[i], m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248)->Bytes, m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248)->SizeBytes);
 		}
 		else if (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording)
 		{
 			std::string msg = "Recording Turn: " + std::to_string(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248);
-			sub_19760_set_message(msg.c_str(), 3u, 50);
+			SetCurrentNotificationMessage_19760(msg.c_str(), 3u, 50);
 			m_InputRecorder->RecordPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248, sizeof(Type_PlayerInput_0x6E3E), (uint8_t*)&D41A0_0.playerInputs_0x6E3E[i]);
 		}
 
@@ -37793,7 +37790,7 @@ void PlayerEvents_51BB0()//232bb0
 			}
 			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 			{
-				strcpy(D41A0_0.array_0x2BDE[i].array_0x01c_2BFA_11258, x_DWORD_E9C4C_langindexbuffer[HAS_BEEN_BANISHED]);//has been banished from the realm.
+				strcpy(D41A0_0.array_0x2BDE[i].CurrentNotificationText_0x01c_2BFA_11258, x_DWORD_E9C4C_langindexbuffer[HAS_BEEN_BANISHED]);//has been banished from the realm.
 				D41A0_0.array_0x2BDE[i].word_0x04f_2C2D_11309 = 1;
 				D41A0_0.array_0x2BDE[i].word_0x04d_2C2B_11307 = 100;
 				D41A0_0.array_0x2BDE[i].dw_w_b_0_2BDE_11230.word[1] = 8;
@@ -37907,7 +37904,7 @@ void PlayerEvents_51BB0()//232bb0
 			NetworkEvent_7373D(i);
 			break;
 		case 0x1D: //Banished
-			strcpy(D41A0_0.array_0x2BDE[i].array_0x01c_2BFA_11258, x_DWORD_E9C4C_langindexbuffer[HAS_BEEN_BANISHED]);//has been banished from the realm.
+			strcpy(D41A0_0.array_0x2BDE[i].CurrentNotificationText_0x01c_2BFA_11258, x_DWORD_E9C4C_langindexbuffer[HAS_BEEN_BANISHED]);//has been banished from the realm.
 			D41A0_0.array_0x2BDE[i].word_0x04f_2C2D_11309 = 1;
 			D41A0_0.array_0x2BDE[i].word_0x04d_2C2B_11307 = 100;
 			D41A0_0.array_0x2BDE[i].dw_w_b_0_2BDE_11230.word[1] = 8;//SKIP FROM GAMELOOP
@@ -38060,7 +38057,7 @@ void PlayerEvents_51BB0()//232bb0
 				CopyAxisForSpellWithLife_6D830(Entities_EA3E4[actEvent->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[spellIndex]], D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte2);
 				if (i == D41A0_0.LevelIndex_0xc)
 				{
-					strcpy(D41A0_0.array_0x2BDE[i].array_0x01c_2BFA_11258, x_DWORD_E9C4C_langindexbuffer[SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte2].hintText_0x16x]);
+					strcpy(D41A0_0.array_0x2BDE[i].CurrentNotificationText_0x01c_2BFA_11258, x_DWORD_E9C4C_langindexbuffer[SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte2].hintText_0x16x]);
 					D41A0_0.array_0x2BDE[i].word_0x04d_2C2B_11307 = 20;
 					D41A0_0.array_0x2BDE[i].word_0x04f_2C2D_11309 = 3;
 				}
@@ -38177,7 +38174,7 @@ void PlayerEvents_51BB0()//232bb0
 					}
 					if (bool1)
 					{
-						strcpy(D41A0_0.array_0x2BDE[i].array_0x01c_2BFA_11258, printbuffer);
+						strcpy(D41A0_0.array_0x2BDE[i].CurrentNotificationText_0x01c_2BFA_11258, printbuffer);
 						D41A0_0.array_0x2BDE[i].word_0x04d_2C2B_11307 = 200;
 						D41A0_0.array_0x2BDE[i].word_0x04f_2C2D_11309 = 2;
 					}
@@ -41056,9 +41053,9 @@ void sub_58F00_game_objectives()//239f00
 							D41A0_0.array_0x2BDE[v24].word_0x04d_2C2B_11307 = 60;
 							D41A0_0.array_0x2BDE[v24].word_0x04f_2C2D_11309 = 4;
 							if (v14)
-								sprintf(D41A0_0.array_0x2BDE[v24].array_0x01c_2BFA_11258, "%s", (char*)x_DWORD_E9C4C_langindexbuffer[431]);//Has Completed All Objectives.
+								sprintf(D41A0_0.array_0x2BDE[v24].CurrentNotificationText_0x01c_2BFA_11258, "%s", (char*)x_DWORD_E9C4C_langindexbuffer[431]);//Has Completed All Objectives.
 							else
-								sprintf(D41A0_0.array_0x2BDE[v24].array_0x01c_2BFA_11258, "%s", (char*)x_DWORD_E9C4C_langindexbuffer[430]);//Has Completed Objective.
+								sprintf(D41A0_0.array_0x2BDE[v24].CurrentNotificationText_0x01c_2BFA_11258, "%s", (char*)x_DWORD_E9C4C_langindexbuffer[430]);//Has Completed Objective.
 						}
 						if ((x_WORD)v24 == D41A0_0.LevelIndex_0xc)
 							D41A0_0.byte_0x36E02 = 1;
@@ -44181,7 +44178,7 @@ void sub_6DC40_improve_ability(uint8_t ability)//24ec40
 	//char v1; // [esp+0h] [ebp-2h]
 
 	sprintf(printbuffer, (const char*)x_DWORD_E9C4C_langindexbuffer[159], x_DWORD_E9C4C_langindexbuffer[160 + ability]);//Your ability to cast %s has improved.
-	sub_19760_set_message(printbuffer, 5u, 200);
+	SetCurrentNotificationMessage_19760(printbuffer, 5u, 200);
 	PrepareEventSound_6E450(D41A0_0.LevelIndex_0xc, -1, 61);
 }
 // 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
@@ -60287,7 +60284,7 @@ void sub_5E310_multiplayer_test_die(type_entity_0x6E8E* a1x)//23f310
 		//v13 = 2124 * a1x->dword_0xA4_164x->word_0x38_56 + (int)x_D41A0_BYTEARRAY_0 + 11230;
 		v14 = (char*)x_DWORD_E9C4C_langindexbuffer[374];//has died.
 		//v15 = (char *)(v13 + 28);
-		v15 = D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].array_0x01c_2BFA_11258;
+		v15 = D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].CurrentNotificationText_0x01c_2BFA_11258;
 		strcpy(v15, v14);
 		/*do
 		{
@@ -60448,7 +60445,7 @@ void sub_5E7C0_multiplayer_test_banished(type_entity_0x6E8E* a1x)//23f7c0
 			if (D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].byte_0x006_2BE4_11236)
 			{
 				v5 = x_DWORD_E9C4C_langindexbuffer[HAS_BEEN_BANISHED];//has been banished from the realm.
-				v6 = D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].array_0x01c_2BFA_11258;//&v3[28];
+				v6 = D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].CurrentNotificationText_0x01c_2BFA_11258;//&v3[28];
 				strcpy(v6, v5);
 				/*do
 {
