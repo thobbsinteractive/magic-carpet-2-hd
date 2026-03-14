@@ -345,7 +345,8 @@ Pathstruct xadatatables = { "",(uint8_t**)&x_DWORD_D41BC_langbuffer,&LANG_BEGIN_
 
 bool IsDefaultResolution(int width, int height)
 {
-	if ((width <= 640) && (height <= 480))
+	if (((width == 640) && (height == 480)) || 
+		 (width == 320) && (height == 200))
 		return true;
 	return false;
 }
