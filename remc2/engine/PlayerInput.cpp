@@ -1190,7 +1190,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 	case 2:
 		if (!soundAble_E3798)
 			return;
-		sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[(soundActive_E3799 != 0) + 390], 3u, 50);
+		SetCurrentNotificationMessage_19760((char*)x_DWORD_E9C4C_langindexbuffer[(soundActive_E3799 != 0) + 390], 3u, 50);
 		//Sound On / Sound Off
 
 		EndSample_8D8F0();
@@ -1203,7 +1203,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		if (musicActive_E37FD)
 		{
 			StopMusic_8E020();
-			sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[393], 3u, 50);//Music Off
+			SetCurrentNotificationMessage_19760((char*)x_DWORD_E9C4C_langindexbuffer[393], 3u, 50);//Music Off
 			musicActive_E37FD = false;
 		}
 		else
@@ -1211,7 +1211,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 			v15 = D41A0_0.maptypeMusic_0x235;
 			musicActive_E37FD = true;
 			StartMusic_8E160(v15, 0x7Fu);
-			sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[392], 3u, 50);//Music On
+			SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[392], 3u, 50);//Music On
 		}
 		return;
 	case 4:
@@ -1222,7 +1222,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= SPEECH_DISABLED;
 		else
 			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 |= SPEECH_ENABLED;
-		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED) == 0) + 469], 3u, 50);
+		SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[((x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & SPEECH_ENABLED) == 0) + 469], 3u, 50);
 		//	Speech On /	Speech Off
 		return;
 	case 5:
@@ -1234,7 +1234,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		{
 			//v12 = D41A0_BYTESTR_0.byte_0x36DEA_fly_asistant == 0;
 			D41A0_0.byte_0x36DEA_fly_asistant = !D41A0_0.byte_0x36DEA_fly_asistant;
-			sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[!D41A0_0.byte_0x36DEA_fly_asistant + 398], 3u, 50);
+			SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[!D41A0_0.byte_0x36DEA_fly_asistant + 398], 3u, 50);
 			// Flight Assistance On / Flight Assistance Off
 		}
 		return;
@@ -1382,20 +1382,20 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		{
 			if (v14)
 				return;
-			sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[381], 3u, 50);//speed normal
+			SetCurrentNotificationMessage_19760((char*)x_DWORD_E9C4C_langindexbuffer[381], 3u, 50);//speed normal
 			//result = 0;
 		}
 		else
 		{
 			if (v14 <= 1u)
 			{
-				sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[382], 3u, 50);//speed fast
+				SetCurrentNotificationMessage_19760((char*)x_DWORD_E9C4C_langindexbuffer[382], 3u, 50);//speed fast
 			}
 			else
 			{
 				if (v14 != 2)
 					return;
-				sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[383], 3u, 50);//speed super fast
+				SetCurrentNotificationMessage_19760((char*)x_DWORD_E9C4C_langindexbuffer[383], 3u, 50);//speed super fast
 			}
 			v13x->dword_0xA4_164x->roll_0x155_341 = 0;
 			v13x->dword_0xA4_164x->pitch_0x157_343 = 0;
@@ -1439,14 +1439,14 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 			return;
 		//v4 = *(x_BYTE *)(x_D41A0_BYTEARRAY_0 + 8586) ^ 1;
 		D41A0_0.m_GameSettings.m_Graphics.m_wReflections ^= 1;
-		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[-D41A0_0.m_GameSettings.m_Graphics.m_wReflections + 360], 3u, 50);
+		SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[-D41A0_0.m_GameSettings.m_Graphics.m_wReflections + 360], 3u, 50);
 		//	Reflections On / Reflections Off
 		return;
 	case 10:
 		if (!D41A0_0.str_0x21AA.csky_0x21AC || !off_D41A8_sky)
 			return;
 		D41A0_0.m_GameSettings.m_Graphics.m_wSky ^= 1u;
-		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[-D41A0_0.m_GameSettings.m_Graphics.m_wSky + 364], 3u, 50);
+		SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[-D41A0_0.m_GameSettings.m_Graphics.m_wSky + 364], 3u, 50);
 		// Sky On / Sky Off
 		return;
 	case 11:
@@ -1454,7 +1454,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 			return;
 		//v6 = *(x_BYTE *)(x_D41A0_BYTEARRAY_0 + 8587) ^ 1;
 		D41A0_0.m_GameSettings.m_Graphics.m_wShadows ^= 1;
-		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[-D41A0_0.m_GameSettings.m_Graphics.m_wShadows + 358], 3u, 50);
+		SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[-D41A0_0.m_GameSettings.m_Graphics.m_wShadows + 358], 3u, 50);
 		// Shadows On / Shadows Off
 		return;
 	case 12:
@@ -1462,7 +1462,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 			return;
 		//v7 = *(x_BYTE *)(x_D41A0_BYTEARRAY_0 + 8598) == 1;
 		D41A0_0.m_GameSettings.str_0x2196.m_wDynamicLighting ^= 1;
-		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[-D41A0_0.m_GameSettings.str_0x2196.m_wDynamicLighting + 396], 3u, 50);
+		SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[-D41A0_0.m_GameSettings.str_0x2196.m_wDynamicLighting + 396], 3u, 50);
 		//Light Sources On / Light Sources Off
 		return;
 	case 13:
@@ -1470,7 +1470,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 		//v9 = *(x_BYTE *)(x_D41A0_BYTEARRAY_0 + 8591) ^ 1;
 		D41A0_0.m_GameSettings.m_Display.m_wMiniMap ^= 1;
 		D41A0_0.m_GameSettings.m_Display.m_wTopBar ^= 1;
-		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[D41A0_0.m_GameSettings.m_Display.m_wMiniMap + 365], 3u, 50);
+		SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[D41A0_0.m_GameSettings.m_Display.m_wMiniMap + 365], 3u, 50);
 		// Icons and Map On / Icons and Map Off
 		if (D41A0_0.m_GameSettings.m_Display.m_wMiniMap)
 			return;
@@ -1481,7 +1481,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 			return;
 		//v10 = *(x_BYTE *)(x_D41A0_BYTEARRAY_0 + 8600) ^ 1;
 		D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 ^= 1;
-		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 + 440], 3u, 50);
+		SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[D41A0_0.m_GameSettings.str_0x2196.transparency_0x2198 + 440], 3u, 50);
 		// Panel Transparency On / Panel Transparency Off
 		return;
 	case 15:
@@ -1489,7 +1489,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 			return;
 		//v11 = *(x_BYTE *)(x_D41A0_BYTEARRAY_0 + 8601) ^ 1;
 		D41A0_0.m_GameSettings.str_0x2196.flat_0x2199 ^= 1;
-		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[-D41A0_0.m_GameSettings.str_0x2196.flat_0x2199 + 443], 3u, 50);
+		SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[-D41A0_0.m_GameSettings.str_0x2196.flat_0x2199 + 443], 3u, 50);
 		// Flat Shading On / Flat Shading Off
 		return;
 	case 16://change resolution
@@ -1501,7 +1501,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 	case 17:
 		//v25 = x_D41A0_BYTEARRAY_4_struct.byteindex_207 == 0;
 		x_D41A0_BYTEARRAY_4_struct.byteindex_207 ^= 1;
-		sub_19760_set_message(x_DWORD_E9C4C_langindexbuffer[x_D41A0_BYTEARRAY_4_struct.byteindex_207 + 402], 3u, 50);
+		SetCurrentNotificationMessage_19760(x_DWORD_E9C4C_langindexbuffer[x_D41A0_BYTEARRAY_4_struct.byteindex_207 + 402], 3u, 50);
 		// Player Names On / Player Names Off
 		return;
 	case 18:
@@ -1521,7 +1521,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 			if (numRenderThreads >= 7)
 			{
 				((GameRenderHD*)m_ptrGameRender)->SetRenderThreads(0);
-				sub_19760_set_message("Multi-thread render OFF", 3u, 50);
+				SetCurrentNotificationMessage_19760("Multi-thread render OFF", 3u, 50);
 			}
 			else
 			{
@@ -1529,7 +1529,7 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 				((GameRenderHD*)m_ptrGameRender)->SetRenderThreads(numRenderThreads);
 				std::string message = "Multi-thread render ON: Number of Threads: ";
 				message += std::to_string(numRenderThreads);
-				sub_19760_set_message(message.c_str(), 3u, 50);
+				SetCurrentNotificationMessage_19760(message.c_str(), 3u, 50);
 			}
 		}
 		return;
@@ -2159,14 +2159,14 @@ void SwitchHelpMode_18AA0()//1f9aa0
 		else
 		{
 			switchHelpMode = false;
-			sub_19760_set_message("No Help Data", 3u, 50);
+			SetCurrentNotificationMessage_19760("No Help Data", 3u, 50);
 		}
 	}
 	if (switchHelpMode)
 	{
 		str_unk_1804B0ar.byte_0xaa = -1;
 		x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
-		sub_19760_set_message((char*)x_DWORD_E9C4C_langindexbuffer[(x_D41A0_BYTEARRAY_4_struct.showHelp_10 == 0) + 400], 3u, 50);
+		SetCurrentNotificationMessage_19760((char*)x_DWORD_E9C4C_langindexbuffer[(x_D41A0_BYTEARRAY_4_struct.showHelp_10 == 0) + 400], 3u, 50);
 		//Help Mode On / Help Mode Off
 	}
 }
@@ -2438,8 +2438,10 @@ void ReadOkayCancelButtonEvents_19E00()//1fae00
 }
 
 //----- (00019760) --------------------------------------------------------
-void sub_19760_set_message(const char* a1, unsigned __int8 a2, __int16 a3)//1fa760
+void SetCurrentNotificationMessage_19760(const char* message, unsigned __int8 a2, __int16 a3)//1fa760
 {
+	int maxLength = sizeof(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].CurrentNotificationText_0x01c_2BFA_11258);
+
 	//char *v3; // esi
 	//char *v4; // edi
 	//char v5; // al
@@ -2447,9 +2449,17 @@ void sub_19760_set_message(const char* a1, unsigned __int8 a2, __int16 a3)//1fa7
 	//int result; // eax
 
 	//v3 = (char*)a1;
-	//D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].array_0x01c_2BFA_11258
+	//D41A0_BYTESTR_0.array_0x2BDE[D41A0_BYTESTR_0.word_0xc].CurrentNotificationText_0x01c_2BFA_11258
 	//v4 = (char*)&x_D41A0_BYTEARRAY_0[2124 * D41A0_BYTESTR_0.word_0xc + 11230 + 28];
-	strcpy(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].array_0x01c_2BFA_11258, a1);
+
+	if (strlen(message) < maxLength)
+		strcpy(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].CurrentNotificationText_0x01c_2BFA_11258, message);
+	else
+	{
+		strncpy(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].CurrentNotificationText_0x01c_2BFA_11258, message, maxLength - 1);
+		D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].CurrentNotificationText_0x01c_2BFA_11258[48] = '\0';
+	}
+
 	/*do
 	{
 		v5 = *v3;

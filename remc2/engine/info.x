@@ -7261,7 +7261,7 @@ sub_2EBB0_draw_text_with_border_630x340(x_DWORD_E9C4C_langindexbuffer[a1]);//fix
 sub_2BC10_draw_text(v11x, v9, v13, v8); ?
 sub_2BC10_draw_text(printbuffer, v4x, v2, (*xadataclrd0dat.colorPalette_var28)[0xf00]);
 
-v83 = D41A0_BYTESTR_0.array_0x2BDE[v18x].array_0x01c_2BFA_11258;
+v83 = D41A0_BYTESTR_0.array_0x2BDE[v18x].CurrentNotificationText_0x01c_2BFA_11258;
 v84 = x_DWORD_E9C4C_langindexbuffer[*(int16_t*)&x_DWORD_DA750ar[0xde+2*40 * v82 + 13 * D41A0_BYTESTR_0.playerInputs_0x6E3E[v114x].str_0x6E3E_byte2]];
 strcpy(v83,v84);
 
@@ -9078,7 +9078,7 @@ axis_3d* sub_57FA0(axis_3d* a1, unsigned __int16 a2, __int16 a3, __int16 a4)//23
 
 void sub_1B280_run_intro_events(uint8_t* a1)//1fc280
 void sub_76160_play_intro(__int16 a1, __int16 a2, uint8_t* a3)//257160
-void sub_82670()//263670
+void PlayInGameFmv_82670()//263670
 
 x_BYTE_10B4E0_terraintype
 
