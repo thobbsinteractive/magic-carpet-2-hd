@@ -215,7 +215,7 @@ inline uint16 __ROR2__(uint16 value, int count) { return (value >> count) | (val
 inline uint32 __ROR4__(uint32 value, int count) { return (value >> count) | (value << (32 - count)); }
 inline uint64 __ROR8__(uint64 value, int count) { return (value >> count) | (value << (64 - count)); }
 
-inline uint32 __ROL4_16__(uint32  value) { return (value << 16) | (value >> 16); }
+inline uint32 __SWAP_HILOWORD__(uint32  value) { return (value << 16) | (value >> 16); }
 
 /*
 inline uint8  __ROL1__(uint8  value, int count) { return __ROL__((uint8)value, count); }
