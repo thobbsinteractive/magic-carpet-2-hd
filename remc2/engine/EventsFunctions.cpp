@@ -22523,16 +22523,19 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 							manaCost = GetSpellManaCost_6D710(playerEntity, spellIndex2, subSpellIndex);
 							if (manaCost > 0)
 							{
+								//Draw mana needed for extra shot for spell
 								DrawBitmap_2BB40(posX + posIconsX, posIconsY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_TILE_BAR], scale);
 								DrawLine_2BC80(posX + posIconsX + (6 * scale), posIconsY + (28 * scale), (36 * scale) * (playerEntity->mana_0x90_144 % manaCost) / manaCost, (4 * scale), color1);
+
+								//Draw mana shot for spell
 								int manaPosX = playerEntity->mana_0x90_144 / manaCost;
 								for (int x = 0; x < 36 && manaPosX > 0; x += 2)
 								{
 									int y = 0;
-									while (y < 4 && manaPosX > 0)
+									while (y < (4 * scale) && manaPosX > 0)
 									{
-										DrawLine_2BC80(x + posX + posIconsX + (6 * scale), y + posIconsY + (28 * scale), (2 * scale), (2 * scale), color0);
-										y += 2;
+										DrawLine_2BC80((x * scale) + posX + posIconsX + (6 * scale), y + posIconsY + (28 * scale), (2 * scale), (2 * scale), color0);
+										y += (2 * scale);
 										manaPosX--;
 									}
 								}
