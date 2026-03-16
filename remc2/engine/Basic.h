@@ -508,6 +508,8 @@ extern uint32_t PitFrequency_F4240;
 
 bool DefaultResolutions();
 bool IsDefaultResolution(int width, int height);
+bool IsDefaultResolution320(int width, int height);
+bool IsDefaultResolution640(int width, int height);
 
 void FreeMem_83E80(uint8_t* a1);
 

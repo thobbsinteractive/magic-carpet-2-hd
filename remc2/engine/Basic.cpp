@@ -343,10 +343,20 @@ Pathstruct xadatatables = { "",(uint8_t**)&x_DWORD_D41BC_langbuffer,&LANG_BEGIN_
 //zero
 //#define psxazero14 47
 
+bool IsDefaultResolution320(int width, int height)
+{
+	return (width == 320 && height == 200);
+}
+
+bool IsDefaultResolution640(int width, int height)
+{
+	return (width == 640 && height == 480);
+}
+
 bool IsDefaultResolution(int width, int height)
 {
-	if (((width == 640) && (height == 480)) || 
-		 (width == 320) && (height == 200))
+	if ((IsDefaultResolution320(width, height)) ||
+		 IsDefaultResolution640(width, height))
 		return true;
 	return false;
 }
