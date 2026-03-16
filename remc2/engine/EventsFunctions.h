@@ -210,6 +210,16 @@ extern x_WORD __SS__;*/
 //extern char IsTable[];
 
 #pragma pack (1)
+typedef struct {//lenght 7
+	Type_SoundEvent_E17CC* pSoundEvent_0;
+	uint8_t levelNumber_4;
+	uint8_t overplayed_5;
+	uint8_t fileIndex_6;
+}
+Type_CutScene_E16E0;
+#pragma pack (16)
+
+#pragma pack (1)
 typedef struct {//lenght 14
 	uint32_t dword_0;//ok
 	int16_t word_4;//ok
@@ -423,6 +433,10 @@ extern char x_BYTE_D4B50;
 extern char x_BYTE_D4B51;
 extern char x_BYTE_DB734;
 extern int resindex_begin;
+extern int x_DWORD_D41C8;
+extern char x_BYTE_D41C4;
+extern void(*ptrDrawBitmap_F01EC)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale);
+extern char x_BYTE_D41C6_old_graphics_mode;
 
 extern int save_debugcounter;
 
@@ -634,6 +648,8 @@ extern axis_3d predictedAxis_EB398ar;
 extern type_D4C52ar2 str_x_DWORD_D4C52ar_0x2F22[7];
 extern std::array<type_D4C52ar, 17> str_D4C48ar;
 extern type_entity_0x6E8E* (*arsub_2a881e[])(axis_3d*);
+
+extern Type_CutScene_E16E0 cutScene_E16E0[];
 
 void sub_49A30(type_entity_0x6E8E* event, unsigned __int16 a2);
 int GetSpellIndex_6E020(int entitySubtype);
@@ -1615,4 +1631,7 @@ void intervalsave(int index);
 void sub_72350(type_animations1* a1);
 void sub_72550(type_E9C08** a1);
 void CopyScreen_85B20(uint8_t* src, uint8_t* dest, uint16_t rows_count);
+void sub_88580();
+int sub_9025C(__int16 a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int16 a5, __int16 a6);
+int sub_90374(uint16_t viewPortX, uint16_t viewPortY, uint16_t viewPortWidth, uint16_t viewPortHeight, unsigned __int16 a5, __int16 a6);
 #endif

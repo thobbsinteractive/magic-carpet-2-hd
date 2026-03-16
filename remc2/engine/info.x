@@ -7261,7 +7261,7 @@ sub_2EBB0_draw_text_with_border_630x340(x_DWORD_E9C4C_langindexbuffer[a1]);//fix
 sub_2BC10_draw_text(v11x, v9, v13, v8); ?
 sub_2BC10_draw_text(printbuffer, v4x, v2, (*xadataclrd0dat.colorPalette_var28)[0xf00]);
 
-v83 = D41A0_BYTESTR_0.array_0x2BDE[v18x].array_0x01c_2BFA_11258;
+v83 = D41A0_BYTESTR_0.array_0x2BDE[v18x].CurrentNotificationText_0x01c_2BFA_11258;
 v84 = x_DWORD_E9C4C_langindexbuffer[*(int16_t*)&x_DWORD_DA750ar[0xde+2*40 * v82 + 13 * D41A0_BYTESTR_0.playerInputs_0x6E3E[v114x].str_0x6E3E_byte2]];
 strcpy(v83,v84);
 
