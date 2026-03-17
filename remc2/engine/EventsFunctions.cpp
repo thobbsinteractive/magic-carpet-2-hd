@@ -734,7 +734,7 @@ void sub_3B4D0_fill_unk_D4350_256(int a1);
 // unsigned __int16 sub_3E360_draw_particles(int a1, int a2);
 // unsigned __int16 sub_3FD60(int a1, int a2);
 int /*__fastcall*/ sub_40D10();
-void sub_40F80();
+void BlendAndBlit_40F80();
 // int sub_43830_generate_level_map(unsigned int a1, int a2);
 // unsigned int sub_43970(unsigned int a1);
 // unsigned int sub_439A0(unsigned int a1, unsigned __int16 a2);
@@ -30838,138 +30838,61 @@ int sub_40D10()//221d10//fix vga
 // 180628: using guessed type int pdwScreenBuffer_351628;
 
 //----- (00040F80) --------------------------------------------------------
-void sub_40F80()//221f80
+void BlendAndBlit_40F80()//221f80
 {
-	int v0; // eax
-	signed int v1; // ecx
-	x_BYTE* v2; // esi
-	x_BYTE* v3; // edi
-	int v4; // edx
-	int v5; // ebx
-	int v6; // eax
-	signed int v7; // ecx
-	x_BYTE* v8; // esi
-	x_BYTE* v9; // edi
-	int v10; // edx
-	int v11; // ebx
-	char v12; // bl
-	signed int v13; // [esp+0h] [ebp-10h]
-	int i; // [esp+4h] [ebp-Ch]
-	uint8_t* v15; // [esp+8h] [ebp-8h]
-	uint8_t* v16; // [esp+8h] [ebp-8h]
-	uint8_t* v17; // [esp+Ch] [ebp-4h]
-	uint8_t* v18; // [esp+Ch] [ebp-4h]
-
-	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 2 && !x_BYTE_D478C)
-	{
-		v13 = (signed int)(unsigned __int16)viewPort.Width_DE564 >> 2;
-		v15 = x_DWORD_E9C3C;
-		v17 = ViewPortRenderBufferStart_DE558;
-		v0 = (unsigned __int16)viewPort.Height_DE568 / 2;
-		for (i = (unsigned __int16)viewPort.Height_DE568 / 2; i; i--)
-		{
-			v1 = v13;
-			v2 = (x_BYTE*)v15;
-			v3 = (x_BYTE*)v17;
-			v4 = 0;
-			v5 = 0;
-			do
-			{
-				LOBYTE(v5) = v2[2];
-				LOBYTE(v4) = v3[2];
-				LOBYTE(v0) = x_BYTE_F0520[v4] + x_BYTE_F0620[v5];
-				LOBYTE(v5) = v2[3];
-				LOBYTE(v4) = v3[3];
-				BYTE1(v0) = x_BYTE_F0920[v4] + x_BYTE_F0220[v5];
-				v0 <<= 16;
-				LOBYTE(v5) = *v2;
-				LOBYTE(v4) = *v3;
-				LOBYTE(v0) = x_BYTE_F0520[v4] + x_BYTE_F0620[v5];
-				LOBYTE(v5) = v2[1];
-				LOBYTE(v4) = v3[1];
-				BYTE1(v0) = x_BYTE_F0920[v4] + x_BYTE_F0220[v5];
-				*(x_DWORD*)v3 = v0;
-				v3 += 4;
-				v2 += 4;
-				--v1;
-			} while (v1);
-			HIWORD(v6) = HIWORD(iScreenWidth_DE560);
-			v7 = v13;
-			v16 = iScreenWidth_DE560 + v15;
-			v18 = iScreenWidth_DE560 + v17;
-			v8 = (x_BYTE*)v16;
-			v9 = (x_BYTE*)v18;
-			v10 = 0;
-			v11 = 0;
-			do
-			{
-				LOBYTE(v11) = v8[2];
-				LOBYTE(v10) = v9[2];
-				LOBYTE(v6) = x_BYTE_F0820[v10] + x_BYTE_F0320[v11];
-				LOBYTE(v11) = v8[3];
-				LOBYTE(v10) = v9[3];
-				BYTE1(v6) = x_BYTE_F0720[v10] + x_BYTE_F0420[v11];
-				v6 <<= 16;
-				LOBYTE(v11) = *v8;
-				LOBYTE(v10) = *v9;
-				LOBYTE(v6) = x_BYTE_F0820[v10] + x_BYTE_F0320[v11];
-				LOBYTE(v11) = v8[1];
-				LOBYTE(v10) = v9[1];
-				BYTE1(v6) = x_BYTE_F0720[v10] + x_BYTE_F0420[v11];
-				*(x_DWORD*)v9 = v6;
-				v9 += 4;
-				v8 += 4;
-				v7--;
-			} while (v7);
-			HIWORD(v0) = HIWORD(iScreenWidth_DE560);
-			v15 = iScreenWidth_DE560 + v16;
-			v17 = iScreenWidth_DE560 + v18;
+	// ── Half-size blending
+	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 2 && !x_BYTE_D478C) {
+		const int stride = (uint16_t)iScreenWidth_DE560;
+		const int width_dwords = (uint16_t)viewPort.Width_DE564 >> 2;
+		const int half_height = (uint16_t)viewPort.Height_DE568 / 2;
+		uint8_t* scan = x_DWORD_E9C3C;
+		uint8_t* vp = ViewPortRenderBufferStart_DE558;
+		for (int row = half_height; row; row--) {
+			uint8_t* s = scan;
+			uint8_t* d = vp;
+			for (int col = width_dwords; col; col--, s += 4, d += 4) {
+				*(uint32_t*)d =
+					((uint32_t)(x_BYTE_F0520[d[2]] + x_BYTE_F0620[s[2]])) |
+					((uint32_t)(x_BYTE_F0920[d[3]] + x_BYTE_F0220[s[3]]) << 8) |
+					((uint32_t)(x_BYTE_F0520[d[0]] + x_BYTE_F0620[s[0]]) << 16) |
+					((uint32_t)(x_BYTE_F0920[d[1]] + x_BYTE_F0220[s[1]]) << 24);
+			}
+			s = scan + stride;
+			d = vp + stride;
+			for (int col = width_dwords; col; col--, s += 4, d += 4) {
+				*(uint32_t*)d =
+					((uint32_t)(x_BYTE_F0820[d[2]] + x_BYTE_F0320[s[2]])) |
+					((uint32_t)(x_BYTE_F0720[d[3]] + x_BYTE_F0420[s[3]]) << 8) |
+					((uint32_t)(x_BYTE_F0820[d[0]] + x_BYTE_F0320[s[0]]) << 16) |
+					((uint32_t)(x_BYTE_F0720[d[1]] + x_BYTE_F0420[s[1]]) << 24);
+			}
+			scan += 2 * stride;
+			vp += 2 * stride;
 		}
 	}
-	v12 = D41A0_0.m_GameSettings.m_Display.m_uiScreenSize;
-	if (v12 == 1)
-	{
+	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 		sub_40D10();
-	}
 	else if (x_WORD_180660_VGA_type_resolution & 1)
 	{
 		if (x_BYTE_D478C)
-		{
 			sub_BD2CB(unk_F0A20x);//maybe for virtual head set
-		}
 		else if ((!DefaultResolutions()) && (x_WORD_180660_VGA_type_resolution != 1))
-		{
 			VGA_BlitAny(maxGameFps);
-		}
 		else if (x_WORD_180660_VGA_type_resolution & 1)
-		{
 			sub_90478_VGA_Blit320(maxGameFps);
-		}
 		else
-		{
 			sub_75200_VGA_Blit640(480, maxGameFps);
-		}
 	}
-	else if (D41A0_0.m_GameSettings.str_0x2192.xxxx_0x2193 && v12)
-	{
+	else if (D41A0_0.m_GameSettings.str_0x2192.xxxx_0x2193 && D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 		sub_BD3DD();
-	}
 	else if (x_BYTE_D478C)
-	{
 		sub_BD1B6(unk_F0A20x);
-	}
 	else if ((!DefaultResolutions()) && (x_WORD_180660_VGA_type_resolution != 1))
-	{
 		VGA_BlitAny(maxGameFps);
-	}
 	else if (x_WORD_180660_VGA_type_resolution & 1)
-	{
 		sub_90478_VGA_Blit320(maxGameFps);
-	}
 	else
-	{
 		sub_75200_VGA_Blit640(480, maxGameFps);
-	}
 }
 
 void sub_41A90_VGA_Palette_install(TColor* bufferx)//222a90
@@ -31952,7 +31875,7 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	DrawGameDebugText_6FEC0();
 	x_D41A0_BYTEARRAY_4_struct.byteindex_196 = GameTimerTurn_17DB54;
 	if (x_D41A0_BYTEARRAY_4_struct.paletteMod_51 >= 3u)
-		sub_40F80();
+		BlendAndBlit_40F80();
 }
 
 //----- (00047760) --------------------------------------------------------
