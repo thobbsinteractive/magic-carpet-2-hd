@@ -5400,7 +5400,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 	Rasterline_t *pRasterLines,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw, 
 	uint8_t **ptrViewPortRenderLineStart_v1102,
-	int32_t Vincrement, int32_t Uincrement, uint32_t BrightnessIncrement_v1146,
+	uint32_t Vincrement, int32_t Uincrement, uint32_t BrightnessIncrement_v1146,
 	const uint8_t *pTexture) 
 {
 	Rasterline_t* next_raster_line = pRasterLines;
@@ -5521,7 +5521,7 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 	Rasterline_t *pRasterLines,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
 	uint8_t **ptrViewPortRenderLineStart_v1102,
-	int32_t Vincrement, int32_t Uincrement,
+	uint32_t Vincrement, int32_t Uincrement,
 	uint8_t *pTexture, char local_x_BYTE_E126C) 
 {
 	// flat shading and reflections enabled
@@ -5767,8 +5767,8 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	uint8_t v18; // of
 	uint8_t* renderBufferStartOfCurrentLine; // [esp+0h] [ebp-88h]
 	int linesToDraw_v1123; // [esp+20h] [ebp-68h]
-	int Uincrement; // [esp+24h] [ebp-64h]
-	int32_t Vincrement; // [esp+30h] [ebp-58h]
+	int32_t Uincrement; // [esp+24h] [ebp-64h]
+	uint32_t Vincrement; // [esp+30h] [ebp-58h]
 	uint32_t BrightnessIncrement = 0xAAAAAAAA; // [esp+3Ch] [ebp-4Ch]
 
 	Uincrement = 0;
