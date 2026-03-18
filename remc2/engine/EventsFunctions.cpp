@@ -766,7 +766,7 @@ void sub_46F50_sound_proc7();
 //void sub_473B0();
 //int sub_473E0();
 // void sub_47560_draw_and_events_in_game(int a1, int a2, x_BYTE *a3, signed int a4, __int16 a5);
-void sub_480A0_set_clear_Palette(/*int a1, int a2, int a3*/);
+void PaletteFadeIn_480A0(/*int a1, int a2, int a3*/);
 void sub_48120();
 int sub_48990(char a1, char a2, char a3, char a4);
 // __int16 sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6);
@@ -31889,7 +31889,7 @@ void PaletteChanges_47760()//228760
 	case 0:
 	case 1: //Fade out loading screen
 	{
-		sub_480A0_set_clear_Palette();
+		PaletteFadeIn_480A0();
 		x_D41A0_BYTEARRAY_4_struct.paletteMod_51++;
 		break;
 	}
@@ -32167,36 +32167,23 @@ void sub_47FC0_load_screen(bool isSecretLevel)//228fc0
 }
 
 //----- (000480A0) --------------------------------------------------------
-void sub_480A0_set_clear_Palette(/*int a1, int a2, int a3*/)//2290a0
+void PaletteFadeIn_480A0()//2290a0
 {
-	long v3; // ebx
-	unsigned int v4; // eax
-	//int v5; // edx
-
 	char dataPath[MAX_PATH];
-
-	// fix if begin
-	v4 = 0;
-	//v5 = 0;
-	// end
-
-	v3 = j___clock();
-	SetMusicVolume_98790(0x1F4u, 0);
+	unsigned int timeDiff = 0;
+	SetMusicVolume_98790(500, 0);
+	long time = j___clock();
 	do
-		v4 = j___clock() - v3;
-	while (v4 < 0x32);
+		timeDiff = j___clock() - time;
+	while (timeDiff < 50); //delay 50 mms
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 	D41A0_0.dword_0x23a = 0;
-
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/PALD-0.DAT");
 	DataFileIO::ReadFileAndDecompress(dataPath, xadatapald0dat2.colorPalette_var28);
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/CLRD-0.DAT");
 	DataFileIO::ReadFileAndDecompress(dataPath, xadataclrd0dat.colorPalette_var28);
 	sub_48120();
 }
-// 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3D8: using guessed type int *xadatapald0dat2.colorPalette_var28;
 
 //----- (00048120) --------------------------------------------------------
 void sub_48120()//229120
