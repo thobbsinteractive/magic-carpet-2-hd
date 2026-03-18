@@ -55528,22 +55528,16 @@ char sub_68BD0(type_entity_0x6E8E*  /*a1x*/, type_entity_0x6E8E* a2x)//249bd0
 //----- (00068BF0) --------------------------------------------------------
 void sub_68BF0()//249bf0
 {
-	__int16 i; // si
-	//int result; // eax
-	type_entity_0x6E8E* jx; // ebx
-	type_entity_0x6E8E* kx; // ebx
-
-	for (i = 0; i < 29; i++)
+	for (int i = 0; i < 29; i++)
 	{
-		//result = (int)x_D41A0_BYTEARRAY_4;
-		for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i]; jx > Entities_EA3E4[0]; jx = jx->next_0)
+		for (type_entity_0x6E8E* jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 		{
 			if (jx->life_0x8 >= 0)
 			{
 				if (CommandLineParams.DoDebugSequences()) {
 					//add_compare(0x249c1b, CommandLineParams.DoDebugafterload());
 				}
-				/*result = */sub_68C70(jx);
+				sub_68C70(jx);
 			}
 			else
 			{
@@ -55552,12 +55546,9 @@ void sub_68BF0()//249bf0
 			}
 		}
 	}
-	for (kx = x_D41A0_BYTEARRAY_4_struct.dword_38523; kx > Entities_EA3E4[0]; kx = kx->next_0)
-		/*result = */sub_68C70(kx);
-	//return result;
+	for (type_entity_0x6E8E* kx = x_D41A0_BYTEARRAY_4_struct.dword_38523; kx > Entities_EA3E4[0]; kx = kx->next_0)
+		sub_68C70(kx);
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00068C70) --------------------------------------------------------
 int sub_68C70(type_entity_0x6E8E* a1x)//249c70
