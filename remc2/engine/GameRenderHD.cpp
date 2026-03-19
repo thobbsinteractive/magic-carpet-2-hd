@@ -5726,7 +5726,7 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	__int16 v373; // bx
 	__int16 v374; // cx
 	unsigned int v375; // eax
-	int v376; // ebx
+	int textureIndexU_v376; // ebx
 	char* v377; // esi
 	int v378; // ecx
 	uint8_t* ptrViewPortRenderLine_v379; // edi
@@ -8845,7 +8845,7 @@ LABEL_129:
 						v1167 = Vincrement_v1135 << 16;
 						v1183 = v1146 << 16;
 						HIWORD(v375) = 0;
-						HIWORD(v376) = 0;
+						HIWORD(textureIndexU_v376) = 0;
 						while (1)
 						{
 							v377 = v1276;
@@ -8865,11 +8865,11 @@ LABEL_129:
 									v380 = (uint16_t)-(int16_t)v375;
 									v381 = v380;
 									v383 = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 3) + Vincrement_v1135 * v380);
-									BYTE1(v376) = v383;
+									BYTE1(textureIndexU_v376) = v383;
 									v382 = *((x_DWORD*)v377 + 2) + Uincrement_v1124 * v380;
 									LOWORD(v383) = v382;
 									v375 = v382 >> 8;
-									LOBYTE(v376) = BYTE1(v375);
+									LOBYTE(textureIndexU_v376) = BYTE1(v375);
 									pixelCount_v384lo = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 4) + v1146 * v381);
 									BYTE1(v375) = pixelCount_v384lo;
 									LOWORD(pixelCount_v384lo) = *((x_WORD*)v377 + 3);
@@ -8883,13 +8883,13 @@ LABEL_129:
 									{
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v383);
 										LOWORD(v383) = Uincrement_v1124 + v383;
-										if (v376 > maxPixelIdx)
+										if (textureIndexU_v376 > maxPixelIdx)
 											break;
-										LOBYTE(v375) = *(x_BYTE*)(v376 + ptrCurrentTexture_v389);
-										LOBYTE(v376) = BYTE2(Uincrement_v1124) + v180 + v376;
+										LOBYTE(v375) = *(x_BYTE*)(textureIndexU_v376 + ptrCurrentTexture_v389);
+										LOBYTE(textureIndexU_v376) = BYTE2(Uincrement_v1124) + v180 + textureIndexU_v376;
 										v180 = __CFADD__(v1167, v383);
 										v383 += v1167;
-										BYTE1(v376) += BYTE2(Vincrement_v1135) + v180;
+										BYTE1(textureIndexU_v376) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1183, pixelCount_v384lo);
 										pixelCount_v384lo += v1183;
 										v388[0] = x_BYTE_F6EE0_tablesx[v375];
@@ -8913,10 +8913,10 @@ LABEL_129:
 						if ((uint8_t)((v385 < 0) ^ v18) | (v385 == 0))
 							goto LABEL_510;
 						ptrViewPortRenderLine_v379 += v375;
-						LOBYTE(v376) = v377[10];
+						LOBYTE(textureIndexU_v376) = v377[10];
 						v383 = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 3));
 						v386 = v385;
-						BYTE1(v376) = v383;
+						BYTE1(textureIndexU_v376) = v383;
 						LOWORD(v383) = *((x_WORD*)v377 + 4);
 						pixelCount_v384lo = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 4));
 						BYTE1(v375) = pixelCount_v384lo;
