@@ -9,11 +9,11 @@
 #include "Type_Unk_F0E20x.h"
 
 typedef struct {
-	int32_t startX;
-	int32_t endX;
-	int32_t U;
-	int32_t V;
-	int32_t brightness;
+	int32_t startX;     // 0
+	int32_t endX;       // 4
+	int32_t U;          // 8
+	int32_t V;          // 12
+	int32_t brightness; // 16
 } Rasterline_t;
 
 constexpr int MAX_THREADS = 8;
