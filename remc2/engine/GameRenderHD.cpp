@@ -5734,7 +5734,7 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	int v381; // ecx
 	unsigned int v382; // eax
 	int v383; // edx
-	int32_t v384; // ecx
+	int32_t pixelCount_v384lo; // ecx
 	__int16 v385; // cx
 	__int16 v386; // bp
 	int v387; // esi
@@ -8870,12 +8870,12 @@ LABEL_129:
 									LOWORD(v383) = v382;
 									v375 = v382 >> 8;
 									LOBYTE(v376) = BYTE1(v375);
-									v384 = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 4) + v1146 * v381);
-									BYTE1(v375) = v384;
-									LOWORD(v384) = *((x_WORD*)v377 + 3);
+									pixelCount_v384lo = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 4) + v1146 * v381);
+									BYTE1(v375) = pixelCount_v384lo;
+									LOWORD(pixelCount_v384lo) = *((x_WORD*)v377 + 3);
 									v375 = (uint16_t)v375;
-									if ((int16_t)v384 > (int16_t)viewPort.Width_DE564)
-										LOWORD(v384) = viewPort.Width_DE564;
+									if ((int16_t)pixelCount_v384lo > (int16_t)viewPort.Width_DE564)
+										LOWORD(pixelCount_v384lo) = viewPort.Width_DE564;
 								LABEL_493:
 									v388 = &ptrViewPortRenderLine_v379[0];
 									ptrCurrentTexture_v389 = x_DWORD_DE55C_ActTexture;
@@ -8890,14 +8890,14 @@ LABEL_129:
 										v180 = __CFADD__(v1167, v383);
 										v383 += v1167;
 										BYTE1(v376) += BYTE2(Vincrement_v1135) + v180;
-										v180 = __CFADD__(v1183, v384);
-										v384 += v1183;
+										v180 = __CFADD__(v1183, pixelCount_v384lo);
+										pixelCount_v384lo += v1183;
 										v388[0] = x_BYTE_F6EE0_tablesx[v375];
 										BYTE1(v375) += BYTE2(v1146) + v180;
 										v388 += 1;
-										v18 = __OFSUB__((x_WORD)v384, 1);
-										LOWORD(v384) = v384 - 1;
-										if ((uint8_t)(((v384 & 0x8000u) != 0) ^ v18) | ((x_WORD)v384 == 0))
+										v18 = __OFSUB__((x_WORD)pixelCount_v384lo, 1);
+										LOWORD(pixelCount_v384lo) = pixelCount_v384lo - 1;
+										if ((uint8_t)(((pixelCount_v384lo & 0x8000u) != 0) ^ v18) | ((x_WORD)pixelCount_v384lo == 0))
 											break;
 									}
 								}
@@ -8918,9 +8918,9 @@ LABEL_129:
 						v386 = v385;
 						BYTE1(v376) = v383;
 						LOWORD(v383) = *((x_WORD*)v377 + 4);
-						v384 = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 4));
-						BYTE1(v375) = v384;
-						LOWORD(v384) = v386;
+						pixelCount_v384lo = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 4));
+						BYTE1(v375) = pixelCount_v384lo;
+						LOWORD(pixelCount_v384lo) = v386;
 						goto LABEL_493;
 					case 6:
 						v1277 = (char*)unk_DE56Cx[startLine];
