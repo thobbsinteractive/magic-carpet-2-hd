@@ -7,10 +7,10 @@ void sub_54630_load_psxblock(uint16_t TextSize)//235630
 	switch (TextSize)
 	{
 	case 16:
-		DataFileIO::sub_84250_load_file_array(psxadatablock16dat);
+		DataFileIO::LoadFileArray_84250(psxadatablock16dat);
 		break;
 	case 32:
-		DataFileIO::sub_84250_load_file_array(psxadatablock32dat);
+		DataFileIO::LoadFileArray_84250(psxadatablock32dat);
 		break;
 	case 128:
 		break;

@@ -43244,7 +43244,7 @@ signed int sub_5BF50_load_psxdata()//23cf50 //find 2bc394
 	x_DWORD_181C40_vga_init_buffer = (uint8_t*)Malloc_83D70(0x100); //fix it 264D70
 	if (x_DWORD_181C40_vga_init_buffer)
 	{
-		if (DataFileIO::sub_84250_load_file_array(psxasearchd_2bac30))//psxasearchd_2bac30~=2a9a54   set 2bc394(after 2A9A54) - set 2bab20
+		if (DataFileIO::LoadFileArray_84250(psxasearchd_2bac30))//psxasearchd_2bac30~=2a9a54   set 2bc394(after 2A9A54) - set 2bab20
 		{
 			myprintf("NOT ENOUGH MEMORY\n");
 			DataFileIO::sub_90D3F_unload_file_array(psxasearchd_2bac30);
@@ -43252,7 +43252,7 @@ signed int sub_5BF50_load_psxdata()//23cf50 //find 2bc394
 		}
 		else
 		{
-			if (DataFileIO::sub_84250_load_file_array(psxadatabuild00dat))
+			if (DataFileIO::LoadFileArray_84250(psxadatabuild00dat))
 			{
 				myprintf("NOT ENOUGH MEMORY\n");
 				DataFileIO::sub_90D3F_unload_file_array(psxasearchd_2bac30);
@@ -43262,7 +43262,7 @@ signed int sub_5BF50_load_psxdata()//23cf50 //find 2bc394
 			else
 			{
 				sub_539A0_load_bldgprm();
-				if (DataFileIO::sub_84250_load_file_array(psxawscreen_351628))
+				if (DataFileIO::LoadFileArray_84250(psxawscreen_351628))
 				{
 					DataFileIO::sub_90D3F_unload_file_array(psxawscreen_351628);
 					myprintf("NOT ENOUGH MEMORY\n");

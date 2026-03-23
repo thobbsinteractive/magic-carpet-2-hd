@@ -473,7 +473,7 @@ void LoadSpr_47160()//228160
 
 	if (x_WORD_180660_VGA_type_resolution == 1)
 	{
-		DataFileIO::sub_84250_load_file_array(psxadatamsprd00dat);
+		DataFileIO::LoadFileArray_84250(psxadatamsprd00dat);
 		filearray_2aa18c[filearrayindex_MSPRD00DATTAB] = { &MSPRD00TAB_BEGIN_BUFFER,&MSPRD00TAB_END_BUFFER,&MSPRD00DAT_BEGIN_BUFFER,&posistruct5 };
 		if (pre_x_DWORD_E9C3C)
 			FreeMem_83E80(pre_x_DWORD_E9C3C);
@@ -483,7 +483,7 @@ void LoadSpr_47160()//228160
 	}
 	else
 	{
-		DataFileIO::sub_84250_load_file_array(psxadatahsprd00dat);//here is loading
+		DataFileIO::LoadFileArray_84250(psxadatahsprd00dat);//here is loading
 		filearray_2aa18c[filearrayindex_MSPRD00DATTAB] = { &HSPRD00TAB_BEGIN_BUFFER,&HSPRD00TAB_END_BUFFER,&HSPRD00DAT_BEGIN_BUFFER,&posistruct5 };
 		if (pre_x_DWORD_E9C3C)
 			FreeMem_83E80(pre_x_DWORD_E9C3C);
