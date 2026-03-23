@@ -27,7 +27,7 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex, bool loadRegressionTest = false)
 bool LoadLevelSLEV_55A10(uint8_t savefileindex, bool loadRegressionTest = false);
 bool SaveLevel_55080(uint8_t savefileindex, int32_t LevelNumber, char* filenameindex);
 void sub_49270_generate_level_features(Type_Level_2FECE* terrain);
-void sub_47160();
+void LoadSpr_47160();
 void sub_55100(char a1);
 void sub_57680_FixPointersAfterLoad();
 void sub_549A0(type_str_611* a1, type_str_611* a2);

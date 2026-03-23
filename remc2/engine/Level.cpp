@@ -442,12 +442,8 @@ void sub_49270_generate_level_features(Type_Level_2FECE* terrain)//22a270
 }
 
 //----- (00047160) --------------------------------------------------------
-void sub_47160()//228160
+void LoadSpr_47160()//228160
 {
-	//unsigned __int8 v0; // al
-
-	//v0 = x_D41A0_BYTEARRAY_0[196308];
-
 	if (D41A0_0.terrain_2FECE.MapType == MapType_t::Day)
 	{
 		sprintf(xadatamsprd00dat.path, "%s/%s", cdDataPath.c_str(), "DATA/MSPRD0-0.DAT");
@@ -478,58 +474,27 @@ void sub_47160()//228160
 	if (x_WORD_180660_VGA_type_resolution == 1)
 	{
 		DataFileIO::sub_84250_load_file_array(psxadatamsprd00dat);
-
-		//fix
 		filearray_2aa18c[filearrayindex_MSPRD00DATTAB] = { &MSPRD00TAB_BEGIN_BUFFER,&MSPRD00TAB_END_BUFFER,&MSPRD00DAT_BEGIN_BUFFER,&posistruct5 };
-		//filearray_2aa18c[filearrayindex_FONTS0DATTAB] = { &FONTS0TAB_BEGIN_BUFFER,&FONTS0TAB_END_BUFFER,&FONTS0DAT_BEGIN_BUFFER,&posistruct2 };
-		//fix
-
-		/*
-		if (x_DWORD_E9C3C)
-			sub_83E80_freemem4(x_DWORD_E9C3C);
-		x_DWORD_E9C3C = (uint8_t*)sub_83CD0_malloc2(64000);
-		*/
-		//fix
 		if (pre_x_DWORD_E9C3C)
 			FreeMem_83E80(pre_x_DWORD_E9C3C);
 		pre_x_DWORD_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
 		x_DWORD_E9C3C = &pre_x_DWORD_E9C3C[200000];
-		//sub_6EB90(&filearray_2aa18c[filearrayindex_FONTS0DATTAB]);//2aa1d4
 		help_VGA_type_resolution = 1;
-		//fix
 	}
 	else
 	{
-		DataFileIO::sub_84250_load_file_array(psxadatahsprd00dat);//tady se to nahraje
-
-		//fix
+		DataFileIO::sub_84250_load_file_array(psxadatahsprd00dat);//here is loading
 		filearray_2aa18c[filearrayindex_MSPRD00DATTAB] = { &HSPRD00TAB_BEGIN_BUFFER,&HSPRD00TAB_END_BUFFER,&HSPRD00DAT_BEGIN_BUFFER,&posistruct5 };
-		//filearray_2aa18c[filearrayindex_FONTS0DATTAB] = { &HFONT3TAB_BEGIN_BUFFER,&HFONT3TAB_END_BUFFER,&HFONT3DAT_BEGIN_BUFFER,&posistruct27 };
-		//fix
-
-		/*if (x_DWORD_E9C3C)
-			sub_83E80_freemem4(x_DWORD_E9C3C);
-		x_DWORD_E9C3C = (uint8_t*)sub_83CD0_malloc2(0x4b000);
-		sub_6EB90(&filearray_2aa18c[filearrayindex_HFONT3DATTAB]);//2aa1d4
-		*/
-		//fix
 		if (pre_x_DWORD_E9C3C)
 			FreeMem_83E80(pre_x_DWORD_E9C3C);
 		pre_x_DWORD_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
 		x_DWORD_E9C3C = &pre_x_DWORD_E9C3C[200000];
 		CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_HFONT3DATTAB]);//2aa1d4
 		help_VGA_type_resolution = 8;
-		//fix
 	}
 	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_MSPRD00DATTAB]);//2aa1bc
 	LoadTextureData(x_WORD_180660_VGA_type_resolution, D41A0_0.terrain_2FECE.MapType, pdwScreenBuffer_351628);//ok
 }
-// 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D91BC: using guessed type int *off_D91BC[2];
-// D91D4: using guessed type void *off_D91D4;
-// E9C3C: using guessed type int x_DWORD_E9C3C;
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 int debugcounter_236100 = 0;
 //----- (00055100) --------------------------------------------------------

@@ -31426,7 +31426,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 			//sub_692A0(Entities_EA3E4[0xc4e0 / 168]);
 			//!!!!!!!!!!! debug fix it
 
-			sub_47160();
+			LoadSpr_47160();
 			// debug !!!
 			//sub_692A0(testarraymain);
 			// debug !!!
@@ -31542,7 +31542,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 
 							sub_47FC0_load_screen(true);
 							LevelInitGame_56A30(actLevel);
-							sub_47160();
+							LoadSpr_47160();
 						}
 					}
 				}
