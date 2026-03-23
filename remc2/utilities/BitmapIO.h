@@ -5,10 +5,18 @@
 #include "../build_config.h"
 
 #include <cstdint>
-#ifdef REMC2_CODE
+//#ifdef REMC2_CODE
 #include <png.h>
-#endif //REMC2_CODE
+//#endif //REMC2_CODE
 #include "../portability/port_filesystem.h"
+
+struct RGBAImage
+{
+	std::vector<uint8_t> pixels;
+	int width = 0;
+	int height = 0;
+	bool hasAlpha = false;
+};
 
 class BitmapIO
 {
@@ -31,6 +39,8 @@ public:
 	static void WriteImageBufferAsImageBMP(const char* path, int width, int height, uint8_t* ptrPalette , uint8_t* ptrBuffer);
 	static void WriteRGBAImageBufferAsImageBMP(const char* path, int width, int height, uint8_t* ptrPalette, uint8_t* ptrBuffer);
 	static void WritePaletteAsImageBMP(const char* path, int numColors, uint8_t* ptrPalette);
+
+	static bool ReadImagePNG(const char* filename, RGBAImage& out);
 #ifdef _DEBUG
 	static void WritePosistructToPng(uint8_t* ptrPalette, uint8_t* ptrBuffer, int width, int height, char* filename, char* title, int padding = 0, double multiplier = 4);
 	static void WritePosistructToPng(uint8_t* ptrPalette, uint8_t* ptrBuffer, int width, int height, char* filename, char* title, int padding, double multiplier, uint8_t transColR, uint8_t transColG, uint8_t transColB);
