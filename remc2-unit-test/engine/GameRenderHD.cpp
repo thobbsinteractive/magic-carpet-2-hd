@@ -40,12 +40,15 @@ TEST(GameRenderHD, TextureIndexU)
 	line->U = 368126;
 	line->V = 1729025;
 
+	char* bytesArray = new char[20];
+
 	//Run current code
 	int32_t textureIndexU_New = BYTE2(line->U);
 
 	//Run original code
 	int32_t textureIndexU_Old = 0;
-	LOBYTE(textureIndexU_Old) = line->U;
+	bytesArray = (char*)line;
+	LOBYTE(textureIndexU_Old) = bytesArray[10];
 
 	//Check results match
 	ASSERT_EQ(textureIndexU_Old, 5125);
