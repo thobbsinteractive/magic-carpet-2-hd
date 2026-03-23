@@ -40,7 +40,8 @@ TEST(GameRenderHD, TextureIndexU)
 	line->U = 368126;
 	line->V = 1729025;
 
-	char* bytesArray = new char[20];
+	std::string originalData = "\xD8\xF2s\x2$";
+	const char* bytesArray = originalData.c_str();
 
 	//Run current code
 	int32_t textureIndexU_New = BYTE2(line->U);
