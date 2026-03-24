@@ -5454,7 +5454,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 					continue;
 				}
 				ptrViewPortRenderPixel_v379 += startX_v375;
-				textureIndexU = BYTE2(current_raster_line->U);
+				LOBYTE(textureIndexU) = BYTE2(current_raster_line->U);
 				v383 = __SWAP_HILOWORD__(current_raster_line->V);
 				textureIndexV = (uint8_t)v383;
 				LOWORD(v383) = LOWORD(current_raster_line->U);
