@@ -733,7 +733,6 @@ void sub_3B4D0_fill_unk_D4350_256(int a1);
 // char sub_3C080_draw_terrain_and_particles(int a1, int a2, __int16 a3, __int16 a4, __int16 a5, signed int a6, int a7, __int16 a8, int a9);
 // unsigned __int16 sub_3E360_draw_particles(int a1, int a2);
 // unsigned __int16 sub_3FD60(int a1, int a2);
-int /*__fastcall*/ sub_40D10();
 void BlendAndBlit_40F80();
 // int sub_43830_generate_level_map(unsigned int a1, int a2);
 // unsigned int sub_43970(unsigned int a1);
@@ -766,8 +765,7 @@ void sub_46F50_sound_proc7();
 //void sub_473B0();
 //int sub_473E0();
 // void sub_47560_draw_and_events_in_game(int a1, int a2, x_BYTE *a3, signed int a4, __int16 a5);
-void sub_480A0_set_clear_Palette(/*int a1, int a2, int a3*/);
-void sub_48120();
+void PaletteFadeIn_480A0(/*int a1, int a2, int a3*/);
 int sub_48990(char a1, char a2, char a3, char a4);
 // __int16 sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6);
 void SetHeightmapByBuildingArea_48B50(uint8 x, uint8 y, int height, int width);
@@ -815,7 +813,6 @@ char sub_572C0(type_entity_0x6E8E* a1, __int16 a2, __int16 a3, __int16 a4, char 
 void sub_57390(uaxis_2d a1, unsigned __int16 a2);
 char sub_57450(unsigned __int8 a1);
 void sub_574A0();
-void sub_57640();
 void sub_57B20(type_str_0x2BDE* a1, type_entity_0x6E8E* a2);
 void CopyEntityPosition_57CF0(type_entity_0x6E8E* entity, axis_3d* position);
 void sub_57D40(type_entity_0x6E8E* entity, axis_3d* position);
@@ -859,7 +856,6 @@ void sub_5DE30(type_entity_0x6E8E* a1);
 //uint8_t GetLetterHeight_6FC30();
 //void sub_6FC50(__int16 a1);
 //unsigned int sub_6FC80_pre_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
-void DrawGameDebugText_6FEC0();
 //int sub_71410_process_tmaps_process_tmaps();
 void sub_716C0(unsigned __int16 a1, unsigned __int16 a2, unsigned __int16 a3);
 void SetF5538ByStrTMAP00TAB_71730(unsigned __int16 a1);
@@ -973,7 +969,6 @@ char sub_904C0(float a1);
 //unsigned __int8 sub_90530(int a1, int a2, float a3);
 //void sub_905EC_any_graphics_command2(char a1);
 //int sub_90810();
-void sub_90D27();
 int sub_9937E_set_video_mode(__int16 a1);
 // int sub_994BA_cursor_move(__int16 a1);
 signed int sub_9951B(__int16 a1);
@@ -1009,7 +1004,6 @@ __int16 sub_9D31C(__int16 result);
 void sub_9E250(uint32_t user); // weak
 int sub_A0B24(int a1);
 int sub_A0BB0(int* a1, int a2);
-void sub_A0D2C_VGA_get_Palette(TColor* a1);
 int sub_AC24B();
 void sub_AC250(int a1, int a2, int a3, int a4, int a5, x_DWORD* a6, x_DWORD* a7, signed int* a8);
 x_BYTE* sub_AD09E(x_BYTE* a1, int a2);
@@ -1021,9 +1015,6 @@ int sub_B1304(int a1, int a2);
 int sub_B1414(int a1);
 int sub_B148C(int a1);
 int sub_B14F8(int* a1, int a2);
-void sub_BD1B6(uint8_t* a1);
-void sub_BD2CB(uint8_t* a1);
-void sub_BD3DD();
 
 uint8_t algn_4BB85[11] = { 0x8d, 0x80, 0x00, 0x00, 0x00, 0x00, 0x8d, 0x52, 0x00, 0x8b, 0x00 };
 
@@ -31889,7 +31880,7 @@ void PaletteChanges_47760()//228760
 	case 0:
 	case 1: //Fade out loading screen
 	{
-		sub_480A0_set_clear_Palette();
+		PaletteFadeIn_480A0();
 		x_D41A0_BYTEARRAY_4_struct.paletteMod_51++;
 		break;
 	}
@@ -32167,36 +32158,23 @@ void sub_47FC0_load_screen(bool isSecretLevel)//228fc0
 }
 
 //----- (000480A0) --------------------------------------------------------
-void sub_480A0_set_clear_Palette(/*int a1, int a2, int a3*/)//2290a0
+void PaletteFadeIn_480A0()//2290a0
 {
-	long v3; // ebx
-	unsigned int v4; // eax
-	//int v5; // edx
-
 	char dataPath[MAX_PATH];
-
-	// fix if begin
-	v4 = 0;
-	//v5 = 0;
-	// end
-
-	v3 = j___clock();
-	SetMusicVolume_98790(0x1F4u, 0);
+	unsigned int timeDiff = 0;
+	SetMusicVolume_98790(500, 0);
+	long time = j___clock();
 	do
-		v4 = j___clock() - v3;
-	while (v4 < 0x32);
+		timeDiff = j___clock() - time;
+	while (timeDiff < 50); //delay 50 mms
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 	D41A0_0.dword_0x23a = 0;
-
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/PALD-0.DAT");
 	DataFileIO::ReadFileAndDecompress(dataPath, xadatapald0dat2.colorPalette_var28);
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/CLRD-0.DAT");
 	DataFileIO::ReadFileAndDecompress(dataPath, xadataclrd0dat.colorPalette_var28);
 	sub_48120();
 }
-// 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3D8: using guessed type int *xadatapald0dat2.colorPalette_var28;
 
 //----- (00048120) --------------------------------------------------------
 void sub_48120()//229120
@@ -55550,22 +55528,16 @@ char sub_68BD0(type_entity_0x6E8E*  /*a1x*/, type_entity_0x6E8E* a2x)//249bd0
 //----- (00068BF0) --------------------------------------------------------
 void sub_68BF0()//249bf0
 {
-	__int16 i; // si
-	//int result; // eax
-	type_entity_0x6E8E* jx; // ebx
-	type_entity_0x6E8E* kx; // ebx
-
-	for (i = 0; i < 29; i++)
+	for (int i = 0; i < 29; i++)
 	{
-		//result = (int)x_D41A0_BYTEARRAY_4;
-		for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i]; jx > Entities_EA3E4[0]; jx = jx->next_0)
+		for (type_entity_0x6E8E* jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 		{
 			if (jx->life_0x8 >= 0)
 			{
 				if (CommandLineParams.DoDebugSequences()) {
 					//add_compare(0x249c1b, CommandLineParams.DoDebugafterload());
 				}
-				/*result = */sub_68C70(jx);
+				sub_68C70(jx);
 			}
 			else
 			{
@@ -55574,12 +55546,9 @@ void sub_68BF0()//249bf0
 			}
 		}
 	}
-	for (kx = x_D41A0_BYTEARRAY_4_struct.dword_38523; kx > Entities_EA3E4[0]; kx = kx->next_0)
-		/*result = */sub_68C70(kx);
-	//return result;
+	for (type_entity_0x6E8E* kx = x_D41A0_BYTEARRAY_4_struct.dword_38523; kx > Entities_EA3E4[0]; kx = kx->next_0)
+		sub_68C70(kx);
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00068C70) --------------------------------------------------------
 int sub_68C70(type_entity_0x6E8E* a1x)//249c70
