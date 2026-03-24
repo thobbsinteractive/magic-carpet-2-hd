@@ -5727,7 +5727,7 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	__int16 v374; // cx
 	unsigned int v375; // eax
 	int textureIndexU_v376; // ebx
-	char* v377; // esi
+	char* current_raster_line_v377; // esi
 	int v378; // ecx
 	uint8_t* ptrViewPortRenderLine_v379; // edi
 	int v380; // eax
@@ -8848,10 +8848,10 @@ LABEL_129:
 						HIWORD(textureIndexU_v376) = 0;
 						while (1)
 						{
-							v377 = v1276;
+							current_raster_line_v377 = v1276;
 							v1276 += 20;
-							LOWORD(v375) = *((x_WORD*)v377 + 1);
-							v378 = *((uint16_t*)v377 + 3);
+							LOWORD(v375) = *((x_WORD*)current_raster_line_v377 + 1);
+							v378 = *((uint16_t*)current_raster_line_v377 + 3);
 							ptrViewPortRenderLine_v379 = iScreenWidth_DE560 + ptrViewPortRenderLineStart_v1102;
 							ptrViewPortRenderLineStart_v1102 += iScreenWidth_DE560;
 							line6++;
@@ -8864,15 +8864,15 @@ LABEL_129:
 								{
 									v380 = (uint16_t)-(int16_t)v375;
 									v381 = v380;
-									v383 = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 3) + Vincrement_v1135 * v380);
+									v383 = __SWAP_HILOWORD__(*((x_DWORD*)current_raster_line_v377 + 3) + Vincrement_v1135 * v380);
 									BYTE1(textureIndexU_v376) = v383;
-									v382 = *((x_DWORD*)v377 + 2) + Uincrement_v1124 * v380;
+									v382 = *((x_DWORD*)current_raster_line_v377 + 2) + Uincrement_v1124 * v380;
 									LOWORD(v383) = v382;
 									v375 = v382 >> 8;
 									LOBYTE(textureIndexU_v376) = BYTE1(v375);
-									pixelCount_v384lo = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 4) + v1146 * v381);
+									pixelCount_v384lo = __SWAP_HILOWORD__(*((x_DWORD*)current_raster_line_v377 + 4) + v1146 * v381);
 									BYTE1(v375) = pixelCount_v384lo;
-									LOWORD(pixelCount_v384lo) = *((x_WORD*)v377 + 3);
+									LOWORD(pixelCount_v384lo) = *((x_WORD*)current_raster_line_v377 + 3);
 									v375 = (uint16_t)v375;
 									if ((int16_t)pixelCount_v384lo > (int16_t)viewPort.Width_DE564)
 										LOWORD(pixelCount_v384lo) = viewPort.Width_DE564;
@@ -8913,12 +8913,12 @@ LABEL_129:
 						if ((uint8_t)((v385 < 0) ^ v18) | (v385 == 0))
 							goto LABEL_510;
 						ptrViewPortRenderLine_v379 += v375;
-						LOBYTE(textureIndexU_v376) = v377[10];
-						v383 = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 3));
+						LOBYTE(textureIndexU_v376) = current_raster_line_v377[10];
+						v383 = __SWAP_HILOWORD__(*((x_DWORD*)current_raster_line_v377 + 3));
 						v386 = v385;
 						BYTE1(textureIndexU_v376) = v383;
-						LOWORD(v383) = *((x_WORD*)v377 + 4);
-						pixelCount_v384lo = __SWAP_HILOWORD__(*((x_DWORD*)v377 + 4));
+						LOWORD(v383) = *((x_WORD*)current_raster_line_v377 + 4);
+						pixelCount_v384lo = __SWAP_HILOWORD__(*((x_DWORD*)current_raster_line_v377 + 4));
 						BYTE1(v375) = pixelCount_v384lo;
 						LOWORD(pixelCount_v384lo) = v386;
 						goto LABEL_493;
