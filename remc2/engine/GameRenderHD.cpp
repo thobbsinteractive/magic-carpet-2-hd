@@ -5726,7 +5726,7 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	__int16 v373; // bx
 	__int16 v374; // cx
 	unsigned int v375; // eax
-	int textureIndexU_v376; // ebx
+	int textureIndexU_v376 = 0; // ebx
 	char* current_raster_line_v377; // esi
 	int v378; // ecx
 	uint8_t* ptrViewPortRenderLine_v379; // edi
