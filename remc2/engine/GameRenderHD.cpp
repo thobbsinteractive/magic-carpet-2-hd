@@ -5413,9 +5413,9 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 	uint8_t v18;
 	uint8_t v180;
 	int16_t startX_v375;
-	uint16_t paletteMapping;
 	uint16_t textureIndexU = 0;
 	uint16_t textureIndexV = 0;
+	uint16_t paletteMapping_v375;
 	int16_t endX_v378;
 	uint8_t* ptrViewPortRenderPixel_v379; // pixel position in screen buffer
 	uint16_t v380;
@@ -5461,7 +5461,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 
 				v384tmp = __SWAP_HILOWORD__(current_raster_line->brightness);
 				BrightnessFractionalPart_v384hi = HIWORD(v384tmp);
-				BYTE1(paletteMapping) = LOWORD(v384tmp);
+				BYTE1(paletteMapping_v375) = LOWORD(v384tmp);
 				pixelCount_v384lo = endX_v385;
 			}
 			else if (endX_v378 > 0)
@@ -5477,7 +5477,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 
 				v384tmp = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement_v1146 * v380);
 				BrightnessFractionalPart_v384hi = HIWORD(v384tmp);
-				BYTE1(paletteMapping) = LOWORD(v384tmp);
+				BYTE1(paletteMapping_v375) = LOWORD(v384tmp);
 				pixelCount_v384lo = HIWORD(current_raster_line->endX);
 
 				if (pixelCount_v384lo > (int16_t)viewPort.Width_DE564) {
@@ -5494,7 +5494,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 					break;
 
 				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU;
-				LOBYTE(paletteMapping) = pTexture[textureIndex];
+				LOBYTE(paletteMapping_v375) = pTexture[textureIndex];
 
 				v180 = __CFADD__((x_WORD)Uincrement, (x_WORD)v383);
 				LOWORD(v383) = Uincrement + v383;
@@ -5504,11 +5504,11 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 				v383 += fixedpointVincrement;
 				textureIndexV = (int8_t)BYTE2(Vincrement) + textureIndexV + v180;
 
-				*ptrViewPortRenderPixel_v379 = x_BYTE_F6EE0_tablesx[paletteMapping];
+				*ptrViewPortRenderPixel_v379 = x_BYTE_F6EE0_tablesx[paletteMapping_v375];
 
 				v180 = __CFADD__(LOWORD(BrightnessIncrement_v1146), BrightnessFractionalPart_v384hi);
 				BrightnessFractionalPart_v384hi += BrightnessIncrement_v1146;
-				paletteMapping = GameRenderHD::SumByte1WithByte2(paletteMapping, BrightnessIncrement_v1146, v180);
+				paletteMapping_v375 = GameRenderHD::SumByte1WithByte2(paletteMapping_v375, BrightnessIncrement_v1146, v180);
 
 				ptrViewPortRenderPixel_v379 += 1;
 			} while (--pixelCount_v384lo > 0);
@@ -5535,7 +5535,7 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 	uint8_t v18;
 	uint8_t v180;
 	int16_t startX_v406;
-	uint16_t paletteMapping;
+	uint16_t paletteMapping_v375;
 	uint16_t textureIndexU = 0;
 	uint16_t textureIndexV = 0;
 	int16_t endX_v408;
@@ -5602,13 +5602,13 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 			}
 
 			v1278 = current_raster_line;
-			BYTE1(paletteMapping) = local_x_BYTE_E126C;
+			BYTE1(paletteMapping_v375) = local_x_BYTE_E126C;
 			do {
 				if (textureIndexV > MAX_TEXTURE_INDEX)
 					break;
 
 				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU;
-				LOBYTE(paletteMapping) = pTexture[textureIndex];
+				LOBYTE(paletteMapping_v375) = pTexture[textureIndex];
 
 				v180 = __CFADD__((x_WORD)Uincrement, (x_WORD)v412);
 				LOWORD(v412) = Uincrement + v412;
@@ -5618,7 +5618,7 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 				v412 = v1169 + v412;
 				textureIndexV = (int8_t)BYTE2(Vincrement) + textureIndexV + v180;
 
-				*currentPixel = x_BYTE_F6EE0_tablesx[paletteMapping];
+				*currentPixel = x_BYTE_F6EE0_tablesx[paletteMapping_v375];
 				currentPixel += 1;
 			} while(--endX_v408);
 			current_raster_line = v1278;
@@ -5646,7 +5646,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 	uint8_t v18;
 	uint8_t v180;
 	int16_t startX;
-	uint16_t paletteMapping;
+	uint16_t paletteMapping_v375;
 	int16_t textureIndexU = 0;
 	int16_t textureIndexV = 0;
 	int16_t endX;
@@ -5718,22 +5718,22 @@ void DrawPolygonRasterLine_reflections_subB6253(
 					break;
 
 				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU;
-				LOBYTE(paletteMapping) = pTexture[textureIndex];
+				LOBYTE(paletteMapping_v375) = pTexture[textureIndex];
 
 				v180 = __CFADD__((x_WORD)Uincrement, (x_WORD)v1053);
 				LOWORD(v1053) = Uincrement + v1053;
-				BYTE1(paletteMapping) = v1054;
+				BYTE1(paletteMapping_v375) = v1054;
 				textureIndexU = (int8_t)BYTE2(Uincrement) + v180 + textureIndexU;
 
-				if ((uint8_t)paletteMapping >= 0xCu)
+				if ((uint8_t)paletteMapping_v375 >= 0xCu)
 				{
-					v1056 = x_BYTE_F6EE0_tablesx[paletteMapping]; // Fixme: x_BYTE_F6EE0_tablesx should be passed as a parameter
+					v1056 = x_BYTE_F6EE0_tablesx[paletteMapping_v375]; // Fixme: x_BYTE_F6EE0_tablesx should be passed as a parameter
 				}
 				else
 				{
-					LOBYTE(paletteMapping) = x_BYTE_F6EE0_tablesx[paletteMapping];
-					BYTE1(paletteMapping) = *currentPixel;
-					v1056 = x_BYTE_F6EE0_tablesx[16384 + paletteMapping];
+					LOBYTE(paletteMapping_v375) = x_BYTE_F6EE0_tablesx[paletteMapping_v375];
+					BYTE1(paletteMapping_v375) = *currentPixel;
+					v1056 = x_BYTE_F6EE0_tablesx[16384 + paletteMapping_v375];
 				}
 
 				v180 = __CFADD__(VincrementFixedPoint, v1053);
