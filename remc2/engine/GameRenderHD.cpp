@@ -5397,7 +5397,7 @@ void GameRenderHD::DrawPolygonRasterLine_single_color_subB6253(
 
 
 void GameRenderHD::DrawPolygonRasterLine_subB6253(
-	Rasterline_t *pRasterLines, int32_t *textureIndexU_v376, uint32_t *textureIndexV,
+	Rasterline_t *pRasterLines, int32_t *textureIndexU_v376, int32_t *textureIndexV,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw, 
 	uint8_t **ptrViewPortRenderLineStart_v1102,
 	uint32_t Vincrement_v1135, int32_t Uincrement_v1124, uint32_t BrightnessIncrement_v1146,
@@ -5496,7 +5496,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 
 				v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v383);
 				LOWORD(v383) = Uincrement_v1124 + v383;
-				*textureIndexU_v376 = (int8_t)BYTE2(Uincrement_v1124) + *textureIndexU_v376 + v180;
+				LOBYTE(*textureIndexU_v376) = BYTE2(Uincrement_v1124) + *textureIndexU_v376 + v180;
 
 				v180 = __CFADD__(fixedpointVincrement_v1167, v383);
 				v383 += fixedpointVincrement_v1167;
@@ -5516,7 +5516,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 
 
 void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
-	Rasterline_t *pRasterLines,
+	Rasterline_t *pRasterLines, int32_t* textureIndexU_v376, int32_t* textureIndexV,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
 	uint8_t **ptrViewPortRenderLineStart_v1102,
 	uint32_t Vincrement_v1135, int32_t Uincrement_v1124,
@@ -5534,8 +5534,6 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 	uint8_t v180;
 	int16_t startX_v406;
 	uint16_t paletteMapping_v375;
-	uint16_t textureIndexU_v376 = 0;
-	uint16_t textureIndexV = 0;
 	int16_t endX_v408;
 	uint8_t* currentPixel;
 	int v410;
@@ -5573,22 +5571,22 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 				currentPixel += startX_v406;
 
 				v412 = __SWAP_HILOWORD__(current_raster_line->V);
-				textureIndexV = (uint8_t)v412;
+				*textureIndexV = (uint8_t)v412;
 
 				LOWORD(v412) = LOWORD(current_raster_line->U);
-				textureIndexU_v376 = BYTE2(current_raster_line->U);
+				*textureIndexU_v376 = BYTE2(current_raster_line->U);
 			}
 			else if (endX_v408 > 0)
 			{
 				v410 = -startX_v406;
 
 				v412 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement_v1135 * v410);
-				textureIndexV = (uint8_t)v412;
+				*textureIndexV = (uint8_t)v412;
 
 				v411 = current_raster_line->U + Uincrement_v1124 * v410;
 				LOWORD(v412) = v411;
 				v413 = v411 >> 8;
-				textureIndexU_v376 = BYTE1(v413);
+				*textureIndexU_v376 = BYTE1(v413);
 
 				if (endX_v408 > viewPort.Width_DE564)
 					endX_v408 = viewPort.Width_DE564;
@@ -5602,19 +5600,19 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 			v1278 = current_raster_line;
 			BYTE1(paletteMapping_v375) = local_x_BYTE_E126C;
 			do {
-				if (textureIndexV > MAX_TEXTURE_INDEX)
+				if (*textureIndexV > MAX_TEXTURE_INDEX)
 					break;
 
-				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU_v376;
+				uint16_t textureIndex = (uint16_t)(*textureIndexV << 8) | *textureIndexU_v376;
 				LOBYTE(paletteMapping_v375) = pTexture_v389[textureIndex];
 
 				v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v412);
 				LOWORD(v412) = Uincrement_v1124 + v412;
-				textureIndexU_v376 = (int8_t)BYTE2(Uincrement_v1124) + textureIndexU_v376 + v180;
+				*textureIndexU_v376 = (int8_t)BYTE2(Uincrement_v1124) + *textureIndexU_v376 + v180;
 
 				v180 = __CFADD__(v1169, v412);
 				v412 = v1169 + v412;
-				textureIndexV = (int8_t)BYTE2(Vincrement_v1135) + textureIndexV + v180;
+				*textureIndexV = (int8_t)BYTE2(Vincrement_v1135) + *textureIndexV + v180;
 
 				*currentPixel = x_BYTE_F6EE0_tablesx[paletteMapping_v375];
 				currentPixel += 1;
@@ -5625,8 +5623,8 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 }
 
 
-void DrawPolygonRasterLine_reflections_subB6253(
-	Rasterline_t *pRasterLines,
+void GameRenderHD::DrawPolygonRasterLine_reflections_subB6253(
+	Rasterline_t *pRasterLines, int32_t* textureIndexU_v376, int32_t* textureIndexV,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
 	uint8_t **pv1102,
 	uint32_t Vincrement_v1135, int Uincrement_v1124,
@@ -5645,8 +5643,6 @@ void DrawPolygonRasterLine_reflections_subB6253(
 	uint8_t v180;
 	int16_t startX;
 	uint16_t paletteMapping_v375;
-	int16_t textureIndexU_v376 = 0;
-	int16_t textureIndexV = 0;
 	int16_t endX;
 	uint8_t* currentPixel;
 	uint32_t v1053;
@@ -5681,10 +5677,10 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				currentPixel += startX;
 
 				v1053 = __SWAP_HILOWORD__(current_raster_line->V);
-				textureIndexV = BYTE2(current_raster_line->V);
+				*textureIndexV = BYTE2(current_raster_line->V);
 
 				LOWORD(v1053) = LOWORD(current_raster_line->U);
-				textureIndexU_v376 = BYTE2(current_raster_line->U);
+				*textureIndexU_v376 = BYTE2(current_raster_line->U);
 
 				pixelCount = endX;
 				v1054 = __SWAP_HILOWORD__(current_raster_line->brightness);
@@ -5697,11 +5693,11 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				const int v1050 = (uint16_t)-startX;
 
 				v1053 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement_v1135 * v1050);
-				textureIndexV = (uint8_t)v1053;
+				*textureIndexV = (uint8_t)v1053;
 
 				const unsigned int v1052 = current_raster_line->U + Uincrement_v1124 * v1050;
 				LOWORD(v1053) = v1052;
-				textureIndexU_v376 = BYTE2(v1052);
+				*textureIndexU_v376 = BYTE2(v1052);
 
 				v1054 = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement * v1050);
 			}
@@ -5712,16 +5708,16 @@ void DrawPolygonRasterLine_reflections_subB6253(
 			}
 
 			do {
-				if (textureIndexV > MAX_TEXTURE_INDEX)
+				if (*textureIndexV > MAX_TEXTURE_INDEX)
 					break;
 
-				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU_v376;
+				uint16_t textureIndex = (uint16_t)(*textureIndexV << 8) | *textureIndexU_v376;
 				LOBYTE(paletteMapping_v375) = pTexture_v389[textureIndex];
 
 				v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1053);
 				LOWORD(v1053) = Uincrement_v1124 + v1053;
 				BYTE1(paletteMapping_v375) = v1054;
-				textureIndexU_v376 = (int8_t)BYTE2(Uincrement_v1124) + v180 + textureIndexU_v376;
+				*textureIndexU_v376 = (int8_t)BYTE2(Uincrement_v1124) + v180 + *textureIndexU_v376;
 
 				if ((uint8_t)paletteMapping_v375 >= 0xCu)
 				{
@@ -5736,7 +5732,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 
 				v180 = __CFADD__(VincrementFixedPoint, v1053);
 				v1053 = VincrementFixedPoint + v1053;
-				textureIndexV = (int8_t)BYTE2(Vincrement_v1135) + v180 + textureIndexV;
+				*textureIndexV = (int8_t)BYTE2(Vincrement_v1135) + v180 + *textureIndexV;
 
 				v180 = __CFADD__(v1189, v1054);
 				v1054 = v1189 + v1054;
@@ -5769,7 +5765,7 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	uint32_t Vincrement_v1135; // [esp+30h] [ebp-58h]
 	uint32_t BrightnessIncrement = 0xAAAAAAAA; // [esp+3Ch] [ebp-4Ch]
 	int32_t textureIndexU_v376 = 0;
-	uint32_t textureIndexV = 0;
+	int32_t textureIndexV = 0;
 
 	Uincrement_v1124 = 0;
 	Vincrement_v1135 = 0;
@@ -7136,7 +7132,7 @@ LABEL_DrawRasterLines:
 	case 7:
 	case 0xB:
 		DrawPolygonRasterLine_flat_shading_subB6253(
-			&rasterlines_DE56Cx[startLine][0],
+			&rasterlines_DE56Cx[startLine][0], &textureIndexU_v376, &textureIndexV,
 			startLine, drawEveryNthLine, linesToDraw_v1123,
 			&renderBufferStartOfCurrentLine, 
 			Vincrement_v1135, Uincrement_v1124,
@@ -7145,7 +7141,7 @@ LABEL_DrawRasterLines:
 		return;
 	case 0x1A:
 		DrawPolygonRasterLine_reflections_subB6253(
-			&rasterlines_DE56Cx[startLine][0],
+			&rasterlines_DE56Cx[startLine][0], &textureIndexU_v376, &textureIndexV,
 			startLine, drawEveryNthLine, linesToDraw_v1123,
  			&renderBufferStartOfCurrentLine,
 			Vincrement_v1135, Uincrement_v1124, BrightnessIncrement,
