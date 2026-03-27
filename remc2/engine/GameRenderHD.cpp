@@ -2953,7 +2953,7 @@ void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index)
 	DrawInverseSquareInProjectionSpace(vertexs, index, x_DWORD_DDF50_texture_adresses.at(Str_E9C38_smalltit[index].textIndex_41));
 }
 
-void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture)
+void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture_v389)
 {
 	//Set Texture coordinates for polys
 	vertexs[20] = UVTable_D4350[Str_E9C38_smalltit[index].textUV_42][0];
@@ -2967,7 +2967,7 @@ void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index, u
 	x_BYTE_E126D = 5;
 
 	//Get Texture
-	x_DWORD_DE55C_ActTexture = pTexture;
+	x_DWORD_DE55C_ActTexture = pTexture_v389;
 
 	//Render
 	auto vertex0 = ProjectionPolygon(&vertexs[0]);
@@ -5397,24 +5397,22 @@ void GameRenderHD::DrawPolygonRasterLine_single_color_subB6253(
 
 
 void GameRenderHD::DrawPolygonRasterLine_subB6253(
-	Rasterline_t *pRasterLines,
+	Rasterline_t *pRasterLines, int32_t *textureIndexU_v376, uint32_t *textureIndexV,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw, 
 	uint8_t **ptrViewPortRenderLineStart_v1102,
-	uint32_t Vincrement, int32_t Uincrement_v1124, uint32_t BrightnessIncrement_v1146,
-	const uint8_t *pTexture) 
+	uint32_t Vincrement_v1135, int32_t Uincrement_v1124, uint32_t BrightnessIncrement_v1146,
+	const uint8_t *pTexture_v389) 
 {
 	Rasterline_t* next_raster_line = pRasterLines;
 	Rasterline_t* current_raster_line;
 
 	uint8_t line6 = startLine;
 
-	uint32_t fixedpointVincrement_v1167 = Vincrement << 16;
+	uint32_t fixedpointVincrement_v1167 = Vincrement_v1135 << 16;
 
 	uint8_t v18;
 	uint8_t v180;
 	int16_t startX_v375;
-	uint16_t textureIndexU = 0;
-	uint16_t textureIndexV = 0;
 	uint16_t paletteMapping_v375;
 	int16_t endX_v378;
 	uint8_t* ptrViewPortRenderPixel_v379; // pixel position in screen buffer
@@ -5454,9 +5452,9 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 					continue;
 				}
 				ptrViewPortRenderPixel_v379 += startX_v375;
-				LOBYTE(textureIndexU) = BYTE2(current_raster_line->U);
+				LOBYTE(*textureIndexU_v376) = BYTE2(current_raster_line->U);
 				v383 = __SWAP_HILOWORD__(current_raster_line->V);
-				textureIndexV = (uint8_t)v383;
+				*textureIndexV = (uint8_t)v383;
 				LOWORD(v383) = LOWORD(current_raster_line->U);
 
 				v384tmp = __SWAP_HILOWORD__(current_raster_line->brightness);
@@ -5468,12 +5466,12 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 			{
 				// startX_v375  is negative here, but endX is positive -> skip pixels by updating v,u,brightness
 				v380 = -startX_v375;
-				v383 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v380);
-				textureIndexV = (uint8_t)v383;
+				v383 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement_v1135 * v380);
+				*textureIndexV = (uint8_t)v383;
 				v382 = current_raster_line->U + Uincrement_v1124 * v380;
 				LOWORD(v383) = v382;
 				startX_v375 = v382 >> 8;
-				textureIndexU = BYTE2(v382);
+				*textureIndexU_v376 = BYTE2(v382);
 
 				v384tmp = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement_v1146 * v380);
 				BrightnessFractionalPart_v384hi = HIWORD(v384tmp);
@@ -5490,19 +5488,19 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 			}
 
 			do {
-				if (textureIndexV > MAX_TEXTURE_INDEX)
+				if (*textureIndexV > MAX_TEXTURE_INDEX)
 					break;
 
-				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU;
-				LOBYTE(paletteMapping_v375) = pTexture[textureIndex];
+				uint16_t textureIndex = (uint16_t)(*textureIndexV << 8) | *textureIndexU_v376;
+				LOBYTE(paletteMapping_v375) = pTexture_v389[textureIndex];
 
 				v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v383);
 				LOWORD(v383) = Uincrement_v1124 + v383;
-				textureIndexU = (int8_t)BYTE2(Uincrement_v1124) + textureIndexU + v180;
+				*textureIndexU_v376 = (int8_t)BYTE2(Uincrement_v1124) + *textureIndexU_v376 + v180;
 
 				v180 = __CFADD__(fixedpointVincrement_v1167, v383);
 				v383 += fixedpointVincrement_v1167;
-				textureIndexV = (int8_t)BYTE2(Vincrement) + textureIndexV + v180;
+				textureIndexV = (int8_t)BYTE2(Vincrement_v1135) + textureIndexV + v180;
 
 				*ptrViewPortRenderPixel_v379 = x_BYTE_F6EE0_tablesx[paletteMapping_v375];
 
@@ -5521,8 +5519,8 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 	Rasterline_t *pRasterLines,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
 	uint8_t **ptrViewPortRenderLineStart_v1102,
-	uint32_t Vincrement, int32_t Uincrement_v1124,
-	uint8_t *pTexture, char local_x_BYTE_E126C) 
+	uint32_t Vincrement_v1135, int32_t Uincrement_v1124,
+	uint8_t *pTexture_v389, char local_x_BYTE_E126C) 
 {
 	// flat shading and reflections enabled
 	Rasterline_t *next_raster_line = pRasterLines;
@@ -5530,13 +5528,13 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 
 	uint8_t line8 = startLine;
 
-	uint32_t v1169 = Vincrement << 16;
+	uint32_t v1169 = Vincrement_v1135 << 16;
 
 	uint8_t v18;
 	uint8_t v180;
 	int16_t startX_v406;
 	uint16_t paletteMapping_v375;
-	uint16_t textureIndexU = 0;
+	uint16_t textureIndexU_v376 = 0;
 	uint16_t textureIndexV = 0;
 	int16_t endX_v408;
 	uint8_t* currentPixel;
@@ -5578,19 +5576,19 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 				textureIndexV = (uint8_t)v412;
 
 				LOWORD(v412) = LOWORD(current_raster_line->U);
-				textureIndexU = BYTE2(current_raster_line->U);
+				textureIndexU_v376 = BYTE2(current_raster_line->U);
 			}
 			else if (endX_v408 > 0)
 			{
 				v410 = -startX_v406;
 
-				v412 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v410);
+				v412 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement_v1135 * v410);
 				textureIndexV = (uint8_t)v412;
 
 				v411 = current_raster_line->U + Uincrement_v1124 * v410;
 				LOWORD(v412) = v411;
 				v413 = v411 >> 8;
-				textureIndexU = BYTE1(v413);
+				textureIndexU_v376 = BYTE1(v413);
 
 				if (endX_v408 > viewPort.Width_DE564)
 					endX_v408 = viewPort.Width_DE564;
@@ -5607,16 +5605,16 @@ void GameRenderHD::DrawPolygonRasterLine_flat_shading_subB6253(
 				if (textureIndexV > MAX_TEXTURE_INDEX)
 					break;
 
-				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU;
-				LOBYTE(paletteMapping_v375) = pTexture[textureIndex];
+				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU_v376;
+				LOBYTE(paletteMapping_v375) = pTexture_v389[textureIndex];
 
 				v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v412);
 				LOWORD(v412) = Uincrement_v1124 + v412;
-				textureIndexU = (int8_t)BYTE2(Uincrement_v1124) + textureIndexU + v180;
+				textureIndexU_v376 = (int8_t)BYTE2(Uincrement_v1124) + textureIndexU_v376 + v180;
 
 				v180 = __CFADD__(v1169, v412);
 				v412 = v1169 + v412;
-				textureIndexV = (int8_t)BYTE2(Vincrement) + textureIndexV + v180;
+				textureIndexV = (int8_t)BYTE2(Vincrement_v1135) + textureIndexV + v180;
 
 				*currentPixel = x_BYTE_F6EE0_tablesx[paletteMapping_v375];
 				currentPixel += 1;
@@ -5631,23 +5629,23 @@ void DrawPolygonRasterLine_reflections_subB6253(
 	Rasterline_t *pRasterLines,
 	uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
 	uint8_t **pv1102,
-	uint32_t Vincrement, int Uincrement_v1124,
+	uint32_t Vincrement_v1135, int Uincrement_v1124,
 	uint32_t BrightnessIncrement,
-	uint8_t *pTexture 
+	uint8_t *pTexture_v389 
 	)
 {
 	Rasterline_t *next_raster_line = pRasterLines;
 	Rasterline_t *current_raster_line;
 	uint8_t line25 = startLine;
 
-	int VincrementFixedPoint = Vincrement << 16;
+	int VincrementFixedPoint = Vincrement_v1135 << 16;
 	int v1189 = BrightnessIncrement << 16;
 
 	uint8_t v18;
 	uint8_t v180;
 	int16_t startX;
 	uint16_t paletteMapping_v375;
-	int16_t textureIndexU = 0;
+	int16_t textureIndexU_v376 = 0;
 	int16_t textureIndexV = 0;
 	int16_t endX;
 	uint8_t* currentPixel;
@@ -5686,7 +5684,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				textureIndexV = BYTE2(current_raster_line->V);
 
 				LOWORD(v1053) = LOWORD(current_raster_line->U);
-				textureIndexU = BYTE2(current_raster_line->U);
+				textureIndexU_v376 = BYTE2(current_raster_line->U);
 
 				pixelCount = endX;
 				v1054 = __SWAP_HILOWORD__(current_raster_line->brightness);
@@ -5698,12 +5696,12 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				pixelCount = endX;
 				const int v1050 = (uint16_t)-startX;
 
-				v1053 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement * v1050);
+				v1053 = __SWAP_HILOWORD__(current_raster_line->V + Vincrement_v1135 * v1050);
 				textureIndexV = (uint8_t)v1053;
 
 				const unsigned int v1052 = current_raster_line->U + Uincrement_v1124 * v1050;
 				LOWORD(v1053) = v1052;
-				textureIndexU = BYTE2(v1052);
+				textureIndexU_v376 = BYTE2(v1052);
 
 				v1054 = __SWAP_HILOWORD__(current_raster_line->brightness + BrightnessIncrement * v1050);
 			}
@@ -5717,13 +5715,13 @@ void DrawPolygonRasterLine_reflections_subB6253(
 				if (textureIndexV > MAX_TEXTURE_INDEX)
 					break;
 
-				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU;
-				LOBYTE(paletteMapping_v375) = pTexture[textureIndex];
+				uint16_t textureIndex = (uint16_t)(textureIndexV << 8) | textureIndexU_v376;
+				LOBYTE(paletteMapping_v375) = pTexture_v389[textureIndex];
 
 				v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1053);
 				LOWORD(v1053) = Uincrement_v1124 + v1053;
 				BYTE1(paletteMapping_v375) = v1054;
-				textureIndexU = (int8_t)BYTE2(Uincrement_v1124) + v180 + textureIndexU;
+				textureIndexU_v376 = (int8_t)BYTE2(Uincrement_v1124) + v180 + textureIndexU_v376;
 
 				if ((uint8_t)paletteMapping_v375 >= 0xCu)
 				{
@@ -5738,7 +5736,7 @@ void DrawPolygonRasterLine_reflections_subB6253(
 
 				v180 = __CFADD__(VincrementFixedPoint, v1053);
 				v1053 = VincrementFixedPoint + v1053;
-				textureIndexV = (int8_t)BYTE2(Vincrement) + v180 + textureIndexV;
+				textureIndexV = (int8_t)BYTE2(Vincrement_v1135) + v180 + textureIndexV;
 
 				v180 = __CFADD__(v1189, v1054);
 				v1054 = v1189 + v1054;
@@ -5768,11 +5766,13 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	uint8_t* renderBufferStartOfCurrentLine; // [esp+0h] [ebp-88h]
 	int linesToDraw_v1123; // [esp+20h] [ebp-68h]
 	int32_t Uincrement_v1124; // [esp+24h] [ebp-64h]
-	uint32_t Vincrement; // [esp+30h] [ebp-58h]
+	uint32_t Vincrement_v1135; // [esp+30h] [ebp-58h]
 	uint32_t BrightnessIncrement = 0xAAAAAAAA; // [esp+3Ch] [ebp-4Ch]
+	int32_t textureIndexU_v376 = 0;
+	uint32_t textureIndexV = 0;
 
 	Uincrement_v1124 = 0;
-	Vincrement = 0;
+	Vincrement_v1135 = 0;
 
 	// NOTE: vert_y_high does not neccessarily mean that it is the vertex with the highest y value.
 	//       It means that the raster lines are drawn from vert_y_low_v3  to vert_y_high.
@@ -6134,7 +6134,7 @@ LABEL_129_DrawTriangle:
 					const int v88 = v87 + 1;
 					Uincrement_v1124 = (signed int)(vert_y_low_v3->U + (unsigned __int64)(v1114 * (signed __int64)(vert_y_middle_v4->U - vert_y_low_v3->U) / v1118) - vert_y_high_v5->U)
 						/ v88;
-					Vincrement = (signed int)(vert_y_low_v3->V + (unsigned __int64)(v1114 * (signed __int64)(vert_y_middle_v4->V - vert_y_low_v3->V) / v1118) - vert_y_high_v5->V)
+					Vincrement_v1135 = (signed int)(vert_y_low_v3->V + (unsigned __int64)(v1114 * (signed __int64)(vert_y_middle_v4->V - vert_y_low_v3->V) / v1118) - vert_y_high_v5->V)
 						/ v88;
 				}
 				v1128 = (vert_y_high_v5->U - vert_y_low_v3->U) / v1114;
@@ -6236,7 +6236,7 @@ LABEL_129_DrawTriangle:
 					const int v73 = v72 + 1;
 					Uincrement_v1124 = (signed int)(vert_y_low_v3->U + (uint64_t)(v1114 * (int64_t)(vert_y_middle_v4->U - vert_y_low_v3->U) / v1118) - vert_y_high_v5->U)
 						/ v73;
-					Vincrement = (signed int)(vert_y_low_v3->V + (uint64_t)(v1114 * (int64_t)(vert_y_middle_v4->V - vert_y_low_v3->V) / v1118) - vert_y_high_v5->V)
+					Vincrement_v1135 = (signed int)(vert_y_low_v3->V + (uint64_t)(v1114 * (int64_t)(vert_y_middle_v4->V - vert_y_low_v3->V) / v1118) - vert_y_high_v5->V)
 						/ v73;
 					v69 = (signed int)(vert_y_low_v3->Brightness + (uint64_t)(v1114 * (int64_t)(vert_y_middle_v4->Brightness - vert_y_low_v3->Brightness) / v1118) - vert_y_high_v5->Brightness) / v73;
 				}
@@ -6518,7 +6518,7 @@ LABEL_24_DrawTriangle:
 					const int v36 = v35 + 1;
 					Uincrement_v1124 = (signed int)(vert_y_middle_v4->U + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->U - vert_y_high_v5->U) / dY_HighLowVert) - vert_y_low_v3->U)
 						/ v36;
-					Vincrement = (signed int)(vert_y_middle_v4->V + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->V - vert_y_high_v5->V) / dY_HighLowVert) - vert_y_low_v3->V)
+					Vincrement_v1135 = (signed int)(vert_y_middle_v4->V + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->V - vert_y_high_v5->V) / dY_HighLowVert) - vert_y_low_v3->V)
 						/ v36;
 				}
 				v1126 = (vert_y_high_v5->U - vert_y_low_v3->U) / dY_HighLowVert;
@@ -6616,7 +6616,7 @@ LABEL_24_DrawTriangle:
 				const int v20 = v19 + 1;
 				Uincrement_v1124 = (signed int)(vert_y_middle_v4->U + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->U - vert_y_high_v5->U) / dY_HighLowVert) - vert_y_low_v3->U)
 					/ v20;
-				Vincrement = (signed int)(vert_y_middle_v4->V + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->V - vert_y_high_v5->V) / dY_HighLowVert) - vert_y_low_v3->V)
+				Vincrement_v1135 = (signed int)(vert_y_middle_v4->V + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->V - vert_y_high_v5->V) / dY_HighLowVert) - vert_y_low_v3->V)
 					/ v20;
 				BrightnessIncrement = (signed int)(vert_y_middle_v4->Brightness + (unsigned __int64)(v1117 * (signed __int64)(vert_y_low_v3->Brightness - vert_y_high_v5->Brightness) / dY_HighLowVert) - vert_y_low_v3->Brightness)
 					/ v20;
@@ -6819,7 +6819,7 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 		case 0x17:
 			v127 = vert_y_middle_v4->X - vert_y_high_v5->X;
 			Uincrement_v1124 = (vert_y_middle_v4->U - vert_y_high_v5->U) / v127;
-			Vincrement = (vert_y_middle_v4->V - vert_y_high_v5->V) / v127;
+			Vincrement_v1135 = (vert_y_middle_v4->V - vert_y_high_v5->V) / v127;
 			v1130 = (vert_y_high_v5->U - vert_y_low_v3->U) / linesToDraw_v1123;
 			v1141 = (vert_y_high_v5->V - vert_y_low_v3->V) / linesToDraw_v1123;
 			v128 = vert_y_low_v3->X << 16;
@@ -6867,7 +6867,7 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalBottom:
 		case 0x1A:
 			v119 = vert_y_middle_v4->X - vert_y_high_v5->X;
 			Uincrement_v1124 = (vert_y_middle_v4->U - vert_y_high_v5->U) / v119;
-			Vincrement = (vert_y_middle_v4->V - vert_y_high_v5->V) / v119;
+			Vincrement_v1135 = (vert_y_middle_v4->V - vert_y_high_v5->V) / v119;
 			BrightnessIncrement = (vert_y_middle_v4->Brightness - vert_y_high_v5->Brightness) / v119;
 			v1129 = (vert_y_high_v5->U - vert_y_low_v3->U) / linesToDraw_v1123;
 			v1140 = (vert_y_high_v5->V - vert_y_low_v3->V) / linesToDraw_v1123;
@@ -7022,7 +7022,7 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 			// flat shading
 			dX_v4v3 = vert_y_middle_v4->X - vert_y_low_v3->X;
 			Uincrement_v1124 = (vert_y_middle_v4->U - vert_y_low_v3->U) / dX_v4v3;
-			Vincrement = (vert_y_middle_v4->V - vert_y_low_v3->V) / dX_v4v3;
+			Vincrement_v1135 = (vert_y_middle_v4->V - vert_y_low_v3->V) / dX_v4v3;
 			v1132 = (vert_y_high_v5->U - vert_y_low_v3->U) / linesToDraw_v1123;
 			v1143 = (vert_y_high_v5->V - vert_y_low_v3->V) / linesToDraw_v1123;
 			v154 = vert_y_low_v3->X << 16;
@@ -7071,7 +7071,7 @@ LABEL_277_PrepareRasterlineForTriangleWithHorizontalTop:
 			// normal shading and reflections
 			dX_v4v3 = vert_y_middle_v4->X - vert_y_low_v3->X;
 			Uincrement_v1124 = (vert_y_middle_v4->U - vert_y_low_v3->U) / dX_v4v3;
-			Vincrement = (vert_y_middle_v4->V - vert_y_low_v3->V) / dX_v4v3;
+			Vincrement_v1135 = (vert_y_middle_v4->V - vert_y_low_v3->V) / dX_v4v3;
 			BrightnessIncrement = (vert_y_middle_v4->Brightness - vert_y_low_v3->Brightness) / dX_v4v3;
 			int v1131 = (vert_y_high_v5->U - vert_y_low_v3->U) / linesToDraw_v1123;
 			int v1142 = (vert_y_high_v5->V - vert_y_low_v3->V) / linesToDraw_v1123;
@@ -7126,10 +7126,10 @@ LABEL_DrawRasterLines:
 		return;
 	case 5:
 		DrawPolygonRasterLine_subB6253(
-			&rasterlines_DE56Cx[startLine][0],
+			&rasterlines_DE56Cx[startLine][0], &textureIndexU_v376, &textureIndexV,
 			startLine, drawEveryNthLine, linesToDraw_v1123,
 			&renderBufferStartOfCurrentLine, 
-			Vincrement, Uincrement_v1124, BrightnessIncrement,
+			Vincrement_v1135, Uincrement_v1124, BrightnessIncrement,
 			x_DWORD_DE55C_ActTexture
 		);
 		return;
@@ -7139,7 +7139,7 @@ LABEL_DrawRasterLines:
 			&rasterlines_DE56Cx[startLine][0],
 			startLine, drawEveryNthLine, linesToDraw_v1123,
 			&renderBufferStartOfCurrentLine, 
-			Vincrement, Uincrement_v1124,
+			Vincrement_v1135, Uincrement_v1124,
 			x_DWORD_DE55C_ActTexture, x_BYTE_E126C
 		);
 		return;
@@ -7148,7 +7148,7 @@ LABEL_DrawRasterLines:
 			&rasterlines_DE56Cx[startLine][0],
 			startLine, drawEveryNthLine, linesToDraw_v1123,
  			&renderBufferStartOfCurrentLine,
-			Vincrement, Uincrement_v1124, BrightnessIncrement,
+			Vincrement_v1135, Uincrement_v1124, BrightnessIncrement,
 			x_DWORD_DE55C_ActTexture
 		);
 		return;

@@ -86,7 +86,7 @@ private:
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture);
 	void DrawPolygonRasterLine_single_color_subB6253(Rasterline_t* pRasterLines, uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
 		uint8_t** ptrRenderBufferStartOfCurrentLine_v1102, char local_x_BYTE_E126C);
-	void DrawPolygonRasterLine_subB6253(Rasterline_t* pRasterLines, uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
+	void DrawPolygonRasterLine_subB6253(Rasterline_t* pRasterLines, int32_t* textureIndexU, uint32_t* textureIndexV, uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
 		uint8_t** ptrViewPortRenderLineStart_v1102, uint32_t Vincrement, int32_t Uincrement, uint32_t BrightnessIncrement_v1146,
 		const uint8_t* pTexture);
 	void DrawPolygonRasterLine_flat_shading_subB6253(Rasterline_t* pRasterLines, uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
