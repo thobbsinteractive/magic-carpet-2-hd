@@ -5500,7 +5500,7 @@ void GameRenderHD::DrawPolygonRasterLine_subB6253(
 
 				v180 = __CFADD__(fixedpointVincrement_v1167, v383);
 				v383 += fixedpointVincrement_v1167;
-				textureIndexV = (int8_t)BYTE2(Vincrement_v1135) + textureIndexV + v180;
+				*textureIndexV = (int8_t)BYTE2(Vincrement_v1135) + *textureIndexV + v180;
 
 				*ptrViewPortRenderPixel_v379 = x_BYTE_F6EE0_tablesx[paletteMapping_v375];
 
