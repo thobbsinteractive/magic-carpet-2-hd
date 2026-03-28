@@ -27,6 +27,13 @@ bool LoadLevelSMAP_558E0(uint8_t savefileindex, bool loadRegressionTest = false)
 bool LoadLevelSLEV_55A10(uint8_t savefileindex, bool loadRegressionTest = false);
 bool SaveLevel_55080(uint8_t savefileindex, int32_t LevelNumber, char* filenameindex);
 void sub_49270_generate_level_features(Type_Level_2FECE* terrain);
+static std::string MapTypeFolder(MapType_t mt);
+static std::string DatBaseName(MapType_t mt);
+static uint8_t NearestPaletteIndex(uint8_t r, uint8_t g, uint8_t b, const TColor* palette, int paletteSize);
+static void EncodeRLE(const uint8_t* raw, const uint8_t* hasAlpha, int w, int h, std::vector<uint8_t>& out);
+static bool PatchSprite(bitmap_pos_struct2_t* tabBase, uint8_t* datBase, size_t& datUsed, size_t datCapacity, int spriteIndex, const char* pngPath, 
+	const TColor* palette, int paletteSize);
+void LoadMenuCustomGraphics();
 void LoadSpr_47160();
 void sub_55100(char a1);
 void sub_57680_FixPointersAfterLoad();

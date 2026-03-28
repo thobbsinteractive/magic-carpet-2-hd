@@ -134,8 +134,8 @@ bool SetConfig() {
 		config_skip_screen = 0;
 
 	//Path
-	strcpy((char*)gameFolder, config.m_Paths.m_GameFolder.c_str());
-	strcpy((char*)cdFolder, config.m_Paths.m_CdFolder.c_str());
+	gameFolder = config.m_Paths.m_GameFolder;
+	cdFolder = config.m_Paths.m_CdFolder;
 
 	//Sound
 	hqsound = config.m_Sound.m_HqSound;
@@ -184,9 +184,9 @@ bool SetConfig() {
 			gameUiScale--;
 		}
 	}
-	strcpy(bigGraphicsFolder, config.m_Graphics.m_GameDetail.m_BigGraphicsFolder.c_str());
-	if (config.m_Graphics.m_GameDetail.m_UseEnhancedGraphics && strlen(bigGraphicsFolder) > 0
-		&& std::filesystem::is_directory(GetSubDirectoryPath(bigGraphicsFolder)))
+	bigGraphicsFolder = config.m_Graphics.m_GameDetail.m_BigGraphicsFolder;
+	if (config.m_Graphics.m_GameDetail.m_UseEnhancedGraphics && strlen(bigGraphicsFolder.c_str()) > 0
+		&& std::filesystem::is_directory(GetSubDirectoryPath(bigGraphicsFolder.c_str())))
 	{
 		bigSprites = true;
 		bigTextures = true;
@@ -197,9 +197,9 @@ bool SetConfig() {
 		texturepixels = 32;
 	}
 
-	strcpy(menuGraphicsFolder, config.m_Graphics.m_GameDetail.m_MenuGraphicsFolder.c_str());
-	if (config.m_Graphics.m_GameDetail.m_UseEnhancedMenuGraphics && strlen(menuGraphicsFolder) > 0
-		&& std::filesystem::is_directory(GetSubDirectoryPath(menuGraphicsFolder)))
+	menuGraphicsFolder = config.m_Graphics.m_GameDetail.m_MenuGraphicsFolder;
+	if (config.m_Graphics.m_GameDetail.m_UseEnhancedMenuGraphics && strlen(menuGraphicsFolder.c_str()) > 0
+		&& std::filesystem::is_directory(GetSubDirectoryPath(menuGraphicsFolder.c_str())))
 	{
 		menuGraphics = true;
 	}
