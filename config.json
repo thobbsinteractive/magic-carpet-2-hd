@@ -48,7 +48,10 @@
 						"gameResWidth: In Game resolution. If using software render keep this low",
 						"gameUiScale: Scale of the Game Mini/Map and UI '2' recommended for HD, 3 for higher. (Max 8) Will not allow spell menu to be wider than screen width",
 						"useEnhancedGraphics: If set to true, bigGraphicsFolder must be set as well",
-						"bigGraphicsFolder: Directory with 128x128 textures(upscaled by AI). Path is relative to .exe"
+						"bigGraphicsFolder: Directory with 128x128 textures(upscaled by AI). Path is relative to .exe",
+						"sky: Turns the sky on or off. Can be changed in-game",
+						"reflections: Turns the reflections on or off. Can be changed in-game",
+						"dynamicLighting: Turns the reflections on or off. Can be changed in-game"
 					],
 					"gameResWidth": 1920,
 					"gameResHeight": 1080,
