@@ -58,6 +58,8 @@
 					"gameUiScale": 2,
 					"useEnhancedGraphics": false,
 					"bigGraphicsFolder": "biggraphics",
+					"useEnhancedMenuGraphics": false,
+					"menuGraphicsFolder": "biggraphics/menu",
 					"sky": true,
 					"reflections": true,
 					"dynamicLighting": true
