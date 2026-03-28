@@ -343,10 +343,20 @@ Pathstruct xadatatables = { "",(uint8_t**)&x_DWORD_D41BC_langbuffer,&LANG_BEGIN_
 //zero
 //#define psxazero14 47
 
+bool IsDefaultResolution320(int width, int height)
+{
+	return (width == 320 && height == 200);
+}
+
+bool IsDefaultResolution640(int width, int height)
+{
+	return (width == 640 && height == 480);
+}
+
 bool IsDefaultResolution(int width, int height)
 {
-	if (((width == 640) && (height == 480)) || 
-		 (width == 320) && (height == 200))
+	if ((IsDefaultResolution320(width, height)) ||
+		 IsDefaultResolution640(width, height))
 		return true;
 	return false;
 }
@@ -3392,3 +3402,18 @@ unsigned long _clock()
 unsigned long j___clock() {
 	return _clock();
 }; // weak
+
+void SetPlayerLocation(uint16_t x, uint16_t y, int16_t z, int16_t pitch, int16_t roll, int16_t yaw)
+{
+	if (Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240] != nullptr)
+	{
+		auto ptrPlayerEntity = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
+		ptrPlayerEntity->position_0x4C_76.x = x;
+		ptrPlayerEntity->position_0x4C_76.y = y;
+		ptrPlayerEntity->position_0x4C_76.z = z;
+
+		ptrPlayerEntity->array_0x52_82.pitch = pitch;
+		ptrPlayerEntity->array_0x52_82.roll = roll;
+		ptrPlayerEntity->array_0x52_82.yaw = yaw;
+	}
+}

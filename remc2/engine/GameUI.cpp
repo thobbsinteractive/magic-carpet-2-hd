@@ -3320,6 +3320,9 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 
 void DrawRectangle(uint8_t* ptrImageBuffer, int posX, int posY, int width, int height, uint8_t lineThickness, uint32_t pitch, uint8_t colour)
 {
+	if (posX < 0 || posY < 0)
+		return;
+
 	uint8_t * ptrImageStart =  (pitch * posY) + posX + ptrImageBuffer;
 
 	//Top
