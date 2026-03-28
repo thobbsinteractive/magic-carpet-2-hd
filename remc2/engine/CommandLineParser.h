@@ -14,9 +14,9 @@ class CommandLineParser {
         // modes: these control behaviour and set multiple other parameters
         bool ModeReleaseGame() const {return m_mode_release_game;}; //this is standard setting
         bool ModePlayingGame() const {return m_mode_playing_game;}; //this is setting for autosavegame
-        bool ModeTestRegressionsGame() const {return m_mode_test_regressions_game;}; //this is setting for regressions testing
-        bool ModeDebugAfterload() const {return m_mode_debug_afterload;}; //this is setting is for compare data with dosbox afterload(can fix mouse move, and etc.)
-        bool ModeDebugOnstart() const {return m_mode_debug_onstart;}; //this is setting is for compare data with dosbox(can fix mouse move, and etc.)
+        int ModeRegressionsSaveIndex() const { return m_test_save_index; }; //this is setting for regressions testing
+		int ModeRegressionsTestType() const { return m_mode_regression_type; }; //this is setting for regressions testing
+		bool ModeDebugOnstart() const {return m_mode_debug_onstart;}; //this is setting is for compare data with dosbox(can fix mouse move, and etc.)
         bool ModeTestNetwork() const {return m_mode_test_network;};
 
         // parameters
@@ -52,11 +52,13 @@ class CommandLineParser {
         bool DoTextOutputToConsole() const { return m_text_output_to_console;};
         bool DoStateMonitor() const { return m_state_monitor;};
         bool DoShowInGameDebug() const { return m_enable_in_game_debug; };
+        bool DoKillMoveAndRotation() const { return m_kill_move_and_rotation; };
 
         // settings
         std::string GetMemimagesPath() const {return m_memimages_path;};
         std::string GetConfigFilePath() const { return m_config_file_path; };
 		int16_t GetSetLevel() const { return m_set_level; };
+		int16_t GetMaxRegressionsSteps() const { return m_max_regressions_steps;};
 		std::string GetCustomLevelPath() const { return m_custom_level_path; };
 		std::string GetLogLevelStr() const { return m_log_level_str; };
 		std::string GetRecordingPath() const { return m_record_file; };
@@ -70,10 +72,9 @@ class CommandLineParser {
         // modes: these control behaviour and set multiple other parameters
         bool m_mode_release_game;
         bool m_mode_playing_game;
-        bool m_mode_test_regressions_game;
-        bool m_mode_debug_afterload;
         bool m_mode_debug_onstart;
         bool m_mode_test_network;
+		int m_mode_regression_type;
 
         // parameters
         bool m_alternative_gamespeed_control;
@@ -107,10 +108,13 @@ class CommandLineParser {
         bool m_text_output_to_console;
         bool m_state_monitor;
         bool m_enable_in_game_debug;
+        bool m_kill_move_and_rotation;
+		int m_test_save_index;
 
         std::string m_memimages_path;
         std::string m_config_file_path;
         uint16_t m_set_level;
+		uint32_t m_max_regressions_steps;
         std::string m_custom_level_path;
 		std::string m_log_level_str;
 		std::string m_record_file;

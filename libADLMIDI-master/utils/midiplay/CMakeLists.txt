@@ -73,7 +73,10 @@ if(WIN32)
     if(NOT MSVC)
         target_link_libraries(adlmidiplay PRIVATE pthread)
     endif()
-    set_property(TARGET adlmidiplay PROPERTY WIN32_EXECUTABLE TRUE)
+    set_property(TARGET adlmidiplay PROPERTY WIN32_EXECUTABLE OFF)
+    if(MSVC)
+        target_compile_definitions(adlmidiplay PRIVATE -DWIN32_CONSOLE)
+    endif()
 elseif(NOT ADLMIDI_DOS)
     if(NOT OPENBSD_LOCALBASE AND NOT HAIKU)
         target_link_libraries(adlmidiplay PRIVATE dl)
@@ -91,4 +94,3 @@ endif()
 
 install(TARGETS adlmidiplay
         RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
-

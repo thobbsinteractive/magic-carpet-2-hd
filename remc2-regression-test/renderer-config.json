@@ -25,7 +25,7 @@
 					"gameResHeight": 480,
 					"useEnhancedGraphics": false,
 					"bigGraphicsFolder": "biggraphics",
-					"sky": false,
+					"sky": true,
 					"reflections": true,
 					"dynamicLighting": true
 				},

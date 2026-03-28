@@ -29,9 +29,9 @@ typedef struct {
 #pragma pack (16)
 
 
-extern char x_BYTE_D419D_fonttype;
+extern char FontType_D419D;
 extern char x_BYTE_D47D8;
-extern char x_BYTE_D94FF_spell_index[29];
+extern char spellIndex_D94FF[29];
 extern int16_t x_WORD_E375C_mouse_position_x;
 extern int16_t x_WORD_E375E_mouse_position_y;
 extern uint8_t xx_array_E36C4[64];
@@ -41,10 +41,10 @@ constexpr std::array WizardsNames_D93A0 {
 };
 
 
-void sub_2BD10_draw_line(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5);
+void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t color, uint8_t thickness = 1);
 
 void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1, uint8_t scale = 1);
-void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_entity_0x6E8E* a3, char a4, uint8_t scale = 1);
+void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_entity_0x6E8E* playerEvent, bool drawNextBitmap, uint8_t scale = 1);
 
 void ComputeTextboxSizes_89830(Type_TextBox_1804B0* textbox, uint8_t scale = 1);
 void ComputeTextboxLine_898A0(Type_TextBox_1804B0* textbox);
@@ -68,7 +68,7 @@ void SetSoundEffectAndMusicLevelCoordinates_19D60(signed int volume);
 
 void DrawPauseMenuPopUps_87860();
 void sub_87C10();
-void DrawBottomMenu_2ECC0();
+void DrawBottomSpellsMenu_2ECC0();
 void ColorizeScreen_2E790(int posX, int posY, int width, int height, uint8_t color);
 void DrawChatMenu_2F6B0();
 void DrawPopupTextBox_87610();
@@ -83,9 +83,9 @@ bool sub_596C0(axis_3d* a1, int16_t a2);
 char sub_63570(type_entity_0x6E8E* a1, type_entity_0x6E8E* a2);
 void DrawMinimap_63600(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10);
 void DrawMinimapEntites_61880(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
-signed int sub_616D0(signed int a1);
-void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling);
-char sub_64CE0_draw_follow_rectangle(v51x_struct* a1);
+int TransformPlayerColorIndex_616D0(int index);
+void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
+char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale = 1);
 void DrawOkCancelMenu_30A60(int16_t posTextX, int16_t posTextY, uint8_t scale = 1);
 void DrawPauseMenu_2FD90(uint8_t scale = 1);
 void DrawSorcererScores_2D1D0(uint8_t scale = 1);
@@ -95,7 +95,9 @@ void DrawVolumeSettings_303D0(uint8_t scale = 1);
 void sub_63670_draw_minimap_a(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10);
 void sub_63C90_draw_minimap_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10);
 void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
-void sub_61A00_draw_minimap_entites_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
+void DrawMinimapEntities_B_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
+uint8_t CalculateScaleOffset(uint8_t scale);
+void DrawRectangle(uint8_t* ptrImageBufferStart, int posX, int poxY, int width, int height, uint8_t lineThickness, uint32_t pitch, uint8_t colour);
 
 void sub_885E0(type_entity_0x6E8E* a1, int16_t posX, int16_t posY, uint16_t a4);
 
@@ -105,8 +107,8 @@ void DrawTextboxText_895D0(Type_TextBox_1804B0* textbox, const char* text, uint8
 void DrawTextboxFrame_89690(Type_TextBox_1804B0* textbox, uint8_t scale = 1);
 void ComputeFrameSizes_89980(Type_TextBox_1804B0* textbox, uint8_t scale = 1);
 
-void sub_BD524(int16_t a1, int16_t a2, int16_t a3, int16_t a4, char a5);
-void sub_BD542(uint16_t a1, uint16_t a2, uint16_t a3, uint16_t a4, char a5);
+void DrawLine_BD524(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t color);
+void DrawLine_BD542(uint16_t posX1, uint16_t posY1, uint16_t posX2, uint16_t posY2, uint8_t color);
 void sub_548F0(type_str_0x2BDE* a1);
 void sub_1A280();
 int sub_1A4A0();
@@ -115,4 +117,4 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1);
 void SetMousePositionInMemory_5BDC0(int16_t posX, int16_t posY);
 void sub_1A5B0_getLangStrings(int a1, int* a2, int* a3);
 void GetOkayCancelButtonPositions_30BE0(int16_t* a1, int16_t* a2, uint8_t scale = 1);
-void sub_52D70(uint16_t playerIndex, char* cheatMessage);
+void ShowMessage_52D70(uint16_t playerIndex, char* cheatMessage);

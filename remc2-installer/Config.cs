@@ -31,6 +31,7 @@ namespace remc2_installer
 		public bool fixSpeedSound { get; set; }
 		public int maxSimultaniousSounds { get; set; }
 		public string speechFolder { get; set; }
+		public bool autoShowObjectivesForForeignLanguages { get; set; }
 	}
 
 	public class Graphics

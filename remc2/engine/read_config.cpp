@@ -139,6 +139,7 @@ bool SetConfig() {
 	//Sound
 	hqsound = config.m_Sound.m_HqSound;
 	fixspeedsound = config.m_Sound.m_FixSpeedSound;
+	autoShowObjectivesForForeignLanguages = config.m_Sound.m_AutoShowObjectivesForForeignLanguages;
 	if (config.m_Sound.m_OggMusic)
 	{
 		oggmusic = true;

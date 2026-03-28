@@ -1,7 +1,9 @@
 #pragma once
-
+#include "../build_config.h"
+#ifdef REMC2_CODE
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#endif //REMC2_CODE
 #include <string>
 #include <map>
 
@@ -45,13 +47,13 @@ class StateMonitor {
         void Monitor_str_D4C48ar();
 
         bool m_initialized = false;
-
+#ifdef REMC2_CODE
         TTF_Font *m_font;
         SDL_Window *m_window;
         SDL_Renderer *m_renderer;
         SDL_Surface *m_surface;
         SDL_Texture *m_texture;
-
+#endif //REMC2_CODE
         map<string, ObservedChange> m_observed_changes;
 
         LastStates m_last_states;

@@ -116,8 +116,6 @@
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <None Include="editor-config.json">
-      <Filter>Source Files</Filter>
-    </None>
+    <None Include="editor-config.json" />
   </ItemGroup>
 </Project>

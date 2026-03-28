@@ -48,8 +48,8 @@
 						"useEnhancedGraphics: If set to true, bigGraphicsFolder must be set as well",
 						"bigGraphicsFolder: Directory with 128x128 textures(upscaled by AI). Path is relative to .exe"
 					],
-					"gameResWidth": 1920,
-					"gameResHeight": 1080,
+					"gameResWidth": 640,
+					"gameResHeight": 480,
 					"gameUiScale": 2,
 					"useEnhancedGraphics": false,
 					"bigGraphicsFolder": "biggraphics",

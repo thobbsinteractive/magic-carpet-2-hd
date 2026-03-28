@@ -106,7 +106,7 @@ TEST(Terrain, sub_44E40) {
 
 	for (int j = 0; j < 400; j++)
 	{
-		x_WORD_17B4E0 = pseudoRand() % (256 * 256);
+		rand2_17B4E0 = pseudoRand() % (256 * 256);
 		int a1 = pseudoRand() % 256;
 		uint8_t a2 = pseudoRand() % 256;
 
@@ -120,7 +120,7 @@ TEST(Terrain, sub_44E40) {
 			mapHeightmap_11B4E0[i] = pseudoRand() % (256 * 256);
 			tempHeightmap1[i] = mapHeightmap_11B4E0[i];
 		}
-		sub_44E40_orig(a1, a2, x_WORD_17B4E0, tempTerrainType1, tempHeightmap1, tempAngle1);
+		sub_44E40_orig(a1, a2, rand2_17B4E0, tempTerrainType1, tempHeightmap1, tempAngle1);
 
 		sub_44E40(a1, a2);
 
@@ -194,10 +194,10 @@ TEST(Terrain, sub_45DC0) {
 		for (int i = 0; i < 7 * 7 * 7 * 7; i++)
 			for (int m = 0; m < 2; m++)
 			{
-				x_BYTE_F2CD0x[i][m] = pseudoRand() % 256;
+				building_F2CD0x[i][m] = pseudoRand() % 256;
 			}
-		x_WORD_17B4E0 = pseudoRand() % (256 * 256);
-		uint16_t tempx_WORD_17B4E0 = x_WORD_17B4E0;
+		rand2_17B4E0 = pseudoRand() % (256 * 256);
+		uint16_t temprand2_17B4E0 = rand2_17B4E0;
 
 		//Create Test Data
 		for (int i = 0; i < 256 * 256; i++)
@@ -215,7 +215,7 @@ TEST(Terrain, sub_45DC0) {
 			tempHeight1[i] = mapHeightmap_11B4E0[i];
 		}
 
-		sub_45DC0_orig(tempa2, tempa3x, tempa4, D41A0_0.terrain_2FECE.MapType, lowDiffHeightmap_D47DC, isCaveLevel_D41B6, &tempx_WORD_17B4E0, x_BYTE_F2CD0x, tempTerrType1, tempHeight1, tempAng1, tempShad1, tempSecHeight1);
+		sub_45DC0_orig(tempa2, tempa3x, tempa4, D41A0_0.terrain_2FECE.MapType, lowDiffHeightmap_D47DC, isCaveLevel_D41B6, &temprand2_17B4E0, building_F2CD0x, tempTerrType1, tempHeight1, tempAng1, tempShad1, tempSecHeight1);
 
 		sub_45DC0(tempa2, tempa3x, tempa4);
 
@@ -227,7 +227,7 @@ TEST(Terrain, sub_45DC0) {
 			ASSERT_EQ(tempSecHeight1[i], x_BYTE_14B4E0_second_heightmap[i]);
 			ASSERT_EQ(tempAng1[i], mapAngle_13B4E0[i]);
 		}
-		ASSERT_EQ(x_WORD_17B4E0, tempx_WORD_17B4E0);
+		ASSERT_EQ(rand2_17B4E0, temprand2_17B4E0);
 	}
 	free(x_BYTE_14B4E0_second_heightmap);
 	free(tempTerrType1);
@@ -496,7 +496,7 @@ TEST(Terrain, sub_43B40) {
 	uint8_t* tempSecondHeightmap1 = (uint8_t*)malloc(65536);
 	uint8_t* tempAng1 = (uint8_t*)malloc(65536);
 	x_BYTE_14B4E0_second_heightmap = (uint8_t*)malloc(65536);
-	uint16_t temp_x_BYTE_D41B7_1;
+	uint16_t temp_MapBasicHeight_D41B7_1;
 
 	//Create Test Data
 	for (int i = 0; i < 256 * 256; i++)
@@ -508,14 +508,14 @@ TEST(Terrain, sub_43B40) {
 		tempMapHeightmap1[i] = mapHeightmap_11B4E0[i];
 		tempSecondHeightmap1[i] = x_BYTE_14B4E0_second_heightmap[i];
 	}
-	x_BYTE_D41B7 = pseudoRand() % 256;
-	temp_x_BYTE_D41B7_1 = x_BYTE_D41B7;
+	MapBasicHeight_D41B7 = pseudoRand() % 256;
+	temp_MapBasicHeight_D41B7_1 = MapBasicHeight_D41B7;
 
-	sub_43B40_orig(temp_x_BYTE_D41B7_1, tempMapHeightmap1, tempAng1, tempSecondHeightmap1);
+	sub_43B40_orig(temp_MapBasicHeight_D41B7_1, tempMapHeightmap1, tempAng1, tempSecondHeightmap1);
 
 	sub_43B40();
 
-	ASSERT_EQ(temp_x_BYTE_D41B7_1, x_BYTE_D41B7);
+	ASSERT_EQ(temp_MapBasicHeight_D41B7_1, MapBasicHeight_D41B7);
 
 	for (int i = 0; i < 256 * 256; i++)
 	{
@@ -537,8 +537,8 @@ TEST(Terrain, sub_44580) {
 	uint8_t* tempScreenBuffer1 = (uint8_t*)malloc(100000);
 	uint8_t* tempAng1 = (uint8_t*)malloc(65536);
 	uint8_t* tempTerrainType1 = (uint8_t*)malloc(65536);
-	uint16_t temp_x_WORD_17B4E0_1;
-	char tempx_BYTE_F2CD0x1[7 * 7 * 7 * 7][2];
+	uint16_t temp_rand2_17B4E0_1;
+	char tempbuilding_F2CD0x1[7 * 7 * 7 * 7][2];
 
 	//Create Test Data
 	for (int i = 0; i < 256 * 256; i++)
@@ -551,28 +551,28 @@ TEST(Terrain, sub_44580) {
 	for (int i = 0; i < 7 * 7 * 7 * 7; i++)
 		for (int m = 0; m < 2; m++)
 		{
-			x_BYTE_F2CD0x[i][m] = pseudoRand() % 256;
-			tempx_BYTE_F2CD0x1[i][m] = x_BYTE_F2CD0x[i][m];
+			building_F2CD0x[i][m] = pseudoRand() % 256;
+			tempbuilding_F2CD0x1[i][m] = building_F2CD0x[i][m];
 		}
 	for (int i = 0; i < 100000; i++)
 	{
 		pdwScreenBuffer_351628[i] = pseudoRand() % 256;
 		tempScreenBuffer1[i] = pdwScreenBuffer_351628[i];
 	}
-	x_WORD_17B4E0 = pseudoRand() % (256 * 256);
-	temp_x_WORD_17B4E0_1 = x_WORD_17B4E0;
+	rand2_17B4E0 = pseudoRand() % (256 * 256);
+	temp_rand2_17B4E0_1 = rand2_17B4E0;
 
-	sub_44580_orig(tempScreenBuffer1, temp_x_WORD_17B4E0_1, tempx_BYTE_F2CD0x1, tempTerrainType1, tempAng1);
+	sub_44580_orig(tempScreenBuffer1, temp_rand2_17B4E0_1, tempbuilding_F2CD0x1, tempTerrainType1, tempAng1);
 
 	sub_44580();
 
 	for (int i = 0; i < 7 * 7 * 7 * 7; i++)
 		for (int m = 0; m < 2; m++)
 		{
-			ASSERT_EQ(tempx_BYTE_F2CD0x1[i][m], x_BYTE_F2CD0x[i][m]);
+			ASSERT_EQ(tempbuilding_F2CD0x1[i][m], building_F2CD0x[i][m]);
 		}
 
-	ASSERT_EQ(temp_x_WORD_17B4E0_1, x_WORD_17B4E0);
+	ASSERT_EQ(temp_rand2_17B4E0_1, rand2_17B4E0);
 
 	for (int i = 0; i < 0x961u * 25; i++)
 	{

@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.2...3.10)
-project (libADLMIDI VERSION 1.6.0 LANGUAGES C CXX)
+project (libADLMIDI VERSION 1.6.1 LANGUAGES C CXX)
 
 include(GNUInstallDirs)
 include(CheckCCompilerFlag)
@@ -25,8 +25,23 @@ else()
     endif()
 endif()
 
+function(CheckCPP14Build OUTVAR)
+    set(CMAKE_CXX_STANDARD 14)
+    try_compile(${OUTVAR}
+        ${CMAKE_CURRENT_BINARY_DIR}/cmake-checks
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/checks/cpp14.cpp
+        CMAKE_FLAGS -DCMAKE_CXX_FLAGS=${FLAG_CPP14}
+    )
+endfunction()
+
 if(COMPILER_SUPPORTS_CXX14)
-    message("== Your C++ compiler supports C++14, YMFM emulator will be ENABLED")
+    CheckCPP14Build(COMPILER_BUILDS_CXX14)
+    if(COMPILER_BUILDS_CXX14)
+        message("== Your C++ compiler supports C++14, YMFM emulator will be ENABLED")
+    else()
+        message("== Your C++ compiler can't build C++14, YMFM emulator will be DISABLED")
+        set(COMPILER_SUPPORTS_CXX14 FALSE)
+    endif()
 else()
     message("== Your C++ compiler does NOT supports C++14, YMFM emulator will be DISABLED")
 endif()
@@ -79,6 +94,12 @@ elseif(NOT MSVC AND NOT MSDOS AND NOT OPENBSD_LOCALBASE)
             CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O2 -fdata-sections -ffunction-sections")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -fdata-sections -ffunction-sections")
+    string(REGEX REPLACE "-O3" ""
+            CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+    string(REGEX REPLACE "-O3" ""
+            CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+    set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO} -O2 -fdata-sections -ffunction-sections")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -O2 -fdata-sections -ffunction-sections")
     if(ANDROID)
         set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -funwind-tables")
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -funwind-tables")
@@ -94,6 +115,8 @@ if(NOT MSVC AND NOT MSDOS)
 # Global optimization flags
     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fno-omit-frame-pointer")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fno-omit-frame-pointer")
+    set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO} -fno-omit-frame-pointer")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -fno-omit-frame-pointer")
 # Turn on all warnings
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
@@ -415,9 +438,6 @@ function(handle_options targetLib)
             target_compile_definitions(${targetLib} PUBLIC ADLMIDI_ENABLE_OPL3_LLE_EMULATOR)
         endif()
 
-        if(USE_NUKED_OPL3_LLE_EMULATOR)
-        endif()
-
         if(USE_HW_SERIAL)
             set(HAS_EMULATOR TRUE)
             target_sources(${targetLib} PRIVATE
@@ -698,6 +718,8 @@ message("USE_ESFMU_EMULATOR       = ${USE_ESFMU_EMULATOR}")
 message("USE_MAME_EMULATOR        = ${USE_MAME_EMULATOR}")
 if(COMPILER_SUPPORTS_CXX14)
     message("USE_YMFM_EMULATOR        = ${USE_YMFM_EMULATOR}")
+else()
+    message("USE_YMFM_EMULATOR        = OFF <lack of C++14>")
 endif()
 message("USE_HW_SERIAL            = ${USE_HW_SERIAL}")
 if(USE_NUKED_OPL2_LLE_EMULATOR OR USE_NUKED_OPL3_LLE_EMULATOR)
@@ -705,7 +727,7 @@ if(USE_NUKED_OPL2_LLE_EMULATOR OR USE_NUKED_OPL3_LLE_EMULATOR)
 VERY POWERFUL processor to work (For example, on Intel Core i7-11700KF (8 cores, 3.60 GHz) \
 they can work in real-time only when they built with Release optimisations, Debug builds \
 are choppy even single chip run). You can't use them on weak devices, don't even think to \
-run theom mobile. I warned. If you want, feel free to optimize them and contribute your \
+run them on mobile. I warned. If you want, feel free to optimize them and contribute your \
 updates to @NukeYkt who created them. The only way you can use them on weaker hardware \
 is record WAVs where real-time performance doesn't matter.")
 endif()
