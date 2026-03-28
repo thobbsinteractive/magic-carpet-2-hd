@@ -40,6 +40,8 @@ private:
 		int m_GameUiScale = 1;
 		bool m_UseEnhancedGraphics = false;
 		std::string m_BigGraphicsFolder = "";
+		bool m_UseEnhancedMenuGraphics = false;
+		std::string m_MenuGraphicsFolder = "";
 		bool m_Sky = true;
 		bool m_Reflections = true;
 		bool m_DynamicLighting = true;

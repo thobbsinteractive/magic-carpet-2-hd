@@ -40,6 +40,7 @@
 extern char gameFolder[512];
 extern char cdFolder[512];
 extern char bigGraphicsFolder[512];
+extern char menuGraphicsFolder[512];
 extern char forceRender[512];
 extern spdlog::logger* Logger;
 

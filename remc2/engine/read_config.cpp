@@ -37,6 +37,7 @@ bool maintainAspectRatio = false;
 bool startWindowed = false;
 bool bigTextures = false;
 bool bigSprites = false;
+bool menuGraphics = false;
 bool sky = true;
 bool reflections = false;
 bool dynamicLighting = false;
@@ -195,6 +196,14 @@ bool SetConfig() {
 	{
 		texturepixels = 32;
 	}
+
+	strcpy(menuGraphicsFolder, config.m_Graphics.m_GameDetail.m_MenuGraphicsFolder.c_str());
+	if (config.m_Graphics.m_GameDetail.m_UseEnhancedMenuGraphics && strlen(menuGraphicsFolder) > 0
+		&& std::filesystem::is_directory(GetSubDirectoryPath(menuGraphicsFolder)))
+	{
+		menuGraphics = true;
+	}
+
 	sky = config.m_Graphics.m_GameDetail.m_Sky;
 	reflections = config.m_Graphics.m_GameDetail.m_Reflections;
 	dynamicLighting = config.m_Graphics.m_GameDetail.m_DynamicLighting;
