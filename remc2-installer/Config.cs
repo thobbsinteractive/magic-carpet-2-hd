@@ -52,8 +52,10 @@ namespace remc2_installer
 		public int gameResWidth { get; set; }
 		public int gameResHeight { get; set; }
 		public int gameUiScale { get; set; }
-		public bool useEnhancedGraphics { get; set; }
-		public string bigGraphicsFolder { get; set; }
+		public bool useHighResGraphics { get; set; }
+		public string highResGraphicsFolder { get; set; }
+		public bool useFixedMenuGraphics { get; set; }
+		public string fixedMenuGraphicsFolder { get; set; }
 		public bool sky { get; set; }
 		public bool reflections { get; set; }
 		public bool dynamicLighting { get; set; }
