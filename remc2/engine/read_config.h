@@ -48,6 +48,7 @@ extern bool maintainAspectRatio;
 extern bool startWindowed;
 extern bool bigTextures;
 extern bool bigSprites;
+extern bool fixedMenuGraphics;
 extern bool sky;
 extern bool reflections;
 extern bool dynamicLighting;

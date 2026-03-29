@@ -308,8 +308,10 @@ void Config::LoadGameDetail(rapidjson::GenericObject<false, rapidjson::Value>& g
 		m_Graphics.m_GameDetail.m_GameResWidth = ReadIntValue(gameDetail, "gameResWidth");
 		m_Graphics.m_GameDetail.m_GameResHeight = ReadIntValue(gameDetail, "gameResHeight");
 		m_Graphics.m_GameDetail.m_GameUiScale = ReadIntValue(gameDetail, "gameUiScale");
-		m_Graphics.m_GameDetail.m_UseEnhancedGraphics = ReadBoolValue(gameDetail, "useEnhancedGraphics");
-		m_Graphics.m_GameDetail.m_BigGraphicsFolder = ReadStringValue(gameDetail, "bigGraphicsFolder");
+		m_Graphics.m_GameDetail.m_UseHighResGraphics = ReadBoolValue(gameDetail, "useHighResGraphics");
+		m_Graphics.m_GameDetail.m_HighResGraphicsFolder = ReadStringValue(gameDetail, "highResGraphicsFolder");
+		m_Graphics.m_GameDetail.m_UseFixedMenuGraphics = ReadBoolValue(gameDetail, "useFixedMenuGraphics");
+		m_Graphics.m_GameDetail.m_FixedMenuGraphicsFolder = ReadStringValue(gameDetail, "fixedMenuGraphicsFolder");
 		m_Graphics.m_GameDetail.m_Sky = ReadBoolValue(gameDetail, "sky");
 		m_Graphics.m_GameDetail.m_Reflections = ReadBoolValue(gameDetail, "reflections");
 		m_Graphics.m_GameDetail.m_DynamicLighting = ReadBoolValue(gameDetail, "dynamicLighting");

@@ -377,7 +377,7 @@ void InitTmaps(unsigned __int16 a1)//251f50
 		char spritePath[512];
 		if (big_sprites_inited)
 		{
-			sprintf(spritePath, "%s", bigGraphicsPath.c_str());
+			sprintf(spritePath, "%s", highResGraphicsPath.c_str());
 		}
 		else
 		{
@@ -571,25 +571,25 @@ subtype_x_DWORD_E9C28_str* LoadTMapMetadata_71E70(type_x_DWORD_E9C28_str* a1y, u
 void sub_70A60_open_tmaps()//251a60
 {
 
-	std::string tMapPath0 = GetSubDirectoryFile(gameFolder, "CDATA", "TMAPS0-0.DAT");
+	std::string tMapPath0 = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "TMAPS0-0.DAT");
 	x_DWORD_DB740_tmaps00file = DataFileIO::CreateOrOpenFile(tMapPath0.c_str(), 512);
 	if (x_DWORD_DB740_tmaps00file == NULL)
 	{
-		tMapPath0 = GetSubDirectoryFile(gameFolder, "DATA", "TMAPS0-0.DAT");
+		tMapPath0 = GetSubDirectoryFile(gameFolder.c_str(), "DATA", "TMAPS0-0.DAT");
 		x_DWORD_DB740_tmaps00file = DataFileIO::CreateOrOpenFile(tMapPath0.c_str(), 512);
 	}
-	std::string tMapPath1 = GetSubDirectoryFile(gameFolder, "CDATA", "TMAPS1-0.DAT");
+	std::string tMapPath1 = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "TMAPS1-0.DAT");
 	x_DWORD_DB744_tmaps10file = DataFileIO::CreateOrOpenFile(tMapPath1.c_str(), 512);
 	if (x_DWORD_DB744_tmaps10file == NULL)
 	{
-		tMapPath1 = GetSubDirectoryFile(gameFolder, "DATA", "TMAPS1-0.DAT");
+		tMapPath1 = GetSubDirectoryFile(gameFolder.c_str(), "DATA", "TMAPS1-0.DAT");
 		x_DWORD_DB744_tmaps10file = DataFileIO::CreateOrOpenFile(tMapPath1.c_str(), 512);
 	}
-	std::string tMapPath2 = GetSubDirectoryFile(gameFolder, "CDATA", "TMAPS2-0.DAT");
+	std::string tMapPath2 = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "TMAPS2-0.DAT");
 	x_DWORD_DB748_tmaps20file = DataFileIO::CreateOrOpenFile(tMapPath2.c_str(), 512);
 	if (x_DWORD_DB748_tmaps20file == NULL)
 	{
-		tMapPath2 = GetSubDirectoryFile(gameFolder, "DATA", "TMAPS2-0.DAT");
+		tMapPath2 = GetSubDirectoryFile(gameFolder.c_str(), "DATA", "TMAPS2-0.DAT");
 		x_DWORD_DB748_tmaps20file = DataFileIO::CreateOrOpenFile(tMapPath2.c_str(), 512);
 	}
 	x_DWORD_DB73C_tmapsfile = x_DWORD_DB740_tmaps00file;

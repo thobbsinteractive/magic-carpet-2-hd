@@ -4,7 +4,8 @@
 
 std::string gameDataPath;
 std::string cdDataPath;
-std::string bigGraphicsPath;
+std::string highResGraphicsPath;
+std::string fixedMenuGraphicsPath;
 
 //lenght 18
 //type_17ECA0 str_17ECA0[256]; // weak
