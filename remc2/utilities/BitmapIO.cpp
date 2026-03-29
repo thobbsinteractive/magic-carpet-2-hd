@@ -344,6 +344,16 @@ finalise:
 	std::cout << "img: " << filename << " created\n";
 }
 
+void BitmapIO::setRGBA(png_byte* ptr, uint8_t* val)
+{
+	ptr[0] = val[0];
+	ptr[1] = val[1];
+	ptr[2] = val[2];
+	ptr[3] = val[3];
+}
+
+#endif
+
 bool BitmapIO::ReadImagePNG(const char* filename, RGBAImage& out)
 {
 	FILE* fp = fopen(filename, "rb");
@@ -458,15 +468,6 @@ bool BitmapIO::ReadImagePNG(const char* filename, RGBAImage& out)
 	fclose(fp);
 	return true;
 }
-
-void BitmapIO::setRGBA(png_byte* ptr, uint8_t* val)
-{
-	ptr[0] = val[0];
-	ptr[1] = val[1];
-	ptr[2] = val[2];
-	ptr[3] = val[3];
-}
-#endif
 
 uint8_t BitmapIO::MultiplyValue(uint8_t orig, double multiplier)
 {
