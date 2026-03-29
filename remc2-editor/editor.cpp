@@ -141,8 +141,8 @@ void editor_run()
 
 	initposistruct();
 
-	gameDataPath = GetSubDirectoryPath(gameFolder);
-	cdDataPath = GetSubDirectoryPath(cdFolder);
+	gameDataPath = GetSubDirectoryPath(gameFolder.c_str());
+	cdDataPath = GetSubDirectoryPath(cdFolder.c_str());
 
 	if (!std::filesystem::exists(gameDataPath))
 		throw std::invalid_argument("Game Data Path is not valid");

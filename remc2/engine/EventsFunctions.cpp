@@ -31426,7 +31426,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 			//sub_692A0(Entities_EA3E4[0xc4e0 / 168]);
 			//!!!!!!!!!!! debug fix it
 
-			sub_47160();
+			LoadSpr_47160();
 			// debug !!!
 			//sub_692A0(testarraymain);
 			// debug !!!
@@ -31455,11 +31455,11 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 				SetCenterScreenForFlyAssistant_6EDB0();
 				if (m_ptrGameRender == nullptr)
 				{
-					if (!strcmp(forceRender, "NG"))
+					if (!strcmp(forceRender.c_str(), "NG"))
 						m_ptrGameRender = (GameRenderInterface*)new GameRenderNG();
-					else if (!strcmp(forceRender, "Original"))
+					else if (!strcmp(forceRender.c_str(), "Original"))
 						m_ptrGameRender = (GameRenderInterface*)new GameRenderOriginal();
-					else if (!strcmp(forceRender, "HD"))
+					else if (!strcmp(forceRender.c_str(), "HD"))
 						m_ptrGameRender = (GameRenderInterface*)new GameRenderHD(pdwScreenBuffer_351628, *xadatapald0dat2.colorPalette_var28, (multiThreadedRender ? numberOfRenderThreads : 0), assignToSpecificCores);
 					else
 					{
@@ -31542,7 +31542,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 
 							sub_47FC0_load_screen(true);
 							LevelInitGame_56A30(actLevel);
-							sub_47160();
+							LoadSpr_47160();
 						}
 					}
 				}
@@ -38265,20 +38265,20 @@ char LevelDecompress_533B0(int16 levelIndex, Type_Level_2FECE* levelData, std::s
 {
 	if (levelIndex < 1000)
 	{
-		std::string levelDataPath = GetSubDirectoryFile(gameFolder, "CLEVELS", "LEVELS.DAT");
+		std::string levelDataPath = GetSubDirectoryFile(gameFolder.c_str(), "CLEVELS", "LEVELS.DAT");
 		FILE* levelsdatfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 		if (levelsdatfile == NULL)
 		{
-			levelDataPath = GetSubDirectoryFile(cdFolder, "LEVELS", "LEVELS.DAT");
+			levelDataPath = GetSubDirectoryFile(cdFolder.c_str(), "LEVELS", "LEVELS.DAT");
 			levelsdatfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 			if (levelsdatfile == NULL)
 				return 0;
 		}
-		levelDataPath = GetSubDirectoryFile(gameFolder, "CLEVELS", "LEVELS.TAB");
+		levelDataPath = GetSubDirectoryFile(gameFolder.c_str(), "CLEVELS", "LEVELS.TAB");
 		FILE* levelstabfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 		if (levelstabfile == NULL)
 		{
-			levelDataPath = GetSubDirectoryFile(cdFolder, "LEVELS", "LEVELS.TAB");
+			levelDataPath = GetSubDirectoryFile(cdFolder.c_str(), "LEVELS", "LEVELS.TAB");
 			levelstabfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 			if (levelstabfile == NULL)
 			{
@@ -38578,13 +38578,13 @@ char sub_54200_create_user_directiores()//235200
 	printbuffer[0] = 0;
 	outtext("Checking Setup Version ..");//23521B - 29EBED
 	v0l = 1;
-	std::string versionPath = GetSubDirectoryFile(gameFolder, "CDATA", "VERSION.DAT");//235250 - 26F3D5
+	std::string versionPath = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "VERSION.DAT");//235250 - 26F3D5
 	DataFileIO::ReadFileAndDecompress(versionPath.c_str(), &readbuffer);//235260 - 234E60
 	if (readbuffer[0] != 60)
 		v0h = 1;
 	outtext("\n");//235277 - 29EBED
-	std::string cDataTmapsPath0 = GetSubDirectoryFile(gameFolder, "CDATA", "TMAPS0-0.DAT");//2352A8 - 26F3D5
-	std::string dataTmapsPath0 = GetSubDirectoryFile(cdFolder, "DATA", "TMAPS0-0.DAT");//2352BE - 26F3D5
+	std::string cDataTmapsPath0 = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "TMAPS0-0.DAT");//2352A8 - 26F3D5
+	std::string dataTmapsPath0 = GetSubDirectoryFile(cdFolder.c_str(), "DATA", "TMAPS0-0.DAT");//2352BE - 26F3D5
 	if (v0h || sub_53EF0_fileexist(cDataTmapsPath0.c_str(), dataTmapsPath0.c_str()))
 	{
 		x_BYTE_D41AD_skip_screen = 0;//fix can not exit from setup
@@ -38592,23 +38592,23 @@ char sub_54200_create_user_directiores()//235200
 		outtext("Creating Setup Directories 1 ..");//2352E4 -29EBED
 		x_DWORD_F4720 = gettextposition();//2352EC - 29E953
 
-		std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder, "CDATA");//23531A - 26F3D5
-		std::string dataTmapsPath = GetSubDirectoryPath(cdFolder, "DATA");//23531A - 26F3D5
+		std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder.c_str(), "CDATA");//23531A - 26F3D5
+		std::string dataTmapsPath = GetSubDirectoryPath(cdFolder.c_str(), "DATA");//23531A - 26F3D5
 		if (LoadFilesFromCDAndGameData(dataTmapsPath.c_str(), cDataTmapsPath.c_str(), "TMAPS0-0"))// this needs to create something // 235330 -234F80 // create tmaps00 tab / data
 			v0l = 0;
 		outtext("\n");//235343 - 29EBED
 	}
 	if (v0l)
 	{
-		std::string cDataTmapsPath1 = GetSubDirectoryFile(gameFolder, "CDATA", "TMAPS1-0.DAT");//23537C - 26F3D5
-		std::string dataTmapsPath1 = GetSubDirectoryFile(cdFolder, "DATA", "TMAPS1-0.DAT");//235392 - 26F3D5
+		std::string cDataTmapsPath1 = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "TMAPS1-0.DAT");//23537C - 26F3D5
+		std::string dataTmapsPath1 = GetSubDirectoryFile(cdFolder.c_str(), "DATA", "TMAPS1-0.DAT");//235392 - 26F3D5
 		if (v0h || sub_53EF0_fileexist(cDataTmapsPath1.c_str(), dataTmapsPath1.c_str()))
 		{
 			//fix it - whne file not exist
 			outtext("Creating Setup Directories 2 ..");
 			x_DWORD_F4720 = gettextposition(/*v3, v4, v0*/);
-			std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder, "CDATA");//2353EE - 26F3D5
-			std::string dataTmapsPath = GetSubDirectoryPath(cdFolder, "DATA");//23531A - 26F3D5
+			std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder.c_str(), "CDATA");//2353EE - 26F3D5
+			std::string dataTmapsPath = GetSubDirectoryPath(cdFolder.c_str(), "DATA");//23531A - 26F3D5
 			if (LoadFilesFromCDAndGameData(dataTmapsPath.c_str(), cDataTmapsPath.c_str(), "TMAPS1-0"))//235404 - 234F80
 				v0l = 0;
 			outtext("\n");
@@ -38616,15 +38616,15 @@ char sub_54200_create_user_directiores()//235200
 	}
 	if (v0l)
 	{
-		std::string cDataTmapsPath2 = GetSubDirectoryFile(gameFolder, "CDATA", "TMAPS2-0.DAT");
-		std::string dataTmapsPath2 = GetSubDirectoryFile(cdFolder, "DATA", "TMAPS2-0.DAT");
+		std::string cDataTmapsPath2 = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "TMAPS2-0.DAT");
+		std::string dataTmapsPath2 = GetSubDirectoryFile(cdFolder.c_str(), "DATA", "TMAPS2-0.DAT");
 		if (v0h || sub_53EF0_fileexist(cDataTmapsPath2.c_str(), dataTmapsPath2.c_str()))
 		{
 			//fix it - whne file not exist
 			outtext("Creating Setup Directories 3 ..");
 			x_DWORD_F4720 = gettextposition(/*v5, v6, v0*/);
-			std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder, "CDATA");
-			std::string dataTmapsPath = GetSubDirectoryPath(cdFolder, "DATA");
+			std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder.c_str(), "CDATA");
+			std::string dataTmapsPath = GetSubDirectoryPath(cdFolder.c_str(), "DATA");
 			if (LoadFilesFromCDAndGameData(dataTmapsPath.c_str(), cDataTmapsPath.c_str(), "TMAPS2-0"))
 				v0l = 0;
 			outtext("\n");
@@ -38634,15 +38634,15 @@ char sub_54200_create_user_directiores()//235200
 	{
 		outtext("Setting Up Levels ..");
 		x_DWORD_F4720 = gettextposition(/*v7, v8, v0*/);
-		std::string clevelsPath = GetSubDirectoryPath(gameFolder, "CLEVELS");
-		std::string levelPath = GetSubDirectoryPath(cdFolder, "LEVELS");
+		std::string clevelsPath = GetSubDirectoryPath(gameFolder.c_str(), "CLEVELS");
+		std::string levelPath = GetSubDirectoryPath(cdFolder.c_str(), "LEVELS");
 		if (LoadFilesFromCDAndGameData(levelPath.c_str(), clevelsPath.c_str(), "LEVELS"))
 			v0l = 0;
 		outtext("\n");
 	}
 	if (v0l && v0h)
 	{
-		versionPath = GetSubDirectoryFile(gameFolder, "CDATA", "VERSION.DAT");
+		versionPath = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "VERSION.DAT");
 		readbuffer[0] = 60;
 		DataFileIO::sub_98C48_open_nwrite_close(versionPath.c_str(), readbuffer, 4);
 	}
@@ -43267,7 +43267,7 @@ signed int sub_5BF50_load_psxdata()//23cf50 //find 2bc394
 	x_DWORD_181C40_vga_init_buffer = (uint8_t*)Malloc_83D70(0x100); //fix it 264D70
 	if (x_DWORD_181C40_vga_init_buffer)
 	{
-		if (DataFileIO::sub_84250_load_file_array(psxasearchd_2bac30))//psxasearchd_2bac30~=2a9a54   set 2bc394(after 2A9A54) - set 2bab20
+		if (DataFileIO::LoadFileArray_84250(psxasearchd_2bac30))//psxasearchd_2bac30~=2a9a54   set 2bc394(after 2A9A54) - set 2bab20
 		{
 			myprintf("NOT ENOUGH MEMORY\n");
 			DataFileIO::sub_90D3F_unload_file_array(psxasearchd_2bac30);
@@ -43275,7 +43275,7 @@ signed int sub_5BF50_load_psxdata()//23cf50 //find 2bc394
 		}
 		else
 		{
-			if (DataFileIO::sub_84250_load_file_array(psxadatabuild00dat))
+			if (DataFileIO::LoadFileArray_84250(psxadatabuild00dat))
 			{
 				myprintf("NOT ENOUGH MEMORY\n");
 				DataFileIO::sub_90D3F_unload_file_array(psxasearchd_2bac30);
@@ -43285,7 +43285,7 @@ signed int sub_5BF50_load_psxdata()//23cf50 //find 2bc394
 			else
 			{
 				sub_539A0_load_bldgprm();
-				if (DataFileIO::sub_84250_load_file_array(psxawscreen_351628))
+				if (DataFileIO::LoadFileArray_84250(psxawscreen_351628))
 				{
 					DataFileIO::sub_90D3F_unload_file_array(psxawscreen_351628);
 					myprintf("NOT ENOUGH MEMORY\n");

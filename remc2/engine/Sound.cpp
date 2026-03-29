@@ -2287,7 +2287,7 @@ bool LoadSounds_84300(uint8_t soundBank)//265300
 		if (soundActiveH_E2A14)
 			EndSample_8D8F0();
 
-		std::string soundPath = GetSubDirectoryFile(cdFolder, "SOUND", "SOUND.DAT");
+		std::string soundPath = GetSubDirectoryFile(cdFolder.c_str(), "SOUND", "SOUND.DAT");
 		file = DataFileIO::CreateOrOpenFile(soundPath.c_str(), 512);
 		
 		if (file != NULL)
@@ -2478,7 +2478,7 @@ bool AilApiReadIni_9E3A0(AIL_INI* INI, char* filename)//27f3a0
 	{
 		strcpy(INI->device_name, "Creative Labs Sound Blaster 16 or AWE32");
 		strcpy(INI->driver_name, "SB16.DIG");
-		std::string driver_path = GetSubDirectoryFile(cdFolder, "SOUND", "SB16.DIG");
+		std::string driver_path = GetSubDirectoryFile(cdFolder.c_str(), "SOUND", "SB16.DIG");
 		sprintf(INI->driver_path, "%s", driver_path.c_str());
 		INI->IO.IO = StrToInt("220h", 16);
 		INI->IO.IRQ = StrToInt("-1", 10);
@@ -2489,7 +2489,7 @@ bool AilApiReadIni_9E3A0(AIL_INI* INI, char* filename)//27f3a0
 	{
 		strcpy(INI->device_name, "Creative Labs Sound Blaster(TM) 16");
 		strcpy(INI->driver_name, "SBPRO2.MDI");
-		std::string driver_path = GetSubDirectoryFile(cdFolder, "SOUND", "SBPRO2.MDI");
+		std::string driver_path = GetSubDirectoryFile(cdFolder.c_str(), "SOUND", "SBPRO2.MDI");
 		sprintf(INI->driver_path, "%s", driver_path.c_str());
 		INI->IO.IO = StrToInt((char*)"220h", 16);
 		INI->IO.IRQ = StrToInt((char*)"-1", 10);

@@ -37,10 +37,11 @@
 // 
 //#define DEBUG_PRINT_DEBUG_TO_SCREEN
 
-extern char gameFolder[512];
-extern char cdFolder[512];
-extern char bigGraphicsFolder[512];
-extern char forceRender[512];
+extern std::string gameFolder;
+extern std::string cdFolder;
+extern std::string highResGraphicsFolder;
+extern std::string fixedMenuGraphicsFolder;
+extern std::string forceRender;
 extern spdlog::logger* Logger;
 
 const char* GetStringFromLoggingLevel(spdlog::level::level_enum level);

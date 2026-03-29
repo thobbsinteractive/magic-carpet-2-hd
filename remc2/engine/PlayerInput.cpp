@@ -2572,7 +2572,7 @@ void ChangeGameResolution_46B40()//227b40
 		DataFileIO::sub_90D3F_unload_file_array(psxadatahsprd00dat);
 		x_WORD_180660_VGA_type_resolution = 1;
 	}
-	sub_47160();
+	LoadSpr_47160();
 
 	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);
 	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_BUILD00DATTAB]);
