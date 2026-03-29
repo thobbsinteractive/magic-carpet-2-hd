@@ -13,8 +13,8 @@ using namespace std;
 
 std::string gameFolder = "NETHERW";
 std::string cdFolder = "CD_Files";
-std::string bigGraphicsFolder = "biggraphics";
-std::string menuGraphicsFolder = "biggraphics/menu";
+std::string highResGraphicsFolder = "graphics/high-res";
+std::string fixedMenuGraphicsFolder = "graphics/fixed/menu";
 std::string forceRender = "";
 spdlog::logger* Logger = nullptr;
 

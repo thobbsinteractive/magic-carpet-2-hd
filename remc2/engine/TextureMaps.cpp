@@ -377,7 +377,7 @@ void InitTmaps(unsigned __int16 a1)//251f50
 		char spritePath[512];
 		if (big_sprites_inited)
 		{
-			sprintf(spritePath, "%s", bigGraphicsPath.c_str());
+			sprintf(spritePath, "%s", highResGraphicsPath.c_str());
 		}
 		else
 		{

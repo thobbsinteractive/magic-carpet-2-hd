@@ -2,7 +2,6 @@
 
 bool IsAfterLoad = false;
 
-void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* textureBuffer);
 void sub_71890();
 void sub_718F0();
 
@@ -538,13 +537,13 @@ static bool PatchSprite(bitmap_pos_struct2_t* tabBase,
 	RGBAImage img;
 	if (!BitmapIO::ReadImagePNG(pngPath, img))
 	{
-		Logger->warn("LoadMenuCustomGraphics: failed to load '{}'.", pngPath);
+		Logger->warn("LoadFixedMenuGraphics: failed to load '{}'.", pngPath);
 		return false;
 	}
 
 	if (img.width > 255 || img.height > 255)
 	{
-		Logger->warn("LoadMenuCustomGraphics: sprite '{}' too large ({}x{} > 255x255), skipped.",
+		Logger->warn("LoadFixedMenuGraphics: sprite '{}' too large ({}x{} > 255x255), skipped.",
 			pngPath, img.width, img.height);
 		return false;
 	}
@@ -580,13 +579,13 @@ static bool PatchSprite(bitmap_pos_struct2_t* tabBase,
 	tabBase[spriteIndex].data_0 = (uint32_t)newOffset;
 	tabBase[spriteIndex].width_4 = (uint8_t)img.width;
 	tabBase[spriteIndex].height_5 = (uint8_t)img.height;
-	Logger->debug("LoadMenuCustomGraphics: patched sprite {} from '{}' "
+	Logger->debug("LoadFixedMenuGraphics: patched sprite {} from '{}' "
 		"({}x{}, {} RLE bytes at offset {}).",
 		spriteIndex, pngPath, img.width, img.height, rleData.size(), newOffset);
 	return true;
 }
 
-void LoadMenuCustomGraphics()
+void LoadFixedMenuGraphics()
 {
 	char dataPath[MAX_PATH];
 	uint8_t** tempPal = xadatapald0dat2.colorPalette_var28;
@@ -625,7 +624,7 @@ void LoadMenuCustomGraphics()
 	const int paletteSize = 256;
 	if (!palette)
 	{
-		Logger->warn("LoadMenuCustomGraphics: palette not loaded, skipping.");
+		Logger->warn("LoadFixedMenuGraphics: palette not loaded, skipping.");
 		return;
 	}
 	uint8_t* datBase = HSPRD00DAT_BEGIN_BUFFER;
@@ -635,7 +634,7 @@ void LoadMenuCustomGraphics()
 
 	if (!datBase || !tabBase || numSprites <= 0)
 	{
-		Logger->warn("LoadMenuCustomGraphics: buffers not loaded, skipping.");
+		Logger->warn("LoadFixedMenuGraphics: buffers not loaded, skipping.");
 		return;
 	}
 	int lastIdx = 0;
@@ -650,14 +649,14 @@ void LoadMenuCustomGraphics()
 		if ((b & 0x80) == 0) p += b;
 	}
 	size_t datUsed = (size_t)(p - HSPRD00DAT_BEGIN_BUFFER);
-	Logger->debug("LoadMenuCustomGraphics: DAT buffer used size: {} bytes.", datUsed);
+	Logger->debug("LoadFixedMenuGraphics: DAT buffer used size: {} bytes.", datUsed);
 
 	const size_t extraCapacity = 1024 * 1024;
 	const size_t datCapacity = datUsed + extraCapacity;
 	uint8_t* newDatBuffer = (uint8_t*)Malloc_83CD0(datCapacity);
 	if (!newDatBuffer)
 	{
-		Logger->error("LoadMenuCustomGraphics: failed to allocate extended DAT buffer.");
+		Logger->error("LoadFixedMenuGraphics: failed to allocate extended DAT buffer.");
 		return;
 	}
 	memcpy(newDatBuffer, HSPRD00DAT_BEGIN_BUFFER, datUsed);
@@ -668,10 +667,10 @@ void LoadMenuCustomGraphics()
 	MapType_t   mt = D41A0_0.terrain_2FECE.MapType;
 	std::string datName = DatBaseName(mt);
 	std::string mapFolder = MapTypeFolder(mt);
-	std::string patchDir = GetSubDirectoryPath(menuGraphicsFolder.c_str(), mapFolder.c_str());
+	std::string patchDir = GetSubDirectoryPath(fixedMenuGraphicsFolder.c_str(), mapFolder.c_str());
 	if (patchDir.empty() || !DirExists(patchDir.c_str()))
 	{
-		Logger->debug("LoadMenuCustomGraphics: patch folder '{}' not found, nothing to do.", patchDir);
+		Logger->debug("LoadFixedMenuGraphics: patch folder '{}' not found, nothing to do.", patchDir);
 		return;
 	}
 	char patchDirBuf[512];
@@ -693,12 +692,12 @@ void LoadMenuCustomGraphics()
 		int spriteIndex = -1;
 		try { spriteIndex = std::stoi(indexStr); }
 		catch (...) {
-			Logger->warn("LoadMenuCustomGraphics: cannot parse index from '{}', skipped.", filename);
+			Logger->warn("LoadFixedMenuGraphics: cannot parse index from '{}', skipped.", filename);
 			continue;
 		}
 		if (spriteIndex < 0 || spriteIndex >= numSprites)
 		{
-			Logger->warn("LoadMenuCustomGraphics: index {} out of range [0,{}), skipped.",
+			Logger->warn("LoadFixedMenuGraphics: index {} out of range [0,{}), skipped.",
 				spriteIndex, numSprites);
 			continue;
 		}
@@ -711,7 +710,7 @@ void LoadMenuCustomGraphics()
 	}
 	if (patchedCount == 0)
 	{
-		Logger->debug("LoadMenuCustomGraphics: no sprites patched for map type '{}'.", mapFolder);
+		Logger->debug("LoadFixedMenuGraphics: no sprites patched for map type '{}'.", mapFolder);
 		return;
 	}
 	sub_9874D_create_index_dattab(
@@ -719,7 +718,7 @@ void LoadMenuCustomGraphics()
 		HSPRD00TAB_END_BUFFER,
 		HSPRD00DAT_BEGIN_BUFFER,
 		posistruct5);
-	Logger->info("LoadMenuCustomGraphics: patched {} sprite(s) for map type '{}'.",
+	Logger->info("LoadFixedMenuGraphics: patched {} sprite(s) for map type '{}'.",
 		patchedCount, mapFolder);
 }
 
@@ -767,8 +766,8 @@ void LoadSpr_47160()//228160
 	{
 		DataFileIO::LoadFileArray_84250(psxadatahsprd00dat);//here is loading
 
-		if(menuGraphics && !(x_WORD_180660_VGA_type_resolution & 1))
-			LoadMenuCustomGraphics();
+		if(fixedMenuGraphics && !(x_WORD_180660_VGA_type_resolution & 1))
+			LoadFixedMenuGraphics();
 
 		filearray_2aa18c[filearrayindex_MSPRD00DATTAB] = { &HSPRD00TAB_BEGIN_BUFFER,&HSPRD00TAB_END_BUFFER,&HSPRD00DAT_BEGIN_BUFFER,&posistruct5 };
 		if (pre_x_DWORD_E9C3C)

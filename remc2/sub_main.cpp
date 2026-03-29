@@ -601,7 +601,8 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		Logger->debug("Getting Game data paths");
 		gameDataPath = GetSubDirectoryPath(gameFolder.c_str());
 		cdDataPath = GetSubDirectoryPath(cdFolder.c_str());
-		bigGraphicsPath = GetSubDirectoryPath(bigGraphicsFolder.c_str());
+		highResGraphicsPath = GetSubDirectoryPath(highResGraphicsFolder.c_str());
+		fixedMenuGraphicsPath = GetSubDirectoryPath(fixedMenuGraphicsFolder.c_str());
 
 		Logger->debug("Initializing graphics Width: {} Height: {}", windowResWidth, windowResHeight);
 		VGA_Init(windowResWidth, windowResHeight, gameResWidth, gameResHeight, maintainAspectRatio, displayIndex);

@@ -38,10 +38,10 @@ private:
 		int m_GameResWidth = 640;
 		int m_GameResHeight = 480;
 		int m_GameUiScale = 1;
-		bool m_UseEnhancedGraphics = false;
-		std::string m_BigGraphicsFolder = "";
-		bool m_UseEnhancedMenuGraphics = false;
-		std::string m_MenuGraphicsFolder = "";
+		bool m_UseHighResGraphics = false;
+		std::string m_HighResGraphicsFolder = "";
+		bool m_UseFixedMenuGraphics = false;
+		std::string m_FixedMenuGraphicsFolder = "";
 		bool m_Sky = true;
 		bool m_Reflections = true;
 		bool m_DynamicLighting = true;

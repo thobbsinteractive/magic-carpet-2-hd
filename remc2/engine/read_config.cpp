@@ -37,7 +37,7 @@ bool maintainAspectRatio = false;
 bool startWindowed = false;
 bool bigTextures = false;
 bool bigSprites = false;
-bool menuGraphics = false;
+bool fixedMenuGraphics = false;
 bool sky = true;
 bool reflections = false;
 bool dynamicLighting = false;
@@ -184,9 +184,9 @@ bool SetConfig() {
 			gameUiScale--;
 		}
 	}
-	bigGraphicsFolder = config.m_Graphics.m_GameDetail.m_BigGraphicsFolder;
-	if (config.m_Graphics.m_GameDetail.m_UseEnhancedGraphics && strlen(bigGraphicsFolder.c_str()) > 0
-		&& std::filesystem::is_directory(GetSubDirectoryPath(bigGraphicsFolder.c_str())))
+	highResGraphicsFolder = config.m_Graphics.m_GameDetail.m_HighResGraphicsFolder;
+	if (config.m_Graphics.m_GameDetail.m_UseHighResGraphics && strlen(highResGraphicsFolder.c_str()) > 0
+		&& std::filesystem::is_directory(GetSubDirectoryPath(highResGraphicsFolder.c_str())))
 	{
 		bigSprites = true;
 		bigTextures = true;
@@ -197,11 +197,11 @@ bool SetConfig() {
 		texturepixels = 32;
 	}
 
-	menuGraphicsFolder = config.m_Graphics.m_GameDetail.m_MenuGraphicsFolder;
-	if (config.m_Graphics.m_GameDetail.m_UseEnhancedMenuGraphics && strlen(menuGraphicsFolder.c_str()) > 0
-		&& std::filesystem::is_directory(GetSubDirectoryPath(menuGraphicsFolder.c_str())))
+	fixedMenuGraphicsFolder = config.m_Graphics.m_GameDetail.m_FixedMenuGraphicsFolder;
+	if (config.m_Graphics.m_GameDetail.m_UseFixedMenuGraphics && strlen(fixedMenuGraphicsFolder.c_str()) > 0
+		&& std::filesystem::is_directory(GetSubDirectoryPath(fixedMenuGraphicsFolder.c_str())))
 	{
-		menuGraphics = true;
+		fixedMenuGraphics = true;
 	}
 
 	sky = config.m_Graphics.m_GameDetail.m_Sky;
