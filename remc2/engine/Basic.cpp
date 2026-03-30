@@ -4,7 +4,8 @@
 
 std::string gameDataPath;
 std::string cdDataPath;
-std::string bigGraphicsPath;
+std::string highResGraphicsPath;
+std::string fixedMenuGraphicsPath;
 
 //lenght 18
 //type_17ECA0 str_17ECA0[256]; // weak
@@ -3402,3 +3403,18 @@ unsigned long _clock()
 unsigned long j___clock() {
 	return _clock();
 }; // weak
+
+void SetPlayerLocation(uint16_t x, uint16_t y, int16_t z, int16_t pitch, int16_t roll, int16_t yaw)
+{
+	if (Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240] != nullptr)
+	{
+		auto ptrPlayerEntity = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
+		ptrPlayerEntity->position_0x4C_76.x = x;
+		ptrPlayerEntity->position_0x4C_76.y = y;
+		ptrPlayerEntity->position_0x4C_76.z = z;
+
+		ptrPlayerEntity->array_0x52_82.pitch = pitch;
+		ptrPlayerEntity->array_0x52_82.roll = roll;
+		ptrPlayerEntity->array_0x52_82.yaw = yaw;
+	}
+}

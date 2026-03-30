@@ -138,12 +138,17 @@ namespace remc2_installer
 									new Files(@"..\Release\kiss\*.*")),
 								new Dir(new Id("FONT_INSTALLDIR"), @"font",
 									new Files(@"..\Release\font\*.*")),
-								new Dir(new Id("BIGGRAPHICS_INSTALLDIR"), @"biggraphics",
-									new Files(@"..\enhancedassets\biggraphics\*.*")
+								new Dir(new Id("HIGHRESGRAPHICS_INSTALLDIR"), @"graphics\high-res",
+									new Files(@"..\enhancedassets\graphics\high-res\*.*")
                                     {
                                         ComponentCondition = "HIGHTEX=\"yes\""
                                     }),
-                                new Dir(new Id("MUSICOGG_INSTALLDIR"), @"music-ogg",
+								new Dir(new Id("FIXEDMENUGRAPHICS_INSTALLDIR"), @"graphics\fixed\menu",
+									new Files(@"..\enhancedassets\graphics\fixed\menu\*.*")
+									{
+										ComponentCondition = "HIGHTEX=\"yes\""
+									}),
+								new Dir(new Id("MUSICOGG_INSTALLDIR"), @"music-ogg",
                                     new Files(@"..\enhancedassets\music-ogg\*.*")),
                                 new Dir(new Id("EXTRACT_INSTALLDIR"), @"Extract",
                                     new File(new Id("DOSBOXEXTRACT_CONF"), @"Extract\dosboxExtract-GOG-CD.conf"),
@@ -155,7 +160,7 @@ namespace remc2_installer
 									new File(new Id("VC_Redist_EXE"), @"Extract\VC_redist.x86.exe"))),
 #endif
 							new Property(new Id("HIGHTEX_PROPERTY"), "HIGHTEX", "yes"),
-							new ManagedAction(new Id("MANAGED_ACTION"), CustomActions.SetEnhancedTextures, Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed));
+							new ManagedAction(new Id("MANAGED_ACTION"), CustomActions.SetHighResGraphics, Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed));
 
 #if WIN64
             project.Platform = Platform.x64;

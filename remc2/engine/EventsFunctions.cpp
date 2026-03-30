@@ -733,7 +733,6 @@ void sub_3B4D0_fill_unk_D4350_256(int a1);
 // char sub_3C080_draw_terrain_and_particles(int a1, int a2, __int16 a3, __int16 a4, __int16 a5, signed int a6, int a7, __int16 a8, int a9);
 // unsigned __int16 sub_3E360_draw_particles(int a1, int a2);
 // unsigned __int16 sub_3FD60(int a1, int a2);
-int /*__fastcall*/ sub_40D10();
 void BlendAndBlit_40F80();
 // int sub_43830_generate_level_map(unsigned int a1, int a2);
 // unsigned int sub_43970(unsigned int a1);
@@ -766,8 +765,7 @@ void sub_46F50_sound_proc7();
 //void sub_473B0();
 //int sub_473E0();
 // void sub_47560_draw_and_events_in_game(int a1, int a2, x_BYTE *a3, signed int a4, __int16 a5);
-void sub_480A0_set_clear_Palette(/*int a1, int a2, int a3*/);
-void sub_48120();
+void PaletteFadeIn_480A0(/*int a1, int a2, int a3*/);
 int sub_48990(char a1, char a2, char a3, char a4);
 // __int16 sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6);
 void SetHeightmapByBuildingArea_48B50(uint8 x, uint8 y, int height, int width);
@@ -815,7 +813,6 @@ char sub_572C0(type_entity_0x6E8E* a1, __int16 a2, __int16 a3, __int16 a4, char 
 void sub_57390(uaxis_2d a1, unsigned __int16 a2);
 char sub_57450(unsigned __int8 a1);
 void sub_574A0();
-void sub_57640();
 void sub_57B20(type_str_0x2BDE* a1, type_entity_0x6E8E* a2);
 void CopyEntityPosition_57CF0(type_entity_0x6E8E* entity, axis_3d* position);
 void sub_57D40(type_entity_0x6E8E* entity, axis_3d* position);
@@ -859,7 +856,6 @@ void sub_5DE30(type_entity_0x6E8E* a1);
 //uint8_t GetLetterHeight_6FC30();
 //void sub_6FC50(__int16 a1);
 //unsigned int sub_6FC80_pre_draw_text(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
-void DrawGameDebugText_6FEC0();
 //int sub_71410_process_tmaps_process_tmaps();
 void sub_716C0(unsigned __int16 a1, unsigned __int16 a2, unsigned __int16 a3);
 void SetF5538ByStrTMAP00TAB_71730(unsigned __int16 a1);
@@ -973,7 +969,6 @@ char sub_904C0(float a1);
 //unsigned __int8 sub_90530(int a1, int a2, float a3);
 //void sub_905EC_any_graphics_command2(char a1);
 //int sub_90810();
-void sub_90D27();
 int sub_9937E_set_video_mode(__int16 a1);
 // int sub_994BA_cursor_move(__int16 a1);
 signed int sub_9951B(__int16 a1);
@@ -1009,7 +1004,6 @@ __int16 sub_9D31C(__int16 result);
 void sub_9E250(uint32_t user); // weak
 int sub_A0B24(int a1);
 int sub_A0BB0(int* a1, int a2);
-void sub_A0D2C_VGA_get_Palette(TColor* a1);
 int sub_AC24B();
 void sub_AC250(int a1, int a2, int a3, int a4, int a5, x_DWORD* a6, x_DWORD* a7, signed int* a8);
 x_BYTE* sub_AD09E(x_BYTE* a1, int a2);
@@ -1021,9 +1015,6 @@ int sub_B1304(int a1, int a2);
 int sub_B1414(int a1);
 int sub_B148C(int a1);
 int sub_B14F8(int* a1, int a2);
-void sub_BD1B6(uint8_t* a1);
-void sub_BD2CB(uint8_t* a1);
-void sub_BD3DD();
 
 uint8_t algn_4BB85[11] = { 0x8d, 0x80, 0x00, 0x00, 0x00, 0x00, 0x8d, 0x52, 0x00, 0x8b, 0x00 };
 
@@ -31435,7 +31426,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 			//sub_692A0(Entities_EA3E4[0xc4e0 / 168]);
 			//!!!!!!!!!!! debug fix it
 
-			sub_47160();
+			LoadSpr_47160();
 			// debug !!!
 			//sub_692A0(testarraymain);
 			// debug !!!
@@ -31464,11 +31455,11 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 				SetCenterScreenForFlyAssistant_6EDB0();
 				if (m_ptrGameRender == nullptr)
 				{
-					if (!strcmp(forceRender, "NG"))
+					if (!strcmp(forceRender.c_str(), "NG"))
 						m_ptrGameRender = (GameRenderInterface*)new GameRenderNG();
-					else if (!strcmp(forceRender, "Original"))
+					else if (!strcmp(forceRender.c_str(), "Original"))
 						m_ptrGameRender = (GameRenderInterface*)new GameRenderOriginal();
-					else if (!strcmp(forceRender, "HD"))
+					else if (!strcmp(forceRender.c_str(), "HD"))
 						m_ptrGameRender = (GameRenderInterface*)new GameRenderHD(pdwScreenBuffer_351628, *xadatapald0dat2.colorPalette_var28, (multiThreadedRender ? numberOfRenderThreads : 0), assignToSpecificCores);
 					else
 					{
@@ -31551,7 +31542,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 
 							sub_47FC0_load_screen(true);
 							LevelInitGame_56A30(actLevel);
-							sub_47160();
+							LoadSpr_47160();
 						}
 					}
 				}
@@ -31889,7 +31880,7 @@ void PaletteChanges_47760()//228760
 	case 0:
 	case 1: //Fade out loading screen
 	{
-		sub_480A0_set_clear_Palette();
+		PaletteFadeIn_480A0();
 		x_D41A0_BYTEARRAY_4_struct.paletteMod_51++;
 		break;
 	}
@@ -32167,36 +32158,23 @@ void sub_47FC0_load_screen(bool isSecretLevel)//228fc0
 }
 
 //----- (000480A0) --------------------------------------------------------
-void sub_480A0_set_clear_Palette(/*int a1, int a2, int a3*/)//2290a0
+void PaletteFadeIn_480A0()//2290a0
 {
-	long v3; // ebx
-	unsigned int v4; // eax
-	//int v5; // edx
-
 	char dataPath[MAX_PATH];
-
-	// fix if begin
-	v4 = 0;
-	//v5 = 0;
-	// end
-
-	v3 = j___clock();
-	SetMusicVolume_98790(0x1F4u, 0);
+	unsigned int timeDiff = 0;
+	SetMusicVolume_98790(500, 0);
+	long time = j___clock();
 	do
-		v4 = j___clock() - v3;
-	while (v4 < 0x32);
+		timeDiff = j___clock() - time;
+	while (timeDiff < 50); //delay 50 mms
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 	D41A0_0.dword_0x23a = 0;
-
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/PALD-0.DAT");
 	DataFileIO::ReadFileAndDecompress(dataPath, xadatapald0dat2.colorPalette_var28);
 	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/CLRD-0.DAT");
 	DataFileIO::ReadFileAndDecompress(dataPath, xadataclrd0dat.colorPalette_var28);
 	sub_48120();
 }
-// 98786: using guessed type int /*__fastcall*/ j___clock(x_DWORD, x_DWORD, x_DWORD);
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// EA3D8: using guessed type int *xadatapald0dat2.colorPalette_var28;
 
 //----- (00048120) --------------------------------------------------------
 void sub_48120()//229120
@@ -38287,20 +38265,20 @@ char LevelDecompress_533B0(int16 levelIndex, Type_Level_2FECE* levelData, std::s
 {
 	if (levelIndex < 1000)
 	{
-		std::string levelDataPath = GetSubDirectoryFile(gameFolder, "CLEVELS", "LEVELS.DAT");
+		std::string levelDataPath = GetSubDirectoryFile(gameFolder.c_str(), "CLEVELS", "LEVELS.DAT");
 		FILE* levelsdatfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 		if (levelsdatfile == NULL)
 		{
-			levelDataPath = GetSubDirectoryFile(cdFolder, "LEVELS", "LEVELS.DAT");
+			levelDataPath = GetSubDirectoryFile(cdFolder.c_str(), "LEVELS", "LEVELS.DAT");
 			levelsdatfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 			if (levelsdatfile == NULL)
 				return 0;
 		}
-		levelDataPath = GetSubDirectoryFile(gameFolder, "CLEVELS", "LEVELS.TAB");
+		levelDataPath = GetSubDirectoryFile(gameFolder.c_str(), "CLEVELS", "LEVELS.TAB");
 		FILE* levelstabfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 		if (levelstabfile == NULL)
 		{
-			levelDataPath = GetSubDirectoryFile(cdFolder, "LEVELS", "LEVELS.TAB");
+			levelDataPath = GetSubDirectoryFile(cdFolder.c_str(), "LEVELS", "LEVELS.TAB");
 			levelstabfile = DataFileIO::CreateOrOpenFile(levelDataPath.c_str(), 512);
 			if (levelstabfile == NULL)
 			{
@@ -38600,13 +38578,13 @@ char sub_54200_create_user_directiores()//235200
 	printbuffer[0] = 0;
 	outtext("Checking Setup Version ..");//23521B - 29EBED
 	v0l = 1;
-	std::string versionPath = GetSubDirectoryFile(gameFolder, "CDATA", "VERSION.DAT");//235250 - 26F3D5
+	std::string versionPath = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "VERSION.DAT");//235250 - 26F3D5
 	DataFileIO::ReadFileAndDecompress(versionPath.c_str(), &readbuffer);//235260 - 234E60
 	if (readbuffer[0] != 60)
 		v0h = 1;
 	outtext("\n");//235277 - 29EBED
-	std::string cDataTmapsPath0 = GetSubDirectoryFile(gameFolder, "CDATA", "TMAPS0-0.DAT");//2352A8 - 26F3D5
-	std::string dataTmapsPath0 = GetSubDirectoryFile(cdFolder, "DATA", "TMAPS0-0.DAT");//2352BE - 26F3D5
+	std::string cDataTmapsPath0 = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "TMAPS0-0.DAT");//2352A8 - 26F3D5
+	std::string dataTmapsPath0 = GetSubDirectoryFile(cdFolder.c_str(), "DATA", "TMAPS0-0.DAT");//2352BE - 26F3D5
 	if (v0h || sub_53EF0_fileexist(cDataTmapsPath0.c_str(), dataTmapsPath0.c_str()))
 	{
 		x_BYTE_D41AD_skip_screen = 0;//fix can not exit from setup
@@ -38614,23 +38592,23 @@ char sub_54200_create_user_directiores()//235200
 		outtext("Creating Setup Directories 1 ..");//2352E4 -29EBED
 		x_DWORD_F4720 = gettextposition();//2352EC - 29E953
 
-		std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder, "CDATA");//23531A - 26F3D5
-		std::string dataTmapsPath = GetSubDirectoryPath(cdFolder, "DATA");//23531A - 26F3D5
+		std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder.c_str(), "CDATA");//23531A - 26F3D5
+		std::string dataTmapsPath = GetSubDirectoryPath(cdFolder.c_str(), "DATA");//23531A - 26F3D5
 		if (LoadFilesFromCDAndGameData(dataTmapsPath.c_str(), cDataTmapsPath.c_str(), "TMAPS0-0"))// this needs to create something // 235330 -234F80 // create tmaps00 tab / data
 			v0l = 0;
 		outtext("\n");//235343 - 29EBED
 	}
 	if (v0l)
 	{
-		std::string cDataTmapsPath1 = GetSubDirectoryFile(gameFolder, "CDATA", "TMAPS1-0.DAT");//23537C - 26F3D5
-		std::string dataTmapsPath1 = GetSubDirectoryFile(cdFolder, "DATA", "TMAPS1-0.DAT");//235392 - 26F3D5
+		std::string cDataTmapsPath1 = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "TMAPS1-0.DAT");//23537C - 26F3D5
+		std::string dataTmapsPath1 = GetSubDirectoryFile(cdFolder.c_str(), "DATA", "TMAPS1-0.DAT");//235392 - 26F3D5
 		if (v0h || sub_53EF0_fileexist(cDataTmapsPath1.c_str(), dataTmapsPath1.c_str()))
 		{
 			//fix it - whne file not exist
 			outtext("Creating Setup Directories 2 ..");
 			x_DWORD_F4720 = gettextposition(/*v3, v4, v0*/);
-			std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder, "CDATA");//2353EE - 26F3D5
-			std::string dataTmapsPath = GetSubDirectoryPath(cdFolder, "DATA");//23531A - 26F3D5
+			std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder.c_str(), "CDATA");//2353EE - 26F3D5
+			std::string dataTmapsPath = GetSubDirectoryPath(cdFolder.c_str(), "DATA");//23531A - 26F3D5
 			if (LoadFilesFromCDAndGameData(dataTmapsPath.c_str(), cDataTmapsPath.c_str(), "TMAPS1-0"))//235404 - 234F80
 				v0l = 0;
 			outtext("\n");
@@ -38638,15 +38616,15 @@ char sub_54200_create_user_directiores()//235200
 	}
 	if (v0l)
 	{
-		std::string cDataTmapsPath2 = GetSubDirectoryFile(gameFolder, "CDATA", "TMAPS2-0.DAT");
-		std::string dataTmapsPath2 = GetSubDirectoryFile(cdFolder, "DATA", "TMAPS2-0.DAT");
+		std::string cDataTmapsPath2 = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "TMAPS2-0.DAT");
+		std::string dataTmapsPath2 = GetSubDirectoryFile(cdFolder.c_str(), "DATA", "TMAPS2-0.DAT");
 		if (v0h || sub_53EF0_fileexist(cDataTmapsPath2.c_str(), dataTmapsPath2.c_str()))
 		{
 			//fix it - whne file not exist
 			outtext("Creating Setup Directories 3 ..");
 			x_DWORD_F4720 = gettextposition(/*v5, v6, v0*/);
-			std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder, "CDATA");
-			std::string dataTmapsPath = GetSubDirectoryPath(cdFolder, "DATA");
+			std::string cDataTmapsPath = GetSubDirectoryPath(gameFolder.c_str(), "CDATA");
+			std::string dataTmapsPath = GetSubDirectoryPath(cdFolder.c_str(), "DATA");
 			if (LoadFilesFromCDAndGameData(dataTmapsPath.c_str(), cDataTmapsPath.c_str(), "TMAPS2-0"))
 				v0l = 0;
 			outtext("\n");
@@ -38656,15 +38634,15 @@ char sub_54200_create_user_directiores()//235200
 	{
 		outtext("Setting Up Levels ..");
 		x_DWORD_F4720 = gettextposition(/*v7, v8, v0*/);
-		std::string clevelsPath = GetSubDirectoryPath(gameFolder, "CLEVELS");
-		std::string levelPath = GetSubDirectoryPath(cdFolder, "LEVELS");
+		std::string clevelsPath = GetSubDirectoryPath(gameFolder.c_str(), "CLEVELS");
+		std::string levelPath = GetSubDirectoryPath(cdFolder.c_str(), "LEVELS");
 		if (LoadFilesFromCDAndGameData(levelPath.c_str(), clevelsPath.c_str(), "LEVELS"))
 			v0l = 0;
 		outtext("\n");
 	}
 	if (v0l && v0h)
 	{
-		versionPath = GetSubDirectoryFile(gameFolder, "CDATA", "VERSION.DAT");
+		versionPath = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "VERSION.DAT");
 		readbuffer[0] = 60;
 		DataFileIO::sub_98C48_open_nwrite_close(versionPath.c_str(), readbuffer, 4);
 	}
@@ -43266,7 +43244,7 @@ signed int sub_5BF50_load_psxdata()//23cf50 //find 2bc394
 	x_DWORD_181C40_vga_init_buffer = (uint8_t*)Malloc_83D70(0x100); //fix it 264D70
 	if (x_DWORD_181C40_vga_init_buffer)
 	{
-		if (DataFileIO::sub_84250_load_file_array(psxasearchd_2bac30))//psxasearchd_2bac30~=2a9a54   set 2bc394(after 2A9A54) - set 2bab20
+		if (DataFileIO::LoadFileArray_84250(psxasearchd_2bac30))//psxasearchd_2bac30~=2a9a54   set 2bc394(after 2A9A54) - set 2bab20
 		{
 			myprintf("NOT ENOUGH MEMORY\n");
 			DataFileIO::sub_90D3F_unload_file_array(psxasearchd_2bac30);
@@ -43274,7 +43252,7 @@ signed int sub_5BF50_load_psxdata()//23cf50 //find 2bc394
 		}
 		else
 		{
-			if (DataFileIO::sub_84250_load_file_array(psxadatabuild00dat))
+			if (DataFileIO::LoadFileArray_84250(psxadatabuild00dat))
 			{
 				myprintf("NOT ENOUGH MEMORY\n");
 				DataFileIO::sub_90D3F_unload_file_array(psxasearchd_2bac30);
@@ -43284,7 +43262,7 @@ signed int sub_5BF50_load_psxdata()//23cf50 //find 2bc394
 			else
 			{
 				sub_539A0_load_bldgprm();
-				if (DataFileIO::sub_84250_load_file_array(psxawscreen_351628))
+				if (DataFileIO::LoadFileArray_84250(psxawscreen_351628))
 				{
 					DataFileIO::sub_90D3F_unload_file_array(psxawscreen_351628);
 					myprintf("NOT ENOUGH MEMORY\n");
@@ -55550,22 +55528,16 @@ char sub_68BD0(type_entity_0x6E8E*  /*a1x*/, type_entity_0x6E8E* a2x)//249bd0
 //----- (00068BF0) --------------------------------------------------------
 void sub_68BF0()//249bf0
 {
-	__int16 i; // si
-	//int result; // eax
-	type_entity_0x6E8E* jx; // ebx
-	type_entity_0x6E8E* kx; // ebx
-
-	for (i = 0; i < 29; i++)
+	for (int i = 0; i < 29; i++)
 	{
-		//result = (int)x_D41A0_BYTEARRAY_4;
-		for (jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i]; jx > Entities_EA3E4[0]; jx = jx->next_0)
+		for (type_entity_0x6E8E* jx = x_D41A0_BYTEARRAY_4_struct.bytearray_38403x[i]; jx > Entities_EA3E4[0]; jx = jx->next_0)
 		{
 			if (jx->life_0x8 >= 0)
 			{
 				if (CommandLineParams.DoDebugSequences()) {
 					//add_compare(0x249c1b, CommandLineParams.DoDebugafterload());
 				}
-				/*result = */sub_68C70(jx);
+				sub_68C70(jx);
 			}
 			else
 			{
@@ -55574,12 +55546,9 @@ void sub_68BF0()//249bf0
 			}
 		}
 	}
-	for (kx = x_D41A0_BYTEARRAY_4_struct.dword_38523; kx > Entities_EA3E4[0]; kx = kx->next_0)
-		/*result = */sub_68C70(kx);
-	//return result;
+	for (type_entity_0x6E8E* kx = x_D41A0_BYTEARRAY_4_struct.dword_38523; kx > Entities_EA3E4[0]; kx = kx->next_0)
+		sub_68C70(kx);
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00068C70) --------------------------------------------------------
 int sub_68C70(type_entity_0x6E8E* a1x)//249c70

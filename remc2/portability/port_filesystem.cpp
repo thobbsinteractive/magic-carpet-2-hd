@@ -11,10 +11,11 @@ using namespace std;
 #endif
 */
 
-char gameFolder[512] = "NETHERW";
-char cdFolder[512] = "CD_Files";
-char bigGraphicsFolder[512] = "bigGraphics";
-char forceRender[512] = "";
+std::string gameFolder = "NETHERW";
+std::string cdFolder = "CD_Files";
+std::string highResGraphicsFolder = "graphics/high-res";
+std::string fixedMenuGraphicsFolder = "graphics/fixed/menu";
+std::string forceRender = "";
 spdlog::logger* Logger = nullptr;
 
 #ifndef _MSC_VER
@@ -519,7 +520,11 @@ std::string getExistingDataPath(std::filesystem::path path)
 			break;
 		}
 #else //__linux__
-		if (std::filesystem::exists(file_location)) {
+		auto p = std::filesystem::path(file_location)
+			.lexically_normal()
+			.make_preferred();
+
+		if (std::filesystem::exists(p)) {
 			file_found = file_location;
 			break;
 		}

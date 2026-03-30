@@ -1484,7 +1484,7 @@ char LoadGameDialog_780F0(type_menuButtons_E1F84* a1x)//0x2590f0
 			strcpy(save_name, x_DWORD_E9C4C_langindexbuffer[414]);//(char *)x_DWORD_EA2C4;//2bb2c4 Empty
 			x_DWORD_17DE38str.xx_BYTE_17DF14[im][41] = 0;
 			x_DWORD_17DE38str.xx_BYTE_17DF14[im][42] = 0;
-			std::string saveGameFilePath = GetSaveGameFile(gameFolder, im + 1);
+			std::string saveGameFilePath = GetSaveGameFile(gameFolder.c_str(), im + 1);
 			SEARCH_FILE = DataFileIO::CreateOrOpenFile(saveGameFilePath.c_str(), 512);
 			if (SEARCH_FILE != NULL)
 			{
@@ -1506,7 +1506,7 @@ char LoadGameDialog_780F0(type_menuButtons_E1F84* a1x)//0x2590f0
 		if ((x_BYTE)v51 == 1 && x_DWORD_17DE38str.savedGameIndex_17DF04 > 0)
 		{
 			//Load Saved Game File
-			std::string loadFilePath = GetSaveGameFile(gameFolder, x_DWORD_17DE38str.savedGameIndex_17DF04);
+			std::string loadFilePath = GetSaveGameFile(gameFolder.c_str(), x_DWORD_17DE38str.savedGameIndex_17DF04);
 			FILE = DataFileIO::CreateOrOpenFile(loadFilePath.c_str(), 512);
 			//v10 = v9;
 			if (FILE != NULL)
@@ -2679,7 +2679,7 @@ char SaveGameDialog_78730(type_menuButtons_E1F84* a1x)//259730
 				v5 += 2;
 			} while (v7);*/
 			v56 = v45;
-			std::string saveGameFilePath = GetSaveGameFile(gameFolder, v2);
+			std::string saveGameFilePath = GetSaveGameFile(gameFolder.c_str(), v2);
 			file1 = DataFileIO::CreateOrOpenFile(saveGameFilePath.c_str(), 512);
 			if (file1 != NULL)
 			{
@@ -2711,7 +2711,7 @@ char SaveGameDialog_78730(type_menuButtons_E1F84* a1x)//259730
 				v9[1] = v12;
 				v9 += 2;
 			} while (v12);*/
-			std::string saveGameFilePath = GetSaveGameFile(gameFolder, x_DWORD_17DE38str.savedGameIndex_17DF04);
+			std::string saveGameFilePath = GetSaveGameFile(gameFolder.c_str(), x_DWORD_17DE38str.savedGameIndex_17DF04);
 			file2 = DataFileIO::CreateOrOpenFile(saveGameFilePath.c_str(), 546);
 			if (file2 != NULL)
 			{
@@ -3573,7 +3573,7 @@ int LoadLanguageFile(bitmap_pos_struct2_t** a1x, bitmap_pos_struct2_t** a2x, uin
 	//fix it
 	//v9=0;//fix it
 	//fix it
-	std::string languageFilePath = GetSubDirectoryFile(cdFolder, "LANGUAGE", langfilename);
+	std::string languageFilePath = GetSubDirectoryFile(cdFolder.c_str(), "LANGUAGE", langfilename);
 	for (uint8_t i = 0; i < 2; i++)//[ebp-4]=354f70
 	{
 		//v4 = atoi(langfilename +1);
@@ -3640,7 +3640,7 @@ int sub_7F960(bitmap_pos_struct2_t* a1x, bitmap_pos_struct2_t* a2x, uint8_t* a3,
 	unsigned __int8 i; // [esp+54h] [ebp-4h]
 	langcount = 0;
 
-	std::string languagePath = GetSubDirectoryFile(cdFolder, "LANGUAGE", langcountstring);
+	std::string languagePath = GetSubDirectoryFile(cdFolder.c_str(), "LANGUAGE", langcountstring);
 	for (i = 0; i < 2u; i = v10 + 1)
 	{
 		langcount = atoi((langcountstring + 1));
@@ -3666,7 +3666,7 @@ int sub_7F960(bitmap_pos_struct2_t* a1x, bitmap_pos_struct2_t* a2x, uint8_t* a3,
 			break;
 		}
 		v10 = i;
-		languagePath = GetSubDirectoryFile(cdFolder, "LANGUAGE", langcountstring);
+		languagePath = GetSubDirectoryFile(cdFolder.c_str(), "LANGUAGE", langcountstring);
 	}
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_98709_create_index_dattab_power(a1x, a2x, a3, a3dattabindex);

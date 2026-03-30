@@ -206,7 +206,8 @@ extern type_F2C20ar str_F2C20ar;
 
 extern std::string gameDataPath;
 extern std::string cdDataPath;
-extern std::string bigGraphicsPath;
+extern std::string highResGraphicsPath;
+extern std::string fixedMenuGraphicsPath;
 
 //extern type_17ECA0 str_17ECA0[];
 //extern uint8_t x_DWORD_17ECA0[];

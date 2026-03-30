@@ -438,6 +438,20 @@ extern char x_BYTE_D41C4;
 extern void(*ptrDrawBitmap_F01EC)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale);
 extern char x_BYTE_D41C6_old_graphics_mode;
 
+extern TColor x_BYTE_181544_oldpalbufferx[];
+extern char x_BYTE_D478C;
+extern char x_BYTE_E390C_VGA_pal_not_begin;
+extern char x_BYTE_F0220[];
+extern char x_BYTE_F0320[];
+extern char x_BYTE_F0420[];
+extern char x_BYTE_F0520[];
+extern char x_BYTE_F0620[];
+extern char x_BYTE_F0720[];
+extern char x_BYTE_F0820[];
+extern char x_BYTE_F0920[];
+extern int x_DWORD_F42A0;
+extern TColor x_BYTE_F3FA0arx[];
+
 extern int save_debugcounter;
 
 void j___delay(x_DWORD); // weak
@@ -1634,4 +1648,13 @@ void CopyScreen_85B20(uint8_t* src, uint8_t* dest, uint16_t rows_count);
 void sub_88580();
 int sub_9025C(__int16 a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int16 a5, __int16 a6);
 int sub_90374(uint16_t viewPortX, uint16_t viewPortY, uint16_t viewPortWidth, uint16_t viewPortHeight, unsigned __int16 a5, __int16 a6);
+int sub_40D10();
+void sub_48120();
+void sub_57640();
+void sub_90D27();
+void sub_A0D2C_VGA_get_Palette(TColor* a1);
+void sub_BD1B6(uint8_t* a1);
+void sub_BD2CB(uint8_t* a1);
+void sub_BD3DD();
+void DrawGameDebugText_6FEC0();
 #endif

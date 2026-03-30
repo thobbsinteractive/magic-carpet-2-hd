@@ -9,11 +9,11 @@
 #include "Type_Unk_F0E20x.h"
 
 typedef struct {
-	int32_t startX;
-	int32_t endX;
-	int32_t U;
-	int32_t V;
-	int32_t brightness;
+	int32_t startX;     // 0
+	int32_t endX;       // 4
+	int32_t U;          // 8
+	int32_t V;          // 12
+	int32_t brightness; // 16
 } Rasterline_t;
 
 constexpr int MAX_THREADS = 8;
@@ -86,11 +86,9 @@ private:
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture);
 	void DrawPolygonRasterLine_single_color_subB6253(Rasterline_t* pRasterLines, uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
 		uint8_t** ptrRenderBufferStartOfCurrentLine_v1102, char local_x_BYTE_E126C);
-	void DrawPolygonRasterLine_subB6253(Rasterline_t* pRasterLines, uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
-		uint8_t** ptrViewPortRenderLineStart_v1102, uint32_t Vincrement, int Uincrement, uint32_t BrightnessIncrement_v1146,
-		const uint8_t* pTexture);
-	void DrawPolygonRasterLine_flat_shading_subB6253(Rasterline_t* pRasterLines, uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw,
-		uint8_t** pv1102, uint32_t Vincrement, int Uincrement, uint8_t* pTexture, char local_x_BYTE_E126C);
+	void DrawPolygonRasterLine_subB6253(Rasterline_t* pRasterLines, int32_t* textureIndexU, int32_t* textureIndexV, uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw, uint8_t** ptrViewPortRenderLineStart_v1102, uint32_t Vincrement, int32_t Uincrement, uint32_t BrightnessIncrement_v1146, const uint8_t* pTexture);
+	void DrawPolygonRasterLine_flat_shading_subB6253(Rasterline_t* pRasterLines, int32_t* textureIndexU_v376, int32_t* textureIndexV, uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw, uint8_t** pv1102, uint32_t Vincrement, int32_t Uincrement, uint8_t* pTexture, char local_x_BYTE_E126C);
+	void DrawPolygonRasterLine_reflections_subB6253(Rasterline_t* pRasterLines, int32_t* textureIndexU_v376, int32_t* textureIndexV, uint8_t startLine, uint8_t drawEveryNthLine, int linesToDraw, uint8_t** pv1102, uint32_t Vincrement_v1135, int Uincrement_v1124, uint32_t BrightnessIncrement, uint8_t* pTexture_v389);
 	void DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t playersColors_E88E0x[][3], int32_t x_DWORD_F5730[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth);
 	void DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* vertex1, const ProjectionPolygon* vertex2, const ProjectionPolygon* vertex3, uint8_t startLine, uint8_t drawEveryNthLine);
 	Rasterline_t* RasterizePolygon(Rasterline_t* ptrPolys, int* startX, int* endX, int startX_inc, int endX_inc, int* numLines);

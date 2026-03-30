@@ -56,8 +56,8 @@ bool ReadConfig::SetConfig() {
 
 	auto config = Config(configFilePath);
 
-	strcpy((char*)gameFolder, config.m_Paths.m_GameFolder.c_str());
-	strcpy((char*)cdFolder, config.m_Paths.m_CdFolder.c_str());
+	gameFolder = config.m_Paths.m_GameFolder;
+	cdFolder = config.m_Paths.m_CdFolder;
 
 	return true;
 };
