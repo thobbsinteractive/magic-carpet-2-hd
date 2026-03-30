@@ -232,7 +232,7 @@ install(
 install(
     DIRECTORY
     ${CMAKE_SOURCE_DIR}/enhancedassets/music-ogg
-    ${CMAKE_SOURCE_DIR}/enhancedassets/biggraphics
+    ${CMAKE_SOURCE_DIR}/enhancedassets/graphics
     DESTINATION bin
 )
 
