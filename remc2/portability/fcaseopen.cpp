@@ -1,5 +1,13 @@
-#include <boost/algorithm/string/predicate.hpp>
 #include "fcaseopen.h"
+
+static bool our_iequals(const std::string& a, const std::string& b) {
+	if (a.size() != b.size())
+		return false;
+	for (size_t i = 0; i < a.size(); ++i)
+		if (tolower((unsigned char)a[i]) != tolower((unsigned char)b[i]))
+			return false;
+	return true;
+}
 
 #ifdef __linux__
 #include <stdlib.h>
@@ -11,8 +19,6 @@
 
 #include <iostream>
 #include <filesystem>
-#include <boost/algorithm/string.hpp>
-
 
 std::vector<std::string> GetTokensFromPath(const std::string &path) {
     size_t pos = 0;
@@ -52,7 +58,7 @@ std::string casepath(const std::string &path)
 
             for (const auto &entry: std::filesystem::directory_iterator(result)) {
                 std::string test = GetTokensFromPath(entry.path().string()).back();
-                if (boost::iequals(token, test)) {
+                if (our_iequals(token, test)) {
                     current = result + test;
                     break;
                 }

@@ -350,55 +350,20 @@ struct space_info
 	unsigned long free;      // <= capacity
 	unsigned long available; // <= free
 };
-//BOOST_FILESYSTEM_DECL
+
 space_info space(char* path, int* ec)
 {
-#   ifdef BOOST_POSIX_API
-	struct BOOST_STATVFS vfs;
-	space_info info;
-	if (!error(::BOOST_STATVFS(path, &vfs) ? BOOST_ERRNO : 0,
-		p, ec, "boost::filesystem::space"))
-	{
-		info.capacity
-			= static_cast<boost::uintmax_t>(vfs.f_blocks)* BOOST_STATVFS_F_FRSIZE;
-		info.free
-			= static_cast<boost::uintmax_t>(vfs.f_bfree)* BOOST_STATVFS_F_FRSIZE;
-		info.available
-			= static_cast<boost::uintmax_t>(vfs.f_bavail)* BOOST_STATVFS_F_FRSIZE;
+	space_info info = { 0, 0, 0 };
+	std::error_code error;
+	std::filesystem::space_info s = std::filesystem::space(path, error);
+	if (!error) {
+		info.capacity = s.capacity;
+		info.free = s.free;
+		info.available = s.available;
+		*ec = 0;
 	}
-
-#   else
-	ULARGE_INTEGER avail, total, free;
-	space_info info;
-
-	//std::string charstring = "hello, world";
-
-	std::wstring widestring;
-
-	for (uint32_t i = 0; i < strlen(path); i++)
-		widestring += (wchar_t)path[i];
-
-	LPCWSTR lpcwpath = widestring.c_str();
-
-
-	if (GetDiskFreeSpaceExW(lpcwpath, &avail, &total, &free) != 0)
-	{
-		info.capacity
-			= ((total.HighPart) << 32)
-			+ total.LowPart;
-		info.free
-			= ((free.HighPart) << 32)
-			+ free.LowPart;
-		info.available
-			= ((avail.HighPart) << 32)
-			+ avail.LowPart;
-	}
-
-#   endif
-
-	else
-	{
-		info.capacity = info.free = info.available = 0;
+	else {
+		*ec = error.value();
 	}
 	return info;
 }

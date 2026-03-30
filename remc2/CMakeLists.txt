@@ -232,7 +232,7 @@ install(
 install(
     DIRECTORY
     ${CMAKE_SOURCE_DIR}/enhancedassets/music-ogg
-    ${CMAKE_SOURCE_DIR}/enhancedassets/biggraphics
+    ${CMAKE_SOURCE_DIR}/enhancedassets/graphics
     DESTINATION bin
 )
 
@@ -263,7 +263,6 @@ if (UNIX)
         ${PNG_LIBRARY}
         findfirst
         ADLMIDI_static
-        Boost::system
     )
     target_link_directories(${PROJECT_NAME} PUBLIC
     )
