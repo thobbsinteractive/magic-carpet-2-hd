@@ -263,7 +263,6 @@ if (UNIX)
         ${PNG_LIBRARY}
         findfirst
         ADLMIDI_static
-        Boost::system
     )
     target_link_directories(${PROJECT_NAME} PUBLIC
     )
