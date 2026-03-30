@@ -170,7 +170,6 @@ target_link_libraries(${REGRESSION_TEST_TARGET} PUBLIC
 	${PNG_LIBRARY}
 	findfirst
 	ADLMIDI_static
-	Boost::system
 	fmt::fmt
 )
 add_compile_definitions(COMPILE_FOR_64BIT)
