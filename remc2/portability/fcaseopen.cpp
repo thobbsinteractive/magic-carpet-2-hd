@@ -64,7 +64,6 @@ std::string casepath(const std::string &path)
             if (!std::filesystem::exists(result))
                 return path;
 
-            for (const auto &entry: std::filesystem::directory_iterator(result)) {
             for (const auto &entry: std::filesystem::directory_iterator(result.empty() ? "." : result)) {
                 std::string test = GetTokensFromPath(entry.path().string()).back();
                 if (our_iequals(token, test)) {
