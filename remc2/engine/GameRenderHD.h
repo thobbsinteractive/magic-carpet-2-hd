@@ -7,6 +7,7 @@
 #include "ProjectionPolygon.h"
 #include "RenderThread.h"
 #include "Type_Unk_F0E20x.h"
+#include <algorithm>
 
 typedef struct {
 	int32_t startX;     // 0
