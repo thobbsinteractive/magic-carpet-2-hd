@@ -59,8 +59,12 @@ else()
     add_compile_options(-Wextra)
     add_compile_options(-pedantic)
     add_compile_options(-Wno-unknown-pragmas)
-	add_compile_options(${SPDLOG_CFLAGS_OTHER})
-		
+    add_compile_options(${SPDLOG_CFLAGS_OTHER})
+
+    # Linux/ARM
+    if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm|aarch64)")
+        add_compile_options(-fsigned-char)
+
     if (USE_SANITIZERS)
         add_compile_options(-fsanitize=address)
         add_compile_options(-fsanitize=pointer-compare)
