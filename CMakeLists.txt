@@ -64,6 +64,7 @@ else()
     # Linux/ARM
     if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm|aarch64)")
         add_compile_options(-fsigned-char)
+    endif ()
 
     if (USE_SANITIZERS)
         add_compile_options(-fsanitize=address)
