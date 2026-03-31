@@ -3,6 +3,7 @@
 #ifndef GAME_RENDER_HD
 #define GAME_RENDER_HD
 
+#define NOMINMAX
 #include "GameRenderInterface.h"
 #include "ProjectionPolygon.h"
 #include "RenderThread.h"
