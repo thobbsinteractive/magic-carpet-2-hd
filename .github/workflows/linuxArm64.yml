@@ -75,7 +75,7 @@ jobs:
         cd ${{ github.workspace }}/build_${{matrix.BUILD_CONFIGURATION}}
         ninja
 
-    - name: Run Unit Tests (via QEMU)
+    - name: Run Unit Tests
       run: |
         docker run --rm --platform linux/arm64 \
           -v ${{ github.workspace }}/build_${{matrix.BUILD_CONFIGURATION}}:/build \
@@ -83,5 +83,5 @@ jobs:
           bash -c "apt-get update -q && apt-get install -y -q \
             libsdl2-2.0-0 libsdl2-mixer-2.0-0 \
             libsdl2-ttf-2.0-0 libsdl2-image-2.0-0 \
-            libpng16-16 libfmt9 libspdlog1 \
+            libpng16-16 libfmt9 libspdlog1.12 \
             && /build/remc2-unit-test/remc2-unit-test"
