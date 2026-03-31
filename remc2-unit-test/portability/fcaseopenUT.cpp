@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "../pch.h"
 #include "../../remc2/portability/fcaseopen.h"
+#include <algorithm>
 std::string g_exe_path;
 TEST (fcaseopen, tokens) {
 #ifdef __linux__
