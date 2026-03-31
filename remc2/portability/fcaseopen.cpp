@@ -51,17 +51,35 @@ std::string casepath(const std::string &path)
     else if (path.size() >= 2 && path[0] == '.' && path[1] == '/')
         result = "./";  // use preffix ./
 
-	// skip token "." when path begin ./
-	int start_i = 0;
-	if (!tokens.empty() && tokens[0] == ".")
-		start_i = 1;
+    // skip token "." when path begin ./
+    int start_i = 0;
+    if (!tokens.empty() && tokens[0] == ".")
+        start_i = 1;
 
     for (int i = start_i; i < tokens.size(); ++i) {
         std::string token = tokens[i];
         std::string current = result + token;
 
         if (!std::filesystem::exists(current)) {
-            if (!std::filesystem::exists(result))
+            std::string dir = result;
+            if (dir.empty())
+                dir = ".";
+            else if (dir.size() > 1 && dir.back() == '/')
+                dir.pop_back();
+
+            if (!std::filesystem::exists(dir))
+                return path;
+
+            bool found = false;
+            for (const auto &entry : std::filesystem::directory_iterator(dir)) {
+                std::string test = entry.path().filename().string();
+                if (our_iequals(token, test)) {
+                    current = result + test;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
                 return path;
 
             for (const auto &entry: std::filesystem::directory_iterator(result.empty() ? "." : result)) {
