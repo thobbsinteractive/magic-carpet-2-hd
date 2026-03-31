@@ -81,14 +81,6 @@ std::string casepath(const std::string &path)
             }
             if (!found)
                 return path;
-
-            for (const auto &entry: std::filesystem::directory_iterator(result.empty() ? "." : result)) {
-                std::string test = GetTokensFromPath(entry.path().string()).back();
-                if (our_iequals(token, test)) {
-                    current = result + test;
-                    break;
-                }
-            }
         }
 
         result = current + ((i != tokens.size()-1) ? "/" : "");
