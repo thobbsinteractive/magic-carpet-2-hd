@@ -181,7 +181,6 @@ target_link_libraries(${UNIT_TEST_TARGET} PUBLIC
 	${PNG_LIBRARY}
 	findfirst
 	ADLMIDI_static
-	Boost::system
 	fmt::fmt
     ${GTEST_LIBRARIES}
     ${GTEST_MAIN_LIBRARIES}
