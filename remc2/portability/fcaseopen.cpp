@@ -48,8 +48,15 @@ std::string casepath(const std::string &path)
     std::string result {""};
     if (path[0] == '/')
         result = "/";
+    else if (path.size() >= 2 && path[0] == '.' && path[1] == '/')
+        result = "./";  // use preffix ./
 
-    for (int i = 0; i < tokens.size(); ++i) {
+	// skip token "." when path begin ./
+	int start_i = 0;
+	if (!tokens.empty() && tokens[0] == ".")
+		start_i = 1;
+
+    for (int i = start_i; i < tokens.size(); ++i) {
         std::string token = tokens[i];
         std::string current = result + token;
 
@@ -58,6 +65,7 @@ std::string casepath(const std::string &path)
                 return path;
 
             for (const auto &entry: std::filesystem::directory_iterator(result)) {
+            for (const auto &entry: std::filesystem::directory_iterator(result.empty() ? "." : result)) {
                 std::string test = GetTokensFromPath(entry.path().string()).back();
                 if (our_iequals(token, test)) {
                     current = result + test;
