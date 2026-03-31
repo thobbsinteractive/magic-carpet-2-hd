@@ -20,7 +20,7 @@ static bool our_iequals(const std::string& a, const std::string& b) {
 #include <iostream>
 #include <filesystem>
 
-std::vector<std::string> GetTokensFromPath(const std::string &path) {
+static std::vector<std::string> GetTokensFromPath(const std::string &path) {
     size_t pos = 0;
     size_t start = 0;
     std::vector<std::string> tokens;
@@ -35,7 +35,7 @@ std::vector<std::string> GetTokensFromPath(const std::string &path) {
     return tokens;
 }
 
-std::string casepath(const std::string &path)
+static std::string casepath(const std::string &path)
 {
     // returns either a path that has upper/lower case fixed and points to an / existing file or returns the input path
 
