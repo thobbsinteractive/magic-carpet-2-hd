@@ -5782,18 +5782,10 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	y2 = vertex2->Y;
 	y3 = vertex3->Y;
 
-#ifdef _MSC_VER
-	int maxx = max(vertex1->X, max(vertex2->X, vertex3->X));
-	int minx = min(vertex1->X, min(vertex2->X, vertex3->X));
-	int maxy = max(y1, __max(y2, y3));
-	int miny = min(y1, __min(y2, y3));
-#else
 	int maxx = std::max(vertex1->X, std::max(vertex2->X, vertex3->X));
 	int minx = std::min(vertex1->X, std::min(vertex2->X, vertex3->X));
 	int maxy = std::max(y1, std::max(y2, y3));
 	int miny = std::min(y1, std::min(y2, y3));
-#endif
-
 
 	if (maxx < 0 || minx >= viewPort.Width_DE564 || maxy < 0 || miny >= viewPort.Height_DE568) {
 		// triangle is outside of the viewport
