@@ -86,9 +86,6 @@ std::string casepath(const std::string &path)
         result = current + ((i != tokens.size()-1) ? "/" : "");
     }
 
-    if (!std::filesystem::exists(result))
-        result = path;
-
     return result;
 }
 #endif//!defined(__ANDROID__)
