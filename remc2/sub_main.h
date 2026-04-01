@@ -38,6 +38,7 @@
 #include "engine/Terrain.h"
 
 #include "portability/port_net.h"
+#include "portability/InputRecorder.h"
 
 //#define __CFSHL__(x, y) (x<<y)
 //#define __CFSHL__(x, y) 1

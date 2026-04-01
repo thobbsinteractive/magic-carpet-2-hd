@@ -18,6 +18,10 @@ struct RecordedEventPlayer
 	uint16_t PlayerIdx = 0;
 	uint32_t TurnCount = 0;
 	std::map<uint32_t, RecordedEventTurn*>* Turns = nullptr;
+	int16_t* SpellsEnabled = nullptr;
+	uint8_t* SpellIndexes = nullptr;
+	uint8_t* SpellLevels = nullptr;
+	int32_t* SpellsExperience = nullptr;
 };
 
 struct RecordedEvent

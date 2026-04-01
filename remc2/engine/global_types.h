@@ -143,7 +143,7 @@ typedef struct {
 type_16_1a;
 
 typedef struct {
-	int32_t dword[26];
+	int32_t SpellExperience[26];
 	//uint16_t word_2279;
 }
 type_32_1a;
@@ -187,20 +187,20 @@ typedef enum
 } Setting;
 
 typedef struct {//begin 611//str_611
-	type_32_1a array_0x263_611x;//size??//dword_0x649_2BDE
+	type_32_1a SpellExperience_0x263_611x;//size??//dword_0x649_2BDE
 	std::array<int32_t,NUMBER_OF_SPELLS> spellsExperience_0x2CB_715x;//104//size?? spell experience, one dword per spell, 26*4=104 bytes
 	//array_0x2CB_715[2] 723
-	type_16_1a array_0x333_819x;//208//size?? spells//word_0x719_2BDE
+	type_16_1a SpellsEnabled_0x333_819x;//208//size?? spells//word_0x719_2BDE
 	//821//array_0x333_819[1]
 	//823//array_0x333_819[2]
 	//825//array_0x333_819[3]
 	//827//array_0x333_819[4]
 	//835//array_0x333_819[8]
-	//type_16_1a word_0x34B_843;//232//remove it array_0x333_819x.word[12]
-	//type_16_1a word_0x34F_847;//remove it array_0x333_819x.word[14]
+	//type_16_1a word_0x34B_843;//232//remove it SpellsEnabled_0x333_819x.word[12]
+	//type_16_1a word_0x34F_847;//remove it SpellsEnabled_0x333_819x.word[14]
 	type_16_1a array_0x367_871x;//260//ok
 	//875 -array_0x367_871[4]
-	type_8_1a array_0x39B_923x;//312//size??//byte_0x781_2BDE
+	type_8_1a SpellIndexes_0x39B_923x;//312//size??//byte_0x781_2BDE
 	type_8_1a array_0x3B5_949x;//338//size??//array_0x79B_2BDE_13177
 	//int8_t array_0x41D_1053x[26];//size??
 	//int8_t array_0x41E_1054;//array_0x41D_1053x[1]
@@ -216,7 +216,7 @@ typedef struct {//begin 611//str_611
 	type_8_1a array_0x3CF_975x;//364//byte_0x7B5_2BDE
 	type_8_1a array_0x3E9_1001x;//390//size??//array_0x7CF_2BDE_13229
 	type_8_1a array_0x403_1027x;//416//size??//byte_0x7E9_2BDE
-	type_8_1a array_0x41D_1053z;//442//size??//byte_0x803_2BDE
+	type_8_1a SpellLevels_0x41D_1053z;//442//size??//byte_0x803_2BDE
 	type_8_1a array_0x437_1079x;//468//size?? //table of spell indexes//byte_0x81D_2BDE
 	int16_t SpellIndexLeft_0x451_1105;//494 act left spell index//word_0x837_2BDE
 	int16_t SpellIndexRight_0x453_1107;//496 act right spell index//word_0x839_2BDE

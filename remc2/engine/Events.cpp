@@ -931,7 +931,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   		std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		SetSoundEffectAndMusicLevelCoordinates_19D60((int)a1_6E8E);
+		SetSoundEffectAndMusicLevelCoordinates_19D60((intptr_t)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -965,7 +965,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_1A5B0_getLangStrings((int)a1_6E8E, 0, 0);
+		sub_1A5B0_getLangStrings((intptr_t)a1_6E8E, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -982,7 +982,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_1A970_change_game_settings((char)a1_6E8E, 0, 0);
+		sub_1A970_change_game_settings((intptr_t)a1_6E8E, 0, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;
@@ -2460,7 +2460,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_33F70((int)a1_6E8E);
+		sub_33F70((intptr_t)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -2525,7 +2525,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_34B00((char)a1_6E8E, 0, 0, 0);
+		sub_34B00((intptr_t)a1_6E8E, 0, 0, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;
@@ -2601,7 +2601,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		GetManaSphereColorIndexFromEntityId_369F0((int)a1_6E8E);
+		GetManaSphereColorIndexFromEntityId_369F0((intptr_t)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -2613,7 +2613,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		GetManaSphereIndexFromId_36A50((int)a1_6E8E);
+		GetManaSphereIndexFromId_36A50((intptr_t)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -3015,7 +3015,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		TransformPlayerColorIndex_616D0((int)a1_6E8E);
+		TransformPlayerColorIndex_616D0((intptr_t)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -3028,7 +3028,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		GetTrueWizardNumber_61790((int)a1_6E8E);
+		GetTrueWizardNumber_61790((intptr_t)a1_6E8E);
 		allert_error();
 #endif
 		break;
@@ -3046,7 +3046,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		DrawMinimapEntites_61880((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		DrawMinimapEntites_61880((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3059,7 +3059,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		DrawMinimapEntities_B_61A00((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		DrawMinimapEntities_B_61A00((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3072,7 +3072,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_627F0_draw_minimap_entites_a((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		sub_627F0_draw_minimap_entites_a((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3089,7 +3089,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		DrawMinimap_63600((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		DrawMinimap_63600((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3103,7 +3103,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_63670_draw_minimap_a((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		sub_63670_draw_minimap_a((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3116,7 +3116,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_63C90_draw_minimap_b((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		sub_63C90_draw_minimap_b((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3129,7 +3129,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		DrawMinimapMarks_644F0((int)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		DrawMinimapMarks_644F0((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3898,7 +3898,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		ShouldUpdateSound_6EA90((int)a1_6E8E, 0);
+		ShouldUpdateSound_6EA90((intptr_t)a1_6E8E, 0);
 		allert_error();
 #endif
 		break;
@@ -3910,7 +3910,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef COMPILE_FOR_64BIT // FIXME: 64bit
   std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		EndLoop_6EAB0((int)a1_6E8E, 0, 0);
+		EndLoop_6EAB0((intptr_t)a1_6E8E, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3932,7 +3932,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		SetMousePosition_6EDE0((short)a1_6E8E, 0);
+		SetMousePosition_6EDE0((intptr_t)a1_6E8E, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;
@@ -3941,7 +3941,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_6EF10_set_mouse_minmax((short)a1_6E8E, 0, 0, 0);
+		sub_6EF10_set_mouse_minmax((intptr_t)a1_6E8E, 0, 0, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;
