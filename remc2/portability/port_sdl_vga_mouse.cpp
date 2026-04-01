@@ -221,7 +221,9 @@ void OnMouseResolutionChanged(uint32_t width, uint32_t height)
 		if (y > screenHeight_180624)
 			y = screenHeight_180624;
 
-		SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, x, y });
+		SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, m_iWindowWidth, m_iWindowHeight });
+
+		//SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, x, y });
 	}
 	else
 		SDL_SetWindowMouseRect(m_window, new SDL_Rect{ 0, 0, 640, 480 });
