@@ -54,8 +54,6 @@ bool subBlitLock = false;
 
 int m_frameNumber = 0;
 
-bool m_warpPending = false;
-
 // Initalize Color Masks.
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 Uint32 redMask = 0xff000000;
@@ -911,11 +909,6 @@ int PollSdlEvents()
 		}
 		case SDL_MOUSEMOTION:
 		{
-			if (m_warpPending) {
-				m_warpPending = false;
-				break;
-			}
-
 			SetMouseEvents(1, event.motion.x, event.motion.y);
 			break;
 		}
@@ -983,7 +976,6 @@ void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y)
 void VGA_Set_mouse(int16_t x, int16_t y) 
 {
 	ScaleDownMouseCoordsToVga(x, y);
-	m_warpPending = true;
 	SDL_WarpMouseInWindow(m_window, x, y);
 	joystick_set_env(x, y);
 }
