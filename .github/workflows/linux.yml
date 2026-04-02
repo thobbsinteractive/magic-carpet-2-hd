@@ -26,9 +26,7 @@ jobs:
         cmake ninja-build \
         libsdl2-dev libsdl2-mixer-dev \
         libsdl2-ttf-dev libsdl2-image-dev \
-        libpng-dev libpng++-dev \
-        libz-dev libgtest-dev \
-        libboost-system-dev \
+        libgtest-dev \
         libspdlog-dev libfmt-dev \
         rapidjson-dev \
         clang-tidy \
