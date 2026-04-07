@@ -143,6 +143,8 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			SDL_SetHint(SDL_HINT_FRAMEBUFFER_ACCELERATION, "1");
 			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
+			SDL_SetRelativeMouseMode(SDL_TRUE);
+
 			SDL_Rect display = GetDisplayByIndex(displayIndex);
 			if (windowWidth > display.w || windowHeight > display.h)
 			{
@@ -975,7 +977,6 @@ void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y)
 
 void VGA_Set_mouse(int16_t x, int16_t y) 
 {
-	Logger->debug("VGA_Set_mouse x {} y {}", x, y);
 	ScaleDownMouseCoordsToVga(x, y);
 	SDL_WarpMouseInWindow(m_window, x, y);
 	joystick_set_env(x, y);
