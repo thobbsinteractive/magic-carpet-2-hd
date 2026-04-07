@@ -44576,23 +44576,19 @@ void SetMousePosition_6EDE0(int16_t posX, int16_t posY)//24fde0
 	}
 #else
 
-	uint32_t display_w = screenWidth_18062C, display_h = screenHeight_180624;
-	uint32_t new_x, new_y;
-
-
 	// we get in posX, posY the location of the pointer for a 640x480 display
 	// so recalculate the position based on what we actually have
 
-	if (x_WORD_180660_VGA_type_resolution & 1) {
-		// 320x240 virtual screen
-		display_w = 320;
-		display_h = 240;
-	}
+	//if (x_WORD_180660_VGA_type_resolution & 1) {
+	//	// 320x240 virtual screen
+	//	display_w = 320;
+	//	display_h = 240;
+	//}
 
-	new_x = display_w * posX / 640;
-	new_y = display_h * posY / 480;
+	//new_x = display_w * posX / 640;
+	//new_y = display_h * posY / 480;
 
-	VGA_Set_mouse(new_x, new_y);
+	VGA_Set_mouse(posX, posY);
 #endif
 }
 
