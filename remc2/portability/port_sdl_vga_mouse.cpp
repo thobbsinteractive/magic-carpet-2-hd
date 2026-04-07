@@ -975,6 +975,7 @@ void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y)
 
 void VGA_Set_mouse(int16_t x, int16_t y) 
 {
+	Logger->debug("VGA_Set_mouse x {} y {}", x, y);
 	ScaleDownMouseCoordsToVga(x, y);
 	SDL_WarpMouseInWindow(m_window, x, y);
 	joystick_set_env(x, y);
