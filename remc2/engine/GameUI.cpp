@@ -137,8 +137,8 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 	int16_t v21; // [esp+1Ch] [ebp-2Ch]
 	int16_t barStartXPos; // [esp+24h] [ebp-24h]
 	type_entity_0x6E8E* v23x; // [esp+28h] [ebp-20h]
-	int16_t v24; // [esp+2Ch] [ebp-1Ch]
-	int16_t v25; // [esp+30h] [ebp-18h]
+	int16_t balloonIdx_v24; // [esp+2Ch] [ebp-1Ch]
+	int16_t numBalloons_v25; // [esp+30h] [ebp-18h]
 	uint8_t v26; // [esp+34h] [ebp-14h]
 	uint8_t manaMaxColourIdx; // [esp+3Ch] [ebp-Ch]
 	uint8_t manaColourIdx; // [esp+40h] [ebp-8h]
@@ -251,40 +251,43 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 		case 1:
 		case 2:
 		case 3:
-			v25 = 1;
+			numBalloons_v25 = 1;
 			break;
 		case 4:
 		case 5:
-			v25 = 2;
+			numBalloons_v25 = 2;
 			break;
 		case 6:
 		case 7:
-			v25 = 3;
+			numBalloons_v25 = 3;
 			break;
 		default:
-			v25 = 0;
+			numBalloons_v25 = 0;
 			break;
 		}
 		//Draw Balloon Icon
-		DrawBitmap_2BB40(posX + (2 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v25 + BALLON1_ICON - 1], scale);
-		v24 = 0;
+		DrawBitmap_2BB40(posX + (2 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[numBalloons_v25 + BALLON1_ICON - 1], scale);
+		balloonIdx_v24 = 0;
 		//Draw Balloon Health Icon
 		DrawBitmap_2BB40(posX + (38 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_MANA_ICONS], scale);
-		if (v25 > 0)
+		if (numBalloons_v25 > 0)
 		{
 			do
 			{
 				v21 = posX + (58 * scale);
-				v9x = Entities_EA3E4[a1x->dword_0xA4_164x->array_0x3C_60[v24]];
+				v9x = Entities_EA3E4[a1x->dword_0xA4_164x->array_0x3C_60[balloonIdx_v24]];
 				//v19x = v9x;
 				if (v9x > Entities_EA3E4[0])
 				{
+					//Life
 					if (v9x->life_0x8 >= 0)
-						DrawBar_2D190(v21, 2 * v24 + 12 * scale, 64 * scale, 2 * scale, ((v9x->life_0x8 << 6) / v9x->maxLife_0x4) * scale, 0x7Bu);
-					DrawBar_2D190(v21, 2 * v24 + 30 * scale, 64 * scale, 2 * scale, ((v9x->mana_0x90_144 << 6) / v9x->maxMana_0x8C_140) * scale, manaColourIdx);
+						DrawBar_2D190(v21, (2 * balloonIdx_v24 * scale) + (12 * scale), 64 * scale, 2 * scale, ((v9x->life_0x8 << 6) / v9x->maxLife_0x4) * scale, 0x7Bu);
+
+					//Mana collected
+					DrawBar_2D190(v21, (2 * balloonIdx_v24 * scale) + (30 * scale), 64 * scale, 2 * scale, ((v9x->mana_0x90_144 << 6) / v9x->maxMana_0x8C_140) * scale, manaColourIdx);
 				}
-				v24++;
-			} while (v24 < v25);
+				balloonIdx_v24++;
+			} while (balloonIdx_v24 < numBalloons_v25);
 		}
 	}
 	posX = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL].width_4 * scale + posX;
