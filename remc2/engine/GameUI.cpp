@@ -281,10 +281,10 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 				{
 					//Life
 					if (v9x->life_0x8 >= 0)
-						DrawBar_2D190(v21, 2 * balloonIdx_v24 + 12 * scale, 64 * scale, 2 * scale, ((v9x->life_0x8 << 6) / v9x->maxLife_0x4) * scale, 0x7Bu);
+						DrawBar_2D190(v21, (2 * balloonIdx_v24 * scale) + (12 * scale), 64 * scale, 2 * scale, ((v9x->life_0x8 << 6) / v9x->maxLife_0x4) * scale, 0x7Bu);
 
 					//Mana collected
-					DrawBar_2D190(v21, 2 * balloonIdx_v24 + 30 * scale, 64 * scale, 2 * scale, ((v9x->mana_0x90_144 << 6) / v9x->maxMana_0x8C_140) * scale, manaColourIdx);
+					DrawBar_2D190(v21, (2 * balloonIdx_v24 * scale) + (30 * scale), 64 * scale, 2 * scale, ((v9x->mana_0x90_144 << 6) / v9x->maxMana_0x8C_140) * scale, manaColourIdx);
 				}
 				balloonIdx_v24++;
 			} while (balloonIdx_v24 < numBalloons_v25);
