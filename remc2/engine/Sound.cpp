@@ -5832,6 +5832,71 @@ void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetV
 	}
 }
 
+uint32_t sub_99830(uint32_t interval)
+{
+
+	unsigned __int8 i; // [esp+4h] [ebp-4h]
+
+	if (musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && AilSequenceStatus_96170(dword_180C78) != 2)
+	{
+		if (x_BYTE_E3816 == 127 && x_BYTE_E3817 == 2)
+		{
+			AilReleaseTimer_92DC0(MusicTimerIdx_180C80);
+			x_BYTE_E3818 = 0;
+		}
+		if (!x_BYTE_E3816 && x_BYTE_E3817 == 1)
+		{
+			AilReleaseTimer_92DC0(MusicTimerIdx_180C80);
+			x_BYTE_E3818 = 0;
+		}
+		if (x_BYTE_E3818)
+		{
+			x_BYTE_E3816 += x_BYTE_E381A;
+			for (i = 0; i < 0x10u; ++i)
+			{
+				if (byte_180C90[i])
+					AilSendChannelVoiceMessage_98360(dword_180C7C, dword_180C78, i | 0xB0, 11, (unsigned __int8)x_BYTE_E3816);
+			}
+		}
+	}
+	else
+	{
+		AilReleaseTimer_92DC0(MusicTimerIdx_180C80);
+		x_BYTE_E3818 = 0;
+		x_BYTE_E3817 = 1;
+		x_BYTE_E3816 = 0;
+		x_BYTE_E381A = -1;
+	}
+	return 0;
+
+	if (TimerFadeSamples_E388D)
+	{
+		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
+		{
+			if (SoundBuffer3_180750[i]->loop_count_12 == 0)
+				continue;
+
+			if (SoundBuffer3_180750[i]->volume_16 != SoundBuffer3_180750[i]->target_volume_6)
+			{
+				int change = 1;
+
+				if (SoundBuffer3_180750[i]->volume_16 > SoundBuffer3_180750[i]->target_volume_6)
+					change = -1;
+
+				if (SoundBuffer3_180750[i]->volume_16 + change > 127)
+					SetSampleVolume_A3B40(SoundBuffer3_180750[i], 127);
+				if (SoundBuffer3_180750[i]->volume_16 + change < 0)
+					SetSampleVolume_A3B40(SoundBuffer3_180750[i], 0);
+				else
+					SetSampleVolume_A3B40(SoundBuffer3_180750[i], SoundBuffer3_180750[i]->volume_16 + change);
+
+				AilSetSampleVolume_93E30(SoundBuffer3_180750[i], SoundBuffer3_180750[i]->volume_16);
+			}
+		}
+	}
+	return interval;
+}
+
 uint32_t FadeSamples_8F4B0(uint32_t interval)
 {
 	if (TimerFadeSamples_E388D)
@@ -6021,15 +6086,15 @@ void UpdateMusic_99970(char a1, unsigned __int8 a2)//27a970
 		x_BYTE_E3818 = 1;
 		if (a2 <= 4u && a2 >= 1u)
 		{
-			//MusicTimerIdx_180C80 = AilRegisterTimer_92600(sub_99830);
-			//AilSetTimerFrequency_92930(MusicTimerIdx_180C80, 30 * a2);
-			//AilStartTimer_92BA0(MusicTimerIdx_180C80);
+			MusicTimerIdx_180C80 = AilRegisterTimer_92600(sub_99830);
+			AilSetTimerFrequency_92930(MusicTimerIdx_180C80, 30 * a2);
+			AilStartTimer_92BA0(MusicTimerIdx_180C80);
 		}
 		else
 		{
-			//MusicTimerIdx_180C80 = AilRegisterTimer_92600(sub_99830);
-			//AilSetTimerFrequency_92930(MusicTimerIdx_180C80, 30);
-			//AilStartTimer_92BA0(MusicTimerIdx_180C80);
+			MusicTimerIdx_180C80 = AilRegisterTimer_92600(sub_99830);
+			AilSetTimerFrequency_92930(MusicTimerIdx_180C80, 30);
+			AilStartTimer_92BA0(MusicTimerIdx_180C80);
 		}
 	}
 }
