@@ -91,7 +91,7 @@ int16_t MaxLoadedWavIndex_180B50; // weak
 AIL_INI musicAILSettings; // weak
 char textBuffer_180BE0[512]; // weak
 HSEQUENCE m_hMusicSequence_180C78; // weak
-HMDIDRIVER hMdiMusicDriver; // weak
+HMDIDRIVER hMdiMusicDriver_180C7C; // weak
 //int x_DWORD_180C80; // weak
 char musicDriverType_180C84; // weak
 
@@ -677,8 +677,8 @@ void InitMusic_8D970()//26e970
 	if (mdMusic)
 	{
 		sscanf((char* const)mdMusic, "%s %x %d %d %d", mdMusicPar1, &ioParms.IO, &ioParms.IRQ, &ioParms.DMA_8_bit, &ioParms.DMA_16_bit);
-		hMdiMusicDriver = AilInstakkMidiDriverFile_95850(mdMusicPar1, &ioParms);
-		if (!hMdiMusicDriver)
+		hMdiMusicDriver_180C7C = AilInstakkMidiDriverFile_95850(mdMusicPar1, &ioParms);
+		if (!hMdiMusicDriver_180C7C)
 		{
 			if (!soundAble_E3798)
 				AilShutdown_919C0();
@@ -703,7 +703,7 @@ void InitMusic_8D970()//26e970
 				musicActive_E37FD = false;
 				return;
 			}
-			if (!AilInstallMidiIni_95710(&hMdiMusicDriver, musicMdiPath))
+			if (!AilInstallMidiIni_95710(&hMdiMusicDriver_180C7C, musicMdiPath))
 				musicCardOk = true;
 		}
 		if (!musicCardOk)
@@ -716,7 +716,7 @@ void InitMusic_8D970()//26e970
 		}
 	}
 
-	m_hMusicSequence_180C78 = AilAllocateSequenceHandle_95A30(hMdiMusicDriver);//driver
+	m_hMusicSequence_180C78 = AilAllocateSequenceHandle_95A30(hMdiMusicDriver_180C7C);//driver
 	bool isDriver = false;
 	if (!_stricmp(musicAILSettings.driver_name, "ADLIB.MDI"))
 	{
@@ -786,12 +786,12 @@ void InitMusic_8D970()//26e970
 		musicDriverType_180C84 = 'r';
 		isDriver = true;
 	}
-	if (!sub_969A0_AIL_MDI_driver_type(hMdiMusicDriver))
+	if (!sub_969A0_AIL_MDI_driver_type(hMdiMusicDriver_180C7C))
 	{
 		musicDriverType_180C84 = 'g';
 		isDriver = true;
 	}
-	if (sub_969A0_AIL_MDI_driver_type(hMdiMusicDriver) == 1 || sub_969A0_AIL_MDI_driver_type(hMdiMusicDriver) == 2)
+	if (sub_969A0_AIL_MDI_driver_type(hMdiMusicDriver_180C7C) == 1 || sub_969A0_AIL_MDI_driver_type(hMdiMusicDriver_180C7C) == 2)
 	{
 		musicDriverType_180C84 = 'f';
 		isDriver = true;
@@ -805,7 +805,7 @@ void InitMusic_8D970()//26e970
 				sub_9FA80();
 				x_BYTE_E3815 = 0;
 			}
-			AilUninstallMidiDriver_959A0(hMdiMusicDriver);
+			AilUninstallMidiDriver_959A0(hMdiMusicDriver_180C7C);
 			if (!soundAble_E3798)
 				AilShutdown_919C0();
 			musicAble_E37FC = false;
@@ -819,7 +819,7 @@ void InitMusic_8D970()//26e970
 		}
 		return;
 	}
-	AilUninstallMidiDriver_959A0(hMdiMusicDriver);
+	AilUninstallMidiDriver_959A0(hMdiMusicDriver_180C7C);
 	if (!soundAble_E3798)
 		AilShutdown_919C0();
 	musicAble_E37FC = false;
@@ -2738,7 +2738,7 @@ void sub_9FA80()//280a80
 {
 	if (musicAble_E37FC && !_stricmp(textBuffer_180BE0, "SBAWE32.MDI") && !_stricmp(&musicDriverType_180C84, "w"))
 	{
-		sub_9F6D0(hMdiMusicDriver, 1);
+		sub_9F6D0(hMdiMusicDriver_180C7C, 1);
 		sub_9F170(x_DWORD_181E2C, x_WORD_181E30);
 		sub_9F170(x_DWORD_181E26, x_WORD_181E2A);
 		x_BYTE_E3815 = 0;
@@ -2956,7 +2956,7 @@ void InitAWE32_9F740(char* textBullfrog)//280740
 			x_DWORD_181E2C = v1;
 			if ((x_DWORD)v1 || x_WORD_181E30)
 			{
-				v9 = sub_9F280(hMdiMusicDriver);
+				v9 = sub_9F280(hMdiMusicDriver_180C7C);
 				if (v9 != -1)
 				{
 					v5x.par2 = x_WORD_181E30;
@@ -2966,10 +2966,10 @@ void InitAWE32_9F740(char* textBullfrog)//280740
 #ifdef TEST_x64
 	allert_error();
 #endif
-					if (sub_9F2E0(hMdiMusicDriver, v5x.par1, v5x.par2, 2u).AX == -1//fix
+					if (sub_9F2E0(hMdiMusicDriver_180C7C, v5x.par1, v5x.par2, 2u).AX == -1//fix
 						&& !dos_read(file, x_DWORD_181E2C, (unsigned __int16)x_WORD_181E30, 512, &v8))
 					{
-						v2 = sub_9F3D0(hMdiMusicDriver, x_DWORD_181E2C, x_WORD_181E30, 1u);
+						v2 = sub_9F3D0(hMdiMusicDriver_180C7C, x_DWORD_181E2C, x_WORD_181E30, 1u);
 						v5x.par2 = WORD2(v2);
 						v5x.par1 = v2;
 						if ((x_DWORD)v2 || v5x.par2)
@@ -2978,7 +2978,7 @@ void InitAWE32_9F740(char* textBullfrog)//280740
 							for (i = 0; (signed __int16)__readgsx_WORD(v5x.par1) > i; i++)
 							{
 								if (dos_read(file, x_DWORD_181E2C, (unsigned __int16)x_WORD_181E30, 512, &v8)
-									|| sub_9F4F0(hMdiMusicDriver, x_DWORD_181E2C, x_WORD_181E30, 1u).AX != -1)//fix
+									|| sub_9F4F0(hMdiMusicDriver_180C7C, x_DWORD_181E2C, x_WORD_181E30, 1u).AX != -1)//fix
 								{
 									return;
 								}
@@ -2995,7 +2995,7 @@ void InitAWE32_9F740(char* textBullfrog)//280740
 									(unsigned __int16)x_WORD_181E2A,
 									__readgsx_DWORD(v5x.par1 + 10),
 									&v8)
-									&& sub_9F5E0(hMdiMusicDriver, x_DWORD_181E26, x_WORD_181E2A, 1u).AX == -1)//fix
+									&& sub_9F5E0(hMdiMusicDriver_180C7C, x_DWORD_181E26, x_WORD_181E2A, 1u).AX == -1)//fix
 								{
 									x_BYTE_E3815 = 1;
 									DataFileIO::Close(file);
@@ -5855,7 +5855,7 @@ uint32_t sub_99830(uint32_t interval)
 			for (i = 0; i < 0x10u; ++i)
 			{
 				if (byte_180C90[i])
-					AilSendChannelVoiceMessage_98360(dword_180C7C, m_hMusicSequence_180C78, i | 0xB0, 11, (unsigned __int8)x_BYTE_E3816);
+					AilSendChannelVoiceMessage_98360(hMdiMusicDriver_180C7C, m_hMusicSequence_180C78, i | 0xB0, 11, (unsigned __int8)x_BYTE_E3816);
 			}
 		}
 	}
