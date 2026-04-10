@@ -100,6 +100,19 @@ void SOUND_start_sequence(int32_t sequence_num) {
 	//3 - menu
 	//4 - intro
 #ifdef SOUND_SDLMIXER
+	if (sequence_num == 1)
+	{
+		if (oggmusic && !GAME_music_war) {
+			std::string oggmusicPath = GetSubDirectoryPath(oggmusicFolder);
+			char selectedTrackPath[512] = "";
+			sprintf(selectedTrackPath, "%s/002-C2GAME3-onlyWar.ogg", oggmusicPath.c_str());
+			GAME_music_war = Mix_LoadWAV(selectedTrackPath);
+		}
+		warMusicOn = true;
+	}
+	else
+		warMusicOn = false;
+
 	last_sequence_num = sequence_num;
 	//volume fix
 	if (lastMusicVolume == -1)
@@ -124,13 +137,11 @@ void SOUND_start_sequence(int32_t sequence_num) {
 				Mix_PauseMusic();
 			}
 	}
-	if (sequence_num == 2)
-		warMusicOn = true;
-	else
-		warMusicOn = false;
 	if(warMusicOn)
 	{
 		if (Mix_Playing(music_war_channel_index) == 0) {
+			Mix_VolumeChunk(GAME_music_war, 0);
+			Mix_Volume(music_war_channel_index, 0);
 			if (Mix_PlayChannel(music_war_channel_index, GAME_music_war, -1) == -1) {
 				if (Mix_Paused(music_war_channel_index) == 1) {
 					Mix_Resume(music_war_channel_index);
@@ -140,7 +151,6 @@ void SOUND_start_sequence(int32_t sequence_num) {
 				}
 			}
 		}
-		WarMusicSetVolume(0);
 	}
 #endif//SOUND_SDLMIXER
 };
@@ -148,6 +158,7 @@ void SOUND_start_sequence(int32_t sequence_num) {
 void WarMusicSetVolume(int32_t volume) {
 #ifdef SOUND_SDLMIXER
 	Mix_Volume(music_war_channel_index, volume);
+	Mix_VolumeChunk(GAME_music_war, 128);
 #endif//SOUND_SDLMIXER
 }
 
@@ -288,8 +299,6 @@ void SOUND_init_MIDI_sequence(uint8_t*  /*datax*/, type_E3808_music_header* head
 		}
 #ifdef SOUND_SDLMIXER
 		GAME_music[track_number] = Mix_LoadMUS(selectedTrackPath);
-		sprintf(selectedTrackPath, "%s/002-C2GAME3-onlyWar.ogg", oggmusicPath.c_str());
-		GAME_music_war = Mix_LoadWAV(selectedTrackPath);
 		if (!GAME_music[track_number]) {
 			Logger->error("Mix_LoadMUS() error: {}", Mix_GetError());
 		}

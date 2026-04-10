@@ -80,7 +80,7 @@ void sub_8D800_sound_proc2();
 void EndSample_8D8F0();
 void InitMusic_8D970();
 void StopMusic_8E020();
-int sub_8E0D0();
+int sub_8E0D0(int a2, int a3);
 void StartMusic_8E160(int track, int volume);
 void sub_8E410_sound_proc16_xmidivolume(int master_volume);
 void sub_8E470_sound_proc17_volume(int volume);

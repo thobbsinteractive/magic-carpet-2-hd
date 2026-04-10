@@ -848,6 +848,23 @@ void StopMusic_8E020()//26f020
 	}
 }
 
+int sub_8E0D0(int a2, int a3)
+{
+	if (!a3)
+	{
+		UpdateMusicTimer_E3819 = true;
+		AilSendChannelVoiceMessage_98360(hMdiMusicDriver_180C7C, m_hMusicSequence_180C78, a2 | 0xB0, 11, 0);
+		//now eliminated, maybe return it later byte_180C90[a2] = 1;
+	}
+	if (a3 == 1)
+	{
+		AilStopSequence_95DE0(m_hMusicSequence_180C78);
+		AilSendChannelVoiceMessage_98360(hMdiMusicDriver_180C7C, m_hMusicSequence_180C78, a2 | 0xB0, 0, 1);
+		sub_95E70_AIL_resume_sequence(m_hMusicSequence_180C78);
+	}
+	return 0;
+}
+
 //----- (0008E160) --------------------------------------------------------
 void StartMusic_8E160(int track, int volume)//26f160
 {
@@ -871,6 +888,11 @@ void StartMusic_8E160(int track, int volume)//26f160
 		}
 		AilInitSequence_95C00(m_hMusicSequence_180C78, musicHeader_E3808->str_8.track_10[track].xmiData_0, 0, track);
 		AilRegisterTriggerCallback_97670(m_hMusicSequence_180C78, reinterpret_cast<void*>(sub_8E0D0));
+
+		//fix call at now,It should be called when we encounter a tag in the MIDI
+		typedef int (*TriggerFunc)(int, int);
+		((TriggerFunc)m_hMusicSequence_180C78->trigger_callback_8_32)(0, 0);
+		//fix call at now,It should be called when we encounter a tag in the MIDI
 
 		if (volume < 127)
 			AilSetSequenceVolume_96030(volume, -1);
@@ -5853,7 +5875,7 @@ uint32_t FadeWarMusic_99830(uint32_t interval)
 		{
 			x_BYTE_E3816 += x_BYTE_E381A;
 
-			//WarMusicSetVolume(x_BYTE_E3816);
+			WarMusicSetVolume(x_BYTE_E3816);
 			/*
 			for (i = 0; i < 0x10u; ++i)
 			{
@@ -5871,35 +5893,7 @@ uint32_t FadeWarMusic_99830(uint32_t interval)
 		x_BYTE_E3816 = 0;
 		x_BYTE_E381A = -1;
 	}
-	return 0;
-	/*
-	if (TimerFadeSamples_E388D)
-	{
-		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
-		{
-			if (SoundBuffer3_180750[i]->loop_count_12 == 0)
-				continue;
-
-			if (SoundBuffer3_180750[i]->volume_16 != SoundBuffer3_180750[i]->target_volume_6)
-			{
-				int change = 1;
-
-				if (SoundBuffer3_180750[i]->volume_16 > SoundBuffer3_180750[i]->target_volume_6)
-					change = -1;
-
-				if (SoundBuffer3_180750[i]->volume_16 + change > 127)
-					SetSampleVolume_A3B40(SoundBuffer3_180750[i], 127);
-				if (SoundBuffer3_180750[i]->volume_16 + change < 0)
-					SetSampleVolume_A3B40(SoundBuffer3_180750[i], 0);
-				else
-					SetSampleVolume_A3B40(SoundBuffer3_180750[i], SoundBuffer3_180750[i]->volume_16 + change);
-
-				AilSetSampleVolume_93E30(SoundBuffer3_180750[i], SoundBuffer3_180750[i]->volume_16);
-			}
-		}
-	}
 	return interval;
-	*/
 }
 
 uint32_t FadeSamples_8F4B0(uint32_t interval)
