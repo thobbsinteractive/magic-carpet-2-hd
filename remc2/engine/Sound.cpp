@@ -6187,99 +6187,97 @@ void WriteWaveToFile(wav_t* wav, const char* name)
 }
 
 //----- (0006E450) --------------------------------------------------------
-void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)//24f450
+void PrepareEventSound_6E450(int16_t entityIndex, int16_t levelIndex, int16_t wavIndex)//24f450
 {
-	type_entity_0x6E8E* ptrEntity_v3x; // edx
-	axis_3d* v4x; // esi
-	unsigned int v5; // eax
-	__int16 v6; // ax
-	unsigned __int16 v7; // ax
-	int v8; // edx
-	int v9; // eax
-	int volume_v10; // esi
-	int v11; // edx
-	int volumePan_v12; // edi
-	unsigned int v13; // eax
-	__int16 playRate_v21; // [esp+0h] [ebp-24h]
-	type_entity_0x6E8E* ptrEntity_v22x; // [esp+4h] [ebp-20h]
-	signed int v23; // [esp+8h] [ebp-1Ch]
-	unsigned int v25; // [esp+10h] [ebp-14h]
-	type_entity_0x6E8E* ptrPlayerEntity_v26x; // [esp+14h] [ebp-10h]
-	unsigned __int16 v27; // [esp+18h] [ebp-Ch]
-	int16_t v28; // [esp+1Ch] [ebp-8h]
-	int16_t flags_v29; // [esp+20h] [ebp-4h]
+	type_entity_0x6E8E* currentEntity;
+	axis_3d* entityPos;
+	unsigned int distXYZ;
+	__int16 targetAngle;
+	unsigned __int16 relativeYaw;
+	int volCalc1;
+	int volCalc2;
+	int volume;
+	int panSide;
+	int volumePan;
+	unsigned int randVal;
+	__int16 playRate = 0;
+	type_entity_0x6E8E* cachedEntity;
+	signed int distanceXYZ;
+	unsigned int distanceToPlayer;
+	type_entity_0x6E8E* playerEntity;
+	unsigned __int16 absoluteYaw;
+	int16_t rawAngle;
+	int16_t soundFlags = 0;
 	axis_3d_32 positionFromPlayer;
 	positionFromPlayer.x = 0;
 	positionFromPlayer.y = 0;
 	positionFromPlayer.z = 0;
 
-	flags_v29 = 0;
-	playRate_v21 = 0;
 	if (!soundActive_E3799 || !soundAble_E3798)
 		return;
-	ptrEntity_v3x = Entities_EA3E4[entityIndex];
-	ptrEntity_v22x = ptrEntity_v3x;
-	if (ptrEntity_v3x <= Entities_EA3E4[0])
+	currentEntity = Entities_EA3E4[entityIndex];
+	cachedEntity = currentEntity;
+	if (currentEntity <= Entities_EA3E4[0])
 	{
-		volume_v10 = 0x7FFF;
-		LOWORD(volumePan_v12) = 0x7FFF;
+		volume = 0x7FFF;
+		volumePan = 0x7FFF;
 	}
 	else
 	{
-		if (ptrEntity_v3x->struct_byte_0xc_12_15.byte[0] < 0)
+		if (currentEntity->struct_byte_0xc_12_15.byte[0] < 0)
 			return;
-		v4x = &ptrEntity_v3x->position_0x4C_76;
-		if ((unsigned int)Maths::EuclideanDistXY_584D0(
+		entityPos = &currentEntity->position_0x4C_76;
+		if (Maths::EuclideanDistXY_584D0(
 			&Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]->position_0x4C_76,
-			&ptrEntity_v3x->position_0x4C_76) > MaxSoundDistance)
+			&currentEntity->position_0x4C_76) > MaxSoundDistance)
 			return;
-		ptrPlayerEntity_v26x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
-		flags_v29 = ptrEntity_v22x->id_0x1A_26;
-		v5 = Maths::EuclideanDistXYZ_58490(&ptrPlayerEntity_v26x->position_0x4C_76, v4x);
-		positionFromPlayer = Maths::RelativeXYZCoordinate(&ptrEntity_v3x->position_0x4C_76, &ptrPlayerEntity_v26x->position_0x4C_76);
-		v25 = v5;
-		v23 = v5;
-		v6 = Maths::sub_581E0_maybe_tan2(&ptrPlayerEntity_v26x->position_0x4C_76, v4x);
-		v28 = v6;
-		v7 = sub_582B0(ptrPlayerEntity_v26x->yaw_0x1C_28, v6);
-		v27 = v7;
-		v8 = 12288 * (512 - v7 / 2 + 512);
-		v9 = (v8 - (__CFSHL__(v8 >> 31, 10) + (v8 >> 31 << 10))) >> 10;
-		volume_v10 = v9 ? (signed int)(0x7FFF * (v9 - v25)) / v9 : 0x7FFF;
-		v11 = (signed __int16)sub_582F0(ptrPlayerEntity_v26x->yaw_0x1C_28, v28);
-		if (volume_v10 < 512)
+		playerEntity = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
+		soundFlags = cachedEntity->id_0x1A_26;
+		distXYZ = Maths::EuclideanDistXYZ_58490(&playerEntity->position_0x4C_76, entityPos);
+		positionFromPlayer = Maths::RelativeXYZCoordinate(&currentEntity->position_0x4C_76, &playerEntity->position_0x4C_76);
+		distanceToPlayer = distXYZ;
+		distanceXYZ = distXYZ;
+		targetAngle = Maths::sub_581E0_maybe_tan2(&playerEntity->position_0x4C_76, entityPos);
+		rawAngle = targetAngle;
+		relativeYaw = sub_582B0(playerEntity->yaw_0x1C_28, targetAngle);
+		absoluteYaw = relativeYaw;
+		volCalc1 = 12288 * (512 - relativeYaw / 2 + 512);
+		volCalc2 = (volCalc1 - (__CFSHL__(volCalc1 >> 31, 10) + (volCalc1 >> 31 << 10))) >> 10;
+		volume = volCalc2 ? (0x7FFF * (volCalc2 - distanceToPlayer)) / volCalc2 : 0x7FFF;
+		panSide = sub_582F0(playerEntity->yaw_0x1C_28, rawAngle);
+		if (volume < 512)
 			return;
-		if (volume_v10 > 0x7FFF)
-			volume_v10 = 0x7FFF;
-		if (v23 > 320)
+		if (volume > 0x7FFF)
+			volume = 0x7FFF;
+		if (distanceXYZ > 320)
 		{
-			if (v27 > 0x200u)
-				v27 = 1024 - v27;
-			volumePan_v12 = (((v27 << 15) * v11 - (__CFSHL__((v27 << 15) * v11 >> 31, 9) + ((v27 << 15) * v11 >> 31 << 9))) >> 9)
+			if (absoluteYaw > 0x200u)
+				absoluteYaw = 1024 - absoluteYaw;
+			volumePan = (((absoluteYaw << 15) * panSide - (__CFSHL__((absoluteYaw << 15) * panSide >> 31, 9) + ((absoluteYaw << 15) * panSide >> 31 << 9))) >> 9)
 				+ 0x7FFF;
-			if (volumePan_v12 < 0)
-				volumePan_v12 = 0;
-			if (volumePan_v12 > 0xFFFF)
-				LOWORD(volumePan_v12) = -1;
+			if (volumePan < 0)
+				volumePan = 0;
+			if (volumePan > 0xFFFF)
+				volumePan = -1;
 		}
 		else
 		{
-			LOWORD(volumePan_v12) = 0x7FFF;
+			volumePan = 0x7FFF;
 		}
 		if (wavIndex >= 0x2Au)
 		{
-			v13 = 9377 * D41A0_0.rand_0x8 + 9439;
+			randVal = 9377 * D41A0_0.rand_0x8 + 9439;
 			if (wavIndex <= 0x2Cu)
 			{
-				playRate_v21 = v13 % 0x1E - 15;
+				playRate = randVal % 0x1E - 15;
 			}
 			else if (wavIndex == 46)
 			{
 				if (Entities_EA3E4[entityIndex]->actionIndex_0x45_69 == 14)
-					playRate_v21 = v13 % 0x14 + 10;
+					playRate = randVal % 0x14 + 10;
 				else
-					playRate_v21 = v13 % 0x14 - 10;
-			}			
+					playRate = randVal % 0x14 - 10;
+			}
 		}
 	}
 	switch (wavIndex)
@@ -6288,7 +6286,7 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 		case Spider_32:
 		case DeepOne_38:
 		case Devil_42:
-		case Arrow2_34:
+		case FireFly1_43:
 		case FireFly2_44:
 		case Goat_46:
 		case DoorC2_47:
@@ -6300,14 +6298,14 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 		case MadDog_58:
 		case MdWeller_59:
 		case Zombie_62:
-			flags_v29 = 0;
+			soundFlags = 0;
 			break;
 	}
 	switch (wavIndex)
 	{
 	case Ocean_1:
 	case Crickets_2:
-		if (a2 == D41A0_0.LevelIndex_0xc)
+		if (levelIndex == D41A0_0.LevelIndex_0xc)
 		{
 			PlaySample_8F100(0, wavIndex, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			Update_Playing_Sample_Status_8F710(0, wavIndex, 70, 2u, 0);
@@ -6344,18 +6342,18 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 	case Success2_61:
 	case SpellUp_63:
 	case GWell_64:
-		if (ShouldUpdateSound_6EA90(volume_v10, EntitySounds_F4FE0[wavIndex].volume_2))
+		if (ShouldUpdateSound_6EA90(volume, EntitySounds_F4FE0[wavIndex].volume_2))
 		{
-			EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
-			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
-			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+			EntitySounds_F4FE0[wavIndex].volume_2 = volume;
+			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan;
+			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate;
 			EntitySounds_F4FE0[wavIndex].playType_0 = 1;
-			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+			EntitySounds_F4FE0[wavIndex].flags_3 = soundFlags;
 			EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 		}
 		break;
 	case Fire_5:
-		if (a2 == D41A0_0.LevelIndex_0xc)
+		if (levelIndex == D41A0_0.LevelIndex_0xc)
 		{
 			PlaySample_8F100(0, wavIndex, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			Update_Playing_Sample_Status_8F710(0, wavIndex, 120, 2u, 0);
@@ -6379,42 +6377,42 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 	case MadDog_58:
 	case MdWeller_59:
 	case Zombie_62:
-		if (ShouldUpdateSound_6EA90(volume_v10, EntitySounds_F4FE0[wavIndex].volume_2))
+		if (ShouldUpdateSound_6EA90(volume, EntitySounds_F4FE0[wavIndex].volume_2))
 		{
-			EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
-			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
-			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+			EntitySounds_F4FE0[wavIndex].volume_2 = volume;
+			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan;
+			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate;
 			EntitySounds_F4FE0[wavIndex].playType_0 = 3;
-			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+			EntitySounds_F4FE0[wavIndex].flags_3 = soundFlags;
 			EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 		}
 		break;
 	case Select_14:
 	case CantUse_29:
-		if (ShouldUpdateSound_6EA90(volume_v10, EntitySounds_F4FE0[wavIndex].volume_2))
+		if (ShouldUpdateSound_6EA90(volume, EntitySounds_F4FE0[wavIndex].volume_2))
 		{
-			if (a2 == D41A0_0.LevelIndex_0xc)
+			if (levelIndex == D41A0_0.LevelIndex_0xc)
 			{
-				EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
-				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+				EntitySounds_F4FE0[wavIndex].volume_2 = volume;
+				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan;
+				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate;
 				EntitySounds_F4FE0[wavIndex].flags_3 = 0;
 				EntitySounds_F4FE0[wavIndex].playType_0 = 1;
 				EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 			}
-			else if (a2 == -1)
+			else if (levelIndex == -1)
 			{
-				EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
-				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
-				EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+				EntitySounds_F4FE0[wavIndex].volume_2 = volume;
+				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan;
+				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate;
+				EntitySounds_F4FE0[wavIndex].flags_3 = soundFlags;
 				EntitySounds_F4FE0[wavIndex].playType_0 = 1;
 				EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 			}
 		}
 		break;
 	case Market_31:
-		if (a2 == D41A0_0.LevelIndex_0xc)
+		if (levelIndex == D41A0_0.LevelIndex_0xc)
 		{
 			PlaySample_8F100(0, wavIndex, 0, 64, 0x64u, -1, IfNotPlayingPlaySample);
 			Update_Playing_Sample_Status_8F710(0, wavIndex, 85, 2u, 0);
@@ -6422,12 +6420,12 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 		break;
 	case DoorC2_47:
 	case Tornado_49:
-		if (ShouldUpdateSound_6EA90(volume_v10, EntitySounds_F4FE0[wavIndex].volume_2))
+		if (ShouldUpdateSound_6EA90(volume, EntitySounds_F4FE0[wavIndex].volume_2))
 		{
-			EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
-			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
-			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
-			EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+			EntitySounds_F4FE0[wavIndex].volume_2 = volume;
+			EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan;
+			EntitySounds_F4FE0[wavIndex].playRate_5 = playRate;
+			EntitySounds_F4FE0[wavIndex].flags_3 = soundFlags;
 			EntitySounds_F4FE0[wavIndex].playType_0 = 4;
 			EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 		}
@@ -6436,23 +6434,23 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 	case Hit2_55:
 	case Hit3_56:
 	case Hit4_57:
-		if (ShouldUpdateSound_6EA90(volume_v10, EntitySounds_F4FE0[wavIndex].volume_2))
+		if (ShouldUpdateSound_6EA90(volume, EntitySounds_F4FE0[wavIndex].volume_2))
 		{
-			if (a2 == D41A0_0.LevelIndex_0xc)
+			if (levelIndex == D41A0_0.LevelIndex_0xc)
 			{
-				EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
-				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
+				EntitySounds_F4FE0[wavIndex].volume_2 = volume;
+				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan;
+				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate;
 				EntitySounds_F4FE0[wavIndex].flags_3 = 0;
 				EntitySounds_F4FE0[wavIndex].playType_0 = 3;
 				EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 			}
-			else if (a2 == -1)
+			else if (levelIndex == -1)
 			{
-				EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
-				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
-				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
-				EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+				EntitySounds_F4FE0[wavIndex].volume_2 = volume;
+				EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan;
+				EntitySounds_F4FE0[wavIndex].playRate_5 = playRate;
+				EntitySounds_F4FE0[wavIndex].flags_3 = soundFlags;
 				EntitySounds_F4FE0[wavIndex].playType_0 = 3;
 				EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 			}
@@ -6463,11 +6461,11 @@ void PrepareEventSound_6E450(int16_t entityIndex, int16_t a2, int16_t wavIndex)/
 	case Drip3_67:
 	case Drip4_68:
 	case Drip5_69:
-		EntitySounds_F4FE0[wavIndex].volume_2 = volume_v10;
-		EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan_v12;
+		EntitySounds_F4FE0[wavIndex].volume_2 = volume;
+		EntitySounds_F4FE0[wavIndex].volumePan_1 = volumePan;
 		EntitySounds_F4FE0[wavIndex].playType_0 = 3;
-		EntitySounds_F4FE0[wavIndex].playRate_5 = playRate_v21;
-		EntitySounds_F4FE0[wavIndex].flags_3 = flags_v29;
+		EntitySounds_F4FE0[wavIndex].playRate_5 = playRate;
+		EntitySounds_F4FE0[wavIndex].flags_3 = soundFlags;
 		EntitySounds_F4FE0[wavIndex].positionFromPlayer = positionFromPlayer;
 		break;
 	default:
