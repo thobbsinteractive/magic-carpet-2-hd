@@ -90,7 +90,7 @@ uint32_t SoundBuffer3EndIdx_180B4C;
 int16_t MaxLoadedWavIndex_180B50; // weak
 AIL_INI musicAILSettings; // weak
 char textBuffer_180BE0[512]; // weak
-HSEQUENCE m_hMusicSequence; // weak
+HSEQUENCE m_hMusicSequence_180C78; // weak
 HMDIDRIVER hMdiMusicDriver; // weak
 //int x_DWORD_180C80; // weak
 char musicDriverType_180C84; // weak
@@ -716,7 +716,7 @@ void InitMusic_8D970()//26e970
 		}
 	}
 
-	m_hMusicSequence = AilAllocateSequenceHandle_95A30(hMdiMusicDriver);//driver
+	m_hMusicSequence_180C78 = AilAllocateSequenceHandle_95A30(hMdiMusicDriver);//driver
 	bool isDriver = false;
 	if (!_stricmp(musicAILSettings.driver_name, "ADLIB.MDI"))
 	{
@@ -839,10 +839,10 @@ void StopMusic_8E020()//26f020
 		x_BYTE_E3817 = 1;
 		x_BYTE_E3816 = 0;
 		x_BYTE_E381A = -1;
-		if (AilSequenceStatus_96170(m_hMusicSequence) != 2)
+		if (AilSequenceStatus_96170(m_hMusicSequence_180C78) != 2)
 		{
-			AilStopSequence_95DE0(m_hMusicSequence);
-			AilEndSequence_95F00(m_hMusicSequence);
+			AilStopSequence_95DE0(m_hMusicSequence_180C78);
+			AilEndSequence_95F00(m_hMusicSequence_180C78);
 		}
 		songCurrentlyPlaying_E3802 = 0;
 	}
@@ -862,20 +862,20 @@ void StartMusic_8E160(int track, int volume)//26f160
 		x_BYTE_E381A = -1;
 		if (songCurrentlyPlaying_E3802)
 		{
-			if (AilSequenceStatus_96170(m_hMusicSequence) != 2)
+			if (AilSequenceStatus_96170(m_hMusicSequence_180C78) != 2)
 			{
-				AilStopSequence_95DE0(m_hMusicSequence);
-				AilEndSequence_95F00(m_hMusicSequence);
+				AilStopSequence_95DE0(m_hMusicSequence_180C78);
+				AilEndSequence_95F00(m_hMusicSequence_180C78);
 			}
 			songCurrentlyPlaying_E3802 = 0;
 		}
-		AilInitSequence_95C00(m_hMusicSequence, musicHeader_E3808->str_8.track_10[track].xmiData_0, 0, track);
-		AilRegisterTriggerCallback_97670(m_hMusicSequence, reinterpret_cast<void*>(sub_8E0D0));
+		AilInitSequence_95C00(m_hMusicSequence_180C78, musicHeader_E3808->str_8.track_10[track].xmiData_0, 0, track);
+		AilRegisterTriggerCallback_97670(m_hMusicSequence_180C78, reinterpret_cast<void*>(sub_8E0D0));
 
 		if (volume < 127)
 			AilSetSequenceVolume_96030(volume, -1);
 
-		AilStartSequence_95D50(m_hMusicSequence, track);
+		AilStartSequence_95D50(m_hMusicSequence_180C78, track);
 		songCurrentlyPlaying_E3802 = track;
 	}
 }
@@ -1483,8 +1483,8 @@ void EndMusic_99C90()//27ac90
 	{
 		if (songCurrentlyPlaying_E3802)
 		{
-			AilStopSequence_95DE0((HSEQUENCE)m_hMusicSequence);
-			AilEndSequence_95F00(m_hMusicSequence);
+			AilStopSequence_95DE0((HSEQUENCE)m_hMusicSequence_180C78);
+			AilEndSequence_95F00(m_hMusicSequence_180C78);
 			songCurrentlyPlaying_E3802 = 0;
 		}
 		if (x_BYTE_E3815 == 1)
@@ -2225,7 +2225,7 @@ void EndAllSound_986E0()//2796e0
 //----- (00098790) --------------------------------------------------------
 void SetMusicVolume_98790(int milliseconds, int volume)//279790
 {
-	if (musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && volume <= 0x7Fu && AilSequenceStatus_96170(m_hMusicSequence) != 2)
+	if (musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && volume <= 0x7Fu && AilSequenceStatus_96170(m_hMusicSequence_180C78) != 2)
 		AilSetSequenceVolume_96030(volume, milliseconds);
 }
 
@@ -5652,7 +5652,7 @@ bool LoadMusicTrack(FILE* filehandle, uint8_t drivernumber)//26fd00
 	GetMusicSequenceCount();
 
 	for (int i = 1; i <= m_iNumberOfTracks; i++)//2b4804
-		AilInitSequence_95C00(m_hMusicSequence, musicHeader_E3808->str_8.track_10[i-1].xmiData_0, 0, i);
+		AilInitSequence_95C00(m_hMusicSequence_180C78, musicHeader_E3808->str_8.track_10[i-1].xmiData_0, 0, i);
 	musicAble_E37FC = true;
 	return true;
 }
@@ -5837,7 +5837,7 @@ uint32_t sub_99830(uint32_t interval)
 
 	unsigned __int8 i; // [esp+4h] [ebp-4h]
 
-	if (musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && AilSequenceStatus_96170(dword_180C78) != 2)
+	if (musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && AilSequenceStatus_96170(m_hMusicSequence_180C78) != 2)
 	{
 		if (x_BYTE_E3816 == 127 && x_BYTE_E3817 == 2)
 		{
@@ -5855,7 +5855,7 @@ uint32_t sub_99830(uint32_t interval)
 			for (i = 0; i < 0x10u; ++i)
 			{
 				if (byte_180C90[i])
-					AilSendChannelVoiceMessage_98360(dword_180C7C, dword_180C78, i | 0xB0, 11, (unsigned __int8)x_BYTE_E3816);
+					AilSendChannelVoiceMessage_98360(dword_180C7C, m_hMusicSequence_180C78, i | 0xB0, 11, (unsigned __int8)x_BYTE_E3816);
 			}
 		}
 	}
@@ -6077,7 +6077,7 @@ bool AilReadIniFile_92190(AIL_INI* INI, char* filename)//273190
 //----- (00099970) --------------------------------------------------------
 void UpdateMusic_99970(char a1, unsigned __int8 a2)//27a970
 {
-	if (UpdateMusicTimer_E3819 && musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && AilSequenceStatus_96170(m_hMusicSequence) != 2 && x_BYTE_E3817 != a1)
+	if (UpdateMusicTimer_E3819 && musicAble_E37FC && musicActive_E37FD && songCurrentlyPlaying_E3802 && AilSequenceStatus_96170(m_hMusicSequence_180C78) != 2 && x_BYTE_E3817 != a1)
 	{
 		if (x_BYTE_E3818)
 			AilReleaseTimer_92DC0(MusicTimerIdx_180C80);
