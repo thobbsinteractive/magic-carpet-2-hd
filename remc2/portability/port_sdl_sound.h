@@ -256,6 +256,8 @@ bool ClearCdTrackSegment();
 bool AreCdTracksAvailable();
 int GetCdTrackCount();
 
+void WarMusicSetVolume(int32_t volume);
+
 void RegisterEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);
 template <typename T> void LoadAudioEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);
 

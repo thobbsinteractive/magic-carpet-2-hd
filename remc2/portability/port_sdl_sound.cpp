@@ -34,9 +34,13 @@ int num_IO_configurations = 3;
 int service_rate = -1;
 int master_volume = -1;
 
+int music_war_channel_index = maxSimultaniousSounds + 1;
+bool warMusicOn = false;
+
 //The music that will be played
 #ifdef SOUND_SDLMIXER
 Mix_Music* GAME_music[20] = { NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL };
+Mix_Chunk* GAME_music_war = NULL;
 #endif//SOUND_SDLMIXER
 #ifdef SOUND_OPENAL
 //Mix_Music* GAME_music[20] = { NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL };
@@ -110,7 +114,7 @@ void SOUND_start_sequence(int32_t sequence_num) {
 
 	if (Mix_PlayingMusic() == 0)
 	{
-		if (Mix_PlayMusic(GAME_music[sequence_num], -1) == -1)
+		if (Mix_PlayMusic(GAME_music[sequence_num], -1) == -1)			
 			if (Mix_PausedMusic() == 1)
 			{
 				Mix_ResumeMusic();
@@ -120,13 +124,40 @@ void SOUND_start_sequence(int32_t sequence_num) {
 				Mix_PauseMusic();
 			}
 	}
+	if (sequence_num == 2)
+		warMusicOn = true;
+	else
+		warMusicOn = true;
+	if(warMusicOn)
+	{
+		if (Mix_Playing(music_war_channel_index) == 0) {
+			if (Mix_PlayChannel(music_war_channel_index, GAME_music_war, -1) == -1) {
+				if (Mix_Paused(music_war_channel_index) == 1) {
+					Mix_Resume(music_war_channel_index);
+				}
+				else {
+					Mix_Pause(music_war_channel_index);
+				}
+			}
+		}
+		WarMusicSetVolume(0);
+	}
 #endif//SOUND_SDLMIXER
 };
+
+void WarMusicSetVolume(int32_t volume) {
+#ifdef SOUND_SDLMIXER
+	Mix_Volume(music_war_channel_index, volume);
+#endif//SOUND_SDLMIXER
+}
 
 void SOUND_pause_sequence(int32_t  /*sequence_num*/) {
 	if (unitTests)return;
 #ifdef SOUND_SDLMIXER
 	Mix_PauseMusic();
+	if (warMusicOn) {
+		Mix_Pause(music_war_channel_index);
+	}
 #endif//SOUND_SDLMIXER
 };
 
@@ -134,12 +165,18 @@ void SOUND_stop_sequence(int32_t  /*sequence_num*/) {
 	if (unitTests)return;
 #ifdef SOUND_SDLMIXER
 	Mix_HaltMusic();
+	if (warMusicOn) {
+		Mix_HaltChannel(music_war_channel_index);
+	}
 #endif//SOUND_SDLMIXER
 };
 void SOUND_resume_sequence(int32_t  /*sequence_num*/) {
 	if (unitTests)return;
 #ifdef SOUND_SDLMIXER
 	Mix_ResumeMusic();
+	if (warMusicOn) {
+		Mix_Resume(music_war_channel_index);
+	}
 #endif//SOUND_SDLMIXER
 };
 
@@ -244,9 +281,15 @@ void SOUND_init_MIDI_sequence(uint8_t*  /*datax*/, type_E3808_music_header* head
 				sprintf(selectedTrackPath, "%s/music%d.ogg", oggmusicPath.c_str(), track_number);
 		}
 		else
+		{
 			sprintf(selectedTrackPath, "%s/music%d.ogg", oggmusicPath.c_str(), track_number);
+			if(track_number==2)//only fix for atypic version music2 with idetical lenght as war music
+				sprintf(selectedTrackPath, "%s/002-C2GAME3-withoutWar.ogg", oggmusicPath.c_str());
+		}
 #ifdef SOUND_SDLMIXER
 		GAME_music[track_number] = Mix_LoadMUS(selectedTrackPath);
+		sprintf(selectedTrackPath, "%s/002-C2GAME3-onlyWar.ogg", oggmusicPath.c_str());
+		GAME_music_war = Mix_LoadWAV(selectedTrackPath);
 		if (!GAME_music[track_number]) {
 			Logger->error("Mix_LoadMUS() error: {}", Mix_GetError());
 		}
@@ -727,7 +770,7 @@ bool init_sound()
 		}
 	}
 
-	Mix_AllocateChannels(maxSimultaniousSounds + 1);
+	Mix_AllocateChannels(maxSimultaniousSounds + 1 + 1);
 
 	//Mix_SetSoundFonts("c:\\prenos\\Magic2\\sf2\\TOM-SF2.sf2");
 	//load_sound_files();

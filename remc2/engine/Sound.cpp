@@ -5832,7 +5832,7 @@ void Update_Playing_Sample_Status_8F710(int flags, __int16 wavIndex, int targetV
 	}
 }
 
-uint32_t sub_99830(uint32_t interval)
+uint32_t FadeWarMusic_99830(uint32_t interval)
 {
 
 	unsigned __int8 i; // [esp+4h] [ebp-4h]
@@ -5852,11 +5852,15 @@ uint32_t sub_99830(uint32_t interval)
 		if (x_BYTE_E3818)
 		{
 			x_BYTE_E3816 += x_BYTE_E381A;
+
+			//WarMusicSetVolume(x_BYTE_E3816);
+			/*
 			for (i = 0; i < 0x10u; ++i)
 			{
 				if (byte_180C90[i])
 					AilSendChannelVoiceMessage_98360(hMdiMusicDriver_180C7C, m_hMusicSequence_180C78, i | 0xB0, 11, (unsigned __int8)x_BYTE_E3816);
 			}
+			*/
 		}
 	}
 	else
@@ -5868,7 +5872,7 @@ uint32_t sub_99830(uint32_t interval)
 		x_BYTE_E381A = -1;
 	}
 	return 0;
-
+	/*
 	if (TimerFadeSamples_E388D)
 	{
 		for (int i = 0; i < SoundBuffer3EndIdx_180B4C; i++)
@@ -5895,6 +5899,7 @@ uint32_t sub_99830(uint32_t interval)
 		}
 	}
 	return interval;
+	*/
 }
 
 uint32_t FadeSamples_8F4B0(uint32_t interval)
@@ -6086,13 +6091,13 @@ void UpdateMusic_99970(char a1, unsigned __int8 a2)//27a970
 		x_BYTE_E3818 = 1;
 		if (a2 <= 4u && a2 >= 1u)
 		{
-			MusicTimerIdx_180C80 = AilRegisterTimer_92600(sub_99830);
+			MusicTimerIdx_180C80 = AilRegisterTimer_92600(FadeWarMusic_99830);
 			AilSetTimerFrequency_92930(MusicTimerIdx_180C80, 30 * a2);
 			AilStartTimer_92BA0(MusicTimerIdx_180C80);
 		}
 		else
 		{
-			MusicTimerIdx_180C80 = AilRegisterTimer_92600(sub_99830);
+			MusicTimerIdx_180C80 = AilRegisterTimer_92600(FadeWarMusic_99830);
 			AilSetTimerFrequency_92930(MusicTimerIdx_180C80, 30);
 			AilStartTimer_92BA0(MusicTimerIdx_180C80);
 		}
