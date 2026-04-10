@@ -127,7 +127,7 @@ void SOUND_start_sequence(int32_t sequence_num) {
 	if (sequence_num == 2)
 		warMusicOn = true;
 	else
-		warMusicOn = true;
+		warMusicOn = false;
 	if(warMusicOn)
 	{
 		if (Mix_Playing(music_war_channel_index) == 0) {
