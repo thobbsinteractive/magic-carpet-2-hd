@@ -12,7 +12,7 @@ extern int16_t MOUSE_MIN;
 extern int16_t MOUSE_MAX_X;
 extern int16_t MOUSE_MAX_Y;
 
-#pragma pack(1)
+#pragma pack(push, 1)
 typedef struct // size 16
 {
 	uint32_t unk_17DBA8; // weak 40
@@ -22,7 +22,7 @@ typedef struct // size 16
 	uint8_t x_BYTE_17DBB5; //(+14)
 	uint8_t x_BYTE_17DBB6; //(+15)
 } Type_unk_17DBA8str; //16
-#pragma pack(16)
+#pragma pack(pop)
 
 #pragma pack(push, 1)
 typedef struct //lenght 56
@@ -49,7 +49,7 @@ typedef struct //lenght 56
 } type_x_DWORD_17DB70str;
 #pragma pack(pop)
 
-#pragma pack(1)
+#pragma pack(push, 1)
 typedef struct //lenght 13
 {
 	int32_t time_17DE28; // weak x_DWORD_17DE28str
@@ -58,7 +58,7 @@ typedef struct //lenght 13
 	int16_t x_WORD_17DE32_posy; // weak x_DWORD_17DE28str+10
 	int8_t DisplayLevelDescriptionText_17DE34; // weak x_DWORD_17DE28str+12
 } Type_DWORD_17DE28str;
-#pragma pack(16)
+#pragma pack(pop)
 
 #pragma pack(push, 1)
 typedef struct {//lenght 69
