@@ -154,6 +154,9 @@ set(SOURCE_FILES_ENGINE
     "engine/UVTable_D4350.h"
     "utilities/DataFileRNC.cpp"
     "utilities/DataFileRNC.h"
+    "lib/stb_impl.cpp"
+    "lib/stb_image.h"
+    "lib/stb_image_write.h"
 )
 source_group("Source Files\\engine" FILES ${SOURCE_FILES_ENGINE})
 
