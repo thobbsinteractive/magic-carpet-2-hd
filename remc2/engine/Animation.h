@@ -8,7 +8,7 @@
 #include "Basic.h"
 #include "Sound.h"
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 7
 	int16_t startFrame;//0
 	char key_2;//2
@@ -25,7 +25,7 @@ typedef struct {//lenght 12
 	int16_t width_alt_10;
 }
 Type_17DB40;
-#pragma pack (16)
+#pragma pack(pop)
 
 extern Type_17DB40 unk_17DB40str;//uint8_t unk_17DB40[12]; // weak
 

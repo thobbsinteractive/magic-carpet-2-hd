@@ -9,7 +9,7 @@
 using namespace std::string_view_literals;
 
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {
 	axis_3d v51y;//v51x_struct v51x; // [esp+A8h] [ebp-12h]//0
 	//uint16_t v52xw_4;//__int16 v52; // [esp+ACh] [ebp-Eh]//+4
@@ -26,7 +26,7 @@ typedef struct {
 	uint16_t v63xw_44;//__int16 v63; // [esp+D4h] [ebp+1Ah]//+44
 	uint8_t v64xb_46;//char v64; // [esp+D6h] [ebp+1Ch]//+46 //color
 } v51x_struct;
-#pragma pack (16)
+#pragma pack(pop)
 
 
 extern char FontType_D419D;

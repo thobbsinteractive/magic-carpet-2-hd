@@ -69,7 +69,7 @@ void preconvert() {
 	int16_t word_20;
 }
 type_D404C;
-#pragma pack (16)
+#pragma pack(pop)
 
 type_D404C str_D404C[5];
 
@@ -116,7 +116,7 @@ sprintf(buffer, "};\n");
 fwrite(buffer, strlen(buffer), 1, file);
 fclose(file);*/
 /*
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 22
 	int16_t word_0;
 	int16_t word_2;
@@ -131,7 +131,7 @@ typedef struct {//lenght 22
 	int8_t byte_19;
 	int16_t word_20;
 }type_mapScreenPortals_E17CC;
-#pragma pack (16)
+#pragma pack(pop)
 	type_mapScreenPortals_E17CC mapScreenPortals_E17CC[168] = {
 	//0 2  4    6       8   10      12      14        16    18 19 20 stub
 	{0, 0, 0x74, 0x1de, 28, 0xa40,   0x341, 0x213,      0,    2,  0, 0, 0 }

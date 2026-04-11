@@ -27,14 +27,14 @@
 #include "LevelStructs.h"
 #include "ScreenBuff.h"
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 3
 	uint8_t red;
 	uint8_t green;
 	uint8_t blue;
 }
 TColor;
-#pragma pack (16)
+#pragma pack(pop)
 
 //#define USE_DOSBOX
 
@@ -150,7 +150,7 @@ extern int32_t x_DWORD_D41A4_x96BF;*/
 
 extern uint8_t* off_D41A8_sky;
 
-#pragma pack (1)
+#pragma pack(push, 1)
 
 typedef struct {
 	int32_t dword[26];
@@ -716,7 +716,7 @@ struct {//0xb0 nebo spis 171(0xab)
 	//int8_t stubb[1];
 }
 typedef type_str_unk_1804B0ar;
-#pragma pack (16)
+#pragma pack(pop)
 
 /*
 	memset((void*)(&x_D41A0_BYTEARRAY_0[16]), 0, 0x1d);
