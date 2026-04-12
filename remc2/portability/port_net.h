@@ -22,7 +22,7 @@ typedef union {
 	uint32_t align;
 } p64align;
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 66(changed to 70)
 	uint8_t ncb_command_0;
 	uint8_t ncb_retcode_1;
@@ -58,7 +58,7 @@ typedef struct {//lenght 66(changed to 70)
 	//uint8_t ncb_reserved_50[16];// not used
 }
 shadow_myNCB;
-#pragma pack (16)
+#pragma pack(pop)
 
 void makeNetwork(myNCB* connection);
 

@@ -18,7 +18,7 @@
 #define x_WORD short
 #define x_DWORD int
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {
 	uint8_t* data;
 	uint8_t width_4;
@@ -30,6 +30,6 @@ typedef struct {
 	uint8_t width_4;
 	uint8_t height_5;
 } bitmap_pos_struct2_t;
-#pragma pack (16)
+#pragma pack (pop)
 
 #endif //BITMAP_POS_STRUCT_H

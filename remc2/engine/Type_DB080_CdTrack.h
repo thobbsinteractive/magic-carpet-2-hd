@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 4
 	int32_t startPos_0;
 	int32_t length_2;
@@ -14,7 +14,7 @@ typedef struct {//lenght 42
 	Type_DB080_TrackSegment TrackSegments_DB080[10];
 }
 Type_DB080_CdTrack;
-#pragma pack (16)
+#pragma pack(pop)
 
 Type_DB080_CdTrack CdTracks_DB080[28] = {
 {0x0001,{{0x0000,0x02EE},{0x0339,0x012C},{0x04B0,0x01C2},{0x06BD,0x01C2},{0x08CA,0x0177},{0x0A8C,0x0177},{0x0000,0x0000},{0x0000,0x0000},{0x0000,0x0000},{0x0C4E,0x020D}}},
