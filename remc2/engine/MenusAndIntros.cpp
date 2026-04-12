@@ -3116,7 +3116,7 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 }
 
 //----- (0007EAE0) --------------------------------------------------------
-int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* portPosX, __int16* portPosY, int8_t* a5, type_animStruct* animStruct)
+int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* portPosX, __int16* portPosY, int8_t* a5, type_animStruct* animStruct)//25fae0
 {
 	type_menuButtons_E1F84 selectVar;
 	int index2;
@@ -3207,6 +3207,11 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* portPosX, __int16* 
 			}
 			if (*a5 != 1 || x_DWORD_17DB70str.x_BYTE_17DB8E)
 				MapMenuPortalsDraw_81760();
+			else
+			{
+				*a5 = 3;
+				MapMenuPortalsDraw_81760();
+			}
 		}
 		else
 		{
@@ -3350,7 +3355,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* portPosX, __int16* 
 	default:
 		break;
 	}
-	if (*a5 != 1 || x_DWORD_17DB70str.x_BYTE_17DB8E || (*a5 == 1 && x_DWORD_17DB70str.x_WORD_17DB8A != -1))
+	//if (*a5 != 1 || x_DWORD_17DB70str.x_BYTE_17DB8E)
 	{
 		if (map_not_moving_WORD_E29D6)
 		{
@@ -3408,7 +3413,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* portPosX, __int16* 
 					{
 						x_DWORD_17DE28str.time_17DE28 = x_DWORD_17DE28str.time2_17DE2C;
 						x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 = 2;
-						IsPlayingCDTrack_17E09D = x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34;
+						IsPlayingCDTrack_17E09D = 1;
 					}
 					else if (x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 == 2)
 					{
@@ -3431,7 +3436,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* portPosX, __int16* 
 					int textIndex = (x_DWORD_17DE28str.x_WORD_17DE32_posy < MOUSE_MAX_Y) ? 280 : 60;
 					PresentLevelDescription_80C30(130, textIndex, 380);
 				}
-				else if (x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 <= 2u || x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 == 3)
+				else if (x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 <= 3)
 				{
 					//adress 2602a7
 					PresentLevelDescription_80C30(0, 0, 0);
@@ -3443,7 +3448,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* portPosX, __int16* 
 
 		if (!result2 && !result)
 		{
-			if (*a5 == 3 && !result && !x_DWORD_17DB70str.x_BYTE_17DB8E)
+			if (*a5 == 3 && !x_DWORD_17DB70str.x_BYTE_17DB8E)
 			{
 				if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)
 				{
@@ -3474,7 +3479,7 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* portPosX, __int16* 
 						}
 						if (mapScreenPortals_E17CC[i].activated_18 == 2) break;
 					}
-					if (!found && !result && !x_DWORD_17DB70str.x_BYTE_17DB8E)
+					if (!found && !x_DWORD_17DB70str.x_BYTE_17DB8E)
 					{
 						for (int i=0;secretMapScreenPortals_E2970[i].posX_8;i++)
 						{
