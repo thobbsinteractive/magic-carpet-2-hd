@@ -4411,6 +4411,7 @@ void ShowEndCredits_833C0()//2643c0
 		int time2 = j___clock();
 		int index1;
 		index1 = index2;
+		bool reachedEnd = false;
 		for (int i = 0; ; i += xy_DWORD_17DEC0_spritestr[65].height_5 + 2)
 		{
 			int timeDiff = (time2 - time) / 100;
@@ -4419,10 +4420,10 @@ void ShowEndCredits_833C0()//2643c0
 			{
 				if (timeDiff > 5)
 				{
-					index1 = 0;
 					time = j___clock();
 					index2 = 0;
 				}
+				reachedEnd = true;
 				break;
 			}
 			if (!_stricmp(off_DB558[index3], "!"))
@@ -4431,7 +4432,7 @@ void ShowEndCredits_833C0()//2643c0
 			sub_7FCB0_draw_text_with_border(off_DB558[index3], 10, 620, (signed __int16)(i + 200), 5, colorIndex, 0);
 			index1++;
 		}
-		if ((time2 - time) / 100 > 2)
+		if (!reachedEnd && (time2 - time) / 100 > 2)
 		{
 			index1++;
 			time = j___clock();
