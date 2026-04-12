@@ -6471,6 +6471,6 @@ void sub_85BF5(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6)//266bf5
 //----- (00041BC0) --------------------------------------------------------
 void sub_41BC0()//222bc0
 {
-	x_BYTE_D47D9 = 0;
+	IsPauseMenuOpen_D47D9 = 0;
 	x_BYTE_D47D8 = 0;
 }

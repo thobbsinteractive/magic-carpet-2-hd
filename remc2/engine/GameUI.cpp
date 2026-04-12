@@ -618,17 +618,17 @@ void DrawCurrentObjectiveTextbox_30630(uint8_t scale)//211630
 }
 
 //----- (00041B60) --------------------------------------------------------
-void sub_41B60()//222b60
+void SetPauseMenuClosed_41B60()//222b60
 {
-	if (x_BYTE_D47D9 == 1)
+	if (IsPauseMenuOpen_D47D9 == 1)
 	{
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = x_BYTE_D47D8;
 		if ((unsigned __int8)x_BYTE_D47D8 >= 1u && (unsigned __int8)x_BYTE_D47D8 <= 1u)
 			sub_417D0_install_pal_and_mouse_minmax2();
 		x_BYTE_D47D8 = 0;
 	}
-	if (x_BYTE_D47D9)
-		x_BYTE_D47D9--;
+	if (IsPauseMenuOpen_D47D9)
+		IsPauseMenuOpen_D47D9--;
 }
 
 //----- (00052E90) --------------------------------------------------------
@@ -648,11 +648,11 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	sub_87C10();
 	if (newMenuState)
 	{
-		sub_41AF0();
+		SetPausedMenuOpen_41AF0();
 	}
 	else if (currentMenuState )
 	{
-		sub_41B60();
+		SetPauseMenuClosed_41B60();
 	}
 	if (newMenuState && (newMenuState < 6u || newMenuState > 7u))
 	{

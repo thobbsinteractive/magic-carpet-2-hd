@@ -15,7 +15,7 @@
 
 
 char CURSOR_SPRITE_INDEX_D419E = 0; // weak//2a519e
-char x_BYTE_D47D9 = 0; // weak
+char IsPauseMenuOpen_D47D9 = 0; // weak
 char x_BYTE_E36DC[124] = { 
 0x00,0x27,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x30,0x2D,0x3D,0x08,0x09,
 0x51,0x57,0x45,0x52,0x54,0x59,0x55,0x49,0x4F,0x50,0x5B,0x5D,0x0D,0x00,0x41,0x53,
@@ -65,7 +65,7 @@ void ProcessKeyboardPresses_17190()//1f8190
 		if (debugcounter_47560 == 5)
 		{
 			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= 0xfe;
-			//sub_41B60();
+			//SetPauseMenuClosed_41B60();
 			/*x_D41A0_BYTEARRAY_4_struct.byteindex_205 = 0;
 			x_D41A0_BYTEARRAY_4_struct.byteindex_206 = 0;
 			SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
@@ -258,22 +258,22 @@ void ProcessKeyboardPresses_17190()//1f8190
 						break;
 					}
 					case 0x3e: {//f4
-						sub_1A970_change_game_settings(12, 0, 0);
+						ChangeSettings_1A970(12, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x3f: {//f5
-						sub_1A970_change_game_settings(13, 0, 0);
+						ChangeSettings_1A970(13, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x40: {//f6
-						sub_1A970_change_game_settings(14, 0, 0);
+						ChangeSettings_1A970(14, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x41: {//f7
-						sub_1A970_change_game_settings(15, 0, 0);
+						ChangeSettings_1A970(15, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
@@ -288,17 +288,17 @@ void ProcessKeyboardPresses_17190()//1f8190
 						break;
 					}
 					case 0x3c: {//f2
-						sub_1A970_change_game_settings(10, 0, 0);
+						ChangeSettings_1A970(10, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x3d: {//f3
-						sub_1A970_change_game_settings(11, 0, 0);
+						ChangeSettings_1A970(11, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x3b: {//f1
-						sub_1A970_change_game_settings(9, 0, 0);
+						ChangeSettings_1A970(9, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
@@ -315,12 +315,12 @@ void ProcessKeyboardPresses_17190()//1f8190
 						break;
 					}
 					case 0x13: {//r
-						sub_1A970_change_game_settings(16, 0, 0);
+						ChangeSettings_1A970(16, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x14: {//t
-						sub_1A970_change_game_settings(19, 0, 0);
+						ChangeSettings_1A970(19, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
@@ -334,34 +334,34 @@ void ProcessKeyboardPresses_17190()//1f8190
 						if (CommandLineParams.DoShowInGameDebug())
 						{
 							sub_70940();
-							sub_1A970_change_game_settings(20, 0, 0);
+							ChangeSettings_1A970(20, 0, 0);
 							LastPressedKey_1806E4 = 0;
 						}
 						break;
 					}
 
 					case 0x3e: {//f4
-						sub_1A970_change_game_settings(4, 0, 0);
+						ChangeSettings_1A970(4, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x3f: {//f5
-						sub_1A970_change_game_settings(2, 0, 0);
+						ChangeSettings_1A970(2, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x40: {//f6
-						sub_1A970_change_game_settings(3, 0, 0);
+						ChangeSettings_1A970(3, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x41: {//f7
-						sub_1A970_change_game_settings(6, 0, 0);
+						ChangeSettings_1A970(6, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x42: {//f8
-						sub_1A970_change_game_settings(17, 0, 0);
+						ChangeSettings_1A970(17, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
@@ -370,23 +370,23 @@ void ProcessKeyboardPresses_17190()//1f8190
 							&& x_WORD_180660_VGA_type_resolution & 1
 							&& (unk_18058Cstr.x_WORD_1805C2_joystick == 0x01 || unk_18058Cstr.x_WORD_1805C2_joystick == 0x08 || unk_18058Cstr.x_WORD_1805C2_joystick == 0x0c))
 						{
-							sub_1A970_change_game_settings(18, 0, 0);
+							ChangeSettings_1A970(18, 0, 0);
 						}
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x3b: {//f1
-						sub_1A970_change_game_settings(1, 0, 0);
+						ChangeSettings_1A970(1, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x3c: {//f2
-						sub_1A970_change_game_settings(5, 0, 0);
+						ChangeSettings_1A970(5, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
 					case 0x3d: {//f3
-						sub_1A970_change_game_settings(7, 0, 0);
+						ChangeSettings_1A970(7, 0, 0);
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
@@ -430,7 +430,7 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 				SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]);
 			//SetCursor_8CD27(xy_DWORD_17DED4_spritestr[39]);
 
-			sub_41AF0();
+			SetPausedMenuOpen_41AF0();
 			if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206)
 				SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]);
 			SetMenuCursorPosition_52E90(
@@ -446,7 +446,7 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 	}
 	else
 	{
-		sub_41B60();
+		SetPauseMenuClosed_41B60();
 		//v3 = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 		//v4 = **filearray_2aa18c[0]; //fix it
 		x_D41A0_BYTEARRAY_4_struct.byteindex_205 = 0;
@@ -1152,7 +1152,7 @@ void HandleButtonClick_191B0(int16_t hiSetting, char loSetting)//1fa1b0 //set sp
 }
 
 //----- (0001A970) --------------------------------------------------------
-void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
+void ChangeSettings_1A970(char a1, int a2, int a3)//1fb970
 {
 	//int v3; // edx
 	//char v4; // cl
@@ -1556,9 +1556,9 @@ void sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
 }
 
 //----- (00041AF0) --------------------------------------------------------
-void sub_41AF0()//222af0
+void SetPausedMenuOpen_41AF0()//222af0
 {
-	if (!x_BYTE_D47D9)
+	if (!IsPauseMenuOpen_D47D9)
 	{
 		if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 		{
@@ -1570,7 +1570,7 @@ void sub_41AF0()//222af0
 			sub_41A90_VGA_Palette_install((TColor*)*xadatapald0dat2.colorPalette_var28);
 		}
 	}
-	x_BYTE_D47D9++;
+	IsPauseMenuOpen_D47D9++;
 }
 
 //----- (0005BF10) --------------------------------------------------------
@@ -2338,7 +2338,7 @@ void ReadOptionMenuEvents_19AB0()//1faab0
 			&& menuBtnPosY <= unk_18058Cstr.x_DWORD_1805B0_mouse.y
 			&& menuBtnPosY + (OPTIONS_MENU_BTN_HEIGHT * scale) > unk_18058Cstr.x_DWORD_1805B0_mouse.y)
 		{
-			sub_1A970_change_game_settings(btnIndex + 1, (unk_18058Cstr.MouseButtonState_18059C & 1) == 0, 1);
+			ChangeSettings_1A970(btnIndex + 1, (unk_18058Cstr.MouseButtonState_18059C & 1) == 0, 1);
 			sub_1A280();
 			sub_19A50();
 			return;
