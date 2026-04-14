@@ -4371,7 +4371,7 @@ void sub_2CE30_pause_end_level(int a1, int a2)//20de30
 void sub_51BB0_game_events(uint8_t* a1)//232bb0
 x_DWORD_E9C4C_langindexbuffer
 
-char sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
+char ChangeSettings_1A970(char a1, int a2, int a3)//1fb970
 
 --
 unk_1804B0ar+ 1e
@@ -4425,7 +4425,7 @@ x_D41A0_BYTEARRAY_0[8589]->28
 versus
 3581c5->1f
 
-1fc123 call char sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
+1fc123 call char ChangeSettings_1A970(char a1, int a2, int a3)//1fb970
 
 x_WORD_180660_VGA_type_resolution
 versus
@@ -4461,7 +4461,7 @@ uint32_t dwordindex_188;//x_D41A0_BYTEARRAY_4_struct.byteindex_188
 
 x_D41A0_BYTEARRAY_4_struct.byteindex_8618 by melo byt 1
 
-char sub_1A970_change_game_settings(char a1, int a2, int a3)//1fb970
+char ChangeSettings_1A970(char a1, int a2, int a3)//1fb970
 
 2124 * 1 + x_D41A0_BYTEARRAY_0 + 11240
 
@@ -8742,7 +8742,7 @@ x_BYTE_10B4E0_terraintype+0x12 00
 versus
 2dc4e0+0x12 0x08
 
-sub_1A970_change_game_settings(16, 0, 0);
+ChangeSettings_1A970(16, 0, 0);
 screenWidth_18062C
 screenHeight_180624
 
