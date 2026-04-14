@@ -280,9 +280,9 @@ void ProcessKeyboardPresses_17190()//1f8190
 					case 0x44: {//f10
 						x_D41A0_BYTEARRAY_4_struct.byteindex_205 = (x_D41A0_BYTEARRAY_4_struct.byteindex_205 == 0);
 						x_D41A0_BYTEARRAY_4_struct.byteindex_206 = x_D41A0_BYTEARRAY_4_struct.byteindex_205;
-						if (x_D41A0_BYTEARRAY_4_struct.byteindex_205 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+						if (x_D41A0_BYTEARRAY_4_struct.byteindex_205 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 							SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
-						if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+						if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 							SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]); //fix it LOBYTE(v0) = sub_8CD27(dword_EB394 + 6 * (unsigned __int8)byte_D419E);
 						LastPressedKey_1806E4 = 0;
 						break;
@@ -366,7 +366,7 @@ void ProcessKeyboardPresses_17190()//1f8190
 						break;
 					}
 					case 0x1f: {//s
-						if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+						if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 							&& x_WORD_180660_VGA_type_resolution & 1
 							&& (unk_18058Cstr.x_WORD_1805C2_joystick == 0x01 || unk_18058Cstr.x_WORD_1805C2_joystick == 0x08 || unk_18058Cstr.x_WORD_1805C2_joystick == 0x0c))
 						{
@@ -414,8 +414,8 @@ void PauseUnpauseGame_18BB0()//1f9bb0
 
 	//v0 = x_D41A0_BYTEARRAY_4_struct.dwordindex_0;
 	//v1 = x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24  ^ 1;
-	x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= 1;
-	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+	x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= GAME_PAUSED;
+	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 	{
 		if (D41A0_0.byte_0x36E0B & 2)//if ( *(0x36E09 + x_D41A0_BYTEARRAY_0 + 2) & 2 )
 		{
@@ -497,7 +497,7 @@ void MouseAndKeysEvents_17A00(int16_t turn)//1f8a00
 		case 4:
 			if (D41A0_0.playerInputs_0x6E3E[D41A0_0.LevelIndex_0xc].PlayerAction_byte0)
 				goto LABEL_292;
-			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 				ReadPauseMenuEvents_197F0();
 			ProcessKeyboardPresses_17190();//test FnX
 			v8x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
@@ -930,7 +930,7 @@ void MouseAndKeysEvents_17A00(int16_t turn)//1f8a00
 		case 6:
 		case 7:
 			v24x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
-			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+			if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 				ReadPauseMenuEvents_197F0();
 			ProcessKeyboardPresses_17190();
 			if (((unk_18058Cstr.MouseButtonState_18059C & 1 && unk_18058Cstr.MouseButtonState_18059C & 2) && !disableLRButtonsMenuOpen) || LastPressedKey_1806E4 == x_BYTE_EB39E_keys[4] || v24x->life_0x8 < 0)
@@ -1495,7 +1495,7 @@ void ChangeSettings_1A970(char a1, int a2, int a3)//1fb970
 	case 16://change resolution
 		if (!D41A0_0.str_0x21B2.cresolution_0x21B4 || D41A0_0.m_GameSettings.m_Display.m_uiScreenSize)
 			return;
-		sub_41BC0();
+		ClearPauseMenuState_41BC0();
 		ChangeGameResolution_46B40();
 		return;
 	case 17:
@@ -1748,7 +1748,7 @@ void ReadPauseMenuEvents_197F0()//1fa7f0
 			scale = gameUiScale;
 		}
 
-	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 	{
 		v1 = x_D41A0_BYTEARRAY_4_struct.byteindex_225;
 		str_unk_1804B0ar.byte_0xaa = -1;
@@ -1981,7 +1981,7 @@ void sub_1A7A0_fly_asistant()//1fb7a0 // fly asistant
 	}
 
 	if (CommandLineParams.DoFixFlyasistant()) {
-		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 			return;
 	}
 
