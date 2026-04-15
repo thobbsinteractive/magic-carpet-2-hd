@@ -148,18 +148,23 @@ namespace remc2_installer
 									{
 										ComponentCondition = "HIGHTEX=\"yes\""
 									}),
+								new Dir(new Id("SPEECH_INSTALLDIR"), @"CD_FILES\SPEECH",
+									new Files(@"..\enhancedassets\sound\speech\*.*")
+									{
+										ComponentCondition = "SPEECH=\"yes\""
+									}),
 								new Dir(new Id("MUSICOGG_INSTALLDIR"), @"music-ogg",
                                     new Files(@"..\enhancedassets\music-ogg\*.*")),
                                 new Dir(new Id("EXTRACT_INSTALLDIR"), @"Extract",
                                     new File(new Id("DOSBOXEXTRACT_CONF"), @"Extract\dosboxExtract-GOG-CD.conf"),
                                     new File(new Id("XXCOPY16_EXE"), @"Extract\XXCOPY16.EXE"),
-									new File(new Id("MPXPLAY_EXE"), @"Extract\mpxplay.exe"),
 #if WIN64
 									new File(new Id("VC_Redist_EXE"), @"Extract\VC_redist.x64.exe"))),
 #else
 									new File(new Id("VC_Redist_EXE"), @"Extract\VC_redist.x86.exe"))),
 #endif
 							new Property(new Id("HIGHTEX_PROPERTY"), "HIGHTEX", "yes"),
+							new Property(new Id("SPEECH_PROPERTY"), "SPEECH", "yes"),
 							new ManagedAction(new Id("MANAGED_ACTION"), CustomActions.SetHighResGraphics, Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed));
 
 #if WIN64
