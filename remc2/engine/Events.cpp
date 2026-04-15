@@ -982,7 +982,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 #ifdef __linux__ // FIXME: types
 		std::cout << "FIXME: types @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 #else
-		sub_1A970_change_game_settings((intptr_t)a1_6E8E, 0, 0);
+		ChangeSettings_1A970((intptr_t)a1_6E8E, 0, 0);
 		stub_fix_it();//bad retyping
 #endif
 		break;

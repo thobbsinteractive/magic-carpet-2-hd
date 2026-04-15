@@ -5,7 +5,7 @@
 
 #include "stdint.h"
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 22
 	int32_t time_0;
 	int16_t viewPortPosX_4;
@@ -19,7 +19,7 @@ typedef struct {//lenght 22
 	int8_t byte_19;
 	int16_t word_20;
 }Type_MapScreenPortals_E17CC;
-#pragma pack (16)
+#pragma pack(pop)
 
 extern Type_MapScreenPortals_E17CC mapScreenPortals_E17CC[26];
 

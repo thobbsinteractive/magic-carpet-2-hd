@@ -26,7 +26,7 @@
 #include "../engine/ail_sound.h"
 #include "port_filesystem.h"
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 32 - this is may be format of wav sound file
 	int8_t filename_0[18];//first 18 chars - name//30
 	uint8_t* wavData_18;//data of wav//18
@@ -177,7 +177,7 @@ typedef struct
 } Mix_Timer;
 
 //shadow shadow_type_E3808_music_header
-#pragma pack (16)
+#pragma pack(pop)
 
 #ifndef SOUND_SDLMIXER
 typedef struct {

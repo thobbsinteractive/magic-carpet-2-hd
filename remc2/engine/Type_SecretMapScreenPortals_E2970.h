@@ -5,7 +5,7 @@
 
 #include "stdint.h"
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 17
 	int32_t time_0;
 	uint16_t index_4;
@@ -16,7 +16,7 @@ typedef struct {//lenght 17
 	uint16_t spriteIndex_14;
 	uint8_t byte_16;
 }Type_SecretMapScreenPortals_E2970;
-#pragma pack (16)
+#pragma pack(pop)
 
 extern Type_SecretMapScreenPortals_E2970 secretMapScreenPortals_E2970[6];
 

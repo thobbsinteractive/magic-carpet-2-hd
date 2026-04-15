@@ -31,51 +31,21 @@ void sub_98709_create_index_dattab_power_add(uint8_t* tabbuffer, uint8_t* tabbuf
 //----- (0009874D) --------------------------------------------------------
 void sub_9874D_create_index_dattab(bitmap_pos_struct2_t* tabbuffer, bitmap_pos_struct2_t* tabbufferend, uint8_t* datbuffer, bitmap_pos_struct_t* dattabindex)//27974d
 {
-	//uint32_t testadr = *(uint32_t*)tabbuffer;
-	/*if (testadr == 0x9999)
+	for (uint32_t i = 0; i < tabbufferend - tabbuffer; i++)
 	{
-		for (uint32_t i = 0;i < (tabbufferend - tabbuffer) / 6;i++)
-		{
-			dattabindex[i].data += (int32_t)datbuffer;
-		}
-	}
-	else*/
-	{
-		/*for (uint32_t i = 0; i < (tabbufferend - tabbuffer) / 6; i++)
-		{
-#ifdef TEST_x64
-	allert_error();
-#endif
-#ifdef COMPILE_FOR_64BIT // FIXME: 64bit
-			std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
-#else
-			dattabindex[i].data = (uint8_t*)(*(uint32_t*)(tabbuffer + 6 * i)) + (int32_t)datbuffer;
-#endif
-			dattabindex[i].width = tabbuffer[6 * i + 4];
-			dattabindex[i].height = tabbuffer[6 * i + 5];
-		}*/
-		for (uint32_t i = 0; i < tabbufferend - tabbuffer; i++)
-		{
-			dattabindex[i].data = (datbuffer + tabbuffer[i].data_0);
-			dattabindex[i].width_4 = tabbuffer[i].width_4;
-			dattabindex[i].height_5 = tabbuffer[i].height_5;
-		}
-
-		//testadr = 0x9999;
-		//memcpy(tabbuffer, &testadr, 4);
+		dattabindex[i].data = (datbuffer + tabbuffer[i].data_0);
+		dattabindex[i].width_4 = tabbuffer[i].width_4;
+		dattabindex[i].height_5 = tabbuffer[i].height_5;
 	}
 }
 
 void sub_9874D_create_index_dattab_add(uint8_t* tabbuffer, uint8_t* tabbufferend, uint8_t* datbuffer, bitmap_pos_struct_t* dattabindex, int add)//27974d
 {
+	uint8_t* start_ptr = tabbuffer + add;
 	for (uint32_t i = 0; i < (tabbufferend - (tabbuffer + add)) / 6; i++)
 	{
-#ifdef x32_BIT_ENVIRONMENT
-		dattabindex[i].data = (uint8_t*)(*(uint32_t*)((tabbuffer + add) + 6 * i)) + reinterpret_cast<int32_t>(datbuffer);
-#endif //x32_BIT_ENVIRONMENT
-#ifdef x64_BIT_ENVIRONMENT
-		dattabindex[i].data = (uint8_t*)(*(uint32_t*)((tabbuffer + add) + 6 * i)) + (int32_t)reinterpret_cast<int64_t>(datbuffer);
-#endif //x64_BIT_ENVIRONMENT			
+		uint32_t file_offset = *(uint32_t*)(start_ptr + (i * 6));
+		dattabindex[i].data = datbuffer + file_offset;
 		dattabindex[i].width_4 = (tabbuffer + add)[6 * i + 4];
 		dattabindex[i].height_5 = (tabbuffer + add)[6 * i + 5];
 	}

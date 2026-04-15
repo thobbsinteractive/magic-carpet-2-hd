@@ -103,7 +103,7 @@ char* MessageIndexToText(int32_t index)
 	return (char*)"";
 }
 
-#pragma pack(1)
+#pragma pack(push, 1)
 typedef struct message_info {
 	uint32_t size;
 	int32_t  message;

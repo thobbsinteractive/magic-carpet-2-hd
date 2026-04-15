@@ -52,7 +52,7 @@ typedef struct {
 	uint8_t data[];
 }TcolNext;
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct //lenght 24
 {
 	int32_t field_0;
@@ -62,9 +62,9 @@ typedef struct //lenght 24
 	int8_t firstSpriteIndex_10;
 	int8_t lastSpriteIndex_11;
 } type_animStruct3;
-#pragma pack (16)
+#pragma pack(pop)
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct //lenght 24
 {
 	int16_t diffX_0;
@@ -80,9 +80,9 @@ typedef struct //lenght 24
 	int16_t stateX_10;
 	int16_t stateY_11;
 } type_animStruct;
-#pragma pack (16)
+#pragma pack(pop)
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct //lenght 24
 {
 	int16_t actX_0;
@@ -98,7 +98,7 @@ typedef struct //lenght 24
 	int16_t stateX_10;
 	int16_t stateY_11;
 } type_animStruct2;
-#pragma pack (16)
+#pragma pack(pop)
 
 #pragma pack (push,1)
 typedef struct//lenght 613 // end 17E09D

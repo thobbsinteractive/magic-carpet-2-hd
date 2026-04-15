@@ -15,7 +15,7 @@ typedef union {
 dw_w_b;
 
 #pragma pack (push)
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {
 	uint8_t byte1;
 	uint8_t byte2;
@@ -179,6 +179,7 @@ enum class spell_t {
 
 typedef enum
 {
+	GAME_PAUSED = 0x1,
 	CHEATS_ENABLED = 0x80u,
 	MULTIPLAYER_MODE = 0x10u,
 	SPEECH_ENABLED = 0x40,
@@ -406,7 +407,7 @@ typedef struct _str_0x6E8E {//lenght a8//THING
 	type_str_164* dword_0xA4_164x;//100 // adress of xx
 } type_entity_0x6E8E;
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {
 	char path[512];
 	uint8_t** colorPalette_var28;//1C // Palette
@@ -414,7 +415,7 @@ typedef struct {
 	uint32_t var36_size_buffer;//24 //maybe file size
 	uint32_t var40_alloc_type;//28
 } Pathstruct;
-#pragma pack (16)
+#pragma pack(pop)
 
 #pragma pack (pop)
 /*

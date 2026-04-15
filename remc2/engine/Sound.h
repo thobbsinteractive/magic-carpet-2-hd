@@ -9,7 +9,7 @@
 #include "../portability/port_sdl_sound.h"
 #include "XmiInfo.h"
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 12
 	int16_t playType_0;
 	int16_t volumePan_1;
@@ -24,7 +24,7 @@ typedef struct {
 	int32_t par1;
 	int16_t par2;
 } type_str_32_16; // weak
-#pragma pack (16)
+#pragma pack(pop)
 
 extern bool soundActive_E3799;
 extern bool musicActive_E37FD;
