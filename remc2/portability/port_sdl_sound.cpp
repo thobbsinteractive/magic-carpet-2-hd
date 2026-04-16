@@ -100,12 +100,19 @@ void SOUND_start_sequence(int32_t sequence_num) {
 	//3 - menu
 	//4 - intro
 #ifdef SOUND_SDLMIXER
-	if (sequence_num == 1)
+
+	if (oggmusic && !GAME_music_war)
 	{
-		if (oggmusic && !GAME_music_war) {
-			std::string oggmusicPath = GetSubDirectoryPath(oggmusicFolder);
-			char selectedTrackPath[512] = "";
-			sprintf(selectedTrackPath, "%s/002-C2GAME3-onlyWar.ogg", oggmusicPath.c_str());
+		std::string oggmusicPath = GetSubDirectoryPath(oggmusicFolder);
+		char selectedTrackPath[512] = "";
+
+		sprintf(selectedTrackPath, "%s/00%d*danger.ogg", oggmusicPath.c_str(), sequence_num);
+		_finddata_t musicFile;
+		auto hFile = my_findfirst(selectedTrackPath, &musicFile);
+
+		if (hFile)
+		{
+			sprintf(selectedTrackPath, "%s/%s", oggmusicPath.c_str(), musicFile.name);
 			GAME_music_war = Mix_LoadWAV(selectedTrackPath);
 		}
 		warMusicOn = true;
