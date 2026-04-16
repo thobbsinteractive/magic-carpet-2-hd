@@ -293,9 +293,15 @@ void SOUND_init_MIDI_sequence(uint8_t*  /*datax*/, type_E3808_music_header* head
 		}
 		else
 		{
-			sprintf(selectedTrackPath, "%s/music%d.ogg", oggmusicPath.c_str(), track_number);
-			if(track_number==2)//only fix for atypic version music2 with idetical lenght as war music
-				sprintf(selectedTrackPath, "%s/002-C2GAME3-withoutWar.ogg", oggmusicPath.c_str());
+			sprintf(selectedTrackPath, "%s/00%d*.ogg", oggmusicPath.c_str(), track_number);
+			_finddata_t musicFile;
+			auto hFile = my_findfirst(selectedTrackPath, &musicFile);
+			if (hFile < 0)
+			{
+				Logger->error("Track NOT found error: {}", Mix_GetError());
+				return;
+			}
+			sprintf(selectedTrackPath, "%s/%s", oggmusicPath.c_str(), musicFile.name);
 		}
 #ifdef SOUND_SDLMIXER
 		GAME_music[track_number] = Mix_LoadMUS(selectedTrackPath);
