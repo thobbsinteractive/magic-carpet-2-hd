@@ -618,17 +618,17 @@ void DrawCurrentObjectiveTextbox_30630(uint8_t scale)//211630
 }
 
 //----- (00041B60) --------------------------------------------------------
-void sub_41B60()//222b60
+void SetPauseMenuClosed_41B60()//222b60
 {
-	if (x_BYTE_D47D9 == 1)
+	if (IsPauseMenuOpen_D47D9 == 1)
 	{
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = x_BYTE_D47D8;
 		if ((unsigned __int8)x_BYTE_D47D8 >= 1u && (unsigned __int8)x_BYTE_D47D8 <= 1u)
 			sub_417D0_install_pal_and_mouse_minmax2();
 		x_BYTE_D47D8 = 0;
 	}
-	if (x_BYTE_D47D9)
-		x_BYTE_D47D9--;
+	if (IsPauseMenuOpen_D47D9)
+		IsPauseMenuOpen_D47D9--;
 }
 
 //----- (00052E90) --------------------------------------------------------
@@ -648,18 +648,18 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	sub_87C10();
 	if (newMenuState)
 	{
-		sub_41AF0();
+		SetPausedMenuOpen_41AF0();
 	}
 	else if (currentMenuState )
 	{
-		sub_41B60();
+		SetPauseMenuClosed_41B60();
 	}
 	if (newMenuState && (newMenuState < 6u || newMenuState > 7u))
 	{
 		if (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2)
 			SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]); // fix it
 	}
-	else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+	else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 	{
 		if (unk_18058Cstr.x_WORD_1805C2_joystick != 7 && unk_18058Cstr.x_WORD_1805C2_joystick != 1 && unk_18058Cstr.x_WORD_1805C2_joystick != 2)
 			SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
@@ -690,7 +690,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	{
 	case (int)MenuState::NONE:
 	case 6u:
-		if (newMenuState == currentMenuState && !(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+		if (newMenuState == currentMenuState && !(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 		{
 			sub_548B0(playStr);
 			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
@@ -706,7 +706,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
 	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		sub_548B0(playStr);
-		if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+		if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
 		FlvInitSet_473B0();
 		break;
@@ -718,7 +718,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	{
 	case (int)MenuState::NONE:
 	case 6:
-		if (newMenuState == currentMenuState  && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+		if (newMenuState == currentMenuState  && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 		{
 			SetCenterScreenForFlyAssistant_6EDB0();
 			sub_548F0(playStr);
@@ -4916,7 +4916,7 @@ void DrawPauseMenu_2FD90(uint8_t scale)//210d90
 	uint8_t colour; // [esp+10h] [ebp-4h]
 
 	colour = (*xadataclrd0dat.colorPalette_var28)[0];
-	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 	{
 		if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206)
 		{

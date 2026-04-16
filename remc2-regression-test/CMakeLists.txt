@@ -144,6 +144,9 @@ set(SOURCE_FILES_REGRESSIONTESTS
     "../remc2/engine/UVTable_D4350.h"
     "../remc2/utilities/DataFileRNC.cpp"
     "../remc2/utilities/DataFileRNC.h"
+    "../remc2/lib/stb_impl.cpp"
+    "../remc2/lib/stb_image.h"
+    "../remc2/lib/stb_image_write.h"
 )
 source_group("Source Files\\regressiontests" FILES ${SOURCE_FILES_REGRESSIONTESTS})
 

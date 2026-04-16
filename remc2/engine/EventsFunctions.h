@@ -209,7 +209,7 @@ extern x_WORD __SS__;*/
 
 //extern char IsTable[];
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 7
 	Type_SoundEvent_E17CC* pSoundEvent_0;
 	uint8_t levelNumber_4;
@@ -217,9 +217,9 @@ typedef struct {//lenght 7
 	uint8_t fileIndex_6;
 }
 Type_CutScene_E16E0;
-#pragma pack (16)
+#pragma pack(pop)
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 14
 	uint32_t dword_0;//ok
 	int16_t word_4;//ok
@@ -227,9 +227,9 @@ typedef struct {//lenght 14
 	int32_t dword_10;//ok
 }
 type_D4C52ar2;
-#pragma pack (16)
+#pragma pack(pop)
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 18
 	uint32_t dword_0;
 	uint32_t dword_4;
@@ -238,9 +238,9 @@ typedef struct {//lenght 18
 	type_D4C52ar2* dword_14;
 }
 type_D4C52ar;
-#pragma pack (16)
+#pragma pack(pop)
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {
 	unsigned long LastTimeRendered_0;
 	int16_t PosX_4;
@@ -268,13 +268,13 @@ typedef struct {//lenght 30
 	int16_t word_28;
 	//int8_t stubb[1];
 } type_x_BYTE_E25ED_db_str;
-#pragma pack (16)
+#pragma pack(pop)
 
 extern filearray_struct x_DWORD_E9B20[4];
 
 extern __int16 x_WORD_E29DA_type_resolution; // weak
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 18
 	int16_t textIndex_0;
 	int16_t minx2_2;
@@ -288,10 +288,10 @@ typedef struct {//lenght 18
 	int8_t byte_17;
 }
 typeTextBoxtextBoxStr_E24BCx;
-#pragma pack (16)
+#pragma pack(pop)
 
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 18
 	int16_t word_0;
 	int16_t word_2;
@@ -304,9 +304,9 @@ typedef struct {//lenght 18
 	int16_t word_16;
 }
 type_x_BYTE_E25ED_2BB;
-#pragma pack (16)
+#pragma pack(pop)
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {
 	int32_t x_DWORD_18058C;
 	int32_t x_DWORD_180590; // [4]//unk_18058Cstr.x_DWORD_180590//1
@@ -330,7 +330,7 @@ typedef struct {
 	uint8_t unk_1805CE[84]; // weak//unk_18058Car[66]
 	int16_t stub_180622;
 } type_unk_18058Cstr;//end 180624
-#pragma pack (16)
+#pragma pack(pop)
 
 //extern type_x_DWORD_17DE38str x_DWORD_17DE38str;
 /*
@@ -363,7 +363,7 @@ extern uint16_t rand2_17B4E0; // 34c4e0
 // needed from GameUI
 extern void(*ptrDrawBitmap_F01E8)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale);
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 16
 	int16_t x1_26_0;//0 x
 	int16_t y1_28_1;//1 y
@@ -405,7 +405,7 @@ typedef struct {//lenght 44
 	//int16_t nocl_42;
 }
 type_menuButtons_E1F84;
-#pragma pack (16)
+#pragma pack(pop)
 
 // typedef struct NCB{
 //				BYTE     ncb_command;	/* NetBIOS command (see netbios.h) */

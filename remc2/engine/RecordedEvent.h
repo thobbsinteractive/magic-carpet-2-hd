@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <map>
 struct RecordedEventHeader
 {
 	uint16_t Level = 0;

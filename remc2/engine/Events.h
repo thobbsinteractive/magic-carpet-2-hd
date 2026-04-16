@@ -4,7 +4,7 @@
 #include "Level.h"
 #include "CompareMaps.h"
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 6
 	int8_t* bitmapData_0;
 	int16_t bitmapIndex_4;
@@ -19,7 +19,7 @@ typedef struct {//lenght 24
 	int8_t* bitmapsData_20xx;
 }
 subx_BYTE_E7EE0x;
-#pragma pack (16)
+#pragma pack(pop)
 
 
 extern subx_BYTE_E7EE0x str_E7EE0x[700];

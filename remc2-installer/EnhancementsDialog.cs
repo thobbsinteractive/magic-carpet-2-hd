@@ -20,9 +20,10 @@ namespace WixSharpSetup
             Text = "[ProductName] Setup";
 
             this.chkInstallTextures.Checked = (!string.IsNullOrWhiteSpace(Runtime.Session["HIGHTEX"]) && Runtime.Session["HIGHTEX"].Equals("yes", StringComparison.InvariantCultureIgnoreCase));
+			this.chkSpeech.Checked = (!string.IsNullOrWhiteSpace(Runtime.Session["SPEECH"]) && Runtime.Session["SPEECH"].Equals("yes", StringComparison.InvariantCultureIgnoreCase));
 
-            //resolve all Control.Text cases with embedded MSI properties (e.g. 'ProductName') and *.wxl file entries
-            base.Localize();
+			//resolve all Control.Text cases with embedded MSI properties (e.g. 'ProductName') and *.wxl file entries
+			base.Localize();
         }
 
         void back_Click(object sender, EventArgs e)
@@ -33,12 +34,13 @@ namespace WixSharpSetup
         void next_Click(object sender, EventArgs e)
         {
             Runtime.Session["HIGHTEX"] = (chkInstallTextures.Checked ? "yes": "no");
-            Shell.GoNext();
+			Runtime.Session["SPEECH"] = (chkSpeech.Checked ? "yes" : "no");
+			Shell.GoNext();
         }
 
         void cancel_Click(object sender, EventArgs e)
         {
             Shell.Cancel();
         }
-    }
+	}
 }
