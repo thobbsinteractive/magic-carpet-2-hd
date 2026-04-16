@@ -114,8 +114,8 @@ void SOUND_start_sequence(int32_t sequence_num) {
 		{
 			sprintf(selectedTrackPath, "%s/%s", oggmusicPath.c_str(), musicFile.name);
 			GAME_music_war = Mix_LoadWAV(selectedTrackPath);
+			warMusicOn = true;
 		}
-		warMusicOn = true;
 	}
 	else
 		warMusicOn = false;
