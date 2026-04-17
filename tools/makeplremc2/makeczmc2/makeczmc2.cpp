@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 	sprintf_s(text2, "%s", "text2");
 	sprintf_s(text3, "%s", "áÁčČďĎéÉěĚíÍňŇóÓřŘšŠťŤúÚůŮýÝžŽ");*/
 	
-	fopen_s(&fptw, "l7.txt", "wb");
+	fopen_s(&fptw, "L8.TXT", "wb");
 
 	val = 0x02;
 	fwrite(&val, 1, 1, fptw);
