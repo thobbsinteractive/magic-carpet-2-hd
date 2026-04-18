@@ -109,6 +109,9 @@ jobs:
         with:
           dotnet-version: '8.x'
 
+      - name: Install WiX Toolset
+        run: dotnet tool install --global wix
+
       - name: Download win-${{ matrix.arch }} artifact
         uses: actions/download-artifact@v4
         with:
