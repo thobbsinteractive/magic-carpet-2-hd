@@ -55,7 +55,6 @@ jobs:
             /p:PlatformTarget=${{ matrix.BUILD_PLATFORM }} `
             /p:Platform=${{ matrix.BUILD_PLATFORM }} `
             /p:WarningLevel=0 `
-            /clp:ErrorsOnly `
             ${{ env.SOLUTION_FILE_PATH }}/remc2.sln
 
       - name: Package (zip) – x86
