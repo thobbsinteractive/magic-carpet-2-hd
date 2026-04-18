@@ -19,6 +19,7 @@ jobs:
   build-windows:
     name: Windows (${{ matrix.BUILD_PLATFORM }})
     runs-on: windows-latest
+    timeout-minutes: 60
     strategy:
       matrix:
         BUILD_PLATFORM: [x86, x64]
@@ -53,6 +54,8 @@ jobs:
             /p:Configuration=Release `
             /p:PlatformTarget=${{ matrix.BUILD_PLATFORM }} `
             /p:Platform=${{ matrix.BUILD_PLATFORM }} `
+            /p:WarningLevel=0 `
+            /clp:ErrorsOnly `
             ${{ env.SOLUTION_FILE_PATH }}/remc2.sln
 
       - name: Package (zip) – x86
