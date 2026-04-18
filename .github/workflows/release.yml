@@ -32,24 +32,28 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: 'a42af01b72c28a8e1d7b48107b33e4f286a55ef6'
-
-      - name: Install dependencies (vcpkg)
-        run: |
-          vcpkg install sdl2 sdl2-mixer sdl2-ttf sdl2-image fmt `
-            --triplet ${{ matrix.vcpkg_triplet }}
-
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
+      # windows-latest má vcpkg předinstalovaný v C:\vcpkg
+      # Nejprve ho zaktualizujeme a pak nainstalujeme závislosti
+      - name: Install dependencies (vcpkg)
+        shell: pwsh
+        env:
+          VCPKG_DEFAULT_TRIPLET: ${{ matrix.vcpkg_triplet }}
+        run: |
+          cd C:\vcpkg
+          git pull --ff-only
+          .\vcpkg.exe integrate install
+          .\vcpkg.exe install sdl2 sdl2-mixer sdl2-ttf sdl2-image fmt `
+            --triplet ${{ matrix.vcpkg_triplet }}
+
       - name: Configure (CMake)
+        shell: pwsh
         run: |
           cmake -B build -A ${{ matrix.platform }} `
-            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" `
-            -DVCPKG_TARGET_TRIPLET=${{ matrix.vcpkg_triplet }} `
+            -DCMAKE_TOOLCHAIN_FILE="C:\vcpkg\scripts\buildsystems\vcpkg.cmake" `
+            -DVCPKG_TARGET_TRIPLET="${{ matrix.vcpkg_triplet }}" `
             -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
@@ -60,10 +64,10 @@ jobs:
         run: |
           $out = "remc2-win-${{ matrix.arch }}"
           New-Item -ItemType Directory -Path $out | Out-Null
-          Copy-Item build\remc2\Release\remc2.exe           $out\
+          Copy-Item build\remc2\Release\remc2.exe              $out\
           Copy-Item build\remc2-editor\Release\remc2-editor.exe $out\ -ErrorAction SilentlyContinue
-          Copy-Item config.json                              $out\
-          Copy-Item "Install Guide.txt"                     $out\
+          Copy-Item config.json                                 $out\
+          Copy-Item "Install Guide.txt"                        $out\
           Compress-Archive -Path $out -DestinationPath "$out.zip"
 
       - name: Upload artifact
@@ -83,9 +87,7 @@ jobs:
       matrix:
         include:
           - arch: x64
-            rid: win-x64
           - arch: x86
-            rid: win-x86
 
     steps:
       - name: Checkout
@@ -98,7 +100,6 @@ jobs:
         with:
           dotnet-version: '8.x'
 
-      # Stáhnout zkompilované binárky z předchozího jobu
       - name: Download win-${{ matrix.arch }} artifact
         uses: actions/download-artifact@v4
         with:
@@ -108,17 +109,17 @@ jobs:
       - name: Unzip binaries
         shell: pwsh
         run: |
-          Expand-Archive artifacts/${{ matrix.arch }}/remc2-win-${{ matrix.arch }}.zip `
-            -DestinationPath staging/${{ matrix.arch }}
+          Expand-Archive "artifacts/${{ matrix.arch }}/remc2-win-${{ matrix.arch }}.zip" `
+            -DestinationPath "staging/${{ matrix.arch }}"
 
       - name: Build installer
+        shell: pwsh
         run: |
           dotnet build remc2-installer.sln `
             --configuration Release `
             -p:Platform=${{ matrix.arch }} `
             -p:GameBinPath="${{ github.workspace }}\staging\${{ matrix.arch }}\remc2-win-${{ matrix.arch }}"
 
-      # Předpokládá, že MSI se vygeneruje do remc2-installer/bin/Release/${{ matrix.arch }}/
       - name: Locate & rename MSI
         shell: pwsh
         run: |
@@ -149,12 +150,21 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-image-dev \
-            libfmt-dev cmake ninja-build g++
+            libfmt-dev cmake ninja-build g++ \
+            pkgconf
 
+      # Ubuntu 22.04 apt balíčky neposkytují SDL2_mixerConfig.cmake (config-mode),
+      # ale jen pkg-config soubory. Přidáme cmake modul cestu z vcpkg cmake modules.
+      # Nejjednodušší řešení: předat SDL2_DIR a spol. přes pkg-config wrapper.
       - name: Configure
         run: |
           cmake -B build -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_BUILD_TYPE=Release \
+            -DSDL2_DIR=/usr/lib/x86_64-linux-gnu/cmake/SDL2 \
+            -DSDL2_mixer_DIR=/usr/lib/x86_64-linux-gnu/cmake/SDL2_mixer \
+            -DSDL2_ttf_DIR=/usr/lib/x86_64-linux-gnu/cmake/SDL2_ttf \
+            -DSDL2_image_DIR=/usr/lib/x86_64-linux-gnu/cmake/SDL2_image \
+            -Dfmt_DIR=/usr/lib/x86_64-linux-gnu/cmake/fmt
 
       - name: Build
         run: cmake --build build --parallel
@@ -162,11 +172,11 @@ jobs:
       - name: Package (tar.gz)
         run: |
           mkdir -p remc2-linux-x86_64
-          cp build/remc2/remc2            remc2-linux-x86_64/
-          cp build/remc2-editor/remc2-editor remc2-linux-x86_64/ 2>/dev/null || true
-          cp config.json                  remc2-linux-x86_64/
-          cp "Install Guide.txt"          remc2-linux-x86_64/
-          cp check_install.sh             remc2-linux-x86_64/
+          cp build/remc2/remc2               remc2-linux-x86_64/
+          cp build/remc2-editor/remc2-editor  remc2-linux-x86_64/ 2>/dev/null || true
+          cp config.json                     remc2-linux-x86_64/
+          cp "Install Guide.txt"             remc2-linux-x86_64/
+          cp check_install.sh                remc2-linux-x86_64/
           tar -czf remc2-linux-x86_64.tar.gz remc2-linux-x86_64/
 
       - name: Upload artifact
@@ -187,7 +197,7 @@ jobs:
       - build-linux
 
     steps:
-      - name: Checkout (pro release notes z tagu)
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Download all artifacts
