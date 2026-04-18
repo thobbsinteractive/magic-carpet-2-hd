@@ -8,73 +8,82 @@ on:
 permissions:
   contents: write
 
+env:
+  SOLUTION_FILE_PATH: .
+
 jobs:
 
   # ─────────────────────────────────────────────
-  # Windows – MSVC (x64 + x86), bez instalátoru
+  # Windows – MSBuild (x64 + x86)
   # ─────────────────────────────────────────────
   build-windows:
-    name: Windows (${{ matrix.arch }})
+    name: Windows (${{ matrix.BUILD_PLATFORM }})
     runs-on: windows-latest
     strategy:
       matrix:
-        include:
-          - arch: x64
-            platform: x64
-            vcpkg_triplet: x64-windows
-          - arch: x86
-            platform: Win32
-            vcpkg_triplet: x86-windows
+        BUILD_PLATFORM: [x86, x64]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           submodules: recursive
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
-      # windows-latest má vcpkg předinstalovaný v C:\vcpkg
-      # Nejprve ho zaktualizujeme a pak nainstalujeme závislosti
-      - name: Install dependencies (vcpkg)
-        shell: pwsh
-        env:
-          VCPKG_DEFAULT_TRIPLET: ${{ matrix.vcpkg_triplet }}
-        run: |
-          cd C:\vcpkg
-          git pull --ff-only
-          .\vcpkg.exe integrate install
-          .\vcpkg.exe install sdl2 sdl2-mixer sdl2-ttf sdl2-image fmt `
-            --triplet ${{ matrix.vcpkg_triplet }}
+      - name: Install googletest
+        uses: cvpkg/googletest-action@v0.1
+        with:
+          googletest_tag: 'release-1.11.0'
 
-      - name: Configure (CMake)
+      - name: Restore vcpkg packages
+        working-directory: ${{ env.GITHUB_WORKSPACE }}
+        run: vcpkg integrate install
+
+      - name: Restore NuGet packages
+        working-directory: ${{ env.GITHUB_WORKSPACE }}
+        run: nuget restore remc2.sln
+
+      - name: Build Release
+        working-directory: ${{ env.GITHUB_WORKSPACE }}
+        run: |
+          msbuild /m `
+            /p:Configuration=Release `
+            /p:PlatformTarget=${{ matrix.BUILD_PLATFORM }} `
+            /p:Platform=${{ matrix.BUILD_PLATFORM }} `
+            ${{ env.SOLUTION_FILE_PATH }}/remc2.sln
+
+      - name: Package (zip) – x86
+        if: matrix.BUILD_PLATFORM == 'x86'
         shell: pwsh
         run: |
-          cmake -B build -A ${{ matrix.platform }} `
-            -DCMAKE_TOOLCHAIN_FILE="C:\vcpkg\scripts\buildsystems\vcpkg.cmake" `
-            -DVCPKG_TARGET_TRIPLET="${{ matrix.vcpkg_triplet }}" `
-            -DCMAKE_BUILD_TYPE=Release
-
-      - name: Build
-        run: cmake --build build --config Release --parallel
-
-      - name: Package (zip)
-        shell: pwsh
-        run: |
-          $out = "remc2-win-${{ matrix.arch }}"
+          $out = "remc2-win-x86"
           New-Item -ItemType Directory -Path $out | Out-Null
-          Copy-Item build\remc2\Release\remc2.exe              $out\
-          Copy-Item build\remc2-editor\Release\remc2-editor.exe $out\ -ErrorAction SilentlyContinue
-          Copy-Item config.json                                 $out\
-          Copy-Item "Install Guide.txt"                        $out\
-          Compress-Archive -Path $out -DestinationPath "$out.zip"
+          Copy-Item "${{ env.SOLUTION_FILE_PATH }}\Release\remc2.exe"        $out\ -ErrorAction SilentlyContinue
+          Copy-Item "${{ env.SOLUTION_FILE_PATH }}\Release\remc2-editor.exe" $out\ -ErrorAction SilentlyContinue
+          Copy-Item "config.json"        $out\
+          Copy-Item "Install Guide.txt"  $out\
+          Compress-Archive -Path $out -DestinationPath "remc2-win-x86.zip"
+
+      - name: Package (zip) – x64
+        if: matrix.BUILD_PLATFORM == 'x64'
+        shell: pwsh
+        run: |
+          $out = "remc2-win-x64"
+          New-Item -ItemType Directory -Path $out | Out-Null
+          Copy-Item "${{ env.SOLUTION_FILE_PATH }}\x64\Release\remc2.exe"        $out\ -ErrorAction SilentlyContinue
+          Copy-Item "${{ env.SOLUTION_FILE_PATH }}\x64\Release\remc2-editor.exe" $out\ -ErrorAction SilentlyContinue
+          Copy-Item "config.json"        $out\
+          Copy-Item "Install Guide.txt"  $out\
+          Compress-Archive -Path $out -DestinationPath "remc2-win-x64.zip"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: remc2-win-${{ matrix.arch }}
-          path: remc2-win-${{ matrix.arch }}.zip
+          name: remc2-win-${{ matrix.BUILD_PLATFORM }}
+          path: remc2-win-${{ matrix.BUILD_PLATFORM }}.zip
 
   # ─────────────────────────────────────────────
   # Windows – MSI instalátor (x64 + x86)
@@ -124,6 +133,7 @@ jobs:
         shell: pwsh
         run: |
           $msi = Get-ChildItem -Recurse -Filter "*.msi" | Select-Object -First 1
+          if (-not $msi) { Write-Error "MSI not found!"; exit 1 }
           Copy-Item $msi.FullName "Magic.Carpet.2.HD.${{ matrix.arch }}.msi"
 
       - name: Upload installer artifact
@@ -133,50 +143,57 @@ jobs:
           path: Magic.Carpet.2.HD.${{ matrix.arch }}.msi
 
   # ─────────────────────────────────────────────
-  # Linux – GCC, x86_64
+  # Linux – x86_64
+  # (stejná metoda jako fungující linux.yml CI)
   # ─────────────────────────────────────────────
   build-linux:
     name: Linux (x86_64)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_CI_COMPATIBILITY_PATH: /usr/lib/x86_64-linux-gnu
 
     steps:
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install \
+            cmake ninja-build \
+            libsdl2-dev libsdl2-mixer-dev \
+            libsdl2-ttf-dev libsdl2-image-dev \
+            libspdlog-dev libfmt-dev \
+            rapidjson-dev \
+            -o APT::Immediate-Configure=0
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
+          path: src
 
-      - name: Install dependencies (apt)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-image-dev \
-            libfmt-dev cmake ninja-build g++ \
-            pkgconf
-
-      # Ubuntu 22.04 apt balíčky neposkytují SDL2_mixerConfig.cmake (config-mode),
-      # ale jen pkg-config soubory. Přidáme cmake modul cestu z vcpkg cmake modules.
-      # Nejjednodušší řešení: předat SDL2_DIR a spol. přes pkg-config wrapper.
       - name: Configure
         run: |
-          cmake -B build -G Ninja \
+          mkdir -p build_Release
+          cd build_Release
+          cmake -GNinja \
             -DCMAKE_BUILD_TYPE=Release \
-            -DSDL2_DIR=/usr/lib/x86_64-linux-gnu/cmake/SDL2 \
-            -DSDL2_mixer_DIR=/usr/lib/x86_64-linux-gnu/cmake/SDL2_mixer \
-            -DSDL2_ttf_DIR=/usr/lib/x86_64-linux-gnu/cmake/SDL2_ttf \
-            -DSDL2_image_DIR=/usr/lib/x86_64-linux-gnu/cmake/SDL2_image \
-            -Dfmt_DIR=/usr/lib/x86_64-linux-gnu/cmake/fmt
+            -DUSE_64_BIT=True \
+            -DGITHUB_CI_COMPATIBILITY_PATH="${{ env.GITHUB_CI_COMPATIBILITY_PATH }}" \
+            ${{ github.workspace }}/src
 
       - name: Build
-        run: cmake --build build --parallel
+        run: |
+          cd build_Release
+          ninja
 
       - name: Package (tar.gz)
         run: |
           mkdir -p remc2-linux-x86_64
-          cp build/remc2/remc2               remc2-linux-x86_64/
-          cp build/remc2-editor/remc2-editor  remc2-linux-x86_64/ 2>/dev/null || true
-          cp config.json                     remc2-linux-x86_64/
-          cp "Install Guide.txt"             remc2-linux-x86_64/
-          cp check_install.sh                remc2-linux-x86_64/
+          find build_Release -maxdepth 3 -name "remc2"        -type f -exec cp {} remc2-linux-x86_64/ \;
+          find build_Release -maxdepth 3 -name "remc2-editor" -type f -exec cp {} remc2-linux-x86_64/ \; || true
+          cp src/config.json            remc2-linux-x86_64/
+          cp "src/Install Guide.txt"    remc2-linux-x86_64/
+          cp src/check_install.sh       remc2-linux-x86_64/
           tar -czf remc2-linux-x86_64.tar.gz remc2-linux-x86_64/
 
       - name: Upload artifact
@@ -184,6 +201,84 @@ jobs:
         with:
           name: remc2-linux-x86_64
           path: remc2-linux-x86_64.tar.gz
+
+  # ─────────────────────────────────────────────
+  # Linux ARM64 (cross-compile)
+  # (stejná metoda jako fungující linuxArm64.yml CI)
+  # ─────────────────────────────────────────────
+  build-linux-arm64:
+    name: Linux (ARM64)
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_CI_COMPATIBILITY_PATH: /usr/lib/aarch64-linux-gnu
+
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          path: src
+
+      - name: Install Dependencies (ARM64 cross)
+        run: |
+          sudo dpkg --add-architecture arm64
+          sudo sed -i 's/^Types: deb/Types: deb\nArchitectures: amd64/' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || \
+          sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
+          sudo tee /etc/apt/sources.list.d/arm64-ports.list <<EOF
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble main restricted universe multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-updates main restricted universe multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-security main restricted universe multiverse
+          EOF
+          sudo apt-get update
+          sudo apt-get -y install \
+            cmake ninja-build \
+            gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
+            libsdl2-dev:arm64 libsdl2-mixer-dev:arm64 \
+            libsdl2-ttf-dev:arm64 libsdl2-image-dev:arm64 \
+            libspdlog-dev:arm64 libfmt-dev:arm64 \
+            rapidjson-dev \
+            -o APT::Immediate-Configure=0
+
+      - name: Configure
+        run: |
+          mkdir -p build_Release
+          cd build_Release
+          cmake -GNinja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_SYSTEM_NAME=Linux \
+            -DCMAKE_SYSTEM_PROCESSOR=aarch64 \
+            -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc \
+            -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ \
+            -DUSE_64_BIT=True \
+            -DGITHUB_CI_COMPATIBILITY_PATH="${{ env.GITHUB_CI_COMPATIBILITY_PATH }}" \
+            ${{ github.workspace }}/src
+
+      - name: Build
+        run: |
+          cd build_Release
+          ninja
+
+      - name: Package (tar.gz)
+        run: |
+          mkdir -p remc2-linux-arm64
+          find build_Release -maxdepth 3 -name "remc2"        -type f -exec cp {} remc2-linux-arm64/ \;
+          find build_Release -maxdepth 3 -name "remc2-editor" -type f -exec cp {} remc2-linux-arm64/ \; || true
+          cp src/config.json            remc2-linux-arm64/
+          cp "src/Install Guide.txt"    remc2-linux-arm64/
+          cp src/check_install.sh       remc2-linux-arm64/
+          tar -czf remc2-linux-arm64.tar.gz remc2-linux-arm64/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remc2-linux-arm64
+          path: remc2-linux-arm64.tar.gz
 
   # ─────────────────────────────────────────────
   # GitHub Release
@@ -195,6 +290,7 @@ jobs:
       - build-windows
       - build-installer
       - build-linux
+      - build-linux-arm64
 
     steps:
       - name: Checkout
@@ -222,3 +318,4 @@ jobs:
             dist/installer-x64/Magic.Carpet.2.HD.x64.msi
             dist/installer-x86/Magic.Carpet.2.HD.x86.msi
             dist/remc2-linux-x86_64/remc2-linux-x86_64.tar.gz
+            dist/remc2-linux-arm64/remc2-linux-arm64.tar.gz
