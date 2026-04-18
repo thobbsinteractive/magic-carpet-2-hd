@@ -61,24 +61,22 @@ jobs:
         if: matrix.BUILD_PLATFORM == 'x86'
         shell: pwsh
         run: |
+          # Zkopírujeme celý Release/ output (exe, DLL, kiss/, font/ atd.)
+          $src = "Release"
           $out = "remc2-win-x86"
-          New-Item -ItemType Directory -Path $out | Out-Null
-          Copy-Item "${{ env.SOLUTION_FILE_PATH }}\Release\remc2.exe"        $out\ -ErrorAction SilentlyContinue
-          Copy-Item "${{ env.SOLUTION_FILE_PATH }}\Release\remc2-editor.exe" $out\ -ErrorAction SilentlyContinue
-          Copy-Item "config.json"        $out\
-          Copy-Item "Install Guide.txt"  $out\
+          Copy-Item $src $out -Recurse -Force
+          Copy-Item "Install Guide.txt" "$out\"
           Compress-Archive -Path $out -DestinationPath "remc2-win-x86.zip"
 
       - name: Package (zip) – x64
         if: matrix.BUILD_PLATFORM == 'x64'
         shell: pwsh
         run: |
+          # Zkopírujeme celý x64\Release\ output (exe, DLL, kiss/, font/ atd.)
+          $src = "x64\Release"
           $out = "remc2-win-x64"
-          New-Item -ItemType Directory -Path $out | Out-Null
-          Copy-Item "${{ env.SOLUTION_FILE_PATH }}\x64\Release\remc2.exe"        $out\ -ErrorAction SilentlyContinue
-          Copy-Item "${{ env.SOLUTION_FILE_PATH }}\x64\Release\remc2-editor.exe" $out\ -ErrorAction SilentlyContinue
-          Copy-Item "config.json"        $out\
-          Copy-Item "Install Guide.txt"  $out\
+          Copy-Item $src $out -Recurse -Force
+          Copy-Item "Install Guide.txt" "$out\"
           Compress-Archive -Path $out -DestinationPath "remc2-win-x64.zip"
 
       - name: Upload artifact
@@ -120,19 +118,28 @@ jobs:
           name: remc2-win-${{ matrix.arch }}
           path: artifacts/${{ matrix.arch }}
 
-      - name: Unzip binaries
+      - name: Unzip binaries into correct output path
         shell: pwsh
         run: |
-          Expand-Archive "artifacts/${{ matrix.arch }}/remc2-win-${{ matrix.arch }}.zip" `
-            -DestinationPath "staging/${{ matrix.arch }}"
+          # WixSharp hledá binárky v cestě relativní od remc2-installer/:
+          #   x86 -> ..\Release          #   x64 -> ..d\Release          Expand-Archive "artifacts/${{ matrix.arch }}/remc2-win-${{ matrix.arch }}.zip" `
+            -DestinationPath "extracted"
+          if ("${{ matrix.arch }}" -eq "x64") {
+            New-Item -ItemType Directory -Path "x64\Release" -Force | Out-Null
+            Copy-Item "extracted
+emc2-win-x64\*" "x64\Release" -Recurse -Force
+          } else {
+            New-Item -ItemType Directory -Path "Release" -Force | Out-Null
+            Copy-Item "extracted
+emc2-win-x86\*" "Release" -Recurse -Force
+          }
 
       - name: Build installer
         shell: pwsh
         run: |
           dotnet build remc2-installer.sln `
             --configuration Release `
-            -p:Platform=${{ matrix.arch }} `
-            -p:GameBinPath="${{ github.workspace }}\staging\${{ matrix.arch }}\remc2-win-${{ matrix.arch }}"
+            -p:Platform=${{ matrix.arch }}
 
       - name: Locate & rename MSI
         shell: pwsh
