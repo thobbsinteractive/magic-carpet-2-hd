@@ -138,6 +138,8 @@ namespace remc2_installer
 									new Files(@"..\Release\kiss\*.*")),
 								new Dir(new Id("FONT_INSTALLDIR"), @"font",
 									new Files(@"..\Release\font\*.*")),
+								new Dir(new Id("LANGUAGE_INSTALLDIR"), @"CD_FILES\LANGUAGE",
+									new Files(@"..\enhancedassets\languages\*.*")),
 								new Dir(new Id("HIGHRESGRAPHICS_INSTALLDIR"), @"graphics\high-res",
 									new Files(@"..\enhancedassets\graphics\high-res\*.*")
                                     {
