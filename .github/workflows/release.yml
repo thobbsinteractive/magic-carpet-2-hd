@@ -57,26 +57,22 @@ jobs:
             /p:WarningLevel=0 `
             ${{ env.SOLUTION_FILE_PATH }}/remc2.sln
 
-      - name: Package (zip) – x86
+      - name: Package (zip) - x86
         if: matrix.BUILD_PLATFORM == 'x86'
         shell: pwsh
         run: |
-          # Zkopírujeme celý Release/ output (exe, DLL, kiss/, font/ atd.)
-          $src = "Release"
           $out = "remc2-win-x86"
-          Copy-Item $src $out -Recurse -Force
-          Copy-Item "Install Guide.txt" "$out\"
+          Copy-Item "Release" $out -Recurse -Force
+          Copy-Item "Install Guide.txt" "$out/"
           Compress-Archive -Path $out -DestinationPath "remc2-win-x86.zip"
 
-      - name: Package (zip) – x64
+      - name: Package (zip) - x64
         if: matrix.BUILD_PLATFORM == 'x64'
         shell: pwsh
         run: |
-          # Zkopírujeme celý x64\Release\ output (exe, DLL, kiss/, font/ atd.)
-          $src = "x64\Release"
           $out = "remc2-win-x64"
-          Copy-Item $src $out -Recurse -Force
-          Copy-Item "Install Guide.txt" "$out\"
+          Copy-Item "x64/Release" $out -Recurse -Force
+          Copy-Item "Install Guide.txt" "$out/"
           Compress-Archive -Path $out -DestinationPath "remc2-win-x64.zip"
 
       - name: Upload artifact
@@ -121,17 +117,14 @@ jobs:
       - name: Unzip binaries into correct output path
         shell: pwsh
         run: |
-          # WixSharp hledá binárky v cestě relativní od remc2-installer/:
-          #   x86 -> ..\Release          #   x64 -> ..d\Release          Expand-Archive "artifacts/${{ matrix.arch }}/remc2-win-${{ matrix.arch }}.zip" `
-            -DestinationPath "extracted"
-          if ("${{ matrix.arch }}" -eq "x64") {
-            New-Item -ItemType Directory -Path "x64\Release" -Force | Out-Null
-            Copy-Item "extracted
-emc2-win-x64\*" "x64\Release" -Recurse -Force
+          $arch = "${{ matrix.arch }}"
+          Expand-Archive "artifacts/$arch/remc2-win-$arch.zip" -DestinationPath "extracted"
+          if ($arch -eq "x64") {
+            New-Item -ItemType Directory -Path "x64/Release" -Force | Out-Null
+            Get-ChildItem "extracted/remc2-win-x64" | Copy-Item -Destination "x64/Release" -Recurse -Force
           } else {
             New-Item -ItemType Directory -Path "Release" -Force | Out-Null
-            Copy-Item "extracted
-emc2-win-x86\*" "Release" -Recurse -Force
+            Get-ChildItem "extracted/remc2-win-x86" | Copy-Item -Destination "Release" -Recurse -Force
           }
 
       - name: Build installer
@@ -156,7 +149,6 @@ emc2-win-x86\*" "Release" -Recurse -Force
 
   # ─────────────────────────────────────────────
   # Linux – x86_64
-  # (stejná metoda jako fungující linux.yml CI)
   # ─────────────────────────────────────────────
   build-linux:
     name: Linux (x86_64)
@@ -216,7 +208,6 @@ emc2-win-x86\*" "Release" -Recurse -Force
 
   # ─────────────────────────────────────────────
   # Linux ARM64 (cross-compile)
-  # (stejná metoda jako fungující linuxArm64.yml CI)
   # ─────────────────────────────────────────────
   build-linux-arm64:
     name: Linux (ARM64)
