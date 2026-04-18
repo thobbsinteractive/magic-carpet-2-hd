@@ -52,8 +52,8 @@ void writeflag() {
 };
 
 char* removeDiakritics(char* text) {
-	char* withdia = (char*)"Ã¡ÃÄÄŒÄÄÃ©Ã‰Ä›ÄšÃ­ÃÅˆÅ‡Ã³Ã“Å™Å˜Å¡Å Å¥Å¤ÃºÃšÅ¯Å®Ã½ÃÅ¾Å½";
-	char* withoutdia = (char*)"aAcCdDeEeEiInNoOrRsStTuUuUyYzZ";
+	char* withdia =    (char*)"áÁèÈïÏéÉìÌíÍòÒóÓøØšŠúÚùÙıİ¹¥æÆêÊ³£ñÑœŒŸ¿¯";
+	char* withoutdia = (char*)"aAcCdDeEeEiInNoOrRsStTuUuUyYzZaAcCeElLnNsSzZzZ";
 	int len = strlen(text);
 	int lendia = strlen(withdia);
 	for (int i = 0;i < len;i++)
