@@ -1,0 +1,214 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+
+  # ─────────────────────────────────────────────
+  # Windows – MSVC (x64 + x86), bez instalátoru
+  # ─────────────────────────────────────────────
+  build-windows:
+    name: Windows (${{ matrix.arch }})
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            platform: x64
+            vcpkg_triplet: x64-windows
+          - arch: x86
+            platform: Win32
+            vcpkg_triplet: x86-windows
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: 'a42af01b72c28a8e1d7b48107b33e4f286a55ef6'
+
+      - name: Install dependencies (vcpkg)
+        run: |
+          vcpkg install sdl2 sdl2-mixer sdl2-ttf sdl2-image fmt `
+            --triplet ${{ matrix.vcpkg_triplet }}
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Configure (CMake)
+        run: |
+          cmake -B build -A ${{ matrix.platform }} `
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" `
+            -DVCPKG_TARGET_TRIPLET=${{ matrix.vcpkg_triplet }} `
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Package (zip)
+        shell: pwsh
+        run: |
+          $out = "remc2-win-${{ matrix.arch }}"
+          New-Item -ItemType Directory -Path $out | Out-Null
+          Copy-Item build\remc2\Release\remc2.exe           $out\
+          Copy-Item build\remc2-editor\Release\remc2-editor.exe $out\ -ErrorAction SilentlyContinue
+          Copy-Item config.json                              $out\
+          Copy-Item "Install Guide.txt"                     $out\
+          Compress-Archive -Path $out -DestinationPath "$out.zip"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remc2-win-${{ matrix.arch }}
+          path: remc2-win-${{ matrix.arch }}.zip
+
+  # ─────────────────────────────────────────────
+  # Windows – MSI instalátor (x64 + x86)
+  # ─────────────────────────────────────────────
+  build-installer:
+    name: Installer (${{ matrix.arch }})
+    runs-on: windows-latest
+    needs: build-windows
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            rid: win-x64
+          - arch: x86
+            rid: win-x86
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      # Stáhnout zkompilované binárky z předchozího jobu
+      - name: Download win-${{ matrix.arch }} artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: remc2-win-${{ matrix.arch }}
+          path: artifacts/${{ matrix.arch }}
+
+      - name: Unzip binaries
+        shell: pwsh
+        run: |
+          Expand-Archive artifacts/${{ matrix.arch }}/remc2-win-${{ matrix.arch }}.zip `
+            -DestinationPath staging/${{ matrix.arch }}
+
+      - name: Build installer
+        run: |
+          dotnet build remc2-installer.sln `
+            --configuration Release `
+            -p:Platform=${{ matrix.arch }} `
+            -p:GameBinPath="${{ github.workspace }}\staging\${{ matrix.arch }}\remc2-win-${{ matrix.arch }}"
+
+      # Předpokládá, že MSI se vygeneruje do remc2-installer/bin/Release/${{ matrix.arch }}/
+      - name: Locate & rename MSI
+        shell: pwsh
+        run: |
+          $msi = Get-ChildItem -Recurse -Filter "*.msi" | Select-Object -First 1
+          Copy-Item $msi.FullName "Magic.Carpet.2.HD.${{ matrix.arch }}.msi"
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-${{ matrix.arch }}
+          path: Magic.Carpet.2.HD.${{ matrix.arch }}.msi
+
+  # ─────────────────────────────────────────────
+  # Linux – GCC, x86_64
+  # ─────────────────────────────────────────────
+  build-linux:
+    name: Linux (x86_64)
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies (apt)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-image-dev \
+            libfmt-dev cmake ninja-build g++
+
+      - name: Configure
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Package (tar.gz)
+        run: |
+          mkdir -p remc2-linux-x86_64
+          cp build/remc2/remc2            remc2-linux-x86_64/
+          cp build/remc2-editor/remc2-editor remc2-linux-x86_64/ 2>/dev/null || true
+          cp config.json                  remc2-linux-x86_64/
+          cp "Install Guide.txt"          remc2-linux-x86_64/
+          cp check_install.sh             remc2-linux-x86_64/
+          tar -czf remc2-linux-x86_64.tar.gz remc2-linux-x86_64/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remc2-linux-x86_64
+          path: remc2-linux-x86_64.tar.gz
+
+  # ─────────────────────────────────────────────
+  # GitHub Release
+  # ─────────────────────────────────────────────
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs:
+      - build-windows
+      - build-installer
+      - build-linux
+
+    steps:
+      - name: Checkout (pro release notes z tagu)
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist/
+
+      - name: List dist
+        run: find dist/ -type f
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Magic Carpet 2 HD ${{ github.ref_name }}"
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
+          generate_release_notes: true
+          files: |
+            dist/remc2-win-x64/remc2-win-x64.zip
+            dist/remc2-win-x86/remc2-win-x86.zip
+            dist/installer-x64/Magic.Carpet.2.HD.x64.msi
+            dist/installer-x86/Magic.Carpet.2.HD.x86.msi
+            dist/remc2-linux-x86_64/remc2-linux-x86_64.tar.gz
