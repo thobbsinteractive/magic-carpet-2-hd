@@ -61,19 +61,17 @@ jobs:
         if: matrix.BUILD_PLATFORM == 'x86'
         shell: pwsh
         run: |
-          $out = "remc2-win-x86"
-          Copy-Item "Release" $out -Recurse -Force
-          Copy-Item "Install Guide.txt" "$out/"
-          Compress-Archive -Path $out -DestinationPath "remc2-win-x86.zip"
+          Copy-Item "Install Guide.txt" "Release/"
+          # Zipujeme OBSAH Release/ přímo, bez obalové složky
+          Compress-Archive -Path "Release/*" -DestinationPath "remc2-win-x86.zip"
 
       - name: Package (zip) - x64
         if: matrix.BUILD_PLATFORM == 'x64'
         shell: pwsh
         run: |
-          $out = "remc2-win-x64"
-          Copy-Item "x64/Release" $out -Recurse -Force
-          Copy-Item "Install Guide.txt" "$out/"
-          Compress-Archive -Path $out -DestinationPath "remc2-win-x64.zip"
+          Copy-Item "Install Guide.txt" "x64/Release/"
+          # Zipujeme OBSAH x64/Release/ přímo, bez obalové složky
+          Compress-Archive -Path "x64/Release/*" -DestinationPath "remc2-win-x64.zip"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -118,14 +116,33 @@ jobs:
         shell: pwsh
         run: |
           $arch = "${{ matrix.arch }}"
-          Expand-Archive "artifacts/$arch/remc2-win-$arch.zip" -DestinationPath "extracted"
           if ($arch -eq "x64") {
+            # x64: instalátor hledá ../x64/Release/ -> x64/Release/ v rootu
             New-Item -ItemType Directory -Path "x64/Release" -Force | Out-Null
-            Get-ChildItem "extracted/remc2-win-x64" | Copy-Item -Destination "x64/Release" -Recurse -Force
+            Expand-Archive "artifacts/$arch/remc2-win-$arch.zip" -DestinationPath "x64/Release"
           } else {
+            # x86: instalátor hledá ../Release/ -> Release/ v rootu
             New-Item -ItemType Directory -Path "Release" -Force | Out-Null
-            Get-ChildItem "extracted/remc2-win-x86" | Copy-Item -Destination "Release" -Recurse -Force
+            Expand-Archive "artifacts/$arch/remc2-win-$arch.zip" -DestinationPath "Release"
           }
+
+      - name: Debug - list workspace
+        shell: pwsh
+        run: |
+          Write-Host "=== workspace root ==="
+          Get-ChildItem . | Select-Object Name, PSIsContainer
+          Write-Host "=== remc2-editor/ ==="
+          if (Test-Path "remc2-editor") {
+            Get-ChildItem "remc2-editor" | Select-Object Name, PSIsContainer
+            Write-Host "=== remc2-editor/kiss/ ==="
+            if (Test-Path "remc2-editor/kiss") {
+              Get-ChildItem "remc2-editor/kiss" | Select-Object Name
+            } else { Write-Host "remc2-editor/kiss NEEXISTUJE" }
+          } else { Write-Host "remc2-editor/ NEEXISTUJE" }
+          Write-Host "=== Release/ ==="
+          if (Test-Path "Release") { Get-ChildItem "Release" | Select-Object Name } else { Write-Host "Release/ NEEXISTUJE" }
+          Write-Host "=== x64/Release/ ==="
+          if (Test-Path "x64/Release") { Get-ChildItem "x64/Release" | Select-Object Name } else { Write-Host "x64/Release/ NEEXISTUJE" }
 
       - name: Copy runtime assets for installer
         shell: pwsh
@@ -134,6 +151,11 @@ jobs:
           #   ../Release/kiss  -> remc2/Release/kiss   (kiss je v remc2-editor/kiss)
           #   ../Release/font  -> remc2/Release/font   (font je v remc2/font)
           #   ../x64/Release/kiss a font pro x64
+          $arch = "${{ matrix.arch }}"
+          # Struktura rootu: remc2-installer/../Release = Release/ v rootu (x86)
+          #                   remc2-installer/../x64/Release = x64/Release/ v rootu (x64)
+          # kiss/ je v remc2-editor/kiss/
+          # font/ je v remc2/font/
           $arch = "${{ matrix.arch }}"
           $dest = if ($arch -eq "x64") { "x64/Release" } else { "Release" }
           New-Item -ItemType Directory -Path "$dest/kiss" -Force | Out-Null
