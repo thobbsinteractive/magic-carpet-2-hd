@@ -135,7 +135,7 @@ jobs:
           #   ../Release/font  -> remc2/Release/font   (font je v remc2/font)
           #   ../x64/Release/kiss a font pro x64
           $arch = "${{ matrix.arch }}"
-          $dest = if ($arch -eq "x64") { "remc2/x64/Release" } else { "remc2/Release" }
+          $dest = if ($arch -eq "x64") { "x64/Release" } else { "Release" }
           New-Item -ItemType Directory -Path "$dest/kiss" -Force | Out-Null
           New-Item -ItemType Directory -Path "$dest/font" -Force | Out-Null
           Copy-Item "remc2-editor/kiss/*" "$dest/kiss/" -Recurse -Force
