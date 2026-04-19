@@ -106,7 +106,11 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Install WiX Toolset
-        run: dotnet tool install --global wix
+        run: |
+          dotnet tool install --global wix
+          wix extension add -g WixToolset.Util.wixext
+          wix extension add -g WixToolset.UI.wixext
+          wix extension add -g WixToolset.Bal.wixext
 
       - name: Download win-${{ matrix.arch }} artifact
         uses: actions/download-artifact@v4
