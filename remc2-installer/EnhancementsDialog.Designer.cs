@@ -1,4 +1,4 @@
-﻿namespace WixSharpSetup
+namespace WixSharpSetup
 {
     partial class EnhancedDataDialog
     {
@@ -37,6 +37,7 @@
             this.btnNext = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.chkInstallTextures = new System.Windows.Forms.CheckBox();
+            this.chkSpeech = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -71,7 +72,7 @@
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(30, 31);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(464, 21);
+            this.label2.Size = new System.Drawing.Size(300, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Would you like to install enhanced assets for Magic Carpet 2?";
             // 
@@ -82,7 +83,7 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(16, 8);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(225, 22);
+            this.label1.Size = new System.Drawing.Size(152, 14);
             this.label1.TabIndex = 1;
             this.label1.Text = "Install Enhanced Assets";
             // 
@@ -140,18 +141,33 @@
             this.chkInstallTextures.AutoSize = true;
             this.chkInstallTextures.Checked = true;
             this.chkInstallTextures.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkInstallTextures.Location = new System.Drawing.Point(15, 63);
+            this.chkInstallTextures.Location = new System.Drawing.Point(13, 69);
+            this.chkInstallTextures.Margin = new System.Windows.Forms.Padding(10);
             this.chkInstallTextures.Name = "chkInstallTextures";
-            this.chkInstallTextures.Size = new System.Drawing.Size(229, 25);
+            this.chkInstallTextures.Size = new System.Drawing.Size(151, 17);
             this.chkInstallTextures.TabIndex = 11;
             this.chkInstallTextures.Text = "Install Enhanced Textures";
             this.chkInstallTextures.UseVisualStyleBackColor = true;
+            // 
+            // chkSpeech
+            // 
+            this.chkSpeech.AutoSize = true;
+            this.chkSpeech.Checked = true;
+            this.chkSpeech.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSpeech.Location = new System.Drawing.Point(13, 106);
+            this.chkSpeech.Margin = new System.Windows.Forms.Padding(10);
+            this.chkSpeech.Name = "chkSpeech";
+            this.chkSpeech.Size = new System.Drawing.Size(93, 17);
+            this.chkSpeech.TabIndex = 12;
+            this.chkSpeech.Text = "Install Speech";
+            this.chkSpeech.UseVisualStyleBackColor = true;
             // 
             // EnhancedDataDialog
             // 
             this.AcceptButton = this.btnNext;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(488, 344);
+            this.ClientSize = new System.Drawing.Size(494, 361);
+            this.Controls.Add(this.chkSpeech);
             this.Controls.Add(this.chkInstallTextures);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -184,5 +200,6 @@
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.CheckBox chkInstallTextures;
-    }
+		private System.Windows.Forms.CheckBox chkSpeech;
+	}
 }

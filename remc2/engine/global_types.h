@@ -179,6 +179,7 @@ enum class spell_t {
 
 typedef enum
 {
+	GAME_PAUSED = 0x1,
 	CHEATS_ENABLED = 0x80u,
 	MULTIPLAYER_MODE = 0x10u,
 	SPEECH_ENABLED = 0x40,
