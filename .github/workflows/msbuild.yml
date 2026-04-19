@@ -11,6 +11,7 @@ on:
 env:
   # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: .
+  GITHUB_REF_NAME: 'release-1.2.3-alpha'
 
 jobs:
   build:
@@ -21,66 +22,29 @@ jobs:
         BUILD_PLATFORM: [x86, x64]
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
-      
-    - name: Install googletest
-      uses: cvpkg/googletest-action@v0.1
-      with:
-        googletest_tag: 'release-1.11.0' # default is 'v1.11.0'
-        
-    - name: Restore vcpkg packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: vcpkg integrate install
+     - name: Extract version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_NAME" =~ ([0-9]+(\.[0-9]+)+) ]]; then
+            echo "VERSION=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          else
+            echo "No version found in ref_name: $GITHUB_REF_NAME"
+            exit 1
+          fi
 
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore remc2.sln
-        
-    - name: Build ${{matrix.BUILD_CONFIGURATION}} ${{matrix.BUILD_PLATFORM}}
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{matrix.BUILD_CONFIGURATION}} /p:PlatformTarget=${{matrix.BUILD_PLATFORM}} /p:Platform=${{matrix.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}}/remc2.sln
-    
-    #- name: Run Unit Tests x86
-    #  if: ${{ matrix.BUILD_CONFIGURATION == 'Debug' && matrix.BUILD_PLATFORM == 'x86' }}
-    #  working-directory: ${{env.GITHUB_WORKSPACE}}
-    #  env:
-    #    ASAN_OPTIONS: continue_on_error=1
-    #  run:
-    #    ${{env.SOLUTION_FILE_PATH}}/${{matrix.BUILD_CONFIGURATION}}/remc2-unit-test.exe
-      
-    #- name: Run Unit Tests x64
-    #  if: ${{ matrix.BUILD_CONFIGURATION == 'Debug' && matrix.BUILD_PLATFORM == 'x64' }}
-    #  working-directory: ${{env.GITHUB_WORKSPACE}}
-    #  env:
-    #    ASAN_OPTIONS: continue_on_error=1
-    #  run:
-    #    ${{env.SOLUTION_FILE_PATH}}/${{matrix.BUILD_PLATFORM}}/${{matrix.BUILD_CONFIGURATION}}/remc2-unit-test.exe
-
-    - name: Archive x86
-      if: ${{ github.REF_NAME == 'master' && matrix.BUILD_CONFIGURATION == 'Release' && matrix.BUILD_PLATFORM == 'x86' }}    
-      uses: actions/upload-artifact@v4
-      with:
-        name: remc2-win-x86
-        path: ${{env.SOLUTION_FILE_PATH}}/Release/
-        if-no-files-found: error
-        
-    - name: Archive x64
-      if: ${{ github.REF_NAME == 'master' && matrix.BUILD_CONFIGURATION == 'Release' && matrix.BUILD_PLATFORM == 'x64' }}    
-      uses: actions/upload-artifact@v4
-      with:
-        name: remc2-win-x64
-        path: ${{env.SOLUTION_FILE_PATH}}/${{matrix.BUILD_PLATFORM}}/Release/
-        if-no-files-found: error
-        
-    - name: Archive Enhanced Graphics
-      if: ${{ github.REF_NAME == 'master' && matrix.BUILD_CONFIGURATION == 'Release' && matrix.BUILD_PLATFORM == 'x64' }}    
-      uses: actions/upload-artifact@v4
-      with:
-        name: enhanced-graphics
-        path: |
-          ${{env.SOLUTION_FILE_PATH}}/enhancedassets/
-          !${{env.SOLUTION_FILE_PATH}}/enhancedassets/music-ogg/
+      - name: Split version
+        shell: bash
+        run: |
+          IFS='.' read -r MAJOR MINOR REVISION BUILD <<< "$VERSION"
+          echo "MAJOR=$MAJOR" >> "$GITHUB_ENV"
+          echo "MINOR=$MINOR" >> "$GITHUB_ENV"
+          echo "REVISION=$REVISION" >> "$GITHUB_ENV"
+          echo "BUILD=${BUILD:-0}" >> "$GITHUB_ENV"
+          
+      - name: Prepare folders
+        shell: pwsh
+        run: |
+          $arch = "${{ matrix.arch }}"
+          
+          # Replace version
+          (Get-Content remc2-installer\Program.cs).Replace('Version(0, 0, 0, 0)', "Version($env:MAJOR, $env:MINOR, $env:REVISION, $env:BUILD)") | Set-Content remc2-installer\Program.cs
