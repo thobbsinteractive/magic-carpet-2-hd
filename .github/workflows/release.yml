@@ -62,16 +62,18 @@ jobs:
         shell: pwsh
         run: |
           Copy-Item "Install Guide.txt" "Release/"
-          # Zipujeme OBSAH Release/ přímo, bez obalové složky
-          Compress-Archive -Path "Release/*" -DestinationPath "remc2-win-x86.zip"
+          Push-Location "Release"
+          7z a "../remc2-win-x86.zip" * -r
+          Pop-Location
 
       - name: Package (zip) - x64
         if: matrix.BUILD_PLATFORM == 'x64'
         shell: pwsh
         run: |
           Copy-Item "Install Guide.txt" "x64/Release/"
-          # Zipujeme OBSAH x64/Release/ přímo, bez obalové složky
-          Compress-Archive -Path "x64/Release/*" -DestinationPath "remc2-win-x64.zip"
+          Push-Location "x64/Release"
+          7z a "../../remc2-win-x64.zip" * -r
+          Pop-Location
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -117,13 +119,11 @@ jobs:
         run: |
           $arch = "${{ matrix.arch }}"
           if ($arch -eq "x64") {
-            # x64: instalátor hledá ../x64/Release/ -> x64/Release/ v rootu
             New-Item -ItemType Directory -Path "x64/Release" -Force | Out-Null
-            Expand-Archive "artifacts/$arch/remc2-win-$arch.zip" -DestinationPath "x64/Release"
+            7z x "artifacts/$arch/remc2-win-$arch.zip" -o"x64/Release" -y
           } else {
-            # x86: instalátor hledá ../Release/ -> Release/ v rootu
             New-Item -ItemType Directory -Path "Release" -Force | Out-Null
-            Expand-Archive "artifacts/$arch/remc2-win-$arch.zip" -DestinationPath "Release"
+            7z x "artifacts/$arch/remc2-win-$arch.zip" -o"Release" -y
           }
 
       - name: Debug - list workspace
