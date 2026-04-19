@@ -112,82 +112,46 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: remc2-win-${{ matrix.arch }}
-          path: artifacts/${{ matrix.arch }}
+          path: artifacts
 
-      - name: Unzip binaries into correct output path
+      - name: Prepare folders
         shell: pwsh
         run: |
           $arch = "${{ matrix.arch }}"
-          # Rozbalíme do temp složky abychom viděli strukturu
-          New-Item -ItemType Directory -Path "unzipped" -Force | Out-Null
-          7z x "artifacts/$arch/remc2-win-$arch.zip" -o"unzipped" -y
-          # Zjistíme jestli zip obsahuje podsložku nebo rovnou soubory
+
+          # Rozbal zip
+          7z x "artifacts/remc2-win-$arch.zip" -o"unzipped" -y
+
+          # Detekuj strukturu - zip obsahuje soubory přímo nebo ve složce?
           $items = Get-ChildItem "unzipped"
-          if ($items.Count -eq 1 -and $items[0].PSIsContainer) {
-            $src = $items[0].FullName
-          } else {
-            $src = "unzipped"
-          }
-          # Zkopírujeme na správné místo
+          $src = if ($items.Count -eq 1 -and $items[0].PSIsContainer) { $items[0].FullName } else { (Resolve-Path "unzipped").Path }
+
+          # Zkopíruj binárky na místo kde Program.cs čeká exe+DLL
           if ($arch -eq "x64") {
-            New-Item -ItemType Directory -Path "x64/Release" -Force | Out-Null
-            Get-ChildItem $src | Copy-Item -Destination "x64/Release" -Recurse -Force
+            New-Item -ItemType Directory -Path "x64\Release" -Force | Out-Null
+            Get-ChildItem $src | Copy-Item -Destination "x64\Release" -Recurse -Force
           } else {
             New-Item -ItemType Directory -Path "Release" -Force | Out-Null
             Get-ChildItem $src | Copy-Item -Destination "Release" -Recurse -Force
           }
-          Write-Host "=== Obsah cilove slozky ==="
-          if ($arch -eq "x64") { Get-ChildItem "x64/Release" | Select-Object Name }
-          else { Get-ChildItem "Release" | Select-Object Name }
 
-      - name: Debug - list workspace
-        shell: pwsh
-        run: |
-          Write-Host "=== workspace root ==="
-          Get-ChildItem . | Select-Object Name, PSIsContainer
-          Write-Host "=== remc2-editor/ ==="
-          if (Test-Path "remc2-editor") {
-            Get-ChildItem "remc2-editor" | Select-Object Name, PSIsContainer
-            Write-Host "=== remc2-editor/kiss/ ==="
-            if (Test-Path "remc2-editor/kiss") {
-              Get-ChildItem "remc2-editor/kiss" | Select-Object Name
-            } else { Write-Host "remc2-editor/kiss NEEXISTUJE" }
-          } else { Write-Host "remc2-editor/ NEEXISTUJE" }
-          Write-Host "=== Release/ ==="
-          if (Test-Path "Release") { Get-ChildItem "Release" | Select-Object Name } else { Write-Host "Release/ NEEXISTUJE" }
-          Write-Host "=== x64/Release/ ==="
-          if (Test-Path "x64/Release") { Get-ChildItem "x64/Release" | Select-Object Name } else { Write-Host "x64/Release/ NEEXISTUJE" }
+          # kiss/ a font/ VŽDY do Release/ - Program.cs to tak hardcoded má pro oba arch
+          New-Item -ItemType Directory -Path "Release\kiss" -Force | Out-Null
+          New-Item -ItemType Directory -Path "Release\font" -Force | Out-Null
+          Copy-Item "remc2-editor\kiss\*" "Release\kiss\" -Recurse -Force
+          Copy-Item "remc2\font\*"        "Release\font\" -Recurse -Force
+          Copy-Item "remc2-editor\editor-config.json" "Release\" -Force -ErrorAction SilentlyContinue
 
-      - name: Copy runtime assets for installer
-        shell: pwsh
-        run: |
-          # Program.cs (remc2-installer/) hledá relativní cesty:
-          #   ../Release/kiss  -> remc2/Release/kiss   (kiss je v remc2-editor/kiss)
-          #   ../Release/font  -> remc2/Release/font   (font je v remc2/font)
-          #   ../x64/Release/kiss a font pro x64
-          $arch = "${{ matrix.arch }}"
-          # Struktura rootu: remc2-installer/../Release = Release/ v rootu (x86)
-          #                   remc2-installer/../x64/Release = x64/Release/ v rootu (x64)
-          # kiss/ je v remc2-editor/kiss/
-          # font/ je v remc2/font/
-          $arch = "${{ matrix.arch }}"
-          $dest = if ($arch -eq "x64") { "x64/Release" } else { "Release" }
-          New-Item -ItemType Directory -Path "$dest/kiss" -Force | Out-Null
-          New-Item -ItemType Directory -Path "$dest/font" -Force | Out-Null
-          Copy-Item "remc2-editor/kiss/*" "$dest/kiss/" -Recurse -Force
-          Copy-Item "remc2/font/*"        "$dest/font/" -Recurse -Force
-          if (Test-Path "remc2-editor/editor-config.json") {
-            Copy-Item "remc2-editor/editor-config.json" "$dest/" -Force
-          }
+          # Ověření
+          Write-Host "=== Release/ ==="; Get-ChildItem "Release" | Select Name
+          if ($arch -eq "x64") { Write-Host "=== x64/Release/ ==="; Get-ChildItem "x64\Release" | Select Name }
 
       - name: Build installer
         shell: pwsh
         run: |
-          dotnet build remc2-installer.sln `
-            --configuration Release `
-            -p:Platform=${{ matrix.arch }}
+          dotnet build remc2-installer.sln --configuration Release -p:Platform=${{ matrix.arch }}
 
-      - name: Locate & rename MSI
+      - name: Locate and rename MSI
         shell: pwsh
         run: |
           $msi = Get-ChildItem -Recurse -Filter "*.msi" | Select-Object -First 1
