@@ -133,7 +133,6 @@ namespace remc2_installer
 								new File(new Id("WAVPACKDLL_DLL"), @"..\Release\wavpackdll.dll"),
 								new File(new Id("ZLIB1_DLL"), @"..\Release\zlib1.dll"),
 #endif
-								new File(new Id("EXTRACT_BAT"), @"Extract.bat"),
 								new Dir(new Id("KISS_INSTALLDIR"), @"kiss",
 									new Files(@"..\Release\kiss\*.*")),
 								new Dir(new Id("FONT_INSTALLDIR"), @"font",
