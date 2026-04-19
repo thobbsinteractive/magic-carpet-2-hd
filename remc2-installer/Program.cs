@@ -137,6 +137,8 @@ namespace remc2_installer
 									new Files(@"..\Release\kiss\*.*")),
 								new Dir(new Id("FONT_INSTALLDIR"), @"font",
 									new Files(@"..\Release\font\*.*")),
+								new Dir(new Id("LANGUAGE_INSTALLDIR"), @"CD_FILES\LANGUAGE",
+									new Files(@"..\enhancedassets\languages\*.*")),
 								new Dir(new Id("HIGHRESGRAPHICS_INSTALLDIR"), @"graphics\high-res",
 									new Files(@"..\enhancedassets\graphics\high-res\*.*")
                                     {
@@ -170,7 +172,7 @@ namespace remc2_installer
             project.Platform = Platform.x64;
 #endif
             project.GUID = new Guid("d945f1c4-cbe4-445c-9674-07de64692857");
-			project.Version = new Version(0, 9, 10, 0);
+			project.Version = new Version(0, 0, 0, 0);
 #if WIN64
 			project.DefaultRefAssemblies.Add(@"bin\x64\Release\net48\Newtonsoft.Json.dll");
 #else

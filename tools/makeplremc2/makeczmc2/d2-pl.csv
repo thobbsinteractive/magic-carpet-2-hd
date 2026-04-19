@@ -1,0 +1,534 @@
+##x#
+X‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚##x#
+X‚‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚##x#
+X‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚##x#
+X‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚‚##x#
+X‚‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‚##x#
+X‚‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‚##x#
+X‚‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚·‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡·‚‚‚‚‚‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚##x#
+X‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚##x#
+X‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚##x#
+X‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚##x#
+X‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‚##x#
+X‚‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‚##x#
+X‚‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‚##x#
+X‚‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‚##x#
+X‚‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚‚##x#
+X‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚##x#
+X‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‚·‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‡‡‚##x#
+X‚‡‡‡‡‡‡‡‡·‚‚„‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‚‚‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‡‚‚‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰‰„‚‚‚‚‚‚‚·‡‡‡‚##x#
+X‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚‚##x#
+##x#
+##x#
+##x#
+##x#
+##x#
+##x#
+##x#
+##x#
+##-1#
+X5This demo of Magic Carpet 2 features a playable level and two rolling demo levels. Bullfrog hopes you will enjoy this taster of the stunning sequel to 1994's Game of the Year. With a whole range of new features, Magic Carpet 2 is faster, darker ..... and bloodier. With 25 action packed levels, Magic Carpet 2 features many new creatures and spells, some of which can be seen on this demo. Plus Magic Carpet 2 will have a save mid game feature. Magic Carpet 2 will be released at the end of September 1995.#X5To demo gry Magic Carpet 2 zawiera grywalny poziom oraz dwa dynamiczne poziomy demonstracyjne. Bullfrog ma nadziejÍ, øe spodoba Ci siÍ ten przedsmak wspania≥ej kontynuacji Gry Roku z 1994 roku. DziÍki ca≥ej gamie nowych funkcji, Magic Carpet 2 jest szybszy, mroczniejszyÖ i bardziej krwawy. Z 25 poziomami pe≥nymi akcji, Magic Carpet 2 oferuje wiele nowych stworzeÒ i zaklÍÊ, z ktÛrych czÍúÊ moøna zobaczyÊ w tym demo. Dodatkowo Magic Carpet 2 bÍdzie posiada≥ funkcjÍ zapisu w trakcie gry. Magic Carpet 2 ukaøe siÍ pod koniec wrzeúnia 1995 roku.#0#
+Pause game.#Wstrzymaj grÍ.#1#
+Abandon level.#PorzuÊ poziom.#2#
+Continue game once dead with castle, end game once dead without.#Kontynuuj grÍ po úmierci z zamkiem, zakoÒcz grÍ po úmierci bez zamku.#3#
+Toggle sound on / off#W≥πcz/wy≥πcz düwiÍk#4#
+Toggle music on / off#W≥πcz/wy≥πcz muzykÍ#5#
+Toggle process speed#Prze≥πcz prÍdkoúÊ procesu#6#
+Brightness correction#Korekta jasnoúci#7#
+Toggle reflections on / off#W≥πcz/wy≥πcz odbicia#8#
+Toggle sky on / off#W≥πcz/wy≥πcz niebo#9#
+Toggle shadows on / off#W≥πcz/wy≥πcz cienie#10#
+Toggle map and icons on / off#W≥πcz/wy≥πcz mapÍ i ikony#11#
+Toggle light sources on / off#W≥πczanie/wy≥πczanie ürÛde≥ úwiat≥a#12#
+Alter screen size#ZmieÒ rozmiar ekranu#13#
+Toggle help on / off#W≥πcz/wy≥πcz pomoc#14#
+Toggle flight assistance on / off#W≥πcz/wy≥πcz pomoc w locie#15#
+Kafkar: When you're a wizard trapped in the Netherworlds, and its demon overlord discovers which#Kafkar: Kiedy jesteú czarodziejem uwiÍzionym w Zaúwiatach, a jego demoniczny w≥adca#16#
+dimension you've just come from, you have good reason to wonder how long that dimension has left#odkrywa, z ktÛrego wymiaru w≥aúnie przyby≥eú, masz dobry powÛd, by zastanawiaÊ siÍ,#17#
+before said demon tranforms it into an ornament for his throne room...#ile czasu pozosta≥o temu wymiarowi, zanim demon zamieni jπ w ozdobÍ swojej sali tronowej...#18#
+Vissuluth: I am free! And I smell the fear of mortal men.#Vissuluth: Jestem wolny! I czujÍ strach úmiertelnikÛw.#19#
+Kafkar: Then you remember that promising apprentice you once introduced to the eldritch arts...#Kafkar: Wtedy przypominasz sobie tego obiecujπcego ucznia, ktÛrego kiedyú wprowadzi≥eú w sztukÍ niebiaÒskπ...#20#
+Apprentice: No! Master?#UczeÒ: Nie! Mistrz?#21#
+Kafkar: I see you have met your new neighbour, Vissuluth, Demon Lord of the Netherworlds.#Kafkar: WidzÍ, øe pozna≥eú swojego nowego sπsiada, Vissulutha, W≥adcÍ DemonÛw ZaúwiatÛw.#22#
+"You must explore the outer Netherworlds while you learn its magic. Your first destination is the ancient city of Jahwl."#ÑMusisz eksplorowaÊ zewnÍtrzne Zaúwiaty, uczπc siÍ ich magii. Twoim pierwszym celem jest staroøytne miasto Jahwl.î#23#
+"Before Vissuluth's rule of the Netherworlds began, the island of Kopahk was occupied by the great sorceress, Payahandra. Go there and discover her lost spells."#ÑZanim Vissuluth objπ≥ w≥adzÍ nad Zaúwiatami, wyspa Kopahk by≥a okupowana przez wielkπ czarodziejkÍ, PayahandrÍ. Udaj siÍ tam i odkryj jej zaginione zaklÍcia.î#24#
+"Nyphur is a shapechanger. I will send you to his lair to seek the source of his power. I warn you, he will not have left his domain weakly defended."#ÑNyphur jest zmiennokszta≥tny. WyúlÍ ciÍ do jego kryjÛwki, abyú poszuka≥ ürÛd≥a jego mocy. Ostrzegam ciÍ, nie opuúci swojej domeny s≥abo bronionej.î#25#
+"A gift from the gods! Alas, it falls towards the netherworld of the spidersÖ"#ÑDar od bogÛw! Niestety, spada w stronÍ podziemnego úwiata pajπkÛwÖî#26#
+"The outcast, Nyphur, wages war against Rahn The Destructor, in the outer netherworld of T'Klom. Neither is fit to rule."#ÑWyrzutek, Nyphur, toczy wojnÍ z Rahnem Niszczycielem w odleg≥ym podziemnym úwiecie T'Klom. Øaden z nich nie nadaje siÍ do rzπdzenia.î#27#
+"Others have entered the Labyrinths of Lost Souls, seeking powers which are said to lie in the netherworld of the undead. I warn you, none has ever returned."#ÑInni weszli do LabiryntÛw Zagubionych Dusz w poszukiwaniu mocy, o ktÛrych mÛwi siÍ, øe kryjπ siÍ w podziemnym úwiecie nieumar≥ych. Ostrzegam ciÍ, nikt nigdy nie powrÛci≥.î#28#
+"The way through the Mountains of Perilium is guarded by the three outer guardians, each of whom shares power with the others by possessing one spell that no other has. All are deadly."#ÑDrogi przez GÛry Perilium strzegπ trzej zewnÍtrzni straønicy, z ktÛrych kaødy dzieli siÍ mocπ z pozosta≥ymi, w≥adajπc jednym zaklÍciem, ktÛrego nie posiadajπ pozostali. Wszyscy sπ úmiertelnie niebezpieczni.î#29#
+"To reach the Black Plains, you must first find your way through the tunnels beneath the mountains. I wonder what Vissuluth has in store for us here."#ÑAby dotrzeÊ do Czarnych RÛwnin, najpierw musisz znaleüÊ drogÍ przez tunele pod gÛrami. Ciekawe, co Vissuluth dla nas tu przygotowa≥.î#30#
+"The manticores of the Black Plains are ruled and hunted by Jark the Hunter, Lord of the Middle Netherworlds. Now he defends his secret lore from your defeated adversaries."#ÑMantikory z Czarnych RÛwnin sπ rzπdzone i úcigane przez Jarka £owcÍ, W≥adcÍ årodkowych ZaúwiatÛw. Teraz broni on swojej tajemnej wiedzy przed twoimi pokonanymi przeciwnikami.î#31#
+"The greatest challenge of your journey awaits you in the jagged wastes of Cymmeria. Guard your castle well, wizard."#ÑNajwiÍksze wyzwanie twojej podrÛøy czeka ciÍ na poszarpanych pustkowiach Cymerii. Strzeø dobrze swojego zamku, czarodzieju.î#32#
+"You must cross the Cymmerian Sea, home of the leviathan. Beware that which lurks beneath the waves."#ÑMusisz przep≥ynπÊ Morze Cymeryjskie, ojczyznÍ lewiatana. Uwaøaj na to, co czai siÍ pod falami.î#33#
+"Centuries ago, the Demon Lord entombed an army of wizards that had risen against him. Forever trapped in giant stone faces, they are known as the sentinels. It would be best to avoid disturbing them when you make your way through these tunnels."#ÑWieki temu W≥adca DemonÛw pochowa≥ armiÍ czarodziejÛw, ktÛrzy mu siÍ przeciwstawili. Na zawsze uwiÍzieni w gigantycznych kamiennych twarzach, sπ znani jako straønicy. Najlepiej by≥oby ich nie niepokoiÊ, przemierzajπc te tunele.î#34#
+"The once beautiful netherworld of Galiphur is being ravaged by the war between the wizard lords you have displaced. Yet, by fighting among themselves, they make easier prey for you."#ÑNiegdyú piÍkny podziemny úwiat Galiphur jest niszczony przez wojnÍ miÍdzy lordami czarodziejÛw, ktÛrych wypar≥eú. Jednak walczπc miÍdzy sobπ, stajπ siÍ dla ciebie ≥atwiejszym ≥upem.î#35#
+"You must return to the underworld soon. But the way to the netherworld you seek has been lost in the violent eruptions of the Fire Peaks."#ÑMusisz wkrÛtce wrÛciÊ do podziemi. Ale droga do podziemnego úwiata, ktÛrego szukasz, zaginÍ≥a w gwa≥townych erupcjach Ognistych SzczytÛw.î#36#
+"Beneath you lies the underground netherworld of Zyggogg. From this place, Vissuluth selects the strongest creatures to join his army. It is time to deal our adversary a truly serious blow."#ÑPod tobπ leøy podziemny úwiat Zyggogg. Z tego miejsca Vissuluth wybiera najsilniejsze stworzenia, by do≥πczy≥y do ??jego armii. Czas zadaÊ naszemu przeciwnikowi naprawdÍ powaøny cios.î#37#
+"You must find out where the troglodytes are coming from and find a way to stop them. I suspect the deep netherworld of Darklava, mining civilisation of the ancient ones."#ÑMusisz dowiedzieÊ siÍ, skπd pochodzπ troglodyci i znaleüÊ sposÛb, by ich powstrzymaÊ. Podejrzewam, øe chodzi o g≥Íboki podziemny úwiat Darklava, gÛrniczπ cywilizacjÍ staroøytnych.î#38#
+"The Arenas of the C'lannesh are infamous across the netherworlds, for the deadly sport which they provide. Your enemies have called on the Elyssia the Trainer for aid. She will see how well you have learned your skills."#ÑAreny C'lannesh cieszπ siÍ z≥π s≥awπ w podziemnych úwiatach ze wzglÍdu na úmiercionoúny sport, jaki oferujπ. Twoi wrogowie wezwali na pomoc TrenerkÍ ElyssiÍ. Zobaczy, jak dobrze opanowa≥eú swoje umiejÍtnoúci.î#39#
+"The Wyvernflights of The Firestorm Mountains are commanded by Yragore, one of the most powerful wizards to serve the Demon Lord. Yet a rival of Yragore stole the spell of creature command. The thief perished but Yragore does not know what happened to the spell."#ÑLotami Wiwern z GÛr Ognistej Burzy dowodzi Yragore, jeden z najpotÍøniejszych czarodziejÛw s≥uøπcych W≥adcy DemonÛw. Jednak rywal Yragore'a ukrad≥ zaklÍcie w≥adania stworzeniami. Z≥odziej zginπ≥, ale Yragore nie wie, co sta≥o siÍ z zaklÍciem.î#40#
+"You have brought chaos to the Demon Lord's domain. His wizards regroup in the wilderness below."#ÑSprowadzi≥eú chaos do domeny W≥adcy DemonÛw. Jego czarodzieje gromadzπ siÍ na pustkowiu poniøej.î#41#
+"The people have nowhere to run to, nor any place to hide. And Vissuluth has turned his army on them. We must go to the aid of the innocent."#ÑLudzie nie majπ dokπd uciec ani gdzie siÍ ukryÊ. A Vissuluth skierowa≥ przeciwko nim swojπ armiÍ. Musimy ruszyÊ z pomocπ niewinnym.î#42#
+"Nyphur's armies return. They gather here, in a maze of tunnels and unstable caverns. You must enter tunnels and hunt down the enemy."#ÑArmie Nyphura powracajπ. Gromadzπ siÍ tutaj, w labiryncie tuneli i niestabilnych jaskiÒ. Musisz wejúÊ do tuneli i upolowaÊ wroga.î#43#
+"We are nearing Vissuluth's Citadel. On the other side of Valley of the Hydra is Jathnar, the capital city. I am certain that the valley beyond will be suitably defended. Take care, master wizard."#ÑZbliøamy siÍ do Cytadeli Vissulutha. Po drugiej stronie Doliny Hydry znajduje siÍ Jathnar, stolica. Jestem pewien, øe dolina za niπ bÍdzie odpowiednio broniona. Uwaøaj, mistrzu czarodzieju.î#44#
+"Dawn rises over the City of Jathnar, the iniquitous den from which the lackeys of the Demon Lord do his bidding. Leave nothing standing here. Let nothing live."#Ñåwit wschodzi nad miastem Jathnar, nikczemnπ norπ, z ktÛrej s≥ugusy W≥adcy DemonÛw wykonujπ jego rozkazy. ZrÛwnaj wszystko z ziemiπ. Nie oszczÍdzaj nikogo.î#45#
+"Vissuluth's Citadel generates a shield which none of your spells can penetrate. But the catacombs beneath the ruins of Jathnar should still provide a way."#ÑCytadela Vissulutha generuje tarczÍ, ktÛrej nie przebije øaden z twoich czarÛw. Ale katakumby pod ruinami Jathnaru powinny nadal nadawaÊ siÍ do przejúcia.î#46#
+"You found the way. I have asked so much and you have never faltered. But you must be ready to use everything you have learned in the battle ahead, for you have reached the citadel. And Vissuluth has returned."#ÑZnalaz≥eú drogÍ. Prosi≥em o tak wiele, a ty nigdy siÍ nie waha≥eú. Ale musisz byÊ gotowy wykorzystaÊ wszystko, czego siÍ nauczy≥eú, w nadchodzπcej bitwie, bo dotar≥eú do cytadeli. A Vissuluth powrÛci≥.î#47#
+"Fly towards my beacon."#ÑLeÊ w kierunku mojego sygna≥u.î#48#
+"Follow the path to the foot of the spire. There you will find a spell jar."#ÑPodπøaj úcieøkπ do podnÛøa iglicy. Tam znajdziesz s≥Ûj z zaklÍciem.î#49#
+"These archers guard a spell jar. They must be vanquished."#ÑCi ≥ucznicy strzegπ s≥oja z zaklÍciem. Trzeba ich pokonaÊ.î#50#
+"Build the strongest castle you can and fill it with mana."#ÑZbuduj najsilniejszy zamek, jaki moøesz, i wype≥nij go manπ.î#51#
+"These fireflies are lethal. Destroy them."#ÑTe úwietliki sπ zabÛjcze. Zniszcz je.î#52#
+"The city of Jahwl is safe for now. Come, there is much more to do."#ÑMiasto Jahwl jest na razie bezpieczne. Chodü, jest jeszcze wiele do zrobienia.î#53#
+"Seek my sign. There is a spell near there which will find out your enemies."#ÑSzukaj mojego znaku. W pobliøu jest zaklÍcie, ktÛre wykryje twoich wrogÛw.î#54#
+"Beware! Nyphur, a servant of the Demon Lord, will try to kill you. You will have to banish him from the netherworld."#ÑUwaøaj! Nyphur, s≥uga W≥adcy DemonÛw, bÍdzie prÛbowa≥ ciÍ zabiÊ. BÍdziesz musia≥ wygnaÊ go z zaúwiatÛw.î#55#
+"Kill the giant bees that plague the people."#ÑZabij gigantyczne pszczo≥y, ktÛre nÍkajπ ludzi.î#56#
+"Good work! Quickly, go to the ruins of Payahandra's tower."#ÑDobra robota! Szybko, idü do ruin wieøy Payahandry.î#57#
+"Payahandra's spells are hidden inside these vaults. Raze them to the ground."#ÑZaklÍcia Payahandry sπ ukryte w tych kryptach. ZrÛwnajcie je z ziemiπ.î#58#
+"When you have recovered the spells, make your way to the portal. Your work here is done."#ÑKiedy odzyskasz zaklÍcia, udaj siÍ do portalu. Twoja praca tutaj jest skoÒczona.î#59#xx
+"The people of Nyphur's netherworld are doomed to swell the ranks of his army of undead, unless you slay the skeleton horde."#ÑMieszkaÒcy podziemnego úwiata Nyphura skazani sπ na zasilenie szeregÛw jego armii nieumar≥ych, jeúli nie pokonasz hordy szkieletÛw.î#60#
+"You must defeat Nyphur's guardian dragons."#ÑMusisz pokonaÊ smoki straønicze Nyphura.î#61#
+"The entrance only reveals itself to the most powerful wizards."#ÑWejúcie ujawnia siÍ tylko najpotÍøniejszym czarodziejom.î#62#
+"Behold the way! Quickly, my friend."#ÑSpÛjrz na drogÍ! Szybko, przyjacielu.î#63#
+"Despatch this evil!"#ÑUsuÒ to z≥o!î#64#
+"Take the secret of the shapechangers and let us begone."#ÑZabierz sekret zmiennokszta≥tnych i odejdümy.î#65#
+"You must find the star that fell."#ÑMusisz odnaleüÊ gwiazdÍ, ktÛra spad≥a.î#66#
+"This is a good time to attack the spiders But beware their webs."#ÑTo dobry moment, øeby zaatakowaÊ pajπki. Uwaøaj jednak na ich sieci.î#67#
+"Once more, your determination proves its worth. Make your way to the portal. We must press on."#ÑPo raz kolejny twoja determinacja dowodzi swojej wartoúci. Udaj siÍ do portalu. Musimy iúÊ dalej.î#68#
+"Rahn is weaker. Challenge him and banish him."#ÑRahn jest s≥abszy. Wyzwij go i wygnaj.î#69#
+"Defend yourself against Nyphur."#ÑBroÒ siÍ przed Nyphurem.î#70#
+"I hope your taste for victory over Vissuluth's lieutenants is not yet sated. Already they plan their revenge."#ÑMam nadziejÍ, øe nie zaspokoi≥eú jeszcze swojego pragnienia zwyciÍstwa nad porucznikami Vissulutha. Juø planujπ zemstÍ.î#71#
+"Send this creature to the grave where it belongs."#ÑPoúlij to stworzenie do grobu, tam gdzie jego miejsce.î#72#
+"I fear you have attracted some unwanted attention."#ÑObawiam siÍ, øe przyciπgnπ≥eú niepoøπdanπ uwagÍ.î#73#
+"There must be a way out of this cave. Look for a hidden sign."#ÑMusi byÊ jakieú wyjúcie z tej jaskini. Szukaj ukrytego znaku.î#74#
+"Defend yourself. Now is not the time to fade into legend."#ÑBroÒ siÍ. Teraz nie czas na to, øeby staÊ siÍ legendπ.î#75#
+"Get out of here! Get out while you can!"#ÑWynoú siÍ stπd! Wynoú siÍ, pÛki moøesz!î#76#
+"To win, you must fight like a demon yourself."#ÑAby wygraÊ, musisz walczyÊ jak demon.î#77#
+"I knew you had the strength. Now it is time to depart this forsaken place."#ÑWiedzia≥em, øe masz si≥Í. Czas opuúciÊ to zapomniane miejsce.î#78#
+"The fiend has sprung a trap! Fight, wizard, fight!"#ÑDiabe≥ zastawi≥ pu≥apkÍ! Walcz, czarodzieju, walcz!î#79#
+"Follow my sign. I will try to find a way."#ÑPodπøaj za moim znakiem. SprÛbujÍ znaleüÊ drogÍ.î#80#
+"Is there no end to this rock?"#ÑCzy ta ska≥a nie ma koÒca?î#81#
+"These zombies guard a hidden way."#ÑTe zombie strzegπ ukrytej drogi.î#82#
+"So, Vissuluth is building an army of devils, is he? You can foil that plan, my friend."#ÑWiÍc Vissuluth buduje armiÍ diab≥Ûw, tak? Moøesz pokrzyøowaÊ ten plan, przyjacielu.î#83#
+"The devils built these structures to block the portal to the Black Plains. Obliterate them."#ÑDiab≥y zbudowa≥y te konstrukcje, øeby zablokowaÊ portal do Czarnych RÛwnin. Zniszczcie je.î#84#
+"You can now return to the surface."#ÑMoøesz teraz wrÛciÊ na powierzchniÍ.î#85#
+"A manticore comes this way. It can smell an intruder."#ÑMantykora nadchodzi tÍdy. Potrafi wyczuÊ intruza.î#86#
+"Finish it!"#ÑDokoÒcz to!î#87#
+"Destroy Jark."#ÑZniszcz Jarka.î#88#
+"Jark's Loretower is revealed to us. His ancient secret lies within."#ÑWieøa wiedzy Jarka zosta≥a nam ujawiona. Jego staroøytna tajemnica leøy w úrodku.î#89#
+"This is your hunting ground now. Make sure no manticore ever leaves this netherworld."#ÑTo teraz twoje tereny ≥owieckie. Dopilnuj, øeby øadna mantikora nigdy nie opuúci≥a tego podziemnego úwiata.î#90#
+"Every one of the beasts has perished. Nothing remains for a wizard to rule!"#ÑWszystkie bestie zginÍ≥y. Nie pozosta≥o juø nic, czym czarodziej mÛg≥by rzπdziÊ!î#91#
+"Vissuluth's army maintains barracks here. Send them crashing to the feet of the mountains."#ÑArmia Vissulutha ma tu koszary. ZmieÊ ich do podnÛøa gÛr.î#92#
+"The black winged swarm finally emerges."#ÑCzarnoskrzyd≥y rÛj w koÒcu siÍ wy≥ania.î#93#
+"The Cymmerians have sealed the portal. Travel to the ruined temple. Perhaps the gods may help us again."#ÑCymmeryjczycy zamknÍli portal. Udaj siÍ do zrujnowanej úwiπtyni. Moøe bogowie znÛw nam pomogπ.î#94#
+"The gods do not speak to me. If you become more powerful the way may be revealed to you."#ÑBogowie nie odzywajπ siÍ do mnie. Jeúli staniesz siÍ potÍøniejszy, droga moøe ci zostaÊ objawiona.î#95#
+"Indeed, the gods are watching you."#ÑRzeczywiúcie, bogowie ciÍ obserwujπ.î#96#
+"Navigate by my sign. The storm will hide you."#ÑKieruj siÍ moim znakiem. Burza ciÍ ukryje.î#97#
+"You have discovered Yujan, the lost city of devils. You must destroy this place."#ÑOdkry≥eú Yujan, zaginione miasto diab≥Ûw. Musisz zniszczyÊ to miejsce.î#98#
+"Wipe out every trace of this evil plague."#ÑZetrzyj wszelki úlad tej z≥owrogiej zarazy.î#99#
+"Ah! This spell will prove useful against Vissuluth's wizards."#ÑAch! To zaklÍcie okaøe siÍ przydatne przeciwko czarodziejom Vissulutha.î#100#
+"This has been a profitable stage of your journey."#ÑTo by≥ op≥acalny etap twojej podrÛøy.î#101#
+"These tunnels all return on each other. You must find a way to blast out."#ÑWszystkie te tunele zachodzπ na siebie. Musisz znaleüÊ sposÛb, øeby siÍ wydostaÊ.î#102#
+"Your stamina has impressed the gods. This spell is your reward."#ÑTwoja wytrzyma≥oúÊ zrobi≥a wraøenie na bogach. To zaklÍcie jest twojπ nagrodπ.î#103#
+"It is time to leave this place."#ÑCzas opuúciÊ to miejsce.î#104#
+"The battle goes badly for Nyphur. His mana could easily be yours."#ÑBitwa idzie üle dla Nyphura. Jego mana z ≥atwoúciπ mog≥aby staÊ siÍ twojπ.î#105#
+"I think it's time for Rahn to pay for his crimes."#ÑMyúlÍ, øe nadszed≥ czas, aby Rahn zap≥aci≥ za swoje zbrodnie.î#106#
+"Attack Belix the Pitiless, scourge of the outer netherworlds!"#ÑZaatakuj Belixa Bezlitosnego, plagÍ zewnÍtrznych podziemnych úwiatÛw!î#107#
+"Only Jark stands in your way now."#ÑTeraz tylko Jarek stoi ci na drodze.î#108#
+"As convincing a display of sorcerous skills as I have ever beheld."#ÑNajbardziej przekonujπcy pokaz umiejÍtnoúci czarodziejskich, jaki kiedykolwiek widzia≥em.î#109#
+"Even here, humans strive for survival. Give them hope by keeping at bay the evil that has taunted them for so long."#ÑNawet tutaj ludzie walczπ o przetrwanie. Daj im nadziejÍ, trzymajπc na dystans z≥o, ktÛre tak d≥ugo ich drÍczy≥o.î#110#
+"The chiefs of the Fire Peaks tribes pray that you can save them from the terror of the moon dwellers."#ÑWodzowie plemion Ognistych SzczytÛw modlπ siÍ, abyú ocali≥ ich przed terrorem mieszkaÒcÛw ksiÍøyca.î#111#
+"If we cannot help the people here, those back in your world are doomed."#ÑJeúli nie bÍdziemy w stanie pomÛc ludziom tutaj, ci w waszym úwiecie bÍdπ zgubieni.î#112#
+"Ye gods, behold! Coming from the sea!"#ÑBogowie, spÛjrzcie! Nadchodzi z morza!î#113#
+"I hope you remember who taught you the sorcerer's way. Hurry, time is our enemy."#ÑMam nadziejÍ, øe pamiÍtasz, kto ciÍ nauczy≥ drogi czarodzieja. Pospiesz siÍ, czas jest naszym wrogiem.î#114#
+"Exterminate them all!"#ÑWytÍp ich wszystkich!î#115#
+"Vissuluth has found some new allies. What they are and where they come from, I do not know."#ÑVissuluth znalaz≥ nowych sojusznikÛw. Czym oni sπ i skπd pochodzπ, nie mam pojÍcia.î#116#
+"I fear our task may be too great. Yet we have no choice but to try."#ÑObawiam siÍ, øe nasze zadanie moøe byÊ zbyt trudne. Nie mamy jednak wyboru i musimy sprÛbowaÊ.î#117#
+"Vissuluth has re-opened the mines. Destroy this outpost. We must get inside."#ÑVissuluth ponownie otworzy≥ kopalnie. Zniszczcie tÍ placÛwkÍ. Musimy dostaÊ siÍ do úrodka.î#118#
+"Those sentinels guard the way."#ÑTamci straønicy strzegπ drogi.î#119#
+"A little more rubble here for you."#ÑTutaj jeszcze trochÍ gruzu dla ciebie.î#120#
+"Quickly, to the mines. Destroy the smelting houses."#ÑSzybko, do kopalÒ. Zniszcz huty.î#121#
+"Fiends! Blast them!"#ÑDiab≥y! Rozwal ich!î#122#
+"Let us leave what remains of Darklava in peace."#ÑZostawmy w spokoju to, co pozosta≥o z Darklavy.î#123#
+"Give these evil doers a display of real wizardry!"#ÑDaj tym z≥oczyÒcom pokaz prawdziwej magii!î#124#
+"Soon you will have finished them for good."#ÑWkrÛtce rozprawisz siÍ z nimi na dobre.î#125#
+"Yragore is extremely powerful, do not attack him until you are ready."#ÑYragore jest niezwykle potÍøny, nie atakuj go, dopÛki nie bÍdziesz gotowy.î#126#
+"Beware! A wyvern approaches!"#ÑUwaga! Zbliøa siÍ wiwerna!î#127#
+"Your battle with the wyvern will attract more of its kind. Be ready."#ÑTwoja walka z wiwernπ przyciπgnie wiÍcej osobnikÛw tego gatunku. Bπdü gotowy.î#128#
+"Now, command the wyvern and attack Yragore's castle!"#ÑTeraz dowodü wiwernπ i zaatakuj zamek Yagore!î#129#
+"Your foe surely fears you now."#ÑTwÛj wrÛg na pewno siÍ ciebie teraz boi.î#130#
+"Battle is joined! Success, my friend!"#ÑBitwa rozpoczÍta! Sukces, mÛj przyjacielu!î#131#
+"You triumph at last."#ÑW koÒcu triumfujesz.î#132#
+"Protect the people. Rid the netherworld of the Demon Lord's twisted creations."#ÑChroÒ ludzi. Uwolnij podziemny úwiat od wypaczonych stworzeÒ W≥adcy DemonÛw.î#133#
+"He has summoned a hydra! Destroy the beast before it lays waste to the entire netherworld."#ÑPrzywo≥a≥ hydrÍ! Zniszcz bestiÍ, zanim spustoszy ca≥y podziemny úwiat.î#134#
+I" fear there will more of these creatures to slay before your journey is done."#ÑObawiam siÍ, øe zanim twoja podrÛø dobiegnie koÒca, bÍdziesz musia≥ zabiÊ jeszcze wiÍcej tych stworzeÒ.î#135#
+"These caverns are infested! Make this place the tomb of the troglodytes."#ÑTe jaskinie sπ zaraøone! ZrÛb z tego miejsca grobowiec troglodytÛw.î#136#
+"Beyond lies the zombie horde. Now is your chance."#ÑDalej kryje siÍ horda zombie. Teraz masz szansÍ.î#137#
+"Nyphur is more powerful than he has ever been. Can you force him to retreat again?"#ÑNyphur jest potÍøniejszy niø kiedykolwiek. Czy moøesz go ponownie zmusiÊ do odwrotu?î#138#
+"I still sense evil. Do not dally here."#ÑWciπø czujÍ z≥o. Nie zatrzymuj siÍ tu.î#139#
+"You have been discovered!"#ÑZosta≥eú odkryty!î#140#
+"Gain all the strength you can while there's time. Tomorrow we fly to Jathnar."#ÑZbierz wszystkie si≥y, pÛki masz czas. Jutro lecimy do Jathnaru.î#141#
+"Night is almost over. You make good time."#ÑNoc prawie siÍ koÒczy. Dobrze ci idzie.î#142#
+"Destroy the War Council Tower."#ÑZniszcz wieøÍ Rady Wojennej.î#143#
+"Good. Now reduce the barracks to rubble."#ÑDobrze. A teraz zrÛwnaj koszary z ziemiπ.î#144#
+"Make sure that not one spell ever leaves Vissuluth's apothecary again."#ÑUpewnij siÍ, øe ani jedno zaklÍcie nie opuúci juø apteki Vissulutha.î#145#
+"Bring down this temple of evil."#ÑZburz tÍ úwiπtyniÍ z≥a.î#146#
+"Smash the weapons vaults."#ÑZniszcz magazyny broni.î#147#
+"Now destroy the seven wizard lords! This time they will perish."#ÑTeraz zniszcz siedmiu czarodziejÛw! Tym razem zginπ.î#148#
+"Cleanse the netherworld of the evil spawn."#ÑOczyúÊ podziemny úwiat ze z≥ego pomiotu.î#149#
+"Enough! The catacombs beckon you."#ÑDoúÊ! Katakumby ciÍ wzywajπ.î#150#
+"This chamber appears to have been a temple."#ÑWyglπda na to, øe ta komnata by≥a kiedyú úwiπtyniπ.î#151#
+"We have incurred the wrath of the faithful. Let us settle this here."#ÑSpowodowaliúmy gniew wiernych. Za≥atwmy to tutaj.î#152#
+"Find out what now lies before us."#ÑDowiedz siÍ, co teraz przed nami.î#153#
+"This is some kind of device."#ÑTo jest jakieú urzπdzenie.î#154#
+"On guard, mage. The foe is upon you."#ÑBπdü czujny, magu. WrÛg jest blisko.î#155#
+"Do not tire, my friend. You have nearly completed your task."#ÑNie mÍcz siÍ, przyjacielu. Prawie ukoÒczy≥eú swoje zadanie.î#156#
+(Vissuluth): "You, invader of my realm, pretender to the shadow throne - prepare to die!"#(Vissuluth): ÑTy, najeüdüco mojego krÛlestwa, pretendencie do tronu cieni ñ przygotuj siÍ na úmierÊ!î#157#
+"You have done it! Ye gods, you have done it. Master, it is I who will serve you, henceforth. Denizens of the Netherworld, hear me! Vissuluth is dead. All hail the new Lord of the Netherworlds"!#ÑDokona≥eú tego! O bogowie, dokona≥eú tego. Mistrzu, to ja bÍdÍ ci odtπd s≥uøy≥. MieszkaÒcy ZaúwiatÛw, wys≥uchajcie mnie! Vissuluth nie øyje. Niech øyje nowy W≥adca ZaúwiatÛw!î#158#
+Your ability to cast %s has improved.#Twoja zdolnoúÊ rzucania zaklÍcia %s uleg≥a poprawie.#159#
+FIREBALL#KULA OGNIA#160#
+POSSESS#POSIADANIE#161#
+CASTLE#ZAMEK#162#
+SPEED UP#PRZYåPIESZENIE#163#
+MORPH#PRZEISTOCZENIE#164#
+HEAL#LECZENIE#165#
+SHIELD#TARCZA#166#
+LIGHTNING#B£YSKAWICA#167#
+REBOUND#ODBICIE#168#
+METEOR#METEOR#169#
+TELEPORT#TELEPORTACJA#170#
+INVISIBLE#NIEWIDZIALNOå∆#171#
+BEYOND SIGHT#PONADWIDOK#172#
+STEAL MANA#KRADZIEØ MANY#173#
+DUEL#POJEDYNEK#174#
+TREMOR#DRØENIE#175#
+CRATER#KRATER#176#
+EARTHQUAKE#TRZ SIENIE ZIEMI#177#
+VOLCANO#WULKAN#178#
+SUMMON ARMY#PRZYWO£ANIE ARMII#179#
+GRAVITY WELL#STUDNIA GRAWITACYJNA#180#
+WHIRLWIND#TR•BA POWIETRZNA#181#
+FOOL'S MANA#MANA G£UPCA#182#
+MAGIC MINE#MAGICZNA MINA#183#
+ALLIANCE#PRZYMIERZE#184#
+CAVE IN#ZAWALISKO#185#
+FireBall#Kula Ognia#186#
+Rapid Fire#Ciπg≥y OgieÒ#187#
+Fire Storm#Burza Ognia#188#
+Possession#Posiadanie#189#
+Mana Magnet#Magnes Many#190#
+Mana Lock#Blokada Many#191#
+Castle#Zamek#192#
+Fire Tower#Wieøa Ognia#193#
+Lightning Tower#Wieøa B≥yskawic#194#
+Speed Up#Przyúpieszenie#195#
+Super Speed#Super PrÍdkoúÊ#196#
+Super Speed II#Super PrÍdkoúÊ II#197#
+Bee Morph#Przeisotczenie w Pszczo≥Í#198#
+Firefly Morph#Przeisotczenie w åwietlika#199#
+Cymmerian Morph#Przeisotczenie w Cymmeriana#200#
+Wyvern Morph#Przeisotczenie w WyvernÍ#201#
+Heal#Leczenie#202#
+Aid#Pomoc#203#
+Constitution#Zdrowie#204#
+Shield#Tarcza#205#
+Shield II#Tarcza II#206#
+Invulnerable#NiewraøliwoúÊ#207#
+Lightning#B≥yskawica#208#
+Thunderbolt#Piorun#209#
+Thunderstorm#Burza z piorunami#210#
+Rebound#Odskok#211#
+Rebound II#Odbicie II#212#
+Amplify#WzmacniaÊ#213#
+Meteor#Meteor#214#
+Meteor II#Meteor II#215#
+Meteor III#Meteor III#216#
+Teleport#Teleportacja#217#
+Teleport II#Teleportacja II#218#
+Castle Port#Port Zamku#219#
+Invisible#NiewidzialnoúÊ#220#
+Possess Invisible#NiewidzialnoúÊ Posiadania#221#
+Attack Invisible#NiewidzialnoúÊ Ataku#222#
+Beyond Sight#Ponad Widok#223#
+See Invisible#Zobacz Niewidzialne#224#
+See All#Zobacz Wszystko#225#
+Steal Mana#Kradnij mane#226#
+Double Steal#Kradnij podwÛjnie#227#
+Burgle#W≥amywanie#228#
+Duel#Pojedynek#229#
+Mana Drain#Wysysanie many#230#
+Health Drain#Wysysanie zdrowia#231#
+Tremor#Drøenie#232#
+Tremor II#Drøenie II#233#
+Tremor III#Drøenie III#234#
+Crater#Krater#235#
+Crater II#Krater II#236#
+Crater III#Krater III#237#
+Earthquake#TrzÍsienie ziemi#238#
+Earthquake II#TrzÍsienie ziemi II#239#
+Earthquake III#TrzÍsienie ziemi III#240#
+Volcano#Wulkan#241#
+Volcano II#Wulkan II#242#
+Volcano III#Wulkan III#243#
+Bee Army#Armia PszczÛ≥#244#
+Firefly Army#Armia åwietlikÛw#245#
+Cymmerian Army#Armia Cymmeryjska#246#
+Wyvern Army#Armia Wiwern#247#
+Gravity Well#Studnia grawitacyjna#248#
+Gravity Well II#Studnia grawitacyjna II#249#
+Gravity Well III#Studnia grawitacyjna III#250#
+Whirlwind#Tornado#251#
+Whirlwind II#Tornado II#252#
+Whirlwind III#Tornado III#253#
+Fool's Mana#Mana G≥upca#254#
+Rapid Fire#Ciπg≥y OgieÒ#255#
+Lightning Fire#B≥yskawiczny OgieÒ#256#
+Magic Mine#Magiczna Mina#257#
+Magic Mine II#Magiczna Mina II#258#
+Magic Mine III#Magiczna Mina III#259#
+Alliance#Przymierze#260#
+Alliance II#Przymierze II#261#
+Alliance III#Przymierze III#262#
+Cave In#Zawalisko#263#
+Cave In II#Zawalisko II#264#
+Cave In III#Zawalisko III#265#
+I, Vissuluth, demon lord of the netherworlds, call upon the battle dead.#Ja, Vissuluth, demoniczny w≥adca podziemnych úwiatÛw, wzywam poleg≥ych w bitwie.#266#
+Ancient warriors, rise and march upon the domain of man. Kill them!#Staroøytni wojownicy, powstaÒcie i ruszajcie na krÛlestwo cz≥owieka. Zabijcie ich!#267#
+Burn their cities to the ground! And as their armies fall before us,#Spalcie ich miasta doszczÍtnie! A gdy ich armie padnπ przed nami,#268#
+let them rise again as slaves of darkness.#niech powstanπ na nowo jako niewolnicy ciemnoúci.#269#
+Heed my call, winged legions of Cymmeria. The time has come when the skies of man are#Us≥yszcie moje wezwanie, skrzydlate legiony Cymerii. Nadszed≥ czas, gdy niebo ludzkoúci#270#
+filled with your kind. Leave your mountain haunts and follow the march of chaos.#zape≥ni siÍ waszym gatunkiem. Opuúcie swoje gÛrskie legowiska i podπøajcie za pochodem chaosu.#271#
+Let the beating of your wings carry this message to the world:#Niech bicie waszych skrzyde≥ niesie úwiatu tÍ wiadomoúÊ:#272#
+Despair and bow down before your new God, Vissuluth.#Rozpaczajcie i pok≥oÒcie siÍ swojemu nowemu Bogowi, Vissuluthowi.#273#
+I summon the demons who dwell beyond the sky. Gather mana for me, cold nameless ones.#Przywo≥ujÍ demony, ktÛre mieszkajπ ponad niebem. Zbierzcie dla mnie manÍ, zimne, bezimienne istoty.#274#
+Strike my enemies down with lightning. Come! I command you to do my bidding.#Powalcie moich wrogÛw piorunem. Chodücie! RozkazujÍ wam, byúcie spe≥nili moje rozkazy.#275#
+My patience is exhausted. From Mount Firestorm, let the wyvernflights ride.#Moja cierpliwoúÊ siÍ wyczerpa≥a. Z GÛry Burzy Ogniowej, niech ruszπ wiwerny.#276#
+Seek out the cities of man and blast them from the face from the world.#Znajdücie miasta ludzkie i zmieÊcie je z powierzchni ziemi.#277#
+Crush them once and for all!#Zmiaødøcie ich raz na zawsze!#278#
+Who is this who would thwart my plans? What mortal fool would challenge the will of a God?#Kim jest ten, kto pokrzyøowa≥by moje plany? Jaki úmiertelny g≥upiec sprzeciwi≥by siÍ woli Boga?#279#
+What name does he go by, this one who will pay for what has been done here with eternal torment?#Jak siÍ nazywa ten, ktÛry zap≥aci wiecznymi mÍkami za to, co tu zrobiono?#280#
+Return to the Netherworlds as soon as you can.#WrÛÊ do ZaúwiatÛw tak szybko, jak to moøliwe.#281#
+You have been banished from the realm.#Zosta≥eú wygnany z krÛlestwa.#282#
+has been banished from the realm.#zosta≥ wygnany z krÛlestwa.#283#
+"You have discovered one of the demon lord's hidden realms."#ÑOdkry≥eú jedno z ukrytych krÛlestw w≥adcy demonÛw.î#284#
+"You have discovered another of the demon lord's hidden realms."#ÑOdkry≥eú kolejne ukryte krÛlestwo w≥adcy demonÛwî.#285#
+Press 'O' to show current objective#Naciúnij ÑOî, aby wyúwietliÊ aktualny cel#286#
+You are here#Jesteú tutaj#287#
+Walls cannot be passed#åcian nie da siÍ przejúÊ#288#
+Press RETURN for large map#Naciúnij RETURN, aby wyúwietliÊ duøπ mapÍ#289#
+Your life is low, retreat for a while#Twoje øycie jest na niskim poziomie, wycofaj siÍ na chwilÍ#290#
+Search for spells#Szukaj zaklÍÊ#291#
+Search for fireball spell#Szukaj zaklÍcia kula ognia#292#
+Search for castle spell#Szukaj zaklÍcia zamek#293#
+Search for possession spell#Szukaj zaklÍcia posiadanie#294#
+Use fireball spell to destroy target#Uøyj zaklÍcia kula ognia, aby zniszczyÊ cel#295#
+Use possession spell to possess mana#Uøyj zaklÍcia posiadanie, aby posiπúÊ manÍ#296#
+Use castle spell to build a safe haven#Uøyj zaklÍcia zamek, aby zbudowaÊ bezpiecznπ przystaÒ#297#
+Press control for spell menu#Naciúnij klawisz Control, aby wyúwietliÊ menu zaklÍÊ#298#
+Return to castle and recast castle spell#WrÛÊ do zamku i rzuÊ ponownie zaklÍcie zamek#299#
+Use cursor keys to move#Uøyj klawiszy kursora, aby siÍ poruszaÊ#300#
+Use mouse to steer#Uøyj myszki do sterowania#301#
+Your castle has been attacked#TwÛj zamek zosta≥ zaatakowany#302#
+Cannot build castles too close to walls#Nie moøna budowaÊ zamkÛw zbyt blisko murÛw#303#
+Use Shift L to destroy your castle for building elsewhere#Uøyj Shift L, aby zniszczyÊ zamek i zbudowaÊ go gdzie indziej#304#
+Press ALT for player information#Naciúnij ALT, aby uzyskaÊ informacje o graczu#305#
+Possess This Mana#Posiπdü tÍ manÍ#306#
+Destroy this for its mana#Zniszcz to dla jego many#307#
+Collect this spell by flying into it#Zbierz ten czar, wlatujπc w niego#308#
+Possess this building to increase your spells mana#Posiπdü ten budynek, aby zwiÍkszyÊ manÍ swoich zaklÍÊ#309#
+This stone restores your life#Ten kamieÒ przywraca Twoje øycie#310#
+This is your balloon which collects your possessed mana#To jest twÛj balon, ktÛry zbiera twojπ posiadanπ manÍ#311#
+This is your castle#To jest twÛj zamek#312#
+This is an enemy castle#To jest wrogi zamek#313#
+This is an enemy balloon#To jest wrogi balon#314#
+Marker stone#KamieÒ znacznikowy#315#
+This is an enemy player#To jest gracz przeciwnika#316#
+Castled mana, current and capacity#Mana w zamku, aktualna i pojemnoúÊ#317#
+Castle life#Energia zamku#318#
+Current size of castle#Obecny rozmiar zamku#319#
+Mana held by balloons#Mana zgromadzona w balonach#320#
+Number of balloons#Liczba balonÛw#321#
+Balloons life#Energia balonÛw#322#
+Castle mana required#Wymagana mana zamku#323#
+This is your life#To jest twoje energia#324#
+This is your spells mana#To jest mana twoich zaklÍÊ#325#
+Click on LMB to cast this spell#Kliknij lewym przyciskiem myszy, aby rzuciÊ ten czar#326#
+Click on RMB to cast this spell#Kliknij prawym przyciskiem myszy, aby rzuciÊ ten czar#327#
+Spell recharge and shots#Do≥adowanie zaklÍcia i strza≥y#328#
+Not enough mana to cast#Za ma≥o many, øeby rzuciÊ zaklÍcie#329#
+Selected spell level#Wybrany poziom zaklÍcia#330#
+Spell Experience points#Punkty doúwiadczenia zaklÍcia#331#
+Not enough castled mana to use#Za ma≥o many w zamku, aby jej uøyÊ#332#
+Achieved spell level#OsiπgniÍty poziom zaklÍcia#333#
+Your current objective is to collect mana#Twoim obecnym celem jest zebranie many#334#
+Your current objective is to destroy a building#Twoim obecnym celem jest zniszczenie budynku#335#
+Your current objective is to destroy buildings#Twoim obecnym celem jest zniszczenie budynkÛw#336#
+Your current objective is to kill a creature#Twoim obecnym celem jest zabicie stworzenia#337#
+Your current objective is to kill creatures#Twoim obecnym celem jest zabijanie stworzeÒ#338#
+Your current objective is to kill a player#Twoim obecnym celem jest zabicie gracza#339#
+Your current objective is to kill all players#Twoim obecnym celem jest zabicie wszystkich graczy#340#
+Your current objective is to fly to a point#Twoim obecnym celem jest dolecieÊ do punktu#341#
+You must now fly to the exit point#Teraz musisz polecieÊ do punktu wyjúcia#342#
+Fly to here to complete objective#LeÊ tutaj, aby ukoÒczyÊ cel#343#
+This is an objective target#To jest cel#344#
+Fly here to exit the level#LeÊ tutaj, aby opuúciÊ poziom#345#
+Message stores#Magazyny wiadomoúci#346#
+To all players in view#Do wszystkich graczy w zasiÍgu wzroku#347#
+To nearest player in view#Do najbliøszego gracza w zasiÍgu wzroku#348#
+To all players#Do wszystkich graczy#349#
+To specific players#Do konkretnych graczy#350#
+Message Recipients#Odbiorcy wiadomoúci#351#
+Current spells mana value#Aktualna wartoúÊ many zaklÍÊ#352#
+Number of times you have killed %s#Liczba zabÛjstw %s#353#
+No Sound#Brak düwiÍku#354#
+No Music#Brak muzyki#355#
+Yes/No#Tak/Nie#356#
+Shadows On#Cienie w≥πczone#357#
+Shadows Off#Cienie wy≥πczone#358#
+Reflections On#Odbicia w≥πczone#359#
+Reflections Off#Odbicia wy≥πczone#360#
+Soften On#ZmiÍkczenie w≥πczone#361#
+Soften Off#ZmiÍkczenie wy≥πczone#362#
+Sky On#Niebo w≥πczone#363#
+Sky Off#Niebo wy≥πczone#364#
+Icons and Map On#Ikony i mapa w≥πczone#365#
+Icons and Map Off#Ikony i mapa wy≥πczone#366#
+Stereo Mode On#Tryb stereo w≥πczony#367#
+Stereo Mode Off#Tryb stereo wy≥πczony#368#
+Light Speed Blur On#S≥abe rozmycie prÍdnoúci w≥πczone#369#
+Heavy Speed Blur On#Silne rozmycie prÍdkoúci w≥πczone#370#
+Speed Blur Off#Rozmycie prÍdkoúci wy≥πczone#371#
+Hit Ratio#WspÛ≥czynnik trafieÒ#372#
+Player Names#Imiona graczy#373#
+has died.#nie øyje.#374#
+is dead.#nie øyje.#375#
+has rejoined.#ponownie do≥πczy≥.#376#
+Mana#Mana#377#
+Tasks completed#Zadania wykonane#378#
+Fly to the exit point.#LeÊ do punktu wyjúcia.#379#
+Press the space bar to continue.#Aby kontynuowaÊ, naciúnij spacjÍ.#380#
+speed normal#prÍdkoúÊ normalna#381#
+speed fast#prÍdkoúÊ szybka#382#
+speed super fast#prÍdkoúÊ bardzo szybka#383#
+Creatures Killed#Zabite stworzenia#384#
+Accuracy#Dok≥adnoúÊ#385#
+Spells found#Znalezione zaklÍcia#386#
+Overall performance#OgÛlna wydajnoúÊ#387#
+Yes#Tak#388#
+No#Nie#389#
+Sound On#DüwiÍk w≥πczony#390#
+Sound Off#DüwiÍk wy≥πczony#391#
+Music On#Muzyka w≥πczona#392#
+Music Off#Muzyka wy≥πczona#393#
+Time Taken#PoúwiÍcony czas#394#
+Light Sources On#èrÛd≥a úwiat≥a w≥πczone#395#
+Light Sources Off#èrÛd≥a úwiat≥a wy≥πczone#396#
+New Spell Level#Nowy poziom zaklÍcia#397#
+Flight Assistance On#Pomoc w lataniu w≥πczona#398#
+Flight Assistance Off#Pomoc w lataniu wy≥πczona#399#
+Help Mode On#Tryb pomocy w≥πczony#400#
+Help Mode Off#Tryb pomocy wy≥πczony#401#
+Player Names On#Nazwy graczy w≥πczone#402#
+Player Names Off#Nazwy graczy wy≥πczone#403#
+Help#Pomoc#404#
+Load a Save Game#Za≥aduj zapisanπ grÍ#405#
+Save Current Game#Zapisz bieøπcπ grÍ#406#
+Exit Game#Wyjdü z gry#407#
+Select Language#Wybierz jÍzyk#408#
+Play MultiPlayer Game#Zagraj w grÍ wieloosobowπ#409#
+Play Game#Zagraj w grÍ#410#
+Configure Joystick#Konfiguruj joystick#411#
+Enter Network Session#Wejdü do sesji sieciowej#412#
+Attempting Connection#PrÛba po≥πczenia#413#
+Empty#Pusty#414#
+Play Game#Zagraj w grÍ#415#
+Enter Your Player Name#Wprowadü swojπ nazwÍ gracza#416#
+Play MultiPlayer Game#Zagraj w grÍ wieloosobowπ#417#
+Load A Previous Game#Za≥aduj poprzedniπ grÍ#418#
+Choose Language Text#Wybierz jÍzyk tekstu#419#
+Enter your name:#Wpisz swoje imiÍ:#420#
+Load#Za≥aduj#421#
+Save#Zapisz#422#
+Load Level#Za≥aduj poziom#423#
+Save Level#Zapisz poziom#424#
+Paused!#Wstrzymano!#425#
+Music Volume#G≥oúnoúÊ muzyki#426#
+Sound Volume#G≥oúnoúÊ düwiÍku#427#
+Options#Opcje#428#
+Failed#Nie powiod≥o siÍ#429#
+Has Completed Objective.#Cel zosta≥ osiπgniÍty.#430#
+Has Completed All Objectives.#Zrealizowa≥ wszystkie cele.#431#
+DAY#DZIE—#432#
+NIGHT#NOC#433#
+CAVERN#JASKINIA#434#
+QUIT#WYJåCIE#435#
+KEY INFORMATION#INFORMACJE KLUCZOWE#436#
+ANALOGUE#ANALOGOWY#437#
+DIGITAL#CYFROWY#438#
+ROTATE THE JOYSTICK#WYKONAJ OBR”T JOYSTICKIEM#439#
+Panel Transparency On#PrzezroczystoúÊ panelu w≥πczona#440#
+Panel Transparency Off#PrzezroczystoúÊ panelu wy≥πczona#441#
+Flat Shading On#Cieniowanie p≥askie w≥πczone#442#
+Flat Shading Off#Cieniowanie p≥askie wy≥πczone#443#
+Move Player Forwards#PrzesuÒ gracza do przodu#444#
+Move Player Backwards#PrzesuÒ gracza do ty≥u#445#
+Move Player Left#PrzesuÒ gracza w lewo#446#
+Move Player Right#PrzesuÒ gracza w prawo#447#
+Map screen#Ekran mapy#448#
+Spell Menu#Menu zaklÍÊ#449#
+Player Information#Informacje o graczu#450#
+Spell Menu mark spells#Menu zaklÍÊ zaznacza zaklÍcia#451#
+Marked spells toggle forwards#Zaznaczone zaklÍcia prze≥πczajπ siÍ do przodu#452#
+Marked spells toggle backwards#Zaznaczone zaklÍcia prze≥πczajπ siÍ do ty≥u#453#
+Click here to change language setting#Kliknij tutaj, aby zmieniÊ ustawienia jÍzyka#454#
+Exit language configuration screen#Wyjdü z ekranu konfiguracji jÍzyka#455#
+Start multiplayer game#Rozpocznij grÍ wieloosobowπ#456#
+Exit mulitplayer session#Wyjdü z sesji wieloosobowej#457#
+Select next character#Wybierz nastÍpny znak#458#
+Select previous character#Wybierz poprzedni znak#459#
+Select multiplayer level#Wybierz poziom wieloosobowy#460#
+Select joystick#Wybierz joystick#461#
+Select joystick type#Wybierz typ joysticka#462#
+Configure Keyboard controls#Konfiguruj sterowanie klawiaturπ#463#
+Click here to play previous level#Kliknij tutaj, aby zagraÊ w poprzedni poziom#464#
+Click here to play next level#Kliknij tutaj, aby zagraÊ na nastÍpnym poziomie#465#
+Exit to main menu#Wyjúcie do menu g≥Ûwnego#466#
+Restart Game#Uruchom ponownie grÍ#467#
+Change screen resolution#ZmieÒ rozdzielczoúÊ ekranu#468#
+Speech On#Mowa w≥πczona#469#
+Speech Off#Mowa wy≥πczona#470#
