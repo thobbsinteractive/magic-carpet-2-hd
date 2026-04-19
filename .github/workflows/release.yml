@@ -118,13 +118,27 @@ jobs:
         shell: pwsh
         run: |
           $arch = "${{ matrix.arch }}"
+          # Rozbalíme do temp složky abychom viděli strukturu
+          New-Item -ItemType Directory -Path "unzipped" -Force | Out-Null
+          7z x "artifacts/$arch/remc2-win-$arch.zip" -o"unzipped" -y
+          # Zjistíme jestli zip obsahuje podsložku nebo rovnou soubory
+          $items = Get-ChildItem "unzipped"
+          if ($items.Count -eq 1 -and $items[0].PSIsContainer) {
+            $src = $items[0].FullName
+          } else {
+            $src = "unzipped"
+          }
+          # Zkopírujeme na správné místo
           if ($arch -eq "x64") {
             New-Item -ItemType Directory -Path "x64/Release" -Force | Out-Null
-            7z x "artifacts/$arch/remc2-win-$arch.zip" -o"x64/Release" -y
+            Get-ChildItem $src | Copy-Item -Destination "x64/Release" -Recurse -Force
           } else {
             New-Item -ItemType Directory -Path "Release" -Force | Out-Null
-            7z x "artifacts/$arch/remc2-win-$arch.zip" -o"Release" -y
+            Get-ChildItem $src | Copy-Item -Destination "Release" -Recurse -Force
           }
+          Write-Host "=== Obsah cilove slozky ==="
+          if ($arch -eq "x64") { Get-ChildItem "x64/Release" | Select-Object Name }
+          else { Get-ChildItem "Release" | Select-Object Name }
 
       - name: Debug - list workspace
         shell: pwsh
