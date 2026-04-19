@@ -40,15 +40,15 @@ jobs:
           googletest_tag: 'release-1.11.0'
 
       - name: Restore vcpkg packages
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
+        working-directory: ${{ github.workspace }}
         run: vcpkg integrate install
 
       - name: Restore NuGet packages
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
+        working-directory: ${{ github.workspace }}
         run: nuget restore remc2.sln
 
       - name: Build Release
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
+        working-directory: ${{ github.workspace }}
         run: |
           msbuild /m `
             /p:Configuration=Release `
@@ -82,7 +82,7 @@ jobs:
           path: remc2-win-${{ matrix.BUILD_PLATFORM }}.zip
 
   # ─────────────────────────────────────────────
-  # Windows – MSI instalátor (x64 + x86)
+  # Windows – MSI installer (x64 + x86)
   # ─────────────────────────────────────────────
   build-installer:
     name: Installer (${{ matrix.arch }})
@@ -98,14 +98,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0   # FIX #6: added for consistent tag access
           submodules: recursive
+
+      - name: Extract version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_NAME" =~ ([0-9]+(\.[0-9]+)+) ]]; then
+            echo "VERSION=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          else
+            echo "No version found in ref_name: $GITHUB_REF_NAME"
+            exit 1
+          fi
+
+      - name: Split version
+        shell: bash
+        run: |
+          IFS='.' read -r MAJOR MINOR REVISION BUILD <<< "$VERSION"
+          echo "MAJOR=$MAJOR" >> "$GITHUB_ENV"
+          echo "MINOR=$MINOR" >> "$GITHUB_ENV"
+          echo "REVISION=$REVISION" >> "$GITHUB_ENV"
+          echo "BUILD=${BUILD:-0}" >> "$GITHUB_ENV"
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
 
-      - name: Install WiX Toolset v4 (bez EULA enforcement)
+      - name: Install WiX Toolset v4
         run: |
           dotnet tool install --global wix --version 4.0.5
           wix extension add -g WixToolset.Util.wixext/4.0.5
@@ -122,14 +142,14 @@ jobs:
         run: |
           $arch = "${{ matrix.arch }}"
 
-          # Rozbal zip
+          # Unzip the zip
           7z x "artifacts/remc2-win-$arch.zip" -o"unzipped" -y
 
-          # Detekuj strukturu - zip obsahuje soubory přímo nebo ve složce?
+          # Detect structure - does the zip contain files directly or in a folder?
           $items = Get-ChildItem "unzipped"
           $src = if ($items.Count -eq 1 -and $items[0].PSIsContainer) { $items[0].FullName } else { (Resolve-Path "unzipped").Path }
 
-          # Zkopíruj binárky na místo kde Program.cs čeká exe+DLL
+          # Copy the binaries to the location where Program.cs expects the exe+DLL
           if ($arch -eq "x64") {
             New-Item -ItemType Directory -Path "x64\Release" -Force | Out-Null
             Get-ChildItem $src | Copy-Item -Destination "x64\Release" -Recurse -Force
@@ -138,14 +158,17 @@ jobs:
             Get-ChildItem $src | Copy-Item -Destination "Release" -Recurse -Force
           }
 
-          # kiss/ a font/ VŽDY do Release/ - Program.cs to tak hardcoded má pro oba arch
+          # kiss/ and font/ ALWAYS to Release/ - Program.cs has it hardcoded for both arch
           New-Item -ItemType Directory -Path "Release\kiss" -Force | Out-Null
           New-Item -ItemType Directory -Path "Release\font" -Force | Out-Null
           Copy-Item "remc2-editor\kiss\*" "Release\kiss\" -Recurse -Force
           Copy-Item "remc2\font\*"        "Release\font\" -Recurse -Force
           Copy-Item "remc2-editor\editor-config.json" "Release\" -Force -ErrorAction SilentlyContinue
 
-          # Ověření
+          # Replace version
+          (Get-Content remc2-installer\Program.cs).Replace('Version(0, 0, 0, 0)', "Version($env:MAJOR, $env:MINOR, $env:REVISION, $env:BUILD)") | Set-Content remc2-installer\Program.cs
+
+          # Verification
           Write-Host "=== Release/ ==="; Get-ChildItem "Release" | Select Name
           if ($arch -eq "x64") { Write-Host "=== x64/Release/ ==="; Get-ChildItem "x64\Release" | Select Name }
 
@@ -163,11 +186,10 @@ jobs:
       - name: Build installer
         shell: pwsh
         run: |
-          # Ignorujeme exit code - MSI se postaví i když post-build event selže (set ide=true)
-          dotnet build remc2-installer.sln --configuration Release -p:Platform=${{ matrix.arch }} -p:AcceptEula=true || true
+          dotnet build remc2-installer.sln --configuration Release -p:Platform=${{ matrix.arch }} -p:AcceptEula=true
           $msi = Get-ChildItem -Recurse -Filter "*.msi" | Select-Object -First 1
-          if (-not $msi) { Write-Error "Build selhal - MSI nenalezeno!"; exit 1 }
-          Write-Host "MSI sestaveno: $($msi.FullName)" 
+          if (-not $msi) { Write-Error "Build failed - MSI not found!"; exit 1 }
+          Write-Host "MSI built: $($msi.FullName)"
 
       - name: Locate and rename MSI
         shell: pwsh
@@ -207,6 +229,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           submodules: recursive
           path: src
 
@@ -260,6 +283,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           submodules: recursive
           path: src
 
