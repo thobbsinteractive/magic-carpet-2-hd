@@ -139,18 +139,19 @@ type_E3810_music_data;*/
 
 //shadow shadow_type_E3808_music_header
 typedef struct {//lenght 32 - this is may be format of wav sound file
+	int8_t filename_14[18];//first 18 chars - name//30
 	int32_t xmiData_0;//data of wav//18
 	int8_t stub_4[4];//22
 	int32_t xmiSize_8;//24
-	int16_t word_12;//28
-	int8_t filename_14[18];//first 18 chars - name//30
+	int16_t word_12;//28	
 }
 shadow_sub2type_E3808_music_header;
 
 typedef struct {//lenght 216
 	int8_t stub[10];
-	shadow_sub2type_E3808_music_header track_10[6];
 	int8_t stubb[14];
+	shadow_sub2type_E3808_music_header track_10[6];
+	//int8_t stubb[14];
 }
 shadow_sub1type_E3808_music_header;
 
@@ -255,6 +256,8 @@ bool EndPlayingCdTrackSegment();
 bool ClearCdTrackSegment();
 bool AreCdTracksAvailable();
 int GetCdTrackCount();
+
+void WarMusicSetVolume(int32_t volume);
 
 void RegisterEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);
 template <typename T> void LoadAudioEffect(int channel, const Mix_Chunk* chunk, float speed, int frequency, int channels, uint16_t format);

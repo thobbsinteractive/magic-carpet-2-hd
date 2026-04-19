@@ -688,7 +688,6 @@ int _nmemneed_0(uint8_t*) { stub_fix_it(); return 0; };// weak
 int /*__fastcall*/ nullsub_1(x_DWORD) { stub_fix_it(); return 0; }; // weak
 //int sub_365F8() { stub_fix_it();return 0; }; // weak 222712
 
-int sub_8E0D0() { stub_fix_it(); return 0; }; // weak
 int dword_1820E0 = 0;
 void j___delay(x_DWORD x) { mydelay(x); }; // weak
 int j_j___clock(x_DWORD, x_DWORD, char*) { stub_fix_it(); return 0; }; // weak
