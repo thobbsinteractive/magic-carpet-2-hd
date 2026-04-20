@@ -28,7 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="WixSharp_wix4" Version="2.13.0" />
+    <PackageReference Include="WixSharp_wix4" Version="2.7.1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
