@@ -11,7 +11,7 @@ on:
 env:
   # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: .
-  GITHUB_REF_NAME: release-1.2.3-alpha
+  VERSION_TEST: release-1.2.3-alpha
 
 jobs:
   build:
@@ -25,10 +25,10 @@ jobs:
       - name: Extract version
         shell: bash
         run: |
-          if [[ "$GITHUB_REF_NAME" =~ ([0-9]+(\.[0-9]+)+) ]]; then
+          if [[ "$VERSION_TEST" =~ ([0-9]+(\.[0-9]+)+) ]]; then
             echo "VERSION=${BASH_REMATCH[1]}" >> $GITHUB_ENV
           else
-            echo "No version found in ref_name: $GITHUB_REF_NAME"
+            echo "No version found in ref_name: $VERSION_TEST"
             exit 1
           fi
 
