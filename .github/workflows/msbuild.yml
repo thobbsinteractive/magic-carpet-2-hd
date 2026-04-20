@@ -22,12 +22,6 @@ jobs:
         BUILD_PLATFORM: [x86, x64]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0   # FIX #6: added for consistent tag access
-          submodules: recursive
-
       - name: Extract version
         shell: bash
         run: |
