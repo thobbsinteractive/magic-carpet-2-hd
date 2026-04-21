@@ -47,6 +47,12 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: nuget restore remc2.sln
 
+      - name: Set version
+        shell: pwsh
+        run: |
+          # Replace version
+          (Get-Content remc2\engine\globals.h).Replace('inline extern const char* VersionNumber = "Beta";', "inline extern const char* VersionNumber = "$GITHUB_REF_NAME";") | Set-Content remc2\engine\globals.h
+          
       - name: Build Release
         working-directory: ${{ github.workspace }}
         run: |
