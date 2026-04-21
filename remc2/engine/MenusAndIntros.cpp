@@ -905,7 +905,7 @@ void MainMenu_76FA0()//257fa0
 			sub_7C120_draw_bitmap_640(185, 232, xy_DWORD_17DED4_spritestr[66]);//adress 25827a
 			DrawMenuAnimations_7AB00();//25bb00
 
-			DrawText_2BC10(VersionNumber, 5, 450, (*xadataclrd0dat.colorPalette_var28)[0]);
+			DrawText_2BC10(VersionNumber, 5, 465, (*xadataclrd0dat.colorPalette_var28)[70]);
 
 			if (DrawAndServe_7B250())//25c250
 			{
