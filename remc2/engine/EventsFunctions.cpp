@@ -44753,7 +44753,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 		DrawText_2BC10((char*)"Version number", 320, v6, (*xadataclrd0dat.colorPalette_var28)[3840]);
 		LOWORD(v7) = GetLetterHeight_6FC30();
 		v8 = v7 + v6;
-		DrawText_2BC10((char*)"Beta", 320, v8, (*xadataclrd0dat.colorPalette_var28)[15]);
+		DrawText_2BC10(VersionNumber, 320, v8, (*xadataclrd0dat.colorPalette_var28)[15]);
 		LOWORD(v9) = GetLetterHeight_6FC30();
 		v10 = v9 + v8;
 		DrawText_2BC10((char*)"Version date", 320, v10, (*xadataclrd0dat.colorPalette_var28)[3840]);
