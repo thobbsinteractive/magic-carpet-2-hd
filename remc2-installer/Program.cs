@@ -10,6 +10,7 @@ namespace remc2_installer
     {
         static void Main()
         {
+			var version = new Version(0, 0, 0, 0);
 #if WIN64
             var project = new ManagedProject("Magic Carpet 2 HD x64",
 #else
@@ -172,7 +173,7 @@ namespace remc2_installer
             project.Platform = Platform.x64;
 #endif
             project.GUID = new Guid("d945f1c4-cbe4-445c-9674-07de64692857");
-			project.Version = new Version(0, 0, 0, 0);
+			project.Version = version;
 #if WIN64
 			project.DefaultRefAssemblies.Add(@"bin\x64\Release\net48\Newtonsoft.Json.dll");
 #else
@@ -201,7 +202,7 @@ namespace remc2_installer
 										   .Add(Dialogs.Exit);
 
             project.ControlPanelInfo.ProductIcon = @"Resources\app.ico";
-            project.ControlPanelInfo.Comments = "Enhanced Edition of Magic Carpet 2";
+            project.ControlPanelInfo.Comments = "Enhanced Edition of Magic Carpet 2 " + version.ToString();
             project.ControlPanelInfo.UrlInfoAbout = "https://github.com/thobbsinteractive/magic-carpet-2-hd";
             project.ControlPanelInfo.Contact = "Magic Carpet 2 HD";
             project.ControlPanelInfo.Manufacturer = "Magic Carpet 2 HD";
@@ -209,7 +210,8 @@ namespace remc2_installer
             project.LicenceFile = @"Resources\MagicCarpet2HD.licence.rtf";
             project.BackgroundImage = @"Resources\MagicCarpet2HD.dialog_bmp.png";
             project.BannerImage = @"Resources\MagicCarpet2HD.dialog_banner.png";
-            ValidateAssemblyCompatibility();
+			project.LocalizationFile = @"Resources\WixUI_en-us.wxl";
+			ValidateAssemblyCompatibility();
             project.AfterInstall += OnAfterInstall;
             project.BuildMsi();
         }
