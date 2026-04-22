@@ -495,7 +495,7 @@
     <!-- _locID_text="WelcomeUpdateDlgDescriptionUpdate" _locComment="WelcomeUpdateDlgDescriptionUpdate" -->
     <String Id="WelcomeUpdateDlgDescriptionUpdate" Overridable="yes" Value="The Setup Wizard will update [ProductName] [Version] on your computer. Click Next to continue or Cancel to exit the Setup Wizard." />
     <!-- _locID_text="WelcomeDlgTitle" _locComment="WelcomeDlgTitle" -->
-    <String Id="WelcomeDlgTitle" Overridable="yes" Value="{\WixUI_Font_Bigger}Welcome to the [ProductName] Setup Wizard" />
+    <String Id="WelcomeDlgTitle" Overridable="yes" Value="{\WixUI_Font_Bigger}Welcome to the [ProductName] [Version] Setup Wizard" />
 
     <!-- _locID_text="WelcomeEulaDlg_Title" _locComment="WelcomeEulaDlg_Title" -->
 
