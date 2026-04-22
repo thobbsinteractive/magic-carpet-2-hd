@@ -291,7 +291,7 @@
 
     <!-- _locID_text="MaintenanceWelcomeDlg_Title" _locComment="MaintenanceWelcomeDlg_Title" -->
 
-    <String Id="MaintenanceWelcomeDlg_Title" Overridable="yes" Value="[ProductName] Setup" />
+    <String Id="MaintenanceWelcomeDlg_Title" Overridable="yes" Value="[ProductName] [Version] Setup" />
     <!-- _locID_text="MaintenanceWelcomeDlgBitmap" _locComment="MaintenanceWelcomeDlgBitmap" -->
     <String Id="MaintenanceWelcomeDlgBitmap" Overridable="yes" Value="WixUI_Bmp_Dialog" />
     <!-- _locID_text="MaintenanceWelcomeDlgDescription" _locComment="MaintenanceWelcomeDlgDescription" -->
@@ -487,7 +487,7 @@
 
     <!-- _locID_text="WelcomeDlg_Title" _locComment="WelcomeDlg_Title" -->
 
-    <String Id="WelcomeDlg_Title" Overridable="yes" Value="[ProductName] Setup" />
+    <String Id="WelcomeDlg_Title" Overridable="yes" Value="[ProductName] [Version] Setup" />
     <!-- _locID_text="WelcomeDlgBitmap" _locComment="WelcomeDlgBitmap" -->
     <String Id="WelcomeDlgBitmap" Overridable="yes" Value="WixUI_Bmp_Dialog" />
     <!-- _locID_text="WelcomeDlgDescription" _locComment="WelcomeDlgDescription" -->
