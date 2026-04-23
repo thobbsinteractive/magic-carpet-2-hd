@@ -48,17 +48,17 @@ jobs:
         run: nuget restore remc2.sln
 
       - name: Set version
-        shell: pwsh
+        shell: bash
         run: |
           # Replace version
-          (Get-Content remc2\engine\globals.h).Replace('Beta', $GITHUB_REF_NAME) | Set-Content remc2\engine\globals.h
-          (Get-Content remc2\engine\globals.h)
-          if (Select-String -Path "remc2\engine\globals.h" -Pattern [regex]::Escape($GITHUB_REF_NAME)) {
-            Write-Host "Set Version Passed!"
-          } else {
-            Write-Host "Set Version Failed!"
+          sed -i "s/Beta/$GITHUB_REF_NAME/g" remc2/engine/globals.h
+          cat remc2/engine/globals.h
+          if grep -q "$GITHUB_REF_NAME" remc2/engine/globals.h; then
+            echo "Set Version Passed!"
+          else
+            echo "Set Version Failed!"
             exit 1
-          }
+          fi
 
       - name: Build Release
         working-directory: ${{ github.workspace }}
