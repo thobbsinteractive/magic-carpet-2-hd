@@ -210,7 +210,6 @@ namespace remc2_installer
             project.LicenceFile = @"Resources\MagicCarpet2HD.licence.rtf";
             project.BackgroundImage = @"Resources\MagicCarpet2HD.dialog_bmp.png";
             project.BannerImage = @"Resources\MagicCarpet2HD.dialog_banner.png";
-			project.LocalizationFile = @"Resources\WixUI_en-us.wxl";
 			ValidateAssemblyCompatibility();
             project.AfterInstall += OnAfterInstall;
             project.BuildMsi();
