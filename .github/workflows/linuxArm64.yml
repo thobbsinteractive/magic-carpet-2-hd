@@ -42,6 +42,8 @@ jobs:
 
         sudo apt-get update
         sudo apt-get -y install \
+        sudo apt-get clean
+        sudo apt-get -y install --fix-broken \
           cmake ninja-build \
           gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
           libsdl2-dev:arm64 libsdl2-mixer-dev:arm64 \
@@ -50,6 +52,15 @@ jobs:
           libspdlog-dev:arm64 libfmt-dev:arm64 \
           rapidjson-dev \
           -o APT::Immediate-Configure=0
+          -o APT::Immediate-Configure=0 || \
+        sudo apt-get -y install --no-install-recommends \
+          cmake ninja-build \
+          gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
+          libsdl2-dev:arm64 libsdl2-mixer-dev:arm64 \
+          libsdl2-ttf-dev:arm64 libsdl2-image-dev:arm64 \
+          libgtest-dev:arm64 \
+          libspdlog-dev:arm64 libfmt-dev:arm64 \
+          rapidjson-dev
 
     - name: Generate Build System - ${{matrix.BUILD_CONFIGURATION}}
       run: |
