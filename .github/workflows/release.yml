@@ -51,8 +51,15 @@ jobs:
         shell: pwsh
         run: |
           # Replace version
-          (Get-Content remc2\engine\globals.h).Replace('inline extern const char* VersionNumber = "Beta";', "inline extern const char* VersionNumber = `"$GITHUB_REF_NAME`";") | Set-Content remc2\engine\globals.h
-          
+          (Get-Content remc2\engine\globals.h).Replace('Beta', $GITHUB_REF_NAME) | Set-Content remc2\engine\globals.h
+          (Get-Content remc2\engine\globals.h)
+          if (Select-String -Path "remc2\engine\globals.h" -Pattern [regex]::Escape($GITHUB_REF_NAME)) {
+            Write-Host "Set Version Passed!"
+          } else {
+            Write-Host "Set Version Failed!"
+            exit 1
+          }
+
       - name: Build Release
         working-directory: ${{ github.workspace }}
         run: |
