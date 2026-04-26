@@ -314,7 +314,7 @@ void sub_71F20(type_x_DWORD_E9C28_str* a1y, subtype_x_DWORD_E9C28_str* a2x)//252
 				a1y->dword_12x[v4 - 1] = a1y->dword_12x[v4];
 				a1y->dword_12x[v4]->word_8 = v4 - 1;
 				a1y->dword_12x[v4]->partstr_0 = i;
-				qmemcpy(i, a1y->dword_12x[v4], a1y->dword_12x[v4]->dword_4);
+				//qmemcpy(i, a1y->dword_12x[v4], a1y->dword_12x[v4]->dword_4);
 
 				/*
 				v4++;
