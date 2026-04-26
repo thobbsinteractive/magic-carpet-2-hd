@@ -688,7 +688,6 @@ int _nmemneed_0(uint8_t*) { stub_fix_it(); return 0; };// weak
 int /*__fastcall*/ nullsub_1(x_DWORD) { stub_fix_it(); return 0; }; // weak
 //int sub_365F8() { stub_fix_it();return 0; }; // weak 222712
 
-int sub_8E0D0() { stub_fix_it(); return 0; }; // weak
 int dword_1820E0 = 0;
 void j___delay(x_DWORD x) { mydelay(x); }; // weak
 int j_j___clock(x_DWORD, x_DWORD, char*) { stub_fix_it(); return 0; }; // weak
@@ -8659,7 +8658,7 @@ LABEL_12:
 		HandleButtonClick_191B0(20, x_D41A0_BYTEARRAY_4_struct.byte_38544);
 		SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
 		SetMousePositionInMemory_5BDC0(posX + a2, posY + 5 * height / 2);
-		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 		{
 			EndSample_8D8F0();
 			StopMusic_8E020();
@@ -22093,7 +22092,7 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 	indexedColor = (*xadataclrd0dat.colorPalette_var28)[3840];
 	if (!x_D41A0_BYTEARRAY_4_struct.byteindex_205 && !x_D41A0_BYTEARRAY_4_struct.SelectedMenuItem_38546)
 	{
-		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 		{
 			DrawText_2BC10(x_DWORD_E9C4C_langindexbuffer[425], posX, posY, (*xadataclrd0dat.colorPalette_var28)[240], scale);//Paused!
 			textPosX = ((8 * scale) * (strlen((const char*)x_DWORD_E9C4C_langindexbuffer[425]) + 2)) + posX;//Paused!
@@ -31688,6 +31687,9 @@ void InGameLoop_47320()//228320
 			}
 		}
 	}
+	//Clear pause status
+	x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= ~GAME_PAUSED;
+
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::GAMEPLAY_ENDED);
 
 	sub_90E07_VGA_set_video_mode_640x480_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
@@ -31726,7 +31728,7 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	if ((CommandLineParams.ModeRegressionsTestType() != -1) && (count_begin == 1))
 		debugcounter_47560++;
 	PaletteChanges_47760();
-	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 	{
 		sub_715B0();//nothing draw //animate sprites
 	}
@@ -31772,10 +31774,10 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 			else
 				sprintf(printbuffer, "%s:%s.", x_DWORD_E9C4C_langindexbuffer[423], x_DWORD_E9C4C_langindexbuffer[429]);//429 - Failed
 			ShowMessage_52D70(0, printbuffer);
-			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= 1;
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= GAME_PAUSED;
 		}
 		if (debug_first_run == 6)
-			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= 1;
+			x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 ^= GAME_PAUSED;
 		if (!CommandLineParams.DoRightButton())
 			debug_first_run++;
 	}
@@ -31815,7 +31817,7 @@ void DrawAndEventsInGame_47560(int16_t turn)//228560
 	sub_84B80();//prepare lightting
 	sub_58F00_game_objectives();//nothing draw
 	PresentObjective_59820();//nothing draw
-	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 		sub_57570();//nothing draw
 	sub_575C0();//nothing draw
 	PlayEntitySounds_6E150();//nothing draw
@@ -40166,7 +40168,7 @@ void UpdateEntities_57730()//238730
 		}
 	}
 	//adress 23899a
-	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 	{
 		sub_12780();
 		for (k = 0; k < 29; k++)
@@ -40321,7 +40323,7 @@ void sub_57B20(type_str_0x2BDE* a1x, type_entity_0x6E8E* a2x)//238b20 //copy pos
 		debugcounter_238b2f++;
 	}
 
-	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 	{
 		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].axis_2BDE_11695.x = a2x->position_0x4C_76.x;
 		a1x->struct_0x1d1_2BDE_11695[a1x->word_0x010_2BDE_11246].axis_2BDE_11695.y = a2x->position_0x4C_76.y;
@@ -44398,7 +44400,7 @@ void PlayEntitySounds_6E150()//24f150
 {
 	auto playerEntity = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
 
-	if (soundActive_E3799 && soundAble_E3798 && (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1) || x_D41A0_BYTEARRAY_4_struct.byte_38591))
+	if (soundActive_E3799 && soundAble_E3798 && (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED) || x_D41A0_BYTEARRAY_4_struct.byte_38591))
 	{
 		for (int i = 0; i < 70; i++)
 		{
@@ -44751,7 +44753,7 @@ void DrawGameDebugText_6FEC0()//250ec0
 		DrawText_2BC10((char*)"Version number", 320, v6, (*xadataclrd0dat.colorPalette_var28)[3840]);
 		LOWORD(v7) = GetLetterHeight_6FC30();
 		v8 = v7 + v6;
-		DrawText_2BC10((char*)"Beta", 320, v8, (*xadataclrd0dat.colorPalette_var28)[15]);
+		DrawText_2BC10(VersionNumber, 320, v8, (*xadataclrd0dat.colorPalette_var28)[15]);
 		LOWORD(v9) = GetLetterHeight_6FC30();
 		v10 = v9 + v8;
 		DrawText_2BC10((char*)"Version date", 320, v10, (*xadataclrd0dat.colorPalette_var28)[3840]);
@@ -48349,7 +48351,7 @@ void sub_872A0()//2682a0
 	{
 		sub_87C10();
 	}
-	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 		str_unk_1804B0ar.byte_0x9f |= 0x20u;
 	if (D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 == 3)
 		str_unk_1804B0ar.byte_0x9f |= 0x10u;
@@ -50087,7 +50089,7 @@ int ReadGameUserInputs_89D10()//26ad10
 				v42 = 4;
 				posY += 4 * width + 12;
 			}
-			else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+			else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 			{
 				height = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MENU_ICON_LOAD].width_4;
 				width = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_SUB_FIREBALL1_SMALL].height_5
@@ -50113,7 +50115,7 @@ int ReadGameUserInputs_89D10()//26ad10
 			}
 		LABEL_301:
 			if (!(unk_18058Cstr.MouseButtonState_18059C & 0x10)
-				&& !(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+				&& !(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 				&& !x_D41A0_BYTEARRAY_4_struct.SelectedMenuItem_38546
 				&& !x_D41A0_BYTEARRAY_4_struct.byteindex_225
 				&& D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 != 3)
@@ -50225,7 +50227,7 @@ int ReadGameUserInputs_89D10()//26ad10
 			unk_18058Cstr.MouseButtonState_18059C |= 0xffffff10;
 			unk_180560x[27] &= 0xF7u;
 		}
-		else if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+		else if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 		{
 			if (!(unk_180560x[26] & 8) || unk_180560x[27] & 8 || unk_18058Cstr.MouseButtonState_18059C & 0x10)
 			{
@@ -50405,7 +50407,7 @@ int ReadGameUserInputs_89D10()//26ad10
 			posY += 4 * width + 12;
 			goto LABEL_138;
 		}
-		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+		if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 		{
 			height = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MENU_ICON_LOAD].width_4;
 			width = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_SUB_FIREBALL1_SMALL].height_5
@@ -50430,7 +50432,7 @@ int ReadGameUserInputs_89D10()//26ad10
 		v11 = 12;
 	LABEL_138:
 		if (unk_18058Cstr.MouseButtonState_18059C & 0x10
-			|| x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1
+			|| x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED
 			|| x_D41A0_BYTEARRAY_4_struct.SelectedMenuItem_38546
 			|| x_D41A0_BYTEARRAY_4_struct.byteindex_225
 			|| D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 == 3)
@@ -60038,7 +60040,7 @@ void AddPlayer03_00_5E010(type_entity_0x6E8E* a1x)//23f010
 {
 	bool locIsOk = false;
 	a1x->minSpeed_0x84_132 = x_DWORD_D4B8C;
-	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 	{
 		if (a1x->dword_0xA4_164x->CastleEntityIndex_0x3A_58)
 		{
@@ -60047,7 +60049,7 @@ void AddPlayer03_00_5E010(type_entity_0x6E8E* a1x)//23f010
 		}
 	}
 	sub_5F380(a1x);
-	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1) && locIsOk)
+	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED) && locIsOk)
 	{
 		if (a1x->str_0x5E_94.word_0x62_98)
 		{
@@ -60059,7 +60061,7 @@ void AddPlayer03_00_5E010(type_entity_0x6E8E* a1x)//23f010
 		}
 		a1x->dword_0xA4_164x->word_0x159_345 = 2;
 	}
-	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+	if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 	{
 		if (a1x->dword_0xA4_164x->word_0x159_345)
 		{
@@ -60076,7 +60078,7 @@ void AddPlayer03_00_5E010(type_entity_0x6E8E* a1x)//23f010
 	sub_5D530(a1x);
 	if (a1x->life_0x8 >= 0)
 	{
-		if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+		if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 		{
 			a1x->mana_0x90_144 += a1x->manaRegen_0x88_136;
 			if (a1x->dword_0xA4_164x->dword_0x18D_397)

@@ -1,0 +1,404 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+env:
+  SOLUTION_FILE_PATH: .
+
+jobs:
+
+  # ─────────────────────────────────────────────
+  # Windows – MSBuild (x64 + x86)
+  # ─────────────────────────────────────────────
+  build-windows:
+    name: Windows (${{ matrix.BUILD_PLATFORM }})
+    runs-on: windows-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        BUILD_PLATFORM: [x86, x64]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Install googletest
+        uses: cvpkg/googletest-action@v0.1
+        with:
+          googletest_tag: 'release-1.11.0'
+
+      - name: Restore vcpkg packages
+        working-directory: ${{ github.workspace }}
+        run: vcpkg integrate install
+
+      - name: Restore NuGet packages
+        working-directory: ${{ github.workspace }}
+        run: nuget restore remc2.sln
+
+      - name: Set version
+        shell: bash
+        run: |
+          # Replace version
+          sed -i "s/Beta/$GITHUB_REF_NAME/g" remc2/engine/globals.h
+          cat remc2/engine/globals.h
+          if grep -q "$GITHUB_REF_NAME" remc2/engine/globals.h; then
+            echo "Set Version Passed!"
+          else
+            echo "Set Version Failed!"
+            exit 1
+          fi
+
+      - name: Build Release
+        working-directory: ${{ github.workspace }}
+        run: |
+          msbuild /m `
+            /p:Configuration=Release `
+            /p:PlatformTarget=${{ matrix.BUILD_PLATFORM }} `
+            /p:Platform=${{ matrix.BUILD_PLATFORM }} `
+            /p:WarningLevel=0 `
+            ${{ env.SOLUTION_FILE_PATH }}/remc2.sln
+
+      - name: Package (zip) - x86
+        if: matrix.BUILD_PLATFORM == 'x86'
+        shell: pwsh
+        run: |
+          Copy-Item "Install Guide.txt" "Release/"
+          Push-Location "Release"
+          7z a "../remc2-win-x86.zip" * -r
+          Pop-Location
+
+      - name: Package (zip) - x64
+        if: matrix.BUILD_PLATFORM == 'x64'
+        shell: pwsh
+        run: |
+          Copy-Item "Install Guide.txt" "x64/Release/"
+          Push-Location "x64/Release"
+          7z a "../../remc2-win-x64.zip" * -r
+          Pop-Location
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remc2-win-${{ matrix.BUILD_PLATFORM }}
+          path: remc2-win-${{ matrix.BUILD_PLATFORM }}.zip
+
+  # ─────────────────────────────────────────────
+  # Windows – MSI installer (x64 + x86)
+  # ─────────────────────────────────────────────
+  build-installer:
+    name: Installer (${{ matrix.arch }})
+    runs-on: windows-latest
+    needs: build-windows
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+          - arch: x86
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # FIX #6: added for consistent tag access
+          submodules: recursive
+
+      - name: Extract version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_NAME" =~ ([0-9]+(\.[0-9]+)+) ]]; then
+            echo "VERSION=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          else
+            echo "No version found in ref_name: $GITHUB_REF_NAME"
+            exit 1
+          fi
+
+      - name: Split version
+        shell: bash
+        run: |
+          IFS='.' read -r MAJOR MINOR REVISION BUILD <<< "$VERSION"
+          echo "MAJOR=$MAJOR" >> "$GITHUB_ENV"
+          echo "MINOR=$MINOR" >> "$GITHUB_ENV"
+          echo "REVISION=$REVISION" >> "$GITHUB_ENV"
+          echo "BUILD=${BUILD:-0}" >> "$GITHUB_ENV"
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Install WiX Toolset v4
+        run: |
+          dotnet tool install --global wix --version 4.0.5
+          wix extension add -g WixToolset.Util.wixext/4.0.5
+          wix extension add -g WixToolset.UI.wixext/4.0.5
+
+      - name: Download win-${{ matrix.arch }} artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: remc2-win-${{ matrix.arch }}
+          path: artifacts
+
+      - name: Prepare folders
+        shell: pwsh
+        run: |
+          $arch = "${{ matrix.arch }}"
+
+          # Unzip the zip
+          7z x "artifacts/remc2-win-$arch.zip" -o"unzipped" -y
+
+          # Detect structure - does the zip contain files directly or in a folder?
+          $items = Get-ChildItem "unzipped"
+          $src = if ($items.Count -eq 1 -and $items[0].PSIsContainer) { $items[0].FullName } else { (Resolve-Path "unzipped").Path }
+
+          # Copy the binaries to the location where Program.cs expects the exe+DLL
+          if ($arch -eq "x64") {
+            New-Item -ItemType Directory -Path "x64\Release" -Force | Out-Null
+            Get-ChildItem $src | Copy-Item -Destination "x64\Release" -Recurse -Force
+          } else {
+            New-Item -ItemType Directory -Path "Release" -Force | Out-Null
+            Get-ChildItem $src | Copy-Item -Destination "Release" -Recurse -Force
+          }
+
+          # kiss/ and font/ ALWAYS to Release/ - Program.cs has it hardcoded for both arch
+          New-Item -ItemType Directory -Path "Release\kiss" -Force | Out-Null
+          New-Item -ItemType Directory -Path "Release\font" -Force | Out-Null
+          Copy-Item "remc2-editor\kiss\*" "Release\kiss\" -Recurse -Force
+          Copy-Item "remc2\font\*"        "Release\font\" -Recurse -Force
+          Copy-Item "remc2-editor\editor-config.json" "Release\" -Force -ErrorAction SilentlyContinue
+
+          # Replace version
+          (Get-Content remc2-installer\Program.cs).Replace('Version(0, 0, 0, 0)', "Version($env:MAJOR, $env:MINOR, $env:REVISION, $env:BUILD)") | Set-Content remc2-installer\Program.cs
+
+          # Verification
+          Write-Host "=== Release/ ==="; Get-ChildItem "Release" | Select Name
+          if ($arch -eq "x64") { Write-Host "=== x64/Release/ ==="; Get-ChildItem "x64\Release" | Select Name }
+
+      - name: Download VC Redist
+        shell: pwsh
+        run: |
+          $arch = "${{ matrix.arch }}"
+          New-Item -ItemType Directory -Path "remc2-installer/Extract" -Force | Out-Null
+          if ($arch -eq "x64") {
+            Invoke-WebRequest "https://aka.ms/vs/17/release/vc_redist.x64.exe" -OutFile "remc2-installer/Extract/VC_redist.x64.exe"
+          } else {
+            Invoke-WebRequest "https://aka.ms/vs/17/release/vc_redist.x86.exe" -OutFile "remc2-installer/Extract/VC_redist.x86.exe"
+          }
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          dotnet build remc2-installer.sln --configuration Release -p:Platform=${{ matrix.arch }} -p:AcceptEula=true || true
+          $msi = Get-ChildItem -Recurse -Filter "*.msi" | Select-Object -First 1
+          if (-not $msi) { Write-Error "Build failed - MSI not found!"; exit 1 }
+          Write-Host "MSI built: $($msi.FullName)"
+
+      - name: Locate and rename MSI
+        shell: pwsh
+        run: |
+          $msi = Get-ChildItem -Recurse -Filter "*.msi" | Select-Object -First 1
+          if (-not $msi) { Write-Error "MSI not found!"; exit 1 }
+          Copy-Item $msi.FullName "Magic.Carpet.2.HD.${{ matrix.arch }}.msi"
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-${{ matrix.arch }}
+          path: Magic.Carpet.2.HD.${{ matrix.arch }}.msi
+
+  # ─────────────────────────────────────────────
+  # Linux – x86_64
+  # ─────────────────────────────────────────────
+  build-linux:
+    name: Linux (x86_64)
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_CI_COMPATIBILITY_PATH: /usr/lib/x86_64-linux-gnu
+
+    steps:
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install \
+            cmake ninja-build \
+            libsdl2-dev libsdl2-mixer-dev \
+            libsdl2-ttf-dev libsdl2-image-dev \
+            libspdlog-dev libfmt-dev \
+            rapidjson-dev \
+            -o APT::Immediate-Configure=0
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          path: src
+
+      - name: Configure
+        run: |
+          mkdir -p build_Release
+          cd build_Release
+          cmake -GNinja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DUSE_64_BIT=True \
+            -DGITHUB_CI_COMPATIBILITY_PATH="${{ env.GITHUB_CI_COMPATIBILITY_PATH }}" \
+            ${{ github.workspace }}/src
+
+      - name: Build
+        run: |
+          cd build_Release
+          ninja
+
+      - name: Package (tar.gz)
+        run: |
+          mkdir -p remc2-linux-x86_64
+          find build_Release -maxdepth 3 -name "remc2"        -type f -exec cp {} remc2-linux-x86_64/ \;
+          find build_Release -maxdepth 3 -name "remc2-editor" -type f -exec cp {} remc2-linux-x86_64/ \; || true
+          cp src/config.json            remc2-linux-x86_64/
+          cp "src/Install Guide.txt"    remc2-linux-x86_64/
+          cp src/check_install.sh       remc2-linux-x86_64/
+          tar -czf remc2-linux-x86_64.tar.gz remc2-linux-x86_64/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remc2-linux-x86_64
+          path: remc2-linux-x86_64.tar.gz
+
+  # ─────────────────────────────────────────────
+  # Linux ARM64 (cross-compile)
+  # ─────────────────────────────────────────────
+  build-linux-arm64:
+    name: Linux (ARM64)
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_CI_COMPATIBILITY_PATH: /usr/lib/aarch64-linux-gnu
+
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          path: src
+
+      - name: Install Dependencies (ARM64 cross)
+        run: |
+          sudo dpkg --add-architecture arm64
+          sudo sed -i 's/^Types: deb/Types: deb\nArchitectures: amd64/' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || \
+          sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
+          sudo tee /etc/apt/sources.list.d/arm64-ports.list <<EOF
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble main restricted universe multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-updates main restricted universe multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-security main restricted universe multiverse
+          EOF
+          sudo apt-get update
+          sudo apt-get clean
+          sudo apt-get -y install --fix-broken \
+            cmake ninja-build \
+            gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
+            libsdl2-dev:arm64 libsdl2-mixer-dev:arm64 \
+            libsdl2-ttf-dev:arm64 libsdl2-image-dev:arm64 \
+            libspdlog-dev:arm64 libfmt-dev:arm64 \
+            rapidjson-dev \
+            -o APT::Immediate-Configure=0 || \
+          sudo apt-get -y install --no-install-recommends \
+            cmake ninja-build \
+            gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
+            libsdl2-dev:arm64 libsdl2-mixer-dev:arm64 \
+            libsdl2-ttf-dev:arm64 libsdl2-image-dev:arm64 \
+            libspdlog-dev:arm64 libfmt-dev:arm64 \
+            rapidjson-dev
+
+      - name: Configure
+        run: |
+          mkdir -p build_Release
+          cd build_Release
+          cmake -GNinja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_SYSTEM_NAME=Linux \
+            -DCMAKE_SYSTEM_PROCESSOR=aarch64 \
+            -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc \
+            -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ \
+            -DUSE_64_BIT=True \
+            -DGITHUB_CI_COMPATIBILITY_PATH="${{ env.GITHUB_CI_COMPATIBILITY_PATH }}" \
+            ${{ github.workspace }}/src
+
+      - name: Build
+        run: |
+          cd build_Release
+          ninja
+
+      - name: Package (tar.gz)
+        run: |
+          mkdir -p remc2-linux-arm64
+          find build_Release -maxdepth 3 -name "remc2"        -type f -exec cp {} remc2-linux-arm64/ \;
+          find build_Release -maxdepth 3 -name "remc2-editor" -type f -exec cp {} remc2-linux-arm64/ \; || true
+          cp src/config.json            remc2-linux-arm64/
+          cp "src/Install Guide.txt"    remc2-linux-arm64/
+          cp src/check_install.sh       remc2-linux-arm64/
+          tar -czf remc2-linux-arm64.tar.gz remc2-linux-arm64/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remc2-linux-arm64
+          path: remc2-linux-arm64.tar.gz
+
+  # ─────────────────────────────────────────────
+  # GitHub Release
+  # ─────────────────────────────────────────────
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs:
+      - build-windows
+      - build-installer
+      - build-linux
+      - build-linux-arm64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist/
+
+      - name: List dist
+        run: find dist/ -type f
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Magic Carpet 2 HD ${{ github.ref_name }}"
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
+          generate_release_notes: true
+          files: |
+            dist/remc2-win-x64/remc2-win-x64.zip
+            dist/remc2-win-x86/remc2-win-x86.zip
+            dist/installer-x64/Magic.Carpet.2.HD.x64.msi
+            dist/installer-x86/Magic.Carpet.2.HD.x86.msi
+            dist/remc2-linux-x86_64/remc2-linux-x86_64.tar.gz
+            dist/remc2-linux-arm64/remc2-linux-arm64.tar.gz

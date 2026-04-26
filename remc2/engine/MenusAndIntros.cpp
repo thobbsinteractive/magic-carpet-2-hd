@@ -897,6 +897,8 @@ void MainMenu_76FA0()//257fa0
 				x_DWORD_17DE38str.showHelp_17DF13 = x_D41A0_BYTEARRAY_4_struct.showHelp_10;
 				x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
 			}
+
+			//Draw Backround
 			if (x_WORD_180660_VGA_type_resolution & 1)
 				CopyScreen(x_DWORD_E9C38_smalltit, pdwScreenBuffer_351628, 320, 200);
 			else
@@ -904,6 +906,9 @@ void MainMenu_76FA0()//257fa0
 
 			sub_7C120_draw_bitmap_640(185, 232, xy_DWORD_17DED4_spritestr[66]);//adress 25827a
 			DrawMenuAnimations_7AB00();//25bb00
+
+			DrawText_7FB90((char*)VersionNumber, 10, 465, getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 255, 0, 0));
+
 			if (DrawAndServe_7B250())//25c250
 			{
 				tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
@@ -927,14 +932,14 @@ void MainMenu_76FA0()//257fa0
 			}
 			sub_7A060_get_mouse_and_keyboard_events();
 		}
-		sub_41BC0();
+		ClearPauseMenuState_41BC0();
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
 		sub_753D0();
 		x_DWORD_E9C38_smalltit = x_DWORD_17DE38str.x_DWORD_17DE44;
 	}
 	else
 	{
-		sub_41BC0();
+		ClearPauseMenuState_41BC0();
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
 		sub_753D0();
 	}
@@ -6469,7 +6474,7 @@ void sub_85BF5(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6)//266bf5
 }
 
 //----- (00041BC0) --------------------------------------------------------
-void sub_41BC0()//222bc0
+void ClearPauseMenuState_41BC0()//222bc0
 {
 	IsPauseMenuOpen_D47D9 = 0;
 	x_BYTE_D47D8 = 0;

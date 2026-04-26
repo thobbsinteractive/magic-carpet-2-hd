@@ -10,6 +10,7 @@ namespace remc2_installer
     {
         static void Main()
         {
+			var version = new Version(0, 0, 0, 0);
 #if WIN64
             var project = new ManagedProject("Magic Carpet 2 HD x64",
 #else
@@ -133,7 +134,6 @@ namespace remc2_installer
 								new File(new Id("WAVPACKDLL_DLL"), @"..\Release\wavpackdll.dll"),
 								new File(new Id("ZLIB1_DLL"), @"..\Release\zlib1.dll"),
 #endif
-								new File(new Id("EXTRACT_BAT"), @"Extract.bat"),
 								new Dir(new Id("KISS_INSTALLDIR"), @"kiss",
 									new Files(@"..\Release\kiss\*.*")),
 								new Dir(new Id("FONT_INSTALLDIR"), @"font",
@@ -150,25 +150,30 @@ namespace remc2_installer
 									{
 										ComponentCondition = "HIGHTEX=\"yes\""
 									}),
+								new Dir(new Id("SPEECH_INSTALLDIR"), @"CD_FILES\SPEECH",
+									new Files(@"..\enhancedassets\sound\speech\*.*")
+									{
+										ComponentCondition = "SPEECH=\"yes\""
+									}),
 								new Dir(new Id("MUSICOGG_INSTALLDIR"), @"music-ogg",
                                     new Files(@"..\enhancedassets\music-ogg\*.*")),
                                 new Dir(new Id("EXTRACT_INSTALLDIR"), @"Extract",
                                     new File(new Id("DOSBOXEXTRACT_CONF"), @"Extract\dosboxExtract-GOG-CD.conf"),
                                     new File(new Id("XXCOPY16_EXE"), @"Extract\XXCOPY16.EXE"),
-									new File(new Id("MPXPLAY_EXE"), @"Extract\mpxplay.exe"),
 #if WIN64
 									new File(new Id("VC_Redist_EXE"), @"Extract\VC_redist.x64.exe"))),
 #else
 									new File(new Id("VC_Redist_EXE"), @"Extract\VC_redist.x86.exe"))),
 #endif
 							new Property(new Id("HIGHTEX_PROPERTY"), "HIGHTEX", "yes"),
+							new Property(new Id("SPEECH_PROPERTY"), "SPEECH", "yes"),
 							new ManagedAction(new Id("MANAGED_ACTION"), CustomActions.SetHighResGraphics, Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed));
 
 #if WIN64
             project.Platform = Platform.x64;
 #endif
             project.GUID = new Guid("d945f1c4-cbe4-445c-9674-07de64692857");
-			project.Version = new Version(0, 9, 10, 0);
+			project.Version = version;
 #if WIN64
 			project.DefaultRefAssemblies.Add(@"bin\x64\Release\net48\Newtonsoft.Json.dll");
 #else
@@ -197,7 +202,7 @@ namespace remc2_installer
 										   .Add(Dialogs.Exit);
 
             project.ControlPanelInfo.ProductIcon = @"Resources\app.ico";
-            project.ControlPanelInfo.Comments = "Enhanced Edition of Magic Carpet 2";
+            project.ControlPanelInfo.Comments = "Enhanced Edition of Magic Carpet 2 " + version.ToString();
             project.ControlPanelInfo.UrlInfoAbout = "https://github.com/thobbsinteractive/magic-carpet-2-hd";
             project.ControlPanelInfo.Contact = "Magic Carpet 2 HD";
             project.ControlPanelInfo.Manufacturer = "Magic Carpet 2 HD";
@@ -205,7 +210,7 @@ namespace remc2_installer
             project.LicenceFile = @"Resources\MagicCarpet2HD.licence.rtf";
             project.BackgroundImage = @"Resources\MagicCarpet2HD.dialog_bmp.png";
             project.BannerImage = @"Resources\MagicCarpet2HD.dialog_banner.png";
-            ValidateAssemblyCompatibility();
+			ValidateAssemblyCompatibility();
             project.AfterInstall += OnAfterInstall;
             project.BuildMsi();
         }
