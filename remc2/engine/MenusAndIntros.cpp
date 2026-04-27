@@ -1613,91 +1613,35 @@ bool LoadGameDialog_780F0(type_menuButtons_E1F84* menuButtons) //0x2590f0
 //----- (00079610) --------------------------------------------------------
 char SetKeysDialog_79610()//25a610
 {
-	int v0; // eax
-	signed __int16 v1; // si
-	//signed __int16* v2; // ebx	
-	uint8_t* temp_screen_buffer; // edi
-	int v4; // ST0C_4
-	int v5; // ST04_4
-	char* v6; // ST00_4
-	//x_WORD* i; // eax
-	//x_WORD* j; // ebx
-	//x_WORD* k; // eax
-	//x_WORD* l; // eax
-	uint8_t* v13; // ebx
-	//int16_t* v14; // edi
-	uint8_t* m; // edi
-	signed __int16 v16; // ax
-	int v17; // eax
-	char v18; // dl
-	uint8_t* n; // eax
-	signed __int16 v20; // ax
-	int v21; // eax
-	char v22; // dl
-	uint8_t* ii; // eax
-	signed __int16 v24; // dx
-	unsigned int v25; // eax
-	//int v26; // eax
-	char v28[60]; // [esp+0h] [ebp-16h]
-	type_menuButtons_E1F84 v29x; // [esp+3Ch] [ebp+26h]
-	//__int16 v30; // [esp+46h] [ebp+30h]
-	//__int16 v31; // [esp+48h] [ebp+32h]
-	//__int16 v32; // [esp+4Ah] [ebp+34h]
-	//__int16 v33; // [esp+4Ch] [ebp+36h]
-	int v34; // [esp+68h] [ebp+52h]
-	int v35; // [esp+6Ch] [ebp+56h]
-	int v36; // [esp+70h] [ebp+5Ah]
-	unsigned int v37; // [esp+74h] [ebp+5Eh]
-	int v38; // [esp+78h] [ebp+62h]
-	int v39; // [esp+7Ch] [ebp+66h]
-	int v40; // [esp+80h] [ebp+6Ah]
-	int v41; // [esp+84h] [ebp+6Eh]
-	int v42; // [esp+88h] [ebp+72h]
-	int v43; // [esp+8Ch] [ebp+76h]
-	int v44; // [esp+90h] [ebp+7Ah]
-	int v45; // [esp+94h] [ebp+7Eh]
-
-	//HIWORD(v0) = HIWORD(x_DWORD_17DED4);
-	v1 = 0;
-	v39 = 359;
-	v43 = 372;
-	v42 = 410;
-	v44 = 0;
-	v41 = 0;
-	v0 = xy_DWORD_17DED4_spritestr[107].height_5;
-	v45 = 191;
-	//LOWORD(v0) = (unsigned __int8)v0;
-	v40 = v0;
-	v38 = j___clock();
-	v35 = v38;
-	memset(v28, 0, 60);
-	//v2 = (signed __int16 *)&unk_E28A8;	
+	uint8_t* temp_screen_buffer;
+	char textBuff[60];
+	int allKeysDone = 0;
+	int v39 = 359;
+	int keyNameX = 372;
+	int buttonAreaWidth = 410;
+	int exitFlag = 0;
+	int fadeInDone = 0;
+	int leftEdge = 191;
+	int spriteHeightCopy = xy_DWORD_17DED4_spritestr[107].height_5;
+	int clock3 = j___clock();
+	int clock2 = clock3;
+	memset(textBuff, 0, 60);
 	sub_7A110_load_hscreen(x_WORD_180660_VGA_type_resolution, 15);
 	temp_screen_buffer = pdwScreenBuffer_351628;
 	pdwScreenBuffer_351628 = x_DWORD_E9C38_smalltit;
-	//v2 = (signed __int16*)x_BYTE_E25ED_2BB;
 	for (int v2_int = 0; str_BYTE_E25ED_2BB[v2_int].word_0; v2_int++)
-	{
-		v4 = str_BYTE_E25ED_2BB[v2_int].word_2;
-		v5 = str_BYTE_E25ED_2BB[v2_int].word_0;
-		v6 = x_DWORD_E9C4C_langindexbuffer[str_BYTE_E25ED_2BB[v2_int].word_12];
-		sub_7FCB0_draw_text_with_border(v6, v5, v39, v4, 4, 0, 0);
-	}
+		sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[str_BYTE_E25ED_2BB[v2_int].word_12], str_BYTE_E25ED_2BB[v2_int].word_0, v39, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
 	pdwScreenBuffer_351628 = temp_screen_buffer;
 	ResetMouse_7B5A0();
 	for (int v2_int = 0; str_BYTE_E25ED_2BB[v2_int].word_0; v2_int++)
 		str_BYTE_E25ED_2BB[v2_int].word_14 = 0;
-	/*for (i = (x_WORD*)x_BYTE_E25ED_2BB; *i; *(i - 2) = 0)//delete
-		i += 9;*/
 	str_BYTE_E25ED_2BB[0].word_14 = 1;
-	//x_BYTE_E25ED_2BB[14] = 1;
 
 	SetCursor_8CD27(xy_DWORD_17DED4_spritestr[110]);
-	while (v44 != 2)
+	while (exitFlag != 2)
 	{
 		SetFrameStart(std::chrono::system_clock::now());
-		v34 = j___clock();
-		v36 = v34;
+		int clockNow = j___clock();
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			CopyScreen((void*)x_DWORD_E9C38_smalltit, (void*)pdwScreenBuffer_351628, 320, 200);
 		else
@@ -1706,197 +1650,175 @@ char SetKeysDialog_79610()//25a610
 		if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)//switch blocks
 		{
 			for (int j_int = 0; str_BYTE_E25ED_2BB[j_int].word_0; j_int++)
-				//for (j = (x_WORD*)x_BYTE_E25ED_2BB; *j; j += 9)//?
 			{
-				v29x.xmin_10 = v45;
-				v29x.ymin_12 = str_BYTE_E25ED_2BB[j_int].word_2 - 4;
-				v29x.sizex_14 = v42;
-				v29x.sizey_16 = v40;
-				if (InRegion_7B200(&v29x, x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))
+				type_menuButtons_E1F84 box;
+				box.xmin_10 = leftEdge;
+				box.ymin_12 = str_BYTE_E25ED_2BB[j_int].word_2 - 4;
+				box.sizex_14 = buttonAreaWidth;
+				box.sizey_16 = spriteHeightCopy;
+				if (InRegion_7B200(&box, x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))
 				{
 					for (int k_int = 0; str_BYTE_E25ED_2BB[k_int].word_0; k_int++)
 						str_BYTE_E25ED_2BB[k_int].word_14 = 0;
 					str_BYTE_E25ED_2BB[0].word_14 = 1;
-					/*for (k = (x_WORD*)x_BYTE_E25ED_2BB; *k; *(k - 2) = 0)
-						k += 9;//?*/
-						//j[7] = 1;
-					v1 = 0;
+					allKeysDone = 0;
 					break;
 				}
 			}
 		}
-		v44 = TestMouseRegions_7E1F0();
-		if (v44 == 1)
+		exitFlag = TestMouseRegions_7E1F0();
+		if (exitFlag == 1)
 		{
 			x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
 			sub_5BCC0_set_any_variables1();
 			for (int l_int = 0; str_BYTE_E25ED_2BB[l_int].word_0; l_int++)
 				str_BYTE_E25ED_2BB[l_int].word_14 = 0;
 			str_BYTE_E25ED_2BB[0].word_14 = 1;
-			/*
-			for (l = (x_WORD*)x_BYTE_E25ED_2BB; *l; *(l - 2) = 0)
-				l += 9;
-			v1 = 0;
-			x_BYTE_E25ED_2BB[14] = 1;
-			*/
 		}
-		v13 = &x_BYTE_EB39E_keys[0];//2bc39e
-		//v14 = (int16_t*)x_BYTE_E25ED_2BB;
+		uint8_t* keyIter = &x_BYTE_EB39E_keys[0]; //2bc39e
 		int v14_int = 0;
-		while (v13 < &x_BYTE_EB39E_keys[9] + 1)//drawing texts
+		while (keyIter < &x_BYTE_EB39E_keys[9] + 1) //drawing texts
 		{
-			memset(v28, 0, 60);
+			memset(textBuff, 0, 60);
 			if (!str_BYTE_E25ED_2BB[v14_int].word_14)
 			{
-				sub_79E10(v28, *v13);
-				sub_7FCB0_draw_text_with_border(/*(int)v13,*/ v28, v43, v42, str_BYTE_E25ED_2BB[v14_int].word_2, 4, 0, 0);
+				sub_79E10(textBuff, *keyIter);
+				sub_7FCB0_draw_text_with_border(textBuff, keyNameX, buttonAreaWidth, str_BYTE_E25ED_2BB[v14_int].word_2, 4, 0, 0);
 			}
-			v13++;
-			//v14 += 9;
+			keyIter++;
 			v14_int++;
 		}
-		//v2 = (signed __int16*)x_BYTE_E25ED_2BB;
 		int v2_int = 0;
-		for (m = &x_BYTE_EB39E_keys[0]; m < &x_BYTE_EB39E_keys[9] + 1 && !v1; ++m)
+		for (uint8_t* keyIter2 = &x_BYTE_EB39E_keys[0]; keyIter2 < &x_BYTE_EB39E_keys[9] + 1 && !allKeysDone; ++keyIter2)
 		{
-			v16 = str_BYTE_E25ED_2BB[v2_int].word_14;
-			if (v16 >= 1u)
+			int keySlotState = str_BYTE_E25ED_2BB[v2_int].word_14;
+			if (keySlotState >= 1u)
 			{
-				v37 = v34 - v38;
-				if (v16 <= 1u)
+				unsigned int elapsedTime = clockNow - clock3;
+				if (keySlotState <= 1u)
 				{
-					memset(v28, 0, 60);
-					sub_79E10((char*)v28, *m);
-					sub_7FCB0_draw_text_with_border(/*(int)v2,*/ v28, v43, v42, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
-					if (v37 > 0x32)
+					memset(textBuff, 0, 60);
+					sub_79E10(textBuff, *keyIter2);
+					sub_7FCB0_draw_text_with_border(textBuff, keyNameX, buttonAreaWidth, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
+					if (elapsedTime > 0x32)
 					{
-						v17 = v34;
 						str_BYTE_E25ED_2BB[v2_int].word_14 = 2;
-						v38 = v17;
+						clock3 = clockNow;
 					}
-					DrawBitmap_2BB40(v45, str_BYTE_E25ED_2BB[v2_int].word_2, xy_DWORD_17DED4_spritestr[107]);
-					if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode && sub_79E10((char*)v28, x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode))
+					DrawBitmap_2BB40(leftEdge, str_BYTE_E25ED_2BB[v2_int].word_2, xy_DWORD_17DED4_spritestr[107]);
+					if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode && sub_79E10(textBuff, x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode))
 					{
-						v18 = 0;
-						if (m != &x_BYTE_EB39E_keys[6])
+						bool isScancode = false;
+						if (keyIter2 != &x_BYTE_EB39E_keys[6])
 						{
-							for (n = &x_BYTE_EB39E_keys[0]; n < &x_BYTE_EB39E_keys[9] + 1; n++)
+							for (uint8_t* keyIter3 = &x_BYTE_EB39E_keys[0]; keyIter3 < &x_BYTE_EB39E_keys[9] + 1; keyIter3++)
 							{
-								if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == *n)
+								if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == *keyIter3)
 								{
-									v18 = 1;
+									isScancode = true;
 									break;
 								}
 							}
 						}
-						if (!v18)
+						if (!isScancode)
 						{
 							x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
-							//v2 += 9;//?
 							str_BYTE_E25ED_2BB[v2_int].word_14 = 0;
 							v2_int++;
-							*m = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
-							//*(v2 - 2) = 0;
-							v20 = str_BYTE_E25ED_2BB[v2_int].word_0;
+							*keyIter2 = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
 							x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
-							if (v20)
+							if (str_BYTE_E25ED_2BB[v2_int].word_0)
 							{
 								str_BYTE_E25ED_2BB[v2_int].word_14 = 1;
 							}
 							else
 							{
-								v1 = 1;
-								v38 = v34;
+								allKeysDone = 1;
+								clock3 = clockNow;
 							}
 						}
 					}
 				}
-				else if (v16 == 2)
+				else if (keySlotState == 2)
 				{
-					if ((v34 - v38) > 0x32)
+					if ((clockNow - clock3) > 0x32)
 					{
-						v21 = v34;
 						str_BYTE_E25ED_2BB[v2_int].word_14 = 1;
-						v38 = v21;
+						clock3 = clockNow;
 					}
-					DrawBitmap_2BB40(v45, str_BYTE_E25ED_2BB[v2_int].word_2, xy_DWORD_17DED4_spritestr[107]);
+					DrawBitmap_2BB40(leftEdge, str_BYTE_E25ED_2BB[v2_int].word_2, xy_DWORD_17DED4_spritestr[107]);
 					if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode)
 					{
-						if (sub_79E10((char*)v28, x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode))
+						if (sub_79E10(textBuff, x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode))
 						{
-							v22 = 0;
-							if (m != &x_BYTE_EB39E_keys[9] + 1)
+							bool isScancode2 = false;
+							if (keyIter2 != &x_BYTE_EB39E_keys[9] + 1)
 							{
-								for (ii = &x_BYTE_EB39E_keys[0]; ii < &x_BYTE_EB39E_keys[9] + 1; ++ii)
+								for (uint8_t* ii = &x_BYTE_EB39E_keys[0]; ii < &x_BYTE_EB39E_keys[9] + 1; ++ii)
 								{
 									if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == *ii)
 									{
-										v22 = 1;
+										isScancode2 = true;
 										break;
 									}
 								}
 							}
-							if (!v22)
+							if (!isScancode2)
 							{
 								x_D41A0_BYTEARRAY_4_struct.setting_38402 = 1;
-								*m = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
+								*keyIter2 = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
 								str_BYTE_E25ED_2BB[v2_int].word_14 = 0;
 								x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
 								v2_int++;
-								v24 = str_BYTE_E25ED_2BB[v2_int].word_0;
-								//v24 = v2[9];
-								//v2 += 9;
-								if (v24)
+								if (str_BYTE_E25ED_2BB[v2_int].word_0)
 									str_BYTE_E25ED_2BB[v2_int].word_14 = 1;
 								else
-									v1 = 1;
+									allKeysDone = 1;
 							}
 						}
 					}
 				}
 			}
-			//v2 += 9;
 			v2_int++;
 		}
-		//?
-		if (v1 >= 1u)
+		if (allKeysDone >= 1u)
 		{
-			v25 = v34 - v38;
-			if (v1 <= 1u)
+			unsigned int stepsElapsed = clockNow - clock3;
+			if (allKeysDone <= 1u)
 			{
-				if (v25 > 0x32)
+				if (stepsElapsed > 0x32)
 				{
-					v1 = 2;
-					v38 = v34;
+					allKeysDone = 2;
+					clock3 = clockNow;
 				}
 				DrawBitmap_2BB40(283, 381, xy_DWORD_17DED4_spritestr[108]);
 			}
-			else if (v1 == 2 && v25 > 0x32)
+			else if (allKeysDone == 2 && stepsElapsed > 0x32)
 			{
-				v1 = 1;
-				v38 = v34;
+				allKeysDone = 1;
+				clock3 = clockNow;
 			}
 		}
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			sub_90478_VGA_Blit320(menuFps);
 		else
 			sub_75200_VGA_Blit640(480, menuFps);
-		if (!v41)
+		if (!fadeInDone)
 		{
 			sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.palette_17DE38x, 0x20u, 0);
-			v41 = 1;
+			fadeInDone = 1;
 		}
-		if ((v36 - v35) > 0xA)
+		if ((clockNow - clock2) > 0xA)
 		{
 			sub_7A060_get_mouse_and_keyboard_events();
-			v35 = v36;
+			clock2 = clockNow;
 		}
 		if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 1)
-			v44 = 2;
+			exitFlag = 2;
 		if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 0x1c)
 		{
-			if (v1)
-				v44 = 2;
+			if (allKeysDone)
+				exitFlag = 2;
 		}
 	}
 	WriteConfigDat_81DB0();
