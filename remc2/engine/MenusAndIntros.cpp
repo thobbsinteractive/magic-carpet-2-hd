@@ -1449,77 +1449,58 @@ signed int sub_7E640(type_menuButtons_E1F84* a1x)//25f640
 }
 
 //----- (000780F0) --------------------------------------------------------
-char LoadGameDialog_780F0(type_menuButtons_E1F84* a1x)//0x2590f0
+bool LoadGameDialog_780F0(type_menuButtons_E1F84* menuButtons) //0x2590f0
 {
-	char* save_name; // edi
-	FILE* SEARCH_FILE; // esi
-	FILE* FILE; // eax
-	//int v16x;
-	//__int16 v17; // si
-	char v18; // cl
-	char v26; // ch
-	type_menuButtons_E1F84 v34x; // [esp+50h] [ebp-6h]
-	//int v40; // [esp+88h] [ebp+32h]
-	int numLevelsCompleted; // [esp+94h] [ebp+3Eh]
-	uint32_t dword_0; // [esp+98h] [ebp+42h]
-	int v44; // [esp+9Ch] [ebp+46h]
-	__int16 v51; // [esp+B8h] [ebp+62h]
-	int im; // [esp+C4h] [ebp+6Eh]
-	__int16 v55; // [esp+C8h] [ebp+72h]
+	char* save_name;
+	FILE* SEARCH_FILE;
+	FILE* FILE;
+	type_menuButtons_E1F84 menuButtons2;
+	int numLevelsCompleted = 0;
+	uint32_t signature;
+	int32_t some_var = 0;
+	bool result = false;
+	int drawScrollResult = 0;
 
-	//fix it
-	//v40 = 0;
-	//fix it
-
-	numLevelsCompleted = 0;
-	v44 = 0;
-	v55 = 0;
-	//v1 = a1x->word_26;
 	uint8_t pal_selected_text = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
 	uint8_t pal_text = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x16u, 0x10u, 9u);
 	if (x_DWORD_17DE38str.savedGameIndex_17DF04 == -1)
 	{
-		for (im = 0; im < 8; im++)
+		for (int index = 0; index < 8; index++)
 		{
-			//v2 = i;
-			//v48 = 43 * im;
-			//v3 = (char*)x_DWORD_E9C4C_langindexbuffer[414];//(char *)x_DWORD_EA2C4;//2bb2c4 Empty
-			save_name = &x_DWORD_17DE38str.xx_BYTE_17DF14[im][0];
-			//v46 = &x_BYTE_17DF14[v48];
-			strcpy(save_name, x_DWORD_E9C4C_langindexbuffer[414]);//(char *)x_DWORD_EA2C4;//2bb2c4 Empty
-			x_DWORD_17DE38str.xx_BYTE_17DF14[im][41] = 0;
-			x_DWORD_17DE38str.xx_BYTE_17DF14[im][42] = 0;
-			std::string saveGameFilePath = GetSaveGameFile(gameFolder.c_str(), im + 1);
+			save_name = &x_DWORD_17DE38str.xx_BYTE_17DF14[index][0];
+			strcpy(save_name, x_DWORD_E9C4C_langindexbuffer[414]);
+			x_DWORD_17DE38str.xx_BYTE_17DF14[index][41] = 0;
+			x_DWORD_17DE38str.xx_BYTE_17DF14[index][42] = 0;
+			std::string saveGameFilePath = GetSaveGameFile(gameFolder.c_str(), index + 1);
 			SEARCH_FILE = DataFileIO::CreateOrOpenFile(saveGameFilePath.c_str(), 512);
 			if (SEARCH_FILE != NULL)
 			{
-				DataFileIO::Read(SEARCH_FILE, (uint8_t*)&dword_0, 4);
-				if (dword_0 == 0xFFFFFFF7u)
+				DataFileIO::Read(SEARCH_FILE, (uint8_t*)&signature, 4);
+				if (signature == 0xFFFFFFF7u)
 				{
 					DataFileIO::Read(SEARCH_FILE, (uint8_t*)save_name, 20);
-					x_DWORD_17DE38str.xx_BYTE_17DF14[im][41] = 1;
+					x_DWORD_17DE38str.xx_BYTE_17DF14[index][41] = 1;
 				}
 				DataFileIO::Close(SEARCH_FILE);
 			}
 		}
 		x_DWORD_17DE38str.savedGameIndex_17DF04 = 0;
 	}
-	v51 = DrawScrollDialog_7BF20(&a1x->str_26);
-	if ((x_BYTE)v51)
+	drawScrollResult = DrawScrollDialog_7BF20(&menuButtons->str_26);
+	if (drawScrollResult)
 	{
-		ClearScrollDialogVars_7C020(&a1x->str_26);
-		if ((x_BYTE)v51 == 1 && x_DWORD_17DE38str.savedGameIndex_17DF04 > 0)
+		ClearScrollDialogVars_7C020(&menuButtons->str_26);
+		if (drawScrollResult == 1 && x_DWORD_17DE38str.savedGameIndex_17DF04 > 0)
 		{
 			//Load Saved Game File
 			std::string loadFilePath = GetSaveGameFile(gameFolder.c_str(), x_DWORD_17DE38str.savedGameIndex_17DF04);
 			FILE = DataFileIO::CreateOrOpenFile(loadFilePath.c_str(), 512);
-			//v10 = v9;
 			if (FILE != NULL)
 			{
-				DataFileIO::Read(FILE, (uint8_t*)&dword_0, 4);
-				if (dword_0 == 0xFFFFFFF7u)
+				DataFileIO::Read(FILE, (uint8_t*)&signature, 4);
+				if (signature == 0xFFFFFFF7u)
 				{
-					if (a1x->byte_25)
+					if (menuButtons->byte_25)
 						sub_7E640(0);
 					DataFileIO::Read(FILE, (uint8_t*)&x_DWORD_17DE38str.xx_BYTE_17DF14[(x_DWORD_17DE38str.savedGameIndex_17DF04 - 1)][0], 20);
 					DataFileIO::Read(FILE, (uint8_t*)x_D41A0_BYTEARRAY_4_struct.player_name_57ar, 32);
@@ -1537,20 +1518,17 @@ char LoadGameDialog_780F0(type_menuButtons_E1F84* a1x)//0x2590f0
 					}
 					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.m_GameSettings, 16);
 					DataFileIO::Read(FILE, (uint8_t*)&numLevelsCompleted, 4);
-					DataFileIO::Read(FILE, (uint8_t*)&v44, 4);
+					DataFileIO::Read(FILE, (uint8_t*)&some_var, 4);
 					DataFileIO::Read(FILE, (uint8_t*)&D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.str_611, 505);
 					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DBC8x, 500);
 					DataFileIO::Read(FILE, (uint8_t*)x_DWORD_17DDBCx, 100);
 					DataFileIO::Close(FILE);
-					//v13 = (x_WORD*)unk_E17CC_0x194;
 					D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.word[1] = 0;
 
 					int i = 0;
 					//Reset all Portals to inactive
 					while (mapScreenPortals_E17CC[i].viewPortPosX_4)
 					{
-						//v13 += 11;
-						//*((x_BYTE *)v13 - 4) = 2;
 						mapScreenPortals_E17CC[i].activated_18 = 2;
 						i++;
 					}
@@ -1573,53 +1551,47 @@ char LoadGameDialog_780F0(type_menuButtons_E1F84* a1x)//0x2590f0
 					}
 					x_DWORD_17DB70str.x_BYTE_17DB8F = 1;
 					memset(&x_DWORD_17DE28str, 0, 13);
-					v18 = a1x->byte_25;
 					x_DWORD_17DB70str.x_WORD_17DB8A = -1;
-					if (v18)
+					if (menuButtons->byte_25)
 					{
-						MapMenuPortalsDraw_81760(/*(type_mapScreenPortals_E17CC*)a1*/);
+						MapMenuPortalsDraw_81760();
 					}
 					else
 					{
 						x_DWORD_17DE38str.savedGameIndex_17DF04 = -1;
-						NewGameDialog_77350(a1x);
-						a1x->dword_4 = 2;
+						NewGameDialog_77350(menuButtons);
+						menuButtons->dword_4 = 2;
 					}
 				}
 			}
 		}
 		x_DWORD_17DE38str.savedGameIndex_17DF04 = -1;
-		v55 = 1;
+		result = true;
 	}
 
 	for (int jm = 0; jm < 8; jm++)
 	{
 		int j = jm + 1;
 		GetFont_6FC50(1);
-		if (a1x->str_26.word_36_5 /**(signed __int16*)(a1 + 36)*/ > 16 * (signed __int16)j + 3 * GetLetterHeight_6FC30())
+		if (menuButtons->str_26.word_36_5 > 16 * (signed __int16)j + 3 * GetLetterHeight_6FC30())
 		{
-      std::string savegame = std::to_string(j) + ". " + std::string(&x_DWORD_17DE38str.xx_BYTE_17DF14[(j - 1)][0]);
-      int16_t savegame_y_pos = a1x->str_26.y1_28_1 + 16 * (j + 1);
-      int16_t savegame_x_pos = a1x->str_26.x1_26_0 + 20;
-      uint8_t pal_text_color = (j == x_DWORD_17DE38str.savedGameIndex_17DF04) ? pal_selected_text : pal_text;
-      DrawText_2BC10(savegame.c_str(), savegame_x_pos, savegame_y_pos, pal_text_color);
+			std::string savegame = std::to_string(j) + ". " + std::string(&x_DWORD_17DE38str.xx_BYTE_17DF14[(j - 1)][0]);
+			int16_t savegame_y_pos = menuButtons->str_26.y1_28_1 + 16 * (j + 1);
+			int16_t savegame_x_pos = menuButtons->str_26.x1_26_0 + 20;
+			uint8_t pal_text_color = (j == x_DWORD_17DE38str.savedGameIndex_17DF04) ? pal_selected_text : pal_text;
+			DrawText_2BC10(savegame.c_str(), savegame_x_pos, savegame_y_pos, pal_text_color);
 		}
 	}
-	if (a1x->str_26.word_36_5 >= a1x->str_26.word_34_4)
+	if (menuButtons->str_26.word_36_5 >= menuButtons->str_26.word_34_4)
 	{
-		//for (k = 1; k < 9; k++)
 		for (int km = 0; km < 8; km++)
 		{
 			int k = km + 1;
-			v34x.xmin_10 = a1x->str_26.x1_26_0 + 20;
-			//v25 = 16 * k;
-			v34x.ymin_12 = 16 * k + a1x->str_26.y1_28_1 + 16;
-			v34x.sizex_14 = 100;
-			//v45 = k;
-			v34x.sizey_16 = 16;
-			v26 = x_DWORD_17DE38str.xx_BYTE_17DF14[(k - 1)][41];
-			//v49 = 43 * (k - 1);
-			if (v26 && InRegion_7B200(&v34x, x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))
+			menuButtons2.xmin_10 = menuButtons->str_26.x1_26_0 + 20;
+			menuButtons2.ymin_12 = 16 * k + menuButtons->str_26.y1_28_1 + 16;
+			menuButtons2.sizex_14 = 100;
+			menuButtons2.sizey_16 = 16;
+			if (x_DWORD_17DE38str.xx_BYTE_17DF14[(k - 1)][41] && InRegion_7B200(&menuButtons2, x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony))
 			{
 				if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)
 				{
@@ -1627,31 +1599,16 @@ char LoadGameDialog_780F0(type_menuButtons_E1F84* a1x)//0x2590f0
 				}
 				else
 				{
-          std::string savegame = std::to_string(k) + ". " + std::string(&x_DWORD_17DE38str.xx_BYTE_17DF14[(k - 1)][0]);
-					int16_t savegame_y_pos = a1x->str_26.y1_28_1 + 16 * (k + 1);
-					int16_t savegame_x_pos = a1x->str_26.x1_26_0 + 20;
+					std::string savegame = std::to_string(k) + ". " + std::string(&x_DWORD_17DE38str.xx_BYTE_17DF14[(k - 1)][0]);
+					int16_t savegame_y_pos = menuButtons->str_26.y1_28_1 + 16 * (k + 1);
+					int16_t savegame_x_pos = menuButtons->str_26.x1_26_0 + 20;
 					DrawText_2BC10(savegame.c_str(), savegame_x_pos, savegame_y_pos, pal_selected_text);
 				}
 			}
 		}
 	}
-	return v55;
+	return result;
 }
-// 8C250: using guessed type x_DWORD memset(x_DWORD, x_DWORD, x_DWORD);
-// 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// E29D6: using guessed type __int16 x_WORD_E29D6;
-// EA2C4: using guessed type int x_DWORD_EA2C4;
-// 17DB8A: using guessed type __int16 x_WORD_17DB8A;
-// 17DB8F: using guessed type char x_BYTE_17DB8F;
-// 17DBC8: using guessed type int x_DWORD_17DBC8[];
-// 17DDBC: using guessed type int x_DWORD_17DDBC[];
-// 17DE28: using guessed type int x_DWORD_17DE28;
-// 17DE38: using guessed type int x_DWORD_17DE38;
-// 17DEE4: using guessed type int x_DWORD_17DEE4_mouse_position;
-// 17DEEE: using guessed type __int16 x_WORD_17DEEE_mouse_buttons;
-// 17DF04: using guessed type __int16 x_WORD_17DF04;
 
 //----- (00079610) --------------------------------------------------------
 char SetKeysDialog_79610()//25a610
