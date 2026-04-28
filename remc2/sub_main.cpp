@@ -678,6 +678,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 			}
 		}
 		delete EventDispatcher::I;
+		VGA_close();
 	}
 	catch (const thread_exit_exception& e)
 	{
