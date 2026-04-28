@@ -1375,6 +1375,7 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t scancode)
 		break;
 	case SDL_SCANCODE_RETURN://enter
 	case SDL_SCANCODE_RETURN2://enter
+	case SDL_SCANCODE_KP_ENTER:
 		return GameKey::RETURN;
 		break;
 	case SDL_SCANCODE_LCTRL://ctrl
