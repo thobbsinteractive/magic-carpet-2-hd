@@ -24,6 +24,8 @@
 #include <string>
 
 #include "../engine/ail_sound.h"
+#include "../engine/EventDispatcher.h"
+#include "../engine/GameState.h"
 #include "port_filesystem.h"
 
 #pragma pack(push, 1)
@@ -206,8 +208,10 @@ extern Mix_Chunk* m_ptrSpeechChunk;
 extern int m_ptrSpeechBytesOffSet;
 
 bool init_sound();
+void SOUND_GameStateChange(const GameState gameState);
 //bool load_sound_files();
 void clean_up_sound();
+void DeleteWarMusic();
 /*int playsound1();
 int playsound2();
 int playsound3();
