@@ -116,9 +116,9 @@ void SOUND_start_sequence(int32_t sequence_num) {
 			GAME_music_war = Mix_LoadWAV(selectedTrackPath);
 			warMusicOn = true;
 		}
+		else
+			warMusicOn = false;
 	}
-	else
-		warMusicOn = false;
 
 	last_sequence_num = sequence_num;
 	//volume fix
@@ -384,7 +384,18 @@ void clean_up_sound()
 
 	//Quit SDL_mixer
 	Mix_CloseAudio();
+	DeleteWarMusic();
+
 #endif//SOUND_SDLMIXER
+}
+
+void DeleteWarMusic()
+{
+	if (GAME_music_war)
+	{
+		Mix_FreeChunk(GAME_music_war);
+		GAME_music_war = nullptr;
+	}
 }
 /*
 int load_music_files() {
@@ -770,6 +781,9 @@ bool init_sound()
 {
 	ActiveAudioEffects.resize(maxSimultaniousSounds);
 
+	std::function<void(GameState)> callback = SOUND_GameStateChange;
+	EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAME_STATE_CHANGE, callback));
+
 	//run();
 	//#define MUSIC_MID_FLUIDSYNTH
 	//Initialize SDL_mixer
@@ -814,6 +828,15 @@ Mix_HookMusicFinished(void (SDLCALL *music_finished)(void));
 
 #endif//SOUND_OPENAL
 	return true;
+}
+
+void SOUND_GameStateChange(const GameState gameState)
+{
+	if (gameState == GameState::GAMEPLAY_ENDED)
+	{
+		warMusicOn = false;
+		DeleteWarMusic();
+	}
 }
 
 void SOUND_ChangeSamplePlaybackRate(HSAMPLE S, float percent)
