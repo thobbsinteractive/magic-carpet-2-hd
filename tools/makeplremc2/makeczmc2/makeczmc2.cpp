@@ -101,7 +101,7 @@ char* encodeDiakritics(char* text) {
 		{(unsigned char)'ï', 183},
 		{(unsigned char)'Ò', 184},
 		{(unsigned char)'Í', 217},
-		{(unsigned char)'ì', 215},
+		{(unsigned char)'ì', 209},
 		{(unsigned char)'Ù', 186},
 		{(unsigned char)'Ó', 237},
 		{(unsigned char)'Ñ', 227},
