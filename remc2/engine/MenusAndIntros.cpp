@@ -762,6 +762,12 @@ void Intros_76D10(char introType)//257d10
 	else
 		sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
 
+	//LoadExternalFonts("",xy_DWORD_17DEC0_spritestr);
+	fixedMenuGraphics = true;
+	if (fixedMenuGraphics)
+		//LoadFixedMenuGraphics();
+		LoadFixedFonts(xy_DWORD_17DEC0_spritestr,(char*)"intro");
+
 	StopSubtitles_2EB40();
 	if (soundAble_E3798 && x_D41A0_BYTEARRAY_4_struct.SelectedLangIndex == 2)
 	{
