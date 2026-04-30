@@ -65,8 +65,75 @@ char* removeDiakritics(char* text) {
 	return text;
 }
 
+char* encodeDiakritics(char* text) {
+	// Tabulka: znak -> kod
+	struct { unsigned char ch; unsigned char code; } table[] = {
+		{(unsigned char)'é', 130},
+		{(unsigned char)'ù', 169},
+		{(unsigned char)'æ', 193},
+		{(unsigned char)'³', 136},
+		{(unsigned char)'', 194},
+		{(unsigned char)'Æ', 195},
+		{(unsigned char)'É', 144},
+		{(unsigned char)'Œ', 196},
+		{(unsigned char)'œ', 197},
+		{(unsigned char)'', 170},
+		{(unsigned char)'', 171},
+		{(unsigned char)'£', 198},
+		{(unsigned char)'è', 172},
+		{(unsigned char)'á', 134},
+		{(unsigned char)'í', 161},
+		{(unsigned char)'ó', 162},
+		{(unsigned char)'ú', 163},
+		{(unsigned char)'¥', 199},
+		{(unsigned char)'¹', 200},
+		{(unsigned char)'', 175},
+		{(unsigned char)'Ê', 201},
+		{(unsigned char)'ê', 202},
+		{(unsigned char)'Ÿ', 203},
+		{(unsigned char)'È', 176},
+		{(unsigned char)'Á', 181},
+		{(unsigned char)'Ì', 178},
+		{(unsigned char)'¯', 204},
+		{(unsigned char)'', 180},
+		{(unsigned char)'¿', 205},
+		{(unsigned char)'Ï', 182},
+		{(unsigned char)'ï', 183},
+		{(unsigned char)'Ò', 184},
+		{(unsigned char)'Í', 217},
+		{(unsigned char)'ì', 215},
+		{(unsigned char)'Ù', 186},
+		{(unsigned char)'Ó', 237},
+		{(unsigned char)'Ñ', 227},
+		{(unsigned char)'ñ', 228},
+		{(unsigned char)'ò', 187},
+		{(unsigned char)'Š', 188},
+		{(unsigned char)'š', 206},
+		{(unsigned char)'Ú', 151},
+		{(unsigned char)'ı', 189},
+		{(unsigned char)'İ', 190},
+		{(unsigned char)'Ø', 207},
+		{(unsigned char)'ø', 192},
+		{(unsigned char)'ø', 192},
+		{(unsigned char)'„', 34},
+		{(unsigned char)'”', 34},
+	};
+	int tableSize = sizeof(table) / sizeof(table[0]);
+	int len = strlen(text);
+
+	for (int i = 0; i < len; i++) {
+		for (int j = 0; j < tableSize; j++) {
+			if ((unsigned char)text[i] == table[j].ch) {
+				text[i] = (char)table[j].code;
+				break;
+			}
+		}
+	}
+	return text;
+}
+
 void writetext(char* text) {
-	text = removeDiakritics(text);
+	text = encodeDiakritics(text);
 	int len = strlen(text);
 	for (int i = 0;i < len;i++)
 		buffer[i]=text[i];
