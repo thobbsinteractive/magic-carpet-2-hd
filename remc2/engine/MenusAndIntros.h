@@ -159,7 +159,7 @@ void SetToIntro_76CF0();
 void MainMenu_76FA0();
 bool NewGameDialog_77350(type_menuButtons_E1F84* a1x);
 char LanguageSettingDialog_779E0(type_menuButtons_E1F84* a1x);
-char LoadGameDialog_780F0(type_menuButtons_E1F84* a1x);
+bool LoadGameDialog_780F0(type_menuButtons_E1F84* menuButtons);
 char SaveGameDialog_78730(type_menuButtons_E1F84* a1x);
 char SetKeysDialog_79610();
 signed int sub_79E10(char* a1, char a2);
