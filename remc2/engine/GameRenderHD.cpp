@@ -1499,13 +1499,13 @@ void GameRenderHD::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexB
 	char v191; // dl
 	char v192; // dh
 
-	char v282 = 20;
+	char rowNum_v282 = 20;
 
 	char ii;
 	do
 	{
 		v161 = v160;
-		//Draw Left Side of Terrain
+		//Draw one row of the Left Side of Terrain
 		for (ii = 39; ii; --ii)
 		{
 			projectedVertexBuffer[18] = Str_E9C38_smalltit[v161].pnt1_16;
@@ -1566,7 +1566,7 @@ void GameRenderHD::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexB
 				DrawSprites_3E360(v172x, str_DWORD_F66F0x, playersColors_E88E0x, x_DWORD_F5730, Entities_EA3E4, str_unk_1804B0ar, viewPort, pitch);
 			v161 = v172x + 1;
 		}
-		//Draw Right Side of Terrain
+		//Draw one row of the Right Side of Terrain
 		if (ii)
 		{
 			v177x = v161 - 1;
@@ -1631,8 +1631,8 @@ void GameRenderHD::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexB
 			} while (v178x >= v177x);
 		}
 		v160 -= 40;
-		v282--;
-	} while (v282);
+		rowNum_v282--;
+	} while (rowNum_v282);
 }
 
 uint16_t GameRenderHD::sub_3FD60(int a2x, uint8_t playersColors_E88E0x[][3], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth)
