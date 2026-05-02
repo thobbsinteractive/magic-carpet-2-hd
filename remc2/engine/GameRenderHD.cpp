@@ -11,7 +11,7 @@ GameRenderHD::GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 	m_ptrBlurBuffer_E9C3C = &m_preBlurBuffer_E9C3C[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
 
 	m_scaleViewDistance = scaleViewDistance;
-	m_tileRows = TILE_ROWS_COUNT * scaleViewDistance;
+	m_tileRows = ((TILE_ROWS_COUNT - 1) * scaleViewDistance) + 1;
 	m_tileColumns = TILE_COLUMNS_COUNT * scaleViewDistance;
 
 	m_ptrStr_E9C38_smalltit = new type_E9C38_smalltit[m_tileRows * m_tileColumns];
@@ -667,12 +667,12 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	//Cave Level Render
 	if (isCaveLevel_D41B6)//21d3e3 cleaned screen
 	{
-		for (i = 21; ; i--)
+		for (i = m_tileRows; ; i--)
 		{
 			if (!i)
 			{
 				//Geometry tiles Distance 0 = near player
-				v46 = 840;
+				v46 = (m_tileRows * m_tileColumns);
 				v47x = 0;
 				while (v46)
 				{
@@ -734,7 +734,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 				SubDrawCaveTerrainAndParticles(projectedVertexBuffer, pitch);
 				return;
 			}
-			for (k = 40; k; k--)
+			for (k = m_tileColumns; k; k--)
 			{
 				v33 = ((uint8_t)mapShading_12B4E0[v279] << 8) + 128;
 				v34 = m_ptrStr_E9C38_smalltit[v278x].y_12;
@@ -950,11 +950,11 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 			LOBYTE(v279) = v122;
 		}
 	}
-	v283 = 21;//21eb44 nothing changed
+	v283 = m_tileRows;//21eb44 nothing changed
 LABEL_259:
 	if (v283)
 	{
-		v285 = 40;
+		v285 = m_tileColumns;
 		while (1)
 		{
 			if (!v285)
@@ -1017,7 +1017,7 @@ LABEL_259:
 	v208 = roll & 0x7FF;//21edb7
 
 	//Geometry tiles Distance 0 = near player
-	v209 = 840;
+	v209 = (m_tileRows * m_tileColumns);
 	v210 = Maths::sin_DB750[v208];
 	v211 = Maths::sin_DB750[512 + v208];
 	str_F2C20ar.sin_0x0d = v210;
