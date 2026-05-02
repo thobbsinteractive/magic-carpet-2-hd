@@ -46214,11 +46214,16 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 				sub_98709_create_index_dattab_power(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
 			else
 				sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
+			
 			x_DWORD_17DE38str.x_WORD_17DF06 = 72;
 			x_DWORD_17DE38str.x_WORD_17DF08 = 68;
 			x_DWORD_17DE38str.x_WORD_17DF0A = 69;
 			x_DWORD_17DE38str.x_WORD_17DF0C = 70;
 			x_DWORD_17DE38str.x_WORD_17DF0E = 71;
+
+			if (fixedMenuGraphics)
+				LoadFixedFonts(xy_DWORD_17DEC0_spritestr, (char*)"4b");
+
 			break;
 		case 6://adress 25b533
 			x_DWORD_17DE38str.x_DWORD_17DE54 = &x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[0x4D54A + 301787];//(uint8_t*)x_DWORD_17DE48c + 301787;//49adb * //44ffef
@@ -46267,6 +46272,13 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			//x_DWORD_17DE38str.x_DWORD_17DEC0 += 6;
 			x_DWORD_17DE38str.x_DWORD_17DEC0++;
 			xy_DWORD_17DEC0_spritestr = &xy_DWORD_17DEC0_spritestr[1];
+
+			if (fixedMenuGraphics)
+			{
+				LoadFixedFonts(xy_DWORD_17DEC0_spritestr, (char*)"6b");
+				LoadFixedFonts(xy_DWORD_17DEC8_spritestr, (char*)"6c");
+			}
+
 			break;
 		case 7:
 			x_DWORD_17DE38str.x_DWORD_17DE48c += 371200;

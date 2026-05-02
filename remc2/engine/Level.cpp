@@ -628,7 +628,7 @@ static bool PatchFont(
 		else
 		{
 			opaque[i] = 1;
-			indexed[i] = 0xf9;// NearestPaletteIndex(r, g, b, palette, paletteSize);
+			indexed[i] = /*0xf9;*/ NearestPaletteIndex(r, g, b, palette, paletteSize);
 		}
 	}
 
@@ -666,6 +666,24 @@ void LoadFixedFonts(bitmap_pos_struct_t* fontStruct, char* type)
 		sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
 		sub_7AA70_load_and_decompres_dat_file(dataPath, *xadatapald0dat2.colorPalette_var28, 0x17C118, 0x300);
 		subFolder = "intro";
+	}
+	else if (!strcmp(type, "4b"))
+	{
+		//sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
+		//sub_7AA70_load_and_decompres_dat_file(dataPath, *xadatapald0dat2.colorPalette_var28, 0x17C118, 0x300);
+		subFolder = "4b";
+	}
+	else if (!strcmp(type, "6b"))
+	{
+		//sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
+		//sub_7AA70_load_and_decompres_dat_file(dataPath, *xadatapald0dat2.colorPalette_var28, 0x17C118, 0x300);
+		subFolder = "6b";
+	}
+	else if (!strcmp(type, "6c"))
+	{
+		//sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
+		//sub_7AA70_load_and_decompres_dat_file(dataPath, *xadatapald0dat2.colorPalette_var28, 0x17C118, 0x300);
+		subFolder = "4b";
 	}
 	// else if (!strcmp(type, "day"))   { ... subFolder = "day";   }
 	// else if (!strcmp(type, "night")) { ... subFolder = "night"; }
