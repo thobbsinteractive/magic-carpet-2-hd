@@ -255,6 +255,15 @@ if (UNIX)
         "${CMAKE_SOURCE_DIR}/spdlog/include"
         "${CMAKE_SOURCE_DIR}/rapidjson"
     )
+    if (APPLE)
+        execute_process(COMMAND brew --prefix
+            OUTPUT_VARIABLE HOMEBREW_PREFIX
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
+        target_include_directories(${PROJECT_NAME} PUBLIC
+            "${HOMEBREW_PREFIX}/include"
+        )
+        target_include_directories(${PROJECT_NAME} PUBLIC ${PNG_INCLUDE_DIRS})
+    endif ()
     #target_compile_definitions(${PROJECT_NAME} PRIVATE
     #)
     #target_compile_options(${PROJECT_NAME} PRIVATE

@@ -174,6 +174,15 @@ target_include_directories(${EDITOR_TARGET} PUBLIC
     "../findfirst"
     "../spdlog/include"
 )
+if (APPLE)
+    execute_process(COMMAND brew --prefix
+        OUTPUT_VARIABLE HOMEBREW_PREFIX
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    target_include_directories(${EDITOR_TARGET} PUBLIC
+        "${HOMEBREW_PREFIX}/include"
+    )
+    target_include_directories(${EDITOR_TARGET} PUBLIC ${PNG_INCLUDE_DIRS})
+endif ()
 add_compile_definitions(COMPILE_FOR_64BIT)
 
 install(

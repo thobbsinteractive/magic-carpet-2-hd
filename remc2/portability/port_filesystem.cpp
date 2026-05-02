@@ -27,6 +27,12 @@ spdlog::logger* Logger = nullptr;
     #include <cstdio>
 #endif
 
+#ifdef __APPLE__
+	#include <mach-o/dyld.h>
+	#include <stdlib.h>
+	#include <climits>
+#endif
+
 const char* GetStringFromLoggingLevel(spdlog::level::level_enum level)
 {
 	const char* level_enum_str[] = { "Trace", "Debug", "Info", "Warn", "Err", "Critical" };
@@ -111,6 +117,19 @@ std::string get_exe_path() {
 	delete[] buffer;
 	std::string::size_type pos = std::string(locstr).find_last_of("\\/");
 	std::string strpathx = std::string(locstr).substr(0, pos)/*+"\\system.exe"*/;
+	return strpathx;
+#elif defined(__APPLE__)
+	std::string strpathx;
+	char result[PATH_MAX];
+	uint32_t size = sizeof(result);
+	if (_NSGetExecutablePath(result, &size) == 0) {
+		char real[PATH_MAX];
+		if (realpath(result, real)) {
+			strpathx = dirname(real);
+		} else {
+			strpathx = dirname(result);
+		}
+	}
 	return strpathx;
 #else
 	std::string strpathx;
@@ -448,7 +467,7 @@ long ReadGraphicsfile(const char* path, uint8_t* buffer, long size)
 std::string getExistingDataPath(std::filesystem::path path) 
 {
 	std::vector<std::string> file_locations;
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 	auto env_home_dir = std::getenv("HOME");
 	auto env_xdg_data_home_dir = std::getenv("XDG_DATA_HOME");
 	std::filesystem::path home_dir;
@@ -478,7 +497,7 @@ std::string getExistingDataPath(std::filesystem::path path)
 
 	// first location at which the file can be found is chosen
 	for (const std::string &file_location: file_locations) {
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		std::string caseInsensitivePath = casepath(file_location);
 		if (std::filesystem::exists(caseInsensitivePath)) {
 			file_found = std::string(caseInsensitivePath);
