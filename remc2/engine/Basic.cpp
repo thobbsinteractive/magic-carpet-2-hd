@@ -143,7 +143,7 @@ uint8_t MaxTrackIdx_180472;
 
 int filearrayindex_POINTERSDATTAB = 0;
 int filearrayindex_FONTS0DATTAB = 1;
-int filearrayindex_MSPRDDATTAB = 2;
+int filearrayindex_FONTS1DATTAB = 2;
 int filearrayindex_ZERO1 = 3;
 int filearrayindex_MSPRD00DATTAB = 4;
 int filearrayindex_ZERO2 = 5;
@@ -238,8 +238,8 @@ filearray_struct filearray_2aa18c[] = {
 { &ZERO_BUFFER_PST2,&ZERO_BUFFER_PST2,&ZERO_BUFFER,&posistruct11 }
 };
 
-filearray_struct x_DWORD_E9B20[4] = { filearray_2aa18c[filearrayindex_FONTS0DATTAB],filearray_2aa18c[filearrayindex_MSPRDDATTAB],
-filearray_2aa18c[filearrayindex_HFONT3DATTAB],filearray_2aa18c[filearrayindex_MSPRDDATTAB] };
+filearray_struct x_DWORD_E9B20[4] = { filearray_2aa18c[filearrayindex_FONTS0DATTAB],filearray_2aa18c[filearrayindex_FONTS1DATTAB],
+filearray_2aa18c[filearrayindex_HFONT3DATTAB],filearray_2aa18c[filearrayindex_FONTS1DATTAB] };
 
 uint8_t* SPELLS_BEGIN_BUFFER_ptr = (uint8_t*)SPELLS_BEGIN_BUFFER_str;
 uint8_t* LANG_BEGIN_BUFFER = 0;

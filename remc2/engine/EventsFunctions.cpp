@@ -48764,7 +48764,7 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 				{
 					str_E2A74[v9x].axis_2[0] |= 1u;
 					str_E2A74[35].axis_2[3] = (D41A0_0.terrain_2FECE.word_0x2FED5 << 6) / 100
-						+ (*filearray_2aa18c[filearrayindex_MSPRDDATTAB].posistruct)[40].width_4
+						+ (*filearray_2aa18c[filearrayindex_FONTS1DATTAB].posistruct)[40].width_4
 						+ 60;
 					str_E2A74[35].axis_2[4] = 38;
 				}

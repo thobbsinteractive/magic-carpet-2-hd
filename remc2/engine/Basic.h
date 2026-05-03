@@ -272,7 +272,7 @@ type_TMAPS00TAB_BEGIN_BUFFER;
 
 extern int filearrayindex_POINTERSDATTAB;
 extern int filearrayindex_FONTS0DATTAB;
-extern int filearrayindex_MSPRDDATTAB;
+extern int filearrayindex_FONTS1DATTAB;
 extern int filearrayindex_ZERO1;
 extern int filearrayindex_MSPRD00DATTAB;
 extern int filearrayindex_ZERO2;

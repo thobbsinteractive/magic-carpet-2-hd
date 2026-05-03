@@ -701,10 +701,10 @@ void LoadFixedFonts(int fontStructIndex, char* type)
 			charIndexOffset = 1;
 			break;
 		case 3: // *filearray_2aa18c[filearrayindex_FONTS0DATTAB].posistruct
-			fontStruct = *filearray_2aa18c[2].posistruct;
-			fontDatBase = (*filearray_2aa18c[2].posistruct)->data;
+			fontStruct = *filearray_2aa18c[filearrayindex_FONTS1DATTAB].posistruct;
+			fontDatBase = (*filearray_2aa18c[filearrayindex_FONTS1DATTAB].posistruct)->data;
 			createIndexType = 0;
-			structForIndex2 = &filearray_2aa18c[2];
+			structForIndex2 = &filearray_2aa18c[filearrayindex_FONTS1DATTAB];
 			patchedBuffer = g_patchedFontDataBuffer4;
 			charIndexOffset = 1;
 			break;
