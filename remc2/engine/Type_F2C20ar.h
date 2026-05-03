@@ -27,11 +27,11 @@ typedef struct {
 	int32_t cos2_0x0f;
 	int32_t dword0x10;
 	int32_t cos_0x11;
-	int32_t dword0x12;
-	int32_t dword0x13;
+	int32_t dword0x12_FogThickness;
+	int32_t dword0x13_FogStart;
 	type_entity_0x6E8E* dword0x14x;
 	int32_t dword0x15_tileRenderCutOffDistance;
-	int32_t dword0x16;
+	int32_t dword0x16_FogEnd;
 	int32_t sin2_0x17;
 	int32_t dword0x18;
 	int32_t Height_0x19;
