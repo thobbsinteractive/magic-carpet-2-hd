@@ -15,6 +15,22 @@ GameRenderHD::GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 	m_tileColumns = TILE_COLUMNS_COUNT * scaleViewDistance;
 
 	m_ptrStr_E9C38_smalltit = new type_E9C38_smalltit[m_tileRows * m_tileColumns];
+
+	m_tileRenderStepTable_D4328x = new TileStepQuadrant[4]{
+		// Quadrant 0 (270->0)
+		{ 0xED, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xD8, 0xFF, 0x01, 0x00 },
+		// Quadrant 1 (0->90)
+		{ 0x00, 0xED, 0xFF, 0x00, 0x01, 0x00, 0x01, 0xD8, 0x00, 0x01 },
+		// Quadrant 2 (90->180)
+		{ 0x13, 0x00, 0xFF, 0xFF, 0x00, 0x01, 0x28, 0x01, 0xFF, 0x00 },
+		// Quadrant 3 (180->270)
+		{ 0x01, 0x13, 0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x28, 0x00, 0xFF }
+	};
+
+	if (m_tileColumns > 40)
+	{
+		BuildTileRenderStepTable(m_tileRenderStepTable_D4328x, m_tileColumns);
+	}
 }
 
 GameRenderHD::~GameRenderHD()
@@ -27,6 +43,43 @@ GameRenderHD::~GameRenderHD()
 	delete[] m_ptrDWORD_E9C38_smalltit;
 	delete[] m_preBlurBuffer_E9C3C;
 	delete[] m_ptrStr_E9C38_smalltit;
+}
+
+void GameRenderHD::BuildTileRenderStepTable(TileStepQuadrant* table, int cols)
+{
+	uint8_t pos_cols = (uint8_t)cols;
+	uint8_t neg_cols = (uint8_t)(256 - cols);
+
+	uint8_t neg_half = (uint8_t)(0xED - (cols - 40) / 2);  // ~-cols/2
+	uint8_t pos_half = (uint8_t)(0x13 + (cols - 40) / 2);  // ~+cols/2
+
+	// Quadrant 0 (270->0)
+	table[0].startX = neg_half;
+	table[0].rowStepX = neg_cols; 
+	table[0].rowStepY = 0xFF;
+	table[0].colStepX = 0x01;
+	table[0].colStepY = 0x00;
+
+	// Quadrant 1 (0->90)
+	table[1].startY = neg_half;
+	table[1].rowStepX = 0x01;
+	table[1].rowStepY = neg_cols;
+	table[1].colStepX = 0x00;
+	table[1].colStepY = 0x01;
+
+	// Quadrant 2 (90->180)
+	table[2].startX = pos_half;
+	table[2].rowStepX = pos_cols;
+	table[2].rowStepY = 0x01;
+	table[2].colStepX = 0xFF;
+	table[2].colStepY = 0x00;
+
+	// Quadrant 3 (180->270)
+	table[3].startY = pos_half;
+	table[3].rowStepX = 0xFF;
+	table[3].rowStepY = pos_cols;
+	table[3].colStepX = 0x00;
+	table[3].colStepY = 0xFF;
 }
 
 void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov)
@@ -552,7 +605,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 			(uint16_t)viewPort.Width_DE564 * (uint16_t)viewPort.Width_DE564
 			+ (uint16_t)viewPort.Height_DE568 * (uint16_t)viewPort.Height_DE568)
 		* fov >> 11;
-	v277 = unk_D4328x + 10 * projectedVertexBuffer[32];
+	v277 = ((uint8_t*)m_tileRenderStepTable_D4328x) + 10 * projectedVertexBuffer[32];
 
 	//This is based on rotation direction there is always a direction
 	switch ((uint8_t)projectedVertexBuffer[32])//fixed? //rotations
