@@ -11,7 +11,7 @@ GameRenderHD::GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 	m_ptrBlurBuffer_E9C3C = &m_preBlurBuffer_E9C3C[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
 
 	m_scaleViewDistance = scaleViewDistance;
-	m_tileRows = ((TILE_ROWS_COUNT - 1) * scaleViewDistance) + 1;
+	m_tileRows = TILE_ROWS_COUNT * scaleViewDistance;
 	m_tileColumns = TILE_COLUMNS_COUNT * scaleViewDistance;
 
 	m_ptrStr_E9C38_smalltit = new type_E9C38_smalltit[m_tileRows * m_tileColumns];
@@ -54,28 +54,31 @@ void GameRenderHD::BuildTileRenderStepTable(TileStepQuadrant* table, int cols)
 	uint8_t pos_half = (uint8_t)(0x13 + (cols - 40) / 2);  // ~+cols/2
 
 	// Quadrant 0 (270->0)
-	table[0].startX = neg_half;
+	table[0].startX = neg_half + 1;
+	table[0].startY = table[0].startY + 1;
 	table[0].rowStepX = neg_cols; 
 	table[0].rowStepY = 0xFF;
 	table[0].colStepX = 0x01;
 	table[0].colStepY = 0x00;
 
 	// Quadrant 1 (0->90)
-	table[1].startY = neg_half;
+	table[1].startY = neg_half + 1;
 	table[1].rowStepX = 0x01;
 	table[1].rowStepY = neg_cols;
 	table[1].colStepX = 0x00;
 	table[1].colStepY = 0x01;
 
 	// Quadrant 2 (90->180)
-	table[2].startX = pos_half;
+	table[2].startX = pos_half - 1;
+	table[2].startY = table[2].startY;
 	table[2].rowStepX = pos_cols;
 	table[2].rowStepY = 0x01;
 	table[2].colStepX = 0xFF;
 	table[2].colStepY = 0x00;
 
 	// Quadrant 3 (180->270)
-	table[3].startY = pos_half;
+	table[3].startX = table[3].startX + 1;
+	table[3].startY = pos_half - 1;
 	table[3].rowStepX = 0xFF;
 	table[3].rowStepY = pos_cols;
 	table[3].colStepX = 0x00;
