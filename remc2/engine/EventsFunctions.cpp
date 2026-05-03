@@ -46221,8 +46221,8 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			x_DWORD_17DE38str.x_WORD_17DF0C = 70;
 			x_DWORD_17DE38str.x_WORD_17DF0E = 71;
 
-			if (fixedMenuGraphics)
-				LoadFixedFonts(xy_DWORD_17DEC0_spritestr, (char*)"4b");
+			if (enhancedFonts)
+				LoadFixedFonts(0, (char*)"4b");
 
 			break;
 		case 6://adress 25b533
@@ -46273,10 +46273,10 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			x_DWORD_17DE38str.x_DWORD_17DEC0++;
 			xy_DWORD_17DEC0_spritestr = &xy_DWORD_17DEC0_spritestr[1];
 
-			if (fixedMenuGraphics)
+			if (enhancedFonts)
 			{
-				LoadFixedFonts(xy_DWORD_17DEC0_spritestr, (char*)"6b");
-				LoadFixedFonts(xy_DWORD_17DEC8_spritestr, (char*)"6c");
+				LoadFixedFonts(0, (char*)"6b");
+				LoadFixedFonts(1, (char*)"6c");
 			}
 
 			break;

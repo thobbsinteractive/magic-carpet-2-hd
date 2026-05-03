@@ -38,6 +38,7 @@ bool startWindowed = false;
 bool bigTextures = false;
 bool bigSprites = false;
 bool fixedMenuGraphics = false;
+bool enhancedFonts = true;
 bool sky = true;
 bool reflections = false;
 bool dynamicLighting = false;
