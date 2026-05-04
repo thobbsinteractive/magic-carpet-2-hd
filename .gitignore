@@ -252,3 +252,5 @@ tags
 remc2-editor/log-editor.txt
 
 !asan/*.pdb
+tools/makeczmc2/Debug/makeczmc2.exe
+tools/makeczmc2/makeczmc2/Debug/makeczmc2.pch
