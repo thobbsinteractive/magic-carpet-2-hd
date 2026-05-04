@@ -676,7 +676,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 		m_tileRows_v17--;
 	}
 
-	str_F2C20ar.dword0x15_tileRenderCutOffDistance = 400 << 16; //Distance cut-off for tile render
+	str_F2C20ar.dword0x15_tileRenderCutOffDistance = (400 * (m_scaleViewDistance * 2)) << 16; //Distance cut-off for tile render
 	v278x = 0;
 	str_F2C20ar.dword0x12_FogThickness = 136 << 16;
 	v22 = v277[0];
