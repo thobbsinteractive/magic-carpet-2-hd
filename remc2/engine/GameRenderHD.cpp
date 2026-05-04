@@ -2945,9 +2945,19 @@ void GameRenderHD::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int in
 
 	uint8_t drawEveryNthLine = m_renderThreads.size() + 1;
 
+	double triArea1 = std::abs(vertex18.X * (vertex12.Y - vertex0.Y) + vertex12.X * (vertex0.Y - vertex18.Y) + vertex0.X * (vertex18.Y - vertex12.Y)) / 2.0;
+	double triArea2 = std::abs(vertex6.X * (vertex12.Y - vertex0.Y) + vertex12.X * (vertex0.Y - vertex6.Y) + vertex0.X * (vertex6.Y - vertex12.Y)) / 2.0;
+
+	double viewPortArea = viewPort.Width_DE564 * viewPort.Height_DE568;
+
+	bool skipThread = (triArea1 / viewPortArea) * 100 < 10.0;
+
+	if (!skipThread)
+		skipThread = (triArea2 / viewPortArea) * 100 < 10.0;
+
 	if ((uint8_t)m_ptrStr_E9C38_smalltit[index].triangleFeatures_38 & 1)
 	{
-		if (m_renderThreads.size() > 0)
+		if (m_renderThreads.size() > 0 && !skipThread)
 		{
 			uint8_t i = 0;
 
@@ -2972,7 +2982,7 @@ void GameRenderHD::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int in
 	}
 	else
 	{
-		if (m_renderThreads.size() > 0)
+		if (m_renderThreads.size() > 0 && !skipThread)
 		{
 			uint8_t i = 0;
 
