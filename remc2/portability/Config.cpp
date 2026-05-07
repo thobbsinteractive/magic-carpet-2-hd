@@ -315,6 +315,7 @@ void Config::LoadGameDetail(rapidjson::GenericObject<false, rapidjson::Value>& g
 		m_Graphics.m_GameDetail.m_Sky = ReadBoolValue(gameDetail, "sky");
 		m_Graphics.m_GameDetail.m_Reflections = ReadBoolValue(gameDetail, "reflections");
 		m_Graphics.m_GameDetail.m_DynamicLighting = ReadBoolValue(gameDetail, "dynamicLighting");
+		m_Graphics.m_GameDetail.m_ViewDistanceScale = ReadIntValue(gameDetail, "viewDistanceScale");
 	}
 }
 
@@ -330,6 +331,7 @@ void Config::LoadThreading(rapidjson::GenericObject<false, rapidjson::Value>& gr
 		m_Graphics.m_Threading.m_isActive = threading["isActive"].GetBool();
 		if (m_Graphics.m_Threading.m_isActive)
 		{
+			m_Graphics.m_Threading.m_SizePercentToThreadRender = ReadFloatValue(threading, "sizePercentToThreadRender");
 			m_Graphics.m_Threading.m_NumberOfRenderThreads = (uint8_t)ReadIntValue(threading,"numberOfRenderThreads");
 			m_Graphics.m_Threading.m_AssignToSpecificCores = ReadBoolValue(threading, "assignToSpecificCores");
 		}

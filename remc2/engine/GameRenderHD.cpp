@@ -2,17 +2,19 @@
 
 #include "../utilities/RendererTests.h"
 
-GameRenderHD::GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t renderThreads, bool assignToSpecificCores, uint8_t scaleViewDistance) :
+GameRenderHD::GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t renderThreads, bool assignToSpecificCores, float sizePercentToThreadRender, uint8_t viewDistanceScale) :
 	m_ptrScreenBuffer_351628(ptrScreenBuffer), m_ptrColorPalette(pColorPalette), m_assignToSpecificCores(assignToSpecificCores),
 	m_ptrDWORD_E9C38_smalltit(new uint8_t[GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT])
 {
+	
 	SetRenderThreads(renderThreads);
 	m_preBlurBuffer_E9C3C = new uint8_t[((GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT) * 3)]; // Allow x 3 padding for sprite rendering
 	m_ptrBlurBuffer_E9C3C = &m_preBlurBuffer_E9C3C[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
 
-	m_scaleViewDistance = scaleViewDistance;
-	m_tileRows = TILE_ROWS_COUNT * scaleViewDistance;
-	m_tileColumns = TILE_COLUMNS_COUNT * scaleViewDistance;
+	m_sizePercentToThreadRender = sizePercentToThreadRender;
+	m_viewDistanceScale = viewDistanceScale;
+	m_tileRows = TILE_ROWS_COUNT * viewDistanceScale;
+	m_tileColumns = TILE_COLUMNS_COUNT * viewDistanceScale;
 
 	m_ptrStr_E9C38_smalltit = new type_E9C38_smalltit[m_tileRows * m_tileColumns];
 
@@ -54,22 +56,22 @@ void GameRenderHD::BuildTileRenderStepTable(TileStepQuadrant* table, int cols)
 	uint8_t pos_half = (uint8_t)(0x13 + (cols - 40) / 2);  // ~+cols/2
 
 	// Quadrant 0 (270->0)
-	table[0].startX = neg_half + (m_scaleViewDistance - 1);
-	table[0].startY = table[0].startY + (m_scaleViewDistance - 1);
+	table[0].startX = neg_half + (m_viewDistanceScale - 1);
+	table[0].startY = table[0].startY + (m_viewDistanceScale - 1);
 	table[0].rowStepX = neg_cols; 
 	table[0].rowStepY = 0xFF;
 	table[0].colStepX = 0x01;
 	table[0].colStepY = 0x00;
 
 	// Quadrant 1 (0->90)
-	table[1].startY = neg_half + (m_scaleViewDistance - 1);
+	table[1].startY = neg_half + (m_viewDistanceScale - 1);
 	table[1].rowStepX = 0x01;
 	table[1].rowStepY = neg_cols;
 	table[1].colStepX = 0x00;
 	table[1].colStepY = 0x01;
 
 	// Quadrant 2 (90->180)
-	table[2].startX = pos_half - (m_scaleViewDistance - 1);
+	table[2].startX = pos_half - (m_viewDistanceScale - 1);
 	table[2].startY = table[2].startY;
 	table[2].rowStepX = pos_cols;
 	table[2].rowStepY = 0x01;
@@ -77,8 +79,8 @@ void GameRenderHD::BuildTileRenderStepTable(TileStepQuadrant* table, int cols)
 	table[2].colStepY = 0x00;
 
 	// Quadrant 3 (180->270)
-	table[3].startX = table[3].startX + (m_scaleViewDistance - 1);
-	table[3].startY = pos_half - (m_scaleViewDistance - 1);
+	table[3].startX = table[3].startX + (m_viewDistanceScale - 1);
+	table[3].startY = pos_half - (m_viewDistanceScale - 1);
 	table[3].rowStepX = 0xFF;
 	table[3].rowStepY = pos_cols;
 	table[3].colStepX = 0x00;
@@ -614,20 +616,20 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	switch ((uint8_t)projectedVertexBuffer[32])//fixed? //rotations
 	{
 	case 0u: // 270 -> 0
-		a2 = (uint8_t)posY - 256 * m_scaleViewDistance;
-		a1 = -(uint8_t)posX - 4864 * m_scaleViewDistance;
+		a2 = (uint8_t)posY - 256 * m_viewDistanceScale;
+		a1 = -(uint8_t)posX - 4864 * m_viewDistanceScale;
 		break;
 	case 1u: // 0 -> 90
-		a1 = -(uint8_t)posY - 4864 * m_scaleViewDistance;
+		a1 = -(uint8_t)posY - 4864 * m_viewDistanceScale;
 		a2 = -(uint8_t)posX;
 		break;
 	case 2u: // 90 -> 180
-		a1 = (uint8_t)posX - 4864 * m_scaleViewDistance;
+		a1 = (uint8_t)posX - 4864 * m_viewDistanceScale;
 		a2 = -(uint8_t)posY;
 		break;
 	case 3u: // 180 -> 270
-		a1 = (uint8_t)posY - 4864 * m_scaleViewDistance;
-		a2 = (uint8_t)posX - 256 * m_scaleViewDistance;
+		a1 = (uint8_t)posY - 4864 * m_viewDistanceScale;
+		a2 = (uint8_t)posX - 256 * m_viewDistanceScale;
 		break;
 	default:
 		break;
@@ -676,7 +678,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 		m_tileRows_v17--;
 	}
 
-	str_F2C20ar.dword0x15_tileRenderCutOffDistance = (400 * (m_scaleViewDistance * m_scaleViewDistance)) << 16; //Distance cut-off for tile render
+	str_F2C20ar.dword0x15_tileRenderCutOffDistance = (400 * (m_viewDistanceScale * m_viewDistanceScale)) << 16; //Distance cut-off for tile render
 	v278x = 0;
 	str_F2C20ar.dword0x12_FogThickness = 136 << 16;
 	v22 = v277[0];
@@ -685,9 +687,9 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	HIBYTE(v279) = v277[1] + HIBYTE(posY);
 	v23 = roll & 0x7FF;
 	str_F2C20ar.cos_0x11 = Maths::sin_DB750[512 + v23];
-	str_F2C20ar.dword0x16_FogEnd = ((400 * (m_scaleViewDistance * m_scaleViewDistance)) - 41) << 16;
+	str_F2C20ar.dword0x16_FogEnd = ((400 * (m_viewDistanceScale * m_viewDistanceScale)) - 41) << 16;
 	str_F2C20ar.sin_0x0d = Maths::sin_DB750[v23];
-	str_F2C20ar.dword0x13_FogStart = ((400 * (m_scaleViewDistance * m_scaleViewDistance)) - 175) << 16;
+	str_F2C20ar.dword0x13_FogStart = ((400 * (m_viewDistanceScale * m_viewDistanceScale)) - 175) << 16;
 
 	if (!D41A0_0.m_GameSettings.m_Graphics.m_wSky || isCaveLevel_D41B6)
 	{
@@ -2950,10 +2952,10 @@ void GameRenderHD::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int in
 
 	double viewPortArea = viewPort.Width_DE564 * viewPort.Height_DE568;
 
-	bool skipThread = (triArea1 / viewPortArea) * 100 < 10.0;
+	bool skipThread = (triArea1 / viewPortArea) * 100 < m_sizePercentToThreadRender;
 
 	if (!skipThread)
-		skipThread = (triArea2 / viewPortArea) * 100 < 10.0;
+		skipThread = (triArea2 / viewPortArea) * 100 < m_sizePercentToThreadRender;
 
 	if ((uint8_t)m_ptrStr_E9C38_smalltit[index].triangleFeatures_38 & 1)
 	{

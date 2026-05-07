@@ -73,7 +73,8 @@ private:
 	type_E9C38_smalltit* m_ptrStr_E9C38_smalltit;
 	uint16_t m_tileRows = TILE_ROWS_COUNT;
 	uint16_t m_tileColumns = TILE_COLUMNS_COUNT;
-	uint8_t m_scaleViewDistance = 1;
+	float m_sizePercentToThreadRender = 10.0;
+	uint8_t m_viewDistanceScale = 1;
 
 	uint8_t* m_ptrDWORD_E9C38_smalltit = nullptr;
 	uint8_t* m_ptrScreenBuffer_351628 = nullptr;
@@ -128,7 +129,7 @@ private:
 	void BuildTileRenderStepTable(TileStepQuadrant* table, int cols);
 
 public:
-	GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t renderThreads, bool assignToSpecificCores, uint8_t scaleViewDistance = 1);
+	GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t renderThreads, bool assignToSpecificCores, float sizePercentToThreadRender = 10.0, uint8_t viewDistanceScale = 1);
 	~GameRenderHD();
 	
 	void SetRenderThreads(uint8_t renderThreads);
