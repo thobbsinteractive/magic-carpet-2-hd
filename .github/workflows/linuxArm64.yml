@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         BUILD_CONFIGURATION: [Debug, Release]
@@ -32,13 +32,20 @@ jobs:
     - name: Install Dependencies (ARM64 cross packages)
       run: |
         sudo dpkg --add-architecture arm64
-        sudo sed -i 's/^Types: deb/Types: deb\nArchitectures: amd64/' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || \
-        sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
-        sudo tee /etc/apt/sources.list.d/arm64-ports.list <<EOF
+
+        if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then
+          sudo sed -i 's/^Types: deb/Types: deb\nArchitectures: amd64/' /etc/apt/sources.list.d/ubuntu.sources
+        elif [ -f /etc/apt/sources.list ]; then
+          sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
+        fi
+
+        sudo tee /etc/apt/sources.list.d/arm64-ports.list > /dev/null <<EOF
         deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble main restricted universe multiverse
         deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-updates main restricted universe multiverse
         deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-security main restricted universe multiverse
+        deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-backports main restricted universe multiverse
         EOF
+
         sudo apt-get update
         sudo apt-get -y install --fix-broken \
           cmake ninja-build \
