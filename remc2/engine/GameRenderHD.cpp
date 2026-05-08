@@ -1133,8 +1133,8 @@ int32_t GameRenderHD::CalculateRotationTranslationY(int64_t pnt1, int64_t sin_0x
 
 void GameRenderHD::SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch)
 {
-	int v57x = (m_tileRows * m_tileColumns) - m_tileColumns;
-	char v58; // ah
+	int tileIdx_v57x = (m_tileRows * m_tileColumns) - m_tileColumns;
+	int tileColIdx_v58; // ah
 	int jx;
 	char v60; // dl
 	char v62; // ch
@@ -1167,17 +1167,17 @@ void GameRenderHD::SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVer
 	char v102; // ch
 	char v105; // dl
 	char v106; // dh
-	char v281 = m_tileRows - 1; // [esp+94h] [ebp+32h]
-	char v293; // [esp+C4h] [ebp+62h]
+	int tileRowIdx_v281 = m_tileRows - 1; // [esp+94h] [ebp+32h]
+	int tileColIdx_v293; // [esp+C4h] [ebp+62h]
 
 	do
 	{
-		v58 = m_tileColumns - 1;
+		tileColIdx_v58 = m_tileColumns - 1;
 		//Draw Left Side of Cave
-		for (jx = v57x; ; jx++)
+		for (jx = tileIdx_v57x; ; jx++)
 		{
-			v293 = v58;
-			if (!v58)
+			tileColIdx_v293 = tileColIdx_v58;
+			if (!tileColIdx_v58)
 				break;
 			projectedVertexBuffer[18] = m_ptrStr_E9C38_smalltit[jx].pnt3_24;
 			projectedVertexBuffer[19] = m_ptrStr_E9C38_smalltit[jx].pnt4_28;
@@ -1264,13 +1264,13 @@ void GameRenderHD::SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVer
 				if (m_ptrStr_E9C38_smalltit[jx].haveBillboard_36)
 					DrawSprites_3E360(jx, str_DWORD_F66F0x, playersColors_E88E0x, x_DWORD_F5730, Entities_EA3E4, str_unk_1804B0ar, viewPort, pitch);
 			}
-			v58 = v293 - 1;
+			tileColIdx_v58 = tileColIdx_v293 - 1;
 		}
 		//Draw Right Side of Cave
-		if (v293)
+		if (tileColIdx_v293)
 		{
 			v82x = jx;
-			v83x = v57x + m_tileColumns - 2;
+			v83x = tileIdx_v57x + m_tileColumns - 2;
 			do
 			{
 				projectedVertexBuffer[18] = m_ptrStr_E9C38_smalltit[v83x].pnt3_24;
@@ -1355,9 +1355,9 @@ void GameRenderHD::SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVer
 				v83x--;
 			} while (v83x >= v82x);
 		}
-		v57x -= m_tileColumns;
-		v281--;
-	} while (v281);
+		tileIdx_v57x -= m_tileColumns;
+		tileRowIdx_v281--;
+	} while (tileRowIdx_v281);
 }
 
 void GameRenderHD::SubDrawInverseTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch)
@@ -1531,7 +1531,7 @@ void GameRenderHD::SubDrawInverseTerrainAndParticles(std::vector<int>& projected
 
 void GameRenderHD::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch)
 {
-	int v160 = (m_tileRows * m_tileColumns) - m_tileColumns;
+	int tileIdx_v160 = (m_tileRows * m_tileColumns) - m_tileColumns;
 
 	int v161;
 	int v162; // eax
@@ -1564,12 +1564,12 @@ void GameRenderHD::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexB
 	char v191; // dl
 	char v192; // dh
 
-	char rowNum_v282 = m_tileRows - 1;
+	int rowNum_v282 = m_tileRows - 1;
 
-	char ii;
+	int ii;
 	do
 	{
-		v161 = v160;
+		v161 = tileIdx_v160;
 		//Draw one row of the Left Side of Terrain
 		for (ii = m_tileColumns - 1; ii; --ii)
 		{
@@ -1635,7 +1635,7 @@ void GameRenderHD::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexB
 		if (ii)
 		{
 			v177x = v161 - 1;
-			v178x = v160 + m_tileColumns - 2;
+			v178x = tileIdx_v160 + m_tileColumns - 2;
 			do
 			{
 				projectedVertexBuffer[18] = m_ptrStr_E9C38_smalltit[v178x].pnt1_16;
@@ -1695,7 +1695,7 @@ void GameRenderHD::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexB
 				v178x = v190x - 1;
 			} while (v178x >= v177x);
 		}
-		v160 -= m_tileColumns;
+		tileIdx_v160 -= m_tileColumns;
 		rowNum_v282--;
 	} while (rowNum_v282);
 }
