@@ -18,7 +18,7 @@ jobs:
   # ─────────────────────────────────────────────
   build-windows:
     name: Windows (${{ matrix.BUILD_PLATFORM }})
-    runs-on: windows-latest
+    runs-on: windows-2025
     timeout-minutes: 60
     strategy:
       matrix:
@@ -99,7 +99,7 @@ jobs:
   # ─────────────────────────────────────────────
   build-installer:
     name: Installer (${{ matrix.arch }})
-    runs-on: windows-latest
+    runs-on: windows-2025
     needs: build-windows
     strategy:
       matrix:
