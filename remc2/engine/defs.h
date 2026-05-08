@@ -9,7 +9,7 @@
 
 */
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 #define _stricmp strcasecmp
 #define _strnicmp strncasecmp
 #define strnicmp strncasecmp

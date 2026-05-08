@@ -1856,7 +1856,7 @@ uint32_t compare_with_sequence(const char* filename, const uint8_t* adress, uint
 		fptestepc = fopen(findname.c_str(), "rb");
 	}
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 	fseek(fptestepc, (long long)count * (long long)size1 + offset, SEEK_SET);
 #else
 	_fseeki64(fptestepc, (long long)count * (long long)size1 + offset, SEEK_SET);

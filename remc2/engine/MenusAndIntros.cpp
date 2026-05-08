@@ -14,7 +14,7 @@ int16_t MOUSE_MIN = 0;
 int16_t MOUSE_MAX_X = 638;
 int16_t MOUSE_MAX_Y = 478;
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 void _strupr(char* s)
 {
 	char* p = s;

@@ -9,7 +9,7 @@ static bool our_iequals(const std::string& a, const std::string& b) {
 	return true;
 }
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 #include <stdlib.h>
 #include <string.h>
 
@@ -94,7 +94,7 @@ std::string casepath(const std::string &path)
 FILE* fcaseopen(char const* path, char const* mode)
 {
     FILE* f = fopen(path, mode);
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
     if (!f)
     {
         std::string r = casepath(path);
