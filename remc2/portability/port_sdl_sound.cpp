@@ -4,7 +4,7 @@
 #include <adlmidi.h>
 #include <iostream>
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
     #include <limits>
     #define MAX_PATH PATH_MAX
 #endif

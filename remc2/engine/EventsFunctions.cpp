@@ -22,7 +22,7 @@
 #include "Type_DB080_CdTrack.h"
 
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 #include <strings.h>
 #include <cstdlib>
 #include <cstring>

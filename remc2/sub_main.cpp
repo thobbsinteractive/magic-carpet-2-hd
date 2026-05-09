@@ -33,7 +33,7 @@ after NetworkCancel_748F7 not changed
 
 */
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 #include <strings.h>
 #include <cstdlib>
 #include <cstring>
