@@ -32,6 +32,14 @@ jobs:
       with:
         googletest_tag: 'release-1.11.0' # default is 'v1.11.0'
         
+    - name: Cache vcpkg packages
+      uses: actions/cache@v4
+      with:
+        path: C:\vcpkg\installed
+        key: vcpkg-${{ matrix.BUILD_PLATFORM }}-${{ hashFiles('**/vcpkg.json', '**/remc2.vcxproj') }}
+        restore-keys: |
+          vcpkg-${{ matrix.BUILD_PLATFORM }}-
+
     - name: Restore vcpkg packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: vcpkg integrate install
@@ -42,7 +50,21 @@ jobs:
         
     - name: Build ${{matrix.BUILD_CONFIGURATION}} ${{matrix.BUILD_PLATFORM}}
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{matrix.BUILD_CONFIGURATION}} /p:PlatformTarget=${{matrix.BUILD_PLATFORM}} /p:Platform=${{matrix.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}}/remc2.sln
+      env:
+        VCPKG_FEATURE_FLAGS: dependencygraph
+      run: |
+        $attempts = 0
+        do {
+          $attempts++
+          Write-Host "Build attempt $attempts of 3..."
+          msbuild /m /p:Configuration=${{matrix.BUILD_CONFIGURATION}} /p:PlatformTarget=${{matrix.BUILD_PLATFORM}} /p:Platform=${{matrix.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}}/remc2.sln
+          if ($LASTEXITCODE -eq 0) { break }
+          if ($attempts -lt 3) {
+            Write-Host "Build failed, retrying in 30s..."
+            Start-Sleep -Seconds 30
+          }
+        } while ($attempts -lt 3)
+        exit $LASTEXITCODE
     
     #- name: Run Unit Tests x86
     #  if: ${{ matrix.BUILD_CONFIGURATION == 'Debug' && matrix.BUILD_PLATFORM == 'x86' }}
