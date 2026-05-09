@@ -511,8 +511,8 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	__int16 v31; // cx
 	int v32; // eax
 	int v33; // ecx
-	signed int v34; // esi
-	int v35; // ebx
+	signed int y_v34; // esi
+	int dist_v35; // ebx
 	uint16_t v36; // dx
 	int v37; // eax
 	__int16 v38; // ax
@@ -586,6 +586,11 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 
 	int a1 = 0;
 	int a2 = 0;
+
+	for (int i = 0; i < (m_tileRows * m_tileColumns); i++)
+	{
+		memset(&m_ptrStr_E9C38_smalltit[i], 0, sizeof(type_E9C38_smalltit));
+	}
 
 	shadows_F2CC7 = D41A0_0.m_GameSettings.m_Graphics.m_wShadows;//21d080
 	notDay_D4320 = D41A0_0.terrain_2FECE.MapType != MapType_t::Day;
@@ -795,17 +800,17 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 			for (k = m_tileColumns; k; k--)
 			{
 				v33 = ((uint8_t)mapShading_12B4E0[v279] << 8) + 128;
-				v34 = m_ptrStr_E9C38_smalltit[v278x].y_12;
-				v35 = v34 * v34 + m_ptrStr_E9C38_smalltit[v278x].x_0 * m_ptrStr_E9C38_smalltit[v278x].x_0;
+				y_v34 = m_ptrStr_E9C38_smalltit[v278x].y_12;
+				dist_v35 = y_v34 * y_v34 + m_ptrStr_E9C38_smalltit[v278x].x_0 * m_ptrStr_E9C38_smalltit[v278x].x_0;
 				m_ptrStr_E9C38_smalltit[v278x].haveBillboard_36 = 0;
-				if (v34 <= -256 || v35 >= str_F2C20ar.dword0x15_tileRenderCutOffDistance)
+				if (y_v34 <= -256 || dist_v35 >= str_F2C20ar.dword0x15_tileRenderCutOffDistance)
 				{
 					m_ptrStr_E9C38_smalltit[v278x].triangleFeatures_38 |= 2u;
 					goto LABEL_46;
 				}
-				if (v34 < 128)
-					v34 = 128;
-				m_ptrStr_E9C38_smalltit[v278x].pnt1_16 = str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].x_0 / v34;
+				if (y_v34 < 128)
+					y_v34 = 128;
+				m_ptrStr_E9C38_smalltit[v278x].pnt1_16 = str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].x_0 / y_v34;
 				v36 = v279;
 				m_ptrStr_E9C38_smalltit[v278x].alt_4 = 32 * mapHeightmap_11B4E0[v279] - posZ;
 				m_ptrStr_E9C38_smalltit[v278x].inverse_alt_8 = ((uint8_t)x_BYTE_14B4E0_second_heightmap[v36] << 15 >> 10) - posZ;
@@ -820,11 +825,11 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 						v37 = 0;
 				}
 				v39 = (v33 << 8) + 8 * v37;
-				if (v35 <= str_F2C20ar.dword0x13_FogStart)
+				if (dist_v35 <= str_F2C20ar.dword0x13_FogStart)
 					goto LABEL_39;
-				if (v35 < str_F2C20ar.dword0x16_FogEnd)
+				if (dist_v35 < str_F2C20ar.dword0x16_FogEnd)
 				{
-					v39 = v39 * (signed __int64)(str_F2C20ar.dword0x16_FogEnd - v35) / str_F2C20ar.dword0x12_FogThickness;
+					v39 = v39 * (signed __int64)(str_F2C20ar.dword0x16_FogEnd - dist_v35) / str_F2C20ar.dword0x12_FogThickness;
 				LABEL_39:
 					m_ptrStr_E9C38_smalltit[v278x].pnt5_32 = v39;
 					goto LABEL_40;
@@ -835,8 +840,8 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					m_ptrStr_E9C38_smalltit[v278x].triangleFeatures_38 |= 0x80u;
 				v40 = str_F2C20ar.dword0x18;
 				//v41x = v278x;
-				m_ptrStr_E9C38_smalltit[v278x].pnt2_20 = str_F2C20ar.dword0x22 + str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].alt_4 / v34;
-				m_ptrStr_E9C38_smalltit[v278x].pnt4_28 = str_F2C20ar.dword0x22 + v40 * m_ptrStr_E9C38_smalltit[v278x].inverse_alt_8 / v34;
+				m_ptrStr_E9C38_smalltit[v278x].pnt2_20 = str_F2C20ar.dword0x22 + str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].alt_4 / y_v34;
+				m_ptrStr_E9C38_smalltit[v278x].pnt4_28 = str_F2C20ar.dword0x22 + v40 * m_ptrStr_E9C38_smalltit[v278x].inverse_alt_8 / y_v34;
 				LOBYTE(v42) = v277[2] + v279;
 				HIBYTE(v42) = v277[3] + HIBYTE(v279);
 				v43x = v278x;
