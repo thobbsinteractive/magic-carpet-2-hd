@@ -517,7 +517,6 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	int v37; // eax
 	__int16 v38; // ax
 	int v39; // eax
-	int v40; // edi
 	//int v41x; // edx
 	uint16_t v42; // bx
 	int v43x;
@@ -799,6 +798,10 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 			}
 			for (k = m_tileColumns; k; k--)
 			{
+				int32_t pnt1_16 = 0;
+				int32_t pnt2_20 = 0;
+				int32_t pnt4_28 = 0;
+
 				v33 = ((uint8_t)mapShading_12B4E0[v279] << 8) + 128;
 				y_v34 = m_ptrStr_E9C38_smalltit[v278x].y_12;
 				dist_v35 = y_v34 * y_v34 + m_ptrStr_E9C38_smalltit[v278x].x_0 * m_ptrStr_E9C38_smalltit[v278x].x_0;
@@ -810,7 +813,8 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 				}
 				if (y_v34 < 128)
 					y_v34 = 128;
-				m_ptrStr_E9C38_smalltit[v278x].pnt1_16 = str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].x_0 / y_v34;
+				pnt1_16 = str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].x_0 / y_v34;
+				m_ptrStr_E9C38_smalltit[v278x].pnt1_16 = pnt1_16;
 				v36 = v279;
 				m_ptrStr_E9C38_smalltit[v278x].alt_4 = 32 * mapHeightmap_11B4E0[v279] - posZ;
 				m_ptrStr_E9C38_smalltit[v278x].inverse_alt_8 = ((uint8_t)x_BYTE_14B4E0_second_heightmap[v36] << 15 >> 10) - posZ;
@@ -838,10 +842,12 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 			LABEL_40:
 				if (mapAngle_13B4E0[v279] & 8)
 					m_ptrStr_E9C38_smalltit[v278x].triangleFeatures_38 |= 0x80u;
-				v40 = str_F2C20ar.dword0x18;
 				//v41x = v278x;
-				m_ptrStr_E9C38_smalltit[v278x].pnt2_20 = str_F2C20ar.dword0x22 + str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].alt_4 / y_v34;
-				m_ptrStr_E9C38_smalltit[v278x].pnt4_28 = str_F2C20ar.dword0x22 + v40 * m_ptrStr_E9C38_smalltit[v278x].inverse_alt_8 / y_v34;
+
+				pnt2_20 = str_F2C20ar.dword0x22 + str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].alt_4 / y_v34;
+				pnt4_28 = str_F2C20ar.dword0x22 + str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].inverse_alt_8 / y_v34;
+				m_ptrStr_E9C38_smalltit[v278x].pnt2_20 = pnt2_20;
+				m_ptrStr_E9C38_smalltit[v278x].pnt4_28 = pnt4_28;
 				LOBYTE(v42) = v277[2] + v279;
 				HIBYTE(v42) = v277[3] + HIBYTE(v279);
 				v43x = v278x;
