@@ -531,6 +531,9 @@
     <None Include="memimages\regressions\level1\sequence-002285FF-003AA0A4.bin">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="playthough-config.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="regression-config.json">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <DeploymentContent>true</DeploymentContent>
