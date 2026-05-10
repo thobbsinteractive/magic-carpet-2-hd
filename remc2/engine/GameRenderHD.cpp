@@ -2958,15 +2958,7 @@ void GameRenderHD::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int in
 
 	uint8_t drawEveryNthLine = m_renderThreads.size() + 1;
 
-	double triArea1 = std::abs(vertex18.X * (vertex12.Y - vertex0.Y) + vertex12.X * (vertex0.Y - vertex18.Y) + vertex0.X * (vertex18.Y - vertex12.Y)) / 2.0;
-	double triArea2 = std::abs(vertex6.X * (vertex12.Y - vertex0.Y) + vertex12.X * (vertex0.Y - vertex6.Y) + vertex0.X * (vertex6.Y - vertex12.Y)) / 2.0;
-
-	double viewPortArea = viewPort.Width_DE564 * viewPort.Height_DE568;
-
-	bool skipThread = (triArea1 / viewPortArea) * 100 < m_sizePercentToThreadRender;
-
-	if (!skipThread)
-		skipThread = (triArea2 / viewPortArea) * 100 < m_sizePercentToThreadRender;
+	auto skipThread = CheckIfThreadRenderTriangle(vertex0, vertex6, vertex12, vertex18);
 
 	if ((uint8_t)m_ptrStr_E9C38_smalltit[index].triangleFeatures_38 & 1)
 	{
@@ -3018,6 +3010,21 @@ void GameRenderHD::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int in
 			DrawTriangleInProjectionSpace_B6253(&vertex18, &vertex6, &vertex0, 0, 1);
 		}
 	}
+}
+
+bool GameRenderHD::CheckIfThreadRenderTriangle(ProjectionPolygon v1, ProjectionPolygon v2, ProjectionPolygon v3, ProjectionPolygon v4)
+{
+	double triArea1 = std::abs(v4.X * (v3.Y - v1.Y) + v3.X * (v1.Y - v4.Y) + v1.X * (v4.Y - v3.Y)) / 2.0;
+	double triArea2 = std::abs(v2.X * (v3.Y - v1.Y) + v3.X * (v1.Y - v2.Y) + v1.X * (v2.Y - v3.Y)) / 2.0;
+
+	double viewPortArea = viewPort.Width_DE564 * viewPort.Height_DE568;
+
+	bool skipThread = (triArea1 / viewPortArea) * 100 < m_sizePercentToThreadRender;
+
+	if (!skipThread)
+		skipThread = (triArea2 / viewPortArea) * 100 < m_sizePercentToThreadRender;
+
+	return skipThread;
 }
 
 void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index)
