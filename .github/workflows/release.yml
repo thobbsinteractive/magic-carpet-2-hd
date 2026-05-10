@@ -18,7 +18,7 @@ jobs:
   # ─────────────────────────────────────────────
   build-windows:
     name: Windows (${{ matrix.BUILD_PLATFORM }})
-    runs-on: windows-latest
+    runs-on: windows-2025
     timeout-minutes: 60
     strategy:
       matrix:
@@ -26,18 +26,26 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           submodules: recursive
 
       - name: Add MSBuild to PATH
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
 
       - name: Install googletest
         uses: cvpkg/googletest-action@v0.1
         with:
           googletest_tag: 'release-1.11.0'
+
+      - name: Cache vcpkg packages
+        uses: actions/cache@v4
+        with:
+          path: C:\vcpkg\installed
+          key: vcpkg-${{ matrix.BUILD_PLATFORM }}-${{ hashFiles('**/vcpkg.json', '**/remc2.vcxproj') }}
+          restore-keys: |
+            vcpkg-${{ matrix.BUILD_PLATFORM }}-
 
       - name: Restore vcpkg packages
         working-directory: ${{ github.workspace }}
@@ -62,13 +70,25 @@ jobs:
 
       - name: Build Release
         working-directory: ${{ github.workspace }}
+        shell: pwsh
         run: |
-          msbuild /m `
-            /p:Configuration=Release `
-            /p:PlatformTarget=${{ matrix.BUILD_PLATFORM }} `
-            /p:Platform=${{ matrix.BUILD_PLATFORM }} `
-            /p:WarningLevel=0 `
-            ${{ env.SOLUTION_FILE_PATH }}/remc2.sln
+          $attempts = 0
+          do {
+            $attempts++
+            Write-Host "Build attempt $attempts of 3..."
+            msbuild /m `
+              /p:Configuration=Release `
+              /p:PlatformTarget=${{ matrix.BUILD_PLATFORM }} `
+              /p:Platform=${{ matrix.BUILD_PLATFORM }} `
+              /p:WarningLevel=0 `
+              ${{ env.SOLUTION_FILE_PATH }}/remc2.sln
+            if ($LASTEXITCODE -eq 0) { break }
+            if ($attempts -lt 3) {
+              Write-Host "Build failed, retrying in 30s..."
+              Start-Sleep -Seconds 30
+            }
+          } while ($attempts -lt 3)
+          exit $LASTEXITCODE
 
       - name: Package (zip) - x86
         if: matrix.BUILD_PLATFORM == 'x86'
@@ -99,7 +119,7 @@ jobs:
   # ─────────────────────────────────────────────
   build-installer:
     name: Installer (${{ matrix.arch }})
-    runs-on: windows-latest
+    runs-on: windows-2025
     needs: build-windows
     strategy:
       matrix:
@@ -109,7 +129,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0   # FIX #6: added for consistent tag access
           submodules: recursive
@@ -240,7 +260,7 @@ jobs:
             -o APT::Immediate-Configure=0
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           submodules: recursive
@@ -294,7 +314,7 @@ jobs:
           platforms: arm64
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           submodules: recursive
@@ -377,7 +397,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4

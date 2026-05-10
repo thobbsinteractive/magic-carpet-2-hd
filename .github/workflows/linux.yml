@@ -33,7 +33,7 @@ jobs:
         -o APT::Immediate-Configure=0
 
     - name: Check Out Sources
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
           submodules: recursive
           path: src
