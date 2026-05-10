@@ -200,7 +200,9 @@ extern uint8_t* x_BYTE_FAEE0_tablesx_pre;
 
 extern std::array<uint8_t*, 256> x_DWORD_DDF50_texture_adresses; /*= { 0,32 }*/ // weak
 
-extern type_E9C38_smalltit Str_E9C38_smalltit[21 * 40];
+const uint16_t TILE_ROWS_COUNT = 21;
+const uint16_t TILE_COLUMNS_COUNT = 40;
+extern type_E9C38_smalltit Str_E9C38_smalltit[TILE_ROWS_COUNT * TILE_COLUMNS_COUNT];
 
 extern type_F2C20ar str_F2C20ar;
 

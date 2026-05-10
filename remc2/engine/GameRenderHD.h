@@ -31,17 +31,26 @@ class GameRenderHD : public GameRenderInterface
 
 private:
 
+	struct TileStepQuadrant {
+		uint8_t startX;      // [0] starting X map coordinate offset
+		uint8_t startY;      // [1] starting Y map coordinate offset
+		uint8_t texOffX;     // [2] texture neighbour X offset
+		uint8_t texOffY;     // [3] texture neighbour Y offset
+		uint8_t entOffX;     // [4] entity/billboard X offset
+		uint8_t entOffY;     // [5] entity/billboard Y offset
+		uint8_t rowStepX;    // [6] row step X
+		uint8_t rowStepY;    // [7] row step Y
+		uint8_t colStepX;    // [8] column step X
+		uint8_t colStepY;    // [9] column step Y
+	};
+
 	//The sprite render uses hardcoded offsets of the buffer. This have been adjusted to the new buffer size of
 	//m_ptrDWORD_E9C38_smalltit otherwise at higher resolutions sprite data they writes over each other
 	const int m_bufferOffset_E9C38_1 = 995328; // 12%
 	const int m_bufferOffset_E9C38_2 = 1161216; // 14%
 	const int m_bufferOffset_E9C38_3 = 1658880; // 20%
 
-	uint8_t unk_D4328x[40] = {
-		0xED,0x01,0x00,0x00,0x00,0xFF,0xD8,0xFF,0x01,0x00,0x00,0xED,0xFF,0x00,0x01,0x00,
-		0x01,0xD8,0x00,0x01,0x13,0x00,0xFF,0xFF,0x00,0x01,0x28,0x01,0xFF,0x00,0x01,0x13,
-		0x00,0xFF,0xFF,0x00,0xFF,0x28,0x00,0xFF
-	};
+	TileStepQuadrant* m_tileRenderStepTable_D4328x;
 
 	uint8_t unk_DE56Cx[8][4194304]; //Number of possible render threads (8) //number of polygons (2048 * 2048)
 	
@@ -61,6 +70,11 @@ private:
 	};
 
 	type_unk_F0E20x m_str_F0E20x[GAME_RES_MAX_WIDTH + 100]; // Originally 640
+	type_E9C38_smalltit* m_ptrStr_E9C38_smalltit;
+	uint16_t m_tileRows = TILE_ROWS_COUNT;
+	uint16_t m_tileColumns = TILE_COLUMNS_COUNT;
+	float m_sizePercentToThreadRender = 10.0;
+	uint8_t m_viewDistanceScale = 1;
 
 	uint8_t* m_ptrDWORD_E9C38_smalltit = nullptr;
 	uint8_t* m_ptrScreenBuffer_351628 = nullptr;
@@ -112,9 +126,12 @@ private:
 	void StartWorkerThread(int core);
 	void StopWorkerThreads();
 	void WaitForRenderFinish();
+	void BuildTileRenderStepTable(TileStepQuadrant* table, int cols);
+	bool CheckIfThreadRenderTriangle(ProjectionPolygon v1, ProjectionPolygon v2, ProjectionPolygon v3, ProjectionPolygon v4);
+	bool CheckViewPortCull(ProjectionPolygon v1, ProjectionPolygon v2, ProjectionPolygon v3, int maxCoordinate = 2147483647, int minCoordinate = -2147483647);
 
 public:
-	GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t renderThreads, bool assignToSpecificCores);
+	GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t renderThreads, bool assignToSpecificCores, float sizePercentToThreadRender = 10.0, uint8_t viewDistanceScale = 1);
 	~GameRenderHD();
 	
 	void SetRenderThreads(uint8_t renderThreads);
