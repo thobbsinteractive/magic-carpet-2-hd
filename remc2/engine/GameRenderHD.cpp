@@ -2958,6 +2958,9 @@ void GameRenderHD::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int in
 
 	uint8_t drawEveryNthLine = m_renderThreads.size() + 1;
 
+	if (CheckViewPortCull(vertex18, vertex12, vertex0) || CheckViewPortCull(vertex0, vertex12, vertex6))
+		return;
+
 	auto skipThread = CheckIfThreadRenderTriangle(vertex0, vertex6, vertex12, vertex18);
 
 	if ((uint8_t)m_ptrStr_E9C38_smalltit[index].triangleFeatures_38 & 1)
@@ -3027,6 +3030,21 @@ bool GameRenderHD::CheckIfThreadRenderTriangle(ProjectionPolygon v1, ProjectionP
 	return skipThread;
 }
 
+bool GameRenderHD::CheckViewPortCull(ProjectionPolygon v1, ProjectionPolygon v2, ProjectionPolygon v3, int maxCoordinate, int minCoordinate)
+{
+	if ((((int64_t)v1.X << 16) > maxCoordinate) || (((int64_t)v1.Y << 16) > maxCoordinate) || (((int64_t)v2.X << 16) > maxCoordinate) ||
+		(((int64_t)v2.Y << 16) > maxCoordinate) || (((int64_t)v3.X << 16) > maxCoordinate) || (((int64_t)v3.Y << 16) > maxCoordinate))
+	{
+		return true;
+	}
+	if ((((int64_t)v1.X << 16) < minCoordinate) || (((int64_t)v1.Y << 16) < minCoordinate) || (((int64_t)v2.X << 16) < minCoordinate) ||
+		(((int64_t)v2.Y << 16) < minCoordinate) || (((int64_t)v3.X << 16) < minCoordinate) || (((int64_t)v3.Y << 16) < minCoordinate))
+	{
+		return true;
+	}
+	return false;
+}
+
 void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index)
 {
 	DrawInverseSquareInProjectionSpace(vertexs, index, x_DWORD_DDF50_texture_adresses.at(m_ptrStr_E9C38_smalltit[index].textIndex_41));
@@ -3062,15 +3080,10 @@ void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index, u
 
 	uint8_t drawEveryNthLine = m_renderThreads.size() + 1;
 
-	double triArea1 = std::abs(vertex18.X * (vertex12.Y - vertex0.Y) + vertex12.X * (vertex0.Y - vertex18.Y) + vertex0.X * (vertex18.Y - vertex12.Y)) / 2.0;
-	double triArea2 = std::abs(vertex6.X * (vertex12.Y - vertex0.Y) + vertex12.X * (vertex0.Y - vertex6.Y) + vertex0.X * (vertex6.Y - vertex12.Y)) / 2.0;
+	if (CheckViewPortCull(vertex18, vertex12, vertex0) || CheckViewPortCull(vertex0, vertex12, vertex6))
+		return;
 
-	double viewPortArea = viewPort.Width_DE564 * viewPort.Height_DE568;
-
-	bool skipThread = (triArea1 / viewPortArea) * 100 < 10.0;
-
-	if (!skipThread)
-		skipThread = (triArea2 / viewPortArea) * 100 < 10.0;
+	auto skipThread = CheckIfThreadRenderTriangle(vertex0, vertex6, vertex12, vertex18);
 
 	if (m_ptrStr_E9C38_smalltit[index].triangleFeatures_38 & 1)
 	{

@@ -128,6 +128,7 @@ private:
 	void WaitForRenderFinish();
 	void BuildTileRenderStepTable(TileStepQuadrant* table, int cols);
 	bool CheckIfThreadRenderTriangle(ProjectionPolygon v1, ProjectionPolygon v2, ProjectionPolygon v3, ProjectionPolygon v4);
+	bool CheckViewPortCull(ProjectionPolygon v1, ProjectionPolygon v2, ProjectionPolygon v3, int maxCoordinate = 2147483647, int minCoordinate = -2147483647);
 
 public:
 	GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t renderThreads, bool assignToSpecificCores, float sizePercentToThreadRender = 10.0, uint8_t viewDistanceScale = 1);
