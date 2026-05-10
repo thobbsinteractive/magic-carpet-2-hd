@@ -674,7 +674,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 		while (m_tileColumns_v19)
 		{
 			m_ptrStr_E9C38_smalltit[v18x].x_0 -= projectedVertexBuffer[27];
-			m_ptrStr_E9C38_smalltit[v18x].y_12 += v20;// +v21;
+			m_ptrStr_E9C38_smalltit[v18x].y_12 += v20;
 			v18x++;
 			m_tileColumns_v19--;
 		}
@@ -3047,12 +3047,11 @@ void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index, u
 	auto vertex12 = ProjectionPolygon(&vertexs[12]);
 	auto vertex18 = ProjectionPolygon(&vertexs[18]);
 
-	//Logger->trace("--------------------------------------");
-	//Logger->trace("{}", vertex0.Print());
-	//Logger->trace("{}", vertex6.Print());
-	//Logger->trace("{}", vertex12.Print());
-	//Logger->trace("{}", vertex18.Print());
-	//Logger->trace("--------------------------------------");
+	//Logger->debug("Idx: {} {}", index, vertex0.Print());
+	//Logger->debug("Idx: {} {}", index, vertex6.Print());
+	//Logger->debug("Idx: {} {}", index, vertex12.Print());
+	//Logger->debug("Idx: {} {}", index, vertex18.Print());
+
 
 	uint8_t drawEveryNthLine = m_renderThreads.size() + 1;
 
