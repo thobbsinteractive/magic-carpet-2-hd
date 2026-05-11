@@ -1,5 +1,5 @@
 # Magic Carpet 2 HD
-## Now actually in HD or 2K!
+## Now actually in HD or 2K with increased View Distance!
 Based off the Reverse engineering of game Magic Carpet 2 from assembler to c/c++ language by Tomas Versly <br />
 Forked from Tomas Vesely's repo here: https://github.com/turican0/remc2 <br /><br />
 Tomas has done amazing work, not only reverse engineering this code but updating it to use more modern memory allocation and use the SDL library for input and sound. He has even increased the sprite resolutions.
