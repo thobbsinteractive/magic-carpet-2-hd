@@ -7,7 +7,7 @@ std::string ReadConfig::FindConfigFile() {
 		configFile_locations.push_back(CommandLineParams.GetConfigFilePath());
 	}
 	else {
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		auto env_home_dir = std::getenv("HOME");
 		auto env_xdg_config_home_dir = std::getenv("XDG_CONFIG_HOME");
 		std::filesystem::path home_dir;
@@ -56,8 +56,8 @@ bool ReadConfig::SetConfig() {
 
 	auto config = Config(configFilePath);
 
-	strcpy((char*)gameFolder, config.m_Paths.m_GameFolder.c_str());
-	strcpy((char*)cdFolder, config.m_Paths.m_CdFolder.c_str());
+	gameFolder = config.m_Paths.m_GameFolder;
+	cdFolder = config.m_Paths.m_CdFolder;
 
 	return true;
 };

@@ -4,7 +4,7 @@
 #include "../portability/bitmap_pos_struct.h"
 
 extern char CURSOR_SPRITE_INDEX_D419E; // weak//2a519e
-extern char x_BYTE_D47D9; // weak
+extern char IsPauseMenuOpen_D47D9; // weak
 extern int debugcounter_47560;
 extern int x_DWORD_17FF14; // weak
 extern int16_t x_WORD_17FF18; // weak
@@ -18,8 +18,8 @@ void ProcessKeyboardPresses_17190();
 void MouseAndKeysEvents_17A00(int16_t turn);
 void PauseUnpauseGame_18BB0();
 void HandleButtonClick_191B0(int16_t hiSetting, char loSetting);
-void sub_1A970_change_game_settings(char a1, int a2, int a3);
-void sub_41AF0();
+void ChangeSettings_1A970(char a1, int a2, int a3);
+void SetPausedMenuOpen_41AF0();
 void SetCursor_8CD27(bitmap_pos_struct_t a2);
 void sub_417D0_install_pal_and_mouse_minmax2();
 void ReadPauseMenuEvents_197F0();

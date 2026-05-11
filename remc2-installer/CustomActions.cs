@@ -6,7 +6,7 @@ using WixToolset.Dtf.WindowsInstaller;
 public class CustomActions
 {
 	[CustomAction]
-    public static ActionResult SetEnhancedTextures(Session session)
+    public static ActionResult SetHighResGraphics(Session session)
     {
 		bool enhancedTextures = false;
 
@@ -26,7 +26,8 @@ public class CustomActions
 			{
 				session.Log($"Updating config File: {configFilePath}");
 
-				if (Utils.SetEnhancedTextures(configFilePath, configFilePath, enhancedTextures))
+				if (Utils.SetHighResGraphics(configFilePath, configFilePath, enhancedTextures) &&
+					Utils.SetFixedMenuGraphics(configFilePath, configFilePath, enhancedTextures))
 				{
 					session.Log($"Success updating config File: {configFilePath}");
 					return ActionResult.Success;

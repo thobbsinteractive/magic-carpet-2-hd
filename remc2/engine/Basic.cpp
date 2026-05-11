@@ -4,7 +4,8 @@
 
 std::string gameDataPath;
 std::string cdDataPath;
-std::string bigGraphicsPath;
+std::string highResGraphicsPath;
+std::string fixedMenuGraphicsPath;
 
 //lenght 18
 //type_17ECA0 str_17ECA0[256]; // weak
@@ -427,7 +428,7 @@ void stub_fix_it() { allert_error(); };
 
 void dbgfprintf(FILE* file, const char* format, ...) {
 	//void dbgfprintf(FILE* file,char* str) {
-	fprintf(file, format);
+	fprintf(file, "%s", format);
 	fprintf(file, "\n");
 }
 
@@ -562,7 +563,13 @@ int sub_9D380(FILE* a1, int a2, char a3, uint8_t* a4x, int a5)//27e380
 {
 	if (a3 & 1)
 	{
-		memcpy((void*)a4x, (const void*)(a2 + a1), a5);
+#ifdef _WIN32
+		// Windows FILE*
+		memcpy((void*)a4x, (const void*)(uintptr_t(a1) + a2), a5);
+#else
+		// Android/Linux FILE*
+		memcpy((void*)a4x, (const void*)((char*)a1 + a2), a5);
+#endif
 	}
 	else
 	{

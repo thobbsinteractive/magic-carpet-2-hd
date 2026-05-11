@@ -34,7 +34,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="EnhancedTexturesDialog.cs">
+    <Compile Update="EnhancementsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="RedistDialog.cs">

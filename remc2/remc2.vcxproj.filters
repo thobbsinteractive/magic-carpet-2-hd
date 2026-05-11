@@ -31,6 +31,12 @@
     <Filter Include="Header Files\utilities">
       <UniqueIdentifier>{3087ce82-d2a1-473b-92b8-cc3d22463f94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\lib">
+      <UniqueIdentifier>{09dcf658-cd17-438b-8076-e982e29977fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\lib">
+      <UniqueIdentifier>{71476ba4-8cad-4bb4-87dd-d3a59776e259}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -339,6 +345,12 @@
     <ClInclude Include="engine\XmiInfo.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
+    <ClInclude Include="lib\stb_image.h">
+      <Filter>Header Files\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\stb_image_write.h">
+      <Filter>Header Files\lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -556,6 +568,9 @@
     </ClCompile>
     <ClCompile Include="engine\XmiInfo.cpp">
       <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\stb_impl.cpp">
+      <Filter>Source Files\lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//32
 	uint32_t configDatSign_0;
 	uint16_t langIndex_4;
@@ -16,4 +16,4 @@ typedef struct {//32
 	uint8_t stubb[2];
 	uint8_t keys[10];
 } TypeConfigDat;
-#pragma pack (16)
+#pragma pack(pop)

@@ -154,6 +154,9 @@ set(SOURCE_FILES_UNITTESTS_DEPENDENCIES
     "../remc2/engine/UVTable_D4350.h"
     "../remc2/utilities/DataFileRNC.cpp"
     "../remc2/utilities/DataFileRNC.h"
+    "../remc2/lib/stb_impl.cpp"
+    "../remc2/lib/stb_image.h"
+    "../remc2/lib/stb_image_write.h"
 )
 source_group("Source Files\\unittests" FILES ${SOURCE_FILES_UNITTESTS} ${SOURCE_FILES_UNITTESTS_DEPENDENCIES})
 
@@ -181,7 +184,6 @@ target_link_libraries(${UNIT_TEST_TARGET} PUBLIC
 	${PNG_LIBRARY}
 	findfirst
 	ADLMIDI_static
-	Boost::system
 	fmt::fmt
     ${GTEST_LIBRARIES}
     ${GTEST_MAIN_LIBRARIES}

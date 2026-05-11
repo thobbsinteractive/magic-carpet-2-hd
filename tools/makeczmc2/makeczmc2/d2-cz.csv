@@ -63,7 +63,7 @@ Xâââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 ##-1#
 X5This demo of Magic Carpet 2 features a playable level and two rolling demo levels. Bullfrog hopes you will enjoy this taster of the stunning sequel to 1994's Game of the Year. With a whole range of new features, Magic Carpet 2 is faster, darker ..... and bloodier. With 25 action packed levels, Magic Carpet 2 features many new creatures and spells, some of which can be seen on this demo. Plus Magic Carpet 2 will have a save mid game feature. Magic Carpet 2 will be released at the end of September 1995.#X5Toto demo hry Magic Carpet 2 obsahuje jednu hratelnou úroveò a dvì ukázkové. Doufáme, e vás ukázka pokraèování ohromující hry z roku 1994 nadchne. Obsahuje celou øadou novıch funkcí, díky kterım je Magic Carpet 2 rychlejší, temnìjší ... a krvavìjší. V 25 akèních levelech najdete v Magic Carpet 2 mnoho novıch tvorù i kouzel, z nich nìkteré budou i v této ukázce. Magic Carpet 2 bude mít cenu støednì velké hry a bude vydán koncem záøí 1995.#0#
 Pause game.#Pozastavit hru.#1#
-Abandon level.#Ukonèit level.#2#
+Abandon level.#Opustit úroveò.#2#
 Continue game once dead with castle, end game once dead without.#Pokud zemøeš a máš postavenı hrad, mùeš se v nìm oivit, jinak bude tvá smrt definitivním koncem hry.#3#
 Toggle sound on / off#Zapnout / vypnout zvuk#4#
 Toggle music on / off#Zapnout / vypnout hudbu#5#
@@ -78,11 +78,11 @@ Alter screen size#Zmìnit velikost obrazovky#13#
 Toggle help on / off#Zapnout / vypnout nápovìdu#14#
 Toggle flight assistance on / off#Zapnout / vypnout letového asistenta#15#
 Kafkar: When you're a wizard trapped in the Netherworlds, and its demon overlord discovers which#Kafkar: Kdy jsi èarodìj, lapenı v zemi Netherworlds, a pán démonù,#16#
-dimension you've just come from, you have good reason to wonder how long that dimension has left#Hle, kde je vùle, tam je cesta! Pospìš si pøíteli!#17#
+dimension you've just come from, you have good reason to wonder how long that dimension has left#zjistí ze které dimenze jsi právì pøišel, mùeš jen hádat, jak dlouho potrvá, #17#
 before said demon tranforms it into an ornament for his throne room...#ne se staneš jeho další trofejí v trùnním sále ...#18#
 Vissuluth: I am free! And I smell the fear of mortal men.#Vissuluth: Koneènì na svobodì! A cítím, e se lidé bojí o svùj ivot!#19#
 Kafkar: Then you remember that promising apprentice you once introduced to the eldritch arts...#Kafkar: Nezapomeò, e tì mohu zasvìtit do prastarého umìní mágù ...#20#
-Apprentice: No! Master?#Uèedník: Nééé! Kde jste mistøe?#21#
+Apprentice: No! Master?#Uèedník: Nééé! Mistøe?#21#
 Kafkar: I see you have met your new neighbour, Vissuluth, Demon Lord of the Netherworlds.#Kafkar: Koukám, e sis všiml našeho nového souseda, Vissulutha, Pána Démonù z Netherworlds.#22#
 "You must explore the outer Netherworlds while you learn its magic. Your first destination is the ancient city of Jahwl."#Nejdøív bys mìl prozkoumat periférii Netherworlds, a procvièit si svou magii. Zaèni návštìvou mìsta Jahwl, kde pøebıvají duše zatracenıch.#23#
 "Before Vissuluth's rule of the Netherworlds began, the island of Kopahk was occupied by the great sorceress, Payahandra. Go there and discover her lost spells."#Ještì ne ji odsud Vissuluth vyhnal, kralovala na ostrovu Kopahk mocná èarodìjka Payahandra. Dostaò se na nìj a najdi její poztrácená kouzla.#24#
@@ -101,7 +101,7 @@ Kafkar: I see you have met your new neighbour, Vissuluth, Demon Lord of the Neth
 "Beneath you lies the underground netherworld of Zyggogg. From this place, Vissuluth selects the strongest creatures to join his army. It is time to deal our adversary a truly serious blow."#Pod tebou leí podzemní svìt Zyggogg. Odsud si Vissuluth pøivolává na pomoc nejmocnìjší tvory, které tvoøí základ jeho armády. Je èas zasadit tvému protivníkovi poøádnou ránu.#37#
 "You must find out where the troglodytes are coming from and find a way to stop them. I suspect the deep netherworld of Darklava, mining civilisation of the ancient ones."#Zjisti, odkud pøicházejí mumie, a najdi zpùsob, jak je zastavit. Mám dojem, e z hloubi podzemí Darkovy, dolu prastarıch civilizací.#38#
 "The Arenas of the C'lannesh are infamous across the netherworlds, for the deadly sport which they provide. Your enemies have called on the Elyssia the Trainer for aid. She will see how well you have learned your skills."#Arény v C'lannesh nechvalnì proslavil po celém svìtì vraednı sport, kterı se zde provozuje. Tvùj nepøátel si vzal na pomoc Trénerku Elys. Boj s ní provìøí tvé dovednosti.#39#
-"The Wyvernflights of The Firestorm Mountains are commanded by Yragore, one of the most powerful wizards to serve the Demon Lord. Yet a rival of Yragore stole the spell of creature command. The thief perished but Yragore does not know what happened to the spell."#Draky z Ohnivého Pohoøí ovládá Yragor, jeden z nejmocnìjších èarodìjníkù, kteøí slouí Pánu Démonù. Ale jeho protivník mu ukradl kouzlo k ovládání pøíšer. Zlodìj sice zahynul, ale Yragor netuší, kam se kouzlo ztratilo.#40#
+"The Wyvernflights of The Firestorm Mountains are commanded by Yragore, one of the most powerful wizards to serve the Demon Lord. Yet a rival of Yragore stole the spell of creature command. The thief perished but Yragore does not know what happened to the spell."#Wywerny z Ohnivého Pohoøí ovládá Yragor, jeden z nejmocnìjších èarodìjníkù, kteøí slouí Pánu Démonù. Ale jeho protivník mu ukradl kouzlo k ovládání pøíšer. Zlodìj sice zahynul, ale Yragor netuší, kam se kouzlo ztratilo.#40#
 "You have brought chaos to the Demon Lord's domain. His wizards regroup in the wilderness below."#Do panství Pána Démonù jsi vmetl chaos. Jeho èarodìjové se seskupili dole v pustinì.#41#
 "The people have nowhere to run to, nor any place to hide. And Vissuluth has turned his army on them. We must go to the aid of the innocent."#Místní lidé nemùou nikam utéct, ani se schovat. A Vissuluthova armáda je na cestì. Musíš tìm civilistùm pomoci.#42#
 "Nyphur's armies return. They gather here, in a maze of tunnels and unstable caverns. You must enter tunnels and hunt down the enemy."#Nyphurovy armády se vracejí. Shromádují se v bludišti tunelù a nestabilních jeskyních. Vlez do tunelù a vystopuj nepøítele.#43#
@@ -188,7 +188,7 @@ Kafkar: I see you have met your new neighbour, Vissuluth, Demon Lord of the Neth
 "Give these evil doers a display of real wizardry!"#Uka tìm hajzlíkùm co dokáe opravdovı èarodìj!#124#
 "Soon you will have finished them for good."#Naše taení ve jménu dobra bude u brzy u konce.#125#
 "Yragore is extremely powerful, do not attack him until you are ready."#Yragor je nesmírnì silnı, neútoè na nìj, dokud nebudeš pøipraven.#126#
-"Beware! A wyvern approaches!"#Pozor! Blíí se Drak! #127#
+"Beware! A wyvern approaches!"#Pozor! Blíí se wywerny! #127#
 "Your battle with the wyvern will attract more of its kind. Be ready."#Náš boj s Drakem, pøílákal jeho kamarády. Buï na nì pøipraven.#128#
 "Now, command the wyvern and attack Yragore's castle!"#Nyní poruè Drakùm, a zaútoèí na Yragorùv hrad!#129#
 "Your foe surely fears you now."#Tvùj sok se tì zaèíná bát…#130#
@@ -350,7 +350,7 @@ has been banished from the realm.#byl vyhnán z øíše.#283#
 Press 'O' to show current objective#Stiskem tlaèítko O zjistíš co máš dìlat#286#
 You are here#Nacházíš se zde#287#
 Walls cannot be passed#Tyto stìny jsou neprostupné#288#
-Press RETURN for large map#Stisk tlaèítka RETURN pøepne velikost mapy#289#
+Press RETURN for large map#Stisk tlaèítka ENTER pøepne velikost mapy#289#
 Your life is low, retreat for a while#Jsi vánì zranìnı, na chvíli uteè#290#
 Search for spells#Najdi kouzla#291#
 Search for fireball spell#Najdi kouzlo Ohnivé koule#292#

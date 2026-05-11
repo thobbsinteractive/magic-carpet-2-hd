@@ -2,7 +2,6 @@
 
 bool IsAfterLoad = false;
 
-void LoadTextureData(__int16 vgaTypeResolution, MapType_t MapType, uint8_t* textureBuffer);
 void sub_71890();
 void sub_718F0();
 
@@ -441,13 +440,291 @@ void sub_49270_generate_level_features(Type_Level_2FECE* terrain)//22a270
 	}
 }
 
-//----- (00047160) --------------------------------------------------------
-void sub_47160()//228160
+static std::string MapTypeFolder(MapType_t mt)
 {
-	//unsigned __int8 v0; // al
+	switch (mt)
+	{
+	case MapType_t::Day:   return "DAY";
+	case MapType_t::Night: return "NIGHT";
+	case MapType_t::Cave:  return "CAVE";
+	default:               return "DAY";
+	}
+}
 
-	//v0 = x_D41A0_BYTEARRAY_0[196308];
+static std::string DatBaseName(MapType_t mt)
+{
+	switch (mt)
+	{
+	case MapType_t::Day:   return "HSPRD0-0.DAT";
+	case MapType_t::Night: return "HSPRN0-0.DAT";
+	case MapType_t::Cave:  return "HSPRC0-0.DAT";
+	default:               return "HSPRD0-0.DAT";
+	}
+}
 
+static uint8_t NearestPaletteIndex(uint8_t r, uint8_t g, uint8_t b,
+	const TColor* palette, int paletteSize)
+{
+	int   bestIdx = 0;
+	int   bestDist = INT_MAX;
+	for (int i = 0; i < paletteSize; ++i)
+	{
+		int dr = (int)r - (int)palette[i].red*4;
+		int dg = (int)g - (int)palette[i].green*4;
+		int db = (int)b - (int)palette[i].blue*4;
+		int dist = dr * dr + dg * dg + db * db;
+		if (dist < bestDist)
+		{
+			bestDist = bestIdx = i;
+			bestIdx = i;
+			bestDist = dist;
+			if (dist == 0) break;
+		}
+	}
+	return (uint8_t)bestIdx;
+}
+
+static void EncodeRLE(const uint8_t* raw, const uint8_t* hasAlpha,
+	int w, int h,
+	std::vector<uint8_t>& out)
+{
+	for (int y = 0; y < h; ++y)
+	{
+		const uint8_t* row = raw + y * w;
+		const uint8_t* alphaRow = hasAlpha + y * w;
+		int x = 0;
+		while (x < w)
+		{
+			if (!alphaRow[x])
+			{
+				int skipStart = x;
+				int skipLen = 0;
+				while (x < w && !alphaRow[x] && skipLen < 127)
+				{
+					++skipLen;
+					++x;
+				}
+				out.push_back((uint8_t)(-skipLen));
+				continue;
+			}
+			int runStart = x;
+			int runLen = 0;
+			while (x < w && runLen < 127 && alphaRow[x])
+			{
+				++runLen;
+				++x;
+			}
+			if (runLen > 0)
+			{
+				out.push_back((uint8_t)runLen);
+				for (int i = runStart; i < runStart + runLen; ++i)
+					out.push_back(row[i]);
+			}
+		}
+		out.push_back(0x00);
+	}
+}
+
+static bool PatchSprite(bitmap_pos_struct2_t* tabBase,
+	uint8_t* datBase,
+	size_t& datUsed,
+	size_t          datCapacity,   // přidaný parametr
+	int             spriteIndex,
+	const char* pngPath,
+	const TColor* palette,
+	int             paletteSize)
+{
+	RGBAImage img;
+	if (!BitmapIO::ReadImagePNG(pngPath, img))
+	{
+		Logger->warn("LoadFixedMenuGraphics: failed to load '{}'.", pngPath);
+		return false;
+	}
+
+	if (img.width > 255 || img.height > 255)
+	{
+		Logger->warn("LoadFixedMenuGraphics: sprite '{}' too large ({}x{} > 255x255), skipped.",
+			pngPath, img.width, img.height);
+		return false;
+	}
+	const int numPixels = img.width * img.height;
+	std::vector<uint8_t> indexed(numPixels);
+	std::vector<uint8_t> opaque(numPixels, 1);
+
+	for (int i = 0; i < numPixels; ++i)
+	{
+		uint8_t r = img.pixels[4 * i + 0];
+		uint8_t g = img.pixels[4 * i + 1];
+		uint8_t b = img.pixels[4 * i + 2];
+		uint8_t a = img.pixels[4 * i + 3];
+
+		if (img.hasAlpha && a < 128)
+		{
+			opaque[i] = 0;
+			indexed[i] = 0;
+		}
+		else
+		{
+			opaque[i] = 1;
+			indexed[i] = NearestPaletteIndex(r, g, b, palette, paletteSize);
+		}
+	}
+	std::vector<uint8_t> rleData;
+	rleData.reserve(numPixels + img.height * 2);
+	EncodeRLE(indexed.data(), opaque.data(), img.width, img.height, rleData);
+	size_t newOffset = datUsed;
+	assert(datUsed + rleData.size() < datCapacity);  // místo < 3000000
+	memcpy(datBase + newOffset, rleData.data(), rleData.size());
+	datUsed += rleData.size();
+	tabBase[spriteIndex].data_0 = (uint32_t)newOffset;
+	tabBase[spriteIndex].width_4 = (uint8_t)img.width;
+	tabBase[spriteIndex].height_5 = (uint8_t)img.height;
+	Logger->debug("LoadFixedMenuGraphics: patched sprite {} from '{}' "
+		"({}x{}, {} RLE bytes at offset {}).",
+		spriteIndex, pngPath, img.width, img.height, rleData.size(), newOffset);
+	return true;
+}
+
+void LoadFixedMenuGraphics()
+{
+	char dataPath[MAX_PATH];
+	uint8_t** tempPal = xadatapald0dat2.colorPalette_var28;
+	switch (D41A0_0.terrain_2FECE.MapType)
+	{
+		case MapType_t::Day:
+		{
+			sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/PALD-0.DAT");
+			DataFileIO::ReadFileAndDecompress(dataPath, xadatapald0dat2.colorPalette_var28);
+		}
+		break;
+		case MapType_t::Night:
+		{
+			if (D41A0_0.terrain_2FECE.byte_0x2FED2 & 2)
+			{
+				sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/PALF-0.DAT");
+				DataFileIO::ReadFileAndDecompress(dataPath, xadatapald0dat2.colorPalette_var28);
+			}
+			else
+			{
+				sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/PALN-0.DAT");
+				DataFileIO::ReadFileAndDecompress(dataPath, xadatapald0dat2.colorPalette_var28);
+			}
+			break;
+		}
+		case MapType_t::Cave:
+		{
+			sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/PALC-0.DAT");
+			DataFileIO::ReadFileAndDecompress(dataPath, xadatapald0dat2.colorPalette_var28);
+			break;
+		}
+	}
+
+	const TColor* palette = (const TColor*)*xadatapald0dat2.colorPalette_var28;
+	xadatapald0dat2.colorPalette_var28 = tempPal;
+	const int paletteSize = 256;
+	if (!palette)
+	{
+		Logger->warn("LoadFixedMenuGraphics: palette not loaded, skipping.");
+		return;
+	}
+	uint8_t* datBase = HSPRD00DAT_BEGIN_BUFFER;
+	bitmap_pos_struct2_t* tabBase = HSPRD00TAB_BEGIN_BUFFER;
+	bitmap_pos_struct2_t* tabEnd = HSPRD00TAB_END_BUFFER;
+	const int             numSprites = (int)(tabEnd - tabBase);
+
+	if (!datBase || !tabBase || numSprites <= 0)
+	{
+		Logger->warn("LoadFixedMenuGraphics: buffers not loaded, skipping.");
+		return;
+	}
+	int lastIdx = 0;
+	for (int i = 0; i < numSprites; ++i)
+		if (tabBase[i].data_0 > tabBase[lastIdx].data_0)
+			lastIdx = i;
+	uint8_t* p = HSPRD00DAT_BEGIN_BUFFER + tabBase[lastIdx].data_0;
+	for (int row = 0; row < tabBase[lastIdx].height_5; )
+	{
+		uint8_t b = *p++;
+		if (b == 0x00) { row++; continue; }
+		if ((b & 0x80) == 0) p += b;
+	}
+	size_t datUsed = (size_t)(p - HSPRD00DAT_BEGIN_BUFFER);
+	Logger->debug("LoadFixedMenuGraphics: DAT buffer used size: {} bytes.", datUsed);
+
+	const size_t extraCapacity = 1024 * 1024;
+	const size_t datCapacity = datUsed + extraCapacity;
+	uint8_t* newDatBuffer = (uint8_t*)Malloc_83CD0(datCapacity);
+	if (!newDatBuffer)
+	{
+		Logger->error("LoadFixedMenuGraphics: failed to allocate extended DAT buffer.");
+		return;
+	}
+	memcpy(newDatBuffer, HSPRD00DAT_BEGIN_BUFFER, datUsed);
+	FreeMem_83E80(HSPRD00DAT_BEGIN_BUFFER);
+	HSPRD00DAT_BEGIN_BUFFER = newDatBuffer;
+	datBase = newDatBuffer;
+
+	MapType_t   mt = D41A0_0.terrain_2FECE.MapType;
+	std::string datName = DatBaseName(mt);
+	std::string mapFolder = MapTypeFolder(mt);
+	std::string patchDir = GetSubDirectoryPath(fixedMenuGraphicsFolder.c_str(), mapFolder.c_str());
+	if (patchDir.empty() || !DirExists(patchDir.c_str()))
+	{
+		Logger->debug("LoadFixedMenuGraphics: patch folder '{}' not found, nothing to do.", patchDir);
+		return;
+	}
+	char patchDirBuf[512];
+	strncpy(patchDirBuf, patchDir.c_str(), sizeof(patchDirBuf) - 1);
+	patchDirBuf[sizeof(patchDirBuf) - 1] = '\0';
+	dirsstruct files = getListDir(patchDirBuf);
+	std::string prefix = std::string(datName) + "_";
+	int patchedCount = 0;
+	for (int f = 0; f < files.number; ++f)
+	{
+		std::string filename = files.dir[f];
+		if (filename.size() <= prefix.size() + 4) continue;
+		if (filename.rfind(prefix, 0) != 0)        continue;
+		std::string ext = filename.substr(filename.size() - 4);
+		std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+		if (ext != ".png") continue;
+		std::string indexStr = filename.substr(prefix.size(),
+			filename.size() - prefix.size() - 4);
+		int spriteIndex = -1;
+		try { spriteIndex = std::stoi(indexStr); }
+		catch (...) {
+			Logger->warn("LoadFixedMenuGraphics: cannot parse index from '{}', skipped.", filename);
+			continue;
+		}
+		if (spriteIndex < 0 || spriteIndex >= numSprites)
+		{
+			Logger->warn("LoadFixedMenuGraphics: index {} out of range [0,{}), skipped.",
+				spriteIndex, numSprites);
+			continue;
+		}
+		std::string fullPath = patchDir + "/" + filename;
+		if (PatchSprite(tabBase, datBase, datUsed, datCapacity,
+			spriteIndex, fullPath.c_str(), palette, paletteSize))
+		{
+			++patchedCount;
+		}
+	}
+	if (patchedCount == 0)
+	{
+		Logger->debug("LoadFixedMenuGraphics: no sprites patched for map type '{}'.", mapFolder);
+		return;
+	}
+	sub_9874D_create_index_dattab(
+		HSPRD00TAB_BEGIN_BUFFER,
+		HSPRD00TAB_END_BUFFER,
+		HSPRD00DAT_BEGIN_BUFFER,
+		posistruct5);
+	Logger->info("LoadFixedMenuGraphics: patched {} sprite(s) for map type '{}'.",
+		patchedCount, mapFolder);
+}
+
+//----- (00047160) --------------------------------------------------------
+void LoadSpr_47160()//228160
+{
 	if (D41A0_0.terrain_2FECE.MapType == MapType_t::Day)
 	{
 		sprintf(xadatamsprd00dat.path, "%s/%s", cdDataPath.c_str(), "DATA/MSPRD0-0.DAT");
@@ -477,59 +754,32 @@ void sub_47160()//228160
 
 	if (x_WORD_180660_VGA_type_resolution == 1)
 	{
-		DataFileIO::sub_84250_load_file_array(psxadatamsprd00dat);
-
-		//fix
+		DataFileIO::LoadFileArray_84250(psxadatamsprd00dat);
 		filearray_2aa18c[filearrayindex_MSPRD00DATTAB] = { &MSPRD00TAB_BEGIN_BUFFER,&MSPRD00TAB_END_BUFFER,&MSPRD00DAT_BEGIN_BUFFER,&posistruct5 };
-		//filearray_2aa18c[filearrayindex_FONTS0DATTAB] = { &FONTS0TAB_BEGIN_BUFFER,&FONTS0TAB_END_BUFFER,&FONTS0DAT_BEGIN_BUFFER,&posistruct2 };
-		//fix
-
-		/*
-		if (x_DWORD_E9C3C)
-			sub_83E80_freemem4(x_DWORD_E9C3C);
-		x_DWORD_E9C3C = (uint8_t*)sub_83CD0_malloc2(64000);
-		*/
-		//fix
 		if (pre_x_DWORD_E9C3C)
 			FreeMem_83E80(pre_x_DWORD_E9C3C);
 		pre_x_DWORD_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
 		x_DWORD_E9C3C = &pre_x_DWORD_E9C3C[200000];
-		//sub_6EB90(&filearray_2aa18c[filearrayindex_FONTS0DATTAB]);//2aa1d4
 		help_VGA_type_resolution = 1;
-		//fix
 	}
 	else
 	{
-		DataFileIO::sub_84250_load_file_array(psxadatahsprd00dat);//tady se to nahraje
+		DataFileIO::LoadFileArray_84250(psxadatahsprd00dat);//here is loading
 
-		//fix
+		if(fixedMenuGraphics && !(x_WORD_180660_VGA_type_resolution & 1))
+			LoadFixedMenuGraphics();
+
 		filearray_2aa18c[filearrayindex_MSPRD00DATTAB] = { &HSPRD00TAB_BEGIN_BUFFER,&HSPRD00TAB_END_BUFFER,&HSPRD00DAT_BEGIN_BUFFER,&posistruct5 };
-		//filearray_2aa18c[filearrayindex_FONTS0DATTAB] = { &HFONT3TAB_BEGIN_BUFFER,&HFONT3TAB_END_BUFFER,&HFONT3DAT_BEGIN_BUFFER,&posistruct27 };
-		//fix
-
-		/*if (x_DWORD_E9C3C)
-			sub_83E80_freemem4(x_DWORD_E9C3C);
-		x_DWORD_E9C3C = (uint8_t*)sub_83CD0_malloc2(0x4b000);
-		sub_6EB90(&filearray_2aa18c[filearrayindex_HFONT3DATTAB]);//2aa1d4
-		*/
-		//fix
 		if (pre_x_DWORD_E9C3C)
 			FreeMem_83E80(pre_x_DWORD_E9C3C);
 		pre_x_DWORD_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
 		x_DWORD_E9C3C = &pre_x_DWORD_E9C3C[200000];
 		CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_HFONT3DATTAB]);//2aa1d4
 		help_VGA_type_resolution = 8;
-		//fix
 	}
 	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_MSPRD00DATTAB]);//2aa1bc
 	LoadTextureData(x_WORD_180660_VGA_type_resolution, D41A0_0.terrain_2FECE.MapType, pdwScreenBuffer_351628);//ok
 }
-// 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D91BC: using guessed type int *off_D91BC[2];
-// D91D4: using guessed type void *off_D91D4;
-// E9C3C: using guessed type int x_DWORD_E9C3C;
-// 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
 int debugcounter_236100 = 0;
 //----- (00055100) --------------------------------------------------------
@@ -717,8 +967,8 @@ void sub_57680_FixPointersAfterLoad()//238680
 void sub_549A0(type_str_611* a1x, type_str_611* a2x)//2359a0
 {
 	a1x->array_0x3E9_1001x = a2x->array_0x3E9_1001x;
-	a1x->array_0x263_611x = a2x->array_0x263_611x;
-	a1x->array_0x41D_1053z = a2x->array_0x41D_1053z;
+	a1x->SpellExperience_0x263_611x = a2x->SpellExperience_0x263_611x;
+	a1x->SpellLevels_0x41D_1053z = a2x->SpellLevels_0x41D_1053z;
 	a1x->array_0x3B5_949x = a2x->array_0x3B5_949x;
 	a1x->array_0x437_1079x = a2x->array_0x437_1079x;
 }
@@ -764,12 +1014,12 @@ void sub_55AB0(type_str_0x2BDE* playStr)//236ab0
 	{
 		if (playStr->dword_0x3E6_2BE4_12228.str_611.array_0x3E9_1001x.SpellIndex[spellIndex_D94FF[i]] || playStr->dword_0x3E6_2BE4_12228.str_611.array_0x403_1027x.SpellIndex[spellIndex_D94FF[i]])
 		{
-			if (!playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[spellIndex_D94FF[i]])
+			if (!playStr->dword_0x3E6_2BE4_12228.str_611.SpellsEnabled_0x333_819x.SpellEnabled[spellIndex_D94FF[i]])
 			{
 				type_entity_0x6E8E* tempEvent = IfSubtypeCallCreatingManaSphere_4A190(&Entities_EA3E4[playStr->playerIndex_0x00a_2BE4_11240]->position_0x4C_76, 15, spellIndex_D94FF[i]);
 				if (tempEvent)
 				{
-					playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[spellIndex_D94FF[i]] = tempEvent - D41A0_0.struct_0x6E8E;
+					playStr->dword_0x3E6_2BE4_12228.str_611.SpellsEnabled_0x333_819x.SpellEnabled[spellIndex_D94FF[i]] = tempEvent - D41A0_0.struct_0x6E8E;
 					tempEvent->parentId_0x28_40 = Entities_EA3E4[playStr->playerIndex_0x00a_2BE4_11240] - D41A0_0.struct_0x6E8E;
 					tempEvent->struct_byte_0xc_12_15.byte[0] |= 1u;
 					SetSpell_6D5E0(tempEvent, playStr->dword_0x3E6_2BE4_12228.str_611.array_0x437_1079x.SpellIndex[spellIndex_D94FF[i]]);
@@ -778,16 +1028,16 @@ void sub_55AB0(type_str_0x2BDE* playStr)//236ab0
 		}
 		else
 		{
-			if (playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[spellIndex_D94FF[i]])
+			if (playStr->dword_0x3E6_2BE4_12228.str_611.SpellsEnabled_0x333_819x.SpellEnabled[spellIndex_D94FF[i]])
 			{
-				playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[spellIndex_D94FF[i]] = 0;
-				sub_57F20(Entities_EA3E4[playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[spellIndex_D94FF[i]]]);
+				playStr->dword_0x3E6_2BE4_12228.str_611.SpellsEnabled_0x333_819x.SpellEnabled[spellIndex_D94FF[i]] = 0;
+				sub_57F20(Entities_EA3E4[playStr->dword_0x3E6_2BE4_12228.str_611.SpellsEnabled_0x333_819x.SpellEnabled[spellIndex_D94FF[i]]]);
 			}
 		}
 	}
-	if (playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexLeft_0x451_1105 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexLeft_0x451_1105])
+	if (playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexLeft_0x451_1105 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.SpellsEnabled_0x333_819x.SpellEnabled[playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexLeft_0x451_1105])
 		playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexLeft_0x451_1105 = -1;
-	if (playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexRight_0x453_1107 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.array_0x333_819x.SpellEnabled[playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexRight_0x453_1107])
+	if (playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexRight_0x453_1107 != -1 && !playStr->dword_0x3E6_2BE4_12228.str_611.SpellsEnabled_0x333_819x.SpellEnabled[playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexRight_0x453_1107])
 		playStr->dword_0x3E6_2BE4_12228.str_611.SpellIndexRight_0x453_1107 = -1;
 }
 

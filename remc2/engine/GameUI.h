@@ -9,7 +9,7 @@
 using namespace std::string_view_literals;
 
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {
 	axis_3d v51y;//v51x_struct v51x; // [esp+A8h] [ebp-12h]//0
 	//uint16_t v52xw_4;//__int16 v52; // [esp+ACh] [ebp-Eh]//+4
@@ -26,7 +26,7 @@ typedef struct {
 	uint16_t v63xw_44;//__int16 v63; // [esp+D4h] [ebp+1Ah]//+44
 	uint8_t v64xb_46;//char v64; // [esp+D6h] [ebp+1Ch]//+46 //color
 } v51x_struct;
-#pragma pack (16)
+#pragma pack(pop)
 
 
 extern char FontType_D419D;
@@ -54,7 +54,7 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale = 1);
 int16_t GetHelpPopupIndex_88450();
 void GetHintText_89AC0(char* buffer, int helpIndex);
 
-void sub_41B60();
+void SetPauseMenuClosed_41B60();
 void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuStatus, bool useSound, uint8_t scale = 1);
 void sub_53120();
 void SetHelpPopupTextAndCoords_884D0(int16_t helpIdx, int16_t a2, int16_t* popupSrcPos, char a4, char a5, uint8_t scale = 1);

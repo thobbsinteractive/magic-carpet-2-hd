@@ -919,55 +919,16 @@ int NetworkSendPacket_74E6D(myNCB* connection, uint8_t* buffer, int size)//255e6
 //----- (00074EF1) --------------------------------------------------------
 void NetworkSendMessage_74EF1(myNCB* connection, uint8_t* inbuffer, unsigned int size)//255ef1
 {
-	unsigned int packedSended; // [esp+4h] [ebp-Ch]
-	uint8_t* buffer; // [esp+8h] [ebp-8h]
-
-	buffer = inbuffer;
-	packedSended = 0;
-	while (1)
-	{
-		if (size <= maxSizeOfPacket * (packedSended + 1))
-		{
-			NetworkSendPacket_74E6D(connection, buffer, size - maxSizeOfPacket * packedSended);
-			return;
-		}
-		if (NetworkSendPacket_74E6D(connection, buffer, maxSizeOfPacket))
-			break;
-		packedSended++;
-		buffer += maxSizeOfPacket;
-	}
-	/*
-	unsigned int packedSended; // [esp+4h] [ebp-Ch]
-	uint8_t* buffer; // [esp+8h] [ebp-8h]
-	//__int16 v7; // [esp+Ch] [ebp-4h]
-
-	buffer = inbuffer;
-	packedSended = 0;
-
+	unsigned int packedSended = 0;
+	uint8_t* buffer = inbuffer;
 	while (size > maxSizeOfPacket * (packedSended + 1))
 	{
-		if (NetworkSendPacket_74E6D(connection, buffer, maxSizeOfPacket) != maxSizeOfPacket)
+		if (NetworkSendPacket_74E6D(connection, buffer, maxSizeOfPacket) != 0)
 			return;
 		packedSended++;
 		buffer += maxSizeOfPacket;
 	}
-	NetworkSendPacket_74E6D(connection, buffer, size - (maxSizeOfPacket * packedSended));
-	*/
-	/*
-	while (1)
-	{
-		if (size <= MaxMessageSize * packedSended)
-		{
-			NetworkSendPacket_74E6D(connection, buffer, size- (MaxMessageSize * packedSended));
-			return;
-		}
-		if (NetworkSendPacket_74E6D(connection, buffer, MaxMessageSize))
-			break;
-		packedSended++;
-		buffer += MaxMessageSize;
-	}
-	*/
-	//return v7;
+	NetworkSendPacket_74E6D(connection, buffer, size - maxSizeOfPacket * packedSended);
 }
 
 //----- (00074F76) --------------------------------------------------------

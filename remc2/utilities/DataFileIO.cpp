@@ -232,61 +232,43 @@ char* DataFileIO::sub_90D3F_unload_file_array(int psindex)//271d3f
 }
 
 //----- (00084250) --------------------------------------------------------
-bool DataFileIO::sub_84250_load_file_array(int psindex)//265250
+bool DataFileIO::LoadFileArray_84250(int psindex)//265250
 {
-	//Pathstruct v1; // ebx
-	uint16_t result; // si
-	//Pathstruct v3; // ebx
-	__int16 v4; // ax
-	//char str[50];//char v6; // [esp+0h] [ebp-64h]
-
 	int oldpsindex = psindex;
-	//sub_85070(); //fix it
-	//v1 = pstr[psindex];//ebx=edi
-	result = 0;//esi=0
 	if (pstr[psindex].colorPalette_var28)
 	{
 		do
 		{
 			ClearMemoryForPath(pstr[psindex++]);
-			//v1 = pstr[++psindex];
 		} while (pstr[psindex].colorPalette_var28);
 	}
 	psindex = oldpsindex;
-	//v3 = pstr[psindex];
-	//oldpsindex = psindex;
+	int index = 0;
 	while (pstr[psindex].colorPalette_var28)
 	{
-		v4 = UnpackAndLoadMemoryFromPath(pstr[psindex]);//27B32d - dalo mu to 1 - set 2bab20
-
-		if (v4 >= 0)
+		int unpackResult = UnpackAndLoadMemoryFromPath(pstr[psindex]);//27B32d
+		if (unpackResult >= 0)
 		{
-			if (v4)
+			if (unpackResult)
 			{
 				psindex++;
-				//v3 = pstr[++psindex];
 				continue;
 			}
-			//goto LABEL_10;
 			sub_41A90_VGA_Palette_install((TColor*)*xadatapald0dat2.colorPalette_var28);//install Palette for text mode(show error)
-			myprintf("ERROR: File %s.\n");
+			myprintf("ERROR: File %s.\n","palette");
 		}
 		else
 		{
 			sub_41A90_VGA_Palette_install((TColor*)*xadatapald0dat2.colorPalette_var28);//install Palette for text mode(show error)
-			myprintf("ERROR: Allocation %s.\n");
+			myprintf("ERROR: Allocation %s.\n","palette");
 		}
 		myprintf("Press return to continue\n");
-		result++;
+		index++;
 		getc(stdin);
-		//gets((x_DWORD)&v6);
-	//LABEL_10:
 		psindex++;
 	}
-	return result;
+	return index;
 }
-// 9A464: using guessed type x_DWORD gets(x_DWORD);
-// EA3D8: using guessed type int *xadatapald0dat2.colorPalette_var28;
 
 //----- (0009A2F5) --------------------------------------------------------
 uint8_t* DataFileIO::ClearMemoryForPath(Pathstruct path)//27B2f5

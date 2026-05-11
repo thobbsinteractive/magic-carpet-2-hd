@@ -154,6 +154,9 @@ set(SOURCE_FILES_ENGINE
     "engine/UVTable_D4350.h"
     "utilities/DataFileRNC.cpp"
     "utilities/DataFileRNC.h"
+    "lib/stb_impl.cpp"
+    "lib/stb_image.h"
+    "lib/stb_image_write.h"
 )
 source_group("Source Files\\engine" FILES ${SOURCE_FILES_ENGINE})
 
@@ -232,7 +235,7 @@ install(
 install(
     DIRECTORY
     ${CMAKE_SOURCE_DIR}/enhancedassets/music-ogg
-    ${CMAKE_SOURCE_DIR}/enhancedassets/biggraphics
+    ${CMAKE_SOURCE_DIR}/enhancedassets/graphics
     DESTINATION bin
 )
 
@@ -252,6 +255,15 @@ if (UNIX)
         "${CMAKE_SOURCE_DIR}/spdlog/include"
         "${CMAKE_SOURCE_DIR}/rapidjson"
     )
+    if (APPLE)
+        execute_process(COMMAND brew --prefix
+            OUTPUT_VARIABLE HOMEBREW_PREFIX
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
+        target_include_directories(${PROJECT_NAME} PUBLIC
+            "${HOMEBREW_PREFIX}/include"
+        )
+        target_include_directories(${PROJECT_NAME} PUBLIC ${PNG_INCLUDE_DIRS})
+    endif ()
     #target_compile_definitions(${PROJECT_NAME} PRIVATE
     #)
     #target_compile_options(${PROJECT_NAME} PRIVATE
@@ -263,13 +275,18 @@ if (UNIX)
         ${PNG_LIBRARY}
         findfirst
         ADLMIDI_static
-        Boost::system
     )
     target_link_directories(${PROJECT_NAME} PUBLIC
     )
     target_compile_definitions(${PROJECT_NAME} PUBLIC
         "$<$<CONFIG:DEBUG>:_DEBUG>"
     )
+    if (APPLE)
+        # Reverse-engineered structs use #pragma pack(1), which places pointers
+        # at non-8-aligned offsets. Apple Silicon's default fixup-chain
+        # relocations reject these. Fall back to classic relocations.
+        target_link_options(${PROJECT_NAME} PRIVATE "-Wl,-no_fixup_chains")
+    endif ()
 endif ()
 
 if (UNIX)

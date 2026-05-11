@@ -11,10 +11,11 @@ using namespace std;
 #endif
 */
 
-char gameFolder[512] = "NETHERW";
-char cdFolder[512] = "CD_Files";
-char bigGraphicsFolder[512] = "bigGraphics";
-char forceRender[512] = "";
+std::string gameFolder = "NETHERW";
+std::string cdFolder = "CD_Files";
+std::string highResGraphicsFolder = "graphics/high-res";
+std::string fixedMenuGraphicsFolder = "graphics/fixed/menu";
+std::string forceRender = "";
 spdlog::logger* Logger = nullptr;
 
 #ifndef _MSC_VER
@@ -24,6 +25,12 @@ spdlog::logger* Logger = nullptr;
 	#include <stdarg.h>
 	#include <sys/stat.h>
     #include <cstdio>
+#endif
+
+#ifdef __APPLE__
+	#include <mach-o/dyld.h>
+	#include <stdlib.h>
+	#include <climits>
 #endif
 
 const char* GetStringFromLoggingLevel(spdlog::level::level_enum level)
@@ -110,6 +117,19 @@ std::string get_exe_path() {
 	delete[] buffer;
 	std::string::size_type pos = std::string(locstr).find_last_of("\\/");
 	std::string strpathx = std::string(locstr).substr(0, pos)/*+"\\system.exe"*/;
+	return strpathx;
+#elif defined(__APPLE__)
+	std::string strpathx;
+	char result[PATH_MAX];
+	uint32_t size = sizeof(result);
+	if (_NSGetExecutablePath(result, &size) == 0) {
+		char real[PATH_MAX];
+		if (realpath(result, real)) {
+			strpathx = dirname(real);
+		} else {
+			strpathx = dirname(result);
+		}
+	}
 	return strpathx;
 #else
 	std::string strpathx;
@@ -349,55 +369,20 @@ struct space_info
 	unsigned long free;      // <= capacity
 	unsigned long available; // <= free
 };
-//BOOST_FILESYSTEM_DECL
+
 space_info space(char* path, int* ec)
 {
-#   ifdef BOOST_POSIX_API
-	struct BOOST_STATVFS vfs;
-	space_info info;
-	if (!error(::BOOST_STATVFS(path, &vfs) ? BOOST_ERRNO : 0,
-		p, ec, "boost::filesystem::space"))
-	{
-		info.capacity
-			= static_cast<boost::uintmax_t>(vfs.f_blocks)* BOOST_STATVFS_F_FRSIZE;
-		info.free
-			= static_cast<boost::uintmax_t>(vfs.f_bfree)* BOOST_STATVFS_F_FRSIZE;
-		info.available
-			= static_cast<boost::uintmax_t>(vfs.f_bavail)* BOOST_STATVFS_F_FRSIZE;
+	space_info info = { 0, 0, 0 };
+	std::error_code error;
+	std::filesystem::space_info s = std::filesystem::space(path, error);
+	if (!error) {
+		info.capacity = s.capacity;
+		info.free = s.free;
+		info.available = s.available;
+		*ec = 0;
 	}
-
-#   else
-	ULARGE_INTEGER avail, total, free;
-	space_info info;
-
-	//std::string charstring = "hello, world";
-
-	std::wstring widestring;
-
-	for (uint32_t i = 0; i < strlen(path); i++)
-		widestring += (wchar_t)path[i];
-
-	LPCWSTR lpcwpath = widestring.c_str();
-
-
-	if (GetDiskFreeSpaceExW(lpcwpath, &avail, &total, &free) != 0)
-	{
-		info.capacity
-			= ((total.HighPart) << 32)
-			+ total.LowPart;
-		info.free
-			= ((free.HighPart) << 32)
-			+ free.LowPart;
-		info.available
-			= ((avail.HighPart) << 32)
-			+ avail.LowPart;
-	}
-
-#   endif
-
-	else
-	{
-		info.capacity = info.free = info.available = 0;
+	else {
+		*ec = error.value();
 	}
 	return info;
 }
@@ -482,7 +467,7 @@ long ReadGraphicsfile(const char* path, uint8_t* buffer, long size)
 std::string getExistingDataPath(std::filesystem::path path) 
 {
 	std::vector<std::string> file_locations;
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 	auto env_home_dir = std::getenv("HOME");
 	auto env_xdg_data_home_dir = std::getenv("XDG_DATA_HOME");
 	std::filesystem::path home_dir;
@@ -512,14 +497,18 @@ std::string getExistingDataPath(std::filesystem::path path)
 
 	// first location at which the file can be found is chosen
 	for (const std::string &file_location: file_locations) {
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		std::string caseInsensitivePath = casepath(file_location);
 		if (std::filesystem::exists(caseInsensitivePath)) {
 			file_found = std::string(caseInsensitivePath);
 			break;
 		}
 #else //__linux__
-		if (std::filesystem::exists(file_location)) {
+		auto p = std::filesystem::path(file_location)
+			.lexically_normal()
+			.make_preferred();
+
+		if (std::filesystem::exists(p)) {
 			file_found = file_location;
 			break;
 		}

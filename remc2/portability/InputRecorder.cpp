@@ -87,12 +87,53 @@ void InputRecorder::StopPlayback()
 	m_IsPlaying = false;
 }
 
+RecordedEventPlayer* InputRecorder::GetCurrentPlayer(int level, int playerIdx)
+{
+	if (!m_IsPlaying || m_InputEvents->count(level) == 0 || m_InputEvents->at(level)->Players->count(playerIdx) == 0 || m_InputEvents->at(level)->Players->count(playerIdx) == 0)
+		return nullptr;
+
+	return m_InputEvents->at(level)->Players->at(playerIdx);
+}
+
 RecordedEventTurn* InputRecorder::GetCurrentPlayerActions(int level, int playerIdx, int turn)
 {
 	if (!m_IsPlaying || m_InputEvents->count(level) == 0 || m_InputEvents->at(level)->Players->count(playerIdx) == 0 || m_InputEvents->at(level)->Players->at(playerIdx)->Turns->count(turn) == 0)
 		return nullptr;
 
 	return m_InputEvents->at(level)->Players->at(playerIdx)->Turns->at(turn);
+}
+
+void InputRecorder::RecordPlayerSpells(int level, int playerIdx, int16_t* spellsEnabled, uint8_t* spellIndexes, uint8_t* spellLevels, int32_t* spellsExperience)
+{
+	if (!m_IsRecording)
+		return;
+
+	if (m_InputEvents->count(level) == 0)
+	{
+		m_InputEvents->insert(std::pair<uint16_t, RecordedEvent*>(level, new RecordedEvent()));
+		m_InputEvents->at(level)->Header = new RecordedEventHeader();
+		m_InputEvents->at(level)->Header->Level = level;
+		m_InputEvents->at(level)->Players = new std::map<uint16_t, RecordedEventPlayer*>();
+	}
+	if (m_InputEvents->at(level)->Players->count(playerIdx) == 0)
+	{
+		m_InputEvents->at(level)->Players->insert(std::pair<uint16_t, RecordedEventPlayer*>(playerIdx, new RecordedEventPlayer()));
+		m_InputEvents->at(level)->Players->at(playerIdx) = new RecordedEventPlayer();
+		m_InputEvents->at(level)->Players->at(playerIdx)->PlayerIdx = playerIdx;
+		m_InputEvents->at(level)->Players->at(playerIdx)->Turns = new std::map<uint32_t, RecordedEventTurn*>();
+		m_InputEvents->at(level)->Players->at(playerIdx)->SpellsEnabled = new int16_t[26];
+		m_InputEvents->at(level)->Players->at(playerIdx)->SpellIndexes = new uint8_t[26];
+		m_InputEvents->at(level)->Players->at(playerIdx)->SpellLevels = new uint8_t[26];
+		m_InputEvents->at(level)->Players->at(playerIdx)->SpellsExperience = new int32_t[26];
+	}
+
+	for (int i = 0; i < 26; i++)
+	{
+		m_InputEvents->at(level)->Players->at(playerIdx)->SpellsEnabled[i] = spellsEnabled[i];
+		m_InputEvents->at(level)->Players->at(playerIdx)->SpellIndexes[i] = spellIndexes[i];
+		m_InputEvents->at(level)->Players->at(playerIdx)->SpellLevels[i] = spellLevels[i];
+		m_InputEvents->at(level)->Players->at(playerIdx)->SpellsExperience[i] = spellsExperience[i];
+	}
 }
 
 void InputRecorder::RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, uint64_t sizeBytes, uint8_t* buffer)
@@ -166,6 +207,15 @@ bool InputRecorder::SaveRecordingToFile(const char* outputFileName)
 
 				fwrite(&playerIndex, sizeof(uint16_t), 1, eventsFile);
 				fwrite(&turnCount, sizeof(uint32_t), 1, eventsFile);
+				fwrite(playIt->second->SpellsEnabled, sizeof(int16_t), 26, eventsFile);
+				fwrite(playIt->second->SpellIndexes, sizeof(uint8_t), 26, eventsFile);
+				fwrite(playIt->second->SpellLevels, sizeof(uint8_t), 26, eventsFile);
+				fwrite(playIt->second->SpellsExperience, sizeof(int32_t), 26, eventsFile);
+
+				delete[] playIt->second->SpellsEnabled;
+				delete[] playIt->second->SpellIndexes;
+				delete[] playIt->second->SpellLevels;
+				delete[] playIt->second->SpellsExperience;
 
 				for (int i = 0; i < playerTurns->size(); i++)
 				{
@@ -222,10 +272,19 @@ bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 
 			uint16_t playerIdx = 0;
 			uint32_t turnCount = 0;
+			int16_t spellsEnabled[26];
+			int8_t spellIndexes[26];
+			int8_t spellLevels[26];
+			int32_t spellsExperience[26];
+
 			while (playerCount--)
 			{
 				fread(&playerIdx, sizeof(RecordedEventPlayer::PlayerIdx), 1, eventsFile);
 				fread(&turnCount, sizeof(RecordedEventPlayer::TurnCount), 1, eventsFile);
+				fread(&spellsEnabled, sizeof(int16_t), 26, eventsFile);
+				fread(&spellIndexes, sizeof(uint8_t), 26, eventsFile);
+				fread(&spellLevels, sizeof(uint8_t), 26, eventsFile);
+				fread(&spellsExperience, sizeof(int32_t), 26, eventsFile);
 
 				if (m_InputEvents->at(level)->Players->count(playerIdx) == 0)
 				{
@@ -233,6 +292,18 @@ bool InputRecorder::LoadRecordingFile(const char* inputFileName)
 					m_InputEvents->at(level)->Players->at(playerIdx)->PlayerIdx = playerIdx;
 					m_InputEvents->at(level)->Players->at(playerIdx)->TurnCount = turnCount;
 					m_InputEvents->at(level)->Players->at(playerIdx)->Turns = new std::map<uint32_t, RecordedEventTurn*>();
+					m_InputEvents->at(level)->Players->at(playerIdx)->SpellsEnabled = new int16_t[26];
+					m_InputEvents->at(level)->Players->at(playerIdx)->SpellIndexes = new uint8_t[26];
+					m_InputEvents->at(level)->Players->at(playerIdx)->SpellLevels = new uint8_t[26];
+					m_InputEvents->at(level)->Players->at(playerIdx)->SpellsExperience = new int32_t[26];
+
+					for (int i = 0; i < 26; i++)
+					{
+						m_InputEvents->at(level)->Players->at(playerIdx)->SpellsEnabled[i] = spellsEnabled[i];
+						m_InputEvents->at(level)->Players->at(playerIdx)->SpellIndexes[i] = spellIndexes[i];
+						m_InputEvents->at(level)->Players->at(playerIdx)->SpellLevels[i] = spellLevels[i];
+						m_InputEvents->at(level)->Players->at(playerIdx)->SpellsExperience[i] = spellsExperience[i];
+					}
 				}
 
 				for (int i = 0; i < turnCount; i++)

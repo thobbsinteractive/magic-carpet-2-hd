@@ -33,7 +33,7 @@ after NetworkCancel_748F7 not changed
 
 */
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 #include <strings.h>
 #include <cstdlib>
 #include <cstring>
@@ -42,7 +42,6 @@ after NetworkCancel_748F7 not changed
 #define strnicmp strncasecmp
 #define __cdecl
 #include <ctype.h>
-#include "../findfirst/findfirst.h"
 #include <iostream>
 #include <functional>
 #include <type_traits>
@@ -70,7 +69,7 @@ void preconvert() {
 	int16_t word_20;
 }
 type_D404C;
-#pragma pack (16)
+#pragma pack(pop)
 
 type_D404C str_D404C[5];
 
@@ -117,7 +116,7 @@ sprintf(buffer, "};\n");
 fwrite(buffer, strlen(buffer), 1, file);
 fclose(file);*/
 /*
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 22
 	int16_t word_0;
 	int16_t word_2;
@@ -132,7 +131,7 @@ typedef struct {//lenght 22
 	int8_t byte_19;
 	int16_t word_20;
 }type_mapScreenPortals_E17CC;
-#pragma pack (16)
+#pragma pack(pop)
 	type_mapScreenPortals_E17CC mapScreenPortals_E17CC[168] = {
 	//0 2  4    6       8   10      12      14        16    18 19 20 stub
 	{0, 0, 0x74, 0x1de, 28, 0xa40,   0x341, 0x213,      0,    2,  0, 0, 0 }
@@ -342,7 +341,7 @@ void sub_560D0_create_sound_dir()//2370d0
 
 	//v7 = 1;
 	sprintf(printbuffer, "DEVICE\t\tNone\r\nDRIVER\t\tNone\r\nIO_ADDR\t\t-1\r\nIRQ\t\t-1\r\nDMA_8_BIT\t\t-1\r\nDMA_16_BIT\t\t-1\r\n");
-	std::string digPath = GetSubDirectoryFile(gameFolder, "SOUND", "DIG.INI");
+	std::string digPath = GetSubDirectoryFile(gameFolder.c_str(), "SOUND", "DIG.INI");
 	diginifile2 = DataFileIO::CreateOrOpenFile(digPath.c_str(), 512);
 	if (diginifile2 == NULL)
 	{
@@ -357,7 +356,7 @@ void sub_560D0_create_sound_dir()//2370d0
 	{
 		DataFileIO::Close(diginifile2);
 	}
-	std::string mdiPath = GetSubDirectoryFile(gameFolder, "SOUND", "MDI.INI");
+	std::string mdiPath = GetSubDirectoryFile(gameFolder.c_str(), "SOUND", "MDI.INI");
 	mdiini = DataFileIO::CreateOrOpenFile(mdiPath.c_str(), 512);
 	if (mdiini == NULL)
 	{
@@ -599,16 +598,17 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		//Set Paths for game data
 		Logger->debug("Getting Game data paths");
-		gameDataPath = GetSubDirectoryPath(gameFolder);
-		cdDataPath = GetSubDirectoryPath(cdFolder);
-		bigGraphicsPath = GetSubDirectoryPath(bigGraphicsFolder);
+		gameDataPath = GetSubDirectoryPath(gameFolder.c_str());
+		cdDataPath = GetSubDirectoryPath(cdFolder.c_str());
+		highResGraphicsPath = GetSubDirectoryPath(highResGraphicsFolder.c_str());
+		fixedMenuGraphicsPath = GetSubDirectoryPath(fixedMenuGraphicsFolder.c_str());
 
 		Logger->debug("Initializing graphics Width: {} Height: {}", windowResWidth, windowResHeight);
 		VGA_Init(windowResWidth, windowResHeight, gameResWidth, gameResHeight, maintainAspectRatio, displayIndex);
 		gamepad_init(gameResWidth, gameResHeight);
 
 		Logger->info("Finding Game Data...");
-		if (std::string mainfile = GetSubDirectoryFile(gameFolder, "CDATA", "TMAPS0-0.DAT"); !file_exists(mainfile.c_str()))//test original file
+		if (std::string mainfile = GetSubDirectoryFile(gameFolder.c_str(), "CDATA", "TMAPS0-0.DAT"); !file_exists(mainfile.c_str()))//test original file
 		{
 			if (std::filesystem::is_directory(gameDataPath))
 			{
@@ -678,6 +678,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 			}
 		}
 		delete EventDispatcher::I;
+		VGA_close();
 	}
 	catch (const thread_exit_exception& e)
 	{

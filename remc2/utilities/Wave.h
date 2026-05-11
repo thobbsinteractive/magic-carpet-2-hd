@@ -5,7 +5,7 @@
 
 #include <cstdint>
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {
 	char isRiff_0[4];
 	int32_t fileSizeBytes_4;
@@ -22,7 +22,7 @@ typedef struct {
 	int32_t dataSizeBytes_40;
 	uint8_t data_44[];
 }wav_t;
-#pragma pack (16)
+#pragma pack(pop)
 
 const int WAVE_HEADER_SIZE_BYTES = 44;
 

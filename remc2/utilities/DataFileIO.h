@@ -25,7 +25,7 @@ public:
 	static bool sub_55C00_TestSaveFile2(int16_t a1);
 	static bool sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelindex, bool loadRegressionTest = false);
 	static char* sub_90D3F_unload_file_array(int a1);
-	static bool sub_84250_load_file_array(int psindex);
+	static bool LoadFileArray_84250(int psindex);
 	static void SetCDFilePaths(const char* cdDataPath, Pathstruct pstr[]);
 	static uint8_t* ClearMemoryForPath(Pathstruct path);
 	static signed int UnpackAndLoadMemoryFromPath(Pathstruct path);

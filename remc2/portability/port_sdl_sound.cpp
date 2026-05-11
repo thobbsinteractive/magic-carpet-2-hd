@@ -4,7 +4,7 @@
 #include <adlmidi.h>
 #include <iostream>
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
     #include <limits>
     #define MAX_PATH PATH_MAX
 #endif
@@ -34,9 +34,13 @@ int num_IO_configurations = 3;
 int service_rate = -1;
 int master_volume = -1;
 
+int music_war_channel_index = maxSimultaniousSounds + 1;
+bool warMusicOn = false;
+
 //The music that will be played
 #ifdef SOUND_SDLMIXER
 Mix_Music* GAME_music[20] = { NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL };
+Mix_Chunk* GAME_music_war = NULL;
 #endif//SOUND_SDLMIXER
 #ifdef SOUND_OPENAL
 //Mix_Music* GAME_music[20] = { NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL };
@@ -96,6 +100,26 @@ void SOUND_start_sequence(int32_t sequence_num) {
 	//3 - menu
 	//4 - intro
 #ifdef SOUND_SDLMIXER
+
+	if (oggmusic && !GAME_music_war)
+	{
+		std::string oggmusicPath = GetSubDirectoryPath(oggmusicFolder);
+		char selectedTrackPath[512] = "";
+
+		sprintf(selectedTrackPath, "%s/00%d*danger.ogg", oggmusicPath.c_str(), sequence_num);
+		_finddata_t musicFile;
+		auto hFile = my_findfirst(selectedTrackPath, &musicFile);
+
+		if (hFile != -1)
+		{
+			sprintf(selectedTrackPath, "%s/%s", oggmusicPath.c_str(), musicFile.name);
+			GAME_music_war = Mix_LoadWAV(selectedTrackPath);
+			warMusicOn = true;
+		}
+		else
+			warMusicOn = false;
+	}
+
 	last_sequence_num = sequence_num;
 	//volume fix
 	if (lastMusicVolume == -1)
@@ -110,7 +134,7 @@ void SOUND_start_sequence(int32_t sequence_num) {
 
 	if (Mix_PlayingMusic() == 0)
 	{
-		if (Mix_PlayMusic(GAME_music[sequence_num], -1) == -1)
+		if (Mix_PlayMusic(GAME_music[sequence_num], -1) == -1)			
 			if (Mix_PausedMusic() == 1)
 			{
 				Mix_ResumeMusic();
@@ -120,13 +144,38 @@ void SOUND_start_sequence(int32_t sequence_num) {
 				Mix_PauseMusic();
 			}
 	}
+	if(warMusicOn)
+	{
+		if (Mix_Playing(music_war_channel_index) == 0) {
+			Mix_VolumeChunk(GAME_music_war, 0);
+			Mix_Volume(music_war_channel_index, 0);
+			if (Mix_PlayChannel(music_war_channel_index, GAME_music_war, -1) == -1) {
+				if (Mix_Paused(music_war_channel_index) == 1) {
+					Mix_Resume(music_war_channel_index);
+				}
+				else {
+					Mix_Pause(music_war_channel_index);
+				}
+			}
+		}
+	}
 #endif//SOUND_SDLMIXER
 };
+
+void WarMusicSetVolume(int32_t volume) {
+#ifdef SOUND_SDLMIXER
+	Mix_Volume(music_war_channel_index, ((volume * settingsMusicVolume) / 127));
+	Mix_VolumeChunk(GAME_music_war, 128);
+#endif//SOUND_SDLMIXER
+}
 
 void SOUND_pause_sequence(int32_t  /*sequence_num*/) {
 	if (unitTests)return;
 #ifdef SOUND_SDLMIXER
 	Mix_PauseMusic();
+	if (warMusicOn) {
+		Mix_Pause(music_war_channel_index);
+	}
 #endif//SOUND_SDLMIXER
 };
 
@@ -134,12 +183,18 @@ void SOUND_stop_sequence(int32_t  /*sequence_num*/) {
 	if (unitTests)return;
 #ifdef SOUND_SDLMIXER
 	Mix_HaltMusic();
+	if (warMusicOn) {
+		Mix_HaltChannel(music_war_channel_index);
+	}
 #endif//SOUND_SDLMIXER
 };
 void SOUND_resume_sequence(int32_t  /*sequence_num*/) {
 	if (unitTests)return;
 #ifdef SOUND_SDLMIXER
 	Mix_ResumeMusic();
+	if (warMusicOn) {
+		Mix_Resume(music_war_channel_index);
+	}
 #endif//SOUND_SDLMIXER
 };
 
@@ -244,7 +299,17 @@ void SOUND_init_MIDI_sequence(uint8_t*  /*datax*/, type_E3808_music_header* head
 				sprintf(selectedTrackPath, "%s/music%d.ogg", oggmusicPath.c_str(), track_number);
 		}
 		else
-			sprintf(selectedTrackPath, "%s/music%d.ogg", oggmusicPath.c_str(), track_number);
+		{
+			sprintf(selectedTrackPath, "%s/00%d*.ogg", oggmusicPath.c_str(), track_number);
+			_finddata_t musicFile;
+			auto hFile = my_findfirst(selectedTrackPath, &musicFile);
+			if (hFile < 0)
+			{
+				Logger->error("Track NOT found error: {}", Mix_GetError());
+				return;
+			}
+			sprintf(selectedTrackPath, "%s/%s", oggmusicPath.c_str(), musicFile.name);
+		}
 #ifdef SOUND_SDLMIXER
 		GAME_music[track_number] = Mix_LoadMUS(selectedTrackPath);
 		if (!GAME_music[track_number]) {
@@ -319,7 +384,18 @@ void clean_up_sound()
 
 	//Quit SDL_mixer
 	Mix_CloseAudio();
+	DeleteWarMusic();
+
 #endif//SOUND_SDLMIXER
+}
+
+void DeleteWarMusic()
+{
+	if (GAME_music_war)
+	{
+		Mix_FreeChunk(GAME_music_war);
+		GAME_music_war = nullptr;
+	}
 }
 /*
 int load_music_files() {
@@ -705,6 +781,9 @@ bool init_sound()
 {
 	ActiveAudioEffects.resize(maxSimultaniousSounds);
 
+	std::function<void(GameState)> callback = SOUND_GameStateChange;
+	EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAME_STATE_CHANGE, callback));
+
 	//run();
 	//#define MUSIC_MID_FLUIDSYNTH
 	//Initialize SDL_mixer
@@ -727,7 +806,7 @@ bool init_sound()
 		}
 	}
 
-	Mix_AllocateChannels(maxSimultaniousSounds + 1);
+	Mix_AllocateChannels(maxSimultaniousSounds + 1 + 1);
 
 	//Mix_SetSoundFonts("c:\\prenos\\Magic2\\sf2\\TOM-SF2.sf2");
 	//load_sound_files();
@@ -749,6 +828,15 @@ Mix_HookMusicFinished(void (SDLCALL *music_finished)(void));
 
 #endif//SOUND_OPENAL
 	return true;
+}
+
+void SOUND_GameStateChange(const GameState gameState)
+{
+	if (gameState == GameState::GAMEPLAY_ENDED)
+	{
+		warMusicOn = false;
+		DeleteWarMusic();
+	}
 }
 
 void SOUND_ChangeSamplePlaybackRate(HSAMPLE S, float percent)

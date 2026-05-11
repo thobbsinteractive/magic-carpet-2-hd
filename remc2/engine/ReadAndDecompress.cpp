@@ -7,10 +7,10 @@ void sub_54630_load_psxblock(uint16_t TextSize)//235630
 	switch (TextSize)
 	{
 	case 16:
-		DataFileIO::sub_84250_load_file_array(psxadatablock16dat);
+		DataFileIO::LoadFileArray_84250(psxadatablock16dat);
 		break;
 	case 32:
-		DataFileIO::sub_84250_load_file_array(psxadatablock32dat);
+		DataFileIO::LoadFileArray_84250(psxadatablock32dat);
 		break;
 	case 128:
 		break;
@@ -44,9 +44,9 @@ void sub_54660_read_and_decompress_sky_and_blocks(MapType_t GraphicsType, uint8_
 		}
 		case 128:
 		{
-			sprintf(dataPath, "%s/%s", bigGraphicsPath.c_str(), "block128.data");
+			sprintf(dataPath, "%s/%s", highResGraphicsPath.c_str(), "block128.data");
 			ReadGraphicsfile(dataPath, BigTextureBuffer);//advance graphics
-			sprintf(dataPath, "%s/%s", bigGraphicsPath.c_str(), "skyd1024.data");
+			sprintf(dataPath, "%s/%s", highResGraphicsPath.c_str(), "skyd1024.data");
 			ReadGraphicsfile(dataPath, off_D41A8_sky);//2a51a8
 			break;
 		}
@@ -93,15 +93,15 @@ void sub_54660_read_and_decompress_sky_and_blocks(MapType_t GraphicsType, uint8_
 		{
 			if (D41A0_0.terrain_2FECE.byte_0x2FED2 & 2)
 			{
-				sprintf(dataPath, "%s/%s", bigGraphicsPath.c_str(), "bl128f0-0.data");
+				sprintf(dataPath, "%s/%s", highResGraphicsPath.c_str(), "bl128f0-0.data");
 				ReadGraphicsfile(dataPath, BigTextureBuffer);//advance graphics
 			}
 			else
 			{
-				sprintf(dataPath, "%s/%s", bigGraphicsPath.c_str(), "bl128n0-0.data");
+				sprintf(dataPath, "%s/%s", highResGraphicsPath.c_str(), "bl128n0-0.data");
 				ReadGraphicsfile(dataPath, BigTextureBuffer);//advance graphics
 			}
-			sprintf(dataPath, "%s/%s", bigGraphicsPath.c_str(), "skyn1024.data");
+			sprintf(dataPath, "%s/%s", highResGraphicsPath.c_str(), "skyn1024.data");
 			ReadGraphicsfile(dataPath, off_D41A8_sky);//2a51a8
 			break;
 		}
@@ -128,7 +128,7 @@ void sub_54660_read_and_decompress_sky_and_blocks(MapType_t GraphicsType, uint8_
 		}
 		case 128:
 		{
-			sprintf(dataPath, "%s/%s", bigGraphicsPath.c_str(), "bl128c0-0.data");
+			sprintf(dataPath, "%s/%s", highResGraphicsPath.c_str(), "bl128c0-0.data");
 			ReadGraphicsfile(dataPath, BigTextureBuffer);//advance graphics
 			break;
 		}
