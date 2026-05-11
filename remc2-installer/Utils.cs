@@ -80,7 +80,7 @@ public static class Utils
 		return keepBaseDir;
 	}
 
-	public static bool SetEnhancedTextures(string inputFile, string outputFilePath, bool enhancedTextures)
+	public static bool SetHighResGraphics(string inputFile, string outputFilePath, bool useHighResGraphics)
 	{
 		var json = File.ReadAllText(inputFile);
 		if (json != null)
@@ -93,7 +93,36 @@ public static class Utils
 			{
 				if (setting.isActive)
 				{
-					setting.graphics.gameDetail.useEnhancedGraphics = enhancedTextures;
+					setting.graphics.gameDetail.useHighResGraphics = useHighResGraphics;
+					updated = true;
+					break;
+				}
+			}
+
+			if (updated)
+			{
+				json = SerializeObject<Config>(config);
+				File.WriteAllText(outputFilePath, json);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static bool SetFixedMenuGraphics(string inputFile, string outputFilePath, bool useFixedMenuGraphics)
+	{
+		var json = File.ReadAllText(inputFile);
+		if (json != null)
+		{
+			bool updated = false;
+
+			var config = JsonConvert.DeserializeObject<Config>(json);
+
+			foreach (var setting in config.settings)
+			{
+				if (setting.isActive)
+				{
+					setting.graphics.gameDetail.useFixedMenuGraphics = useFixedMenuGraphics;
 					updated = true;
 					break;
 				}

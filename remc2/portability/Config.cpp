@@ -72,7 +72,7 @@ void Config::LoadSettings(rapidjson::Document& document)
 
 	for (int i = 0; i < settingsArray.Size(); i++)
 	{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		auto settings = settingsArray[i].GetObject();
 #else
 		auto settings = settingsArray[i].GetObj();
@@ -95,7 +95,7 @@ void Config::LoadGame(rapidjson::GenericObject<false, rapidjson::Value>& setting
 {
 	if (settings.HasMember("game"))
 	{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		auto game = settings["game"].GetObject();
 #else
 		auto game = settings["game"].GetObj();
@@ -109,7 +109,7 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 {
 	if (settings.HasMember("controls"))
 	{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		auto controls = settings["controls"].GetObject();
 #else
 		auto controls = settings["controls"].GetObj();
@@ -121,7 +121,7 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 
 			for (int i = 0; i < mouseArray.Size(); i++)
 			{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 				auto mouse = mouseArray[i].GetObject();
 #else
 				auto mouse = mouseArray[i].GetObj();
@@ -149,7 +149,7 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 
 			for (int i = 0; i < keyboardArray.Size(); i++)
 			{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 				auto keyboard = keyboardArray[i].GetObject();
 #else
 				auto keyboard = keyboardArray[i].GetObj();
@@ -174,7 +174,7 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 
 			for (int i = 0; i < gamePadArray.Size(); i++)
 			{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 				auto gamePad = gamePadArray[i].GetObject();
 #else
 				auto gamePad = gamePadArray[i].GetObj();
@@ -216,7 +216,7 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 
 					if (gamePad.HasMember("axisYawSensitivity"))
 					{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 						auto axisYawSensitivity = gamePad["axisYawSensitivity"].GetObject();
 #else
 						auto axisYawSensitivity = gamePad["axisYawSensitivity"].GetObj();
@@ -227,7 +227,7 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 
 							for (int z = 0; z < zonesArray.Size(); z++) // Uses SizeType instead of size_t
 							{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 								auto zone = zonesArray[z].GetObject();
 #else
 								auto zone = zonesArray[z].GetObj();
@@ -246,7 +246,7 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 
 					if (gamePad.HasMember("axisPitchSensitivity"))
 					{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 						auto axisPitchSensitivity = gamePad["axisPitchSensitivity"].GetObject();
 #else
 						auto axisPitchSensitivity = gamePad["axisPitchSensitivity"].GetObj();
@@ -257,7 +257,7 @@ void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& set
 
 							for (int z = 0; z < zonesArray.Size(); z++) // Uses SizeType instead of size_t
 							{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 								auto zone = zonesArray[z].GetObject();
 #else
 								auto zone = zonesArray[z].GetObj();
@@ -280,7 +280,7 @@ void Config::LoadGraphics(rapidjson::GenericObject<false, rapidjson::Value>& set
 {
 	if (settings.HasMember("graphics"))
 	{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		auto graphics = settings["graphics"].GetObject();
 #else
 		auto graphics = settings["graphics"].GetObj();
@@ -300,7 +300,7 @@ void Config::LoadGameDetail(rapidjson::GenericObject<false, rapidjson::Value>& g
 {
 	if (graphics.HasMember("gameDetail"))
 	{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		auto gameDetail = graphics["gameDetail"].GetObject();
 #else
 		auto gameDetail = graphics["gameDetail"].GetObj();
@@ -308,17 +308,20 @@ void Config::LoadGameDetail(rapidjson::GenericObject<false, rapidjson::Value>& g
 		m_Graphics.m_GameDetail.m_GameResWidth = ReadIntValue(gameDetail, "gameResWidth");
 		m_Graphics.m_GameDetail.m_GameResHeight = ReadIntValue(gameDetail, "gameResHeight");
 		m_Graphics.m_GameDetail.m_GameUiScale = ReadIntValue(gameDetail, "gameUiScale");
-		m_Graphics.m_GameDetail.m_UseEnhancedGraphics = ReadBoolValue(gameDetail, "useEnhancedGraphics");
-		m_Graphics.m_GameDetail.m_BigGraphicsFolder = ReadStringValue(gameDetail, "bigGraphicsFolder");
+		m_Graphics.m_GameDetail.m_UseHighResGraphics = ReadBoolValue(gameDetail, "useHighResGraphics");
+		m_Graphics.m_GameDetail.m_HighResGraphicsFolder = ReadStringValue(gameDetail, "highResGraphicsFolder");
+		m_Graphics.m_GameDetail.m_UseFixedMenuGraphics = ReadBoolValue(gameDetail, "useFixedMenuGraphics");
+		m_Graphics.m_GameDetail.m_FixedMenuGraphicsFolder = ReadStringValue(gameDetail, "fixedMenuGraphicsFolder");
 		m_Graphics.m_GameDetail.m_Sky = ReadBoolValue(gameDetail, "sky");
 		m_Graphics.m_GameDetail.m_Reflections = ReadBoolValue(gameDetail, "reflections");
 		m_Graphics.m_GameDetail.m_DynamicLighting = ReadBoolValue(gameDetail, "dynamicLighting");
+		m_Graphics.m_GameDetail.m_ViewDistanceScale = ReadIntValue(gameDetail, "viewDistanceScale");
 	}
 }
 
 void Config::LoadThreading(rapidjson::GenericObject<false, rapidjson::Value>& graphics)
 {
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 	auto threading = graphics["threading"].GetObject();
 #else
 	auto threading = graphics["threading"].GetObj();
@@ -328,6 +331,7 @@ void Config::LoadThreading(rapidjson::GenericObject<false, rapidjson::Value>& gr
 		m_Graphics.m_Threading.m_isActive = threading["isActive"].GetBool();
 		if (m_Graphics.m_Threading.m_isActive)
 		{
+			m_Graphics.m_Threading.m_SizePercentToThreadRender = ReadFloatValue(threading, "sizePercentToThreadRender");
 			m_Graphics.m_Threading.m_NumberOfRenderThreads = (uint8_t)ReadIntValue(threading,"numberOfRenderThreads");
 			m_Graphics.m_Threading.m_AssignToSpecificCores = ReadBoolValue(threading, "assignToSpecificCores");
 		}
@@ -338,7 +342,7 @@ void Config::LoadSound(rapidjson::GenericObject<false, rapidjson::Value>& settin
 {
 	if (settings.HasMember("sound"))
 	{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		auto sound = settings["sound"].GetObject();
 #else
 		auto sound = settings["sound"].GetObj();
@@ -358,7 +362,7 @@ void Config::LoadPaths(rapidjson::GenericObject<false, rapidjson::Value>& settin
 {
 	if (settings.HasMember("paths"))
 	{
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		auto paths = settings["paths"].GetObject();
 #else
 		auto paths = settings["paths"].GetObj();

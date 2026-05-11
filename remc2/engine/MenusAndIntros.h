@@ -12,7 +12,7 @@ extern int16_t MOUSE_MIN;
 extern int16_t MOUSE_MAX_X;
 extern int16_t MOUSE_MAX_Y;
 
-#pragma pack(1)
+#pragma pack(push, 1)
 typedef struct // size 16
 {
 	uint32_t unk_17DBA8; // weak 40
@@ -22,9 +22,9 @@ typedef struct // size 16
 	uint8_t x_BYTE_17DBB5; //(+14)
 	uint8_t x_BYTE_17DBB6; //(+15)
 } Type_unk_17DBA8str; //16
-#pragma pack(16)
+#pragma pack(pop)
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct //lenght 56
 {
 	uint32_t time_17DB70; // weak
@@ -47,9 +47,9 @@ typedef struct //lenght 56
 	//std::array<uint8_t, 6> unk_17DB92; // weak 32
 	//std::array<uint8_t, 16> fill3; // fill
 } type_x_DWORD_17DB70str;
-#pragma pack (16)
+#pragma pack(pop)
 
-#pragma pack(1)
+#pragma pack(push, 1)
 typedef struct //lenght 13
 {
 	int32_t time_17DE28; // weak x_DWORD_17DE28str
@@ -58,9 +58,9 @@ typedef struct //lenght 13
 	int16_t x_WORD_17DE32_posy; // weak x_DWORD_17DE28str+10
 	int8_t DisplayLevelDescriptionText_17DE34; // weak x_DWORD_17DE28str+12
 } Type_DWORD_17DE28str;
-#pragma pack(16)
+#pragma pack(pop)
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 69
 	int32_t time_0;//0
 	uint8_t stub_4;//4
@@ -82,7 +82,7 @@ typedef struct {//lenght 69
 	type_animStruct array_word_45;//45
 }
 type_WORD_E20A4;
-#pragma pack (16)
+#pragma pack(pop)
 
 enum class MenuItem : int {
 	InitLanguage = 0,
@@ -94,13 +94,13 @@ enum class MenuItem : int {
 	LangSettings = 12
 };
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct {//lenght 18
 	uint8_t byte_0;
 	uint8_t stub[17];
 }
 type_BYTE_E25ED_0x;
-#pragma pack (16)
+#pragma pack(pop)
 
 // from sub_main
 extern int8_t LoadLevelNumber_D419C;
@@ -150,6 +150,7 @@ extern bool first_enter;
 extern int16_t x_WORD_17DBC4;
 extern typeTextBoxtextBoxStr_E24BCx textBoxStr_E25DC[];
 extern type_BYTE_E25ED_0x str_BYTE_E25ED_0x[];
+extern type_x_BYTE_E25ED_2BB str_BYTE_E25ED_2BB[];
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -159,7 +160,7 @@ void SetToIntro_76CF0();
 void MainMenu_76FA0();
 bool NewGameDialog_77350(type_menuButtons_E1F84* a1x);
 char LanguageSettingDialog_779E0(type_menuButtons_E1F84* a1x);
-char LoadGameDialog_780F0(type_menuButtons_E1F84* a1x);
+bool LoadGameDialog_780F0(type_menuButtons_E1F84* menuButtons);
 char SaveGameDialog_78730(type_menuButtons_E1F84* a1x);
 char SetKeysDialog_79610();
 signed int sub_79E10(char* a1, char a2);
@@ -219,8 +220,9 @@ void CleanRecByColor_85C42(uint8_t* a1, int a2, int a3, int a4, int a5, unsigned
 void DrawNetworkLevelName_7D380();
 void PaletteCopy_7C800(signed __int16 a1);
 void sub_85BF5(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
-void sub_41BC0();
+void ClearPauseMenuState_41BC0();
 void StopSubtitles_2EB40();
 void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
 signed int DrawBitmapAndPlaySound_7E320();
 int GetMapMenuDialogIndex_7E320(uint32_t adress, type_menuButtons_E1F84* a1x);
+signed int sub_7E640(type_menuButtons_E1F84* a1x);

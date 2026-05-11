@@ -137,8 +137,8 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 	int16_t v21; // [esp+1Ch] [ebp-2Ch]
 	int16_t barStartXPos; // [esp+24h] [ebp-24h]
 	type_entity_0x6E8E* v23x; // [esp+28h] [ebp-20h]
-	int16_t v24; // [esp+2Ch] [ebp-1Ch]
-	int16_t v25; // [esp+30h] [ebp-18h]
+	int16_t balloonIdx_v24; // [esp+2Ch] [ebp-1Ch]
+	int16_t numBalloons_v25; // [esp+30h] [ebp-18h]
 	uint8_t v26; // [esp+34h] [ebp-14h]
 	uint8_t manaMaxColourIdx; // [esp+3Ch] [ebp-Ch]
 	uint8_t manaColourIdx; // [esp+40h] [ebp-8h]
@@ -251,40 +251,43 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 		case 1:
 		case 2:
 		case 3:
-			v25 = 1;
+			numBalloons_v25 = 1;
 			break;
 		case 4:
 		case 5:
-			v25 = 2;
+			numBalloons_v25 = 2;
 			break;
 		case 6:
 		case 7:
-			v25 = 3;
+			numBalloons_v25 = 3;
 			break;
 		default:
-			v25 = 0;
+			numBalloons_v25 = 0;
 			break;
 		}
 		//Draw Balloon Icon
-		DrawBitmap_2BB40(posX + (2 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v25 + BALLON1_ICON - 1], scale);
-		v24 = 0;
+		DrawBitmap_2BB40(posX + (2 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[numBalloons_v25 + BALLON1_ICON - 1], scale);
+		balloonIdx_v24 = 0;
 		//Draw Balloon Health Icon
 		DrawBitmap_2BB40(posX + (38 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_MANA_ICONS], scale);
-		if (v25 > 0)
+		if (numBalloons_v25 > 0)
 		{
 			do
 			{
 				v21 = posX + (58 * scale);
-				v9x = Entities_EA3E4[a1x->dword_0xA4_164x->array_0x3C_60[v24]];
+				v9x = Entities_EA3E4[a1x->dword_0xA4_164x->array_0x3C_60[balloonIdx_v24]];
 				//v19x = v9x;
 				if (v9x > Entities_EA3E4[0])
 				{
+					//Life
 					if (v9x->life_0x8 >= 0)
-						DrawBar_2D190(v21, 2 * v24 + 12 * scale, 64 * scale, 2 * scale, ((v9x->life_0x8 << 6) / v9x->maxLife_0x4) * scale, 0x7Bu);
-					DrawBar_2D190(v21, 2 * v24 + 30 * scale, 64 * scale, 2 * scale, ((v9x->mana_0x90_144 << 6) / v9x->maxMana_0x8C_140) * scale, manaColourIdx);
+						DrawBar_2D190(v21, (2 * balloonIdx_v24 * scale) + (12 * scale), 64 * scale, 2 * scale, ((v9x->life_0x8 << 6) / v9x->maxLife_0x4) * scale, 0x7Bu);
+
+					//Mana collected
+					DrawBar_2D190(v21, (2 * balloonIdx_v24 * scale) + (30 * scale), 64 * scale, 2 * scale, ((v9x->mana_0x90_144 << 6) / v9x->maxMana_0x8C_140) * scale, manaColourIdx);
 				}
-				v24++;
-			} while (v24 < v25);
+				balloonIdx_v24++;
+			} while (balloonIdx_v24 < numBalloons_v25);
 		}
 	}
 	posX = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL].width_4 * scale + posX;
@@ -615,17 +618,17 @@ void DrawCurrentObjectiveTextbox_30630(uint8_t scale)//211630
 }
 
 //----- (00041B60) --------------------------------------------------------
-void sub_41B60()//222b60
+void SetPauseMenuClosed_41B60()//222b60
 {
-	if (x_BYTE_D47D9 == 1)
+	if (IsPauseMenuOpen_D47D9 == 1)
 	{
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = x_BYTE_D47D8;
 		if ((unsigned __int8)x_BYTE_D47D8 >= 1u && (unsigned __int8)x_BYTE_D47D8 <= 1u)
 			sub_417D0_install_pal_and_mouse_minmax2();
 		x_BYTE_D47D8 = 0;
 	}
-	if (x_BYTE_D47D9)
-		x_BYTE_D47D9--;
+	if (IsPauseMenuOpen_D47D9)
+		IsPauseMenuOpen_D47D9--;
 }
 
 //----- (00052E90) --------------------------------------------------------
@@ -645,18 +648,18 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	sub_87C10();
 	if (newMenuState)
 	{
-		sub_41AF0();
+		SetPausedMenuOpen_41AF0();
 	}
 	else if (currentMenuState )
 	{
-		sub_41B60();
+		SetPauseMenuClosed_41B60();
 	}
 	if (newMenuState && (newMenuState < 6u || newMenuState > 7u))
 	{
 		if (unk_18058Cstr.x_WORD_1805C2_joystick == 7 || unk_18058Cstr.x_WORD_1805C2_joystick == 1 || unk_18058Cstr.x_WORD_1805C2_joystick == 2)
 			SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[CURSOR_SPRITE_INDEX_D419E]); // fix it
 	}
-	else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+	else if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 	{
 		if (unk_18058Cstr.x_WORD_1805C2_joystick != 7 && unk_18058Cstr.x_WORD_1805C2_joystick != 1 && unk_18058Cstr.x_WORD_1805C2_joystick != 2)
 			SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]);
@@ -687,7 +690,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	{
 	case (int)MenuState::NONE:
 	case 6u:
-		if (newMenuState == currentMenuState && !(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+		if (newMenuState == currentMenuState && !(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 		{
 			sub_548B0(playStr);
 			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
@@ -703,7 +706,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
 	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		sub_548B0(playStr);
-		if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1))
+		if (!(x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED))
 			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
 		FlvInitSet_473B0();
 		break;
@@ -715,7 +718,7 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	{
 	case (int)MenuState::NONE:
 	case 6:
-		if (newMenuState == currentMenuState  && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+		if (newMenuState == currentMenuState  && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 		{
 			SetCenterScreenForFlyAssistant_6EDB0();
 			sub_548F0(playStr);
@@ -1077,7 +1080,7 @@ void DrawMinimapEntities_B_61A00(int16_t x, int16_t y, int16_t posX, int16_t pos
 	GetFont_6FC50(FontType_D419D);
 	v73 = v15 >> 16;
 	v80x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
-	v16 = v80x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[12];
+	v16 = v80x->dword_0xA4_164x->str_611.SpellsEnabled_0x333_819x.SpellEnabled[12];
 	if (v16)
 		v83 = Entities_EA3E4[v16]->word_0x2E_46;
 	//v17 = v80x->dword_0xA4_164;
@@ -1740,7 +1743,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	GetFont_6FC50(FontType_D419D);
 	v87 = v16 >> 16;
 	v102x = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
-	v17 = v102x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[12];
+	v17 = v102x->dword_0xA4_164x->str_611.SpellsEnabled_0x333_819x.SpellEnabled[12];
 	if (v17)
 		v93 = Entities_EA3E4[v17]->word_0x2E_46;
 	//v18 = v102x->dword_0xA4_164;
@@ -2220,9 +2223,9 @@ char sub_63570(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//244570
 	char v5; // dl
 	uint8_t v6; // al
 
-	v2x = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[12]];
+	v2x = Entities_EA3E4[a1x->dword_0xA4_164x->str_611.SpellsEnabled_0x333_819x.SpellEnabled[12]];
 	v3 = 1;
-	v4x = Entities_EA3E4[a2x->dword_0xA4_164x->str_611.array_0x333_819x.SpellEnabled[4]];
+	v4x = Entities_EA3E4[a2x->dword_0xA4_164x->str_611.SpellsEnabled_0x333_819x.SpellEnabled[4]];
 	v5 = 0;
 	if (v4x > Entities_EA3E4[0] && v4x->word_0x2E_46)
 		v5 = 1;
@@ -3320,6 +3323,9 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 
 void DrawRectangle(uint8_t* ptrImageBuffer, int posX, int posY, int width, int height, uint8_t lineThickness, uint32_t pitch, uint8_t colour)
 {
+	if (posX < 0 || posY < 0)
+		return;
+
 	uint8_t * ptrImageStart =  (pitch * posY) + posX + ptrImageBuffer;
 
 	//Top
@@ -4910,7 +4916,7 @@ void DrawPauseMenu_2FD90(uint8_t scale)//210d90
 	uint8_t colour; // [esp+10h] [ebp-4h]
 
 	colour = (*xadataclrd0dat.colorPalette_var28)[0];
-	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 1)
+	if (x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & GAME_PAUSED)
 	{
 		if (!x_D41A0_BYTEARRAY_4_struct.byteindex_206)
 		{

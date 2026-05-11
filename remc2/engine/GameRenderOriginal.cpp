@@ -667,16 +667,16 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 	}
 	str_F2C20ar.dword0x15_tileRenderCutOffDistance = 26214400;//21d2df not drawing
 	v278x = 0;
-	str_F2C20ar.dword0x12 = 8912896;
+	str_F2C20ar.dword0x12_FogThickness = 8912896;
 	v22 = v277[0];
 	str_F2C20ar.dword0x22 = pitch * (unsigned __int16)viewPort.Width_DE564 >> 8;
 	LOBYTE(v279) = v22 + HIBYTE(posX);
 	HIBYTE(v279) = v277[1] + HIBYTE(posY);
 	v23 = roll & 0x7FF;
 	str_F2C20ar.cos_0x11 = Maths::sin_DB750[512 + v23];
-	str_F2C20ar.dword0x16 = 23658496;
+	str_F2C20ar.dword0x16_FogEnd = 23658496;
 	str_F2C20ar.sin_0x0d = Maths::sin_DB750[v23];
-	str_F2C20ar.dword0x13 = 14745600;
+	str_F2C20ar.dword0x13_FogStart = 14745600;
 	if (!D41A0_0.m_GameSettings.m_Graphics.m_wSky || isCaveLevel_D41B6)
 	{
 		v26 = viewPort.Width_DE564;
@@ -1061,11 +1061,11 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 						v37 = 0;
 				}
 				v39 = (v33 << 8) + 8 * v37;
-				if (v35 <= str_F2C20ar.dword0x13)
+				if (v35 <= str_F2C20ar.dword0x13_FogStart)
 					goto LABEL_39;
-				if (v35 < str_F2C20ar.dword0x16)
+				if (v35 < str_F2C20ar.dword0x16_FogEnd)
 				{
-					v39 = v39 * (signed __int64)(str_F2C20ar.dword0x16 - v35) / str_F2C20ar.dword0x12;
+					v39 = v39 * (signed __int64)(str_F2C20ar.dword0x16_FogEnd - v35) / str_F2C20ar.dword0x12_FogThickness;
 				LABEL_39:
 					Str_E9C38_smalltit[v278x].pnt5_32 = v39;
 					goto LABEL_40;
@@ -1569,11 +1569,11 @@ void GameRenderOriginal::DrawTerrainAndParticles_3C080(__int16 posX, __int16 pos
 					v113 = 0;
 				}
 				v116 = (v248x[31] << 8) + 8 * v113;
-				if (v110 <= str_F2C20ar.dword0x13)
+				if (v110 <= str_F2C20ar.dword0x13_FogStart)
 					goto LABEL_133;
-				if (v110 < str_F2C20ar.dword0x16)
+				if (v110 < str_F2C20ar.dword0x16_FogEnd)
 				{
-					v116 = v116 * (signed __int64)(str_F2C20ar.dword0x16 - v110) / str_F2C20ar.dword0x12;
+					v116 = v116 * (signed __int64)(str_F2C20ar.dword0x16_FogEnd - v110) / str_F2C20ar.dword0x12_FogThickness;
 				LABEL_133:
 					Str_E9C38_smalltit[v278x].pnt5_32 = v116;
 					goto LABEL_134;
@@ -1647,9 +1647,9 @@ LABEL_259:
 		if (!(mapAngle_13B4E0[v200] & 8) || (Str_E9C38_smalltit[v278x].alt_4 -= v202 >> 10, v197 >= 14464))
 			v202 = 0;
 		v203 = (v197 << 8) + 8 * v202;
-		if (v199 > str_F2C20ar.dword0x13)
+		if (v199 > str_F2C20ar.dword0x13_FogStart)
 		{
-			if (v199 >= str_F2C20ar.dword0x16)
+			if (v199 >= str_F2C20ar.dword0x16_FogEnd)
 			{
 				Str_E9C38_smalltit[v278x].pnt5_32 = 0;
 			LABEL_254:
@@ -1664,7 +1664,7 @@ LABEL_259:
 				Str_E9C38_smalltit[v278x].haveBillboard_36 = mapEntityIndex_15B4E0[v204];
 				goto LABEL_256;
 			}
-			v203 = v203 * (signed __int64)(str_F2C20ar.dword0x16 - v199) / str_F2C20ar.dword0x12;
+			v203 = v203 * (signed __int64)(str_F2C20ar.dword0x16_FogEnd - v199) / str_F2C20ar.dword0x12_FogThickness;
 		}
 		Str_E9C38_smalltit[v278x].pnt5_32 = v203;
 		goto LABEL_254;
@@ -1944,13 +1944,13 @@ uint16_t GameRenderOriginal::sub_3FD60(int a2x)
 				v8 = v40 * v40 + v6 * v6;
 				if (v7 > 64 && v8 < str_F2C20ar.dword0x15_tileRenderCutOffDistance)
 				{
-					if (v8 <= str_F2C20ar.dword0x13)
+					if (v8 <= str_F2C20ar.dword0x13_FogStart)
 					{
 						str_F2C20ar.dword0x00 = 0x2000;
 					}
-					else if (v8 < str_F2C20ar.dword0x16)
+					else if (v8 < str_F2C20ar.dword0x16_FogEnd)
 					{
-						str_F2C20ar.dword0x00 = 32 * (str_F2C20ar.dword0x16 - (v40 * v40 + v6 * v6)) / str_F2C20ar.dword0x12 << 8;
+						str_F2C20ar.dword0x00 = 32 * (str_F2C20ar.dword0x16_FogEnd - (v40 * v40 + v6 * v6)) / str_F2C20ar.dword0x12_FogThickness << 8;
 					}
 					else
 					{
@@ -3170,10 +3170,10 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 					v6 = v99 * v99 + v5 * v5;
 					if (v99 > 64 && v6 < str_F2C20ar.dword0x15_tileRenderCutOffDistance)
 					{
-						if (v6 <= str_F2C20ar.dword0x13)
+						if (v6 <= str_F2C20ar.dword0x13_FogStart)
 							str_F2C20ar.dword0x00 = 0x2000;
 						else
-							str_F2C20ar.dword0x00 = v6 < str_F2C20ar.dword0x16 ? 32 * (str_F2C20ar.dword0x16 - (v99 * v99 + v5 * v5)) / str_F2C20ar.dword0x12 << 8 : 0;
+							str_F2C20ar.dword0x00 = v6 < str_F2C20ar.dword0x16_FogEnd ? 32 * (str_F2C20ar.dword0x16_FogEnd - (v99 * v99 + v5 * v5)) / str_F2C20ar.dword0x12_FogThickness << 8 : 0;
 						v7x = &particlesParameters_D951C[str_F2C20ar.dword0x14x->word_0x5A_90];
 						if (!v7x->byte_10)
 						{
@@ -3498,13 +3498,13 @@ void GameRenderOriginal::DrawSprites_3E360(int a2x)//21f360
 			v51 = v100 * v100 + v49 * v49;
 			if (v100 > 64 && v51 < str_F2C20ar.dword0x15_tileRenderCutOffDistance)
 			{
-				if (v51 <= str_F2C20ar.dword0x13)
+				if (v51 <= str_F2C20ar.dword0x13_FogStart)
 				{
 					str_F2C20ar.dword0x00 = 0x2000;
 				}
-				else if (v51 < str_F2C20ar.dword0x16)
+				else if (v51 < str_F2C20ar.dword0x16_FogEnd)
 				{
-					str_F2C20ar.dword0x00 = 32 * (str_F2C20ar.dword0x16 - (v100 * v100 + v49 * v49)) / str_F2C20ar.dword0x12 << 8;
+					str_F2C20ar.dword0x00 = 32 * (str_F2C20ar.dword0x16_FogEnd - (v100 * v100 + v49 * v49)) / str_F2C20ar.dword0x12_FogThickness << 8;
 				}
 				else
 				{

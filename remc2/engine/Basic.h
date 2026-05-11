@@ -52,7 +52,7 @@ typedef struct {
 	uint8_t data[];
 }TcolNext;
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct //lenght 24
 {
 	int32_t field_0;
@@ -62,9 +62,9 @@ typedef struct //lenght 24
 	int8_t firstSpriteIndex_10;
 	int8_t lastSpriteIndex_11;
 } type_animStruct3;
-#pragma pack (16)
+#pragma pack(pop)
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct //lenght 24
 {
 	int16_t diffX_0;
@@ -80,9 +80,9 @@ typedef struct //lenght 24
 	int16_t stateX_10;
 	int16_t stateY_11;
 } type_animStruct;
-#pragma pack (16)
+#pragma pack(pop)
 
-#pragma pack (1)
+#pragma pack(push, 1)
 typedef struct //lenght 24
 {
 	int16_t actX_0;
@@ -98,7 +98,7 @@ typedef struct //lenght 24
 	int16_t stateX_10;
 	int16_t stateY_11;
 } type_animStruct2;
-#pragma pack (16)
+#pragma pack(pop)
 
 #pragma pack (push,1)
 typedef struct//lenght 613 // end 17E09D
@@ -200,13 +200,16 @@ extern uint8_t* x_BYTE_FAEE0_tablesx_pre;
 
 extern std::array<uint8_t*, 256> x_DWORD_DDF50_texture_adresses; /*= { 0,32 }*/ // weak
 
-extern type_E9C38_smalltit Str_E9C38_smalltit[21 * 40];
+const uint16_t TILE_ROWS_COUNT = 21;
+const uint16_t TILE_COLUMNS_COUNT = 40;
+extern type_E9C38_smalltit Str_E9C38_smalltit[TILE_ROWS_COUNT * TILE_COLUMNS_COUNT];
 
 extern type_F2C20ar str_F2C20ar;
 
 extern std::string gameDataPath;
 extern std::string cdDataPath;
-extern std::string bigGraphicsPath;
+extern std::string highResGraphicsPath;
+extern std::string fixedMenuGraphicsPath;
 
 //extern type_17ECA0 str_17ECA0[];
 //extern uint8_t x_DWORD_17ECA0[];
@@ -559,7 +562,7 @@ uint8_t getPaletteIndex_5BE80(TColor* a1x, uint8_t a2, uint8_t a3, uint8_t a4);
 void sub_7C140_draw_text_background(int16_t a1, int16_t a2, int16_t a3, int16_t a4, uint8_t a5);
 void sub_41A90_VGA_Palette_install(TColor* a1x);
 void sub_2EC90(char a1);
-uint32_t DrawText_7FAE0(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
+uint32_t DrawText_7FAE0(char* text, int16_t x, int16_t width, int16_t posy, uint8_t color);
 void sub_90478_VGA_Blit320(uint8_t maxFps = 0);
 void sub_75200_VGA_Blit640(uint16_t height, uint8_t maxFps = 0);
 uint8_t GetLetterHeight_6FC30();
@@ -578,7 +581,7 @@ void VGA_DrawPlayerCoordData(int x, int y);
 void VGA_BlitAny(uint8_t maxFps = 0);
 void LockFps(uint8_t maxFps);
 void sub_6EF10_set_mouse_minmax(__int16 a1, signed __int16 a2, __int16 a3, signed __int16 a4);
-void DrawText_7FB90(char* a1, int16_t a2, int16_t a3, uint8_t a4);
+void DrawText_7FB90(char* textbuffer, int16_t posx, int16_t posy, uint8_t color);
 void sub_8CACD_draw_cursor2();
 void drawBitmap320_8F8B0(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);
 void drawBitmap640_8F8E8(int16_t posx, int16_t posy, bitmap_pos_struct_t temppstr, uint8_t scale = 1);

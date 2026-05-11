@@ -13,7 +13,6 @@
 
 #include "port_sdl_sound.h"
 #include "port_filesystem.h"
-#include "InputRecorder.h"
 #include "../engine/Scene.h"
 #include "../engine/GameState.h"
 

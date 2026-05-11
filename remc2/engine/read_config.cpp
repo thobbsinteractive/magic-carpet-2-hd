@@ -37,10 +37,13 @@ bool maintainAspectRatio = false;
 bool startWindowed = false;
 bool bigTextures = false;
 bool bigSprites = false;
+bool fixedMenuGraphics = false;
 bool sky = true;
 bool reflections = false;
 bool dynamicLighting = false;
+int viewDistanceScale = 1;
 bool multiThreadedRender = false;
+float sizePercentToThreadRender = 0;
 int numberOfRenderThreads = 0;
 bool assignToSpecificCores = false;
 bool openGLRender = false;
@@ -61,7 +64,7 @@ std::string findConfigFile() {
 		config_locations.push_back(CommandLineParams.GetConfigFilePath());
 	}
 	else {
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		auto env_home_dir = std::getenv("HOME");
 		auto env_xdg_config_home_dir = std::getenv("XDG_CONFIG_HOME");
 		std::filesystem::path home_dir;
@@ -133,8 +136,8 @@ bool SetConfig() {
 		config_skip_screen = 0;
 
 	//Path
-	strcpy((char*)gameFolder, config.m_Paths.m_GameFolder.c_str());
-	strcpy((char*)cdFolder, config.m_Paths.m_CdFolder.c_str());
+	gameFolder = config.m_Paths.m_GameFolder;
+	cdFolder = config.m_Paths.m_CdFolder;
 
 	//Sound
 	hqsound = config.m_Sound.m_HqSound;
@@ -183,9 +186,9 @@ bool SetConfig() {
 			gameUiScale--;
 		}
 	}
-	strcpy(bigGraphicsFolder, config.m_Graphics.m_GameDetail.m_BigGraphicsFolder.c_str());
-	if (config.m_Graphics.m_GameDetail.m_UseEnhancedGraphics && strlen(bigGraphicsFolder) > 0
-		&& std::filesystem::is_directory(GetSubDirectoryPath(bigGraphicsFolder)))
+	highResGraphicsFolder = config.m_Graphics.m_GameDetail.m_HighResGraphicsFolder;
+	if (config.m_Graphics.m_GameDetail.m_UseHighResGraphics && strlen(highResGraphicsFolder.c_str()) > 0
+		&& std::filesystem::is_directory(GetSubDirectoryPath(highResGraphicsFolder.c_str())))
 	{
 		bigSprites = true;
 		bigTextures = true;
@@ -195,10 +198,22 @@ bool SetConfig() {
 	{
 		texturepixels = 32;
 	}
+
+	fixedMenuGraphicsFolder = config.m_Graphics.m_GameDetail.m_FixedMenuGraphicsFolder;
+	if (config.m_Graphics.m_GameDetail.m_UseFixedMenuGraphics && strlen(fixedMenuGraphicsFolder.c_str()) > 0
+		&& std::filesystem::is_directory(GetSubDirectoryPath(fixedMenuGraphicsFolder.c_str())))
+	{
+		fixedMenuGraphics = true;
+	}
+
 	sky = config.m_Graphics.m_GameDetail.m_Sky;
 	reflections = config.m_Graphics.m_GameDetail.m_Reflections;
 	dynamicLighting = config.m_Graphics.m_GameDetail.m_DynamicLighting;
+	if (config.m_Graphics.m_GameDetail.m_ViewDistanceScale > 0 && config.m_Graphics.m_GameDetail.m_ViewDistanceScale < 4)
+		viewDistanceScale = config.m_Graphics.m_GameDetail.m_ViewDistanceScale;
+
 	multiThreadedRender = config.m_Graphics.m_Threading.m_isActive;
+	sizePercentToThreadRender = config.m_Graphics.m_Threading.m_SizePercentToThreadRender;
 	numberOfRenderThreads = config.m_Graphics.m_Threading.m_NumberOfRenderThreads;
 	if (multiThreadedRender)
 	{
