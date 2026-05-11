@@ -23,11 +23,13 @@
 				"gameDetail": {
 					"gameResWidth": 320,
 					"gameResHeight": 320,
+					"gameUiScale": 1,
 					"useEnhancedGraphics": false,
 					"bigGraphicsFolder": "biggraphics",
 					"sky": true,
 					"reflections": true,
-					"dynamicLighting": true
+					"dynamicLighting": true,
+					"viewDistanceScale": 3
 				},
 				"threading": {
 					"isActive": false,

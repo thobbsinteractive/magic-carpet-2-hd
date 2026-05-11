@@ -19,7 +19,8 @@
 					"oggMusicAlternative: use original and alternative sound tracks",
 					"fixspeedsound: set true when sounds play double speed",
 					"maxSimultaniousSounds: Original was 10. Increasing might impact performance",
-					"speechFolder: location of the ripped CD speech tracks"
+					"speechFolder: location of the ripped CD speech tracks",
+					"autoShowObjectivesForForeignLanguages: auto displays objective and mission text when not english"
 				],
 				"hqSound": true,
 				"oggMusic": true,
@@ -27,7 +28,8 @@
 				"oggMusicAlternative": false,
 				"fixSpeedSound": false,
 				"maxSimultaniousSounds": 20,
-				"speechFolder": "CD_Files/SPEECH"
+				"speechFolder": "CD_Files/SPEECH",
+				"autoShowObjectivesForForeignLanguages": true
 			},
 			"graphics": {
 				"description": [
@@ -45,25 +47,36 @@
 					"description": [
 						"gameResWidth: In Game resolution. If using software render keep this low",
 						"gameUiScale: Scale of the Game Mini/Map and UI '2' recommended for HD, 3 for higher. (Max 8) Will not allow spell menu to be wider than screen width",
-						"useEnhancedGraphics: If set to true, bigGraphicsFolder must be set as well",
-						"bigGraphicsFolder: Directory with 128x128 textures(upscaled by AI). Path is relative to .exe"
+						"useHighResGraphics: If set to true, highResGraphicsFolder must be set as well",
+						"highResGraphicsFolder: Directory with 128x128 textures. Path is relative to .exe",
+						"useFixedMenuGraphics: If set to true, fixedMenuGraphicsFolder folder must be set as well",
+						"fixedMenuGraphicsFolder: Directory with fixed menu graphics. Path is relative to .exe",
+						"sky: Turns the sky on or off. Can be changed in-game",
+						"reflections: Turns the reflections on or off. Can be changed in-game",
+						"dynamicLighting: Turns the reflections on or off. Can be changed in-game",
+						"viewDistanceScale: Increases the view distance (will effect performance). '1' = Original distance, '2' = 2x, '3' = 3x (Max)"
 					],
 					"gameResWidth": 640,
 					"gameResHeight": 480,
 					"gameUiScale": 2,
-					"useEnhancedGraphics": false,
-					"bigGraphicsFolder": "biggraphics",
+					"useHighResGraphics": false,
+					"highResGraphicsFolder": "graphics/high-res",
+					"useFixedMenuGraphics": false,
+					"fixedMenuGraphicsFolder": "graphics/fixed/menu",
 					"sky": true,
 					"reflections": true,
-					"dynamicLighting": true
+					"dynamicLighting": true,
+					"viewDistanceScale": 3
 				},
 				"threading": {
 					"description": [
 						"isActive : If set to false or deleted, multi-threading will not be used in render",
+						"sizePercentToThreadRender: 0.0 - 100.0. Decides if a poly is big enough percent on screen to render using threading",
 						"numberOfRenderThreads: Valid range 1-7. Depends on the number of available cores (Press 'T' to change in game)",
 						"assignToSpecificCores: When set to true, threads will be assigned to a specifc core (as many as supported)"
 					],
 					"isActive": true,
+					"sizePercentToThreadRender": 10.0,
 					"numberOfRenderThreads": 3,
 					"assignToSpecificCores": false
 				}
@@ -223,7 +236,7 @@
 								{
 									"start": 31000,
 									"end": 32767,
-									"factor": 1
+									"factor": 1.0
 								}
 							]
 						},
@@ -285,7 +298,7 @@
 								{
 									"start": 31000,
 									"end": 32767,
-									"factor": 1
+									"factor": 1.0
 								}
 							]
 						}
