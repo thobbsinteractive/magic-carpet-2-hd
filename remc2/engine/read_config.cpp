@@ -119,7 +119,9 @@ bool SetConfig() {
 	else {
 		if (CommandLineParams.DoShowDebugMessages1())
 			std::cout << "Config File cannot be found... Exiting\n";
+#ifndef __ANDROID__
 		throw std::invalid_argument("Config.json not found!");
+#endif
 		return false;
 	}
 
