@@ -21,14 +21,18 @@ RenderThread::RenderThread(uint8_t core)
 
 RenderThread::~RenderThread()
 {
+#ifndef __ANDROID__
 	try
+#endif
 	{
 		StopWorkerThread();
 	}
+#ifndef __ANDROID__
 	catch (const std::exception& e)
 	{
 		Logger->error("Error Stopping Worker Thread: {}", e.what());
 	}
+#endif
 }
 
 void RenderThread::StartWorkerThread(int8_t core)
