@@ -690,11 +690,16 @@ void LoadFixedMenuGraphics()
 		std::string indexStr = filename.substr(prefix.size(),
 			filename.size() - prefix.size() - 4);
 		int spriteIndex = -1;
-		try { spriteIndex = std::stoi(indexStr); }
+#ifndef __ANDROID__
+		try
+#endif
+		{ spriteIndex = std::stoi(indexStr); }
+#ifndef __ANDROID__
 		catch (...) {
 			Logger->warn("LoadFixedMenuGraphics: cannot parse index from '{}', skipped.", filename);
 			continue;
 		}
+#endif
 		if (spriteIndex < 0 || spriteIndex >= numSprites)
 		{
 			Logger->warn("LoadFixedMenuGraphics: index {} out of range [0,{}), skipped.",
