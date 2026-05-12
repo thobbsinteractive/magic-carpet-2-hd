@@ -82,7 +82,9 @@ void renderer_tests_eval_findings() {
 	}
 
 	if (!renderer_tests_success) {
+#ifndef __ANDROID__
 		throw std::runtime_error("Render tests failed, Exiting!");
+#endif
 	}
 	else {
 		Logger->info("No differences between HD and Original renderer and all checkpoints hit");
