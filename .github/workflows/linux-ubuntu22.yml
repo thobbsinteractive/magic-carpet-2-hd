@@ -1,10 +1,8 @@
-name: Linux CI
+name: Linux CI-22.04
 on:
   push:
     branches:
-      [ master, development ]
-    tags:
-      - 'u*'
+      [ master, development, add-ubuntu-22.04-support ]
   pull_request:
       types: [opened, synchronize, reopened]
   workflow_dispatch:
