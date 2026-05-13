@@ -1,16 +1,21 @@
 # Magic Carpet 2 HD
-## Now actually in HD or 2K!
+## Now actually in HD or 2K with increased View Distance!
 Based off the Reverse engineering of game Magic Carpet 2 from assembler to c/c++ language by Tomas Versly <br />
 Forked from Tomas Vesely's repo here: https://github.com/turican0/remc2 <br /><br />
 Tomas has done amazing work, not only reverse engineering this code but updating it to use more modern memory allocation and use the SDL library for input and sound. He has even increased the sprite resolutions.
 
-## Download the latest Alpha Here (now with MSI Installer)! ##
+## Download the latest Beta Here (now with MSI Installer)! ##
 https://github.com/thobbsinteractive/magic-carpet-2-hd/releases/latest
 
 ### Install Guide for GOG Edition or from Magic Carpet CD ###
 https://github.com/thobbsinteractive/magic-carpet-2-hd/wiki/Windows-Installation-Guide
 
-#### Basic Controls ####
+## Interesting links ##
+-**Magic Balls:** A project that uses the same engine but renders the image via the Godot engine: https://github.com/turican0/MagicBalls<br>
+-Blog from the very beginning of this project's development: https://github.com/turican0/remc2/wiki<br>
+-Dosbox version for data comparison: https://github.com/turican0/dosbox-x-remc2<br>
+
+### Basic Controls ###
 Controls can be redefined in the Config.json file, however here are the defaults:
 </br>
 Forward = W</br>
@@ -20,7 +25,7 @@ Move Right = D</br>
 Open Spell Menu = LCtrl / Mouse 4</br>
 Open Map = Tab / Middle Mouse</br>
 
-#### Command Line Args ####
+### Command Line Args ###
 You can use the following arguments:</br>
 To jump to a selected Level use:</br>
 --set_level [0-25]</br>
@@ -42,8 +47,6 @@ https://github.com/thobbsinteractive/magic-carpet-2-hd/wiki/FAQ
 Moburma has been tirelessly working to document cut levels, level data structures and missing graphics at: https://tcrf.net/Magic_Carpet_2:_The_Netherworlds
 
 ## My intention is to make a patch for Magic Carpet 1 and 2 (GOG editions) that initially will:
-- Add more screen resolution options
-- Increase draw distance
 - Seperate Render and Simulation code so that game speed is not dependent of FPS (or fix FPS)
 - Enable local multiplayer without NETBIOS
 
@@ -163,7 +166,6 @@ The game will search for this file in the following locations and this particula
 1. `$XDG_CONFIG_HOME/remc2`
 2. `$HOME/.config/remc2`
 3. next to the `remc2` binary
-
  
 # ROADMAP:
 
@@ -178,7 +180,7 @@ The game will search for this file in the following locations and this particula
 - [ ] Implement a (platform independent) Launch menu to adjust settings in config.ini before launch
 
 ## MILLSTONE 3
-- [ ] Improve sounds and music using updated original scores and directional sounds in game - In Review!
+- [X] Improve sounds and music using updated original scores and directional sounds in game - In Review!
 - [X] Implement a wix sharp .msi installation for new .exe to make patching the and running existing game simple and something similar for the Linux versions
 
 ## MILLSTONE 4
@@ -203,16 +205,11 @@ e.g. `void sub_19CA0_sound_proc5(unsigned __int8 a1)` was renamed to `void Chang
 - Be careful with making logic changes to the code and Test, Test, Test! I recommend playing the first level all the way though. Then the first Cave level (4) and I also recomend Level 5 as you have a nice mix of AI to kill and a cutscene at level completion.
 - Please build and run the remc2-regression-test project BEFORE making a pull request. This must pass and since it needs the game data cannot be placed in the Github Actions.
 
-## Interesting links ##
--Blog from the very beginning of this project's development: https://github.com/turican0/remc2/wiki<br>
--Dosbox version for data comparison: https://github.com/turican0/dosbox-x-remc2<br>
--A project that uses the same engine but renders the image via the Godot engine: https://github.com/turican0/MagicBalls<br>
-
 ## License ##
 ### Original Source Code is Copyright 1995 Bullfrog Productions ###
 
 ### Additonal Code is Licensed under the following MIT Licence: ###
-Copyright 2022 Magic Carpet 2 HD
+Copyright 2026 Magic Carpet 2 HD
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

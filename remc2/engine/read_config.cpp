@@ -41,7 +41,9 @@ bool fixedMenuGraphics = false;
 bool sky = true;
 bool reflections = false;
 bool dynamicLighting = false;
+int viewDistanceScale = 1;
 bool multiThreadedRender = false;
+float sizePercentToThreadRender = 0;
 int numberOfRenderThreads = 0;
 bool assignToSpecificCores = false;
 bool openGLRender = false;
@@ -207,7 +209,11 @@ bool SetConfig() {
 	sky = config.m_Graphics.m_GameDetail.m_Sky;
 	reflections = config.m_Graphics.m_GameDetail.m_Reflections;
 	dynamicLighting = config.m_Graphics.m_GameDetail.m_DynamicLighting;
+	if (config.m_Graphics.m_GameDetail.m_ViewDistanceScale > 0 && config.m_Graphics.m_GameDetail.m_ViewDistanceScale < 4)
+		viewDistanceScale = config.m_Graphics.m_GameDetail.m_ViewDistanceScale;
+
 	multiThreadedRender = config.m_Graphics.m_Threading.m_isActive;
+	sizePercentToThreadRender = config.m_Graphics.m_Threading.m_SizePercentToThreadRender;
 	numberOfRenderThreads = config.m_Graphics.m_Threading.m_NumberOfRenderThreads;
 	if (multiThreadedRender)
 	{
