@@ -1044,11 +1044,12 @@ int run()
 
 	is_playing = 1;
 	/* Start playing */
-#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+#if SDL_MIXER_VERSION_ATLEAST(2, 8, 0)
 	Mix_PauseAudio(0);
 #else
-	// Mix_PauseAudio není dostupné v SDL2_mixer < 2.6.0
-	SDL_PauseAudio(0);
+	// Mix_PauseAudio not in SDL2_mixer < 2.8.0
+	Mix_Resume(-1);
+	Mix_ResumeMusic();
 #endif
 
 	Logger->info("Playing... Hit Ctrl+C to quit!");
