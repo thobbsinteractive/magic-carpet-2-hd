@@ -1,4 +1,4 @@
-name: Linux CI-22.04
+name: Linux CI Ubuntu 2204
 on:
   push:
     branches:
