@@ -17,7 +17,7 @@
 extern type_str_164 unk_F42B0x[1136];
 extern type_str_160 str_D7BD6[157];
 extern bool IsAfterLoad;
-
+extern void LoadFixedFonts(int fontStructIndex, char* type);
 
 bool SaveLevelSLEV_55250(uint8_t savefileindex, char* filenameindex);//SLEV1
 bool SaveLevelSMAP_55320(uint8_t savefileindex, char* filenameindex);

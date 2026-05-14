@@ -312,6 +312,8 @@ void Config::LoadGameDetail(rapidjson::GenericObject<false, rapidjson::Value>& g
 		m_Graphics.m_GameDetail.m_HighResGraphicsFolder = ReadStringValue(gameDetail, "highResGraphicsFolder");
 		m_Graphics.m_GameDetail.m_UseFixedMenuGraphics = ReadBoolValue(gameDetail, "useFixedMenuGraphics");
 		m_Graphics.m_GameDetail.m_FixedMenuGraphicsFolder = ReadStringValue(gameDetail, "fixedMenuGraphicsFolder");
+		m_Graphics.m_GameDetail.m_UseExtendedFonts = ReadBoolValue(gameDetail, "useExtendedFonts");
+		m_Graphics.m_GameDetail.m_ExtendedFontsFolder = ReadStringValue(gameDetail, "extendedFontsFolder");
 		m_Graphics.m_GameDetail.m_Sky = ReadBoolValue(gameDetail, "sky");
 		m_Graphics.m_GameDetail.m_Reflections = ReadBoolValue(gameDetail, "reflections");
 		m_Graphics.m_GameDetail.m_DynamicLighting = ReadBoolValue(gameDetail, "dynamicLighting");

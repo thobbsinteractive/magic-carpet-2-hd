@@ -148,7 +148,12 @@ namespace remc2_installer
 								new Dir(new Id("FIXEDMENUGRAPHICS_INSTALLDIR"), @"graphics\fixed\menu",
 									new Files(@"..\enhancedassets\graphics\fixed\menu\*.*")
 									{
-										ComponentCondition = "HIGHTEX=\"yes\""
+										ComponentCondition = "FIXEDMENUGRAPHICS=\"yes\""
+									}),
+								new Dir(new Id("EXTENDEDFONTS_INSTALLDIR"), @"graphics\fixed\fonts",
+									new Files(@"..\enhancedassets\graphics\fixed\fonts\*.*")
+									{
+										ComponentCondition = "EXTENDEDFONTS=\"yes\""
 									}),
 								new Dir(new Id("SPEECH_INSTALLDIR"), @"CD_FILES\SPEECH",
 									new Files(@"..\enhancedassets\sound\speech\*.*")
@@ -166,8 +171,12 @@ namespace remc2_installer
 									new File(new Id("VC_Redist_EXE"), @"Extract\VC_redist.x86.exe"))),
 #endif
 							new Property(new Id("HIGHTEX_PROPERTY"), "HIGHTEX", "yes"),
+							new Property(new Id("FIXEDMENUGRAPHICS_PROPERTY"), "FIXEDMENUGRAPHICS", "yes"),
+							new Property(new Id("EXTENDEDFONTS_PROPERTY"), "EXTENDEDFONTS", "yes"),
 							new Property(new Id("SPEECH_PROPERTY"), "SPEECH", "yes"),
-							new ManagedAction(new Id("MANAGED_ACTION"), CustomActions.SetHighResGraphics, Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed));
+							new ManagedAction(new Id("MANAGED_ACTION_1"), CustomActions.SetHighResGraphics, Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed),
+							new ManagedAction(new Id("MANAGED_ACTION_2"), CustomActions.SetFixedMenuGraphics, Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed),
+							new ManagedAction(new Id("MANAGED_ACTION_3"), CustomActions.SetExtendedFonts, Return.check, When.After, Step.InstallFinalize, Condition.NOT_Installed));
 
 #if WIN64
             project.Platform = Platform.x64;
