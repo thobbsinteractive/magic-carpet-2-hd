@@ -776,15 +776,15 @@ void LoadFixedFonts(int fontStructIndex, char* type)
 
 	memcpy(patchedBuffer, fontDatBase, datUsed);
 
-	std::string patchDir = GetSubDirectoryPath(fixedMenuFontsFolder.c_str(), subFolder.c_str());
-	if (patchDir.empty() || !DirExists(patchDir.c_str()))
+	std::string fontsDir = GetSubDirectoryPath(extendedFontsFolder.c_str(), subFolder.c_str());
+	if (fontsDir.empty() || !DirExists(fontsDir.c_str()))
 	{
-		Logger->debug("LoadFixedFonts: patch folder '{}' not found, nothing to do.", patchDir);
+		Logger->debug("LoadExtendedFonts: patch folder '{}' not found, nothing to do.", fontsDir);
 		return;
 	}
 
 	char patchDirBuf[512];
-	strncpy(patchDirBuf, patchDir.c_str(), sizeof(patchDirBuf) - 1);
+	strncpy(patchDirBuf, fontsDir.c_str(), sizeof(patchDirBuf) - 1);
 	patchDirBuf[sizeof(patchDirBuf) - 1] = '\0';
 
 	dirsstruct files = getListDir(patchDirBuf);
@@ -826,7 +826,7 @@ void LoadFixedFonts(int fontStructIndex, char* type)
 		charIndex += charIndexOffset;
 
 		size_t offsetBefore = datUsed;
-		std::string fullPath = patchDir + "/" + filename;
+		std::string fullPath = fontsDir + "/" + filename;
 
 		if (PatchFont(patchedBuffer, datUsed, datCapacity,
 			fontStruct, charIndex, fullPath.c_str(), palette, paletteSize))
@@ -1072,7 +1072,7 @@ void LoadSpr_47160()//228160
 		CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_HFONT3DATTAB]);//2aa1d4
 		help_VGA_type_resolution = 8;
 
-		if (enhancedFonts)
+		if (extendedFonts)
 			LoadFixedFonts(2, (char*)"HFONT3");
 	}
 	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_MSPRD00DATTAB]);//2aa1bc

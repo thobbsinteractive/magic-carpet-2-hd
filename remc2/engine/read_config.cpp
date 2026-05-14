@@ -38,7 +38,7 @@ bool startWindowed = false;
 bool bigTextures = false;
 bool bigSprites = false;
 bool fixedMenuGraphics = false;
-bool enhancedFonts = true;
+bool extendedFonts = false;
 bool sky = true;
 bool reflections = false;
 bool dynamicLighting = false;
@@ -207,6 +207,13 @@ bool SetConfig() {
 		&& std::filesystem::is_directory(GetSubDirectoryPath(fixedMenuGraphicsFolder.c_str())))
 	{
 		fixedMenuGraphics = true;
+	}
+
+	extendedFontsFolder = config.m_Graphics.m_GameDetail.m_ExtendedFontsFolder;
+	if (config.m_Graphics.m_GameDetail.m_UseExtendedFonts && strlen(extendedFontsFolder.c_str()) > 0
+		&& std::filesystem::is_directory(GetSubDirectoryPath(extendedFontsFolder.c_str())))
+	{
+		extendedFonts = true;
 	}
 
 	sky = config.m_Graphics.m_GameDetail.m_Sky;

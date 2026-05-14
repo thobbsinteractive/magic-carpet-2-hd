@@ -41,7 +41,7 @@ extern std::string gameFolder;
 extern std::string cdFolder;
 extern std::string highResGraphicsFolder;
 extern std::string fixedMenuGraphicsFolder;
-extern std::string fixedMenuFontsFolder;
+extern std::string extendedFontsFolder;
 extern std::string forceRender;
 extern spdlog::logger* Logger;
 

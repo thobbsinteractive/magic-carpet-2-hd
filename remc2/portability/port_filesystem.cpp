@@ -15,7 +15,7 @@ std::string gameFolder = "NETHERW";
 std::string cdFolder = "CD_Files";
 std::string highResGraphicsFolder = "graphics/high-res";
 std::string fixedMenuGraphicsFolder = "graphics/fixed/menu";
-std::string fixedMenuFontsFolder = "graphics/fixed/fonts";
+std::string extendedFontsFolder = "graphics/fixed/fonts";
 std::string forceRender = "";
 spdlog::logger* Logger = nullptr;
 

@@ -763,7 +763,7 @@ void Intros_76D10(char introType)//257d10
 		sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
 
 	//LoadExternalFonts("",xy_DWORD_17DEC0_spritestr);
-	if (enhancedFonts)
+	if (extendedFonts)
 		LoadFixedFonts(0,(char*)"intro");
 
 	StopSubtitles_2EB40();
@@ -4147,7 +4147,7 @@ void PlayInGameFmv_82670()//263670
 					sprintf(cutScenePath, "%s/INTRO/CUT%d.DAT", cdDataPath.c_str(), cutScene_E16E0[cutSceneIndex].fileIndex_6);
 					sprintf(printbuffer, "%s", cutScenePath);
 
-					if (enhancedFonts)
+					if (extendedFonts)
 						LoadFixedFonts(0, (char*)"intro");
 
 					PlayInfoFmv(0, 1, cutScene_E16E0[cutSceneIndex].pSoundEvent_0, cutScenePath);
