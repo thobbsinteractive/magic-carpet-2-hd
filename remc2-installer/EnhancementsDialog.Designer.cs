@@ -38,6 +38,8 @@ namespace WixSharpSetup
             this.btnCancel = new System.Windows.Forms.Button();
             this.chkInstallTextures = new System.Windows.Forms.CheckBox();
             this.chkSpeech = new System.Windows.Forms.CheckBox();
+            this.chkFixedMenuGraphics = new System.Windows.Forms.CheckBox();
+            this.chkExtendedFonts = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -106,7 +108,7 @@ namespace WixSharpSetup
             this.btnBack.Location = new System.Drawing.Point(227, 12);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(75, 31);
-            this.btnBack.TabIndex = 0;
+            this.btnBack.TabIndex = 5;
             this.btnBack.Text = "Back";
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.back_Click);
@@ -118,7 +120,7 @@ namespace WixSharpSetup
             this.btnNext.Location = new System.Drawing.Point(308, 12);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(75, 31);
-            this.btnNext.TabIndex = 0;
+            this.btnNext.TabIndex = 4;
             this.btnNext.Text = "Next";
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.next_Click);
@@ -131,7 +133,7 @@ namespace WixSharpSetup
             this.btnCancel.Location = new System.Drawing.Point(404, 12);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 31);
-            this.btnCancel.TabIndex = 0;
+            this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.cancel_Click);
@@ -145,7 +147,7 @@ namespace WixSharpSetup
             this.chkInstallTextures.Margin = new System.Windows.Forms.Padding(10);
             this.chkInstallTextures.Name = "chkInstallTextures";
             this.chkInstallTextures.Size = new System.Drawing.Size(151, 17);
-            this.chkInstallTextures.TabIndex = 11;
+            this.chkInstallTextures.TabIndex = 0;
             this.chkInstallTextures.Text = "Install Enhanced Textures";
             this.chkInstallTextures.UseVisualStyleBackColor = true;
             // 
@@ -154,19 +156,47 @@ namespace WixSharpSetup
             this.chkSpeech.AutoSize = true;
             this.chkSpeech.Checked = true;
             this.chkSpeech.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSpeech.Location = new System.Drawing.Point(13, 106);
+            this.chkSpeech.Location = new System.Drawing.Point(13, 180);
             this.chkSpeech.Margin = new System.Windows.Forms.Padding(10);
             this.chkSpeech.Name = "chkSpeech";
             this.chkSpeech.Size = new System.Drawing.Size(93, 17);
-            this.chkSpeech.TabIndex = 12;
+            this.chkSpeech.TabIndex = 3;
             this.chkSpeech.Text = "Install Speech";
             this.chkSpeech.UseVisualStyleBackColor = true;
+            // 
+            // chkFixedMenuGraphics
+            // 
+            this.chkFixedMenuGraphics.AutoSize = true;
+            this.chkFixedMenuGraphics.Checked = true;
+            this.chkFixedMenuGraphics.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkFixedMenuGraphics.Location = new System.Drawing.Point(13, 106);
+            this.chkFixedMenuGraphics.Margin = new System.Windows.Forms.Padding(10);
+            this.chkFixedMenuGraphics.Name = "chkFixedMenuGraphics";
+            this.chkFixedMenuGraphics.Size = new System.Drawing.Size(157, 17);
+            this.chkFixedMenuGraphics.TabIndex = 1;
+            this.chkFixedMenuGraphics.Text = "Install Fixed Menu Graphics";
+            this.chkFixedMenuGraphics.UseVisualStyleBackColor = true;
+            // 
+            // chkExtendedFonts
+            // 
+            this.chkExtendedFonts.AutoSize = true;
+            this.chkExtendedFonts.Checked = true;
+            this.chkExtendedFonts.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkExtendedFonts.Location = new System.Drawing.Point(13, 143);
+            this.chkExtendedFonts.Margin = new System.Windows.Forms.Padding(10);
+            this.chkExtendedFonts.Name = "chkExtendedFonts";
+            this.chkExtendedFonts.Size = new System.Drawing.Size(134, 17);
+            this.chkExtendedFonts.TabIndex = 2;
+            this.chkExtendedFonts.Text = "Install Extended Fonts";
+            this.chkExtendedFonts.UseVisualStyleBackColor = true;
             // 
             // EnhancedDataDialog
             // 
             this.AcceptButton = this.btnNext;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(494, 361);
+            this.Controls.Add(this.chkExtendedFonts);
+            this.Controls.Add(this.chkFixedMenuGraphics);
             this.Controls.Add(this.chkSpeech);
             this.Controls.Add(this.chkInstallTextures);
             this.Controls.Add(this.panel2);
@@ -201,5 +231,7 @@ namespace WixSharpSetup
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.CheckBox chkInstallTextures;
 		private System.Windows.Forms.CheckBox chkSpeech;
+		private System.Windows.Forms.CheckBox chkFixedMenuGraphics;
+		private System.Windows.Forms.CheckBox chkExtendedFonts;
 	}
 }

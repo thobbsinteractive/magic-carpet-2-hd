@@ -65,7 +65,7 @@
 					"highResGraphicsFolder": "graphics/high-res",
 					"useFixedMenuGraphics": true,
 					"fixedMenuGraphicsFolder": "graphics/fixed/menu",
-					"useExtendedFonts": false,
+					"useExtendedFonts": true,
 					"extendedFontsFolder": "graphics/fixed/fonts",
 					"sky": true,
 					"reflections": true,
