@@ -32,27 +32,28 @@ jobs:
     - name: Install Dependencies (ARM64 cross packages)
       run: |
         sudo dpkg --add-architecture arm64
-        sudo apt update
-        sudo apt --fix-broken install
+
+        # Omez výchozí repozitáře pouze na amd64
         sudo sed -i 's/^Types: deb/Types: deb\nArchitectures: amd64/' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || \
         sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
+
+        # Přidej ARM64 porty
         sudo tee /etc/apt/sources.list.d/arm64-ports.list <<EOF
         deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble main restricted universe multiverse
         deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-updates main restricted universe multiverse
         deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-security main restricted universe multiverse
         EOF
-        sudo sed -i 's/^deb \[arch=arm64\]/deb [arch=arm64]/' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || true
+
         sudo apt-get update
-        sudo apt-get -y install --fix-broken --no-install-recommends \
+        sudo apt-get -y install --no-install-recommends \
           cmake ninja-build \
           gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
           libsdl2-dev:arm64 libsdl2-mixer-dev:arm64 \
           libsdl2-ttf-dev:arm64 libsdl2-image-dev:arm64 \
           libgtest-dev:arm64 \
           libspdlog-dev:arm64 libfmt-dev:arm64 \
-          libglib2.0-dev:arm64 libglib2.0-dev-bin:arm64 \
-          rapidjson-dev \
-          -o APT::Immediate-Configure=0
+          libpng-dev:arm64 \
+          rapidjson-dev
 
     - name: Generate Build System - ${{matrix.BUILD_CONFIGURATION}}
       run: |
