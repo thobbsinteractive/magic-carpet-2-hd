@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         BUILD_CONFIGURATION: [Debug, Release]
@@ -32,39 +32,26 @@ jobs:
     - name: Install Dependencies (ARM64 cross packages)
       run: |
         sudo dpkg --add-architecture arm64
-
-        if grep -q "^Types: deb" /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null; then
-          sudo sed -i '/^Types: deb/{n; /^Architectures:/!s/^/Architectures: amd64\n/}' /etc/apt/sources.list.d/ubuntu.sources
-          sudo sed -i 's/^URIs:/Architectures: amd64\nURIs:/' /etc/apt/sources.list.d/ubuntu.sources
-        else
-          sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
-        fi
-
-        sudo tee /etc/apt/sources.list.d/arm64-ports.list > /dev/null <<EOF
+        sudo apt update
+        sudo apt --fix-broken install
+        sudo sed -i 's/^Types: deb/Types: deb\nArchitectures: amd64/' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || \
+        sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
+        sudo tee /etc/apt/sources.list.d/arm64-ports.list <<EOF
         deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble main restricted universe multiverse
         deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-updates main restricted universe multiverse
         deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-security main restricted universe multiverse
         EOF
-
+        sudo sed -i 's/^deb \[arch=arm64\]/deb [arch=arm64]/' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || true
         sudo apt-get update
-
-        # Nástroje pro build (amd64)
-        sudo apt-get -y install --no-install-recommends \
+        sudo apt-get -y install --fix-broken --no-install-recommends \
           cmake ninja-build \
-          gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-
-        # ARM64 knihovny — bez závislostí aby se nenainstaloval broken libglib2.0-dev:arm64
-        sudo apt-get -y install --no-install-recommends \
-          libsdl2-2.0-0:arm64 libsdl2-dev:arm64 \
-          libsdl2-mixer-2.0-0:arm64 libsdl2-mixer-dev:arm64 \
-          libsdl2-ttf-2.0-0:arm64 libsdl2-ttf-dev:arm64 \
-          libsdl2-image-2.0-0:arm64 libsdl2-image-dev:arm64 \
-          libpng16-16:arm64 libpng-dev:arm64 \
-          libfmt9:arm64 libfmt-dev:arm64 \
-          libspdlog1.12:arm64 libspdlog-dev:arm64 \
+          gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
+          libsdl2-dev:arm64 libsdl2-mixer-dev:arm64 \
+          libsdl2-ttf-dev:arm64 libsdl2-image-dev:arm64 \
           libgtest-dev:arm64 \
+          libspdlog-dev:arm64 libfmt-dev:arm64 \
+          libglib2.0-dev:arm64 libglib2.0-dev-bin:arm64 \
           rapidjson-dev \
-          --no-install-recommends \
           -o APT::Immediate-Configure=0
 
     - name: Generate Build System - ${{matrix.BUILD_CONFIGURATION}}
@@ -93,7 +80,7 @@ jobs:
       run: |
         docker run --rm --platform linux/arm64 \
           -v ${{ github.workspace }}/build_${{matrix.BUILD_CONFIGURATION}}:/build \
-          ubuntu:24.04 \
+          ubuntu:latest \
           bash -c "apt-get update -q && apt-get install -y -q \
             libsdl2-2.0-0 libsdl2-mixer-2.0-0 \
             libsdl2-ttf-2.0-0 libsdl2-image-2.0-0 \
