@@ -2,7 +2,7 @@ name: Linux CI22
 on:
   push:
     branches:
-      [ master, development, add-ubuntu-22.04-support3 ]
+      [ master, development ]
   pull_request:
       types: [opened, synchronize, reopened]
   workflow_dispatch:
