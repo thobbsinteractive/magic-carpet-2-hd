@@ -71,7 +71,7 @@ char* encodeDiakritics(char* text) {
 		{(unsigned char)'é', 130},
 		{(unsigned char)'ù', 169},
 		{(unsigned char)'æ', 193},
-		{(unsigned char)'³', 136},
+		{(unsigned char)'³', 208},
 		{(unsigned char)'', 194},
 		{(unsigned char)'Æ', 195},
 		{(unsigned char)'É', 144},
