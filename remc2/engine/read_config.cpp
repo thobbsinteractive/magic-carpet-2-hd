@@ -42,7 +42,9 @@ bool enhancedFonts = true;
 bool sky = true;
 bool reflections = false;
 bool dynamicLighting = false;
+int viewDistanceScale = 1;
 bool multiThreadedRender = false;
+float sizePercentToThreadRender = 0;
 int numberOfRenderThreads = 0;
 bool assignToSpecificCores = false;
 bool openGLRender = false;
@@ -63,7 +65,7 @@ std::string findConfigFile() {
 		config_locations.push_back(CommandLineParams.GetConfigFilePath());
 	}
 	else {
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 		auto env_home_dir = std::getenv("HOME");
 		auto env_xdg_config_home_dir = std::getenv("XDG_CONFIG_HOME");
 		std::filesystem::path home_dir;
@@ -120,7 +122,9 @@ bool SetConfig() {
 	else {
 		if (CommandLineParams.DoShowDebugMessages1())
 			std::cout << "Config File cannot be found... Exiting\n";
+#ifndef __ANDROID__
 		throw std::invalid_argument("Config.json not found!");
+#endif
 		return false;
 	}
 
@@ -208,7 +212,11 @@ bool SetConfig() {
 	sky = config.m_Graphics.m_GameDetail.m_Sky;
 	reflections = config.m_Graphics.m_GameDetail.m_Reflections;
 	dynamicLighting = config.m_Graphics.m_GameDetail.m_DynamicLighting;
+	if (config.m_Graphics.m_GameDetail.m_ViewDistanceScale > 0 && config.m_Graphics.m_GameDetail.m_ViewDistanceScale < 4)
+		viewDistanceScale = config.m_Graphics.m_GameDetail.m_ViewDistanceScale;
+
 	multiThreadedRender = config.m_Graphics.m_Threading.m_isActive;
+	sizePercentToThreadRender = config.m_Graphics.m_Threading.m_SizePercentToThreadRender;
 	numberOfRenderThreads = config.m_Graphics.m_Threading.m_NumberOfRenderThreads;
 	if (multiThreadedRender)
 	{

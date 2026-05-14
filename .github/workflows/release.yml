@@ -231,13 +231,13 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get -y install \
+          sudo apt-get -y install --no-install-recommends \
             cmake ninja-build \
             libsdl2-dev libsdl2-mixer-dev \
             libsdl2-ttf-dev libsdl2-image-dev \
             libspdlog-dev libfmt-dev \
-            rapidjson-dev \
-            -o APT::Immediate-Configure=0
+            libpng-dev \
+            rapidjson-dev
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -303,29 +303,25 @@ jobs:
       - name: Install Dependencies (ARM64 cross)
         run: |
           sudo dpkg --add-architecture arm64
-          sudo sed -i 's/^Types: deb/Types: deb\nArchitectures: amd64/' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || \
-          sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
-          sudo tee /etc/apt/sources.list.d/arm64-ports.list <<EOF
+
+          sudo grep -q "^Architectures:" /etc/apt/sources.list.d/ubuntu.sources || \
+          sudo sed -i 's/^Types: deb$/Types: deb\nArchitectures: amd64/' \
+            /etc/apt/sources.list.d/ubuntu.sources
+
+          sudo tee /etc/apt/sources.list.d/arm64-ports.list > /dev/null <<'EOF'
           deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble main restricted universe multiverse
           deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-updates main restricted universe multiverse
           deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-security main restricted universe multiverse
           EOF
+
           sudo apt-get update
-          sudo apt-get clean
-          sudo apt-get -y install --fix-broken \
-            cmake ninja-build \
-            gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
-            libsdl2-dev:arm64 libsdl2-mixer-dev:arm64 \
-            libsdl2-ttf-dev:arm64 libsdl2-image-dev:arm64 \
-            libspdlog-dev:arm64 libfmt-dev:arm64 \
-            rapidjson-dev \
-            -o APT::Immediate-Configure=0 || \
           sudo apt-get -y install --no-install-recommends \
             cmake ninja-build \
             gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
             libsdl2-dev:arm64 libsdl2-mixer-dev:arm64 \
             libsdl2-ttf-dev:arm64 libsdl2-image-dev:arm64 \
             libspdlog-dev:arm64 libfmt-dev:arm64 \
+            libpng-dev:arm64 \
             rapidjson-dev
 
       - name: Configure
@@ -364,6 +360,67 @@ jobs:
           path: remc2-linux-arm64.tar.gz
 
   # ─────────────────────────────────────────────
+  # Linux – Ubuntu 22.04 x86_64
+  # ─────────────────────────────────────────────
+  build-linux-ubuntu22:
+    name: Linux Ubuntu 22.04 (x86_64)
+    runs-on: ubuntu-22.04
+
+    env:
+      GITHUB_CI_COMPATIBILITY_PATH: /usr/lib/x86_64-linux-gnu
+
+    steps:
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install --no-install-recommends \
+            cmake ninja-build \
+            libsdl2-dev libsdl2-mixer-dev \
+            libsdl2-ttf-dev libsdl2-image-dev \
+            libspdlog-dev libfmt-dev \
+            libpng-dev \
+            rapidjson-dev \
+            -o APT::Immediate-Configure=0
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          path: src
+
+      - name: Configure
+        run: |
+          mkdir -p build_Release
+          cd build_Release
+          cmake -GNinja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DUSE_64_BIT=True \
+            -DGITHUB_CI_COMPATIBILITY_PATH="${{ env.GITHUB_CI_COMPATIBILITY_PATH }}" \
+            ${{ github.workspace }}/src
+
+      - name: Build
+        run: |
+          cd build_Release
+          ninja
+
+      - name: Package (tar.gz)
+        run: |
+          mkdir -p remc2-linux-ubuntu22-x86_64
+          find build_Release -maxdepth 3 -name "remc2"        -type f -exec cp {} remc2-linux-ubuntu22-x86_64/ \;
+          find build_Release -maxdepth 3 -name "remc2-editor" -type f -exec cp {} remc2-linux-ubuntu22-x86_64/ \; || true
+          cp src/config.json            remc2-linux-ubuntu22-x86_64/
+          cp "src/Install Guide.txt"    remc2-linux-ubuntu22-x86_64/
+          cp src/check_install.sh       remc2-linux-ubuntu22-x86_64/
+          tar -czf remc2-linux-ubuntu22-x86_64.tar.gz remc2-linux-ubuntu22-x86_64/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remc2-linux-ubuntu22-x86_64
+          path: remc2-linux-ubuntu22-x86_64.tar.gz
+
+  # ─────────────────────────────────────────────
   # GitHub Release
   # ─────────────────────────────────────────────
   release:
@@ -373,6 +430,7 @@ jobs:
       - build-windows
       - build-installer
       - build-linux
+      - build-linux-ubuntu22
       - build-linux-arm64
 
     steps:
@@ -401,4 +459,5 @@ jobs:
             dist/installer-x64/Magic.Carpet.2.HD.x64.msi
             dist/installer-x86/Magic.Carpet.2.HD.x86.msi
             dist/remc2-linux-x86_64/remc2-linux-x86_64.tar.gz
+            dist/remc2-linux-ubuntu22-x86_64/remc2-linux-ubuntu22-x86_64.tar.gz
             dist/remc2-linux-arm64/remc2-linux-arm64.tar.gz

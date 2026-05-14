@@ -150,6 +150,7 @@ extern bool first_enter;
 extern int16_t x_WORD_17DBC4;
 extern typeTextBoxtextBoxStr_E24BCx textBoxStr_E25DC[];
 extern type_BYTE_E25ED_0x str_BYTE_E25ED_0x[];
+extern type_x_BYTE_E25ED_2BB str_BYTE_E25ED_2BB[];
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -224,3 +225,4 @@ void StopSubtitles_2EB40();
 void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
 signed int DrawBitmapAndPlaySound_7E320();
 int GetMapMenuDialogIndex_7E320(uint32_t adress, type_menuButtons_E1F84* a1x);
+signed int sub_7E640(type_menuButtons_E1F84* a1x);

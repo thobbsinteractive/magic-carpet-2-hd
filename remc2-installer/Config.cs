@@ -59,12 +59,14 @@ namespace remc2_installer
 		public bool sky { get; set; }
 		public bool reflections { get; set; }
 		public bool dynamicLighting { get; set; }
+		public int viewDistanceScale { get; set; }
 	}
 
 	public class Threading
 	{
 		public string[] description { get; set; }
 		public bool isActive { get; set; }
+		public float sizePercentToThreadRender { get; set; }
 		public int numberOfRenderThreads { get; set; }
 		public bool assignToSpecificCores { get; set; }
 	}
