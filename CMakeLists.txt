@@ -21,9 +21,49 @@ if (GITHUB_CI_COMPATIBILITY_PATH)
 endif ()
 
 find_package(SDL2 REQUIRED)
-find_package(SDL2_mixer REQUIRED)
-find_package(SDL2_ttf REQUIRED)
-find_package(SDL2_image REQUIRED)
+
+foreach(_entry
+    "SDL2_mixer|SDL_mixer.h|SDL2_mixer"
+    "SDL2_ttf|SDL_ttf.h|SDL2_ttf"
+    "SDL2_image|SDL_image.h|SDL2_image")
+
+    string(REPLACE "|" ";" _pkg "${_entry}")
+    list(GET _pkg 0 _name)
+    list(GET _pkg 1 _header)
+    list(GET _pkg 2 _lib)
+
+    find_package(${_name} QUIET CONFIG)
+    if(NOT ${_name}_FOUND)
+        find_path(_inc ${_header}
+            PATH_SUFFIXES SDL2
+            HINTS
+                /usr/include
+                /usr/local/include
+                /usr/include/${CMAKE_LIBRARY_ARCHITECTURE}
+        )
+        find_library(_libpath
+            NAMES ${_lib}
+            HINTS
+                /usr/lib
+                /usr/local/lib
+                /usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}
+        )
+        if(NOT _inc OR NOT _libpath)
+            message(FATAL_ERROR "Nelze najít ${_name}. Nainstaluj lib${_lib}-dev.")
+        endif()
+        if(NOT TARGET ${_name}::${_name})
+            add_library(${_name}::${_name} UNKNOWN IMPORTED)
+            set_target_properties(${_name}::${_name} PROPERTIES
+                IMPORTED_LOCATION "${_libpath}"
+                INTERFACE_INCLUDE_DIRECTORIES "${_inc}"
+            )
+        endif()
+        message(STATUS "Found ${_name} (fallback): ${_libpath}")
+        unset(_inc CACHE)
+        unset(_libpath CACHE)
+    endif()
+endforeach()
+
 find_package(PNG REQUIRED)
 find_package(fmt REQUIRED)
 
