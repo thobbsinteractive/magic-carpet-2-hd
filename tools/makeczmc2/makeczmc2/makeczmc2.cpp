@@ -12,7 +12,7 @@ char val;
 void writeflag() {
 	char red = 0xe0;
 	char white = 0xe2;
-	//char blue = 0xe4;
+	char blue = 0xe4;
 	/*int width = 87;
 	int height = 51;*/
 
@@ -34,7 +34,6 @@ void writeflag() {
 			buffer[j*width + i] = red;
 	}
 
-	/*
 	for (int j = 1;j < height / 2;j++)
 		for (int i = 3;i < width - 1;i++)
 			if ((i < width / 2) && ((i - 1)*inheight < (j)*inwidth))
@@ -43,7 +42,6 @@ void writeflag() {
 		for (int i = 3;i < width - 1;i++)
 			if ((i < width / 2) && ((i-1)*inheight < (height-j)*inwidth))
 				buffer[j*width + i] = blue;
-	*/
 
 	fwrite(buffer, 1, height*width, fptw);
 };
