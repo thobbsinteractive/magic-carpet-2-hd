@@ -1,6 +1,3 @@
-// makeczmc2.cpp : Tento soubor obsahuje funkci main. Provádění programu se tam zahajuje a ukončuje.
-//
-
 #include "pch.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -83,7 +80,7 @@ char* encodeDiakritics(char* text) {
 		{(unsigned char)'�', 172},
 		{(unsigned char)'�', 214},
 		{(unsigned char)'�', 216},
-		{(unsigned char)'�', 237},
+		{(unsigned char)'�', 220},
 		{(unsigned char)'�', 218},
 		{(unsigned char)'�', 199},
 		{(unsigned char)'�', 200},
@@ -103,7 +100,7 @@ char* encodeDiakritics(char* text) {
 		{(unsigned char)'�', 217},
 		{(unsigned char)'�', 209},
 		{(unsigned char)'�', 186},
-		{(unsigned char)'�', 237},
+		{(unsigned char)'�', 220},
 		{(unsigned char)'�', 210},
 		{(unsigned char)'�', 211},
 		{(unsigned char)'�', 187},
@@ -164,10 +161,6 @@ int main(int argc, char *argv[])
 	fclose(fptr);
 
 	char text[4096];
-	/*sprintf_s(text1,"%s", "text1");
-	sprintf_s(text2, "%s", "text2");
-	sprintf_s(text3, "%s", "áÁčČďĎéÉěĚíÍňŇóÓřŘšŠťŤúÚůŮýÝžŽ");*/
-	
 	fopen_s(&fptw, "L8.TXT", "wb");
 
 	val = 0x02;
