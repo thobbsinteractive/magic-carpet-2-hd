@@ -46224,7 +46224,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			if (extendedFonts)
 			{
 				LoadFixedFonts(0, (char*)"4b");
-				LoadFixedFonts(3, (char*)"4b");
+				LoadFixedFonts(3, (char*)"FONT1");
 			}
 			break;
 		case 6://adress 25b533
