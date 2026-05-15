@@ -46278,7 +46278,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			if (extendedFonts)
 			{
 				LoadFixedFonts(0, (char*)"6b");
-				LoadFixedFonts(1, (char*)"FONT1");
+				LoadFixedFonts(1, (char*)"6c");
 				LoadFixedFonts(3, (char*)"FONT1");
 			}
 
