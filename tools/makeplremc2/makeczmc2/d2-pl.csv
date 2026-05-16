@@ -351,14 +351,14 @@ Press 'O' to show current objective#Naciœnij „O”, aby wyœwietliæ aktualny cel#28
 You are here#Jesteœ tutaj#287#
 Walls cannot be passed#Œcian nie da siê przejœæ#288#
 Press RETURN for large map#Naciœnij RETURN, aby wyœwietliæ du¿¹ mapê#289#
-Your life is low, retreat for a while#Twoje ¿ycie jest na niskim poziomie, wycofaj siê na chwilê#290#
+Your life is low, retreat for a while#Twoja energia jest na niskim poziomie, wycofaj siê na chwilê#290#
 Search for spells#Szukaj zaklêæ#291#
 Search for fireball spell#Szukaj zaklêcia kula ognia#292#
 Search for castle spell#Szukaj zaklêcia zamek#293#
 Search for possession spell#Szukaj zaklêcia posiadanie#294#
 Use fireball spell to destroy target#U¿yj zaklêcia kula ognia, aby zniszczyæ cel#295#
 Use possession spell to possess mana#U¿yj zaklêcia posiadanie, aby posi¹œæ manê#296#
-Use castle spell to build a safe haven#U¿yj zaklêcia zamek, aby zbudowaæ bezpieczn¹ przystañ#297#
+Use castle spell to build a safe haven#U¿yj zaklêcia zamek, aby zbudowaæ schronienie#297#
 Press control for spell menu#Naciœnij klawisz Control, aby wyœwietliæ menu zaklêæ#298#
 Return to castle and recast castle spell#Wróæ do zamku i rzuæ ponownie zaklêcie zamek#299#
 Use cursor keys to move#U¿yj klawiszy kursora, aby siê poruszaæ#300#
@@ -371,7 +371,7 @@ Possess This Mana#Posi¹dŸ tê manê#306#
 Destroy this for its mana#Zniszcz to dla jego many#307#
 Collect this spell by flying into it#Zbierz ten czar, wlatuj¹c w niego#308#
 Possess this building to increase your spells mana#Posi¹dŸ ten budynek, aby zwiêkszyæ manê zaklêæ#309#
-This stone restores your life#Ten kamieñ przywraca Twoje ¿ycie#310#
+This stone restores your life#Ten kamieñ przywraca Twoj¹ energiê#310#
 This is your balloon which collects your possessed mana#To jest twój balon, który zbiera twoj¹ posiadan¹ manê#311#
 This is your castle#To jest twój zamek#312#
 This is an enemy castle#To jest wrogi zamek#313#
@@ -385,7 +385,7 @@ Mana held by balloons#Mana zgromadzona w balonach#320#
 Number of balloons#Liczba balonów#321#
 Balloons life#Energia balonów#322#
 Castle mana required#Wymagana mana zamku#323#
-This is your life#To jest twoje energia#324#
+This is your life#To jest twoja energia#324#
 This is your spells mana#To jest mana twoich zaklêæ#325#
 Click on LMB to cast this spell#Kliknij lewym przyciskiem myszy, aby rzuciæ ten czar#326#
 Click on RMB to cast this spell#Kliknij prawym przyciskiem myszy, aby rzuciæ ten czar#327#
@@ -490,9 +490,9 @@ Paused!#Wstrzymano!#425#
 Music Volume#G³oœnoœæ muzyki#426#
 Sound Volume#G³oœnoœæ dŸwiêku#427#
 Options#Opcje#428#
-Failed#Nie powiod³o siê#429#
-Has Completed Objective.#Cel zosta³ osi¹gniêty.#430#
-Has Completed All Objectives.#Zrealizowa³ wszystkie cele.#431#
+Failed#poniós³ pora¿kê#429#
+Has Completed Objective.#osi¹gni¹³ cel.#430#
+Has Completed All Objectives.#zrealizowa³ wszystkie cele.#431#
 DAY#DZIEÑ#432#
 NIGHT#NOC#433#
 CAVERN#JASKINIA#434#
