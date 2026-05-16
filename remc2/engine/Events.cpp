@@ -2991,6 +2991,12 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		sub_609E0(a1_6E8E);
 		break;
 	}
+	case 0x241a90: {
+		break;
+	}
+	case 0x241aa0: {
+		break;
+	}
 	case 0x241ab0: {
 		AddBallon_60AB0(a1_6E8E);
 		break;
@@ -2998,6 +3004,9 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 
 	case 0x241d50: {
 		sub_60D50((axis_3d*)a1_6E8E, 0);
+		break;
+	}
+	case 0x241e90: {
 		break;
 	}
 	case 0x241ea0: {
@@ -3010,6 +3019,9 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 	}
 	case 0x242000: {
 		sub_61000(a1_6E8E);
+		break;
+	}
+	case 0x241040: {
 		break;
 	}
 	case 0x242050: {
