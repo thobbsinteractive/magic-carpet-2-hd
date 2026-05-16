@@ -2486,6 +2486,12 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		sub_34350(a1_6E8E);
 		break;
 	}
+	case 0x215370: {
+		break;
+	}
+	case 0x215380: {
+		break;
+	}
 	case 0x215390: {
 		sub_34390(a1_6E8E);
 		break;
@@ -2677,8 +2683,17 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		sub_389F0(a1_6E8E);
 		break;
 	}
+	case 0x219af0: {
+		break;
+	}
 	case 0x219b00: {
 		CompareEvent08_38B00(a1_6E8E);
+		break;
+	}
+	case 0x219b70: {
+		break;
+	}
+	case 0x219b80: {
 		break;
 	}
 
@@ -2696,6 +2711,9 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 	}
 	case 0x219e40: {
 		sub_38E40(a1_6E8E);
+		break;
+	}
+	case 0x219e60: {
 		break;
 	}
 	case 0x219e70: {
@@ -4571,6 +4589,14 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		return sub_4EF90(a1_axis3d);
 		break;
 	}
+	case 0x230020: {
+		return 0;
+		break;
+	}
+	case 0x230030: {
+		return 0;
+		break;
+	}
 	case 0x230040: {
 		return sub_4F040(a1_axis3d);
 		break;
@@ -4589,6 +4615,10 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 				 }*/
 	case 0x2305f0: {
 		return sub_4F5F0(a1_axis3d);
+		break;
+	}
+	case 0x230690: {
+		return 0;
 		break;
 	}
 	case 0x2306a0: {
@@ -4793,14 +4823,22 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		return sub_50960(a1_axis3d);
 		break;
 	}
+	case 0x231a10: {
+		return 0;
+		break;
+	}
 	case 0x231a20: {
 		return sub_50A20(a1_axis3d);
 		break;
 	}
-				 /*case 0x231a90: {
-					 return sub_50A90(a1_axis3d, 0, 0);//fix it
-					 break;
-				 }*/
+	case 0x231a80: {
+		return 0;
+		break;
+	}
+	case 0x231a90: {
+		return AddSwitchXX_50A90(a1_axis3d, 0, 0); //fix it
+		break;
+	}
 	case 0x231ae0: {// 1 instance in level 21
 		return AddSwitch00_50AE0(a1_axis3d);
 		break;
@@ -4953,10 +4991,10 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		return AddSwitch31atyp_50FF0(a1_axis3d);
 		break;
 	}
-				 /*case 0x232120: {
-					 return sub_51120(a1_axis3d, 0, 0);//fix it
-					 break;
-				 }*/
+	case 0x232120: {
+		return AddSpellXX_XX_51120(a1_axis3d, 0, 0); //fix it
+		break;
+	}
 	case 0x2321a0: {
 		return AddSpell00_00_511A0(a1_axis3d);
 		break;
@@ -5061,10 +5099,10 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		return AddSpell25_75_514C0(a1_axis3d);
 		break;
 	}
-				 /*case 0x2324e0: {
-					 return sub_514E0(a1_axis3d, 0, 0, 0);//fix it
-					 break;
-				 }*/
+	case 0x2324e0: {
+		return sub_514E0(a1_axis3d, 0, 0, 0);//fix it
+		break;
+	}
 	case 0x232530: {
 		return sub_51530(a1_axis3d);
 		//return fix_it_4A190();
