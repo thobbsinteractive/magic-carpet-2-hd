@@ -1,6 +1,16 @@
 #pragma once
 #include <wx/wx.h>
 
+// ─── IDs ────────────────────────────────────────────────────────────────────
+enum {
+	ID_BTN_PLAY = wxID_HIGHEST + 1,
+	ID_BTN_FILE,
+	ID_BTN_CONTROLS,
+	ID_BTN_SOUND,
+	ID_BTN_GRAPHICS,
+	ID_BTN_EXIT
+};
+
 enum
 {
 	// menu items
@@ -18,5 +28,10 @@ public:
 	MainFrame(const wxString& title);
 
 private:
-	void OnExit(wxCommandEvent& event);
+	void OnPlay(wxCommandEvent& evt);
+	void OnFile(wxCommandEvent& evt);
+	void OnControls(wxCommandEvent& evt);
+	void OnSound(wxCommandEvent& evt);
+	void OnGraphics(wxCommandEvent& evt);
+	void OnExit(wxCommandEvent& evt);
 };
