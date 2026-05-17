@@ -50,7 +50,18 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 }
 
 // ── Button handlers ──────────────────────────────────────────────────────────
-void MainFrame::OnPlay(wxCommandEvent&) { wxLogMessage("New clicked"); }
+void MainFrame::OnPlay(wxCommandEvent&)
+{
+	// Launch remc2.exe detached (wxEXEC_ASYNC = fire-and-forget)
+	long pid = wxExecute("remc2.exe", wxEXEC_ASYNC);
+	if (pid == 0) {
+		wxMessageBox("Failed to launch Magic Carpet 2 HD.\n"
+			"Make sure it is in the same directory as this application.",
+			"Launch Error", wxOK | wxICON_ERROR, this);
+		return;
+	}
+	Close(true); // close the launcher
+}
 
 void MainFrame::OnFile(wxCommandEvent&)
 {
