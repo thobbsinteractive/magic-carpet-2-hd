@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameFilesDialog.cpp" />
+    <ClCompile Include="GraphicsDialog.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="Remc2ConfiguratorApp.cpp" />
     <ClCompile Include="SoundDialog.cpp" />
@@ -144,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="GameFilesDialog.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="GraphicsDialog.h" />
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="SoundDialog.h" />
   </ItemGroup>

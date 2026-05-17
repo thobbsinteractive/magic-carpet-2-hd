@@ -81,7 +81,13 @@ void MainFrame::OnSound(wxCommandEvent&)
 		settings = dlg.GetSettings();
 }
 
-void MainFrame::OnGraphics(wxCommandEvent&) { wxLogMessage("Help clicked"); }
+void MainFrame::OnGraphics(wxCommandEvent&)
+{
+	GraphicsSettings settings;
+	GraphicsDialog dlg(this, settings);
+	if (dlg.ShowModal() == wxID_OK)
+		settings = dlg.GetSettings();
+}
 
 // Event handlers
 void MainFrame::OnExit(wxCommandEvent& WXUNUSED(event))

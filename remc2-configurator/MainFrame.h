@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "GameFilesDialog.h"
 #include "SoundDialog.h"
+#include "GraphicsDialog.h"
 
 class MainFrame : public wxFrame
 {
