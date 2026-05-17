@@ -8,22 +8,22 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
 
 	// ── Controls ────────────────────────────────────────────────────────────
-	m_hqSound = new wxCheckBox(panel, wxID_ANY, "High Quality Sound");
-	m_oggMusic = new wxCheckBox(panel, wxID_ANY, "OGG Music");
 	m_oggMusicAlternative = new wxCheckBox(panel, wxID_ANY, "OGG Music Alternative");
 	m_fixSpeedSound = new wxCheckBox(panel, wxID_ANY, "Fix Speed Sound");
 	m_autoShowObjectives = new wxCheckBox(panel, wxID_ANY,
 		"Auto Show Objectives for Foreign Languages");
 
-	m_hqSound->SetValue(s.hqSound);
-	m_oggMusic->SetValue(s.oggMusic);
 	m_oggMusicAlternative->SetValue(s.oggMusicAlternative);
+	m_oggMusicAlternative->SetToolTip("Use alternative music tracks.");
 	m_fixSpeedSound->SetValue(s.fixSpeedSound);
+	m_fixSpeedSound->SetToolTip("Set to true when sounds play double speed.");
 	m_autoShowObjectives->SetValue(s.autoShowObjectivesForForeignLang);
+	m_autoShowObjectives->SetToolTip("Auto display objective and mission text when a different language to english is used.");
 
 	// OGG Folder row
 	auto* oggFolderLabel = new wxStaticText(panel, wxID_ANY, "OGG Folder:");
 	m_oggFolder = new wxTextCtrl(panel, wxID_ANY, s.oggFolder);
+	m_oggFolder->SetToolTip("Relative Path to the music tracks. Required for music to play.");
 
 	wxBoxSizer* oggRow = new wxBoxSizer(wxHORIZONTAL);
 	oggRow->Add(oggFolderLabel, wxSizerFlags(0).CentreVertical().Border(wxRIGHT, 6));
@@ -33,7 +33,8 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	auto* maxLabel = new wxStaticText(panel, wxID_ANY, "Max Simultaneous Sounds:");
 	m_maxSimSounds = new wxSpinCtrl(panel, wxID_ANY, wxEmptyString,
 		wxDefaultPosition, wxDefaultSize,
-		wxSP_ARROW_KEYS, 8, 128, s.maxSimultaneousSounds);
+		wxSP_ARROW_KEYS, 10, 128, s.maxSimultaneousSounds);
+	m_maxSimSounds->SetToolTip("Original game was 10. Increasing beyond 20 might impact performance.");
 
 	wxBoxSizer* maxRow = new wxBoxSizer(wxHORIZONTAL);
 	maxRow->Add(maxLabel, wxSizerFlags(0).CentreVertical().Border(wxRIGHT, 6));
@@ -42,6 +43,7 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	// Speech Folder row
 	auto* speechLabel = new wxStaticText(panel, wxID_ANY, "Speech Folder:");
 	m_speechFolder = new wxTextCtrl(panel, wxID_ANY, s.speechFolder);
+	m_speechFolder->SetToolTip("Relative Path to the speech tracks. Required for in game briefings to play.");
 
 	wxBoxSizer* speechRow = new wxBoxSizer(wxHORIZONTAL);
 	speechRow->Add(speechLabel, wxSizerFlags(0).CentreVertical().Border(wxRIGHT, 6));
@@ -57,8 +59,6 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	const wxSizerFlags rowFlags = wxSizerFlags(0).Expand().Border(wxLEFT | wxRIGHT | wxTOP, 12);
 
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
-	mainSizer->Add(m_hqSound, rowFlags);
-	mainSizer->Add(m_oggMusic, rowFlags);
 	mainSizer->Add(oggRow, rowFlags);
 	mainSizer->Add(m_oggMusicAlternative, rowFlags);
 	mainSizer->Add(m_fixSpeedSound, rowFlags);
@@ -80,8 +80,6 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 SoundSettings SoundDialog::GetSettings() const
 {
 	SoundSettings s;
-	s.hqSound = m_hqSound->GetValue();
-	s.oggMusic = m_oggMusic->GetValue();
 	s.oggFolder = m_oggFolder->GetValue();
 	s.oggMusicAlternative = m_oggMusicAlternative->GetValue();
 	s.fixSpeedSound = m_fixSpeedSound->GetValue();

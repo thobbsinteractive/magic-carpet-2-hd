@@ -2,8 +2,6 @@
 #include "Globals.h"
 
 struct SoundSettings {
-	bool     hqSound = true;
-	bool     oggMusic = true;
 	wxString oggFolder = "music-ogg";
 	bool     oggMusicAlternative = false;
 	bool     fixSpeedSound = false;
@@ -18,8 +16,6 @@ public:
 	SoundSettings GetSettings() const;
 
 private:
-	wxCheckBox* m_hqSound = nullptr;
-	wxCheckBox* m_oggMusic = nullptr;
 	wxTextCtrl* m_oggFolder = nullptr;
 	wxCheckBox* m_oggMusicAlternative = nullptr;
 	wxCheckBox* m_fixSpeedSound = nullptr;
