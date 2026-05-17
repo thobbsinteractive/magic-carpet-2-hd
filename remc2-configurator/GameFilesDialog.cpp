@@ -1,4 +1,5 @@
 #include "GameFilesDialog.h"
+#include "PathHelpers.h"
 
 GameFilesDialog::GameFilesDialog(wxWindow* parent)
 	: wxDialog(parent, wxID_ANY, "Select Game Files Folders",
@@ -60,7 +61,7 @@ void GameFilesDialog::OnBrowseGameFiles(wxCommandEvent& evt)
 		wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
 
 	if (dlg.ShowModal() == wxID_OK)
-		m_gameFolderCtrl->SetValue(dlg.GetPath());
+		m_gameFolderCtrl->SetValue(ToRelative(dlg.GetPath()));
 }
 
 void GameFilesDialog::OnBrowseCdFiles(wxCommandEvent& evt)
@@ -71,5 +72,5 @@ void GameFilesDialog::OnBrowseCdFiles(wxCommandEvent& evt)
 		wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
 
 	if (dlg.ShowModal() == wxID_OK)
-		m_cdFolderCtrl->SetValue(dlg.GetPath());
+		m_cdFolderCtrl->SetValue(ToRelative(dlg.GetPath()));
 }

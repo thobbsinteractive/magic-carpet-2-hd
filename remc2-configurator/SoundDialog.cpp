@@ -1,4 +1,6 @@
 #include "SoundDialog.h"
+#include "PathHelpers.h"
+#include <wx/dirdlg.h>
 
 SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	: wxDialog(parent, wxID_ANY, "Sound Settings",
@@ -20,16 +22,18 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	m_autoShowObjectives->SetValue(s.autoShowObjectivesForForeignLang);
 	m_autoShowObjectives->SetToolTip("Auto display objective and mission text when a different language to english is used.");
 
-	// OGG Folder row
+	// ── OGG Folder row ───────────────────────────────────────────────────────
 	auto* oggFolderLabel = new wxStaticText(panel, wxID_ANY, "OGG Folder:");
 	m_oggFolder = new wxTextCtrl(panel, wxID_ANY, s.oggFolder);
 	m_oggFolder->SetToolTip("Relative Path to the music tracks. Required for music to play.");
+	auto* btnOggBrowse = new wxButton(panel, wxID_ANY, "Browse...");
 
 	wxBoxSizer* oggRow = new wxBoxSizer(wxHORIZONTAL);
 	oggRow->Add(oggFolderLabel, wxSizerFlags(0).CentreVertical().Border(wxRIGHT, 6));
-	oggRow->Add(m_oggFolder, wxSizerFlags(1).Expand());
+	oggRow->Add(m_oggFolder, wxSizerFlags(1).Expand().Border(wxRIGHT, 4));
+	oggRow->Add(btnOggBrowse, wxSizerFlags(0).CentreVertical());
 
-	// Max Simultaneous Sounds row
+	// ── Max Simultaneous Sounds row ──────────────────────────────────────────
 	auto* maxLabel = new wxStaticText(panel, wxID_ANY, "Max Simultaneous Sounds:");
 	m_maxSimSounds = new wxSpinCtrl(panel, wxID_ANY, wxEmptyString,
 		wxDefaultPosition, wxDefaultSize,
@@ -40,14 +44,33 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	maxRow->Add(maxLabel, wxSizerFlags(0).CentreVertical().Border(wxRIGHT, 6));
 	maxRow->Add(m_maxSimSounds, wxSizerFlags(0));
 
-	// Speech Folder row
+	// ── Speech Folder row ────────────────────────────────────────────────────
 	auto* speechLabel = new wxStaticText(panel, wxID_ANY, "Speech Folder:");
 	m_speechFolder = new wxTextCtrl(panel, wxID_ANY, s.speechFolder);
 	m_speechFolder->SetToolTip("Relative Path to the speech tracks. Required for in game briefings to play.");
+	auto* btnSpeechBrowse = new wxButton(panel, wxID_ANY, "Browse...");
 
 	wxBoxSizer* speechRow = new wxBoxSizer(wxHORIZONTAL);
 	speechRow->Add(speechLabel, wxSizerFlags(0).CentreVertical().Border(wxRIGHT, 6));
-	speechRow->Add(m_speechFolder, wxSizerFlags(1).Expand());
+	speechRow->Add(m_speechFolder, wxSizerFlags(1).Expand().Border(wxRIGHT, 4));
+	speechRow->Add(btnSpeechBrowse, wxSizerFlags(0).CentreVertical());
+
+	// ── Browse button handlers ───────────────────────────────────────────────
+	btnOggBrowse->Bind(wxEVT_BUTTON, [this, panel](wxCommandEvent&) {
+		wxDirDialog dlg(panel, "Select OGG Music Folder",
+			ToAbsolute(m_oggFolder->GetValue()),
+			wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
+		if (dlg.ShowModal() == wxID_OK)
+			m_oggFolder->SetValue(ToRelative(dlg.GetPath()));
+		});
+
+	btnSpeechBrowse->Bind(wxEVT_BUTTON, [this, panel](wxCommandEvent&) {
+		wxDirDialog dlg(panel, "Select Speech Folder",
+			ToAbsolute(m_speechFolder->GetValue()),
+			wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
+		if (dlg.ShowModal() == wxID_OK)
+			m_speechFolder->SetValue(ToRelative(dlg.GetPath()));
+		});
 
 	// ── OK / Cancel ──────────────────────────────────────────────────────────
 	wxStdDialogButtonSizer* btnSizer = new wxStdDialogButtonSizer();

@@ -139,6 +139,7 @@
     <ClCompile Include="GameFilesDialog.cpp" />
     <ClCompile Include="GraphicsDialog.cpp" />
     <ClCompile Include="MainFrame.cpp" />
+    <ClCompile Include="PathHelpers.cpp" />
     <ClCompile Include="Remc2ConfiguratorApp.cpp" />
     <ClCompile Include="SoundDialog.cpp" />
   </ItemGroup>
@@ -147,6 +148,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="GraphicsDialog.h" />
     <ClInclude Include="MainFrame.h" />
+    <ClInclude Include="PathHelpers.h" />
     <ClInclude Include="SoundDialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
