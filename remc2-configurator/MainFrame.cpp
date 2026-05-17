@@ -51,7 +51,15 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 
 // ── Button handlers ──────────────────────────────────────────────────────────
 void MainFrame::OnPlay(wxCommandEvent&) { wxLogMessage("New clicked"); }
-void MainFrame::OnFile(wxCommandEvent&) { wxLogMessage("Open clicked"); }
+
+void MainFrame::OnFile(wxCommandEvent&)
+{
+	GameFilesDialog dlg(this);
+	if (dlg.ShowModal() == wxID_OK) {
+
+	}
+}
+
 void MainFrame::OnControls(wxCommandEvent&) { wxLogMessage("Save clicked"); }
 void MainFrame::OnSound(wxCommandEvent&) { wxLogMessage("Settings clicked"); }
 void MainFrame::OnGraphics(wxCommandEvent&) { wxLogMessage("Help clicked"); }
