@@ -737,7 +737,7 @@ void LoadFixedFonts(int fontStructIndex, char* type)
 		return;
 	}
 	
-	int numSprites = 271;
+	int numSprites = 256;
 	int lastIdx = 0;
 	for (int i = 1; i < numSprites; ++i)
 	{

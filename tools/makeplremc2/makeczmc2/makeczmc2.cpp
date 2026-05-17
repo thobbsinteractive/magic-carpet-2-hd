@@ -1,6 +1,3 @@
-// makeczmc2.cpp : Tento soubor obsahuje funkci main. ProvÃ¡dÄ›nÃ­ programu se tam zahajuje a ukonÄuje.
-//
-
 #include "pch.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,7 +68,7 @@ char* encodeDiakritics(char* text) {
 		{(unsigned char)'é', 130},
 		{(unsigned char)'ù', 169},
 		{(unsigned char)'æ', 193},
-		{(unsigned char)'³', 136},
+		{(unsigned char)'³', 208},
 		{(unsigned char)'', 194},
 		{(unsigned char)'Æ', 195},
 		{(unsigned char)'É', 144},
@@ -83,7 +80,7 @@ char* encodeDiakritics(char* text) {
 		{(unsigned char)'è', 172},
 		{(unsigned char)'á', 214},
 		{(unsigned char)'í', 216},
-		{(unsigned char)'ó', 162},
+		{(unsigned char)'ó', 220},
 		{(unsigned char)'ú', 218},
 		{(unsigned char)'¥', 199},
 		{(unsigned char)'¹', 200},
@@ -103,7 +100,7 @@ char* encodeDiakritics(char* text) {
 		{(unsigned char)'Í', 217},
 		{(unsigned char)'ì', 209},
 		{(unsigned char)'Ù', 186},
-		{(unsigned char)'Ó', 237},
+		{(unsigned char)'Ó', 220},
 		{(unsigned char)'Ñ', 210},
 		{(unsigned char)'ñ', 211},
 		{(unsigned char)'ò', 187},
@@ -164,10 +161,6 @@ int main(int argc, char *argv[])
 	fclose(fptr);
 
 	char text[4096];
-	/*sprintf_s(text1,"%s", "text1");
-	sprintf_s(text2, "%s", "text2");
-	sprintf_s(text3, "%s", "Ã¡ÃÄÄŒÄÄÃ©Ã‰Ä›ÄšÃ­ÃÅˆÅ‡Ã³Ã“Å™Å˜Å¡Å Å¥Å¤ÃºÃšÅ¯Å®Ã½ÃÅ¾Å½");*/
-	
 	fopen_s(&fptw, "L8.TXT", "wb");
 
 	val = 0x02;
