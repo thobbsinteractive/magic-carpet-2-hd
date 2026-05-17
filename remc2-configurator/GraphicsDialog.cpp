@@ -49,6 +49,7 @@ void GraphicsDialog::BuildUI(const GraphicsSettings& cfg)
 	m_spinDisplay = new wxSpinCtrl(this, wxID_ANY,
 		wxEmptyString, wxDefaultPosition, wxDefaultSize,
 		wxSP_ARROW_KEYS, 0, 7, cfg.displayIndex);
+	m_spinDisplay->SetToolTip("Decides which display to use, if it cannot find a display at the index, it will find the first one big enough.");
 	grid->Add(m_spinDisplay, 0, wxEXPAND);
 
 	// ── Resolution ───────────────────────────────────────────────────────────
@@ -62,6 +63,7 @@ void GraphicsDialog::BuildUI(const GraphicsSettings& cfg)
 		wxDefaultPosition, wxDefaultSize, choices);
 	m_choiceRes->SetSelection(FindResIndex(cfg.windowResWidth, cfg.windowResHeight));
 	m_choiceRes->Bind(wxEVT_CHOICE, &GraphicsDialog::OnResolutionChanged, this);
+	m_choiceRes->SetToolTip("Window resolution, cannot be greater than resolution of chosen display.");
 	grid->Add(m_choiceRes, 0, wxEXPAND);
 
 	// ── Maintain aspect ratio ─────────────────────────────────────────────────
@@ -69,6 +71,7 @@ void GraphicsDialog::BuildUI(const GraphicsSettings& cfg)
 		0, wxALIGN_CENTER_VERTICAL);
 	m_chkAspect = new wxCheckBox(this, wxID_ANY, wxEmptyString);
 	m_chkAspect->SetValue(cfg.maintainAspectRatio);
+	m_chkAspect->SetToolTip("If set to false, whole window will be used for menu screen etc... stretching content.");
 	grid->Add(m_chkAspect, 0);
 
 	// ── Start windowed ───────────────────────────────────────────────────────
@@ -76,6 +79,7 @@ void GraphicsDialog::BuildUI(const GraphicsSettings& cfg)
 		0, wxALIGN_CENTER_VERTICAL);
 	m_chkWindowed = new wxCheckBox(this, wxID_ANY, wxEmptyString);
 	m_chkWindowed->SetValue(cfg.startWindowed);
+	m_chkWindowed->SetToolTip("Set to true to start windowed. Use Alt-Enter to change in game to windowed mode.");
 	grid->Add(m_chkWindowed, 0);
 
 	main->Add(grid, 1, wxEXPAND | wxALL, 14);
