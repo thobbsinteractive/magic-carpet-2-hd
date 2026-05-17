@@ -10,7 +10,7 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
 
 	// ── Controls ────────────────────────────────────────────────────────────
-	m_oggMusicAlternative = new wxCheckBox(panel, wxID_ANY, "OGG Music Alternative");
+	m_oggMusicAlternative = new wxCheckBox(panel, wxID_ANY, "Use Alternative Music Tracks");
 	m_fixSpeedSound = new wxCheckBox(panel, wxID_ANY, "Fix Speed Sound");
 	m_autoShowObjectives = new wxCheckBox(panel, wxID_ANY,
 		"Auto Show Objectives for Foreign Languages");
@@ -23,7 +23,7 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	m_autoShowObjectives->SetToolTip("Auto display objective and mission text when a different language to english is used.");
 
 	// ── OGG Folder row ───────────────────────────────────────────────────────
-	auto* oggFolderLabel = new wxStaticText(panel, wxID_ANY, "OGG Folder:");
+	auto* oggFolderLabel = new wxStaticText(panel, wxID_ANY, "Music Tracks Folder:");
 	m_oggFolder = new wxTextCtrl(panel, wxID_ANY, s.oggFolder);
 	m_oggFolder->SetToolTip("Relative Path to the music tracks. Required for music to play.");
 	auto* btnOggBrowse = new wxButton(panel, wxID_ANY, "Browse...");
@@ -45,7 +45,7 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	maxRow->Add(m_maxSimSounds, wxSizerFlags(0));
 
 	// ── Speech Folder row ────────────────────────────────────────────────────
-	auto* speechLabel = new wxStaticText(panel, wxID_ANY, "Speech Folder:");
+	auto* speechLabel = new wxStaticText(panel, wxID_ANY, "Speech Track Folder:");
 	m_speechFolder = new wxTextCtrl(panel, wxID_ANY, s.speechFolder);
 	m_speechFolder->SetToolTip("Relative Path to the speech tracks. Required for in game briefings to play.");
 	auto* btnSpeechBrowse = new wxButton(panel, wxID_ANY, "Browse...");
@@ -57,7 +57,7 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 
 	// ── Browse button handlers ───────────────────────────────────────────────
 	btnOggBrowse->Bind(wxEVT_BUTTON, [this, panel](wxCommandEvent&) {
-		wxDirDialog dlg(panel, "Select OGG Music Folder",
+		wxDirDialog dlg(panel, "Select Music Track Folder",
 			ToAbsolute(m_oggFolder->GetValue()),
 			wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
 		if (dlg.ShowModal() == wxID_OK)
@@ -65,7 +65,7 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 		});
 
 	btnSpeechBrowse->Bind(wxEVT_BUTTON, [this, panel](wxCommandEvent&) {
-		wxDirDialog dlg(panel, "Select Speech Folder",
+		wxDirDialog dlg(panel, "Select Speech Track Folder",
 			ToAbsolute(m_speechFolder->GetValue()),
 			wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
 		if (dlg.ShowModal() == wxID_OK)

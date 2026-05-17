@@ -1,6 +1,6 @@
 #include "MainFrame.h"
 
-MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
+MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(300, 350))
 {
 	// set the frame icon
 	SetIcon(wxICON(sample));
@@ -66,6 +66,8 @@ void MainFrame::OnPlay(wxCommandEvent&)
 void MainFrame::OnFile(wxCommandEvent&)
 {
 	GameFilesDialog dlg(this);
+	dlg.SetMinSize(wxSize(440, 200));
+	dlg.SetMaxSize(wxSize(440, 200));
 	if (dlg.ShowModal() == wxID_OK) {
 
 	}
@@ -77,6 +79,8 @@ void MainFrame::OnSound(wxCommandEvent&)
 {
 	SoundSettings settings;
 	SoundDialog dlg(this, settings);
+	dlg.SetMinSize(wxSize(420, 340));
+	dlg.SetMaxSize(wxSize(420, 340));
 	if (dlg.ShowModal() == wxID_OK)
 		settings = dlg.GetSettings();
 }
@@ -85,6 +89,8 @@ void MainFrame::OnGraphics(wxCommandEvent&)
 {
 	GraphicsSettings settings;
 	GraphicsDialog dlg(this, settings);
+	dlg.SetMinSize(wxSize(256, 256));
+	dlg.SetMaxSize(wxSize(256, 256));
 	if (dlg.ShowModal() == wxID_OK)
 		settings = dlg.GetSettings();
 }

@@ -25,15 +25,7 @@ int GraphicsDialog::FindResIndex(int w, int h)
 // ── GraphicsDialog ────────────────────────────────────────────────────────────
 GraphicsDialog::GraphicsDialog(wxWindow* parent, const GraphicsSettings& cfg)
 	: wxDialog(parent, wxID_ANY, "Graphics Settings",
-		wxDefaultPosition, wxDefaultSize,
-		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
-{
-	BuildUI(cfg);
-	Fit();
-	Centre();
-}
-
-void GraphicsDialog::BuildUI(const GraphicsSettings& cfg)
+		wxDefaultPosition, wxSize(256,256))
 {
 	// Seed custom resolution from config in case it's not in the preset list
 	m_customWidth = cfg.windowResWidth;
@@ -108,6 +100,9 @@ void GraphicsDialog::BuildUI(const GraphicsSettings& cfg)
 	SetSizer(main);
 
 	btnOK->Bind(wxEVT_BUTTON, &GraphicsDialog::OnOK, this);
+
+	Fit();
+	Centre();
 }
 
 void GraphicsDialog::OnResolutionChanged(wxCommandEvent&)

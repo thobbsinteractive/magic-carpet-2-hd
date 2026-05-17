@@ -31,7 +31,6 @@ private:
 	int m_customHeight = 1080;
 
 	// Helpers
-	void BuildUI(const GraphicsSettings& cfg);
 	void OnOK(wxCommandEvent& evt);
 	void OnResolutionChanged(wxCommandEvent& evt);
 

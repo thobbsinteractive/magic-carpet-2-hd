@@ -8,7 +8,8 @@ public:
 
 bool Remc2ConfiguratorApp::OnInit()
 {
-	MainFrame* frame = new MainFrame("Minimal wxWidgets App");
+	MainFrame* frame = new MainFrame("Magic Carpet HD Configurator");
+	frame->SetMinSize(wxSize(300, 350));
 	frame->Show();
 	return true;
 }
