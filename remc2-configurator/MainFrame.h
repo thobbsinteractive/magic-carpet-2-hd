@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "GameFilesDialog.h"
+#include "SoundDialog.h"
 
 class MainFrame : public wxFrame
 {

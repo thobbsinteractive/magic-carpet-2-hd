@@ -72,7 +72,15 @@ void MainFrame::OnFile(wxCommandEvent&)
 }
 
 void MainFrame::OnControls(wxCommandEvent&) { wxLogMessage("Save clicked"); }
-void MainFrame::OnSound(wxCommandEvent&) { wxLogMessage("Settings clicked"); }
+
+void MainFrame::OnSound(wxCommandEvent&)
+{
+	SoundSettings settings;
+	SoundDialog dlg(this, settings);
+	if (dlg.ShowModal() == wxID_OK)
+		settings = dlg.GetSettings();
+}
+
 void MainFrame::OnGraphics(wxCommandEvent&) { wxLogMessage("Help clicked"); }
 
 // Event handlers

@@ -1,5 +1,6 @@
 #pragma once
 #include <wx/wx.h>
+#include <wx/spinctrl.h>
 
 enum {
 	ID_BTN_PLAY = wxID_HIGHEST + 1,
