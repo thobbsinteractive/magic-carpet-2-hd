@@ -65,13 +65,13 @@ char* removeDiakritics(char* text) {
 char* encodeDiakritics(char* text) {
 	// Tabulka: znak -> kod
 	struct { unsigned char ch; unsigned char code; } table[] = {
-		{(unsigned char)'é', 130},
+		{(unsigned char)'é', 219},
 		{(unsigned char)'ù', 169},
 		{(unsigned char)'æ', 193},
 		{(unsigned char)'³', 208},
 		{(unsigned char)'', 194},
 		{(unsigned char)'Æ', 195},
-		{(unsigned char)'É', 144},
+		{(unsigned char)'É', 219},
 		{(unsigned char)'Œ', 196},
 		{(unsigned char)'œ', 197},
 		{(unsigned char)'', 170},
