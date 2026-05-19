@@ -7,6 +7,11 @@ using json = nlohmann::json;
 
 Config::Config(std::string fileName)
 {
+	LoadFromFile(fileName);
+}
+
+bool Config::LoadFromFile(std::string fileName)
+{
 	if (std::filesystem::exists(fileName))
 	{
 		auto jsonStr = ReadFileToString(fileName);

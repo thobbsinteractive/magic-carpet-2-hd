@@ -15,6 +15,19 @@ class Config
 private:
 	ConfigToSdlScancode m_ConfigToSdlScancode;
 
+	std::string ReadStringValue(const json& settings, const char* name);
+	int ReadIntValue(const json& settings, const char* name);
+	float ReadFloatValue(const json& settings, const char* name);
+	bool ReadBoolValue(const json& settings, const char* name);
+	SDL_Scancode ReadKeyScancode(const json& settings, const char* name);
+	std::string ReadFileToString(std::string fileName);
+	void SetString(json& obj, const char* key, const std::string& value);
+	void SetInt(json& obj, const char* key, int value);
+	void SetFloat(json& obj, const char* key, float value);
+	void SetBool(json& obj, const char* key, bool value);
+	json& GetOrCreate(json& parent, const char* key);
+
+public:
 	struct Paths
 	{
 		std::string m_GameFolder = "";
@@ -155,35 +168,6 @@ private:
 		GamePad m_GamePad;
 	};
 
-	void LoadSettings(json& document);
-	void LoadGraphics(const json& settings);
-	void LoadGameDetail(const json& graphics);
-	void LoadThreading(const json& graphics);
-	void LoadSound(const json& settings);
-	void LoadPaths(const json& settings);
-	void LoadControls(const json& settings);
-	void LoadGame(const json& settings);
-	std::string ReadStringValue(const json& settings, const char* name);
-	int ReadIntValue(const json& settings, const char* name);
-	float ReadFloatValue(const json& settings, const char* name);
-	bool ReadBoolValue(const json& settings, const char* name);
-	SDL_Scancode ReadKeyScancode(const json& settings, const char* name);
-	std::string ReadFileToString(std::string fileName);
-	void SetString(json& obj, const char* key, const std::string& value);
-	void SetInt(json& obj, const char* key, int value);
-	void SetFloat(json& obj, const char* key, float value);
-	void SetBool(json& obj, const char* key, bool value);
-	void SaveSettings(json& document);
-	void SaveGraphics(json& settings);
-	void SaveGameDetail(json& graphics);
-	void SaveThreading(json& graphics);
-	void SaveSound(json& settings);
-	void SavePaths(json& settings);
-	void SaveGame(json& settings);
-	void SaveControls(json& settings);
-	json& GetOrCreate(json& parent, const char* key);
-
-public:
 	std::string m_Name;
 	std::string m_Version;
 	Paths m_Paths;
@@ -193,7 +177,25 @@ public:
 	Controls m_Controls;
 
 	Config(std::string fileName);
+	bool LoadFromFile(std::string fileName);
 	bool SaveToFile(std::string fileName);
+
+	void LoadSettings(json& document);
+	void LoadGraphics(const json& settings);
+	void LoadGameDetail(const json& graphics);
+	void LoadThreading(const json& graphics);
+	void LoadSound(const json& settings);
+	void LoadPaths(const json& settings);
+	void LoadControls(const json& settings);
+	void LoadGame(const json& settings);
+	void SaveSettings(json& document);
+	void SaveGraphics(json& settings);
+	void SaveGameDetail(json& graphics);
+	void SaveThreading(json& graphics);
+	void SaveSound(json& settings);
+	void SavePaths(json& settings);
+	void SaveGame(json& settings);
+	void SaveControls(json& settings);
 };
 
 #endif //CONFIG_H
