@@ -162,7 +162,7 @@ target_include_directories(${REGRESSION_TEST_TARGET} PUBLIC
     "../remc2/portability"
     "../findfirst"
     "../spdlog/include"
-    "../rapidjson"
+    "../nlohmann-json"
 )
 target_link_libraries(${REGRESSION_TEST_TARGET} PUBLIC 
     gtest

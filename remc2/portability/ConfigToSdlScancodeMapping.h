@@ -242,4 +242,19 @@ public:
 			return m_ConfigToSdlScancodeMap[text];
 		return SDL_SCANCODE_UNKNOWN;
 	}
+
+	std::string GetName(uint16_t scanCode)
+	{
+		return GetName((SDL_Scancode)scanCode);
+	}
+
+	std::string GetName(SDL_Scancode scanCode)
+	{
+		for (auto const& [key, val] : m_ConfigToSdlScancodeMap)
+		{
+			if (val == scanCode)
+				return key;
+		}
+		return "";
+	}
 };

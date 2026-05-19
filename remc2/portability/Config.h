@@ -4,11 +4,11 @@
 
 #include <string>
 #include <vector>
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
+#include <nlohmann/json.hpp>
 #include "../utilities/Maths.h"
 #include "ConfigToSdlScancodeMapping.h"
+
+using json = nlohmann::json;
 
 class Config
 {
@@ -62,7 +62,7 @@ private:
 	{
 		int m_DisplayIndex = 0;
 		int m_WindowResWidth = 640;
-		int m_WindowResHeight = 480;	
+		int m_WindowResHeight = 480;
 		bool m_MaintainAspectRatio = true;
 		bool m_StartWindowed = false;
 		std::string m_ForceRender = "";
@@ -155,20 +155,33 @@ private:
 		GamePad m_GamePad;
 	};
 
-	void LoadSettings(rapidjson::Document& document);
-	void LoadGraphics(rapidjson::GenericObject<false, rapidjson::Value>& settings);
-	void LoadGameDetail(rapidjson::GenericObject<false, rapidjson::Value>& graphics);
-	void LoadThreading(rapidjson::GenericObject<false, rapidjson::Value>& graphics);
-	void LoadSound(rapidjson::GenericObject<false, rapidjson::Value>& settings);
-	void LoadPaths(rapidjson::GenericObject<false, rapidjson::Value>& settings);
-	void LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& settings);
-	void LoadGame(rapidjson::GenericObject<false, rapidjson::Value>& settings);
-	std::string ReadStringValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
-	int ReadIntValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
-	float ReadFloatValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
-	bool ReadBoolValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
-	SDL_Scancode ReadKeyScancode(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name);
+	void LoadSettings(json& document);
+	void LoadGraphics(const json& settings);
+	void LoadGameDetail(const json& graphics);
+	void LoadThreading(const json& graphics);
+	void LoadSound(const json& settings);
+	void LoadPaths(const json& settings);
+	void LoadControls(const json& settings);
+	void LoadGame(const json& settings);
+	std::string ReadStringValue(const json& settings, const char* name);
+	int ReadIntValue(const json& settings, const char* name);
+	float ReadFloatValue(const json& settings, const char* name);
+	bool ReadBoolValue(const json& settings, const char* name);
+	SDL_Scancode ReadKeyScancode(const json& settings, const char* name);
 	std::string ReadFileToString(std::string fileName);
+	void SetString(json& obj, const char* key, const std::string& value);
+	void SetInt(json& obj, const char* key, int value);
+	void SetFloat(json& obj, const char* key, float value);
+	void SetBool(json& obj, const char* key, bool value);
+	void SaveSettings(json& document);
+	void SaveGraphics(json& settings);
+	void SaveGameDetail(json& graphics);
+	void SaveThreading(json& graphics);
+	void SaveSound(json& settings);
+	void SavePaths(json& settings);
+	void SaveGame(json& settings);
+	void SaveControls(json& settings);
+	json& GetOrCreate(json& parent, const char* key);
 
 public:
 	std::string m_Name;
@@ -180,6 +193,7 @@ public:
 	Controls m_Controls;
 
 	Config(std::string fileName);
+	bool SaveToFile(std::string fileName);
 };
 
 #endif //CONFIG_H

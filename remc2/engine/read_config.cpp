@@ -18,9 +18,6 @@
 #include "../portability/port_filesystem.h"
 #include "../portability/port_sdl_sound.h"
 #include "../portability/port_time.h"
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
 
 int config_skip_screen;
 int texturepixels = 32;
