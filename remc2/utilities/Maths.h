@@ -3,8 +3,8 @@
 #ifndef MATHS_H
 #define MATHS_H
 
-#include "../engine/engine_support.h"
 #include <vector>
+#include "../engine/axis_3d.h"
 
 class Maths {
 
