@@ -24,6 +24,7 @@ bool Config::LoadFromFile(std::string fileName)
 				if (document.contains("settings"))
 				{
 					LoadSettings(document);
+					return true;
 				}
 			}
 			catch (const json::parse_error& e)
@@ -32,6 +33,7 @@ bool Config::LoadFromFile(std::string fileName)
 			}
 		}
 	}
+	return false;
 }
 
 std::string Config::ReadStringValue(const json& settings, const char* name)

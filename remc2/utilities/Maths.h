@@ -4,6 +4,8 @@
 #define MATHS_H
 
 #include <vector>
+#include <cmath>
+#include <SDL2/SDL_stdinc.h>
 #include "../engine/axis_3d.h"
 
 class Maths {
