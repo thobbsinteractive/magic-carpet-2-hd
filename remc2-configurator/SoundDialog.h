@@ -1,19 +1,11 @@
 #pragma once
 #include "Globals.h"
-
-struct SoundSettings {
-	wxString oggFolder = "music-ogg";
-	bool     oggMusicAlternative = false;
-	bool     fixSpeedSound = false;
-	int      maxSimultaneousSounds = 20;
-	wxString speechFolder = "CD_Files/SPEECH";
-	bool     autoShowObjectivesForForeignLang = true;
-};
+#include "../remc2/portability/Config.h"
 
 class SoundDialog : public wxDialog {
 public:
-	SoundDialog(wxWindow* parent, const SoundSettings& s);
-	SoundSettings GetSettings() const;
+	SoundDialog(wxWindow* parent, const Config::Sound& s);
+	Config::Sound GetSettings() const;
 
 private:
 	wxTextCtrl* m_oggFolder = nullptr;

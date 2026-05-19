@@ -7,7 +7,13 @@ using json = nlohmann::json;
 
 Config::Config(std::string fileName)
 {
+	m_FileName = fileName;
 	LoadFromFile(fileName);
+}
+
+bool Config::LoadFromFile()
+{
+	return LoadFromFile(m_FileName);
 }
 
 bool Config::LoadFromFile(std::string fileName)
@@ -485,6 +491,11 @@ void Config::SaveSettings(json& document)
 			break;
 		}
 	}
+}
+
+bool Config::SaveToFile()
+{
+	return SaveToFile(m_FileName);
 }
 
 bool Config::SaveToFile(std::string fileName)

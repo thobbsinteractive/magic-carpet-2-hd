@@ -8,7 +8,7 @@ public:
 
 bool Remc2ConfiguratorApp::OnInit()
 {
-	MainFrame* frame = new MainFrame("Magic Carpet HD Configurator");
+	MainFrame* frame = new MainFrame("Magic Carpet HD Configurator", "Config.json");
 	frame->SetMinSize(wxSize(300, 350));
 	frame->Show();
 	return true;

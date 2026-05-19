@@ -2,7 +2,7 @@
 #include "PathHelpers.h"
 #include <wx/dirdlg.h>
 
-SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
+SoundDialog::SoundDialog(wxWindow* parent, const Config::Sound& s)
 	: wxDialog(parent, wxID_ANY, "Sound Settings",
 		wxDefaultPosition, wxSize(420, 340),
 		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
@@ -15,16 +15,16 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	m_autoShowObjectives = new wxCheckBox(panel, wxID_ANY,
 		"Auto Show Objectives for Foreign Languages");
 
-	m_oggMusicAlternative->SetValue(s.oggMusicAlternative);
+	m_oggMusicAlternative->SetValue(s.m_OggMusicAlternative);
 	m_oggMusicAlternative->SetToolTip("Use alternative music tracks.");
-	m_fixSpeedSound->SetValue(s.fixSpeedSound);
+	m_fixSpeedSound->SetValue(s.m_FixSpeedSound);
 	m_fixSpeedSound->SetToolTip("Set to true when sounds play double speed.");
-	m_autoShowObjectives->SetValue(s.autoShowObjectivesForForeignLang);
+	m_autoShowObjectives->SetValue(s.m_AutoShowObjectivesForForeignLanguages);
 	m_autoShowObjectives->SetToolTip("Auto display objective and mission text when a different language to english is used.");
 
 	// ── OGG Folder row ───────────────────────────────────────────────────────
 	auto* oggFolderLabel = new wxStaticText(panel, wxID_ANY, "Music Tracks Folder:");
-	m_oggFolder = new wxTextCtrl(panel, wxID_ANY, s.oggFolder);
+	m_oggFolder = new wxTextCtrl(panel, wxID_ANY, s.m_OggFolder);
 	m_oggFolder->SetToolTip("Relative Path to the music tracks. Required for music to play.");
 	auto* btnOggBrowse = new wxButton(panel, wxID_ANY, "Browse...");
 
@@ -37,7 +37,7 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	auto* maxLabel = new wxStaticText(panel, wxID_ANY, "Max Simultaneous Sounds:");
 	m_maxSimSounds = new wxSpinCtrl(panel, wxID_ANY, wxEmptyString,
 		wxDefaultPosition, wxDefaultSize,
-		wxSP_ARROW_KEYS, 10, 128, s.maxSimultaneousSounds);
+		wxSP_ARROW_KEYS, 10, 128, s.m_MaxSimultaniousSounds);
 	m_maxSimSounds->SetToolTip("Original game was 10. Increasing beyond 20 might impact performance.");
 
 	wxBoxSizer* maxRow = new wxBoxSizer(wxHORIZONTAL);
@@ -46,7 +46,7 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 
 	// ── Speech Folder row ────────────────────────────────────────────────────
 	auto* speechLabel = new wxStaticText(panel, wxID_ANY, "Speech Track Folder:");
-	m_speechFolder = new wxTextCtrl(panel, wxID_ANY, s.speechFolder);
+	m_speechFolder = new wxTextCtrl(panel, wxID_ANY, s.m_SpeechFolder);
 	m_speechFolder->SetToolTip("Relative Path to the speech tracks. Required for in game briefings to play.");
 	auto* btnSpeechBrowse = new wxButton(panel, wxID_ANY, "Browse...");
 
@@ -100,14 +100,14 @@ SoundDialog::SoundDialog(wxWindow* parent, const SoundSettings& s)
 	Centre();
 }
 
-SoundSettings SoundDialog::GetSettings() const
+Config::Sound SoundDialog::GetSettings() const
 {
-	SoundSettings s;
-	s.oggFolder = m_oggFolder->GetValue();
-	s.oggMusicAlternative = m_oggMusicAlternative->GetValue();
-	s.fixSpeedSound = m_fixSpeedSound->GetValue();
-	s.maxSimultaneousSounds = m_maxSimSounds->GetValue();
-	s.speechFolder = m_speechFolder->GetValue();
-	s.autoShowObjectivesForForeignLang = m_autoShowObjectives->GetValue();
+	Config::Sound s;
+	s.m_OggFolder = m_oggFolder->GetValue();
+	s.m_OggMusicAlternative = m_oggMusicAlternative->GetValue();
+	s.m_FixSpeedSound = m_fixSpeedSound->GetValue();
+	s.m_MaxSimultaniousSounds = m_maxSimSounds->GetValue();
+	s.m_SpeechFolder = m_speechFolder->GetValue();
+	s.m_AutoShowObjectivesForForeignLanguages = m_autoShowObjectives->GetValue();
 	return s;
 }

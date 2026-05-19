@@ -14,6 +14,7 @@ class Config
 {
 private:
 	ConfigToSdlScancode m_ConfigToSdlScancode;
+	std::string m_FileName = "";
 
 	std::string ReadStringValue(const json& settings, const char* name);
 	int ReadIntValue(const json& settings, const char* name);
@@ -28,6 +29,7 @@ private:
 	json& GetOrCreate(json& parent, const char* key);
 
 public:
+
 	struct Paths
 	{
 		std::string m_GameFolder = "";
@@ -177,7 +179,9 @@ public:
 	Controls m_Controls;
 
 	Config(std::string fileName);
+	bool LoadFromFile();
 	bool LoadFromFile(std::string fileName);
+	bool SaveToFile();
 	bool SaveToFile(std::string fileName);
 
 	void LoadSettings(json& document);

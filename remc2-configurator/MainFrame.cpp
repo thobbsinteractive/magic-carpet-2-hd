@@ -1,7 +1,9 @@
 #include "MainFrame.h"
 
-MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(300, 350))
+MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(300, 350))
 {
+	m_ptrConfig = new Config(ToAbsolute(fileName).ToStdString());
+
 	// set the frame icon
 	SetIcon(wxICON(sample));
 
@@ -77,12 +79,15 @@ void MainFrame::OnControls(wxCommandEvent&) { wxLogMessage("Save clicked"); }
 
 void MainFrame::OnSound(wxCommandEvent&)
 {
-	SoundSettings settings;
+	auto settings = m_ptrConfig->m_Sound;
 	SoundDialog dlg(this, settings);
 	dlg.SetMinSize(wxSize(420, 340));
 	dlg.SetMaxSize(wxSize(420, 340));
 	if (dlg.ShowModal() == wxID_OK)
+	{
 		settings = dlg.GetSettings();
+		m_ptrConfig->SaveToFile();
+	}
 }
 
 void MainFrame::OnGraphics(wxCommandEvent&)

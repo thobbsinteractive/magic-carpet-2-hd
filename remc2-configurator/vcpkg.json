@@ -2,7 +2,9 @@
     "name": "remc2-configurator",
     "version": "0.9.9",
     "dependencies": [
-		"wxwidgets"
+		"wxwidgets",
+		"nlohmann-json",
+		"sdl2"
     ],
 	"builtin-baseline": "ef7dbf94b9198bc58f45951adcf1f041fcbc5ea0"
 }

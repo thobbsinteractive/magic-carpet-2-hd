@@ -81,12 +81,12 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\remc2\portability\Config.cpp" />
     <ClCompile Include="GameFilesDialog.cpp" />
     <ClCompile Include="GraphicsDialog.cpp" />
     <ClCompile Include="MainFrame.cpp" />
@@ -144,6 +145,8 @@
     <ClCompile Include="SoundDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\remc2\portability\Config.h" />
+    <ClInclude Include="..\remc2\portability\ConfigToSdlScancodeMapping.h" />
     <ClInclude Include="GameFilesDialog.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="GraphicsDialog.h" />
