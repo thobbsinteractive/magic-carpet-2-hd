@@ -88,6 +88,7 @@ void MainFrame::OnSound(wxCommandEvent&)
 		settings = dlg.GetSettings();
 		m_ptrConfig->SaveSoundToDoc(settings);
 		m_ptrConfig->SaveToFile();
+		m_ptrConfig->LoadSettingsFromDoc();
 	}
 }
 

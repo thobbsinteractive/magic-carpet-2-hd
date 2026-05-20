@@ -186,6 +186,7 @@ public:
 	bool SaveToFile();
 	bool SaveToFile(std::string fileName);
 
+	void LoadSettingsFromDoc();
 	void LoadSettings(json& document);
 	void LoadGraphics(const json& settings);
 	void LoadGameDetail(const json& graphics);

@@ -116,6 +116,11 @@ json& Config::GetOrCreate(json& parent, const char* key)
 	return parent[key];
 }
 
+void Config::LoadSettingsFromDoc()
+{
+	LoadSettings(m_Document);
+}
+
 void Config::LoadSettings(json& document)
 {
 	auto& settingsArray = document["settings"];
