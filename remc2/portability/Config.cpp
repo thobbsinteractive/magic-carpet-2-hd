@@ -26,10 +26,10 @@ bool Config::LoadFromFile(std::string fileName)
 		{
 			try
 			{
-				json document = json::parse(jsonStr);
-				if (document.contains("settings"))
+				m_Document = json::parse(jsonStr);
+				if (m_Document.contains("settings"))
 				{
-					LoadSettings(document);
+					LoadSettings(m_Document);
 					return true;
 				}
 			}
@@ -382,17 +382,31 @@ void Config::SavePaths(json& settings)
 	SetString(paths, "cdFolder", m_Paths.m_CdFolder);
 }
 
-void Config::SaveSound(json& settings)
+void Config::SaveSoundToDoc(Sound soundSettings)
 {
-	auto& sound = GetOrCreate(settings, "sound");
-	SetBool(sound, "hqSound", m_Sound.m_HqSound);
-	SetBool(sound, "oggMusic", m_Sound.m_OggMusic);
-	SetString(sound, "oggFolder", m_Sound.m_OggFolder);
-	SetBool(sound, "oggMusicAlternative", m_Sound.m_OggMusicAlternative);
-	SetBool(sound, "fixSpeedSound", m_Sound.m_FixSpeedSound);
-	SetBool(sound, "autoShowObjectivesForForeignLanguages", m_Sound.m_AutoShowObjectivesForForeignLanguages);
-	SetInt(sound, "maxSimultaniousSounds", m_Sound.m_MaxSimultaniousSounds);
-	SetString(sound, "speechFolder", m_Sound.m_SpeechFolder);
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry("settings");
+	auto& sound = GetOrCreate(settingsEntry, "sound");
+	SetBool(sound, "hqSound", soundSettings.m_HqSound);
+	SetBool(sound, "oggMusic", soundSettings.m_OggMusic);
+	SetString(sound, "oggFolder", soundSettings.m_OggFolder);
+	SetBool(sound, "oggMusicAlternative", soundSettings.m_OggMusicAlternative);
+	SetBool(sound, "fixSpeedSound", soundSettings.m_FixSpeedSound);
+	SetBool(sound, "autoShowObjectivesForForeignLanguages", soundSettings.m_AutoShowObjectivesForForeignLanguages);
+	SetInt(sound, "maxSimultaniousSounds", soundSettings.m_MaxSimultaniousSounds);
+	SetString(sound, "speechFolder", soundSettings.m_SpeechFolder);
+}
+
+json& Config::GetOrCreateActiveSettingsEntry(const char* key)
+{
+	auto& settingsArray = m_Document["settings"];
+
+	for (auto& entry : settingsArray)
+	{
+		if (entry.contains("name") && entry.contains("isActive") && entry["isActive"].get<bool>() == true)
+		{
+			return entry;
+		}
+	}
 }
 
 void Config::SaveGameDetail(json& graphics)
@@ -484,7 +498,6 @@ void Config::SaveSettings(json& document)
 		if (entry.contains("isActive") && entry["isActive"].get<bool>())
 		{
 			SavePaths(entry);
-			SaveSound(entry);
 			SaveGraphics(entry);
 			SaveGame(entry);
 			SaveControls(entry);
@@ -500,33 +513,9 @@ bool Config::SaveToFile()
 
 bool Config::SaveToFile(std::string fileName)
 {
-	json document;
-	{
-		auto jsonStr = ReadFileToString(fileName);
-		if (!jsonStr.empty())
-		{
-			try
-			{
-				document = json::parse(jsonStr);
-				if (!document.is_object())
-					document = json::object();
-			}
-			catch (const json::parse_error&)
-			{
-				document = json::object();
-			}
-		}
-		else
-		{
-			document = json::object();
-		}
-	}
-
-	SaveSettings(document);
-
 	std::ofstream f(fileName);
 	if (!f.is_open()) return false;
 
-	f << document.dump(1, '\t');
+	f << m_Document.dump(1, '\t');
 	return true;
 }

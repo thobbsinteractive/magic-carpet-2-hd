@@ -86,6 +86,7 @@ void MainFrame::OnSound(wxCommandEvent&)
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		settings = dlg.GetSettings();
+		m_ptrConfig->SaveSoundToDoc(settings);
 		m_ptrConfig->SaveToFile();
 	}
 }

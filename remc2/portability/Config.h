@@ -15,6 +15,7 @@ class Config
 private:
 	ConfigToSdlScancode m_ConfigToSdlScancode;
 	std::string m_FileName = "";
+	json m_Document;
 
 	std::string ReadStringValue(const json& settings, const char* name);
 	int ReadIntValue(const json& settings, const char* name);
@@ -26,6 +27,7 @@ private:
 	void SetInt(json& obj, const char* key, int value);
 	void SetFloat(json& obj, const char* key, float value);
 	void SetBool(json& obj, const char* key, bool value);
+	json& GetOrCreateActiveSettingsEntry(const char* key);
 	json& GetOrCreate(json& parent, const char* key);
 
 public:
@@ -192,11 +194,12 @@ public:
 	void LoadPaths(const json& settings);
 	void LoadControls(const json& settings);
 	void LoadGame(const json& settings);
+
 	void SaveSettings(json& document);
 	void SaveGraphics(json& settings);
 	void SaveGameDetail(json& graphics);
 	void SaveThreading(json& graphics);
-	void SaveSound(json& settings);
+	void SaveSoundToDoc(Sound soundSettings);
 	void SavePaths(json& settings);
 	void SaveGame(json& settings);
 	void SaveControls(json& settings);
