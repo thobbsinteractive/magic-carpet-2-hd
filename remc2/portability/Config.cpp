@@ -410,8 +410,8 @@ void Config::SaveGraphicsToDoc(Config::Graphics graphics)
 	SetInt(gfx, "windowResHeight", graphics.m_WindowResHeight);
 	SetBool(gfx, "maintainAspectRatio", graphics.m_MaintainAspectRatio);
 	SetBool(gfx, "startWindowed", graphics.m_StartWindowed);
-	//SaveGameDetailToDoc(graphics.m_GameDetail);
-	//SaveThreadingToDoc(graphics.m_Threading);
+	SaveGameDetailToDoc(graphics.m_GameDetail);
+	SaveThreadingToDoc(graphics.m_Threading);
 }
 
 void Config::SaveGameDetailToDoc(Config::GameDetail gameDetail)
