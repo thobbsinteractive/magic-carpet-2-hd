@@ -2,22 +2,12 @@
 #include "Globals.h"
 #include <wx/statline.h>
 
-// ── Graphics settings ────────────────────────────────────────────────────────
-struct GraphicsSettings
-{
-	int  displayIndex = 0;
-	int  windowResWidth = 1920;
-	int  windowResHeight = 1080;
-	bool maintainAspectRatio = true;
-	bool startWindowed = false;
-};
-
 // ── Dialog ───────────────────────────────────────────────────────────────────
 class GraphicsDialog : public wxDialog
 {
 public:
-	GraphicsDialog(wxWindow* parent, const GraphicsSettings& cfg);
-	GraphicsSettings GetSettings() const;
+	GraphicsDialog(wxWindow* parent, const Config::Graphics& cfg);
+	Config::Graphics GetSettings() const;
 
 private:
 	// Controls

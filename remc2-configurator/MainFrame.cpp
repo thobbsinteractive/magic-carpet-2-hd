@@ -94,12 +94,17 @@ void MainFrame::OnSound(wxCommandEvent&)
 
 void MainFrame::OnGraphics(wxCommandEvent&)
 {
-	GraphicsSettings settings;
+	auto settings = m_ptrConfig->m_Graphics;
 	GraphicsDialog dlg(this, settings);
 	dlg.SetMinSize(wxSize(256, 256));
 	dlg.SetMaxSize(wxSize(256, 256));
 	if (dlg.ShowModal() == wxID_OK)
+	{
 		settings = dlg.GetSettings();
+		m_ptrConfig->SaveGraphicsToDoc(settings);
+		m_ptrConfig->SaveToFile();
+		m_ptrConfig->LoadSettingsFromDoc();
+	}
 }
 
 // Event handlers

@@ -3,7 +3,7 @@
 #include <fstream>
 #include "Config.h"
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 Config::Config(std::string fileName)
 {
@@ -387,9 +387,9 @@ void Config::SavePaths(json& settings)
 	SetString(paths, "cdFolder", m_Paths.m_CdFolder);
 }
 
-void Config::SaveSoundToDoc(Sound soundSettings)
+void Config::SaveSoundToDoc(Config::Sound soundSettings)
 {
-	auto& settingsEntry = GetOrCreateActiveSettingsEntry("settings");
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
 	auto& sound = GetOrCreate(settingsEntry, "sound");
 	SetBool(sound, "hqSound", soundSettings.m_HqSound);
 	SetBool(sound, "oggMusic", soundSettings.m_OggMusic);
@@ -401,57 +401,48 @@ void Config::SaveSoundToDoc(Sound soundSettings)
 	SetString(sound, "speechFolder", soundSettings.m_SpeechFolder);
 }
 
-json& Config::GetOrCreateActiveSettingsEntry(const char* key)
+void Config::SaveGraphicsToDoc(Config::Graphics graphics)
 {
-	auto& settingsArray = m_Document["settings"];
-
-	for (auto& entry : settingsArray)
-	{
-		if (entry.contains("name") && entry.contains("isActive") && entry["isActive"].get<bool>() == true)
-		{
-			return entry;
-		}
-	}
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& gfx = GetOrCreate(settingsEntry, "graphics");
+	SetInt(gfx, "displayIndex", graphics.m_DisplayIndex);
+	SetInt(gfx, "windowResWidth", graphics.m_WindowResWidth);
+	SetInt(gfx, "windowResHeight", graphics.m_WindowResHeight);
+	SetBool(gfx, "maintainAspectRatio", graphics.m_MaintainAspectRatio);
+	SetBool(gfx, "startWindowed", graphics.m_StartWindowed);
+	//SaveGameDetailToDoc(graphics.m_GameDetail);
+	//SaveThreadingToDoc(graphics.m_Threading);
 }
 
-void Config::SaveGameDetail(json& graphics)
+void Config::SaveGameDetailToDoc(Config::GameDetail gameDetail)
 {
-	auto& gd = GetOrCreate(graphics, "gameDetail");
-	SetInt(gd, "gameResWidth", m_Graphics.m_GameDetail.m_GameResWidth);
-	SetInt(gd, "gameResHeight", m_Graphics.m_GameDetail.m_GameResHeight);
-	SetInt(gd, "gameUiScale", m_Graphics.m_GameDetail.m_GameUiScale);
-	SetBool(gd, "useHighResGraphics", m_Graphics.m_GameDetail.m_UseHighResGraphics);
-	SetString(gd, "highResGraphicsFolder", m_Graphics.m_GameDetail.m_HighResGraphicsFolder);
-	SetBool(gd, "useFixedMenuGraphics", m_Graphics.m_GameDetail.m_UseFixedMenuGraphics);
-	SetString(gd, "fixedMenuGraphicsFolder", m_Graphics.m_GameDetail.m_FixedMenuGraphicsFolder);
-	SetBool(gd, "useExtendedFonts", m_Graphics.m_GameDetail.m_UseExtendedFonts);
-	SetString(gd, "extendedFontsFolder", m_Graphics.m_GameDetail.m_ExtendedFontsFolder);
-	SetBool(gd, "sky", m_Graphics.m_GameDetail.m_Sky);
-	SetBool(gd, "reflections", m_Graphics.m_GameDetail.m_Reflections);
-	SetBool(gd, "dynamicLighting", m_Graphics.m_GameDetail.m_DynamicLighting);
-	SetInt(gd, "viewDistanceScale", m_Graphics.m_GameDetail.m_ViewDistanceScale);
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& gfx = GetOrCreate(settingsEntry, "graphics");
+	auto& gd = GetOrCreate(gfx, "gameDetail");
+	SetInt(gd, "gameResWidth", gameDetail.m_GameResWidth);
+	SetInt(gd, "gameResHeight", gameDetail.m_GameResHeight);
+	SetInt(gd, "gameUiScale", gameDetail.m_GameUiScale);
+	SetBool(gd, "useHighResGraphics", gameDetail.m_UseHighResGraphics);
+	SetString(gd, "highResGraphicsFolder", gameDetail.m_HighResGraphicsFolder);
+	SetBool(gd, "useFixedMenuGraphics", gameDetail.m_UseFixedMenuGraphics);
+	SetString(gd, "fixedMenuGraphicsFolder", gameDetail.m_FixedMenuGraphicsFolder);
+	SetBool(gd, "useExtendedFonts", gameDetail.m_UseExtendedFonts);
+	SetString(gd, "extendedFontsFolder", gameDetail.m_ExtendedFontsFolder);
+	SetBool(gd, "sky", gameDetail.m_Sky);
+	SetBool(gd, "reflections", gameDetail.m_Reflections);
+	SetBool(gd, "dynamicLighting", gameDetail.m_DynamicLighting);
+	SetInt(gd, "viewDistanceScale", gameDetail.m_ViewDistanceScale);
 }
 
-void Config::SaveThreading(json& graphics)
+void Config::SaveThreadingToDoc(Config::Threading threading)
 {
-	auto& t = GetOrCreate(graphics, "threading");
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& gfx = GetOrCreate(settingsEntry, "graphics");
+	auto& t = GetOrCreate(gfx, "threading");
 	SetBool(t, "isActive", m_Graphics.m_Threading.m_isActive);
 	SetFloat(t, "sizePercentToThreadRender", m_Graphics.m_Threading.m_SizePercentToThreadRender);
 	SetInt(t, "numberOfRenderThreads", m_Graphics.m_Threading.m_NumberOfRenderThreads);
 	SetBool(t, "assignToSpecificCores", m_Graphics.m_Threading.m_AssignToSpecificCores);
-}
-
-void Config::SaveGraphics(json& settings)
-{
-	auto& gfx = GetOrCreate(settings, "graphics");
-	SetInt(gfx, "displayIndex", m_Graphics.m_DisplayIndex);
-	SetInt(gfx, "windowResWidth", m_Graphics.m_WindowResWidth);
-	SetInt(gfx, "windowResHeight", m_Graphics.m_WindowResHeight);
-	SetBool(gfx, "maintainAspectRatio", m_Graphics.m_MaintainAspectRatio);
-	SetBool(gfx, "startWindowed", m_Graphics.m_StartWindowed);
-	SetString(gfx, "forceRender", m_Graphics.m_ForceRender);
-	SaveGameDetail(gfx);
-	SaveThreading(gfx);
 }
 
 void Config::SaveGame(json& settings)
@@ -503,10 +494,22 @@ void Config::SaveSettings(json& document)
 		if (entry.contains("isActive") && entry["isActive"].get<bool>())
 		{
 			SavePaths(entry);
-			SaveGraphics(entry);
 			SaveGame(entry);
 			SaveControls(entry);
 			break;
+		}
+	}
+}
+
+json& Config::GetOrCreateActiveSettingsEntry()
+{
+	auto& settingsArray = m_Document["settings"];
+
+	for (auto& entry : settingsArray)
+	{
+		if (entry.contains("name") && entry.contains("isActive") && entry["isActive"].get<bool>() == true)
+		{
+			return entry;
 		}
 	}
 }

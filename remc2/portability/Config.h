@@ -8,7 +8,7 @@
 #include "../utilities/Maths.h"
 #include "ConfigToSdlScancodeMapping.h"
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 class Config
 {
@@ -27,7 +27,7 @@ private:
 	void SetInt(json& obj, const char* key, int value);
 	void SetFloat(json& obj, const char* key, float value);
 	void SetBool(json& obj, const char* key, bool value);
-	json& GetOrCreateActiveSettingsEntry(const char* key);
+	json& GetOrCreateActiveSettingsEntry();
 	json& GetOrCreate(json& parent, const char* key);
 
 public:
@@ -82,7 +82,6 @@ public:
 		int m_WindowResHeight = 480;
 		bool m_MaintainAspectRatio = true;
 		bool m_StartWindowed = false;
-		std::string m_ForceRender = "";
 		GameDetail m_GameDetail;
 		Threading m_Threading;
 	};
@@ -197,9 +196,9 @@ public:
 	void LoadGame(const json& settings);
 
 	void SaveSettings(json& document);
-	void SaveGraphics(json& settings);
-	void SaveGameDetail(json& graphics);
-	void SaveThreading(json& graphics);
+	void SaveGraphicsToDoc(Graphics graphics);
+	void SaveGameDetailToDoc(GameDetail gameDetail);
+	void SaveThreadingToDoc(Config::Threading threading);
 	void SaveSoundToDoc(Sound soundSettings);
 	void SavePaths(json& settings);
 	void SaveGame(json& settings);

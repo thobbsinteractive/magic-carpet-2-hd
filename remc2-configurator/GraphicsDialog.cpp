@@ -23,13 +23,13 @@ int GraphicsDialog::FindResIndex(int w, int h)
 }
 
 // ── GraphicsDialog ────────────────────────────────────────────────────────────
-GraphicsDialog::GraphicsDialog(wxWindow* parent, const GraphicsSettings& cfg)
+GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Graphics& cfg)
 	: wxDialog(parent, wxID_ANY, "Graphics Settings",
 		wxDefaultPosition, wxSize(256,256))
 {
 	// Seed custom resolution from config in case it's not in the preset list
-	m_customWidth = cfg.windowResWidth;
-	m_customHeight = cfg.windowResHeight;
+	m_customWidth = cfg.m_WindowResWidth;
+	m_customHeight = cfg.m_WindowResHeight;
 
 	auto* main = new wxBoxSizer(wxVERTICAL);
 	auto* grid = new wxFlexGridSizer(/*rows*/4, /*cols*/2, /*vgap*/10, /*hgap*/12);
@@ -40,7 +40,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const GraphicsSettings& cfg)
 		0, wxALIGN_CENTER_VERTICAL);
 	m_spinDisplay = new wxSpinCtrl(this, wxID_ANY,
 		wxEmptyString, wxDefaultPosition, wxDefaultSize,
-		wxSP_ARROW_KEYS, 0, 7, cfg.displayIndex);
+		wxSP_ARROW_KEYS, 0, 7, cfg.m_DisplayIndex);
 	m_spinDisplay->SetToolTip("Decides which display to use, if it cannot find a display at the index, it will find the first one big enough.");
 	grid->Add(m_spinDisplay, 0, wxEXPAND);
 
@@ -53,7 +53,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const GraphicsSettings& cfg)
 	choices.Add("Custom...");
 	m_choiceRes = new wxChoice(this, wxID_ANY,
 		wxDefaultPosition, wxDefaultSize, choices);
-	m_choiceRes->SetSelection(FindResIndex(cfg.windowResWidth, cfg.windowResHeight));
+	m_choiceRes->SetSelection(FindResIndex(cfg.m_WindowResWidth, cfg.m_WindowResHeight));
 	m_choiceRes->Bind(wxEVT_CHOICE, &GraphicsDialog::OnResolutionChanged, this);
 	m_choiceRes->SetToolTip("Window resolution, cannot be greater than resolution of chosen display.");
 	grid->Add(m_choiceRes, 0, wxEXPAND);
@@ -62,7 +62,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const GraphicsSettings& cfg)
 	grid->Add(new wxStaticText(this, wxID_ANY, "Maintain aspect ratio:"),
 		0, wxALIGN_CENTER_VERTICAL);
 	m_chkAspect = new wxCheckBox(this, wxID_ANY, wxEmptyString);
-	m_chkAspect->SetValue(cfg.maintainAspectRatio);
+	m_chkAspect->SetValue(cfg.m_MaintainAspectRatio);
 	m_chkAspect->SetToolTip("If set to false, whole window will be used for menu screen etc... stretching content.");
 	grid->Add(m_chkAspect, 0);
 
@@ -70,7 +70,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const GraphicsSettings& cfg)
 	grid->Add(new wxStaticText(this, wxID_ANY, "Start windowed:"),
 		0, wxALIGN_CENTER_VERTICAL);
 	m_chkWindowed = new wxCheckBox(this, wxID_ANY, wxEmptyString);
-	m_chkWindowed->SetValue(cfg.startWindowed);
+	m_chkWindowed->SetValue(cfg.m_StartWindowed);
 	m_chkWindowed->SetToolTip("Set to true to start windowed. Use Alt-Enter to change in game to windowed mode.");
 	grid->Add(m_chkWindowed, 0);
 
@@ -163,23 +163,23 @@ void GraphicsDialog::OnOK(wxCommandEvent&)
 	EndModal(wxID_OK);
 }
 
-GraphicsSettings GraphicsDialog::GetSettings() const
+Config::Graphics GraphicsDialog::GetSettings() const
 {
-	GraphicsSettings cfg;
-	cfg.displayIndex = m_spinDisplay->GetValue();
+	Config::Graphics cfg;
+	cfg.m_DisplayIndex = m_spinDisplay->GetValue();
 
 	int sel = m_choiceRes->GetSelection();
 	int customIdx = (int)std::size(s_resolutions);
 
 	if (sel == customIdx) {
-		cfg.windowResWidth = m_customWidth;
-		cfg.windowResHeight = m_customHeight;
+		cfg.m_WindowResWidth = m_customWidth;
+		cfg.m_WindowResHeight = m_customHeight;
 	}
 	else if (sel >= 0 && sel < customIdx) {
-		cfg.windowResWidth = s_resolutions[sel].w;
-		cfg.windowResHeight = s_resolutions[sel].h;
+		cfg.m_WindowResWidth = s_resolutions[sel].w;
+		cfg.m_WindowResHeight = s_resolutions[sel].h;
 	}
-	cfg.maintainAspectRatio = m_chkAspect->GetValue();
-	cfg.startWindowed = m_chkWindowed->GetValue();
+	cfg.m_MaintainAspectRatio = m_chkAspect->GetValue();
+	cfg.m_StartWindowed = m_chkWindowed->GetValue();
 	return cfg;
 }
