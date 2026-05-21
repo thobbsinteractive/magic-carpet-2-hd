@@ -16,6 +16,8 @@ private:
 	wxCheckBox* m_chkAspect;
 	wxCheckBox* m_chkWindowed;
 
+	Config::Graphics m_cfg;
+
 	// Tracks custom resolutions entered by the user
 	int m_customWidth = 1920, m_customHeight = 1080;
 	int m_customIGWidth = 1920, m_customIGHeight = 1080;

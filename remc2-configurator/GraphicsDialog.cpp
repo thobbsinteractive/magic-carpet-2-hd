@@ -73,6 +73,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Graphics& cfg)
 	: wxDialog(parent, wxID_ANY, "Graphics Settings",
 		wxDefaultPosition, wxSize(256, 256))
 {
+	m_cfg = cfg;
 	m_customWidth = cfg.m_WindowResWidth;
 	m_customHeight = cfg.m_WindowResHeight;
 	m_customIGWidth = cfg.m_GameDetail.m_GameResWidth;
@@ -198,7 +199,8 @@ void GraphicsDialog::OnOK(wxCommandEvent&)
 
 Config::Graphics GraphicsDialog::GetSettings() const
 {
-	Config::Graphics cfg;
+	Config::Graphics cfg = m_cfg;
+
 	cfg.m_DisplayIndex = m_spinDisplay->GetValue();
 
 	const int customIdx = (int)std::size(s_resolutions);

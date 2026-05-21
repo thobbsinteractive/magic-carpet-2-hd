@@ -64,7 +64,7 @@ public:
 		bool m_Sky = true;
 		bool m_Reflections = true;
 		bool m_DynamicLighting = true;
-		int m_ViewDistanceScale = 3;
+		int m_ViewDistanceScale = 2;
 	};
 
 	struct Threading
