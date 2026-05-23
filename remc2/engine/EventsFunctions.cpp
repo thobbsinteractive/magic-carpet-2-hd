@@ -46222,8 +46222,10 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			x_DWORD_17DE38str.x_WORD_17DF0E = 71;
 
 			if (extendedFonts)
+			{
 				LoadFixedFonts(0, (char*)"4b");
-
+				LoadFixedFonts(3, (char*)"FONT1");
+			}
 			break;
 		case 6://adress 25b533
 			x_DWORD_17DE38str.x_DWORD_17DE54 = &x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226[0x4D54A + 301787];//(uint8_t*)x_DWORD_17DE48c + 301787;//49adb * //44ffef
@@ -46277,6 +46279,7 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			{
 				LoadFixedFonts(0, (char*)"6b");
 				LoadFixedFonts(1, (char*)"6c");
+				LoadFixedFonts(3, (char*)"FONT1");
 			}
 
 			break;
