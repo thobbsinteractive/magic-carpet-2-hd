@@ -79,31 +79,31 @@ void MainFrame::OnControls(wxCommandEvent&) { wxLogMessage("Save clicked"); }
 
 void MainFrame::OnSound(wxCommandEvent&)
 {
-	auto settings = m_ptrConfig->m_Sound;
-	SoundDialog dlg(this, settings);
+	auto settings = m_ptrConfig->GetSettingsFromDoc();
+	SoundDialog dlg(this, settings.m_Sound);
 	dlg.SetMinSize(wxSize(420, 340));
 	dlg.SetMaxSize(wxSize(420, 340));
 	if (dlg.ShowModal() == wxID_OK)
 	{
-		settings = dlg.GetSettings();
-		m_ptrConfig->SaveSoundToDoc(settings);
+		auto soundSettings = dlg.GetSettings();
+		m_ptrConfig->SaveSoundToDoc(soundSettings);
 		m_ptrConfig->SaveToFile();
-		m_ptrConfig->LoadSettingsFromDoc();
+		m_ptrConfig->GetSettingsFromDoc();
 	}
 }
 
 void MainFrame::OnGraphics(wxCommandEvent&)
 {
-	auto settings = m_ptrConfig->m_Graphics;
-	GraphicsDialog dlg(this, settings);
+	auto settings = m_ptrConfig->GetSettingsFromDoc();
+	GraphicsDialog dlg(this, settings.m_Graphics);
 	dlg.SetMinSize(wxSize(256, 256));
 	dlg.SetMaxSize(wxSize(256, 256));
 	if (dlg.ShowModal() == wxID_OK)
 	{
-		settings = dlg.GetSettings();
-		m_ptrConfig->SaveGraphicsToDoc(settings);
+		auto graphicSettings = dlg.GetSettings();
+		m_ptrConfig->SaveGraphicsToDoc(graphicSettings);
 		m_ptrConfig->SaveToFile();
-		m_ptrConfig->LoadSettingsFromDoc();
+		m_ptrConfig->GetSettingsFromDoc();
 	}
 }
 

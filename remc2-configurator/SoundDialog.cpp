@@ -2,7 +2,7 @@
 #include "PathHelpers.h"
 #include <wx/dirdlg.h>
 
-SoundDialog::SoundDialog(wxWindow* parent, const Config::Sound& s)
+SoundDialog::SoundDialog(wxWindow* parent, const Config::Settings::Sound& s)
 	: wxDialog(parent, wxID_ANY, "Sound Settings",
 		wxDefaultPosition, wxSize(420, 340),
 		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
@@ -100,9 +100,9 @@ SoundDialog::SoundDialog(wxWindow* parent, const Config::Sound& s)
 	Centre();
 }
 
-Config::Sound SoundDialog::GetSettings() const
+Config::Settings::Sound SoundDialog::GetSettings() const
 {
-	Config::Sound s;
+	Config::Settings::Sound s;
 	s.m_OggFolder = m_oggFolder->GetValue();
 	s.m_OggMusicAlternative = m_oggMusicAlternative->GetValue();
 	s.m_FixSpeedSound = m_fixSpeedSound->GetValue();

@@ -69,7 +69,7 @@ static bool ShowCustomResDlg(wxWindow* parent, wxChoice* choice, int customIdx,
 }
 
 // ── GraphicsDialog ────────────────────────────────────────────────────────────
-GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Graphics& cfg)
+GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphics& cfg)
 	: wxDialog(parent, wxID_ANY, "Graphics Settings",
 		wxDefaultPosition, wxSize(256, 256))
 {
@@ -197,9 +197,9 @@ void GraphicsDialog::OnOK(wxCommandEvent&)
 	EndModal(wxID_OK);
 }
 
-Config::Graphics GraphicsDialog::GetSettings() const
+Config::Settings::Graphics GraphicsDialog::GetSettings() const
 {
-	Config::Graphics cfg = m_cfg;
+	Config::Settings::Graphics cfg = m_cfg;
 
 	cfg.m_DisplayIndex = m_spinDisplay->GetValue();
 

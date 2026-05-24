@@ -188,15 +188,15 @@ public:
 	bool SaveToFile();
 	bool SaveToFile(std::string fileName);
 
-	void LoadSettingsFromDoc();
-	Settings LoadSettings(json& document);
-	Settings::Graphics LoadGraphics(const json& settings);
-	Settings::GameDetail LoadGameDetail(const json& graphics);
-	Settings::Threading LoadThreading(const json& graphics);
-	Settings::Sound LoadSound(const json& settings);
-	Settings::Paths LoadPaths(const json& settings);
-	Settings::Controls LoadControls(const json& settings);
-	Settings::Game LoadGame(const json& settings);
+    Settings GetSettingsFromDoc();
+	Settings GetSettings(json& document);
+	Settings::Graphics GetGraphics(const json& settings);
+	Settings::GameDetail GetGameDetail(const json& graphics);
+	Settings::Threading GetThreading(const json& graphics);
+	Settings::Sound GetSound(const json& settings);
+	Settings::Paths GetPaths(const json& settings);
+	Settings::Controls GetControls(const json& settings);
+	Settings::Game GetGame(const json& settings);
 
 	void SaveSettings(json& document, Settings settings);
 	void SaveSoundToDoc(Settings::Sound soundSettings);

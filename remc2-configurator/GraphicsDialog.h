@@ -5,8 +5,8 @@
 class GraphicsDialog : public wxDialog
 {
 public:
-	GraphicsDialog(wxWindow* parent, const Config::Graphics& cfg);
-	Config::Graphics GetSettings() const;
+	GraphicsDialog(wxWindow* parent, const Config::Settings::Graphics& cfg);
+	Config::Settings::Graphics GetSettings() const;
 
 private:
 	// Controls
@@ -16,7 +16,7 @@ private:
 	wxCheckBox* m_chkAspect;
 	wxCheckBox* m_chkWindowed;
 
-	Config::Graphics m_cfg;
+	Config::Settings::Graphics m_cfg;
 
 	// Tracks custom resolutions entered by the user
 	int m_customWidth = 1920, m_customHeight = 1080;

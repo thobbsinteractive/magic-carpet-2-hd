@@ -29,7 +29,6 @@ bool Config::LoadFromFile(std::string fileName)
 				m_Document = json::parse(jsonStr);
 				if (m_Document.contains("settings"))
 				{
-					LoadSettings(m_Document);
 					return true;
 				}
 			}
@@ -116,16 +115,16 @@ json& Config::GetOrCreate(json& parent, const char* key)
 	return parent[key];
 }
 
-void Config::LoadSettingsFromDoc()
+Config::Settings Config::GetSettingsFromDoc()
 {
-	LoadSettings(m_Document);
+	return GetSettings(m_Document);
 }
 
-Config::Settings Config::LoadSettings(json& document)
+Config::Settings Config::GetSettings(json& document)
 {
 	Settings settings;
 
-	auto& settingsArray = document["settings"];
+	auto& settingsArray = m_Document["settings"];
 
 	for (auto& entry : settingsArray)
 	{
@@ -133,18 +132,18 @@ Config::Settings Config::LoadSettings(json& document)
 		{
 			settings.m_Name = ReadStringValue(entry, "name");
 			settings.m_Version = ReadStringValue(entry, "version");
-			settings.m_Paths = LoadPaths(entry);
-			settings.m_Sound = LoadSound(entry);
-			settings.m_Graphics = LoadGraphics(entry);
-			settings.m_Game = LoadGame(entry);
-			settings.m_Controls = LoadControls(entry);
+			settings.m_Paths = GetPaths(entry);
+			settings.m_Sound = GetSound(entry);
+			settings.m_Graphics = GetGraphics(entry);
+			settings.m_Game = GetGame(entry);
+			settings.m_Controls = GetControls(entry);
 			break;
 		}
 	}
 	return settings;
 }
 
-Config::Settings::Game Config::LoadGame(const json& settings)
+Config::Settings::Game Config::GetGame(const json& settings)
 {
 	Config::Settings::Game gameValues;
 	if (settings.contains("game"))
@@ -156,7 +155,7 @@ Config::Settings::Game Config::LoadGame(const json& settings)
 	return gameValues;
 }
 
-Config::Settings::Controls Config::LoadControls(const json& settings)
+Config::Settings::Controls Config::GetControls(const json& settings)
 {
 	Config::Settings::Controls controlValues;
 
@@ -287,7 +286,7 @@ Config::Settings::Controls Config::LoadControls(const json& settings)
 	return controlValues;
 }
 
-Config::Settings::Graphics Config::LoadGraphics(const json& settings)
+Config::Settings::Graphics Config::GetGraphics(const json& settings)
 {
 	Config::Settings::Graphics graphicsValues;
 
@@ -300,13 +299,13 @@ Config::Settings::Graphics Config::LoadGraphics(const json& settings)
 		graphicsValues.m_MaintainAspectRatio = ReadBoolValue(graphics, "maintainAspectRatio");
 		graphicsValues.m_StartWindowed = ReadBoolValue(graphics, "startWindowed");
 
-		graphicsValues.m_GameDetail = LoadGameDetail(graphics);
-		graphicsValues.m_Threading = LoadThreading(graphics);
+		graphicsValues.m_GameDetail = GetGameDetail(graphics);
+		graphicsValues.m_Threading = GetThreading(graphics);
 	}
 	return graphicsValues;
 }
 
-Config::Settings::GameDetail Config::LoadGameDetail(const json& graphics)
+Config::Settings::GameDetail Config::GetGameDetail(const json& graphics)
 {
 	Config::Settings::GameDetail gameDetailValues;
 
@@ -330,7 +329,7 @@ Config::Settings::GameDetail Config::LoadGameDetail(const json& graphics)
 	return gameDetailValues;
 }
 
-Config::Settings::Threading Config::LoadThreading(const json& graphics)
+Config::Settings::Threading Config::GetThreading(const json& graphics)
 {
 	Config::Settings::Threading threadingValues;
 	if (graphics.contains("threading"))
@@ -347,7 +346,7 @@ Config::Settings::Threading Config::LoadThreading(const json& graphics)
 	return threadingValues;
 }
 
-Config::Settings::Sound Config::LoadSound(const json& settings)
+Config::Settings::Sound Config::GetSound(const json& settings)
 {
 	Config::Settings::Sound soundValues;
 	if (settings.contains("sound"))
@@ -365,7 +364,7 @@ Config::Settings::Sound Config::LoadSound(const json& settings)
 	return soundValues;
 }
 
-Config::Settings::Paths Config::LoadPaths(const json& settings)
+Config::Settings::Paths Config::GetPaths(const json& settings)
 {
 	Config::Settings::Paths pathValues;
 	if (settings.contains("paths"))

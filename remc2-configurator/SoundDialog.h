@@ -4,8 +4,8 @@
 
 class SoundDialog : public wxDialog {
 public:
-	SoundDialog(wxWindow* parent, const Config::Sound& s);
-	Config::Sound GetSettings() const;
+	SoundDialog(wxWindow* parent, const Config::Settings::Sound& s);
+	Config::Settings::Sound GetSettings() const;
 
 private:
 	wxTextCtrl* m_oggFolder = nullptr;
