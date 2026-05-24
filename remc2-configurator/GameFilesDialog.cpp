@@ -1,7 +1,7 @@
 #include "GameFilesDialog.h"
 #include "PathHelpers.h"
 
-GameFilesDialog::GameFilesDialog(wxWindow* parent)
+GameFilesDialog::GameFilesDialog(wxWindow* parent, const Config::Settings::Paths& p)
 	: wxDialog(parent, wxID_ANY, "Select Game Files Folders",
 		wxDefaultPosition, wxSize(440, 200),
 		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
@@ -34,6 +34,11 @@ GameFilesDialog::GameFilesDialog(wxWindow* parent)
 	// ── Event bindings (both Browse buttons share one handler) ───────────────
 	Bind(wxEVT_BUTTON, &GameFilesDialog::OnBrowseGameFiles, this, ID_BTN_GAME_BROWSE);
 	Bind(wxEVT_BUTTON, &GameFilesDialog::OnBrowseCdFiles, this, ID_BTN_CD_BROWSE);
+
+	m_gameFolderCtrl->SetValue(p.m_GameFolder);
+	m_gameFolderCtrl->SetToolTip("Path to the NETHERW Folder");
+	m_cdFolderCtrl->SetValue(p.m_CdFolder);
+	m_cdFolderCtrl->SetToolTip("Path to the Contents of the CD");
 
 	Centre();
 }
@@ -74,3 +79,12 @@ void GameFilesDialog::OnBrowseCdFiles(wxCommandEvent& evt)
 	if (dlg.ShowModal() == wxID_OK)
 		m_cdFolderCtrl->SetValue(ToRelative(dlg.GetPath()));
 }
+
+Config::Settings::Paths GameFilesDialog::GetPaths() const
+{
+	Config::Settings::Paths p;
+	p.m_GameFolder = m_gameFolderCtrl->GetValue();
+	p.m_CdFolder = m_cdFolderCtrl->GetValue();
+	return p;
+}
+

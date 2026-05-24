@@ -67,11 +67,15 @@ void MainFrame::OnPlay(wxCommandEvent&)
 
 void MainFrame::OnFile(wxCommandEvent&)
 {
-	GameFilesDialog dlg(this);
+	auto settings = m_ptrConfig->GetSettingsFromDoc();
+	GameFilesDialog dlg(this, settings.m_Paths);
 	dlg.SetMinSize(wxSize(440, 200));
 	dlg.SetMaxSize(wxSize(440, 200));
 	if (dlg.ShowModal() == wxID_OK) {
-
+		auto pathSettings = dlg.GetPaths();
+		m_ptrConfig->SavePathsToDoc(pathSettings);
+		m_ptrConfig->SaveToFile();
+		m_ptrConfig->GetSettingsFromDoc();
 	}
 }
 

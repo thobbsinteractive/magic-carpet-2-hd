@@ -3,10 +3,8 @@
 
 class GameFilesDialog : public wxDialog {
 public:
-	GameFilesDialog(wxWindow* parent);
-
-	wxString GetGameFolderPath() const { return m_gameFolderCtrl->GetValue(); }
-	wxString GetCdFolderPath()   const { return m_cdFolderCtrl->GetValue(); }
+	GameFilesDialog(wxWindow* parent, const Config::Settings::Paths& p);
+	Config::Settings::Paths GetPaths() const;
 
 private:
 	// Helper that builds one label + text + browse row and appends it to mainSizer
