@@ -121,39 +121,44 @@ void Config::LoadSettingsFromDoc()
 	LoadSettings(m_Document);
 }
 
-void Config::LoadSettings(json& document)
+Config::Settings Config::LoadSettings(json& document)
 {
+	Settings settings;
+
 	auto& settingsArray = document["settings"];
 
 	for (auto& entry : settingsArray)
 	{
 		if (entry.contains("name") && entry.contains("isActive") && entry["isActive"].get<bool>() == true)
 		{
-			m_Name = ReadStringValue(entry, "name");
-			m_Version = ReadStringValue(entry, "version");
-			LoadPaths(entry);
-			LoadSound(entry);
-			LoadGraphics(entry);
-			LoadGame(entry);
-			LoadControls(entry);
+			settings.m_Name = ReadStringValue(entry, "name");
+			settings.m_Version = ReadStringValue(entry, "version");
+			settings.m_Paths = LoadPaths(entry);
+			settings.m_Sound = LoadSound(entry);
+			settings.m_Graphics = LoadGraphics(entry);
+			settings.m_Game = LoadGame(entry);
+			settings.m_Controls = LoadControls(entry);
 			break;
 		}
 	}
+	return settings;
 }
 
-void Config::LoadGame(const json& settings)
+Config::Settings::Game Config::LoadGame(const json& settings)
 {
+	Config::Settings::Game gameValues;
 	if (settings.contains("game"))
 	{
 		const auto& game = settings["game"];
-		m_Game.m_MaxGameFps = ReadIntValue(game, "maxGameFps");
-		m_Game.m_FmvFps = ReadIntValue(game, "fmvFps");
+		gameValues.m_MaxGameFps = ReadIntValue(game, "maxGameFps");
+		gameValues.m_FmvFps = ReadIntValue(game, "fmvFps");
 	}
+	return gameValues;
 }
 
-void Config::LoadControls(const json& settings)
+Config::Settings::Controls Config::LoadControls(const json& settings)
 {
-	if (!settings.contains("controls")) return;
+	Config::Settings::Controls controlValues;
 
 	const auto& controls = settings["controls"];
 
@@ -163,16 +168,16 @@ void Config::LoadControls(const json& settings)
 		{
 			if (mouse.contains("isActive") && mouse["isActive"].get<bool>() == true)
 			{
-				m_Controls.m_Mouse.m_InvertXAxis = ReadBoolValue(mouse, "invertXAxis");
-				m_Controls.m_Mouse.m_InvertYAxis = ReadBoolValue(mouse, "invertYAxis");
-				m_Controls.m_Mouse.m_mouseScaleX = ReadFloatValue(mouse, "mouseScaleX");
-				m_Controls.m_Mouse.m_mouseScaleY = ReadFloatValue(mouse, "mouseScaleY");
-				m_Controls.m_Mouse.m_disableLRButtonsMenuOpen = ReadBoolValue(mouse, "disableLRButtonsMenuOpen");
-				m_Controls.m_Mouse.m_spellLeft = ReadIntValue(mouse, "spellLeft");
-				m_Controls.m_Mouse.m_spellRight = ReadIntValue(mouse, "spellRight");
-				m_Controls.m_Mouse.m_map = ReadIntValue(mouse, "map");
-				m_Controls.m_Mouse.m_spellMenu = ReadIntValue(mouse, "spellMenu");
-				m_Controls.m_Mouse.m_spellMenuMark = ReadIntValue(mouse, "spellMenuMark");
+				controlValues.m_Mouse.m_InvertXAxis = ReadBoolValue(mouse, "invertXAxis");
+				controlValues.m_Mouse.m_InvertYAxis = ReadBoolValue(mouse, "invertYAxis");
+				controlValues.m_Mouse.m_mouseScaleX = ReadFloatValue(mouse, "mouseScaleX");
+				controlValues.m_Mouse.m_mouseScaleY = ReadFloatValue(mouse, "mouseScaleY");
+				controlValues.m_Mouse.m_disableLRButtonsMenuOpen = ReadBoolValue(mouse, "disableLRButtonsMenuOpen");
+				controlValues.m_Mouse.m_spellLeft = ReadIntValue(mouse, "spellLeft");
+				controlValues.m_Mouse.m_spellRight = ReadIntValue(mouse, "spellRight");
+				controlValues.m_Mouse.m_map = ReadIntValue(mouse, "map");
+				controlValues.m_Mouse.m_spellMenu = ReadIntValue(mouse, "spellMenu");
+				controlValues.m_Mouse.m_spellMenuMark = ReadIntValue(mouse, "spellMenuMark");
 				break;
 			}
 		}
@@ -184,13 +189,13 @@ void Config::LoadControls(const json& settings)
 		{
 			if (keyboard.contains("isActive") && keyboard["isActive"].get<bool>() == true)
 			{
-				m_Controls.m_Keyboard.m_forward = ReadKeyScancode(keyboard, "forward");
-				m_Controls.m_Keyboard.m_backwards = ReadKeyScancode(keyboard, "backwards");
-				m_Controls.m_Keyboard.m_left = ReadKeyScancode(keyboard, "left");
-				m_Controls.m_Keyboard.m_right = ReadKeyScancode(keyboard, "right");
-				m_Controls.m_Keyboard.m_map = ReadKeyScancode(keyboard, "map");
-				m_Controls.m_Keyboard.m_spellMenu = ReadKeyScancode(keyboard, "spellMenu");
-				m_Controls.m_Keyboard.m_spellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
+				controlValues.m_Keyboard.m_forward = ReadKeyScancode(keyboard, "forward");
+				controlValues.m_Keyboard.m_backwards = ReadKeyScancode(keyboard, "backwards");
+				controlValues.m_Keyboard.m_left = ReadKeyScancode(keyboard, "left");
+				controlValues.m_Keyboard.m_right = ReadKeyScancode(keyboard, "right");
+				controlValues.m_Keyboard.m_map = ReadKeyScancode(keyboard, "map");
+				controlValues.m_Keyboard.m_spellMenu = ReadKeyScancode(keyboard, "spellMenu");
+				controlValues.m_Keyboard.m_spellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
 				break;
 			}
 		}
@@ -202,37 +207,37 @@ void Config::LoadControls(const json& settings)
 		{
 			if (gamePad.contains("isActive") && gamePad["isActive"].get<bool>() == true)
 			{
-				m_Controls.m_GamePad.m_Name = ReadStringValue(gamePad, "name");
-				m_Controls.m_GamePad.m_ButtonMiniMap = (uint16_t)ReadIntValue(gamePad, "buttonMiniMap");
-				m_Controls.m_GamePad.m_ButtonSpell = (uint16_t)ReadIntValue(gamePad, "buttonSpell");
-				m_Controls.m_GamePad.m_ButtonPauseMenu = (uint16_t)ReadIntValue(gamePad, "buttonPauseMenu");
-				m_Controls.m_GamePad.m_ButtonEsc = (uint16_t)ReadIntValue(gamePad, "buttonEsc");
-				m_Controls.m_GamePad.m_ButtonFireL = (uint16_t)ReadIntValue(gamePad, "buttonFireL");
-				m_Controls.m_GamePad.m_ButtonFireR = (uint16_t)ReadIntValue(gamePad, "buttonFireR");
-				m_Controls.m_GamePad.m_ButtonMenuSelect = (uint16_t)ReadIntValue(gamePad, "buttonMenuSelect");
-				m_Controls.m_GamePad.m_TriggerDeadZone = (uint16_t)ReadIntValue(gamePad, "triggerDeadZone");
-				m_Controls.m_GamePad.m_HapticEnabled = ReadBoolValue(gamePad, "hapticEnabled");
-				m_Controls.m_GamePad.m_HapticMaxGain = (uint16_t)ReadIntValue(gamePad, "hapticMaxGain");
-				m_Controls.m_GamePad.m_HatNav = (uint16_t)ReadIntValue(gamePad, "hatNav");
-				m_Controls.m_GamePad.m_HatMov = (uint16_t)ReadIntValue(gamePad, "hatMov");
-				m_Controls.m_GamePad.m_HatNavInv = ReadBoolValue(gamePad, "hatNavInv");
-				m_Controls.m_GamePad.m_HatMovInv = ReadBoolValue(gamePad, "hatMovInv");
-				m_Controls.m_GamePad.m_AxisLong = (uint16_t)ReadIntValue(gamePad, "axisLong");
-				m_Controls.m_GamePad.m_AxisLongDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongDeadZone");
-				m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongNavDeadZone");
-				m_Controls.m_GamePad.m_AxisLongInv = ReadBoolValue(gamePad, "axisLongInv");
-				m_Controls.m_GamePad.m_AxisTrans = (uint16_t)ReadIntValue(gamePad, "axisTrans");
-				m_Controls.m_GamePad.m_AxisTransDeadZone = (uint16_t)ReadIntValue(gamePad, "axisTransDeadZone");
-				m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisTransNavDeadZone");
-				m_Controls.m_GamePad.m_AxisNavNs = (uint16_t)ReadIntValue(gamePad, "axisNavNs");
-				m_Controls.m_GamePad.m_AxisNavNsInv = ReadBoolValue(gamePad, "axisNavNsInv");
-				m_Controls.m_GamePad.m_AxisNavEw = (uint16_t)ReadIntValue(gamePad, "axisNavEw");
-				m_Controls.m_GamePad.m_AxisNavEwInv = ReadBoolValue(gamePad, "axisNavEwInv");
-				m_Controls.m_GamePad.m_AxisFireR = (uint16_t)ReadIntValue(gamePad, "axisFireR");
-				m_Controls.m_GamePad.m_AxisFireL = (uint16_t)ReadIntValue(gamePad, "axisFireL");
-				m_Controls.m_GamePad.m_AxisYaw = (uint16_t)ReadIntValue(gamePad, "axisYaw");
-				m_Controls.m_GamePad.m_AxisYawInv = ReadBoolValue(gamePad, "axisYawInv");
-				m_Controls.m_GamePad.m_AxisYawDeadZone = (uint16_t)ReadIntValue(gamePad, "axisYawDeadZone");
+				controlValues.m_GamePad.m_Name = ReadStringValue(gamePad, "name");
+				controlValues.m_GamePad.m_ButtonMiniMap = (uint16_t)ReadIntValue(gamePad, "buttonMiniMap");
+				controlValues.m_GamePad.m_ButtonSpell = (uint16_t)ReadIntValue(gamePad, "buttonSpell");
+				controlValues.m_GamePad.m_ButtonPauseMenu = (uint16_t)ReadIntValue(gamePad, "buttonPauseMenu");
+				controlValues.m_GamePad.m_ButtonEsc = (uint16_t)ReadIntValue(gamePad, "buttonEsc");
+				controlValues.m_GamePad.m_ButtonFireL = (uint16_t)ReadIntValue(gamePad, "buttonFireL");
+				controlValues.m_GamePad.m_ButtonFireR = (uint16_t)ReadIntValue(gamePad, "buttonFireR");
+				controlValues.m_GamePad.m_ButtonMenuSelect = (uint16_t)ReadIntValue(gamePad, "buttonMenuSelect");
+				controlValues.m_GamePad.m_TriggerDeadZone = (uint16_t)ReadIntValue(gamePad, "triggerDeadZone");
+				controlValues.m_GamePad.m_HapticEnabled = ReadBoolValue(gamePad, "hapticEnabled");
+				controlValues.m_GamePad.m_HapticMaxGain = (uint16_t)ReadIntValue(gamePad, "hapticMaxGain");
+				controlValues.m_GamePad.m_HatNav = (uint16_t)ReadIntValue(gamePad, "hatNav");
+				controlValues.m_GamePad.m_HatMov = (uint16_t)ReadIntValue(gamePad, "hatMov");
+				controlValues.m_GamePad.m_HatNavInv = ReadBoolValue(gamePad, "hatNavInv");
+				controlValues.m_GamePad.m_HatMovInv = ReadBoolValue(gamePad, "hatMovInv");
+				controlValues.m_GamePad.m_AxisLong = (uint16_t)ReadIntValue(gamePad, "axisLong");
+				controlValues.m_GamePad.m_AxisLongDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongDeadZone");
+				controlValues.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongNavDeadZone");
+				controlValues.m_GamePad.m_AxisLongInv = ReadBoolValue(gamePad, "axisLongInv");
+				controlValues.m_GamePad.m_AxisTrans = (uint16_t)ReadIntValue(gamePad, "axisTrans");
+				controlValues.m_GamePad.m_AxisTransDeadZone = (uint16_t)ReadIntValue(gamePad, "axisTransDeadZone");
+				controlValues.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisTransNavDeadZone");
+				controlValues.m_GamePad.m_AxisNavNs = (uint16_t)ReadIntValue(gamePad, "axisNavNs");
+				controlValues.m_GamePad.m_AxisNavNsInv = ReadBoolValue(gamePad, "axisNavNsInv");
+				controlValues.m_GamePad.m_AxisNavEw = (uint16_t)ReadIntValue(gamePad, "axisNavEw");
+				controlValues.m_GamePad.m_AxisNavEwInv = ReadBoolValue(gamePad, "axisNavEwInv");
+				controlValues.m_GamePad.m_AxisFireR = (uint16_t)ReadIntValue(gamePad, "axisFireR");
+				controlValues.m_GamePad.m_AxisFireL = (uint16_t)ReadIntValue(gamePad, "axisFireL");
+				controlValues.m_GamePad.m_AxisYaw = (uint16_t)ReadIntValue(gamePad, "axisYaw");
+				controlValues.m_GamePad.m_AxisYawInv = ReadBoolValue(gamePad, "axisYawInv");
+				controlValues.m_GamePad.m_AxisYawDeadZone = (uint16_t)ReadIntValue(gamePad, "axisYawDeadZone");
 
 				if (gamePad.contains("axisYawSensitivity"))
 				{
@@ -243,7 +248,7 @@ void Config::LoadControls(const json& settings)
 						{
 							if (zone.contains("start") && zone.contains("end") && zone.contains("factor"))
 							{
-								m_Controls.m_GamePad.m_AxisYawSensitivity.push_back(Maths::Zone{
+								controlValues.m_GamePad.m_AxisYawSensitivity.push_back(Maths::Zone{
 									(uint16_t)zone["start"].get<int>(),
 									(uint16_t)zone["end"].get<int>(),
 									zone["factor"].get<double>()
@@ -253,9 +258,9 @@ void Config::LoadControls(const json& settings)
 					}
 				}
 
-				m_Controls.m_GamePad.m_AxisPitch = (uint16_t)ReadIntValue(gamePad, "axisPitch");
-				m_Controls.m_GamePad.m_AxisPitchInv = ReadBoolValue(gamePad, "axisPitchInv");
-				m_Controls.m_GamePad.m_AxisPitchDeadZone = (uint16_t)ReadIntValue(gamePad, "axisPitchDeadZone");
+				controlValues.m_GamePad.m_AxisPitch = (uint16_t)ReadIntValue(gamePad, "axisPitch");
+				controlValues.m_GamePad.m_AxisPitchInv = ReadBoolValue(gamePad, "axisPitchInv");
+				controlValues.m_GamePad.m_AxisPitchDeadZone = (uint16_t)ReadIntValue(gamePad, "axisPitchDeadZone");
 
 				if (gamePad.contains("axisPitchSensitivity"))
 				{
@@ -266,7 +271,7 @@ void Config::LoadControls(const json& settings)
 						{
 							if (zone.contains("start") && zone.contains("end") && zone.contains("factor"))
 							{
-								m_Controls.m_GamePad.m_AxisPitchSensitivity.push_back(Maths::Zone{
+								controlValues.m_GamePad.m_AxisPitchSensitivity.push_back(Maths::Zone{
 									(uint16_t)zone["start"].get<int>(),
 									(uint16_t)zone["end"].get<int>(),
 									zone["factor"].get<double>()
@@ -279,84 +284,97 @@ void Config::LoadControls(const json& settings)
 			}
 		}
 	}
+	return controlValues;
 }
 
-void Config::LoadGraphics(const json& settings)
+Config::Settings::Graphics Config::LoadGraphics(const json& settings)
 {
+	Config::Settings::Graphics graphicsValues;
+
 	if (settings.contains("graphics"))
 	{
 		const auto& graphics = settings["graphics"];
-		m_Graphics.m_DisplayIndex = ReadIntValue(graphics, "displayIndex");
-		m_Graphics.m_WindowResWidth = ReadIntValue(graphics, "windowResWidth");
-		m_Graphics.m_WindowResHeight = ReadIntValue(graphics, "windowResHeight");
-		m_Graphics.m_MaintainAspectRatio = ReadBoolValue(graphics, "maintainAspectRatio");
-		m_Graphics.m_StartWindowed = ReadBoolValue(graphics, "startWindowed");
+		graphicsValues.m_DisplayIndex = ReadIntValue(graphics, "displayIndex");
+		graphicsValues.m_WindowResWidth = ReadIntValue(graphics, "windowResWidth");
+		graphicsValues.m_WindowResHeight = ReadIntValue(graphics, "windowResHeight");
+		graphicsValues.m_MaintainAspectRatio = ReadBoolValue(graphics, "maintainAspectRatio");
+		graphicsValues.m_StartWindowed = ReadBoolValue(graphics, "startWindowed");
 
-		LoadGameDetail(graphics);
-		LoadThreading(graphics);
+		graphicsValues.m_GameDetail = LoadGameDetail(graphics);
+		graphicsValues.m_Threading = LoadThreading(graphics);
 	}
+	return graphicsValues;
 }
 
-void Config::LoadGameDetail(const json& graphics)
+Config::Settings::GameDetail Config::LoadGameDetail(const json& graphics)
 {
+	Config::Settings::GameDetail gameDetailValues;
+
 	if (graphics.contains("gameDetail"))
 	{
 		const auto& gameDetail = graphics["gameDetail"];
-		m_Graphics.m_GameDetail.m_GameResWidth = ReadIntValue(gameDetail, "gameResWidth");
-		m_Graphics.m_GameDetail.m_GameResHeight = ReadIntValue(gameDetail, "gameResHeight");
-		m_Graphics.m_GameDetail.m_GameUiScale = ReadIntValue(gameDetail, "gameUiScale");
-		m_Graphics.m_GameDetail.m_UseHighResGraphics = ReadBoolValue(gameDetail, "useHighResGraphics");
-		m_Graphics.m_GameDetail.m_HighResGraphicsFolder = ReadStringValue(gameDetail, "highResGraphicsFolder");
-		m_Graphics.m_GameDetail.m_UseFixedMenuGraphics = ReadBoolValue(gameDetail, "useFixedMenuGraphics");
-		m_Graphics.m_GameDetail.m_FixedMenuGraphicsFolder = ReadStringValue(gameDetail, "fixedMenuGraphicsFolder");
-		m_Graphics.m_GameDetail.m_UseExtendedFonts = ReadBoolValue(gameDetail, "useExtendedFonts");
-		m_Graphics.m_GameDetail.m_ExtendedFontsFolder = ReadStringValue(gameDetail, "extendedFontsFolder");
-		m_Graphics.m_GameDetail.m_Sky = ReadBoolValue(gameDetail, "sky");
-		m_Graphics.m_GameDetail.m_Reflections = ReadBoolValue(gameDetail, "reflections");
-		m_Graphics.m_GameDetail.m_DynamicLighting = ReadBoolValue(gameDetail, "dynamicLighting");
-		m_Graphics.m_GameDetail.m_ViewDistanceScale = ReadIntValue(gameDetail, "viewDistanceScale");
+		gameDetailValues.m_GameResWidth = ReadIntValue(gameDetail, "gameResWidth");
+		gameDetailValues.m_GameResHeight = ReadIntValue(gameDetail, "gameResHeight");
+		gameDetailValues.m_GameUiScale = ReadIntValue(gameDetail, "gameUiScale");
+		gameDetailValues.m_UseHighResGraphics = ReadBoolValue(gameDetail, "useHighResGraphics");
+		gameDetailValues.m_HighResGraphicsFolder = ReadStringValue(gameDetail, "highResGraphicsFolder");
+		gameDetailValues.m_UseFixedMenuGraphics = ReadBoolValue(gameDetail, "useFixedMenuGraphics");
+		gameDetailValues.m_FixedMenuGraphicsFolder = ReadStringValue(gameDetail, "fixedMenuGraphicsFolder");
+		gameDetailValues.m_UseExtendedFonts = ReadBoolValue(gameDetail, "useExtendedFonts");
+		gameDetailValues.m_ExtendedFontsFolder = ReadStringValue(gameDetail, "extendedFontsFolder");
+		gameDetailValues.m_Sky = ReadBoolValue(gameDetail, "sky");
+		gameDetailValues.m_Reflections = ReadBoolValue(gameDetail, "reflections");
+		gameDetailValues.m_DynamicLighting = ReadBoolValue(gameDetail, "dynamicLighting");
+		gameDetailValues.m_ViewDistanceScale = ReadIntValue(gameDetail, "viewDistanceScale");
 	}
+	return gameDetailValues;
 }
 
-void Config::LoadThreading(const json& graphics)
+Config::Settings::Threading Config::LoadThreading(const json& graphics)
 {
+	Config::Settings::Threading threadingValues;
 	if (graphics.contains("threading"))
 	{
 		const auto& threading = graphics["threading"];
-		m_Graphics.m_Threading.m_isActive = threading.value("isActive", false);
-		if (m_Graphics.m_Threading.m_isActive)
+		threadingValues.m_isActive = threading.value("isActive", false);
+		if (threadingValues.m_isActive)
 		{
-			m_Graphics.m_Threading.m_SizePercentToThreadRender = ReadFloatValue(threading, "sizePercentToThreadRender");
-			m_Graphics.m_Threading.m_NumberOfRenderThreads = (uint8_t)ReadIntValue(threading, "numberOfRenderThreads");
-			m_Graphics.m_Threading.m_AssignToSpecificCores = ReadBoolValue(threading, "assignToSpecificCores");
+			threadingValues.m_SizePercentToThreadRender = ReadFloatValue(threading, "sizePercentToThreadRender");
+			threadingValues.m_NumberOfRenderThreads = (uint8_t)ReadIntValue(threading, "numberOfRenderThreads");
+			threadingValues.m_AssignToSpecificCores = ReadBoolValue(threading, "assignToSpecificCores");
 		}
 	}
+	return threadingValues;
 }
 
-void Config::LoadSound(const json& settings)
+Config::Settings::Sound Config::LoadSound(const json& settings)
 {
+	Config::Settings::Sound soundValues;
 	if (settings.contains("sound"))
 	{
 		const auto& sound = settings["sound"];
-		m_Sound.m_HqSound = ReadBoolValue(sound, "hqSound");
-		m_Sound.m_OggMusic = ReadBoolValue(sound, "oggMusic");
-		m_Sound.m_OggFolder = ReadStringValue(sound, "oggFolder");
-		m_Sound.m_OggMusicAlternative = ReadBoolValue(sound, "oggMusicAlternative");
-		m_Sound.m_FixSpeedSound = ReadBoolValue(sound, "fixSpeedSound");
-		m_Sound.m_AutoShowObjectivesForForeignLanguages = ReadBoolValue(sound, "autoShowObjectivesForForeignLanguages");
-		m_Sound.m_MaxSimultaniousSounds = ReadIntValue(sound, "maxSimultaniousSounds");
-		m_Sound.m_SpeechFolder = ReadStringValue(sound, "speechFolder");
+		soundValues.m_HqSound = ReadBoolValue(sound, "hqSound");
+		soundValues.m_OggMusic = ReadBoolValue(sound, "oggMusic");
+		soundValues.m_OggFolder = ReadStringValue(sound, "oggFolder");
+		soundValues.m_OggMusicAlternative = ReadBoolValue(sound, "oggMusicAlternative");
+		soundValues.m_FixSpeedSound = ReadBoolValue(sound, "fixSpeedSound");
+		soundValues.m_AutoShowObjectivesForForeignLanguages = ReadBoolValue(sound, "autoShowObjectivesForForeignLanguages");
+		soundValues.m_MaxSimultaniousSounds = ReadIntValue(sound, "maxSimultaniousSounds");
+		soundValues.m_SpeechFolder = ReadStringValue(sound, "speechFolder");
 	}
+	return soundValues;
 }
 
-void Config::LoadPaths(const json& settings)
+Config::Settings::Paths Config::LoadPaths(const json& settings)
 {
+	Config::Settings::Paths pathValues;
 	if (settings.contains("paths"))
 	{
 		const auto& paths = settings["paths"];
-		m_Paths.m_GameFolder = ReadStringValue(paths, "gameFolder");
-		m_Paths.m_CdFolder = ReadStringValue(paths, "cdFolder");
+		pathValues.m_GameFolder = ReadStringValue(paths, "gameFolder");
+		pathValues.m_CdFolder = ReadStringValue(paths, "cdFolder");
 	}
+	return pathValues;
 }
 
 std::string Config::ReadFileToString(std::string fileName)
@@ -380,14 +398,15 @@ std::string Config::ReadFileToString(std::string fileName)
 	return jsonStr;
 }
 
-void Config::SavePaths(json& settings)
+void Config::SavePathsToDoc(Config::Settings::Paths pathSettings)
 {
-	auto& paths = GetOrCreate(settings, "paths");
-	SetString(paths, "gameFolder", m_Paths.m_GameFolder);
-	SetString(paths, "cdFolder", m_Paths.m_CdFolder);
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& paths = GetOrCreate(settingsEntry, "paths");
+	SetString(paths, "gameFolder", pathSettings.m_GameFolder);
+	SetString(paths, "cdFolder", pathSettings.m_CdFolder);
 }
 
-void Config::SaveSoundToDoc(Config::Sound soundSettings)
+void Config::SaveSoundToDoc(Config::Settings::Sound soundSettings)
 {
 	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
 	auto& sound = GetOrCreate(settingsEntry, "sound");
@@ -401,7 +420,7 @@ void Config::SaveSoundToDoc(Config::Sound soundSettings)
 	SetString(sound, "speechFolder", soundSettings.m_SpeechFolder);
 }
 
-void Config::SaveGraphicsToDoc(Config::Graphics graphics)
+void Config::SaveGraphicsToDoc(Config::Settings::Graphics graphics)
 {
 	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
 	auto& gfx = GetOrCreate(settingsEntry, "graphics");
@@ -414,7 +433,7 @@ void Config::SaveGraphicsToDoc(Config::Graphics graphics)
 	SaveThreadingToDoc(graphics.m_Threading);
 }
 
-void Config::SaveGameDetailToDoc(Config::GameDetail gameDetail)
+void Config::SaveGameDetailToDoc(Config::Settings::GameDetail gameDetail)
 {
 	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
 	auto& gfx = GetOrCreate(settingsEntry, "graphics");
@@ -434,58 +453,60 @@ void Config::SaveGameDetailToDoc(Config::GameDetail gameDetail)
 	SetInt(gd, "viewDistanceScale", gameDetail.m_ViewDistanceScale);
 }
 
-void Config::SaveThreadingToDoc(Config::Threading threading)
+void Config::SaveThreadingToDoc(Config::Settings::Threading threading)
 {
 	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
 	auto& gfx = GetOrCreate(settingsEntry, "graphics");
 	auto& t = GetOrCreate(gfx, "threading");
-	SetBool(t, "isActive", m_Graphics.m_Threading.m_isActive);
-	SetFloat(t, "sizePercentToThreadRender", m_Graphics.m_Threading.m_SizePercentToThreadRender);
-	SetInt(t, "numberOfRenderThreads", m_Graphics.m_Threading.m_NumberOfRenderThreads);
-	SetBool(t, "assignToSpecificCores", m_Graphics.m_Threading.m_AssignToSpecificCores);
+	SetBool(t, "isActive", threading.m_isActive);
+	SetFloat(t, "sizePercentToThreadRender", threading.m_SizePercentToThreadRender);
+	SetInt(t, "numberOfRenderThreads", threading.m_NumberOfRenderThreads);
+	SetBool(t, "assignToSpecificCores", threading.m_AssignToSpecificCores);
 }
 
-void Config::SaveGame(json& settings)
+void Config::SaveGameToDoc(Config::Settings::Game gameSettings)
 {
-	auto& game = GetOrCreate(settings, "game");
-	SetInt(game, "maxGameFps", m_Game.m_MaxGameFps);
-	SetInt(game, "fmvFps", m_Game.m_FmvFps);
-	SetBool(game, "skipIntro", m_Game.m_SkipIntro);
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& game = GetOrCreate(settingsEntry, "game");
+	SetInt(game, "maxGameFps", gameSettings.m_MaxGameFps);
+	SetInt(game, "fmvFps", gameSettings.m_FmvFps);
+	SetBool(game, "skipIntro", gameSettings.m_SkipIntro);
 }
 
-void Config::SaveControls(json& settings)
+void Config::SaveControlsToDoc(Config::Settings::Controls controlSettings)
 {
-	auto& controls = GetOrCreate(settings, "controls");
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& controls = GetOrCreate(settingsEntry, "controls");
 
 	if (!controls.contains("mouse"))
 		controls["mouse"] = json::array({ json::object() });
 	auto& mouse = controls["mouse"][0];
 	SetBool(mouse, "isActive", true);
-	SetBool(mouse, "invertXAxis", m_Controls.m_Mouse.m_InvertXAxis);
-	SetBool(mouse, "invertYAxis", m_Controls.m_Mouse.m_InvertYAxis);
-	SetFloat(mouse, "mouseScaleX", m_Controls.m_Mouse.m_mouseScaleX);
-	SetFloat(mouse, "mouseScaleY", m_Controls.m_Mouse.m_mouseScaleY);
-	SetBool(mouse, "disableLRButtonsMenuOpen", m_Controls.m_Mouse.m_disableLRButtonsMenuOpen);
-	SetInt(mouse, "spellLeft", m_Controls.m_Mouse.m_spellLeft);
-	SetInt(mouse, "spellRight", m_Controls.m_Mouse.m_spellRight);
-	SetInt(mouse, "map", m_Controls.m_Mouse.m_map);
-	SetInt(mouse, "spellMenu", m_Controls.m_Mouse.m_spellMenu);
-	SetInt(mouse, "spellMenuMark", m_Controls.m_Mouse.m_spellMenuMark);
+	SetBool(mouse, "invertXAxis", controlSettings.m_Mouse.m_InvertXAxis);
+	SetBool(mouse, "invertYAxis", controlSettings.m_Mouse.m_InvertYAxis);
+	SetFloat(mouse, "mouseScaleX", controlSettings.m_Mouse.m_mouseScaleX);
+	SetFloat(mouse, "mouseScaleY", controlSettings.m_Mouse.m_mouseScaleY);
+	SetBool(mouse, "disableLRButtonsMenuOpen", controlSettings.m_Mouse.m_disableLRButtonsMenuOpen);
+	SetInt(mouse, "spellLeft", controlSettings.m_Mouse.m_spellLeft);
+	SetInt(mouse, "spellRight", controlSettings.m_Mouse.m_spellRight);
+	SetInt(mouse, "map", controlSettings.m_Mouse.m_map);
+	SetInt(mouse, "spellMenu", controlSettings.m_Mouse.m_spellMenu);
+	SetInt(mouse, "spellMenuMark", controlSettings.m_Mouse.m_spellMenuMark);
 
 	if (!controls.contains("keyboard"))
 		controls["keyboard"] = json::array({ json::object() });
 	auto& keyboard = controls["keyboard"][0];
 	SetBool(keyboard, "isActive", true);
-	SetString(keyboard, "forward", m_ConfigToSdlScancode.GetName(m_Controls.m_Keyboard.m_forward));
-	SetString(keyboard, "backwards", m_ConfigToSdlScancode.GetName(m_Controls.m_Keyboard.m_backwards));
-	SetString(keyboard, "left", m_ConfigToSdlScancode.GetName(m_Controls.m_Keyboard.m_left));
-	SetString(keyboard, "right", m_ConfigToSdlScancode.GetName(m_Controls.m_Keyboard.m_right));
-	SetString(keyboard, "map", m_ConfigToSdlScancode.GetName(m_Controls.m_Keyboard.m_map));
-	SetString(keyboard, "spellMenu", m_ConfigToSdlScancode.GetName(m_Controls.m_Keyboard.m_spellMenu));
-	SetString(keyboard, "spellMenuMark", m_ConfigToSdlScancode.GetName(m_Controls.m_Keyboard.m_spellMenuMark));
+	SetString(keyboard, "forward", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_forward));
+	SetString(keyboard, "backwards", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_backwards));
+	SetString(keyboard, "left", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_left));
+	SetString(keyboard, "right", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_right));
+	SetString(keyboard, "map", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_map));
+	SetString(keyboard, "spellMenu", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_spellMenu));
+	SetString(keyboard, "spellMenuMark", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_spellMenuMark));
 }
 
-void Config::SaveSettings(json& document)
+void Config::SaveSettings(json& document, Settings settings)
 {
 	if (!document.contains("settings")) return;
 
@@ -493,9 +514,9 @@ void Config::SaveSettings(json& document)
 	{
 		if (entry.contains("isActive") && entry["isActive"].get<bool>())
 		{
-			SavePaths(entry);
-			SaveGame(entry);
-			SaveControls(entry);
+			SavePathsToDoc(settings.m_Paths);
+			SaveGameToDoc(settings.m_Game);
+			SaveControlsToDoc(settings.m_Controls);
 			break;
 		}
 	}
