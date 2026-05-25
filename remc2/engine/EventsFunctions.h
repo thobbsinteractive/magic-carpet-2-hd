@@ -1120,7 +1120,7 @@ void sub_3AF00_castle_defend_event(type_entity_0x6E8E* a1);
 void sub_53160();
 void sub_59C40_getTerrtoZ(type_entity_0x6E8E* a1);
 int sub_59C60(type_entity_0x6E8E* a1);
-int sub_59C80(type_entity_0x6E8E* a1);
+int UpdateScroll_59C80(type_entity_0x6E8E* entity);
 char sub_59DC0(type_entity_0x6E8E* a1);
 void sub_59F60(type_entity_0x6E8E* a1);
 type_entity_0x6E8E* sub_5B070(type_entity_0x6E8E* a1);

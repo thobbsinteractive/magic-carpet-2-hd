@@ -41194,56 +41194,45 @@ int sub_59C60(type_entity_0x6E8E* a1x)//23ac60
 }
 
 //----- (00059C80) --------------------------------------------------------
-int sub_59C80(type_entity_0x6E8E* a1x)//23ac80
+int UpdateScroll_59C80(type_entity_0x6E8E* entity)//23ac80
 {
-	//int result; // eax
-	//int v2; // ebx
-	type_entity_0x6E8E* ix; // ebx
-	int v4; // edi
-	int v5; // eax
-
+	type_entity_0x6E8E* entity2;
 	if (x_D41A0_BYTEARRAY_4_struct.setting_38545 & 4)
 	{
-		a1x->struct_byte_0xc_12_15.byte[0] |= 1u;
-		DisableEntityDrawing04_57F10(a1x);
+		entity->struct_byte_0xc_12_15.byte[0] |= 1u;
+		DisableEntityDrawing04_57F10(entity);
 	}
 	else
 	{
-		a1x->position_0x4C_76.z = getTerrainAlt_10C40(&a1x->position_0x4C_76);
-		//v2 = (int)x_D41A0_BYTEARRAY_4;
-		//*(x_WORD *)(a1 + 80) = result;
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
+		entity->position_0x4C_76.z = getTerrainAlt_10C40(&entity->position_0x4C_76);
+		for (entity2 = x_D41A0_BYTEARRAY_4_struct.dword_38519; entity2 > Entities_EA3E4[0]; entity2 = entity2->next_0)
 		{
-			if (!ix->model_0x40_64 && ix->life_0x8 >= 0)
+			if (!entity2->model_0x40_64 && entity2->life_0x8 >= 0)
 			{
-				//result = sub_106C0(i, a1);
-				if (sub_106C0(ix, a1x))
+				if (sub_106C0(entity2, entity))
 				{
-					v4 = ix->dword_0xA4_164x->playerColorIndex_0x38_56;
-					if (v4 == D41A0_0.LevelIndex_0xc)
+					int playerIndex = entity2->dword_0xA4_164x->playerColorIndex_0x38_56;
+					if (playerIndex == D41A0_0.LevelIndex_0xc)
 					{
+						int countXP;
 						if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
-							v5 = 50;
+							countXP = 50;
 						else
-							v5 = 4;
-						sub_6E090(&ix->dword_0xA4_164x->str_611, v5);
-						PrepareEventSound_6E450(v4, -1, 63);
+							countXP = 4;
+						sub_6E090(&entity2->dword_0xA4_164x->str_611, countXP);
+						PrepareEventSound_6E450(playerIndex, -1, 63);
 						if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 							sub_6DBD0();
 						else
 							sub_6DB50(0, 1);
 					}
-					DisableEntityDrawing04_57F10(a1x);
+					DisableEntityDrawing04_57F10(entity);
 				}
 			}
 		}
 	}
-	//return result;
 	return 1;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00059DC0) --------------------------------------------------------
 char sub_59DC0(type_entity_0x6E8E* a1x)//23adc0
