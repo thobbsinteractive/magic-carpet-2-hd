@@ -4613,7 +4613,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 	case 0x230040: {
-		return sub_4F040(a1_axis3d);
+		return AddWind_4F040(a1_axis3d);
 		break;
 	}
 				 /*case 0x230c10: {

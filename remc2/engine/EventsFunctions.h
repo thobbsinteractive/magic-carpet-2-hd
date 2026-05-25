@@ -1468,7 +1468,7 @@ type_entity_0x6E8E* sub_4EDC0(axis_3d* a1);
 type_entity_0x6E8E* sub_4EED0(axis_3d* a1);
 type_entity_0x6E8E* sub_4EF30(axis_3d* a1);
 type_entity_0x6E8E* sub_4EF90(axis_3d* a1);
-type_entity_0x6E8E* sub_4F040(axis_3d* a1);
+type_entity_0x6E8E* AddWind_4F040(axis_3d* axis);
 unsigned __int16 sub_4F1C0(type_entity_0x6E8E* a1);
 type_entity_0x6E8E* sub_4F2A0(axis_3d* a1);
 __int16 sub_4F440(type_entity_0x6E8E* a1);

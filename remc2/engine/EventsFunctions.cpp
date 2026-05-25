@@ -34113,7 +34113,7 @@ type_entity_0x6E8E* AddTrader_4C0B0(axis_3d* position)//22d0b0
 		entity->dword_0x10_16 = (entity - D41A0_0.struct_0x6E8E) % 100;
 		entity->subSpellIndex_0x2A_42 = 500;
 		entity->byte_0x38_56 = 1;
-		entity->dword_0xA0_160x = &str_D7BD6[100]; //(type_str_160*)&unk_D7BD6[0xd48];
+		entity->dword_0xA0_160x = &str_D7BD6[100];
 		entity->byte_0x39_57 = 64;
 		entity->xtype_0x41_65 = 3;
 		entity->dword_0x10_16 = 2;
@@ -35851,73 +35851,55 @@ type_entity_0x6E8E* sub_4EF90(axis_3d* a1x)//22ff90
 }
 
 //----- (0004F040) --------------------------------------------------------
-type_entity_0x6E8E* sub_4F040(axis_3d* a1x)//230040
+type_entity_0x6E8E* AddWind_4F040(axis_3d* axis)//230040
 {
-	type_entity_0x6E8E* v1x; // eax
-	//uint8_t* v2; // ebx
-	//__int16 v3; // dx
-	//__int16 v4; // ax
-	//__int16 v5; // ax
-	type_entity_0x6E8E* v6x; // eax
-	//uint8_t* v7; // ecx
-	type_entity_0x6E8E* v9x; // [esp+0h] [ebp-10h]
-	type_entity_0x6E8E* v10x; // [esp+4h] [ebp-Ch]
-	//x_WORD *v11; // [esp+8h] [ebp-8h]
-	signed int i; // [esp+Ch] [ebp-4h]
-
 	if (sub_4A810_get_0x35plus() < 12)
 		return 0;
-	v1x = NewEvent_4A050();
-	//v2 = v1;
-	//v11 = (x_WORD *)v1;
-	if (!v1x)
+	type_entity_0x6E8E* entity = NewEvent_4A050();
+	if (!entity)
 		return 0;
-	v1x->actionIndex_0x45_69 = 22;
-	v1x->class_0x3F_63 = 10;
-	v1x->model_0x40_64 = 22;
-	v1x->word_0x2C_44 = 0;
-	v1x->word_0x2E_46 = 1;
-	v1x->byte_0x3C_60 = 0;
-	v1x->minSpeed_0x84_132 = 20;
-	v1x->maxSpeed_0x86_134 = 10;
-	v1x->actSpeed_0x82_130 = 50;
-	v1x->maxLife_0x4 = 500;
-	v1x->subSpellIndex_0x2A_42 = 1000;
-	//v3 = v1x->word_0x14_20;
-	v1x->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
-	v1x->rand_0x14_20 = 9377 * v1x->rand_0x14_20 + 9439;
-	//v4 = v1x->word_0x14_20;
-	v1x->fov_0x22_34 = 0;
-	v1x->byte_0x38_56 = 1;
-	//v5 = (v1x->word_0x14_20 & 0x7FF) - 1;
-	v1x->roll_0x20_32 = (v1x->rand_0x14_20 & 0x7FF) - 1;
-	v1x->yaw_0x1C_28 = (v1x->rand_0x14_20 & 0x7FF) - 1;
-	v10x = v1x;
-	v1x->pitch_0x1E_30 = v1x->roll_0x20_32;
-	CopyMaxLifeToLife_49A20(v1x);
-	for (i = 0; i < 11; i++)
+	entity->actionIndex_0x45_69 = 22;
+	entity->class_0x3F_63 = 10;
+	entity->model_0x40_64 = 22;
+	entity->word_0x2C_44 = 0;
+	entity->word_0x2E_46 = 1;
+	entity->byte_0x3C_60 = 0;
+	entity->minSpeed_0x84_132 = 20;
+	entity->maxSpeed_0x86_134 = 10;
+	entity->actSpeed_0x82_130 = 50;
+	entity->maxLife_0x4 = 500;
+	entity->subSpellIndex_0x2A_42 = 1000;
+	entity->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
+	entity->rand_0x14_20 = 9377 * entity->rand_0x14_20 + 9439;
+	entity->fov_0x22_34 = 0;
+	entity->byte_0x38_56 = 1;
+	entity->roll_0x20_32 = (entity->rand_0x14_20 & 0x7FF) - 1;
+	entity->yaw_0x1C_28 = (entity->rand_0x14_20 & 0x7FF) - 1;
+	type_entity_0x6E8E* entity3 = entity;
+	entity->pitch_0x1E_30 = entity->roll_0x20_32;
+	CopyMaxLifeToLife_49A20(entity);
+	for (int i = 0; i < 11; i++)
 	{
-		v6x = NewEvent_4A050();
-		v9x = v6x;
-		if (v6x)
+		type_entity_0x6E8E* entity2 = NewEvent_4A050();
+		type_entity_0x6E8E* entity4 = entity2;
+		if (entity2)
 		{
-			qmemcpy(v6x, v1x, 0xA8u);
-			v6x->model_0x40_64 = 75;
-			v6x->actionIndex_0x45_69 = 82;
-			v6x->word_0x2C_44 = i + 1;
-			v6x->word_0x32_50 = v10x - D41A0_0.struct_0x6E8E;
-			v10x->word_0x34_52 = v6x - D41A0_0.struct_0x6E8E;
-			v6x->word_0x34_52 = 0;
-			v6x->byte_0x3E_62 = i;
-			AddEventToMap_57D70(v6x, a1x);
+			qmemcpy(entity2, entity, 0xA8u);
+			entity2->model_0x40_64 = 75;
+			entity2->actionIndex_0x45_69 = 82;
+			entity2->word_0x2C_44 = i + 1;
+			entity2->word_0x32_50 = entity3 - D41A0_0.struct_0x6E8E;
+			entity3->word_0x34_52 = entity2 - D41A0_0.struct_0x6E8E;
+			entity2->word_0x34_52 = 0;
+			entity2->byte_0x3E_62 = i;
+			AddEventToMap_57D70(entity2, axis);
 		}
-		v10x = v9x;
+		entity3 = entity4;
 	}
-	AddEventToMap_57D70(v1x, a1x);
-	sub_4F1C0(v1x);
-	return v1x;
+	AddEventToMap_57D70(entity, axis);
+	sub_4F1C0(entity);
+	return entity;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 
 //----- (0004F1C0) --------------------------------------------------------
 unsigned __int16 sub_4F1C0(type_entity_0x6E8E* a1x)//230c10
