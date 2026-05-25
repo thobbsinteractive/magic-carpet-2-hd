@@ -1590,7 +1590,7 @@ type_entity_0x6E8E* AddSpell12_36_51320(axis_3d* a1);
 type_entity_0x6E8E* AddSpell13_39_51340(axis_3d* a1);
 type_entity_0x6E8E* AddSpell14_42_51360(axis_3d* a1);
 type_entity_0x6E8E* AddSpell15_45_51380(axis_3d* a1);
-type_entity_0x6E8E* sub_513A0(axis_3d* a1);
+type_entity_0x6E8E* AddSpell16_48_513A0(axis_3d* a1);
 type_entity_0x6E8E* AddSpell17_51_513C0(axis_3d* a1);
 type_entity_0x6E8E* AddSpell18_54_513E0(axis_3d* a1);
 type_entity_0x6E8E* AddSpell19_57_51400(axis_3d* a1);

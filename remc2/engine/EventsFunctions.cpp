@@ -54298,7 +54298,7 @@ type_entity_0x6E8E* AddSpell15_45_51380(axis_3d* position)//232380
 }
 
 //----- (000513A0) --------------------------------------------------------
-type_entity_0x6E8E* sub_513A0(axis_3d* position)//2323a0
+type_entity_0x6E8E* AddSpell16_48_513A0(axis_3d* position)//2323a0
 {
 	return AddSpellXX_XX_51120(position, 16, 48);
 }
@@ -54359,7 +54359,7 @@ type_entity_0x6E8E* AddSpell25_75_514C0(axis_3d* position)//2324c0
 
 type_entity_0x6E8E* (*arsub_2a881e[])(axis_3d*) = { AddSpell00_00_511A0, AddSpell01_03_511C0, AddSpell02_06_511E0,AddSpell03_09_51200,AddSpell04_12_51220,
 AddSpell05_15_51240 ,AddSpell06_18_51260,AddSpell07_21_51280,AddSpell08_24_512A0,AddSpell09_27_512C0,AddSpell10_30_512E0,AddSpell11_33_51300,AddSpell12_36_51320,AddSpell13_39_51340,
-AddSpell14_42_51360,AddSpell15_45_51380,sub_513A0,AddSpell17_51_513C0,AddSpell18_54_513E0,AddSpell19_57_51400,AddSpell20_60_51420,AddSpell21_63_51440,
+AddSpell14_42_51360,AddSpell15_45_51380,AddSpell16_48_513A0,AddSpell17_51_513C0,AddSpell18_54_513E0,AddSpell19_57_51400,AddSpell20_60_51420,AddSpell21_63_51440,
 AddSpell22_66_51460,AddSpell23_69_51480,AddSpell24_72_514A0,AddSpell25_75_514C0 };
 
 //----- (0006F100) --------------------------------------------------------
