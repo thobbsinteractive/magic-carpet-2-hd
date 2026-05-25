@@ -35935,77 +35935,57 @@ unsigned __int16 sub_4F1C0(type_entity_0x6E8E* a1x)//230c10
 // EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0004F2A0) --------------------------------------------------------
-type_entity_0x6E8E* sub_4F2A0(axis_3d* a1x)//2302a0
-{
-	type_entity_0x6E8E* v1x; // eax
-	//uint8_t* v2; // ebx
-	//char v3; // ah
-	type_entity_0x6E8E* v4x; // eax
-	//uint8_t* v5; // ecx
-	//uint8_t* v7; // [esp+0h] [ebp-10h]
-	type_entity_0x6E8E* v8x; // [esp+4h] [ebp-Ch]
-	signed int i; // [esp+8h] [ebp-8h]
-	//uint8_t* v10; // [esp+Ch] [ebp-4h]
-
-	//fix
-	v8x = 0;
-	v1x = 0;
-	//fix
-
-	//v10 = 0;
+type_entity_0x6E8E* AddFireSpheres_4F2A0(axis_3d* position)//2302a0
+{	
+	type_entity_0x6E8E* entity = NULL;
 	if (sub_4A810_get_0x35plus() >= 26)
 	{
-		v1x = NewEvent_4A050();
-		//v2 = v1;
-		//v10 = v1;
-		if (v1x)
+		entity = NewEvent_4A050();
+		if (entity)
 		{
-			v1x->actionIndex_0x45_69 = 83;
-			v1x->class_0x3F_63 = 10;
-			v1x->model_0x40_64 = 76;
-			v1x->maxLife_0x4 = 80;
-			v1x->subSpellIndex_0x2A_42 = 70;
-			v1x->actSpeed_0x82_130 = 40;
-			v1x->maxSpeed_0x86_134 = 192;
-			v1x->minSpeed_0x84_132 = 480;
-			v1x->actSpeed_0x82_130 = 40;
-			//v3 = v1x->struct_byte_0xc_12_15.dbyte1_2.byte1;
-			v1x->byte_0x38_56 = 1;
-			v1x->byte_0x43_67 = 0;
-			v1x->byte_0x44_68 = 0;
-			v1x->word_0x2C_44 = 0;
-			v1x->fontTypeIndex_0x3D_61 = 0;
-			v8x = v1x;
-			v1x->struct_byte_0xc_12_15.byte[0] &= 0xf6;
-			v1x->struct_byte_0xc_12_15.byte[0] |= 1;
-			CopyMaxLifeToLife_49A20(v1x);
-			for (i = 0; i < 25; i++)
+			entity->actionIndex_0x45_69 = 83;
+			entity->class_0x3F_63 = 10;
+			entity->model_0x40_64 = 76;
+			entity->maxLife_0x4 = 80;
+			entity->subSpellIndex_0x2A_42 = 70;
+			entity->actSpeed_0x82_130 = 40;
+			entity->maxSpeed_0x86_134 = 192;
+			entity->minSpeed_0x84_132 = 480;
+			entity->actSpeed_0x82_130 = 40;
+			entity->byte_0x38_56 = 1;
+			entity->byte_0x43_67 = 0;
+			entity->byte_0x44_68 = 0;
+			entity->word_0x2C_44 = 0;
+			entity->fontTypeIndex_0x3D_61 = 0;
+			type_entity_0x6E8E* entity3 = entity;
+			entity->struct_byte_0xc_12_15.byte[0] &= 0xf6;
+			entity->struct_byte_0xc_12_15.byte[0] |= 1;
+			CopyMaxLifeToLife_49A20(entity);
+			for (int i = 0; i < 25; i++)
 			{
-				v4x = NewEvent_4A050();
-				//v7 = v4;
-				if (v4x)
+				type_entity_0x6E8E* entity2 = NewEvent_4A050();
+				if (entity2)
 				{
-					qmemcpy(v4x, v1x, sizeof(type_entity_0x6E8E));
-					v4x->model_0x40_64 = 77;
-					v4x->actionIndex_0x45_69 = 84;
-					v4x->word_0x32_50 = v8x - D41A0_0.struct_0x6E8E;
-					v8x->word_0x34_52 = v4x - D41A0_0.struct_0x6E8E;
-					v4x->byte_0x3E_62 = i;
-					v4x->byte_0x43_67 = i / 5;
-					v4x->word_0x34_52 = 0;
-					v4x->byte_0x44_68 = i % 5;
-					AddEventToMap_57D70(v4x, a1x);
+					qmemcpy(entity2, entity, sizeof(type_entity_0x6E8E));
+					entity2->model_0x40_64 = 77;
+					entity2->actionIndex_0x45_69 = 84;
+					entity2->word_0x32_50 = entity3 - D41A0_0.struct_0x6E8E;
+					entity3->word_0x34_52 = entity2 - D41A0_0.struct_0x6E8E;
+					entity2->byte_0x3E_62 = i;
+					entity2->byte_0x43_67 = i / 5;
+					entity2->word_0x34_52 = 0;
+					entity2->byte_0x44_68 = i % 5;
+					AddEventToMap_57D70(entity2, position);
 				}
-				v8x = v4x;
+				entity3 = entity2;
 			}
-			AddEventToMap_57D70(v1x, a1x);
-			SetEntityShiftRot_49EA0(v1x, 640, 640);
-			sub_4F440(v1x);
+			AddEventToMap_57D70(entity, position);
+			SetEntityShiftRot_49EA0(entity, 640, 640);
+			sub_4F440(entity);
 		}
 	}
-	return v1x;
+	return entity;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 
 //----- (0004F440) --------------------------------------------------------
 __int16 sub_4F440(type_entity_0x6E8E* a1x)//230440
