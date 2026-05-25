@@ -4584,7 +4584,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 	case 0x22fd70: {
-		return sub_4ED70(a1_axis3d);
+		return AddGroupFires_4ED70(a1_axis3d);
 
 		break;
 	}

@@ -35729,22 +35729,21 @@ type_entity_0x6E8E* sub_4ECD0(axis_3d* position)//22fcd0
 }
 
 //----- (0004ED70) --------------------------------------------------------
-type_entity_0x6E8E* sub_4ED70(axis_3d* position)//22fd70
+type_entity_0x6E8E* AddGroupFires_4ED70(axis_3d* position)//22fd70
 {
-	type_entity_0x6E8E* v1x; // eax
-	v1x = NewEvent_4A050();
-	if (v1x)
+	type_entity_0x6E8E* entity= NewEvent_4A050();
+	if (entity)
 	{
-		v1x->actionIndex_0x45_69 = 17;
-		v1x->class_0x3F_63 = 10;
-		v1x->model_0x40_64 = 17;
-		v1x->position_0x4C_76 = *position;
-		v1x->maxLife_0x4 = 10;
-		v1x->subSpellIndex_0x2A_42 = 3000;
-		v1x->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
-		CopyMaxLifeToLife_49A20(v1x);
+		entity->actionIndex_0x45_69 = 17;
+		entity->class_0x3F_63 = 10;
+		entity->model_0x40_64 = 17;
+		entity->position_0x4C_76 = *position;
+		entity->maxLife_0x4 = 10;
+		entity->subSpellIndex_0x2A_42 = 3000;
+		entity->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
+		CopyMaxLifeToLife_49A20(entity);
 	}
-	return v1x;
+	return entity;
 }
 
 //----- (0004EDC0) --------------------------------------------------------
