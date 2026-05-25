@@ -1398,7 +1398,7 @@ type_entity_0x6E8E* sub_4BBB0(axis_3d* a1);
 type_entity_0x6E8E* sub_4BD00(axis_3d* a1);
 type_entity_0x6E8E* sub_4BDF0(axis_3d* a1);
 type_entity_0x6E8E* AddVilliger_4BF40(axis_3d* a1);
-type_entity_0x6E8E* sub_4C0B0(axis_3d* a1);
+type_entity_0x6E8E* AddTrader_4C0B0(axis_3d* a1);
 type_entity_0x6E8E* sub_4C1E0(axis_3d* a1);
 type_entity_0x6E8E* sub_4C310(axis_3d* a1);
 type_entity_0x6E8E* sub_4C460(axis_3d* a1);

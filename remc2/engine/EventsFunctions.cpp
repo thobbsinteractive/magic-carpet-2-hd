@@ -34092,38 +34092,38 @@ type_entity_0x6E8E* AddVilliger_4BF40(axis_3d* position)//22cf40 - add creature 
 }
 
 //----- (0004C0B0) --------------------------------------------------------
-type_entity_0x6E8E* sub_4C0B0(axis_3d* position)//22d0b0
+type_entity_0x6E8E* AddTrader_4C0B0(axis_3d* position)//22d0b0
 {
-	type_entity_0x6E8E* v1x = NewEvent_4A050();
-	if (v1x)
+	type_entity_0x6E8E* entity = NewEvent_4A050();
+	if (entity)
 	{
-		v1x->maxSpeed_0x86_134 = 18;
-		v1x->actSpeed_0x82_130 = v1x->maxSpeed_0x86_134;
-		v1x->actionIndex_0x45_69 = 113;
-		v1x->class_0x3F_63 = 5;
-		v1x->model_0x40_64 = 14;
-		v1x->rand_0x14_20 = 9377 * v1x->rand_0x14_20 + 9439;
-		v1x->minSpeed_0x84_132 = 54;
-		v1x->maxLife_0x4 = 1000;
-		v1x->roll_0x20_32 = (v1x->rand_0x14_20 & 0x7FF) - 1;
-		v1x->yaw_0x1C_28 = (v1x->rand_0x14_20 & 0x7FF) - 1;
-		v1x->pitch_0x1E_30 = v1x->roll_0x20_32;
-		v1x->mana_0x90_144 = 0;
-		v1x->fov_0x22_34 = 0;
-		v1x->dword_0x10_16 = (v1x - D41A0_0.struct_0x6E8E) % 100;
-		v1x->subSpellIndex_0x2A_42 = 500;
-		v1x->byte_0x38_56 = 1;
-		v1x->dword_0xA0_160x = &str_D7BD6[100]; //(type_str_160*)&unk_D7BD6[0xd48];
-		v1x->byte_0x39_57 = 64;
-		v1x->xtype_0x41_65 = 3;
-		v1x->dword_0x10_16 = 2;
-		v1x->byte_0x3E_62 = D41A0_0.array_0x10[v1x->model_0x40_64]++;
-		AddEventToMap_57D70(v1x, position);
-		CopyMaxLifeToLife_49A20(v1x);
-		SetEntityIndexAndRot_49CD0(v1x, 219);
-		SetEntityShiftRot_49EA0(v1x, 128, 128);
+		entity->maxSpeed_0x86_134 = 18;
+		entity->actSpeed_0x82_130 = entity->maxSpeed_0x86_134;
+		entity->actionIndex_0x45_69 = 113;
+		entity->class_0x3F_63 = 5;
+		entity->model_0x40_64 = 14;
+		entity->rand_0x14_20 = 9377 * entity->rand_0x14_20 + 9439;
+		entity->minSpeed_0x84_132 = 54;
+		entity->maxLife_0x4 = 1000;
+		entity->roll_0x20_32 = (entity->rand_0x14_20 & 0x7FF) - 1;
+		entity->yaw_0x1C_28 = (entity->rand_0x14_20 & 0x7FF) - 1;
+		entity->pitch_0x1E_30 = entity->roll_0x20_32;
+		entity->mana_0x90_144 = 0;
+		entity->fov_0x22_34 = 0;
+		entity->dword_0x10_16 = (entity - D41A0_0.struct_0x6E8E) % 100;
+		entity->subSpellIndex_0x2A_42 = 500;
+		entity->byte_0x38_56 = 1;
+		entity->dword_0xA0_160x = &str_D7BD6[100]; //(type_str_160*)&unk_D7BD6[0xd48];
+		entity->byte_0x39_57 = 64;
+		entity->xtype_0x41_65 = 3;
+		entity->dword_0x10_16 = 2;
+		entity->byte_0x3E_62 = D41A0_0.array_0x10[entity->model_0x40_64]++;
+		AddEventToMap_57D70(entity, position);
+		CopyMaxLifeToLife_49A20(entity);
+		SetEntityIndexAndRot_49CD0(entity, 219);
+		SetEntityShiftRot_49EA0(entity, 128, 128);
 	}
-	return v1x;
+	return entity;
 }
 
 //----- (0004C1E0) --------------------------------------------------------
