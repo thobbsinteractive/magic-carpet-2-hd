@@ -35729,7 +35729,7 @@ type_entity_0x6E8E* sub_4ECD0(axis_3d* position)//22fcd0
 }
 
 //----- (0004ED70) --------------------------------------------------------
-type_entity_0x6E8E* AddGroupFires_4ED70(axis_3d* position)//22fd70
+type_entity_0x6E8E* AddMeteor_4ED70(axis_3d* position)//22fd70
 {
 	type_entity_0x6E8E* entity= NewEvent_4A050();
 	if (entity)
