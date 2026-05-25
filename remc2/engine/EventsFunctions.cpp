@@ -36831,7 +36831,7 @@ type_entity_0x6E8E* sub_504B0(axis_3d* position)//2314b0
 }
 
 //----- (00050500) --------------------------------------------------------
-type_entity_0x6E8E* sub_50500(axis_3d* position)//231500
+type_entity_0x6E8E* AddAuxiliary_50500(axis_3d* position)//231500
 {
 	type_entity_0x6E8E* event = NewEvent_4A050();
 	if (event)
