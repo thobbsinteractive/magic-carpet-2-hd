@@ -33464,21 +33464,21 @@ type_entity_0x6E8E* AddTree_4AC40(axis_3d* position)//22bc40 Spawn ??
 }
 
 //----- (0004AD70) --------------------------------------------------------
-type_entity_0x6E8E* sub_4AD70(axis_3d* position)//22bd70 //Spawn ??
+type_entity_0x6E8E* AddStone_4AD70(axis_3d* position)//22bd70 //Spawn ??
 {
-	type_entity_0x6E8E* v1x = NewEvent_4A050();
-	if (v1x)
+	type_entity_0x6E8E* entity = NewEvent_4A050();
+	if (entity)
 	{
-		v1x->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
-		v1x->dword_0x10_16 = (v1x - D41A0_0.struct_0x6E8E) % 11;
-		v1x->actionIndex_0x45_69 = 3;
-		v1x->class_0x3F_63 = 2;
-		v1x->model_0x40_64 = 1;
-		AddEventToMap_57D70(v1x, position);
-		CopyMaxLifeToLife_49A20(v1x);
-		SetHalfSpeedEntity_49DA0(v1x, 79);
+		entity->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
+		entity->dword_0x10_16 = (entity - D41A0_0.struct_0x6E8E) % 11;
+		entity->actionIndex_0x45_69 = 3;
+		entity->class_0x3F_63 = 2;
+		entity->model_0x40_64 = 1;
+		AddEventToMap_57D70(entity, position);
+		CopyMaxLifeToLife_49A20(entity);
+		SetHalfSpeedEntity_49DA0(entity, 79);
 	}
-	return v1x;
+	return entity;
 }
 
 //----- (0004ADF0) --------------------------------------------------------

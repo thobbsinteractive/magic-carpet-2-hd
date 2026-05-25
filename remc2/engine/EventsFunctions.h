@@ -1380,7 +1380,7 @@ type_entity_0x6E8E* sub_4A9C0(axis_3d* a1);
 type_entity_0x6E8E* sub_4AA40(axis_3d* a1);
 type_entity_0x6E8E* sub_4ABA0(axis_3d* a1);
 type_entity_0x6E8E* AddTree_4AC40(axis_3d* a1);
-type_entity_0x6E8E* sub_4AD70(axis_3d* a1);
+type_entity_0x6E8E* AddStone_4AD70(axis_3d* a1);
 type_entity_0x6E8E* AddDolmen_4ADF0(axis_3d* a1);
 type_entity_0x6E8E* sub_4AE80(axis_3d* a1);
 type_entity_0x6E8E* sub_4AF00(axis_3d* a1);
