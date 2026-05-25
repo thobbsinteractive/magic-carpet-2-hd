@@ -41219,7 +41219,7 @@ int UpdateScroll_59C80(type_entity_0x6E8E* entity)//23ac80
 							countXP = 50;
 						else
 							countXP = 4;
-						sub_6E090(&entity2->dword_0xA4_164x->str_611, countXP);
+						UpdateExperience_6E090(&entity2->dword_0xA4_164x->str_611, countXP);
 						PrepareEventSound_6E450(playerIndex, -1, 63);
 						if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 							sub_6DBD0();
@@ -44306,22 +44306,16 @@ int GetSpellIndex_6E020(int entitySubtype)//24f020
 }
 
 //----- (0006E090) --------------------------------------------------------
-void sub_6E090(type_str_611* a1x, int a2)//24f090
+void UpdateExperience_6E090(type_str_611* spells, int countXP)//24f090
 {
-	signed int i; // eax
-	//int result; // eax
-
-	for (i = 0; i < 26; i++)
+	for (int i = 0; i < 26; i++)
 	{
-		if (a1x->SpellsEnabled_0x333_819x.SpellEnabled[i])
-			a1x->spellsExperience_0x2CB_715x.at(i) += a2;
+		if (spells->SpellsEnabled_0x333_819x.SpellEnabled[i])
+			spells->spellsExperience_0x2CB_715x.at(i) += countXP;
 	}
-	//result = (int)x_D41A0_BYTEARRAY_4;
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 >= 0 && a1x->spellsExperience_0x2CB_715x.at((int)spell_t::castle) > 7) // FIXME: replace magic numbers
-		a1x->spellsExperience_0x2CB_715x.at((int)spell_t::castle) = 7;
-	//return result;
+	if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 >= 0 && spells->spellsExperience_0x2CB_715x.at((int)spell_t::castle) > 7)
+		spells->spellsExperience_0x2CB_715x.at((int)spell_t::castle) = 7;
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
 
 //----- (0006E0D0) --------------------------------------------------------
 void sub_6E0D0()//24f0d0

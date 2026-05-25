@@ -3903,7 +3903,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 	case 0x24f090: {
-		sub_6E090((type_str_611*)a1_6E8E, 0);
+		UpdateExperience_6E090((type_str_611*)a1_6E8E, 0);
 		break;
 	}
 	case 0x24f0d0: {
