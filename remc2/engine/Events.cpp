@@ -2854,6 +2854,9 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		sub_59C80(a1_6E8E);
 		break;
 	}
+	case 0x23ad90: {
+		break;
+	}
 	case 0x23adc0: {
 		sub_59DC0(a1_6E8E);
 		break;
