@@ -1,4 +1,5 @@
 #include "GraphicsDialog.h"
+#include "GraphicsFoldersDialog.h"
 
 // ── Resolution table ─────────────────────────────────────────────────────────
 const GraphicsDialog::ResEntry GraphicsDialog::s_resolutions[] =
@@ -146,11 +147,20 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	main->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 14);
 
 	// ── Advanced Settings button ──────────────────────────────────────────────
-	auto* btnAdvanced = new wxButton(this, wxID_ANY, "Advanced Settings...");
-	main->Add(btnAdvanced, 0, wxALIGN_CENTER | wxLEFT | wxTOP | wxBOTTOM, 10);
-	btnAdvanced->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
-		wxMessageBox("Advanced settings coming soon.",
-			"Advanced Settings", wxOK | wxICON_INFORMATION, this);
+	auto* btnEnhanced = new wxButton(this, wxID_ANY, "Enhanced Graphics...");
+	main->Add(btnEnhanced, 0, wxALIGN_CENTER | wxLEFT | wxTOP | wxBOTTOM, 10);
+	btnEnhanced->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
+		GraphicsFoldersDialog dlg(this, m_cfg.m_GameDetail);
+		if (dlg.ShowModal() == wxID_OK)
+		{
+			auto folderSettings = dlg.GetFolders();
+			m_cfg.m_GameDetail.m_UseHighResGraphics = folderSettings.m_UseHighResGraphics;
+			m_cfg.m_GameDetail.m_HighResGraphicsFolder = folderSettings.m_HighResGraphicsFolder;
+			m_cfg.m_GameDetail.m_UseFixedMenuGraphics = folderSettings.m_UseFixedMenuGraphics;
+			m_cfg.m_GameDetail.m_FixedMenuGraphicsFolder = folderSettings.m_FixedMenuGraphicsFolder;
+			m_cfg.m_GameDetail.m_UseExtendedFonts = folderSettings.m_UseExtendedFonts;
+			m_cfg.m_GameDetail.m_ExtendedFontsFolder = folderSettings.m_ExtendedFontsFolder;
+		}
 		});
 
 	main->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 14);

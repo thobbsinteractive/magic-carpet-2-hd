@@ -36,6 +36,9 @@
     <ClCompile Include="..\remc2\portability\Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicsFoldersDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainFrame.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\remc2\portability\ConfigToSdlScancodeMapping.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsFoldersDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
