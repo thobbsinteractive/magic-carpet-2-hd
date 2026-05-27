@@ -71,7 +71,7 @@ static bool ShowCustomResDlg(wxWindow* parent, wxChoice* choice, int customIdx,
 
 // ── DisplayDialog ────────────────────────────────────────────────────────────
 DisplayDialog::DisplayDialog(wxWindow* parent, const Config::Settings::Graphics& cfg)
-	: wxDialog(parent, wxID_ANY, "Graphics Settings",
+	: wxDialog(parent, wxID_ANY, "Display Settings",
 		wxDefaultPosition, wxSize(256, 256))
 {
 	m_cfg = cfg;

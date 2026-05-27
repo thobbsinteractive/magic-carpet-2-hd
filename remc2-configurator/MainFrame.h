@@ -3,6 +3,7 @@
 #include "GameFilesDialog.h"
 #include "SoundDialog.h"
 #include "DisplayDialog.h"
+#include "GraphicsDialog.h"
 #include "PathHelpers.h"
 
 class MainFrame : public wxFrame

@@ -139,6 +139,7 @@
     <ClCompile Include="..\remc2\portability\Config.cpp" />
     <ClCompile Include="GameFilesDialog.cpp" />
     <ClCompile Include="DisplayDialog.cpp" />
+    <ClCompile Include="GraphicsDialog.cpp" />
     <ClCompile Include="GraphicsFoldersDialog.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="PathHelpers.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="GameFilesDialog.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="DisplayDialog.h" />
+    <ClInclude Include="GraphicsDialog.h" />
     <ClInclude Include="GraphicsFoldersDialog.h" />
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="PathHelpers.h" />

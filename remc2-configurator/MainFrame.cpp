@@ -117,7 +117,7 @@ void MainFrame::OnDisplay(wxCommandEvent&)
 void MainFrame::OnGraphics(wxCommandEvent&)
 {
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
-	/*DisplayDialog dlg(this, settings.m_Graphics);
+	GraphicsDialog dlg(this, settings.m_Graphics);
 	dlg.SetMinSize(wxSize(256, 256));
 	dlg.SetMaxSize(wxSize(256, 256));
 	if (dlg.ShowModal() == wxID_OK)
@@ -126,7 +126,7 @@ void MainFrame::OnGraphics(wxCommandEvent&)
 		m_ptrConfig->SaveGraphicsToDoc(graphicSettings);
 		m_ptrConfig->SaveToFile();
 		m_ptrConfig->GetSettingsFromDoc();
-	}*/
+	}
 }
 
 // Event handlers
