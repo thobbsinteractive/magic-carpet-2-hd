@@ -48,6 +48,15 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	main->Add(grid, 1, wxEXPAND | wxALL, 14);
 	main->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 14);
 
+	// ── Render Threads button ─────────────────────────────────────────────────
+	auto* btnRenderThreads = new wxButton(this, wxID_ANY, "Render Threads...");
+	main->Add(btnRenderThreads, 0, wxALIGN_CENTER | wxLEFT | wxTOP | wxBOTTOM, 10);
+	btnRenderThreads->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
+		// TODO: open render threads dialog
+		});
+
+	main->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 14);
+
 	// ── Enhanced Graphics button ──────────────────────────────────────────────
 	auto* btnEnhanced = new wxButton(this, wxID_ANY, "Enhanced Graphics...");
 	main->Add(btnEnhanced, 0, wxALIGN_CENTER | wxLEFT | wxTOP | wxBOTTOM, 10);

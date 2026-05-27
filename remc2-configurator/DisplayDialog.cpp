@@ -131,7 +131,9 @@ DisplayDialog::DisplayDialog(wxWindow* parent, const Config::Settings::Graphics&
 	m_spinUiScale = new wxSpinCtrl(this, wxID_ANY,
 		wxEmptyString, wxDefaultPosition, wxDefaultSize,
 		wxSP_ARROW_KEYS, 1, 8, cfg.m_GameDetail.m_GameUiScale);
-	m_spinUiScale->SetToolTip("Scale of the Game Mini/Map and UI '2' recommended for HD, 3 for higher. (Max 8) Will not allow spell menu to be wider than screen width.");
+	m_spinUiScale->SetToolTip(
+		"Scale of the Game Mini/Map and UI '2' recommended for HD, 3 for higher. "
+		"(Max 8) Will not allow spell menu to be wider than screen width.");
 	grid->Add(m_spinUiScale, 0, wxEXPAND);
 
 	// ── Maintain aspect ratio ─────────────────────────────────────────────────
