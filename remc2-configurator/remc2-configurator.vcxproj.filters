@@ -27,7 +27,7 @@
     <ClCompile Include="SoundDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsDialog.cpp">
+    <ClCompile Include="DisplayDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PathHelpers.cpp">
@@ -53,7 +53,7 @@
     <ClInclude Include="SoundDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsDialog.h">
+    <ClInclude Include="DisplayDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PathHelpers.h">

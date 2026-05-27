@@ -1,8 +1,8 @@
-#include "GraphicsDialog.h"
+#include "DisplayDialog.h"
 #include "GraphicsFoldersDialog.h"
 
 // ── Resolution table ─────────────────────────────────────────────────────────
-const GraphicsDialog::ResEntry GraphicsDialog::s_resolutions[] =
+const DisplayDialog::ResEntry DisplayDialog::s_resolutions[] =
 {
 	{ "640 x 480",   640,  480  },
 	{ "800 x 600",   800,  600  },
@@ -16,7 +16,7 @@ const GraphicsDialog::ResEntry GraphicsDialog::s_resolutions[] =
 	{ "3840 x 2160", 3840, 2160 },
 };
 
-int GraphicsDialog::FindResIndex(int w, int h)
+int DisplayDialog::FindResIndex(int w, int h)
 {
 	for (int i = 0; i < (int)std::size(s_resolutions); ++i)
 		if (s_resolutions[i].w == w && s_resolutions[i].h == h)
@@ -69,8 +69,8 @@ static bool ShowCustomResDlg(wxWindow* parent, wxChoice* choice, int customIdx,
 	return false;
 }
 
-// ── GraphicsDialog ────────────────────────────────────────────────────────────
-GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphics& cfg)
+// ── DisplayDialog ────────────────────────────────────────────────────────────
+DisplayDialog::DisplayDialog(wxWindow* parent, const Config::Settings::Graphics& cfg)
 	: wxDialog(parent, wxID_ANY, "Graphics Settings",
 		wxDefaultPosition, wxSize(256, 256))
 {
@@ -108,7 +108,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	m_choiceRes = new wxChoice(this, wxID_ANY,
 		wxDefaultPosition, wxDefaultSize, choices);
 	m_choiceRes->SetSelection(FindResIndex(cfg.m_WindowResWidth, cfg.m_WindowResHeight));
-	m_choiceRes->Bind(wxEVT_CHOICE, &GraphicsDialog::OnResolutionChanged, this);
+	m_choiceRes->Bind(wxEVT_CHOICE, &DisplayDialog::OnResolutionChanged, this);
 	m_choiceRes->SetToolTip(
 		"Window resolution. Cannot be greater than the resolution of the chosen display.");
 	grid->Add(m_choiceRes, 0, wxEXPAND);
@@ -119,7 +119,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	m_choiceInGame = new wxChoice(this, wxID_ANY,
 		wxDefaultPosition, wxDefaultSize, choices);
 	m_choiceInGame->SetSelection(FindResIndex(cfg.m_GameDetail.m_GameResWidth, cfg.m_GameDetail.m_GameResHeight));
-	m_choiceInGame->Bind(wxEVT_CHOICE, &GraphicsDialog::OnInGameResolutionChanged, this);
+	m_choiceInGame->Bind(wxEVT_CHOICE, &DisplayDialog::OnInGameResolutionChanged, this);
 	m_choiceInGame->SetToolTip(
 		"Resolution used during gameplay. Can be set lower than the window "
 		"resolution for better performance.");
@@ -144,26 +144,6 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	grid->Add(m_chkWindowed, 0);
 
 	main->Add(grid, 1, wxEXPAND | wxALL, 14);
-	main->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 14);
-
-	// ── Advanced Settings button ──────────────────────────────────────────────
-	auto* btnEnhanced = new wxButton(this, wxID_ANY, "Enhanced Graphics...");
-	main->Add(btnEnhanced, 0, wxALIGN_CENTER | wxLEFT | wxTOP | wxBOTTOM, 10);
-	btnEnhanced->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
-		GraphicsFoldersDialog dlg(this, m_cfg.m_GameDetail);
-		if (dlg.ShowModal() == wxID_OK)
-		{
-			auto folderSettings = dlg.GetFolders();
-			m_cfg.m_GameDetail.m_UseHighResGraphics = folderSettings.m_UseHighResGraphics;
-			m_cfg.m_GameDetail.m_HighResGraphicsFolder = folderSettings.m_HighResGraphicsFolder;
-			m_cfg.m_GameDetail.m_UseFixedMenuGraphics = folderSettings.m_UseFixedMenuGraphics;
-			m_cfg.m_GameDetail.m_FixedMenuGraphicsFolder = folderSettings.m_FixedMenuGraphicsFolder;
-			m_cfg.m_GameDetail.m_UseExtendedFonts = folderSettings.m_UseExtendedFonts;
-			m_cfg.m_GameDetail.m_ExtendedFontsFolder = folderSettings.m_ExtendedFontsFolder;
-		}
-		});
-
-	main->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 14);
 
 	// ── OK / Cancel ───────────────────────────────────────────────────────────
 	auto* btnSizer = new wxStdDialogButtonSizer();
@@ -176,13 +156,13 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	main->Add(btnSizer, 0, wxEXPAND | wxALL, 10);
 
 	SetSizer(main);
-	btnOK->Bind(wxEVT_BUTTON, &GraphicsDialog::OnOK, this);
+	btnOK->Bind(wxEVT_BUTTON, &DisplayDialog::OnOK, this);
 
 	Fit();
 	Centre();
 }
 
-void GraphicsDialog::OnResolutionChanged(wxCommandEvent&)
+void DisplayDialog::OnResolutionChanged(wxCommandEvent&)
 {
 	const int customIdx = (int)std::size(s_resolutions);
 	if (m_choiceRes->GetSelection() != customIdx)
@@ -192,7 +172,7 @@ void GraphicsDialog::OnResolutionChanged(wxCommandEvent&)
 		m_choiceRes->SetSelection(FindResIndex(m_customWidth, m_customHeight));
 }
 
-void GraphicsDialog::OnInGameResolutionChanged(wxCommandEvent&)
+void DisplayDialog::OnInGameResolutionChanged(wxCommandEvent&)
 {
 	const int customIdx = (int)std::size(s_resolutions);
 	if (m_choiceInGame->GetSelection() != customIdx)
@@ -202,12 +182,12 @@ void GraphicsDialog::OnInGameResolutionChanged(wxCommandEvent&)
 		m_choiceInGame->SetSelection(FindResIndex(m_customIGWidth, m_customIGHeight));
 }
 
-void GraphicsDialog::OnOK(wxCommandEvent&)
+void DisplayDialog::OnOK(wxCommandEvent&)
 {
 	EndModal(wxID_OK);
 }
 
-Config::Settings::Graphics GraphicsDialog::GetSettings() const
+Config::Settings::Graphics DisplayDialog::GetSettings() const
 {
 	Config::Settings::Graphics cfg = m_cfg;
 

@@ -2,7 +2,7 @@
 #include "Globals.h"
 #include "GameFilesDialog.h"
 #include "SoundDialog.h"
-#include "GraphicsDialog.h"
+#include "DisplayDialog.h"
 #include "PathHelpers.h"
 
 class MainFrame : public wxFrame
@@ -18,6 +18,7 @@ private:
 	void OnFile(wxCommandEvent& evt);
 	void OnControls(wxCommandEvent& evt);
 	void OnSound(wxCommandEvent& evt);
+	void OnDisplay(wxCommandEvent& evt);
 	void OnGraphics(wxCommandEvent& evt);
 	void OnExit(wxCommandEvent& evt);
 };

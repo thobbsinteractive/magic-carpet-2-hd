@@ -3,10 +3,10 @@
 #include <wx/statline.h>
 #include <wx/display.h>
 
-class GraphicsDialog : public wxDialog
+class DisplayDialog : public wxDialog
 {
 public:
-	GraphicsDialog(wxWindow* parent, const Config::Settings::Graphics& cfg);
+	DisplayDialog(wxWindow* parent, const Config::Settings::Graphics& cfg);
 	Config::Settings::Graphics GetSettings() const;
 
 private:

@@ -15,6 +15,7 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	wxButton* btnFile = new wxButton(panel, ID_BTN_FILE, "Game Files");
 	wxButton* btnControls = new wxButton(panel, ID_BTN_CONTROLS, "Controls");
 	wxButton* btnSound = new wxButton(panel, ID_BTN_SOUND, "Sound");
+	wxButton* btnDisplay = new wxButton(panel, ID_BTN_DISPLAY, "Display");
 	wxButton* btnGraphics = new wxButton(panel, ID_BTN_GRAPHICS, "Graphics");
 	wxButton* btnExit = new wxButton(panel, ID_BTN_EXIT, "Exit");
 
@@ -29,6 +30,7 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	vSizer->Add(btnFile, flags);
 	vSizer->Add(btnControls, flags);
 	vSizer->Add(btnSound, flags);
+	vSizer->Add(btnDisplay, flags);
 	vSizer->Add(btnGraphics, flags);
 	vSizer->Add(btnExit, flags);
 
@@ -45,6 +47,7 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	Bind(wxEVT_BUTTON, &MainFrame::OnFile, this, ID_BTN_FILE);
 	Bind(wxEVT_BUTTON, &MainFrame::OnControls, this, ID_BTN_CONTROLS);
 	Bind(wxEVT_BUTTON, &MainFrame::OnSound, this, ID_BTN_SOUND);
+	Bind(wxEVT_BUTTON, &MainFrame::OnDisplay, this, ID_BTN_DISPLAY);
 	Bind(wxEVT_BUTTON, &MainFrame::OnGraphics, this, ID_BTN_GRAPHICS);
 	Bind(wxEVT_BUTTON, &MainFrame::OnExit, this, ID_BTN_EXIT);
 
@@ -96,10 +99,10 @@ void MainFrame::OnSound(wxCommandEvent&)
 	}
 }
 
-void MainFrame::OnGraphics(wxCommandEvent&)
+void MainFrame::OnDisplay(wxCommandEvent&)
 {
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
-	GraphicsDialog dlg(this, settings.m_Graphics);
+	DisplayDialog dlg(this, settings.m_Graphics);
 	dlg.SetMinSize(wxSize(256, 256));
 	dlg.SetMaxSize(wxSize(256, 256));
 	if (dlg.ShowModal() == wxID_OK)
@@ -109,6 +112,21 @@ void MainFrame::OnGraphics(wxCommandEvent&)
 		m_ptrConfig->SaveToFile();
 		m_ptrConfig->GetSettingsFromDoc();
 	}
+}
+
+void MainFrame::OnGraphics(wxCommandEvent&)
+{
+	auto settings = m_ptrConfig->GetSettingsFromDoc();
+	/*DisplayDialog dlg(this, settings.m_Graphics);
+	dlg.SetMinSize(wxSize(256, 256));
+	dlg.SetMaxSize(wxSize(256, 256));
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		auto graphicSettings = dlg.GetSettings();
+		m_ptrConfig->SaveGraphicsToDoc(graphicSettings);
+		m_ptrConfig->SaveToFile();
+		m_ptrConfig->GetSettingsFromDoc();
+	}*/
 }
 
 // Event handlers
