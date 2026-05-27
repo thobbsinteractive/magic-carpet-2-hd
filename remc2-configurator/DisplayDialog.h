@@ -12,6 +12,7 @@ public:
 private:
 	// Controls
 	wxSpinCtrl* m_spinDisplay;
+	wxSpinCtrl* m_spinUiScale;
 	wxChoice* m_choiceRes;
 	wxChoice* m_choiceInGame;
 	wxCheckBox* m_chkAspect;

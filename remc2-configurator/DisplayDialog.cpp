@@ -81,7 +81,7 @@ DisplayDialog::DisplayDialog(wxWindow* parent, const Config::Settings::Graphics&
 	m_customIGHeight = cfg.m_GameDetail.m_GameResHeight;
 
 	auto* main = new wxBoxSizer(wxVERTICAL);
-	auto* grid = new wxFlexGridSizer(/*rows*/5, /*cols*/2, /*vgap*/10, /*hgap*/12);
+	auto* grid = new wxFlexGridSizer(/*rows*/6, /*cols*/2, /*vgap*/10, /*hgap*/12);
 	grid->AddGrowableCol(1, 1);
 
 	// ── Display index ────────────────────────────────────────────────────────
@@ -124,6 +124,15 @@ DisplayDialog::DisplayDialog(wxWindow* parent, const Config::Settings::Graphics&
 		"Resolution used during gameplay. Can be set lower than the window "
 		"resolution for better performance.");
 	grid->Add(m_choiceInGame, 0, wxEXPAND);
+
+	// ── UI Scale ──────────────────────────────────────────────────────────────
+	grid->Add(new wxStaticText(this, wxID_ANY, "UI Scale multiplier:"),
+		0, wxALIGN_CENTER_VERTICAL);
+	m_spinUiScale = new wxSpinCtrl(this, wxID_ANY,
+		wxEmptyString, wxDefaultPosition, wxDefaultSize,
+		wxSP_ARROW_KEYS, 1, 8, cfg.m_GameDetail.m_GameUiScale);
+	m_spinUiScale->SetToolTip("Scale of the Game Mini/Map and UI '2' recommended for HD, 3 for higher. (Max 8) Will not allow spell menu to be wider than screen width.");
+	grid->Add(m_spinUiScale, 0, wxEXPAND);
 
 	// ── Maintain aspect ratio ─────────────────────────────────────────────────
 	grid->Add(new wxStaticText(this, wxID_ANY, "Maintain aspect ratio:"),
@@ -221,6 +230,7 @@ Config::Settings::Graphics DisplayDialog::GetSettings() const
 		}
 	}
 
+	cfg.m_GameDetail.m_GameUiScale = m_spinUiScale->GetValue();
 	cfg.m_MaintainAspectRatio = m_chkAspect->GetValue();
 	cfg.m_StartWindowed = m_chkWindowed->GetValue();
 	return cfg;
