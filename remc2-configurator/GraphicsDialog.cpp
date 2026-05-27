@@ -89,7 +89,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 		0, wxALIGN_CENTER_VERTICAL);
 	m_spinDisplay = new wxSpinCtrl(this, wxID_ANY,
 		wxEmptyString, wxDefaultPosition, wxDefaultSize,
-		wxSP_ARROW_KEYS, 0, 7, cfg.m_DisplayIndex);
+		wxSP_ARROW_KEYS, 0, wxDisplay::GetCount() - 1, cfg.m_DisplayIndex);
 	m_spinDisplay->SetToolTip(
 		"Decides which display to use. If it cannot find a display at the "
 		"index, it will use the first one big enough.");

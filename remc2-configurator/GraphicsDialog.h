@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include <wx/statline.h>
+#include <wx/display.h>
 
 class GraphicsDialog : public wxDialog
 {
