@@ -1,5 +1,4 @@
 #include "GraphicsDialog.h"
-#include "GraphicsFoldersDialog.h"
 
 // ── GraphicsDialog ────────────────────────────────────────────────────────────
 GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphics& cfg)
@@ -52,7 +51,15 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	auto* btnRenderThreads = new wxButton(this, wxID_ANY, "Render Threads...");
 	main->Add(btnRenderThreads, 0, wxALIGN_CENTER | wxLEFT | wxTOP | wxBOTTOM, 10);
 	btnRenderThreads->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
-		// TODO: open render threads dialog
+		ThreadingDialog dlg(this, m_cfg.m_Threading);
+		if (dlg.ShowModal() == wxID_OK)
+		{
+			auto threadingSettings = dlg.GetSettings();
+			m_cfg.m_Threading.m_IsActive = threadingSettings.m_IsActive;
+			m_cfg.m_Threading.m_SizePercentToThreadRender = threadingSettings.m_SizePercentToThreadRender;
+			m_cfg.m_Threading.m_NumberOfRenderThreads = threadingSettings.m_NumberOfRenderThreads;
+			m_cfg.m_Threading.m_AssignToSpecificCores = threadingSettings.m_AssignToSpecificCores;
+		}
 		});
 
 	main->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 14);

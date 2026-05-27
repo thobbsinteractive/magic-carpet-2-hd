@@ -335,13 +335,10 @@ Config::Settings::Threading Config::GetThreading(const json& graphics)
 	if (graphics.contains("threading"))
 	{
 		const auto& threading = graphics["threading"];
-		threadingValues.m_isActive = threading.value("isActive", false);
-		if (threadingValues.m_isActive)
-		{
-			threadingValues.m_SizePercentToThreadRender = ReadFloatValue(threading, "sizePercentToThreadRender");
-			threadingValues.m_NumberOfRenderThreads = (uint8_t)ReadIntValue(threading, "numberOfRenderThreads");
-			threadingValues.m_AssignToSpecificCores = ReadBoolValue(threading, "assignToSpecificCores");
-		}
+		threadingValues.m_IsActive = threading.value("isActive", false);
+		threadingValues.m_SizePercentToThreadRender = ReadFloatValue(threading, "sizePercentToThreadRender");
+		threadingValues.m_NumberOfRenderThreads = (uint8_t)ReadIntValue(threading, "numberOfRenderThreads");
+		threadingValues.m_AssignToSpecificCores = ReadBoolValue(threading, "assignToSpecificCores");
 	}
 	return threadingValues;
 }
@@ -457,7 +454,7 @@ void Config::SaveThreadingToDoc(Config::Settings::Threading threading)
 	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
 	auto& gfx = GetOrCreate(settingsEntry, "graphics");
 	auto& t = GetOrCreate(gfx, "threading");
-	SetBool(t, "isActive", threading.m_isActive);
+	SetBool(t, "isActive", threading.m_IsActive);
 	SetFloat(t, "sizePercentToThreadRender", threading.m_SizePercentToThreadRender);
 	SetInt(t, "numberOfRenderThreads", threading.m_NumberOfRenderThreads);
 	SetBool(t, "assignToSpecificCores", threading.m_AssignToSpecificCores);

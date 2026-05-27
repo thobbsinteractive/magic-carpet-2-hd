@@ -2,6 +2,8 @@
 #include "Globals.h"
 #include <wx/statline.h>
 #include <wx/display.h>
+#include "GraphicsFoldersDialog.h"
+#include "ThreadingDialog.h"
 
 class GraphicsDialog : public wxDialog
 {

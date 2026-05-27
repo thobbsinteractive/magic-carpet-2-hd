@@ -145,6 +145,7 @@
     <ClCompile Include="PathHelpers.cpp" />
     <ClCompile Include="Remc2ConfiguratorApp.cpp" />
     <ClCompile Include="SoundDialog.cpp" />
+    <ClCompile Include="ThreadingDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\remc2\portability\Config.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="PathHelpers.h" />
     <ClInclude Include="SoundDialog.h" />
+    <ClInclude Include="ThreadingDialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

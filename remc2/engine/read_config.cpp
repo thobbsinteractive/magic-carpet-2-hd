@@ -220,7 +220,7 @@ bool SetConfig() {
 	if (settingsValue.m_Graphics.m_GameDetail.m_ViewDistanceScale > 0 && settingsValue.m_Graphics.m_GameDetail.m_ViewDistanceScale < 4)
 		viewDistanceScale = settingsValue.m_Graphics.m_GameDetail.m_ViewDistanceScale;
 
-	multiThreadedRender = settingsValue.m_Graphics.m_Threading.m_isActive;
+	multiThreadedRender = settingsValue.m_Graphics.m_Threading.m_IsActive;
 	sizePercentToThreadRender = settingsValue.m_Graphics.m_Threading.m_SizePercentToThreadRender;
 	numberOfRenderThreads = settingsValue.m_Graphics.m_Threading.m_NumberOfRenderThreads;
 	if (multiThreadedRender)
