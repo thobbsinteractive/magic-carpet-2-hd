@@ -33464,21 +33464,21 @@ type_entity_0x6E8E* AddTree_4AC40(axis_3d* position)//22bc40 Spawn ??
 }
 
 //----- (0004AD70) --------------------------------------------------------
-type_entity_0x6E8E* sub_4AD70(axis_3d* position)//22bd70 //Spawn ??
+type_entity_0x6E8E* AddStone_4AD70(axis_3d* position)//22bd70 //Spawn ??
 {
-	type_entity_0x6E8E* v1x = NewEvent_4A050();
-	if (v1x)
+	type_entity_0x6E8E* entity = NewEvent_4A050();
+	if (entity)
 	{
-		v1x->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
-		v1x->dword_0x10_16 = (v1x - D41A0_0.struct_0x6E8E) % 11;
-		v1x->actionIndex_0x45_69 = 3;
-		v1x->class_0x3F_63 = 2;
-		v1x->model_0x40_64 = 1;
-		AddEventToMap_57D70(v1x, position);
-		CopyMaxLifeToLife_49A20(v1x);
-		SetHalfSpeedEntity_49DA0(v1x, 79);
+		entity->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
+		entity->dword_0x10_16 = (entity - D41A0_0.struct_0x6E8E) % 11;
+		entity->actionIndex_0x45_69 = 3;
+		entity->class_0x3F_63 = 2;
+		entity->model_0x40_64 = 1;
+		AddEventToMap_57D70(entity, position);
+		CopyMaxLifeToLife_49A20(entity);
+		SetHalfSpeedEntity_49DA0(entity, 79);
 	}
-	return v1x;
+	return entity;
 }
 
 //----- (0004ADF0) --------------------------------------------------------
@@ -34092,38 +34092,38 @@ type_entity_0x6E8E* AddVilliger_4BF40(axis_3d* position)//22cf40 - add creature 
 }
 
 //----- (0004C0B0) --------------------------------------------------------
-type_entity_0x6E8E* sub_4C0B0(axis_3d* position)//22d0b0
+type_entity_0x6E8E* AddTrader_4C0B0(axis_3d* position)//22d0b0
 {
-	type_entity_0x6E8E* v1x = NewEvent_4A050();
-	if (v1x)
+	type_entity_0x6E8E* entity = NewEvent_4A050();
+	if (entity)
 	{
-		v1x->maxSpeed_0x86_134 = 18;
-		v1x->actSpeed_0x82_130 = v1x->maxSpeed_0x86_134;
-		v1x->actionIndex_0x45_69 = 113;
-		v1x->class_0x3F_63 = 5;
-		v1x->model_0x40_64 = 14;
-		v1x->rand_0x14_20 = 9377 * v1x->rand_0x14_20 + 9439;
-		v1x->minSpeed_0x84_132 = 54;
-		v1x->maxLife_0x4 = 1000;
-		v1x->roll_0x20_32 = (v1x->rand_0x14_20 & 0x7FF) - 1;
-		v1x->yaw_0x1C_28 = (v1x->rand_0x14_20 & 0x7FF) - 1;
-		v1x->pitch_0x1E_30 = v1x->roll_0x20_32;
-		v1x->mana_0x90_144 = 0;
-		v1x->fov_0x22_34 = 0;
-		v1x->dword_0x10_16 = (v1x - D41A0_0.struct_0x6E8E) % 100;
-		v1x->subSpellIndex_0x2A_42 = 500;
-		v1x->byte_0x38_56 = 1;
-		v1x->dword_0xA0_160x = &str_D7BD6[100]; //(type_str_160*)&unk_D7BD6[0xd48];
-		v1x->byte_0x39_57 = 64;
-		v1x->xtype_0x41_65 = 3;
-		v1x->dword_0x10_16 = 2;
-		v1x->byte_0x3E_62 = D41A0_0.array_0x10[v1x->model_0x40_64]++;
-		AddEventToMap_57D70(v1x, position);
-		CopyMaxLifeToLife_49A20(v1x);
-		SetEntityIndexAndRot_49CD0(v1x, 219);
-		SetEntityShiftRot_49EA0(v1x, 128, 128);
+		entity->maxSpeed_0x86_134 = 18;
+		entity->actSpeed_0x82_130 = entity->maxSpeed_0x86_134;
+		entity->actionIndex_0x45_69 = 113;
+		entity->class_0x3F_63 = 5;
+		entity->model_0x40_64 = 14;
+		entity->rand_0x14_20 = 9377 * entity->rand_0x14_20 + 9439;
+		entity->minSpeed_0x84_132 = 54;
+		entity->maxLife_0x4 = 1000;
+		entity->roll_0x20_32 = (entity->rand_0x14_20 & 0x7FF) - 1;
+		entity->yaw_0x1C_28 = (entity->rand_0x14_20 & 0x7FF) - 1;
+		entity->pitch_0x1E_30 = entity->roll_0x20_32;
+		entity->mana_0x90_144 = 0;
+		entity->fov_0x22_34 = 0;
+		entity->dword_0x10_16 = (entity - D41A0_0.struct_0x6E8E) % 100;
+		entity->subSpellIndex_0x2A_42 = 500;
+		entity->byte_0x38_56 = 1;
+		entity->dword_0xA0_160x = &str_D7BD6[100];
+		entity->byte_0x39_57 = 64;
+		entity->xtype_0x41_65 = 3;
+		entity->dword_0x10_16 = 2;
+		entity->byte_0x3E_62 = D41A0_0.array_0x10[entity->model_0x40_64]++;
+		AddEventToMap_57D70(entity, position);
+		CopyMaxLifeToLife_49A20(entity);
+		SetEntityIndexAndRot_49CD0(entity, 219);
+		SetEntityShiftRot_49EA0(entity, 128, 128);
 	}
-	return v1x;
+	return entity;
 }
 
 //----- (0004C1E0) --------------------------------------------------------
@@ -35729,22 +35729,21 @@ type_entity_0x6E8E* sub_4ECD0(axis_3d* position)//22fcd0
 }
 
 //----- (0004ED70) --------------------------------------------------------
-type_entity_0x6E8E* sub_4ED70(axis_3d* position)//22fd70
+type_entity_0x6E8E* AddGroupFires_4ED70(axis_3d* position)//22fd70
 {
-	type_entity_0x6E8E* v1x; // eax
-	v1x = NewEvent_4A050();
-	if (v1x)
+	type_entity_0x6E8E* entity= NewEvent_4A050();
+	if (entity)
 	{
-		v1x->actionIndex_0x45_69 = 17;
-		v1x->class_0x3F_63 = 10;
-		v1x->model_0x40_64 = 17;
-		v1x->position_0x4C_76 = *position;
-		v1x->maxLife_0x4 = 10;
-		v1x->subSpellIndex_0x2A_42 = 3000;
-		v1x->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
-		CopyMaxLifeToLife_49A20(v1x);
+		entity->actionIndex_0x45_69 = 17;
+		entity->class_0x3F_63 = 10;
+		entity->model_0x40_64 = 17;
+		entity->position_0x4C_76 = *position;
+		entity->maxLife_0x4 = 10;
+		entity->subSpellIndex_0x2A_42 = 3000;
+		entity->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
+		CopyMaxLifeToLife_49A20(entity);
 	}
-	return v1x;
+	return entity;
 }
 
 //----- (0004EDC0) --------------------------------------------------------
@@ -35851,73 +35850,55 @@ type_entity_0x6E8E* sub_4EF90(axis_3d* a1x)//22ff90
 }
 
 //----- (0004F040) --------------------------------------------------------
-type_entity_0x6E8E* sub_4F040(axis_3d* a1x)//230040
+type_entity_0x6E8E* AddWind_4F040(axis_3d* axis)//230040
 {
-	type_entity_0x6E8E* v1x; // eax
-	//uint8_t* v2; // ebx
-	//__int16 v3; // dx
-	//__int16 v4; // ax
-	//__int16 v5; // ax
-	type_entity_0x6E8E* v6x; // eax
-	//uint8_t* v7; // ecx
-	type_entity_0x6E8E* v9x; // [esp+0h] [ebp-10h]
-	type_entity_0x6E8E* v10x; // [esp+4h] [ebp-Ch]
-	//x_WORD *v11; // [esp+8h] [ebp-8h]
-	signed int i; // [esp+Ch] [ebp-4h]
-
 	if (sub_4A810_get_0x35plus() < 12)
 		return 0;
-	v1x = NewEvent_4A050();
-	//v2 = v1;
-	//v11 = (x_WORD *)v1;
-	if (!v1x)
+	type_entity_0x6E8E* entity = NewEvent_4A050();
+	if (!entity)
 		return 0;
-	v1x->actionIndex_0x45_69 = 22;
-	v1x->class_0x3F_63 = 10;
-	v1x->model_0x40_64 = 22;
-	v1x->word_0x2C_44 = 0;
-	v1x->word_0x2E_46 = 1;
-	v1x->byte_0x3C_60 = 0;
-	v1x->minSpeed_0x84_132 = 20;
-	v1x->maxSpeed_0x86_134 = 10;
-	v1x->actSpeed_0x82_130 = 50;
-	v1x->maxLife_0x4 = 500;
-	v1x->subSpellIndex_0x2A_42 = 1000;
-	//v3 = v1x->word_0x14_20;
-	v1x->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
-	v1x->rand_0x14_20 = 9377 * v1x->rand_0x14_20 + 9439;
-	//v4 = v1x->word_0x14_20;
-	v1x->fov_0x22_34 = 0;
-	v1x->byte_0x38_56 = 1;
-	//v5 = (v1x->word_0x14_20 & 0x7FF) - 1;
-	v1x->roll_0x20_32 = (v1x->rand_0x14_20 & 0x7FF) - 1;
-	v1x->yaw_0x1C_28 = (v1x->rand_0x14_20 & 0x7FF) - 1;
-	v10x = v1x;
-	v1x->pitch_0x1E_30 = v1x->roll_0x20_32;
-	CopyMaxLifeToLife_49A20(v1x);
-	for (i = 0; i < 11; i++)
+	entity->actionIndex_0x45_69 = 22;
+	entity->class_0x3F_63 = 10;
+	entity->model_0x40_64 = 22;
+	entity->word_0x2C_44 = 0;
+	entity->word_0x2E_46 = 1;
+	entity->byte_0x3C_60 = 0;
+	entity->minSpeed_0x84_132 = 20;
+	entity->maxSpeed_0x86_134 = 10;
+	entity->actSpeed_0x82_130 = 50;
+	entity->maxLife_0x4 = 500;
+	entity->subSpellIndex_0x2A_42 = 1000;
+	entity->struct_byte_0xc_12_15.byte[0] &= 0xF7u;
+	entity->rand_0x14_20 = 9377 * entity->rand_0x14_20 + 9439;
+	entity->fov_0x22_34 = 0;
+	entity->byte_0x38_56 = 1;
+	entity->roll_0x20_32 = (entity->rand_0x14_20 & 0x7FF) - 1;
+	entity->yaw_0x1C_28 = (entity->rand_0x14_20 & 0x7FF) - 1;
+	type_entity_0x6E8E* entity3 = entity;
+	entity->pitch_0x1E_30 = entity->roll_0x20_32;
+	CopyMaxLifeToLife_49A20(entity);
+	for (int i = 0; i < 11; i++)
 	{
-		v6x = NewEvent_4A050();
-		v9x = v6x;
-		if (v6x)
+		type_entity_0x6E8E* entity2 = NewEvent_4A050();
+		type_entity_0x6E8E* entity4 = entity2;
+		if (entity2)
 		{
-			qmemcpy(v6x, v1x, 0xA8u);
-			v6x->model_0x40_64 = 75;
-			v6x->actionIndex_0x45_69 = 82;
-			v6x->word_0x2C_44 = i + 1;
-			v6x->word_0x32_50 = v10x - D41A0_0.struct_0x6E8E;
-			v10x->word_0x34_52 = v6x - D41A0_0.struct_0x6E8E;
-			v6x->word_0x34_52 = 0;
-			v6x->byte_0x3E_62 = i;
-			AddEventToMap_57D70(v6x, a1x);
+			qmemcpy(entity2, entity, 0xA8u);
+			entity2->model_0x40_64 = 75;
+			entity2->actionIndex_0x45_69 = 82;
+			entity2->word_0x2C_44 = i + 1;
+			entity2->word_0x32_50 = entity3 - D41A0_0.struct_0x6E8E;
+			entity3->word_0x34_52 = entity2 - D41A0_0.struct_0x6E8E;
+			entity2->word_0x34_52 = 0;
+			entity2->byte_0x3E_62 = i;
+			AddEventToMap_57D70(entity2, axis);
 		}
-		v10x = v9x;
+		entity3 = entity4;
 	}
-	AddEventToMap_57D70(v1x, a1x);
-	sub_4F1C0(v1x);
-	return v1x;
+	AddEventToMap_57D70(entity, axis);
+	sub_4F1C0(entity);
+	return entity;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 
 //----- (0004F1C0) --------------------------------------------------------
 unsigned __int16 sub_4F1C0(type_entity_0x6E8E* a1x)//230c10
@@ -35953,77 +35934,57 @@ unsigned __int16 sub_4F1C0(type_entity_0x6E8E* a1x)//230c10
 // EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (0004F2A0) --------------------------------------------------------
-type_entity_0x6E8E* sub_4F2A0(axis_3d* a1x)//2302a0
-{
-	type_entity_0x6E8E* v1x; // eax
-	//uint8_t* v2; // ebx
-	//char v3; // ah
-	type_entity_0x6E8E* v4x; // eax
-	//uint8_t* v5; // ecx
-	//uint8_t* v7; // [esp+0h] [ebp-10h]
-	type_entity_0x6E8E* v8x; // [esp+4h] [ebp-Ch]
-	signed int i; // [esp+8h] [ebp-8h]
-	//uint8_t* v10; // [esp+Ch] [ebp-4h]
-
-	//fix
-	v8x = 0;
-	v1x = 0;
-	//fix
-
-	//v10 = 0;
+type_entity_0x6E8E* AddFireSpheres_4F2A0(axis_3d* position)//2302a0
+{	
+	type_entity_0x6E8E* entity = NULL;
 	if (sub_4A810_get_0x35plus() >= 26)
 	{
-		v1x = NewEvent_4A050();
-		//v2 = v1;
-		//v10 = v1;
-		if (v1x)
+		entity = NewEvent_4A050();
+		if (entity)
 		{
-			v1x->actionIndex_0x45_69 = 83;
-			v1x->class_0x3F_63 = 10;
-			v1x->model_0x40_64 = 76;
-			v1x->maxLife_0x4 = 80;
-			v1x->subSpellIndex_0x2A_42 = 70;
-			v1x->actSpeed_0x82_130 = 40;
-			v1x->maxSpeed_0x86_134 = 192;
-			v1x->minSpeed_0x84_132 = 480;
-			v1x->actSpeed_0x82_130 = 40;
-			//v3 = v1x->struct_byte_0xc_12_15.dbyte1_2.byte1;
-			v1x->byte_0x38_56 = 1;
-			v1x->byte_0x43_67 = 0;
-			v1x->byte_0x44_68 = 0;
-			v1x->word_0x2C_44 = 0;
-			v1x->fontTypeIndex_0x3D_61 = 0;
-			v8x = v1x;
-			v1x->struct_byte_0xc_12_15.byte[0] &= 0xf6;
-			v1x->struct_byte_0xc_12_15.byte[0] |= 1;
-			CopyMaxLifeToLife_49A20(v1x);
-			for (i = 0; i < 25; i++)
+			entity->actionIndex_0x45_69 = 83;
+			entity->class_0x3F_63 = 10;
+			entity->model_0x40_64 = 76;
+			entity->maxLife_0x4 = 80;
+			entity->subSpellIndex_0x2A_42 = 70;
+			entity->actSpeed_0x82_130 = 40;
+			entity->maxSpeed_0x86_134 = 192;
+			entity->minSpeed_0x84_132 = 480;
+			entity->actSpeed_0x82_130 = 40;
+			entity->byte_0x38_56 = 1;
+			entity->byte_0x43_67 = 0;
+			entity->byte_0x44_68 = 0;
+			entity->word_0x2C_44 = 0;
+			entity->fontTypeIndex_0x3D_61 = 0;
+			type_entity_0x6E8E* entity3 = entity;
+			entity->struct_byte_0xc_12_15.byte[0] &= 0xf6;
+			entity->struct_byte_0xc_12_15.byte[0] |= 1;
+			CopyMaxLifeToLife_49A20(entity);
+			for (int i = 0; i < 25; i++)
 			{
-				v4x = NewEvent_4A050();
-				//v7 = v4;
-				if (v4x)
+				type_entity_0x6E8E* entity2 = NewEvent_4A050();
+				if (entity2)
 				{
-					qmemcpy(v4x, v1x, sizeof(type_entity_0x6E8E));
-					v4x->model_0x40_64 = 77;
-					v4x->actionIndex_0x45_69 = 84;
-					v4x->word_0x32_50 = v8x - D41A0_0.struct_0x6E8E;
-					v8x->word_0x34_52 = v4x - D41A0_0.struct_0x6E8E;
-					v4x->byte_0x3E_62 = i;
-					v4x->byte_0x43_67 = i / 5;
-					v4x->word_0x34_52 = 0;
-					v4x->byte_0x44_68 = i % 5;
-					AddEventToMap_57D70(v4x, a1x);
+					qmemcpy(entity2, entity, sizeof(type_entity_0x6E8E));
+					entity2->model_0x40_64 = 77;
+					entity2->actionIndex_0x45_69 = 84;
+					entity2->word_0x32_50 = entity3 - D41A0_0.struct_0x6E8E;
+					entity3->word_0x34_52 = entity2 - D41A0_0.struct_0x6E8E;
+					entity2->byte_0x3E_62 = i;
+					entity2->byte_0x43_67 = i / 5;
+					entity2->word_0x34_52 = 0;
+					entity2->byte_0x44_68 = i % 5;
+					AddEventToMap_57D70(entity2, position);
 				}
-				v8x = v4x;
+				entity3 = entity2;
 			}
-			AddEventToMap_57D70(v1x, a1x);
-			SetEntityShiftRot_49EA0(v1x, 640, 640);
-			sub_4F440(v1x);
+			AddEventToMap_57D70(entity, position);
+			SetEntityShiftRot_49EA0(entity, 640, 640);
+			sub_4F440(entity);
 		}
 	}
-	return v1x;
+	return entity;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 
 //----- (0004F440) --------------------------------------------------------
 __int16 sub_4F440(type_entity_0x6E8E* a1x)//230440
@@ -36849,7 +36810,7 @@ type_entity_0x6E8E* sub_504B0(axis_3d* position)//2314b0
 }
 
 //----- (00050500) --------------------------------------------------------
-type_entity_0x6E8E* sub_50500(axis_3d* position)//231500
+type_entity_0x6E8E* AddAuxiliary_50500(axis_3d* position)//231500
 {
 	type_entity_0x6E8E* event = NewEvent_4A050();
 	if (event)
@@ -41233,56 +41194,45 @@ int sub_59C60(type_entity_0x6E8E* a1x)//23ac60
 }
 
 //----- (00059C80) --------------------------------------------------------
-int sub_59C80(type_entity_0x6E8E* a1x)//23ac80
+int UpdateScroll_59C80(type_entity_0x6E8E* entity)//23ac80
 {
-	//int result; // eax
-	//int v2; // ebx
-	type_entity_0x6E8E* ix; // ebx
-	int v4; // edi
-	int v5; // eax
-
+	type_entity_0x6E8E* entity2;
 	if (x_D41A0_BYTEARRAY_4_struct.setting_38545 & 4)
 	{
-		a1x->struct_byte_0xc_12_15.byte[0] |= 1u;
-		DisableEntityDrawing04_57F10(a1x);
+		entity->struct_byte_0xc_12_15.byte[0] |= 1u;
+		DisableEntityDrawing04_57F10(entity);
 	}
 	else
 	{
-		a1x->position_0x4C_76.z = getTerrainAlt_10C40(&a1x->position_0x4C_76);
-		//v2 = (int)x_D41A0_BYTEARRAY_4;
-		//*(x_WORD *)(a1 + 80) = result;
-		for (ix = x_D41A0_BYTEARRAY_4_struct.dword_38519; ix > Entities_EA3E4[0]; ix = ix->next_0)
+		entity->position_0x4C_76.z = getTerrainAlt_10C40(&entity->position_0x4C_76);
+		for (entity2 = x_D41A0_BYTEARRAY_4_struct.dword_38519; entity2 > Entities_EA3E4[0]; entity2 = entity2->next_0)
 		{
-			if (!ix->model_0x40_64 && ix->life_0x8 >= 0)
+			if (!entity2->model_0x40_64 && entity2->life_0x8 >= 0)
 			{
-				//result = sub_106C0(i, a1);
-				if (sub_106C0(ix, a1x))
+				if (sub_106C0(entity2, entity))
 				{
-					v4 = ix->dword_0xA4_164x->playerColorIndex_0x38_56;
-					if (v4 == D41A0_0.LevelIndex_0xc)
+					int playerIndex = entity2->dword_0xA4_164x->playerColorIndex_0x38_56;
+					if (playerIndex == D41A0_0.LevelIndex_0xc)
 					{
+						int countXP;
 						if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
-							v5 = 50;
+							countXP = 50;
 						else
-							v5 = 4;
-						sub_6E090(&ix->dword_0xA4_164x->str_611, v5);
-						PrepareEventSound_6E450(v4, -1, 63);
+							countXP = 4;
+						UpdateExperience_6E090(&entity2->dword_0xA4_164x->str_611, countXP);
+						PrepareEventSound_6E450(playerIndex, -1, 63);
 						if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 							sub_6DBD0();
 						else
 							sub_6DB50(0, 1);
 					}
-					DisableEntityDrawing04_57F10(a1x);
+					DisableEntityDrawing04_57F10(entity);
 				}
 			}
 		}
 	}
-	//return result;
 	return 1;
 }
-// D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// D41A4: using guessed type int x_DWORD_D41A4;
-// EA3E4: using guessed type int Entities_EA3E4[];
 
 //----- (00059DC0) --------------------------------------------------------
 char sub_59DC0(type_entity_0x6E8E* a1x)//23adc0
@@ -44356,22 +44306,16 @@ int GetSpellIndex_6E020(int entitySubtype)//24f020
 }
 
 //----- (0006E090) --------------------------------------------------------
-void sub_6E090(type_str_611* a1x, int a2)//24f090
+void UpdateExperience_6E090(type_str_611* spells, int countXP)//24f090
 {
-	signed int i; // eax
-	//int result; // eax
-
-	for (i = 0; i < 26; i++)
+	for (int i = 0; i < 26; i++)
 	{
-		if (a1x->SpellsEnabled_0x333_819x.SpellEnabled[i])
-			a1x->spellsExperience_0x2CB_715x.at(i) += a2;
+		if (spells->SpellsEnabled_0x333_819x.SpellEnabled[i])
+			spells->spellsExperience_0x2CB_715x.at(i) += countXP;
 	}
-	//result = (int)x_D41A0_BYTEARRAY_4;
-	if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 >= 0 && a1x->spellsExperience_0x2CB_715x.at((int)spell_t::castle) > 7) // FIXME: replace magic numbers
-		a1x->spellsExperience_0x2CB_715x.at((int)spell_t::castle) = 7;
-	//return result;
+	if (x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 >= 0 && spells->spellsExperience_0x2CB_715x.at((int)spell_t::castle) > 7)
+		spells->spellsExperience_0x2CB_715x.at((int)spell_t::castle) = 7;
 }
-// D41A4: using guessed type int x_DWORD_D41A4;
 
 //----- (0006E0D0) --------------------------------------------------------
 void sub_6E0D0()//24f0d0
@@ -54337,7 +54281,7 @@ type_entity_0x6E8E* AddSpell15_45_51380(axis_3d* position)//232380
 }
 
 //----- (000513A0) --------------------------------------------------------
-type_entity_0x6E8E* sub_513A0(axis_3d* position)//2323a0
+type_entity_0x6E8E* AddSpell16_48_513A0(axis_3d* position)//2323a0
 {
 	return AddSpellXX_XX_51120(position, 16, 48);
 }
@@ -54398,7 +54342,7 @@ type_entity_0x6E8E* AddSpell25_75_514C0(axis_3d* position)//2324c0
 
 type_entity_0x6E8E* (*arsub_2a881e[])(axis_3d*) = { AddSpell00_00_511A0, AddSpell01_03_511C0, AddSpell02_06_511E0,AddSpell03_09_51200,AddSpell04_12_51220,
 AddSpell05_15_51240 ,AddSpell06_18_51260,AddSpell07_21_51280,AddSpell08_24_512A0,AddSpell09_27_512C0,AddSpell10_30_512E0,AddSpell11_33_51300,AddSpell12_36_51320,AddSpell13_39_51340,
-AddSpell14_42_51360,AddSpell15_45_51380,sub_513A0,AddSpell17_51_513C0,AddSpell18_54_513E0,AddSpell19_57_51400,AddSpell20_60_51420,AddSpell21_63_51440,
+AddSpell14_42_51360,AddSpell15_45_51380,AddSpell16_48_513A0,AddSpell17_51_513C0,AddSpell18_54_513E0,AddSpell19_57_51400,AddSpell20_60_51420,AddSpell21_63_51440,
 AddSpell22_66_51460,AddSpell23_69_51480,AddSpell24_72_514A0,AddSpell25_75_514C0 };
 
 //----- (0006F100) --------------------------------------------------------

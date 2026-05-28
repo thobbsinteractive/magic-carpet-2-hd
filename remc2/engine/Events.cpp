@@ -2851,7 +2851,10 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 	case 0x23ac80: {
-		sub_59C80(a1_6E8E);
+		UpdateScroll_59C80(a1_6E8E);
+		break;
+	}
+	case 0x23ad90: {
 		break;
 	}
 	case 0x23adc0: {
@@ -3900,7 +3903,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 		break;
 	}
 	case 0x24f090: {
-		sub_6E090((type_str_611*)a1_6E8E, 0);
+		UpdateExperience_6E090((type_str_611*)a1_6E8E, 0);
 		break;
 	}
 	case 0x24f0d0: {
@@ -4231,7 +4234,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 	case 0x22bd70: {
-		return sub_4AD70(a1_axis3d);
+		return AddStone_4AD70(a1_axis3d);
 		break;
 	}
 	case 0x22bdf0: {// 1 instance in level 3
@@ -4305,7 +4308,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 	case 0x22d0b0: {
-		return sub_4C0B0(a1_axis3d);
+		return AddTrader_4C0B0(a1_axis3d);
 		break;
 	}
 	case 0x22d1e0: {
@@ -4581,7 +4584,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 	case 0x22fd70: {
-		return sub_4ED70(a1_axis3d);
+		return AddGroupFires_4ED70(a1_axis3d);
 
 		break;
 	}
@@ -4610,7 +4613,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 	case 0x230040: {
-		return sub_4F040(a1_axis3d);
+		return AddWind_4F040(a1_axis3d);
 		break;
 	}
 				 /*case 0x230c10: {
@@ -4618,7 +4621,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 					 break;
 				 }*/
 	case 0x2302a0: {
-		return sub_4F2A0(a1_axis3d);
+		return AddFireSpheres_4F2A0(a1_axis3d);
 		break;
 	}
 				 /*case 0x230440: {
@@ -4789,7 +4792,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 	case 0x231500: {
-		return sub_50500(a1_axis3d);
+		return AddAuxiliary_50500(a1_axis3d);
 		break;
 	}
 	case 0x2315a0: {
@@ -5072,7 +5075,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 	case 0x2323a0: {
-		return sub_513A0(a1_axis3d);
+		return AddSpell16_48_513A0(a1_axis3d);
 		break;
 	}
 	case 0x2323c0: {
