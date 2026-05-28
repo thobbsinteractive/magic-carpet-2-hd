@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\remc2\portability\Config.cpp" />
+    <ClCompile Include="GameDialog.cpp" />
     <ClCompile Include="GameFilesDialog.cpp" />
     <ClCompile Include="DisplayDialog.cpp" />
     <ClCompile Include="GraphicsDialog.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="..\remc2\portability\Config.h" />
     <ClInclude Include="..\remc2\portability\ConfigToSdlScancodeMapping.h" />
+    <ClInclude Include="GameDialog.h" />
     <ClInclude Include="GameFilesDialog.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="DisplayDialog.h" />

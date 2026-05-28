@@ -13,6 +13,7 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	// ── Buttons ─────────────────────────────────────────────────────────────
 	wxButton* btnPlay = new wxButton(panel, ID_BTN_PLAY, "Play");
 	wxButton* btnFile = new wxButton(panel, ID_BTN_FILE, "Game Files");
+	wxButton* btnGame = new wxButton(panel, ID_BTN_GAME, "Frames Per Second");
 	wxButton* btnControls = new wxButton(panel, ID_BTN_CONTROLS, "Controls");
 	wxButton* btnSound = new wxButton(panel, ID_BTN_SOUND, "Sound");
 	wxButton* btnDisplay = new wxButton(panel, ID_BTN_DISPLAY, "Display");
@@ -28,6 +29,7 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 
 	vSizer->Add(btnPlay, flags);
 	vSizer->Add(btnFile, flags);
+	vSizer->Add(btnGame, flags);
 	vSizer->Add(btnControls, flags);
 	vSizer->Add(btnSound, flags);
 	vSizer->Add(btnDisplay, flags);
@@ -45,6 +47,7 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	// ── Event bindings ───────────────────────────────────────────────────────
 	Bind(wxEVT_BUTTON, &MainFrame::OnPlay, this, ID_BTN_PLAY);
 	Bind(wxEVT_BUTTON, &MainFrame::OnFile, this, ID_BTN_FILE);
+	Bind(wxEVT_BUTTON, &MainFrame::OnGame, this, ID_BTN_GAME);
 	Bind(wxEVT_BUTTON, &MainFrame::OnControls, this, ID_BTN_CONTROLS);
 	Bind(wxEVT_BUTTON, &MainFrame::OnSound, this, ID_BTN_SOUND);
 	Bind(wxEVT_BUTTON, &MainFrame::OnDisplay, this, ID_BTN_DISPLAY);
@@ -77,6 +80,20 @@ void MainFrame::OnFile(wxCommandEvent&)
 	if (dlg.ShowModal() == wxID_OK) {
 		auto pathSettings = dlg.GetPaths();
 		m_ptrConfig->SavePathsToDoc(pathSettings);
+		m_ptrConfig->SaveToFile();
+		m_ptrConfig->GetSettingsFromDoc();
+	}
+}
+
+void MainFrame::OnGame(wxCommandEvent&)
+{
+	auto settings = m_ptrConfig->GetSettingsFromDoc();
+	GameDialog dlg(this, settings.m_Game);
+	dlg.SetMinSize(wxSize(300, 200));
+	dlg.SetMaxSize(wxSize(300, 200));
+	if (dlg.ShowModal() == wxID_OK) {
+		auto gameSettings = dlg.GetSettings();
+		m_ptrConfig->SaveGameToDoc(gameSettings);
 		m_ptrConfig->SaveToFile();
 		m_ptrConfig->GetSettingsFromDoc();
 	}
