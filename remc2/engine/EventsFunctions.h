@@ -1463,7 +1463,7 @@ type_entity_0x6E8E* SetSmoke4_4EAA0(axis_3d* a1, char a2, char a3, __int16 a4, i
 type_entity_0x6E8E* ArriveCheckpoint_4EB50(axis_3d* a1);
 type_entity_0x6E8E* AddSmoke_4EC10(axis_3d* a1);
 type_entity_0x6E8E* sub_4ECD0(axis_3d* a1);
-type_entity_0x6E8E* AddGroupFires_4ED70(axis_3d* a1);
+type_entity_0x6E8E* AddMeteor_4ED70(axis_3d* a1);
 type_entity_0x6E8E* sub_4EDC0(axis_3d* a1);
 type_entity_0x6E8E* sub_4EED0(axis_3d* a1);
 type_entity_0x6E8E* sub_4EF30(axis_3d* a1);
