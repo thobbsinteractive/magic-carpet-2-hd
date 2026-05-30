@@ -2,7 +2,7 @@
 
 ControlsDialog::ControlsDialog(wxWindow* parent, const Config::Settings::Controls& cfg)
 	: wxDialog(parent, wxID_ANY, "Controls Settings",
-		wxDefaultPosition, wxSize(256, 256))
+		wxDefaultPosition, wxSize(264, 500))
 {
 	m_cfg = cfg;
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -23,6 +23,7 @@ ControlsDialog::ControlsDialog(wxWindow* parent, const Config::Settings::Control
 
 	mainSizer->Add(m_notebook, 1, wxEXPAND | wxALL, 5);
 	SetSizerAndFit(mainSizer);
+	Centre(wxBOTH);
 }
 
 void ControlsDialog::CreateMousePage()

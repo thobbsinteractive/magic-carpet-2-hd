@@ -103,8 +103,8 @@ void MainFrame::OnControls(wxCommandEvent&)
 { 
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
 	ControlsDialog dlg(this, settings.m_Controls);
-	dlg.SetMinSize(wxSize(256, 256));
-	dlg.SetMaxSize(wxSize(256, 256));
+	dlg.SetMinSize(wxSize(264, 500));
+	dlg.SetMaxSize(wxSize(264, 500));
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		auto controlSettings = dlg.GetSettings();
