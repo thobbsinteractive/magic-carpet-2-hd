@@ -22650,7 +22650,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 					subSpellPos = playerEntity->dword_0xA4_164x->str_611.SpellExperience_0x263_611x.SpellExperience[spellIndex] + playerEntity->dword_0xA4_164x->str_611.spellsExperience_0x2CB_715x.at(spellIndex) - xPos;
 					if (xDiff > 0)
 					{
-						posEndX = 54 * subSpellPos / xDiff;
+						posEndX = (54 * scale) * subSpellPos / xDiff;
 					}
 					else
 					{
@@ -22659,16 +22659,16 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 				}
 				else
 				{
-					posEndX = 54;
+					posEndX = (54 * scale);
 				}
 				//Draw Experience for Spell
 				if ((posEndX & 0x8000u) != 0)
 					posEndX = 0;
-				if (posEndX > 54)
-					posEndX = 54;
+				if (posEndX > (54 * scale))
+					posEndX = (54 * scale);
 				DrawLine_2BC80(posX + posSubMenuSpellX + (6 * scale), posY2 + (28 * scale), (54 * scale), (2 * scale), (*xadataclrd0dat.colorPalette_var28)[0]);
 				if (posEndX)
-					DrawLine_2BC80(posX + posSubMenuSpellX + (6 * scale), posY2 + (28 * scale), (posEndX * scale), (2 * scale), (*xadataclrd0dat.colorPalette_var28)[3840]);
+					DrawLine_2BC80(posX + posSubMenuSpellX + (6 * scale), posY2 + (28 * scale), posEndX, (2 * scale), (*xadataclrd0dat.colorPalette_var28)[3840]);
 			}
 			subSpellIndex2++;
 			posSubMenuSpellX += posSubMenuIconWidth;
@@ -35729,7 +35729,7 @@ type_entity_0x6E8E* sub_4ECD0(axis_3d* position)//22fcd0
 }
 
 //----- (0004ED70) --------------------------------------------------------
-type_entity_0x6E8E* AddGroupFires_4ED70(axis_3d* position)//22fd70
+type_entity_0x6E8E* AddMeteor_4ED70(axis_3d* position)//22fd70
 {
 	type_entity_0x6E8E* entity= NewEvent_4A050();
 	if (entity)

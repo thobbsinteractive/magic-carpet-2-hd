@@ -2857,9 +2857,6 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
 	case 0x23ad90: {
 		break;
 	}
-	case 0x23ad90: {
-		break;
-	}
 	case 0x23adc0: {
 		sub_59DC0(a1_6E8E);
 		break;
@@ -4587,8 +4584,7 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		break;
 	}
 	case 0x22fd70: {
-		return AddGroupFires_4ED70(a1_axis3d);
-
+		return AddMeteor_4ED70(a1_axis3d);
 		break;
 	}
 	case 0x22fdc0: {
