@@ -32,7 +32,9 @@ void ControlsDialog::CreateMousePage()
 	// -- Invert Axes --
 	wxStaticBoxSizer* axesSizer = new wxStaticBoxSizer(wxVERTICAL, m_mousePage, "Axes");
 	m_invertYAxis = new wxCheckBox(m_mousePage, wxID_ANY, "Invert Y Axis");
+	m_invertYAxis->SetToolTip("True By default, the Y axis is inverted in the original game");
 	m_invertXAxis = new wxCheckBox(m_mousePage, wxID_ANY, "Invert X Axis");
+	m_invertXAxis->SetToolTip("By default, the X axis is not inverted");
 	m_invertYAxis->SetValue(m_cfg.m_Mouse.m_InvertYAxis);
 	m_invertXAxis->SetValue(m_cfg.m_Mouse.m_InvertXAxis);
 	axesSizer->Add(m_invertYAxis, 0, wxALL, 5);
@@ -48,6 +50,7 @@ void ControlsDialog::CreateMousePage()
 	m_mouseScaleX->SetRange(0.1, 5.0);
 	m_mouseScaleX->SetIncrement(0.1);
 	m_mouseScaleX->SetValue(m_cfg.m_Mouse.m_MouseScaleX);
+	m_mouseScaleX->SetToolTip("1.0 = normal, 1.5 = slower, 0.5 faster etc... (Note: Effects joystick steering too)");
 	scaleXRow->Add(m_mouseScaleX, 1, wxEXPAND);
 
 	wxBoxSizer* scaleYRow = new wxBoxSizer(wxHORIZONTAL);
@@ -56,6 +59,7 @@ void ControlsDialog::CreateMousePage()
 	m_mouseScaleY->SetRange(0.1, 5.0);
 	m_mouseScaleY->SetIncrement(0.1);
 	m_mouseScaleY->SetValue(m_cfg.m_Mouse.m_MouseScaleY);
+	m_mouseScaleY->SetToolTip("1.0 = normal, 1.5 = slower, 0.5 faster etc... (Note: Effects joystick steering too)");
 	scaleYRow->Add(m_mouseScaleY, 1, wxEXPAND);
 
 	scaleSizer->Add(scaleXRow, 0, wxEXPAND | wxALL, 5);
@@ -88,6 +92,7 @@ void ControlsDialog::CreateMousePage()
 	wxStaticBoxSizer* miscSizer = new wxStaticBoxSizer(wxVERTICAL, m_mousePage, "Misc");
 	m_disableLRButtonsMenuOpen = new wxCheckBox(m_mousePage, wxID_ANY, "Disable L+R Buttons Opening Menu");
 	m_disableLRButtonsMenuOpen->SetValue(m_cfg.m_Mouse.m_DisableLRButtonsMenuOpen);
+	m_disableLRButtonsMenuOpen->SetToolTip("When enabled, stops the two fire buttons opening the map screen");
 	miscSizer->Add(m_disableLRButtonsMenuOpen, 0, wxALL, 5);
 	sizer->Add(miscSizer, 0, wxEXPAND | wxALL, 5);
 
@@ -110,7 +115,18 @@ void ControlsDialog::CreateJoystickPage()
 
 Config::Settings::Controls ControlsDialog::GetSettings() const
 {
-	Config::Settings::Controls cfg;
-	// Populate cfg from widgets here
+	Config::Settings::Controls cfg = m_cfg;
+
+	cfg.m_Mouse.m_InvertXAxis = m_invertYAxis->GetValue();
+	cfg.m_Mouse.m_InvertYAxis = m_invertYAxis->GetValue();
+	cfg.m_Mouse.m_MouseScaleX = m_mouseScaleX->GetValue();
+	cfg.m_Mouse.m_MouseScaleY = m_mouseScaleY->GetValue();
+	cfg.m_Mouse.m_SpellLeft = m_spellLeft->GetValue();
+	cfg.m_Mouse.m_SpellRight = m_spellRight->GetValue();
+	cfg.m_Mouse.m_Map = m_map->GetValue();
+	cfg.m_Mouse.m_SpellMenu = m_spellMenu->GetValue();
+	cfg.m_Mouse.m_SpellMenuMark = m_spellMenuMark->GetValue();
+	cfg.m_Mouse.m_DisableLRButtonsMenuOpen = m_disableLRButtonsMenuOpen->GetValue();
+
 	return cfg;
 }
