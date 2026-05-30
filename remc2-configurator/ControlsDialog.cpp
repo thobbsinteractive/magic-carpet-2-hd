@@ -66,17 +66,19 @@ void ControlsDialog::CreateMousePage()
 	scaleSizer->Add(scaleYRow, 0, wxEXPAND | wxALL, 5);
 	sizer->Add(scaleSizer, 0, wxEXPAND | wxALL, 5);
 
-	// -- Mouse Buttons (1=Left, 2=Middle, 3=Right, 0=Undefined) --
-	wxStaticBoxSizer* btnSizer = new wxStaticBoxSizer(wxVERTICAL, m_mousePage, "Mouse Buttons (1=Left, 2=Middle, 3=Right, 0=Undefined)");
+	// -- Mouse Buttons --
+	wxStaticBoxSizer* btnSizer = new wxStaticBoxSizer(wxVERTICAL, m_mousePage, "Mouse Buttons");
 
-	auto addButtonRow = [&](const wxString& label, wxSpinCtrl*& ctrl, int value)
+	const wxString buttonChoices[] = { "0 - Undefined", "1 - Left", "2 - Middle", "3 - Right", "4 - Mouse 4", "5 - Mouse 5" };
+	const int numChoices = WXSIZEOF(buttonChoices);
+
+	auto addButtonRow = [&](const wxString& label, wxChoice*& ctrl, int value)
 		{
 			wxBoxSizer* row = new wxBoxSizer(wxHORIZONTAL);
 			row->Add(new wxStaticText(m_mousePage, wxID_ANY, label), 1, wxALIGN_CENTER_VERTICAL);
-			ctrl = new wxSpinCtrl(m_mousePage, wxID_ANY);
-			ctrl->SetRange(0, 5);
-			ctrl->SetValue(value);
-			row->Add(ctrl, 0);
+			ctrl = new wxChoice(m_mousePage, wxID_ANY, wxDefaultPosition, wxDefaultSize, numChoices, buttonChoices);
+			ctrl->SetSelection(value); // value maps directly to index (0=Undefined, 1=Left, etc.)
+			row->Add(ctrl, 1, wxEXPAND);
 			btnSizer->Add(row, 0, wxEXPAND | wxALL, 5);
 		};
 
@@ -117,15 +119,15 @@ Config::Settings::Controls ControlsDialog::GetSettings() const
 {
 	Config::Settings::Controls cfg = m_cfg;
 
-	cfg.m_Mouse.m_InvertXAxis = m_invertYAxis->GetValue();
+	cfg.m_Mouse.m_InvertXAxis = m_invertXAxis->GetValue();
 	cfg.m_Mouse.m_InvertYAxis = m_invertYAxis->GetValue();
 	cfg.m_Mouse.m_MouseScaleX = m_mouseScaleX->GetValue();
 	cfg.m_Mouse.m_MouseScaleY = m_mouseScaleY->GetValue();
-	cfg.m_Mouse.m_SpellLeft = m_spellLeft->GetValue();
-	cfg.m_Mouse.m_SpellRight = m_spellRight->GetValue();
-	cfg.m_Mouse.m_Map = m_map->GetValue();
-	cfg.m_Mouse.m_SpellMenu = m_spellMenu->GetValue();
-	cfg.m_Mouse.m_SpellMenuMark = m_spellMenuMark->GetValue();
+	cfg.m_Mouse.m_SpellLeft = m_spellLeft->GetSelection();
+	cfg.m_Mouse.m_SpellRight = m_spellRight->GetSelection();
+	cfg.m_Mouse.m_Map = m_map->GetSelection();
+	cfg.m_Mouse.m_SpellMenu = m_spellMenu->GetSelection();
+	cfg.m_Mouse.m_SpellMenuMark = m_spellMenuMark->GetSelection();
 	cfg.m_Mouse.m_DisableLRButtonsMenuOpen = m_disableLRButtonsMenuOpen->GetValue();
 
 	return cfg;

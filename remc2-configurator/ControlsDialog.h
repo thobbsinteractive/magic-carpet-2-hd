@@ -19,11 +19,11 @@ private:
 	wxSpinCtrlDouble* m_mouseScaleX;
 	wxSpinCtrlDouble* m_mouseScaleY;
 
-	wxSpinCtrl* m_spellLeft;
-	wxSpinCtrl* m_spellRight;
-	wxSpinCtrl* m_map;
-	wxSpinCtrl* m_spellMenu;
-	wxSpinCtrl* m_spellMenuMark;
+	wxChoice* m_spellLeft;
+	wxChoice* m_spellRight;
+	wxChoice* m_map;
+	wxChoice* m_spellMenu;
+	wxChoice* m_spellMenuMark;
 
 	wxNotebook* m_notebook;
 
