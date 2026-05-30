@@ -2,7 +2,7 @@
 #include "PathHelpers.h"
 
 GraphicsFoldersDialog::GraphicsFoldersDialog(wxWindow* parent, const Config::Settings::GameDetail& d)
-	: wxDialog(parent, wxID_ANY, "Select Graphics Files Folders", wxDefaultPosition, wxSize(600, 200), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER), m_initialDetail(d)
+	: wxDialog(parent, wxID_ANY, "Select Graphics Files Folders", wxDefaultPosition, wxSize(600, 200)), m_initialDetail(d)
 {
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
 

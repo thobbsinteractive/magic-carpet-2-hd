@@ -3,8 +3,7 @@
 
 GameFilesDialog::GameFilesDialog(wxWindow* parent, const Config::Settings::Paths& p)
 	: wxDialog(parent, wxID_ANY, "Select Game Files Folders",
-		wxDefaultPosition, wxSize(440, 200),
-		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+		wxDefaultPosition, wxSize(440, 200))
 {
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
 

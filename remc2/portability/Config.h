@@ -100,26 +100,26 @@ public:
 			std::string m_Name = "";
 			bool m_InvertYAxis = true;
 			bool m_InvertXAxis = false;
-			float m_mouseScaleX = 1.0f;
-			float m_mouseScaleY = 1.0f;
-			bool m_disableLRButtonsMenuOpen = false;
-			uint16_t m_spellLeft = 1;
-			uint16_t m_spellRight = 2;
-			uint16_t m_map = 0;
-			uint16_t m_spellMenu = 0;
-			uint16_t m_spellMenuMark = 0;
+			float m_MouseScaleX = 1.0f;
+			float m_MouseScaleY = 1.0f;
+			bool m_DisableLRButtonsMenuOpen = false;
+			uint16_t m_SpellLeft = 1;
+			uint16_t m_SpellRight = 2;
+			uint16_t m_Map = 0;
+			uint16_t m_SpellMenu = 0;
+			uint16_t m_SpellMenuMark = 0;
 		};
 
 		struct Keyboard
 		{
 			std::string m_Name = "";
-			uint16_t m_forward = 0;
-			uint16_t m_backwards = 0;
-			uint16_t m_left = 0;
-			uint16_t m_right = 0;
-			uint16_t m_map = 0;
-			uint16_t m_spellMenu = 0;
-			uint16_t m_spellMenuMark = 0;
+			uint16_t m_Forward = 0;
+			uint16_t m_Backwards = 0;
+			uint16_t m_Left = 0;
+			uint16_t m_Right = 0;
+			uint16_t m_Map = 0;
+			uint16_t m_SpellMenu = 0;
+			uint16_t m_SpellMenuMark = 0;
 		};
 
 		struct GamePad

@@ -4,9 +4,8 @@
 #include <wx/dirdlg.h>
 
 GameDialog::GameDialog(wxWindow* parent, const Config::Settings::Game& g)
-	: wxDialog(parent, wxID_ANY, "Frames Per Second Settings",
-		wxDefaultPosition, wxSize(300, 200),
-		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+	: wxDialog(parent, wxID_ANY, "Speed Settings",
+		wxDefaultPosition, wxSize(300, 200))
 {
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
 

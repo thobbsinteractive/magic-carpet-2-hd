@@ -6,6 +6,7 @@
 #include "DisplayDialog.h"
 #include "GraphicsDialog.h"
 #include "PathHelpers.h"
+#include "ControlsDialog.h"
 
 class MainFrame : public wxFrame
 {

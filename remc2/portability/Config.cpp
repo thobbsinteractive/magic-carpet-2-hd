@@ -169,14 +169,14 @@ Config::Settings::Controls Config::GetControls(const json& settings)
 			{
 				controlValues.m_Mouse.m_InvertXAxis = ReadBoolValue(mouse, "invertXAxis");
 				controlValues.m_Mouse.m_InvertYAxis = ReadBoolValue(mouse, "invertYAxis");
-				controlValues.m_Mouse.m_mouseScaleX = ReadFloatValue(mouse, "mouseScaleX");
-				controlValues.m_Mouse.m_mouseScaleY = ReadFloatValue(mouse, "mouseScaleY");
-				controlValues.m_Mouse.m_disableLRButtonsMenuOpen = ReadBoolValue(mouse, "disableLRButtonsMenuOpen");
-				controlValues.m_Mouse.m_spellLeft = ReadIntValue(mouse, "spellLeft");
-				controlValues.m_Mouse.m_spellRight = ReadIntValue(mouse, "spellRight");
-				controlValues.m_Mouse.m_map = ReadIntValue(mouse, "map");
-				controlValues.m_Mouse.m_spellMenu = ReadIntValue(mouse, "spellMenu");
-				controlValues.m_Mouse.m_spellMenuMark = ReadIntValue(mouse, "spellMenuMark");
+				controlValues.m_Mouse.m_MouseScaleX = ReadFloatValue(mouse, "mouseScaleX");
+				controlValues.m_Mouse.m_MouseScaleY = ReadFloatValue(mouse, "mouseScaleY");
+				controlValues.m_Mouse.m_DisableLRButtonsMenuOpen = ReadBoolValue(mouse, "disableLRButtonsMenuOpen");
+				controlValues.m_Mouse.m_SpellLeft = ReadIntValue(mouse, "spellLeft");
+				controlValues.m_Mouse.m_SpellRight = ReadIntValue(mouse, "spellRight");
+				controlValues.m_Mouse.m_Map = ReadIntValue(mouse, "map");
+				controlValues.m_Mouse.m_SpellMenu = ReadIntValue(mouse, "spellMenu");
+				controlValues.m_Mouse.m_SpellMenuMark = ReadIntValue(mouse, "spellMenuMark");
 				break;
 			}
 		}
@@ -188,13 +188,13 @@ Config::Settings::Controls Config::GetControls(const json& settings)
 		{
 			if (keyboard.contains("isActive") && keyboard["isActive"].get<bool>() == true)
 			{
-				controlValues.m_Keyboard.m_forward = ReadKeyScancode(keyboard, "forward");
-				controlValues.m_Keyboard.m_backwards = ReadKeyScancode(keyboard, "backwards");
-				controlValues.m_Keyboard.m_left = ReadKeyScancode(keyboard, "left");
-				controlValues.m_Keyboard.m_right = ReadKeyScancode(keyboard, "right");
-				controlValues.m_Keyboard.m_map = ReadKeyScancode(keyboard, "map");
-				controlValues.m_Keyboard.m_spellMenu = ReadKeyScancode(keyboard, "spellMenu");
-				controlValues.m_Keyboard.m_spellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
+				controlValues.m_Keyboard.m_Forward = ReadKeyScancode(keyboard, "forward");
+				controlValues.m_Keyboard.m_Backwards = ReadKeyScancode(keyboard, "backwards");
+				controlValues.m_Keyboard.m_Left = ReadKeyScancode(keyboard, "left");
+				controlValues.m_Keyboard.m_Right = ReadKeyScancode(keyboard, "right");
+				controlValues.m_Keyboard.m_Map = ReadKeyScancode(keyboard, "map");
+				controlValues.m_Keyboard.m_SpellMenu = ReadKeyScancode(keyboard, "spellMenu");
+				controlValues.m_Keyboard.m_SpellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
 				break;
 			}
 		}
@@ -480,26 +480,26 @@ void Config::SaveControlsToDoc(Config::Settings::Controls controlSettings)
 	SetBool(mouse, "isActive", true);
 	SetBool(mouse, "invertXAxis", controlSettings.m_Mouse.m_InvertXAxis);
 	SetBool(mouse, "invertYAxis", controlSettings.m_Mouse.m_InvertYAxis);
-	SetFloat(mouse, "mouseScaleX", controlSettings.m_Mouse.m_mouseScaleX);
-	SetFloat(mouse, "mouseScaleY", controlSettings.m_Mouse.m_mouseScaleY);
-	SetBool(mouse, "disableLRButtonsMenuOpen", controlSettings.m_Mouse.m_disableLRButtonsMenuOpen);
-	SetInt(mouse, "spellLeft", controlSettings.m_Mouse.m_spellLeft);
-	SetInt(mouse, "spellRight", controlSettings.m_Mouse.m_spellRight);
-	SetInt(mouse, "map", controlSettings.m_Mouse.m_map);
-	SetInt(mouse, "spellMenu", controlSettings.m_Mouse.m_spellMenu);
-	SetInt(mouse, "spellMenuMark", controlSettings.m_Mouse.m_spellMenuMark);
+	SetFloat(mouse, "mouseScaleX", controlSettings.m_Mouse.m_MouseScaleX);
+	SetFloat(mouse, "mouseScaleY", controlSettings.m_Mouse.m_MouseScaleY);
+	SetBool(mouse, "disableLRButtonsMenuOpen", controlSettings.m_Mouse.m_DisableLRButtonsMenuOpen);
+	SetInt(mouse, "spellLeft", controlSettings.m_Mouse.m_SpellLeft);
+	SetInt(mouse, "spellRight", controlSettings.m_Mouse.m_SpellRight);
+	SetInt(mouse, "map", controlSettings.m_Mouse.m_Map);
+	SetInt(mouse, "spellMenu", controlSettings.m_Mouse.m_SpellMenu);
+	SetInt(mouse, "spellMenuMark", controlSettings.m_Mouse.m_SpellMenuMark);
 
 	if (!controls.contains("keyboard"))
 		controls["keyboard"] = json::array({ json::object() });
 	auto& keyboard = controls["keyboard"][0];
 	SetBool(keyboard, "isActive", true);
-	SetString(keyboard, "forward", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_forward));
-	SetString(keyboard, "backwards", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_backwards));
-	SetString(keyboard, "left", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_left));
-	SetString(keyboard, "right", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_right));
-	SetString(keyboard, "map", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_map));
-	SetString(keyboard, "spellMenu", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_spellMenu));
-	SetString(keyboard, "spellMenuMark", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_spellMenuMark));
+	SetString(keyboard, "forward", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Forward));
+	SetString(keyboard, "backwards", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Backwards));
+	SetString(keyboard, "left", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Left));
+	SetString(keyboard, "right", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Right));
+	SetString(keyboard, "map", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Map));
+	SetString(keyboard, "spellMenu", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenu));
+	SetString(keyboard, "spellMenuMark", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenuMark));
 }
 
 void Config::SaveSettings(json& document, Settings settings)

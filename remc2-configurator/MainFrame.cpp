@@ -13,7 +13,7 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	// ── Buttons ─────────────────────────────────────────────────────────────
 	wxButton* btnPlay = new wxButton(panel, ID_BTN_PLAY, "Play");
 	wxButton* btnFile = new wxButton(panel, ID_BTN_FILE, "Game Files");
-	wxButton* btnGame = new wxButton(panel, ID_BTN_GAME, "Frames Per Second");
+	wxButton* btnGame = new wxButton(panel, ID_BTN_GAME, "Speed");
 	wxButton* btnControls = new wxButton(panel, ID_BTN_CONTROLS, "Controls");
 	wxButton* btnSound = new wxButton(panel, ID_BTN_SOUND, "Sound");
 	wxButton* btnDisplay = new wxButton(panel, ID_BTN_DISPLAY, "Display");
@@ -99,7 +99,20 @@ void MainFrame::OnGame(wxCommandEvent&)
 	}
 }
 
-void MainFrame::OnControls(wxCommandEvent&) { wxLogMessage("Save clicked"); }
+void MainFrame::OnControls(wxCommandEvent&) 
+{ 
+	auto settings = m_ptrConfig->GetSettingsFromDoc();
+	ControlsDialog dlg(this, settings.m_Controls);
+	dlg.SetMinSize(wxSize(256, 256));
+	dlg.SetMaxSize(wxSize(256, 256));
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		auto controlSettings = dlg.GetSettings();
+		m_ptrConfig->SaveControlsToDoc(controlSettings);
+		m_ptrConfig->SaveToFile();
+		m_ptrConfig->GetSettingsFromDoc();
+	}
+}
 
 void MainFrame::OnSound(wxCommandEvent&)
 {
