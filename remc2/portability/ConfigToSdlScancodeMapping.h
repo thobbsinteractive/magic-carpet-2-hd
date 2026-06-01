@@ -236,6 +236,11 @@ public:
 		m_ConfigToSdlScancodeMap["RGUI"] = SDL_SCANCODE_RGUI;
 	}
 
+	std::map<std::string, SDL_Scancode> GetScancodeMap()
+	{
+		return m_ConfigToSdlScancodeMap;
+	}
+
 	SDL_Scancode GetScancode(std::string text)
 	{
 		if (m_ConfigToSdlScancodeMap.count(text) > 0)

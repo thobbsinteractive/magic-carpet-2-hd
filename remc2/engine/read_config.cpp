@@ -242,23 +242,23 @@ bool SetConfig() {
 	invertXAxis = settingsValue.m_Controls.m_Mouse.m_InvertXAxis;
 
 	//Mouse
-	mouseScaleX = settingsValue.m_Controls.m_Mouse.m_mouseScaleX;
-	mouseScaleY = settingsValue.m_Controls.m_Mouse.m_mouseScaleY;
-	disableLRButtonsMenuOpen = settingsValue.m_Controls.m_Mouse.m_disableLRButtonsMenuOpen;
-	mouseMapping.SpellLeft = settingsValue.m_Controls.m_Mouse.m_spellLeft;
-	mouseMapping.SpellRight = settingsValue.m_Controls.m_Mouse.m_spellRight;
-	mouseMapping.map = settingsValue.m_Controls.m_Mouse.m_map;
-	mouseMapping.SpellMenu = settingsValue.m_Controls.m_Mouse.m_spellMenu;
-	mouseMapping.SpellMenuMark = settingsValue.m_Controls.m_Mouse.m_spellMenuMark;
+	mouseScaleX = settingsValue.m_Controls.m_Mouse.m_MouseScaleX;
+	mouseScaleY = settingsValue.m_Controls.m_Mouse.m_MouseScaleY;
+	disableLRButtonsMenuOpen = settingsValue.m_Controls.m_Mouse.m_DisableLRButtonsMenuOpen;
+	mouseMapping.SpellLeft = settingsValue.m_Controls.m_Mouse.m_SpellLeft;
+	mouseMapping.SpellRight = settingsValue.m_Controls.m_Mouse.m_SpellRight;
+	mouseMapping.map = settingsValue.m_Controls.m_Mouse.m_Map;
+	mouseMapping.SpellMenu = settingsValue.m_Controls.m_Mouse.m_SpellMenu;
+	mouseMapping.SpellMenuMark = settingsValue.m_Controls.m_Mouse.m_SpellMenuMark;
 
 	//Keyboard
-	inputMapping.Forward = settingsValue.m_Controls.m_Keyboard.m_forward;
-	inputMapping.Backwards = settingsValue.m_Controls.m_Keyboard.m_backwards;
-	inputMapping.Left = settingsValue.m_Controls.m_Keyboard.m_left;
-	inputMapping.Right = settingsValue.m_Controls.m_Keyboard.m_right;
-	inputMapping.Map = settingsValue.m_Controls.m_Keyboard.m_map;
-	inputMapping.SpellMenu = settingsValue.m_Controls.m_Keyboard.m_spellMenu;
-	inputMapping.SpellMenuMark = settingsValue.m_Controls.m_Keyboard.m_spellMenuMark;
+	inputMapping.Forward = settingsValue.m_Controls.m_Keyboard.m_Forward;
+	inputMapping.Backwards = settingsValue.m_Controls.m_Keyboard.m_Backwards;
+	inputMapping.Left = settingsValue.m_Controls.m_Keyboard.m_Left;
+	inputMapping.Right = settingsValue.m_Controls.m_Keyboard.m_Right;
+	inputMapping.Map = settingsValue.m_Controls.m_Keyboard.m_Map;
+	inputMapping.SpellMenu = settingsValue.m_Controls.m_Keyboard.m_SpellMenu;
+	inputMapping.SpellMenuMark = settingsValue.m_Controls.m_Keyboard.m_SpellMenuMark;
 
 	gpc.axis_yaw = settingsValue.m_Controls.m_GamePad.m_AxisYaw;
 	gpc.axis_pitch = settingsValue.m_Controls.m_GamePad.m_AxisPitch;
