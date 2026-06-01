@@ -131,96 +131,81 @@ void ControlsDialog::CreateKeyboardPage()
 			wxID_ANY,
 			"Classic");
 
-	buttonRow->Add(
-		m_modernButton,
-		1,
-		wxEXPAND | wxRIGHT,
-		5);
+	buttonRow->Add(m_modernButton, 1, wxEXPAND | wxRIGHT,5);
+	buttonRow->Add(m_classicButton, 1, wxEXPAND);
 
-	buttonRow->Add(
-		m_classicButton,
-		1,
-		wxEXPAND);
+	presetSizer->Add(buttonRow, 0, wxEXPAND | wxALL, 5);
 
-	presetSizer->Add(
-		buttonRow,
-		0,
-		wxEXPAND | wxALL,
-		5);
+	m_modernButton->Bind(wxEVT_BUTTON, &ControlsDialog::OnModernLayout, this);
+	m_classicButton->Bind(wxEVT_BUTTON, &ControlsDialog::OnClassicLayout, this);
 
-	m_modernButton->Bind(
-		wxEVT_BUTTON,
-		&ControlsDialog::OnModernLayout,
-		this);
-
-	m_classicButton->Bind(
-		wxEVT_BUTTON,
-		&ControlsDialog::OnClassicLayout,
-		this);
-
-	sizer->Add(
-		presetSizer,
-		0,
-		wxEXPAND | wxALL,
-		5);
+	sizer->Add(presetSizer, 0, wxEXPAND | wxALL, 5);
 
 	//
 	// Key bindings
 	//
-	wxStaticBoxSizer* bindingsSizer =
-		new wxStaticBoxSizer(
-			wxVERTICAL,
-			m_keyboardPage,
-			"Key Bindings");
+	wxStaticBoxSizer* bindingsSizer = new wxStaticBoxSizer(wxVERTICAL, m_keyboardPage, "Key Bindings");
 
 	const wxArrayString keyChoices = GetAvailableKeys();
 
-	auto addKeyRow =
-		[&](const wxString& label,
-			wxChoice*& ctrl)
-		{
-			wxBoxSizer* row = new wxBoxSizer(wxHORIZONTAL);
+	// Forward
+	wxBoxSizer* forwardRow = new wxBoxSizer(wxHORIZONTAL);
+	forwardRow->Add(new wxStaticText(m_keyboardPage, wxID_ANY, "Forward:"), 1, wxALIGN_CENTER_VERTICAL);
+	m_forwardKey = new wxChoice(m_keyboardPage, wxID_ANY, wxDefaultPosition, wxDefaultSize, keyChoices);
+	SetChoiceValue(m_forwardKey, m_configToSdlScancode.GetName(m_cfg.m_Keyboard.m_Forward));
+	forwardRow->Add(m_forwardKey, 1, wxEXPAND);
+	bindingsSizer->Add(forwardRow, 0, wxEXPAND | wxALL, 5);
 
-			row->Add(
-				new wxStaticText(
-					m_keyboardPage,
-					wxID_ANY,
-					label),
-				1,
-				wxALIGN_CENTER_VERTICAL);
+	// Backwards
+	wxBoxSizer* backwardsRow = new wxBoxSizer(wxHORIZONTAL);
+	backwardsRow->Add(new wxStaticText(m_keyboardPage, wxID_ANY, "Backwards:"), 1, wxALIGN_CENTER_VERTICAL);
+	m_backwardsKey = new wxChoice(m_keyboardPage, wxID_ANY, wxDefaultPosition, wxDefaultSize, keyChoices);
+	SetChoiceValue(m_backwardsKey, m_configToSdlScancode.GetName(m_cfg.m_Keyboard.m_Backwards));
+	backwardsRow->Add(m_backwardsKey, 1, wxEXPAND);
+	bindingsSizer->Add(backwardsRow, 0, wxEXPAND | wxALL, 5);
 
-			ctrl = new wxChoice(
-				m_keyboardPage,
-				wxID_ANY,
-				wxDefaultPosition,
-				wxDefaultSize,
-				keyChoices);
+	// Left
+	wxBoxSizer* leftRow = new wxBoxSizer(wxHORIZONTAL);
+	leftRow->Add(new wxStaticText(m_keyboardPage, wxID_ANY, "Move Left:"), 1, wxALIGN_CENTER_VERTICAL);
+	m_leftKey = new wxChoice(m_keyboardPage, wxID_ANY, wxDefaultPosition, wxDefaultSize, keyChoices);
+	SetChoiceValue(m_leftKey, m_configToSdlScancode.GetName(m_cfg.m_Keyboard.m_Left));
+	leftRow->Add(m_leftKey, 1, wxEXPAND);
+	bindingsSizer->Add(leftRow, 0, wxEXPAND | wxALL, 5);
 
-			row->Add(
-				ctrl,
-				1,
-				wxEXPAND);
+	// Right
+	wxBoxSizer* rightRow = new wxBoxSizer(wxHORIZONTAL);
+	rightRow->Add(new wxStaticText(m_keyboardPage, wxID_ANY, "Move Right:"), 1, wxALIGN_CENTER_VERTICAL);
+	m_rightKey = new wxChoice(m_keyboardPage, wxID_ANY, wxDefaultPosition, wxDefaultSize, keyChoices);
+	SetChoiceValue(m_rightKey, m_configToSdlScancode.GetName(m_cfg.m_Keyboard.m_Right));
+	rightRow->Add(m_rightKey, 1, wxEXPAND);
+	bindingsSizer->Add(rightRow, 0, wxEXPAND | wxALL, 5);
 
-			bindingsSizer->Add(
-				row,
-				0,
-				wxEXPAND | wxALL,
-				5);
-		};
+	// Map
+	wxBoxSizer* mapRow = new wxBoxSizer(wxHORIZONTAL);
+	mapRow->Add(new wxStaticText(m_keyboardPage, wxID_ANY, "Open Map:"), 1, wxALIGN_CENTER_VERTICAL);
+	m_mapKey = new wxChoice(m_keyboardPage, wxID_ANY, wxDefaultPosition, wxDefaultSize, keyChoices);
+	SetChoiceValue(m_mapKey, m_configToSdlScancode.GetName(m_cfg.m_Keyboard.m_Map));
+	mapRow->Add(m_mapKey, 1, wxEXPAND);
+	bindingsSizer->Add(mapRow, 0, wxEXPAND | wxALL, 5);
 
-	addKeyRow("Forward:", m_forwardKey);
-	addKeyRow("Backwards:", m_backwardsKey);
-	addKeyRow("Left:", m_leftKey);
-	addKeyRow("Right:", m_rightKey);
-	addKeyRow("Map:", m_mapKey);
-	addKeyRow("Spell Menu:", m_spellMenuKey);
-	addKeyRow("Mark:", m_spellMenuMarkKey);
+	// Spell Menu
+	wxBoxSizer* spellMenuRow = new wxBoxSizer(wxHORIZONTAL);
+	spellMenuRow->Add(new wxStaticText(m_keyboardPage, wxID_ANY, "Open Spell Menu:"), 1, wxALIGN_CENTER_VERTICAL);
+	m_spellMenuKey = new wxChoice(m_keyboardPage, wxID_ANY, wxDefaultPosition, wxDefaultSize, keyChoices);
+	SetChoiceValue(m_spellMenuKey, m_configToSdlScancode.GetName(m_cfg.m_Keyboard.m_SpellMenu));
+	spellMenuRow->Add(m_spellMenuKey, 1, wxEXPAND);
+	bindingsSizer->Add(spellMenuRow, 0, wxEXPAND | wxALL, 5);
 
-	sizer->Add(
-		bindingsSizer,
-		1,
-		wxEXPAND | wxALL,
-		5);
+	// Mark
+	wxBoxSizer* markRow = new wxBoxSizer(wxHORIZONTAL);
+	markRow->Add(new wxStaticText(m_keyboardPage, wxID_ANY, "Favourite Spell:"), 1, wxALIGN_CENTER_VERTICAL);
+	m_spellMenuMarkKey = new wxChoice(m_keyboardPage, wxID_ANY, wxDefaultPosition, wxDefaultSize, keyChoices);
+	SetChoiceValue(m_spellMenuMarkKey, m_configToSdlScancode.GetName(m_cfg.m_Keyboard.m_SpellMenuMark));
+	markRow->Add(m_spellMenuMarkKey, 1, wxEXPAND);
+
+	bindingsSizer->Add(markRow, 0, wxEXPAND | wxALL, 5);
+
+	sizer->Add(bindingsSizer, 1, wxEXPAND | wxALL, 5);
 
 	m_keyboardPage->SetSizer(sizer);
 }
