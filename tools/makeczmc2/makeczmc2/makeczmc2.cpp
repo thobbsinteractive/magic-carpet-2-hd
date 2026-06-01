@@ -112,6 +112,7 @@ char* encodeDiakritics(char* text) {
 		{(unsigned char)'ø', 192},
 		{(unsigned char)'„', 34},
 		{(unsigned char)'”', 34},
+		{(unsigned char)',', 221},
 	};
 	int tableSize = sizeof(table) / sizeof(table[0]);
 	int len = strlen(text);
