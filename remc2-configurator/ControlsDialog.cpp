@@ -109,34 +109,54 @@ void ControlsDialog::CreateKeyboardPage()
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
 	//
-	// Layout preset
+	// Layout presets
 	//
 	wxStaticBoxSizer* presetSizer =
-		new wxStaticBoxSizer(wxVERTICAL,
+		new wxStaticBoxSizer(
+			wxVERTICAL,
 			m_keyboardPage,
 			"Keyboard Layout");
 
-	const wxString layouts[] =
-	{
-		"Modern",
-		"Classic"
-	};
+	wxBoxSizer* buttonRow = new wxBoxSizer(wxHORIZONTAL);
 
-	m_keyboardLayout = new wxChoice(
-		m_keyboardPage,
-		wxID_ANY,
-		wxDefaultPosition,
-		wxDefaultSize,
-		WXSIZEOF(layouts),
-		layouts);
+	m_modernButton =
+		new wxButton(
+			m_keyboardPage,
+			wxID_ANY,
+			"Modern");
 
-	m_keyboardLayout->SetSelection(0);
+	m_classicButton =
+		new wxButton(
+			m_keyboardPage,
+			wxID_ANY,
+			"Classic");
+
+	buttonRow->Add(
+		m_modernButton,
+		1,
+		wxEXPAND | wxRIGHT,
+		5);
+
+	buttonRow->Add(
+		m_classicButton,
+		1,
+		wxEXPAND);
 
 	presetSizer->Add(
-		m_keyboardLayout,
+		buttonRow,
 		0,
 		wxEXPAND | wxALL,
 		5);
+
+	m_modernButton->Bind(
+		wxEVT_BUTTON,
+		&ControlsDialog::OnModernLayout,
+		this);
+
+	m_classicButton->Bind(
+		wxEVT_BUTTON,
+		&ControlsDialog::OnClassicLayout,
+		this);
 
 	sizer->Add(
 		presetSizer,
@@ -148,7 +168,8 @@ void ControlsDialog::CreateKeyboardPage()
 	// Key bindings
 	//
 	wxStaticBoxSizer* bindingsSizer =
-		new wxStaticBoxSizer(wxVERTICAL,
+		new wxStaticBoxSizer(
+			wxVERTICAL,
 			m_keyboardPage,
 			"Key Bindings");
 
@@ -156,8 +177,7 @@ void ControlsDialog::CreateKeyboardPage()
 
 	auto addKeyRow =
 		[&](const wxString& label,
-			wxChoice*& ctrl,
-			const wxString& defaultKey)
+			wxChoice*& ctrl)
 		{
 			wxBoxSizer* row = new wxBoxSizer(wxHORIZONTAL);
 
@@ -176,11 +196,6 @@ void ControlsDialog::CreateKeyboardPage()
 				wxDefaultSize,
 				keyChoices);
 
-			int idx = ctrl->FindString(defaultKey);
-
-			if (idx != wxNOT_FOUND)
-				ctrl->SetSelection(idx);
-
 			row->Add(
 				ctrl,
 				1,
@@ -193,13 +208,13 @@ void ControlsDialog::CreateKeyboardPage()
 				5);
 		};
 
-	addKeyRow("Forward:", m_forwardKey, "W");
-	addKeyRow("Backwards:", m_backwardsKey, "S");
-	addKeyRow("Left:", m_leftKey, "A");
-	addKeyRow("Right:", m_rightKey, "D");
-	addKeyRow("Map:", m_mapKey, "TAB");
-	addKeyRow("Spell Menu:", m_spellMenuKey, "LCTRL");
-	addKeyRow("Mark:", m_spellMenuMarkKey, "LSHIFT");
+	addKeyRow("Forward:", m_forwardKey);
+	addKeyRow("Backwards:", m_backwardsKey);
+	addKeyRow("Left:", m_leftKey);
+	addKeyRow("Right:", m_rightKey);
+	addKeyRow("Map:", m_mapKey);
+	addKeyRow("Spell Menu:", m_spellMenuKey);
+	addKeyRow("Mark:", m_spellMenuMarkKey);
 
 	sizer->Add(
 		bindingsSizer,
@@ -210,6 +225,16 @@ void ControlsDialog::CreateKeyboardPage()
 	m_keyboardPage->SetSizer(sizer);
 }
 
+void ControlsDialog::OnModernLayout(wxCommandEvent&)
+{
+	LoadKeyboardLayout("Modern");
+}
+
+void ControlsDialog::OnClassicLayout(wxCommandEvent&)
+{
+	LoadKeyboardLayout("Classic");
+}
+
 void ControlsDialog::CreateJoystickPage()
 {
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
@@ -217,16 +242,32 @@ void ControlsDialog::CreateJoystickPage()
 	m_joystickPage->SetSizer(sizer);
 }
 
-//void ControlsDialog::LoadKeyboardLayout(size_t index)
-//{
-//	//SetChoiceValue(m_forwardKey, layout.m_Forward);
-//	//SetChoiceValue(m_backwardsKey, layout.m_Backwards);
-//	//SetChoiceValue(m_leftKey, layout.m_Left);
-//	//SetChoiceValue(m_rightKey, layout.m_Right);
-//	//SetChoiceValue(m_mapKey, layout.m_Map);
-//	//SetChoiceValue(m_spellMenuKey, layout.m_SpellMenu);
-//	//SetChoiceValue(m_spellMenuMarkKey, layout.m_SpellMenuMark);
-//}
+void ControlsDialog::LoadKeyboardLayout(const wxString& layoutName)
+{
+	if (layoutName.ToStdString() == "Modern")
+	{
+		SetChoiceValue(m_forwardKey, "W");
+		SetChoiceValue(m_backwardsKey, "S");
+		SetChoiceValue(m_leftKey, "A");
+		SetChoiceValue(m_rightKey, "D");
+		SetChoiceValue(m_mapKey, "TAB");
+		SetChoiceValue(m_spellMenuKey, "LCTRL");
+		SetChoiceValue(m_spellMenuMarkKey, "LSHIFT");
+		return;
+	}
+	
+	if (layoutName.ToStdString() == "Classic")
+	{
+		SetChoiceValue(m_forwardKey, "UP");
+		SetChoiceValue(m_backwardsKey, "DOWN");
+		SetChoiceValue(m_leftKey, "LEFT");
+		SetChoiceValue(m_rightKey, "RIGHT");
+		SetChoiceValue(m_mapKey, "RETURN");
+		SetChoiceValue(m_spellMenuKey, "RCTRL");
+		SetChoiceValue(m_spellMenuMarkKey, "RSHIFT");
+		return;
+	}
+}
 
 void ControlsDialog::SetChoiceValue(wxChoice* choice, const wxString& value)
 {
@@ -276,9 +317,4 @@ Config::Settings::Controls ControlsDialog::GetSettings() const
 	cfg.m_Keyboard.m_SpellMenuMark = m_spellMenuMark->GetSelection();
 
 	return cfg;
-}
-
-void ControlsDialog::OnKeyboardLayoutChanged(wxCommandEvent& event)
-{
-
 }

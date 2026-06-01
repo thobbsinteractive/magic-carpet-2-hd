@@ -29,7 +29,8 @@ private:
 	wxChoice* m_spellMenuMark;
 
 	// Keyboard tab widgets
-	wxChoice* m_keyboardLayout = nullptr;
+	wxButton* m_modernButton = nullptr;
+	wxButton* m_classicButton = nullptr;
 
 	wxChoice* m_forwardKey = nullptr;
 	wxChoice* m_backwardsKey = nullptr;
@@ -47,10 +48,12 @@ private:
 
 	Config::Settings::Controls m_cfg;
 	void SetChoiceValue(wxChoice* choice, const wxString& value);
+	void OnModernLayout(wxCommandEvent&);
+	void OnClassicLayout(wxCommandEvent&);
+	void LoadKeyboardLayout(const wxString& layoutName);
 
 	void CreateMousePage();
 	void CreateKeyboardPage();
 	void CreateJoystickPage();
 	wxArrayString GetAvailableKeys() const;
-	void OnKeyboardLayoutChanged(wxCommandEvent& event);
 };
