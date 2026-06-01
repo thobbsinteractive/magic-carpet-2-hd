@@ -56,4 +56,5 @@ private:
 	void CreateKeyboardPage();
 	void CreateJoystickPage();
 	wxArrayString GetAvailableKeys() const;
+	void OnOK(wxCommandEvent&);
 };

@@ -26,6 +26,22 @@ ControlsDialog::ControlsDialog(wxWindow* parent, const Config::Settings::Control
 	mainSizer->Add(m_notebook, 1, wxEXPAND | wxALL, 5);
 	SetSizerAndFit(mainSizer);
 	Centre(wxBOTH);
+
+	// ── OK / Cancel ───────────────────────────────────────────────────────────
+	auto* btnSizer = new wxStdDialogButtonSizer();
+	auto* btnOK = new wxButton(this, wxID_OK, "OK");
+	auto* btnCancel = new wxButton(this, wxID_CANCEL, "Cancel");
+	btnOK->SetDefault();
+	btnSizer->AddButton(btnOK);
+	btnSizer->AddButton(btnCancel);
+	btnSizer->Realize();
+	mainSizer->Add(btnSizer, 0, wxEXPAND | wxALL, 10);
+
+	SetSizer(mainSizer);
+	btnOK->Bind(wxEVT_BUTTON, &ControlsDialog::OnOK, this);
+
+	SetSizerAndFit(mainSizer);
+	Centre(wxBOTH);
 }
 
 void ControlsDialog::CreateMousePage()
@@ -302,4 +318,9 @@ Config::Settings::Controls ControlsDialog::GetSettings() const
 	cfg.m_Keyboard.m_SpellMenuMark = m_spellMenuMark->GetSelection();
 
 	return cfg;
+}
+
+void ControlsDialog::OnOK(wxCommandEvent&)
+{
+	EndModal(wxID_OK);
 }
