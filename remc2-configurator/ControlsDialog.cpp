@@ -1,5 +1,7 @@
 #include "ControlsDialog.h"
 
+ConfigToSdlScancode ControlsDialog::m_configToSdlScancode;
+
 ControlsDialog::ControlsDialog(wxWindow* parent, const Config::Settings::Controls& cfg)
 	: wxDialog(parent, wxID_ANY, "Controls Settings",
 		wxDefaultPosition, wxSize(264, 500))
@@ -105,7 +107,106 @@ void ControlsDialog::CreateMousePage()
 void ControlsDialog::CreateKeyboardPage()
 {
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-	// Add keyboard controls here
+
+	//
+	// Layout preset
+	//
+	wxStaticBoxSizer* presetSizer =
+		new wxStaticBoxSizer(wxVERTICAL,
+			m_keyboardPage,
+			"Keyboard Layout");
+
+	const wxString layouts[] =
+	{
+		"Modern",
+		"Classic"
+	};
+
+	m_keyboardLayout = new wxChoice(
+		m_keyboardPage,
+		wxID_ANY,
+		wxDefaultPosition,
+		wxDefaultSize,
+		WXSIZEOF(layouts),
+		layouts);
+
+	m_keyboardLayout->SetSelection(0);
+
+	presetSizer->Add(
+		m_keyboardLayout,
+		0,
+		wxEXPAND | wxALL,
+		5);
+
+	sizer->Add(
+		presetSizer,
+		0,
+		wxEXPAND | wxALL,
+		5);
+
+	//
+	// Key bindings
+	//
+	wxStaticBoxSizer* bindingsSizer =
+		new wxStaticBoxSizer(wxVERTICAL,
+			m_keyboardPage,
+			"Key Bindings");
+
+	const wxArrayString keyChoices = GetAvailableKeys();
+
+	auto addKeyRow =
+		[&](const wxString& label,
+			wxChoice*& ctrl,
+			const wxString& defaultKey)
+		{
+			wxBoxSizer* row = new wxBoxSizer(wxHORIZONTAL);
+
+			row->Add(
+				new wxStaticText(
+					m_keyboardPage,
+					wxID_ANY,
+					label),
+				1,
+				wxALIGN_CENTER_VERTICAL);
+
+			ctrl = new wxChoice(
+				m_keyboardPage,
+				wxID_ANY,
+				wxDefaultPosition,
+				wxDefaultSize,
+				keyChoices);
+
+			int idx = ctrl->FindString(defaultKey);
+
+			if (idx != wxNOT_FOUND)
+				ctrl->SetSelection(idx);
+
+			row->Add(
+				ctrl,
+				1,
+				wxEXPAND);
+
+			bindingsSizer->Add(
+				row,
+				0,
+				wxEXPAND | wxALL,
+				5);
+		};
+
+	addKeyRow("Forward:", m_forwardKey, "W");
+	addKeyRow("Backwards:", m_backwardsKey, "S");
+	addKeyRow("Left:", m_leftKey, "A");
+	addKeyRow("Right:", m_rightKey, "D");
+	addKeyRow("Map:", m_mapKey, "TAB");
+	addKeyRow("Spell Menu:", m_spellMenuKey, "LCTRL");
+	addKeyRow("Mark:", m_spellMenuMarkKey, "LSHIFT");
+
+	sizer->Add(
+		bindingsSizer,
+		1,
+		wxEXPAND | wxALL,
+		5);
+
 	m_keyboardPage->SetSizer(sizer);
 }
 
@@ -114,6 +215,41 @@ void ControlsDialog::CreateJoystickPage()
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 	// Add joystick controls here
 	m_joystickPage->SetSizer(sizer);
+}
+
+//void ControlsDialog::LoadKeyboardLayout(size_t index)
+//{
+//	//SetChoiceValue(m_forwardKey, layout.m_Forward);
+//	//SetChoiceValue(m_backwardsKey, layout.m_Backwards);
+//	//SetChoiceValue(m_leftKey, layout.m_Left);
+//	//SetChoiceValue(m_rightKey, layout.m_Right);
+//	//SetChoiceValue(m_mapKey, layout.m_Map);
+//	//SetChoiceValue(m_spellMenuKey, layout.m_SpellMenu);
+//	//SetChoiceValue(m_spellMenuMarkKey, layout.m_SpellMenuMark);
+//}
+
+void ControlsDialog::SetChoiceValue(wxChoice* choice, const wxString& value)
+{
+	int idx = choice->FindString(value);
+
+	if (idx != wxNOT_FOUND)
+		choice->SetSelection(idx);
+}
+
+
+wxArrayString ControlsDialog::GetAvailableKeys() const
+{
+	wxArrayString keys;
+
+	for (const auto& [name, scancode] : m_configToSdlScancode.GetScancodeMap())
+	{
+		if (!name.empty())
+			keys.Add(wxString(name));
+	}
+
+	keys.Sort();
+
+	return keys;
 }
 
 Config::Settings::Controls ControlsDialog::GetSettings() const
@@ -131,5 +267,18 @@ Config::Settings::Controls ControlsDialog::GetSettings() const
 	cfg.m_Mouse.m_SpellMenuMark = m_spellMenuMark->GetSelection();
 	cfg.m_Mouse.m_DisableLRButtonsMenuOpen = m_disableLRButtonsMenuOpen->GetValue();
 
+	cfg.m_Keyboard.m_Forward = m_forwardKey->GetSelection();
+	cfg.m_Keyboard.m_Backwards = m_backwardsKey->GetSelection();
+	cfg.m_Keyboard.m_Left = m_leftKey->GetSelection();
+	cfg.m_Keyboard.m_Right = m_rightKey->GetSelection();
+	cfg.m_Keyboard.m_Map = m_mapKey->GetSelection();
+	cfg.m_Keyboard.m_SpellMenu = m_spellMenu->GetSelection();
+	cfg.m_Keyboard.m_SpellMenuMark = m_spellMenuMark->GetSelection();
+
 	return cfg;
+}
+
+void ControlsDialog::OnKeyboardLayoutChanged(wxCommandEvent& event)
+{
+
 }

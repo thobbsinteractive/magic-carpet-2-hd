@@ -74,9 +74,6 @@
     <ClInclude Include="..\remc2\portability\Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\remc2\portability\ConfigToSdlScancodeMapping.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsFoldersDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -151,7 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\remc2\portability\Config.h" />
-    <ClInclude Include="..\remc2\portability\ConfigToSdlScancodeMapping.h" />
     <ClInclude Include="ControlsDialog.h" />
     <ClInclude Include="GameDialog.h" />
     <ClInclude Include="GameFilesDialog.h" />

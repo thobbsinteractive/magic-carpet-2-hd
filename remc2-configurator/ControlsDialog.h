@@ -11,6 +11,9 @@ public:
 	Config::Settings::Controls GetSettings() const;
 
 private:
+
+	static ConfigToSdlScancode m_configToSdlScancode;
+
 	// Mouse tab widgets
 	wxCheckBox* m_invertYAxis;
 	wxCheckBox* m_invertXAxis;
@@ -25,6 +28,17 @@ private:
 	wxChoice* m_spellMenu;
 	wxChoice* m_spellMenuMark;
 
+	// Keyboard tab widgets
+	wxChoice* m_keyboardLayout = nullptr;
+
+	wxChoice* m_forwardKey = nullptr;
+	wxChoice* m_backwardsKey = nullptr;
+	wxChoice* m_leftKey = nullptr;
+	wxChoice* m_rightKey = nullptr;
+	wxChoice* m_mapKey = nullptr;
+	wxChoice* m_spellMenuKey = nullptr;
+	wxChoice* m_spellMenuMarkKey = nullptr;
+
 	wxNotebook* m_notebook;
 
 	wxPanel* m_mousePage;
@@ -32,8 +46,11 @@ private:
 	wxPanel* m_joystickPage;
 
 	Config::Settings::Controls m_cfg;
+	void SetChoiceValue(wxChoice* choice, const wxString& value);
 
 	void CreateMousePage();
 	void CreateKeyboardPage();
 	void CreateJoystickPage();
+	wxArrayString GetAvailableKeys() const;
+	void OnKeyboardLayoutChanged(wxCommandEvent& event);
 };
