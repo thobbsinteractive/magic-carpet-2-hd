@@ -56,5 +56,6 @@ private:
 	void CreateKeyboardPage();
 	void CreateJoystickPage();
 	wxArrayString GetAvailableKeys() const;
+	SDL_Scancode GetSelectedScancode(wxChoice* choice) const;
 	void OnOK(wxCommandEvent&);
 };

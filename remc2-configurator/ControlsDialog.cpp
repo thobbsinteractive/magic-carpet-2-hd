@@ -294,6 +294,14 @@ wxArrayString ControlsDialog::GetAvailableKeys() const
 	return keys;
 }
 
+SDL_Scancode ControlsDialog::GetSelectedScancode(wxChoice* choice) const
+{
+	int sel = choice->GetSelection();
+	wxString str = choice->GetString(choice->GetSelection());
+	SDL_Scancode code = m_configToSdlScancode.GetScancode(choice->GetString(choice->GetSelection()).ToStdString());
+	return code;
+}
+
 Config::Settings::Controls ControlsDialog::GetSettings() const
 {
 	Config::Settings::Controls cfg = m_cfg;
@@ -309,13 +317,13 @@ Config::Settings::Controls ControlsDialog::GetSettings() const
 	cfg.m_Mouse.m_SpellMenuMark = m_spellMenuMark->GetSelection();
 	cfg.m_Mouse.m_DisableLRButtonsMenuOpen = m_disableLRButtonsMenuOpen->GetValue();
 
-	cfg.m_Keyboard.m_Forward = m_forwardKey->GetSelection();
-	cfg.m_Keyboard.m_Backwards = m_backwardsKey->GetSelection();
-	cfg.m_Keyboard.m_Left = m_leftKey->GetSelection();
-	cfg.m_Keyboard.m_Right = m_rightKey->GetSelection();
-	cfg.m_Keyboard.m_Map = m_mapKey->GetSelection();
-	cfg.m_Keyboard.m_SpellMenu = m_spellMenu->GetSelection();
-	cfg.m_Keyboard.m_SpellMenuMark = m_spellMenuMark->GetSelection();
+	cfg.m_Keyboard.m_Forward = GetSelectedScancode(m_forwardKey);
+	cfg.m_Keyboard.m_Backwards = GetSelectedScancode(m_backwardsKey);
+	cfg.m_Keyboard.m_Left = GetSelectedScancode(m_leftKey);
+	cfg.m_Keyboard.m_Right = GetSelectedScancode(m_rightKey);
+	cfg.m_Keyboard.m_Map = GetSelectedScancode(m_mapKey);
+	cfg.m_Keyboard.m_SpellMenu = GetSelectedScancode(m_spellMenuKey);
+	cfg.m_Keyboard.m_SpellMenuMark = GetSelectedScancode(m_spellMenuMarkKey);
 
 	return cfg;
 }
