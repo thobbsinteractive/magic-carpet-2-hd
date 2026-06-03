@@ -283,13 +283,11 @@ wxArrayString ControlsDialog::GetAvailableKeys() const
 {
 	wxArrayString keys;
 
-	for (const auto& [name, scancode] : m_configToSdlScancode.GetScancodeMap())
+	for (const auto& [scancode, name] : m_configToSdlScancode.GetScancodeMap())
 	{
 		if (!name.empty())
 			keys.Add(wxString(name));
 	}
-
-	keys.Sort();
 
 	return keys;
 }
