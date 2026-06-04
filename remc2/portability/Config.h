@@ -27,6 +27,7 @@ private:
 	void SetInt(json& obj, const char* key, int value);
 	void SetFloat(json& obj, const char* key, float value);
 	void SetBool(json& obj, const char* key, bool value);
+	void SetZones(json& obj, const char* key,const std::vector<Maths::Zone>& zones);
 	json& GetOrCreateActiveSettingsEntry();
 	json& GetOrCreate(json& parent, const char* key);
 

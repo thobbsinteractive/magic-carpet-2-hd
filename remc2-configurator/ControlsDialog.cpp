@@ -383,15 +383,15 @@ void ControlsDialog::CreateJoystickPage()
 	yawDeadZoneRow->Add(m_axisYawDeadZone, 1, wxEXPAND);
 	yawGroup->Add(yawDeadZoneRow, 0, wxEXPAND | wxALL, 5);
 
-	m_axisYawZones = m_cfg.m_GamePad.m_AxisYawSensitivity;
-	m_axisYawZonesButton = new wxButton(m_joystickPage, wxID_ANY, "Edit Yaw Sensitivity...");
-	m_axisYawZonesButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+	m_axisYawSensitivity = m_cfg.m_GamePad.m_AxisYawSensitivity;
+	m_axisYawSensitivityButton = new wxButton(m_joystickPage, wxID_ANY, "Edit Yaw Sensitivity...");
+	m_axisYawSensitivityButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
 		{
-			ZoneEditorDialog dlg(this, m_axisYawZones);
+			ZoneEditorDialog dlg(this, m_axisYawSensitivity);
 			if (dlg.ShowModal() == wxID_OK)
-				m_axisYawZones = dlg.GetZones();
+				m_axisYawSensitivity = dlg.GetZones();
 		});
-	yawGroup->Add(m_axisYawZonesButton, 0, wxEXPAND | wxALL, 5);
+	yawGroup->Add(m_axisYawSensitivityButton, 0, wxEXPAND | wxALL, 5);
 
 	m_axisYawInv = new wxCheckBox(m_joystickPage, wxID_ANY, "Invert");
 	m_axisYawInv->SetValue(m_cfg.m_GamePad.m_AxisYawInv);
@@ -420,15 +420,15 @@ void ControlsDialog::CreateJoystickPage()
 	pitchDeadZoneRow->Add(m_axisPitchDeadZone, 1, wxEXPAND);
 	pitchGroup->Add(pitchDeadZoneRow, 0, wxEXPAND | wxALL, 5);
 
-	m_axisPitchZones = m_cfg.m_GamePad.m_AxisPitchSensitivity;
-	m_axisPitchZonesButton = new wxButton(m_joystickPage, wxID_ANY, "Edit Pitch Sensitivity...");
-	m_axisPitchZonesButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+	m_axisPitchSensitivity = m_cfg.m_GamePad.m_AxisPitchSensitivity;
+	m_axisPitchSensitivityButton = new wxButton(m_joystickPage, wxID_ANY, "Edit Pitch Sensitivity...");
+	m_axisPitchSensitivityButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
 		{
-			ZoneEditorDialog dlg(this, m_axisPitchZones);
+			ZoneEditorDialog dlg(this, m_axisPitchSensitivity);
 			if (dlg.ShowModal() == wxID_OK)
-				m_axisPitchZones = dlg.GetZones();
+				m_axisPitchSensitivity = dlg.GetZones();
 		});
-	pitchGroup->Add(m_axisPitchZonesButton, 0, wxEXPAND | wxALL, 5);
+	pitchGroup->Add(m_axisPitchSensitivityButton, 0, wxEXPAND | wxALL, 5);
 
 	m_axisPitchInv = new wxCheckBox(m_joystickPage, wxID_ANY, "Invert");
 	m_axisPitchInv->SetValue(m_cfg.m_GamePad.m_AxisPitchInv);
@@ -540,6 +540,63 @@ void ControlsDialog::OnXBoxPreset(wxCommandEvent&)
 	m_buttonFireL->SetValue(5);
 	m_buttonFireR->SetValue(6);
 	m_buttonMenuSelect->SetValue(1);
+	m_triggerDeadZone->SetValue(3000);
+	m_hapticEnabled->SetValue(true);
+	m_hapticMaxGain->SetValue(75);
+	m_hatNav->SetValue(0);
+	m_hatMov->SetValue(0);
+	m_hatNavInv->SetValue(false);
+	m_hatMovInv->SetValue(false);
+	m_axisLong->SetValue(2);
+	m_axisLongDeadZone->SetValue(12000);
+	m_axisLongNavDeadZone->SetValue(6000);
+	m_axisLongInv->SetValue(true);
+	m_axisTrans->SetValue(1);
+	m_axisTransInv->SetValue(false);
+	m_axisTransDeadZone->SetValue(12000);
+	m_axisTransNavDeadZone->SetValue(6000);
+	m_axisNavNs->SetValue(2);
+	m_axisNavNsInv->SetValue(false);
+	m_axisNavEw->SetValue(1);
+	m_axisNavEwInv->SetValue(false);
+	m_axisFireR->SetValue(6);
+	m_axisFireL->SetValue(5);
+	m_axisYaw->SetValue(3);
+	m_axisYawInv->SetValue(false);
+	m_axisYawDeadZone->SetValue(3000);
+	m_axisPitch->SetValue(4);
+	m_axisPitchInv->SetValue(false);
+	m_axisPitchDeadZone->SetValue(3000);
+
+	m_axisYawSensitivity.clear();
+	m_axisYawSensitivity = {
+		{    0,  8000, 0.1 },
+		{ 8000, 15000, 0.2 },
+		{15000, 20000, 0.3 },
+		{20000, 25000, 0.35},
+		{25000, 26000, 0.4 },
+		{26000, 27000, 0.5 },
+		{27000, 28000, 0.6 },
+		{28000, 29000, 0.7 },
+		{29000, 30000, 0.8 },
+		{30000, 31000, 0.9 },
+		{31000, 32767, 1.0 }
+	};
+
+	m_axisPitchSensitivity.clear();
+	m_axisPitchSensitivity = {
+		{    0,  8000, 0.1 },
+		{ 8000, 15000, 0.2 },
+		{15000, 20000, 0.3 },
+		{20000, 25000, 0.35},
+		{25000, 26000, 0.4 },
+		{26000, 27000, 0.5 },
+		{27000, 28000, 0.6 },
+		{28000, 29000, 0.7 },
+		{29000, 30000, 0.8 },
+		{30000, 31000, 0.9 },
+		{31000, 32767, 1.0 }
+	};
 }
 
 void ControlsDialog::LoadKeyboardLayout(const wxString& layoutName)
@@ -660,8 +717,8 @@ Config::Settings::Controls ControlsDialog::GetSettings() const
 	cfg.m_GamePad.m_AxisNavNsInv = m_axisNavNsInv->GetValue();
 	cfg.m_GamePad.m_AxisNavEw = m_axisNavEw->GetValue();
 	cfg.m_GamePad.m_AxisNavEwInv = m_axisNavEwInv->GetValue();
-	cfg.m_GamePad.m_AxisYawSensitivity = m_axisYawZones;
-	cfg.m_GamePad.m_AxisPitchSensitivity = m_axisPitchZones;
+	cfg.m_GamePad.m_AxisYawSensitivity = m_axisYawSensitivity;
+	cfg.m_GamePad.m_AxisPitchSensitivity = m_axisPitchSensitivity;
 
 	return cfg;
 }

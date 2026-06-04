@@ -106,6 +106,24 @@ void Config::SetBool(json& obj, const char* key, bool value)
 	obj[key] = value;
 }
 
+void Config::SetZones(json& obj, const char* key, const std::vector<Maths::Zone>& zones)
+{
+	nlohmann::json axisYawSensitivity;
+
+	axisYawSensitivity["zones"] = nlohmann::json::array();
+
+	for (const auto& zone : zones)
+	{
+		axisYawSensitivity["zones"].push_back({
+			{"start",  zone.m_xStart},
+			{"end",    zone.m_xEnd},
+			{"factor", zone.m_factor}
+			});
+	}
+
+	obj[key] = axisYawSensitivity;
+}
+
 json& Config::GetOrCreate(json& parent, const char* key)
 {
 	if (!parent.contains(key))
@@ -500,6 +518,48 @@ void Config::SaveControlsToDoc(Config::Settings::Controls controlSettings)
 	SetString(keyboard, "map", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Map));
 	SetString(keyboard, "spellMenu", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenu));
 	SetString(keyboard, "spellMenuMark", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenuMark));
+
+	if (!controls.contains("gamePad"))
+		controls["gamePad"] = json::array({ json::object() });
+	auto& gamePad = controls["gamePad"][0];
+	SetBool(gamePad, "isActive", true);
+	SetInt(gamePad, "controllerId", controlSettings.m_GamePad.m_ControllerId);
+	SetInt(gamePad, "buttonMiniMap", controlSettings.m_GamePad.m_ButtonMiniMap);
+	SetInt(gamePad, "buttonSpell", controlSettings.m_GamePad.m_ButtonSpell);
+	SetInt(gamePad, "buttonPauseMenu", controlSettings.m_GamePad.m_ButtonPauseMenu);
+	SetInt(gamePad, "buttonEsc", controlSettings.m_GamePad.m_ButtonEsc);
+	SetInt(gamePad, "buttonFireL", controlSettings.m_GamePad.m_ButtonFireL);
+	SetInt(gamePad, "buttonFireR", controlSettings.m_GamePad.m_ButtonFireR);
+	SetInt(gamePad, "buttonMenuSelect", controlSettings.m_GamePad.m_ButtonMenuSelect);
+	SetInt(gamePad, "triggerDeadZone", controlSettings.m_GamePad.m_TriggerDeadZone);
+	SetBool(gamePad, "hapticEnabled", controlSettings.m_GamePad.m_HapticEnabled);
+	SetInt(gamePad, "hapticMaxGain", controlSettings.m_GamePad.m_HapticMaxGain);
+	SetInt(gamePad, "hatNav", controlSettings.m_GamePad.m_HatNav);
+	SetInt(gamePad, "hatMov", controlSettings.m_GamePad.m_HatMov);
+	SetBool(gamePad, "hatNavInv", controlSettings.m_GamePad.m_HatNavInv);
+	SetBool(gamePad, "hatMovInv", controlSettings.m_GamePad.m_HatMovInv);
+	SetInt(gamePad, "axisLong", controlSettings.m_GamePad.m_AxisLong);
+	SetInt(gamePad, "axisLongDeadZone", controlSettings.m_GamePad.m_AxisLongDeadZone);
+	SetInt(gamePad, "axisLongNavDeadZone", controlSettings.m_GamePad.m_AxisLongNavDeadZone);
+	SetBool(gamePad, "axisLongInv", controlSettings.m_GamePad.m_AxisLongInv);
+	SetInt(gamePad, "axisTrans", controlSettings.m_GamePad.m_AxisTrans);
+	SetBool(gamePad, "axisTransInv", controlSettings.m_GamePad.m_AxisTransInv);
+	SetInt(gamePad, "axisTransDeadZone", controlSettings.m_GamePad.m_AxisTransDeadZone);
+	SetInt(gamePad, "axisTransNavDeadZone", controlSettings.m_GamePad.m_AxisTransNavDeadZone);
+	SetInt(gamePad, "axisNavNs", controlSettings.m_GamePad.m_AxisNavNs);
+	SetBool(gamePad, "axisNavNsInv", controlSettings.m_GamePad.m_AxisNavNsInv);
+	SetInt(gamePad, "axisNavEw", controlSettings.m_GamePad.m_AxisNavEw);
+	SetBool(gamePad, "axisNavEwInv", controlSettings.m_GamePad.m_AxisNavEwInv);
+	SetInt(gamePad, "axisFireR", controlSettings.m_GamePad.m_AxisFireR);
+	SetInt(gamePad, "axisFireL", controlSettings.m_GamePad.m_AxisFireL);
+	SetInt(gamePad, "axisYaw", controlSettings.m_GamePad.m_AxisYaw);
+	SetBool(gamePad, "axisYawInv", controlSettings.m_GamePad.m_AxisYawInv);
+	SetInt(gamePad, "axisYawDeadZone", controlSettings.m_GamePad.m_AxisYawDeadZone);
+	SetInt(gamePad, "axisPitch", controlSettings.m_GamePad.m_AxisPitch);
+	SetBool(gamePad, "axisPitchInv", controlSettings.m_GamePad.m_AxisPitchInv);
+	SetInt(gamePad, "axisPitchDeadZone", controlSettings.m_GamePad.m_AxisPitchDeadZone);
+	SetZones(gamePad, "axisYawSensitivity", controlSettings.m_GamePad.m_AxisYawSensitivity);
+	SetZones(gamePad, "axisPitchSensitivity", controlSettings.m_GamePad.m_AxisPitchSensitivity);
 }
 
 void Config::SaveSettings(json& document, Settings settings)

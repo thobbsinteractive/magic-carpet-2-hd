@@ -70,13 +70,13 @@ private:
 	wxSpinCtrl* m_axisYaw = nullptr;
 	wxSpinCtrl* m_axisYawDeadZone = nullptr;
 	wxCheckBox* m_axisYawInv = nullptr;
-	std::vector<Maths::Zone> m_axisYawZones;
-	wxButton* m_axisYawZonesButton = nullptr;
+	std::vector<Maths::Zone> m_axisYawSensitivity;
+	wxButton* m_axisYawSensitivityButton = nullptr;
 	wxSpinCtrl* m_axisPitch = nullptr;
 	wxSpinCtrl* m_axisPitchDeadZone = nullptr;
 	wxCheckBox* m_axisPitchInv = nullptr;
-	std::vector<Maths::Zone> m_axisPitchZones;
-	wxButton* m_axisPitchZonesButton = nullptr;
+	std::vector<Maths::Zone> m_axisPitchSensitivity;
+	wxButton* m_axisPitchSensitivityButton = nullptr;
 	wxSpinCtrl* m_axisNavNs = nullptr;
 	wxCheckBox* m_axisNavNsInv = nullptr;
 	wxSpinCtrl* m_axisNavEw = nullptr;
