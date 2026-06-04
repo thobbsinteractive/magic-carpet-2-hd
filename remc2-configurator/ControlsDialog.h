@@ -40,6 +40,16 @@ private:
 	wxChoice* m_spellMenuKey = nullptr;
 	wxChoice* m_spellMenuMarkKey = nullptr;
 
+	wxButton* m_xboxPresetButton = nullptr;
+	wxSpinCtrl* m_controllerId = nullptr;
+	wxSpinCtrl* m_buttonMiniMap = nullptr;
+	wxSpinCtrl* m_buttonSpell = nullptr;
+	wxSpinCtrl* m_buttonPauseMenu = nullptr;
+	wxSpinCtrl* m_buttonEsc = nullptr;
+	wxSpinCtrl* m_buttonFireL = nullptr;
+	wxSpinCtrl* m_buttonFireR = nullptr;
+	wxSpinCtrl* m_buttonMenuSelect = nullptr;
+
 	wxNotebook* m_notebook;
 
 	wxPanel* m_mousePage;
@@ -50,6 +60,7 @@ private:
 	void SetChoiceValue(wxChoice* choice, const wxString& value);
 	void OnModernLayout(wxCommandEvent&);
 	void OnClassicLayout(wxCommandEvent&);
+	void OnXBoxPreset(wxCommandEvent& evt);
 	void LoadKeyboardLayout(const wxString& layoutName);
 
 	void CreateMousePage();

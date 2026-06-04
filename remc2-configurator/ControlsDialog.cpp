@@ -236,10 +236,73 @@ void ControlsDialog::OnClassicLayout(wxCommandEvent&)
 	LoadKeyboardLayout("Classic");
 }
 
+void ControlsDialog::OnXBoxPreset(wxCommandEvent&)
+{
+	m_controllerId->SetValue(0);
+	m_buttonMiniMap->SetValue(3);
+	m_buttonSpell->SetValue(1);
+	m_buttonPauseMenu->SetValue(7);
+	m_buttonEsc->SetValue(8);
+	m_buttonFireL->SetValue(5);
+	m_buttonFireR->SetValue(6);
+	m_buttonMenuSelect->SetValue(1);
+}
+
 void ControlsDialog::CreateJoystickPage()
 {
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-	// Add joystick controls here
+
+	// -- Preset --
+	wxStaticBoxSizer* presetSizer =
+		new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, "Preset");
+
+	m_xboxPresetButton = new wxButton(m_joystickPage, wxID_ANY, "Xbox Controller");
+	presetSizer->Add(m_xboxPresetButton, 0, wxEXPAND | wxALL, 5);
+	m_xboxPresetButton->Bind(wxEVT_BUTTON, &ControlsDialog::OnXBoxPreset, this);
+
+	sizer->Add(presetSizer, 0, wxEXPAND | wxALL, 5);
+
+	// -- Controller --
+	wxStaticBoxSizer* controllerSizer =
+		new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, "Controller");
+
+	wxBoxSizer* controllerIdRow = new wxBoxSizer(wxHORIZONTAL);
+	controllerIdRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Controller ID:"),
+		1, wxALIGN_CENTER_VERTICAL);
+	m_controllerId = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+	m_controllerId->SetRange(0, 7);
+	m_controllerId->SetValue(m_cfg.m_GamePad.m_ControllerId);
+	controllerIdRow->Add(m_controllerId, 1, wxEXPAND);
+	controllerSizer->Add(controllerIdRow, 0, wxEXPAND | wxALL, 5);
+
+	sizer->Add(controllerSizer, 0, wxEXPAND | wxALL, 5);
+
+	// -- Buttons --
+	wxStaticBoxSizer* btnSizer =
+		new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, "Button Bindings");
+
+	auto addButtonRow = [&](const wxString& label, wxSpinCtrl*& ctrl, int value)
+		{
+			wxBoxSizer* row = new wxBoxSizer(wxHORIZONTAL);
+			row->Add(new wxStaticText(m_joystickPage, wxID_ANY, label),
+				1, wxALIGN_CENTER_VERTICAL);
+			ctrl = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+			ctrl->SetRange(0, 128);
+			ctrl->SetValue(value);
+			row->Add(ctrl, 1, wxEXPAND);
+			btnSizer->Add(row, 0, wxEXPAND | wxALL, 5);
+		};
+
+	addButtonRow("Mini Map:", m_buttonMiniMap, m_cfg.m_GamePad.m_ButtonMiniMap);
+	addButtonRow("Spell:", m_buttonSpell, m_cfg.m_GamePad.m_ButtonSpell);
+	addButtonRow("Pause Menu:", m_buttonPauseMenu, m_cfg.m_GamePad.m_ButtonPauseMenu);
+	addButtonRow("Esc:", m_buttonEsc, m_cfg.m_GamePad.m_ButtonEsc);
+	addButtonRow("Fire L:", m_buttonFireL, m_cfg.m_GamePad.m_ButtonFireL);
+	addButtonRow("Fire R:", m_buttonFireR, m_cfg.m_GamePad.m_ButtonFireR);
+	addButtonRow("Menu Select:", m_buttonMenuSelect, m_cfg.m_GamePad.m_ButtonMenuSelect);
+
+	sizer->Add(btnSizer, 0, wxEXPAND | wxALL, 5);
+
 	m_joystickPage->SetSizer(sizer);
 }
 
@@ -322,6 +385,15 @@ Config::Settings::Controls ControlsDialog::GetSettings() const
 	cfg.m_Keyboard.m_Map = GetSelectedScancode(m_mapKey);
 	cfg.m_Keyboard.m_SpellMenu = GetSelectedScancode(m_spellMenuKey);
 	cfg.m_Keyboard.m_SpellMenuMark = GetSelectedScancode(m_spellMenuMarkKey);
+
+	cfg.m_GamePad.m_ControllerId = m_controllerId->GetValue();
+	cfg.m_GamePad.m_ButtonMiniMap = m_buttonMiniMap->GetValue();
+	cfg.m_GamePad.m_ButtonSpell = m_buttonSpell->GetValue();
+	cfg.m_GamePad.m_ButtonPauseMenu = m_buttonPauseMenu->GetValue();
+	cfg.m_GamePad.m_ButtonEsc = m_buttonEsc->GetValue();
+	cfg.m_GamePad.m_ButtonFireL = m_buttonFireL->GetValue();
+	cfg.m_GamePad.m_ButtonFireR = m_buttonFireR->GetValue();
+	cfg.m_GamePad.m_ButtonMenuSelect = m_buttonMenuSelect->GetValue();
 
 	return cfg;
 }
