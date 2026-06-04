@@ -477,7 +477,7 @@ void ControlsDialog::CreateJoystickPage()
 	yawGroup->Add(yawDeadZoneRow, 0, wxEXPAND | wxALL, 5);
 
 	m_axisYawZones = m_cfg.m_GamePad.m_AxisYawSensitivity;
-	m_axisYawZonesButton = new wxButton(m_joystickPage, wxID_ANY, "Edit Yaw Zones...");
+	m_axisYawZonesButton = new wxButton(m_joystickPage, wxID_ANY, "Edit Yaw Sensitivity...");
 	m_axisYawZonesButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
 		{
 			ZoneEditorDialog dlg(this, m_axisYawZones);
@@ -514,7 +514,7 @@ void ControlsDialog::CreateJoystickPage()
 	pitchGroup->Add(pitchDeadZoneRow, 0, wxEXPAND | wxALL, 5);
 
 	m_axisPitchZones = m_cfg.m_GamePad.m_AxisPitchSensitivity;
-	m_axisPitchZonesButton = new wxButton(m_joystickPage, wxID_ANY, "Edit Pitch Zones...");
+	m_axisPitchZonesButton = new wxButton(m_joystickPage, wxID_ANY, "Edit Pitch Sensitivity...");
 	m_axisPitchZonesButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
 		{
 			ZoneEditorDialog dlg(this, m_axisPitchZones);
@@ -660,6 +660,8 @@ Config::Settings::Controls ControlsDialog::GetSettings() const
 	cfg.m_GamePad.m_AxisNavNsInv = m_axisNavNsInv->GetValue();
 	cfg.m_GamePad.m_AxisNavEw = m_axisNavEw->GetValue();
 	cfg.m_GamePad.m_AxisNavEwInv = m_axisNavEwInv->GetValue();
+	cfg.m_GamePad.m_AxisYawSensitivity = m_axisYawZones;
+	cfg.m_GamePad.m_AxisPitchSensitivity = m_axisPitchZones;
 
 	return cfg;
 }
