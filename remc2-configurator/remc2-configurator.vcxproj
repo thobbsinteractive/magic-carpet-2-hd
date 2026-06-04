@@ -88,6 +88,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+		<PostBuildEvent>
+			<Command>
+				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)mc2_hd_logo.png" /Y /F
+			</Command>
+		</PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -104,6 +109,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+		<PostBuildEvent>
+			<Command>
+				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)mc2_hd_logo.png" /Y /F
+			</Command>
+		</PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -118,6 +128,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+		<PostBuildEvent>
+			<Command>
+				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)mc2_hd_logo.png" /Y /F
+			</Command>
+		</PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -134,6 +149,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+		<PostBuildEvent>
+			<Command>
+				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)mc2_hd_logo.png" /Y /F
+			</Command>
+		</PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\remc2\portability\Config.cpp" />
@@ -166,6 +186,11 @@
     <ClInclude Include="ThreadingDialog.h" />
     <ClInclude Include="ZoneEditorCtrl.h" />
     <ClInclude Include="ZoneEditorDialog.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="mc2_hd_logo.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

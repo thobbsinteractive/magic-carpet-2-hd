@@ -1,7 +1,9 @@
 #include "MainFrame.h"
 
-MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(300, 350))
+MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 580))
 {
+	wxInitAllImageHandlers();
+
 	m_ptrConfig = new Config(ToAbsolute(fileName).ToStdString());
 
 	// set the frame icon
@@ -10,15 +12,34 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	// ── Panel (gives a native background) ───────────────────────────────────
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
 
+	wxString path = wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPathWithSep() + "mc2_hd_logo.png";
+
+	wxBitmap logo(path, wxBITMAP_TYPE_PNG);
+
+	if (!logo.IsOk())
+	{
+		wxMessageBox("Failed to load mc2_hd_logo.png");
+	}
+
+	wxStaticBitmap* image = new wxStaticBitmap(panel, wxID_ANY, logo);
+
 	// ── Buttons ─────────────────────────────────────────────────────────────
 	wxButton* btnPlay = new wxButton(panel, ID_BTN_PLAY, "Play");
+	btnPlay->SetMinSize(wxSize(-1, 40));
 	wxButton* btnFile = new wxButton(panel, ID_BTN_FILE, "Game Files");
+	btnFile->SetMinSize(wxSize(-1, 40));
 	wxButton* btnGame = new wxButton(panel, ID_BTN_GAME, "Speed");
+	btnGame->SetMinSize(wxSize(-1, 40));
 	wxButton* btnControls = new wxButton(panel, ID_BTN_CONTROLS, "Controls");
+	btnControls->SetMinSize(wxSize(-1, 40));
 	wxButton* btnSound = new wxButton(panel, ID_BTN_SOUND, "Sound");
+	btnSound->SetMinSize(wxSize(-1, 40));
 	wxButton* btnDisplay = new wxButton(panel, ID_BTN_DISPLAY, "Display");
+	btnDisplay->SetMinSize(wxSize(-1, 40));
 	wxButton* btnGraphics = new wxButton(panel, ID_BTN_GRAPHICS, "Graphics");
+	btnGraphics->SetMinSize(wxSize(-1, 40));
 	wxButton* btnExit = new wxButton(panel, ID_BTN_EXIT, "Exit");
+	btnExit->SetMinSize(wxSize(-1, 40));
 
 	// ── Vertical sizer ──────────────────────────────────────────────────────
 	// wxSizerFlags: Expand fills the full width; border adds padding on all sides.
