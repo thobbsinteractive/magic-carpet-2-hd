@@ -1,6 +1,6 @@
 #include "MainFrame.h"
 
-MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 580))
+MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 600))
 {
 	wxInitAllImageHandlers();
 
@@ -42,20 +42,30 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	btnExit->SetMinSize(wxSize(-1, 40));
 
 	// ── Vertical sizer ──────────────────────────────────────────────────────
-	// wxSizerFlags: Expand fills the full width; border adds padding on all sides.
-	wxBoxSizer* vSizer = new wxBoxSizer(wxVERTICAL);
+
+	wxBoxSizer* buttonSizer = new wxBoxSizer(wxVERTICAL);
 	const wxSizerFlags flags = wxSizerFlags(0)
 		.Expand()
-		.Border(wxALL, 8);
+		.Border(wxTOP | wxBOTTOM, 4);
 
-	vSizer->Add(btnPlay, flags);
-	vSizer->Add(btnFile, flags);
-	vSizer->Add(btnGame, flags);
-	vSizer->Add(btnControls, flags);
-	vSizer->Add(btnSound, flags);
-	vSizer->Add(btnDisplay, flags);
-	vSizer->Add(btnGraphics, flags);
-	vSizer->Add(btnExit, flags);
+	wxBoxSizer* vSizer = new wxBoxSizer(wxVERTICAL);
+
+	buttonSizer->Add(image, flags);
+	buttonSizer->Add(btnPlay, flags);
+	buttonSizer->Add(btnFile, flags);
+	buttonSizer->Add(btnGame, flags);
+	buttonSizer->Add(btnControls, flags);
+	buttonSizer->Add(btnSound, flags);
+	buttonSizer->Add(btnDisplay, flags);
+	buttonSizer->Add(btnGraphics, flags);
+	buttonSizer->Add(btnExit, flags);
+
+	vSizer->Add(
+		buttonSizer,
+		wxSizerFlags()
+		.Expand()
+		.Border(wxLEFT | wxRIGHT, 8)
+	);
 
 	// ── Wrap in an outer sizer to centre the column ─────────────────────────
 	wxBoxSizer* outerSizer = new wxBoxSizer(wxVERTICAL);
