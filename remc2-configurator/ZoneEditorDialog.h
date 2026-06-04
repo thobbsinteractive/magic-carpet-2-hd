@@ -10,13 +10,13 @@ class ZoneEditorDialog : public wxDialog
 {
 public:
     ZoneEditorDialog(wxWindow*          parent,
-               const std::vector<Zone>& zones,
+               const std::vector<Maths::Zone>& zones,
                wxWindowID               id    = wxID_ANY,
                const wxString&          title = wxT("Zone Editor"),
                const wxPoint&           pos   = wxDefaultPosition,
                const wxSize&            size  = wxSize(560, 540));
 
-    std::vector<Zone> GetZones() const;
+    std::vector<Maths::Zone> GetZones() const;
 
 private:
     ZoneEditorCtrl* m_editor      = nullptr;

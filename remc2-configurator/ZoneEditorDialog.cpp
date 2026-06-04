@@ -15,7 +15,7 @@ wxEND_EVENT_TABLE()
 // Constructor
 // ---------------------------------------------------------------------------
 ZoneEditorDialog::ZoneEditorDialog(wxWindow*    parent,
-                       const std::vector<Zone>& zones,
+                       const std::vector<Maths::Zone>& zones,
                        wxWindowID               id,
                        const wxString&          title,
                        const wxPoint&           pos,
@@ -66,7 +66,7 @@ ZoneEditorDialog::ZoneEditorDialog(wxWindow*    parent,
 // ---------------------------------------------------------------------------
 // GetZones
 // ---------------------------------------------------------------------------
-std::vector<Zone> ZoneEditorDialog::GetZones() const
+std::vector<Maths::Zone> ZoneEditorDialog::GetZones() const
 {
     return m_editor->GetZones();
 }

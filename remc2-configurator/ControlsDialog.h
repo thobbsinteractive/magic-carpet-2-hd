@@ -3,6 +3,7 @@
 #include <wx/statline.h>
 #include <wx/display.h>
 #include <wx/notebook.h>
+#include "ZoneEditorDialog.h"
 
 class ControlsDialog : public wxDialog
 {
@@ -58,6 +59,28 @@ private:
 	wxSpinCtrl* m_hatMov = nullptr;
 	wxCheckBox* m_hatNavInv = nullptr;
 	wxCheckBox* m_hatMovInv = nullptr;
+	wxSpinCtrl* m_axisLong = nullptr;
+	wxSpinCtrl* m_axisLongDeadZone = nullptr;
+	wxSpinCtrl* m_axisLongNavDeadZone = nullptr;
+	wxCheckBox* m_axisLongInv = nullptr;
+	wxSpinCtrl* m_axisTrans = nullptr;
+	wxSpinCtrl* m_axisTransDeadZone = nullptr;
+	wxSpinCtrl* m_axisTransNavDeadZone = nullptr;
+	wxCheckBox* m_axisTransInv = nullptr;
+	wxSpinCtrl* m_axisYaw = nullptr;
+	wxSpinCtrl* m_axisYawDeadZone = nullptr;
+	wxCheckBox* m_axisYawInv = nullptr;
+	std::vector<Maths::Zone> m_axisYawZones;
+	wxButton* m_axisYawZonesButton = nullptr;
+	wxSpinCtrl* m_axisPitch = nullptr;
+	wxSpinCtrl* m_axisPitchDeadZone = nullptr;
+	wxCheckBox* m_axisPitchInv = nullptr;
+	std::vector<Maths::Zone> m_axisPitchZones;
+	wxButton* m_axisPitchZonesButton = nullptr;
+	wxSpinCtrl* m_axisNavNs = nullptr;
+	wxCheckBox* m_axisNavNsInv = nullptr;
+	wxSpinCtrl* m_axisNavEw = nullptr;
+	wxCheckBox* m_axisNavEwInv = nullptr;
 
 	wxNotebook* m_notebook;
 

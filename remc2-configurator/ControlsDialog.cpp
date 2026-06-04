@@ -333,11 +333,6 @@ void ControlsDialog::CreateJoystickPage()
 
 	leftCol->Add(btnSizer, 0, wxEXPAND | wxALL, 5);
 
-	sizer->Add(leftCol, 1, wxEXPAND);
-
-	// ── Right column ──────────────────────────────────────────────────────────
-	wxBoxSizer* rightCol = new wxBoxSizer(wxVERTICAL);
-
 	// -- Haptic --
 	wxStaticBoxSizer* hapticSizer =
 		new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, "Haptic");
@@ -355,7 +350,7 @@ void ControlsDialog::CreateJoystickPage()
 	gainRow->Add(m_hapticMaxGain, 1, wxEXPAND);
 	hapticSizer->Add(gainRow, 0, wxEXPAND | wxALL, 5);
 
-	rightCol->Add(hapticSizer, 0, wxEXPAND | wxALL, 5);
+	leftCol->Add(hapticSizer, 0, wxEXPAND | wxALL, 5);
 
 	// -- POV Hat --
 	wxStaticBoxSizer* hatSizer =
@@ -379,7 +374,168 @@ void ControlsDialog::CreateJoystickPage()
 	addHatRow("Navigation:", m_hatNav, m_hatNavInv, m_cfg.m_GamePad.m_HatNav, m_cfg.m_GamePad.m_HatNavInv);
 	addHatRow("Movement:", m_hatMov, m_hatMovInv, m_cfg.m_GamePad.m_HatMov, m_cfg.m_GamePad.m_HatMovInv);
 
-	rightCol->Add(hatSizer, 0, wxEXPAND | wxALL, 5);
+	leftCol->Add(hatSizer, 0, wxEXPAND | wxALL, 5);
+
+	sizer->Add(leftCol, 1, wxEXPAND);
+
+	// ── Right column ──────────────────────────────────────────────────────────
+	wxBoxSizer* rightCol = new wxBoxSizer(wxVERTICAL);
+
+	wxStaticBoxSizer* axisSizer =
+		new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, "Axes");
+
+	auto addAxisRowWithNavDeadZone = [&](const wxString& label, wxSpinCtrl*& axis,
+		wxSpinCtrl*& deadZone, wxSpinCtrl*& navDeadZone, wxCheckBox*& inv,
+		int axisVal, int deadZoneVal, int navDeadZoneVal, bool invVal)
+		{
+			wxStaticBoxSizer* group = new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, label);
+
+			wxBoxSizer* axisRow = new wxBoxSizer(wxHORIZONTAL);
+			axisRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Axis:"),
+				1, wxALIGN_CENTER_VERTICAL);
+			axis = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+			axis->SetRange(0, 7);
+			axis->SetValue(axisVal);
+			axisRow->Add(axis, 1, wxEXPAND);
+			group->Add(axisRow, 0, wxEXPAND | wxALL, 5);
+
+			wxBoxSizer* deadZoneRow = new wxBoxSizer(wxHORIZONTAL);
+			deadZoneRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Dead Zone:"),
+				1, wxALIGN_CENTER_VERTICAL);
+			deadZone = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+			deadZone->SetRange(0, 32767);
+			deadZone->SetValue(deadZoneVal);
+			deadZoneRow->Add(deadZone, 1, wxEXPAND);
+			group->Add(deadZoneRow, 0, wxEXPAND | wxALL, 5);
+
+			wxBoxSizer* navDeadZoneRow = new wxBoxSizer(wxHORIZONTAL);
+			navDeadZoneRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Nav Dead Zone:"),
+				1, wxALIGN_CENTER_VERTICAL);
+			navDeadZone = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+			navDeadZone->SetRange(0, 32767);
+			navDeadZone->SetValue(navDeadZoneVal);
+			navDeadZoneRow->Add(navDeadZone, 1, wxEXPAND);
+			group->Add(navDeadZoneRow, 0, wxEXPAND | wxALL, 5);
+
+			inv = new wxCheckBox(m_joystickPage, wxID_ANY, "Invert");
+			inv->SetValue(invVal);
+			group->Add(inv, 0, wxALL, 5);
+
+			axisSizer->Add(group, 0, wxEXPAND | wxALL, 3);
+		};
+
+	auto addAxisRowNoDeadZone = [&](const wxString& label, wxSpinCtrl*& axis, wxCheckBox*& inv,
+		int axisVal, bool invVal)
+		{
+			wxStaticBoxSizer* group = new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, label);
+
+			wxBoxSizer* axisRow = new wxBoxSizer(wxHORIZONTAL);
+			axisRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Axis:"),
+				1, wxALIGN_CENTER_VERTICAL);
+			axis = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+			axis->SetRange(0, 7);
+			axis->SetValue(axisVal);
+			axisRow->Add(axis, 1, wxEXPAND);
+			group->Add(axisRow, 0, wxEXPAND | wxALL, 5);
+
+			inv = new wxCheckBox(m_joystickPage, wxID_ANY, "Invert");
+			inv->SetValue(invVal);
+			group->Add(inv, 0, wxALL, 5);
+
+			axisSizer->Add(group, 0, wxEXPAND | wxALL, 3);
+		};
+
+	addAxisRowWithNavDeadZone("Longitudinal",
+		m_axisLong, m_axisLongDeadZone, m_axisLongNavDeadZone, m_axisLongInv,
+		m_cfg.m_GamePad.m_AxisLong, m_cfg.m_GamePad.m_AxisLongDeadZone,
+		m_cfg.m_GamePad.m_AxisLongNavDeadZone, m_cfg.m_GamePad.m_AxisLongInv);
+
+	addAxisRowWithNavDeadZone("Transverse",
+		m_axisTrans, m_axisTransDeadZone, m_axisTransNavDeadZone, m_axisTransInv,
+		m_cfg.m_GamePad.m_AxisTrans, m_cfg.m_GamePad.m_AxisTransDeadZone,
+		m_cfg.m_GamePad.m_AxisTransNavDeadZone, m_cfg.m_GamePad.m_AxisTransInv);
+
+	// Yaw
+	wxStaticBoxSizer* yawGroup = new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, "Yaw");
+
+	wxBoxSizer* yawAxisRow = new wxBoxSizer(wxHORIZONTAL);
+	yawAxisRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Axis:"),
+		1, wxALIGN_CENTER_VERTICAL);
+	m_axisYaw = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+	m_axisYaw->SetRange(0, 7);
+	m_axisYaw->SetValue(m_cfg.m_GamePad.m_AxisYaw);
+	yawAxisRow->Add(m_axisYaw, 1, wxEXPAND);
+	yawGroup->Add(yawAxisRow, 0, wxEXPAND | wxALL, 5);
+
+	wxBoxSizer* yawDeadZoneRow = new wxBoxSizer(wxHORIZONTAL);
+	yawDeadZoneRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Dead Zone:"),
+		1, wxALIGN_CENTER_VERTICAL);
+	m_axisYawDeadZone = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+	m_axisYawDeadZone->SetRange(0, 32767);
+	m_axisYawDeadZone->SetValue(m_cfg.m_GamePad.m_AxisYawDeadZone);
+	yawDeadZoneRow->Add(m_axisYawDeadZone, 1, wxEXPAND);
+	yawGroup->Add(yawDeadZoneRow, 0, wxEXPAND | wxALL, 5);
+
+	m_axisYawZones = m_cfg.m_GamePad.m_AxisYawSensitivity;
+	m_axisYawZonesButton = new wxButton(m_joystickPage, wxID_ANY, "Edit Yaw Zones...");
+	m_axisYawZonesButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+		{
+			ZoneEditorDialog dlg(this, m_axisYawZones);
+			if (dlg.ShowModal() == wxID_OK)
+				m_axisYawZones = dlg.GetZones();
+		});
+	yawGroup->Add(m_axisYawZonesButton, 0, wxEXPAND | wxALL, 5);
+
+	m_axisYawInv = new wxCheckBox(m_joystickPage, wxID_ANY, "Invert");
+	m_axisYawInv->SetValue(m_cfg.m_GamePad.m_AxisYawInv);
+	yawGroup->Add(m_axisYawInv, 0, wxALL, 5);
+
+	axisSizer->Add(yawGroup, 0, wxEXPAND | wxALL, 3);
+
+	// Pitch
+	wxStaticBoxSizer* pitchGroup = new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, "Pitch");
+
+	wxBoxSizer* pitchAxisRow = new wxBoxSizer(wxHORIZONTAL);
+	pitchAxisRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Axis:"),
+		1, wxALIGN_CENTER_VERTICAL);
+	m_axisPitch = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+	m_axisPitch->SetRange(0, 7);
+	m_axisPitch->SetValue(m_cfg.m_GamePad.m_AxisPitch);
+	pitchAxisRow->Add(m_axisPitch, 1, wxEXPAND);
+	pitchGroup->Add(pitchAxisRow, 0, wxEXPAND | wxALL, 5);
+
+	wxBoxSizer* pitchDeadZoneRow = new wxBoxSizer(wxHORIZONTAL);
+	pitchDeadZoneRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Dead Zone:"),
+		1, wxALIGN_CENTER_VERTICAL);
+	m_axisPitchDeadZone = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+	m_axisPitchDeadZone->SetRange(0, 32767);
+	m_axisPitchDeadZone->SetValue(m_cfg.m_GamePad.m_AxisPitchDeadZone);
+	pitchDeadZoneRow->Add(m_axisPitchDeadZone, 1, wxEXPAND);
+	pitchGroup->Add(pitchDeadZoneRow, 0, wxEXPAND | wxALL, 5);
+
+	m_axisPitchZones = m_cfg.m_GamePad.m_AxisPitchSensitivity;
+	m_axisPitchZonesButton = new wxButton(m_joystickPage, wxID_ANY, "Edit Pitch Zones...");
+	m_axisPitchZonesButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+		{
+			ZoneEditorDialog dlg(this, m_axisPitchZones);
+			if (dlg.ShowModal() == wxID_OK)
+				m_axisPitchZones = dlg.GetZones();
+		});
+	pitchGroup->Add(m_axisPitchZonesButton, 0, wxEXPAND | wxALL, 5);
+
+	m_axisPitchInv = new wxCheckBox(m_joystickPage, wxID_ANY, "Invert");
+	m_axisPitchInv->SetValue(m_cfg.m_GamePad.m_AxisPitchInv);
+	pitchGroup->Add(m_axisPitchInv, 0, wxALL, 5);
+
+	axisSizer->Add(pitchGroup, 0, wxEXPAND | wxALL, 3);
+
+	addAxisRowNoDeadZone("Nav North South", m_axisNavNs, m_axisNavNsInv,
+		m_cfg.m_GamePad.m_AxisNavNs, m_cfg.m_GamePad.m_AxisNavNsInv);
+
+	addAxisRowNoDeadZone("Nav East West", m_axisNavEw, m_axisNavEwInv,
+		m_cfg.m_GamePad.m_AxisNavEw, m_cfg.m_GamePad.m_AxisNavEwInv);
+
+	rightCol->Add(axisSizer, 0, wxEXPAND | wxALL, 5);
 
 	sizer->Add(rightCol, 1, wxEXPAND);
 
@@ -475,6 +631,35 @@ Config::Settings::Controls ControlsDialog::GetSettings() const
 	cfg.m_GamePad.m_ButtonFireR = m_buttonFireR->GetValue();
 	cfg.m_GamePad.m_ButtonMenuSelect = m_buttonMenuSelect->GetValue();
 	cfg.m_GamePad.m_TriggerDeadZone = m_triggerDeadZone->GetValue();
+	cfg.m_GamePad.m_AxisFireL = m_axisFireL->GetValue();
+	cfg.m_GamePad.m_AxisFireR = m_axisFireR->GetValue();
+
+	cfg.m_GamePad.m_HapticEnabled = m_hapticEnabled->GetValue();
+	cfg.m_GamePad.m_HapticMaxGain = m_hapticMaxGain->GetValue();
+
+	cfg.m_GamePad.m_HatNav = m_hatNav->GetValue();
+	cfg.m_GamePad.m_HatNavInv = m_hatNavInv->GetValue();
+	cfg.m_GamePad.m_HatMov = m_hatMov->GetValue();
+	cfg.m_GamePad.m_HatMovInv = m_hatMovInv->GetValue();
+
+	cfg.m_GamePad.m_AxisLong = m_axisLong->GetValue();
+	cfg.m_GamePad.m_AxisLongDeadZone = m_axisLongDeadZone->GetValue();
+	cfg.m_GamePad.m_AxisLongNavDeadZone = m_axisLongNavDeadZone->GetValue();
+	cfg.m_GamePad.m_AxisLongInv = m_axisLongInv->GetValue();
+	cfg.m_GamePad.m_AxisTrans = m_axisTrans->GetValue();
+	cfg.m_GamePad.m_AxisTransDeadZone = m_axisTransDeadZone->GetValue();
+	cfg.m_GamePad.m_AxisTransNavDeadZone = m_axisTransNavDeadZone->GetValue();
+	cfg.m_GamePad.m_AxisTransInv = m_axisTransInv->GetValue();
+	cfg.m_GamePad.m_AxisYaw = m_axisYaw->GetValue();
+	cfg.m_GamePad.m_AxisYawDeadZone = m_axisYawDeadZone->GetValue();
+	cfg.m_GamePad.m_AxisYawInv = m_axisYawInv->GetValue();
+	cfg.m_GamePad.m_AxisPitch = m_axisPitch->GetValue();
+	cfg.m_GamePad.m_AxisPitchDeadZone = m_axisPitchDeadZone->GetValue();
+	cfg.m_GamePad.m_AxisPitchInv = m_axisPitchInv->GetValue();
+	cfg.m_GamePad.m_AxisNavNs = m_axisNavNs->GetValue();
+	cfg.m_GamePad.m_AxisNavNsInv = m_axisNavNsInv->GetValue();
+	cfg.m_GamePad.m_AxisNavEw = m_axisNavEw->GetValue();
+	cfg.m_GamePad.m_AxisNavEwInv = m_axisNavEwInv->GetValue();
 
 	return cfg;
 }

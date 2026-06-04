@@ -4,16 +4,7 @@
 #include <wx/grid.h>
 #include <wx/panel.h>
 #include <vector>
-
-// ---------------------------------------------------------------------------
-// Zone – plain data struct
-// ---------------------------------------------------------------------------
-struct Zone
-{
-    int    start  = 0;
-    int    end    = 0;
-    double factor = 0.0;
-};
+#include "../remc2/utilities/Maths.h"
 
 // ---------------------------------------------------------------------------
 // ZoneBarPanel – read-only visual bar drawn above the grid
@@ -23,10 +14,10 @@ class ZoneBarPanel : public wxPanel
 public:
     ZoneBarPanel(wxWindow* parent, wxWindowID id = wxID_ANY);
 
-    void SetZones(const std::vector<Zone>& zones);
+    void SetZones(const std::vector<Maths::Zone>& zones);
 
 private:
-    std::vector<Zone> m_zones;
+    std::vector<Maths::Zone> m_zones;
     int               m_totalRange = 1;
 
     void OnPaint(wxPaintEvent& evt);
@@ -56,8 +47,8 @@ public:
     // -----------------------------------------------------------------------
     // Public API
     // -----------------------------------------------------------------------
-    void SetZones(const std::vector<Zone>& zones);
-    std::vector<Zone> GetZones() const;
+    void SetZones(const std::vector<Maths::Zone>& zones);
+    std::vector<Maths::Zone> GetZones() const;
 
     // Validate that zones are contiguous (end[i] == start[i+1]) and
     // that factors are in [0,1].  Returns an empty string on success,
@@ -69,8 +60,8 @@ private:
     void BuildGrid();
     void RefreshGrid();
     void RefreshBar();
-    void AppendRowToGrid(int row, const Zone& z);
-    Zone RowToZone(int row) const;
+    void AppendRowToGrid(int row, const Maths::Zone& z);
+	Maths::Zone RowToZone(int row) const;
     void FireChangedEvent();
 
     // ---- event handlers ----------------------------------------------------
@@ -80,7 +71,7 @@ private:
     void OnGridSelect(wxGridEvent&    evt);
 
     // ---- members -----------------------------------------------------------
-    std::vector<Zone> m_zones;
+    std::vector<Maths::Zone> m_zones;
 
     ZoneBarPanel* m_bar    = nullptr;
     wxGrid*       m_grid   = nullptr;

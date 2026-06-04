@@ -56,12 +56,12 @@ ZoneBarPanel::ZoneBarPanel(wxWindow* parent, wxWindowID id)
     SetMinSize(wxSize(-1, BAR_HEIGHT));
 }
 
-void ZoneBarPanel::SetZones(const std::vector<Zone>& zones)
+void ZoneBarPanel::SetZones(const std::vector<Maths::Zone>& zones)
 {
     m_zones = zones;
     m_totalRange = 1;
     if (!zones.empty())
-        m_totalRange = std::max(1, zones.back().end - zones.front().start);
+        m_totalRange = std::max(1, zones.back().m_xEnd - zones.front().m_xStart);
     Refresh();
 }
 
@@ -76,22 +76,22 @@ void ZoneBarPanel::OnPaint(wxPaintEvent&)
 
     if (m_zones.empty()) return;
 
-    const int originValue = m_zones.front().start;
+    const int originValue = m_zones.front().m_xStart;
     const double scale    = (double)sz.x / m_totalRange;
     const int    barY     = 4;
     const int    barH     = sz.y - 8;
 
     for (int i = 0; i < (int)m_zones.size(); ++i)
     {
-        const Zone& z   = m_zones[i];
-        int x0 = (int)std::round((z.start - originValue) * scale);
-        int x1 = (int)std::round((z.end   - originValue) * scale);
+        const Maths::Zone& z   = m_zones[i];
+        int x0 = (int)std::round((z.m_xStart - originValue) * scale);
+        int x1 = (int)std::round((z.m_xEnd   - originValue) * scale);
         int w  = std::max(1, x1 - x0);
 
         wxColour col = kPalette[i % kPaletteSize];
 
         // Fill proportional to factor (height)
-        int fillH = (int)(barH * z.factor);
+        int fillH = (int)(barH * z.m_factor);
         int fillY = barY + (barH - fillH);
 
         // Background stripe (dim)
@@ -191,14 +191,14 @@ void ZoneEditorCtrl::BuildGrid()
 // ============================================================================
 //  SetZones / GetZones
 // ============================================================================
-void ZoneEditorCtrl::SetZones(const std::vector<Zone>& zones)
+void ZoneEditorCtrl::SetZones(const std::vector<Maths::Zone>& zones)
 {
     m_zones = zones;
     RefreshGrid();
     RefreshBar();
 }
 
-std::vector<Zone> ZoneEditorCtrl::GetZones() const
+std::vector<Maths::Zone> ZoneEditorCtrl::GetZones() const
 {
     return m_zones;
 }
@@ -210,22 +210,22 @@ wxString ZoneEditorCtrl::Validate() const
 {
     for (int i = 0; i < (int)m_zones.size(); ++i)
     {
-        const Zone& z = m_zones[i];
+        const Maths::Zone& z = m_zones[i];
 
-        if (z.start >= z.end)
+        if (z.m_xStart >= z.m_xEnd)
             return wxString::Format(
                 wxT("Zone %d: start (%d) must be less than end (%d)."),
-                i + 1, z.start, z.end);
+                i + 1, z.m_xStart, z.m_xEnd);
 
-        if (z.factor < 0.0 || z.factor > 1.0)
+        if (z.m_factor < 0.0 || z.m_factor > 1.0)
             return wxString::Format(
                 wxT("Zone %d: factor (%.4f) must be in [0, 1]."),
-                i + 1, z.factor);
+                i + 1, z.m_factor);
 
-        if (i > 0 && m_zones[i].start != m_zones[i - 1].end)
+        if (i > 0 && m_zones[i].m_xStart != m_zones[i - 1].m_xEnd)
             return wxString::Format(
                 wxT("Gap between zone %d (end=%d) and zone %d (start=%d)."),
-                i, m_zones[i - 1].end, i + 1, m_zones[i].start);
+                i, m_zones[i - 1].m_xEnd, i + 1, m_zones[i].m_xStart);
     }
     return wxEmptyString;
 }
@@ -265,32 +265,32 @@ void ZoneEditorCtrl::RefreshGrid()
 // ============================================================================
 //  AppendRowToGrid – write one zone into a grid row
 // ============================================================================
-void ZoneEditorCtrl::AppendRowToGrid(int row, const Zone& z)
+void ZoneEditorCtrl::AppendRowToGrid(int row, const Maths::Zone& z)
 {
     m_grid->SetCellValue(row, COL_START,
-        wxString::Format(wxT("%d"), z.start));
+        wxString::Format(wxT("%d"), z.m_xStart));
     m_grid->SetCellValue(row, COL_END,
-        wxString::Format(wxT("%d"), z.end));
+        wxString::Format(wxT("%d"), z.m_xEnd));
     m_grid->SetCellValue(row, COL_FACTOR,
-        wxString::Format(wxT("%.4f"), z.factor));
+        wxString::Format(wxT("%.4f"), z.m_factor));
 }
 
 // ============================================================================
 //  RowToZone – read one grid row back into a Zone
 // ============================================================================
-Zone ZoneEditorCtrl::RowToZone(int row) const
+Maths::Zone ZoneEditorCtrl::RowToZone(int row) const
 {
-    Zone z;
+	Maths::Zone z;
     long tmp = 0;
 
     if (m_grid->GetCellValue(row, COL_START).ToLong(&tmp))
-        z.start = (int)tmp;
+        z.m_xStart = (int)tmp;
     if (m_grid->GetCellValue(row, COL_END).ToLong(&tmp))
-        z.end = (int)tmp;
+        z.m_xEnd = (int)tmp;
 
     double d = 0.0;
     if (m_grid->GetCellValue(row, COL_FACTOR).ToDouble(&d))
-        z.factor = d;
+        z.m_factor = d;
 
     return z;
 }
@@ -344,15 +344,15 @@ void ZoneEditorCtrl::OnGridSelect(wxGridEvent& evt)
 // ============================================================================
 void ZoneEditorCtrl::OnAddZone(wxCommandEvent&)
 {
-    Zone newZone;
+	Maths::Zone newZone;
 
     if (!m_zones.empty())
     {
-        const Zone& last = m_zones.back();
-        int span = last.end - last.start;
-        newZone.start  = last.end;
-        newZone.end    = last.end + span;
-        newZone.factor = std::min(1.0, last.factor + 0.05);
+        const Maths::Zone& last = m_zones.back();
+        int span = last.m_xEnd - last.m_xStart;
+        newZone.m_xStart  = last.m_xEnd;
+        newZone.m_xEnd    = last.m_xEnd + span;
+        newZone.m_factor = std::min(1.0, last.m_factor + 0.05);
     }
     else
     {
