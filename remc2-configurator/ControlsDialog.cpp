@@ -105,7 +105,7 @@ void ControlsDialog::CreateMousePage()
 	addButtonRow("Fire Spell Right:", m_spellRight, m_cfg.m_Mouse.m_SpellRight);
 	addButtonRow("Open Map:", m_map, m_cfg.m_Mouse.m_Map);
 	addButtonRow("Open Spell Menu:", m_spellMenu, m_cfg.m_Mouse.m_SpellMenu);
-	addButtonRow("Spell Menu Mark:", m_spellMenuMark, m_cfg.m_Mouse.m_SpellMenuMark);
+	addButtonRow("Favorite Spell:", m_spellMenuMark, m_cfg.m_Mouse.m_SpellMenuMark);
 
 	sizer->Add(btnSizer, 0, wxEXPAND | wxALL, 5);
 
@@ -250,7 +250,10 @@ void ControlsDialog::OnXBoxPreset(wxCommandEvent&)
 
 void ControlsDialog::CreateJoystickPage()
 {
-	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
+
+	// ── Left column ───────────────────────────────────────────────────────────
+	wxBoxSizer* leftCol = new wxBoxSizer(wxVERTICAL);
 
 	// -- Preset --
 	wxStaticBoxSizer* presetSizer =
@@ -260,7 +263,7 @@ void ControlsDialog::CreateJoystickPage()
 	presetSizer->Add(m_xboxPresetButton, 0, wxEXPAND | wxALL, 5);
 	m_xboxPresetButton->Bind(wxEVT_BUTTON, &ControlsDialog::OnXBoxPreset, this);
 
-	sizer->Add(presetSizer, 0, wxEXPAND | wxALL, 5);
+	leftCol->Add(presetSizer, 0, wxEXPAND | wxALL, 5);
 
 	// -- Controller --
 	wxStaticBoxSizer* controllerSizer =
@@ -275,7 +278,7 @@ void ControlsDialog::CreateJoystickPage()
 	controllerIdRow->Add(m_controllerId, 1, wxEXPAND);
 	controllerSizer->Add(controllerIdRow, 0, wxEXPAND | wxALL, 5);
 
-	sizer->Add(controllerSizer, 0, wxEXPAND | wxALL, 5);
+	leftCol->Add(controllerSizer, 0, wxEXPAND | wxALL, 5);
 
 	// -- Buttons --
 	wxStaticBoxSizer* btnSizer =
@@ -297,11 +300,88 @@ void ControlsDialog::CreateJoystickPage()
 	addButtonRow("Spell:", m_buttonSpell, m_cfg.m_GamePad.m_ButtonSpell);
 	addButtonRow("Pause Menu:", m_buttonPauseMenu, m_cfg.m_GamePad.m_ButtonPauseMenu);
 	addButtonRow("Esc:", m_buttonEsc, m_cfg.m_GamePad.m_ButtonEsc);
-	addButtonRow("Fire L:", m_buttonFireL, m_cfg.m_GamePad.m_ButtonFireL);
-	addButtonRow("Fire R:", m_buttonFireR, m_cfg.m_GamePad.m_ButtonFireR);
+	addButtonRow("Fire Left Spell:", m_buttonFireL, m_cfg.m_GamePad.m_ButtonFireL);
+	addButtonRow("Fire Right Spell:", m_buttonFireR, m_cfg.m_GamePad.m_ButtonFireR);
 	addButtonRow("Menu Select:", m_buttonMenuSelect, m_cfg.m_GamePad.m_ButtonMenuSelect);
 
-	sizer->Add(btnSizer, 0, wxEXPAND | wxALL, 5);
+	wxBoxSizer* deadZoneRow = new wxBoxSizer(wxHORIZONTAL);
+	deadZoneRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Trigger Dead Zone:"),
+		1, wxALIGN_CENTER_VERTICAL);
+	m_triggerDeadZone = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+	m_triggerDeadZone->SetRange(0, 32767);
+	m_triggerDeadZone->SetValue(m_cfg.m_GamePad.m_TriggerDeadZone);
+	deadZoneRow->Add(m_triggerDeadZone, 1, wxEXPAND);
+	btnSizer->Add(deadZoneRow, 0, wxEXPAND | wxALL, 5);
+
+	wxBoxSizer* axisFireLRow = new wxBoxSizer(wxHORIZONTAL);
+	axisFireLRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Fire Left Spell Trigger Axis:"),
+		1, wxALIGN_CENTER_VERTICAL);
+	m_axisFireL = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+	m_axisFireL->SetRange(0, 7);
+	m_axisFireL->SetValue(m_cfg.m_GamePad.m_AxisFireL);
+	axisFireLRow->Add(m_axisFireL, 1, wxEXPAND);
+	btnSizer->Add(axisFireLRow, 0, wxEXPAND | wxALL, 5);
+
+	wxBoxSizer* axisFireRRow = new wxBoxSizer(wxHORIZONTAL);
+	axisFireRRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Fire Right Spell Trigger Axis:"),
+		1, wxALIGN_CENTER_VERTICAL);
+	m_axisFireR = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+	m_axisFireR->SetRange(0, 7);
+	m_axisFireR->SetValue(m_cfg.m_GamePad.m_AxisFireR);
+	axisFireRRow->Add(m_axisFireR, 1, wxEXPAND);
+	btnSizer->Add(axisFireRRow, 0, wxEXPAND | wxALL, 5);
+
+	leftCol->Add(btnSizer, 0, wxEXPAND | wxALL, 5);
+
+	sizer->Add(leftCol, 1, wxEXPAND);
+
+	// ── Right column ──────────────────────────────────────────────────────────
+	wxBoxSizer* rightCol = new wxBoxSizer(wxVERTICAL);
+
+	// -- Haptic --
+	wxStaticBoxSizer* hapticSizer =
+		new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, "Haptic");
+
+	m_hapticEnabled = new wxCheckBox(m_joystickPage, wxID_ANY, "Enable Haptic Feedback");
+	m_hapticEnabled->SetValue(m_cfg.m_GamePad.m_HapticEnabled);
+	hapticSizer->Add(m_hapticEnabled, 0, wxALL, 5);
+
+	wxBoxSizer* gainRow = new wxBoxSizer(wxHORIZONTAL);
+	gainRow->Add(new wxStaticText(m_joystickPage, wxID_ANY, "Max Gain:"),
+		1, wxALIGN_CENTER_VERTICAL);
+	m_hapticMaxGain = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+	m_hapticMaxGain->SetRange(0, 100);
+	m_hapticMaxGain->SetValue(m_cfg.m_GamePad.m_HapticMaxGain);
+	gainRow->Add(m_hapticMaxGain, 1, wxEXPAND);
+	hapticSizer->Add(gainRow, 0, wxEXPAND | wxALL, 5);
+
+	rightCol->Add(hapticSizer, 0, wxEXPAND | wxALL, 5);
+
+	// -- POV Hat --
+	wxStaticBoxSizer* hatSizer =
+		new wxStaticBoxSizer(wxVERTICAL, m_joystickPage, "POV Hat");
+
+	auto addHatRow = [&](const wxString& label, wxSpinCtrl*& ctrl, wxCheckBox*& inv, int value, bool invValue)
+		{
+			wxBoxSizer* row = new wxBoxSizer(wxHORIZONTAL);
+			row->Add(new wxStaticText(m_joystickPage, wxID_ANY, label),
+				1, wxALIGN_CENTER_VERTICAL);
+			ctrl = new wxSpinCtrl(m_joystickPage, wxID_ANY);
+			ctrl->SetRange(0, 128);
+			ctrl->SetValue(value);
+			row->Add(ctrl, 1, wxEXPAND | wxRIGHT, 5);
+			inv = new wxCheckBox(m_joystickPage, wxID_ANY, "Invert");
+			inv->SetValue(invValue);
+			row->Add(inv, 0, wxALIGN_CENTER_VERTICAL);
+			hatSizer->Add(row, 0, wxEXPAND | wxALL, 5);
+		};
+
+	addHatRow("Navigation:", m_hatNav, m_hatNavInv, m_cfg.m_GamePad.m_HatNav, m_cfg.m_GamePad.m_HatNavInv);
+	addHatRow("Movement:", m_hatMov, m_hatMovInv, m_cfg.m_GamePad.m_HatMov, m_cfg.m_GamePad.m_HatMovInv);
+
+	rightCol->Add(hatSizer, 0, wxEXPAND | wxALL, 5);
+
+	sizer->Add(rightCol, 1, wxEXPAND);
 
 	m_joystickPage->SetSizer(sizer);
 }
@@ -394,6 +474,7 @@ Config::Settings::Controls ControlsDialog::GetSettings() const
 	cfg.m_GamePad.m_ButtonFireL = m_buttonFireL->GetValue();
 	cfg.m_GamePad.m_ButtonFireR = m_buttonFireR->GetValue();
 	cfg.m_GamePad.m_ButtonMenuSelect = m_buttonMenuSelect->GetValue();
+	cfg.m_GamePad.m_TriggerDeadZone = m_triggerDeadZone->GetValue();
 
 	return cfg;
 }

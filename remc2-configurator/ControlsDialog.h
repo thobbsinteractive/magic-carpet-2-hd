@@ -49,6 +49,15 @@ private:
 	wxSpinCtrl* m_buttonFireL = nullptr;
 	wxSpinCtrl* m_buttonFireR = nullptr;
 	wxSpinCtrl* m_buttonMenuSelect = nullptr;
+	wxSpinCtrl* m_triggerDeadZone = nullptr;
+	wxSpinCtrl* m_axisFireR = nullptr;
+	wxSpinCtrl* m_axisFireL = nullptr;
+	wxCheckBox* m_hapticEnabled = nullptr;
+	wxSpinCtrl* m_hapticMaxGain = nullptr;
+	wxSpinCtrl* m_hatNav = nullptr;
+	wxSpinCtrl* m_hatMov = nullptr;
+	wxCheckBox* m_hatNavInv = nullptr;
+	wxCheckBox* m_hatMovInv = nullptr;
 
 	wxNotebook* m_notebook;
 
