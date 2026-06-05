@@ -261,10 +261,11 @@ message_info Unpack_Message(const std::string& data)
 	}
 	memcpy(&out, data.data(), MSG_WIRE_HEADER);
 	if (out.size > sizeof(out.data) || MSG_WIRE_HEADER + out.size > data.size()) {
-		debug_net_printf("Unpack: bad payload size %u\n", out.size);
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-		out.message = MESS_UNKNOWN;
+		debug_net_printf("Unpack: bad payload size %u\n", out.size);
 #endif
+		out.message = MESS_UNKNOWN;
+
 		return out;
 	}
 	if (out.size > 0)
@@ -374,9 +375,7 @@ struct TcpRecvBuf {
 			// a single TCP connection but defends against bugs).
 			if (len > MAX_FRAME) {
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("TcpRecvBuf: FATAL bad frame len=%u (max=%u), "
-					"discarding %zu bytes — connection likely corrupted\n",
-					len, MAX_FRAME, raw.size());
+				debug_net_printf("TcpRecvBuf: FATAL bad frame len=%u (max=%u), discarding %zu bytes — connection likely corrupted\n", len, MAX_FRAME, raw.size());
 #endif
 				raw.clear();
 				return false; // treat as disconnect — upper layer will reconnect
@@ -600,8 +599,7 @@ static void deleteListenConnection(myNCB* c)
 static bool setListen(myNCB* tmp)
 {
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("setListen: looking for NCB whose callName=[%.16s]\n",
-		tmp->ncb_name_26);
+	debug_net_printf("setListen: looking for NCB whose callName=[%.16s]\n", tmp->ncb_name_26);
 #endif
 	std::lock_guard<std::mutex> lk(clientConnMutex);
 	for (auto* c : clientConnection) {
@@ -609,14 +607,12 @@ static bool setListen(myNCB* tmp)
 			c->ncb_lsn_2 = 20;
 			c->ncb_cmd_cplt_49 = NRC_GOODRET;
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("setListen: MATCH name=[%.16s] call=[%.16s] lsn=20\n",
-				c->ncb_name_26, c->ncb_callName_10);
+			debug_net_printf("setListen: MATCH name=[%.16s] call=[%.16s] lsn=20\n", c->ncb_name_26, c->ncb_callName_10);
 #endif
 			return true;
 		}
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("setListen: candidate name=[%.16s] call=[%.16s] NO MATCH\n",
-			c->ncb_name_26, c->ncb_callName_10);
+		debug_net_printf("setListen: candidate name=[%.16s] call=[%.16s] NO MATCH\n", c->ncb_name_26, c->ncb_callName_10);
 #endif
 	}
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
@@ -870,10 +866,12 @@ namespace MyNetworkLib {
 		IpPortIsSet = iam_server;
 
 		// Start peer data port
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
 		if (!StartPeerListen(clPort))
+		{
+#ifdef TEST_NETWORK_MESSAGES_PORTNET
 			debug_net_printf("NetworkClass: peer listen on %d failed\n", clPort);
 #endif
+		}
 
 		// Server: start control accept port
 		if (clIam_server) {
@@ -888,8 +886,7 @@ namespace MyNetworkLib {
 				listen(ctrlListenSock, 16);
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
 			else
-				debug_net_printf("NetworkClass: ctrl listen on %d failed err=%d\n",
-					clServerPort, sock_errno());
+				debug_net_printf("NetworkClass: ctrl listen on %d failed err=%d\n",	clServerPort, sock_errno());
 			debug_net_printf("NetworkClass: ctrl listen on port %d\n", clServerPort);
 #endif
 		}
@@ -984,8 +981,7 @@ namespace MyNetworkLib {
 			cc.rbuf.ready.clear();
 			if (!ok) {
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("PollCtrlClients: client %s:%d disconnected\n",
-					cc.addr.c_str(), cc.port);
+				debug_net_printf("PollCtrlClients: client %s:%d disconnected\n", cc.addr.c_str(), cc.port);
 #endif
 				CLOSE_SOCKET(cc.sock);
 				it = ctrlClients.erase(it);
@@ -1054,8 +1050,7 @@ namespace MyNetworkLib {
 			if (!listenNCB) {
 				// setListen hasn't run yet for this NCB — reject and let caller retry
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("AcceptPeer: WARNING no listenNCB ready, closing incoming "
-					"connection from %s (will retry)\n", ip);
+				debug_net_printf("AcceptPeer: WARNING no listenNCB ready, closing incoming connection from %s (will retry)\n", ip);
 #endif
 				CLOSE_SOCKET(s);
 				continue;
@@ -1070,8 +1065,7 @@ namespace MyNetworkLib {
 			sess->Touch();
 			AddSession(listenNCB, sess);
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("AcceptPeer: session listenNCB=%p name=[%.16s] call=[%.16s]\n",
-				(void*)listenNCB, listenNCB->ncb_name_26, listenNCB->ncb_callName_10);
+			debug_net_printf("AcceptPeer: session listenNCB=%p name=[%.16s] call=[%.16s]\n", (void*)listenNCB, listenNCB->ncb_name_26, listenNCB->ncb_callName_10);
 #endif
 		}
 	}
@@ -1100,8 +1094,7 @@ namespace MyNetworkLib {
 					std::lock_guard<std::mutex> qlk(sess->queueMtx);
 					sess->dataQueue.push(raw);
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("PollSessions: queued DIRECT_SEND size=%u (queue=%zu)\n",
-						u.size, sess->dataQueue.size());
+					debug_net_printf("PollSessions: queued DIRECT_SEND size=%u (queue=%zu)\n", u.size, sess->dataQueue.size());
 #endif
 				}
 				else if (u.message == MESS_HEARTBEAT) {
@@ -1121,8 +1114,7 @@ namespace MyNetworkLib {
 
 			if (!ok) {
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("PollSessions: peer %s:%d disconnected\n",
-					sess->peerAddr.c_str(), sess->peerPort);
+				debug_net_printf("PollSessions: peer %s:%d disconnected\n", sess->peerAddr.c_str(), sess->peerPort);
 #endif
 				sess->alive = false;
 				if (sess->ownerNCB) {
@@ -1136,8 +1128,7 @@ namespace MyNetworkLib {
 			long silence = sess->SilenceMs();
 			if (silence >= HEARTBEAT_TIMEOUT_MS) {
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("PollSessions: timeout %ldms peer=%s:%d\n",
-					silence, sess->peerAddr.c_str(), sess->peerPort);
+				debug_net_printf("PollSessions: timeout %ldms peer=%s:%d\n", silence, sess->peerAddr.c_str(), sess->peerPort);
 #endif
 				sess->alive = false;
 				if (sess->ownerNCB) {
@@ -1172,8 +1163,7 @@ namespace MyNetworkLib {
 		a.sin_port = htons((unsigned short)dataPort);
 		inet_pton(AF_INET, addr.c_str(), &a.sin_addr);
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("ConnectDataToPeer: %s:%d for ncb=[%.16s]\n",
-			addr.c_str(), dataPort, ncb->ncb_name_26);
+		debug_net_printf("ConnectDataToPeer: %s:%d for ncb=[%.16s]\n", addr.c_str(), dataPort, ncb->ncb_name_26);
 #endif
 		if (connect(s, (sockaddr*)&a, sizeof(a)) != 0) {
 			int e = sock_errno();
@@ -1312,8 +1302,7 @@ namespace MyNetworkLib {
 				ct->connection->ncb_retcode_1 = NRC_GOODRET;
 				ct->connection->ncb_cmd_cplt_49 = NRC_GOODRET;
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("HandleClient: CALL_ACCEPT idx=%d name=[%.16s]\n",
-					u.index, ct->connection->ncb_name_26);
+				debug_net_printf("HandleClient: CALL_ACCEPT idx=%d name=[%.16s]\n", u.index, ct->connection->ncb_name_26);
 #endif
 				struct { char ip[64]; int dataPort; } ci{};
 				if (u.size >= (int)sizeof(ci)) {
@@ -1322,8 +1311,7 @@ namespace MyNetworkLib {
 						std::string key(u.messNCB.ncb_callName_10, 16);
 						directPeers[key] = { std::string(ci.ip), ci.dataPort };
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-						debug_net_printf("HandleClient: CALL_ACCEPT peer=[%.16s] %s:%d\n",
-							u.messNCB.ncb_callName_10, ci.ip, ci.dataPort);
+						debug_net_printf("HandleClient: CALL_ACCEPT peer=[%.16s] %s:%d\n", u.messNCB.ncb_callName_10, ci.ip, ci.dataPort);
 #endif
 						ConnectDataToPeer(ct->connection, std::string(ci.ip), ci.dataPort);
 						// Register CALL NCB in clientConnection so Pass4 tracks
@@ -1348,8 +1336,7 @@ namespace MyNetworkLib {
 			myNCB tmp; memset(&tmp, 0, sizeof(tmp));
 			memcpy(tmp.ncb_name_26, u.messNCB.ncb_name_26, 16);  // caller's name
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("HandleClient: LISTEN_ACCEPT callerName=[%.16s] listenerName=[%.16s]\n",
-				u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
+			debug_net_printf("HandleClient: LISTEN_ACCEPT callerName=[%.16s] listenerName=[%.16s]\n", u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
 #endif
 			setListen(&tmp);
 
@@ -1361,8 +1348,7 @@ namespace MyNetworkLib {
 					std::string key(u.messNCB.ncb_name_26, 16);
 					directPeers[key] = { std::string(li.ip), li.dataPort };
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("HandleClient: LISTEN_ACCEPT caller=%s:%d\n",
-						li.ip, li.dataPort);
+					debug_net_printf("HandleClient: LISTEN_ACCEPT caller=%s:%d\n", li.ip, li.dataPort);
 #endif
 					// Incoming TCP connection accepted by AcceptPeerConnections()
 				}
@@ -1427,8 +1413,7 @@ namespace MyNetworkLib {
 			}
 			if (!sess) {
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("Pass1: RECEIVE idx=%d no session name=[%.16s]\n",
-					conn.index, conn.connection->ncb_name_26);
+				debug_net_printf("Pass1: RECEIVE idx=%d no session name=[%.16s]\n", conn.index, conn.connection->ncb_name_26);
 #endif
 				continue;
 			}
@@ -1444,8 +1429,7 @@ namespace MyNetworkLib {
 			message_info u = Unpack_Message(raw);
 			if (u.size > conn.connection->ncb_bufferLength_8) {
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("Pass1: RECEIVE idx=%d size=%u > buf=%u DROP\n",
-					conn.index, u.size, conn.connection->ncb_bufferLength_8);
+				debug_net_printf("Pass1: RECEIVE idx=%d size=%u > buf=%u DROP\n", conn.index, u.size, conn.connection->ncb_bufferLength_8);
 #endif
 				continue;
 			}
@@ -1455,9 +1439,7 @@ namespace MyNetworkLib {
 			conn.connection->ncb_cmd_cplt_49 = NRC_GOODRET;
 			toDelete.push_back(conn.index);
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("Pass1: RECEIVE idx=%d DELIVERED size=%u from=[%.16s] to=[%.16s]\n",
-				conn.index, u.size,
-				u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
+			debug_net_printf("Pass1: RECEIVE idx=%d DELIVERED size=%u from=[%.16s] to=[%.16s]\n", conn.index, u.size, u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
 #endif
 		}
 
@@ -1560,8 +1542,7 @@ namespace MyNetworkLib {
 #endif
 			}
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("Pass4: lsn=%d name=[%.16s] alive=%d cplt %02X→%02X\n",
-				c->ncb_lsn_2, c->ncb_name_26, (int)alive, old, c->ncb_cmd_cplt_49);
+			debug_net_printf("Pass4: lsn=%d name=[%.16s] alive=%d cplt %02X→%02X\n", c->ncb_lsn_2, c->ncb_name_26, (int)alive, old, c->ncb_cmd_cplt_49);
 #endif
 		}
 	}
@@ -1601,8 +1582,7 @@ namespace MyNetworkLib {
 	void NetworkClass::ListenNetwork(myNCB* c, int32_t index)
 	{
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("ListenNetwork: name=[%.16s] call=[%.16s]\n",
-			c->ncb_name_26, c->ncb_callName_10);
+		debug_net_printf("ListenNetwork: name=[%.16s] call=[%.16s]\n", c->ncb_name_26, c->ncb_callName_10);
 #endif
 		myNCB safe = *c; safe.ncb_buffer_4.p = nullptr;
 		SendCtrl(Pack_Message(MESS_CLIENT_MESSAGE_LISTEN, myNCBtoShadow(*c), index, clPort,
@@ -1649,8 +1629,7 @@ namespace MyNetworkLib {
 		c->ncb_retcode_1 = NRC_GOODRET;
 		c->ncb_cmd_cplt_49 = NRC_GOODRET;
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("SendNetwork: sent size=%u name=[%.16s]\n",
-			c->ncb_bufferLength_8, c->ncb_name_26);
+		debug_net_printf("SendNetwork: sent size=%u name=[%.16s]\n", c->ncb_bufferLength_8, c->ncb_name_26);
 #endif
 	}
 
