@@ -39036,8 +39036,6 @@ void write_pngs()
 	}
 }
 
-const int StartNetworkTimeout = 5;
-
 //----- (00056210) --------------------------------------------------------
 void sub_56210_process_command_line(int argc, char** argv)//237210
 {
@@ -39221,12 +39219,13 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 					//if (ServerPort == -1)ServerPort = NetworkPort;
 				}
 			}
+			/*
 			else if (!_stricmp("otherserverport", (char*)actarg))//set to all one computer adress
 			{
 				ServerPort = atoi(argv[++argnumber]);
 				if (ServerPort < 0)ServerPort = 0;
 				if (ServerPort > 99999)ServerPort = 99999;
-			}
+			}*/
 		}
 		argnumber++;
 	}
