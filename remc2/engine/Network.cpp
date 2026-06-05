@@ -1053,7 +1053,7 @@ bool SetMultiplayerColors_7CE50()//25de50
 	__int16 colorIndex; // di
 	bool result = false;
 
-	x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].connected_0 = 1;
+	x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].makeUpdate_0 = 1;
 	NetworkUpdateConnections2_74374();//some with network
 	printState(connection_E12AE);
 	ReceiveSendAll_7438A((uint8_t*)x_DWORD_17DE38str.array_BYTE_17DE68x, sizeof(type_BYTE_17DE68x));
@@ -1061,13 +1061,13 @@ bool SetMultiplayerColors_7CE50()//25de50
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			x_DWORD_17DE38str.array_BYTE_17DE68x[v0].arrayColors_1[j] = x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[j];
-			x_BYTE_E131C[j] = x_DWORD_17DE38str.array_BYTE_17DE68x[v0].arrayColors_1[j];
+			x_DWORD_17DE38str.array_BYTE_17DE68x[v0].playerIndex_1[j] = x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[j];
+			x_BYTE_E131C[j] = x_DWORD_17DE38str.array_BYTE_17DE68x[v0].playerIndex_1[j];
 		}
 	}
 	for (int i = 0; i < 8; i++)
 	{
-		if (x_DWORD_17DE38str.array_BYTE_17DE68x[i].connected_0)
+		if (x_DWORD_17DE38str.array_BYTE_17DE68x[i].makeUpdate_0)
 		{
 			switch (x_DWORD_17DE38str.array_BYTE_17DE68x[i].action_9)
 			{
@@ -1080,7 +1080,7 @@ bool SetMultiplayerColors_7CE50()//25de50
 				}
 				sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
 
-				x_DWORD_17DE38str.array_BYTE_17DE68x[i].connected_0 = 0;
+				x_DWORD_17DE38str.array_BYTE_17DE68x[i].makeUpdate_0 = 0;
 				NetworkSomeChange_73AA1(i);
 				if (i == x_DWORD_17DE38str.serverIndex_17DEFC)
 					result = true;
@@ -1089,22 +1089,22 @@ bool SetMultiplayerColors_7CE50()//25de50
 				if (GetIndexNetwork2_74515() == GetIndexNetwork_74536())//begin of select character
 				{
 					if (i <= 0)
-						x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i] = i;
+						x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i] = i;
 					else
-						x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i] = i - 1;
-					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i] = sub_7D230(1, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i], i);
+						x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i] = i - 1;
+					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i] = sub_7D230(1, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i], i);
 				}
 				break;
 			case 3://change to left character
 				if (GetIndexNetwork2_74515() == GetIndexNetwork_74536() && x_DWORD_17DE38str.x_WORD_17DEFE < 7)
 				{
-					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i] = sub_7D230(1, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i], i);
+					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i] = sub_7D230(1, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i], i);
 				}
 				break;
 			case 4://change to right character
 				if (GetIndexNetwork2_74515() == GetIndexNetwork_74536() && x_DWORD_17DE38str.x_WORD_17DEFE < 7)
 				{
-					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i] = sub_7D230(0, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i], i);
+					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i] = sub_7D230(0, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i], i);
 				}
 				break;
 			case 5://start multiplayer level
@@ -1125,7 +1125,7 @@ bool SetMultiplayerColors_7CE50()//25de50
 		}
 	}
 	x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].action_9 = 0;
-	x_DWORD_17DE38str.x_WORD_17DEF4 = x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[x_DWORD_17DE38str.serverIndex_17DEFC];
+	x_DWORD_17DE38str.x_WORD_17DEF4 = x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[x_DWORD_17DE38str.serverIndex_17DEFC];
 	DrawNetworkLevelName_7D1F0();
 	return result;
 }
@@ -1137,7 +1137,7 @@ void DrawNetworkLevelName_7D1F0()//25e1f0
 	x_DWORD_17DE38str.x_WORD_17DEFE = 0;
 	do
 	{
-		if (x_DWORD_17DE38str.array_BYTE_17DE68x[index].connected_0)
+		if (x_DWORD_17DE38str.array_BYTE_17DE68x[index].makeUpdate_0)
 			x_DWORD_17DE38str.x_WORD_17DEFE++;
 		index++;
 	} while (index < 8);
@@ -1148,11 +1148,11 @@ void SetMultiplayerColors_7D310()//25e310
 {
 	for (int v0 = 0; v0 < 8; v0++)
 	{
-		if (x_DWORD_17DE38str.array_BYTE_17DE68x[v0].connected_0)
+		if (x_DWORD_17DE38str.array_BYTE_17DE68x[v0].makeUpdate_0)
 		{
 			if (v0 != x_DWORD_17DE38str.serverIndex_17DEFC)
 			{
-				SetPaletteColor_7CDC0(v0, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[v0]);
+				SetPaletteColor_7CDC0(v0, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[v0]);
 			}
 		}
 	}
@@ -1178,7 +1178,7 @@ signed int sub_7D230(char a1, unsigned __int8 a2, unsigned __int8 a3)//25e230
 			v7 = 0;
 			while (v5 < 8)
 			{
-				if (v5 != a3 && x_DWORD_17DE38str.array_BYTE_17DE68x[v5].connected_0 && x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[v5] == (x_WORD)v3)
+				if (v5 != a3 && x_DWORD_17DE38str.array_BYTE_17DE68x[v5].makeUpdate_0 && x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[v5] == (x_WORD)v3)
 				{
 					v7 = 1;
 					break;
@@ -1197,7 +1197,7 @@ signed int sub_7D230(char a1, unsigned __int8 a2, unsigned __int8 a3)//25e230
 			v8 = 0;
 			while (v4 < 8)
 			{
-				if (v4 != a3 && x_DWORD_17DE38str.array_BYTE_17DE68x[v4].connected_0 && x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[v4] == (x_WORD)v3)
+				if (v4 != a3 && x_DWORD_17DE38str.array_BYTE_17DE68x[v4].makeUpdate_0 && x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[v4] == (x_WORD)v3)
 				{
 					v8 = 1;
 					break;
