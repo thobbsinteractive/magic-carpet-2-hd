@@ -31,13 +31,13 @@ source_group("Source Files Configurator" FILES ${SOURCE_FILES_CONFIGURATOR})
 set(ROOT_NAMESPACE ${CONFIGURATOR_TARGET})
 
 # Find wxWidgets
-find_package(wxWidgets REQUIRED COMPONENTS core base)
-
-add_executable(${CONFIGURATOR_TARGET} ${SOURCE_FILES_CONFIGURATOR})
+find_package(wxWidgets CONFIG REQUIRED)
 
 target_link_libraries(${CONFIGURATOR_TARGET} PUBLIC
     wxWidgets::wxWidgets
 )
+
+add_executable(${CONFIGURATOR_TARGET} ${SOURCE_FILES_CONFIGURATOR})
 
 target_include_directories(${CONFIGURATOR_TARGET} PUBLIC
     "../spdlog/include"
