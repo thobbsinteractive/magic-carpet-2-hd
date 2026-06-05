@@ -94,7 +94,7 @@ endif()
 
 find_package(PNG REQUIRED)
 find_package(fmt REQUIRED)
-find_package(wxwidgets REQUIRED)
+find_package(wxWidgets REQUIRED)
 
 ################################################################################
 # Global configuration types
