@@ -46219,6 +46219,10 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 				sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DED4, x_DWORD_17DE38str.x_DWORD_17DED8, x_DWORD_17DE38str.x_DWORD_17DE48c, xy_DWORD_17DED4_spritestr);
 				sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
 			}
+			if (extendedFonts)
+			{
+				LoadFixedFonts(0, (char*)"4b");
+			}
 			break;
 		case 12:
 			sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_E9C38_smalltit, 0x91C59, 134382);
