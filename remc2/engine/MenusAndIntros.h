@@ -5,6 +5,7 @@
 #include "../sub_main.h"
 #include "EventsFunctions.h"
 #include "TypeConfigDat.h"
+#include "Network.h"
 
 // types
 
