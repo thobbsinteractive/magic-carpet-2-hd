@@ -66,4 +66,6 @@ void UpdateNetInfo();
 
 void RemoveDeadClients();
 
+void InitNetworkInfo();
+
 #endif //MAIN_NETWORK
