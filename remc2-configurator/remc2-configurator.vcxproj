@@ -90,7 +90,7 @@
     </Link>
 		<PostBuildEvent>
 			<Command>
-				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)mc2_hd_logo.png" /Y /F
+				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)/" /Y /F
 			</Command>
 		</PostBuildEvent>
   </ItemDefinitionGroup>
@@ -111,7 +111,7 @@
     </Link>
 		<PostBuildEvent>
 			<Command>
-				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)mc2_hd_logo.png" /Y /F
+				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)/" /Y /F
 			</Command>
 		</PostBuildEvent>
   </ItemDefinitionGroup>
@@ -130,7 +130,7 @@
     </Link>
 		<PostBuildEvent>
 			<Command>
-				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)mc2_hd_logo.png" /Y /F
+				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)/" /Y /F
 			</Command>
 		</PostBuildEvent>
   </ItemDefinitionGroup>
@@ -151,7 +151,7 @@
     </Link>
 		<PostBuildEvent>
 			<Command>
-				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)mc2_hd_logo.png" /Y /F
+				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)/" /Y /F
 			</Command>
 		</PostBuildEvent>
   </ItemDefinitionGroup>
