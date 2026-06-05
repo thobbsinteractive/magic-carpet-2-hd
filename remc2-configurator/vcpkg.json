@@ -3,8 +3,7 @@
     "version": "0.9.9",
     "dependencies": [
 		"wxwidgets",
-		"nlohmann-json",
-		"sdl2"
+		"nlohmann-json"
     ],
 	"builtin-baseline": "ef7dbf94b9198bc58f45951adcf1f041fcbc5ea0"
 }
