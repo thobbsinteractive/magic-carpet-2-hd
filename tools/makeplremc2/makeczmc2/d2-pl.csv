@@ -77,12 +77,12 @@ Toggle light sources on / off#W³¹czanie/wy³¹czanie Ÿróde³ œwiat³a#12#
 Alter screen size#Zmieñ rozmiar ekranu#13#
 Toggle help on / off#W³¹cz/wy³¹cz pomoc#14#
 Toggle flight assistance on / off#W³¹cz/wy³¹cz pomoc w locie#15#
-Kafkar: When you're a wizard trapped in the Netherworlds, and its demon overlord discovers which#Kafkar: Kiedy jesteœ czarodziejem uwiêzionym w Zaœwiatach, a jego demoniczny w³adca#16#
-dimension you've just come from, you have good reason to wonder how long that dimension has left#odkrywa, z którego wymiaru w³aœnie przyby³eœ, masz dobry powód, by zastanawiaæ siê,#17#
-before said demon tranforms it into an ornament for his throne room...#ile czasu pozosta³o temu wymiarowi, zanim demon zamieni j¹ w ozdobê swojej sali tronowej...#18#
+Kafkar: When you're a wizard trapped in the Netherworlds, and its demon overlord discovers which#Kafkar: Kiedy jesteœ czarodziejem uwiêzionym w Zaœwiatach,#16#
+dimension you've just come from, you have good reason to wonder how long that dimension has left#a jego demoniczny w³adca odkrywa, z którego wymiaru w³aœnie przyby³eœ,#17#
+before said demon tranforms it into an ornament for his throne room...#masz dobry powód, by zastanawiaæ siê, ile czasu pozosta³o temu wymiarowi, zanim demon zamieni go w ozdobê swojej sali tronowej...#18#
 Vissuluth: I am free! And I smell the fear of mortal men.#Vissuluth: Jestem wolny! I czujê strach œmiertelników.#19#
 Kafkar: Then you remember that promising apprentice you once introduced to the eldritch arts...#Kafkar: Wtedy przypominasz sobie tego obiecuj¹cego ucznia, którego kiedyœ wprowadzi³eœ w sztukê niebiañsk¹...#20#
-Apprentice: No! Master?#Uczeñ: Nie! Mistrz?#21#
+Apprentice: No! Master?#Uczeñ: Nie!                                     Mistrz?#21#
 Kafkar: I see you have met your new neighbour, Vissuluth, Demon Lord of the Netherworlds.#Kafkar: Widzê, ¿e pozna³eœ swojego nowego s¹siada, Vissulutha, W³adcê Demonów Zaœwiatów.#22#
 "You must explore the outer Netherworlds while you learn its magic. Your first destination is the ancient city of Jahwl."#"Musisz eksplorowaæ zewnêtrzne Zaœwiaty, ucz¹c siê ich magii. Twoim pierwszym celem jest staro¿ytne miasto Jahwl."#23#
 "Before Vissuluth's rule of the Netherworlds began, the island of Kopahk was occupied by the great sorceress, Payahandra. Go there and discover her lost spells."#"Zanim Vissuluth obj¹³ w³adzê nad Zaœwiatami, wyspa Kopahk by³a okupowana przez wielk¹ czarodziejkê, Payahandrê. Udaj siê tam i odkryj jej zaginione zaklêcia."#24#
@@ -119,7 +119,7 @@ Kafkar: I see you have met your new neighbour, Vissuluth, Demon Lord of the Neth
 "Beware! Nyphur, a servant of the Demon Lord, will try to kill you. You will have to banish him from the netherworld."#"Uwa¿aj! Nyphur, s³uga W³adcy Demonów, bêdzie próbowa³ ciê zabiæ. Bêdziesz musia³ wygnaæ go z zaœwiatów."#55#
 "Kill the giant bees that plague the people."#"Zabij gigantyczne pszczo³y, które nêkaj¹ ludzi."#56#
 "Good work! Quickly, go to the ruins of Payahandra's tower."#"Dobra robota! Szybko, idŸ do ruin wie¿y Payahandry."#57#
-"Payahandra's spells are hidden inside these vaults. Raze them to the ground."#"Zaklêcia Payahandry s¹ ukryte w tych kryptach. Zrównajcie je z ziemi¹."#58#
+"Payahandra's spells are hidden inside these vaults. Raze them to the ground."#"Zaklêcia Payahandry s¹ ukryte w tych kryptach. Zrównaj je z ziemi¹."#58#
 "When you have recovered the spells, make your way to the portal. Your work here is done."#"Kiedy odzyskasz zaklêcia, udaj siê do portalu. Twoja praca tutaj jest skoñczona."#59#xx
 "The people of Nyphur's netherworld are doomed to swell the ranks of his army of undead, unless you slay the skeleton horde."#"Mieszkañcy podziemnego œwiata Nyphura skazani s¹ na zasilenie szeregów jego armii nieumar³ych, jeœli nie pokonasz hordy szkieletów."#60#
 "You must defeat Nyphur's guardian dragons."#"Musisz pokonaæ smoki stra¿nicze Nyphura."#61#
@@ -145,15 +145,15 @@ Kafkar: I see you have met your new neighbour, Vissuluth, Demon Lord of the Neth
 "Is there no end to this rock?"#"Czy ta ska³a nie ma koñca?"#81#
 "These zombies guard a hidden way."#"Te zombie strzeg¹ ukrytej drogi."#82#
 "So, Vissuluth is building an army of devils, is he? You can foil that plan, my friend."#"Wiêc Vissuluth buduje armiê diab³ów, tak? Mo¿esz pokrzy¿owaæ ten plan, przyjacielu."#83#
-"The devils built these structures to block the portal to the Black Plains. Obliterate them."#"Diab³y zbudowa³y te konstrukcje, ¿eby zablokowaæ portal do Czarnych Równin. Zniszczcie je."#84#
+"The devils built these structures to block the portal to the Black Plains. Obliterate them."#"Diab³y zbudowa³y te konstrukcje, ¿eby zablokowaæ portal do Czarnych Równin. Zniszcz je."#84#
 "You can now return to the surface."#"Mo¿esz teraz wróciæ na powierzchniê."#85#
-"A manticore comes this way. It can smell an intruder."#"Mantykora nadchodzi têdy. Potrafi wyczuæ intruza."#86#
+"A manticore comes this way. It can smell an intruder."#"Mantikora nadchodzi têdy. Potrafi wyczuæ intruza."#86#
 "Finish it!"#"Dokoñcz to!"#87#
 "Destroy Jark."#"Zniszcz Jarka."#88#
 "Jark's Loretower is revealed to us. His ancient secret lies within."#"Wie¿a wiedzy Jarka zosta³a nam ujawiona. Jego staro¿ytna tajemnica le¿y w œrodku."#89#
 "This is your hunting ground now. Make sure no manticore ever leaves this netherworld."#"To teraz twoje tereny ³owieckie. Dopilnuj, ¿eby ¿adna mantikora nigdy nie opuœci³a tego podziemnego œwiata."#90#
 "Every one of the beasts has perished. Nothing remains for a wizard to rule!"#"Wszystkie bestie zginê³y. Nie pozosta³o ju¿ nic, czym czarodziej móg³by rz¹dziæ!"#91#
-"Vissuluth's army maintains barracks here. Send them crashing to the feet of the mountains."#"Armia Vissulutha ma tu koszary. Zmieæ ich do podnó¿a gór."#92#
+"Vissuluth's army maintains barracks here. Send them crashing to the feet of the mountains."#"Armia Vissulutha ma tu koszary. Zmieæ je do podnó¿a gór."#92#
 "The black winged swarm finally emerges."#"Czarnoskrzyd³y rój w koñcu siê wy³ania."#93#
 "The Cymmerians have sealed the portal. Travel to the ruined temple. Perhaps the gods may help us again."#"Cymmeryjczycy zamknêli portal. Udaj siê do zrujnowanej œwi¹tyni. Mo¿e bogowie znów nam pomog¹."#94#
 "The gods do not speak to me. If you become more powerful the way may be revealed to you."#"Bogowie nie odzywaj¹ siê do mnie. Jeœli staniesz siê potê¿niejszy, droga mo¿e ci zostaæ objawiona."#95#
@@ -178,8 +178,8 @@ Kafkar: I see you have met your new neighbour, Vissuluth, Demon Lord of the Neth
 "I hope you remember who taught you the sorcerer's way. Hurry, time is our enemy."#"Mam nadziejê, ¿e pamiêtasz, kto ciê nauczy³ drogi czarodzieja. Pospiesz siê, czas jest naszym wrogiem."#114#
 "Exterminate them all!"#"Wytêp ich wszystkich!"#115#
 "Vissuluth has found some new allies. What they are and where they come from, I do not know."#"Vissuluth znalaz³ nowych sojuszników. Czym oni s¹ i sk¹d pochodz¹, nie mam pojêcia."#116#
-"I fear our task may be too great. Yet we have no choice but to try."#"Obawiam siê, ¿e nasze zadanie mo¿e byæ zbyt trudne. Nie mamy jednak wyboru i musimy spróbowaæ."#117#
-"Vissuluth has re-opened the mines. Destroy this outpost. We must get inside."#"Vissuluth ponownie otworzy³ kopalnie. Zniszczcie tê placówkê. Musimy dostaæ siê do œrodka."#118#
+"I fear our task may be too great. Yet we have no choice but to try."#"Obawiam siê, ¿e nasze zadanie mo¿e byæ zbyt trudne. Nie mamy jednak innego wyboru ni¿ spróbowaæ."#117#
+"Vissuluth has re-opened the mines. Destroy this outpost. We must get inside."#"Vissuluth ponownie otworzy³ kopalnie. Zniszcz tê placówkê. Musimy dostaæ siê do œrodka."#118#
 "Those sentinels guard the way."#"Tamci stra¿nicy strzeg¹ drogi."#119#
 "A little more rubble here for you."#"Tutaj jeszcze trochê gruzu dla ciebie."#120#
 "Quickly, to the mines. Destroy the smelting houses."#"Szybko, do kopalñ. Zniszcz huty."#121#
@@ -190,8 +190,8 @@ Kafkar: I see you have met your new neighbour, Vissuluth, Demon Lord of the Neth
 "Yragore is extremely powerful, do not attack him until you are ready."#"Yragore jest niezwykle potê¿ny, nie atakuj go, dopóki nie bêdziesz gotowy."#126#
 "Beware! A wyvern approaches!"#"Uwaga! Zbli¿a siê wiwerna!"#127#
 "Your battle with the wyvern will attract more of its kind. Be ready."#"Twoja walka z wiwern¹ przyci¹gnie wiêcej osobników tego gatunku. B¹dŸ gotowy."#128#
-"Now, command the wyvern and attack Yragore's castle!"#"Teraz dowodŸ wiwern¹ i zaatakuj zamek Yagore!"#129#
-"Your foe surely fears you now."#"Twój wróg na pewno siê ciebie teraz boi."#130#
+"Now, command the wyvern and attack Yragore's castle!"#"Teraz dowodŸ wiwern¹ i zaatakuj zamek Yragore’a!"#129#
+"Your foe surely fears you now."#"Twój wróg na pewno teraz siê ciebie boi."#130#
 "Battle is joined! Success, my friend!"#"Bitwa rozpoczêta! Sukces, mój przyjacielu!"#131#
 "You triumph at last."#"W koñcu triumfujesz."#132#
 "Protect the people. Rid the netherworld of the Demon Lord's twisted creations."#"Chroñ ludzi. Uwolnij podziemny œwiat od wypaczonych stworzeñ W³adcy Demonów."#133#
@@ -199,14 +199,14 @@ Kafkar: I see you have met your new neighbour, Vissuluth, Demon Lord of the Neth
 I" fear there will more of these creatures to slay before your journey is done."#"Obawiam siê, ¿e zanim twoja podró¿ dobiegnie koñca, bêdziesz musia³ zabiæ jeszcze wiêcej tych stworzeñ."#135#
 "These caverns are infested! Make this place the tomb of the troglodytes."#"Te jaskinie s¹ zara¿one! Zrób z tego miejsca grobowiec troglodytów."#136#
 "Beyond lies the zombie horde. Now is your chance."#"Dalej kryje siê horda zombie. Teraz masz szansê."#137#
-"Nyphur is more powerful than he has ever been. Can you force him to retreat again?"#"Nyphur jest potê¿niejszy ni¿ kiedykolwiek. Czy mo¿esz go ponownie zmusiæ do odwrotu?"#138#
+"Nyphur is more powerful than he has ever been. Can you force him to retreat again?"#"Nyphur jest potê¿niejszy ni¿ kiedykolwiek. Czy mo¿esz go znowu zmusiæ do odwrotu?"#138#
 "I still sense evil. Do not dally here."#"Wci¹¿ czujê z³o. Nie zatrzymuj siê tu."#139#
 "You have been discovered!"#"Zosta³eœ odkryty!"#140#
 "Gain all the strength you can while there's time. Tomorrow we fly to Jathnar."#"Zbierz wszystkie si³y, póki masz czas. Jutro lecimy do Jathnaru."#141#
 "Night is almost over. You make good time."#"Noc prawie siê koñczy. Dobrze ci idzie."#142#
 "Destroy the War Council Tower."#"Zniszcz wie¿ê Rady Wojennej."#143#
 "Good. Now reduce the barracks to rubble."#"Dobrze. A teraz zrównaj koszary z ziemi¹."#144#
-"Make sure that not one spell ever leaves Vissuluth's apothecary again."#"Upewnij siê, ¿e ani jedno zaklêcie nie opuœci ju¿ apteki Vissulutha."#145#
+"Make sure that not one spell ever leaves Vissuluth's apothecary again."#"Upewnij siê, ¿e ani jedno zaklêcie nie opuœci ju¿ aptekarii Vissulutha."#145#
 "Bring down this temple of evil."#"Zburz tê œwi¹tyniê z³a."#146#
 "Smash the weapons vaults."#"Zniszcz magazyny broni."#147#
 "Now destroy the seven wizard lords! This time they will perish."#"Teraz zniszcz siedmiu czarodziejów! Tym razem zgin¹."#148#
@@ -224,7 +224,7 @@ Your ability to cast %s has improved.#Zaklêcie %s uleg³o poprawie.#159#
 FIREBALL#KULA OGNIA#160#
 POSSESS#POSIADANIE#161#
 CASTLE#ZAMEK#162#
-SPEED UP#PRZYŒPIESZENIE#163#
+SPEED UP#PRZYSPIESZENIE#163#
 MORPH#PRZEISTOCZENIE#164#
 HEAL#LECZENIE#165#
 SHIELD#TARCZA#166#
@@ -256,13 +256,13 @@ Mana Lock#Blokada Many#191#
 Castle#Zamek#192#
 Fire Tower#Wie¿a Ognia#193#
 Lightning Tower#Wie¿a B³yskawic#194#
-Speed Up#Przyœpieszenie#195#
+Speed Up#Przyspieszenie#195#
 Super Speed#Super Prêdkoœæ#196#
 Super Speed II#Super Prêdkoœæ II#197#
 Bee Morph#Przeisotczenie w Pszczo³ê#198#
 Firefly Morph#Przeisotczenie w Œwietlika#199#
 Cymmerian Morph#Przeisotczenie w Cymmeriana#200#
-Wyvern Morph#Przeisotczenie w Wyvernê#201#
+Wyvern Morph#Przeisotczenie w Wiwernê#201#
 Heal#Leczenie#202#
 Aid#Pomoc#203#
 Constitution#Zdrowie#204#
@@ -284,11 +284,11 @@ Castle Port#Port Zamku#219#
 Invisible#Niewidzialnoœæ#220#
 Possess Invisible#Niewidzialnoœæ Posiadania#221#
 Attack Invisible#Niewidzialnoœæ Ataku#222#
-Beyond Sight#Ponad Widok#223#
-See Invisible#Zobacz Niewidzialne#224#
-See All#Zobacz Wszystko#225#
-Steal Mana#Kradnij mane#226#
-Double Steal#Kradnij podwójnie#227#
+Beyond Sight#Ponadwidzenie#223#
+See Invisible#Widzenie Niewidzialnego#224#
+See All#Widzenie Wszystkiego#225#
+Steal Mana#Kradzie¿ many#226#
+Double Steal#Podwójna kradzie¿#227#
 Burgle#W³amywanie#228#
 Duel#Pojedynek#229#
 Mana Drain#Wysysanie many#230#
@@ -327,26 +327,26 @@ Alliance III#Przymierze III#262#
 Cave In#Zawalisko#263#
 Cave In II#Zawalisko II#264#
 Cave In III#Zawalisko III#265#
-I, Vissuluth, demon lord of the netherworlds, call upon the battle dead.#Ja, Vissuluth, demoniczny w³adca podziemnych œwiatów, wzywam poleg³ych w bitwie.#266#
-Ancient warriors, rise and march upon the domain of man. Kill them!#Staro¿ytni wojownicy, powstañcie i ruszajcie na królestwo cz³owieka. Zabijcie ich!#267#
-Burn their cities to the ground! And as their armies fall before us,#Spalcie ich miasta doszczêtnie! A gdy ich armie padn¹ przed nami,#268#
-let them rise again as slaves of darkness.#niech powstan¹ na nowo jako niewolnicy ciemnoœci.#269#
-Heed my call, winged legions of Cymmeria. The time has come when the skies of man are#Us³yszcie moje wezwanie, skrzydlate legiony Cymerii. Nadszed³ czas, gdy niebo ludzkoœci#270#
-filled with your kind. Leave your mountain haunts and follow the march of chaos.#zape³ni siê waszym gatunkiem. Opuœcie swoje górskie legowiska i pod¹¿ajcie za pochodem chaosu.#271#
-Let the beating of your wings carry this message to the world:#Niech bicie waszych skrzyde³ niesie œwiatu tê wiadomoœæ:#272#
-Despair and bow down before your new God, Vissuluth.#Rozpaczajcie i pok³oñcie siê swojemu nowemu Bogowi, Vissuluthowi.#273#
-I summon the demons who dwell beyond the sky. Gather mana for me, cold nameless ones.#Przywo³ujê demony, które mieszkaj¹ ponad niebem. Zbierzcie dla mnie manê, zimne, bezimienne istoty.#274#
-Strike my enemies down with lightning. Come! I command you to do my bidding.#Powalcie moich wrogów piorunem. ChodŸcie! Rozkazujê wam, byœcie spe³nili moje rozkazy.#275#
-My patience is exhausted. From Mount Firestorm, let the wyvernflights ride.#Moja cierpliwoœæ siê wyczerpa³a. Z Góry Burzy Ogniowej, niech rusz¹ wiwerny.#276#
-Seek out the cities of man and blast them from the face from the world.#ZnajdŸcie miasta ludzkie i zmieæcie je z powierzchni ziemi.#277#
-Crush them once and for all!#Zmia¿d¿cie ich raz na zawsze!#278#
-Who is this who would thwart my plans? What mortal fool would challenge the will of a God?#Kim jest ten, kto pokrzy¿owa³by moje plany? Jaki œmiertelny g³upiec sprzeciwi³by siê woli Boga?#279#
-What name does he go by, this one who will pay for what has been done here with eternal torment?#Jak siê nazywa ten, który zap³aci wiecznymi mêkami za to, co tu zrobiono?#280#
+I, Vissuluth, demon lord of the netherworlds, call upon the battle dead.#Ja, Vissuluth, demoniczny w³adca podziemnych œwiatów,#266#
+Ancient warriors, rise and march upon the domain of man. Kill them!#wzywam poleg³ych w bitwie. Staro¿ytni wojownicy,#267#
+Burn their cities to the ground! And as their armies fall before us,#powstañcie i ruszajcie na królestwo cz³owieka. Zabijcie ich!#268#
+let them rise again as slaves of darkness.#Spalcie ich miasta doszczêtnie! A gdy ich armie padn¹ przed nami, niech powstan¹ na nowo jako niewolnicy ciemnoœci.#269#
+Heed my call, winged legions of Cymmeria. The time has come when the skies of man are#Us³yszcie moje wezwanie, skrzydlate legiony Cymerii.#270#
+filled with your kind. Leave your mountain haunts and follow the march of chaos.#Nadszed³ czas, gdy niebo ludzkoœci zape³ni siê waszym gatunkiem.#271#
+Let the beating of your wings carry this message to the world:#Opuœcie swoje górskie legowiska i pod¹¿ajcie za pochodem chaosu.#272#
+Despair and bow down before your new God, Vissuluth.#Niech bicie waszych skrzyde³ niesie œwiatu tê wiadomoœæ: Rozpaczajcie i pok³oñcie siê swojemu nowemu Bogowi, Vissuluthowi.#273#
+I summon the demons who dwell beyond the sky. Gather mana for me, cold nameless ones.#Przywo³ujê demony, które mieszkaj¹ ponad niebem. Zbierzcie dla mnie manê,#274#
+Strike my enemies down with lightning. Come! I command you to do my bidding.#zimne, bezimienne istoty. Powalcie moich wrogów piorunem. ChodŸcie! Rozkazujê wam, byœcie spe³nili moje rozkazy.#275#
+My patience is exhausted. From Mount Firestorm, let the wyvernflights ride.#Moja cierpliwoœæ siê wyczerpa³a.#276#
+Seek out the cities of man and blast them from the face from the world.#Z Góry Burzy Ogniowej, niech rusz¹ wiwerny.#277#
+Crush them once and for all!#ZnajdŸcie miasta ludzkie i zmieæcie je z powierzchni ziemi. Zmia¿d¿cie je raz na zawsze!#278#
+Who is this who would thwart my plans? What mortal fool would challenge the will of a God?#Kim jest ten, który pokrzy¿owa³by moje plany?#279#
+What name does he go by, this one who will pay for what has been done here with eternal torment?#Jaki œmiertelny g³upiec sprzeciwi³by siê woli Boga? Jak siê nazywa ten, który zap³aci wiecznymi mêkami za to, co tu zrobiono?#280#
 Return to the Netherworlds as soon as you can.#Wróæ do Zaœwiatów tak szybko, jak to mo¿liwe.#281#
 You have been banished from the realm.#Zosta³eœ wygnany z królestwa.#282#
 has been banished from the realm.#zosta³ wygnany z królestwa.#283#
 "You have discovered one of the demon lord's hidden realms."#"Odkry³eœ jedno z ukrytych królestw w³adcy demonów."#284#
-"You have discovered another of the demon lord's hidden realms."#"Odkry³eœ kolejne ukryte królestwo w³adcy demonów".#285#
+"You have discovered another of the demon lord's hidden realms."#"Odkry³eœ kolejne ukryte królestwo w³adcy demonów."#285#
 Press 'O' to show current objective#Naciœnij "O", aby wyœwietliæ aktualny cel#286#
 You are here#Jesteœ tutaj#287#
 Walls cannot be passed#Œcian nie da siê przejœæ#288#
@@ -361,12 +361,12 @@ Use possession spell to possess mana#U¿yj zaklêcia posiadanie, aby posi¹œæ manê#
 Use castle spell to build a safe haven#U¿yj zaklêcia zamek, aby zbudowaæ schronienie#297#
 Press control for spell menu#Naciœnij klawisz Control, aby wyœwietliæ menu zaklêæ#298#
 Return to castle and recast castle spell#Wróæ do zamku i rzuæ ponownie zaklêcie zamek#299#
-Use cursor keys to move#U¿yj klawiszy kursora, aby siê poruszaæ#300#
+Use cursor keys to move#U¿yj klawiszy, aby siê poruszaæ#300#
 Use mouse to steer#U¿yj myszki do sterowania#301#
 Your castle has been attacked#Twój zamek zosta³ zaatakowany#302#
 Cannot build castles too close to walls#Nie mo¿na budowaæ zamków zbyt blisko murów#303#
 Use Shift L to destroy your castle for building elsewhere#U¿yj Shift L, aby zniszczyæ zamek i zbudowaæ go gdzie indziej#304#
-Press ALT for player information#Naciœnij ALT, aby uzyskaæ informacje o graczu#305#
+Press ALT for player information#Naciœnij ALT, aby uzyskaæ informacje o graczach#305#
 Possess This Mana#Posi¹dŸ tê manê#306#
 Destroy this for its mana#Zniszcz to dla jego many#307#
 Collect this spell by flying into it#Zbierz ten czar, wlatuj¹c w niego#308#
@@ -414,7 +414,7 @@ To all players#Do wszystkich graczy#349#
 To specific players#Do konkretnych graczy#350#
 Message Recipients#Odbiorcy wiadomoœci#351#
 Current spells mana value#Aktualna wartoœæ many zaklêæ#352#
-Number of times you have killed %s#Liczba zabójstw %s#353#
+Number of times you have killed %s#Tyle razy zabi³eœ %s#353#
 No Sound#Brak dŸwiêku#354#
 No Music#Brak muzyki#355#
 Yes/No#Tak/Nie#356#
@@ -448,7 +448,7 @@ speed super fast#prêdkoœæ bardzo szybka#383#
 Creatures Killed#Zabite stworzenia#384#
 Accuracy#Dok³adnoœæ#385#
 Spells found#Znalezione zaklêcia#386#
-Overall performance#Ogólna wydajnoœæ#387#
+Overall performance#Wynik ca³oœciowy#387#
 Yes#Tak#388#
 No#Nie#389#
 Sound On#DŸwiêk w³¹czony#390#
@@ -477,7 +477,7 @@ Enter Network Session#WejdŸ do sesji sieciowej#412#
 Attempting Connection#Próba po³¹czenia#413#
 Empty#Pusty#414#
 Play Game#Zagraj w grê#415#
-Enter Your Player Name#WprowadŸ swoj¹ nazwê gracza#416#
+Enter Your Player Name#WprowadŸ nazwê swojego gracza#416#
 Play MultiPlayer Game#Zagraj w grê wieloosobow¹#417#
 Load A Previous Game#Za³aduj poprzedni¹ grê#418#
 Choose Language Text#Wybierz jêzyk tekstu#419#
@@ -519,13 +519,13 @@ Click here to change language setting#Kliknij tutaj, aby zmieniæ ustawienia jêzy
 Exit language configuration screen#WyjdŸ z ekranu konfiguracji jêzyka#455#
 Start multiplayer game#Rozpocznij grê wieloosobow¹#456#
 Exit mulitplayer session#WyjdŸ z sesji wieloosobowej#457#
-Select next character#Wybierz nastêpny znak#458#
-Select previous character#Wybierz poprzedni znak#459#
+Select next character#Wybierz nastêpn¹ postaæ#458#
+Select previous character#Wybierz poprzedni¹ postaæ#459#
 Select multiplayer level#Wybierz poziom wieloosobowy#460#
 Select joystick#Wybierz joystick#461#
 Select joystick type#Wybierz typ joysticka#462#
 Configure Keyboard controls#Konfiguruj sterowanie klawiatur¹#463#
-Click here to play previous level#Kliknij tutaj, aby zagraæ w poprzedni poziom#464#
+Click here to play previous level#Kliknij tutaj, aby zagraæ na poprzednim poziomie#464#
 Click here to play next level#Kliknij tutaj, aby zagraæ na nastêpnym poziomie#465#
 Exit to main menu#Wyjœcie do menu g³ównego#466#
 Restart Game#Uruchom ponownie grê#467#
