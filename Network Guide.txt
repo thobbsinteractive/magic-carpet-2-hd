@@ -26,3 +26,6 @@ Or for testing on single computer:
 --mode_test_network client 127.0.0.1 3030 3035
 --mode_test_network client 127.0.0.1 3030 3036
 --mode_test_network client 127.0.0.1 3030 3037
+
+Leave the network number in the game set to 0. If there are multiple games on a single network,
+the servers will have different IP addresses so they don't interfere with each other.
