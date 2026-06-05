@@ -94,6 +94,7 @@ endif()
 
 find_package(PNG REQUIRED)
 find_package(fmt REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 ################################################################################
 # Global configuration types
