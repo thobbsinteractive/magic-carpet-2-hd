@@ -11,7 +11,8 @@
 #include "../engine/defs.h"
 #include "../portability/port_outputs.h"
 
-//#include <thread>
+#include <thread>
+#include <atomic>
 #include <cassert>
 #include <vector>
 #include <mutex>

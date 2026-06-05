@@ -56,6 +56,7 @@
 #include <thread>
 #include <atomic>
 #include <mutex>
+#include <memory>
 #include <chrono>
 #include <cassert>
 #include <algorithm>
@@ -78,6 +79,7 @@ static void set_nodelay(socket_t s) {
 #else
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -293,7 +295,7 @@ void debug_net_printf(const char* format, ...)
 	debug_net_output = fopen(debug_net_filename1.c_str(), debug_net_first ? "wt" : "at");
 	debug_net_first = false;
 	if (debug_net_output) {
-		fprintf(debug_net_output, "%d|%s", clock(), buf);
+		fprintf(debug_net_output, "%ld|%s", (long)clock(), buf);
 		fclose(debug_net_output);
 	}
 }
@@ -886,7 +888,7 @@ namespace MyNetworkLib {
 				listen(ctrlListenSock, 16);
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
 			else
-				debug_net_printf("NetworkClass: ctrl listen on %d failed err=%d\n",	clServerPort, sock_errno());
+				debug_net_printf("NetworkClass: ctrl listen on %d failed err=%d\n", clServerPort, sock_errno());
 			debug_net_printf("NetworkClass: ctrl listen on port %d\n", clServerPort);
 #endif
 		}
