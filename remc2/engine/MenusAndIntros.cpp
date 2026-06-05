@@ -4757,27 +4757,27 @@ bool DrawAndServe_pre_sub_7B250(uint32_t var, type_menuButtons_E1F84* var2x)
 		break;
 	}
 	case 0x25dcf0: {
-		return sub_7CCF0(/*var*/);
+		return MultiplayerPreviousLevel_7CCF0(/*var*/);
 		break;
 	}
 	case 0x25dd30: {
-		return sub_7CD30(/*var*/);
+		return MultiplayerNextLevel_7CD30(/*var*/);
 		break;
 	}
 	case 0x25dca0: {
-		return sub_7CCA0(/*var*/);
+		return MultiplayerExit_7CCA0(/*var*/);
 		break;
 	}
 	case 0x25dda0: {
-		return sub_7CDA0(/*var*/);
+		return MultiplayerPlayLevel_7CDA0(/*var*/);
 		break;
 	}
 	case 0x25dbf0: {
-		return sub_7CBF0(/*var*/);
+		return MultiplayerPreviousWizard_7CBF0(/*var*/);
 		break;
 	}
 	case 0x25dc40: {
-		return sub_7CC40(/*var*/);
+		return MultiplayerNextWizard_7CC40(/*var*/);
 		break;
 	}
 	case 0x25ee80: {
@@ -5261,7 +5261,7 @@ char SetJoystickDialog_79160(type_menuButtons_E1F84* locEvent)//25a160
 
 
 //----- (0007CCF0) --------------------------------------------------------
-int sub_7CCF0()//25dcf0
+int MultiplayerPreviousLevel_7CCF0()//25dcf0
 {
 	if (x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].selectedLevel_10 > 50)
 	{
@@ -5272,7 +5272,7 @@ int sub_7CCF0()//25dcf0
 }
 
 //----- (0007CD30) --------------------------------------------------------
-int sub_7CD30()//25dd30
+int MultiplayerNextLevel_7CD30()//25dd30
 {
 	char* v0 = (char*)(LevelsNames_D9204)[1 + x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].selectedLevel_10];
 	if (v0[0] && v0[0] != 48)
@@ -5284,7 +5284,7 @@ int sub_7CD30()//25dd30
 }
 
 //----- (0007CCA0) --------------------------------------------------------
-int sub_7CCA0()//25dca0
+int MultiplayerExit_7CCA0()//25dca0
 {
 	if (x_DWORD_17DE38str.serverIndex_17DEFC == GetIndexNetwork2_74515() && x_DWORD_17DE38str.x_WORD_17DEFE == 1 || x_DWORD_17DE38str.serverIndex_17DEFC != GetIndexNetwork2_74515())
 		x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].action_9 = 1;
@@ -5292,14 +5292,14 @@ int sub_7CCA0()//25dca0
 }
 
 //----- (0007CDA0) --------------------------------------------------------
-int sub_7CDA0()//25dda0
+int MultiplayerPlayLevel_7CDA0()//25dda0
 {
 	x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].action_9 = 5;
 	return 0;
 }
 
 //----- (0007CBF0) --------------------------------------------------------
-char sub_7CBF0()//25dbf0
+char MultiplayerPreviousWizard_7CBF0()//25dbf0
 {
 	x_DWORD_17DE38str.x_WORD_17DEF8 = 0;
 	x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].action_9 = 3;
@@ -5310,7 +5310,7 @@ char sub_7CBF0()//25dbf0
 }
 
 //----- (0007CC40) --------------------------------------------------------
-char sub_7CC40()//25dc40
+char MultiplayerNextWizard_7CC40()//25dc40
 {
 	x_DWORD_17DE38str.palMulti_17DF02 = 0;
 	x_DWORD_17DE38str.x_WORD_17DEF8 = 1;
