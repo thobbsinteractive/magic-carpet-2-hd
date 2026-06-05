@@ -169,6 +169,7 @@ Config::Settings::Game Config::GetGame(const json& settings)
 		const auto& game = settings["game"];
 		gameValues.m_MaxGameFps = ReadIntValue(game, "maxGameFps");
 		gameValues.m_FmvFps = ReadIntValue(game, "fmvFps");
+		gameValues.m_SkipIntro = ReadBoolValue(game, "skipIntro");
 	}
 	return gameValues;
 }
