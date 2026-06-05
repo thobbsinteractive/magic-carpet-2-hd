@@ -837,7 +837,6 @@ signed int sub_5C060();
 //signed int sub_5C1B0_set_any_variables2();
 void sub_5C330();
 signed int sub_5C3D0_file_decompress(uint8_t* a1, uint8_t* a2);
-void NetworkDisallocation2_5C450();
 void sub_5C490_testers_info();
 void sub_5C800(type_entity_0x6E8E* a1, char a2);
 void SetPaletteModification_5C830(type_entity_0x6E8E* event, char paletteSubMod, __int16 PaletteCount);
@@ -43444,14 +43443,6 @@ signed int sub_5C3D0_file_decompress(uint8_t* input, uint8_t* output)//23d3d0
 	return 1;
 }
 // 99682: using guessed type x_DWORD strncmp(x_DWORD, x_DWORD, x_DWORD);
-
-//----- (0005C450) --------------------------------------------------------
-void NetworkDisallocation2_5C450()//23d450
-{
-	if (x_D41A0_BYTEARRAY_4_struct.isNetwork_216w)
-		NetworkDisallocation_72D04();
-}
-// D41A4: using guessed type int x_DWORD_D41A4;
 
 //----- (0005C490) --------------------------------------------------------
 void sub_5C490_testers_info()//23d490
