@@ -94,7 +94,6 @@ endif()
 
 find_package(PNG REQUIRED)
 find_package(fmt REQUIRED)
-find_package(nlohmann_json REQUIRED)
 
 ################################################################################
 # Global configuration types
@@ -202,6 +201,7 @@ endif ()
 # remc2 and tests
 add_subdirectory(remc2)
 add_subdirectory(remc2-editor)
+add_subdirectory(remc2-configurator)
 if (UNIT_TESTS)
     find_package(GTest REQUIRED)
     add_subdirectory(remc2-unit-test)
