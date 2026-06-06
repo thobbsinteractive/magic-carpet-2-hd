@@ -30,7 +30,7 @@ jobs:
         libspdlog-dev libfmt-dev \
         rapidjson-dev \
         clang-tidy \
-        libwxgtk3.0-gtk3-dev \
+        libwxgtk3.2-dev \
         -o APT::Immediate-Configure=0
 
     - name: Check Out Sources
