@@ -24,8 +24,9 @@ jobs:
         libsdl2-ttf-dev libsdl2-image-dev \
         libgtest-dev \
         libspdlog-dev libfmt-dev \
-        rapidjson-dev \
+        nlohmann-json3-dev \
         clang-tidy \
+        libwxgtk3.2-dev \
         -o APT::Immediate-Configure=0
     - name: Check Out Sources
       uses: actions/checkout@v4
