@@ -88,8 +88,9 @@ There are two ways to build the Linux binary.
   - SDL2_image
   - SDL2_ttf
   - spdlog
-  - rapidjson-dev
-    - To install them on Debian/Pi OS: `sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libspdlog-dev rapidjson-dev` 
+  - nlohmann-json3-dev
+  - libwxgtk3.2-dev
+    - To install them on Debian/Pi OS: `sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libspdlog-dev nlohmann-json3-dev libwxgtk3.2-dev` 
   4. Build the code
   ```bash
   export BUILDTYPE=Debug # or Release

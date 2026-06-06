@@ -643,7 +643,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 				InitNetworkInfo();
 		}
 
-		if (CommandLineParams.DoCopySkipConfig()) {
+		if (CommandLineParams.DoCopySkipConfig() || config_skip_screen) {
 			x_BYTE_D41AD_skip_screen = config_skip_screen;
 		}
 

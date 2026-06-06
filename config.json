@@ -55,7 +55,7 @@
 						"extendedFontsFolder: Directory with extended font graphics to support more languages. Path is relative to .exe",
 						"sky: Turns the sky on or off. Can be changed in-game",
 						"reflections: Turns the reflections on or off. Can be changed in-game",
-						"dynamicLighting: Turns the reflections on or off. Can be changed in-game",
+						"dynamicLighting: Turns the dynamic terrain lighting on or off. Can be changed in-game",
 						"viewDistanceScale: Increases the view distance (will effect performance). '1' = Original distance, '2' = 2x, '3' = 3x (Max)"
 					],
 					"gameResWidth": 1920,

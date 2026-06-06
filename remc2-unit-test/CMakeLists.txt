@@ -172,8 +172,6 @@ target_include_directories(${UNIT_TEST_TARGET} PUBLIC
     "../remc2/engine"
     "../remc2/portability"
     "../findfirst"
-    "../spdlog/include"
-    "../rapidjson"
     ${GTEST_INCLUDE_DIRS}
 )
 target_link_libraries(${UNIT_TEST_TARGET} PUBLIC 

@@ -18,9 +18,6 @@
 #include "../portability/port_filesystem.h"
 #include "../portability/port_sdl_sound.h"
 #include "../portability/port_time.h"
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
 
 int config_skip_screen;
 int texturepixels = 32;
@@ -129,24 +126,25 @@ bool SetConfig() {
 	}
 
 	auto config = Config(configFilePath);
+	auto settingsValue = config.GetSettingsFromDoc();
 
 	//Game
-	maxGameFps = config.m_Game.m_MaxGameFps;
-	fmvFps = config.m_Game.m_FmvFps;
-	if (config.m_Game.m_SkipIntro)
+	maxGameFps = settingsValue.m_Game.m_MaxGameFps;
+	fmvFps = settingsValue.m_Game.m_FmvFps;
+	if (settingsValue.m_Game.m_SkipIntro)
 		config_skip_screen = 1;
 	else
 		config_skip_screen = 0;
 
 	//Path
-	gameFolder = config.m_Paths.m_GameFolder;
-	cdFolder = config.m_Paths.m_CdFolder;
+	gameFolder = settingsValue.m_Paths.m_GameFolder;
+	cdFolder = settingsValue.m_Paths.m_CdFolder;
 
 	//Sound
-	hqsound = config.m_Sound.m_HqSound;
-	fixspeedsound = config.m_Sound.m_FixSpeedSound;
-	autoShowObjectivesForForeignLanguages = config.m_Sound.m_AutoShowObjectivesForForeignLanguages;
-	if (config.m_Sound.m_OggMusic)
+	hqsound = settingsValue.m_Sound.m_HqSound;
+	fixspeedsound = settingsValue.m_Sound.m_FixSpeedSound;
+	autoShowObjectivesForForeignLanguages = settingsValue.m_Sound.m_AutoShowObjectivesForForeignLanguages;
+	if (settingsValue.m_Sound.m_OggMusic)
 	{
 		oggmusic = true;
 		hqsound = true;//for mp3 music must be activate hqsound
@@ -154,32 +152,32 @@ bool SetConfig() {
 	else
 		oggmusic = false;
 
-	if (config.m_Sound.m_MaxSimultaniousSounds > 10)
-		maxSimultaniousSounds = config.m_Sound.m_MaxSimultaniousSounds;
+	if (settingsValue.m_Sound.m_MaxSimultaniousSounds > 10)
+		maxSimultaniousSounds = settingsValue.m_Sound.m_MaxSimultaniousSounds;
 
-	oggmusicalternative = config.m_Sound.m_OggMusicAlternative;
-	strcpy(oggmusicFolder, config.m_Sound.m_OggFolder.c_str());
-	strcpy(speechFolder, config.m_Sound.m_SpeechFolder.c_str());
+	oggmusicalternative = settingsValue.m_Sound.m_OggMusicAlternative;
+	strcpy(oggmusicFolder, settingsValue.m_Sound.m_OggFolder.c_str());
+	strcpy(speechFolder, settingsValue.m_Sound.m_SpeechFolder.c_str());
 
 	//Graphics
-	displayIndex = config.m_Graphics.m_DisplayIndex;
-	windowResWidth = config.m_Graphics.m_WindowResWidth;
-	windowResHeight = config.m_Graphics.m_WindowResHeight;
+	displayIndex = settingsValue.m_Graphics.m_DisplayIndex;
+	windowResWidth = settingsValue.m_Graphics.m_WindowResWidth;
+	windowResHeight = settingsValue.m_Graphics.m_WindowResHeight;
 	if (windowResWidth < 640 || windowResHeight < 480)
 	{
 		windowResWidth = 640;
 		windowResHeight = 480;
 	}
-	maintainAspectRatio = config.m_Graphics.m_MaintainAspectRatio;
-	startWindowed = config.m_Graphics.m_StartWindowed;
-	gameResWidth = config.m_Graphics.m_GameDetail.m_GameResWidth;
-	gameResHeight = config.m_Graphics.m_GameDetail.m_GameResHeight;
+	maintainAspectRatio = settingsValue.m_Graphics.m_MaintainAspectRatio;
+	startWindowed = settingsValue.m_Graphics.m_StartWindowed;
+	gameResWidth = settingsValue.m_Graphics.m_GameDetail.m_GameResWidth;
+	gameResHeight = settingsValue.m_Graphics.m_GameDetail.m_GameResHeight;
 	if (gameResWidth < 320 || gameResHeight < 200)
 	{
 		gameResWidth = 320;
 		gameResHeight = 200;
 	}
-	gameUiScale = config.m_Graphics.m_GameDetail.m_GameUiScale;
+	gameUiScale = settingsValue.m_Graphics.m_GameDetail.m_GameUiScale;
 	if (gameUiScale < 1)
 		gameUiScale = 1;
 	if (gameUiScale > 8 || (640 * gameUiScale) > gameResWidth)
@@ -189,8 +187,8 @@ bool SetConfig() {
 			gameUiScale--;
 		}
 	}
-	highResGraphicsFolder = config.m_Graphics.m_GameDetail.m_HighResGraphicsFolder;
-	if (config.m_Graphics.m_GameDetail.m_UseHighResGraphics && strlen(highResGraphicsFolder.c_str()) > 0
+	highResGraphicsFolder = settingsValue.m_Graphics.m_GameDetail.m_HighResGraphicsFolder;
+	if (settingsValue.m_Graphics.m_GameDetail.m_UseHighResGraphics && strlen(highResGraphicsFolder.c_str()) > 0
 		&& std::filesystem::is_directory(GetSubDirectoryPath(highResGraphicsFolder.c_str())))
 	{
 		bigSprites = true;
@@ -202,32 +200,32 @@ bool SetConfig() {
 		texturepixels = 32;
 	}
 
-	fixedMenuGraphicsFolder = config.m_Graphics.m_GameDetail.m_FixedMenuGraphicsFolder;
-	if (config.m_Graphics.m_GameDetail.m_UseFixedMenuGraphics && strlen(fixedMenuGraphicsFolder.c_str()) > 0
+	fixedMenuGraphicsFolder = settingsValue.m_Graphics.m_GameDetail.m_FixedMenuGraphicsFolder;
+	if (settingsValue.m_Graphics.m_GameDetail.m_UseFixedMenuGraphics && strlen(fixedMenuGraphicsFolder.c_str()) > 0
 		&& std::filesystem::is_directory(GetSubDirectoryPath(fixedMenuGraphicsFolder.c_str())))
 	{
 		fixedMenuGraphics = true;
 	}
 
-	extendedFontsFolder = config.m_Graphics.m_GameDetail.m_ExtendedFontsFolder;
-	if (config.m_Graphics.m_GameDetail.m_UseExtendedFonts && strlen(extendedFontsFolder.c_str()) > 0
+	extendedFontsFolder = settingsValue.m_Graphics.m_GameDetail.m_ExtendedFontsFolder;
+	if (settingsValue.m_Graphics.m_GameDetail.m_UseExtendedFonts && strlen(extendedFontsFolder.c_str()) > 0
 		&& std::filesystem::is_directory(GetSubDirectoryPath(extendedFontsFolder.c_str())))
 	{
 		extendedFonts = true;
 	}
 
-	sky = config.m_Graphics.m_GameDetail.m_Sky;
-	reflections = config.m_Graphics.m_GameDetail.m_Reflections;
-	dynamicLighting = config.m_Graphics.m_GameDetail.m_DynamicLighting;
-	if (config.m_Graphics.m_GameDetail.m_ViewDistanceScale > 0 && config.m_Graphics.m_GameDetail.m_ViewDistanceScale < 4)
-		viewDistanceScale = config.m_Graphics.m_GameDetail.m_ViewDistanceScale;
+	sky = settingsValue.m_Graphics.m_GameDetail.m_Sky;
+	reflections = settingsValue.m_Graphics.m_GameDetail.m_Reflections;
+	dynamicLighting = settingsValue.m_Graphics.m_GameDetail.m_DynamicLighting;
+	if (settingsValue.m_Graphics.m_GameDetail.m_ViewDistanceScale > 0 && settingsValue.m_Graphics.m_GameDetail.m_ViewDistanceScale < 4)
+		viewDistanceScale = settingsValue.m_Graphics.m_GameDetail.m_ViewDistanceScale;
 
-	multiThreadedRender = config.m_Graphics.m_Threading.m_isActive;
-	sizePercentToThreadRender = config.m_Graphics.m_Threading.m_SizePercentToThreadRender;
-	numberOfRenderThreads = config.m_Graphics.m_Threading.m_NumberOfRenderThreads;
+	multiThreadedRender = settingsValue.m_Graphics.m_Threading.m_IsActive;
+	sizePercentToThreadRender = settingsValue.m_Graphics.m_Threading.m_SizePercentToThreadRender;
+	numberOfRenderThreads = settingsValue.m_Graphics.m_Threading.m_NumberOfRenderThreads;
 	if (multiThreadedRender)
 	{
-		assignToSpecificCores = config.m_Graphics.m_Threading.m_AssignToSpecificCores;
+		assignToSpecificCores = settingsValue.m_Graphics.m_Threading.m_AssignToSpecificCores;
 
 		if (numberOfRenderThreads < 1)
 		{
@@ -240,68 +238,68 @@ bool SetConfig() {
 	}
 
 	//Controls
-	invertYAxis = config.m_Controls.m_Mouse.m_InvertYAxis;
-	invertXAxis = config.m_Controls.m_Mouse.m_InvertXAxis;
+	invertYAxis = settingsValue.m_Controls.m_Mouse.m_InvertYAxis;
+	invertXAxis = settingsValue.m_Controls.m_Mouse.m_InvertXAxis;
 
 	//Mouse
-	mouseScaleX = config.m_Controls.m_Mouse.m_mouseScaleX;
-	mouseScaleY = config.m_Controls.m_Mouse.m_mouseScaleY;
-	disableLRButtonsMenuOpen = config.m_Controls.m_Mouse.m_disableLRButtonsMenuOpen;
-	mouseMapping.SpellLeft = config.m_Controls.m_Mouse.m_spellLeft;
-	mouseMapping.SpellRight = config.m_Controls.m_Mouse.m_spellRight;
-	mouseMapping.map = config.m_Controls.m_Mouse.m_map;
-	mouseMapping.SpellMenu = config.m_Controls.m_Mouse.m_spellMenu;
-	mouseMapping.SpellMenuMark = config.m_Controls.m_Mouse.m_spellMenuMark;
+	mouseScaleX = settingsValue.m_Controls.m_Mouse.m_MouseScaleX;
+	mouseScaleY = settingsValue.m_Controls.m_Mouse.m_MouseScaleY;
+	disableLRButtonsMenuOpen = settingsValue.m_Controls.m_Mouse.m_DisableLRButtonsMenuOpen;
+	mouseMapping.SpellLeft = settingsValue.m_Controls.m_Mouse.m_SpellLeft;
+	mouseMapping.SpellRight = settingsValue.m_Controls.m_Mouse.m_SpellRight;
+	mouseMapping.map = settingsValue.m_Controls.m_Mouse.m_Map;
+	mouseMapping.SpellMenu = settingsValue.m_Controls.m_Mouse.m_SpellMenu;
+	mouseMapping.SpellMenuMark = settingsValue.m_Controls.m_Mouse.m_SpellMenuMark;
 
 	//Keyboard
-	inputMapping.Forward = config.m_Controls.m_Keyboard.m_forward;
-	inputMapping.Backwards = config.m_Controls.m_Keyboard.m_backwards;
-	inputMapping.Left = config.m_Controls.m_Keyboard.m_left;
-	inputMapping.Right = config.m_Controls.m_Keyboard.m_right;
-	inputMapping.Map = config.m_Controls.m_Keyboard.m_map;
-	inputMapping.SpellMenu = config.m_Controls.m_Keyboard.m_spellMenu;
-	inputMapping.SpellMenuMark = config.m_Controls.m_Keyboard.m_spellMenuMark;
+	inputMapping.Forward = settingsValue.m_Controls.m_Keyboard.m_Forward;
+	inputMapping.Backwards = settingsValue.m_Controls.m_Keyboard.m_Backwards;
+	inputMapping.Left = settingsValue.m_Controls.m_Keyboard.m_Left;
+	inputMapping.Right = settingsValue.m_Controls.m_Keyboard.m_Right;
+	inputMapping.Map = settingsValue.m_Controls.m_Keyboard.m_Map;
+	inputMapping.SpellMenu = settingsValue.m_Controls.m_Keyboard.m_SpellMenu;
+	inputMapping.SpellMenuMark = settingsValue.m_Controls.m_Keyboard.m_SpellMenuMark;
 
-	gpc.axis_yaw = config.m_Controls.m_GamePad.m_AxisYaw;
-	gpc.axis_pitch = config.m_Controls.m_GamePad.m_AxisPitch;
-	gpc.axis_long = config.m_Controls.m_GamePad.m_AxisLong;
-	gpc.axis_trans = config.m_Controls.m_GamePad.m_AxisTrans;
-	gpc.axis_nav_ns = config.m_Controls.m_GamePad.m_AxisNavNs;
-	gpc.axis_nav_ew = config.m_Controls.m_GamePad.m_AxisNavEw;
-	gpc.axis_fire_R = config.m_Controls.m_GamePad.m_AxisFireR;
-	gpc.axis_fire_L = config.m_Controls.m_GamePad.m_AxisFireL;
+	gpc.axis_yaw = settingsValue.m_Controls.m_GamePad.m_AxisYaw;
+	gpc.axis_pitch = settingsValue.m_Controls.m_GamePad.m_AxisPitch;
+	gpc.axis_long = settingsValue.m_Controls.m_GamePad.m_AxisLong;
+	gpc.axis_trans = settingsValue.m_Controls.m_GamePad.m_AxisTrans;
+	gpc.axis_nav_ns = settingsValue.m_Controls.m_GamePad.m_AxisNavNs;
+	gpc.axis_nav_ew = settingsValue.m_Controls.m_GamePad.m_AxisNavEw;
+	gpc.axis_fire_R = settingsValue.m_Controls.m_GamePad.m_AxisFireR;
+	gpc.axis_fire_L = settingsValue.m_Controls.m_GamePad.m_AxisFireL;
 
-	gp_temp = config.m_Controls.m_GamePad.m_AxisYawInv;
+	gp_temp = settingsValue.m_Controls.m_GamePad.m_AxisYawInv;
 	if (gpc.axis_yaw) {
 		gpc.axis_yaw -= 1; // go back to SDL axis notation
 		gpc.axis_yaw_conf = GAMEPAD_ITEM_ENABLED | (gp_temp ? GAMEPAD_AXIS_INVERTED : 0);
 	}
 
-	gp_temp = config.m_Controls.m_GamePad.m_AxisPitchInv;
+	gp_temp = settingsValue.m_Controls.m_GamePad.m_AxisPitchInv;
 	if (gpc.axis_pitch) {
 		gpc.axis_pitch -= 1; // go back to SDL axis notation
 		gpc.axis_pitch_conf = GAMEPAD_ITEM_ENABLED | (gp_temp ? GAMEPAD_AXIS_INVERTED : 0);
 	}
 
-	gp_temp = config.m_Controls.m_GamePad.m_AxisLongInv;
+	gp_temp = settingsValue.m_Controls.m_GamePad.m_AxisLongInv;
 	if (gpc.axis_long) {
 		gpc.axis_long -= 1; // go back to SDL axis notation
 		gpc.axis_long_conf = GAMEPAD_ITEM_ENABLED | (gp_temp ? GAMEPAD_AXIS_INVERTED : 0);
 	}
 
-	gp_temp = config.m_Controls.m_GamePad.m_AxisTransInv;
+	gp_temp = settingsValue.m_Controls.m_GamePad.m_AxisTransInv;
 	if (gpc.axis_trans) {
 		gpc.axis_trans -= 1; // go back to SDL axis notation
 		gpc.axis_trans_conf = GAMEPAD_ITEM_ENABLED | (gp_temp ? GAMEPAD_AXIS_INVERTED : 0);
 	}
 
-	gp_temp = config.m_Controls.m_GamePad.m_AxisNavNsInv;
+	gp_temp = settingsValue.m_Controls.m_GamePad.m_AxisNavNsInv;
 	if (gpc.axis_nav_ns) {
 		gpc.axis_nav_ns -= 1; // go back to SDL axis notation
 		gpc.axis_nav_ns_conf = GAMEPAD_ITEM_ENABLED | (gp_temp ? GAMEPAD_AXIS_INVERTED : 0);
 	}
 
-	gp_temp = config.m_Controls.m_GamePad.m_AxisNavEwInv;
+	gp_temp = settingsValue.m_Controls.m_GamePad.m_AxisNavEwInv;
 	if (gpc.axis_nav_ew) {
 		gpc.axis_nav_ew -= 1; // go back to SDL axis notation
 		gpc.axis_nav_ew_conf = GAMEPAD_ITEM_ENABLED | (gp_temp ? GAMEPAD_AXIS_INVERTED : 0);
@@ -317,46 +315,46 @@ bool SetConfig() {
 		gpc.axis_fire_L_conf = GAMEPAD_ITEM_ENABLED;
 	}
 
-	gpc.controller_id = config.m_Controls.m_GamePad.m_ControllerId;
-	gpc.button_fire_L = config.m_Controls.m_GamePad.m_ButtonFireL;
-	gpc.button_fire_R = config.m_Controls.m_GamePad.m_ButtonFireR;
-	gpc.button_spell = config.m_Controls.m_GamePad.m_ButtonSpell;
-	gpc.button_minimap = config.m_Controls.m_GamePad.m_ButtonMiniMap;
-	gpc.button_fwd = config.m_Controls.m_GamePad.m_ButtonFwd;
-	gpc.button_back = config.m_Controls.m_GamePad.m_ButtonBack;
-	gpc.button_pause_menu = config.m_Controls.m_GamePad.m_ButtonPauseMenu;
-	gpc.button_esc = config.m_Controls.m_GamePad.m_ButtonEsc;
-	gpc.button_menu_select = config.m_Controls.m_GamePad.m_ButtonMenuSelect;
+	gpc.controller_id = settingsValue.m_Controls.m_GamePad.m_ControllerId;
+	gpc.button_fire_L = settingsValue.m_Controls.m_GamePad.m_ButtonFireL;
+	gpc.button_fire_R = settingsValue.m_Controls.m_GamePad.m_ButtonFireR;
+	gpc.button_spell = settingsValue.m_Controls.m_GamePad.m_ButtonSpell;
+	gpc.button_minimap = settingsValue.m_Controls.m_GamePad.m_ButtonMiniMap;
+	gpc.button_fwd = settingsValue.m_Controls.m_GamePad.m_ButtonFwd;
+	gpc.button_back = settingsValue.m_Controls.m_GamePad.m_ButtonBack;
+	gpc.button_pause_menu = settingsValue.m_Controls.m_GamePad.m_ButtonPauseMenu;
+	gpc.button_esc = settingsValue.m_Controls.m_GamePad.m_ButtonEsc;
+	gpc.button_menu_select = settingsValue.m_Controls.m_GamePad.m_ButtonMenuSelect;
 
-	gpc.axis_yaw_sensitivity = ReadZones(config.m_Controls.m_GamePad.m_AxisYawSensitivity);
-	gpc.axis_yaw_dead_zone = config.m_Controls.m_GamePad.m_AxisYawDeadZone;
-	gpc.axis_pitch_sensitivity = ReadZones(config.m_Controls.m_GamePad.m_AxisPitchSensitivity);
-	gpc.axis_pitch_dead_zone = config.m_Controls.m_GamePad.m_AxisPitchDeadZone;
-	gpc.axis_long_dead_zone = config.m_Controls.m_GamePad.m_AxisLongDeadZone;
-	gpc.axis_trans_dead_zone = config.m_Controls.m_GamePad.m_AxisTransDeadZone;
+	gpc.axis_yaw_sensitivity = ReadZones(settingsValue.m_Controls.m_GamePad.m_AxisYawSensitivity);
+	gpc.axis_yaw_dead_zone = settingsValue.m_Controls.m_GamePad.m_AxisYawDeadZone;
+	gpc.axis_pitch_sensitivity = ReadZones(settingsValue.m_Controls.m_GamePad.m_AxisPitchSensitivity);
+	gpc.axis_pitch_dead_zone = settingsValue.m_Controls.m_GamePad.m_AxisPitchDeadZone;
+	gpc.axis_long_dead_zone = settingsValue.m_Controls.m_GamePad.m_AxisLongDeadZone;
+	gpc.axis_trans_dead_zone = settingsValue.m_Controls.m_GamePad.m_AxisTransDeadZone;
 
-	gpc.axis_long_nav_dead_zone = config.m_Controls.m_GamePad.m_AxisLongNavDeadZone;
-	gpc.axis_trans_nav_dead_zone = config.m_Controls.m_GamePad.m_AxisTransNavDeadZone;
+	gpc.axis_long_nav_dead_zone = settingsValue.m_Controls.m_GamePad.m_AxisLongNavDeadZone;
+	gpc.axis_trans_nav_dead_zone = settingsValue.m_Controls.m_GamePad.m_AxisTransNavDeadZone;
 
-	gpc.trigger_dead_zone = config.m_Controls.m_GamePad.m_TriggerDeadZone;
+	gpc.trigger_dead_zone = settingsValue.m_Controls.m_GamePad.m_TriggerDeadZone;
 
-	gpc.hat_nav = config.m_Controls.m_GamePad.m_HatNav;
-	gpc.hat_mov = config.m_Controls.m_GamePad.m_HatMov;
+	gpc.hat_nav = settingsValue.m_Controls.m_GamePad.m_HatNav;
+	gpc.hat_mov = settingsValue.m_Controls.m_GamePad.m_HatMov;
 
-	gp_temp = config.m_Controls.m_GamePad.m_HatNavInv;
+	gp_temp = settingsValue.m_Controls.m_GamePad.m_HatNavInv;
 	if (gpc.hat_nav) {
 		gpc.hat_nav -= 1; // go back to SDL axis notation
 		gpc.hat_nav_conf = GAMEPAD_ITEM_ENABLED | (gp_temp ? GAMEPAD_AXIS_INVERTED : 0);
 	}
 
-	gp_temp = config.m_Controls.m_GamePad.m_HatMovInv;
+	gp_temp = settingsValue.m_Controls.m_GamePad.m_HatMovInv;
 	if (gpc.hat_mov) {
 		gpc.hat_mov -= 1; // go back to SDL axis notation
 		gpc.hat_mov_conf = GAMEPAD_ITEM_ENABLED | (gp_temp ? GAMEPAD_AXIS_INVERTED : 0);
 	}
 
-	gpc.haptic_enabled = config.m_Controls.m_GamePad.m_HapticEnabled;
-	gpc.haptic_gain_max = config.m_Controls.m_GamePad.m_HapticMaxGain;
+	gpc.haptic_enabled = settingsValue.m_Controls.m_GamePad.m_HapticEnabled;
+	gpc.haptic_gain_max = settingsValue.m_Controls.m_GamePad.m_HapticMaxGain;
 
 	return true;
 };

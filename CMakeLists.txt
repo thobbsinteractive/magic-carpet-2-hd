@@ -201,6 +201,7 @@ endif ()
 # remc2 and tests
 add_subdirectory(remc2)
 add_subdirectory(remc2-editor)
+add_subdirectory(remc2-configurator)
 if (UNIT_TESTS)
     find_package(GTest REQUIRED)
     add_subdirectory(remc2-unit-test)
