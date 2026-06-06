@@ -18,7 +18,8 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get -y install \
+        sudo add-apt-repository ppa:wxpython/wxpython-dev
+        sudo apt-get update
         cmake ninja-build \
         libsdl2-dev libsdl2-mixer-dev \
         libsdl2-ttf-dev libsdl2-image-dev \
