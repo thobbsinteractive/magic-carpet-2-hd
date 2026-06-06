@@ -29,6 +29,7 @@ jobs:
         libgtest-dev \
         libspdlog-dev libfmt-dev \
         rapidjson-dev \
+        nlohmann-json3-dev \
         clang-tidy \
         libwxgtk3.2-dev \
         -o APT::Immediate-Configure=0
