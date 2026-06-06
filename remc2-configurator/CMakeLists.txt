@@ -33,11 +33,13 @@ set(ROOT_NAMESPACE ${CONFIGURATOR_TARGET})
 # Find wxWidgets
 find_package(wxWidgets REQUIRED)
 
+# Create executable BEFORE adding libraries
+add_executable(${CONFIGURATOR_TARGET} ${SOURCE_FILES_CONFIGURATOR})
+
+# Now add link libraries
 target_link_libraries(${CONFIGURATOR_TARGET} PUBLIC
     wxWidgets::wxWidgets
 )
-
-add_executable(${CONFIGURATOR_TARGET} ${SOURCE_FILES_CONFIGURATOR})
 
 target_include_directories(${CONFIGURATOR_TARGET} PUBLIC
     "../spdlog/include"
