@@ -6,8 +6,6 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 
 	m_ptrConfig = new Config(ToAbsolute(fileName).ToStdString());
 
-	// set the frame icon
-	SetIcon(wxICON(sample));
 
 	// ── Panel (gives a native background) ───────────────────────────────────
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
