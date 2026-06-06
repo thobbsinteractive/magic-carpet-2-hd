@@ -24,8 +24,10 @@ set(SOURCE_FILES_CONFIGURATOR
     "SoundDialog.h"
     "ThreadingDialog.cpp"
     "ThreadingDialog.h"
-    "ZoneEditorCtrl.cpp"
+	"ZoneEditorCtrl.cpp"
     "ZoneEditorCtrl.h"
+    "ZoneEditorDialog.cpp"
+    "ZoneEditorDialog.h"
 )
 
 source_group("Source Files Configurator" FILES ${SOURCE_FILES_CONFIGURATOR})
