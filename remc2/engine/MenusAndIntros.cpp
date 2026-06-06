@@ -1196,6 +1196,9 @@ char LanguageSettingDialog_779E0(type_menuButtons_E1F84* a1y)//2589E0
 	SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
 	x_DWORD_17DE38str.x_WORD_17DEEC = 0;
 
+	if (extendedFonts)
+		LoadFixedFonts(0, (char*)"4b");
+
 	char languagePathL[MAX_PATH];
 	char languagePathD[MAX_PATH];
 	sprintf(languagePathL, "%s/LANGUAGE/L*.TXT", cdDataPath.c_str());
