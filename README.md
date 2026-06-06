@@ -1,4 +1,5 @@
-# Magic Carpet 2 HD
+<img width="370" height="150" alt="Magic Carpet 2 HD" src="https://github.com/user-attachments/assets/fab5e500-e1a3-4972-b3df-190870933233" />
+
 ## Now actually in HD or 2K with increased View Distance!
 Based off the Reverse engineering of game Magic Carpet 2 from assembler to c/c++ language by Tomas Versly <br />
 Forked from Tomas Vesely's repo here: https://github.com/turican0/remc2 <br /><br />
