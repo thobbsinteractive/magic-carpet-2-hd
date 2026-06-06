@@ -26,7 +26,7 @@ jobs:
         libspdlog-dev libfmt-dev \
         nlohmann-json3-dev \
         clang-tidy \
-        libwxgtk3.0-dev \
+        libwxgtk3.2-dev \
         -o APT::Immediate-Configure=0
     - name: Check Out Sources
       uses: actions/checkout@v4
