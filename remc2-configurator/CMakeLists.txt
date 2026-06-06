@@ -4,6 +4,8 @@ set(SOURCE_FILES_CONFIGURATOR
     "Remc2ConfiguratorApp.cpp"
     "../remc2/portability/Config.cpp"
     "../remc2/portability/Config.h"
+	"ControlsDialog.cpp"
+    "ControlsDialog.h"
     "DisplayDialog.cpp"
     "DisplayDialog.h"
     "GameDialog.cpp"
