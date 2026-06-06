@@ -18,8 +18,7 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo add-apt-repository ppa:wxpython/wxpython-dev
-        sudo apt-get update
+        sudo apt-get install -y \
         cmake ninja-build \
         libsdl2-dev libsdl2-mixer-dev \
         libsdl2-ttf-dev libsdl2-image-dev \
@@ -27,8 +26,7 @@ jobs:
         libspdlog-dev libfmt-dev \
         nlohmann-json3-dev \
         clang-tidy \
-        libwxgtk3.2-dev \
-        -o APT::Immediate-Configure=0
+        libwxgtk3.2-dev
     - name: Check Out Sources
       uses: actions/checkout@v4
       with:
