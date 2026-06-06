@@ -31,7 +31,7 @@ source_group("Source Files Configurator" FILES ${SOURCE_FILES_CONFIGURATOR})
 set(ROOT_NAMESPACE ${CONFIGURATOR_TARGET})
 
 # Find wxWidgets
-find_package(wxWidgets CONFIG REQUIRED)
+find_package(wxWidgets REQUIRED)
 
 target_link_libraries(${CONFIGURATOR_TARGET} PUBLIC
     wxWidgets::wxWidgets
