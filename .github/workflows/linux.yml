@@ -28,7 +28,6 @@ jobs:
         libsdl2-ttf-dev libsdl2-image-dev \
         libgtest-dev \
         libspdlog-dev libfmt-dev \
-        rapidjson-dev \
         nlohmann-json3-dev \
         clang-tidy \
         libwxgtk3.2-dev \
