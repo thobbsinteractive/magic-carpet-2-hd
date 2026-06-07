@@ -2,7 +2,7 @@
     "name": "remc2-editor",
     "version": "0.9.9",
     "dependencies": [
-		"rapidjson",
+		"nlohmann-json",
 		"spdlog",
 		"sdl2",
 		"sdl2-mixer",

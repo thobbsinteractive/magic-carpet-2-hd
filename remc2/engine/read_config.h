@@ -24,9 +24,6 @@
 #include "../engine/CommandLineParser.h"
 #include "../utilities/Maths.h"
 #include "defs.h"
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
 
 #ifndef READ_CONFIG
 #define READ_CONFIG
