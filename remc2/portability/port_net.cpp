@@ -985,6 +985,12 @@ namespace MyNetworkLib {
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
 				debug_net_printf("PollCtrlClients: client %s:%d disconnected\n", cc.addr.c_str(), cc.port);
 #endif
+				for (int ni = (int)NetworkName.size() - 1; ni >= 0; ni--) {
+					if (clientIpPort[ni].adress == cc.addr && clientIpPort[ni].port == cc.dataPort) {
+						RemoveListenName(NetworkName[ni]);
+						RemoveNetworkName(NetworkName[ni]);
+					}
+				}
 				CLOSE_SOCKET(cc.sock);
 				it = ctrlClients.erase(it);
 			}
@@ -1025,6 +1031,9 @@ namespace MyNetworkLib {
 			if (s == SOCK_INVALID) break;
 			set_nonblocking(s); set_nodelay(s);
 			char ip[INET_ADDRSTRLEN]; inet_ntop(AF_INET, &from.sin_addr, ip, sizeof(ip));
+			int callerClPort = ntohs(from.sin_port); // fallback na ephemeral
+			for (int i = 0; i < (int)NetworkName.size(); i++)
+				if (clientIpPort[i].adress == std::string(ip)) { callerClPort = clientIpPort[i].port; break; }
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
 			debug_net_printf("AcceptPeer: data connection from %s\n", ip);
 #endif
@@ -1041,11 +1050,13 @@ namespace MyNetworkLib {
 				std::lock_guard<std::mutex> lk(clientConnMutex);
 				for (auto* c : clientConnection) {
 					if (c->ncb_lsn_2 == 0) continue;
-					auto it = tcpSessions.find(c);
-					if (it == tcpSessions.end() || !it->second->alive)
+					bool hasAlive = false;
 					{
-						listenNCB = c; break;
+						std::lock_guard<std::mutex> slk(sessions_mutex);
+						auto it = tcpSessions.find(c);
+						hasAlive = (it != tcpSessions.end() && it->second->alive);
 					}
+					if (!hasAlive) { listenNCB = c; break; }
 				}
 			}
 
@@ -1061,7 +1072,7 @@ namespace MyNetworkLib {
 			auto sess = std::make_shared<TcpSession>();
 			sess->sock = s;
 			sess->peerAddr = std::string(ip);
-			sess->peerPort = ntohs(from.sin_port);
+			sess->peerPort = callerClPort;
 			sess->alive = true;
 			sess->ownerNCB = listenNCB;
 			sess->Touch();
@@ -1249,7 +1260,7 @@ namespace MyNetworkLib {
 				// (ctrlClientsMtx already held recursively by PollCtrlClients caller)
 				std::lock_guard<std::recursive_mutex> lk(ctrlClientsMtx);
 				for (auto& cc : ctrlClients) {
-					if (cc.addr == callIP.adress) {
+					if (cc.addr == callIP.adress && cc.dataPort == callIP.port) {
 						TcpSendFull(cc.sock,
 							Pack_Message(MESS_SERVER_LISTEN_ACCEPT, u.messNCB, u.index,
 								clServerPort, (char*)&li, sizeof(li)));
@@ -1527,6 +1538,8 @@ namespace MyNetworkLib {
 		// ------------------------------------------------------------------
 		// Pass 4 — session liveness → ncb_cmd_cplt_49
 		// ------------------------------------------------------------------
+		std::vector<myNCB*> connSnap;
+		{ std::lock_guard<std::mutex> clk(clientConnMutex); connSnap = clientConnection; }
 		for (auto* c : clientConnection)
 		{
 			if (c->ncb_lsn_2 == 0 || c->ncb_cmd_cplt_49 == NRC_PENDING) continue;
