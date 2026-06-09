@@ -4,7 +4,8 @@ ConfigToSdlScancode ControlsDialog::m_configToSdlScancode;
 
 ControlsDialog::ControlsDialog(wxWindow* parent, const Config::Settings::Controls& cfg)
 	: wxDialog(parent, wxID_ANY, "Controls Settings",
-		wxDefaultPosition, wxSize(264, 500))
+		wxDefaultPosition, wxSize(700, 950), 
+		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	m_cfg = cfg;
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
