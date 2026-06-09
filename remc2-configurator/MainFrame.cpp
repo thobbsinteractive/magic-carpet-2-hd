@@ -1,6 +1,6 @@
 #include "MainFrame.h"
 
-MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 600))
+MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 600), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	wxInitAllImageHandlers();
 
@@ -105,7 +105,6 @@ void MainFrame::OnFile(wxCommandEvent&)
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
 	GameFilesDialog dlg(this, settings.m_Paths);
 	dlg.SetMinSize(wxSize(440, 200));
-	dlg.SetMaxSize(wxSize(440, 200));
 	if (dlg.ShowModal() == wxID_OK) {
 		auto pathSettings = dlg.GetPaths();
 		m_ptrConfig->SavePathsToDoc(pathSettings);
@@ -119,7 +118,6 @@ void MainFrame::OnGame(wxCommandEvent&)
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
 	GameDialog dlg(this, settings.m_Game);
 	dlg.SetMinSize(wxSize(300, 200));
-	dlg.SetMaxSize(wxSize(300, 200));
 	if (dlg.ShowModal() == wxID_OK) {
 		auto gameSettings = dlg.GetSettings();
 		m_ptrConfig->SaveGameToDoc(gameSettings);
@@ -133,7 +131,6 @@ void MainFrame::OnControls(wxCommandEvent&)
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
 	ControlsDialog dlg(this, settings.m_Controls);
 	dlg.SetMinSize(wxSize(264, 500));
-	dlg.SetMaxSize(wxSize(264, 500));
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		auto controlSettings = dlg.GetSettings();
@@ -148,7 +145,6 @@ void MainFrame::OnSound(wxCommandEvent&)
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
 	SoundDialog dlg(this, settings.m_Sound);
 	dlg.SetMinSize(wxSize(420, 340));
-	dlg.SetMaxSize(wxSize(420, 340));
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		auto soundSettings = dlg.GetSettings();
@@ -163,7 +159,6 @@ void MainFrame::OnDisplay(wxCommandEvent&)
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
 	DisplayDialog dlg(this, settings.m_Graphics);
 	dlg.SetMinSize(wxSize(256, 256));
-	dlg.SetMaxSize(wxSize(256, 256));
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		auto graphicSettings = dlg.GetSettings();
@@ -178,7 +173,6 @@ void MainFrame::OnGraphics(wxCommandEvent&)
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
 	GraphicsDialog dlg(this, settings.m_Graphics);
 	dlg.SetMinSize(wxSize(256, 256));
-	dlg.SetMaxSize(wxSize(256, 256));
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		auto graphicSettings = dlg.GetSettings();
