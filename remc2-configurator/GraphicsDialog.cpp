@@ -3,7 +3,8 @@
 // ── GraphicsDialog ────────────────────────────────────────────────────────────
 GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphics& cfg)
 	: wxDialog(parent, wxID_ANY, "Graphics Settings",
-		wxDefaultPosition, wxSize(320, 256))
+		wxDefaultPosition, wxSize(210, 310), 
+		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	m_cfg = cfg;
 
@@ -52,6 +53,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	main->Add(btnRenderThreads, 0, wxALIGN_CENTER | wxLEFT | wxTOP | wxBOTTOM, 10);
 	btnRenderThreads->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
 		ThreadingDialog dlg(this, m_cfg.m_Threading);
+		dlg.SetMinSize(wxSize(286, 220));
 		if (dlg.ShowModal() == wxID_OK)
 		{
 			auto threadingSettings = dlg.GetSettings();
@@ -69,6 +71,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	main->Add(btnEnhanced, 0, wxALIGN_CENTER | wxLEFT | wxTOP | wxBOTTOM, 10);
 	btnEnhanced->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
 		GraphicsFoldersDialog dlg(this, m_cfg.m_GameDetail);
+		dlg.SetMinSize(wxSize(600, 200));
 		if (dlg.ShowModal() == wxID_OK)
 		{
 			auto folderSettings = dlg.GetFolders();

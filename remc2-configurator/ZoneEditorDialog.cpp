@@ -20,8 +20,8 @@ ZoneEditorDialog::ZoneEditorDialog(wxWindow*    parent,
                        const wxString&          title,
                        const wxPoint&           pos,
                        const wxSize&            size)
-    : wxDialog(parent, id, title, pos, size,
-               wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+    : wxDialog(parent, id, title, pos, size, 
+		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
     SetMinSize(wxSize(420, 380));
 
