@@ -3,7 +3,8 @@
 // ── ThreadingDialog ───────────────────────────────────────────────────────────
 ThreadingDialog::ThreadingDialog(wxWindow* parent, const Config::Settings::Threading& cfg)
 	: wxDialog(parent, wxID_ANY, "Threading Settings",
-		wxDefaultPosition, wxDefaultSize)
+		wxDefaultPosition, wxSize(286, 220),
+		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	m_cfg = cfg;
 
