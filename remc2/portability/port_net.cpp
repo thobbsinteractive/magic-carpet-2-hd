@@ -607,7 +607,7 @@ static bool setListen(myNCB* tmp)
 	for (auto* c : clientConnection) {
 		if (memcmp(tmp->ncb_name_26, c->ncb_callName_10, 16) == 0) {
 			c->ncb_lsn_2 = 20;
-			c->ncb_cmd_cplt_49 = NRC_GOODRET;
+			//c->ncb_cmd_cplt_49 = NRC_GOODRET;
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
 			debug_net_printf("setListen: MATCH name=[%.16s] call=[%.16s] lsn=20\n", c->ncb_name_26, c->ncb_callName_10);
 #endif
@@ -1077,6 +1077,7 @@ namespace MyNetworkLib {
 			sess->ownerNCB = listenNCB;
 			sess->Touch();
 			AddSession(listenNCB, sess);
+			listenNCB->ncb_cmd_cplt_49 = NRC_GOODRET;
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
 			debug_net_printf("AcceptPeer: session listenNCB=%p name=[%.16s] call=[%.16s]\n", (void*)listenNCB, listenNCB->ncb_name_26, listenNCB->ncb_callName_10);
 #endif
@@ -1243,6 +1244,21 @@ namespace MyNetworkLib {
 			TypeIpPort callIP = GetIpPortFromName(u.messNCB.ncb_callName_10);
 			if (AddListenName2(&u.messNCB)) {
 				// Tell caller: listener IP + data port
+				// If listener registered via loopback, use the server's real LAN IP as seen by caller
+				std::string listenerIp = callIP.adress;
+				if (listenerIp == "127.0.0.1" || listenerIp == "::1") {
+					for (auto& cc2 : ctrlClients) {
+						if (cc2.addr == senderAddr && cc2.dataPort == senderDataPort) {
+							sockaddr_in la{}; socklen_t ll = sizeof(la);
+							if (getsockname(cc2.sock, (sockaddr*)&la, &ll) == 0) {
+								char rip[INET_ADDRSTRLEN];
+								inet_ntop(AF_INET, &la.sin_addr, rip, sizeof(rip));
+								if (strcmp(rip, "0.0.0.0") != 0) listenerIp = rip;
+							}
+							break;
+						}
+					}
+				}
 				struct CallAcceptInfo { char ip[64]; int dataPort; };
 				CallAcceptInfo ci{}; strncpy(ci.ip, callIP.adress.c_str(), 63); ci.dataPort = callIP.port;
 				SendToCtrlClient(Pack_Message(MESS_SERVER_CALL_ACCEPT, u.messNCB, u.index, -10,
