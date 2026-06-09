@@ -172,7 +172,7 @@ void MainFrame::OnGraphics(wxCommandEvent&)
 {
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
 	GraphicsDialog dlg(this, settings.m_Graphics);
-	dlg.SetMinSize(wxSize(256, 256));
+	dlg.SetMinSize(wxSize(220, 310));
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		auto graphicSettings = dlg.GetSettings();

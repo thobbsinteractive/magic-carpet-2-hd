@@ -3,7 +3,8 @@
 // ── GraphicsDialog ────────────────────────────────────────────────────────────
 GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphics& cfg)
 	: wxDialog(parent, wxID_ANY, "Graphics Settings",
-		wxDefaultPosition, wxSize(320, 256))
+		wxDefaultPosition, wxSize(220, 310), 
+		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	m_cfg = cfg;
 
