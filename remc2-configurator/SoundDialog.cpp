@@ -4,7 +4,8 @@
 
 SoundDialog::SoundDialog(wxWindow* parent, const Config::Settings::Sound& s)
 	: wxDialog(parent, wxID_ANY, "Sound Settings",
-		wxDefaultPosition, wxSize(420, 340), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
+		wxDefaultPosition, wxSize(420, 340), 
+		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
 

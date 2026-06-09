@@ -70,6 +70,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	main->Add(btnEnhanced, 0, wxALIGN_CENTER | wxLEFT | wxTOP | wxBOTTOM, 10);
 	btnEnhanced->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
 		GraphicsFoldersDialog dlg(this, m_cfg.m_GameDetail);
+		dlg.SetMinSize(wxSize(600, 200));
 		if (dlg.ShowModal() == wxID_OK)
 		{
 			auto folderSettings = dlg.GetFolders();
