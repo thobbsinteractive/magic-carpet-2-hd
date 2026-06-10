@@ -1260,7 +1260,7 @@ namespace MyNetworkLib {
 					}
 				}
 				struct CallAcceptInfo { char ip[64]; int dataPort; };
-				CallAcceptInfo ci{}; strncpy(ci.ip, callIP.adress.c_str(), 63); ci.dataPort = callIP.port;
+				CallAcceptInfo ci{}; strncpy(ci.ip, listenerIp.c_str(), 63); ci.dataPort = callIP.port;
 				SendToCtrlClient(Pack_Message(MESS_SERVER_CALL_ACCEPT, u.messNCB, u.index, -10,
 					(char*)&ci, sizeof(ci)),
 					senderAddr, senderDataPort);
