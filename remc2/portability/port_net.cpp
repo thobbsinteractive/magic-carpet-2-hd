@@ -1727,7 +1727,7 @@ void simulateInterupt(myNCB* connection)
 		locNetworkClass->SendNetwork(connection, locIndex);
 		break;
 	case 0x95:  // RECEIVE
-		locTimeout = 0x7FFFFFFF;
+		locTimeout = 10000;
 		connection->ncb_retcode_1 = NRC_PENDING;
 		connection->ncb_cmd_cplt_49 = NRC_PENDING;
 		state = NETI_RECEIVE;
