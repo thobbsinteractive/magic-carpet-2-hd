@@ -46,7 +46,7 @@
 //   ReceiveServerAddName() — all signatures unchanged from the UDP version.
 
 //#define TEST_NETWORK_MESSAGES_NETWORK
-#define TEST_NETWORK_MESSAGES_PORTNET
+//#define TEST_NETWORK_MESSAGES_PORTNET
 
 #define _CRT_SECURE_NO_WARNINGS
 #include "port_net.h"
