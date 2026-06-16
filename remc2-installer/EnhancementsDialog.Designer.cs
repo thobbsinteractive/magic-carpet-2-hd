@@ -51,11 +51,11 @@ namespace WixSharpSetup
             // 
             // banner
             // 
+            this.banner.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.banner.BackColor = System.Drawing.Color.White;
-            this.banner.Dock = System.Windows.Forms.DockStyle.Fill;
             this.banner.Location = new System.Drawing.Point(0, 0);
             this.banner.Name = "banner";
-            this.banner.Size = new System.Drawing.Size(478, 53);
+            this.banner.Size = new System.Drawing.Size(478, 62);
             this.banner.TabIndex = 0;
             this.banner.TabStop = false;
             // 
@@ -197,12 +197,9 @@ namespace WixSharpSetup
             this.tblMain.Location = new System.Drawing.Point(0, 0);
             this.tblMain.Name = "tblMain";
             this.tblMain.RowCount = 3;
-            this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 61F));
+            this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tblMain.Size = new System.Drawing.Size(486, 336);
             this.tblMain.TabIndex = 2;
             // 
@@ -216,7 +213,7 @@ namespace WixSharpSetup
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(480, 55);
+            this.panel2.Size = new System.Drawing.Size(480, 64);
             this.panel2.TabIndex = 10;
             // 
             // grpOptions
@@ -226,9 +223,9 @@ namespace WixSharpSetup
             this.grpOptions.Controls.Add(this.chkSpeech);
             this.grpOptions.Controls.Add(this.chkFixedMenuGraphics);
             this.grpOptions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpOptions.Location = new System.Drawing.Point(3, 64);
+            this.grpOptions.Location = new System.Drawing.Point(3, 73);
             this.grpOptions.Name = "grpOptions";
-            this.grpOptions.Size = new System.Drawing.Size(480, 209);
+            this.grpOptions.Size = new System.Drawing.Size(480, 200);
             this.grpOptions.TabIndex = 11;
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
@@ -243,7 +240,6 @@ namespace WixSharpSetup
             this.Controls.Add(this.tblMain);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(510, 400);
             this.MinimumSize = new System.Drawing.Size(510, 400);
             this.Name = "EnhancedDataDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
