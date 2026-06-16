@@ -58,11 +58,11 @@ namespace WixSharpSetup
             // 
             // banner
             // 
-            this.banner.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.banner.BackColor = System.Drawing.Color.White;
-            this.banner.Location = new System.Drawing.Point(-26, 3);
+            this.banner.Dock = System.Windows.Forms.DockStyle.Right;
+            this.banner.Location = new System.Drawing.Point(-23, 0);
             this.banner.Name = "banner";
-            this.banner.Size = new System.Drawing.Size(501, 59);
+            this.banner.Size = new System.Drawing.Size(501, 62);
             this.banner.TabIndex = 0;
             this.banner.TabStop = false;
             // 
@@ -147,7 +147,7 @@ namespace WixSharpSetup
             "DOS Edition"});
             this.cboInstallLocation.Location = new System.Drawing.Point(100, 17);
             this.cboInstallLocation.Name = "cboInstallLocation";
-            this.cboInstallLocation.Size = new System.Drawing.Size(205, 31);
+            this.cboInstallLocation.Size = new System.Drawing.Size(291, 31);
             this.cboInstallLocation.TabIndex = 3;
             // 
             // lblInstallLocation
