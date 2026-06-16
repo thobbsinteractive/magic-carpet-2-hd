@@ -28,11 +28,12 @@ namespace WixSharpSetup
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("CD_Files");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("NETHERW");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD", new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("CD_Files");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("NETHERW");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+            this.banner = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -49,6 +50,7 @@ namespace WixSharpSetup
             this.tblMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.txtPath = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.grpBox.SuspendLayout();
@@ -56,12 +58,23 @@ namespace WixSharpSetup
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
+            // banner
+            // 
+            this.banner.BackColor = System.Drawing.Color.White;
+            this.banner.Dock = System.Windows.Forms.DockStyle.Right;
+            this.banner.Location = new System.Drawing.Point(-23, 0);
+            this.banner.Name = "banner";
+            this.banner.Size = new System.Drawing.Size(501, 62);
+            this.banner.TabIndex = 0;
+            this.banner.TabStop = false;
+            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.banner);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
@@ -201,15 +214,15 @@ namespace WixSharpSetup
             this.treeViewInstallProgress.Location = new System.Drawing.Point(3, 176);
             this.treeViewInstallProgress.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.treeViewInstallProgress.Name = "treeViewInstallProgress";
-            treeNode4.Name = "CDFiles";
-            treeNode4.Text = "CD_Files";
-            treeNode5.Name = "NETHERW";
-            treeNode5.Text = "NETHERW";
-            treeNode6.Checked = true;
-            treeNode6.Name = "InstallPath";
-            treeNode6.Text = "C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD";
+            treeNode1.Name = "CDFiles";
+            treeNode1.Text = "CD_Files";
+            treeNode2.Name = "NETHERW";
+            treeNode2.Text = "NETHERW";
+            treeNode3.Checked = true;
+            treeNode3.Name = "InstallPath";
+            treeNode3.Text = "C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD";
             this.treeViewInstallProgress.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode6});
+            treeNode3});
             this.treeViewInstallProgress.ShowPlusMinus = false;
             this.treeViewInstallProgress.ShowRootLines = false;
             this.treeViewInstallProgress.Size = new System.Drawing.Size(480, 87);
@@ -284,6 +297,7 @@ namespace WixSharpSetup
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Data";
             this.Load += new System.EventHandler(this.dialog_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.banner)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -298,6 +312,8 @@ namespace WixSharpSetup
         }
 
         #endregion
+
+        private System.Windows.Forms.PictureBox banner;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;

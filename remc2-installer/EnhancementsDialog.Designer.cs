@@ -28,6 +28,7 @@ namespace WixSharpSetup
         /// </summary>
         private void InitializeComponent()
         {
+            this.banner = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlBottom = new System.Windows.Forms.Panel();
@@ -41,11 +42,22 @@ namespace WixSharpSetup
             this.tblMain = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.grpOptions = new System.Windows.Forms.GroupBox();
+            ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
             this.pnlBottom.SuspendLayout();
             this.tblMain.SuspendLayout();
             this.panel2.SuspendLayout();
             this.grpOptions.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // banner
+            // 
+            this.banner.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.banner.BackColor = System.Drawing.Color.White;
+            this.banner.Location = new System.Drawing.Point(0, 0);
+            this.banner.Name = "banner";
+            this.banner.Size = new System.Drawing.Size(478, 62);
+            this.banner.TabIndex = 0;
+            this.banner.TabStop = false;
             // 
             // label2
             // 
@@ -127,7 +139,7 @@ namespace WixSharpSetup
             this.chkInstallTextures.AutoSize = true;
             this.chkInstallTextures.Checked = true;
             this.chkInstallTextures.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkInstallTextures.Location = new System.Drawing.Point(18, 44);
+            this.chkInstallTextures.Location = new System.Drawing.Point(11, 37);
             this.chkInstallTextures.Margin = new System.Windows.Forms.Padding(10);
             this.chkInstallTextures.Name = "chkInstallTextures";
             this.chkInstallTextures.Size = new System.Drawing.Size(267, 28);
@@ -140,7 +152,7 @@ namespace WixSharpSetup
             this.chkSpeech.AutoSize = true;
             this.chkSpeech.Checked = true;
             this.chkSpeech.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSpeech.Location = new System.Drawing.Point(18, 155);
+            this.chkSpeech.Location = new System.Drawing.Point(11, 148);
             this.chkSpeech.Margin = new System.Windows.Forms.Padding(10);
             this.chkSpeech.Name = "chkSpeech";
             this.chkSpeech.Size = new System.Drawing.Size(161, 28);
@@ -153,7 +165,7 @@ namespace WixSharpSetup
             this.chkFixedMenuGraphics.AutoSize = true;
             this.chkFixedMenuGraphics.Checked = true;
             this.chkFixedMenuGraphics.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkFixedMenuGraphics.Location = new System.Drawing.Point(18, 81);
+            this.chkFixedMenuGraphics.Location = new System.Drawing.Point(11, 74);
             this.chkFixedMenuGraphics.Margin = new System.Windows.Forms.Padding(10);
             this.chkFixedMenuGraphics.Name = "chkFixedMenuGraphics";
             this.chkFixedMenuGraphics.Size = new System.Drawing.Size(280, 28);
@@ -166,7 +178,7 @@ namespace WixSharpSetup
             this.chkExtendedFonts.AutoSize = true;
             this.chkExtendedFonts.Checked = true;
             this.chkExtendedFonts.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkExtendedFonts.Location = new System.Drawing.Point(18, 118);
+            this.chkExtendedFonts.Location = new System.Drawing.Point(11, 111);
             this.chkExtendedFonts.Margin = new System.Windows.Forms.Padding(10);
             this.chkExtendedFonts.Name = "chkExtendedFonts";
             this.chkExtendedFonts.Size = new System.Drawing.Size(234, 28);
@@ -197,6 +209,7 @@ namespace WixSharpSetup
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.banner);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
@@ -212,7 +225,6 @@ namespace WixSharpSetup
             this.grpOptions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpOptions.Location = new System.Drawing.Point(3, 73);
             this.grpOptions.Name = "grpOptions";
-            this.grpOptions.Padding = new System.Windows.Forms.Padding(10);
             this.grpOptions.Size = new System.Drawing.Size(480, 200);
             this.grpOptions.TabIndex = 11;
             this.grpOptions.TabStop = false;
@@ -233,6 +245,7 @@ namespace WixSharpSetup
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Enhanced Assets";
             this.Load += new System.EventHandler(this.dialog_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.banner)).EndInit();
             this.pnlBottom.ResumeLayout(false);
             this.pnlBottom.PerformLayout();
             this.tblMain.ResumeLayout(false);
@@ -245,6 +258,8 @@ namespace WixSharpSetup
         }
 
         #endregion
+
+        private System.Windows.Forms.PictureBox banner;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlBottom;
