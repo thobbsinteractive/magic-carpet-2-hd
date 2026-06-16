@@ -28,7 +28,6 @@ namespace WixSharpSetup
         /// </summary>
         private void InitializeComponent()
         {
-            this.banner = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -37,21 +36,10 @@ namespace WixSharpSetup
             this.btnRun = new System.Windows.Forms.Button();
             this.lblDescription = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // banner
-            // 
-            this.banner.BackColor = System.Drawing.Color.White;
-            this.banner.Dock = System.Windows.Forms.DockStyle.Right;
-            this.banner.Location = new System.Drawing.Point(-23, 0);
-            this.banner.Name = "banner";
-            this.banner.Size = new System.Drawing.Size(501, 62);
-            this.banner.TabIndex = 0;
-            this.banner.TabStop = false;
             // 
             // panel2
             // 
@@ -59,7 +47,6 @@ namespace WixSharpSetup
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.banner);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
@@ -130,6 +117,7 @@ namespace WixSharpSetup
             // 
             this.lblDescription.Location = new System.Drawing.Point(3, 70);
             this.lblDescription.Name = "lblDescription";
+            this.lblDescription.Padding = new System.Windows.Forms.Padding(10);
             this.lblDescription.Size = new System.Drawing.Size(470, 196);
             this.lblDescription.TabIndex = 11;
             this.lblDescription.Text = "The LATEST C++ Redistributable is required to run Magic Carpet 2 HD and the Edito" +
@@ -166,7 +154,6 @@ namespace WixSharpSetup
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Data";
             this.Load += new System.EventHandler(this.dialog_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.banner)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -177,8 +164,6 @@ namespace WixSharpSetup
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox banner;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;

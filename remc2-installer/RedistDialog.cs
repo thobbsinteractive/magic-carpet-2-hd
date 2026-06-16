@@ -52,7 +52,6 @@ namespace WixSharpSetup
 
         private void dialog_Load(object sender, EventArgs e)
         {
-            banner.Image = Runtime.Session.GetResourceBitmap("WixUI_Bmp_Banner");
             Text = "[ProductName] Setup";
             base.Localize();
         }
