@@ -86,7 +86,7 @@ private:
 
 	wxPanel* m_mousePage;
 	wxPanel* m_keyboardPage;
-	wxPanel* m_joystickPage;
+	wxScrolledWindow* m_joystickPage;
 
 	Config::Settings::Controls m_cfg;
 	void SetChoiceValue(wxChoice* choice, const wxString& value);

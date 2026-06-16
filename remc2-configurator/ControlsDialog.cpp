@@ -14,7 +14,9 @@ ControlsDialog::ControlsDialog(wxWindow* parent, const Config::Settings::Control
 
 	m_mousePage = new wxPanel(m_notebook, wxID_ANY);
 	m_keyboardPage = new wxPanel(m_notebook, wxID_ANY);
-	m_joystickPage = new wxPanel(m_notebook, wxID_ANY);
+	m_joystickPage = new wxScrolledWindow(m_notebook, wxID_ANY);
+
+	m_joystickPage->SetScrollRate(0, 10);
 
 	m_notebook->AddPage(m_mousePage, "Mouse");
 	m_notebook->AddPage(m_keyboardPage, "Keyboard");
@@ -519,6 +521,7 @@ void ControlsDialog::CreateJoystickPage()
 	sizer->Add(rightCol, 1, wxEXPAND);
 
 	m_joystickPage->SetSizer(sizer);
+	m_joystickPage->FitInside();
 }
 
 void ControlsDialog::OnModernLayout(wxCommandEvent&)
