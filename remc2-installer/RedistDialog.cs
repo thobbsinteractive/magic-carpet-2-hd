@@ -7,7 +7,7 @@ using WixSharp.UI.Forms;
 
 namespace WixSharpSetup
 {
-    public partial class RedistDialog : ManagedForm, IManagedDialog
+    public partial class RedistDialog : ManagedForm
     {
 		private bool _runClicked;
 

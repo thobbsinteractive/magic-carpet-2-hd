@@ -4,7 +4,7 @@ using WixSharp.UI.Forms;
 
 namespace WixSharpSetup
 {
-    public partial class EnhancedDataDialog : ManagedForm, IManagedDialog
+    public partial class EnhancedDataDialog : ManagedForm
     {
         public EnhancedDataDialog()
         {

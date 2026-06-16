@@ -7,7 +7,7 @@ using WixSharp.UI.Forms;
 
 namespace WixSharpSetup
 {
-    public partial class GameDataDialog : ManagedForm, IManagedDialog
+    public partial class GameDataDialog : ManagedForm
     {
 		private bool _runClicked;
 
