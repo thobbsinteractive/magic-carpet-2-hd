@@ -27,10 +27,6 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
       
-    - name: Restore vcpkg packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: vcpkg integrate install
-      
     - name: Setup vcpkg and install googletest
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |

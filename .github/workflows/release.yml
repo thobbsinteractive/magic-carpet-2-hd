@@ -34,14 +34,15 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
-      - name: Install googletest
-        uses: cvpkg/googletest-action@v0.1
-        with:
-          googletest_tag: 'release-1.11.0'
-
-      - name: Restore vcpkg packages
-        working-directory: ${{ github.workspace }}
-        run: vcpkg integrate install
+      - name: Setup vcpkg and install googletest
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          if (-not (Test-Path 'vcpkg')) {
+            git clone https://github.com/microsoft/vcpkg.git vcpkg
+          }
+          & .\vcpkg\bootstrap-vcpkg.bat
+          & .\vcpkg\vcpkg.exe install gtest:x86-windows gtest:x64-windows
+          & .\vcpkg\vcpkg.exe integrate install
 
       - name: Restore NuGet packages
         working-directory: ${{ github.workspace }}
