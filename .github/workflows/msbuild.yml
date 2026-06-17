@@ -27,10 +27,6 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
       
-    - name: Install CMake
-      run: |
-        choco install cmake -y
-      
     - name: Install googletest
       uses: cvpkg/googletest-action@v0.1
       with:
