@@ -29,12 +29,12 @@ jobs:
       
     - name: Install CMake
       run: |
-        choco install cmake -y
+        choco install --version=3.26.4 -y --force
       
     - name: Install googletest
       uses: cvpkg/googletest-action@v0.1
       with:
-        googletest_tag: 'release-1.17.0' # default is 'v1.11.0'
+        googletest_tag: 'release-1.11.0' # default is 'v1.11.0'
         
     - name: Restore vcpkg packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
