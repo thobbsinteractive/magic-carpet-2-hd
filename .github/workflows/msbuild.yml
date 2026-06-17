@@ -21,15 +21,15 @@ jobs:
         BUILD_PLATFORM: [x86, x64]
 
     steps:
-    - name: Install CMake
-      run: |
-      choco install cmake --version=3.30.0 -y
-      
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
+      
+    - name: Install CMake
+      run: |
+      choco install cmake --version=3.30.0 -y
       
     - name: Install googletest
       uses: cvpkg/googletest-action@v0.1
