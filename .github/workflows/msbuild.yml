@@ -34,12 +34,12 @@ jobs:
     - name: Setup vcpkg and install googletest
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        if not exist vcpkg (
+        if (-not (Test-Path 'vcpkg')) {
           git clone https://github.com/microsoft/vcpkg.git vcpkg
-        )
-        .\vcpkg\bootstrap-vcpkg.bat
-        .\vcpkg\vcpkg.exe install gtest:x86-windows gtest:x64-windows
-        .\vcpkg\vcpkg.exe integrate install
+        }
+        & .\vcpkg\bootstrap-vcpkg.bat
+        & .\vcpkg\vcpkg.exe install gtest:x86-windows gtest:x64-windows
+        & .\vcpkg\vcpkg.exe integrate install
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
