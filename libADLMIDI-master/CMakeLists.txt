@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.15)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 project (libADLMIDI VERSION 1.6.1 LANGUAGES C CXX)
 
 include(GNUInstallDirs)
