@@ -28,12 +28,11 @@ namespace WixSharpSetup
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("CD_Files");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("NETHERW");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD", new System.Windows.Forms.TreeNode[] {
-            treeNode10,
-            treeNode11});
-            this.banner = new System.Windows.Forms.PictureBox();
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("CD_Files");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("NETHERW");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5});
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -42,38 +41,31 @@ namespace WixSharpSetup
             this.btnRun = new System.Windows.Forms.Button();
             this.cboInstallLocation = new System.Windows.Forms.ComboBox();
             this.lblInstallLocation = new System.Windows.Forms.Label();
-            this.txtPath = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.lblGameData = new System.Windows.Forms.Label();
             this.grpBox = new System.Windows.Forms.GroupBox();
             this.btnInfo = new System.Windows.Forms.Button();
             this.treeViewInstallProgress = new System.Windows.Forms.TreeView();
-            ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
+            this.tblMain = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.txtPath = new System.Windows.Forms.TextBox();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.grpBox.SuspendLayout();
+            this.tblMain.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // banner
-            // 
-            this.banner.BackColor = System.Drawing.Color.White;
-            this.banner.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.banner.Location = new System.Drawing.Point(0, 0);
-            this.banner.Name = "banner";
-            this.banner.Size = new System.Drawing.Size(501, 59);
-            this.banner.TabIndex = 0;
-            this.banner.TabStop = false;
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.panel2.BackColor = System.Drawing.Color.White;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.banner);
-            this.panel2.Location = new System.Drawing.Point(-5, -5);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(503, 61);
+            this.panel2.Size = new System.Drawing.Size(480, 64);
             this.panel2.TabIndex = 10;
             // 
             // label2
@@ -83,7 +75,7 @@ namespace WixSharpSetup
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(30, 31);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(475, 21);
+            this.label2.Size = new System.Drawing.Size(569, 24);
             this.label2.TabIndex = 1;
             this.label2.Text = "Please select where to get the Magic Carpet 2 game data from";
             // 
@@ -94,7 +86,7 @@ namespace WixSharpSetup
             this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(16, 8);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(192, 22);
+            this.label1.Size = new System.Drawing.Size(226, 25);
             this.label1.TabIndex = 1;
             this.label1.Text = "Game Data Location";
             // 
@@ -104,18 +96,20 @@ namespace WixSharpSetup
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.btnNext);
             this.panel1.Controls.Add(this.btnRun);
-            this.panel1.Location = new System.Drawing.Point(-3, 308);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 269);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(503, 57);
+            this.panel1.Size = new System.Drawing.Size(480, 64);
             this.panel1.TabIndex = 9;
             // 
             // btnNext
             // 
+            this.btnNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnNext.AutoSize = true;
             this.btnNext.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNext.Location = new System.Drawing.Point(409, 3);
+            this.btnNext.Location = new System.Drawing.Point(394, 20);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(75, 31);
+            this.btnNext.Size = new System.Drawing.Size(75, 34);
             this.btnNext.TabIndex = 1;
             this.btnNext.Text = "Next";
             this.btnNext.UseVisualStyleBackColor = true;
@@ -123,11 +117,12 @@ namespace WixSharpSetup
             // 
             // btnRun
             // 
+            this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRun.AutoSize = true;
             this.btnRun.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRun.Location = new System.Drawing.Point(241, 3);
+            this.btnRun.Location = new System.Drawing.Point(199, 20);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(162, 31);
+            this.btnRun.Size = new System.Drawing.Size(189, 34);
             this.btnRun.TabIndex = 0;
             this.btnRun.Text = "Extract Game Data";
             this.btnRun.UseVisualStyleBackColor = true;
@@ -135,39 +130,31 @@ namespace WixSharpSetup
             // 
             // cboInstallLocation
             // 
+            this.cboInstallLocation.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboInstallLocation.FormattingEnabled = true;
             this.cboInstallLocation.Items.AddRange(new object[] {
             "GOG Edition",
             "DOS Edition"});
-            this.cboInstallLocation.Location = new System.Drawing.Point(100, 17);
+            this.cboInstallLocation.Location = new System.Drawing.Point(203, 43);
             this.cboInstallLocation.Name = "cboInstallLocation";
-            this.cboInstallLocation.Size = new System.Drawing.Size(205, 29);
+            this.cboInstallLocation.Size = new System.Drawing.Size(254, 31);
             this.cboInstallLocation.TabIndex = 3;
             // 
             // lblInstallLocation
             // 
             this.lblInstallLocation.AutoSize = true;
-            this.lblInstallLocation.Location = new System.Drawing.Point(11, 20);
+            this.lblInstallLocation.Location = new System.Drawing.Point(3, 40);
             this.lblInstallLocation.Name = "lblInstallLocation";
-            this.lblInstallLocation.Size = new System.Drawing.Size(126, 21);
+            this.lblInstallLocation.Size = new System.Drawing.Size(148, 24);
             this.lblInstallLocation.TabIndex = 2;
             this.lblInstallLocation.Text = "Get Data From:";
-            // 
-            // txtPath
-            // 
-            this.txtPath.Location = new System.Drawing.Point(10, 85);
-            this.txtPath.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
-            this.txtPath.Name = "txtPath";
-            this.txtPath.Size = new System.Drawing.Size(381, 27);
-            this.txtPath.TabIndex = 5;
-            this.txtPath.TextChanged += new System.EventHandler(this.Path_TextChanged);
             // 
             // btnBrowse
             // 
             this.btnBrowse.AutoSize = true;
-            this.btnBrowse.Location = new System.Drawing.Point(10, 49);
+            this.btnBrowse.Location = new System.Drawing.Point(3, 83);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(75, 31);
+            this.btnBrowse.Size = new System.Drawing.Size(148, 34);
             this.btnBrowse.TabIndex = 4;
             this.btnBrowse.Text = "Browse";
             this.btnBrowse.UseVisualStyleBackColor = true;
@@ -176,31 +163,31 @@ namespace WixSharpSetup
             // lblGameData
             // 
             this.lblGameData.AutoSize = true;
-            this.lblGameData.Location = new System.Drawing.Point(84, 54);
+            this.tableLayoutPanel1.SetColumnSpan(this.lblGameData, 2);
+            this.lblGameData.Location = new System.Drawing.Point(3, 0);
             this.lblGameData.Name = "lblGameData";
-            this.lblGameData.Size = new System.Drawing.Size(236, 21);
+            this.lblGameData.Size = new System.Drawing.Size(280, 24);
             this.lblGameData.TabIndex = 15;
             this.lblGameData.Text = "Magic Carpet 2 GOG directory:";
             // 
             // grpBox
             // 
-            this.grpBox.Controls.Add(this.lblGameData);
-            this.grpBox.Controls.Add(this.cboInstallLocation);
-            this.grpBox.Controls.Add(this.lblInstallLocation);
-            this.grpBox.Controls.Add(this.txtPath);
-            this.grpBox.Controls.Add(this.btnBrowse);
-            this.grpBox.Location = new System.Drawing.Point(12, 91);
+            this.grpBox.Controls.Add(this.tableLayoutPanel1);
+            this.grpBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpBox.Location = new System.Drawing.Point(3, 113);
             this.grpBox.Name = "grpBox";
-            this.grpBox.Size = new System.Drawing.Size(470, 128);
+            this.grpBox.Padding = new System.Windows.Forms.Padding(10);
+            this.grpBox.Size = new System.Drawing.Size(480, 50);
             this.grpBox.TabIndex = 17;
             this.grpBox.TabStop = false;
             // 
             // btnInfo
             // 
+            this.btnInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInfo.AutoSize = true;
-            this.btnInfo.Location = new System.Drawing.Point(407, 62);
+            this.btnInfo.Location = new System.Drawing.Point(408, 73);
             this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(75, 31);
+            this.btnInfo.Size = new System.Drawing.Size(75, 34);
             this.btnInfo.TabIndex = 8;
             this.btnInfo.Text = "Help";
             this.btnInfo.UseVisualStyleBackColor = true;
@@ -209,58 +196,108 @@ namespace WixSharpSetup
             // treeViewInstallProgress
             // 
             this.treeViewInstallProgress.CheckBoxes = true;
+            this.treeViewInstallProgress.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewInstallProgress.Enabled = false;
-            this.treeViewInstallProgress.Location = new System.Drawing.Point(12, 232);
+            this.treeViewInstallProgress.Location = new System.Drawing.Point(3, 176);
             this.treeViewInstallProgress.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.treeViewInstallProgress.Name = "treeViewInstallProgress";
-            treeNode10.Name = "CDFiles";
-            treeNode10.Text = "CD_Files";
-            treeNode11.Name = "NETHERW";
-            treeNode11.Text = "NETHERW";
-            treeNode12.Checked = true;
-            treeNode12.Name = "InstallPath";
-            treeNode12.Text = "C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD";
+            treeNode4.Name = "CDFiles";
+            treeNode4.Text = "CD_Files";
+            treeNode5.Name = "NETHERW";
+            treeNode5.Text = "NETHERW";
+            treeNode6.Checked = true;
+            treeNode6.Name = "InstallPath";
+            treeNode6.Text = "C:\\Program Files x86\\Remc2\\Magic Carpet 2 HD";
             this.treeViewInstallProgress.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode12});
+            treeNode6});
             this.treeViewInstallProgress.ShowPlusMinus = false;
             this.treeViewInstallProgress.ShowRootLines = false;
-            this.treeViewInstallProgress.Size = new System.Drawing.Size(391, 52);
+            this.treeViewInstallProgress.Size = new System.Drawing.Size(480, 87);
             this.treeViewInstallProgress.TabIndex = 19;
             this.treeViewInstallProgress.TabStop = false;
+            // 
+            // tblMain
+            // 
+            this.tblMain.ColumnCount = 1;
+            this.tblMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblMain.Controls.Add(this.panel2, 0, 0);
+            this.tblMain.Controls.Add(this.panel1, 0, 4);
+            this.tblMain.Controls.Add(this.treeViewInstallProgress, 0, 3);
+            this.tblMain.Controls.Add(this.grpBox, 0, 2);
+            this.tblMain.Controls.Add(this.btnInfo, 0, 1);
+            this.tblMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tblMain.Location = new System.Drawing.Point(0, 0);
+            this.tblMain.Name = "tblMain";
+            this.tblMain.RowCount = 5;
+            this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tblMain.Size = new System.Drawing.Size(486, 336);
+            this.tblMain.TabIndex = 20;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.lblInstallLocation, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lblGameData, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnBrowse, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.cboInstallLocation, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txtPath, 0, 3);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 34);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(460, 6);
+            this.tableLayoutPanel1.TabIndex = 16;
+            // 
+            // txtPath
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.txtPath, 2);
+            this.txtPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtPath.Location = new System.Drawing.Point(3, 130);
+            this.txtPath.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.txtPath.Name = "txtPath";
+            this.txtPath.Size = new System.Drawing.Size(454, 31);
+            this.txtPath.TabIndex = 5;
+            this.txtPath.TextChanged += new System.EventHandler(this.Path_TextChanged);
             // 
             // GameDataDialog
             // 
             this.AcceptButton = this.btnRun;
-            this.ClientSize = new System.Drawing.Size(488, 344);
-            this.Controls.Add(this.treeViewInstallProgress);
-            this.Controls.Add(this.btnInfo);
-            this.Controls.Add(this.grpBox);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(168F, 168F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(486, 336);
+            this.Controls.Add(this.tblMain);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(510, 400);
             this.MinimumSize = new System.Drawing.Size(510, 400);
             this.Name = "GameDataDialog";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Data";
             this.Load += new System.EventHandler(this.dialog_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.banner)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.grpBox.ResumeLayout(false);
-            this.grpBox.PerformLayout();
+            this.tblMain.ResumeLayout(false);
+            this.tblMain.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox banner;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
@@ -268,12 +305,14 @@ namespace WixSharpSetup
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.ComboBox cboInstallLocation;
         private System.Windows.Forms.Label lblInstallLocation;
-        private System.Windows.Forms.TextBox txtPath;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Label lblGameData;
 		private System.Windows.Forms.GroupBox grpBox;
 		private System.Windows.Forms.Button btnInfo;
 		private System.Windows.Forms.TreeView treeViewInstallProgress;
+		private System.Windows.Forms.TableLayoutPanel tblMain;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private System.Windows.Forms.TextBox txtPath;
 	}
 }
