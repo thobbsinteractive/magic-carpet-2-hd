@@ -39194,30 +39194,24 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 			}
 			else if (!_stricmp("client", (char*)actarg))//set to all one computer adress
 			{
-				//if (!Iam_server)
-				{
-					Iam_client = true;
-					strcpy(serverIP, (char*)argv[++argnumber]);
-					ServerPort = atoi(argv[++argnumber]);
-					if (ServerPort < 0)ServerPort = 0;
-					if (ServerPort > 99999)ServerPort = 99999;
-					NetworkPort = atoi(argv[++argnumber]);
-					if (NetworkPort < 0)NetworkPort = 0;
-					if (NetworkPort > 99999)NetworkPort = 99999;
-					//if (ServerPort == -1)ServerPort = NetworkPort;
-				}
+				Iam_client = true;
+				strcpy(serverIP, (char*)argv[++argnumber]);
+				ServerPort = atoi(argv[++argnumber]);
+				if (ServerPort < 0)ServerPort = 0;
+				if (ServerPort > 99999)ServerPort = 99999;
+				NetworkPort = atoi(argv[++argnumber]);
+				if (NetworkPort < 0)NetworkPort = 0;
+				if (NetworkPort > 99999)NetworkPort = 99999;
+				//if (ServerPort == -1)ServerPort = NetworkPort;
 			}
 			else if (!_stricmp("server", (char*)actarg))//set to all one computer adress
 			{
-				//if (!Iam_client)
-				{
-					Iam_server = true;
-					//strcpy(serverIP, (char*)argv[++argnumber]);
-					ServerPort = atoi(argv[++argnumber]);
-					if (ServerPort < 0)ServerPort = 0;
-					if (ServerPort > 99999)ServerPort = 99999;
-					//if (ServerPort == -1)ServerPort = NetworkPort;
-				}
+				Iam_server = true;
+				//strcpy(serverIP, (char*)argv[++argnumber]);
+				ServerPort = atoi(argv[++argnumber]);
+				if (ServerPort < 0)ServerPort = 0;
+				if (ServerPort > 99999)ServerPort = 99999;
+				//if (ServerPort == -1)ServerPort = NetworkPort;
 			}
 			/*
 			else if (!_stricmp("otherserverport", (char*)actarg))//set to all one computer adress
