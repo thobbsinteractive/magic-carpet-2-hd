@@ -5,6 +5,7 @@
 #include "../sub_main.h"
 #include "EventsFunctions.h"
 #include "TypeConfigDat.h"
+#include "Network.h"
 
 // types
 
@@ -195,12 +196,12 @@ bool ExitDialog_77980(type_menuButtons_E1F84* a1x);
 char SetPlayerNameDialog_78E00(/*int a1, int a2, */type_menuButtons_E1F84* a3x);
 int sub_7F6A0(int a1, int a2, __int16 a3, __int16 a4, char* a5, int8_t* a6, unsigned __int8 a7);
 char SetJoystickDialog_79160(type_menuButtons_E1F84* a1x);
-int sub_7CCF0();
-int sub_7CD30();
-int sub_7CCA0();
-int sub_7CDA0();
-char sub_7CBF0();
-char sub_7CC40();
+int MultiplayerPreviousLevel_7CCF0();
+int MultiplayerNextLevel_7CD30();
+int MultiplayerExit_7CCA0();
+int MultiplayerPlayLevel_7CDA0();
+char MultiplayerPreviousWizard_7CBF0();
+char MultiplayerNextWizard_7CC40();
 char MultiplayerMenu_7DE80(type_menuButtons_E1F84* a2x);
 int DrawScrollDialog_7BF20(type_str_word_26* a1x);
 void sub_8C0E0(unsigned __int8(/*__fastcall*/ *a1)(signed int));

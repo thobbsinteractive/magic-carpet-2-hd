@@ -196,14 +196,14 @@ void CommandLineParser::InterpretParams() {
         }
         else if (param == "--mode_test_network") {
             m_mode_test_network = true;
-            m_copy_skip_config = true;
-            m_hide_graphics = false;
-            m_debugafterload = true;
+            //m_copy_skip_config = true;
+            //m_hide_graphics = false;
+            //m_debugafterload = true;
             m_auto_change_res = true;
-            m_load_edited_level = true;
-            m_disable_graphics_enhance = true;
-            m_text_output_to_console = true;
-            m_show_debug_messages1 = true;
+            //m_load_edited_level = true;
+            //m_disable_graphics_enhance = true;
+            //m_text_output_to_console = true;
+            //m_show_debug_messages1 = true;
         }
         else if (param == "--no_alternative_gamespeed_control") m_alternative_gamespeed_control = false;
         else if (param == "--no_analyze_entity")                m_analyze_entity = false;

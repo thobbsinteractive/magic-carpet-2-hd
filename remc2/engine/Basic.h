@@ -36,8 +36,8 @@
 #pragma pack (push,1)
 typedef struct//lenght 11
 {
-	int8_t connected_0;
-	uint8_t arrayColors_1[8];
+	int8_t makeUpdate_0;
+	uint8_t playerIndex_1[8];
 	int8_t action_9;
 	int8_t selectedLevel_10;
 } type_BYTE_17DE68x;

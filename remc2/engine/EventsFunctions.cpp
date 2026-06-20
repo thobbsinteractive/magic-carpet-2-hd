@@ -837,7 +837,6 @@ signed int sub_5C060();
 //signed int sub_5C1B0_set_any_variables2();
 void sub_5C330();
 signed int sub_5C3D0_file_decompress(uint8_t* a1, uint8_t* a2);
-void NetworkDisallocation2_5C450();
 void sub_5C490_testers_info();
 void sub_5C800(type_entity_0x6E8E* a1, char a2);
 void SetPaletteModification_5C830(type_entity_0x6E8E* event, char paletteSubMod, __int16 PaletteCount);
@@ -39037,36 +39036,6 @@ void write_pngs()
 	}
 }
 
-const int StartNetworkTimeout = 5;
-
-void InitNetworkInfo() {
-	if (CommandLineParams.ModeTestNetwork()) {
-		std::string exepath = get_exe_path();
-		debug_net_filename2 = exepath + "/../" + debug_net_filename1;
-
-		//testlib1();
-		/*if (Iam_server)
-			InitLibNetServer(ServerMPort);
-		InitLibNetClient(serverIP, ServerMPort, ClientMPort);*/
-		InitMyNetLib(Iam_server, serverIP, NetworkPort, ServerPort);
-		/*
-		if (Iam_server)
-		{
-			while (StartNetworkTimeout>0) {
-				mydelay(1000);
-				StartNetworkTimeout--;
-				myprintf("I wait for clients %d s\n", StartNetworkTimeout);
-			}
-			SendMessagesRegisterOK();
-		}
-		bool receive_timeout = false;
-		while (!receive_timeout) {
-			receive_timeout = ReceiveTimeout();
-			mydelay(1000);
-		}*/
-	}
-};
-
 //----- (00056210) --------------------------------------------------------
 void sub_56210_process_command_line(int argc, char** argv)//237210
 {
@@ -39225,33 +39194,25 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 			}
 			else if (!_stricmp("client", (char*)actarg))//set to all one computer adress
 			{
-				if (!Iam_server)
-				{
-					Iam_client = true;
-					strcpy(serverIP, (char*)argv[++argnumber]);
-					NetworkPort = atoi(argv[++argnumber]);
-					if (NetworkPort < 0)NetworkPort = 0;
-					if (NetworkPort > 99999)NetworkPort = 99999;
-					if (ServerPort == -1)ServerPort = NetworkPort;
-				}
-			}
-			else if (!_stricmp("server", (char*)actarg))//set to all one computer adress
-			{
-				if (!Iam_client)
-				{
-					Iam_server = true;
-					strcpy(serverIP, (char*)argv[++argnumber]);
-					NetworkPort = atoi(argv[++argnumber]);
-					if (NetworkPort < 0)NetworkPort = 0;
-					if (NetworkPort > 99999)NetworkPort = 99999;
-					if (ServerPort == -1)ServerPort = NetworkPort;
-				}
-			}
-			else if (!_stricmp("otherserverport", (char*)actarg))//set to all one computer adress
-			{
+				Iam_client = true;
+				strcpy(serverIP, (char*)argv[++argnumber]);
 				ServerPort = atoi(argv[++argnumber]);
 				if (ServerPort < 0)ServerPort = 0;
 				if (ServerPort > 99999)ServerPort = 99999;
+				NetworkPort = atoi(argv[++argnumber]);
+				if (NetworkPort < 0)
+					NetworkPort = 0;
+				if (NetworkPort > 99999)
+					NetworkPort = 99999;
+			}
+			else if (!_stricmp("server", (char*)actarg))//set to all one computer adress
+			{
+				Iam_server = true;
+				ServerPort = atoi(argv[++argnumber]);
+				if (ServerPort < 0)
+					ServerPort = 0;
+				if (ServerPort > 99999)
+					ServerPort = 99999;
 			}
 		}
 		argnumber++;
@@ -43445,14 +43406,6 @@ signed int sub_5C3D0_file_decompress(uint8_t* input, uint8_t* output)//23d3d0
 }
 // 99682: using guessed type x_DWORD strncmp(x_DWORD, x_DWORD, x_DWORD);
 
-//----- (0005C450) --------------------------------------------------------
-void NetworkDisallocation2_5C450()//23d450
-{
-	if (x_D41A0_BYTEARRAY_4_struct.isNetwork_216w)
-		NetworkDisallocation_72D04();
-}
-// D41A4: using guessed type int x_DWORD_D41A4;
-
 //----- (0005C490) --------------------------------------------------------
 void sub_5C490_testers_info()//23d490
 {
@@ -46252,6 +46205,10 @@ void sub_7A110_load_hscreen(char a1, char a2)//25b110
 			{
 				sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DED4, x_DWORD_17DE38str.x_DWORD_17DED8, x_DWORD_17DE38str.x_DWORD_17DE48c, xy_DWORD_17DED4_spritestr);
 				sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
+			}
+			if (extendedFonts)
+			{
+				LoadFixedFonts(0, (char*)"4b");
 			}
 			break;
 		case 12:
