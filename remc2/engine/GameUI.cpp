@@ -382,7 +382,7 @@ void DrawSpellIcon_2E260(int16_t posX, int16_t posY, type_entity_0x6E8E* playerE
 					DrawLine_2BC80(
 						posX + (4 * scale),
 						posY + (36 * scale),
-						(56 * scale) * (parentEvent->mana_0x90_144 % playerEvent->maxMana_0x8C_140) / playerEvent->maxMana_0x8C_140,
+						(56 * scale) * (int64)(parentEvent->mana_0x90_144 % playerEvent->maxMana_0x8C_140) / playerEvent->maxMana_0x8C_140,
 						(4 * scale),
 						color1);
 					int manaScaled = parentEvent->mana_0x90_144 / playerEvent->maxMana_0x8C_140;
