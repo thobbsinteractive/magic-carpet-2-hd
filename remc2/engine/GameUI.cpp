@@ -891,8 +891,10 @@ int TransformPlayerColorIndex_616D0(int index)//2426d0
 				index2 = 5;
 				break;
 			case 5:
-			case 7:
 				index2 = 7;
+				break;
+			case 7:
+				index2 = 6;//fix wizard index, in original is 7
 				break;
 			case 6:
 				index2 = 3;
