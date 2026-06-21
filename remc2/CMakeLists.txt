@@ -253,7 +253,7 @@ if (UNIX)
     target_include_directories(${PROJECT_NAME} PUBLIC
         "${CMAKE_SOURCE_DIR}/findfirst"
         "${CMAKE_SOURCE_DIR}/spdlog/include"
-        "${CMAKE_SOURCE_DIR}/rapidjson"
+        "${CMAKE_SOURCE_DIR}/nlohmann-json"
     )
     if (APPLE)
         execute_process(COMMAND brew --prefix

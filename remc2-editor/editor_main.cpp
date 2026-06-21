@@ -12,7 +12,7 @@ using namespace std;
 #include "SDL2/SDL.h"
 
 #include "editor.h"
-#include "ReadConfig.h"
+#include "../remc2/engine/read_config.h"
 
 int main(int argc, char* argv[])
 {	
@@ -53,8 +53,7 @@ int main(int argc, char* argv[])
 	try
 	{
 		InitializeLogging(level, "log-editor.txt");
-		ReadConfig readConfig;
-		readConfig.SetConfig();
+		SetConfig();
 		support_begin();
 		editor_run();
 	}

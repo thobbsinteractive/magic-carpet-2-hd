@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 
@@ -201,6 +201,7 @@ endif ()
 # remc2 and tests
 add_subdirectory(remc2)
 add_subdirectory(remc2-editor)
+add_subdirectory(remc2-configurator)
 if (UNIT_TESTS)
     find_package(GTest REQUIRED)
     add_subdirectory(remc2-unit-test)

@@ -1604,7 +1604,6 @@ x_WORD* sub_60400(__int16 a1, x_WORD* a2, x_WORD* a3);
 void sub_6D8B0(unsigned __int16 a1, unsigned __int16 a2, __int16 a3);
 void CollectLevelStats_5C530();
 void sub_56210_process_command_line(int a1, char** a2);
-void InitNetworkInfo();
 void sub_46830_main_loop(unsigned __int16 a3);
 void sub_5BC20();
 void sub_75AB0();

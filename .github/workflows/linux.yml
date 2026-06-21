@@ -28,8 +28,9 @@ jobs:
         libsdl2-ttf-dev libsdl2-image-dev \
         libgtest-dev \
         libspdlog-dev libfmt-dev \
-        rapidjson-dev \
+        nlohmann-json3-dev \
         clang-tidy \
+        libwxgtk3.2-dev \
         -o APT::Immediate-Configure=0
 
     - name: Check Out Sources
@@ -43,7 +44,7 @@ jobs:
         cd ${{ github.workspace }}
         mkdir build_${{matrix.BUILD_CONFIGURATION}}
         cd build_${{matrix.BUILD_CONFIGURATION}}
-        cmake -GNinja -DCMAKE_BUILD_TYPE=${{matrix.BUILD_CONFIGURATION}} -DUSE_64_BIT=True -DUNIT_TESTS=True -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DGITHUB_CI_COMPATIBILITY_PATH="${{env.GITHUB_CI_COMPATIBILITY_PATH}}" ${{ github.workspace }}/src
+        cmake -GNinja -DCMAKE_BUILD_TYPE=${{matrix.BUILD_CONFIGURATION}} -DUSE_64_BIT=True -DUNIT_TESTS=True -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DGITHUB_CI_COMPATIBILITY_PATH="${{env.GITHUB_CI_COMPATIBILITY_PATH}}" -DwxWidgets_DIR=/usr/lib/x86_64-linux-gnu/cmake/wxWidgets ../src
         
     - name: Build - ${{matrix.BUILD_CONFIGURATION}}
       run: |

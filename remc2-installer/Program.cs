@@ -62,6 +62,27 @@ namespace remc2_installer
 									}
 								},
 #if WIN64
+							new WixSharp.File(new Id("CONFIG_EXE"), @"..\x64\Release\remc2-configurator.exe",
+								new FileShortcut(new Id("CONFIG_EXE_SHORTCUT"), "Configure", "SHORTCUTDIR")
+								{
+									IconFile = "Resources/config.ico"
+								})
+#else
+							new WixSharp.File(new Id("CONFIG_EXE"), @"..\Release\remc2-configurator.exe", 
+								new FileShortcut(new Id("CONFIG_EXE_SHORTCUT"), "Configure", "SHORTCUTDIR")
+								{
+									IconFile = "Resources/config.ico"
+								})
+#endif
+							{
+								Permissions = new[] {
+										new FilePermission("Everyone", GenericPermission.All) { Execute = true },
+										new FilePermission("Users", GenericPermission.All) { Execute = true },
+										new FilePermission("AuthenticatedUser", GenericPermission.All) { Execute = true },
+										new FilePermission("CREATOR OWNER", GenericPermission.All)  { Execute = true },
+									}
+							},
+#if WIN64
 								new File(new Id("CONFIG_INI"), @"..\x64\Release\config.json")
 								{
 									Permissions = new[] {
@@ -118,6 +139,13 @@ namespace remc2_installer
 								new File(new Id("VORBIXFILE_DLL"), @"..\x64\Release\vorbisfile.dll"),
 								new File(new Id("WAVPACKDLL_DLL"), @"..\x64\Release\wavpackdll.dll"),
 								new File(new Id("ZLIB1_DLL"), @"..\x64\Release\zlib1.dll"),
+								new File(new Id("WXBASE32_VC_CUSTOM_DLL"), @"..\x64\Release\wxbase32u_vc_x64_custom.dll"),
+								new File(new Id("WXMSW32UD_CORE_VC_CUSTOM_DLL"), @"..\x64\Release\wxmsw32u_core_vc_x64_custom.dll"),
+								new File(new Id("JPEG62_DLL"), @"..\x64\Release\jpeg62.dll"),
+								new File(new Id("LIBLZMA_DLL"), @"..\x64\Release\liblzma.dll"),
+								new File(new Id("PCRE2_16_DLL"), @"..\x64\Release\pcre2-16.dll"),
+								new File(new Id("TIFF_DLL"), @"..\x64\Release\tiff.dll"),
+								new File(new Id("MC_HD_LOGO_PNG"), @"..\x64\Release\mc2_hd_logo.png"),
 #else
 								new File(new Id("BROTLICOMMON_DLL"), @"..\Release\brotlicommon.dll"),
 								new File(new Id("BROTLIDEC_DLL"), @"..\Release\brotlidec.dll"),
@@ -133,6 +161,13 @@ namespace remc2_installer
 								new File(new Id("VORBIXFILE_DLL"), @"..\Release\vorbisfile.dll"),
 								new File(new Id("WAVPACKDLL_DLL"), @"..\Release\wavpackdll.dll"),
 								new File(new Id("ZLIB1_DLL"), @"..\Release\zlib1.dll"),
+								new File(new Id("WXBASE32_VC_CUSTOM_DLL"), @"..\Release\wxbase32u_vc_custom.dll"),
+								new File(new Id("WXMSW32UD_CORE_VC_CUSTOM_DLL"), @"..\Release\wxmsw32u_core_vc_custom.dll"),
+								new File(new Id("JPEG62_DLL"), @"..\Release\jpeg62.dll"),
+								new File(new Id("LIBLZMA_DLL"), @"..\Release\liblzma.dll"),
+								new File(new Id("PCRE2_16_DLL"), @"..\Release\pcre2-16.dll"),
+								new File(new Id("TIFF_DLL"), @"..\Release\tiff.dll"),
+								new File(new Id("MC_HD_LOGO_PNG"), @"..\Release\mc2_hd_logo.png"),
 #endif
 								new Dir(new Id("KISS_INSTALLDIR"), @"kiss",
 									new Files(@"..\Release\kiss\*.*")),

@@ -1,0 +1,31 @@
+If you want to play a multiplayer game, all players must be on the same network or connected via NAT.
+
+One player is set up as the server and the others as clients.
+
+The server has the following settings in the command line:
+
+--mode_test_network server [server-port] client [server-ip] [server-port] [client-port]
+
+The clients have these:
+--mode_test_network client [server-ip] [server-port] [client-port]
+
+For example(standard network game on different computers):
+--mode_test_network server 3030 client 127.0.0.1 3030 3031
+--mode_test_network client 192.168.0.15 3030 3030
+--mode_test_network client 192.168.0.15 3030 3030
+--mode_test_network client 192.168.0.15 3030 3030
+--mode_test_network client 192.168.0.15 3030 3030
+--mode_test_network client 192.168.0.15 3030 3030
+
+
+Or for testing on single computer:
+--mode_test_network server 3030 client 127.0.0.1 3030 3031
+--mode_test_network client 127.0.0.1 3030 3032
+--mode_test_network client 127.0.0.1 3030 3033
+--mode_test_network client 127.0.0.1 3030 3034
+--mode_test_network client 127.0.0.1 3030 3035
+--mode_test_network client 127.0.0.1 3030 3036
+--mode_test_network client 127.0.0.1 3030 3037
+
+Leave the network number in the game set to 0. If there are multiple games on a single network,
+the servers will have different IP addresses so they don't interfere with each other.

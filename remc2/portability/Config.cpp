@@ -3,380 +3,398 @@
 #include <fstream>
 #include "Config.h"
 
+using json = nlohmann::ordered_json;
+
 Config::Config(std::string fileName)
+{
+	m_FileName = fileName;
+	LoadFromFile(fileName);
+}
+
+bool Config::LoadFromFile()
+{
+	return LoadFromFile(m_FileName);
+}
+
+bool Config::LoadFromFile(std::string fileName)
 {
 	if (std::filesystem::exists(fileName))
 	{
-		auto json = ReadFileToString(fileName);
+		auto jsonStr = ReadFileToString(fileName);
 
-		if (json.size() > 0)
+		if (jsonStr.size() > 0)
 		{
-			rapidjson::Document document;
-			document.Parse(json.c_str());
-			if (document.HasMember("settings"))
+			try
 			{
-				LoadSettings(document);
+				m_Document = json::parse(jsonStr);
+				if (m_Document.contains("settings"))
+				{
+					return true;
+				}
+			}
+			catch (const json::parse_error& e)
+			{
+				std::cout << "JSON parse error: " << e.what();
 			}
 		}
-	}
-}
-
-std::string Config::ReadStringValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
-{
-	if (settings.HasMember(name))
-	{
-		return settings[name].GetString();
-	}
-	return "";
-}
-
-int Config::ReadIntValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
-{
-	if (settings.HasMember(name))
-	{
-		return settings[name].GetInt();
-	}
-	return 0;
-}
-
-float Config::ReadFloatValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
-{
-	if (settings.HasMember(name))
-	{
-		return settings[name].GetFloat();
-	}
-	return 0.0f;
-}
-
-bool Config::ReadBoolValue(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
-{
-	if (settings.HasMember(name))
-	{
-		return settings[name].GetBool();
 	}
 	return false;
 }
 
-SDL_Scancode Config::ReadKeyScancode(rapidjson::GenericObject<false, rapidjson::Value>& settings, const char* name)
+std::string Config::ReadStringValue(const json& settings, const char* name)
 {
-	if (settings.HasMember(name))
+	if (settings.contains(name) && settings[name].is_string())
 	{
-		return m_ConfigToSdlScancode.GetScancode(settings[name].GetString());
+		return settings[name].get<std::string>();
+	}
+	return "";
+}
+
+int Config::ReadIntValue(const json& settings, const char* name)
+{
+	if (settings.contains(name) && settings[name].is_number())
+	{
+		return settings[name].get<int>();
+	}
+	return 0;
+}
+
+float Config::ReadFloatValue(const json& settings, const char* name)
+{
+	if (settings.contains(name) && settings[name].is_number())
+	{
+		return settings[name].get<float>();
+	}
+	return 0.0f;
+}
+
+bool Config::ReadBoolValue(const json& settings, const char* name)
+{
+	if (settings.contains(name) && settings[name].is_boolean())
+	{
+		return settings[name].get<bool>();
+	}
+	return false;
+}
+
+SDL_Scancode Config::ReadKeyScancode(const json& settings, const char* name)
+{
+	if (settings.contains(name) && settings[name].is_string())
+	{
+		return m_ConfigToSdlScancode.GetScancode(settings[name].get<std::string>());
 	}
 	return SDL_Scancode::SDL_SCANCODE_UNKNOWN;
 }
 
-void Config::LoadSettings(rapidjson::Document& document)
+void Config::SetString(json& obj, const char* key, const std::string& value)
 {
-	auto settingsArray = document["settings"].GetArray();
+	obj[key] = value;
+}
 
-	for (int i = 0; i < settingsArray.Size(); i++)
+void Config::SetInt(json& obj, const char* key, int value)
+{
+	obj[key] = value;
+}
+
+void Config::SetFloat(json& obj, const char* key, float value)
+{
+	obj[key] = value;
+}
+
+void Config::SetBool(json& obj, const char* key, bool value)
+{
+	obj[key] = value;
+}
+
+void Config::SetZones(json& obj, const char* key, const std::vector<Maths::Zone>& zones)
+{
+	nlohmann::json axisYawSensitivity;
+
+	axisYawSensitivity["zones"] = nlohmann::json::array();
+
+	for (const auto& zone : zones)
 	{
-#if defined(__linux__) || defined(__APPLE__)
-		auto settings = settingsArray[i].GetObject();
-#else
-		auto settings = settingsArray[i].GetObj();
-#endif
-		if (settings.HasMember("name") && settings.HasMember("isActive") && settings["isActive"].GetBool() == true)
+		axisYawSensitivity["zones"].push_back({
+			{"start",  zone.m_xStart},
+			{"end",    zone.m_xEnd},
+			{"factor", zone.m_factor}
+			});
+	}
+
+	obj[key] = axisYawSensitivity;
+}
+
+json& Config::GetOrCreate(json& parent, const char* key)
+{
+	if (!parent.contains(key))
+	{
+		parent[key] = json::object();
+	}
+	return parent[key];
+}
+
+Config::Settings Config::GetSettingsFromDoc()
+{
+	return GetSettings(m_Document);
+}
+
+Config::Settings Config::GetSettings(json& document)
+{
+	Settings settings;
+
+	auto& settingsArray = m_Document["settings"];
+
+	for (auto& entry : settingsArray)
+	{
+		if (entry.contains("name") && entry.contains("isActive") && entry["isActive"].get<bool>() == true)
 		{
-			m_Name = ReadStringValue(settings, "name");
-			m_Version = ReadStringValue(settings, "version");
-			LoadPaths(settings);
-			LoadSound(settings);
-			LoadGraphics(settings);
-			LoadGame(settings);
-			LoadControls(settings);
+			settings.m_Name = ReadStringValue(entry, "name");
+			settings.m_Version = ReadStringValue(entry, "version");
+			settings.m_Paths = GetPaths(entry);
+			settings.m_Sound = GetSound(entry);
+			settings.m_Graphics = GetGraphics(entry);
+			settings.m_Game = GetGame(entry);
+			settings.m_Controls = GetControls(entry);
 			break;
 		}
 	}
+	return settings;
 }
 
-void Config::LoadGame(rapidjson::GenericObject<false, rapidjson::Value>& settings)
+Config::Settings::Game Config::GetGame(const json& settings)
 {
-	if (settings.HasMember("game"))
+	Config::Settings::Game gameValues;
+	if (settings.contains("game"))
 	{
-#if defined(__linux__) || defined(__APPLE__)
-		auto game = settings["game"].GetObject();
-#else
-		auto game = settings["game"].GetObj();
-#endif
-		m_Game.m_MaxGameFps = ReadIntValue(game, "maxGameFps");
-		m_Game.m_FmvFps = ReadIntValue(game, "fmvFps");
+		const auto& game = settings["game"];
+		gameValues.m_MaxGameFps = ReadIntValue(game, "maxGameFps");
+		gameValues.m_FmvFps = ReadIntValue(game, "fmvFps");
+		gameValues.m_SkipIntro = ReadBoolValue(game, "skipIntro");
 	}
+	return gameValues;
 }
 
-void Config::LoadControls(rapidjson::GenericObject<false, rapidjson::Value>& settings)
+Config::Settings::Controls Config::GetControls(const json& settings)
 {
-	if (settings.HasMember("controls"))
+	Config::Settings::Controls controlValues;
+
+	const auto& controls = settings["controls"];
+
+	if (controls.contains("mouse"))
 	{
-#if defined(__linux__) || defined(__APPLE__)
-		auto controls = settings["controls"].GetObject();
-#else
-		auto controls = settings["controls"].GetObj();
-#endif
-
-		if (controls.HasMember("mouse"))
+		for (const auto& mouse : controls["mouse"])
 		{
-			auto mouseArray = controls["mouse"].GetArray();
-
-			for (int i = 0; i < mouseArray.Size(); i++)
+			if (mouse.contains("isActive") && mouse["isActive"].get<bool>() == true)
 			{
-#if defined(__linux__) || defined(__APPLE__)
-				auto mouse = mouseArray[i].GetObject();
-#else
-				auto mouse = mouseArray[i].GetObj();
-#endif
-				if (mouse.HasMember("isActive") && mouse["isActive"].GetBool() == true)
-				{
-					m_Controls.m_Mouse.m_InvertXAxis = ReadBoolValue(mouse, "invertXAxis");
-					m_Controls.m_Mouse.m_InvertYAxis = ReadBoolValue(mouse, "invertYAxis");
-					m_Controls.m_Mouse.m_mouseScaleX = ReadFloatValue(mouse, "mouseScaleX");
-					m_Controls.m_Mouse.m_mouseScaleY = ReadFloatValue(mouse, "mouseScaleY");
-					m_Controls.m_Mouse.m_disableLRButtonsMenuOpen = ReadBoolValue(mouse, "disableLRButtonsMenuOpen");
-					m_Controls.m_Mouse.m_spellLeft = ReadIntValue(mouse, "spellLeft");
-					m_Controls.m_Mouse.m_spellRight = ReadIntValue(mouse, "spellRight");
-					m_Controls.m_Mouse.m_map = ReadIntValue(mouse, "map");
-					m_Controls.m_Mouse.m_spellMenu = ReadIntValue(mouse, "spellMenu");
-					m_Controls.m_Mouse.m_spellMenuMark = ReadIntValue(mouse, "spellMenuMark");
-					break;
-				}
+				controlValues.m_Mouse.m_InvertXAxis = ReadBoolValue(mouse, "invertXAxis");
+				controlValues.m_Mouse.m_InvertYAxis = ReadBoolValue(mouse, "invertYAxis");
+				controlValues.m_Mouse.m_MouseScaleX = ReadFloatValue(mouse, "mouseScaleX");
+				controlValues.m_Mouse.m_MouseScaleY = ReadFloatValue(mouse, "mouseScaleY");
+				controlValues.m_Mouse.m_DisableLRButtonsMenuOpen = ReadBoolValue(mouse, "disableLRButtonsMenuOpen");
+				controlValues.m_Mouse.m_SpellLeft = ReadIntValue(mouse, "spellLeft");
+				controlValues.m_Mouse.m_SpellRight = ReadIntValue(mouse, "spellRight");
+				controlValues.m_Mouse.m_Map = ReadIntValue(mouse, "map");
+				controlValues.m_Mouse.m_SpellMenu = ReadIntValue(mouse, "spellMenu");
+				controlValues.m_Mouse.m_SpellMenuMark = ReadIntValue(mouse, "spellMenuMark");
+				break;
 			}
 		}
+	}
 
-		if (controls.HasMember("keyboard"))
+	if (controls.contains("keyboard"))
+	{
+		for (const auto& keyboard : controls["keyboard"])
 		{
-			auto keyboardArray = controls["keyboard"].GetArray();
-
-			for (int i = 0; i < keyboardArray.Size(); i++)
+			if (keyboard.contains("isActive") && keyboard["isActive"].get<bool>() == true)
 			{
-#if defined(__linux__) || defined(__APPLE__)
-				auto keyboard = keyboardArray[i].GetObject();
-#else
-				auto keyboard = keyboardArray[i].GetObj();
-#endif
-				if (keyboard.HasMember("isActive") && keyboard["isActive"].GetBool() == true)
-				{
-					 m_Controls.m_Keyboard.m_forward = ReadKeyScancode(keyboard, "forward");
-					 m_Controls.m_Keyboard.m_backwards = ReadKeyScancode(keyboard, "backwards");
-					 m_Controls.m_Keyboard.m_left = ReadKeyScancode(keyboard, "left");
-					 m_Controls.m_Keyboard.m_right = ReadKeyScancode(keyboard, "right");
-					 m_Controls.m_Keyboard.m_map = ReadKeyScancode(keyboard, "map");
-					 m_Controls.m_Keyboard.m_spellMenu = ReadKeyScancode(keyboard, "spellMenu");
-					 m_Controls.m_Keyboard.m_spellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
-					 break;
-				}
+				controlValues.m_Keyboard.m_Forward = ReadKeyScancode(keyboard, "forward");
+				controlValues.m_Keyboard.m_Backwards = ReadKeyScancode(keyboard, "backwards");
+				controlValues.m_Keyboard.m_Left = ReadKeyScancode(keyboard, "left");
+				controlValues.m_Keyboard.m_Right = ReadKeyScancode(keyboard, "right");
+				controlValues.m_Keyboard.m_Map = ReadKeyScancode(keyboard, "map");
+				controlValues.m_Keyboard.m_SpellMenu = ReadKeyScancode(keyboard, "spellMenu");
+				controlValues.m_Keyboard.m_SpellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
+				break;
 			}
 		}
+	}
 
-		if (controls.HasMember("gamePad"))
+	if (controls.contains("gamePad"))
+	{
+		for (const auto& gamePad : controls["gamePad"])
 		{
-			auto gamePadArray = controls["gamePad"].GetArray();
-
-			for (int i = 0; i < gamePadArray.Size(); i++)
+			if (gamePad.contains("isActive") && gamePad["isActive"].get<bool>() == true)
 			{
-#if defined(__linux__) || defined(__APPLE__)
-				auto gamePad = gamePadArray[i].GetObject();
-#else
-				auto gamePad = gamePadArray[i].GetObj();
-#endif
-				if (gamePad.HasMember("isActive") && gamePad["isActive"].GetBool() == true)
-				{
-					m_Controls.m_GamePad.m_Name = ReadStringValue(gamePad, "name");
-					m_Controls.m_GamePad.m_ButtonMiniMap = (uint16_t)ReadIntValue(gamePad, "buttonMiniMap");
-					m_Controls.m_GamePad.m_ButtonSpell = (uint16_t)ReadIntValue(gamePad, "buttonSpell");
-					m_Controls.m_GamePad.m_ButtonPauseMenu = (uint16_t)ReadIntValue(gamePad, "buttonPauseMenu");
-					m_Controls.m_GamePad.m_ButtonEsc = (uint16_t)ReadIntValue(gamePad, "buttonEsc");
-					m_Controls.m_GamePad.m_ButtonFireL = (uint16_t)ReadIntValue(gamePad, "buttonFireL");
-					m_Controls.m_GamePad.m_ButtonFireR = (uint16_t)ReadIntValue(gamePad, "buttonFireR");
-					m_Controls.m_GamePad.m_ButtonMenuSelect = (uint16_t)ReadIntValue(gamePad, "buttonMenuSelect");
-					m_Controls.m_GamePad.m_TriggerDeadZone = (uint16_t)ReadIntValue(gamePad, "triggerDeadZone");
-					m_Controls.m_GamePad.m_HapticEnabled = ReadBoolValue(gamePad, "hapticEnabled");
-					m_Controls.m_GamePad.m_HapticMaxGain = (uint16_t)ReadIntValue(gamePad, "hapticMaxGain");
-					m_Controls.m_GamePad.m_HatNav = (uint16_t)ReadIntValue(gamePad, "hatNav");
-					m_Controls.m_GamePad.m_HatMov = (uint16_t)ReadIntValue(gamePad, "hatMov");
-					m_Controls.m_GamePad.m_HatNavInv = ReadBoolValue(gamePad, "hatNavInv");
-					m_Controls.m_GamePad.m_HatMovInv = ReadBoolValue(gamePad, "hatMovInv");
-					m_Controls.m_GamePad.m_AxisLong = (uint16_t)ReadIntValue(gamePad, "axisLong");
-					m_Controls.m_GamePad.m_AxisLongDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongDeadZone");
-					m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongNavDeadZone");
-					m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongNavDeadZone");
-					m_Controls.m_GamePad.m_AxisLongInv = ReadBoolValue(gamePad, "axisLongInv");
-					m_Controls.m_GamePad.m_AxisTrans = (uint16_t)ReadIntValue(gamePad, "axisTrans");
-					m_Controls.m_GamePad.m_AxisTransDeadZone = (uint16_t)ReadIntValue(gamePad, "axisTransDeadZone");
-					m_Controls.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisTransNavDeadZone");
-					m_Controls.m_GamePad.m_AxisNavNs = (uint16_t)ReadIntValue(gamePad, "axisNavNs");
-					m_Controls.m_GamePad.m_AxisNavNsInv = ReadBoolValue(gamePad, "axisNavNsInv");
-					m_Controls.m_GamePad.m_AxisNavEw = (uint16_t)ReadIntValue(gamePad, "axisNavEw");
-					m_Controls.m_GamePad.m_AxisNavEwInv = ReadBoolValue(gamePad, "axisNavEwInv");
-					m_Controls.m_GamePad.m_AxisFireR = (uint16_t)ReadIntValue(gamePad, "axisFireR");
-					m_Controls.m_GamePad.m_AxisFireL = (uint16_t)ReadIntValue(gamePad, "axisFireL");
-					m_Controls.m_GamePad.m_AxisYaw = (uint16_t)ReadIntValue(gamePad, "axisYaw");
-					m_Controls.m_GamePad.m_AxisYawInv = ReadBoolValue(gamePad, "axisYawInv");
-					m_Controls.m_GamePad.m_AxisYawDeadZone = (uint16_t)ReadIntValue(gamePad, "axisYawDeadZone");
+				controlValues.m_GamePad.m_Name = ReadStringValue(gamePad, "name");
+				controlValues.m_GamePad.m_ButtonMiniMap = (uint16_t)ReadIntValue(gamePad, "buttonMiniMap");
+				controlValues.m_GamePad.m_ButtonSpell = (uint16_t)ReadIntValue(gamePad, "buttonSpell");
+				controlValues.m_GamePad.m_ButtonPauseMenu = (uint16_t)ReadIntValue(gamePad, "buttonPauseMenu");
+				controlValues.m_GamePad.m_ButtonEsc = (uint16_t)ReadIntValue(gamePad, "buttonEsc");
+				controlValues.m_GamePad.m_ButtonFireL = (uint16_t)ReadIntValue(gamePad, "buttonFireL");
+				controlValues.m_GamePad.m_ButtonFireR = (uint16_t)ReadIntValue(gamePad, "buttonFireR");
+				controlValues.m_GamePad.m_ButtonMenuSelect = (uint16_t)ReadIntValue(gamePad, "buttonMenuSelect");
+				controlValues.m_GamePad.m_TriggerDeadZone = (uint16_t)ReadIntValue(gamePad, "triggerDeadZone");
+				controlValues.m_GamePad.m_HapticEnabled = ReadBoolValue(gamePad, "hapticEnabled");
+				controlValues.m_GamePad.m_HapticMaxGain = (uint16_t)ReadIntValue(gamePad, "hapticMaxGain");
+				controlValues.m_GamePad.m_HatNav = (uint16_t)ReadIntValue(gamePad, "hatNav");
+				controlValues.m_GamePad.m_HatMov = (uint16_t)ReadIntValue(gamePad, "hatMov");
+				controlValues.m_GamePad.m_HatNavInv = ReadBoolValue(gamePad, "hatNavInv");
+				controlValues.m_GamePad.m_HatMovInv = ReadBoolValue(gamePad, "hatMovInv");
+				controlValues.m_GamePad.m_AxisLong = (uint16_t)ReadIntValue(gamePad, "axisLong");
+				controlValues.m_GamePad.m_AxisLongDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongDeadZone");
+				controlValues.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisLongNavDeadZone");
+				controlValues.m_GamePad.m_AxisLongInv = ReadBoolValue(gamePad, "axisLongInv");
+				controlValues.m_GamePad.m_AxisTrans = (uint16_t)ReadIntValue(gamePad, "axisTrans");
+				controlValues.m_GamePad.m_AxisTransDeadZone = (uint16_t)ReadIntValue(gamePad, "axisTransDeadZone");
+				controlValues.m_GamePad.m_AxisLongNavDeadZone = (uint16_t)ReadIntValue(gamePad, "axisTransNavDeadZone");
+				controlValues.m_GamePad.m_AxisNavNs = (uint16_t)ReadIntValue(gamePad, "axisNavNs");
+				controlValues.m_GamePad.m_AxisNavNsInv = ReadBoolValue(gamePad, "axisNavNsInv");
+				controlValues.m_GamePad.m_AxisNavEw = (uint16_t)ReadIntValue(gamePad, "axisNavEw");
+				controlValues.m_GamePad.m_AxisNavEwInv = ReadBoolValue(gamePad, "axisNavEwInv");
+				controlValues.m_GamePad.m_AxisFireR = (uint16_t)ReadIntValue(gamePad, "axisFireR");
+				controlValues.m_GamePad.m_AxisFireL = (uint16_t)ReadIntValue(gamePad, "axisFireL");
+				controlValues.m_GamePad.m_AxisYaw = (uint16_t)ReadIntValue(gamePad, "axisYaw");
+				controlValues.m_GamePad.m_AxisYawInv = ReadBoolValue(gamePad, "axisYawInv");
+				controlValues.m_GamePad.m_AxisYawDeadZone = (uint16_t)ReadIntValue(gamePad, "axisYawDeadZone");
 
-					if (gamePad.HasMember("axisYawSensitivity"))
+				if (gamePad.contains("axisYawSensitivity"))
+				{
+					const auto& axisYawSensitivity = gamePad["axisYawSensitivity"];
+					if (axisYawSensitivity.contains("zones"))
 					{
-#if defined(__linux__) || defined(__APPLE__)
-						auto axisYawSensitivity = gamePad["axisYawSensitivity"].GetObject();
-#else
-						auto axisYawSensitivity = gamePad["axisYawSensitivity"].GetObj();
-#endif
-						if (axisYawSensitivity.HasMember("zones"))
+						for (const auto& zone : axisYawSensitivity["zones"])
 						{
-							auto zonesArray = axisYawSensitivity["zones"].GetArray();
-
-							for (int z = 0; z < zonesArray.Size(); z++) // Uses SizeType instead of size_t
+							if (zone.contains("start") && zone.contains("end") && zone.contains("factor"))
 							{
-#if defined(__linux__) || defined(__APPLE__)
-								auto zone = zonesArray[z].GetObject();
-#else
-								auto zone = zonesArray[z].GetObj();
-#endif
-								if (zone.HasMember("start") && zone.HasMember("end") && zone.HasMember("factor"))
-								{
-									m_Controls.m_GamePad.m_AxisYawSensitivity.push_back(Maths::Zone{ (uint16_t)zone["start"].GetInt(), (uint16_t)zone["end"].GetInt(), zone["factor"].GetDouble() });
-								}
+								controlValues.m_GamePad.m_AxisYawSensitivity.push_back(Maths::Zone{
+									(uint16_t)zone["start"].get<int>(),
+									(uint16_t)zone["end"].get<int>(),
+									zone["factor"].get<double>()
+									});
 							}
 						}
 					}
+				}
 
-					m_Controls.m_GamePad.m_AxisPitch = (uint16_t)ReadIntValue(gamePad, "axisPitch");
-					m_Controls.m_GamePad.m_AxisPitchInv = ReadBoolValue(gamePad, "axisPitchInv");
-					m_Controls.m_GamePad.m_AxisPitchDeadZone = (uint16_t)ReadIntValue(gamePad, "axisPitchDeadZone");
+				controlValues.m_GamePad.m_AxisPitch = (uint16_t)ReadIntValue(gamePad, "axisPitch");
+				controlValues.m_GamePad.m_AxisPitchInv = ReadBoolValue(gamePad, "axisPitchInv");
+				controlValues.m_GamePad.m_AxisPitchDeadZone = (uint16_t)ReadIntValue(gamePad, "axisPitchDeadZone");
 
-					if (gamePad.HasMember("axisPitchSensitivity"))
+				if (gamePad.contains("axisPitchSensitivity"))
+				{
+					const auto& axisPitchSensitivity = gamePad["axisPitchSensitivity"];
+					if (axisPitchSensitivity.contains("zones"))
 					{
-#if defined(__linux__) || defined(__APPLE__)
-						auto axisPitchSensitivity = gamePad["axisPitchSensitivity"].GetObject();
-#else
-						auto axisPitchSensitivity = gamePad["axisPitchSensitivity"].GetObj();
-#endif
-						if (axisPitchSensitivity.HasMember("zones"))
+						for (const auto& zone : axisPitchSensitivity["zones"])
 						{
-							auto zonesArray = axisPitchSensitivity["zones"].GetArray();
-
-							for (int z = 0; z < zonesArray.Size(); z++) // Uses SizeType instead of size_t
+							if (zone.contains("start") && zone.contains("end") && zone.contains("factor"))
 							{
-#if defined(__linux__) || defined(__APPLE__)
-								auto zone = zonesArray[z].GetObject();
-#else
-								auto zone = zonesArray[z].GetObj();
-#endif
-								if (zone.HasMember("start") && zone.HasMember("end") && zone.HasMember("factor"))
-								{
-									m_Controls.m_GamePad.m_AxisPitchSensitivity.push_back(Maths::Zone{ (uint16_t)zone["start"].GetInt(), (uint16_t)zone["end"].GetInt(), zone["factor"].GetDouble() });
-								}
+								controlValues.m_GamePad.m_AxisPitchSensitivity.push_back(Maths::Zone{
+									(uint16_t)zone["start"].get<int>(),
+									(uint16_t)zone["end"].get<int>(),
+									zone["factor"].get<double>()
+									});
 							}
 						}
 					}
-					break;
 				}
+				break;
 			}
 		}
 	}
+	return controlValues;
 }
 
-void Config::LoadGraphics(rapidjson::GenericObject<false, rapidjson::Value>& settings)
+Config::Settings::Graphics Config::GetGraphics(const json& settings)
 {
-	if (settings.HasMember("graphics"))
-	{
-#if defined(__linux__) || defined(__APPLE__)
-		auto graphics = settings["graphics"].GetObject();
-#else
-		auto graphics = settings["graphics"].GetObj();
-#endif
-		m_Graphics.m_DisplayIndex = ReadIntValue(graphics, "displayIndex");
-		m_Graphics.m_WindowResWidth = ReadIntValue(graphics, "windowResWidth");
-		m_Graphics.m_WindowResHeight = ReadIntValue(graphics, "windowResHeight");
-		m_Graphics.m_MaintainAspectRatio = ReadBoolValue(graphics, "maintainAspectRatio");
-		m_Graphics.m_StartWindowed = ReadBoolValue(graphics, "startWindowed");
+	Config::Settings::Graphics graphicsValues;
 
-		LoadGameDetail(graphics);
-		LoadThreading(graphics);
+	if (settings.contains("graphics"))
+	{
+		const auto& graphics = settings["graphics"];
+		graphicsValues.m_DisplayIndex = ReadIntValue(graphics, "displayIndex");
+		graphicsValues.m_WindowResWidth = ReadIntValue(graphics, "windowResWidth");
+		graphicsValues.m_WindowResHeight = ReadIntValue(graphics, "windowResHeight");
+		graphicsValues.m_MaintainAspectRatio = ReadBoolValue(graphics, "maintainAspectRatio");
+		graphicsValues.m_StartWindowed = ReadBoolValue(graphics, "startWindowed");
+
+		graphicsValues.m_GameDetail = GetGameDetail(graphics);
+		graphicsValues.m_Threading = GetThreading(graphics);
 	}
+	return graphicsValues;
 }
 
-void Config::LoadGameDetail(rapidjson::GenericObject<false, rapidjson::Value>& graphics)
+Config::Settings::GameDetail Config::GetGameDetail(const json& graphics)
 {
-	if (graphics.HasMember("gameDetail"))
+	Config::Settings::GameDetail gameDetailValues;
+
+	if (graphics.contains("gameDetail"))
 	{
-#if defined(__linux__) || defined(__APPLE__)
-		auto gameDetail = graphics["gameDetail"].GetObject();
-#else
-		auto gameDetail = graphics["gameDetail"].GetObj();
-#endif
-		m_Graphics.m_GameDetail.m_GameResWidth = ReadIntValue(gameDetail, "gameResWidth");
-		m_Graphics.m_GameDetail.m_GameResHeight = ReadIntValue(gameDetail, "gameResHeight");
-		m_Graphics.m_GameDetail.m_GameUiScale = ReadIntValue(gameDetail, "gameUiScale");
-		m_Graphics.m_GameDetail.m_UseHighResGraphics = ReadBoolValue(gameDetail, "useHighResGraphics");
-		m_Graphics.m_GameDetail.m_HighResGraphicsFolder = ReadStringValue(gameDetail, "highResGraphicsFolder");
-		m_Graphics.m_GameDetail.m_UseFixedMenuGraphics = ReadBoolValue(gameDetail, "useFixedMenuGraphics");
-		m_Graphics.m_GameDetail.m_FixedMenuGraphicsFolder = ReadStringValue(gameDetail, "fixedMenuGraphicsFolder");
-		m_Graphics.m_GameDetail.m_UseExtendedFonts = ReadBoolValue(gameDetail, "useExtendedFonts");
-		m_Graphics.m_GameDetail.m_ExtendedFontsFolder = ReadStringValue(gameDetail, "extendedFontsFolder");
-		m_Graphics.m_GameDetail.m_Sky = ReadBoolValue(gameDetail, "sky");
-		m_Graphics.m_GameDetail.m_Reflections = ReadBoolValue(gameDetail, "reflections");
-		m_Graphics.m_GameDetail.m_DynamicLighting = ReadBoolValue(gameDetail, "dynamicLighting");
-		m_Graphics.m_GameDetail.m_ViewDistanceScale = ReadIntValue(gameDetail, "viewDistanceScale");
+		const auto& gameDetail = graphics["gameDetail"];
+		gameDetailValues.m_GameResWidth = ReadIntValue(gameDetail, "gameResWidth");
+		gameDetailValues.m_GameResHeight = ReadIntValue(gameDetail, "gameResHeight");
+		gameDetailValues.m_GameUiScale = ReadIntValue(gameDetail, "gameUiScale");
+		gameDetailValues.m_UseHighResGraphics = ReadBoolValue(gameDetail, "useHighResGraphics");
+		gameDetailValues.m_HighResGraphicsFolder = ReadStringValue(gameDetail, "highResGraphicsFolder");
+		gameDetailValues.m_UseFixedMenuGraphics = ReadBoolValue(gameDetail, "useFixedMenuGraphics");
+		gameDetailValues.m_FixedMenuGraphicsFolder = ReadStringValue(gameDetail, "fixedMenuGraphicsFolder");
+		gameDetailValues.m_UseExtendedFonts = ReadBoolValue(gameDetail, "useExtendedFonts");
+		gameDetailValues.m_ExtendedFontsFolder = ReadStringValue(gameDetail, "extendedFontsFolder");
+		gameDetailValues.m_Sky = ReadBoolValue(gameDetail, "sky");
+		gameDetailValues.m_Reflections = ReadBoolValue(gameDetail, "reflections");
+		gameDetailValues.m_DynamicLighting = ReadBoolValue(gameDetail, "dynamicLighting");
+		gameDetailValues.m_ViewDistanceScale = ReadIntValue(gameDetail, "viewDistanceScale");
 	}
+	return gameDetailValues;
 }
 
-void Config::LoadThreading(rapidjson::GenericObject<false, rapidjson::Value>& graphics)
+Config::Settings::Threading Config::GetThreading(const json& graphics)
 {
-#if defined(__linux__) || defined(__APPLE__)
-	auto threading = graphics["threading"].GetObject();
-#else
-	auto threading = graphics["threading"].GetObj();
-#endif
-	if (graphics.HasMember("threading"))
+	Config::Settings::Threading threadingValues;
+	if (graphics.contains("threading"))
 	{
-		m_Graphics.m_Threading.m_isActive = threading["isActive"].GetBool();
-		if (m_Graphics.m_Threading.m_isActive)
-		{
-			m_Graphics.m_Threading.m_SizePercentToThreadRender = ReadFloatValue(threading, "sizePercentToThreadRender");
-			m_Graphics.m_Threading.m_NumberOfRenderThreads = (uint8_t)ReadIntValue(threading,"numberOfRenderThreads");
-			m_Graphics.m_Threading.m_AssignToSpecificCores = ReadBoolValue(threading, "assignToSpecificCores");
-		}
+		const auto& threading = graphics["threading"];
+		threadingValues.m_IsActive = threading.value("isActive", false);
+		threadingValues.m_SizePercentToThreadRender = ReadFloatValue(threading, "sizePercentToThreadRender");
+		threadingValues.m_NumberOfRenderThreads = (uint8_t)ReadIntValue(threading, "numberOfRenderThreads");
+		threadingValues.m_AssignToSpecificCores = ReadBoolValue(threading, "assignToSpecificCores");
 	}
+	return threadingValues;
 }
 
-void Config::LoadSound(rapidjson::GenericObject<false, rapidjson::Value>& settings)
+Config::Settings::Sound Config::GetSound(const json& settings)
 {
-	if (settings.HasMember("sound"))
+	Config::Settings::Sound soundValues;
+	if (settings.contains("sound"))
 	{
-#if defined(__linux__) || defined(__APPLE__)
-		auto sound = settings["sound"].GetObject();
-#else
-		auto sound = settings["sound"].GetObj();
-#endif
-		m_Sound.m_HqSound = ReadBoolValue(sound, "hqSound");
-		m_Sound.m_OggMusic = ReadBoolValue(sound, "oggMusic");
-		m_Sound.m_OggFolder = ReadStringValue(sound, "oggFolder");
-		m_Sound.m_OggMusicAlternative = ReadBoolValue(sound, "oggMusicAlternative");
-		m_Sound.m_FixSpeedSound = ReadBoolValue(sound, "fixSpeedSound");
-		m_Sound.m_AutoShowObjectivesForForeignLanguages = ReadBoolValue(sound, "autoShowObjectivesForForeignLanguages");
-		m_Sound.m_MaxSimultaniousSounds = ReadIntValue(sound, "maxSimultaniousSounds");
-		m_Sound.m_SpeechFolder = ReadStringValue(sound, "speechFolder");
+		const auto& sound = settings["sound"];
+		soundValues.m_HqSound = ReadBoolValue(sound, "hqSound");
+		soundValues.m_OggMusic = ReadBoolValue(sound, "oggMusic");
+		soundValues.m_OggFolder = ReadStringValue(sound, "oggFolder");
+		soundValues.m_OggMusicAlternative = ReadBoolValue(sound, "oggMusicAlternative");
+		soundValues.m_FixSpeedSound = ReadBoolValue(sound, "fixSpeedSound");
+		soundValues.m_AutoShowObjectivesForForeignLanguages = ReadBoolValue(sound, "autoShowObjectivesForForeignLanguages");
+		soundValues.m_MaxSimultaniousSounds = ReadIntValue(sound, "maxSimultaniousSounds");
+		soundValues.m_SpeechFolder = ReadStringValue(sound, "speechFolder");
 	}
+	return soundValues;
 }
 
-void Config::LoadPaths(rapidjson::GenericObject<false, rapidjson::Value>& settings)
+Config::Settings::Paths Config::GetPaths(const json& settings)
 {
-	if (settings.HasMember("paths"))
+	Config::Settings::Paths pathValues;
+	if (settings.contains("paths"))
 	{
-#if defined(__linux__) || defined(__APPLE__)
-		auto paths = settings["paths"].GetObject();
-#else
-		auto paths = settings["paths"].GetObj();
-#endif
-		m_Paths.m_GameFolder = ReadStringValue(paths, "gameFolder");
-		m_Paths.m_CdFolder = ReadStringValue(paths, "cdFolder");
+		const auto& paths = settings["paths"];
+		pathValues.m_GameFolder = ReadStringValue(paths, "gameFolder");
+		pathValues.m_CdFolder = ReadStringValue(paths, "cdFolder");
 	}
+	return pathValues;
 }
 
 std::string Config::ReadFileToString(std::string fileName)
 {
-	std::string json;
+	std::string jsonStr;
 
 	try
 	{
@@ -384,13 +402,206 @@ std::string Config::ReadFileToString(std::string fileName)
 		std::string line;
 		while (std::getline(is, line))
 		{
-			json += line;
-			json.push_back('\n');
+			jsonStr += line;
+			jsonStr.push_back('\n');
 		}
 	}
 	catch (const std::exception& e)
 	{
 		std::cout << "Error Stopping Worker Thread: " << e.what();
 	}
-	return json;
-};
+	return jsonStr;
+}
+
+void Config::SavePathsToDoc(Config::Settings::Paths pathSettings)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& paths = GetOrCreate(settingsEntry, "paths");
+	SetString(paths, "gameFolder", pathSettings.m_GameFolder);
+	SetString(paths, "cdFolder", pathSettings.m_CdFolder);
+}
+
+void Config::SaveSoundToDoc(Config::Settings::Sound soundSettings)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& sound = GetOrCreate(settingsEntry, "sound");
+	SetBool(sound, "hqSound", soundSettings.m_HqSound);
+	SetBool(sound, "oggMusic", soundSettings.m_OggMusic);
+	SetString(sound, "oggFolder", soundSettings.m_OggFolder);
+	SetBool(sound, "oggMusicAlternative", soundSettings.m_OggMusicAlternative);
+	SetBool(sound, "fixSpeedSound", soundSettings.m_FixSpeedSound);
+	SetBool(sound, "autoShowObjectivesForForeignLanguages", soundSettings.m_AutoShowObjectivesForForeignLanguages);
+	SetInt(sound, "maxSimultaniousSounds", soundSettings.m_MaxSimultaniousSounds);
+	SetString(sound, "speechFolder", soundSettings.m_SpeechFolder);
+}
+
+void Config::SaveGraphicsToDoc(Config::Settings::Graphics graphics)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& gfx = GetOrCreate(settingsEntry, "graphics");
+	SetInt(gfx, "displayIndex", graphics.m_DisplayIndex);
+	SetInt(gfx, "windowResWidth", graphics.m_WindowResWidth);
+	SetInt(gfx, "windowResHeight", graphics.m_WindowResHeight);
+	SetBool(gfx, "maintainAspectRatio", graphics.m_MaintainAspectRatio);
+	SetBool(gfx, "startWindowed", graphics.m_StartWindowed);
+	SaveGameDetailToDoc(graphics.m_GameDetail);
+	SaveThreadingToDoc(graphics.m_Threading);
+}
+
+void Config::SaveGameDetailToDoc(Config::Settings::GameDetail gameDetail)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& gfx = GetOrCreate(settingsEntry, "graphics");
+	auto& gd = GetOrCreate(gfx, "gameDetail");
+	SetInt(gd, "gameResWidth", gameDetail.m_GameResWidth);
+	SetInt(gd, "gameResHeight", gameDetail.m_GameResHeight);
+	SetInt(gd, "gameUiScale", gameDetail.m_GameUiScale);
+	SetBool(gd, "useHighResGraphics", gameDetail.m_UseHighResGraphics);
+	SetString(gd, "highResGraphicsFolder", gameDetail.m_HighResGraphicsFolder);
+	SetBool(gd, "useFixedMenuGraphics", gameDetail.m_UseFixedMenuGraphics);
+	SetString(gd, "fixedMenuGraphicsFolder", gameDetail.m_FixedMenuGraphicsFolder);
+	SetBool(gd, "useExtendedFonts", gameDetail.m_UseExtendedFonts);
+	SetString(gd, "extendedFontsFolder", gameDetail.m_ExtendedFontsFolder);
+	SetBool(gd, "sky", gameDetail.m_Sky);
+	SetBool(gd, "reflections", gameDetail.m_Reflections);
+	SetBool(gd, "dynamicLighting", gameDetail.m_DynamicLighting);
+	SetInt(gd, "viewDistanceScale", gameDetail.m_ViewDistanceScale);
+}
+
+void Config::SaveThreadingToDoc(Config::Settings::Threading threading)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& gfx = GetOrCreate(settingsEntry, "graphics");
+	auto& t = GetOrCreate(gfx, "threading");
+	SetBool(t, "isActive", threading.m_IsActive);
+	SetFloat(t, "sizePercentToThreadRender", threading.m_SizePercentToThreadRender);
+	SetInt(t, "numberOfRenderThreads", threading.m_NumberOfRenderThreads);
+	SetBool(t, "assignToSpecificCores", threading.m_AssignToSpecificCores);
+}
+
+void Config::SaveGameToDoc(Config::Settings::Game gameSettings)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& game = GetOrCreate(settingsEntry, "game");
+	SetInt(game, "maxGameFps", gameSettings.m_MaxGameFps);
+	SetInt(game, "fmvFps", gameSettings.m_FmvFps);
+	SetBool(game, "skipIntro", gameSettings.m_SkipIntro);
+}
+
+void Config::SaveControlsToDoc(Config::Settings::Controls controlSettings)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& controls = GetOrCreate(settingsEntry, "controls");
+
+	if (!controls.contains("mouse"))
+		controls["mouse"] = json::array({ json::object() });
+	auto& mouse = controls["mouse"][0];
+	SetBool(mouse, "isActive", true);
+	SetBool(mouse, "invertXAxis", controlSettings.m_Mouse.m_InvertXAxis);
+	SetBool(mouse, "invertYAxis", controlSettings.m_Mouse.m_InvertYAxis);
+	SetFloat(mouse, "mouseScaleX", controlSettings.m_Mouse.m_MouseScaleX);
+	SetFloat(mouse, "mouseScaleY", controlSettings.m_Mouse.m_MouseScaleY);
+	SetBool(mouse, "disableLRButtonsMenuOpen", controlSettings.m_Mouse.m_DisableLRButtonsMenuOpen);
+	SetInt(mouse, "spellLeft", controlSettings.m_Mouse.m_SpellLeft);
+	SetInt(mouse, "spellRight", controlSettings.m_Mouse.m_SpellRight);
+	SetInt(mouse, "map", controlSettings.m_Mouse.m_Map);
+	SetInt(mouse, "spellMenu", controlSettings.m_Mouse.m_SpellMenu);
+	SetInt(mouse, "spellMenuMark", controlSettings.m_Mouse.m_SpellMenuMark);
+
+	if (!controls.contains("keyboard"))
+		controls["keyboard"] = json::array({ json::object() });
+	auto& keyboard = controls["keyboard"][0];
+	SetBool(keyboard, "isActive", true);
+	SetString(keyboard, "forward", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Forward));
+	SetString(keyboard, "backwards", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Backwards));
+	SetString(keyboard, "left", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Left));
+	SetString(keyboard, "right", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Right));
+	SetString(keyboard, "map", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Map));
+	SetString(keyboard, "spellMenu", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenu));
+	SetString(keyboard, "spellMenuMark", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenuMark));
+
+	if (!controls.contains("gamePad"))
+		controls["gamePad"] = json::array({ json::object() });
+	auto& gamePad = controls["gamePad"][0];
+	SetBool(gamePad, "isActive", true);
+	SetInt(gamePad, "controllerId", controlSettings.m_GamePad.m_ControllerId);
+	SetInt(gamePad, "buttonMiniMap", controlSettings.m_GamePad.m_ButtonMiniMap);
+	SetInt(gamePad, "buttonSpell", controlSettings.m_GamePad.m_ButtonSpell);
+	SetInt(gamePad, "buttonPauseMenu", controlSettings.m_GamePad.m_ButtonPauseMenu);
+	SetInt(gamePad, "buttonEsc", controlSettings.m_GamePad.m_ButtonEsc);
+	SetInt(gamePad, "buttonFireL", controlSettings.m_GamePad.m_ButtonFireL);
+	SetInt(gamePad, "buttonFireR", controlSettings.m_GamePad.m_ButtonFireR);
+	SetInt(gamePad, "buttonMenuSelect", controlSettings.m_GamePad.m_ButtonMenuSelect);
+	SetInt(gamePad, "triggerDeadZone", controlSettings.m_GamePad.m_TriggerDeadZone);
+	SetBool(gamePad, "hapticEnabled", controlSettings.m_GamePad.m_HapticEnabled);
+	SetInt(gamePad, "hapticMaxGain", controlSettings.m_GamePad.m_HapticMaxGain);
+	SetInt(gamePad, "hatNav", controlSettings.m_GamePad.m_HatNav);
+	SetInt(gamePad, "hatMov", controlSettings.m_GamePad.m_HatMov);
+	SetBool(gamePad, "hatNavInv", controlSettings.m_GamePad.m_HatNavInv);
+	SetBool(gamePad, "hatMovInv", controlSettings.m_GamePad.m_HatMovInv);
+	SetInt(gamePad, "axisLong", controlSettings.m_GamePad.m_AxisLong);
+	SetInt(gamePad, "axisLongDeadZone", controlSettings.m_GamePad.m_AxisLongDeadZone);
+	SetInt(gamePad, "axisLongNavDeadZone", controlSettings.m_GamePad.m_AxisLongNavDeadZone);
+	SetBool(gamePad, "axisLongInv", controlSettings.m_GamePad.m_AxisLongInv);
+	SetInt(gamePad, "axisTrans", controlSettings.m_GamePad.m_AxisTrans);
+	SetBool(gamePad, "axisTransInv", controlSettings.m_GamePad.m_AxisTransInv);
+	SetInt(gamePad, "axisTransDeadZone", controlSettings.m_GamePad.m_AxisTransDeadZone);
+	SetInt(gamePad, "axisTransNavDeadZone", controlSettings.m_GamePad.m_AxisTransNavDeadZone);
+	SetInt(gamePad, "axisNavNs", controlSettings.m_GamePad.m_AxisNavNs);
+	SetBool(gamePad, "axisNavNsInv", controlSettings.m_GamePad.m_AxisNavNsInv);
+	SetInt(gamePad, "axisNavEw", controlSettings.m_GamePad.m_AxisNavEw);
+	SetBool(gamePad, "axisNavEwInv", controlSettings.m_GamePad.m_AxisNavEwInv);
+	SetInt(gamePad, "axisFireR", controlSettings.m_GamePad.m_AxisFireR);
+	SetInt(gamePad, "axisFireL", controlSettings.m_GamePad.m_AxisFireL);
+	SetInt(gamePad, "axisYaw", controlSettings.m_GamePad.m_AxisYaw);
+	SetBool(gamePad, "axisYawInv", controlSettings.m_GamePad.m_AxisYawInv);
+	SetInt(gamePad, "axisYawDeadZone", controlSettings.m_GamePad.m_AxisYawDeadZone);
+	SetInt(gamePad, "axisPitch", controlSettings.m_GamePad.m_AxisPitch);
+	SetBool(gamePad, "axisPitchInv", controlSettings.m_GamePad.m_AxisPitchInv);
+	SetInt(gamePad, "axisPitchDeadZone", controlSettings.m_GamePad.m_AxisPitchDeadZone);
+	SetZones(gamePad, "axisYawSensitivity", controlSettings.m_GamePad.m_AxisYawSensitivity);
+	SetZones(gamePad, "axisPitchSensitivity", controlSettings.m_GamePad.m_AxisPitchSensitivity);
+}
+
+void Config::SaveSettings(json& document, Settings settings)
+{
+	if (!document.contains("settings")) return;
+
+	for (auto& entry : document["settings"])
+	{
+		if (entry.contains("isActive") && entry["isActive"].get<bool>())
+		{
+			SavePathsToDoc(settings.m_Paths);
+			SaveGameToDoc(settings.m_Game);
+			SaveControlsToDoc(settings.m_Controls);
+			break;
+		}
+	}
+}
+
+json& Config::GetOrCreateActiveSettingsEntry()
+{
+	auto& settingsArray = m_Document["settings"];
+
+	for (auto& entry : settingsArray)
+	{
+		if (entry.contains("name") && entry.contains("isActive") && entry["isActive"].get<bool>() == true)
+		{
+			return entry;
+		}
+	}
+}
+
+bool Config::SaveToFile()
+{
+	return SaveToFile(m_FileName);
+}
+
+bool Config::SaveToFile(std::string fileName)
+{
+	std::ofstream f(fileName);
+	if (!f.is_open()) return false;
+
+	f << m_Document.dump(1, '\t');
+	return true;
+}

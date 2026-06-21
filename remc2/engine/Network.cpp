@@ -1,11 +1,13 @@
 #include "Network.h"
 
+//#define PRINT_UPDATE_CONNECTIONS
+
 //char x_BYTE_E126D = 0; // weak
 char x_BYTE_E1274 = 0; // weak
 char x_BYTE_E1275 = 0; // weak
-int16_t IndexInNetwork_E1276 = -1; // weak
-__int16 countConnected_E1278 = 0; // weak
-__int16 maxPlayers_E127A = 8; // weak
+int16_t IndexInNetwork_E1276 = -1; // 0x2B2276
+__int16 countConnected_E1278 = 0; // 0x2B2278
+__int16 maxPlayers_E127A = 8; // 0x2B227A
 uint8_t* networkBuffer_E127E = nullptr; // weak
 uint8_t* paket_E1282 = nullptr; // weak
 uint8_t* packetArray_E1286[8] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr }; // idb
@@ -13,7 +15,7 @@ uint8_t connected_E12A6 = 0; // weak
 int16_t IndexInNetwork2_E12A8 = 0; // weak
 myNCB* mainConnection_E12AA = nullptr; // weak //array size 66 //0x2b22aa
 
-myNCB* connection_E12AE[8] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+myNCB* connection_E12AE[8] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };//0x2B22AE
 char connected_E12CE[8] = { 0, 0, 0, 0, 0, 0, 0, 0 }; // idb
 
 
@@ -26,7 +28,7 @@ bool Iam_client = false;
 //int ClientMPort = 3491;
 int NetworkPort = 15001;
 int ServerPort = -1;
-char serverIP[256] = "000.000.000.000";
+char serverIP[256] = "127.0.0.1";
 
 type_str_word_26 str_WORD_E1F70 = { 430, 78, 0, 0, 80, 0, 413, 0, 0 }; // idb // for scoll dialog drawing
 
@@ -54,20 +56,15 @@ TColor str_BYTE_E1711[2][18] = { {//players Palette colors is halfed
 //----- (00072D04) --------------------------------------------------------
 void NetworkDisallocation_72D04()
 {
-	signed int i; // [esp+0h] [ebp-8h]
-	signed int j; // [esp+4h] [ebp-4h]
-
 	if (x_BYTE_E1274)
 	{
-		for (i = 0; maxPlayers_E127A > i; i++)
+		for (int i = 0; maxPlayers_E127A > i; i++)
 		{
-			while (connection_E12AE[i]->ncb_cmd_cplt_49 == 0xff)
-				/*fake_network_interupt(connection_E12AE[i])*/;
+			while (connection_E12AE[i]->ncb_cmd_cplt_49 == 0xff);
 		}
-		while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff)
-			/*fake_network_interupt(mainConnection_E12AA)*/;
+		while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff);
 		FreeMem_83E80((uint8_t*)mainConnection_E12AA);
-		for (j = 0; j < 8; j++)
+		for (int j = 0; j < 8; j++)
 		{
 			FreeMem_83E80((uint8_t*)connection_E12AE[j]);
 			FreeMem_83E80((uint8_t*)packetArray_E1286[j]);
@@ -81,7 +78,7 @@ void NetworkDisallocation_72D04()
 //----- (00072DDE) --------------------------------------------------------
 uint8 NetworkTestAddName_72DDE(/*signed __int16* a1,*/ int compindex)//253dde
 {//253de2
-	uint8 result; // [esp+14h] [ebp-8h]
+	uint8 result;
 	sprintf(printbuffer, "%s%d", nethID, compindex);
 	do
 	{//253e06
@@ -93,46 +90,38 @@ uint8 NetworkTestAddName_72DDE(/*signed __int16* a1,*/ int compindex)//253dde
 }
 
 //----- (00072E70) --------------------------------------------------------
-int sub_72E70(int  /*a1*/, int  /*a2*/, signed __int16* a3)//253e70
+int sub_72E70(signed __int16* a3)//253e70
 {
-	int v3; // edx
-	char v5; // [esp+0h] [ebp-30h]
-	char v6[8]; // [esp+18h] [ebp-18h]
-	//int v7; // [esp+20h] [ebp-10h]
-	int i; // [esp+28h] [ebp-8h]
-	int v9; // [esp+2Ch] [ebp-4h]
-
-	for (i = 0; maxPlayers_E127A > i; i++)
+	char connected[8];
+	for (int i = 0; maxPlayers_E127A > i; i++)
 	{
 		if (IndexInNetwork_E1276 != i)
 			NetworkCall_74809(i);
 	}
-	memset(v6, 0, 8);
-	v9 = 0;
-	while (v9 < 2)
+	memset(connected, 0, 8);
+	int result = 0;
+	while (result < 2)
 	{
-		v3 = v6[IndexInNetwork_E1276];
-		if (v3 == maxPlayers_E127A - 1 || connected_E12A6)
+		if (connected[IndexInNetwork_E1276] == maxPlayers_E127A - 1 || connected_E12A6)
 			break;
-		for (i = 0; maxPlayers_E127A > i; i++)
+		for (int i = 0; maxPlayers_E127A > i; i++)
 		{
 			if (IndexInNetwork_E1276 != i)
 			{
-				v5 = connection_E12AE[i]->ncb_cmd_cplt_49;
-				if (v5)
+				if (connection_E12AE[i]->ncb_cmd_cplt_49)
 				{
-					if (v5 == 0xff)
+					if (connection_E12AE[i]->ncb_cmd_cplt_49 == 0xff)
 					{
-						if (v9)
+						if (result)
 							NetworkCancel_748F7(i);
 					}
-					else if (!v6[i])
+					else if (!connected[i])
 					{
-						++v6[IndexInNetwork_E1276];
-						v6[i] = 1;
+						connected[IndexInNetwork_E1276]++;
+						connected[i] = 1;
 					}
 				}
-				else if (++v9 == 1)
+				else if (++result == 1)
 				{
 					IndexInNetwork2_E12A8 = i;
 				}
@@ -140,8 +129,7 @@ int sub_72E70(int  /*a1*/, int  /*a2*/, signed __int16* a3)//253e70
 		}
 		WaitToConnect_7C230();
 	}
-	//v7 = v9;
-	return v9;
+	return result;
 }
 
 //----- (00072FBB) --------------------------------------------------------
@@ -173,9 +161,9 @@ void NetworkListenAll_7302E()//25402e
 //----- (0007308F) --------------------------------------------------------
 int NetworkInitConnection_7308F(char* a2, __int16 a3)//25408f
 {
-	uint8 addNameResult; // [esp+4h] [ebp-24h]
-	int i; // [esp+1Ch] [ebp-Ch]
-	int result; // [esp+20h] [ebp-8h]
+	uint8 addNameResult;
+	int i;
+	int result;
 	//254093
 	if (!x_BYTE_E1274 || x_BYTE_E1275)
 		return -1;
@@ -190,12 +178,11 @@ int NetworkInitConnection_7308F(char* a2, __int16 a3)//25408f
 		connected_E12CE[i] = 0;
 	for (i = 0; maxPlayers_E127A > i; i++)
 	{
-		while (connection_E12AE[i]->ncb_cmd_cplt_49 == 0xff)
-			/*fake_network_interupt(connection_E12AE[i])*/;
+		while (connection_E12AE[i]->ncb_cmd_cplt_49 == 0xff);
 	}
-	while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff)//AddNameNotSet?
-		/*fake_network_interupt(mainConnection_E12AA)*/;
+	while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff);//AddNameNotSet?
 
+	/*
 	//wait for Server AddName
 	if (!Iam_server)
 	{
@@ -203,13 +190,19 @@ int NetworkInitConnection_7308F(char* a2, __int16 a3)//25408f
 		snprintf(prbuffer, sizeof(prbuffer), "WAITING FOR SERVER: %s", serverIP);
 		VGA_Draw_string(prbuffer);
 		bool receiveServerAddName = false;
-		while (!receiveServerAddName) {
-			receiveServerAddName = ReceiveServerAddName();
+		while (!ReceiveServerAddName()) {
 			mydelay(1000);
 			VGA_Draw_string((char*)".");
+
+			//added for network
+			if (locNetworkClass) {
+				locNetworkClass->UpdateNetworkSingleThread();
+			}
+			//added for network
 		}
 	}
 	//wait for Server AddName
+	*/
 
 	i = 0;
 	IndexInNetwork_E1276 = -1;
@@ -528,6 +521,7 @@ char fixBuffer[60000];
 //----- (0007438A) --------------------------------------------------------
 void ReceiveSendAll_7438A(uint8_t* buffer, unsigned int size)//25538a
 {
+	RemoveDeadClients();
 	if (x_BYTE_E1274)
 	{
 		if (IndexInNetwork_E1276 == IndexInNetwork2_E12A8)
@@ -561,11 +555,10 @@ void ReceiveSendAll_7438A(uint8_t* buffer, unsigned int size)//25538a
 			NetworkSendMessage2_74006(IndexInNetwork2_E12A8, (buffer + size * IndexInNetwork_E1276), size);
 			timeState(true, "After Send, Before Receive");//debug
 			NetworkReceiveMessage2_7404E(IndexInNetwork2_E12A8, buffer, size * countConnected_E1278);
-			//debug
+			//debug			
 			if (memcmp(&fixBuffer[IndexInNetwork_E1276 * size], (char*)&buffer[IndexInNetwork_E1276 * size], size))
 			{
-				//memcpy(buffer, fixBuffer, size * countConnected_E1278);
-				//allert_error();
+				memcpy(buffer, fixBuffer, size * countConnected_E1278);
 			}
 			//debug
 			timeState(true, "After Receive");//debug
@@ -592,7 +585,7 @@ void NetworkCancelAll_7449C()//25549c
 //----- (00074515) --------------------------------------------------------
 int16_t GetIndexNetwork2_74515()//255515
 {
-	return (unsigned __int16)IndexInNetwork2_E12A8;
+	return IndexInNetwork2_E12A8;
 }
 
 //----- (00074536) --------------------------------------------------------
@@ -606,18 +599,11 @@ const int maxSizeOfPacket = 2048 * 30;//original 2048
 //----- (00074556) --------------------------------------------------------
 uint8_t NetworkAllocation_74556()//255556 push ebp 355250
 {
-	signed int v2; // [esp+4h] [ebp-8h]
-	signed int i; // [esp+8h] [ebp-4h]
-	signed int j; // [esp+8h] [ebp-4h]
-
-	v2 = 1;
+	bool allocation_ok = true;
 	if (!x_BYTE_E1274 && !mainConnection_E12AA)
 	{
 		mainConnection_E12AA = (myNCB*)Malloc_83D70(sizeof(myNCB));
 		memset(mainConnection_E12AA, 0, sizeof(myNCB));
-		mainConnection_E12AA->ncb_command_0 = 0x7f;//?
-		mainConnection_E12AA->ncb_retcode_1 = 0x03;
-		mainConnection_E12AA->ncb_cmd_cplt_49 = 0x03;
 		if (mainConnection_E12AA)
 		{
 			if (NetworkInit_74A11() == -1)//255a11
@@ -630,20 +616,21 @@ uint8_t NetworkAllocation_74556()//255556 push ebp 355250
 				memset(paket_E1282, 0, maxSizeOfPacket);
 				if (paket_E1282)
 				{
+					int i;
 					for (i = 0; i < 8; i++)
 					{
 						packetArray_E1286[i] = (uint8_t*)Malloc_83D70(maxSizeOfPacket);
 						memset(packetArray_E1286[i], 0, maxSizeOfPacket);
 						if (!packetArray_E1286[i])
 						{
-							v2 = 0;
+							allocation_ok = false;
 							break;
 						}
 						connection_E12AE[i] = (myNCB*)Malloc_83D70(sizeof(myNCB));
 						memset(connection_E12AE[i], 0, sizeof(myNCB));
 						if (!connection_E12AE[i])
 						{
-							v2 = 0;
+							allocation_ok = false;
 							break;
 						}
 					}
@@ -652,20 +639,20 @@ uint8_t NetworkAllocation_74556()//255556 push ebp 355250
 				}
 				else
 				{
-					v2 = 0;
+					allocation_ok = false;
 				}
 			}
 			else
 			{
-				v2 = 0;
+				allocation_ok = false;
 			}
 		}
 		else
 		{
-			v2 = 0;
+			allocation_ok = false;
 		}
 	}
-	if (!v2)
+	if (!allocation_ok)
 	{
 		x_BYTE_E1274 = 0;
 		if (mainConnection_E12AA)
@@ -674,7 +661,7 @@ uint8_t NetworkAllocation_74556()//255556 push ebp 355250
 			FreeMem_83E80(networkBuffer_E127E);
 		if (paket_E1282)
 			FreeMem_83E80(paket_E1282);
-		for (j = 0; j < 8; j++)
+		for (int j = 0; j < 8; j++)
 		{
 			if (connection_E12AE[j])
 				FreeMem_83E80((uint8_t*)connection_E12AE[j]);
@@ -704,7 +691,6 @@ uint8_t NetworkAddName_74767(/*signed __int16* a1,*/ myNCB* connection, char* na
 //----- (00074809) --------------------------------------------------------
 void NetworkCall_74809(__int16 clientIndex)//255809
 {
-	//int result; // [esp+14h] [ebp-8h]
 	connection_E12AE[clientIndex]->ncb_command_0 = 0x90;//CALL 
 	sprintf(connection_E12AE[clientIndex]->ncb_callName_10, "%s%d", nethID, clientIndex);
 	while (strlen(connection_E12AE[clientIndex]->ncb_callName_10) < 0xFu)
@@ -712,11 +698,6 @@ void NetworkCall_74809(__int16 clientIndex)//255809
 	connection_E12AE[clientIndex]->ncb_rto_42 = 0;
 	connection_E12AE[clientIndex]->ncb_sto_43 = 0;
 	setNetbios_75044(connection_E12AE[clientIndex]);
-	//if (setNetbios_75044(connection_E12AE[clientIndex]) == -1)
-	//	result = -99;
-	//else
-	//	result = -connection_E12AE[clientIndex]->ncb_cmd_cplt_49;
-	//return result;
 }
 
 //----- (000748F7) --------------------------------------------------------
@@ -725,15 +706,12 @@ signed int NetworkCancel_748F7(__int16 compindex)//2558f7
 	if (connection_E12AE[compindex]->ncb_cmd_cplt_49 != 0xff)
 		return -mainConnection_E12AA->ncb_cmd_cplt_49;
 	mainConnection_E12AA->ncb_command_0 = 0x35;//CANCEL 
-
 	mainConnection_E12AA->ncb_buffer_4.p = (uint8_t*)connection_E12AE[compindex];
-
 	if (setNetbios_75044(mainConnection_E12AA) != 0xff)
 	{
 		do
 		{
-			while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff)
-				/*fake_network_interupt(mainConnection_E12AA)*/;
+			while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff);
 		} while (connection_E12AE[compindex]->ncb_cmd_cplt_49 == 0xff);
 		return -mainConnection_E12AA->ncb_cmd_cplt_49;
 	}
@@ -757,12 +735,6 @@ int dos_getvect(int vector) {
 //----- (00074A11) --------------------------------------------------------
 signed int NetworkInit_74A11()//255a11 // netbios
 {
-	//__int16 v0; // dx
-
-	//fix it
-	//v0 = 0;
-	//fix it
-
 	if (dos_getvect(92))
 	{
 		mainConnection_E12AA->ncb_command_0 = 0x7F;//?
@@ -782,10 +754,8 @@ void NetworkDeleteName_74A86(myNCB* a1x, char* a2)//255a86
 		strcat(a1x->ncb_name_26, " ");
 	a1x->ncb_command_0 = 0xb1;//DELETE_NAME
 	if (setNetbios_75044(a1x) == -1)
-		return; //return -99;
-	while (a1x->ncb_cmd_cplt_49 == 0xff)
-		/*fake_network_interupt(a1x)*/;
-	//return -(unsigned __int8)a1[49];
+		return;
+	while (a1x->ncb_cmd_cplt_49 == 0xff);
 }
 
 //----- (00074B19) --------------------------------------------------------
@@ -793,18 +763,14 @@ void NetworkHangUp_74B19(myNCB* a1x)//255b19
 {
 	a1x->ncb_command_0 = 0x92;//HANG_UP 
 	if (setNetbios_75044(a1x) == -1)
-		return;// return -99;
-	while (a1x->ncb_cmd_cplt_49 == 0xff)
-		/*fake_network_interupt(a1x)*/;
+		return;
+	while (a1x->ncb_cmd_cplt_49 == 0xff);
 	a1x->ncb_lsn_2 = 0;
-	//return -(unsigned __int8)a1[49];
 }
 
 //----- (00074B75) --------------------------------------------------------
 signed int NetworkListen_74B75(__int16 a1)//255b75
 {
-	//char v2; // [esp+0h] [ebp-18h]
-
 	if (connection_E12AE[a1]->ncb_cmd_cplt_49 == 0xff)
 		return -connection_E12AE[a1]->ncb_cmd_cplt_49;
 	sprintf(printbuffer, "%s%d", nethID, a1);
@@ -826,31 +792,22 @@ signed int NetworkListen_74B75(__int16 a1)//255b75
 int NetworkReceivePacket_74C9D(myNCB* connection, uint8_t* buffer, int size)//255c9d
 {
 	connection->ncb_command_0 = 0x95;//RECEIVE
-
 	connection->ncb_buffer_4.p = paket_E1282;
-
 	connection->ncb_bufferLength_8 = size;
 	if (setNetbios_75044(connection) == -1)
 		return -99;
-	while (connection->ncb_cmd_cplt_49 == 0xffu)
-		/*fake_network_interupt(connection)*/;
+	while (connection->ncb_cmd_cplt_49 == 0xffu);
 	if (connection->ncb_cmd_cplt_49)
 		return -connection->ncb_cmd_cplt_49;
-	//allert_error();
-	//memcpy((void*)a2x, (void*)x_DWORD_E1282, a1x->ncb_length_8);
-	for (int i = 0; i < size/*connection->ncb_bufferLength_8*/; i++)
-		buffer[i] = paket_E1282[i];
+	memcpy((void*)buffer, (void*)paket_E1282, size);
 	return connection->ncb_bufferLength_8;
 }
 
 //----- (00074D41) --------------------------------------------------------
 void NetworkReceiveMessage_74D41(myNCB* connection, uint8_t* inbuffer, unsigned int size)//255d41
 {
-	//int v3; // eax
-	//int v5; // [esp+0h] [ebp-10h]
-	//int v6; // [esp+4h] [ebp-Ch]
-	unsigned int packedReceived; // [esp+8h] [ebp-8h]
-	uint8_t* buffer; // [esp+Ch] [ebp-4h]
+	unsigned int packedReceived;
+	uint8_t* buffer;
 
 	buffer = inbuffer;
 	packedReceived = 0;
@@ -862,23 +819,6 @@ void NetworkReceiveMessage_74D41(myNCB* connection, uint8_t* inbuffer, unsigned 
 		buffer += maxSizeOfPacket;
 	}
 	NetworkReceivePacket_74C9D(connection, buffer, size - maxSizeOfPacket * packedReceived);
-
-	/*
-	//int v3; // eax
-	//int v5; // [esp+0h] [ebp-10h]
-	//int v6; // [esp+4h] [ebp-Ch]
-	unsigned int packedReceived; // [esp+8h] [ebp-8h]
-	uint8_t* buffer; // [esp+Ch] [ebp-4h]
-
-	buffer = inbuffer;
-	packedReceived = 0;
-	while (size > 50000 * (packedReceived + 1))
-	{
-		if (NetworkReceivePacket_74C9D(connection, buffer) != 50000)
-			return;
-		packedReceived++;
-		buffer += 50000;
-	}*/
 }
 
 /*
@@ -911,8 +851,7 @@ int NetworkSendPacket_74E6D(myNCB* connection, uint8_t* buffer, int size)//255e6
 	connection->ncb_bufferLength_8 = size;
 	if (setNetbios_75044(connection) == -1)
 		return -99;
-	while (connection->ncb_cmd_cplt_49 == 0xff)
-		/*fake_network_interupt(connection)*/;
+	while (connection->ncb_cmd_cplt_49 == 0xff);
 	return -connection->ncb_cmd_cplt_49;
 }
 
@@ -930,6 +869,26 @@ void NetworkSendMessage_74EF1(myNCB* connection, uint8_t* inbuffer, unsigned int
 	}
 	NetworkSendPacket_74E6D(connection, buffer, size - maxSizeOfPacket * packedSended);
 }
+
+char oldConnected[8] = { -1, -1, -1, -1, -1, -1, -1, -1 }; // idb
+void RemoveDeadClients()
+{
+	for (int i = 0; i < maxPlayers_E127A; i++)
+	{
+		if (connected_E12CE[i] != oldConnected[i])
+		{
+			if ((connected_E12CE[i] == 0) && (oldConnected[i] != -1))
+			{
+				NetworkCancel_748F7(i);
+				NetworkHangUp_74B19(connection_E12AE[i]);
+				x_DWORD_17DE38str.array_BYTE_17DE68x[i].makeUpdate_0 = 1;
+				x_DWORD_17DE38str.array_BYTE_17DE68x[i].action_9 = 1;
+			}
+			oldConnected[i] = connected_E12CE[i];
+		}
+	}
+}
+
 
 //----- (00074F76) --------------------------------------------------------
 void NetworkUpdateConnections_74F76()//255f76
@@ -998,7 +957,7 @@ int setNetbios_75044(myNCB* connection)//256044
 	v7x.eax = 0x300;
 	v7x.ebx = 0x5C;*/
 	//v7x.edx = &v2x;
-	makeNetwork(connection);//Simulate Real Mode Interrupt //network
+	simulateInterupt(connection);//Simulate Real Mode Interrupt //network
 	/*if (v10x.esi)
 		v13 = -1;
 	else*/
@@ -1053,7 +1012,7 @@ bool SetMultiplayerColors_7CE50()//25de50
 	__int16 colorIndex; // di
 	bool result = false;
 
-	x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].connected_0 = 1;
+	x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].makeUpdate_0 = 1;
 	NetworkUpdateConnections2_74374();//some with network
 	printState(connection_E12AE);
 	ReceiveSendAll_7438A((uint8_t*)x_DWORD_17DE38str.array_BYTE_17DE68x, sizeof(type_BYTE_17DE68x));
@@ -1061,13 +1020,13 @@ bool SetMultiplayerColors_7CE50()//25de50
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			x_DWORD_17DE38str.array_BYTE_17DE68x[v0].arrayColors_1[j] = x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[j];
-			x_BYTE_E131C[j] = x_DWORD_17DE38str.array_BYTE_17DE68x[v0].arrayColors_1[j];
+			x_DWORD_17DE38str.array_BYTE_17DE68x[v0].playerIndex_1[j] = x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[j];
+			x_BYTE_E131C[j] = x_DWORD_17DE38str.array_BYTE_17DE68x[v0].playerIndex_1[j];
 		}
 	}
 	for (int i = 0; i < 8; i++)
 	{
-		if (x_DWORD_17DE38str.array_BYTE_17DE68x[i].connected_0)
+		if (x_DWORD_17DE38str.array_BYTE_17DE68x[i].makeUpdate_0)
 		{
 			switch (x_DWORD_17DE38str.array_BYTE_17DE68x[i].action_9)
 			{
@@ -1080,7 +1039,7 @@ bool SetMultiplayerColors_7CE50()//25de50
 				}
 				sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
 
-				x_DWORD_17DE38str.array_BYTE_17DE68x[i].connected_0 = 0;
+				x_DWORD_17DE38str.array_BYTE_17DE68x[i].makeUpdate_0 = 0;
 				NetworkSomeChange_73AA1(i);
 				if (i == x_DWORD_17DE38str.serverIndex_17DEFC)
 					result = true;
@@ -1089,22 +1048,22 @@ bool SetMultiplayerColors_7CE50()//25de50
 				if (GetIndexNetwork2_74515() == GetIndexNetwork_74536())//begin of select character
 				{
 					if (i <= 0)
-						x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i] = i;
+						x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i] = i;
 					else
-						x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i] = i - 1;
-					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i] = sub_7D230(1, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i], i);
+						x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i] = i - 1;
+					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i] = FindFreeColorIndex_7D230(1, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i], i);
 				}
 				break;
 			case 3://change to left character
 				if (GetIndexNetwork2_74515() == GetIndexNetwork_74536() && x_DWORD_17DE38str.x_WORD_17DEFE < 7)
 				{
-					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i] = sub_7D230(1, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i], i);
+					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i] = FindFreeColorIndex_7D230(1, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i], i);
 				}
 				break;
 			case 4://change to right character
 				if (GetIndexNetwork2_74515() == GetIndexNetwork_74536() && x_DWORD_17DE38str.x_WORD_17DEFE < 7)
 				{
-					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i] = sub_7D230(0, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[i], i);
+					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i] = FindFreeColorIndex_7D230(0, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i], i);
 				}
 				break;
 			case 5://start multiplayer level
@@ -1125,7 +1084,7 @@ bool SetMultiplayerColors_7CE50()//25de50
 		}
 	}
 	x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].action_9 = 0;
-	x_DWORD_17DE38str.x_WORD_17DEF4 = x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[x_DWORD_17DE38str.serverIndex_17DEFC];
+	x_DWORD_17DE38str.x_WORD_17DEF4 = x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[x_DWORD_17DE38str.serverIndex_17DEFC];
 	DrawNetworkLevelName_7D1F0();
 	return result;
 }
@@ -1137,7 +1096,7 @@ void DrawNetworkLevelName_7D1F0()//25e1f0
 	x_DWORD_17DE38str.x_WORD_17DEFE = 0;
 	do
 	{
-		if (x_DWORD_17DE38str.array_BYTE_17DE68x[index].connected_0)
+		if (x_DWORD_17DE38str.array_BYTE_17DE68x[index].makeUpdate_0)
 			x_DWORD_17DE38str.x_WORD_17DEFE++;
 		index++;
 	} while (index < 8);
@@ -1146,74 +1105,132 @@ void DrawNetworkLevelName_7D1F0()//25e1f0
 //----- (0007D310) --------------------------------------------------------
 void SetMultiplayerColors_7D310()//25e310
 {
-	for (int v0 = 0; v0 < 8; v0++)
+	for (int i = 0; i < 8; i++)
 	{
-		if (x_DWORD_17DE38str.array_BYTE_17DE68x[v0].connected_0)
+		if (x_DWORD_17DE38str.array_BYTE_17DE68x[i].makeUpdate_0)
 		{
-			if (v0 != x_DWORD_17DE38str.serverIndex_17DEFC)
+			if (i != x_DWORD_17DE38str.serverIndex_17DEFC)
 			{
-				SetPaletteColor_7CDC0(v0, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[v0]);
+				SetPaletteColor_7CDC0(i, x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[i]);
 			}
 		}
 	}
 }
 
 //----- (0007D230) --------------------------------------------------------
-signed int sub_7D230(char a1, unsigned __int8 a2, unsigned __int8 a3)//25e230
+int FindFreeColorIndex_7D230(char searchBackward, uint8 startColor, uint8 excludeSlot)
 {
-	signed int v3; // ebx
-	__int16 v4; // si
-	__int16 v5; // si
-	signed __int16 v7; // [esp+0h] [ebp-8h]
-	signed __int16 v8; // [esp+4h] [ebp-4h]
+	signed int currentColor;     // ebx
+	__int16 slotFwd;             // si
+	__int16 slotBwd;             // si
+	signed __int16 colorTakenBwd; // [esp+0h] [ebp-8h]
+	signed __int16 colorTakenFwd; // [esp+4h] [ebp-4h]
 
-	v3 = a2;
-	if (a1)
+	currentColor = startColor;
+	if (searchBackward)
 	{
 		do
 		{
-			if ((--v3 & 0x8000u) != 0)
-				v3 = 7;
-			v5 = 0;
-			v7 = 0;
-			while (v5 < 8)
+			if ((--currentColor & 0x8000u) != 0)
+				currentColor = 7;
+			slotBwd = 0;
+			colorTakenBwd = 0;
+			while (slotBwd < 8)
 			{
-				if (v5 != a3 && x_DWORD_17DE38str.array_BYTE_17DE68x[v5].connected_0 && x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[v5] == (x_WORD)v3)
+				if (slotBwd != excludeSlot &&
+					x_DWORD_17DE38str.array_BYTE_17DE68x[slotBwd].makeUpdate_0 &&
+					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[slotBwd] == (x_WORD)currentColor)
 				{
-					v7 = 1;
+					colorTakenBwd = 1;
 					break;
 				}
-				v5++;
+				slotBwd++;
 			}
-		} while (v7);
+		} while (colorTakenBwd);
 	}
 	else
 	{
 		do
 		{
-			if ((signed __int16)++v3 > 7)
-				v3 = 0;
-			v4 = 0;
-			v8 = 0;
-			while (v4 < 8)
+			if ((signed __int16)++currentColor > 7)
+				currentColor = 0;
+			slotFwd = 0;
+			colorTakenFwd = 0;
+			while (slotFwd < 8)
 			{
-				if (v4 != a3 && x_DWORD_17DE38str.array_BYTE_17DE68x[v4].connected_0 && x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].arrayColors_1[v4] == (x_WORD)v3)
+				if (slotFwd != excludeSlot &&
+					x_DWORD_17DE38str.array_BYTE_17DE68x[slotFwd].makeUpdate_0 &&
+					x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].playerIndex_1[slotFwd] == (x_WORD)currentColor)
 				{
-					v8 = 1;
+					colorTakenFwd = 1;
 					break;
 				}
-				v4++;
+				slotFwd++;
 			}
-		} while (v8);
+		} while (colorTakenFwd);
 	}
-	return v3;
+	return currentColor;
 }
 
 //----- (0007CDC0) --------------------------------------------------------
-void SetPaletteColor_7CDC0(unsigned __int8 a1, unsigned __int8 a2)//25ddc0
+void SetPaletteColor_7CDC0(uint8 colorIndex, uint8 playerIndex)//25ddc0
 {
-	TColor* v2a = &((TColor*)*xadatapald0dat2.colorPalette_var28)[134 + 2 * a1];
-	TColor* v2b = &((TColor*)*xadatapald0dat2.colorPalette_var28)[135 + 2 * a1];
-	*v2a = str_BYTE_E1711[0][a2];
-	*v2b = str_BYTE_E1711[1][a2];
+	((TColor*)*xadatapald0dat2.colorPalette_var28)[134 + 2 * colorIndex] = str_BYTE_E1711[0][playerIndex];
+	((TColor*)*xadatapald0dat2.colorPalette_var28)[135 + 2 * colorIndex] = str_BYTE_E1711[1][playerIndex];
+}
+
+//----- (0005C450) --------------------------------------------------------
+void NetworkDisallocation2_5C450()//23d450
+{
+	if (x_D41A0_BYTEARRAY_4_struct.isNetwork_216w)
+		NetworkDisallocation_72D04();
+}
+
+const int StartNetworkTimeout = 5;
+
+void InitNetworkInfo() {
+	if (CommandLineParams.ModeTestNetwork()) {
+		std::string exepath = get_exe_path();
+		//debug_net_filename2 = exepath + "/../" + debug_net_filename1;
+
+		//testlib1();
+		/*if (Iam_server)
+			InitLibNetServer(ServerMPort);
+		InitLibNetClient(serverIP, ServerMPort, ClientMPort);*/
+		InitMyNetLib(Iam_server, Iam_client, serverIP, NetworkPort, ServerPort);//not dedicate server
+		/*
+		if (Iam_server)
+		{
+			while (StartNetworkTimeout>0) {
+				mydelay(1000);
+				StartNetworkTimeout--;
+				myprintf("I wait for clients %d s\n", StartNetworkTimeout);
+			}
+			SendMessagesRegisterOK();
+		}
+		bool receive_timeout = false;
+		while (!receive_timeout) {
+			receive_timeout = ReceiveTimeout();
+			mydelay(1000);
+		}*/
+	}
+};
+
+void UpdateNetInfo()
+{
+#ifdef PRINT_UPDATE_CONNECTIONS
+	char buffer[128];
+	VGA_GotoXY(0, 20);
+	snprintf(buffer, sizeof(buffer), "0: %02d %01d,%01d %02d",
+		x_DWORD_17DE38str.array_BYTE_17DE68x[0].action_9,
+		x_DWORD_17DE38str.array_BYTE_17DE68x[0].playerIndex_1[0],
+		x_DWORD_17DE38str.array_BYTE_17DE68x[0].playerIndex_1[0], x_DWORD_17DE38str.array_BYTE_17DE68x[0].selectedLevel_10);
+	VGA_Draw_stringXYtoBuffer(buffer, 0, 20, pdwScreenBuffer_351628);
+	VGA_GotoXY(0, 40);
+	snprintf(buffer, sizeof(buffer), "1: %02d %01d,%01d %02d",
+		x_DWORD_17DE38str.array_BYTE_17DE68x[1].action_9,
+		x_DWORD_17DE38str.array_BYTE_17DE68x[1].playerIndex_1[1],
+		x_DWORD_17DE38str.array_BYTE_17DE68x[1].playerIndex_1[1], x_DWORD_17DE38str.array_BYTE_17DE68x[1].selectedLevel_10);
+	VGA_Draw_stringXYtoBuffer(buffer, 0, 40, pdwScreenBuffer_351628);
+#endif
 }
