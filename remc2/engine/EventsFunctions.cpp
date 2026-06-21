@@ -56992,7 +56992,7 @@ void sub_6AD60(type_entity_0x6E8E* a1x)//24bd60
 								}
 								break;
 							default:
-								v12x = Entities_EA3E4[v16x->dword_0xA4_164x->CastleEntityIndex_0x3A_58];
+								v12x = Entities_EA3E4[v29x->dword_0xA4_164x->CastleEntityIndex_0x3A_58];
 								v13 = v12x < Entities_EA3E4[0];
 								v14 = v12x == Entities_EA3E4[0];
 							LABEL_26:
