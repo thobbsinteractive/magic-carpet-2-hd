@@ -93,7 +93,8 @@ void JoinDialog::OnOK(wxCommandEvent& event)
 		return;
 	}
 
-	EndModal(wxID_OK);
+	if (LaunchGame(""))
+		EndModal(wxID_OK);
 }
 
 // ── MultiplayerDialog ────────────────────────────────────────────────────────
@@ -138,9 +139,9 @@ void MultiplayerDialog::OnHost(wxCommandEvent&)
 	HostDialog dlg(this);
 	if (dlg.ShowModal() == wxID_OK)
 	{
-		dlg.GetPort();
-
-		EndModal(wxID_OK);
+		std::string port = std::to_string(dlg.GetPort());
+		if (LaunchGame("--mode_test_network server " + port + " client 127.0.0.1 " + port + " " + port))
+			EndModal(wxID_OK);
 	}
 }
 
@@ -149,7 +150,9 @@ void MultiplayerDialog::OnJoin(wxCommandEvent&)
 	JoinDialog dlg(this);
 	if (dlg.ShowModal() == wxID_OK)
 	{
-		EndModal(wxID_OK);
-		// TODO: pass dlg.GetIP() / dlg.GetPort() to the network layer
+		std::string port = std::to_string(dlg.GetPort());
+		wxString ip = dlg.GetIP();
+		if (LaunchGame("--mode_test_network client " + ip + " " + port + " " + port))
+			EndModal(wxID_OK);
 	}
 }

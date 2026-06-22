@@ -3,6 +3,7 @@
 #include <wx/statline.h>
 #include <wx/spinctrl.h>
 #include <wx/artprov.h>
+#include "PathHelpers.h"
 
 // ── HostDialog ───────────────────────────────────────────────────────────────
 class HostDialog : public wxDialog
