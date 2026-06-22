@@ -221,20 +221,6 @@ type_x_BYTE_E25ED_2BB str_BYTE_E2590[3] = {//set joy
 { 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000 }
 };
 
-#pragma pack(push, 1)
-typedef struct {//lenght 24
-uint32_t dword_0;
-uint32_t dword_4;
-uint32_t dword_8;
-uint32_t dword_12;
-uint16_t word_16;
-uint16_t word_18;
-uint16_t word_20;
-uint16_t word_22;
-}
-type_E1BAC_0x3c4;
-#pragma pack(pop)
-
 //0x2ec
 type_E1BAC_0x3c4 str_E1BAC_0x2ec[9] = {
 {0x0005BC1E,0x000032D0,0x00076BBD,0x00000300,0x00F4,0x0085,0x0088,0x015C},
