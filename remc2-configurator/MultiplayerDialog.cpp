@@ -92,9 +92,7 @@ void JoinDialog::OnOK(wxCommandEvent& event)
 			"Validation Error", wxOK | wxICON_WARNING, this);
 		return;
 	}
-
-	if (LaunchGame(""))
-		EndModal(wxID_OK);
+	EndModal(wxID_OK);
 }
 
 // ── MultiplayerDialog ────────────────────────────────────────────────────────
