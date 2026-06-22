@@ -24,6 +24,10 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	// ── Buttons ─────────────────────────────────────────────────────────────
 	wxButton* btnPlay = new wxButton(panel, ID_BTN_PLAY, "Play");
 	btnPlay->SetMinSize(wxSize(-1, 40));
+	wxButton* btnLaunchOptions = new wxButton(panel, ID_BTN_LAUNCH_OPTIONS, "Launch Options");
+	btnLaunchOptions->SetMinSize(wxSize(-1, 40));
+	wxButton* btnMultiplayer = new wxButton(panel, ID_BTN_MULTIPLAYER, "Multiplayer");
+	btnMultiplayer->SetMinSize(wxSize(-1, 40));
 	wxButton* btnFile = new wxButton(panel, ID_BTN_FILE, "Game Files");
 	btnFile->SetMinSize(wxSize(-1, 40));
 	wxButton* btnGame = new wxButton(panel, ID_BTN_GAME, "Speed");
@@ -50,6 +54,8 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 
 	buttonSizer->Add(image, flags);
 	buttonSizer->Add(btnPlay, flags);
+	buttonSizer->Add(btnLaunchOptions, flags);
+	buttonSizer->Add(btnMultiplayer, flags);
 	buttonSizer->Add(btnFile, flags);
 	buttonSizer->Add(btnGame, flags);
 	buttonSizer->Add(btnControls, flags);
@@ -75,6 +81,8 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 
 	// ── Event bindings ───────────────────────────────────────────────────────
 	Bind(wxEVT_BUTTON, &MainFrame::OnPlay, this, ID_BTN_PLAY);
+	Bind(wxEVT_BUTTON, &MainFrame::OnLaunchOptions, this, ID_BTN_LAUNCH_OPTIONS);
+	Bind(wxEVT_BUTTON, &MainFrame::OnMultiplayer, this, ID_BTN_MULTIPLAYER);
 	Bind(wxEVT_BUTTON, &MainFrame::OnFile, this, ID_BTN_FILE);
 	Bind(wxEVT_BUTTON, &MainFrame::OnGame, this, ID_BTN_GAME);
 	Bind(wxEVT_BUTTON, &MainFrame::OnControls, this, ID_BTN_CONTROLS);
@@ -89,15 +97,30 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 // ── Button handlers ──────────────────────────────────────────────────────────
 void MainFrame::OnPlay(wxCommandEvent&)
 {
-	// Launch remc2.exe detached (wxEXEC_ASYNC = fire-and-forget)
-	long pid = wxExecute("remc2.exe", wxEXEC_ASYNC);
-	if (pid == 0) {
-		wxMessageBox("Failed to launch Magic Carpet 2 HD.\n"
-			"Make sure it is in the same directory as this application.",
-			"Launch Error", wxOK | wxICON_ERROR, this);
-		return;
+	if (LaunchGame(""))
+		Close(true); // close the launcher
+}
+
+void MainFrame::OnLaunchOptions(wxCommandEvent&)
+{
+	auto settings = m_ptrConfig->GetSettingsFromDoc();
+	//LaunchOptionsDialog dlg(this, settings.m_LaunchOptions);
+	//if (dlg.ShowModal() == wxID_OK)
+	//{
+	//	auto launchSettings = dlg.GetSettings();
+	//	m_ptrConfig->SaveLaunchOptionsToDoc(launchSettings);
+	//	m_ptrConfig->SaveToFile();
+	//	m_ptrConfig->GetSettingsFromDoc();
+	//}
+}
+
+void MainFrame::OnMultiplayer(wxCommandEvent&)
+{
+	MultiplayerDialog dlg(this);
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		this->Close();
 	}
-	Close(true); // close the launcher
 }
 
 void MainFrame::OnFile(wxCommandEvent&)

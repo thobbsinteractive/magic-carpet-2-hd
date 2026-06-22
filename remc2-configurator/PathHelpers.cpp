@@ -20,3 +20,16 @@ wxString ToAbsolute(const wxString& path)
 		fn.MakeAbsolute(GetExeDir());
 	return fn.GetFullPath();
 }
+
+bool LaunchGame(const wxString& args)
+{
+	// Launch remc2.exe detached (wxEXEC_ASYNC = fire-and-forget)
+	long pid = wxExecute("remc2.exe " + args, wxEXEC_ASYNC);
+	if (pid == 0) {
+		wxMessageBox("Failed to launch Magic Carpet 2 HD.\n"
+			"Make sure it is in the same directory as this application.",
+			"Launch Error", wxOK | wxICON_ERROR);
+		return false;
+	}
+	return true;
+}

@@ -150,6 +150,7 @@ Config::Settings Config::GetSettings(json& document)
 		{
 			settings.m_Name = ReadStringValue(entry, "name");
 			settings.m_Version = ReadStringValue(entry, "version");
+			settings.m_LaunchArguments = ReadStringValue(entry, "launchArguments");
 			settings.m_Paths = GetPaths(entry);
 			settings.m_Sound = GetSound(entry);
 			settings.m_Graphics = GetGraphics(entry);

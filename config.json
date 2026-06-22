@@ -4,6 +4,7 @@
 			"name": "Main",
 			"version": "1.0",
 			"isActive": true,
+			"launchArguments": "", 
 			"paths": {
 				"description": [
 					"gameFolder: Main game content folder (after install). Path is relative to .exe",

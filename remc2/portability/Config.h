@@ -176,6 +176,7 @@ public:
 
 		std::string m_Name;
 		std::string m_Version;
+		std::string m_LaunchArguments;
 		Paths m_Paths;
 		Sound m_Sound;
 		Graphics m_Graphics;
