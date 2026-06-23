@@ -4,7 +4,7 @@
 			"name": "Main",
 			"version": "1.0",
 			"isActive": true,
-			"launchArguments": "", 
+			"launchArguments": "",
 			"paths": {
 				"description": [
 					"gameFolder: Main game content folder (after install). Path is relative to .exe",
@@ -13,6 +13,12 @@
 				"gameFolder": "NETHERW",
 				"cdFolder": "CD_Files"
 			},
+			"multiplayer": {
+				"serverPort": 3030,
+				"clientPort": 3030,
+				"clientServerPort": 3030,
+				"clientServerIp": "127.0.0.1"
+			}
 			"sound": {
 				"description": [
 					"hqSound: sound is transfered from 11025,8bit,mono to 44000,16bit,stereo. using AWE32 record of MIDI",

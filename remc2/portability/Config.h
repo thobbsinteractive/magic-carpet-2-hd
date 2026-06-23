@@ -41,6 +41,14 @@ public:
 			std::string m_CdFolder = "";
 		};
 
+		struct Multiplayer
+		{
+			int m_ServerPort = 3030;
+			int m_ClientPort = 3030;
+			int m_ClientServerPort = 3030;
+			std::string m_ClientServerIp = "127.0.0.1";
+		};
+
 		struct Sound
 		{
 			bool m_HqSound = true;
@@ -178,6 +186,7 @@ public:
 		std::string m_Version;
 		std::string m_LaunchArguments;
 		Paths m_Paths;
+		Multiplayer m_Multiplayer;
 		Sound m_Sound;
 		Graphics m_Graphics;
 		Game m_Game;
@@ -198,11 +207,13 @@ public:
 	Settings::Sound GetSound(const json& settings);
 	Settings::Paths GetPaths(const json& settings);
 	Settings::Controls GetControls(const json& settings);
+	Settings::Multiplayer GetMultiplayer(const json& settings);
 	Settings::Game GetGame(const json& settings);
 
 	void SaveSettings(json& document, Settings settings);
 	void SaveSoundToDoc(Settings::Sound soundSettings);
 	void SavePathsToDoc(Settings::Paths pathSettings);
+	void SaveMultiplayerToDoc(Settings::Multiplayer multiplayerSettings);
 	void SaveGraphicsToDoc(Settings::Graphics graphics);
 	void SaveGameDetailToDoc(Settings::GameDetail gameDetail);
 	void SaveThreadingToDoc(Settings::Threading threading);

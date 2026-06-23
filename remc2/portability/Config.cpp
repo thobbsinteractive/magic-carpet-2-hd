@@ -152,6 +152,7 @@ Config::Settings Config::GetSettings(json& document)
 			settings.m_Version = ReadStringValue(entry, "version");
 			settings.m_LaunchArguments = ReadStringValue(entry, "launchArguments");
 			settings.m_Paths = GetPaths(entry);
+			settings.m_Multiplayer = GetMultiplayer(entry);
 			settings.m_Sound = GetSound(entry);
 			settings.m_Graphics = GetGraphics(entry);
 			settings.m_Game = GetGame(entry);
@@ -160,6 +161,20 @@ Config::Settings Config::GetSettings(json& document)
 		}
 	}
 	return settings;
+}
+
+Config::Settings::Multiplayer Config::GetMultiplayer(const json& settings)
+{
+	Config::Settings::Multiplayer multiplayerValues;
+	if (settings.contains("multiplayer"))
+	{
+		const auto& multiplayer = settings["multiplayer"];
+		multiplayerValues.m_ServerPort = ReadIntValue(multiplayer, "serverPort");
+		multiplayerValues.m_ClientPort = ReadIntValue(multiplayer, "clientPort");
+		multiplayerValues.m_ClientServerPort = ReadIntValue(multiplayer, "clientServerPort");
+		multiplayerValues.m_ClientServerIp = ReadStringValue(multiplayer, "clientServerIp");
+	}
+	return multiplayerValues;
 }
 
 Config::Settings::Game Config::GetGame(const json& settings)
@@ -422,6 +437,16 @@ void Config::SavePathsToDoc(Config::Settings::Paths pathSettings)
 	SetString(paths, "cdFolder", pathSettings.m_CdFolder);
 }
 
+void Config::SaveMultiplayerToDoc(Config::Settings::Multiplayer multiplayerSettings)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& multiplayer = GetOrCreate(settingsEntry, "multiplayer");
+	SetInt(multiplayer, "serverPort", multiplayerSettings.m_ServerPort);
+	SetInt(multiplayer, "clientPort", multiplayerSettings.m_ClientPort);
+	SetInt(multiplayer, "clientServerPort", multiplayerSettings.m_ClientServerPort);
+	SetString(multiplayer, "clientServerIp", multiplayerSettings.m_ClientServerIp);
+}
+
 void Config::SaveSoundToDoc(Config::Settings::Sound soundSettings)
 {
 	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
@@ -573,6 +598,7 @@ void Config::SaveSettings(json& document, Settings settings)
 		if (entry.contains("isActive") && entry["isActive"].get<bool>())
 		{
 			SavePathsToDoc(settings.m_Paths);
+			SaveMultiplayerToDoc(settings.m_Multiplayer);
 			SaveGameToDoc(settings.m_Game);
 			SaveControlsToDoc(settings.m_Controls);
 			break;
