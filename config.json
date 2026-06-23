@@ -18,7 +18,7 @@
 				"clientPort": 3030,
 				"clientServerPort": 3030,
 				"clientServerIp": "127.0.0.1"
-			}
+			},
 			"sound": {
 				"description": [
 					"hqSound: sound is transfered from 11025,8bit,mono to 44000,16bit,stereo. using AWE32 record of MIDI",

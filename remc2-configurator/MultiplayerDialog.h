@@ -4,17 +4,18 @@
 #include <wx/spinctrl.h>
 #include <wx/artprov.h>
 #include "PathHelpers.h"
+#include "../remc2/portability/Config.h"
 
 // ── HostDialog ───────────────────────────────────────────────────────────────
 class HostDialog : public wxDialog
 {
 public:
-	HostDialog(wxWindow* parent);
+	HostDialog(wxWindow* parent, const Config::Settings::Multiplayer& cfg);
 
-	int      GetPort() const { return m_port; }
+	int      GetPort() const { return m_cfg.m_ServerPort; }
 
 private:
-	int      m_port = 3030;
+	Config::Settings::Multiplayer m_cfg;
 	wxSpinCtrl* m_ctrlPort = nullptr;
 
 	void OnOK(wxCommandEvent&);
@@ -24,14 +25,13 @@ private:
 class JoinDialog : public wxDialog
 {
 public:
-	JoinDialog(wxWindow* parent);
+	JoinDialog(wxWindow* parent, const Config::Settings::Multiplayer& cfg);
 
-	wxString GetIP()   const { return m_ip; }
-	int      GetPort() const { return m_port; }
+	wxString GetIP()   const { return m_cfg.m_ClientServerIp; }
+	int      GetPort() const { return m_cfg.m_ClientServerPort; }
 
 private:
-	wxString m_ip;
-	int      m_port = 3030;
+	Config::Settings::Multiplayer m_cfg;
 
 	wxTextCtrl* m_ctrlIP = nullptr;
 	wxSpinCtrl* m_ctrlPort = nullptr;
@@ -43,9 +43,12 @@ private:
 class MultiplayerDialog : public wxDialog
 {
 public:
-	MultiplayerDialog(wxWindow* parent);
+	MultiplayerDialog(wxWindow* parent, const Config::Settings::Multiplayer& cfg);
+	Config::Settings::Multiplayer GetMultiplayer() const;
 
 private:
+	Config::Settings::Multiplayer m_cfg;
+	
 	void OnHost(wxCommandEvent&);
 	void OnJoin(wxCommandEvent&);
 

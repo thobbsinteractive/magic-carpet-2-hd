@@ -1,11 +1,12 @@
 #include "MultiplayerDialog.h"
 
 // ── HostDialog ───────────────────────────────────────────────────────────────
-HostDialog::HostDialog(wxWindow* parent)
+HostDialog::HostDialog(wxWindow* parent, const Config::Settings::Multiplayer& cfg)
 	: wxDialog(parent, wxID_ANY, "Host Game",
 		wxDefaultPosition, wxDefaultSize,
 		wxDEFAULT_DIALOG_STYLE)
 {
+	m_cfg = cfg;
 	auto* sizer = new wxBoxSizer(wxVERTICAL);
 	auto* grid = new wxFlexGridSizer(1, 2, 8, 8);
 	grid->AddGrowableCol(1, 1);
@@ -16,6 +17,7 @@ HostDialog::HostDialog(wxWindow* parent)
 	m_ctrlPort = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
 		wxDefaultPosition, wxSize(180, -1),
 		wxSP_ARROW_KEYS, 1024, 65535, 3030);
+	m_ctrlPort->SetValue(cfg.m_ServerPort);
 	grid->Add(m_ctrlPort, 1, wxEXPAND);
 
 	sizer->Add(grid, 0, wxEXPAND | wxALL, 12);
@@ -36,16 +38,17 @@ HostDialog::HostDialog(wxWindow* parent)
 
 void HostDialog::OnOK(wxCommandEvent&)
 {
-	m_port = m_ctrlPort->GetValue();
+	m_cfg.m_ServerPort = m_ctrlPort->GetValue();
 	EndModal(wxID_OK);
 }
 
 // ── JoinDialog ───────────────────────────────────────────────────────────────
-JoinDialog::JoinDialog(wxWindow* parent)
+JoinDialog::JoinDialog(wxWindow* parent, const Config::Settings::Multiplayer& cfg)
 	: wxDialog(parent, wxID_ANY, "Join Game",
 		wxDefaultPosition, wxDefaultSize,
 		wxDEFAULT_DIALOG_STYLE)
 {
+	m_cfg = cfg;
 	auto* sizer = new wxBoxSizer(wxVERTICAL);
 	auto* grid = new wxFlexGridSizer(2, 2, 8, 8);
 	grid->AddGrowableCol(1, 1);
@@ -55,6 +58,7 @@ JoinDialog::JoinDialog(wxWindow* parent)
 		0, wxALIGN_CENTER_VERTICAL);
 	m_ctrlIP = new wxTextCtrl(this, wxID_ANY, wxEmptyString,
 		wxDefaultPosition, wxSize(180, -1));
+	m_ctrlIP->SetValue(cfg.m_ClientServerIp);
 	grid->Add(m_ctrlIP, 1, wxEXPAND);
 
 	// Server Port
@@ -63,6 +67,7 @@ JoinDialog::JoinDialog(wxWindow* parent)
 	m_ctrlPort = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
 		wxDefaultPosition, wxSize(180, -1),
 		wxSP_ARROW_KEYS, 1024, 65535, 3030);
+	m_ctrlPort->SetValue(cfg.m_ClientServerPort);
 	grid->Add(m_ctrlPort, 1, wxEXPAND);
 
 	sizer->Add(grid, 0, wxEXPAND | wxALL, 12);
@@ -83,10 +88,10 @@ JoinDialog::JoinDialog(wxWindow* parent)
 
 void JoinDialog::OnOK(wxCommandEvent& event)
 {
-	m_ip = m_ctrlIP->GetValue().Trim();
-	m_port = m_ctrlPort->GetValue();
+	m_cfg.m_ClientServerIp = m_ctrlIP->GetValue().Trim();
+	m_cfg.m_ClientServerPort = m_ctrlPort->GetValue();
 
-	if (m_ip.IsEmpty())
+	if (m_ctrlIP->GetValue().Trim().IsEmpty())
 	{
 		wxMessageBox("Please enter the server IP address.",
 			"Validation Error", wxOK | wxICON_WARNING, this);
@@ -96,11 +101,12 @@ void JoinDialog::OnOK(wxCommandEvent& event)
 }
 
 // ── MultiplayerDialog ────────────────────────────────────────────────────────
-MultiplayerDialog::MultiplayerDialog(wxWindow* parent)
+MultiplayerDialog::MultiplayerDialog(wxWindow* parent, const Config::Settings::Multiplayer& cfg)
 	: wxDialog(parent, wxID_ANY, "Multiplayer",
 		wxDefaultPosition, wxDefaultSize,
 		wxDEFAULT_DIALOG_STYLE)
 {
+	m_cfg = cfg;
 	auto* sizer = new wxBoxSizer(wxVERTICAL);
 
 	sizer->Add(new wxStaticText(this, wxID_ANY, "Choose a multiplayer mode:"),
@@ -134,23 +140,26 @@ MultiplayerDialog::MultiplayerDialog(wxWindow* parent)
 
 void MultiplayerDialog::OnHost(wxCommandEvent&)
 {
-	HostDialog dlg(this);
+	HostDialog dlg(this, m_cfg);
 	if (dlg.ShowModal() == wxID_OK)
 	{
-		std::string port = std::to_string(dlg.GetPort());
-		if (LaunchGame("--mode_test_network server " + port + " client 127.0.0.1 " + port + " " + port))
-			EndModal(wxID_OK);
+		m_cfg.m_ServerPort = dlg.GetPort();
+		EndModal(wxID_NETWORK);
 	}
 }
 
 void MultiplayerDialog::OnJoin(wxCommandEvent&)
 {
-	JoinDialog dlg(this);
+	JoinDialog dlg(this, m_cfg);
 	if (dlg.ShowModal() == wxID_OK)
 	{
-		std::string port = std::to_string(dlg.GetPort());
-		wxString ip = dlg.GetIP();
-		if (LaunchGame("--mode_test_network client " + ip + " " + port + " " + port))
-			EndModal(wxID_OK);
+		m_cfg.m_ClientServerPort = dlg.GetPort();
+		m_cfg.m_ClientServerIp = dlg.GetIP();
+		EndModal(wxID_ADD);
 	}
+}
+
+Config::Settings::Multiplayer MultiplayerDialog::GetMultiplayer() const
+{
+	return m_cfg;
 }
