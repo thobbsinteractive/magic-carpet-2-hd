@@ -4451,8 +4451,20 @@ type_entity_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1_axis3d)//
 		//return fix_it_4A190();
 		break;
 	}
+	case 0x22edc0: {
+		return NULL;
+		break;
+	}
 	case 0x22edd0: {
 		return sub_4DDD0(a1_axis3d);
+		break;
+	}
+	case 0x22ee80: {
+		return NULL;
+		break;
+	}
+	case 0x22ee90: {
+		return NULL;
 		break;
 	}
 	case 0x22eea0: {

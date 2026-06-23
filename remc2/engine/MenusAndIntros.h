@@ -85,6 +85,20 @@ typedef struct {//lenght 69
 type_WORD_E20A4;
 #pragma pack(pop)
 
+#pragma pack(push, 1)
+typedef struct {//lenght 24
+	uint32_t dword_0;
+	uint32_t dword_4;
+	uint32_t dword_8;
+	uint32_t dword_12;
+	uint16_t word_16;
+	uint16_t word_18;
+	uint16_t word_20;
+	uint16_t word_22;
+}
+type_E1BAC_0x3c4;
+#pragma pack(pop)
+
 enum class MenuItem : int {
 	InitLanguage = 0,
 	SetToIntro = 1,
@@ -152,6 +166,7 @@ extern int16_t x_WORD_17DBC4;
 extern typeTextBoxtextBoxStr_E24BCx textBoxStr_E25DC[];
 extern type_BYTE_E25ED_0x str_BYTE_E25ED_0x[];
 extern type_x_BYTE_E25ED_2BB str_BYTE_E25ED_2BB[];
+extern type_E1BAC_0x3c4 str_E1BAC_0x2ec[];
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
