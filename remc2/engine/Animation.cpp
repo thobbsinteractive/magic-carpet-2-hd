@@ -584,7 +584,7 @@ void sub_9A0FC_wait_to_screen_beam()//27B0fc
 	while ( !(result & 8) );
 	return result;*/
 	VGA_Blit(nullptr);
-	mydelay(10);
+	mydelay(1);
 }
 
 //----- (000473E0) --------------------------------------------------------
