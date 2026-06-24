@@ -97,9 +97,7 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 // ── Button handlers ──────────────────────────────────────────────────────────
 void MainFrame::OnPlay(wxCommandEvent&)
 {
-	auto settings = m_ptrConfig->GetSettingsFromDoc();
-
-	if (LaunchGame(settings.m_LaunchArguments))
+	if (LaunchGame(""))
 		Close(true); // close the launcher
 }
 
@@ -112,6 +110,8 @@ void MainFrame::OnLaunchOptions(wxCommandEvent&)
 		settings.m_LaunchArguments = dlg.GetLaunchArguments();
 		m_ptrConfig->SaveLaunchArgumentsToDoc(settings);
 		m_ptrConfig->SaveToFile();
+		LaunchGame(settings.m_LaunchArguments);
+		Close(true);
 	}
 }
 

@@ -89,7 +89,7 @@ LaunchOptionsDialog::LaunchOptionsDialog(wxWindow* parent, std::string launchArg
 
 	// --- Buttons ---
 	auto* btnSizer = new wxStdDialogButtonSizer();
-	btnSizer->AddButton(new wxButton(this, wxID_OK));
+	btnSizer->AddButton(new wxButton(this, wxID_OK, "Launch"));
 	btnSizer->AddButton(new wxButton(this, wxID_CANCEL));
 	btnSizer->Realize();
 	mainSizer->Add(btnSizer, 0, wxEXPAND | wxALL, 10);
