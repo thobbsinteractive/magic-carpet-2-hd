@@ -98,7 +98,7 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		{
 		case 'A':
 		case 'a':
-			x_DWORD_E3844 = 0;
+			x_DWORD_E3844 = pSoundEvent[soundEventIndex_D4004].index;
 			break;
 		case 'B':
 		case 'b':
