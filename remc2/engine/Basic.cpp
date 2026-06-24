@@ -1498,20 +1498,12 @@ void DrawBitmap_2BB40(int16_t posx, int16_t posy, bitmap_pos_struct_t tempposstr
 }
 
 //----- (00075D70) --------------------------------------------------------
-void sub_75D70(uint8_t* a1y, uint32_t a2)//256d70
+void CopyAndShiftFrom17DB50_75D70(uint8_t* dest, uint32_t count)//256d70
 {
-	//unsigned int result; // eax
-
-	if (a1y)
-	{
-		//result = a2;
-		qmemcpy(a1y, (void*)x_DWORD_17DB50, a2);
-		//qmemcpy(a1+a2, (void *)(x_DWORD_17DB50+a2), a2&3);
-	}
-	x_DWORD_17DB50 += a2;
-	//return result;
+	if (dest)
+		qmemcpy(dest, (void*)x_DWORD_17DB50, count);
+	x_DWORD_17DB50 += count;
 }
-// 17DB50: using guessed type int x_DWORD_17DB50;
 
 //----- (0002BC80) --------------------------------------------------------
 void DrawLine_2BC80(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx)//20cc80

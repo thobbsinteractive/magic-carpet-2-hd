@@ -242,7 +242,7 @@ void DrawFrame_75E70()//256e70
 	x_BYTE_17D738[0] = 0;
 	if (x_WORD_17D724 == 0xf100)
 	{
-		sub_75D70(0, x_DWORD_17D720[0] - 16);
+		CopyAndShiftFrom17DB50_75D70(0, x_DWORD_17D720[0] - 16);
 		ReadFrame_75DB0();
 		DrawFrame_75E70();
 	}
@@ -254,11 +254,11 @@ void DrawFrame_75E70()//256e70
 			if (frameChunkIndex >= x_WORD_17D726)
 				break;
 			chunkStreamPos = x_DWORD_17DB50;
-			sub_75D70((uint8_t*)&chunkHeader, sizeof(chunkHeader));
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&chunkHeader, sizeof(chunkHeader));
 			switch (chunkHeader.type)
 			{
 			case 4:
-				sub_76260_read_intro_Palette();
+				ReadIntroPalettes_76260();
 				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"COLOUR256 ");
 				paletteChanged = true;
 				break;
@@ -267,7 +267,7 @@ void DrawFrame_75E70()//256e70
 				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"SS2 ");
 				break;
 			case 11:
-				sub_76260_read_intro_Palette();
+				ReadIntroPalettes_76260();
 				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"COLOUR ");
 				paletteChanged = true;
 				break;
@@ -284,12 +284,12 @@ void DrawFrame_75E70()//256e70
 				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"BRUN ");
 				break;
 			case 16:
-				sub_75D70((uint8_t*)framebuffer_E12F4x, width_17DB4A * height_17DB48);
+				CopyAndShiftFrom17DB50_75D70((uint8_t*)framebuffer_E12F4x, width_17DB4A * height_17DB48);
 				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"COPY ");
 				chunkHeader.size = width_17DB4A * height_17DB48;//added
 				break;
 			case 18:
-				sub_75D70(0, chunkHeader.size - 6);//added
+				CopyAndShiftFrom17DB50_75D70(0, chunkHeader.size - 6);//added
 				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"PSTAMP ");
 				break;
 			default:
@@ -368,33 +368,33 @@ void sub_76300()//257300
 	*/
 
 	v0 = 0;
-	sub_75D70((uint8_t*)&v5, 2u);
+	CopyAndShiftFrom17DB50_75D70((uint8_t*)&v5, 2u);
 	v2 = (uint8_t*)framebuffer_E12F4x;//2b22f4
 	if (v5 > 0u)
 	{
 		do
 		{
 			v3 = v2;
-			sub_75D70((uint8_t*)&v9, 2u);
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&v9, 2u);
 			if ((v9 & 0x8000) == 0)
 			{
 				//v6 = v9;
 				for (i = 0; i < v9; i++)
 				{
-					sub_75D70((uint8_t*)&v11, 1u);
+					CopyAndShiftFrom17DB50_75D70((uint8_t*)&v11, 1u);
 					v3 += v11;
-					sub_75D70((uint8_t*)&v10, 1u);
+					CopyAndShiftFrom17DB50_75D70((uint8_t*)&v10, 1u);
 					if (v10 >= 0)
 					{
 						if (v10 > 0)
 						{
-							sub_75D70((uint8_t*)v3, 2 * v10);
+							CopyAndShiftFrom17DB50_75D70((uint8_t*)v3, 2 * v10);
 							v3 += 2 * v10;
 						}
 					}
 					else
 					{
-						sub_75D70((uint8_t*)&v8, 2u);
+						CopyAndShiftFrom17DB50_75D70((uint8_t*)&v8, 2u);
 						v4 = 0;
 						while (abs(v10) > v4)
 						{
@@ -439,9 +439,9 @@ int sub_76430()
 	unsigned __int8 v9; // [esp+10h] [ebp-8h]
 	unsigned __int8 v10; // [esp+14h] [ebp-4h]
 
-	sub_75D70((uint8_t*)&v6, 2u);
+	CopyAndShiftFrom17DB50_75D70((uint8_t*)&v6, 2u);
 	v0 = height_17DB48 * v6 + (uint8_t*)framebuffer_E12F4x;
-	sub_75D70((uint8_t*)&v6, 2u);
+	CopyAndShiftFrom17DB50_75D70((uint8_t*)&v6, 2u);
 	v5 = 0;
 	result = 0;
 	if (v6 > 0u)
@@ -450,22 +450,22 @@ int sub_76430()
 		{
 			v2 = (char*)v0;
 			v3 = 0;
-			sub_75D70((uint8_t*)&v9, 1u);
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&v9, 1u);
 			while (v3 < (signed int)v9)
 			{
-				sub_75D70((uint8_t*)&v7, 1u);
+				CopyAndShiftFrom17DB50_75D70((uint8_t*)&v7, 1u);
 				v2 += v7;
-				sub_75D70((uint8_t*)&v8, 1u);
+				CopyAndShiftFrom17DB50_75D70((uint8_t*)&v8, 1u);
 				if (v8 >= 0)
 				{
 					if (v8 <= 0)
 						goto LABEL_8;
-					sub_75D70((uint8_t*)v2, v8);
+					CopyAndShiftFrom17DB50_75D70((uint8_t*)v2, v8);
 					v4 = v8;
 				}
 				else
 				{
-					sub_75D70((uint8_t*)&v10, 1u);
+					CopyAndShiftFrom17DB50_75D70((uint8_t*)&v10, 1u);
 					memset(v2, v10, abs(v8));
 					v4 = abs(v8);
 				}
@@ -504,22 +504,22 @@ int sub_76540()//257540
 			break;
 		v1 = (char*)v0;
 		v2 = 0;
-		sub_75D70(0, 1u);
+		CopyAndShiftFrom17DB50_75D70(0, 1u);
 		while (v2 < height_17DB48)
 		{
-			sub_75D70((uint8_t*)&v6, 1u);
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&v6, 1u);
 			if (v6 >= 0)
 			{
 				if (v6 > 0)
 				{
-					sub_75D70((uint8_t*)&v5, 1u);
+					CopyAndShiftFrom17DB50_75D70((uint8_t*)&v5, 1u);
 					memset(v1, v5, v6);
 				}
 			}
 			else
 			{
 				v6 = abs(v6);
-				sub_75D70((uint8_t*)v1, v6);
+				CopyAndShiftFrom17DB50_75D70((uint8_t*)v1, v6);
 			}
 			v2 += v6;
 			v1 += v6;
@@ -654,37 +654,31 @@ LABEL_28:
 // 18074C: using guessed type __int16 x_WORD_18074C_mouse_left2_button;
 
 //----- (00076260) --------------------------------------------------------
-void sub_76260_read_intro_Palette()
+void ReadIntroPalettes_76260()
 {
-	TColor* v0x; // ebx
-	int v1; // esi
-	unsigned __int16 v3; // di
-	uint16_t v4; // [esp+0h] [ebp-Ch]
-	int32_t v5; // [esp+4h] [ebp-8h]
-	unsigned __int8 v6; // [esp+8h] [ebp-4h]
-
-	v0x = unk_17D838x;
-	v1 = 0;
-	sub_75D70((uint8_t*)&v4, 2u);
-	if (v4 > 0u)
+	uint16_t countPalette;
+	int32_t count;
+	uint8 offset;
+	TColor* palette = unk_17D838x;
+	int actPalette = 0;
+	CopyAndShiftFrom17DB50_75D70((uint8_t*)&countPalette, 2u);
+	if (countPalette > 0u)
 	{
 		do
 		{
-			sub_75D70((uint8_t*)&v6, 1u);
-			//v0 += 3 * v6;
-			v0x += v6;
-			v5 = 0;
-			sub_75D70((uint8_t*)&v5, 1u);
-			if (!v5)
-				v5 = 256;
-			for (v3 = 0; v3 < v5; v3++)//mybe read Palette
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&offset, 1u);
+			palette += offset;
+			count = 0;
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&count, 1u);
+			if (!count)
+				count = 256;
+			for (int i = 0; i < count; i++)
 			{
-				sub_75D70((uint8_t*)v0x, 3u);
-				//v0 += 3;
-				v0x++;
+				CopyAndShiftFrom17DB50_75D70((uint8_t*)palette, 3u);
+				palette++;
 			}
-			v1++;
-		} while (v1 < v4);
+			actPalette++;
+		} while (actPalette < countPalette);
 	}
 }
 
