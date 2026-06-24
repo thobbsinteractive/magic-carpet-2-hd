@@ -8,6 +8,7 @@
 #include "PathHelpers.h"
 #include "ControlsDialog.h"
 #include "MultiplayerDialog.h"
+#include "LaunchOptionsDialog.h"
 
 class MainFrame : public wxFrame
 {

@@ -104,14 +104,14 @@ void MainFrame::OnPlay(wxCommandEvent&)
 void MainFrame::OnLaunchOptions(wxCommandEvent&)
 {
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
-	//LaunchOptionsDialog dlg(this, settings.m_LaunchOptions);
-	//if (dlg.ShowModal() == wxID_OK)
-	//{
-	//	auto launchSettings = dlg.GetSettings();
-	//	m_ptrConfig->SaveLaunchOptionsToDoc(launchSettings);
-	//	m_ptrConfig->SaveToFile();
-	//	m_ptrConfig->GetSettingsFromDoc();
-	//}
+	LaunchOptionsDialog dlg(this, settings.m_LaunchArguments);
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		//auto launchSettings = dlg.GetSettings();
+		//m_ptrConfig->SaveLaunchOptionsToDoc(launchSettings);
+		//m_ptrConfig->SaveToFile();
+		//m_ptrConfig->GetSettingsFromDoc();
+	}
 }
 
 void MainFrame::OnMultiplayer(wxCommandEvent&)
