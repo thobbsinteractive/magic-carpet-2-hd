@@ -1,6 +1,6 @@
 #include "MainFrame.h"
 
-MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 600), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
+MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 700), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	wxInitAllImageHandlers();
 
@@ -97,7 +97,9 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 // ── Button handlers ──────────────────────────────────────────────────────────
 void MainFrame::OnPlay(wxCommandEvent&)
 {
-	if (LaunchGame(""))
+	auto settings = m_ptrConfig->GetSettingsFromDoc();
+
+	if (LaunchGame(settings.m_LaunchArguments))
 		Close(true); // close the launcher
 }
 
@@ -107,10 +109,9 @@ void MainFrame::OnLaunchOptions(wxCommandEvent&)
 	LaunchOptionsDialog dlg(this, settings.m_LaunchArguments);
 	if (dlg.ShowModal() == wxID_OK)
 	{
-		//auto launchSettings = dlg.GetSettings();
-		//m_ptrConfig->SaveLaunchOptionsToDoc(launchSettings);
-		//m_ptrConfig->SaveToFile();
-		//m_ptrConfig->GetSettingsFromDoc();
+		settings.m_LaunchArguments = dlg.GetLaunchArguments();
+		m_ptrConfig->SaveLaunchArgumentsToDoc(settings);
+		m_ptrConfig->SaveToFile();
 	}
 }
 

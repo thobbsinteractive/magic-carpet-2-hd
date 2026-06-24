@@ -1,32 +1,33 @@
 #include "LaunchOptionsDialog.h"
 
 LaunchOptionsDialog::LaunchOptionsDialog(wxWindow* parent, std::string launchArguments)
-	: wxDialog(parent, wxID_ANY, "Launch Options", wxDefaultPosition, wxDefaultSize,
-		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+	: wxDialog(parent, wxID_ANY, "Launch Options", wxDefaultPosition, wxSize(430, 460),
+		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	auto* mainSizer = new wxBoxSizer(wxVERTICAL);
-
-	// --- Custom Map ---
-	mainSizer->Add(new wxStaticText(this, wxID_ANY, "Custom Map"),
-		0, wxLEFT | wxRIGHT | wxTOP, 10);
-	auto* mapSizer = new wxBoxSizer(wxHORIZONTAL);
-	m_customMap = new wxTextCtrl(this, wxID_ANY);
-	auto* browseMapBtn = new wxButton(this, wxID_ANY, "Browse...");
-	mapSizer->Add(m_customMap, 1, wxRIGHT, 5);
-	mapSizer->Add(browseMapBtn, 0);
-	mainSizer->Add(mapSizer, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 10);
-
-	mainSizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 10);
 
 	// --- Set Level ---
 	auto* levelSizer = new wxBoxSizer(wxHORIZONTAL);
 	m_setLevel = new wxCheckBox(this, wxID_ANY, "Set Level");
+	m_setLevel->SetToolTip("Jump to a selected Level");
 	m_levelSpin = new wxSpinCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxDefaultSize,
 		wxSP_ARROW_KEYS, 0, 25, 0);
 	m_levelSpin->Enable(false);
+	m_levelSpin->SetToolTip("Jump to a selected Level");
 	levelSizer->Add(m_setLevel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
 	levelSizer->Add(m_levelSpin, 0, wxALIGN_CENTER_VERTICAL);
 	mainSizer->Add(levelSizer, 0, wxLEFT | wxRIGHT | wxTOP, 10);
+
+	// --- Custom Map ---
+	mainSizer->Add(new wxStaticText(this, wxID_ANY, "Run Custom Map"),
+		0, wxLEFT | wxRIGHT | wxTOP, 10);
+	auto* mapSizer = new wxBoxSizer(wxHORIZONTAL);
+	m_customMap = new wxTextCtrl(this, wxID_ANY);
+	m_customMap->SetToolTip("Path of a custom level you have created using the editor");
+	m_browseMapBtn = new wxButton(this, wxID_ANY, "Browse...");
+	mapSizer->Add(m_customMap, 1, wxRIGHT, 5);
+	mapSizer->Add(m_browseMapBtn, 0);
+	mainSizer->Add(mapSizer, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 10);
 
 	mainSizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 10);
 
@@ -34,7 +35,10 @@ LaunchOptionsDialog::LaunchOptionsDialog(wxWindow* parent, std::string launchArg
 	auto* radioSizer = new wxBoxSizer(wxHORIZONTAL);
 	m_radioRecord = new wxRadioButton(this, wxID_ANY, "Record", wxDefaultPosition,
 		wxDefaultSize, wxRB_GROUP);
+	m_radioRecord->SetToolTip("To playback a playthough");
+
 	m_radioPlay = new wxRadioButton(this, wxID_ANY, "Play");
+	m_radioPlay->SetToolTip("To record a playthough");
 	radioSizer->Add(m_radioRecord, 0, wxRIGHT, 15);
 	radioSizer->Add(m_radioPlay, 0);
 	mainSizer->Add(radioSizer, 0, wxLEFT | wxRIGHT | wxTOP, 10);
@@ -58,15 +62,21 @@ LaunchOptionsDialog::LaunchOptionsDialog(wxWindow* parent, std::string launchArg
 	logLevels.Add("Trace");
 	m_logLevel = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, logLevels);
 	m_logLevel->SetSelection(0);
+	m_logLevel->SetToolTip("To change the log level of the game: Info (default), Warning, Debug or Trace (will impact performance)");
 	mainSizer->Add(m_logLevel, 0, wxLEFT | wxRIGHT | wxTOP, 10);
-
-	mainSizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 10);
 
 	// --- Enable In-Game Debug ---
 	m_enableInGameDebug = new wxCheckBox(this, wxID_ANY, "Enable In-Game Debug");
+	m_enableInGameDebug->SetToolTip("To run the game with option to show in game debug info (press 'J' to show)");
 	mainSizer->Add(m_enableInGameDebug, 0, wxLEFT | wxRIGHT | wxTOP, 10);
 
 	mainSizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 10);
+
+	// --- Additional Arguments ---
+	mainSizer->Add(new wxStaticText(this, wxID_ANY, "Custom Arguments"),
+		0, wxLEFT | wxRIGHT | wxTOP, 10);
+	m_extraArgs = new wxTextCtrl(this, wxID_ANY);
+	mainSizer->Add(m_extraArgs, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
 
 	// --- Command Line (read-only) ---
 	mainSizer->Add(new wxStaticText(this, wxID_ANY, "Command Line:"),
@@ -85,9 +95,9 @@ LaunchOptionsDialog::LaunchOptionsDialog(wxWindow* parent, std::string launchArg
 	mainSizer->Add(btnSizer, 0, wxEXPAND | wxALL, 10);
 
 	SetSizerAndFit(mainSizer);
-	SetMinSize(GetSize());
 
 	// --- Bindings ---
+	m_extraArgs->Bind(wxEVT_TEXT, &LaunchOptionsDialog::OnControlChanged, this);
 	m_customMap->Bind(wxEVT_TEXT, &LaunchOptionsDialog::OnControlChanged, this);
 	m_setLevel->Bind(wxEVT_CHECKBOX, &LaunchOptionsDialog::OnSetLevel, this);
 	m_levelSpin->Bind(wxEVT_SPINCTRL, [this](wxSpinEvent&) { BuildCommandLine(); });
@@ -96,8 +106,12 @@ LaunchOptionsDialog::LaunchOptionsDialog(wxWindow* parent, std::string launchArg
 	m_recordPlayFile->Bind(wxEVT_TEXT, &LaunchOptionsDialog::OnControlChanged, this);
 	m_logLevel->Bind(wxEVT_CHOICE, &LaunchOptionsDialog::OnControlChanged, this);
 	m_enableInGameDebug->Bind(wxEVT_CHECKBOX, &LaunchOptionsDialog::OnControlChanged, this);
-	browseMapBtn->Bind(wxEVT_BUTTON, &LaunchOptionsDialog::OnBrowseMap, this);
+	m_browseMapBtn->Bind(wxEVT_BUTTON, &LaunchOptionsDialog::OnBrowseMap, this);
 	browseRecordBtn->Bind(wxEVT_BUTTON, &LaunchOptionsDialog::OnBrowseRecordPlay, this);
+
+	SetMinSize(wxSize(430, 460));
+	SetSize(wxSize(430, 460));
+	Centre();
 
 	// --- Populate controls from launchArguments ---
 	ParseAndApplyArguments(launchArguments);
@@ -118,14 +132,23 @@ void LaunchOptionsDialog::BuildCommandLine()
 			result += token;
 		};
 
-	// --custom_level
-	const auto customLevel = m_customMap->GetValue().ToStdString();
-	if (!customLevel.empty())
-		append("--custom_level \"" + customLevel + "\"");
+	// Free-text additional arguments go first
+	const auto extra = m_extraArgs->GetValue().ToStdString();
+	if (!extra.empty())
+		append(extra);
 
-	// --set_level
+	// --set_level and --custom_level are mutually exclusive:
+	// Set Level takes priority when checked; Custom Map is active only when unchecked.
 	if (m_setLevel->IsChecked())
+	{
 		append("--set_level " + std::to_string(m_levelSpin->GetValue()));
+	}
+	else
+	{
+		const auto customLevel = m_customMap->GetValue().ToStdString();
+		if (!customLevel.empty())
+			append("--custom_level \"" + customLevel + "\"");
+	}
 
 	// --record_file / --play_file
 	const auto recordPath = m_recordPlayFile->GetValue().ToStdString();
@@ -187,6 +210,68 @@ static std::string ExtractValue(const std::string& args, const std::string& flag
 	return args.substr(start, end - start);
 }
 
+static std::string StripKnownFlags(std::string args)
+{
+	static const std::vector<std::string> valuedFlags = {
+		"--custom_level", "--set_level", "--record_file", "--play_file", "--log_level"
+	};
+	static const std::vector<std::string> boolFlags = {
+		"--enable_in_game_debug"
+	};
+
+	for (const auto& flag : boolFlags)
+	{
+		const auto pos = args.find(flag);
+		if (pos != std::string::npos)
+			args.erase(pos, flag.size());
+	}
+
+	for (const auto& flag : valuedFlags)
+	{
+		const auto pos = args.find(flag);
+		if (pos == std::string::npos)
+			continue;
+
+		auto end = pos + flag.size();
+		while (end < args.size() && args[end] == ' ')
+			++end;
+		if (end < args.size() && args[end] == '"')
+		{
+			++end;
+			end = args.find('"', end);
+			if (end != std::string::npos)
+				++end;
+		}
+		else
+		{
+			while (end < args.size() && args[end] != ' ')
+				++end;
+		}
+		args.erase(pos, end - pos);
+	}
+
+	// Trim and collapse whitespace
+	std::string result;
+	bool inSpace = true;
+	for (char c : args)
+	{
+		if (c == ' ')
+		{
+			if (!inSpace)
+				result += ' ';
+			inSpace = true;
+		}
+		else
+		{
+			result += c;
+			inSpace = false;
+		}
+	}
+	if (!result.empty() && result.back() == ' ')
+		result.pop_back();
+	return result;
+}
+
 void LaunchOptionsDialog::ParseAndApplyArguments(const std::string& args)
 {
 	const auto customLevel = ExtractValue(args, "--custom_level");
@@ -229,6 +314,10 @@ void LaunchOptionsDialog::ParseAndApplyArguments(const std::string& args)
 	if (args.find("--enable_in_game_debug") != std::string::npos)
 		m_enableInGameDebug->SetValue(true);
 
+	const auto extra = StripKnownFlags(args);
+	if (!extra.empty())
+		m_extraArgs->SetValue(wxString::FromUTF8(extra));
+
 	BuildCommandLine();
 }
 
@@ -244,6 +333,12 @@ void LaunchOptionsDialog::OnControlChanged(wxCommandEvent&)
 void LaunchOptionsDialog::OnSetLevel(wxCommandEvent&)
 {
 	m_levelSpin->Enable(m_setLevel->IsChecked());
+	m_customMap->Enable(!m_setLevel->IsChecked());
+	m_browseMapBtn->Enable(!m_setLevel->IsChecked());
+
+	if (m_setLevel->IsChecked())
+		m_customMap->SetValue("");
+
 	BuildCommandLine();
 }
 
@@ -253,7 +348,7 @@ void LaunchOptionsDialog::OnBrowseMap(wxCommandEvent&)
 		"Map files (*.mc2)|*.mc2|All files (*.*)|*.*",
 		wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if (dlg.ShowModal() == wxID_OK)
-		m_customMap->SetValue(dlg.GetPath()); // triggers OnControlChanged via EVT_TEXT
+		m_customMap->SetValue(dlg.GetPath());
 }
 
 void LaunchOptionsDialog::OnBrowseRecordPlay(wxCommandEvent&)
@@ -264,5 +359,5 @@ void LaunchOptionsDialog::OnBrowseRecordPlay(wxCommandEvent&)
 		isRecord ? wxFD_SAVE | wxFD_OVERWRITE_PROMPT
 		: wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if (dlg.ShowModal() == wxID_OK)
-		m_recordPlayFile->SetValue(dlg.GetPath()); // triggers OnControlChanged via EVT_TEXT
+		m_recordPlayFile->SetValue(dlg.GetPath());
 }

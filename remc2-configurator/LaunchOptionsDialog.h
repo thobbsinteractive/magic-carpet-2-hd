@@ -11,9 +11,11 @@ public:
 	std::string GetLaunchArguments() const;
 
 private:
-	wxTextCtrl* m_customMap;
+	wxTextCtrl* m_extraArgs;
 	wxCheckBox* m_setLevel;
 	wxSpinCtrl* m_levelSpin;
+	wxTextCtrl* m_customMap;
+	wxButton* m_browseMapBtn;
 	wxRadioButton* m_radioRecord;
 	wxRadioButton* m_radioPlay;
 	wxTextCtrl* m_recordPlayFile;

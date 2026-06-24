@@ -210,7 +210,7 @@ public:
 	Settings::Multiplayer GetMultiplayer(const json& settings);
 	Settings::Game GetGame(const json& settings);
 
-	void SaveSettings(json& document, Settings settings);
+	void SaveLaunchArgumentsToDoc(Config::Settings settings);
 	void SaveSoundToDoc(Settings::Sound soundSettings);
 	void SavePathsToDoc(Settings::Paths pathSettings);
 	void SaveMultiplayerToDoc(Settings::Multiplayer multiplayerSettings);

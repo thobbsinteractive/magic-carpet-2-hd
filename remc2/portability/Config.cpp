@@ -429,6 +429,12 @@ std::string Config::ReadFileToString(std::string fileName)
 	return jsonStr;
 }
 
+void Config::SaveLaunchArgumentsToDoc(Config::Settings settings)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	SetString(settingsEntry, "launchArguments", settings.m_LaunchArguments);
+}
+
 void Config::SavePathsToDoc(Config::Settings::Paths pathSettings)
 {
 	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
@@ -587,23 +593,6 @@ void Config::SaveControlsToDoc(Config::Settings::Controls controlSettings)
 	SetInt(gamePad, "axisPitchDeadZone", controlSettings.m_GamePad.m_AxisPitchDeadZone);
 	SetZones(gamePad, "axisYawSensitivity", controlSettings.m_GamePad.m_AxisYawSensitivity);
 	SetZones(gamePad, "axisPitchSensitivity", controlSettings.m_GamePad.m_AxisPitchSensitivity);
-}
-
-void Config::SaveSettings(json& document, Settings settings)
-{
-	if (!document.contains("settings")) return;
-
-	for (auto& entry : document["settings"])
-	{
-		if (entry.contains("isActive") && entry["isActive"].get<bool>())
-		{
-			SavePathsToDoc(settings.m_Paths);
-			SaveMultiplayerToDoc(settings.m_Multiplayer);
-			SaveGameToDoc(settings.m_Game);
-			SaveControlsToDoc(settings.m_Controls);
-			break;
-		}
-	}
 }
 
 json& Config::GetOrCreateActiveSettingsEntry()
