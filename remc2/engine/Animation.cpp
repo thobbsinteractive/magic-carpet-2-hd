@@ -549,6 +549,7 @@ void sub_75CB0()//256cb0
 	{
 		while (GameTimerTurn_17DB54 < x_DWORD_E3844)
 		{
+			mydelay(1);//fix for timer problem in release version
 			if (x_WORD_E12FE && sub_473E0())
 			{
 				stopPlaybackFlag_17DB5A = 1;
