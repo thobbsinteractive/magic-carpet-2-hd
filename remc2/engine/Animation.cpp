@@ -304,7 +304,7 @@ void DrawFrame_75E70()//256e70
 	sub_75CB0();//256cb0
 	if (paletteChanged)
 	{
-		sub_9A0FC_wait_to_screen_beam();//27b0fc
+		fix_sub_9A0FC_wait_to_screen_beam(1);//27b0fc
 		if (redrawTextInVideo_E12FC)
 		{
 			sub_41A90_VGA_Palette_install(unk_17D838x);
@@ -572,20 +572,15 @@ void sub_75CB0()//256cb0
 // 180744: using guessed type __int16 x_WORD_180744_mouse_right_button;
 // 180746: using guessed type __int16 x_WORD_180746_mouse_left_button;
 
+/*
 //----- (0009A0FC) --------------------------------------------------------
 void sub_9A0FC_wait_to_screen_beam()//27B0fc
 {
 	if (CommandLineParams.DoShowDebugPerifery())ShowPerifery();
 
-	/*unsigned __int8 result; // al
-
-	do
-	  result = __inx_BYTE(0x3DAu);
-	while ( !(result & 8) );
-	return result;*/
 	VGA_Blit(nullptr);
 	mydelay(1);
-}
+}*/
 
 //----- (000473E0) --------------------------------------------------------
 int sub_473E0()//2283e0

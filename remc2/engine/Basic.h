@@ -603,3 +603,5 @@ void sub_417A0_install_pal_and_mouse_minmax();
 unsigned long j___clock();
 
 void SetPlayerLocation(uint16_t x, uint16_t y, int16_t z, int16_t pitch, int16_t roll, int16_t yaw);
+
+void fix_sub_9A0FC_wait_to_screen_beam(int32_t delay);

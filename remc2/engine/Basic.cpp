@@ -3416,3 +3416,10 @@ void SetPlayerLocation(uint16_t x, uint16_t y, int16_t z, int16_t pitch, int16_t
 		ptrPlayerEntity->array_0x52_82.yaw = yaw;
 	}
 }
+
+void fix_sub_9A0FC_wait_to_screen_beam(int32_t delay)//27B0fc
+{
+	VGA_Blit(nullptr);
+	if (delay > 0)
+		mydelay(delay);
+}
