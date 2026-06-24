@@ -217,136 +217,99 @@ void ReadFrame_75DB0()//256db0
 
 int(/*__fastcall*/ *x_DWORD_17DB3C)(); // weak
 
+#pragma pack(push, 1)
+typedef struct {
+	uint32_t size;
+	int16_t  type;   // type chunk:
+	//   4  = COLOUR256 (256-color palette)
+	//   7  = SS2       (delta/RLE frame)
+	//   11 = COLOUR    (64-color palette)
+	//   12 = LC        (line compressed)
+	//   13 = BLACK     (clear frame to black)
+	//   15 = BRUN      (byte run-length compressed)
+	//   16 = COPY      (raw uncompressed frame)
+	//   18 = PSTAMP    (postage stamp / thumbnail)
+} FliChunkHeader;
+#pragma pack(pop)
 //----- (00075E70) --------------------------------------------------------
-void /*__fastcall*/ DrawFrame_75E70()//256e70
+void DrawFrame_75E70()//256e70
 {
-	//int v1; // eax
-	unsigned int v2; // ebx
-	char* v3; // esi
-	char* v4; // edi
-	//char v5; // al
-	//char v6; // al
-	char* v7; // esi
-	char* v8; // esi
-	char* v9; // edi
-	//char v10; // al
-	//char v11; // al
-	char* v12; // esi
-	char* v13; // edi
-	//char v14; // al
-	//char v15; // al
-	char* v16; // edi
-	//char v17; // al
-	//char v18; // al
-	char v19; // al
-	int16_t v20x[3]; // [esp+0h] [ebp-10h]
-	//uint32_t v20y; // [esp+0h] [ebp-10h]
-	//int v21; // [esp+4h] [ebp-Ch]
-	uint8_t* v22; // [esp+8h] [ebp-8h]
-	char v23; // [esp+Ch] [ebp-4h]
-
-	//HIBYTE(a1) = 0;
-	v23 = 0;
+	unsigned int frameChunkIndex;
+	FliChunkHeader chunkHeader;
+	uint8_t* chunkStreamPos;
+	bool paletteChanged = false;
 	x_DWORD_17DB50 = x_DWORD_E9C38_smalltit;
 	x_BYTE_17D738[0] = 0;
 	if (x_WORD_17D724 == 0xf100)
 	{
 		sub_75D70(0, x_DWORD_17D720[0] - 16);
-		/*v1 = */ReadFrame_75DB0();
-		/*a1 = 0;*/DrawFrame_75E70(/*v1*/);
+		ReadFrame_75DB0();
+		DrawFrame_75E70();
 	}
 	else if (x_WORD_17D724 == 0xF1FA)
 	{
-		v2 = 0;
+		frameChunkIndex = 0;
 		while (1)
 		{
-			//a1 = x_WORD_17D726;
-			if (v2 >= x_WORD_17D726)
+			if (frameChunkIndex >= x_WORD_17D726)
 				break;
-			v22 = x_DWORD_17DB50;
-			sub_75D70((uint8_t*)v20x, 6);
-			//v20y = *(uint32_t*)&v20x;			
-			switch (v20x[2])//4? b
+			chunkStreamPos = x_DWORD_17DB50;
+			sub_75D70((uint8_t*)&chunkHeader, sizeof(chunkHeader));
+			switch (chunkHeader.type)
 			{
 			case 4:
-				v3 = (char*)"COLOUR256 ";
 				sub_76260_read_intro_Palette();
-				v4 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v4,v3);
-				v23 = 1;
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"COLOUR256 ");
+				paletteChanged = true;
 				break;
 			case 7:
-				v7 = (char*)"SS2 ";
 				sub_76300();//257300 - uz by mel byt vykreslen text
-				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v16, v7);
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"SS2 ");
 				break;
-			case 0xB:
+			case 11:
 				sub_76260_read_intro_Palette();
-				v8 = (char*)"COLOUR ";
-				v9 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v9, v8);
-				v23 = 1;
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"COLOUR ");
+				paletteChanged = true;
 				break;
-			case 0xC:
-				v7 = (char*)"LC ";
+			case 12:
 				sub_76430();
-				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v16, v7);
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"LC ");
 				break;
-			case 0xD:
+			case 13:
 				memset((void*)framebuffer_E12F4x, 0, height_17DB48 * width_17DB4A);
-				v7 = (char*)"BLACK ";
-				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v16, v7);
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"BLACK ");
 				break;
-			case 0xF:
-				v7 = (char*)"BRUN ";//ok
+			case 15:
 				sub_76540();//257540
-				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v16, v7);
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"BRUN ");
 				break;
-			case 0x10:
+			case 16:
 				sub_75D70((uint8_t*)framebuffer_E12F4x, width_17DB4A * height_17DB48);
-				v12 = (char*)"COPY ";
-				v13 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v13, v12);
-				//v20y = x_WORD_17DB4A * x_WORD_17DB48;
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"COPY ");
+				chunkHeader.size = width_17DB4A * height_17DB48;//added
 				break;
-			case 0x12:
-				/*fix
-					sub_75D70(0, *(uint32_t*)&v20x - 6);
-				*///may be is problem
-				v7 = (char*)"PSTAMP ";
-			//LABEL_23:
-				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v16, v7);
+			case 18:
+				sub_75D70(0, chunkHeader.size - 6);//added
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"PSTAMP ");
 				break;
 			default:
 				break;
 			}
-			v2++;
-			x_DWORD_17DB50 = *(uint32_t*)&v20x + v22;
+			frameChunkIndex++;
+			x_DWORD_17DB50 = chunkHeader.size + chunkStreamPos;
 		}
 	}
 	if (x_DWORD_17DB3C)
 		x_DWORD_17DB3C();
 	sub_75CB0();//256cb0
-	if (v23)
+	if (paletteChanged)
 	{
-		//sub_9A0FC_wait_to_screen_beam();//27b0fc
+		sub_9A0FC_wait_to_screen_beam();//27b0fc
 		if (redrawTextInVideo_E12FC)
 		{
-			/*uint8_t origbyte = 0;
-			uint8_t remakebyte = 0;
-			long compar = compare_with_snapshot((char*)"0160-00256E70", unk_17D838, 0x34e838, 0x300, &origbyte, &remakebyte);
-			*/
-
 			sub_41A90_VGA_Palette_install(unk_17D838x);
-			v19 = getPaletteIndex_5BE80(unk_17D838x, 0x3Fu, 0x3Fu, 0x3Fu);
-			sub_2EC90(v19);//20fc90 -zde se prekresli texty
+			sub_2EC90(getPaletteIndex_5BE80(unk_17D838x, 0x3Fu, 0x3Fu, 0x3Fu));//20fc90 -zde se prekresli texty
 		}
-		sub_9A0FC_wait_to_screen_beam();
 	}
 
 	if (DisplaySubtitles_D41C1)
@@ -359,7 +322,6 @@ void /*__fastcall*/ DrawFrame_75E70()//256e70
 	{
 		sub_90478_VGA_Blit320(fmvFps);
 	}
-
 }
 
 //----- (0002EC60) --------------------------------------------------------
