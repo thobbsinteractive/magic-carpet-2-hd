@@ -7,6 +7,8 @@
 #include "GraphicsDialog.h"
 #include "PathHelpers.h"
 #include "ControlsDialog.h"
+#include "MultiplayerDialog.h"
+#include "LaunchOptionsDialog.h"
 
 class MainFrame : public wxFrame
 {
@@ -18,6 +20,8 @@ private:
 	Config* m_ptrConfig = nullptr;
 
 	void OnPlay(wxCommandEvent& evt);
+	void OnLaunchOptions(wxCommandEvent& evt);
+	void OnMultiplayer(wxCommandEvent& evt);
 	void OnFile(wxCommandEvent& evt);
 	void OnGame(wxCommandEvent& evt);
 	void OnControls(wxCommandEvent& evt);

@@ -1,6 +1,6 @@
 #include "MainFrame.h"
 
-MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 600), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
+MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 700), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	wxInitAllImageHandlers();
 
@@ -24,6 +24,10 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	// ── Buttons ─────────────────────────────────────────────────────────────
 	wxButton* btnPlay = new wxButton(panel, ID_BTN_PLAY, "Play");
 	btnPlay->SetMinSize(wxSize(-1, 40));
+	wxButton* btnLaunchOptions = new wxButton(panel, ID_BTN_LAUNCH_OPTIONS, "Launch Options");
+	btnLaunchOptions->SetMinSize(wxSize(-1, 40));
+	wxButton* btnMultiplayer = new wxButton(panel, ID_BTN_MULTIPLAYER, "Multiplayer");
+	btnMultiplayer->SetMinSize(wxSize(-1, 40));
 	wxButton* btnFile = new wxButton(panel, ID_BTN_FILE, "Game Files");
 	btnFile->SetMinSize(wxSize(-1, 40));
 	wxButton* btnGame = new wxButton(panel, ID_BTN_GAME, "Speed");
@@ -50,6 +54,8 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 
 	buttonSizer->Add(image, flags);
 	buttonSizer->Add(btnPlay, flags);
+	buttonSizer->Add(btnLaunchOptions, flags);
+	buttonSizer->Add(btnMultiplayer, flags);
 	buttonSizer->Add(btnFile, flags);
 	buttonSizer->Add(btnGame, flags);
 	buttonSizer->Add(btnControls, flags);
@@ -75,6 +81,8 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 
 	// ── Event bindings ───────────────────────────────────────────────────────
 	Bind(wxEVT_BUTTON, &MainFrame::OnPlay, this, ID_BTN_PLAY);
+	Bind(wxEVT_BUTTON, &MainFrame::OnLaunchOptions, this, ID_BTN_LAUNCH_OPTIONS);
+	Bind(wxEVT_BUTTON, &MainFrame::OnMultiplayer, this, ID_BTN_MULTIPLAYER);
 	Bind(wxEVT_BUTTON, &MainFrame::OnFile, this, ID_BTN_FILE);
 	Bind(wxEVT_BUTTON, &MainFrame::OnGame, this, ID_BTN_GAME);
 	Bind(wxEVT_BUTTON, &MainFrame::OnControls, this, ID_BTN_CONTROLS);
@@ -89,15 +97,46 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 // ── Button handlers ──────────────────────────────────────────────────────────
 void MainFrame::OnPlay(wxCommandEvent&)
 {
-	// Launch remc2.exe detached (wxEXEC_ASYNC = fire-and-forget)
-	long pid = wxExecute("remc2.exe", wxEXEC_ASYNC);
-	if (pid == 0) {
-		wxMessageBox("Failed to launch Magic Carpet 2 HD.\n"
-			"Make sure it is in the same directory as this application.",
-			"Launch Error", wxOK | wxICON_ERROR, this);
-		return;
+	if (LaunchGame(""))
+		Close(true); // close the launcher
+}
+
+void MainFrame::OnLaunchOptions(wxCommandEvent&)
+{
+	auto settings = m_ptrConfig->GetSettingsFromDoc();
+	LaunchOptionsDialog dlg(this, settings.m_LaunchArguments);
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		settings.m_LaunchArguments = dlg.GetLaunchArguments();
+		m_ptrConfig->SaveLaunchArgumentsToDoc(settings);
+		m_ptrConfig->SaveToFile();
+		LaunchGame(settings.m_LaunchArguments);
+		Close(true);
 	}
-	Close(true); // close the launcher
+}
+
+void MainFrame::OnMultiplayer(wxCommandEvent&)
+{
+	auto settings = m_ptrConfig->GetSettingsFromDoc();
+	MultiplayerDialog dlg(this, settings.m_Multiplayer);
+	auto dialogResult = dlg.ShowModal();
+	if (dialogResult == wxID_NETWORK || dialogResult == wxID_ADD || dialogResult == wxID_OK)
+	{
+		auto multiplayerSettings = dlg.GetMultiplayer();
+		m_ptrConfig->SaveMultiplayerToDoc(multiplayerSettings);
+		m_ptrConfig->SaveToFile();
+		m_ptrConfig->GetSettingsFromDoc();
+
+		if (dialogResult == wxID_NETWORK && LaunchGame("--mode_test_network server " + std::to_string(multiplayerSettings.m_ServerPort) +
+			" client 127.0.0.1 " + std::to_string(multiplayerSettings.m_ServerPort) +
+			" " + std::to_string(multiplayerSettings.m_ServerClientPort)))
+			this->Close();
+
+		if (dialogResult == wxID_ADD && LaunchGame("--mode_test_network client " + multiplayerSettings.m_ClientServerIp +
+			" " + std::to_string(multiplayerSettings.m_ClientServerPort) +
+			" " + std::to_string(multiplayerSettings.m_ClientPort)))
+			this->Close();
+	}
 }
 
 void MainFrame::OnFile(wxCommandEvent&)

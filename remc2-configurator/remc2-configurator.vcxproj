@@ -163,7 +163,9 @@
     <ClCompile Include="DisplayDialog.cpp" />
     <ClCompile Include="GraphicsDialog.cpp" />
     <ClCompile Include="GraphicsFoldersDialog.cpp" />
+    <ClCompile Include="LaunchOptionsDialog.cpp" />
     <ClCompile Include="MainFrame.cpp" />
+    <ClCompile Include="MultiplayerDialog.cpp" />
     <ClCompile Include="PathHelpers.cpp" />
     <ClCompile Include="Remc2ConfiguratorApp.cpp" />
     <ClCompile Include="SoundDialog.cpp" />
@@ -180,7 +182,9 @@
     <ClInclude Include="DisplayDialog.h" />
     <ClInclude Include="GraphicsDialog.h" />
     <ClInclude Include="GraphicsFoldersDialog.h" />
+    <ClInclude Include="LaunchOptionsDialog.h" />
     <ClInclude Include="MainFrame.h" />
+    <ClInclude Include="MultiplayerDialog.h" />
     <ClInclude Include="PathHelpers.h" />
     <ClInclude Include="SoundDialog.h" />
     <ClInclude Include="ThreadingDialog.h" />

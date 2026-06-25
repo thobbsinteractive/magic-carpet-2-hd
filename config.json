@@ -4,6 +4,7 @@
 			"name": "Main",
 			"version": "1.0",
 			"isActive": true,
+			"launchArguments": "",
 			"paths": {
 				"description": [
 					"gameFolder: Main game content folder (after install). Path is relative to .exe",
@@ -11,6 +12,13 @@
 				],
 				"gameFolder": "NETHERW",
 				"cdFolder": "CD_Files"
+			},
+			"multiplayer": {
+				"serverPort": 3030,
+				"serverClientPort": 3031,
+				"clientPort": 3030,
+				"clientServerPort": 3030,
+				"clientServerIp": "127.0.0.1"
 			},
 			"sound": {
 				"description": [
