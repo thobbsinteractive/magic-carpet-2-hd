@@ -114,7 +114,7 @@ JoinDialog::JoinDialog(wxWindow* parent, const Config::Settings::Multiplayer& cf
 
 	auto* btnSizer = new wxBoxSizer(wxHORIZONTAL);
 	auto* btnOK = new wxButton(this, wxID_OK, "Join Game");
-	auto* btnSave = new wxButton(this, wxID_SAVE, "OK");
+	auto* btnSave = new wxButton(this, wxID_SAVE, "Save");
 	auto* btnCancel = new wxButton(this, wxID_CANCEL);
 	btnSizer->Add(btnOK, 0, wxRIGHT, 4);
 	btnSizer->Add(btnSave, 0, wxRIGHT, 4);
