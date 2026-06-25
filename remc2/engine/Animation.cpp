@@ -304,7 +304,7 @@ void DrawFrame_75E70()//256e70
 	sub_75CB0();//256cb0
 	if (paletteChanged)
 	{
-		fix_sub_9A0FC_wait_to_screen_beam(1);//27b0fc
+		fix_sub_9A0FC_wait_to_screen_beam(0);//27b0fc
 		if (redrawTextInVideo_E12FC)
 		{
 			sub_41A90_VGA_Palette_install(unk_17D838x);
