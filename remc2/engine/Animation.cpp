@@ -534,6 +534,17 @@ int sub_76540()//257540
 // 17DB48: using guessed type __int16 x_WORD_17DB48;
 // 17DB4A: using guessed type __int16 x_WORD_17DB4A;
 
+std::string get_current_time_str() {
+	auto now = std::chrono::system_clock::now();
+	auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+	std::stringstream ss;
+	ss << std::put_time(std::localtime(&in_time_t), "%X"); // %X je lokální formát času (HH:MM:SS)
+	return ss.str();
+}
+
+static std::chrono::system_clock::time_point oldTime = std::chrono::system_clock::now();
+
 //----- (00075CB0) --------------------------------------------------------
 void sub_75CB0()//256cb0
 {
@@ -547,6 +558,7 @@ void sub_75CB0()//256cb0
 	}
 	else
 	{
+		Logger->debug("Begin anim wait [{}]: {} {}", get_current_time_str(), GameTimerTurn_17DB54, x_DWORD_E3844);
 		while (GameTimerTurn_17DB54 < x_DWORD_E3844)
 		{
 			if (x_WORD_E12FE && sub_473E0())
@@ -560,6 +572,12 @@ void sub_75CB0()//256cb0
 				return;
 			}
 		}
+		Logger->debug("End anim wait [{}]: {} {}", get_current_time_str(), GameTimerTurn_17DB54, x_DWORD_E3844);
+		auto now = std::chrono::system_clock::now();
+		auto diff = now - oldTime;
+		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
+
+		Logger->debug("Frame len:{} ms:", ms);		
 		GameTimerTurn_17DB54 = 0;
 	}
 }
