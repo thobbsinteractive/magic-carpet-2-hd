@@ -12,12 +12,16 @@ class HostDialog : public wxDialog
 public:
 	HostDialog(wxWindow* parent, const Config::Settings::Multiplayer& cfg);
 
-	int      GetPort() const { return m_cfg.m_ServerPort; }
+	int GetServerPort() const { return m_cfg.m_ServerPort; }
+	int GetServerClientPort() const { return m_cfg.m_ServerClientPort; }
 
 private:
 	Config::Settings::Multiplayer m_cfg;
-	wxSpinCtrl* m_ctrlPort = nullptr;
+	wxSpinCtrl* m_ctrlServerPort;
+	wxSpinCtrl* m_ctrlServerClientPort;
 
+	void OnPortChanged(wxSpinEvent& event);
+	void OnSave(wxCommandEvent&);
 	void OnOK(wxCommandEvent&);
 };
 
@@ -28,14 +32,17 @@ public:
 	JoinDialog(wxWindow* parent, const Config::Settings::Multiplayer& cfg);
 
 	wxString GetIP()   const { return m_cfg.m_ClientServerIp; }
-	int      GetPort() const { return m_cfg.m_ClientServerPort; }
+	int      GetServerPort() const { return m_cfg.m_ClientServerPort; }
+	int      GetClientPort() const { return m_cfg.m_ClientPort; }
 
 private:
 	Config::Settings::Multiplayer m_cfg;
 
-	wxTextCtrl* m_ctrlIP = nullptr;
-	wxSpinCtrl* m_ctrlPort = nullptr;
+	wxTextCtrl* m_ctrlServerIP = nullptr;
+	wxSpinCtrl* m_ctrlServerPort = nullptr;
+	wxSpinCtrl* m_ctrlClientPort;
 
+	void OnSave(wxCommandEvent&);
 	void OnOK(wxCommandEvent&);
 };
 
