@@ -28,7 +28,7 @@ HostDialog::HostDialog(wxWindow* parent, const Config::Settings::Multiplayer& cf
 		wxDefaultPosition, wxSize(180, -1),
 		wxSP_ARROW_KEYS, 1024, 65535, 3031);
 	m_ctrlServerClientPort->SetValue(cfg.m_ServerPort + 1);
-	m_ctrlServerClientPort->SetToolTip("The Port the Host Player will use. Should be different to Host Port");
+	m_ctrlServerClientPort->SetToolTip("The Port the Host Player will use. Should be different to Host Port.");
 	grid->Add(m_ctrlServerClientPort, 1, wxEXPAND);
 
 	sizer->Add(grid, 0, wxEXPAND | wxALL, 12);
@@ -91,7 +91,7 @@ JoinDialog::JoinDialog(wxWindow* parent, const Config::Settings::Multiplayer& cf
 	grid->Add(m_ctrlServerIP, 1, wxEXPAND);
 
 	// Server Port
-	grid->Add(new wxStaticText(this, wxID_ANY, "Port:"),
+	grid->Add(new wxStaticText(this, wxID_ANY, "Server Port:"),
 		0, wxALIGN_CENTER_VERTICAL);
 	m_ctrlServerPort = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
 		wxDefaultPosition, wxSize(180, -1),
@@ -106,7 +106,7 @@ JoinDialog::JoinDialog(wxWindow* parent, const Config::Settings::Multiplayer& cf
 		wxDefaultPosition, wxSize(180, -1),
 		wxSP_ARROW_KEYS, 1024, 65535, 3031);
 	m_ctrlClientPort->SetValue(cfg.m_ClientPort);
-	m_ctrlClientPort->SetToolTip("The Port this client will use. Should be different to Server Port.");
+	m_ctrlClientPort->SetToolTip("The Port this client will use.");
 	grid->Add(m_ctrlClientPort, 1, wxEXPAND);
 
 	sizer->Add(grid, 0, wxEXPAND | wxALL, 12);
