@@ -131,7 +131,7 @@ uint8_t* ViewPortRenderBufferAltStart_DE554 = 0;
 //language
 char* x_DWORD_E9C4C_langindexbuffer[1000]; // idb
 
-int16_t GameTimerTurn_17DB54 = 0;
+volatile int16_t GameTimerTurn_17DB54 = 0;
 uint32_t PitFrequency_F4240 = 1193182; //PIT Frequency
 
 int Int386Request_17FF0C;
