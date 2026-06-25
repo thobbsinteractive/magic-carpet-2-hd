@@ -37,6 +37,10 @@ char x_BYTE_17D738[256]; // idb
 
 __int16 x_WORD_E12FE = 0; // weak
 
+long AnimCurrentTick = 0;
+std::chrono::system_clock::time_point AnimCurrentTime = std::chrono::system_clock::now();
+float AnimTickTime = 8.4f;
+
 //----- (00076160) --------------------------------------------------------
 void PlayInfoFmv(__int16 allowSkip, __int16 redrawText, Type_SoundEvent_E17CC* pSoundEvent, char* path)//sub_76160 - 257160
 {
@@ -61,6 +65,9 @@ void PlayInfoFmv(__int16 allowSkip, __int16 redrawText, Type_SoundEvent_E17CC* p
 		stopPlaybackFlag_17DB5A = 0;
 		FlvInitSet_473B0();//2283b0
 		allowSkipVideo_17DB5C = allowSkip;
+
+		AnimCurrentTick = 0;
+		AnimCurrentTime = std::chrono::system_clock::now();
 		do
 		{
 			SetFrameStart(std::chrono::system_clock::now());
@@ -543,7 +550,7 @@ std::string get_current_time_str() {
 	return ss.str();
 }
 
-static std::chrono::system_clock::time_point oldTime = std::chrono::system_clock::now();
+//std::chrono::system_clock::time_point oldTime = std::chrono::system_clock::now();
 
 //----- (00075CB0) --------------------------------------------------------
 void sub_75CB0()//256cb0
@@ -558,8 +565,14 @@ void sub_75CB0()//256cb0
 	}
 	else
 	{
-		Logger->debug("Begin anim wait [{}]: {} {}", get_current_time_str(), GameTimerTurn_17DB54, x_DWORD_E3844);
-		while (GameTimerTurn_17DB54 < x_DWORD_E3844)
+		//Logger->debug("Begin anim wait [{}]: {} {}", get_current_time_str(), GameTimerTurn_17DB54, x_DWORD_E3844);
+		AnimCurrentTick += x_DWORD_E3844;
+		std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+		// Pokud AnimTickTime a Tick reprezentují milisekundy:
+		//while (now < AnimCurrentTime + std::chrono::milliseconds(AnimCurrentTick * AnimTickTime))
+		std::chrono::system_clock::time_point deadline = AnimCurrentTime + std::chrono::milliseconds(static_cast<long long>(AnimCurrentTick * AnimTickTime));
+		while (now < deadline)
+		//while (GameTimerTurn_17DB54 < x_DWORD_E3844)
 		{
 			if (x_WORD_E12FE && sub_473E0())
 			{
@@ -571,13 +584,17 @@ void sub_75CB0()//256cb0
 				stopPlaybackFlag_17DB5A = 1;
 				return;
 			}
+			now = std::chrono::system_clock::now();
 		}
+		/*
 		Logger->debug("End anim wait [{}]: {} {}", get_current_time_str(), GameTimerTurn_17DB54, x_DWORD_E3844);
-		auto now = std::chrono::system_clock::now();
-		auto diff = now - oldTime;
+		auto now2 = std::chrono::system_clock::now();
+		auto diff = now2 - oldTime;
+		oldTime = now2;
 		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
 
-		Logger->debug("Frame len:{} ms:", ms);		
+		Logger->debug("Frame len:{} ms:", ms);
+		*/
 		GameTimerTurn_17DB54 = 0;
 	}
 }
