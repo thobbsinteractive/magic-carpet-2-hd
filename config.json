@@ -91,7 +91,7 @@
 					"fmvFps: frames per second (18 seems to match original)"
 				],
 				"maxGameFps": 24,
-				"fmvFps": 18
+				"fmvFps": 2000
 			},
 			"controls": {
 				"mouse": [
