@@ -550,8 +550,6 @@ std::string get_current_time_str() {
 	return ss.str();
 }
 
-//std::chrono::system_clock::time_point oldTime = std::chrono::system_clock::now();
-
 //----- (00075CB0) --------------------------------------------------------
 void sub_75CB0()//256cb0
 {
@@ -565,11 +563,8 @@ void sub_75CB0()//256cb0
 	}
 	else
 	{
-		//Logger->debug("Begin anim wait [{}]: {} {}", get_current_time_str(), GameTimerTurn_17DB54, x_DWORD_E3844);
 		AnimCurrentTick += x_DWORD_E3844;
 		std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
-		// Pokud AnimTickTime a Tick reprezentují milisekundy:
-		//while (now < AnimCurrentTime + std::chrono::milliseconds(AnimCurrentTick * AnimTickTime))
 		std::chrono::system_clock::time_point deadline = AnimCurrentTime + std::chrono::milliseconds(static_cast<long long>(AnimCurrentTick * AnimTickTime));
 		while (now < deadline)
 		//while (GameTimerTurn_17DB54 < x_DWORD_E3844)
@@ -586,26 +581,9 @@ void sub_75CB0()//256cb0
 			}
 			now = std::chrono::system_clock::now();
 		}
-		/*
-		Logger->debug("End anim wait [{}]: {} {}", get_current_time_str(), GameTimerTurn_17DB54, x_DWORD_E3844);
-		auto now2 = std::chrono::system_clock::now();
-		auto diff = now2 - oldTime;
-		oldTime = now2;
-		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
-
-		Logger->debug("Frame len:{} ms:", ms);
-		*/
 		GameTimerTurn_17DB54 = 0;
 	}
 }
-// E12FE: using guessed type __int16 x_WORD_E12FE;
-// E3844: using guessed type int x_DWORD_E3844;
-// 17DB54: using guessed type int GameTimerTurn_17DB54;
-// 17DB5A: using guessed type __int16 x_WORD_17DB5A;
-// 17DB5C: using guessed type __int16 x_WORD_17DB5C;
-// 1806E4: using guessed type char x_BYTE_1806E4;
-// 180744: using guessed type __int16 x_WORD_180744_mouse_right_button;
-// 180746: using guessed type __int16 x_WORD_180746_mouse_left_button;
 
 /*
 //----- (0009A0FC) --------------------------------------------------------
