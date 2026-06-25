@@ -43046,37 +43046,49 @@ void sub_46DD0_init_sound_and_music()//227DD0
 	sub_83CC0(21);
 }
 
-/* stub code move to other file
-typedef struct {
-	int      increment;     // stejná role jako "increment" / dělič PIT (10022)
-	int      accumulator;   // frakční akumulátor
-	uint32_t fast_tick_count;   // náhrada dword_17DB54
-	void   (*slow_tick_cb)(void); // náhrada starého INT8 handleru
-	bool     running;
-	pthread_t thread;
-} FastTimer;
-static FastTimer g_timer;
-void* sub_6FD30(void* arg)
-{
-	(void)arg;
-	struct timespec interval;
-	interval.tv_sec = 0;
-	interval.tv_nsec = 1000000000L / 119;   // ~119 Hz
-	while (g_timer.running)	{
-		nanosleep(&interval, NULL);
-		GameTimerTurn_17DB54++;
-		x_D41A0_BYTEARRAY_4_struct.dwordindex_2392 += x_D41A0_BYTEARRAY_4_struct.dwordindex_2388;
+static void (*slow_tick_cb)(void) = nullptr;     // náhrada _chain_intr -> starý handler
 
-		if (x_D41A0_BYTEARRAY_4_struct.dwordindex_2392 >= 0x10000)
+static std::thread       gameTimerThread;
+static std::atomic<bool> gameTimerRunning{ false };
+
+static void sub_6FD30()
+{
+	// 119 Hz ~ 8.4 ms perioda; sleep_for(1ms) jako v netThread, tick řešíme akumulátorem
+	auto nextTick = std::chrono::steady_clock::now();
+	const auto interval = std::chrono::microseconds(1000000 / 119);
+
+	while (gameTimerRunning.load())
+	{
+		auto now = std::chrono::steady_clock::now();
+		if (now >= nextTick)
 		{
-			x_D41A0_BYTEARRAY_4_struct.dwordindex_2392 -= 0x10000;
-			if (slow_tick_callback)
-				slow_tick_callback();
+			nextTick += interval;
+			GameTimerTurn_17DB54++;
+			x_D41A0_BYTEARRAY_4_struct.dwordindex_2392 += x_D41A0_BYTEARRAY_4_struct.dwordindex_2388;
+			if (x_D41A0_BYTEARRAY_4_struct.dwordindex_2392 >= 0x10000)
+			{
+				x_D41A0_BYTEARRAY_4_struct.dwordindex_2392 -= 0x10000;
+
+				if (slow_tick_cb)
+					slow_tick_cb();
+			}
 		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
-	return NULL;
 }
-*/
+
+void StopProgrammableIntervalTimer()
+{
+	if (!gameTimerRunning.load()) return;
+	gameTimerRunning.store(false);
+	if (gameTimerThread.joinable())
+		gameTimerThread.join();
+}
+
+struct GameTimerGuard {
+	~GameTimerGuard() { StopProgrammableIntervalTimer(); }
+};
+static GameTimerGuard g_gameTimerGuard;
 
 //----- (0006FDA0) --------------------------------------------------------
 void SetProgrammableIntervalTimer_6FDA0()//fix//250da0
@@ -43103,8 +43115,9 @@ void SetProgrammableIntervalTimer_6FDA0()//fix//250da0
 	 //result = dos_setvect(8, (DWORD)sub_6FD30, (unsigned __int16)__CS__);
 	 //BYTE1(result) = 1;
 	x_BYTE_DB734 = 1;
-	//g_timer.running = true;//this uncoment and fix the timer
-	//pthread_create(&g_timer.thread, NULL, sub_6FD30, NULL);//this uncomment and fix the timer
+	if (gameTimerRunning.load()) return;
+	gameTimerRunning.store(true);
+	gameTimerThread = std::thread(sub_6FD30);
 	//return result;
 }
 
