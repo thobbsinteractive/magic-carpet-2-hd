@@ -505,7 +505,7 @@ extern type_TMAPS00TAB_BEGIN_BUFFER* str_TMAPS00TAB_BEGIN_BUFFER;
 
 extern uint8_t* Zero_pointer;
 
-volatile extern int16_t GameTimerTurn_17DB54; // weak
+volatile extern int16_t GameTimerTurn_17DB54; // 34EB54
 
 extern uint32_t PitFrequency_F4240;
 
