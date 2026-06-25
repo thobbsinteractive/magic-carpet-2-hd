@@ -3221,14 +3221,14 @@ int NewGameDraw_7EAE0(int16_t* posx, int16_t* posy, __int16* portPosX, __int16* 
 			}
 		}
 		int tempPosX;
-		if (index4 != -1)
+		if ((index4 != -1) && (index4 != 0))
 		{
 			mapScreenPortals_E17CC[index4 - 1].activated_18 = 2;
 			tempPosX = mapScreenPortals_E17CC[index4].viewPortPosX_4;
 			mapScreenPortals_E17CC[index4].viewPortPosX_4 = 0;
 		}
 		MapMenuPortalsDraw_81760();
-		if (index4 != -1)
+		if ((index4 != -1) && (index4 != 0))
 		{
 			mapScreenPortals_E17CC[index4 - 1].activated_18 = 1;
 			mapScreenPortals_E17CC[index4].viewPortPosX_4 = tempPosX;
