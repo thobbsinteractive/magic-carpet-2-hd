@@ -1,6 +1,6 @@
 #include "MainFrame.h"
 
-MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 700), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
+MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(416, 520), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	wxInitAllImageHandlers();
 
@@ -30,16 +30,8 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	btnMultiplayer->SetMinSize(wxSize(-1, 40));
 	wxButton* btnFile = new wxButton(panel, ID_BTN_FILE, "Game Files");
 	btnFile->SetMinSize(wxSize(-1, 40));
-	wxButton* btnGame = new wxButton(panel, ID_BTN_GAME, "Speed");
-	btnGame->SetMinSize(wxSize(-1, 40));
-	wxButton* btnControls = new wxButton(panel, ID_BTN_CONTROLS, "Controls");
-	btnControls->SetMinSize(wxSize(-1, 40));
-	wxButton* btnSound = new wxButton(panel, ID_BTN_SOUND, "Sound");
-	btnSound->SetMinSize(wxSize(-1, 40));
-	wxButton* btnDisplay = new wxButton(panel, ID_BTN_DISPLAY, "Display");
-	btnDisplay->SetMinSize(wxSize(-1, 40));
-	wxButton* btnGraphics = new wxButton(panel, ID_BTN_GRAPHICS, "Graphics");
-	btnGraphics->SetMinSize(wxSize(-1, 40));
+	wxButton* btnSettings = new wxButton(panel, ID_BTN_SETTINGS, "Settings");
+	btnSettings->SetMinSize(wxSize(-1, 40));
 	wxButton* btnExit = new wxButton(panel, ID_BTN_EXIT, "Exit");
 	btnExit->SetMinSize(wxSize(-1, 40));
 
@@ -57,11 +49,7 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	buttonSizer->Add(btnLaunchOptions, flags);
 	buttonSizer->Add(btnMultiplayer, flags);
 	buttonSizer->Add(btnFile, flags);
-	buttonSizer->Add(btnGame, flags);
-	buttonSizer->Add(btnControls, flags);
-	buttonSizer->Add(btnSound, flags);
-	buttonSizer->Add(btnDisplay, flags);
-	buttonSizer->Add(btnGraphics, flags);
+	buttonSizer->Add(btnSettings, flags);
 	buttonSizer->Add(btnExit, flags);
 
 	vSizer->Add(
@@ -84,11 +72,7 @@ MainFrame::MainFrame(const wxString& title, const std::string fileName) : wxFram
 	Bind(wxEVT_BUTTON, &MainFrame::OnLaunchOptions, this, ID_BTN_LAUNCH_OPTIONS);
 	Bind(wxEVT_BUTTON, &MainFrame::OnMultiplayer, this, ID_BTN_MULTIPLAYER);
 	Bind(wxEVT_BUTTON, &MainFrame::OnFile, this, ID_BTN_FILE);
-	Bind(wxEVT_BUTTON, &MainFrame::OnGame, this, ID_BTN_GAME);
-	Bind(wxEVT_BUTTON, &MainFrame::OnControls, this, ID_BTN_CONTROLS);
-	Bind(wxEVT_BUTTON, &MainFrame::OnSound, this, ID_BTN_SOUND);
-	Bind(wxEVT_BUTTON, &MainFrame::OnDisplay, this, ID_BTN_DISPLAY);
-	Bind(wxEVT_BUTTON, &MainFrame::OnGraphics, this, ID_BTN_GRAPHICS);
+	Bind(wxEVT_BUTTON, &MainFrame::OnSettings, this, ID_BTN_SETTINGS);
 	Bind(wxEVT_BUTTON, &MainFrame::OnExit, this, ID_BTN_EXIT);
 
 	Centre(); // centre on screen
@@ -152,76 +136,13 @@ void MainFrame::OnFile(wxCommandEvent&)
 	}
 }
 
-void MainFrame::OnGame(wxCommandEvent&)
+void MainFrame::OnSettings(wxCommandEvent&)
 {
-	auto settings = m_ptrConfig->GetSettingsFromDoc();
-	GameDialog dlg(this, settings.m_Game);
-	dlg.SetMinSize(wxSize(286, 194));
-	if (dlg.ShowModal() == wxID_OK) {
-		auto gameSettings = dlg.GetSettings();
-		m_ptrConfig->SaveGameToDoc(gameSettings);
-		m_ptrConfig->SaveToFile();
-		m_ptrConfig->GetSettingsFromDoc();
-	}
+	SettingsDialog dlg(this, m_ptrConfig);
+	dlg.SetMinSize(wxSize(300, 290));
+	dlg.ShowModal();
 }
 
-void MainFrame::OnControls(wxCommandEvent&) 
-{ 
-	auto settings = m_ptrConfig->GetSettingsFromDoc();
-	ControlsDialog dlg(this, settings.m_Controls);
-	dlg.SetMinSize(wxSize(666, 950));
-	if (dlg.ShowModal() == wxID_OK)
-	{
-		auto controlSettings = dlg.GetSettings();
-		m_ptrConfig->SaveControlsToDoc(controlSettings);
-		m_ptrConfig->SaveToFile();
-		m_ptrConfig->GetSettingsFromDoc();
-	}
-}
-
-void MainFrame::OnSound(wxCommandEvent&)
-{
-	auto settings = m_ptrConfig->GetSettingsFromDoc();
-	SoundDialog dlg(this, settings.m_Sound);
-	dlg.SetMinSize(wxSize(404, 332));
-	if (dlg.ShowModal() == wxID_OK)
-	{
-		auto soundSettings = dlg.GetSettings();
-		m_ptrConfig->SaveSoundToDoc(soundSettings);
-		m_ptrConfig->SaveToFile();
-		m_ptrConfig->GetSettingsFromDoc();
-	}
-}
-
-void MainFrame::OnDisplay(wxCommandEvent&)
-{
-	auto settings = m_ptrConfig->GetSettingsFromDoc();
-	DisplayDialog dlg(this, settings.m_Graphics);
-	dlg.SetMinSize(wxSize(270, 300));
-	if (dlg.ShowModal() == wxID_OK)
-	{
-		auto graphicSettings = dlg.GetSettings();
-		m_ptrConfig->SaveGraphicsToDoc(graphicSettings);
-		m_ptrConfig->SaveToFile();
-		m_ptrConfig->GetSettingsFromDoc();
-	}
-}
-
-void MainFrame::OnGraphics(wxCommandEvent&)
-{
-	auto settings = m_ptrConfig->GetSettingsFromDoc();
-	GraphicsDialog dlg(this, settings.m_Graphics);
-	dlg.SetMinSize(wxSize(210, 310));
-	if (dlg.ShowModal() == wxID_OK)
-	{
-		auto graphicSettings = dlg.GetSettings();
-		m_ptrConfig->SaveGraphicsToDoc(graphicSettings);
-		m_ptrConfig->SaveToFile();
-		m_ptrConfig->GetSettingsFromDoc();
-	}
-}
-
-// Event handlers
 void MainFrame::OnExit(wxCommandEvent& WXUNUSED(event))
 {
 	// true is to force the frame to close

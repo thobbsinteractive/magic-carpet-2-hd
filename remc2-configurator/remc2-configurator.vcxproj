@@ -88,11 +88,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-		<PostBuildEvent>
-			<Command>
+    <PostBuildEvent>
+      <Command>
 				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)/" /Y /F
 			</Command>
-		</PostBuildEvent>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -109,11 +109,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-		<PostBuildEvent>
-			<Command>
+    <PostBuildEvent>
+      <Command>
 				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)/" /Y /F
 			</Command>
-		</PostBuildEvent>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -128,11 +128,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-		<PostBuildEvent>
-			<Command>
+    <PostBuildEvent>
+      <Command>
 				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)/" /Y /F
 			</Command>
-		</PostBuildEvent>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -149,11 +149,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-		<PostBuildEvent>
-			<Command>
+    <PostBuildEvent>
+      <Command>
 				XCOPY "$(ProjectDir)mc2_hd_logo.png" "$(TargetDir)/" /Y /F
 			</Command>
-		</PostBuildEvent>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\remc2\portability\Config.cpp" />
@@ -168,6 +168,7 @@
     <ClCompile Include="MultiplayerDialog.cpp" />
     <ClCompile Include="PathHelpers.cpp" />
     <ClCompile Include="Remc2ConfiguratorApp.cpp" />
+    <ClCompile Include="SettingsDialog.cpp" />
     <ClCompile Include="SoundDialog.cpp" />
     <ClCompile Include="ThreadingDialog.cpp" />
     <ClCompile Include="ZoneEditorCtrl.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="MultiplayerDialog.h" />
     <ClInclude Include="PathHelpers.h" />
+    <ClInclude Include="SettingsDialog.h" />
     <ClInclude Include="SoundDialog.h" />
     <ClInclude Include="ThreadingDialog.h" />
     <ClInclude Include="ZoneEditorCtrl.h" />
