@@ -4,6 +4,8 @@ set(SOURCE_FILES_CONFIGURATOR
     "Remc2ConfiguratorApp.cpp"
     "../remc2/portability/Config.cpp"
     "../remc2/portability/Config.h"
+	"SettingsDialog.cpp"
+	"SettingsDialog.h"
 	"LaunchOptionsDialog.cpp"
 	"LaunchOptionsDialog.h"
     "MultiplayerDialog.cpp"
