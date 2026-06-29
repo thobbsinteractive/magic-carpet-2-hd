@@ -88,12 +88,15 @@ LaunchOptionsDialog::LaunchOptionsDialog(wxWindow* parent, std::string launchArg
 	mainSizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 	// --- Buttons ---
-	auto* btnSizer = new wxStdDialogButtonSizer();
-	btnSizer->AddButton(new wxButton(this, wxID_OK, "Launch"));
-	btnSizer->AddButton(new wxButton(this, wxID_CANCEL));
-	btnSizer->Realize();
-	mainSizer->Add(btnSizer, 0, wxEXPAND | wxALL, 10);
+	auto* btnSizer = new wxBoxSizer(wxHORIZONTAL);
+	auto* btnOK = new wxButton(this, wxID_OK, "Launch Game");
+	auto* btnSave = new wxButton(this, wxID_SAVE, "Save");
+	auto* btnCancel = new wxButton(this, wxID_CANCEL);
+	btnSizer->Add(btnOK, 0, wxRIGHT, 4);
+	btnSizer->Add(btnSave, 0, wxRIGHT, 4);
+	btnSizer->Add(btnCancel, 0);
 
+	mainSizer->Add(btnSizer, 0, wxALIGN_CENTER | wxALL, 8);
 	SetSizerAndFit(mainSizer);
 
 	// --- Bindings ---
@@ -112,6 +115,9 @@ LaunchOptionsDialog::LaunchOptionsDialog(wxWindow* parent, std::string launchArg
 	SetMinSize(wxSize(430, 460));
 	SetSize(wxSize(430, 460));
 	Centre();
+
+	btnOK->Bind(wxEVT_BUTTON, &LaunchOptionsDialog::OnOK, this);
+	btnSave->Bind(wxEVT_BUTTON, &LaunchOptionsDialog::OnSave, this);
 
 	// --- Populate controls from launchArguments ---
 	ParseAndApplyArguments(launchArguments);
@@ -360,4 +366,14 @@ void LaunchOptionsDialog::OnBrowseRecordPlay(wxCommandEvent&)
 		: wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if (dlg.ShowModal() == wxID_OK)
 		m_recordPlayFile->SetValue(dlg.GetPath());
+}
+
+void LaunchOptionsDialog::OnSave(wxCommandEvent&)
+{
+	EndModal(wxID_SAVE);
+}
+
+void LaunchOptionsDialog::OnOK(wxCommandEvent&)
+{
+	EndModal(wxID_OK);
 }
