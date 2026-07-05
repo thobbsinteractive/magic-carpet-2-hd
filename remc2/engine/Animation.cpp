@@ -322,12 +322,12 @@ void DrawFrame_75E70()//256e70
 	if (DisplaySubtitles_D41C1)
 	{
 		pdwScreenBuffer_351628 += 0x26C0;
-		sub_90478_VGA_Blit320(fmvFps);
+		sub_90478_VGA_Blit320(UINT8_MAX);
 		pdwScreenBuffer_351628 -= 0x26C0;
 	}
 	else
 	{
-		sub_90478_VGA_Blit320(fmvFps);
+		sub_90478_VGA_Blit320(UINT8_MAX);
 	}
 }
 

@@ -168,7 +168,6 @@ Config::Settings::Game Config::GetGame(const json& settings)
 	{
 		const auto& game = settings["game"];
 		gameValues.m_MaxGameFps = ReadIntValue(game, "maxGameFps");
-		gameValues.m_FmvFps = ReadIntValue(game, "fmvFps");
 		gameValues.m_SkipIntro = ReadBoolValue(game, "skipIntro");
 	}
 	return gameValues;
@@ -484,7 +483,6 @@ void Config::SaveGameToDoc(Config::Settings::Game gameSettings)
 	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
 	auto& game = GetOrCreate(settingsEntry, "game");
 	SetInt(game, "maxGameFps", gameSettings.m_MaxGameFps);
-	SetInt(game, "fmvFps", gameSettings.m_FmvFps);
 	SetBool(game, "skipIntro", gameSettings.m_SkipIntro);
 }
 

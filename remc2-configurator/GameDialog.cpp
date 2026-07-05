@@ -19,16 +19,6 @@ GameDialog::GameDialog(wxWindow* parent, const Config::Settings::Game& g)
 	maxRow->Add(maxGameLabel, wxSizerFlags(0).CentreVertical().Border(wxRIGHT, 6));
 	maxRow->Add(m_maxGameFps, wxSizerFlags(0));
 
-	// ── FMV FPS row ──────────────────────────────────────────────────────────
-	auto* fmvFpsLabel = new wxStaticText(panel, wxID_ANY, "FMV Frames per Second (18 default):");
-	m_maxFmvFps = new wxSpinCtrl(panel, wxID_ANY, wxEmptyString,
-		wxDefaultPosition, wxDefaultSize,
-		wxSP_ARROW_KEYS, 0, 340, g.m_FmvFps);
-	m_maxFmvFps->SetToolTip("Frames Per Second for FMV playback. Set to 0 to unlock.");
-	wxBoxSizer* fmvRow = new wxBoxSizer(wxHORIZONTAL);
-	fmvRow->Add(fmvFpsLabel, wxSizerFlags(0).CentreVertical().Border(wxRIGHT, 6));
-	fmvRow->Add(m_maxFmvFps, wxSizerFlags(0));
-
 	// ── Skip Intro checkbox ──────────────────────────────────────────────────
 	m_skipIntro = new wxCheckBox(panel, wxID_ANY, "Skip Intro");
 	m_skipIntro->SetValue(g.m_SkipIntro);
@@ -44,7 +34,6 @@ GameDialog::GameDialog(wxWindow* parent, const Config::Settings::Game& g)
 	const wxSizerFlags rowFlags = wxSizerFlags(0).Expand().Border(wxLEFT | wxRIGHT | wxTOP, 12);
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	mainSizer->Add(maxRow, rowFlags);
-	mainSizer->Add(fmvRow, rowFlags);
 	mainSizer->Add(m_skipIntro, wxSizerFlags(0).Border(wxLEFT | wxRIGHT | wxTOP, 12));
 	mainSizer->AddStretchSpacer(1);
 	mainSizer->Add(btnSizer, wxSizerFlags(0).Expand().Border(wxALL, 8));
@@ -60,7 +49,6 @@ Config::Settings::Game GameDialog::GetSettings() const
 {
 	Config::Settings::Game g;
 	g.m_MaxGameFps = m_maxGameFps->GetValue();
-	g.m_FmvFps = m_maxFmvFps->GetValue();
 	g.m_SkipIntro = m_skipIntro->GetValue();
 	return g;
 }
