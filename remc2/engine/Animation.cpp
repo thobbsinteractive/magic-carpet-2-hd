@@ -37,6 +37,10 @@ char x_BYTE_17D738[256]; // idb
 
 __int16 x_WORD_E12FE = 0; // weak
 
+long AnimCurrentTick = 0;
+std::chrono::system_clock::time_point AnimCurrentTime = std::chrono::system_clock::now();
+float AnimTickTime = 8.4f;
+
 //----- (00076160) --------------------------------------------------------
 void PlayInfoFmv(__int16 allowSkip, __int16 redrawText, Type_SoundEvent_E17CC* pSoundEvent, char* path)//sub_76160 - 257160
 {
@@ -61,6 +65,9 @@ void PlayInfoFmv(__int16 allowSkip, __int16 redrawText, Type_SoundEvent_E17CC* p
 		stopPlaybackFlag_17DB5A = 0;
 		FlvInitSet_473B0();//2283b0
 		allowSkipVideo_17DB5C = allowSkip;
+
+		AnimCurrentTick = 0;
+		AnimCurrentTime = std::chrono::system_clock::now();
 		do
 		{
 			SetFrameStart(std::chrono::system_clock::now());
@@ -98,7 +105,7 @@ void PlayIntoSoundEvents_1B280(Type_SoundEvent_E17CC* pSoundEvent)//1fc280
 		{
 		case 'A':
 		case 'a':
-			x_DWORD_E3844 = 0;
+			x_DWORD_E3844 = pSoundEvent[soundEventIndex_D4004].index;
 			break;
 		case 'B':
 		case 'b':
@@ -217,149 +224,111 @@ void ReadFrame_75DB0()//256db0
 
 int(/*__fastcall*/ *x_DWORD_17DB3C)(); // weak
 
+#pragma pack(push, 1)
+typedef struct {
+	uint32_t size;
+	int16_t  type;   // type chunk:
+	//   4  = COLOUR256 (256-color palette)
+	//   7  = SS2       (delta/RLE frame)
+	//   11 = COLOUR    (64-color palette)
+	//   12 = LC        (line compressed)
+	//   13 = BLACK     (clear frame to black)
+	//   15 = BRUN      (byte run-length compressed)
+	//   16 = COPY      (raw uncompressed frame)
+	//   18 = PSTAMP    (postage stamp / thumbnail)
+} FliChunkHeader;
+#pragma pack(pop)
 //----- (00075E70) --------------------------------------------------------
-void /*__fastcall*/ DrawFrame_75E70()//256e70
+void DrawFrame_75E70()//256e70
 {
-	//int v1; // eax
-	unsigned int v2; // ebx
-	char* v3; // esi
-	char* v4; // edi
-	//char v5; // al
-	//char v6; // al
-	char* v7; // esi
-	char* v8; // esi
-	char* v9; // edi
-	//char v10; // al
-	//char v11; // al
-	char* v12; // esi
-	char* v13; // edi
-	//char v14; // al
-	//char v15; // al
-	char* v16; // edi
-	//char v17; // al
-	//char v18; // al
-	char v19; // al
-	int16_t v20x[3]; // [esp+0h] [ebp-10h]
-	//uint32_t v20y; // [esp+0h] [ebp-10h]
-	//int v21; // [esp+4h] [ebp-Ch]
-	uint8_t* v22; // [esp+8h] [ebp-8h]
-	char v23; // [esp+Ch] [ebp-4h]
-
-	//HIBYTE(a1) = 0;
-	v23 = 0;
+	unsigned int frameChunkIndex;
+	FliChunkHeader chunkHeader;
+	uint8_t* chunkStreamPos;
+	bool paletteChanged = false;
 	x_DWORD_17DB50 = x_DWORD_E9C38_smalltit;
 	x_BYTE_17D738[0] = 0;
 	if (x_WORD_17D724 == 0xf100)
 	{
-		sub_75D70(0, x_DWORD_17D720[0] - 16);
-		/*v1 = */ReadFrame_75DB0();
-		/*a1 = 0;*/DrawFrame_75E70(/*v1*/);
+		CopyAndShiftFrom17DB50_75D70(0, x_DWORD_17D720[0] - 16);
+		ReadFrame_75DB0();
+		DrawFrame_75E70();
 	}
 	else if (x_WORD_17D724 == 0xF1FA)
 	{
-		v2 = 0;
+		frameChunkIndex = 0;
 		while (1)
 		{
-			//a1 = x_WORD_17D726;
-			if (v2 >= x_WORD_17D726)
+			if (frameChunkIndex >= x_WORD_17D726)
 				break;
-			v22 = x_DWORD_17DB50;
-			sub_75D70((uint8_t*)v20x, 6);
-			//v20y = *(uint32_t*)&v20x;			
-			switch (v20x[2])//4? b
+			chunkStreamPos = x_DWORD_17DB50;
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&chunkHeader, sizeof(chunkHeader));
+			switch (chunkHeader.type)
 			{
 			case 4:
-				v3 = (char*)"COLOUR256 ";
-				sub_76260_read_intro_Palette();
-				v4 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v4,v3);
-				v23 = 1;
+				ReadIntroPalettes_76260();
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"COLOUR256 ");
+				paletteChanged = true;
 				break;
 			case 7:
-				v7 = (char*)"SS2 ";
 				sub_76300();//257300 - uz by mel byt vykreslen text
-				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v16, v7);
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"SS2 ");
 				break;
-			case 0xB:
-				sub_76260_read_intro_Palette();
-				v8 = (char*)"COLOUR ";
-				v9 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v9, v8);
-				v23 = 1;
+			case 11:
+				ReadIntroPalettes_76260();
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"COLOUR ");
+				paletteChanged = true;
 				break;
-			case 0xC:
-				v7 = (char*)"LC ";
+			case 12:
 				sub_76430();
-				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v16, v7);
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"LC ");
 				break;
-			case 0xD:
+			case 13:
 				memset((void*)framebuffer_E12F4x, 0, height_17DB48 * width_17DB4A);
-				v7 = (char*)"BLACK ";
-				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v16, v7);
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"BLACK ");
 				break;
-			case 0xF:
-				v7 = (char*)"BRUN ";//ok
+			case 15:
 				sub_76540();//257540
-				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v16, v7);
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"BRUN ");
 				break;
-			case 0x10:
-				sub_75D70((uint8_t*)framebuffer_E12F4x, width_17DB4A * height_17DB48);
-				v12 = (char*)"COPY ";
-				v13 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v13, v12);
-				//v20y = x_WORD_17DB4A * x_WORD_17DB48;
+			case 16:
+				CopyAndShiftFrom17DB50_75D70((uint8_t*)framebuffer_E12F4x, width_17DB4A * height_17DB48);
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"COPY ");
+				chunkHeader.size = width_17DB4A * height_17DB48;//added
 				break;
-			case 0x12:
-				/*fix
-					sub_75D70(0, *(uint32_t*)&v20x - 6);
-				*///may be is problem
-				v7 = (char*)"PSTAMP ";
-			//LABEL_23:
-				v16 = &x_BYTE_17D738[strlen(x_BYTE_17D738)];
-				strcpy(v16, v7);
+			case 18:
+				CopyAndShiftFrom17DB50_75D70(0, chunkHeader.size - 6);//added
+				strcpy(&x_BYTE_17D738[strlen(x_BYTE_17D738)], (char*)"PSTAMP ");
 				break;
 			default:
 				break;
 			}
-			v2++;
-			x_DWORD_17DB50 = *(uint32_t*)&v20x + v22;
+			frameChunkIndex++;
+			x_DWORD_17DB50 = chunkHeader.size + chunkStreamPos;
 		}
 	}
 	if (x_DWORD_17DB3C)
 		x_DWORD_17DB3C();
 	sub_75CB0();//256cb0
-	if (v23)
+	if (paletteChanged)
 	{
-		//sub_9A0FC_wait_to_screen_beam();//27b0fc
+		fix_sub_9A0FC_wait_to_screen_beam(0);//27b0fc
 		if (redrawTextInVideo_E12FC)
 		{
-			/*uint8_t origbyte = 0;
-			uint8_t remakebyte = 0;
-			long compar = compare_with_snapshot((char*)"0160-00256E70", unk_17D838, 0x34e838, 0x300, &origbyte, &remakebyte);
-			*/
-
 			sub_41A90_VGA_Palette_install(unk_17D838x);
-			v19 = getPaletteIndex_5BE80(unk_17D838x, 0x3Fu, 0x3Fu, 0x3Fu);
-			sub_2EC90(v19);//20fc90 -zde se prekresli texty
+			sub_2EC90(getPaletteIndex_5BE80(unk_17D838x, 0x3Fu, 0x3Fu, 0x3Fu));//20fc90 -zde se prekresli texty
 		}
-		sub_9A0FC_wait_to_screen_beam();
 	}
 
 	if (DisplaySubtitles_D41C1)
 	{
 		pdwScreenBuffer_351628 += 0x26C0;
-		sub_90478_VGA_Blit320(fmvFps);
+		sub_90478_VGA_Blit320(UINT8_MAX);
 		pdwScreenBuffer_351628 -= 0x26C0;
 	}
 	else
 	{
-		sub_90478_VGA_Blit320(fmvFps);
+		sub_90478_VGA_Blit320(UINT8_MAX);
 	}
-
 }
 
 //----- (0002EC60) --------------------------------------------------------
@@ -406,33 +375,33 @@ void sub_76300()//257300
 	*/
 
 	v0 = 0;
-	sub_75D70((uint8_t*)&v5, 2u);
+	CopyAndShiftFrom17DB50_75D70((uint8_t*)&v5, 2u);
 	v2 = (uint8_t*)framebuffer_E12F4x;//2b22f4
 	if (v5 > 0u)
 	{
 		do
 		{
 			v3 = v2;
-			sub_75D70((uint8_t*)&v9, 2u);
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&v9, 2u);
 			if ((v9 & 0x8000) == 0)
 			{
 				//v6 = v9;
 				for (i = 0; i < v9; i++)
 				{
-					sub_75D70((uint8_t*)&v11, 1u);
+					CopyAndShiftFrom17DB50_75D70((uint8_t*)&v11, 1u);
 					v3 += v11;
-					sub_75D70((uint8_t*)&v10, 1u);
+					CopyAndShiftFrom17DB50_75D70((uint8_t*)&v10, 1u);
 					if (v10 >= 0)
 					{
 						if (v10 > 0)
 						{
-							sub_75D70((uint8_t*)v3, 2 * v10);
+							CopyAndShiftFrom17DB50_75D70((uint8_t*)v3, 2 * v10);
 							v3 += 2 * v10;
 						}
 					}
 					else
 					{
-						sub_75D70((uint8_t*)&v8, 2u);
+						CopyAndShiftFrom17DB50_75D70((uint8_t*)&v8, 2u);
 						v4 = 0;
 						while (abs(v10) > v4)
 						{
@@ -477,9 +446,9 @@ int sub_76430()
 	unsigned __int8 v9; // [esp+10h] [ebp-8h]
 	unsigned __int8 v10; // [esp+14h] [ebp-4h]
 
-	sub_75D70((uint8_t*)&v6, 2u);
+	CopyAndShiftFrom17DB50_75D70((uint8_t*)&v6, 2u);
 	v0 = height_17DB48 * v6 + (uint8_t*)framebuffer_E12F4x;
-	sub_75D70((uint8_t*)&v6, 2u);
+	CopyAndShiftFrom17DB50_75D70((uint8_t*)&v6, 2u);
 	v5 = 0;
 	result = 0;
 	if (v6 > 0u)
@@ -488,22 +457,22 @@ int sub_76430()
 		{
 			v2 = (char*)v0;
 			v3 = 0;
-			sub_75D70((uint8_t*)&v9, 1u);
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&v9, 1u);
 			while (v3 < (signed int)v9)
 			{
-				sub_75D70((uint8_t*)&v7, 1u);
+				CopyAndShiftFrom17DB50_75D70((uint8_t*)&v7, 1u);
 				v2 += v7;
-				sub_75D70((uint8_t*)&v8, 1u);
+				CopyAndShiftFrom17DB50_75D70((uint8_t*)&v8, 1u);
 				if (v8 >= 0)
 				{
 					if (v8 <= 0)
 						goto LABEL_8;
-					sub_75D70((uint8_t*)v2, v8);
+					CopyAndShiftFrom17DB50_75D70((uint8_t*)v2, v8);
 					v4 = v8;
 				}
 				else
 				{
-					sub_75D70((uint8_t*)&v10, 1u);
+					CopyAndShiftFrom17DB50_75D70((uint8_t*)&v10, 1u);
 					memset(v2, v10, abs(v8));
 					v4 = abs(v8);
 				}
@@ -542,22 +511,22 @@ int sub_76540()//257540
 			break;
 		v1 = (char*)v0;
 		v2 = 0;
-		sub_75D70(0, 1u);
+		CopyAndShiftFrom17DB50_75D70(0, 1u);
 		while (v2 < height_17DB48)
 		{
-			sub_75D70((uint8_t*)&v6, 1u);
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&v6, 1u);
 			if (v6 >= 0)
 			{
 				if (v6 > 0)
 				{
-					sub_75D70((uint8_t*)&v5, 1u);
+					CopyAndShiftFrom17DB50_75D70((uint8_t*)&v5, 1u);
 					memset(v1, v5, v6);
 				}
 			}
 			else
 			{
 				v6 = abs(v6);
-				sub_75D70((uint8_t*)v1, v6);
+				CopyAndShiftFrom17DB50_75D70((uint8_t*)v1, v6);
 			}
 			v2 += v6;
 			v1 += v6;
@@ -572,6 +541,15 @@ int sub_76540()//257540
 // 17DB48: using guessed type __int16 x_WORD_17DB48;
 // 17DB4A: using guessed type __int16 x_WORD_17DB4A;
 
+std::string get_current_time_str() {
+	auto now = std::chrono::system_clock::now();
+	auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+	std::stringstream ss;
+	ss << std::put_time(std::localtime(&in_time_t), "%X"); // %X je lokální formát času (HH:MM:SS)
+	return ss.str();
+}
+
 //----- (00075CB0) --------------------------------------------------------
 void sub_75CB0()//256cb0
 {
@@ -585,7 +563,11 @@ void sub_75CB0()//256cb0
 	}
 	else
 	{
-		while (GameTimerTurn_17DB54 < x_DWORD_E3844)
+		AnimCurrentTick += x_DWORD_E3844;
+		std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+		std::chrono::system_clock::time_point deadline = AnimCurrentTime + std::chrono::milliseconds(static_cast<long long>(AnimCurrentTick * AnimTickTime));
+		while (now < deadline)
+		//while (GameTimerTurn_17DB54 < x_DWORD_E3844)
 		{
 			if (x_WORD_E12FE && sub_473E0())
 			{
@@ -597,33 +579,21 @@ void sub_75CB0()//256cb0
 				stopPlaybackFlag_17DB5A = 1;
 				return;
 			}
+			now = std::chrono::system_clock::now();
 		}
 		GameTimerTurn_17DB54 = 0;
 	}
 }
-// E12FE: using guessed type __int16 x_WORD_E12FE;
-// E3844: using guessed type int x_DWORD_E3844;
-// 17DB54: using guessed type int GameTimerTurn_17DB54;
-// 17DB5A: using guessed type __int16 x_WORD_17DB5A;
-// 17DB5C: using guessed type __int16 x_WORD_17DB5C;
-// 1806E4: using guessed type char x_BYTE_1806E4;
-// 180744: using guessed type __int16 x_WORD_180744_mouse_right_button;
-// 180746: using guessed type __int16 x_WORD_180746_mouse_left_button;
 
+/*
 //----- (0009A0FC) --------------------------------------------------------
 void sub_9A0FC_wait_to_screen_beam()//27B0fc
 {
 	if (CommandLineParams.DoShowDebugPerifery())ShowPerifery();
 
-	/*unsigned __int8 result; // al
-
-	do
-	  result = __inx_BYTE(0x3DAu);
-	while ( !(result & 8) );
-	return result;*/
 	VGA_Blit(nullptr);
-	mydelay(10);
-}
+	mydelay(1);
+}*/
 
 //----- (000473E0) --------------------------------------------------------
 int sub_473E0()//2283e0
@@ -692,37 +662,31 @@ LABEL_28:
 // 18074C: using guessed type __int16 x_WORD_18074C_mouse_left2_button;
 
 //----- (00076260) --------------------------------------------------------
-void sub_76260_read_intro_Palette()
+void ReadIntroPalettes_76260()
 {
-	TColor* v0x; // ebx
-	int v1; // esi
-	unsigned __int16 v3; // di
-	uint16_t v4; // [esp+0h] [ebp-Ch]
-	int32_t v5; // [esp+4h] [ebp-8h]
-	unsigned __int8 v6; // [esp+8h] [ebp-4h]
-
-	v0x = unk_17D838x;
-	v1 = 0;
-	sub_75D70((uint8_t*)&v4, 2u);
-	if (v4 > 0u)
+	uint16_t countPalette;
+	int32_t count;
+	uint8 offset;
+	TColor* palette = unk_17D838x;
+	int actPalette = 0;
+	CopyAndShiftFrom17DB50_75D70((uint8_t*)&countPalette, 2u);
+	if (countPalette > 0u)
 	{
 		do
 		{
-			sub_75D70((uint8_t*)&v6, 1u);
-			//v0 += 3 * v6;
-			v0x += v6;
-			v5 = 0;
-			sub_75D70((uint8_t*)&v5, 1u);
-			if (!v5)
-				v5 = 256;
-			for (v3 = 0; v3 < v5; v3++)//mybe read Palette
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&offset, 1u);
+			palette += offset;
+			count = 0;
+			CopyAndShiftFrom17DB50_75D70((uint8_t*)&count, 1u);
+			if (!count)
+				count = 256;
+			for (int i = 0; i < count; i++)
 			{
-				sub_75D70((uint8_t*)v0x, 3u);
-				//v0 += 3;
-				v0x++;
+				CopyAndShiftFrom17DB50_75D70((uint8_t*)palette, 3u);
+				palette++;
 			}
-			v1++;
-		} while (v1 < v4);
+			actPalette++;
+		} while (actPalette < countPalette);
 	}
 }
 

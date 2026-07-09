@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
 set(src_DIR ../src)
 set(include_DIR ../include)

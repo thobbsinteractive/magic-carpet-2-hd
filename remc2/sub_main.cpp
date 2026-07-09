@@ -535,7 +535,9 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 	SetTimeStart();
 
+#ifndef __ANDROID__
 	try
+#endif
 	{
 		begin_plugin();
 
@@ -566,15 +568,19 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		Logger->info("Reading config.json file");
 
+#ifndef __ANDROID__
 		try
+#endif
 		{
 			SetConfig();
 		}
+#ifndef __ANDROID__
 		catch (const std::exception& e)
 		{
 			Logger->critical("Error reading config.json file: {}", e.what());
 			return -1;
 		}
+#endif
 
 		EventDispatcher::I = new EventDispatcher();
 
@@ -637,7 +643,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 				InitNetworkInfo();
 		}
 
-		if (CommandLineParams.DoCopySkipConfig()) {
+		if (CommandLineParams.DoCopySkipConfig() || config_skip_screen) {
 			x_BYTE_D41AD_skip_screen = config_skip_screen;
 		}
 
@@ -680,6 +686,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		delete EventDispatcher::I;
 		VGA_close();
 	}
+#ifndef __ANDROID__
 	catch (const thread_exit_exception& e)
 	{
 		Logger->info("Immediate Exit called");
@@ -689,6 +696,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		Logger->critical("Critical Error: {}", e.what());
 		exitCode = -1;
 	}
+#endif
 	Logger->info("Exited Game");
 	return exitCode;
 }

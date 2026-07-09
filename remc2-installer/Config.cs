@@ -7,11 +7,22 @@ namespace remc2_installer
 		public string name { get; set; }
 		public string version { get; set; }
 		public bool isActive { get; set; }
+		public string launchArguments { get; set; }
 		public Paths paths { get; set; }
+		public Multiplayer multiplayer { get; set; }
 		public Sound sound { get; set; }
 		public Graphics graphics { get; set; }
 		public Game game { get; set; }
 		public Controls controls { get; set; }
+	}
+
+	public class Multiplayer
+	{
+		public int serverPort { get; set; }
+		public int serverClientPort { get; set; }
+		public int clientPort { get; set; }
+		public int clientServerPort { get; set; }
+		public string clientServerIp { get; set; }
 	}
 
 	public class Paths
@@ -56,6 +67,8 @@ namespace remc2_installer
 		public string highResGraphicsFolder { get; set; }
 		public bool useFixedMenuGraphics { get; set; }
 		public string fixedMenuGraphicsFolder { get; set; }
+		public bool useExtendedFonts { get; set; }
+		public string extendedFontsFolder { get; set; }
 		public bool sky { get; set; }
 		public bool reflections { get; set; }
 		public bool dynamicLighting { get; set; }
@@ -75,7 +88,6 @@ namespace remc2_installer
 	{
 		public string[] description { get; set; }
 		public int maxGameFps { get; set; }
-		public int fmvFps { get; set; }
 	}
 
 	public class Controls

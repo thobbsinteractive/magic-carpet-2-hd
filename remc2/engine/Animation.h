@@ -69,7 +69,7 @@ void DrawFrame_75E70();
 void sub_2EC60();
 int sub_473E0();
 
-void sub_76260_read_intro_Palette();
+void ReadIntroPalettes_76260();
 void sub_76300();
 int sub_76430();
 int sub_76540();

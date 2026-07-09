@@ -585,6 +585,292 @@ static bool PatchSprite(bitmap_pos_struct2_t* tabBase,
 	return true;
 }
 
+static uint8_t* g_patchedFontDataBuffer = nullptr;
+static uint8_t* g_patchedFontDataBuffer2 = nullptr;
+static uint8_t* g_patchedFontDataBuffer3 = nullptr;
+static uint8_t* g_patchedFontDataBuffer4 = nullptr;
+static bool PatchFont(
+	uint8_t* datBase,
+	size_t& datUsed,
+	size_t               datCapacity,
+	bitmap_pos_struct_t* fontStruct,
+	int                  fontIndex,
+	const RGBAImage& img,
+	const TColor* palette,
+	int                  paletteSize)
+{
+	if (img.width > 255 || img.height > 255)
+	{
+		Logger->warn("LoadFixedFonts: font index {} too large ({}x{}), keeping original.",
+			fontIndex, img.width, img.height);
+		return false;
+	}
+	const int numPixels = img.width * img.height;
+	std::vector<uint8_t> indexed(numPixels);
+	std::vector<uint8_t> opaque(numPixels, 1);
+	for (int i = 0; i < numPixels; ++i)
+	{
+		uint8_t r = img.pixels[4 * i + 0];
+		uint8_t g = img.pixels[4 * i + 1];
+		uint8_t b = img.pixels[4 * i + 2];
+		uint8_t a = img.pixels[4 * i + 3];
+		if (img.hasAlpha && a < 128)
+		{
+			opaque[i] = 0;
+			indexed[i] = 0;
+		}
+		else
+		{
+			opaque[i] = 1;
+			indexed[i] = NearestPaletteIndex(r, g, b, palette, paletteSize);
+		}
+	}
+	std::vector<uint8_t> rleData;
+	rleData.reserve(numPixels + img.height * 2);
+	EncodeRLE(indexed.data(), opaque.data(), img.width, img.height, rleData);
+	if (datUsed + rleData.size() > datCapacity)
+	{
+		Logger->error("LoadFixedFonts: font buffer overflow at index {}, keeping original.", fontIndex);
+		return false;
+	}
+	size_t newOffset = datUsed;
+	memcpy(datBase + newOffset, rleData.data(), rleData.size());
+	datUsed += rleData.size();
+	fontStruct[fontIndex].width_4 = (uint8_t)img.width;
+	fontStruct[fontIndex].height_5 = (uint8_t)img.height;
+	Logger->debug("LoadFixedFonts: patched font {} ({}x{}, {} RLE bytes at offset {}).",
+		fontIndex, img.width, img.height, rleData.size(), newOffset);
+	return true;
+}
+
+void LoadFixedFonts(int fontStructIndex, char* type)
+{
+	char dataPath[MAX_PATH];
+	uint8_t** tempPal = xadatapald0dat2.colorPalette_var28;
+	std::string subFolder;
+	uint8_t* fontDatBase = NULL;
+	bitmap_pos_struct2_t* datTabOffset0 = NULL;
+	bitmap_pos_struct2_t* datTabOffset1 = NULL;
+	bitmap_pos_struct_t* fontStruct = NULL;
+	uint8_t** patchedBufferPtr = nullptr;
+	filearray_struct* structForIndex2 = NULL;
+	int createIndexType = 0;
+	int charIndexOffset = 0;
+	switch (fontStructIndex)
+	{
+	case 0:
+		fontStruct = xy_DWORD_17DEC0_spritestr;
+		fontDatBase = x_DWORD_17DE38str.x_DWORD_17DE54;
+		datTabOffset0 = x_DWORD_17DE38str.x_DWORD_17DEC0;
+		datTabOffset1 = x_DWORD_17DE38str.x_DWORD_17DEC4;
+		patchedBufferPtr = &g_patchedFontDataBuffer;
+		break;
+	case 1:
+		fontStruct = xy_DWORD_17DEC8_spritestr;
+		fontDatBase = x_DWORD_17DE38str.x_DWORD_17DE58;
+		datTabOffset0 = x_DWORD_17DE38str.x_DWORD_17DEC8;
+		datTabOffset1 = x_DWORD_17DE38str.x_DWORD_17DECC;
+		patchedBufferPtr = &g_patchedFontDataBuffer2;
+		break;
+	case 2:
+		fontStruct = *filearray_2aa18c[filearrayindex_HFONT3DATTAB].posistruct;
+		fontDatBase = HFONT3DAT_BEGIN_BUFFER;
+		createIndexType = 1;
+		structForIndex2 = &filearray_2aa18c[filearrayindex_HFONT3DATTAB];
+		patchedBufferPtr = &g_patchedFontDataBuffer3;
+		charIndexOffset = 1;
+		break;
+	case 3:
+		fontStruct = *filearray_2aa18c[filearrayindex_FONTS1DATTAB].posistruct;
+		fontDatBase = (*filearray_2aa18c[filearrayindex_FONTS1DATTAB].posistruct)->data;
+		createIndexType = 1;
+		structForIndex2 = &filearray_2aa18c[filearrayindex_FONTS1DATTAB];
+		patchedBufferPtr = &g_patchedFontDataBuffer4;
+		charIndexOffset = 1;
+		break;
+	}
+	if (!fontStruct || !patchedBufferPtr)
+	{
+		Logger->warn("LoadFixedFonts: invalid fontStructIndex {}.", fontStructIndex);
+		return;
+	}
+	if (!strcmp(type, "intro"))
+	{
+		sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
+		sub_7AA70_load_and_decompres_dat_file(dataPath, *xadatapald0dat2.colorPalette_var28, 0x17C118, 0x300);
+		subFolder = "intro";
+	}
+	else if (!strcmp(type, "4b")) { subFolder = "4b"; }
+	else if (!strcmp(type, "6b")) { subFolder = "6b"; }
+	else if (!strcmp(type, "6c")) { subFolder = "4b"; }
+	else if (!strcmp(type, "HFONT3")) { subFolder = "6b"; }
+	else if (!strcmp(type, "FONT1")) { subFolder = "FONT1"; }
+	const TColor* palette = (const TColor*)*xadatapald0dat2.colorPalette_var28;
+	xadatapald0dat2.colorPalette_var28 = tempPal;
+	const int paletteSize = 256;
+	if (!palette)
+	{
+		Logger->warn("LoadFixedFonts: palette not loaded, skipping.");
+		return;
+	}
+	if (subFolder.empty())
+	{
+		Logger->warn("LoadFixedFonts: unknown type '{}', skipping.", type);
+		return;
+	}
+	const int numSprites = 256;
+	// Save original pointers before index rebuild overwrites them
+	std::vector<uint8_t*> originalDataPtrs(numSprites);
+	std::vector<uint8_t>  originalWidths(numSprites);
+	std::vector<uint8_t>  originalHeights(numSprites);
+	for (int i = 0; i < numSprites; ++i)
+	{
+		originalDataPtrs[i] = fontStruct[i].data;
+		originalWidths[i] = fontStruct[i].width_4;
+		originalHeights[i] = fontStruct[i].height_5;
+	}
+	std::string fontsDir = GetSubDirectoryPath(extendedFontsFolder.c_str(), subFolder.c_str());
+	if (fontsDir.empty() || !DirExists(fontsDir.c_str()))
+	{
+		Logger->debug("LoadFixedFonts: patch folder '{}' not found, nothing to do.", fontsDir);
+		return;
+	}
+	char patchDirBuf[512];
+	strncpy(patchDirBuf, fontsDir.c_str(), sizeof(patchDirBuf) - 1);
+	patchDirBuf[sizeof(patchDirBuf) - 1] = '\0';
+	dirsstruct files = getListDir(patchDirBuf);
+	struct PatchedEntry
+	{
+		int     charIndex;
+		size_t  offset;
+		uint8_t width;
+		uint8_t height;
+	};
+	struct PngEntry
+	{
+		int       charIndex;
+		RGBAImage img;
+	};
+	std::vector<PngEntry>     loadedPngs;
+	std::vector<PatchedEntry> patchedList;
+	size_t datCapacity = 0;
+	for (int f = 0; f < files.number; ++f)
+	{
+		std::string filename = files.dir[f];
+		if (filename.size() < 5) continue;
+		std::string ext = filename.substr(filename.size() - 4);
+		std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+		if (ext != ".png") continue;
+		std::string indexStr = filename.substr(0, filename.size() - 4);
+		int charIndex = -1;
+		try { charIndex = std::stoi(indexStr); }
+		catch (...)
+		{
+			Logger->warn("LoadFixedFonts: cannot parse index from '{}', skipped.", filename);
+			continue;
+		}
+		if (charIndex < 0 || charIndex >= numSprites)
+		{
+			Logger->warn("LoadFixedFonts: index {} out of range [0,{}), skipped.", charIndex, numSprites);
+			continue;
+		}
+		charIndex += charIndexOffset;
+		RGBAImage img;
+		std::string fullPath = fontsDir + "/" + filename;
+		if (!BitmapIO::ReadImagePNG(fullPath.c_str(), img))
+		{
+			Logger->warn("LoadFixedFonts: failed to load '{}', skipped.", fullPath);
+			continue;
+		}
+		if (img.width > 255 || img.height > 255)
+		{
+			Logger->warn("LoadFixedFonts: font '{}' too large ({}x{}), skipped.", fullPath, img.width, img.height);
+			continue;
+		}
+		datCapacity += img.width * img.height + img.height * 2; // worst case RLE per glyph
+		loadedPngs.push_back({ charIndex, std::move(img) });
+	}
+	if (loadedPngs.empty())
+	{
+		Logger->debug("LoadFixedFonts: no valid PNG files found for type '{}', nothing to do.", type);
+		return;
+	}
+	datCapacity += 1024; // small safety margin
+	if (*patchedBufferPtr)
+	{
+		FreeMem_83E80(*patchedBufferPtr);
+		*patchedBufferPtr = nullptr;
+	}
+	uint8_t* patchedBuffer = (uint8_t*)Malloc_83CD0(datCapacity);
+	if (!patchedBuffer)
+	{
+		Logger->error("LoadFixedFonts: failed to allocate {} bytes for patch buffer.", datCapacity);
+		return;
+	}
+	*patchedBufferPtr = patchedBuffer;
+	size_t datUsed = 0;
+	int patchedCount = 0;
+	for (auto& entry : loadedPngs)
+	{
+		size_t offsetBefore = datUsed;
+		if (PatchFont(patchedBuffer, datUsed, datCapacity,
+			fontStruct, entry.charIndex, entry.img, palette, paletteSize))
+		{
+			PatchedEntry pe;
+			pe.charIndex = entry.charIndex;
+			pe.offset = offsetBefore;
+			pe.width = fontStruct[entry.charIndex].width_4;
+			pe.height = fontStruct[entry.charIndex].height_5;
+			patchedList.push_back(pe);
+			++patchedCount;
+		}
+	}
+	if (patchedCount == 0)
+	{
+		Logger->debug("LoadFixedFonts: no fonts patched for type '{}', all original kept.", type);
+		FreeMem_83E80(patchedBuffer);
+		*patchedBufferPtr = nullptr;
+		return;
+	}
+	// Rebuild index table so pointers are recalculated from original base
+	if (createIndexType == 0)
+	{
+		if (x_WORD_180660_VGA_type_resolution & 1)
+			sub_98709_create_index_dattab_power(datTabOffset0, datTabOffset1, fontDatBase, fontStruct);
+		else
+			sub_9874D_create_index_dattab(datTabOffset0, datTabOffset1, fontDatBase, fontStruct);
+	}
+	else
+		CreateIndexes_6EB90(structForIndex2);
+	// Restore original pointers for glyphs that were NOT patched
+	bool patchedSet[256] = {};
+	for (auto& pe : patchedList)
+		patchedSet[pe.charIndex] = true;
+	for (int i = 0; i < numSprites; ++i)
+	{
+		if (!patchedSet[i])
+		{
+			fontStruct[i].data = originalDataPtrs[i];
+			fontStruct[i].width_4 = originalWidths[i];
+			fontStruct[i].height_5 = originalHeights[i];
+		}
+	}
+	// Point patched glyphs into patch buffer and apply resolution scaling
+	for (auto& pe : patchedList)
+	{
+		fontStruct[pe.charIndex].data = patchedBuffer + pe.offset;
+		fontStruct[pe.charIndex].width_4 = pe.width;
+		fontStruct[pe.charIndex].height_5 = pe.height;
+		if (x_WORD_180660_VGA_type_resolution & 1)
+		{
+			fontStruct[pe.charIndex].width_4 *= 2;
+			fontStruct[pe.charIndex].height_5 *= 2;
+		}
+	}
+	Logger->info("LoadFixedFonts: patched {}/{} font(s) for type '{}', {} kept original.",
+		patchedCount, numSprites, type, numSprites - patchedCount);
+}
+
 void LoadFixedMenuGraphics()
 {
 	char dataPath[MAX_PATH];
@@ -690,11 +976,16 @@ void LoadFixedMenuGraphics()
 		std::string indexStr = filename.substr(prefix.size(),
 			filename.size() - prefix.size() - 4);
 		int spriteIndex = -1;
-		try { spriteIndex = std::stoi(indexStr); }
+#ifndef __ANDROID__
+		try
+#endif
+		{ spriteIndex = std::stoi(indexStr); }
+#ifndef __ANDROID__
 		catch (...) {
 			Logger->warn("LoadFixedMenuGraphics: cannot parse index from '{}', skipped.", filename);
 			continue;
 		}
+#endif
 		if (spriteIndex < 0 || spriteIndex >= numSprites)
 		{
 			Logger->warn("LoadFixedMenuGraphics: index {} out of range [0,{}), skipped.",
@@ -776,6 +1067,9 @@ void LoadSpr_47160()//228160
 		x_DWORD_E9C3C = &pre_x_DWORD_E9C3C[200000];
 		CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_HFONT3DATTAB]);//2aa1d4
 		help_VGA_type_resolution = 8;
+
+		if (extendedFonts)
+			LoadFixedFonts(2, (char*)"HFONT3");
 	}
 	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_MSPRD00DATTAB]);//2aa1bc
 	LoadTextureData(x_WORD_180660_VGA_type_resolution, D41A0_0.terrain_2FECE.MapType, pdwScreenBuffer_351628);//ok

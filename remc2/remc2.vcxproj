@@ -389,6 +389,7 @@
   <ItemGroup>
     <ClInclude Include="build_config.h" />
     <ClInclude Include="engine\Animation.h" />
+    <ClInclude Include="engine\axis_3d.h" />
     <ClInclude Include="engine\Basic.h" />
     <ClInclude Include="engine\BasicMini.h" />
     <ClInclude Include="engine\BasicTerrain.h" />

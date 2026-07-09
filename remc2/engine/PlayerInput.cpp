@@ -2577,6 +2577,9 @@ void ChangeGameResolution_46B40()//227b40
 	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);
 	CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_BUILD00DATTAB]);
 
+	if (extendedFonts)
+		LoadFixedFonts(3, (char*)"FONT1");
+
 	memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
 	if (x_WORD_180660_VGA_type_resolution & 1)
 	{

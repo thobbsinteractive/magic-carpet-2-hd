@@ -41,6 +41,7 @@ extern std::string gameFolder;
 extern std::string cdFolder;
 extern std::string highResGraphicsFolder;
 extern std::string fixedMenuGraphicsFolder;
+extern std::string extendedFontsFolder;
 extern std::string forceRender;
 extern spdlog::logger* Logger;
 
@@ -73,7 +74,7 @@ FILE* myopent(char* path, char* type);
 
 typedef struct {
 	int number;
-	char dir[256][512];
+	char dir[300][512];
 } dirsstruct;
 
 dirsstruct getListDir(char* dirname);

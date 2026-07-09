@@ -24,9 +24,6 @@
 #include "../engine/CommandLineParser.h"
 #include "../utilities/Maths.h"
 #include "defs.h"
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
 
 #ifndef READ_CONFIG
 #define READ_CONFIG
@@ -36,7 +33,6 @@ std::vector<Maths::Zone> ReadZones(std::vector<Maths::Zone> zonesArray);
 extern int config_skip_screen;
 extern int texturepixels;
 extern int maxGameFps;
-extern int fmvFps;
 extern int menuFps;
 extern int displayIndex;
 extern int windowResWidth;
@@ -49,6 +45,7 @@ extern bool startWindowed;
 extern bool bigTextures;
 extern bool bigSprites;
 extern bool fixedMenuGraphics;
+extern bool extendedFonts;
 extern bool sky;
 extern bool reflections;
 extern bool dynamicLighting;

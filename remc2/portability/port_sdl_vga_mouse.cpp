@@ -559,7 +559,7 @@ void VGA_Draw_string(char* wrstring) {
 		SDL_UnlockSurface(m_gamePalletisedSurface);
 	}
 	SubBlit(m_iOrigw, m_iOrigh);
-	mydelay(10);
+	//mydelay(10);
 }
 
 int drawCounter = 0;

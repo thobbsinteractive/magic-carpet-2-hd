@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include "axis_3d.h"
 
 const uint16_t GAME_RES_MAX_WIDTH = 3840;
 const uint16_t GAME_RES_MAX_HEIGHT = 2160;
@@ -41,23 +42,6 @@ typedef struct {
 	int32_t y;
 }axis_2d_32;
 
-typedef struct {
-	int32_t x;
-	int32_t y;
-	int32_t z;
-}axis_3d_32;
-
-typedef struct {
-	uint16_t x;
-	uint16_t y;
-	int16_t z;
-}axis_3d;
-
-typedef struct {
-	int16_t x;
-	int16_t y;
-	int16_t z;
-}axis_3ds;
 /*
 typedef struct {
 	uint16_t x;
