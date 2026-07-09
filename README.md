@@ -2,6 +2,8 @@
 Based off the Reverse engineering of game Magic Carpet 2 from assembler to c/c++ language by Tomas Versly <br />
 Forked from Tomas Vesely's repo here: https://github.com/turican0/remc2
 
+### find us on Discord here: https://discord.gg/GR55HCbJJ4 ###
+
 ## Current Features ##
 - **Support for HD, 2k and even 4k gameplay**
 - Modern Controls
@@ -151,7 +153,7 @@ The game will search for this file in the following locations and this particula
 3. next to the `remc2` binary
 
 ## Development Guide ##
-**If you know a bit about game development or want to help out, branch away or email me here: thobbsinteractive@gmail.com or find us on Discord here: https://discord.gg/GR55HCbJJ4**
+**If you know a bit about game development or want to help out, branch away or email me here: thobbsinteractive@gmail.com**
 - The Project is compiled as C++17.
 - If you re-name a method include the id from the original method name as this makes it easier to track changes from the generated code.
 e.g. `void sub_19CA0_sound_proc5(unsigned __int8 a1)` was renamed to `void ChangeSoundLevel_19CA0(uint8_t option)`
