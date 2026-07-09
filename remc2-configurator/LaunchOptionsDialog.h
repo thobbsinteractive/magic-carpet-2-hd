@@ -30,4 +30,6 @@ private:
 	void OnSetLevel(wxCommandEvent&);
 	void OnBrowseMap(wxCommandEvent&);
 	void OnBrowseRecordPlay(wxCommandEvent&);
+	void OnSave(wxCommandEvent&);
+	void OnOK(wxCommandEvent&);
 };

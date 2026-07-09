@@ -89,13 +89,18 @@ void MainFrame::OnLaunchOptions(wxCommandEvent&)
 {
 	auto settings = m_ptrConfig->GetSettingsFromDoc();
 	LaunchOptionsDialog dlg(this, settings.m_LaunchArguments);
-	if (dlg.ShowModal() == wxID_OK)
+	auto dialogResult = dlg.ShowModal();
+	if (dialogResult == wxID_OK || dialogResult == wxID_SAVE)
 	{
 		settings.m_LaunchArguments = dlg.GetLaunchArguments();
 		m_ptrConfig->SaveLaunchArgumentsToDoc(settings);
 		m_ptrConfig->SaveToFile();
-		LaunchGame(settings.m_LaunchArguments);
-		Close(true);
+
+		if (dialogResult == wxID_OK)
+		{
+			LaunchGame(settings.m_LaunchArguments);
+			Close(true);
+		}
 	}
 }
 
