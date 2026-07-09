@@ -19,7 +19,7 @@ extern uint8_t connected_E12A6;
 
 void NetworkDisallocation_72D04();
 // int sub_72DDE(signed __int16 *a1, int a2);
-int sub_72E70(int a1, int a2, signed __int16* a3);//not used
+int sub_72E70(signed __int16* a3);//not used
 signed int NetworkTestCall_72FBB();
 void NetworkListenAll_7302E();
 // int NetworkInitConnection_7308F(signed __int16 *a1, int a2, __int16 a3);
@@ -54,10 +54,18 @@ void WaitToConnect_7C230(/*int a1,*/ /*int a2*//*, signed __int16* a3*/);
 bool SetMultiplayerColors_7CE50();
 void DrawNetworkLevelName_7D1F0();
 
-signed int sub_7D230(char a1, unsigned __int8 a2, unsigned __int8 a3);
+int FindFreeColorIndex_7D230(char searchBackward, uint8 startColor, uint8 excludeSlot);
 
-void SetPaletteColor_7CDC0(unsigned __int8 a1, unsigned __int8 a2);
+void SetPaletteColor_7CDC0(uint8 colorIndex, uint8 playerIndex);
 
 uint8_t NetworkAddName_74767(/*signed __int16* a1,*/ myNCB* a2x, char* a3);
+
+void NetworkDisallocation2_5C450();
+
+void UpdateNetInfo();
+
+void RemoveDeadClients();
+
+void InitNetworkInfo();
 
 #endif //MAIN_NETWORK

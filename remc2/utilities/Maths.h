@@ -3,8 +3,16 @@
 #ifndef MATHS_H
 #define MATHS_H
 
-#include "../engine/engine_support.h"
 #include <vector>
+#include <cmath>
+#ifdef REMC2_CODE
+#include <SDL2/SDL_stdinc.h>
+#else
+#ifndef M_PI
+#define M_PI    3.14159265358979323846264338327950288   /**< pi */
+#endif
+#endif
+#include "../engine/axis_3d.h"
 
 class Maths {
 

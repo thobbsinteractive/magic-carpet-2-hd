@@ -29,7 +29,6 @@
   <ItemGroup>
     <ClInclude Include="editor.h" />
     <ClInclude Include="kiss_sdl.h" />
-    <ClInclude Include="ReadConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="editor.cpp" />
@@ -38,7 +37,6 @@
     <ClCompile Include="kiss_general.cpp" />
     <ClCompile Include="kiss_posix.cpp" />
     <ClCompile Include="kiss_widgets.cpp" />
-    <ClCompile Include="ReadConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\remc2\remc2.vcxproj">

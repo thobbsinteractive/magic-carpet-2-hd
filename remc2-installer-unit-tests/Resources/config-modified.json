@@ -4,6 +4,7 @@
 			"name": "Main",
 			"version": "1.0",
 			"isActive": true,
+			"launchArguments": "",
 			"paths": {
 				"description": [
 					"gameFolder: Main game content folder (after install). Path is relative to .exe",
@@ -11,6 +12,13 @@
 				],
 				"gameFolder": "NETHERW",
 				"cdFolder": "CD_Files"
+			},
+			"multiplayer": {
+				"serverPort": 3030,
+				"serverClientPort": 3031,
+				"clientPort": 3030,
+				"clientServerPort": 3030,
+				"clientServerIp": "127.0.0.1"
 			},
 			"sound": {
 				"description": [
@@ -51,6 +59,8 @@
 						"highResGraphicsFolder: Directory with 128x128 textures. Path is relative to .exe",
 						"useFixedMenuGraphics: If set to true, fixedMenuGraphicsFolder folder must be set as well",
 						"fixedMenuGraphicsFolder: Directory with fixed menu graphics. Path is relative to .exe",
+						"useExtendedFonts: If set to true, extendedFontsFolder folder must be set as well",
+						"extendedFontsFolder: Directory with extended font graphics to support more languages. Path is relative to .exe",
 						"sky: Turns the sky on or off. Can be changed in-game",
 						"reflections: Turns the reflections on or off. Can be changed in-game",
 						"dynamicLighting: Turns the reflections on or off. Can be changed in-game",
@@ -63,6 +73,8 @@
 					"highResGraphicsFolder": "graphics/high-res",
 					"useFixedMenuGraphics": true,
 					"fixedMenuGraphicsFolder": "graphics/fixed/menu",
+					"useExtendedFonts": true,
+					"extendedFontsFolder": "graphics/fixed/fonts",
 					"sky": true,
 					"reflections": true,
 					"dynamicLighting": true,
@@ -83,11 +95,9 @@
 			},
 			"game": {
 				"description": [
-					"maxGameFps: max frames per second in game. Locks the frame rate.  Delete or set to 0 to unlock",
-					"fmvFps: frames per second (18 seems to match original)"
+					"maxGameFps: max frames per second in game. Locks the frame rate.  Delete or set to 0 to unlock"
 				],
-				"maxGameFps": 24,
-				"fmvFps": 18
+				"maxGameFps": 24
 			},
 			"controls": {
 				"mouse": [

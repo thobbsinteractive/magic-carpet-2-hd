@@ -7,7 +7,7 @@ using WixSharp.UI.Forms;
 
 namespace WixSharpSetup
 {
-    public partial class RedistDialog : ManagedForm, IManagedDialog
+    public partial class RedistDialog : ManagedForm
     {
 		private bool _runClicked;
 
@@ -52,7 +52,6 @@ namespace WixSharpSetup
 
         private void dialog_Load(object sender, EventArgs e)
         {
-            banner.Image = Runtime.Session.GetResourceBitmap("WixUI_Bmp_Banner");
             Text = "[ProductName] Setup";
             base.Localize();
         }

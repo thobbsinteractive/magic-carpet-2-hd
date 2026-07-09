@@ -144,11 +144,13 @@ void editor_run()
 	gameDataPath = GetSubDirectoryPath(gameFolder.c_str());
 	cdDataPath = GetSubDirectoryPath(cdFolder.c_str());
 
+#ifndef __ANDROID__
 	if (!std::filesystem::exists(gameDataPath))
 		throw std::invalid_argument("Game Data Path is not valid");
 
 	if (!std::filesystem::exists(cdDataPath))
 		throw std::invalid_argument("CD Data Path is not valid");
+#endif
 
 	DataFileIO::SetCDFilePaths(cdDataPath.c_str(), pstr);
 

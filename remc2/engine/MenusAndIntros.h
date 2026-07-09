@@ -5,6 +5,7 @@
 #include "../sub_main.h"
 #include "EventsFunctions.h"
 #include "TypeConfigDat.h"
+#include "Network.h"
 
 // types
 
@@ -84,6 +85,20 @@ typedef struct {//lenght 69
 type_WORD_E20A4;
 #pragma pack(pop)
 
+#pragma pack(push, 1)
+typedef struct {//lenght 24
+	uint32_t dword_0;
+	uint32_t dword_4;
+	uint32_t dword_8;
+	uint32_t dword_12;
+	uint16_t word_16;
+	uint16_t word_18;
+	uint16_t word_20;
+	uint16_t word_22;
+}
+type_E1BAC_0x3c4;
+#pragma pack(pop)
+
 enum class MenuItem : int {
 	InitLanguage = 0,
 	SetToIntro = 1,
@@ -151,6 +166,7 @@ extern int16_t x_WORD_17DBC4;
 extern typeTextBoxtextBoxStr_E24BCx textBoxStr_E25DC[];
 extern type_BYTE_E25ED_0x str_BYTE_E25ED_0x[];
 extern type_x_BYTE_E25ED_2BB str_BYTE_E25ED_2BB[];
+extern type_E1BAC_0x3c4 str_E1BAC_0x2ec[];
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -195,12 +211,12 @@ bool ExitDialog_77980(type_menuButtons_E1F84* a1x);
 char SetPlayerNameDialog_78E00(/*int a1, int a2, */type_menuButtons_E1F84* a3x);
 int sub_7F6A0(int a1, int a2, __int16 a3, __int16 a4, char* a5, int8_t* a6, unsigned __int8 a7);
 char SetJoystickDialog_79160(type_menuButtons_E1F84* a1x);
-int sub_7CCF0();
-int sub_7CD30();
-int sub_7CCA0();
-int sub_7CDA0();
-char sub_7CBF0();
-char sub_7CC40();
+int MultiplayerPreviousLevel_7CCF0();
+int MultiplayerNextLevel_7CD30();
+int MultiplayerExit_7CCA0();
+int MultiplayerPlayLevel_7CDA0();
+char MultiplayerPreviousWizard_7CBF0();
+char MultiplayerNextWizard_7CC40();
 char MultiplayerMenu_7DE80(type_menuButtons_E1F84* a2x);
 int DrawScrollDialog_7BF20(type_str_word_26* a1x);
 void sub_8C0E0(unsigned __int8(/*__fastcall*/ *a1)(signed int));

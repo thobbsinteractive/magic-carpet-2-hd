@@ -14,35 +14,28 @@ env:
 
 jobs:
   build:
-    runs-on: windows-2025
+    runs-on: windows-latest
     strategy:
       matrix:
         BUILD_CONFIGURATION: [Debug, Release]
         BUILD_PLATFORM: [x86, x64]
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v3
+      uses: microsoft/setup-msbuild@v2
       
-    - name: Install googletest
-      uses: cvpkg/googletest-action@v0.1
-      with:
-        googletest_tag: 'release-1.11.0' # default is 'v1.11.0'
-        
-    - name: Cache vcpkg packages
-      uses: actions/cache@v4
-      with:
-        path: C:\vcpkg\installed
-        key: vcpkg-${{ matrix.BUILD_PLATFORM }}-${{ hashFiles('**/vcpkg.json', '**/remc2.vcxproj') }}
-        restore-keys: |
-          vcpkg-${{ matrix.BUILD_PLATFORM }}-
-
-    - name: Restore vcpkg packages
+    - name: Setup vcpkg and install googletest
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: vcpkg integrate install
+      run: |
+        if (-not (Test-Path 'vcpkg')) {
+          git clone https://github.com/microsoft/vcpkg.git vcpkg
+        }
+        & .\vcpkg\bootstrap-vcpkg.bat
+        & .\vcpkg\vcpkg.exe install gtest:x86-windows gtest:x64-windows
+        & .\vcpkg\vcpkg.exe integrate install
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -50,21 +43,7 @@ jobs:
         
     - name: Build ${{matrix.BUILD_CONFIGURATION}} ${{matrix.BUILD_PLATFORM}}
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      env:
-        VCPKG_FEATURE_FLAGS: dependencygraph
-      run: |
-        $attempts = 0
-        do {
-          $attempts++
-          Write-Host "Build attempt $attempts of 3..."
-          msbuild /m /p:Configuration=${{matrix.BUILD_CONFIGURATION}} /p:PlatformTarget=${{matrix.BUILD_PLATFORM}} /p:Platform=${{matrix.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}}/remc2.sln
-          if ($LASTEXITCODE -eq 0) { break }
-          if ($attempts -lt 3) {
-            Write-Host "Build failed, retrying in 30s..."
-            Start-Sleep -Seconds 30
-          }
-        } while ($attempts -lt 3)
-        exit $LASTEXITCODE
+      run: msbuild /m /p:Configuration=${{matrix.BUILD_CONFIGURATION}} /p:PlatformTarget=${{matrix.BUILD_PLATFORM}} /p:Platform=${{matrix.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}}/remc2.sln
     
     #- name: Run Unit Tests x86
     #  if: ${{ matrix.BUILD_CONFIGURATION == 'Debug' && matrix.BUILD_PLATFORM == 'x86' }}

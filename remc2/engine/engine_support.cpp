@@ -1033,7 +1033,9 @@ void allert_error() {
 void Exit_thread()
 {
 	thread_exit_exception e;
+#ifndef __ANDROID__
 	throw e;
+#endif
 }
 
 void End_thread(int backCode)

@@ -1,8 +1,6 @@
 set(EDITOR_TARGET remc2-editor)
 
 set(SOURCE_FILES_EDITOR
-    "ReadConfig.h"
-    "ReadConfig.cpp"
     "editor.cpp"
     "editor_main.cpp"
     "editor.h"
