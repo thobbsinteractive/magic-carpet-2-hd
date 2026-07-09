@@ -101,7 +101,6 @@ public:
 		struct Game
 		{
 			int m_MaxGameFps = 0;
-			int m_FmvFps = 20;
 			bool m_SkipIntro = false;
 		};
 

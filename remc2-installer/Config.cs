@@ -88,7 +88,6 @@ namespace remc2_installer
 	{
 		public string[] description { get; set; }
 		public int maxGameFps { get; set; }
-		public int fmvFps { get; set; }
 	}
 
 	public class Controls

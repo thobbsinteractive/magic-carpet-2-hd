@@ -9,6 +9,5 @@ public:
 
 private:
 	wxSpinCtrl* m_maxGameFps = nullptr;
-	wxSpinCtrl* m_maxFmvFps = nullptr;
 	wxCheckBox* m_skipIntro = nullptr;
 };
