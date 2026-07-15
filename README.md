@@ -165,24 +165,24 @@ e.g. `void sub_19CA0_sound_proc5(unsigned __int8 a1)` was renamed to `void Chang
 
 # ROADMAP #
 
-## MILLSTONE 1 ##
+## MILESTONE 1 ##
 - [x] Get solution runnable from Visual Studio 2019 build, with minimum of setup. Cut down on unnecessary extra files and libraries and use nuget instead.
 - [x] Refactor reverse engineered code into seperate classes where possible.
 
-## MILLSTONE 2 ##
+## MILESTONE 2 ##
 - [x] Add resolution support
 - [ ] Implement Open GL render
 - [X] Implement Controller Support
 - [X] Implement a (platform independent) Launch menu to adjust settings in config.json before launch
 
-## MILLSTONE 3 ##
+## MILESTONE 3 ##
 - [X] Improve sounds and music using updated original scores and directional sounds in game - In Review!
 - [X] Implement a wix sharp .msi installation for new .exe to make patching the and running existing game simple and something similar for the Linux versions
 
-## MILLSTONE 4 ##
+## MILESTONE 4 ##
 - [X] Get basic LAN/IPv4 multiplayer working again
 
-## MILLSTONE 5 ##
+## MILESTONE 5 ##
 - [ ] Get Magic Carpet 1 working using this engine. Ideally with original music and graphics.
 
 ## LONG TERM GOALS ##
