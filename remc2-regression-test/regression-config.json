@@ -39,8 +39,7 @@
 			},
 			"game": {
 				"loggingLevel": "Debug",
-				"maxGameFps": 30,
-				"fmvFps": 20,
+				"maxGameFps": 30
 				"skipIntro": true
 			}
 		}
