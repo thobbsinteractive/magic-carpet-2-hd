@@ -1429,20 +1429,30 @@ namespace MyNetworkLib {
 
 			// Find a session whose owner has the same local name
 			std::shared_ptr<TcpSession> sess;
+			bool deadPeerForName = false; // a matching session exists but the peer is gone
 			{
 				std::lock_guard<std::mutex> lk(sessions_mutex);
 				for (auto& kv : tcpSessions) {
-					if (!kv.second->alive || !kv.second->ownerNCB) continue;
+					if (!kv.second->ownerNCB) continue;
 					if (memcmp(kv.second->ownerNCB->ncb_name_26,
-						conn.connection->ncb_name_26, 16) == 0)
-					{
-						sess = kv.second; break;
-					}
+						conn.connection->ncb_name_26, 16) != 0) continue;
+					if (kv.second->alive) { sess = kv.second; break; }
+					deadPeerForName = true;
 				}
 			}
 			if (!sess) {
+				// If the only session for this local name is dead (peer disconnected
+				// or was banished), fail the blocking RECEIVE instead of spinning
+				// forever in NetworkReceivePacket_74C9D().  A normal re-negotiation
+				// gap has NO session at all (HANG_UP removes it), so this only fires
+				// on a genuinely lost peer and does not disturb reconnect.
+				if (deadPeerForName) {
+					conn.connection->ncb_retcode_1 = NRC_SCLOSED;
+					conn.connection->ncb_cmd_cplt_49 = NRC_SCLOSED;
+					toDelete.push_back(conn.index);
+				}
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("Pass1: RECEIVE idx=%d no session name=[%.16s]\n", conn.index, conn.connection->ncb_name_26);
+				debug_net_printf("Pass1: RECEIVE idx=%d no session name=[%.16s] deadPeer=%d\n", conn.index, conn.connection->ncb_name_26, (int)deadPeerForName);
 #endif
 				continue;
 			}
@@ -1717,7 +1727,12 @@ void simulateInterupt(myNCB* connection)
 		state = NETI_LISTEN;
 		break;
 	case 0x92:  // HANG_UP
-		locTimeout = 500;
+		// Over TCP a HANG_UP just closes the data socket (RemoveSession in Pass 2) —
+		// there is no round-trip to wait for.  The old 500 ms timeout was pure dead
+		// time, and NetworkCanceling_73669() issues a HANG_UP for every one of the 8
+		// player slots (even the unconnected ones), so a banish/disconnect stalled the
+		// caller for ~7*500 ms = 3.5 s.  A short timeout removes that stall.
+		locTimeout = 40;
 		connection->ncb_cmd_cplt_49 = NRC_PENDING;
 		break;
 	case 0x94:  // SEND
@@ -1742,7 +1757,13 @@ void simulateInterupt(myNCB* connection)
 		state = NETI_ADD_NAME;
 		break;
 	case 0xb1:  // DELETE_NAME
-		locTimeout = 10000;
+		// DELETE is fire-and-forget: DeleteNetwork() has already sent the
+		// MESS_CLIENT_DELETE to the server over reliable TCP, so there is no
+		// reply to wait for.  The old 10000 ms timeout made Pass 2 hold this
+		// NCB in NRC_PENDING for a full 10 s, during which NetworkDeleteName_74A86()
+		// busy-waits — that is the multi-second hang seen when a player is banished
+		// (banish → NetworkEvent → NetworkCanceling → NetworkDeleteName).
+		locTimeout = 100;
 		connection->ncb_retcode_1 = NRC_PENDING;
 		locNetworkClass->DeleteNetwork(connection, locIndex);
 		break;
@@ -1756,6 +1777,27 @@ void simulateInterupt(myNCB* connection)
 	lc.state = state;
 	lc.retryCount = 0;
 	{ std::lock_guard<std::mutex> lk(connections_mutex); handleConnections.push_back(lc); }
+}
+
+// ---------------------------------------------------------------------------
+// ResetNetworkGameState — drop all per-match state so a NEW match starts clean.
+// Without this, a second match inherits stale data sessions / established-connection
+// entries / pending NCB commands keyed by the (reused) NCB pointers from the first
+// match; that made the peers issue redundant CALLs and clobber each other's data
+// session, so they never reconnected (restart bug #3).  Sockets stay open.
+// ---------------------------------------------------------------------------
+void ResetNetworkGameState()
+{
+	{
+		std::lock_guard<std::mutex> lk(sessions_mutex);
+		for (auto& kv : tcpSessions) if (kv.second) kv.second->Close();
+		tcpSessions.clear();
+	}
+	{ std::lock_guard<std::mutex> lk(clientConnMutex);   clientConnection.clear(); }
+	{ std::lock_guard<std::mutex> lk(connections_mutex); handleConnections.clear(); }
+#ifdef TEST_NETWORK_MESSAGES_PORTNET
+	debug_net_printf("ResetNetworkGameState: cleared sessions/connections/commands for new match\n");
+#endif
 }
 
 // ---------------------------------------------------------------------------

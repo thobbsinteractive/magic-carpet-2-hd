@@ -182,6 +182,10 @@ int NetworkInitConnection_7308F(char* a2, __int16 a3)//25408f
 	}
 	while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff);//AddNameNotSet?
 
+	// clear stale per-match network state left over from a previous
+	// game before starting this one, otherwise the peers fail to reconnect.
+	ResetNetworkGameState();
+
 	/*
 	//wait for Server AddName
 	if (!Iam_server)
