@@ -984,13 +984,21 @@ void ScaleUpMouseCoordsToVga(int16_t& x, int16_t& y)
 {
 	if (m_iOrigw > 640)
 	{
-		float fx = (float)m_iOrigw / (640.0f * mouseScaleX);
+		float fx = 1;
+
+		if ((640.0f * mouseScaleX) <= m_iOrigw)
+			fx = (float)m_iOrigw / (640.0f * mouseScaleX);
+
 		x = fx * x;
 	}
 
 	if (m_iOrigh > 480)
 	{
-		float fy = (float)m_iOrigh / (480.0f * mouseScaleY);
+		float fy = 1;
+
+		if ((480 * mouseScaleY) <= m_iOrigh)
+			fy = (float)m_iOrigh / (480.0f * mouseScaleY);
+
 		y = fy * y;
 	}
 }
