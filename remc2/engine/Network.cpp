@@ -520,8 +520,6 @@ void NetworkUpdateConnections2_74374()//255374
 	NetworkUpdateConnections_74F76();
 }
 
-char fixBuffer[60000];
-
 //----- (0007438A) --------------------------------------------------------
 void ReceiveSendAll_7438A(uint8_t* buffer, unsigned int size)//25538a
 {
@@ -550,21 +548,23 @@ void ReceiveSendAll_7438A(uint8_t* buffer, unsigned int size)//25538a
 		}
 		else
 		{
-			timeState(false, "End");//debug	
-			timeState(true, "Begin - pre Send");//debug	
-			printState2((char*)"Send State 4\n");//debug	
-			//fix some problems
-			memcpy(fixBuffer, buffer, size * countConnected_E1278);
-			//fix some problems
+			timeState(false, "End");//debug
+			timeState(true, "Begin - pre Send");//debug
+			printState2((char*)"Send State 4\n");//debug
 			NetworkSendMessage2_74006(IndexInNetwork2_E12A8, (buffer + size * IndexInNetwork_E1276), size);
 			timeState(true, "After Send, Before Receive");//debug
 			NetworkReceiveMessage2_7404E(IndexInNetwork2_E12A8, buffer, size * countConnected_E1278);
-			//debug			
-			if (memcmp(&fixBuffer[IndexInNetwork_E1276 * size], (char*)&buffer[IndexInNetwork_E1276 * size], size))
-			{
-				memcpy(buffer, fixBuffer, size * countConnected_E1278);
-			}
-			//debug
+			// The array echoed by the token holder is authoritative and must be used as
+			// received: every node has to run the simulation on identical input.
+			//
+			// This used to keep a copy of the local buffer and, whenever the echo did not
+			// carry back exactly the slice we had just sent, restore that whole local copy
+			// instead.  That is what caused players to lose track of each other: as soon as
+			// the echo ran one turn behind (harmless in itself - both sides still apply the
+			// same array, just one turn later), the comparison failed on every turn from
+			// then on, so this node permanently discarded the authoritative array and ran
+			// on its local one, where the other players' slots are never filled in.  The
+			// condition kept failing, so it never recovered.
 			timeState(true, "After Receive");//debug
 		}
 	}

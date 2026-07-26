@@ -31,7 +31,7 @@ void CommandLineParser::Init(int argc, char **argv) {
     m_load_edited_level = false;
     m_mouse_off2 = false;
     m_move_player = false;
-    m_no_show_new_procedures = false;
+    m_no_show_new_procedures = true;
     m_off_pause_5 = false;
     m_right_button = false;
     m_test_regression = false;

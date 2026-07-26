@@ -78,6 +78,7 @@ static void set_nodelay(socket_t s) {
 }
 #else
 #include <sys/socket.h>
+#include <sys/select.h>
 #include <arpa/inet.h>
 #include <netinet/tcp.h>
 #include <unistd.h>
@@ -331,7 +332,18 @@ static void LogPkt(const char* dir, const std::string& addr, int port,
 // TCP helpers — length-prefixed framing
 // ---------------------------------------------------------------------------
 
-// Send all bytes of msg on socket s (blocking).
+// Send all bytes of msg on socket s.
+//
+// Every socket here is non-blocking, so a large frame (a full game-state packet is
+// ~17 KB and the packet limit is 60 KB, against a default ~64 KB socket buffer) can
+// easily fill the send buffer and make send() fail with EWOULDBLOCK part way through.
+// Treating that as a fatal error - as this used to - left the 4-byte length prefix and
+// a partial body on the wire: the receiver then waited for a remainder that never came
+// and glued the *next* message onto the truncated one, so both sides silently decoded
+// garbage game state.  Instead wait for the socket to become writable and continue, so
+// a frame is either delivered whole or the connection is reported as broken.
+static const long TCP_SEND_STALL_TIMEOUT_MS = 5000;
+
 static bool TcpSendFull(socket_t s, const std::string& msg)
 {
 	if (s == SOCK_INVALID) return false;
@@ -341,10 +353,22 @@ static bool TcpSendFull(socket_t s, const std::string& msg)
 		(uint8_t)(len >> 8), (uint8_t)(len) };
 	auto send_all = [s](const void* b, int n) -> bool {
 		const char* p = (const char*)b; int left = n;
+		long waited = 0;
 		while (left > 0) {
 			int r = send(s, p, left, 0);
-			if (r <= 0) return false;
-			p += r; left -= r;
+			if (r > 0) { p += r; left -= r; waited = 0; continue; }
+			if (r == 0) return false;
+			int e = sock_errno();
+			if (!would_block(e)) return false;
+			// Buffer full: wait until the peer drains it, then resume this frame.
+			fd_set wf; FD_ZERO(&wf); FD_SET(s, &wf);
+			timeval tv; tv.tv_sec = 0; tv.tv_usec = 50 * 1000;
+			int sel = select((int)s + 1, nullptr, &wf, nullptr, &tv);
+			if (sel < 0) return false;
+			if (sel == 0) {
+				waited += 50;
+				if (waited >= TCP_SEND_STALL_TIMEOUT_MS) return false; // peer is gone/stuck
+			}
 		}
 		return true;
 		};
@@ -729,20 +753,65 @@ void CleanMessages(myNCB locNCB)
 // ---------------------------------------------------------------------------
 static socket_t peerListenSock = SOCK_INVALID;
 
-static bool StartPeerListen(int port)
+// Claim a listening port exclusively.
+//
+// On Windows SO_REUSEADDR does NOT mean "reuse a TIME_WAIT port" as it does on POSIX -
+// it lets a second socket bind a port another socket is already listening on, and which
+// of them receives a new connection is then undefined.  Two instances started on one
+// machine with overlapping ports (e.g. the client's data port equal to the server's
+// control port) therefore steal each other's connections instead of failing, which shows
+// up as endless reconnects and "no listenNCB" rejections.  Ask for exclusive use so an
+// overlap fails loudly at bind() time.  On POSIX keep SO_REUSEADDR - there it only allows
+// rebinding a port left in TIME_WAIT, which is what we want after a restart.
+static void set_exclusive_listen(socket_t s)
+{
+	int opt = 1;
+#ifdef _WIN32
+	setsockopt(s, SOL_SOCKET, SO_EXCLUSIVEADDRUSE, (char*)&opt, sizeof(opt));
+#else
+	setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
+#endif
+}
+
+// Bind the port peers connect to for game data.  'port' is in/out: if the configured
+// port is taken (typically because it collides with the control port of a server running
+// on the same machine) we fall back to an OS-assigned port and report it back, because
+// the port we actually listen on is what gets advertised to the server and handed to the
+// caller in CALL_ACCEPT.  Losing this socket used to be silent, and only broke later,
+// when this node happened to be the one that had to LISTEN - which is why the failure
+// looked like it depended on who started the session first.
+static bool StartPeerListen(int& port)
 {
 	peerListenSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (peerListenSock == SOCK_INVALID) return false;
-	int opt = 1;
-	setsockopt(peerListenSock, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
+	set_exclusive_listen(peerListenSock);
 	set_nonblocking(peerListenSock);
 	sockaddr_in a{}; a.sin_family = AF_INET; a.sin_port = htons((unsigned short)port);
 	a.sin_addr.s_addr = INADDR_ANY;
 	if (bind(peerListenSock, (sockaddr*)&a, sizeof(a)) != 0) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("PeerListen: bind(%d) failed err=%d\n", port, sock_errno());
-#endif
-		CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
+		int e = sock_errno();
+		debug_net_printf("PeerListen: data port %d unavailable (err=%d) - taking an OS-assigned port instead\n", port, e);
+		sockaddr_in any{}; any.sin_family = AF_INET; any.sin_port = 0; any.sin_addr.s_addr = INADDR_ANY;
+		if (bind(peerListenSock, (sockaddr*)&any, sizeof(any)) != 0) {
+			debug_net_printf("PeerListen: FATAL - no data port could be bound (err=%d)\n", sock_errno());
+			CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
+		}
+		sockaddr_in got{}; socklen_t gl = sizeof(got);
+		if (getsockname(peerListenSock, (sockaddr*)&got, &gl) != 0) {
+			CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
+		}
+		port = ntohs(got.sin_port);
+		debug_net_printf("PeerListen: using data port %d\n", port);
+	}
+	else if (port == 0) {
+		// Caller asked the OS to choose; report back what we actually got, because this
+		// number is what we advertise to the server and to the peer that has to call us.
+		sockaddr_in got{}; socklen_t gl = sizeof(got);
+		if (getsockname(peerListenSock, (sockaddr*)&got, &gl) != 0) {
+			CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
+		}
+		port = ntohs(got.sin_port);
+		debug_net_printf("PeerListen: using data port %d\n", port);
 	}
 	listen(peerListenSock, 8);
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
@@ -867,31 +936,56 @@ namespace MyNetworkLib {
 		clIam_client = iam_client;
 		IpPortIsSet = iam_server;
 
-		// Start peer data port
-		if (!StartPeerListen(clPort))
+		// Give every instance its own debug log.  Two instances started from the same
+		// folder would otherwise both open "net_messages_log1.txt": the one starting
+		// second truncates ("wt") what the first has already written, and from then on
+		// their lines interleave in a single file with two unrelated clock() timelines.
+		// That makes the capture nearly unusable for diagnosing a desync.
 		{
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("NetworkClass: peer listen on %d failed\n", clPort);
-#endif
+			char portbuf[16];
+			snprintf(portbuf, sizeof(portbuf), "%d", clPort);
+			debug_net_filename1 = std::string("net_messages_log1_") + portbuf + ".txt";
 		}
 
-		// Server: start control accept port
+		// Server: claim the control port FIRST.  It is the one port that cannot move -
+		// clients are told to connect there - whereas the data port below can relocate.
 		if (clIam_server) {
 			ctrlListenSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-			int opt = 1;
-			setsockopt(ctrlListenSock, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
+			set_exclusive_listen(ctrlListenSock);
 			set_nonblocking(ctrlListenSock);
 			sockaddr_in a{}; a.sin_family = AF_INET;
 			a.sin_port = htons((unsigned short)clServerPort);
 			a.sin_addr.s_addr = INADDR_ANY;
-			if (bind(ctrlListenSock, (sockaddr*)&a, sizeof(a)) == 0)
+			if (bind(ctrlListenSock, (sockaddr*)&a, sizeof(a)) == 0) {
 				listen(ctrlListenSock, 16);
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-			else
-				debug_net_printf("NetworkClass: ctrl listen on %d failed err=%d\n", clServerPort, sock_errno());
-			debug_net_printf("NetworkClass: ctrl listen on port %d\n", clServerPort);
+				debug_net_printf("NetworkClass: ctrl listen on port %d\n", clServerPort);
 #endif
+			}
+			else {
+				// Always report this: hosting is impossible and every later symptom
+				// (clients looping on "server disconnected") follows from it.
+				debug_net_printf("NetworkClass: FATAL - cannot listen on control port %d (err=%d); "
+					"another program or game instance already uses it\n", clServerPort, sock_errno());
+				CLOSE_SOCKET(ctrlListenSock); ctrlListenSock = SOCK_INVALID;
+			}
 		}
+
+		// A pure client must never squat on the port the server listens on when both run
+		// on this machine: whoever starts first wins it, and if the client wins, the host
+		// cannot open its control port at all.  The data port is advertised to the peers,
+		// so moving it is transparent - unlike the control port, which is fixed.
+		if (!clIam_server && clPort == clServerPort &&
+			(clHost.compare(0, 4, "127.") == 0 || clHost == "localhost" || clHost == "::1"))
+		{
+			debug_net_printf("NetworkClass: data port %d is the local server's control port - "
+				"taking an OS-assigned data port instead\n", clPort);
+			clPort = 0; // ask the OS; StartPeerListen reports what we actually got
+		}
+
+		// Peer data port (may relocate if the configured one is taken).
+		if (!StartPeerListen(clPort))
+			debug_net_printf("NetworkClass: FATAL - no data port available; peers cannot connect\n");
 	}
 
 	NetworkClass::~NetworkClass()
@@ -1105,11 +1199,30 @@ namespace MyNetworkLib {
 				if (debug_net) LogPkt("DATA RX ←", sess->peerAddr, sess->peerPort, u);
 
 				if (u.message == MESS_DIRECT_SEND) {
-					std::lock_guard<std::mutex> qlk(sess->queueMtx);
-					sess->dataQueue.push(raw);
+					size_t depth;
+					{
+						std::lock_guard<std::mutex> qlk(sess->queueMtx);
+						sess->dataQueue.push(raw);
+						depth = sess->dataQueue.size();
+					}
 #ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("PollSessions: queued DIRECT_SEND size=%u (queue=%zu)\n", u.size, sess->dataQueue.size());
+					debug_net_printf("PollSessions: queued DIRECT_SEND size=%u (queue=%zu)\n", u.size, depth);
 #endif
+					// A backlog means the game is reading one message per turn while the
+					// peer already produced the next one, so from here on every RECEIVE
+					// hands over data one turn old.  That is harmless for the lockstep
+					// itself (both nodes still apply the same array, just later), but it is
+					// worth reporting: stale packets must NOT be dropped to "catch up",
+					// because skipping one would make this node apply a different sequence
+					// of inputs than its peer - a real divergence.
+					if (depth > 1) {
+						static int s_backlogReports = 0;
+						if (s_backlogReports < 10) {
+							s_backlogReports++;
+							debug_net_printf("PollSessions: NOTE data queue depth %zu for peer %s:%d - "
+								"receives now run one turn behind\n", depth, sess->peerAddr.c_str(), sess->peerPort);
+						}
+					}
 				}
 				else if (u.message == MESS_HEARTBEAT) {
 					shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
