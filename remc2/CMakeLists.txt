@@ -14,6 +14,7 @@ endif ()
 source_group("Header Files" FILES ${HEADER_FILES})
 
 if (WIN32)
+	set(APP_ICON_RESOURCE ${CMAKE_SOURCE_DIR}/icons/app.rc)
     set(SOURCE_FILES
         "remc2.cpp"
         "stdafx.cpp"
