@@ -23,7 +23,7 @@
 #include "Type_D93C0_Bldgprmbuffer.h"
 #include "TextureMaps.h"
 #include "defs.h"
-#include "ProjectionPolygon.h"
+#include "ProjectionVertex.h"
 
 typedef struct {//size 4*5
 	int32 x_0;

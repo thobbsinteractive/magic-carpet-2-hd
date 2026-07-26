@@ -1,7 +1,7 @@
-#include "ProjectionPolygon.h"
+#include "ProjectionVertex.h"
 #include <string>
 
-ProjectionPolygon::ProjectionPolygon(int* vertexs)
+ProjectionVertex::ProjectionVertex(int* vertexs)
 {
 	X = vertexs[0];
 	Y = vertexs[1];
@@ -10,7 +10,7 @@ ProjectionPolygon::ProjectionPolygon(int* vertexs)
 	Brightness = vertexs[4];
 }
 
-std::string ProjectionPolygon::Print()
+std::string ProjectionVertex::Print()
 {
 	return "X: " + std::to_string(X) + " Y: " + std::to_string(Y) + " U: " + std::to_string(U) + " V: " + std::to_string(V) + " B: " + std::to_string(Brightness);
 }

@@ -153,7 +153,7 @@
     <ClInclude Include="engine\RenderThread.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
-    <ClInclude Include="engine\ProjectionPolygon.h">
+    <ClInclude Include="engine\ProjectionVertex.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
     <ClInclude Include="utilities\Wave.h">
@@ -437,7 +437,7 @@
     <ClCompile Include="engine\RenderThread.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
-    <ClCompile Include="engine\ProjectionPolygon.cpp">
+    <ClCompile Include="engine\ProjectionVertex.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
     <ClCompile Include="engine\Type_MapScreenPortals_E17CC.cpp">

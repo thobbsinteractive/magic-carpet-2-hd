@@ -420,7 +420,7 @@
     <ClInclude Include="engine\GameRenderOriginal.h" />
     <ClInclude Include="engine\MenuState.h" />
     <ClInclude Include="engine\Network.h" />
-    <ClInclude Include="engine\ProjectionPolygon.h" />
+    <ClInclude Include="engine\ProjectionVertex.h" />
     <ClInclude Include="engine\Scene.h" />
     <ClInclude Include="engine\WavIndexes.h" />
     <ClInclude Include="engine\ReadAndDecompress.h" />
@@ -517,7 +517,7 @@
     <ClCompile Include="engine\MouseOnOff.cpp" />
     <ClCompile Include="engine\Network.cpp" />
     <ClCompile Include="engine\PrintMessages.cpp" />
-    <ClCompile Include="engine\ProjectionPolygon.cpp" />
+    <ClCompile Include="engine\ProjectionVertex.cpp" />
     <ClCompile Include="engine\ReadAndDecompress.cpp" />
     <ClCompile Include="engine\ScreenBuff.cpp" />
     <ClCompile Include="engine\Sound.cpp" />
