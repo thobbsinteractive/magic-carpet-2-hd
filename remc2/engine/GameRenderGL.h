@@ -127,8 +127,6 @@ public:
 	~GameRenderGL();
 
 	void DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov);
-	void WriteWorldToBMP();
-	void WriteWholeBufferToBmp();
 	void ClearGraphicsBuffer(uint8_t colorIdx);
 
 	static int32_t CalculateRotationTranslationX(int64_t cos_0x11, int64_t pnt1, int64_t sin_0x0d, int64_t pnt2);
