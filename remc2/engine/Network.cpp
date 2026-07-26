@@ -520,6 +520,10 @@ void NetworkUpdateConnections2_74374()//255374
 	NetworkUpdateConnections_74F76();
 }
 
+// Holds this node's own entry of the exchanged array across the send/receive round trip.
+// The largest element exchanged is type_str_0x2BDE (2124 bytes).
+uint8_t ownSliceBuffer[4096];
+
 //----- (0007438A) --------------------------------------------------------
 void ReceiveSendAll_7438A(uint8_t* buffer, unsigned int size)//25538a
 {
@@ -551,20 +555,26 @@ void ReceiveSendAll_7438A(uint8_t* buffer, unsigned int size)//25538a
 			timeState(false, "End");//debug
 			timeState(true, "Begin - pre Send");//debug
 			printState2((char*)"Send State 4\n");//debug
-			NetworkSendMessage2_74006(IndexInNetwork2_E12A8, (buffer + size * IndexInNetwork_E1276), size);
+			// Keep our own slice: the echo can still carry the previous turn's copy of it,
+			// and rolling our own entry back would drop whatever the local player just did.
+			uint8_t* mySlot = &buffer[size * IndexInNetwork_E1276];
+			if (size <= sizeof(ownSliceBuffer))
+				memcpy(ownSliceBuffer, mySlot, size);
+			NetworkSendMessage2_74006(IndexInNetwork2_E12A8, mySlot, size);
 			timeState(true, "After Send, Before Receive");//debug
 			NetworkReceiveMessage2_7404E(IndexInNetwork2_E12A8, buffer, size * countConnected_E1278);
-			// The array echoed by the token holder is authoritative and must be used as
-			// received: every node has to run the simulation on identical input.
+			// The echoed array is authoritative for the OTHER players - it must be taken as
+			// received, otherwise this node loses track of where they are.  Only our own
+			// entry is restored, so a locally made choice (menu selection, marking mana,
+			// re-casting a castle) is not erased before it has been sent on.
 			//
-			// This used to keep a copy of the local buffer and, whenever the echo did not
-			// carry back exactly the slice we had just sent, restore that whole local copy
-			// instead.  That is what caused players to lose track of each other: as soon as
-			// the echo ran one turn behind (harmless in itself - both sides still apply the
-			// same array, just one turn later), the comparison failed on every turn from
-			// then on, so this node permanently discarded the authoritative array and ran
-			// on its local one, where the other players' slots are never filled in.  The
-			// condition kept failing, so it never recovered.
+			// Restoring the WHOLE array here - as the code used to do whenever the echo did
+			// not match - was what broke the sync: once the echo ran one turn behind, the
+			// comparison failed on every following turn, so this node permanently discarded
+			// the authoritative data and ran on its own copy, in which the other players'
+			// slots are never filled in.  It never recovered from that.
+			if (size <= sizeof(ownSliceBuffer))
+				memcpy(mySlot, ownSliceBuffer, size);
 			timeState(true, "After Receive");//debug
 		}
 	}
