@@ -1,5 +1,9 @@
 set(EDITOR_TARGET remc2-editor)
 
+if (WIN32)
+	set(APP_ICON_RESOURCE ${CMAKE_SOURCE_DIR}/icons/editor.rc)
+endif()
+
 set(SOURCE_FILES_EDITOR
     "editor.cpp"
     "editor_main.cpp"
