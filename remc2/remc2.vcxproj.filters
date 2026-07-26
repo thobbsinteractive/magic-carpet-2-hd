@@ -31,11 +31,14 @@
     <Filter Include="Header Files\utilities">
       <UniqueIdentifier>{3087ce82-d2a1-473b-92b8-cc3d22463f94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\lib">
-      <UniqueIdentifier>{09dcf658-cd17-438b-8076-e982e29977fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\lib">
       <UniqueIdentifier>{71476ba4-8cad-4bb4-87dd-d3a59776e259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\portability\lib">
+      <UniqueIdentifier>{09dcf658-cd17-438b-8076-e982e29977fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\portability\shaders">
+      <UniqueIdentifier>{e7b8062d-a177-422d-8569-eeadbba25149}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -354,6 +357,12 @@
     <ClInclude Include="engine\axis_3d.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
+    <ClInclude Include="portability\VulkanPolygonRenderer.h">
+      <Filter>Header Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="portability\RenderPolygon.h">
+      <Filter>Header Files\portability</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -573,7 +582,10 @@
       <Filter>Source Files\engine</Filter>
     </ClCompile>
     <ClCompile Include="lib\stb_impl.cpp">
-      <Filter>Source Files\lib</Filter>
+      <Filter>Source Files\portability\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="portability\VulkanPolygonRenderer.cpp">
+      <Filter>Source Files\portability</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -588,6 +600,12 @@
     </None>
     <None Include="..\config.json">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="portability\shaders\polygon.frag">
+      <Filter>Source Files\portability\shaders</Filter>
+    </None>
+    <None Include="shaders\polygon.vert">
+      <Filter>Source Files\portability\shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

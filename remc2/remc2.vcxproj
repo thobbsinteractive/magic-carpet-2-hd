@@ -466,7 +466,9 @@
     <ClInclude Include="portability\port_net.h" />
     <ClInclude Include="portability\port_sdl_joystick.h" />
     <ClInclude Include="portability\port_show_perifery.h" />
+    <ClInclude Include="portability\RenderPolygon.h" />
     <ClInclude Include="portability\SfxEffectWrapper.h" />
+    <ClInclude Include="portability\VulkanPolygonRenderer.h" />
     <ClInclude Include="utilities\BitmapIO.h" />
     <ClInclude Include="utilities\DataFileIO.h" />
     <ClInclude Include="utilities\DataFileRNC.h" />
@@ -549,6 +551,7 @@
     <ClCompile Include="portability\port_net.cpp" />
     <ClCompile Include="portability\port_sdl_joystick.cpp" />
     <ClCompile Include="portability\port_show_perifery.cpp" />
+    <ClCompile Include="portability\VulkanPolygonRenderer.cpp" />
     <ClCompile Include="utilities\BitmapIO.cpp" />
     <ClCompile Include="utilities\DataFileIO.cpp" />
     <ClCompile Include="utilities\DataFileRNC.cpp" />
@@ -586,6 +589,12 @@
     <None Include="engine\bytearrays.x" />
     <None Include="engine\info.x" />
     <None Include="engine\structures.x" />
+    <None Include="portability\shaders\polygon.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="portability\shaders\polygon.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="font\16x16-font.bmp">
