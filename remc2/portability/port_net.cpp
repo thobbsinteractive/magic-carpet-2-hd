@@ -45,8 +45,8 @@
 //   printState(), printState2(), timeState(), IsRemoteAlive(),
 //   ReceiveServerAddName() — all signatures unchanged from the UDP version.
 
-//#define TEST_NETWORK_MESSAGES_NETWORK
-//#define TEST_NETWORK_MESSAGES_PORTNET
+#define TEST_NETWORK_MESSAGES_NETWORK
+#define TEST_NETWORK_MESSAGES_PORTNET
 
 #define _CRT_SECURE_NO_WARNINGS
 #include "port_net.h"
@@ -1518,9 +1518,21 @@ namespace MyNetworkLib {
 	void NetworkClass::UpdateClient()
 	{
 		if (!IpPortIsSet) {
-			shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
-			SendCtrl(Pack_Message(MESS_CLIENT_GET_IP, n, GetNextIndex(), clPort));
-			return;
+			// The control link is not up (yet, or any more): keep asking the server for
+			// our address, but do NOT skip the NCB state machine below.
+			//
+			// Returning here - as this used to do - stopped Pass 2 from ever completing a
+			// command once the server had gone away.  Network.cpp busy-waits on
+			// ncb_cmd_cplt_49 for HANG_UP, DELETE_NAME and CANCEL, so leaving the game
+			// after the server quit first froze the whole process: the command it was
+			// spinning on could never be completed by anyone.
+			static clock_t lastProbe = 0;
+			clock_t nowProbe = clock();
+			if (lastProbe == 0 || (long)((nowProbe - lastProbe) * 1000 / CLOCKS_PER_SEC) >= 250) {
+				lastProbe = nowProbe;
+				shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
+				SendCtrl(Pack_Message(MESS_CLIENT_GET_IP, n, GetNextIndex(), clPort));
+			}
 		}
 
 		std::lock_guard<std::mutex> conn_lk(connections_mutex);
