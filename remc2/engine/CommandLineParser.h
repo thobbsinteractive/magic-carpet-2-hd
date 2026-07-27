@@ -17,7 +17,7 @@ class CommandLineParser {
         int ModeRegressionsSaveIndex() const { return m_test_save_index; }; //this is setting for regressions testing
 		int ModeRegressionsTestType() const { return m_mode_regression_type; }; //this is setting for regressions testing
 		bool ModeDebugOnstart() const {return m_mode_debug_onstart;}; //this is setting is for compare data with dosbox(can fix mouse move, and etc.)
-        bool ModeTestNetwork() const {return m_mode_test_network;};
+        bool ModeNetwork() const {return m_mode_network;};
 
         // parameters
         bool DoAlternativeGamespeedControl() const {return m_alternative_gamespeed_control ;};
@@ -73,7 +73,7 @@ class CommandLineParser {
         bool m_mode_release_game;
         bool m_mode_playing_game;
         bool m_mode_debug_onstart;
-        bool m_mode_test_network;
+        bool m_mode_network;
 		int m_mode_regression_type;
 
         // parameters

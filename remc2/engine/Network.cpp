@@ -733,7 +733,7 @@ signed int NetworkCancel_748F7(__int16 compindex)//2558f7
 }
 
 int dos_getvect(int vector) {
-	if (CommandLineParams.ModeTestNetwork()) {
+	if (CommandLineParams.ModeNetwork()) {
 		if ((Iam_server) || (Iam_client))
 		{
 			//get ah from 2b5cb2 - 01
@@ -978,7 +978,7 @@ int setNetbios_75044(myNCB* connection)//256044
 	v13 = 0;
 	return v13;
 
-	/* if (CommandLineParams.ModeTestNetwork()) {
+	/* if (CommandLineParams.ModeNetwork()) {
 		a1x->byte_1 = 3;
 	}
 	return 1;*/
@@ -1203,7 +1203,7 @@ void NetworkDisallocation2_5C450()//23d450
 const int StartNetworkTimeout = 5;
 
 void InitNetworkInfo() {
-	if (CommandLineParams.ModeTestNetwork()) {
+	if (CommandLineParams.ModeNetwork()) {
 		std::string exepath = get_exe_path();
 		//debug_net_filename2 = exepath + "/../" + debug_net_filename1;
 

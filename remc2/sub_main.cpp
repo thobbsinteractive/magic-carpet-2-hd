@@ -638,7 +638,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		initposistruct();
 
 		sub_56210_process_command_line(argc, argv);//236FD4 - 237210
-		if (CommandLineParams.ModeTestNetwork()) {
+		if (CommandLineParams.ModeNetwork()) {
 			if (Iam_server || Iam_client)
 				InitNetworkInfo();
 		}
@@ -674,7 +674,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		sub_5BC20();//23CC20 //remove devices?
 		sub_56730_clean_memory();//237730
 
-		if (CommandLineParams.ModeTestNetwork()) {
+		if (CommandLineParams.ModeNetwork()) {
 			if (Iam_server || Iam_client)
 			{
 				EndMyNetLib();

@@ -15,7 +15,7 @@ void CommandLineParser::Init(int argc, char **argv) {
     m_test_save_index = -1;
 	m_mode_regression_type = -1;
     m_mode_debug_onstart = false;
-    m_mode_test_network = false;
+    m_mode_network = false;
 
     m_analyze_entity = true;
     m_alternative_gamespeed_control = true;
@@ -73,7 +73,7 @@ void CommandLineParser::InterpretParams() {
         "--mode_release_game",
         "--mode_playing_game",
         "--mode_debug_onstart",
-        "--mode_test_network",
+        "--network",
 		"--mode_test_regressions",
     };
     auto is_in_all_params = [&all_modes](const std::string &s) {
@@ -194,8 +194,8 @@ void CommandLineParser::InterpretParams() {
             //m_move_player = true;
             m_hide_graphics = false;
         }
-        else if (param == "--mode_test_network") {
-            m_mode_test_network = true;
+        else if (param == "--network") {
+            m_mode_network = true;
             //m_copy_skip_config = true;
             //m_hide_graphics = false;
             //m_debugafterload = true;
