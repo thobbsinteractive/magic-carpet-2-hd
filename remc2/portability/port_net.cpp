@@ -44,10 +44,6 @@
 //   simulateInterupt(), InitMyNetLib(), EndMyNetLib(), CleanMessages(),
 //   printState(), printState2(), timeState(), IsRemoteAlive(),
 //   ReceiveServerAddName() — all signatures unchanged from the UDP version.
-
-#define TEST_NETWORK_MESSAGES_NETWORK
-#define TEST_NETWORK_MESSAGES_PORTNET
-
 #define _CRT_SECURE_NO_WARNINGS
 #include "port_net.h"
 #include <map>
@@ -122,6 +118,7 @@ int         timest_index = 0;
 clock_t     timest_timer = 0;
 const int   timest_max_mess = 400;
 std::string timest_buffer[timest_max_mess];
+bool m_network_debug = false;
 
 // ---------------------------------------------------------------------------
 // Protocol message type constants  (wire-compatible with the UDP version)
@@ -256,17 +253,17 @@ message_info Unpack_Message(const std::string& data)
 	message_info out;
 	memset(&out, 0, sizeof(out));
 	if (data.size() < MSG_WIRE_HEADER) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("Unpack: too short %zu/%zu\n", data.size(), MSG_WIRE_HEADER);
-#endif
+		if (m_network_debug)
+			debug_net_printf("Unpack: too short %zu/%zu\n", data.size(), MSG_WIRE_HEADER);
+
 		out.message = MESS_UNKNOWN;
 		return out;
 	}
 	memcpy(&out, data.data(), MSG_WIRE_HEADER);
 	if (out.size > sizeof(out.data) || MSG_WIRE_HEADER + out.size > data.size()) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("Unpack: bad payload size %u\n", out.size);
-#endif
+		if (m_network_debug)
+			debug_net_printf("Unpack: bad payload size %u\n", out.size);
+
 		out.message = MESS_UNKNOWN;
 
 		return out;
@@ -320,12 +317,12 @@ static void LogPkt(const char* dir, const std::string& addr, int port,
 	const message_info& u)
 {
 	std::string p = PayloadPreview(u.data, u.size);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("%s %s:%d  msg=%-30s size=%u name=[%.16s] call=[%.16s] idx=%d%s%s\n",
-		dir, addr.c_str(), port, MessageIndexToText(u.message),
-		u.size, u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10, u.index,
-		p.empty() ? "" : " ", p.c_str());
-#endif
+	if (m_network_debug)
+		debug_net_printf("%s %s:%d  msg=%-30s size=%u name=[%.16s] call=[%.16s] idx=%d%s%s\n",
+			dir, addr.c_str(), port, MessageIndexToText(u.message),
+			u.size, u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10, u.index,
+			p.empty() ? "" : " ", p.c_str());
+
 }
 
 // ---------------------------------------------------------------------------
@@ -400,9 +397,9 @@ struct TcpRecvBuf {
 			// mid-frame and the socket was re-used — should not happen on
 			// a single TCP connection but defends against bugs).
 			if (len > MAX_FRAME) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("TcpRecvBuf: FATAL bad frame len=%u (max=%u), discarding %zu bytes — connection likely corrupted\n", len, MAX_FRAME, raw.size());
-#endif
+				if (m_network_debug)
+					debug_net_printf("TcpRecvBuf: FATAL bad frame len=%u (max=%u), discarding %zu bytes — connection likely corrupted\n", len, MAX_FRAME, raw.size());
+
 				raw.clear();
 				return false; // treat as disconnect — upper layer will reconnect
 			}
@@ -624,26 +621,26 @@ static void deleteListenConnection(myNCB* c)
 // So: tmp->ncb_name_26 (caller's name) == c->ncb_callName_10 (who we waited for).
 static bool setListen(myNCB* tmp)
 {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("setListen: looking for NCB whose callName=[%.16s]\n", tmp->ncb_name_26);
-#endif
+	if (m_network_debug)
+		debug_net_printf("setListen: looking for NCB whose callName=[%.16s]\n", tmp->ncb_name_26);
+
 	std::lock_guard<std::mutex> lk(clientConnMutex);
 	for (auto* c : clientConnection) {
 		if (memcmp(tmp->ncb_name_26, c->ncb_callName_10, 16) == 0) {
 			c->ncb_lsn_2 = 20;
 			//c->ncb_cmd_cplt_49 = NRC_GOODRET;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("setListen: MATCH name=[%.16s] call=[%.16s] lsn=20\n", c->ncb_name_26, c->ncb_callName_10);
-#endif
+			if (m_network_debug)
+				debug_net_printf("setListen: MATCH name=[%.16s] call=[%.16s] lsn=20\n", c->ncb_name_26, c->ncb_callName_10);
+
 			return true;
 		}
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("setListen: candidate name=[%.16s] call=[%.16s] NO MATCH\n", c->ncb_name_26, c->ncb_callName_10);
-#endif
+		if (m_network_debug)
+			debug_net_printf("setListen: candidate name=[%.16s] call=[%.16s] NO MATCH\n", c->ncb_name_26, c->ncb_callName_10);
+
 	}
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("setListen: NO MATCH\n");
-#endif
+	if (m_network_debug)
+		debug_net_printf("setListen: NO MATCH\n");
+
 	return false;
 }
 
@@ -814,9 +811,9 @@ static bool StartPeerListen(int& port)
 		debug_net_printf("PeerListen: using data port %d\n", port);
 	}
 	listen(peerListenSock, 8);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("PeerListen: data port %d\n", port);
-#endif
+	if (m_network_debug)
+		debug_net_printf("PeerListen: data port %d\n", port);
+
 	return true;
 }
 
@@ -870,9 +867,9 @@ static bool SendToCtrlClient(const std::string& msg, const std::string& addr, in
 			return TcpSendFull(cc.sock, msg);
 		}
 	}
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("SendToCtrlClient: no client %s:%d\n", addr.c_str(), dataPort);
-#endif
+	if (m_network_debug)
+		debug_net_printf("SendToCtrlClient: no client %s:%d\n", addr.c_str(), dataPort);
+
 	return false;
 }
 
@@ -958,9 +955,9 @@ namespace MyNetworkLib {
 			a.sin_addr.s_addr = INADDR_ANY;
 			if (bind(ctrlListenSock, (sockaddr*)&a, sizeof(a)) == 0) {
 				listen(ctrlListenSock, 16);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("NetworkClass: ctrl listen on port %d\n", clServerPort);
-#endif
+				if (m_network_debug)
+					debug_net_printf("NetworkClass: ctrl listen on port %d\n", clServerPort);
+
 			}
 			else {
 				// Always report this: hosting is impossible and every later symptom
@@ -1001,13 +998,13 @@ namespace MyNetworkLib {
 		if (netRunning.load()) return;
 		netRunning.store(true);
 		netThread = std::thread([this]() {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("NetThread: started\n");
-#endif
+			if (m_network_debug)
+				debug_net_printf("NetThread: started\n");
+
 			while (netRunning.load()) { locUpdateNetworkSingleThread(); std::this_thread::sleep_for(std::chrono::milliseconds(1)); }
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("NetThread: stopped\n");
-#endif
+			if (m_network_debug)
+				debug_net_printf("NetThread: stopped\n");
+
 			});
 	}
 
@@ -1035,9 +1032,9 @@ namespace MyNetworkLib {
 		set_nonblocking(s);
 		{ std::lock_guard<std::mutex> lk(ctrlSendMtx); ctrlSock = s; }
 		IpPortIsSet = true;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("ConnectToServer: connected to %s:%d\n", clHost.c_str(), clServerPort);
-#endif
+		if (m_network_debug)
+			debug_net_printf("ConnectToServer: connected to %s:%d\n", clHost.c_str(), clServerPort);
+
 	}
 
 	// ---------------------------------------------------------------------------
@@ -1053,9 +1050,9 @@ namespace MyNetworkLib {
 			ClientCtrl cc; cc.sock = s; cc.addr = ip; cc.port = ntohs(from.sin_port);
 			std::lock_guard<std::recursive_mutex> lk(ctrlClientsMtx);
 			ctrlClients.push_back(std::move(cc));
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("AcceptCtrl: client %s:%d\n", ip, cc.port);
-#endif
+			if (m_network_debug)
+				debug_net_printf("AcceptCtrl: client %s:%d\n", ip, cc.port);
+
 		}
 	}
 
@@ -1076,9 +1073,9 @@ namespace MyNetworkLib {
 			}
 			cc.rbuf.ready.clear();
 			if (!ok) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("PollCtrlClients: client %s:%d disconnected\n", cc.addr.c_str(), cc.port);
-#endif
+				if (m_network_debug)
+					debug_net_printf("PollCtrlClients: client %s:%d disconnected\n", cc.addr.c_str(), cc.port);
+
 				for (int ni = (int)NetworkName.size() - 1; ni >= 0; ni--) {
 					if (clientIpPort[ni].adress == cc.addr && clientIpPort[ni].port == cc.dataPort) {
 						RemoveListenName(NetworkName[ni]);
@@ -1104,9 +1101,9 @@ namespace MyNetworkLib {
 		}
 		ctrlRecvBuf.ready.clear();
 		if (!ok) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("PollCtrlSocket: server disconnected\n");
-#endif
+			if (m_network_debug)
+				debug_net_printf("PollCtrlSocket: server disconnected\n");
+
 			std::lock_guard<std::mutex> lk(ctrlSendMtx);
 			CLOSE_SOCKET(ctrlSock); ctrlSock = SOCK_INVALID;
 			IpPortIsSet = false;
@@ -1128,9 +1125,8 @@ namespace MyNetworkLib {
 			int callerClPort = ntohs(from.sin_port); // fallback na ephemeral
 			for (int i = 0; i < (int)NetworkName.size(); i++)
 				if (clientIpPort[i].adress == std::string(ip)) { callerClPort = clientIpPort[i].port; break; }
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("AcceptPeer: data connection from %s\n", ip);
-#endif
+			if (m_network_debug)
+				debug_net_printf("AcceptPeer: data connection from %s\n", ip);
 
 			// Find the LISTEN NCB that is waiting for an incoming data connection.
 			// setListen() (called from PollCtrlSocket → HandleClientMsg a few lines above
@@ -1156,9 +1152,9 @@ namespace MyNetworkLib {
 
 			if (!listenNCB) {
 				// setListen hasn't run yet for this NCB — reject and let caller retry
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("AcceptPeer: WARNING no listenNCB ready, closing incoming connection from %s (will retry)\n", ip);
-#endif
+				if (m_network_debug)
+					debug_net_printf("AcceptPeer: WARNING no listenNCB ready, closing incoming connection from %s (will retry)\n", ip);
+
 				CLOSE_SOCKET(s);
 				continue;
 			}
@@ -1172,9 +1168,9 @@ namespace MyNetworkLib {
 			sess->Touch();
 			AddSession(listenNCB, sess);
 			listenNCB->ncb_cmd_cplt_49 = NRC_GOODRET;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("AcceptPeer: session listenNCB=%p name=[%.16s] call=[%.16s]\n", (void*)listenNCB, listenNCB->ncb_name_26, listenNCB->ncb_callName_10);
-#endif
+			if (m_network_debug)
+				debug_net_printf("AcceptPeer: session listenNCB=%p name=[%.16s] call=[%.16s]\n", (void*)listenNCB, listenNCB->ncb_name_26, listenNCB->ncb_callName_10);
+
 		}
 	}
 
@@ -1205,9 +1201,9 @@ namespace MyNetworkLib {
 						sess->dataQueue.push(raw);
 						depth = sess->dataQueue.size();
 					}
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("PollSessions: queued DIRECT_SEND size=%u (queue=%zu)\n", u.size, depth);
-#endif
+					if (m_network_debug)
+						debug_net_printf("PollSessions: queued DIRECT_SEND size=%u (queue=%zu)\n", u.size, depth);
+
 					// A backlog means the game is reading one message per turn while the
 					// peer already produced the next one, so from here on every RECEIVE
 					// hands over data one turn old.  That is harmless for the lockstep
@@ -1227,22 +1223,22 @@ namespace MyNetworkLib {
 				else if (u.message == MESS_HEARTBEAT) {
 					shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
 					sess->Send(Pack_Message(MESS_HEARTBEAT_ACK, n, 0, clPort));
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("PollSessions: HEARTBEAT → ACK\n");
-#endif
+					if (m_network_debug)
+						debug_net_printf("PollSessions: HEARTBEAT → ACK\n");
+
 				}
 				else if (u.message == MESS_HEARTBEAT_ACK) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("PollSessions: HEARTBEAT_ACK\n");
-#endif
+					if (m_network_debug)
+						debug_net_printf("PollSessions: HEARTBEAT_ACK\n");
+
 				}
 			}
 			sess->rbuf.ready.clear();
 
 			if (!ok) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("PollSessions: peer %s:%d disconnected\n", sess->peerAddr.c_str(), sess->peerPort);
-#endif
+				if (m_network_debug)
+					debug_net_printf("PollSessions: peer %s:%d disconnected\n", sess->peerAddr.c_str(), sess->peerPort);
+
 				sess->alive = false;
 				if (sess->ownerNCB) {
 					sess->ownerNCB->ncb_retcode_1 = NRC_SCLOSED;
@@ -1254,9 +1250,9 @@ namespace MyNetworkLib {
 			// Heartbeat
 			long silence = sess->SilenceMs();
 			if (silence >= HEARTBEAT_TIMEOUT_MS) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("PollSessions: timeout %ldms peer=%s:%d\n", silence, sess->peerAddr.c_str(), sess->peerPort);
-#endif
+				if (m_network_debug)
+					debug_net_printf("PollSessions: timeout %ldms peer=%s:%d\n", silence, sess->peerAddr.c_str(), sess->peerPort);
+
 				sess->alive = false;
 				if (sess->ownerNCB) {
 					sess->ownerNCB->ncb_retcode_1 = NRC_SCLOSED;
@@ -1272,9 +1268,9 @@ namespace MyNetworkLib {
 					sess->lastProbeSent = std::chrono::steady_clock::now();
 					shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
 					sess->Send(Pack_Message(MESS_HEARTBEAT, n, 0, clPort));
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("PollSessions: HEARTBEAT probe silence=%ldms\n", silence);
-#endif
+					if (m_network_debug)
+						debug_net_printf("PollSessions: HEARTBEAT probe silence=%ldms\n", silence);
+
 				}
 			}
 		}
@@ -1289,17 +1285,17 @@ namespace MyNetworkLib {
 		sockaddr_in a{}; a.sin_family = AF_INET;
 		a.sin_port = htons((unsigned short)dataPort);
 		inet_pton(AF_INET, addr.c_str(), &a.sin_addr);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("ConnectDataToPeer: %s:%d for ncb=[%.16s]\n", addr.c_str(), dataPort, ncb->ncb_name_26);
-#endif
+		if (m_network_debug)
+			debug_net_printf("ConnectDataToPeer: %s:%d for ncb=[%.16s]\n", addr.c_str(), dataPort, ncb->ncb_name_26);
+
 		if (connect(s, (sockaddr*)&a, sizeof(a)) != 0) {
 			int e = sock_errno();
 			if (!would_block(e))
 			{
 				CLOSE_SOCKET(s);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("ConnectDataToPeer: failed err=%d\n", e);
-#endif
+				if (m_network_debug)
+					debug_net_printf("ConnectDataToPeer: failed err=%d\n", e);
+
 				return false;
 			}
 		}
@@ -1420,9 +1416,9 @@ namespace MyNetworkLib {
 
 		if (u.message == MESS_SERVER_GIVE_IP) {
 			IpPortIsSet = true;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("HandleClient: GIVE_IP — confirmed\n");
-#endif
+			if (m_network_debug)
+				debug_net_printf("HandleClient: GIVE_IP — confirmed\n");
+
 			return;
 		}
 
@@ -1443,18 +1439,18 @@ namespace MyNetworkLib {
 				ct->state = NETI_CALL_ACCEPT;
 				ct->connection->ncb_retcode_1 = NRC_GOODRET;
 				ct->connection->ncb_cmd_cplt_49 = NRC_GOODRET;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("HandleClient: CALL_ACCEPT idx=%d name=[%.16s]\n", u.index, ct->connection->ncb_name_26);
-#endif
+				if (m_network_debug)
+					debug_net_printf("HandleClient: CALL_ACCEPT idx=%d name=[%.16s]\n", u.index, ct->connection->ncb_name_26);
+
 				struct { char ip[64]; int dataPort; } ci{};
 				if (u.size >= (int)sizeof(ci)) {
 					memcpy(&ci, u.data, sizeof(ci));
 					if (ci.ip[0] && ci.dataPort > 0) {
 						std::string key(u.messNCB.ncb_callName_10, 16);
 						directPeers[key] = { std::string(ci.ip), ci.dataPort };
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-						debug_net_printf("HandleClient: CALL_ACCEPT peer=[%.16s] %s:%d\n", u.messNCB.ncb_callName_10, ci.ip, ci.dataPort);
-#endif
+						if (m_network_debug)
+							debug_net_printf("HandleClient: CALL_ACCEPT peer=[%.16s] %s:%d\n", u.messNCB.ncb_callName_10, ci.ip, ci.dataPort);
+
 						ConnectDataToPeer(ct->connection, std::string(ci.ip), ci.dataPort);
 						// Register CALL NCB in clientConnection so Pass4 tracks
 						// liveness the same way as LISTEN NCBs.
@@ -1477,9 +1473,9 @@ namespace MyNetworkLib {
 			// u.messNCB.ncb_callName_10 is the LISTENER's name ("NETH200") — wrong field.
 			myNCB tmp; memset(&tmp, 0, sizeof(tmp));
 			memcpy(tmp.ncb_name_26, u.messNCB.ncb_name_26, 16);  // caller's name
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("HandleClient: LISTEN_ACCEPT callerName=[%.16s] listenerName=[%.16s]\n", u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
-#endif
+			if (m_network_debug)
+				debug_net_printf("HandleClient: LISTEN_ACCEPT callerName=[%.16s] listenerName=[%.16s]\n", u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
+
 			setListen(&tmp);
 
 			// Record caller's data port
@@ -1489,9 +1485,9 @@ namespace MyNetworkLib {
 				if (li.ip[0] && li.dataPort > 0) {
 					std::string key(u.messNCB.ncb_name_26, 16);
 					directPeers[key] = { std::string(li.ip), li.dataPort };
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("HandleClient: LISTEN_ACCEPT caller=%s:%d\n", li.ip, li.dataPort);
-#endif
+					if (m_network_debug)
+						debug_net_printf("HandleClient: LISTEN_ACCEPT caller=%s:%d\n", li.ip, li.dataPort);
+
 					// Incoming TCP connection accepted by AcceptPeerConnections()
 				}
 			}
@@ -1576,9 +1572,9 @@ namespace MyNetworkLib {
 					conn.connection->ncb_cmd_cplt_49 = NRC_SCLOSED;
 					toDelete.push_back(conn.index);
 				}
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("Pass1: RECEIVE idx=%d no session name=[%.16s] deadPeer=%d\n", conn.index, conn.connection->ncb_name_26, (int)deadPeerForName);
-#endif
+				if (m_network_debug)
+					debug_net_printf("Pass1: RECEIVE idx=%d no session name=[%.16s] deadPeer=%d\n", conn.index, conn.connection->ncb_name_26, (int)deadPeerForName);
+
 				continue;
 			}
 
@@ -1592,9 +1588,9 @@ namespace MyNetworkLib {
 
 			message_info u = Unpack_Message(raw);
 			if (u.size > conn.connection->ncb_bufferLength_8) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("Pass1: RECEIVE idx=%d size=%u > buf=%u DROP\n", conn.index, u.size, conn.connection->ncb_bufferLength_8);
-#endif
+				if (m_network_debug)
+					debug_net_printf("Pass1: RECEIVE idx=%d size=%u > buf=%u DROP\n", conn.index, u.size, conn.connection->ncb_bufferLength_8);
+
 				continue;
 			}
 			memcpy(conn.connection->ncb_buffer_4.p, u.data, u.size);
@@ -1602,9 +1598,9 @@ namespace MyNetworkLib {
 			conn.connection->ncb_retcode_1 = NRC_GOODRET;
 			conn.connection->ncb_cmd_cplt_49 = NRC_GOODRET;
 			toDelete.push_back(conn.index);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("Pass1: RECEIVE idx=%d DELIVERED size=%u from=[%.16s] to=[%.16s]\n", conn.index, u.size, u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
-#endif
+			if (m_network_debug)
+				debug_net_printf("Pass1: RECEIVE idx=%d DELIVERED size=%u from=[%.16s] to=[%.16s]\n", conn.index, u.size, u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
+
 		}
 
 		// ------------------------------------------------------------------
@@ -1703,13 +1699,13 @@ namespace MyNetworkLib {
 			else if (c->ncb_cmd_cplt_49 != NRC_SCLOSED) {
 				c->ncb_cmd_cplt_49 = NRC_SCLOSED;
 				c->ncb_retcode_1 = NRC_SCLOSED;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("Pass4: CLOSED name=[%.16s] lsn=%d\n", c->ncb_name_26, c->ncb_lsn_2);
-#endif
+				if (m_network_debug)
+					debug_net_printf("Pass4: CLOSED name=[%.16s] lsn=%d\n", c->ncb_name_26, c->ncb_lsn_2);
+
 			}
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("Pass4: lsn=%d name=[%.16s] alive=%d cplt %02X→%02X\n", c->ncb_lsn_2, c->ncb_name_26, (int)alive, old, c->ncb_cmd_cplt_49);
-#endif
+			if (m_network_debug)
+				debug_net_printf("Pass4: lsn=%d name=[%.16s] alive=%d cplt %02X→%02X\n", c->ncb_lsn_2, c->ncb_name_26, (int)alive, old, c->ncb_cmd_cplt_49);
+
 		}
 	}
 
@@ -1747,9 +1743,9 @@ namespace MyNetworkLib {
 
 	void NetworkClass::ListenNetwork(myNCB* c, int32_t index)
 	{
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("ListenNetwork: name=[%.16s] call=[%.16s]\n", c->ncb_name_26, c->ncb_callName_10);
-#endif
+		if (m_network_debug)
+			debug_net_printf("ListenNetwork: name=[%.16s] call=[%.16s]\n", c->ncb_name_26, c->ncb_callName_10);
+
 		myNCB safe = *c; safe.ncb_buffer_4.p = nullptr;
 		SendCtrl(Pack_Message(MESS_CLIENT_MESSAGE_LISTEN, myNCBtoShadow(*c), index, clPort,
 			(char*)&safe, sizeof(safe)));
@@ -1774,9 +1770,9 @@ namespace MyNetworkLib {
 		}
 
 		if (!sess) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("SendNetwork: no session for name=[%.16s]\n", c->ncb_name_26);
-#endif
+			if (m_network_debug)
+				debug_net_printf("SendNetwork: no session for name=[%.16s]\n", c->ncb_name_26);
+
 			c->ncb_cmd_cplt_49 = NRC_SCLOSED;
 			return;
 		}
@@ -1784,9 +1780,9 @@ namespace MyNetworkLib {
 		std::string packed = Pack_Message(MESS_DIRECT_SEND, myNCBtoShadow(*c), index, clPort,
 			(char*)c->ncb_buffer_4.p, c->ncb_bufferLength_8);
 		if (!sess->Send(packed)) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("SendNetwork: TCP send failed for name=[%.16s]\n", c->ncb_name_26);
-#endif
+			if (m_network_debug)
+				debug_net_printf("SendNetwork: TCP send failed for name=[%.16s]\n", c->ncb_name_26);
+
 			sess->alive = false;
 			c->ncb_cmd_cplt_49 = NRC_SCLOSED;
 			return;
@@ -1794,9 +1790,9 @@ namespace MyNetworkLib {
 		// TCP is reliable — mark SEND complete immediately
 		c->ncb_retcode_1 = NRC_GOODRET;
 		c->ncb_cmd_cplt_49 = NRC_GOODRET;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("SendNetwork: sent size=%u name=[%.16s]\n", c->ncb_bufferLength_8, c->ncb_name_26);
-#endif
+		if (m_network_debug)
+			debug_net_printf("SendNetwork: sent size=%u name=[%.16s]\n", c->ncb_bufferLength_8, c->ncb_name_26);
+
 	}
 
 } // namespace MyNetworkLib
@@ -1920,43 +1916,45 @@ void ResetNetworkGameState()
 	}
 	{ std::lock_guard<std::mutex> lk(clientConnMutex);   clientConnection.clear(); }
 	{ std::lock_guard<std::mutex> lk(connections_mutex); handleConnections.clear(); }
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("ResetNetworkGameState: cleared sessions/connections/commands for new match\n");
-#endif
+
+	if (m_network_debug)
+		debug_net_printf("ResetNetworkGameState: cleared sessions/connections/commands for new match\n");
+
 }
 
 // ---------------------------------------------------------------------------
 // Debug helpers  (unchanged API)
 // ---------------------------------------------------------------------------
 void printState(myNCB** connections) {
-#ifdef TEST_NETWORK_MESSAGES_NETWORK
-	for (int i = 0; i < 3; i++)
-		debug_net_printf("NetworkGetState: %d %p lsn=%d cplt=%s\n",
-			i, connections[i], connections[i]->ncb_lsn_2,
-			(!connections[i]->ncb_cmd_cplt_49) ? "ok" : "pending");
-#endif
+	if (m_network_debug)
+	{
+		for (int i = 0; i < 3; i++)
+			debug_net_printf("NetworkGetState: %d %p lsn=%d cplt=%s\n",
+				i, connections[i], connections[i]->ncb_lsn_2,
+				(!connections[i]->ncb_cmd_cplt_49) ? "ok" : "pending");
+	}
 }
 void printState2(char* text) {
-#ifdef TEST_NETWORK_MESSAGES_NETWORK
-	debug_net_printf("%s", text);
-#endif
+	if (m_network_debug)
+		debug_net_printf("%s", text);
 }
 void timeState(bool start, const char* text) {
-#ifdef TEST_NETWORK_MESSAGES_NETWORK
-	/*
-	if (start || (timest_index == 0)) timest_timer = clock();
-	char buff[100];
-	snprintf(buff, sizeof(buff), "%s | %d", text, (int)(clock() - timest_timer));
-	timest_buffer[timest_index].assign(buff, strlen(buff));
-	timest_index++;
-	if (timest_index > timest_max_mess) {
-		ofstream ofs("net_time_messages_log.txt", std::ofstream::out);
-		for (int i = 0; i < timest_max_mess; i++)
-			ofs << timest_buffer[i] << endl;
-		ofs.close();
-		exit(0);
-	}*/
-#endif
+	if (m_network_debug)
+	{
+		/*
+		if (start || (timest_index == 0)) timest_timer = clock();
+		char buff[100];
+		snprintf(buff, sizeof(buff), "%s | %d", text, (int)(clock() - timest_timer));
+		timest_buffer[timest_index].assign(buff, strlen(buff));
+		timest_index++;
+		if (timest_index > timest_max_mess) {
+			ofstream ofs("net_time_messages_log.txt", std::ofstream::out);
+			for (int i = 0; i < timest_max_mess; i++)
+				ofs << timest_buffer[i] << endl;
+			ofs.close();
+			exit(0);
+		}*/
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -1983,4 +1981,9 @@ void EndMyNetLib()
 #ifdef _WIN32
 	WSACleanup();
 #endif
+}
+
+void SetNetworkDebug()
+{
+	m_network_debug = true;
 }

@@ -1203,8 +1203,13 @@ void NetworkDisallocation2_5C450()//23d450
 const int StartNetworkTimeout = 5;
 
 void InitNetworkInfo() {
+
 	if (CommandLineParams.ModeNetwork()) {
 		std::string exepath = get_exe_path();
+
+		if (CommandLineParams.DoNetworkDebug())
+			SetNetworkDebug();
+
 		//debug_net_filename2 = exepath + "/../" + debug_net_filename1;
 
 		//testlib1();

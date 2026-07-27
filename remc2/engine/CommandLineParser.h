@@ -20,6 +20,7 @@ class CommandLineParser {
         bool ModeNetwork() const {return m_mode_network;};
 
         // parameters
+		bool DoNetworkDebug() const { return m_network_debug; };
         bool DoAlternativeGamespeedControl() const {return m_alternative_gamespeed_control ;};
         bool DoAnalyzeEntity() const {return m_analyze_entity ;};
         bool DoAutoChangeRes() const {return m_auto_change_res;};
@@ -77,6 +78,7 @@ class CommandLineParser {
 		int m_mode_regression_type;
 
         // parameters
+		bool m_network_debug;
         bool m_alternative_gamespeed_control;
         bool m_analyze_entity;
         bool m_auto_change_res;

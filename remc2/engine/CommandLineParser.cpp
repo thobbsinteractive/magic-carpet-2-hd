@@ -17,6 +17,7 @@ void CommandLineParser::Init(int argc, char **argv) {
     m_mode_debug_onstart = false;
     m_mode_network = false;
 
+	m_network_debug = false;
     m_analyze_entity = true;
     m_alternative_gamespeed_control = true;
     m_auto_change_res = false;
@@ -205,6 +206,7 @@ void CommandLineParser::InterpretParams() {
             //m_text_output_to_console = true;
             //m_show_debug_messages1 = true;
         }
+		else if (param == "--network_debug")				    m_network_debug = true;
         else if (param == "--no_alternative_gamespeed_control") m_alternative_gamespeed_control = false;
         else if (param == "--no_analyze_entity")                m_analyze_entity = false;
         else if (param == "--auto_change_res")                  m_auto_change_res = true;
