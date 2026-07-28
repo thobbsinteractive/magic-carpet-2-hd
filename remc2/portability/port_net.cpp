@@ -1698,7 +1698,19 @@ namespace MyNetworkLib {
 			bool alive = sess && sess->alive && sess->SilenceMs() < HEARTBEAT_TIMEOUT_MS;
 			uint8_t old = c->ncb_cmd_cplt_49;
 			if (alive) {
-				c->ncb_cmd_cplt_49 = NRC_GOODRET;
+				// Only revive an NCB that liveness detection had previously marked closed.
+				//
+				// Writing NRC_GOODRET unconditionally used to race with the game thread:
+				// the check above can read "not pending" a moment before the game arms a
+				// new RECEIVE (setting NRC_PENDING), and the write then completed that
+				// RECEIVE with no data attached.  Network.cpp only busy-waits for
+				// ncb_cmd_cplt_49 to change, so it accepted the empty completion, left the
+				// message sitting in the queue and carried on - sending its own update
+				// anyway.  Every occurrence pushed the reader one message further behind,
+				// which is why the token holder ended up ~25 turns late and never saw the
+				// last actions of a peer that then disconnected.
+				if (old == NRC_SCLOSED)
+					c->ncb_cmd_cplt_49 = NRC_GOODRET;
 			}
 			else if (c->ncb_cmd_cplt_49 != NRC_SCLOSED) {
 				c->ncb_cmd_cplt_49 = NRC_SCLOSED;
