@@ -140,6 +140,9 @@ const int32_t MESS_HEARTBEAT = 17; // keep-alive probe
 const int32_t MESS_HEARTBEAT_ACK = 20; // keep-alive reply
 const int32_t MESS_CLIENT_GET_IP = 18;
 const int32_t MESS_SERVER_GIVE_IP = 19;
+// Marker put in the 'index' field of a GIVE_IP that is an announcement rather than an
+// address reply: the session's first NetBIOS name (…0) has been registered.
+const int32_t SERVER_NAME_REGISTERED = -777;
 
 char* MessageIndexToText(int32_t index)
 {
@@ -1048,6 +1051,13 @@ namespace MyNetworkLib {
 			set_nonblocking(s); set_nodelay(s);
 			char ip[INET_ADDRSTRLEN]; inet_ntop(AF_INET, &from.sin_addr, ip, sizeof(ip));
 			ClientCtrl cc; cc.sock = s; cc.addr = ip; cc.port = ntohs(from.sin_port);
+			// A node joining after the session's first name was registered has to be told
+			// about it now - it will not ask, because it considers itself set up as soon
+			// as the control connection is up.
+			if (serverAddname) {
+				shadow_myNCB sn{}; sn.ncb_command_0 = 0xFE;
+				TcpSendFull(s, Pack_Message(MESS_SERVER_GIVE_IP, sn, SERVER_NAME_REGISTERED, clPort));
+			}
 			std::lock_guard<std::recursive_mutex> lk(ctrlClientsMtx);
 			ctrlClients.push_back(std::move(cc));
 			if (m_network_debug)
@@ -1325,6 +1335,11 @@ namespace MyNetworkLib {
 			std::string reply = Pack_Message(MESS_SERVER_GIVE_IP, n, -1, u.port,
 				senderAddr.c_str(), (int)senderAddr.size() + 1);
 			SendToCtrlClient(reply, senderAddr, u.port);
+			// A node that connects after the first name was registered would never see
+			// the announcement sent at that moment, so repeat the current state here.
+			if (serverAddname)
+				SendToCtrlClient(Pack_Message(MESS_SERVER_GIVE_IP, n, SERVER_NAME_REGISTERED, clPort),
+					senderAddr, u.port);
 			return;
 		}
 
@@ -1337,7 +1352,21 @@ namespace MyNetworkLib {
 				char cmp[16] = { 0 };
 				sprintf(cmp, "NETH2%c0", u.data[5]);
 				while (strlen(cmp) < 15) strcat(cmp, " ");
-				if (memcmp(u.data, cmp, 15) == 0) serverAddname = true;
+				if (memcmp(u.data, cmp, 15) == 0) {
+					serverAddname = true;
+					// Tell every node that the session's first name (…0) is now taken.
+					// This is what ReceiveServerAddName() reports, and it is how a client
+					// can wait for the server to claim its name before claiming its own.
+					// The flag used to be raised here and never sent anywhere, so
+					// ReceiveServerAddName() always answered false and the wait built on
+					// it could never finish.
+					std::lock_guard<std::recursive_mutex> lk(ctrlClientsMtx);
+					shadow_myNCB sn{}; sn.ncb_command_0 = 0xFE;
+					std::string note = Pack_Message(MESS_SERVER_GIVE_IP, sn, SERVER_NAME_REGISTERED, clPort);
+					for (auto& cc : ctrlClients)
+						if (cc.sock != SOCK_INVALID) TcpSendFull(cc.sock, note);
+					receiveServerAddName = true; // also true for the node hosting the session
+				}
 			}
 			else if (ExistNetworkName(u.data, ip)) {
 				SendToCtrlClient(Pack_Message(MESS_SERVER_TESTADDNAME_OK, n, u.index, -10), senderAddr, senderDataPort);
@@ -1415,6 +1444,14 @@ namespace MyNetworkLib {
 		message_info u = Unpack_Message(raw);
 
 		if (u.message == MESS_SERVER_GIVE_IP) {
+			if (u.index == SERVER_NAME_REGISTERED) {
+				// Not an address reply: the server is announcing that the session's
+				// first NetBIOS name is registered.  ReceiveServerAddName() reports this.
+				receiveServerAddName = true;
+				if (m_network_debug)
+					debug_net_printf("HandleClient: server name registered\n");
+				return;
+			}
 			IpPortIsSet = true;
 			if (m_network_debug)
 				debug_net_printf("HandleClient: GIVE_IP — confirmed\n");
