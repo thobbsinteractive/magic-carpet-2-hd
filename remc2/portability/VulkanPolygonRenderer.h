@@ -2,7 +2,7 @@
 
 #include <vulkan/vulkan.h>
 #include <VkBootstrap.h>
-#include <vk_mem_alloc.h>
+#include <vma/vk_mem_alloc.h>
 
 #include <vector>
 #include <unordered_map>

@@ -15,6 +15,7 @@
 #include "port_filesystem.h"
 #include "../engine/Scene.h"
 #include "../engine/GameState.h"
+#include "RenderPolygon.h"
 
 typedef struct
 {
@@ -27,11 +28,14 @@ typedef struct
 void VGA_Init(int windowWidth, int windowHeight, int gameResWidth, int gameResHeight, bool maintainAspectRatio, int displayIndex);
 void VGA_Init(Uint32 flags, int windowWidth, int windowHeight, int gameResWidth, int gameResHeight, bool maintainAspectRatio, int displayIndex);
 void CreateRenderSurfaces(int gameResWidth, int gameResHeight);
+void CreateRenderer(int width, int height);
 bool VGA_LoadFont();
 void VGA_close();
 void FreeRenderSurfaces();
+void FreeRenderer();
 void VGA_Resize(int width, int height);
 void VGA_Blit(Uint8* srcBuffer);
+void DrawPolygons(std::vector<RenderPolygon>* polygons);
 void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight);
 void VGA_Debug_Blit(int width, int height, Uint8* srcBuffer);
 void VGA_Set_Palette(Uint8* Palettebuffer);

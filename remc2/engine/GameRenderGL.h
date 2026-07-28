@@ -25,6 +25,7 @@
 #include "defs.h"
 #include "RenderThread.h"
 #include "ProjectionVertex.h"
+#include "../portability/RenderPolygon.h"
 
 class GameRenderGL : public GameRenderInterface
 {
@@ -102,15 +103,14 @@ private:
 
 	void DrawSky_40950(int16_t roll);
 	void DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __int16 yaw, signed int posZ, int pitch, int16_t roll, int fov);
-	void SubDrawTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
-	void SubDrawInverseTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
-	void SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch);
+	void SubDrawTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons);
+	void SubDrawInverseTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons);
+	void SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons);
 	void DrawSprite_41BD3(uint32 a1);
-	void DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index);
-	void DrawInverseSquareInProjectionSpace(int* vertexs, int index);
-	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture);
+	void DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index, std::vector<RenderPolygon>* polygons);
+	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, std::vector<RenderPolygon>* polygons);
+	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture, std::vector<RenderPolygon> *polygons);
 	void DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t playersColors_E88E0x[][3], int32_t x_DWORD_F5730[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth);
-	void DrawTriangleInProjectionSpace_B6253(const ProjectionVertex* vertex1, const ProjectionVertex* vertex2, const ProjectionVertex* vertex3);
 	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int s0, int s1, int* line);
 	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v4, int s0, int s1, int s4, int* line);
 	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line);

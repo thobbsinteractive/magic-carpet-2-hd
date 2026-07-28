@@ -15,6 +15,7 @@ extern DOS_Device* DOS_CON;
 #include "../engine/EventDispatcher.h"
 #include "GameKey.h"
 #include "KeyboardInputMapping.h"
+#include "VulkanPolygonRenderer.h"
 
 SDL_Window* m_window = nullptr;
 SDL_Renderer* m_renderer = nullptr;
@@ -26,6 +27,8 @@ uint8_t m_fontBuffer[256 * 256];
 SDL_Surface* m_surfaceFont = nullptr;
 uint8_t m_smallFontBuffer[128 * 128];
 SDL_Surface* m_smallSurfaceFont = nullptr;
+
+VulkanPolygonRenderer* m_vulkanRenderer = nullptr;
 
 uint8_t LastPressedKey_1806E4; //3516e4
 int8_t pressedKeys_180664[128]; // idb
@@ -251,6 +254,12 @@ void CreateRenderSurfaces(int width, int height)
 		m_gameRGBASurface->w, m_gameRGBASurface->h);
 }
 
+void CreateRenderer(int width, int height)
+{
+	m_vulkanRenderer = new VulkanPolygonRenderer();
+	m_vulkanRenderer->Init(m_window, width, height);
+}
+
 Uint8* VGA_Get_Palette() {
 	return tempPalettebuffer;
 }
@@ -263,6 +272,11 @@ void SetPalette(SDL_Color* colours) {
 	{
 		SDL_SetPaletteColors(m_gamePalletisedSurface->format->palette, m_currentPalletColours, 0, 256);
 		//SubBlit(m_iOrigw, m_iOrigh);
+	}
+
+	if (m_vulkanRenderer)
+	{
+		m_vulkanRenderer->SetPalette(tempPalettebuffer);
 	}
 }
 
@@ -886,6 +900,9 @@ int PollSdlEvents()
 				m_iWindowHeight = newHeight;
 				if (EventDispatcher::I != nullptr)
 					EventDispatcher::I->DispatchEvent<int, int>(EventType::E_WINDOW_SIZE_CHANGE, newWidth, newHeight);
+
+				if (m_vulkanRenderer)
+					m_vulkanRenderer->Resize(newWidth, newHeight);
 			}
 			break;
 		}
@@ -1059,6 +1076,15 @@ void VGA_Blit(Uint8* srcBuffer) {
 	SOUND_UPDATE();
 }
 
+void DrawPolygons(std::vector<RenderPolygon> *polygons)
+{
+	if (m_vulkanRenderer->BeginFrame())
+	{
+		m_vulkanRenderer->DrawPolygons(*polygons);
+		m_vulkanRenderer->EndFrame();
+	}
+}
+
 void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight) {
 	while (subBlitLock);//fix problem with quick blitting
 	subBlitLock = true;
@@ -1166,6 +1192,7 @@ void VGA_close()
 	SDL_FreeSurface(m_surfaceFont);
 	m_surfaceFont = nullptr;
 	FreeRenderSurfaces();
+	FreeRenderer();
 	SDL_DestroyRenderer(m_renderer);
 	m_renderer = nullptr;
 	SDL_DestroyWindow(m_window);
@@ -1182,6 +1209,12 @@ void FreeRenderSurfaces()
 	m_gameRGBASurface = nullptr;
 	SDL_DestroyTexture(m_texture);
 	m_texture = nullptr;
+}
+
+void FreeRenderer()
+{
+	delete m_vulkanRenderer;
+	m_vulkanRenderer = nullptr;
 }
 
 int16_t VGA_get_shift_status() {
