@@ -153,6 +153,8 @@ void ResetNetworkGameState();
 
 void EndMyNetLib();
 
+void SetNetworkDebug();
+
 void AddRecMess(std::string message);
 std::string GetRecMess();
 unsigned int GetRecCount();

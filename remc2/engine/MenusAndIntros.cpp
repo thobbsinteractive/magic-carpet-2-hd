@@ -5664,7 +5664,7 @@ int DrawScrollDialog2_7B660(int a1, int a2, __int16 a3, type_str_word_26* a4x, c
 			}
 		}
 		/*
-		if (CommandLineParams.ModeTestNetwork()) {
+		if (CommandLineParams.ModeNetwork()) {
 			if (first_enter)
 			{
 				first_enter = false;
@@ -5804,7 +5804,7 @@ bool DrawAndServe_7B250()//25c250
 		str_E1BAC[0].selected_8 = 1;
 	}
 	/*
-	if (CommandLineParams.ModeTestNetwork()) {
+	if (CommandLineParams.ModeNetwork()) {
 		if (first_enter)
 		{
 			str_E1BAC[2].selected_8 = 1;
