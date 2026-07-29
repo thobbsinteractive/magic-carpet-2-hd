@@ -5344,6 +5344,10 @@ char MultiplayerMenu_7DE80(type_menuButtons_E1F84* a2x)//25ee80
 	v20 = v22 + xy_DWORD_17DED4_spritestr[72].width_4 - 22;
 	v8 = a2x->str_26.word_34_4 / 2 + a2x->str_26.y1_28_1 - GetLetterHeight_6FC30();
 	v23 = DrawScrollDialog_7BF20(&a2x->str_26);
+
+	//Skip Game Number entry
+	v23 = 1;
+
 	if (a2x->str_26.word_36_5 > a2x->str_26.word_34_4 / 2)
 	{
 		if ((unsigned __int8)x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode != 0xFu)
