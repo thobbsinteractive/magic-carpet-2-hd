@@ -99,7 +99,7 @@ array_E1328 - ok, remowed at now, but maybe must rewrite in future
 byte_E16E0 - ok
 x_BYTE_E1711 - ok, rewrited to str_BYTE_E1711
 unk_E1748x - ok
-off_E1BAC - rewrited str_E1BAC_0x1b8 str_E1BAC_0x3c4//buttons pos - must fix str_E1BAC_0x3c4
+off_E1BAC - rewrited str_E1BAC_0x1b8 mainMenuButtons_E1BAC_0x3c4//buttons pos - must fix mainMenuButtons_E1BAC_0x3c4
 x_WORD_E1F70 //ok
 x_WORD_E1F84 - ok, rewrited to type_menuButtons_E1F84
 x_WORD_E2008 - ok, rewrited to str_WORD_E2008 //type_menuButtons_E1F84
