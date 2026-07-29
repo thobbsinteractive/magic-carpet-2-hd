@@ -31691,6 +31691,9 @@ void InGameLoop_47320()//228320
 
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::GAMEPLAY_ENDED);
 
+	if(IsRecording())
+		m_InputRecorder->SaveRecording();
+
 	sub_90E07_VGA_set_video_mode_640x480_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
 }
 

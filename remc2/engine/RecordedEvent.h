@@ -12,6 +12,11 @@ struct RecordedEventTurn
 	uint32_t Turn = 0;
 	uint32_t SizeBytes = 0;
 	uint8_t* Bytes = nullptr;
+
+	~RecordedEventTurn()
+	{
+		delete[] Bytes;
+	}
 };
 
 struct RecordedEventPlayer
@@ -23,6 +28,14 @@ struct RecordedEventPlayer
 	uint8_t* SpellIndexes = nullptr;
 	uint8_t* SpellLevels = nullptr;
 	int32_t* SpellsExperience = nullptr;
+
+	~RecordedEventPlayer()
+	{
+		delete[] SpellsEnabled;
+		delete[] SpellIndexes;
+		delete[] SpellLevels;
+		delete[] SpellsExperience;
+	}
 };
 
 struct RecordedEvent

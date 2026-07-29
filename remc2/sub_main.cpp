@@ -756,3 +756,8 @@ bool IsRecordingOrPlaying()
 {
 	return (m_InputRecorder != nullptr && (m_InputRecorder->m_IsPlaying || m_InputRecorder->m_IsRecording));
 }
+
+bool IsRecording()
+{
+	return (m_InputRecorder != nullptr && m_InputRecorder->m_IsRecording);
+}
