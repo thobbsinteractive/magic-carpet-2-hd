@@ -19,9 +19,10 @@ void CommandLineParser::Init(int argc, char **argv) {
 
 	m_network_debug = false;
 	m_auto_test = false;
-	m_net_drop_permille = 0;
 	m_net_delay_ms = 0;
-	m_net_reorder_permille = 0;
+	m_net_jitter_ms = 0;
+	m_net_stall_ms = 0;
+	m_net_stall_every = 0;
 	m_net_kill_after_s = 0;
 	m_quit_after_s = 0;
     m_analyze_entity = true;
@@ -214,9 +215,10 @@ void CommandLineParser::InterpretParams() {
         }
 		else if (param == "--network_debug")				    m_network_debug = true;
 		else if (param == "--auto_test")                        m_auto_test = true;
-		else if (param == "--net_drop")                         m_net_drop_permille = atoi((++p)->c_str());
 		else if (param == "--net_delay")                        m_net_delay_ms = atoi((++p)->c_str());
-		else if (param == "--net_reorder")                      m_net_reorder_permille = atoi((++p)->c_str());
+		else if (param == "--net_jitter")                       m_net_jitter_ms = atoi((++p)->c_str());
+		else if (param == "--net_stall")                        m_net_stall_ms = atoi((++p)->c_str());
+		else if (param == "--net_stall_every")                  m_net_stall_every = atoi((++p)->c_str());
 		else if (param == "--net_kill_after")                   m_net_kill_after_s = atoi((++p)->c_str());
 		else if (param == "--quit_after")                       m_quit_after_s = atoi((++p)->c_str());
         else if (param == "--no_alternative_gamespeed_control") m_alternative_gamespeed_control = false;

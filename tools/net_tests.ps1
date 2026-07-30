@@ -44,15 +44,21 @@ if (-not $Exe)      { $Exe      = Join-Path $RepoRoot "remc2\x64\$Config\remc2.e
 # Test catalogue.  'extraHost'/'extraClient' are appended to that instance's command
 # line; 'runSeconds' is how long the session is left alone before it is judged.
 # ---------------------------------------------------------------------------
+# Note on what is and is not simulated: the link is TCP, so nothing can be lost,
+# duplicated or delivered out of order - it is pointless to pretend otherwise.  What an
+# unreliable line really costs the game is time: a lost segment is retransmitted and
+# everything queued behind it waits, which the 'stall' scenarios reproduce.
 $Tests = @(
     @{ name = "baseline";        desc = "undisturbed session";                extraHost=@();                        extraClient=@();                        runSeconds=60 }
-    @{ name = "drop";            desc = "5% of game packets discarded";       extraHost=@("--net_drop","50");       extraClient=@("--net_drop","50");       runSeconds=60 }
-    @{ name = "drop-heavy";      desc = "20% of game packets discarded";      extraHost=@("--net_drop","200");      extraClient=@("--net_drop","200");      runSeconds=60 }
-    @{ name = "delay";           desc = "30 ms added to every game packet";   extraHost=@("--net_delay","30");      extraClient=@("--net_delay","30");      runSeconds=60 }
+    @{ name = "delay";           desc = "30 ms on every message";             extraHost=@("--net_delay","30");      extraClient=@("--net_delay","30");      runSeconds=60 }
     @{ name = "delay-client";    desc = "only the client is slowed down";     extraHost=@();                        extraClient=@("--net_delay","60");      runSeconds=60 }
-    @{ name = "reorder";         desc = "10% of game packets swapped";        extraHost=@("--net_reorder","100");   extraClient=@("--net_reorder","100");   runSeconds=60 }
-    @{ name = "mixed";           desc = "loss, latency and reordering";       extraHost=@("--net_drop","30","--net_delay","20","--net_reorder","50");
-                                                                              extraClient=@("--net_drop","30","--net_delay","20","--net_reorder","50");    runSeconds=60 }
+    @{ name = "jitter";          desc = "latency varying by 0-150 ms";        extraHost=@("--net_jitter","150");    extraClient=@("--net_jitter","150");    runSeconds=60 }
+    @{ name = "stall";           desc = "300 ms pause every 50th message";    extraHost=@("--net_stall","300","--net_stall_every","50");
+                                                                              extraClient=@("--net_stall","300","--net_stall_every","50");                 runSeconds=60 }
+    @{ name = "stall-heavy";     desc = "800 ms pause every 15th message";    extraHost=@("--net_stall","800","--net_stall_every","15");
+                                                                              extraClient=@("--net_stall","800","--net_stall_every","15");                 runSeconds=60 }
+    @{ name = "mixed";           desc = "latency, jitter and stalls";         extraHost=@("--net_delay","20","--net_jitter","80","--net_stall","400","--net_stall_every","40");
+                                                                              extraClient=@("--net_delay","20","--net_jitter","80","--net_stall","400","--net_stall_every","40"); runSeconds=60 }
     @{ name = "client-quits";    desc = "client leaves, host must carry on";  extraHost=@();                        extraClient=@("--quit_after","20");     runSeconds=60; expect="hostSurvives" }
     @{ name = "host-quits";      desc = "host leaves, client must carry on";  extraHost=@("--quit_after","20");     extraClient=@();                        runSeconds=60; expect="clientSurvives" }
     @{ name = "client-vanishes"; desc = "client is killed outright";          extraHost=@();                        extraClient=@();                        runSeconds=60; killAfter="client" }
@@ -102,7 +108,7 @@ function Measure-Session([string]$logPath) {
     # Reads one instance's log and reports what the network layer actually did.
     $result = [ordered]@{
         reachedGame = $false; sent = 0; queued = 0; delivered = 0
-        backlog = 0; maxQueue = 0; dropped = 0; reordered = 0
+        backlog = 0; maxQueue = 0; stalled = 0
         disconnects = 0; fatal = 0
     }
     if (-not (Test-Path $logPath)) { return $result }
@@ -111,8 +117,7 @@ function Measure-Session([string]$logPath) {
     $result.sent        = ([regex]::Matches($text, 'SendNetwork: sent')).Count
     $result.queued      = ([regex]::Matches($text, 'queued DIRECT_SEND')).Count
     $result.delivered   = ([regex]::Matches($text, 'RECEIVE.*DELIVERED')).Count
-    $result.dropped     = ([regex]::Matches($text, 'NETFAULT: dropped')).Count
-    $result.reordered   = ([regex]::Matches($text, 'NETFAULT: released')).Count
+    $result.stalled     = ([regex]::Matches($text, 'NETFAULT: stalling')).Count
     $result.disconnects = ([regex]::Matches($text, 'disconnected')).Count
     $result.fatal       = ([regex]::Matches($text, 'FATAL')).Count
     $result.backlog     = $result.queued - $result.delivered
@@ -188,7 +193,7 @@ function Invoke-Test($test) {
         Detail   = if ($problems.Count -eq 0) { "" } else { $problems -join "; " }
         HostQ    = "$($h.delivered)/$($h.queued) maxQ=$($h.maxQueue)"
         ClientQ  = "$($c.delivered)/$($c.queued) maxQ=$($c.maxQueue)"
-        Injected = "drop $($h.dropped + $c.dropped), reorder $($h.reordered + $c.reordered)"
+        Injected = "stalls: $($h.stalled + $c.stalled)"
     }
 }
 

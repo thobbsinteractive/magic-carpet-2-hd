@@ -416,7 +416,7 @@ struct TcpRecvBuf {
 };
 
 // ---------------------------------------------------------------------------
-// Fault injection for automated testing (--net_drop / --net_delay / --net_reorder).
+// Fault injection for automated testing (--net_delay / --net_jitter / --net_stall).
 //
 // Deliberately confined to the peer-to-peer game data: the control channel that
 // registers names and sets up sessions is never touched, so a test disturbs a running
@@ -424,20 +424,22 @@ struct TcpRecvBuf {
 // the command line, so a normal game runs through the untouched path.
 // ---------------------------------------------------------------------------
 namespace NetFaults {
-	static int  s_dropPermille = 0;
 	static int  s_delayMs = 0;
-	static int  s_reorderPermille = 0;
+	static int  s_jitterMs = 0;
+	static int  s_stallMs = 0;
+	static int  s_stallEvery = 0;
 	static bool s_configured = false;
 
-	void Configure(int dropPermille, int delayMs, int reorderPermille)
+	void Configure(int delayMs, int jitterMs, int stallMs, int stallEvery)
 	{
-		s_dropPermille = dropPermille;
 		s_delayMs = delayMs;
-		s_reorderPermille = reorderPermille;
-		s_configured = (dropPermille > 0 || delayMs > 0 || reorderPermille > 0);
+		s_jitterMs = jitterMs;
+		s_stallMs = stallMs;
+		s_stallEvery = stallEvery;
+		s_configured = (delayMs > 0 || jitterMs > 0 || (stallMs > 0 && stallEvery > 0));
 		if (s_configured)
-			debug_net_printf("NETFAULT: drop=%d%%o delay=%dms reorder=%d%%o\n",
-				dropPermille, delayMs, reorderPermille);
+			debug_net_printf("NETFAULT: delay=%dms jitter=%dms stall=%dms every %d messages\n",
+				delayMs, jitterMs, stallMs, stallEvery);
 	}
 
 	bool Enabled() { return s_configured; }
@@ -450,9 +452,27 @@ namespace NetFaults {
 		return (state >> 16) & 0x7FFF;
 	}
 
-	bool ShouldDrop() { return s_dropPermille > 0 && (int)(NextRand() % 1000) < s_dropPermille; }
-	bool ShouldHoldBack() { return s_reorderPermille > 0 && (int)(NextRand() % 1000) < s_reorderPermille; }
-	void SleepDelay() { if (s_delayMs > 0) std::this_thread::sleep_for(std::chrono::milliseconds(s_delayMs)); }
+	// Hold a freshly arrived message back for a while before handing it on.
+	//
+	// Only ever delays - never discards or reorders.  Over TCP a message that was sent
+	// does arrive, and in order; what an unreliable line actually costs is time, because
+	// the lost segment is retransmitted and everything queued behind it waits with it.
+	// A stall reproduces exactly that, so the test stays faithful to what the game can
+	// really meet on the wire.
+	void Apply()
+	{
+		int ms = s_delayMs;
+		if (s_jitterMs > 0) ms += (int)(NextRand() % (unsigned)(s_jitterMs + 1));
+		if (s_stallMs > 0 && s_stallEvery > 0) {
+			static int counter = 0;
+			if (++counter >= s_stallEvery) {
+				counter = 0;
+				ms += s_stallMs;
+				debug_net_printf("NETFAULT: stalling a message by %dms (retransmit-like)\n", s_stallMs);
+			}
+		}
+		if (ms > 0) std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -707,10 +727,6 @@ struct TcpSession {
 	// Send-side mutex: prevents interleaved writes from SendNetwork (main/bg thread)
 	// and PollSessions HEARTBEAT sends (network thread).
 	std::mutex              sendMtx;
-
-	// Packet held back by the reorder fault injector, released after the next one
-	std::string reorderHeld;
-	bool        reorderPending = false;
 
 	// Liveness tracking
 	std::chrono::steady_clock::time_point lastRx;
@@ -1254,30 +1270,11 @@ namespace MyNetworkLib {
 					// receiving side of the game-data channel only: the control channel
 					// stays intact, so a test can disturb the traffic of an established
 					// session without preventing the session from being set up at all.
-					if (NetFaults::Enabled()) {
-						if (NetFaults::ShouldDrop()) {
-							debug_net_printf("NETFAULT: dropped a data packet (size=%u)\n", u.size);
-							continue;
-						}
-						if (NetFaults::ShouldHoldBack()) {
-							// Keep it and release it after the next one, which delivers
-							// the two packets in swapped order.
-							sess->reorderHeld = raw;
-							sess->reorderPending = true;
-							debug_net_printf("NETFAULT: holding a data packet back (size=%u)\n", u.size);
-							continue;
-						}
-						NetFaults::SleepDelay();
-					}
+					if (NetFaults::Enabled()) NetFaults::Apply();
 					size_t depth;
 					{
 						std::lock_guard<std::mutex> qlk(sess->queueMtx);
 						sess->dataQueue.push(raw);
-						if (sess->reorderPending) {
-							sess->dataQueue.push(sess->reorderHeld);
-							sess->reorderPending = false;
-							debug_net_printf("NETFAULT: released the held packet out of order\n");
-						}
 						depth = sess->dataQueue.size();
 					}
 					if (m_network_debug)
@@ -2084,9 +2081,10 @@ void InitMyNetLib(bool iam_server, bool iam_client,
 #ifdef _WIN32
 	WSADATA wsa; WSAStartup(MAKEWORD(2, 2), &wsa);
 #endif
-	NetFaults::Configure(CommandLineParams.NetDropPermille(),
-		CommandLineParams.NetDelayMs(),
-		CommandLineParams.NetReorderPermille());
+	NetFaults::Configure(CommandLineParams.NetDelayMs(),
+		CommandLineParams.NetJitterMs(),
+		CommandLineParams.NetStallMs(),
+		CommandLineParams.NetStallEvery());
 	locNetworkClass = new MyNetworkLib::NetworkClass(
 		iam_server, iam_client, ip, networkPort, serverPort);
 	locNetworkClass->StartNetworkThread();

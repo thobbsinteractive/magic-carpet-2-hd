@@ -23,15 +23,19 @@ class CommandLineParser {
 		bool DoNetworkDebug() const { return m_network_debug; };
 
 		// Automated network testing.  AutoTest() drives the menus (skip intros, enter the
-		// network game, host starts the level) so a test can run unattended.  The fault
-		// injectors below act on the peer-to-peer game data only, never on the control
-		// channel, so a test can disturb the traffic without breaking session setup.
+		// network game, host starts the level) so a test can run unattended.
+		//
+		// The disturbances below only ever delay game data, never discard or reorder it:
+		// the link is TCP, so a message that was sent always arrives, and always in order.
+		// What a lossy line really costs is time - the segment is retransmitted and
+		// everything behind it waits - which is what NetStallMs models.
 		bool AutoTest() const { return m_auto_test; };
-		int  NetDropPermille() const { return m_net_drop_permille; };   // packets discarded
-		int  NetDelayMs() const { return m_net_delay_ms; };             // extra latency
-		int  NetReorderPermille() const { return m_net_reorder_permille; }; // packets held back
-		int  NetKillAfterS() const { return m_net_kill_after_s; };      // drop the link
-		int  QuitAfterS() const { return m_quit_after_s; };             // leave the game
+		int  NetDelayMs() const { return m_net_delay_ms; };         // constant extra latency
+		int  NetJitterMs() const { return m_net_jitter_ms; };       // 0..n random extra latency
+		int  NetStallMs() const { return m_net_stall_ms; };         // occasional long pause
+		int  NetStallEvery() const { return m_net_stall_every; };   // ...once per n messages
+		int  NetKillAfterS() const { return m_net_kill_after_s; };  // drop the link
+		int  QuitAfterS() const { return m_quit_after_s; };         // leave the game
         bool DoAlternativeGamespeedControl() const {return m_alternative_gamespeed_control ;};
         bool DoAnalyzeEntity() const {return m_analyze_entity ;};
         bool DoAutoChangeRes() const {return m_auto_change_res;};
@@ -91,9 +95,10 @@ class CommandLineParser {
         // parameters
 		bool m_network_debug;
 		bool m_auto_test;
-		int  m_net_drop_permille;
 		int  m_net_delay_ms;
-		int  m_net_reorder_permille;
+		int  m_net_jitter_ms;
+		int  m_net_stall_ms;
+		int  m_net_stall_every;
 		int  m_net_kill_after_s;
 		int  m_quit_after_s;
         bool m_alternative_gamespeed_control;
