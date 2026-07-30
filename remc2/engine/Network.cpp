@@ -182,6 +182,10 @@ int NetworkInitConnection_7308F(char* a2, __int16 a3)//25408f
 	}
 	while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff);//AddNameNotSet?
 
+	// clear stale per-match network state left over from a previous
+	// game before starting this one, otherwise the peers fail to reconnect.
+	ResetNetworkGameState();
+
 	/*
 	//wait for Server AddName
 	if (!Iam_server)
@@ -516,7 +520,9 @@ void NetworkUpdateConnections2_74374()//255374
 	NetworkUpdateConnections_74F76();
 }
 
-char fixBuffer[60000];
+// Holds this node's own entry of the exchanged array across the send/receive round trip.
+// The largest element exchanged is type_str_0x2BDE (2124 bytes).
+uint8_t ownSliceBuffer[4096];
 
 //----- (0007438A) --------------------------------------------------------
 void ReceiveSendAll_7438A(uint8_t* buffer, unsigned int size)//25538a
@@ -546,21 +552,29 @@ void ReceiveSendAll_7438A(uint8_t* buffer, unsigned int size)//25538a
 		}
 		else
 		{
-			timeState(false, "End");//debug	
-			timeState(true, "Begin - pre Send");//debug	
-			printState2((char*)"Send State 4\n");//debug	
-			//fix some problems
-			memcpy(fixBuffer, buffer, size * countConnected_E1278);
-			//fix some problems
-			NetworkSendMessage2_74006(IndexInNetwork2_E12A8, (buffer + size * IndexInNetwork_E1276), size);
+			timeState(false, "End");//debug
+			timeState(true, "Begin - pre Send");//debug
+			printState2((char*)"Send State 4\n");//debug
+			// Keep our own slice: the echo can still carry the previous turn's copy of it,
+			// and rolling our own entry back would drop whatever the local player just did.
+			uint8_t* mySlot = &buffer[size * IndexInNetwork_E1276];
+			if (size <= sizeof(ownSliceBuffer))
+				memcpy(ownSliceBuffer, mySlot, size);
+			NetworkSendMessage2_74006(IndexInNetwork2_E12A8, mySlot, size);
 			timeState(true, "After Send, Before Receive");//debug
 			NetworkReceiveMessage2_7404E(IndexInNetwork2_E12A8, buffer, size * countConnected_E1278);
-			//debug			
-			if (memcmp(&fixBuffer[IndexInNetwork_E1276 * size], (char*)&buffer[IndexInNetwork_E1276 * size], size))
-			{
-				memcpy(buffer, fixBuffer, size * countConnected_E1278);
-			}
-			//debug
+			// The echoed array is authoritative for the OTHER players - it must be taken as
+			// received, otherwise this node loses track of where they are.  Only our own
+			// entry is restored, so a locally made choice (menu selection, marking mana,
+			// re-casting a castle) is not erased before it has been sent on.
+			//
+			// Restoring the WHOLE array here - as the code used to do whenever the echo did
+			// not match - was what broke the sync: once the echo ran one turn behind, the
+			// comparison failed on every following turn, so this node permanently discarded
+			// the authoritative data and ran on its own copy, in which the other players'
+			// slots are never filled in.  It never recovered from that.
+			if (size <= sizeof(ownSliceBuffer))
+				memcpy(mySlot, ownSliceBuffer, size);
 			timeState(true, "After Receive");//debug
 		}
 	}
@@ -719,7 +733,7 @@ signed int NetworkCancel_748F7(__int16 compindex)//2558f7
 }
 
 int dos_getvect(int vector) {
-	if (CommandLineParams.ModeTestNetwork()) {
+	if (CommandLineParams.ModeNetwork()) {
 		if ((Iam_server) || (Iam_client))
 		{
 			//get ah from 2b5cb2 - 01
@@ -964,7 +978,7 @@ int setNetbios_75044(myNCB* connection)//256044
 	v13 = 0;
 	return v13;
 
-	/* if (CommandLineParams.ModeTestNetwork()) {
+	/* if (CommandLineParams.ModeNetwork()) {
 		a1x->byte_1 = 3;
 	}
 	return 1;*/
@@ -1189,8 +1203,13 @@ void NetworkDisallocation2_5C450()//23d450
 const int StartNetworkTimeout = 5;
 
 void InitNetworkInfo() {
-	if (CommandLineParams.ModeTestNetwork()) {
+
+	if (CommandLineParams.ModeNetwork()) {
 		std::string exepath = get_exe_path();
+
+		if (CommandLineParams.DoNetworkDebug())
+			SetNetworkDebug();
+
 		//debug_net_filename2 = exepath + "/../" + debug_net_filename1;
 
 		//testlib1();

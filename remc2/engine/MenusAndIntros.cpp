@@ -331,7 +331,7 @@ type_menuButtons_E1F84 str_WORD_E1F84[3] = {
 {0x00000000,0x00000000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x00,0x00,0x00,0x00,0x00,0x00,{0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}}
 };
 
-type_menuButtons_E1F84 str_E1BAC[10] = {
+type_menuButtons_E1F84 mainMenuButtons_E1BAC[10] = {
 {0x00258350,0x00000000,0x0000,0x00CE,0x0043,0x0050,0x0050,0x019A,0x3B,0x33,0x06,0x01,0x00,0x00,{0x004E,0x004E,0x0000,0x0000,0x0050,0x0000,0x0000,0x0000,0x0003}},
 {0x00259E00,0x00000000,0x0000,0x0119,0x0041,0x0050,0x0050,0x0194,0x3C,0x34,0x0A,0x01,0x00,0x00,{0x0164,0x0070,0x0000,0x0000,0x0050,0x0000,0x01A4,0x0000,0x0003}},
 {0x0025EE80,0x00000000,0x0000,0x016A,0x0048,0x0050,0x0050,0x0199,0x3D,0x35,0x07,0x01,0x00,0x00,{0x01AE,0x004E,0x0000,0x0000,0x0050,0x0000,0x019C,0x0000,0x0003}},
@@ -2031,11 +2031,11 @@ void DrawMenuAnimations_7AB00()//25bb00
 		}
 	}
 	// draw selected main menu item
-	for (int iy = 0; (str_E1BAC[iy].xmin_10<<16) + str_E1BAC[iy].ymin_12; iy++)
+	for (int iy = 0; (mainMenuButtons_E1BAC[iy].xmin_10<<16) + mainMenuButtons_E1BAC[iy].ymin_12; iy++)
 	{
-		if (str_E1BAC[iy].canSelect_23 && str_E1BAC[iy].gold_color_24)
+		if (mainMenuButtons_E1BAC[iy].canSelect_23 && mainMenuButtons_E1BAC[iy].gold_color_24)
 		{
-			DrawBitmap_2BB40(str_E1BAC[iy].xmin_10, str_E1BAC[iy].ymin_12, xy_DWORD_17DED4_spritestr[str_E1BAC[iy].byte_21]);
+			DrawBitmap_2BB40(mainMenuButtons_E1BAC[iy].xmin_10, mainMenuButtons_E1BAC[iy].ymin_12, xy_DWORD_17DED4_spritestr[mainMenuButtons_E1BAC[iy].byte_21]);
 		}
 	}
 }
@@ -2170,18 +2170,18 @@ void sub_7BEC0()//25cec0
 	unsigned __int8 v1; // dl
 
 	//for (result = off_E1BAC; *((uint16_t*)result + 5); result += 44)
-	for (resultx = 0; str_E1BAC[resultx].xmin_10; resultx++)
+	for (resultx = 0; mainMenuButtons_E1BAC[resultx].xmin_10; resultx++)
 	{
-		str_E1BAC[resultx].selected_8 = 0;
-		v1 = str_E1BAC[resultx].byte_22;
-		str_E1BAC[resultx].gold_color_24 = 0;
+		mainMenuButtons_E1BAC[resultx].selected_8 = 0;
+		v1 = mainMenuButtons_E1BAC[resultx].byte_22;
+		mainMenuButtons_E1BAC[resultx].gold_color_24 = 0;
 		if (v1 == 7u)
 		{
-			str_E1BAC[resultx].canSelect_23 = x_D41A0_BYTEARRAY_4_struct.isNetwork_216w != 0;
+			mainMenuButtons_E1BAC[resultx].canSelect_23 = x_D41A0_BYTEARRAY_4_struct.isNetwork_216w != 0;
 		}
 		else if (v1 == 13)
 		{
-			str_E1BAC[resultx].canSelect_23 = 1;
+			mainMenuButtons_E1BAC[resultx].canSelect_23 = 1;
 		}		
 	}
 	//return result;
@@ -5344,6 +5344,10 @@ char MultiplayerMenu_7DE80(type_menuButtons_E1F84* a2x)//25ee80
 	v20 = v22 + xy_DWORD_17DED4_spritestr[72].width_4 - 22;
 	v8 = a2x->str_26.word_34_4 / 2 + a2x->str_26.y1_28_1 - GetLetterHeight_6FC30();
 	v23 = DrawScrollDialog_7BF20(&a2x->str_26);
+
+	//Skip Game Number entry
+	v23 = 1;
+
 	if (a2x->str_26.word_36_5 > a2x->str_26.word_34_4 / 2)
 	{
 		if ((unsigned __int8)x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode != 0xFu)
@@ -5664,7 +5668,7 @@ int DrawScrollDialog2_7B660(int a1, int a2, __int16 a3, type_str_word_26* a4x, c
 			}
 		}
 		/*
-		if (CommandLineParams.ModeTestNetwork()) {
+		if (CommandLineParams.ModeNetwork()) {
 			if (first_enter)
 			{
 				first_enter = false;
@@ -5800,35 +5804,35 @@ bool DrawAndServe_7B250()//25c250
 	typeTextBoxtextBoxStr_E24BCx textBoxStr[2];
 
 	if (CommandLineParams.ModeRegressionsTestType()==0) {
-		str_E1BAC[0].dword_0 = 0x258350;
-		str_E1BAC[0].selected_8 = 1;
+		mainMenuButtons_E1BAC[0].dword_0 = 0x258350;
+		mainMenuButtons_E1BAC[0].selected_8 = 1;
 	}
 	/*
-	if (CommandLineParams.ModeTestNetwork()) {
+	if (CommandLineParams.ModeNetwork()) {
 		if (first_enter)
 		{
-			str_E1BAC[2].selected_8 = 1;
+			mainMenuButtons_E1BAC[2].selected_8 = 1;
 		}
 	}*/
 
-	for (int i = 0; str_E1BAC[i].xmin_10; i++)
+	for (int i = 0; mainMenuButtons_E1BAC[i].xmin_10; i++)
 	{
-		if (str_E1BAC[i].selected_8 && str_E1BAC[i].dword_0)
+		if (mainMenuButtons_E1BAC[i].selected_8 && mainMenuButtons_E1BAC[i].dword_0)
 		{
-			if (DrawAndServe_pre_sub_7B250(str_E1BAC[i].dword_0, &str_E1BAC[i]))
+			if (DrawAndServe_pre_sub_7B250(mainMenuButtons_E1BAC[i].dword_0, &mainMenuButtons_E1BAC[i]))
 			{
-				str_E1BAC[i].selected_8 = 0;
+				mainMenuButtons_E1BAC[i].selected_8 = 0;
 				ResetMouse_7B5A0();
 			}
-			if (str_E1BAC[i].dword_4)
+			if (mainMenuButtons_E1BAC[i].dword_4)
 			{
-				str_E1BAC[i].selected_8 = 0;
+				mainMenuButtons_E1BAC[i].selected_8 = 0;
 				SetCenterScreenForFlyAssistant_6EDB0();
 				sub_7A110_load_hscreen(x_WORD_180660_VGA_type_resolution, 4);
 				ResetMouse_7B5A0();
 				SetCursor_8CD27(xy_DWORD_17DED4_spritestr[39]);
-				if (str_E1BAC[i].dword_4 == 2)
-					str_E1BAC[i].dword_4 = 0;
+				if (mainMenuButtons_E1BAC[i].dword_4 == 2)
+					mainMenuButtons_E1BAC[i].dword_4 = 0;
 				return 1;
 			}
 			return 0;
@@ -5836,12 +5840,12 @@ bool DrawAndServe_7B250()//25c250
 	}
 	//clear/set off_E1BAC
 	int jx;
-	for (jx = 0; str_E1BAC[jx].xmin_10; jx++)//clear/set off_E1BAC
+	for (jx = 0; mainMenuButtons_E1BAC[jx].xmin_10; jx++)//clear/set off_E1BAC
 	{
-		str_E1BAC[jx].selected_8 = 0;
-		str_E1BAC[jx].gold_color_24 = 0;
-		if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 1 && str_E1BAC[jx].byte_22 == 11)
-			str_E1BAC[jx].selected_8 = 1;
+		mainMenuButtons_E1BAC[jx].selected_8 = 0;
+		mainMenuButtons_E1BAC[jx].gold_color_24 = 0;
+		if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 1 && mainMenuButtons_E1BAC[jx].byte_22 == 11)
+			mainMenuButtons_E1BAC[jx].selected_8 = 1;
 	}
 	if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 1)
 	{
@@ -5849,20 +5853,20 @@ bool DrawAndServe_7B250()//25c250
 	}
 	else
 	{
-		for (jx = 0; str_E1BAC[jx].xmin_10; jx++)
+		for (jx = 0; mainMenuButtons_E1BAC[jx].xmin_10; jx++)
 		{
-			if (InRegion_7B200(&str_E1BAC[jx], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony)
-				&& str_E1BAC[jx].canSelect_23)
+			if (InRegion_7B200(&mainMenuButtons_E1BAC[jx], x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx, x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony)
+				&& mainMenuButtons_E1BAC[jx].canSelect_23)
 			{
 				if (x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons & 1)
 				{
 					PlaySample_8F100(0, 14, 127, 64, 0x64u, 0, 3u);
-					str_E1BAC[jx].selected_8 = 1;
+					mainMenuButtons_E1BAC[jx].selected_8 = 1;
 					ResetMouse_7B5A0();
 				}
 				else
 				{
-					str_E1BAC[jx].gold_color_24 = 1;
+					mainMenuButtons_E1BAC[jx].gold_color_24 = 1;
 					x_BYTE_17DBC6 = 1;
 				}
 				break;
@@ -5885,17 +5889,17 @@ bool DrawAndServe_7B250()//25c250
 		textBoxStr[0] = textBoxStr_E25DC[x_WORD_17DBC4];
 		int index = 0;
 		sub_7E840_draw_textbox_with_line(textBoxStr, 80, 89);
-		if (!str_E1BAC[0].xmin_10)
+		if (!mainMenuButtons_E1BAC[0].xmin_10)
 			return 0;
 		do
 		{
-			if (str_E1BAC[index].byte_22 == str_BYTE_E25ED_0x[x_WORD_17DBC4].byte_0)
+			if (mainMenuButtons_E1BAC[index].byte_22 == str_BYTE_E25ED_0x[x_WORD_17DBC4].byte_0)
 			{
-				str_E1BAC[index].gold_color_24 = 1;//turn on gold selection
+				mainMenuButtons_E1BAC[index].gold_color_24 = 1;//turn on gold selection
 				return 0;
 			}
 			index++;
-		} while (str_E1BAC[index].xmin_10);
+		} while (mainMenuButtons_E1BAC[index].xmin_10);
 		return false;
 	}
 	else
@@ -5913,7 +5917,7 @@ bool DrawAndServe_7B250()//25c250
 		int index2 = 0;
 		if (textBoxStr_E25DC[index2].minx2_2)
 		{
-			while (textBoxStr_E25DC[index2].byte_17 != str_E1BAC[jx].byte_22)
+			while (textBoxStr_E25DC[index2].byte_17 != mainMenuButtons_E1BAC[jx].byte_22)
 			{
 				index2++;
 				if (!textBoxStr_E25DC[index2].minx2_2)

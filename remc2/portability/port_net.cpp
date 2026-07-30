@@ -44,10 +44,6 @@
 //   simulateInterupt(), InitMyNetLib(), EndMyNetLib(), CleanMessages(),
 //   printState(), printState2(), timeState(), IsRemoteAlive(),
 //   ReceiveServerAddName() — all signatures unchanged from the UDP version.
-
-//#define TEST_NETWORK_MESSAGES_NETWORK
-//#define TEST_NETWORK_MESSAGES_PORTNET
-
 #define _CRT_SECURE_NO_WARNINGS
 #include "port_net.h"
 #include <map>
@@ -78,6 +74,7 @@ static void set_nodelay(socket_t s) {
 }
 #else
 #include <sys/socket.h>
+#include <sys/select.h>
 #include <arpa/inet.h>
 #include <netinet/tcp.h>
 #include <unistd.h>
@@ -121,6 +118,7 @@ int         timest_index = 0;
 clock_t     timest_timer = 0;
 const int   timest_max_mess = 400;
 std::string timest_buffer[timest_max_mess];
+bool m_network_debug = false;
 
 // ---------------------------------------------------------------------------
 // Protocol message type constants  (wire-compatible with the UDP version)
@@ -142,6 +140,9 @@ const int32_t MESS_HEARTBEAT = 17; // keep-alive probe
 const int32_t MESS_HEARTBEAT_ACK = 20; // keep-alive reply
 const int32_t MESS_CLIENT_GET_IP = 18;
 const int32_t MESS_SERVER_GIVE_IP = 19;
+// Marker put in the 'index' field of a GIVE_IP that is an announcement rather than an
+// address reply: the session's first NetBIOS name (…0) has been registered.
+const int32_t SERVER_NAME_REGISTERED = -777;
 
 char* MessageIndexToText(int32_t index)
 {
@@ -255,17 +256,17 @@ message_info Unpack_Message(const std::string& data)
 	message_info out;
 	memset(&out, 0, sizeof(out));
 	if (data.size() < MSG_WIRE_HEADER) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("Unpack: too short %zu/%zu\n", data.size(), MSG_WIRE_HEADER);
-#endif
+		if (m_network_debug)
+			debug_net_printf("Unpack: too short %zu/%zu\n", data.size(), MSG_WIRE_HEADER);
+
 		out.message = MESS_UNKNOWN;
 		return out;
 	}
 	memcpy(&out, data.data(), MSG_WIRE_HEADER);
 	if (out.size > sizeof(out.data) || MSG_WIRE_HEADER + out.size > data.size()) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("Unpack: bad payload size %u\n", out.size);
-#endif
+		if (m_network_debug)
+			debug_net_printf("Unpack: bad payload size %u\n", out.size);
+
 		out.message = MESS_UNKNOWN;
 
 		return out;
@@ -319,19 +320,30 @@ static void LogPkt(const char* dir, const std::string& addr, int port,
 	const message_info& u)
 {
 	std::string p = PayloadPreview(u.data, u.size);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("%s %s:%d  msg=%-30s size=%u name=[%.16s] call=[%.16s] idx=%d%s%s\n",
-		dir, addr.c_str(), port, MessageIndexToText(u.message),
-		u.size, u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10, u.index,
-		p.empty() ? "" : " ", p.c_str());
-#endif
+	if (m_network_debug)
+		debug_net_printf("%s %s:%d  msg=%-30s size=%u name=[%.16s] call=[%.16s] idx=%d%s%s\n",
+			dir, addr.c_str(), port, MessageIndexToText(u.message),
+			u.size, u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10, u.index,
+			p.empty() ? "" : " ", p.c_str());
+
 }
 
 // ---------------------------------------------------------------------------
 // TCP helpers — length-prefixed framing
 // ---------------------------------------------------------------------------
 
-// Send all bytes of msg on socket s (blocking).
+// Send all bytes of msg on socket s.
+//
+// Every socket here is non-blocking, so a large frame (a full game-state packet is
+// ~17 KB and the packet limit is 60 KB, against a default ~64 KB socket buffer) can
+// easily fill the send buffer and make send() fail with EWOULDBLOCK part way through.
+// Treating that as a fatal error - as this used to - left the 4-byte length prefix and
+// a partial body on the wire: the receiver then waited for a remainder that never came
+// and glued the *next* message onto the truncated one, so both sides silently decoded
+// garbage game state.  Instead wait for the socket to become writable and continue, so
+// a frame is either delivered whole or the connection is reported as broken.
+static const long TCP_SEND_STALL_TIMEOUT_MS = 5000;
+
 static bool TcpSendFull(socket_t s, const std::string& msg)
 {
 	if (s == SOCK_INVALID) return false;
@@ -341,10 +353,22 @@ static bool TcpSendFull(socket_t s, const std::string& msg)
 		(uint8_t)(len >> 8), (uint8_t)(len) };
 	auto send_all = [s](const void* b, int n) -> bool {
 		const char* p = (const char*)b; int left = n;
+		long waited = 0;
 		while (left > 0) {
 			int r = send(s, p, left, 0);
-			if (r <= 0) return false;
-			p += r; left -= r;
+			if (r > 0) { p += r; left -= r; waited = 0; continue; }
+			if (r == 0) return false;
+			int e = sock_errno();
+			if (!would_block(e)) return false;
+			// Buffer full: wait until the peer drains it, then resume this frame.
+			fd_set wf; FD_ZERO(&wf); FD_SET(s, &wf);
+			timeval tv; tv.tv_sec = 0; tv.tv_usec = 50 * 1000;
+			int sel = select((int)s + 1, nullptr, &wf, nullptr, &tv);
+			if (sel < 0) return false;
+			if (sel == 0) {
+				waited += 50;
+				if (waited >= TCP_SEND_STALL_TIMEOUT_MS) return false; // peer is gone/stuck
+			}
 		}
 		return true;
 		};
@@ -376,9 +400,9 @@ struct TcpRecvBuf {
 			// mid-frame and the socket was re-used — should not happen on
 			// a single TCP connection but defends against bugs).
 			if (len > MAX_FRAME) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("TcpRecvBuf: FATAL bad frame len=%u (max=%u), discarding %zu bytes — connection likely corrupted\n", len, MAX_FRAME, raw.size());
-#endif
+				if (m_network_debug)
+					debug_net_printf("TcpRecvBuf: FATAL bad frame len=%u (max=%u), discarding %zu bytes — connection likely corrupted\n", len, MAX_FRAME, raw.size());
+
 				raw.clear();
 				return false; // treat as disconnect — upper layer will reconnect
 			}
@@ -600,26 +624,26 @@ static void deleteListenConnection(myNCB* c)
 // So: tmp->ncb_name_26 (caller's name) == c->ncb_callName_10 (who we waited for).
 static bool setListen(myNCB* tmp)
 {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("setListen: looking for NCB whose callName=[%.16s]\n", tmp->ncb_name_26);
-#endif
+	if (m_network_debug)
+		debug_net_printf("setListen: looking for NCB whose callName=[%.16s]\n", tmp->ncb_name_26);
+
 	std::lock_guard<std::mutex> lk(clientConnMutex);
 	for (auto* c : clientConnection) {
 		if (memcmp(tmp->ncb_name_26, c->ncb_callName_10, 16) == 0) {
 			c->ncb_lsn_2 = 20;
 			//c->ncb_cmd_cplt_49 = NRC_GOODRET;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("setListen: MATCH name=[%.16s] call=[%.16s] lsn=20\n", c->ncb_name_26, c->ncb_callName_10);
-#endif
+			if (m_network_debug)
+				debug_net_printf("setListen: MATCH name=[%.16s] call=[%.16s] lsn=20\n", c->ncb_name_26, c->ncb_callName_10);
+
 			return true;
 		}
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("setListen: candidate name=[%.16s] call=[%.16s] NO MATCH\n", c->ncb_name_26, c->ncb_callName_10);
-#endif
+		if (m_network_debug)
+			debug_net_printf("setListen: candidate name=[%.16s] call=[%.16s] NO MATCH\n", c->ncb_name_26, c->ncb_callName_10);
+
 	}
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("setListen: NO MATCH\n");
-#endif
+	if (m_network_debug)
+		debug_net_printf("setListen: NO MATCH\n");
+
 	return false;
 }
 
@@ -729,25 +753,70 @@ void CleanMessages(myNCB locNCB)
 // ---------------------------------------------------------------------------
 static socket_t peerListenSock = SOCK_INVALID;
 
-static bool StartPeerListen(int port)
+// Claim a listening port exclusively.
+//
+// On Windows SO_REUSEADDR does NOT mean "reuse a TIME_WAIT port" as it does on POSIX -
+// it lets a second socket bind a port another socket is already listening on, and which
+// of them receives a new connection is then undefined.  Two instances started on one
+// machine with overlapping ports (e.g. the client's data port equal to the server's
+// control port) therefore steal each other's connections instead of failing, which shows
+// up as endless reconnects and "no listenNCB" rejections.  Ask for exclusive use so an
+// overlap fails loudly at bind() time.  On POSIX keep SO_REUSEADDR - there it only allows
+// rebinding a port left in TIME_WAIT, which is what we want after a restart.
+static void set_exclusive_listen(socket_t s)
+{
+	int opt = 1;
+#ifdef _WIN32
+	setsockopt(s, SOL_SOCKET, SO_EXCLUSIVEADDRUSE, (char*)&opt, sizeof(opt));
+#else
+	setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
+#endif
+}
+
+// Bind the port peers connect to for game data.  'port' is in/out: if the configured
+// port is taken (typically because it collides with the control port of a server running
+// on the same machine) we fall back to an OS-assigned port and report it back, because
+// the port we actually listen on is what gets advertised to the server and handed to the
+// caller in CALL_ACCEPT.  Losing this socket used to be silent, and only broke later,
+// when this node happened to be the one that had to LISTEN - which is why the failure
+// looked like it depended on who started the session first.
+static bool StartPeerListen(int& port)
 {
 	peerListenSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (peerListenSock == SOCK_INVALID) return false;
-	int opt = 1;
-	setsockopt(peerListenSock, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
+	set_exclusive_listen(peerListenSock);
 	set_nonblocking(peerListenSock);
 	sockaddr_in a{}; a.sin_family = AF_INET; a.sin_port = htons((unsigned short)port);
 	a.sin_addr.s_addr = INADDR_ANY;
 	if (bind(peerListenSock, (sockaddr*)&a, sizeof(a)) != 0) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("PeerListen: bind(%d) failed err=%d\n", port, sock_errno());
-#endif
-		CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
+		int e = sock_errno();
+		debug_net_printf("PeerListen: data port %d unavailable (err=%d) - taking an OS-assigned port instead\n", port, e);
+		sockaddr_in any{}; any.sin_family = AF_INET; any.sin_port = 0; any.sin_addr.s_addr = INADDR_ANY;
+		if (bind(peerListenSock, (sockaddr*)&any, sizeof(any)) != 0) {
+			debug_net_printf("PeerListen: FATAL - no data port could be bound (err=%d)\n", sock_errno());
+			CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
+		}
+		sockaddr_in got{}; socklen_t gl = sizeof(got);
+		if (getsockname(peerListenSock, (sockaddr*)&got, &gl) != 0) {
+			CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
+		}
+		port = ntohs(got.sin_port);
+		debug_net_printf("PeerListen: using data port %d\n", port);
+	}
+	else if (port == 0) {
+		// Caller asked the OS to choose; report back what we actually got, because this
+		// number is what we advertise to the server and to the peer that has to call us.
+		sockaddr_in got{}; socklen_t gl = sizeof(got);
+		if (getsockname(peerListenSock, (sockaddr*)&got, &gl) != 0) {
+			CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
+		}
+		port = ntohs(got.sin_port);
+		debug_net_printf("PeerListen: using data port %d\n", port);
 	}
 	listen(peerListenSock, 8);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("PeerListen: data port %d\n", port);
-#endif
+	if (m_network_debug)
+		debug_net_printf("PeerListen: data port %d\n", port);
+
 	return true;
 }
 
@@ -801,9 +870,9 @@ static bool SendToCtrlClient(const std::string& msg, const std::string& addr, in
 			return TcpSendFull(cc.sock, msg);
 		}
 	}
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-	debug_net_printf("SendToCtrlClient: no client %s:%d\n", addr.c_str(), dataPort);
-#endif
+	if (m_network_debug)
+		debug_net_printf("SendToCtrlClient: no client %s:%d\n", addr.c_str(), dataPort);
+
 	return false;
 }
 
@@ -867,31 +936,56 @@ namespace MyNetworkLib {
 		clIam_client = iam_client;
 		IpPortIsSet = iam_server;
 
-		// Start peer data port
-		if (!StartPeerListen(clPort))
+		// Give every instance its own debug log.  Two instances started from the same
+		// folder would otherwise both open "net_messages_log1.txt": the one starting
+		// second truncates ("wt") what the first has already written, and from then on
+		// their lines interleave in a single file with two unrelated clock() timelines.
+		// That makes the capture nearly unusable for diagnosing a desync.
 		{
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("NetworkClass: peer listen on %d failed\n", clPort);
-#endif
+			char portbuf[16];
+			snprintf(portbuf, sizeof(portbuf), "%d", clPort);
+			debug_net_filename1 = std::string("net_messages_log1_") + portbuf + ".txt";
 		}
 
-		// Server: start control accept port
+		// Server: claim the control port FIRST.  It is the one port that cannot move -
+		// clients are told to connect there - whereas the data port below can relocate.
 		if (clIam_server) {
 			ctrlListenSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-			int opt = 1;
-			setsockopt(ctrlListenSock, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
+			set_exclusive_listen(ctrlListenSock);
 			set_nonblocking(ctrlListenSock);
 			sockaddr_in a{}; a.sin_family = AF_INET;
 			a.sin_port = htons((unsigned short)clServerPort);
 			a.sin_addr.s_addr = INADDR_ANY;
-			if (bind(ctrlListenSock, (sockaddr*)&a, sizeof(a)) == 0)
+			if (bind(ctrlListenSock, (sockaddr*)&a, sizeof(a)) == 0) {
 				listen(ctrlListenSock, 16);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			else
-				debug_net_printf("NetworkClass: ctrl listen on %d failed err=%d\n", clServerPort, sock_errno());
-			debug_net_printf("NetworkClass: ctrl listen on port %d\n", clServerPort);
-#endif
+				if (m_network_debug)
+					debug_net_printf("NetworkClass: ctrl listen on port %d\n", clServerPort);
+
+			}
+			else {
+				// Always report this: hosting is impossible and every later symptom
+				// (clients looping on "server disconnected") follows from it.
+				debug_net_printf("NetworkClass: FATAL - cannot listen on control port %d (err=%d); "
+					"another program or game instance already uses it\n", clServerPort, sock_errno());
+				CLOSE_SOCKET(ctrlListenSock); ctrlListenSock = SOCK_INVALID;
+			}
 		}
+
+		// A pure client must never squat on the port the server listens on when both run
+		// on this machine: whoever starts first wins it, and if the client wins, the host
+		// cannot open its control port at all.  The data port is advertised to the peers,
+		// so moving it is transparent - unlike the control port, which is fixed.
+		if (!clIam_server && clPort == clServerPort &&
+			(clHost.compare(0, 4, "127.") == 0 || clHost == "localhost" || clHost == "::1"))
+		{
+			debug_net_printf("NetworkClass: data port %d is the local server's control port - "
+				"taking an OS-assigned data port instead\n", clPort);
+			clPort = 0; // ask the OS; StartPeerListen reports what we actually got
+		}
+
+		// Peer data port (may relocate if the configured one is taken).
+		if (!StartPeerListen(clPort))
+			debug_net_printf("NetworkClass: FATAL - no data port available; peers cannot connect\n");
 	}
 
 	NetworkClass::~NetworkClass()
@@ -907,13 +1001,13 @@ namespace MyNetworkLib {
 		if (netRunning.load()) return;
 		netRunning.store(true);
 		netThread = std::thread([this]() {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("NetThread: started\n");
-#endif
+			if (m_network_debug)
+				debug_net_printf("NetThread: started\n");
+
 			while (netRunning.load()) { locUpdateNetworkSingleThread(); std::this_thread::sleep_for(std::chrono::milliseconds(1)); }
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("NetThread: stopped\n");
-#endif
+			if (m_network_debug)
+				debug_net_printf("NetThread: stopped\n");
+
 			});
 	}
 
@@ -941,9 +1035,9 @@ namespace MyNetworkLib {
 		set_nonblocking(s);
 		{ std::lock_guard<std::mutex> lk(ctrlSendMtx); ctrlSock = s; }
 		IpPortIsSet = true;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("ConnectToServer: connected to %s:%d\n", clHost.c_str(), clServerPort);
-#endif
+		if (m_network_debug)
+			debug_net_printf("ConnectToServer: connected to %s:%d\n", clHost.c_str(), clServerPort);
+
 	}
 
 	// ---------------------------------------------------------------------------
@@ -957,11 +1051,18 @@ namespace MyNetworkLib {
 			set_nonblocking(s); set_nodelay(s);
 			char ip[INET_ADDRSTRLEN]; inet_ntop(AF_INET, &from.sin_addr, ip, sizeof(ip));
 			ClientCtrl cc; cc.sock = s; cc.addr = ip; cc.port = ntohs(from.sin_port);
+			// A node joining after the session's first name was registered has to be told
+			// about it now - it will not ask, because it considers itself set up as soon
+			// as the control connection is up.
+			if (serverAddname) {
+				shadow_myNCB sn{}; sn.ncb_command_0 = 0xFE;
+				TcpSendFull(s, Pack_Message(MESS_SERVER_GIVE_IP, sn, SERVER_NAME_REGISTERED, clPort));
+			}
 			std::lock_guard<std::recursive_mutex> lk(ctrlClientsMtx);
 			ctrlClients.push_back(std::move(cc));
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("AcceptCtrl: client %s:%d\n", ip, cc.port);
-#endif
+			if (m_network_debug)
+				debug_net_printf("AcceptCtrl: client %s:%d\n", ip, cc.port);
+
 		}
 	}
 
@@ -982,9 +1083,9 @@ namespace MyNetworkLib {
 			}
 			cc.rbuf.ready.clear();
 			if (!ok) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("PollCtrlClients: client %s:%d disconnected\n", cc.addr.c_str(), cc.port);
-#endif
+				if (m_network_debug)
+					debug_net_printf("PollCtrlClients: client %s:%d disconnected\n", cc.addr.c_str(), cc.port);
+
 				for (int ni = (int)NetworkName.size() - 1; ni >= 0; ni--) {
 					if (clientIpPort[ni].adress == cc.addr && clientIpPort[ni].port == cc.dataPort) {
 						RemoveListenName(NetworkName[ni]);
@@ -1010,9 +1111,9 @@ namespace MyNetworkLib {
 		}
 		ctrlRecvBuf.ready.clear();
 		if (!ok) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("PollCtrlSocket: server disconnected\n");
-#endif
+			if (m_network_debug)
+				debug_net_printf("PollCtrlSocket: server disconnected\n");
+
 			std::lock_guard<std::mutex> lk(ctrlSendMtx);
 			CLOSE_SOCKET(ctrlSock); ctrlSock = SOCK_INVALID;
 			IpPortIsSet = false;
@@ -1034,9 +1135,8 @@ namespace MyNetworkLib {
 			int callerClPort = ntohs(from.sin_port); // fallback na ephemeral
 			for (int i = 0; i < (int)NetworkName.size(); i++)
 				if (clientIpPort[i].adress == std::string(ip)) { callerClPort = clientIpPort[i].port; break; }
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("AcceptPeer: data connection from %s\n", ip);
-#endif
+			if (m_network_debug)
+				debug_net_printf("AcceptPeer: data connection from %s\n", ip);
 
 			// Find the LISTEN NCB that is waiting for an incoming data connection.
 			// setListen() (called from PollCtrlSocket → HandleClientMsg a few lines above
@@ -1062,9 +1162,9 @@ namespace MyNetworkLib {
 
 			if (!listenNCB) {
 				// setListen hasn't run yet for this NCB — reject and let caller retry
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("AcceptPeer: WARNING no listenNCB ready, closing incoming connection from %s (will retry)\n", ip);
-#endif
+				if (m_network_debug)
+					debug_net_printf("AcceptPeer: WARNING no listenNCB ready, closing incoming connection from %s (will retry)\n", ip);
+
 				CLOSE_SOCKET(s);
 				continue;
 			}
@@ -1078,9 +1178,9 @@ namespace MyNetworkLib {
 			sess->Touch();
 			AddSession(listenNCB, sess);
 			listenNCB->ncb_cmd_cplt_49 = NRC_GOODRET;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("AcceptPeer: session listenNCB=%p name=[%.16s] call=[%.16s]\n", (void*)listenNCB, listenNCB->ncb_name_26, listenNCB->ncb_callName_10);
-#endif
+			if (m_network_debug)
+				debug_net_printf("AcceptPeer: session listenNCB=%p name=[%.16s] call=[%.16s]\n", (void*)listenNCB, listenNCB->ncb_name_26, listenNCB->ncb_callName_10);
+
 		}
 	}
 
@@ -1105,31 +1205,50 @@ namespace MyNetworkLib {
 				if (debug_net) LogPkt("DATA RX ←", sess->peerAddr, sess->peerPort, u);
 
 				if (u.message == MESS_DIRECT_SEND) {
-					std::lock_guard<std::mutex> qlk(sess->queueMtx);
-					sess->dataQueue.push(raw);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("PollSessions: queued DIRECT_SEND size=%u (queue=%zu)\n", u.size, sess->dataQueue.size());
-#endif
+					size_t depth;
+					{
+						std::lock_guard<std::mutex> qlk(sess->queueMtx);
+						sess->dataQueue.push(raw);
+						depth = sess->dataQueue.size();
+					}
+					if (m_network_debug)
+						debug_net_printf("PollSessions: queued DIRECT_SEND size=%u (queue=%zu)\n", u.size, depth);
+
+					// A backlog means the game is reading one message per turn while the
+					// peer already produced the next one, so from here on every RECEIVE
+					// hands over data one turn old.  That is harmless for the lockstep
+					// itself (both nodes still apply the same array, just later), but it is
+					// worth reporting: stale packets must NOT be dropped to "catch up",
+					// because skipping one would make this node apply a different sequence
+					// of inputs than its peer - a real divergence.
+					if (depth > 1) {
+						static int s_backlogReports = 0;
+						if (s_backlogReports < 10) {
+							s_backlogReports++;
+							debug_net_printf("PollSessions: NOTE data queue depth %zu for peer %s:%d - "
+								"receives now run one turn behind\n", depth, sess->peerAddr.c_str(), sess->peerPort);
+						}
+					}
 				}
 				else if (u.message == MESS_HEARTBEAT) {
 					shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
 					sess->Send(Pack_Message(MESS_HEARTBEAT_ACK, n, 0, clPort));
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("PollSessions: HEARTBEAT → ACK\n");
-#endif
+					if (m_network_debug)
+						debug_net_printf("PollSessions: HEARTBEAT → ACK\n");
+
 				}
 				else if (u.message == MESS_HEARTBEAT_ACK) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("PollSessions: HEARTBEAT_ACK\n");
-#endif
+					if (m_network_debug)
+						debug_net_printf("PollSessions: HEARTBEAT_ACK\n");
+
 				}
 			}
 			sess->rbuf.ready.clear();
 
 			if (!ok) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("PollSessions: peer %s:%d disconnected\n", sess->peerAddr.c_str(), sess->peerPort);
-#endif
+				if (m_network_debug)
+					debug_net_printf("PollSessions: peer %s:%d disconnected\n", sess->peerAddr.c_str(), sess->peerPort);
+
 				sess->alive = false;
 				if (sess->ownerNCB) {
 					sess->ownerNCB->ncb_retcode_1 = NRC_SCLOSED;
@@ -1141,9 +1260,9 @@ namespace MyNetworkLib {
 			// Heartbeat
 			long silence = sess->SilenceMs();
 			if (silence >= HEARTBEAT_TIMEOUT_MS) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("PollSessions: timeout %ldms peer=%s:%d\n", silence, sess->peerAddr.c_str(), sess->peerPort);
-#endif
+				if (m_network_debug)
+					debug_net_printf("PollSessions: timeout %ldms peer=%s:%d\n", silence, sess->peerAddr.c_str(), sess->peerPort);
+
 				sess->alive = false;
 				if (sess->ownerNCB) {
 					sess->ownerNCB->ncb_retcode_1 = NRC_SCLOSED;
@@ -1159,9 +1278,9 @@ namespace MyNetworkLib {
 					sess->lastProbeSent = std::chrono::steady_clock::now();
 					shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
 					sess->Send(Pack_Message(MESS_HEARTBEAT, n, 0, clPort));
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("PollSessions: HEARTBEAT probe silence=%ldms\n", silence);
-#endif
+					if (m_network_debug)
+						debug_net_printf("PollSessions: HEARTBEAT probe silence=%ldms\n", silence);
+
 				}
 			}
 		}
@@ -1176,17 +1295,17 @@ namespace MyNetworkLib {
 		sockaddr_in a{}; a.sin_family = AF_INET;
 		a.sin_port = htons((unsigned short)dataPort);
 		inet_pton(AF_INET, addr.c_str(), &a.sin_addr);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("ConnectDataToPeer: %s:%d for ncb=[%.16s]\n", addr.c_str(), dataPort, ncb->ncb_name_26);
-#endif
+		if (m_network_debug)
+			debug_net_printf("ConnectDataToPeer: %s:%d for ncb=[%.16s]\n", addr.c_str(), dataPort, ncb->ncb_name_26);
+
 		if (connect(s, (sockaddr*)&a, sizeof(a)) != 0) {
 			int e = sock_errno();
 			if (!would_block(e))
 			{
 				CLOSE_SOCKET(s);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("ConnectDataToPeer: failed err=%d\n", e);
-#endif
+				if (m_network_debug)
+					debug_net_printf("ConnectDataToPeer: failed err=%d\n", e);
+
 				return false;
 			}
 		}
@@ -1216,6 +1335,11 @@ namespace MyNetworkLib {
 			std::string reply = Pack_Message(MESS_SERVER_GIVE_IP, n, -1, u.port,
 				senderAddr.c_str(), (int)senderAddr.size() + 1);
 			SendToCtrlClient(reply, senderAddr, u.port);
+			// A node that connects after the first name was registered would never see
+			// the announcement sent at that moment, so repeat the current state here.
+			if (serverAddname)
+				SendToCtrlClient(Pack_Message(MESS_SERVER_GIVE_IP, n, SERVER_NAME_REGISTERED, clPort),
+					senderAddr, u.port);
 			return;
 		}
 
@@ -1228,7 +1352,21 @@ namespace MyNetworkLib {
 				char cmp[16] = { 0 };
 				sprintf(cmp, "NETH2%c0", u.data[5]);
 				while (strlen(cmp) < 15) strcat(cmp, " ");
-				if (memcmp(u.data, cmp, 15) == 0) serverAddname = true;
+				if (memcmp(u.data, cmp, 15) == 0) {
+					serverAddname = true;
+					// Tell every node that the session's first name (…0) is now taken.
+					// This is what ReceiveServerAddName() reports, and it is how a client
+					// can wait for the server to claim its name before claiming its own.
+					// The flag used to be raised here and never sent anywhere, so
+					// ReceiveServerAddName() always answered false and the wait built on
+					// it could never finish.
+					std::lock_guard<std::recursive_mutex> lk(ctrlClientsMtx);
+					shadow_myNCB sn{}; sn.ncb_command_0 = 0xFE;
+					std::string note = Pack_Message(MESS_SERVER_GIVE_IP, sn, SERVER_NAME_REGISTERED, clPort);
+					for (auto& cc : ctrlClients)
+						if (cc.sock != SOCK_INVALID) TcpSendFull(cc.sock, note);
+					receiveServerAddName = true; // also true for the node hosting the session
+				}
 			}
 			else if (ExistNetworkName(u.data, ip)) {
 				SendToCtrlClient(Pack_Message(MESS_SERVER_TESTADDNAME_OK, n, u.index, -10), senderAddr, senderDataPort);
@@ -1306,10 +1444,18 @@ namespace MyNetworkLib {
 		message_info u = Unpack_Message(raw);
 
 		if (u.message == MESS_SERVER_GIVE_IP) {
+			if (u.index == SERVER_NAME_REGISTERED) {
+				// Not an address reply: the server is announcing that the session's
+				// first NetBIOS name is registered.  ReceiveServerAddName() reports this.
+				receiveServerAddName = true;
+				if (m_network_debug)
+					debug_net_printf("HandleClient: server name registered\n");
+				return;
+			}
 			IpPortIsSet = true;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("HandleClient: GIVE_IP — confirmed\n");
-#endif
+			if (m_network_debug)
+				debug_net_printf("HandleClient: GIVE_IP — confirmed\n");
+
 			return;
 		}
 
@@ -1330,18 +1476,18 @@ namespace MyNetworkLib {
 				ct->state = NETI_CALL_ACCEPT;
 				ct->connection->ncb_retcode_1 = NRC_GOODRET;
 				ct->connection->ncb_cmd_cplt_49 = NRC_GOODRET;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("HandleClient: CALL_ACCEPT idx=%d name=[%.16s]\n", u.index, ct->connection->ncb_name_26);
-#endif
+				if (m_network_debug)
+					debug_net_printf("HandleClient: CALL_ACCEPT idx=%d name=[%.16s]\n", u.index, ct->connection->ncb_name_26);
+
 				struct { char ip[64]; int dataPort; } ci{};
 				if (u.size >= (int)sizeof(ci)) {
 					memcpy(&ci, u.data, sizeof(ci));
 					if (ci.ip[0] && ci.dataPort > 0) {
 						std::string key(u.messNCB.ncb_callName_10, 16);
 						directPeers[key] = { std::string(ci.ip), ci.dataPort };
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-						debug_net_printf("HandleClient: CALL_ACCEPT peer=[%.16s] %s:%d\n", u.messNCB.ncb_callName_10, ci.ip, ci.dataPort);
-#endif
+						if (m_network_debug)
+							debug_net_printf("HandleClient: CALL_ACCEPT peer=[%.16s] %s:%d\n", u.messNCB.ncb_callName_10, ci.ip, ci.dataPort);
+
 						ConnectDataToPeer(ct->connection, std::string(ci.ip), ci.dataPort);
 						// Register CALL NCB in clientConnection so Pass4 tracks
 						// liveness the same way as LISTEN NCBs.
@@ -1364,9 +1510,9 @@ namespace MyNetworkLib {
 			// u.messNCB.ncb_callName_10 is the LISTENER's name ("NETH200") — wrong field.
 			myNCB tmp; memset(&tmp, 0, sizeof(tmp));
 			memcpy(tmp.ncb_name_26, u.messNCB.ncb_name_26, 16);  // caller's name
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("HandleClient: LISTEN_ACCEPT callerName=[%.16s] listenerName=[%.16s]\n", u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
-#endif
+			if (m_network_debug)
+				debug_net_printf("HandleClient: LISTEN_ACCEPT callerName=[%.16s] listenerName=[%.16s]\n", u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
+
 			setListen(&tmp);
 
 			// Record caller's data port
@@ -1376,9 +1522,9 @@ namespace MyNetworkLib {
 				if (li.ip[0] && li.dataPort > 0) {
 					std::string key(u.messNCB.ncb_name_26, 16);
 					directPeers[key] = { std::string(li.ip), li.dataPort };
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-					debug_net_printf("HandleClient: LISTEN_ACCEPT caller=%s:%d\n", li.ip, li.dataPort);
-#endif
+					if (m_network_debug)
+						debug_net_printf("HandleClient: LISTEN_ACCEPT caller=%s:%d\n", li.ip, li.dataPort);
+
 					// Incoming TCP connection accepted by AcceptPeerConnections()
 				}
 			}
@@ -1405,9 +1551,21 @@ namespace MyNetworkLib {
 	void NetworkClass::UpdateClient()
 	{
 		if (!IpPortIsSet) {
-			shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
-			SendCtrl(Pack_Message(MESS_CLIENT_GET_IP, n, GetNextIndex(), clPort));
-			return;
+			// The control link is not up (yet, or any more): keep asking the server for
+			// our address, but do NOT skip the NCB state machine below.
+			//
+			// Returning here - as this used to do - stopped Pass 2 from ever completing a
+			// command once the server had gone away.  Network.cpp busy-waits on
+			// ncb_cmd_cplt_49 for HANG_UP, DELETE_NAME and CANCEL, so leaving the game
+			// after the server quit first froze the whole process: the command it was
+			// spinning on could never be completed by anyone.
+			static clock_t lastProbe = 0;
+			clock_t nowProbe = clock();
+			if (lastProbe == 0 || (long)((nowProbe - lastProbe) * 1000 / CLOCKS_PER_SEC) >= 250) {
+				lastProbe = nowProbe;
+				shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
+				SendCtrl(Pack_Message(MESS_CLIENT_GET_IP, n, GetNextIndex(), clPort));
+			}
 		}
 
 		std::lock_guard<std::mutex> conn_lk(connections_mutex);
@@ -1429,21 +1587,31 @@ namespace MyNetworkLib {
 
 			// Find a session whose owner has the same local name
 			std::shared_ptr<TcpSession> sess;
+			bool deadPeerForName = false; // a matching session exists but the peer is gone
 			{
 				std::lock_guard<std::mutex> lk(sessions_mutex);
 				for (auto& kv : tcpSessions) {
-					if (!kv.second->alive || !kv.second->ownerNCB) continue;
+					if (!kv.second->ownerNCB) continue;
 					if (memcmp(kv.second->ownerNCB->ncb_name_26,
-						conn.connection->ncb_name_26, 16) == 0)
-					{
-						sess = kv.second; break;
-					}
+						conn.connection->ncb_name_26, 16) != 0) continue;
+					if (kv.second->alive) { sess = kv.second; break; }
+					deadPeerForName = true;
 				}
 			}
 			if (!sess) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("Pass1: RECEIVE idx=%d no session name=[%.16s]\n", conn.index, conn.connection->ncb_name_26);
-#endif
+				// If the only session for this local name is dead (peer disconnected
+				// or was banished), fail the blocking RECEIVE instead of spinning
+				// forever in NetworkReceivePacket_74C9D().  A normal re-negotiation
+				// gap has NO session at all (HANG_UP removes it), so this only fires
+				// on a genuinely lost peer and does not disturb reconnect.
+				if (deadPeerForName) {
+					conn.connection->ncb_retcode_1 = NRC_SCLOSED;
+					conn.connection->ncb_cmd_cplt_49 = NRC_SCLOSED;
+					toDelete.push_back(conn.index);
+				}
+				if (m_network_debug)
+					debug_net_printf("Pass1: RECEIVE idx=%d no session name=[%.16s] deadPeer=%d\n", conn.index, conn.connection->ncb_name_26, (int)deadPeerForName);
+
 				continue;
 			}
 
@@ -1457,9 +1625,9 @@ namespace MyNetworkLib {
 
 			message_info u = Unpack_Message(raw);
 			if (u.size > conn.connection->ncb_bufferLength_8) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("Pass1: RECEIVE idx=%d size=%u > buf=%u DROP\n", conn.index, u.size, conn.connection->ncb_bufferLength_8);
-#endif
+				if (m_network_debug)
+					debug_net_printf("Pass1: RECEIVE idx=%d size=%u > buf=%u DROP\n", conn.index, u.size, conn.connection->ncb_bufferLength_8);
+
 				continue;
 			}
 			memcpy(conn.connection->ncb_buffer_4.p, u.data, u.size);
@@ -1467,9 +1635,9 @@ namespace MyNetworkLib {
 			conn.connection->ncb_retcode_1 = NRC_GOODRET;
 			conn.connection->ncb_cmd_cplt_49 = NRC_GOODRET;
 			toDelete.push_back(conn.index);
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("Pass1: RECEIVE idx=%d DELIVERED size=%u from=[%.16s] to=[%.16s]\n", conn.index, u.size, u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
-#endif
+			if (m_network_debug)
+				debug_net_printf("Pass1: RECEIVE idx=%d DELIVERED size=%u from=[%.16s] to=[%.16s]\n", conn.index, u.size, u.messNCB.ncb_name_26, u.messNCB.ncb_callName_10);
+
 		}
 
 		// ------------------------------------------------------------------
@@ -1563,18 +1731,30 @@ namespace MyNetworkLib {
 			bool alive = sess && sess->alive && sess->SilenceMs() < HEARTBEAT_TIMEOUT_MS;
 			uint8_t old = c->ncb_cmd_cplt_49;
 			if (alive) {
-				c->ncb_cmd_cplt_49 = NRC_GOODRET;
+				// Only revive an NCB that liveness detection had previously marked closed.
+				//
+				// Writing NRC_GOODRET unconditionally used to race with the game thread:
+				// the check above can read "not pending" a moment before the game arms a
+				// new RECEIVE (setting NRC_PENDING), and the write then completed that
+				// RECEIVE with no data attached.  Network.cpp only busy-waits for
+				// ncb_cmd_cplt_49 to change, so it accepted the empty completion, left the
+				// message sitting in the queue and carried on - sending its own update
+				// anyway.  Every occurrence pushed the reader one message further behind,
+				// which is why the token holder ended up ~25 turns late and never saw the
+				// last actions of a peer that then disconnected.
+				if (old == NRC_SCLOSED)
+					c->ncb_cmd_cplt_49 = NRC_GOODRET;
 			}
 			else if (c->ncb_cmd_cplt_49 != NRC_SCLOSED) {
 				c->ncb_cmd_cplt_49 = NRC_SCLOSED;
 				c->ncb_retcode_1 = NRC_SCLOSED;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-				debug_net_printf("Pass4: CLOSED name=[%.16s] lsn=%d\n", c->ncb_name_26, c->ncb_lsn_2);
-#endif
+				if (m_network_debug)
+					debug_net_printf("Pass4: CLOSED name=[%.16s] lsn=%d\n", c->ncb_name_26, c->ncb_lsn_2);
+
 			}
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("Pass4: lsn=%d name=[%.16s] alive=%d cplt %02X→%02X\n", c->ncb_lsn_2, c->ncb_name_26, (int)alive, old, c->ncb_cmd_cplt_49);
-#endif
+			if (m_network_debug)
+				debug_net_printf("Pass4: lsn=%d name=[%.16s] alive=%d cplt %02X→%02X\n", c->ncb_lsn_2, c->ncb_name_26, (int)alive, old, c->ncb_cmd_cplt_49);
+
 		}
 	}
 
@@ -1612,9 +1792,9 @@ namespace MyNetworkLib {
 
 	void NetworkClass::ListenNetwork(myNCB* c, int32_t index)
 	{
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("ListenNetwork: name=[%.16s] call=[%.16s]\n", c->ncb_name_26, c->ncb_callName_10);
-#endif
+		if (m_network_debug)
+			debug_net_printf("ListenNetwork: name=[%.16s] call=[%.16s]\n", c->ncb_name_26, c->ncb_callName_10);
+
 		myNCB safe = *c; safe.ncb_buffer_4.p = nullptr;
 		SendCtrl(Pack_Message(MESS_CLIENT_MESSAGE_LISTEN, myNCBtoShadow(*c), index, clPort,
 			(char*)&safe, sizeof(safe)));
@@ -1639,9 +1819,9 @@ namespace MyNetworkLib {
 		}
 
 		if (!sess) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("SendNetwork: no session for name=[%.16s]\n", c->ncb_name_26);
-#endif
+			if (m_network_debug)
+				debug_net_printf("SendNetwork: no session for name=[%.16s]\n", c->ncb_name_26);
+
 			c->ncb_cmd_cplt_49 = NRC_SCLOSED;
 			return;
 		}
@@ -1649,9 +1829,9 @@ namespace MyNetworkLib {
 		std::string packed = Pack_Message(MESS_DIRECT_SEND, myNCBtoShadow(*c), index, clPort,
 			(char*)c->ncb_buffer_4.p, c->ncb_bufferLength_8);
 		if (!sess->Send(packed)) {
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-			debug_net_printf("SendNetwork: TCP send failed for name=[%.16s]\n", c->ncb_name_26);
-#endif
+			if (m_network_debug)
+				debug_net_printf("SendNetwork: TCP send failed for name=[%.16s]\n", c->ncb_name_26);
+
 			sess->alive = false;
 			c->ncb_cmd_cplt_49 = NRC_SCLOSED;
 			return;
@@ -1659,9 +1839,9 @@ namespace MyNetworkLib {
 		// TCP is reliable — mark SEND complete immediately
 		c->ncb_retcode_1 = NRC_GOODRET;
 		c->ncb_cmd_cplt_49 = NRC_GOODRET;
-#ifdef TEST_NETWORK_MESSAGES_PORTNET
-		debug_net_printf("SendNetwork: sent size=%u name=[%.16s]\n", c->ncb_bufferLength_8, c->ncb_name_26);
-#endif
+		if (m_network_debug)
+			debug_net_printf("SendNetwork: sent size=%u name=[%.16s]\n", c->ncb_bufferLength_8, c->ncb_name_26);
+
 	}
 
 } // namespace MyNetworkLib
@@ -1717,7 +1897,12 @@ void simulateInterupt(myNCB* connection)
 		state = NETI_LISTEN;
 		break;
 	case 0x92:  // HANG_UP
-		locTimeout = 500;
+		// Over TCP a HANG_UP just closes the data socket (RemoveSession in Pass 2) —
+		// there is no round-trip to wait for.  The old 500 ms timeout was pure dead
+		// time, and NetworkCanceling_73669() issues a HANG_UP for every one of the 8
+		// player slots (even the unconnected ones), so a banish/disconnect stalled the
+		// caller for ~7*500 ms = 3.5 s.  A short timeout removes that stall.
+		locTimeout = 40;
 		connection->ncb_cmd_cplt_49 = NRC_PENDING;
 		break;
 	case 0x94:  // SEND
@@ -1742,7 +1927,13 @@ void simulateInterupt(myNCB* connection)
 		state = NETI_ADD_NAME;
 		break;
 	case 0xb1:  // DELETE_NAME
-		locTimeout = 10000;
+		// DELETE is fire-and-forget: DeleteNetwork() has already sent the
+		// MESS_CLIENT_DELETE to the server over reliable TCP, so there is no
+		// reply to wait for.  The old 10000 ms timeout made Pass 2 hold this
+		// NCB in NRC_PENDING for a full 10 s, during which NetworkDeleteName_74A86()
+		// busy-waits — that is the multi-second hang seen when a player is banished
+		// (banish → NetworkEvent → NetworkCanceling → NetworkDeleteName).
+		locTimeout = 100;
 		connection->ncb_retcode_1 = NRC_PENDING;
 		locNetworkClass->DeleteNetwork(connection, locIndex);
 		break;
@@ -1759,37 +1950,60 @@ void simulateInterupt(myNCB* connection)
 }
 
 // ---------------------------------------------------------------------------
+// ResetNetworkGameState — drop all per-match state so a NEW match starts clean.
+// Without this, a second match inherits stale data sessions / established-connection
+// entries / pending NCB commands keyed by the (reused) NCB pointers from the first
+// match; that made the peers issue redundant CALLs and clobber each other's data
+// session, so they never reconnected (restart bug #3).  Sockets stay open.
+// ---------------------------------------------------------------------------
+void ResetNetworkGameState()
+{
+	{
+		std::lock_guard<std::mutex> lk(sessions_mutex);
+		for (auto& kv : tcpSessions) if (kv.second) kv.second->Close();
+		tcpSessions.clear();
+	}
+	{ std::lock_guard<std::mutex> lk(clientConnMutex);   clientConnection.clear(); }
+	{ std::lock_guard<std::mutex> lk(connections_mutex); handleConnections.clear(); }
+
+	if (m_network_debug)
+		debug_net_printf("ResetNetworkGameState: cleared sessions/connections/commands for new match\n");
+
+}
+
+// ---------------------------------------------------------------------------
 // Debug helpers  (unchanged API)
 // ---------------------------------------------------------------------------
 void printState(myNCB** connections) {
-#ifdef TEST_NETWORK_MESSAGES_NETWORK
-	for (int i = 0; i < 3; i++)
-		debug_net_printf("NetworkGetState: %d %p lsn=%d cplt=%s\n",
-			i, connections[i], connections[i]->ncb_lsn_2,
-			(!connections[i]->ncb_cmd_cplt_49) ? "ok" : "pending");
-#endif
+	if (m_network_debug)
+	{
+		for (int i = 0; i < 3; i++)
+			debug_net_printf("NetworkGetState: %d %p lsn=%d cplt=%s\n",
+				i, connections[i], connections[i]->ncb_lsn_2,
+				(!connections[i]->ncb_cmd_cplt_49) ? "ok" : "pending");
+	}
 }
 void printState2(char* text) {
-#ifdef TEST_NETWORK_MESSAGES_NETWORK
-	debug_net_printf("%s", text);
-#endif
+	if (m_network_debug)
+		debug_net_printf("%s", text);
 }
 void timeState(bool start, const char* text) {
-#ifdef TEST_NETWORK_MESSAGES_NETWORK
-	/*
-	if (start || (timest_index == 0)) timest_timer = clock();
-	char buff[100];
-	snprintf(buff, sizeof(buff), "%s | %d", text, (int)(clock() - timest_timer));
-	timest_buffer[timest_index].assign(buff, strlen(buff));
-	timest_index++;
-	if (timest_index > timest_max_mess) {
-		ofstream ofs("net_time_messages_log.txt", std::ofstream::out);
-		for (int i = 0; i < timest_max_mess; i++)
-			ofs << timest_buffer[i] << endl;
-		ofs.close();
-		exit(0);
-	}*/
-#endif
+	if (m_network_debug)
+	{
+		/*
+		if (start || (timest_index == 0)) timest_timer = clock();
+		char buff[100];
+		snprintf(buff, sizeof(buff), "%s | %d", text, (int)(clock() - timest_timer));
+		timest_buffer[timest_index].assign(buff, strlen(buff));
+		timest_index++;
+		if (timest_index > timest_max_mess) {
+			ofstream ofs("net_time_messages_log.txt", std::ofstream::out);
+			for (int i = 0; i < timest_max_mess; i++)
+				ofs << timest_buffer[i] << endl;
+			ofs.close();
+			exit(0);
+		}*/
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -1816,4 +2030,9 @@ void EndMyNetLib()
 #ifdef _WIN32
 	WSACleanup();
 #endif
+}
+
+void SetNetworkDebug()
+{
+	m_network_debug = true;
 }

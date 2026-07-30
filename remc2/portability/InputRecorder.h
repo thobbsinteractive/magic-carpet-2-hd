@@ -14,6 +14,9 @@ private:
 	std::string m_FilePath;
 	std::map<uint16_t, RecordedEvent*>* m_InputEvents;
 
+	bool SaveRecordingToFile(const char* outputFileName);
+	bool LoadRecordingFile(const char* inputFileName);
+
 public:
 	bool m_IsRecording = false;
 	bool m_IsPlaying = false;
@@ -21,10 +24,9 @@ public:
 	InputRecorder(const char* filePath);
 	~InputRecorder();
 
-	void PlayPause(const GameState state);
 	void StartRecording();
+	bool SaveRecording();
 	bool StopRecording();
-	void PauseRecording(bool pause);
 	void ClearInputEvents();
 	
 	bool StartPlayback();
@@ -35,8 +37,5 @@ public:
 
 	void RecordPlayerActions(uint16_t level, uint16_t playerIdx, uint32_t turn, uint64_t sizeBytes, uint8_t* buffer);
 	void RecordPlayerSpells(int level, int playerIdx, int16_t* spellsEnabled, uint8_t* spellIndexes, uint8_t* spellLevels, int32_t* spellsExperience);
-
-	bool SaveRecordingToFile(const char* outputFileName);
-	bool LoadRecordingFile(const char* inputFileName);
 };
 

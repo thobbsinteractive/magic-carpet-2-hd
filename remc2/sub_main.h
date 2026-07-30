@@ -100,6 +100,7 @@ void StopRecording();
 void StartPlayback(const char* inputFileName);
 void StopPlayback();
 bool IsRecordingOrPlaying();
+bool IsRecording();
 
 int sub_main(int argc, char** argv, char** envp);
 #endif //SUB_MAIN_ACTIVE
