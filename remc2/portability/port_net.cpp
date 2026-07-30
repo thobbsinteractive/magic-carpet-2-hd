@@ -46,6 +46,7 @@
 //   ReceiveServerAddName() — all signatures unchanged from the UDP version.
 #define _CRT_SECURE_NO_WARNINGS
 #include "port_net.h"
+#include "../engine/CommandLineParser.h"
 #include <map>
 #include <set>
 #include <queue>
@@ -415,6 +416,46 @@ struct TcpRecvBuf {
 };
 
 // ---------------------------------------------------------------------------
+// Fault injection for automated testing (--net_drop / --net_delay / --net_reorder).
+//
+// Deliberately confined to the peer-to-peer game data: the control channel that
+// registers names and sets up sessions is never touched, so a test disturbs a running
+// game rather than preventing it from starting.  All three are off unless asked for on
+// the command line, so a normal game runs through the untouched path.
+// ---------------------------------------------------------------------------
+namespace NetFaults {
+	static int  s_dropPermille = 0;
+	static int  s_delayMs = 0;
+	static int  s_reorderPermille = 0;
+	static bool s_configured = false;
+
+	void Configure(int dropPermille, int delayMs, int reorderPermille)
+	{
+		s_dropPermille = dropPermille;
+		s_delayMs = delayMs;
+		s_reorderPermille = reorderPermille;
+		s_configured = (dropPermille > 0 || delayMs > 0 || reorderPermille > 0);
+		if (s_configured)
+			debug_net_printf("NETFAULT: drop=%d%%o delay=%dms reorder=%d%%o\n",
+				dropPermille, delayMs, reorderPermille);
+	}
+
+	bool Enabled() { return s_configured; }
+
+	// Deterministic per-process pseudo-random, so a failing run can be repeated.
+	static unsigned NextRand()
+	{
+		static unsigned state = 12345;
+		state = state * 1103515245u + 12345u;
+		return (state >> 16) & 0x7FFF;
+	}
+
+	bool ShouldDrop() { return s_dropPermille > 0 && (int)(NextRand() % 1000) < s_dropPermille; }
+	bool ShouldHoldBack() { return s_reorderPermille > 0 && (int)(NextRand() % 1000) < s_reorderPermille; }
+	void SleepDelay() { if (s_delayMs > 0) std::this_thread::sleep_for(std::chrono::milliseconds(s_delayMs)); }
+}
+
+// ---------------------------------------------------------------------------
 // Name / connection registry  (unchanged API surface)
 // ---------------------------------------------------------------------------
 std::vector<std::string> NetworkName;
@@ -666,6 +707,10 @@ struct TcpSession {
 	// Send-side mutex: prevents interleaved writes from SendNetwork (main/bg thread)
 	// and PollSessions HEARTBEAT sends (network thread).
 	std::mutex              sendMtx;
+
+	// Packet held back by the reorder fault injector, released after the next one
+	std::string reorderHeld;
+	bool        reorderPending = false;
 
 	// Liveness tracking
 	std::chrono::steady_clock::time_point lastRx;
@@ -1205,10 +1250,34 @@ namespace MyNetworkLib {
 				if (debug_net) LogPkt("DATA RX ←", sess->peerAddr, sess->peerPort, u);
 
 				if (u.message == MESS_DIRECT_SEND) {
+					// Optional fault injection for testing.  It is applied here, on the
+					// receiving side of the game-data channel only: the control channel
+					// stays intact, so a test can disturb the traffic of an established
+					// session without preventing the session from being set up at all.
+					if (NetFaults::Enabled()) {
+						if (NetFaults::ShouldDrop()) {
+							debug_net_printf("NETFAULT: dropped a data packet (size=%u)\n", u.size);
+							continue;
+						}
+						if (NetFaults::ShouldHoldBack()) {
+							// Keep it and release it after the next one, which delivers
+							// the two packets in swapped order.
+							sess->reorderHeld = raw;
+							sess->reorderPending = true;
+							debug_net_printf("NETFAULT: holding a data packet back (size=%u)\n", u.size);
+							continue;
+						}
+						NetFaults::SleepDelay();
+					}
 					size_t depth;
 					{
 						std::lock_guard<std::mutex> qlk(sess->queueMtx);
 						sess->dataQueue.push(raw);
+						if (sess->reorderPending) {
+							sess->dataQueue.push(sess->reorderHeld);
+							sess->reorderPending = false;
+							debug_net_printf("NETFAULT: released the held packet out of order\n");
+						}
 						depth = sess->dataQueue.size();
 					}
 					if (m_network_debug)
@@ -2015,6 +2084,9 @@ void InitMyNetLib(bool iam_server, bool iam_client,
 #ifdef _WIN32
 	WSADATA wsa; WSAStartup(MAKEWORD(2, 2), &wsa);
 #endif
+	NetFaults::Configure(CommandLineParams.NetDropPermille(),
+		CommandLineParams.NetDelayMs(),
+		CommandLineParams.NetReorderPermille());
 	locNetworkClass = new MyNetworkLib::NetworkClass(
 		iam_server, iam_client, ip, networkPort, serverPort);
 	locNetworkClass->StartNetworkThread();
