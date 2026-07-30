@@ -459,7 +459,7 @@ namespace NetFaults {
 	// the lost segment is retransmitted and everything queued behind it waits with it.
 	// A stall reproduces exactly that, so the test stays faithful to what the game can
 	// really meet on the wire.
-	void Apply()
+	int NextHoldMs()
 	{
 		int ms = s_delayMs;
 		if (s_jitterMs > 0) ms += (int)(NextRand() % (unsigned)(s_jitterMs + 1));
@@ -471,7 +471,7 @@ namespace NetFaults {
 				debug_net_printf("NETFAULT: stalling a message by %dms (retransmit-like)\n", s_stallMs);
 			}
 		}
-		if (ms > 0) std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+		return ms;
 	}
 }
 
@@ -727,6 +727,10 @@ struct TcpSession {
 	// Send-side mutex: prevents interleaved writes from SendNetwork (main/bg thread)
 	// and PollSessions HEARTBEAT sends (network thread).
 	std::mutex              sendMtx;
+
+	// Arrivals deliberately held back by the test fault injector
+	struct HeldMessage { std::string raw; std::chrono::steady_clock::time_point releaseAt; };
+	std::deque<HeldMessage> heldMessages;
 
 	// Liveness tracking
 	std::chrono::steady_clock::time_point lastRx;
@@ -1260,17 +1264,31 @@ namespace MyNetworkLib {
 			if (!sess->alive) continue;
 
 			bool ok = sess->rbuf.Poll(sess->sock);
+
+			// Fault injection for testing: hold arrivals back for a while instead of
+			// acting on them at once.  Only the arrival time is affected - nothing is
+			// discarded or reordered, because TCP cannot do either.  The wait is recorded
+			// per message rather than slept through here, so this thread keeps polling,
+			// answering heartbeats and running the NCB passes; sleeping in this loop would
+			// freeze our own networking instead of simulating a silent peer.
+			if (NetFaults::Enabled() && !sess->rbuf.ready.empty()) {
+				auto now = std::chrono::steady_clock::now();
+				for (auto& raw : sess->rbuf.ready)
+					sess->heldMessages.push_back({ raw, now + std::chrono::milliseconds(NetFaults::NextHoldMs()) });
+				sess->rbuf.ready.clear();
+				auto due = std::chrono::steady_clock::now();
+				while (!sess->heldMessages.empty() && sess->heldMessages.front().releaseAt <= due) {
+					sess->rbuf.ready.push_back(sess->heldMessages.front().raw);
+					sess->heldMessages.pop_front();
+				}
+			}
+
 			for (auto& raw : sess->rbuf.ready) {
 				sess->Touch();
 				message_info u = Unpack_Message(raw);
 				if (debug_net) LogPkt("DATA RX ←", sess->peerAddr, sess->peerPort, u);
 
 				if (u.message == MESS_DIRECT_SEND) {
-					// Optional fault injection for testing.  It is applied here, on the
-					// receiving side of the game-data channel only: the control channel
-					// stays intact, so a test can disturb the traffic of an established
-					// session without preventing the session from being set up at all.
-					if (NetFaults::Enabled()) NetFaults::Apply();
 					size_t depth;
 					{
 						std::lock_guard<std::mutex> qlk(sess->queueMtx);

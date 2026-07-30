@@ -59,6 +59,10 @@ $Tests = @(
                                                                               extraClient=@("--net_stall","800","--net_stall_every","15");                 runSeconds=60 }
     @{ name = "mixed";           desc = "latency, jitter and stalls";         extraHost=@("--net_delay","20","--net_jitter","80","--net_stall","400","--net_stall_every","40");
                                                                               extraClient=@("--net_delay","20","--net_jitter","80","--net_stall","400","--net_stall_every","40"); runSeconds=60 }
+    # The client must not run ahead while it is waiting for the host: a long pause in the
+    # host's replies has to hold the client back, not let it simulate extra turns.
+    @{ name = "host-freeze";     desc = "host unresponsive for 3 s at a time";extraHost=@();                        extraClient=@("--net_stall","3000","--net_stall_every","40"); runSeconds=60; checkLockstep=$true }
+    @{ name = "host-freeze-long";desc = "host unresponsive for 8 s at a time";extraHost=@();                        extraClient=@("--net_stall","8000","--net_stall_every","25"); runSeconds=60; checkLockstep=$true }
     @{ name = "client-quits";    desc = "client leaves, host must carry on";  extraHost=@();                        extraClient=@("--quit_after","20");     runSeconds=60; expect="hostSurvives" }
     @{ name = "host-quits";      desc = "host leaves, client must carry on";  extraHost=@("--quit_after","20");     extraClient=@();                        runSeconds=60; expect="clientSurvives" }
     @{ name = "client-vanishes"; desc = "client is killed outright";          extraHost=@();                        extraClient=@();                        runSeconds=60; killAfter="client" }
@@ -175,6 +179,16 @@ function Invoke-Test($test) {
         $minExchanges = [int]($test.runSeconds * 2)   # deliberately generous
         if ($h.delivered -lt $minExchanges) { $problems += "host stalled ($($h.delivered) exchanges)" }
         if ($c.delivered -lt $minExchanges) { $problems += "client stalled ($($c.delivered) exchanges)" }
+    }
+
+    # Lockstep: neither side may take turns the other has not seen.  Each exchange is one
+    # turn, so the two counts have to stay close no matter how slow the link gets.
+    if ($test.checkLockstep) {
+        $lead = [math]::Abs($h.sent - $c.sent)
+        $worst = [math]::Max($h.sent, $c.sent)
+        if ($worst -gt 0 -and $lead -gt [math]::Max(5, $worst * 0.1)) {
+            $problems += "one side ran $lead turns ahead (host $($h.sent), client $($c.sent))"
+        }
     }
 
     switch ($test.expect) {
