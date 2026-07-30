@@ -124,7 +124,7 @@ extern const char* LevelsNames_D9204[61];
 extern char* off_DB558[];
 extern __int16 x_WORD_E131A;
 extern char x_BYTE_E1324;
-extern type_menuButtons_E1F84 str_E1BAC[10];
+extern type_menuButtons_E1F84 mainMenuButtons_E1BAC[10];
 extern long lastTime_E208C;
 extern __int16 timeCounter_E2094;
 extern char minTimeCounter_E2096;

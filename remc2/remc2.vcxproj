@@ -605,6 +605,9 @@
       <DeploymentContent>true</DeploymentContent>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icons\app.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

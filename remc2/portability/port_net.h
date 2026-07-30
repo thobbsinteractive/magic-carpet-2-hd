@@ -146,7 +146,14 @@ extern MyNetworkLib::NetworkClass* locNetworkClass;
 
 void simulateInterupt(myNCB* connection);
 
+// Clears per-match network state (data sessions, established-connection list, pending
+// NCB commands) so a fresh multiplayer match does not inherit stale entries from a
+// previous one.  Sockets stay open.  Fixes restart bug (#3).
+void ResetNetworkGameState();
+
 void EndMyNetLib();
+
+void SetNetworkDebug();
 
 void AddRecMess(std::string message);
 std::string GetRecMess();

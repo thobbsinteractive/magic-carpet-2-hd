@@ -7,25 +7,12 @@ InputRecorder::InputRecorder(const char* filePath)
 {
 	m_FilePath = filePath;
 	m_InputEvents = new std::map<uint16_t, RecordedEvent*>();
-	//std::function<void(GameState)> stateChangeCallBack = [this](GameState a) { this->PlayPause(a); };
-	//EventDispatcher::I->RegisterEvent(new Event<GameState>(EventType::E_GAME_STATE_CHANGE, stateChangeCallBack));
 }
 
 InputRecorder::~InputRecorder()
 {
 	ClearInputEvents();
 	delete m_InputEvents;
-}
-
-void InputRecorder::PlayPause(const GameState state)
-{
-	switch (state)
-	{
-		case GameState::GAMEPLAY_LOADING:
-			PauseRecording(true);
-		case GameState::GAMEPLAY_STARTED:
-			PauseRecording(false);
-	};
 }
 
 void InputRecorder::StartRecording()
@@ -57,21 +44,20 @@ void InputRecorder::ClearInputEvents()
 	m_InputEvents->clear();
 }
 
+bool InputRecorder::SaveRecording()
+{
+	return SaveRecordingToFile(m_FilePath.c_str());
+}
+
 bool InputRecorder::StopRecording()
 {
 	m_IsRecording = false;
-	if (SaveRecordingToFile(m_FilePath.c_str()))
+	if (SaveRecording())
 	{
 		ClearInputEvents();
 		return true;
 	}
 	return false;
-}
-
-void InputRecorder::PauseRecording(bool pause)
-{
-	m_IsRecording = !pause;
-	m_IsPlaying = !pause;
 }
 
 bool InputRecorder::StartPlayback()
@@ -211,11 +197,6 @@ bool InputRecorder::SaveRecordingToFile(const char* outputFileName)
 				fwrite(playIt->second->SpellIndexes, sizeof(uint8_t), 26, eventsFile);
 				fwrite(playIt->second->SpellLevels, sizeof(uint8_t), 26, eventsFile);
 				fwrite(playIt->second->SpellsExperience, sizeof(int32_t), 26, eventsFile);
-
-				delete[] playIt->second->SpellsEnabled;
-				delete[] playIt->second->SpellIndexes;
-				delete[] playIt->second->SpellLevels;
-				delete[] playIt->second->SpellsExperience;
 
 				for (int i = 0; i < playerTurns->size(); i++)
 				{

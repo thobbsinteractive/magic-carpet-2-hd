@@ -73,6 +73,9 @@
   <ItemGroup>
     <None Include="editor-config.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icons\editor.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

@@ -116,12 +116,12 @@ void MainFrame::OnMultiplayer(wxCommandEvent&)
 		m_ptrConfig->SaveToFile();
 		m_ptrConfig->GetSettingsFromDoc();
 
-		if (dialogResult == wxID_NETWORK && LaunchGame("--mode_test_network server " + std::to_string(multiplayerSettings.m_ServerPort) +
+		if (dialogResult == wxID_NETWORK && LaunchGame("--network server " + std::to_string(multiplayerSettings.m_ServerPort) +
 			" client 127.0.0.1 " + std::to_string(multiplayerSettings.m_ServerPort) +
 			" " + std::to_string(multiplayerSettings.m_ServerClientPort)))
 			this->Close();
 
-		if (dialogResult == wxID_ADD && LaunchGame("--mode_test_network client " + multiplayerSettings.m_ClientServerIp +
+		if (dialogResult == wxID_ADD && LaunchGame("--network client " + multiplayerSettings.m_ClientServerIp +
 			" " + std::to_string(multiplayerSettings.m_ClientServerPort) +
 			" " + std::to_string(multiplayerSettings.m_ClientPort)))
 			this->Close();

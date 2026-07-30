@@ -99,7 +99,7 @@ array_E1328 - ok, remowed at now, but maybe must rewrite in future
 byte_E16E0 - ok
 x_BYTE_E1711 - ok, rewrited to str_BYTE_E1711
 unk_E1748x - ok
-off_E1BAC - rewrited str_E1BAC_0x1b8 str_E1BAC_0x3c4//buttons pos - must fix str_E1BAC_0x3c4
+off_E1BAC - rewrited str_E1BAC_0x1b8 mainMenuButtons_E1BAC_0x3c4//buttons pos - must fix mainMenuButtons_E1BAC_0x3c4
 x_WORD_E1F70 //ok
 x_WORD_E1F84 - ok, rewrited to type_menuButtons_E1F84
 x_WORD_E2008 - ok, rewrited to str_WORD_E2008 //type_menuButtons_E1F84
@@ -31691,6 +31691,9 @@ void InGameLoop_47320()//228320
 
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::GAMEPLAY_ENDED);
 
+	if(IsRecording())
+		m_InputRecorder->SaveRecording();
+
 	sub_90E07_VGA_set_video_mode_640x480_and_Palette((TColor*)*xadatapald0dat2.colorPalette_var28);
 }
 
@@ -37532,10 +37535,44 @@ void PlayerEvents_51BB0()//232bb0
 	type_entity_0x6E8E* actEvent;
 	bool useSound;
 
+	// Playing a recording back in a network game: only the node that holds the token may
+	// replay, and it has to do so BEFORE the exchange below.  The recorded inputs then
+	// travel over the wire like any other input, so every node runs on exactly the same
+	// array and the simulations stay in step.
+	//
+	// Replaying on each node separately does not work: the lookup below is indexed by
+	// that node's own turn counter (array_0x2BDE[own index].Turn), and those counters are
+	// not kept in sync between nodes, so the same "turn" is a different moment on each
+	// machine.  Feeding the array in after the exchange would also overwrite the only
+	// thing keeping the nodes together.
+	bool replayingOverNetwork = false;
+	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying
+		&& (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
+	{
+		replayingOverNetwork = true;
+		if (GetIndexNetwork_74536() == GetIndexNetwork2_74515())
+		{
+			int32_t turn = D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248;
+			for (int pi = 0; pi < D41A0_0.NumberOfPlayers_0xe; pi++)
+			{
+				RecordedEventTurn* rec = m_InputRecorder->GetCurrentPlayerActions(
+					x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, pi, turn);
+				if (rec && rec->Bytes)
+				{
+					size_t n = (size_t)rec->SizeBytes;
+					if (n > sizeof(Type_PlayerInput_0x6E3E)) n = sizeof(Type_PlayerInput_0x6E3E);
+					memcpy(&D41A0_0.playerInputs_0x6E3E[pi], rec->Bytes, n);
+				}
+			}
+		}
+	}
+
 	if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 	{
 		NetworkUpdateConnections2_74374();
 		ReceiveSendAll_7438A((uint8_t*)D41A0_0.playerInputs_0x6E3E, sizeof(Type_PlayerInput_0x6E3E));//multi receive
+
+
 		bool playerFound = false;
 		for (int i = 0; i < D41A0_0.NumberOfPlayers_0xe; i++)
 		{
@@ -37566,7 +37603,9 @@ void PlayerEvents_51BB0()//232bb0
 	}
 	for (int i = 0; i < D41A0_0.NumberOfPlayers_0xe; i++)
 	{
-		if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
+		// !replayingOverNetwork: in a network game the recording was already applied
+		// above, before the exchange, so the array now holds what every node agreed on.
+		if (!replayingOverNetwork && m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying && m_InputRecorder->GetCurrentPlayerActions(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, i, D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].Turn_2BE0_11248) != nullptr)
 		{
 			if (CommandLineParams.ModeRegressionsTestType()==-1)
 			{
