@@ -1,13 +1,7 @@
 #include "VulkanPolygonRenderer.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_vulkan.h>
-
-#include <cstring>
-#include <stdexcept>
-#include <fstream>
-#include <vector>
-#include <algorithm>
+#define VMA_IMPLEMENTATION
+#include <vma/vk_mem_alloc.h>
 
 // ---------------------------------------------------------------------
 // NOTE: shader bytecode is loaded from .spv files at runtime (see

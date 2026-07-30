@@ -421,6 +421,7 @@
     <ClInclude Include="engine\MenuState.h" />
     <ClInclude Include="engine\Network.h" />
     <ClInclude Include="engine\ProjectionVertex.h" />
+    <ClInclude Include="engine\ResourceType.h" />
     <ClInclude Include="engine\Scene.h" />
     <ClInclude Include="engine\WavIndexes.h" />
     <ClInclude Include="engine\ReadAndDecompress.h" />

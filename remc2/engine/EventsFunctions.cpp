@@ -31464,7 +31464,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 							m_ptrGameRender = (GameRenderInterface*)new GameRenderOriginal();
 						}
 						else {
-							m_ptrGameRender = (GameRenderInterface*)new GameRenderHD(pdwScreenBuffer_351628, *xadatapald0dat2.colorPalette_var28, (multiThreadedRender ? numberOfRenderThreads : 0), assignToSpecificCores, sizePercentToThreadRender, viewDistanceScale);
+							m_ptrGameRender = (GameRenderInterface*)new GameRenderGL(pdwScreenBuffer_351628, *xadatapald0dat2.colorPalette_var28, viewDistanceScale);
 						}
 					}
 				}
@@ -42802,8 +42802,11 @@ void sub_5B7A0_prepare_textures()//23C7A0
 	{
 		for (int xpos = 0; xpos < (256 / x_BYTE_D41B5_texture_size); xpos++)
 		{
-			x_DWORD_DDF50_texture_adresses.at(texture_addresses_index++) =
-				(uint8_t*)((ypos * x_BYTE_D41B5_texture_size << 8) + (xpos * x_BYTE_D41B5_texture_size) + BLOCK32DAT_BEGIN_BUFFER);
+			uint8_t* ptrTexture = (uint8_t*)((ypos * x_BYTE_D41B5_texture_size << 8) + (xpos * x_BYTE_D41B5_texture_size) + BLOCK32DAT_BEGIN_BUFFER);
+
+			x_DWORD_DDF50_texture_adresses.at(texture_addresses_index++) = ptrTexture;
+
+			EventDispatcher::I->DispatchEvent(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED, ptrTexture, x_BYTE_D41B5_texture_size);
 		}
 	}
 	sub_5B840_load_Palette_and_help_Palette();//23C840

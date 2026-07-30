@@ -1,12 +1,19 @@
 #pragma once
+#ifndef VULKANPOLYGONRENDER_H
+#define VULKANPOLYGONRENDER_H
 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_vulkan.h>
 #include <vulkan/vulkan.h>
 #include <VkBootstrap.h>
 #include <vma/vk_mem_alloc.h>
-
 #include <vector>
-#include <unordered_map>
 #include <cstdint>
+#include <cstring>
+#include <stdexcept>
+#include <fstream>
+#include <algorithm>
+#include <unordered_map>
 
 #include "RenderPolygon.h"
 
@@ -167,3 +174,5 @@ private:
 
 	bool m_initialized = false;
 };
+
+#endif //VULKANPOLYGONRENDER_H 

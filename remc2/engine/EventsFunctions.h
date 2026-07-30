@@ -38,6 +38,7 @@
 #include "Terrain.h"
 
 #include "EventDispatcher.h"
+#include "ResourceType.h"
 
 //#include "../portability/port_net.h"
 

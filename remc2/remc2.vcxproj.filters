@@ -363,6 +363,9 @@
     <ClInclude Include="portability\RenderPolygon.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
+    <ClInclude Include="engine\ResourceType.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -604,9 +607,7 @@
     <None Include="portability\shaders\polygon.frag">
       <Filter>Source Files\portability\shaders</Filter>
     </None>
-    <None Include="shaders\polygon.vert">
-      <Filter>Source Files\portability\shaders</Filter>
-    </None>
+    <None Include="portability\shaders\polygon.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="font\8x8-font.bmp">
