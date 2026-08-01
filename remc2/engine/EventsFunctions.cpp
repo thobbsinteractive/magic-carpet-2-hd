@@ -37545,6 +37545,33 @@ void PlayerEvents_51BB0()//232bb0
 	// not kept in sync between nodes, so the same "turn" is a different moment on each
 	// machine.  Feeding the array in after the exchange would also overwrite the only
 	// thing keeping the nodes together.
+	// Scripted endings for unattended tests: leave the game, or drop the network link to
+	// see how the other side copes with a peer that vanishes.
+	if ((x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
+		&& (CommandLineParams.QuitAfterS() > 0 || CommandLineParams.NetKillAfterS() > 0))
+	{
+		static long inGameSince = 0;
+		if (inGameSince == 0) inGameSince = (long)j___clock();
+		long secondsInGame = ((long)j___clock() - inGameSince) / 100;
+
+		if (CommandLineParams.NetKillAfterS() > 0 && secondsInGame >= CommandLineParams.NetKillAfterS()) {
+			static bool linkDropped = false;
+			if (!linkDropped) {
+				linkDropped = true;
+				debug_net_printf("AUTOTEST: dropping the network link now\n");
+				EndMyNetLib();
+			}
+		}
+		if (CommandLineParams.QuitAfterS() > 0 && secondsInGame >= CommandLineParams.QuitAfterS()) {
+			static bool leftGame = false;
+			if (!leftGame) {
+				leftGame = true;
+				debug_net_printf("AUTOTEST: leaving the game now\n");
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;
+			}
+		}
+	}
+
 	bool replayingOverNetwork = false;
 	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying
 		&& (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
