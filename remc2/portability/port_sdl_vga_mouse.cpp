@@ -151,7 +151,14 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			{
 				display = FindDisplayByResolution(windowWidth, windowHeight);
 			}
-			m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			m_window = SDL_CreateWindow(default_caption, display.x, display.y, display.w, display.h, SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_VULKAN);
+
+			if (m_window == nullptr)
+			{
+				auto error = std::string(SDL_GetError());
+				throw std::runtime_error("SDL_CreateWindow failed: " + error);
+			}
+
 			ToggleFullscreen(!startWindowed);
 
 			m_renderer =
@@ -166,6 +173,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			// Do it once, and don't have to worry about it again.
 
 			CreateRenderSurfaces(gameResWidth, gameResHeight);
+			CreateRenderer(gameResWidth, gameResHeight);
 
 			SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
 

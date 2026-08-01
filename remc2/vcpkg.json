@@ -7,7 +7,10 @@
 		"libvorbis",
 		"libogg",
 		"libpng",
-		"sdl2",
+		{
+			"name": "sdl2",
+			"features": ["vulkan"]
+		},
 		"sdl2-ttf",
 		"sdl2-mixer",
 		"libadlmidi",

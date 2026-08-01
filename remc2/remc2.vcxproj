@@ -592,9 +592,11 @@
     <None Include="engine\structures.x" />
     <None Include="portability\shaders\polygon.frag">
       <DeploymentContent>true</DeploymentContent>
+      <FileType>Text</FileType>
     </None>
     <None Include="portability\shaders\polygon.vert">
       <DeploymentContent>true</DeploymentContent>
+      <FileType>Text</FileType>
     </None>
   </ItemGroup>
   <ItemGroup>

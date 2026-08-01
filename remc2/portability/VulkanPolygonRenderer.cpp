@@ -14,7 +14,7 @@ namespace
 {
 	std::string ShaderPath(const char* filename)
 	{
-		return std::string("shaders/") + filename;
+		return std::string("portability/shaders/") + filename;
 	}
 
 	std::vector<char> ReadFile(const std::string& path)
@@ -100,7 +100,10 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 	m_debugMessenger = m_vkbInstance.debug_messenger;
 
 	if (!SDL_Vulkan_CreateSurface(window, m_instance, &m_surface))
-		throw std::runtime_error("SDL_Vulkan_CreateSurface failed");
+	{
+		auto error = std::string(SDL_GetError());
+		throw std::runtime_error("SDL_Vulkan_CreateSurface failed: " + error);
+	}
 
 	vkb::PhysicalDeviceSelector selector{ m_vkbInstance };
 	auto physRet = selector
@@ -605,8 +608,8 @@ void VulkanPolygonRenderer::FreeTexture(uint32_t textureId)
 
 bool VulkanPolygonRenderer::CreatePipeline()
 {
-	auto vertCode = ReadFile(ShaderPath("polygon.vert.spv"));
-	auto fragCode = ReadFile(ShaderPath("polygon.frag.spv"));
+	auto vertCode = ReadFile(ShaderPath("polygon.vert"));
+	auto fragCode = ReadFile(ShaderPath("polygon.frag"));
 	VkShaderModule vertModule = CreateShaderModule(m_device, vertCode);
 	VkShaderModule fragModule = CreateShaderModule(m_device, fragCode);
 

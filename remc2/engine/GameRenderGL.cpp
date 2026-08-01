@@ -710,6 +710,8 @@ void GameRenderGL::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v46--;
 				}
 				SubDrawCaveTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
+				DrawPolygons(polygons);
+				delete polygons;
 				return;
 			}
 			for (k = m_tileColumns; k; k--)
@@ -861,6 +863,8 @@ void GameRenderGL::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 				}
 				//Draw rest of terrain
 				SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
+				DrawPolygons(polygons);
+				delete polygons;
 				Logger->trace("Finished Drawing Terrain Frame with Reflection");
 				return;
 			}
@@ -1046,7 +1050,6 @@ LABEL_259:
 	SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
 
 	DrawPolygons(polygons);
-
 	delete polygons;
 }
 
