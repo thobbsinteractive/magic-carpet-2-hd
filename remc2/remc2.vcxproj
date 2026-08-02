@@ -590,14 +590,24 @@
     <None Include="engine\bytearrays.x" />
     <None Include="engine\info.x" />
     <None Include="engine\structures.x" />
-    <None Include="portability\shaders\polygon.frag">
-      <DeploymentContent>true</DeploymentContent>
-      <FileType>Text</FileType>
-    </None>
-    <None Include="portability\shaders\polygon.vert">
-      <DeploymentContent>true</DeploymentContent>
-      <FileType>Text</FileType>
-    </None>
+		<CustomBuild Include="portability\shaders\polygon.frag">
+			<Command>
+				rem Compiling %(Identity)
+				if not exist "$(OutDir)shaders" mkdir "$(OutDir)shaders"
+				"$(VULKAN_SDK)\Bin\glslc.exe" "%(FullPath)" -o "$(OutDir)shaders\%(Filename)%(Extension).spv"
+			</Command>
+			<Outputs>$(OutDir)shaders\%(Filename)%(Extension).spv</Outputs>
+			<Message>Compiling %(Filename)%(Extension)</Message>
+		</CustomBuild>
+		<CustomBuild Include="portability\shaders\polygon.vert">
+			<Command>
+				rem Compiling %(Identity)
+				if not exist "$(OutDir)shaders" mkdir "$(OutDir)shaders"
+				"$(VULKAN_SDK)\Bin\glslc.exe" "%(FullPath)" -o "$(OutDir)shaders\%(Filename)%(Extension).spv"
+			</Command>
+			<Outputs>$(OutDir)shaders\%(Filename)%(Extension).spv</Outputs>
+			<Message>Compiling %(Filename)%(Extension)</Message>
+		</CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Image Include="font\16x16-font.bmp">

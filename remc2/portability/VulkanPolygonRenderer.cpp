@@ -14,7 +14,7 @@ namespace
 {
 	std::string ShaderPath(const char* filename)
 	{
-		return std::string("portability/shaders/") + filename;
+		return std::string("shaders/") + filename;
 	}
 
 	std::vector<char> ReadFile(const std::string& path)
@@ -608,10 +608,13 @@ void VulkanPolygonRenderer::FreeTexture(uint32_t textureId)
 
 bool VulkanPolygonRenderer::CreatePipeline()
 {
-	auto vertCode = ReadFile(ShaderPath("polygon.vert"));
-	auto fragCode = ReadFile(ShaderPath("polygon.frag"));
+	auto vertCode = ReadFile(ShaderPath("polygon.vert.spv"));
+	auto fragCode = ReadFile(ShaderPath("polygon.frag.spv"));
 	VkShaderModule vertModule = CreateShaderModule(m_device, vertCode);
 	VkShaderModule fragModule = CreateShaderModule(m_device, fragCode);
+
+	if (vertModule == VK_NULL_HANDLE || fragModule == VK_NULL_HANDLE)
+		return false;
 
 	VkPipelineShaderStageCreateInfo vertStage{};
 	vertStage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;

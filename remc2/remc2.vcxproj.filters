@@ -604,12 +604,6 @@
     <None Include="..\config.json">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="portability\shaders\polygon.frag">
-      <Filter>Source Files\portability\shaders</Filter>
-    </None>
-    <None Include="portability\shaders\polygon.vert">
-      <Filter>Source Files\portability\shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="font\8x8-font.bmp">
@@ -623,5 +617,13 @@
     <ResourceCompile Include="icons\app.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="portability\shaders\polygon.frag">
+      <Filter>Source Files\portability\shaders</Filter>
+    </CustomBuild>
+    <CustomBuild Include="portability\shaders\polygon.vert">
+      <Filter>Source Files\portability\shaders</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
