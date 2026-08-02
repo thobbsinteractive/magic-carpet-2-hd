@@ -28,7 +28,7 @@ typedef struct
 void VGA_Init(int windowWidth, int windowHeight, int gameResWidth, int gameResHeight, bool maintainAspectRatio, int displayIndex);
 void VGA_Init(Uint32 flags, int windowWidth, int windowHeight, int gameResWidth, int gameResHeight, bool maintainAspectRatio, int displayIndex);
 void CreateRenderSurfaces(int gameResWidth, int gameResHeight);
-void CreateRenderer(int width, int height);
+bool CreateRenderer(int width, int height);
 bool VGA_LoadFont();
 void VGA_close();
 void FreeRenderSurfaces();

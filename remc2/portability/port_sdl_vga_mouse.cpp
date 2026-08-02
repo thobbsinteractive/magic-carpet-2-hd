@@ -173,7 +173,10 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			// Do it once, and don't have to worry about it again.
 
 			CreateRenderSurfaces(gameResWidth, gameResHeight);
-			CreateRenderer(gameResWidth, gameResHeight);
+			if (!CreateRenderer(gameResWidth, gameResHeight))
+			{
+				throw std::runtime_error("CreateRenderer failed");
+			}
 
 			SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
 
@@ -262,10 +265,10 @@ void CreateRenderSurfaces(int width, int height)
 		m_gameRGBASurface->w, m_gameRGBASurface->h);
 }
 
-void CreateRenderer(int width, int height)
+bool CreateRenderer(int width, int height)
 {
 	m_vulkanRenderer = new VulkanPolygonRenderer();
-	m_vulkanRenderer->Init(m_window, width, height);
+	return m_vulkanRenderer->Init(m_window, width, height);
 }
 
 Uint8* VGA_Get_Palette() {
