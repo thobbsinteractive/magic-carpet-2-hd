@@ -37757,10 +37757,14 @@ void PlayerEvents_51BB0()//232bb0
 		case 0x11:
 			if (D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte1 == 8)
 			{
-				if (strlen(D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222]) + 1 != 1)
+				// Backspace removes the last character: loc_520C4 zeroes names_81[len - 1].
+				// Taking one off that (as this used to) ate two characters at a time, and on a
+				// one-character message it wrote the byte in front of the string - which is
+				// word_0x04f_2C2D_11309, the notification type.
+				if (strlen(D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222]) != 0)
 				{
 					D41A0_0.array_0x2BDE[i].byte_0x3E2_2BE4_12224--;
-					D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222][strlen(D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222]) - 2] = 0;
+					D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222][strlen(D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222]) - 1] = 0;
 				}
 			}
 			else if (D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte1)
@@ -38081,20 +38085,32 @@ void PlayerEvents_51BB0()//232bb0
 				}
 				else
 				{
+					// loc_522C2: your own message is always shown to you; whether someone
+					// else's reaches you is decided by the mode they sent it in
+					// (byte_0x3E1: 0 = in view, 1 = nearest, 2 = everyone, 3 = allies).
+					// This test used to be the wrong way round - the switch ran for the
+					// local player and remote messages were dropped without being read,
+					// so chat never arrived from anyone else in a network game.
 					bool bool1 = false;
 					if (i == D41A0_0.LevelIndex_0xc)
+					{
+						bool1 = true;
+					}
+					else
 					{
 						switch (D41A0_0.array_0x2BDE[i].byte_0x3E1_2BE4_12223)
 						{
 						case 0:
 							if (!(sub_61810(actEvent, Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]) == 0))
 								bool1 = true;
+							break;
 						case 1:
 							if (!(sub_61620(actEvent, Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]) == 0))
 								bool1 = true;
 							break;
 						case 2:
 							bool1 = true;
+							break;
 						case 3:
 							if ((1 << D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.playerColorIndex_0x38_56) & D41A0_0.array_0x2BDE[i].byte_0x3E3_2BE4_12225)
 								bool1 = true;
