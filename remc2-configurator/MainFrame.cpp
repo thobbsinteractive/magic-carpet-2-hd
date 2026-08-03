@@ -119,7 +119,7 @@ void MainFrame::OnMultiplayer(wxCommandEvent&)
 		std::string additional_args = "";
 
 		if (multiplayerSettings.m_RecordPlayFile.length() > 0)
-			additional_args += "--record_file " + multiplayerSettings.m_RecordPlayFile + " ";
+			additional_args += "--record_file \"" + multiplayerSettings.m_RecordPlayFile + "\" ";
 
 		if (multiplayerSettings.m_Debug)
 			additional_args += "--network_debug ";

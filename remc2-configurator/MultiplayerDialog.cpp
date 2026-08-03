@@ -49,6 +49,13 @@ HostDialog::HostDialog(wxWindow* parent, const Config::Settings::Multiplayer& cf
 	grid->Add(recordingSizer, 1, wxEXPAND);
 
 	sizer->Add(grid, 0, wxEXPAND | wxALL, 12);
+
+	// Debug Network
+	m_ctrlDebugNetwork = new wxCheckBox(this, wxID_ANY, "Debug Network");
+	m_ctrlDebugNetwork->SetValue(cfg.m_Debug);
+	m_ctrlDebugNetwork->SetToolTip("Enable verbose network logging for this session.");
+	sizer->Add(m_ctrlDebugNetwork, 0, wxLEFT | wxRIGHT | wxBOTTOM, 12);
+
 	sizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 8);
 
 	auto* btnSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -97,6 +104,7 @@ void HostDialog::OnSave(wxCommandEvent&)
 	m_cfg.m_ServerPort = m_ctrlServerPort->GetValue();
 	m_cfg.m_ServerClientPort = m_ctrlServerClientPort->GetValue();
 	m_cfg.m_RecordPlayFile = m_recordPlayFile->GetValue().Trim();
+	m_cfg.m_Debug = m_ctrlDebugNetwork->GetValue();
 	EndModal(wxID_SAVE);
 }
 
@@ -105,6 +113,7 @@ void HostDialog::OnOK(wxCommandEvent&)
 	m_cfg.m_ServerPort = m_ctrlServerPort->GetValue();
 	m_cfg.m_ServerClientPort = m_ctrlServerClientPort->GetValue();
 	m_cfg.m_RecordPlayFile = m_recordPlayFile->GetValue().Trim();
+	m_cfg.m_Debug = m_ctrlDebugNetwork->GetValue();
 	EndModal(wxID_OK);
 }
 

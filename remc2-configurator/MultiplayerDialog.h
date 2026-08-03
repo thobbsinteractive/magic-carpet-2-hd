@@ -19,9 +19,10 @@ public:
 
 private:
 	Config::Settings::Multiplayer m_cfg;
-	wxSpinCtrl* m_ctrlServerPort;
-	wxSpinCtrl* m_ctrlServerClientPort;
-	wxTextCtrl* m_recordPlayFile;
+	wxSpinCtrl* m_ctrlServerPort = nullptr;
+	wxSpinCtrl* m_ctrlServerClientPort = nullptr;
+	wxTextCtrl* m_recordPlayFile = nullptr;
+	wxCheckBox* m_ctrlDebugNetwork = nullptr;
 
 	void OnPortChanged(wxSpinEvent& event);
 	void OnSave(wxCommandEvent&);
