@@ -53,6 +53,35 @@ TColor str_BYTE_E1711[2][18] = { {//players Palette colors is halfed
 {0x00,0x00,0x00}}//27-8
 }; // weak//2b2711
 
+// Waiting for an NCB to complete blocks the game thread outright - nothing is drawn and no
+// input is read - so a step of the handshake that never completes is indistinguishable from
+// a hung game.  Nothing bounds these waits (LISTEN and RECEIVE never expire, see
+// port_net.cpp), which is by design: the game really does have to wait for the peer.  What
+// was missing is any record of it, so a report of "both instances froze" left nothing to go
+// on.  Report what is being waited for, and keep waiting exactly as before.
+//
+// The message goes through debug_net_printf, which writes its file whether or not
+// --network_debug was given, so a freeze is recorded even on an ordinary run.
+void WaitForNcb_diag(myNCB* ncb, const char* what)
+{
+	const long start = (long)j___clock();
+	long reported = 0;
+	while (ncb->ncb_cmd_cplt_49 == 0xff)
+	{
+		const long waited = ((long)j___clock() - start) / 100;//seconds
+		if (waited >= 3 && waited - reported >= 3)
+		{
+			reported = waited;
+			debug_net_printf("STUCK: %s pending %lds - cmd=0x%02X ret=0x%02X lsn=%d name=[%.16s] call=[%.16s]\n",
+				what, waited, (int)ncb->ncb_command_0, (int)ncb->ncb_retcode_1, (int)ncb->ncb_lsn_2,
+				ncb->ncb_name_26, ncb->ncb_callName_10);
+		}
+	}
+	if (reported)
+		debug_net_printf("STUCK: %s completed after %lds with 0x%02X\n",
+			what, ((long)j___clock() - start) / 100, (int)ncb->ncb_cmd_cplt_49);
+}
+
 //----- (00072D04) --------------------------------------------------------
 void NetworkDisallocation_72D04()
 {
@@ -60,9 +89,9 @@ void NetworkDisallocation_72D04()
 	{
 		for (int i = 0; maxPlayers_E127A > i; i++)
 		{
-			while (connection_E12AE[i]->ncb_cmd_cplt_49 == 0xff);
+			WaitForNcb_diag(connection_E12AE[i], "shutdown: player NCB");
 		}
-		while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff);
+		WaitForNcb_diag(mainConnection_E12AA, "shutdown: main NCB");
 		FreeMem_83E80((uint8_t*)mainConnection_E12AA);
 		for (int j = 0; j < 8; j++)
 		{
@@ -178,9 +207,9 @@ int NetworkInitConnection_7308F(char* a2, __int16 a3)//25408f
 		connected_E12CE[i] = 0;
 	for (i = 0; maxPlayers_E127A > i; i++)
 	{
-		while (connection_E12AE[i]->ncb_cmd_cplt_49 == 0xff);
+		WaitForNcb_diag(connection_E12AE[i], "join: player NCB before add name");
 	}
-	while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff);//AddNameNotSet?
+	WaitForNcb_diag(mainConnection_E12AA, "join: main NCB before add name");//AddNameNotSet?
 
 	// clear stale per-match network state left over from a previous
 	// game before starting this one, otherwise the peers fail to reconnect.
@@ -340,8 +369,7 @@ void NetworkEvent_7373D(int16_t a1)//25473d
 						if (IndexInNetwork_E1276 != i && locConnected[i] == 1)
 						{
 							NetworkListen_74B75(i);
-							while (connection_E12AE[i]->ncb_cmd_cplt_49 == 0xff)
-								/*fake_network_interupt(connection_E12AE[i])*/;
+							WaitForNcb_diag(connection_E12AE[i], "player left: LISTEN for the next peer");
 							if (connection_E12AE[i]->ncb_cmd_cplt_49)
 								sprintf(printbuffer, "Error code (LISTEN) : %d", connection_E12AE[i]->ncb_cmd_cplt_49);
 						}
@@ -352,8 +380,7 @@ void NetworkEvent_7373D(int16_t a1)//25473d
 					while (1)
 					{
 						NetworkCall_74809(IndexInNetwork2_E12A8);
-						while (connection_E12AE[IndexInNetwork2_E12A8]->ncb_cmd_cplt_49 == 0xff)
-							/*fake_network_interupt(connection_E12AE[x_WORD_E12A8])*/;
+						WaitForNcb_diag(connection_E12AE[IndexInNetwork2_E12A8], "player left: CALL to the new token holder");
 						if (!connection_E12AE[IndexInNetwork2_E12A8]->ncb_cmd_cplt_49)
 							break;
 						sprintf(printbuffer, "Error code (CALL) : %d", connection_E12AE[IndexInNetwork2_E12A8]->ncb_cmd_cplt_49);
@@ -440,8 +467,7 @@ void NetworkSomeChange_73AA1(__int16 a1)//254aa1
 						if (IndexInNetwork_E1276 != i && locConnected[i] == 1)
 						{
 							NetworkListen_74B75(i);
-							while (connection_E12AE[i]->ncb_cmd_cplt_49 == 0xff)
-								/*fake_network_interupt(connection_E12AE[i])*/;
+							WaitForNcb_diag(connection_E12AE[i], "peer change: LISTEN for the next peer");
 							if (connection_E12AE[i]->ncb_cmd_cplt_49)
 								sprintf(printbuffer, "Error code (LISTEN) : %d", connection_E12AE[i]->ncb_cmd_cplt_49);
 						}
@@ -452,8 +478,7 @@ void NetworkSomeChange_73AA1(__int16 a1)//254aa1
 					while (1)
 					{
 						NetworkCall_74809(IndexInNetwork2_E12A8);
-						while (connection_E12AE[IndexInNetwork2_E12A8]->ncb_cmd_cplt_49 == 0xff)
-							/*fake_network_interupt(connection_E12AE[x_WORD_E12A8])*/;
+						WaitForNcb_diag(connection_E12AE[IndexInNetwork2_E12A8], "peer change: CALL to the new token holder");
 						if (!connection_E12AE[IndexInNetwork2_E12A8]->ncb_cmd_cplt_49)
 							break;
 						snprintf(printbuffer, printBufferSize, "Error code (CALL) : %d", connection_E12AE[IndexInNetwork2_E12A8]->ncb_cmd_cplt_49);
@@ -695,8 +720,19 @@ uint8_t NetworkAddName_74767(/*signed __int16* a1,*/ myNCB* connection, char* na
 	connection->ncb_command_0 = 0xb0;//ADD_NAME
 	if (setNetbios_75044(connection) == 0xff)
 		return 157;
+	// Unlike the other waits this one keeps drawing, so it is the "waiting for connection"
+	// screen rather than a freeze.  Note it in the log every half minute, so the timeline
+	// shows how long a session sat here before a peer turned up.
+	const long addNameStart = (long)j___clock();
+	long addNameReported = 0;
 	while (connection->ncb_cmd_cplt_49 == 0xff && !connected_E12A6)
 	{
+		const long waited = ((long)j___clock() - addNameStart) / 100;//seconds
+		if (waited - addNameReported >= 30)
+		{
+			addNameReported = waited;
+			debug_net_printf("WAITING: add name [%.16s] not answered for %lds\n", connection->ncb_name_26, waited);
+		}
 		WaitToConnect_7C230();//25d36d
 	}
 	return connection->ncb_cmd_cplt_49;
@@ -725,7 +761,10 @@ signed int NetworkCancel_748F7(__int16 compindex)//2558f7
 	{
 		do
 		{
-			while (mainConnection_E12AA->ncb_cmd_cplt_49 == 0xff);
+			WaitForNcb_diag(mainConnection_E12AA, "cancel: main NCB");
+			// The original re-checks the cancelled NCB here and spins on the main one again
+			// if it is still pending, which is the same wait - only without anything to see.
+			WaitForNcb_diag(connection_E12AE[compindex], "cancel: the NCB being cancelled");
 		} while (connection_E12AE[compindex]->ncb_cmd_cplt_49 == 0xff);
 		return -mainConnection_E12AA->ncb_cmd_cplt_49;
 	}
@@ -769,16 +808,16 @@ void NetworkDeleteName_74A86(myNCB* a1x, char* a2)//255a86
 	a1x->ncb_command_0 = 0xb1;//DELETE_NAME
 	if (setNetbios_75044(a1x) == -1)
 		return;
-	while (a1x->ncb_cmd_cplt_49 == 0xff);
+	WaitForNcb_diag(a1x, "delete name");
 }
 
 //----- (00074B19) --------------------------------------------------------
 void NetworkHangUp_74B19(myNCB* a1x)//255b19
 {
-	a1x->ncb_command_0 = 0x92;//HANG_UP 
+	a1x->ncb_command_0 = 0x92;//HANG_UP
 	if (setNetbios_75044(a1x) == -1)
 		return;
-	while (a1x->ncb_cmd_cplt_49 == 0xff);
+	WaitForNcb_diag(a1x, "hang up");
 	a1x->ncb_lsn_2 = 0;
 }
 
@@ -810,7 +849,9 @@ int NetworkReceivePacket_74C9D(myNCB* connection, uint8_t* buffer, int size)//25
 	connection->ncb_bufferLength_8 = size;
 	if (setNetbios_75044(connection) == -1)
 		return -99;
-	while (connection->ncb_cmd_cplt_49 == 0xffu);
+	// This is where a node ends up when its peer stops sending while the socket stays up:
+	// RECEIVE never expires, so the turn never finishes.
+	WaitForNcb_diag(connection, "receive packet");
 	if (connection->ncb_cmd_cplt_49)
 		return -connection->ncb_cmd_cplt_49;
 	memcpy((void*)buffer, (void*)paket_E1282, size);
@@ -865,7 +906,7 @@ int NetworkSendPacket_74E6D(myNCB* connection, uint8_t* buffer, int size)//255e6
 	connection->ncb_bufferLength_8 = size;
 	if (setNetbios_75044(connection) == -1)
 		return -99;
-	while (connection->ncb_cmd_cplt_49 == 0xff);
+	WaitForNcb_diag(connection, "send packet");
 	return -connection->ncb_cmd_cplt_49;
 }
 
