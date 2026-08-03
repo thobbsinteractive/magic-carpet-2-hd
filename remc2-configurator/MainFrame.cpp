@@ -129,7 +129,7 @@ void MainFrame::OnMultiplayer(wxCommandEvent&)
 			" " + std::to_string(multiplayerSettings.m_ServerClientPort)))
 			this->Close();
 
-		if (dialogResult == wxID_ADD && LaunchGame("--network client " + multiplayerSettings.m_ClientServerIp +
+		if (dialogResult == wxID_ADD && LaunchGame(additional_args +  "--network client " + multiplayerSettings.m_ClientServerIp +
 			" " + std::to_string(multiplayerSettings.m_ClientServerPort) +
 			" " + std::to_string(multiplayerSettings.m_ClientPort)))
 			this->Close();

@@ -37,15 +37,17 @@ public:
 	JoinDialog(wxWindow* parent, const Config::Settings::Multiplayer& cfg);
 
 	wxString GetIP()   const { return m_cfg.m_ClientServerIp; }
-	int      GetServerPort() const { return m_cfg.m_ClientServerPort; }
-	int      GetClientPort() const { return m_cfg.m_ClientPort; }
+	int GetServerPort() const { return m_cfg.m_ClientServerPort; }
+	int GetClientPort() const { return m_cfg.m_ClientPort; }
+	bool GetDebugSession() const { return m_cfg.m_Debug; }
 
 private:
 	Config::Settings::Multiplayer m_cfg;
 
 	wxTextCtrl* m_ctrlServerIP = nullptr;
 	wxSpinCtrl* m_ctrlServerPort = nullptr;
-	wxSpinCtrl* m_ctrlClientPort;
+	wxSpinCtrl* m_ctrlClientPort = nullptr;
+	wxCheckBox* m_ctrlDebugNetwork = nullptr;
 
 	void OnSave(wxCommandEvent&);
 	void OnOK(wxCommandEvent&);

@@ -156,6 +156,13 @@ JoinDialog::JoinDialog(wxWindow* parent, const Config::Settings::Multiplayer& cf
 	grid->Add(m_ctrlClientPort, 1, wxEXPAND);
 
 	sizer->Add(grid, 0, wxEXPAND | wxALL, 12);
+
+	// Debug Network
+	m_ctrlDebugNetwork = new wxCheckBox(this, wxID_ANY, "Debug Network");
+	m_ctrlDebugNetwork->SetValue(cfg.m_Debug);
+	m_ctrlDebugNetwork->SetToolTip("Enable verbose network logging for this session.");
+	sizer->Add(m_ctrlDebugNetwork, 0, wxLEFT | wxRIGHT | wxBOTTOM, 12);
+
 	sizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 8);
 
 	auto* btnSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -180,6 +187,7 @@ void JoinDialog::OnSave(wxCommandEvent&)
 	m_cfg.m_ClientServerIp = m_ctrlServerIP->GetValue().Trim();
 	m_cfg.m_ClientServerPort = m_ctrlServerPort->GetValue();
 	m_cfg.m_ClientPort = m_ctrlClientPort->GetValue();
+	m_cfg.m_Debug = m_ctrlDebugNetwork->GetValue();
 	EndModal(wxID_SAVE);
 }
 
@@ -194,6 +202,7 @@ void JoinDialog::OnOK(wxCommandEvent& event)
 	m_cfg.m_ClientServerIp = m_ctrlServerIP->GetValue().Trim();
 	m_cfg.m_ClientServerPort = m_ctrlServerPort->GetValue();
 	m_cfg.m_ClientPort = m_ctrlClientPort->GetValue();
+	m_cfg.m_Debug = m_ctrlDebugNetwork->GetValue();
 	EndModal(wxID_OK);
 }
 
@@ -262,6 +271,7 @@ void MultiplayerDialog::OnJoin(wxCommandEvent&)
 		m_cfg.m_ClientServerPort = dlg.GetServerPort();
 		m_cfg.m_ClientPort = dlg.GetClientPort();
 		m_cfg.m_ClientServerIp = dlg.GetIP();
+		m_cfg.m_Debug = dlg.GetDebugSession();
 
 		if (result == wxID_OK)
 			EndModal(wxID_ADD);
