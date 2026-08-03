@@ -116,7 +116,15 @@ void MainFrame::OnMultiplayer(wxCommandEvent&)
 		m_ptrConfig->SaveToFile();
 		m_ptrConfig->GetSettingsFromDoc();
 
-		if (dialogResult == wxID_NETWORK && LaunchGame("--network server " + std::to_string(multiplayerSettings.m_ServerPort) +
+		std::string additional_args = "";
+
+		if (multiplayerSettings.m_RecordPlayFile.length() > 0)
+			additional_args += "--record_file " + multiplayerSettings.m_RecordPlayFile + " ";
+
+		if (multiplayerSettings.m_Debug)
+			additional_args += "--network_debug ";
+
+		if (dialogResult == wxID_NETWORK && LaunchGame(additional_args + "--network server " + std::to_string(multiplayerSettings.m_ServerPort) +
 			" client 127.0.0.1 " + std::to_string(multiplayerSettings.m_ServerPort) +
 			" " + std::to_string(multiplayerSettings.m_ServerClientPort)))
 			this->Close();
