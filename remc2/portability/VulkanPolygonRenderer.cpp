@@ -163,7 +163,7 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 		return false;
 	if (!CreatePaletteTexture())
 		return false;
-	if (!CreateOverlayPipeline())
+	if (!CreateOverlayResources((uint32_t)windowWidth, (uint32_t)windowHeight))
 		return false;
 	if (!CreatePipeline())
 		return false;
