@@ -165,6 +165,8 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 		return false;
 	if (!CreatePipeline())
 		return false;
+	if (!CreateWireframePipeline())
+		return false;
 	if (!CreateFrameData())
 		return false;
 
@@ -606,6 +608,124 @@ void VulkanPolygonRenderer::FreeTexture(uint32_t textureId)
 	m_textures.erase(it);
 }
 
+bool VulkanPolygonRenderer::CreateWireframePipeline()
+{
+	auto vertCode = ReadFile(ShaderPath("polygon.vert.spv"));
+	auto fragCode = ReadFile(ShaderPath("wireframe.frag.spv")); // NEW shader, no sampler
+	VkShaderModule vertModule = CreateShaderModule(m_device, vertCode);
+	VkShaderModule fragModule = CreateShaderModule(m_device, fragCode);
+
+	if (vertModule == VK_NULL_HANDLE || fragModule == VK_NULL_HANDLE)
+		return false;
+
+	VkPipelineShaderStageCreateInfo vertStage{};
+	vertStage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	vertStage.stage = VK_SHADER_STAGE_VERTEX_BIT;
+	vertStage.module = vertModule;
+	vertStage.pName = "main";
+
+	VkPipelineShaderStageCreateInfo fragStage{};
+	fragStage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	fragStage.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
+	fragStage.module = fragModule;
+	fragStage.pName = "main";
+
+	VkPipelineShaderStageCreateInfo stages[] = { vertStage, fragStage };
+
+	VkVertexInputBindingDescription binding{};
+	binding.binding = 0;
+	binding.stride = sizeof(Vertex);
+	binding.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+
+	// Keep all 3 attributes bound even though the wireframe fragment shader
+	// only consumes brightness - the vertex shader still writes uv out, and
+	// vertex input layout must match the shared Vertex struct/vertex shader.
+	VkVertexInputAttributeDescription attrs[3]{};
+	attrs[0] = { 0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, x) };
+	attrs[1] = { 1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, u) };
+	attrs[2] = { 2, 0, VK_FORMAT_R32_SFLOAT, offsetof(Vertex, brightness) };
+
+	VkPipelineVertexInputStateCreateInfo vertexInput{};
+	vertexInput.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+	vertexInput.vertexBindingDescriptionCount = 1;
+	vertexInput.pVertexBindingDescriptions = &binding;
+	vertexInput.vertexAttributeDescriptionCount = 3;
+	vertexInput.pVertexAttributeDescriptions = attrs;
+
+	VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
+	inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+	inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+
+	VkPipelineViewportStateCreateInfo viewportState{};
+	viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+	viewportState.viewportCount = 1;
+	viewportState.scissorCount = 1;
+
+	VkPipelineRasterizationStateCreateInfo raster{};
+	raster.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+	raster.polygonMode = VK_POLYGON_MODE_LINE;
+	raster.cullMode = VK_CULL_MODE_NONE;
+	raster.frontFace = m_frontFace;
+	raster.lineWidth = 1.0f;
+
+	VkPipelineMultisampleStateCreateInfo multisample{};
+	multisample.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+	multisample.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+
+	VkPipelineColorBlendAttachmentState blendAttachment{};
+	blendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
+		VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+	blendAttachment.blendEnable = VK_FALSE;
+
+	VkPipelineColorBlendStateCreateInfo blend{};
+	blend.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+	blend.attachmentCount = 1;
+	blend.pAttachments = &blendAttachment;
+
+	VkDynamicState dynamicStates[] = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
+	VkPipelineDynamicStateCreateInfo dynamicState{};
+	dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+	dynamicState.dynamicStateCount = 2;
+	dynamicState.pDynamicStates = dynamicStates;
+
+	// No descriptor set layout - this pipeline never samples a texture.
+	VkPushConstantRange pushConstant{};
+	pushConstant.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+	pushConstant.offset = 0;
+	pushConstant.size = sizeof(float) * 2;
+
+	VkPipelineLayoutCreateInfo layoutInfo{};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+	layoutInfo.setLayoutCount = 0;
+	layoutInfo.pSetLayouts = nullptr;
+	layoutInfo.pushConstantRangeCount = 1;
+	layoutInfo.pPushConstantRanges = &pushConstant;
+	if (vkCreatePipelineLayout(m_device, &layoutInfo, nullptr, &m_wireframePipelineLayout) != VK_SUCCESS)
+		return false;
+
+	VkGraphicsPipelineCreateInfo pipelineInfo{};
+	pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+	pipelineInfo.stageCount = 2;
+	pipelineInfo.pStages = stages;
+	pipelineInfo.pVertexInputState = &vertexInput;
+	pipelineInfo.pInputAssemblyState = &inputAssembly;
+	pipelineInfo.pViewportState = &viewportState;
+	pipelineInfo.pRasterizationState = &raster;
+	pipelineInfo.pMultisampleState = &multisample;
+	pipelineInfo.pColorBlendState = &blend;
+	pipelineInfo.pDynamicState = &dynamicState;
+	pipelineInfo.layout = m_wireframePipelineLayout;
+	pipelineInfo.renderPass = m_renderPass;
+	pipelineInfo.subpass = 0;
+
+	VkResult result = vkCreateGraphicsPipelines(m_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_wireframePipeline);
+
+	vkDestroyShaderModule(m_device, vertModule, nullptr);
+	vkDestroyShaderModule(m_device, fragModule, nullptr);
+
+	return result == VK_SUCCESS;
+}
+
 bool VulkanPolygonRenderer::CreatePipeline()
 {
 	auto vertCode = ReadFile(ShaderPath("polygon.vert.spv"));
@@ -862,6 +982,51 @@ bool VulkanPolygonRenderer::BeginFrame()
 	vkCmdPushConstants(frame.commandBuffer, m_pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(screenSize), screenSize);
 
 	return true;
+}
+
+void VulkanPolygonRenderer::DrawPolygonsWireframe(const std::vector<RenderPolygon>& polygons)
+{
+	FrameData& frame = m_frames[m_currentFrame];
+
+	std::vector<Vertex> vertices;
+	std::vector<uint32_t> indices;
+	vertices.reserve(polygons.size() * 4);
+	indices.reserve(polygons.size() * 6);
+
+	for (const auto& poly : polygons)
+	{
+		if (poly.Vertices.size() < 3)
+			continue;
+
+		uint32_t baseVertex = (uint32_t)vertices.size();
+		for (const auto& v : poly.Vertices)
+		{
+			Vertex vert{};
+			vert.x = (float)v.X;
+			vert.y = (float)v.Y;
+			vert.u = (float)v.U;
+			vert.v = (float)v.V;
+			vert.brightness = (float)v.Brightness / 255.0f;
+			vertices.push_back(vert);
+		}
+		FanTriangulate(baseVertex, (uint32_t)poly.Vertices.size(), indices);
+	}
+
+	if (vertices.empty() || indices.empty())
+		return;
+
+	EnsureFrameBufferCapacity(frame, vertices.size() * sizeof(Vertex), indices.size() * sizeof(uint32_t));
+	std::memcpy(frame.vertexMapped, vertices.data(), vertices.size() * sizeof(Vertex));
+	std::memcpy(frame.indexMapped, indices.data(), indices.size() * sizeof(uint32_t));
+
+	VkDeviceSize offset = 0;
+	vkCmdBindVertexBuffers(frame.commandBuffer, 0, 1, &frame.vertexBuffer, &offset);
+	vkCmdBindIndexBuffer(frame.commandBuffer, frame.indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+	vkCmdBindPipeline(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_wireframePipeline);
+
+	// No texture sorting/batching and no descriptor set bind - this pipeline
+	// has no sampler, so all polygons draw in one call regardless of TextureId.
+	vkCmdDrawIndexed(frame.commandBuffer, (uint32_t)indices.size(), 1, 0, 0, 0);
 }
 
 void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polygons)

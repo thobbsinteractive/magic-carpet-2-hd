@@ -604,6 +604,9 @@
     <None Include="..\config.json">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="portability\shaders\wireframe.frag">
+      <Filter>Source Files\portability\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="font\8x8-font.bmp">

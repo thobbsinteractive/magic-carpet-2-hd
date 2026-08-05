@@ -68,6 +68,7 @@ public:
 
 	bool BeginFrame();
 	void DrawPolygons(const std::vector<RenderPolygon>& polygons);
+	void DrawPolygonsWireframe(const std::vector<RenderPolygon>& polygons);
 	void EndFrame();
 
 private:
@@ -112,6 +113,7 @@ private:
 	void DestroySwapchain();
 	bool CreateRenderPass();
 	bool CreatePipeline();
+	bool CreateWireframePipeline();
 	bool CreateDescriptorResources();
 	bool CreatePaletteTexture();
 	bool CreateFrameData();
@@ -143,7 +145,9 @@ private:
 
 	VkRenderPass m_renderPass = VK_NULL_HANDLE;
 	VkPipelineLayout m_pipelineLayout = VK_NULL_HANDLE;
+	VkPipelineLayout m_wireframePipelineLayout = VK_NULL_HANDLE;
 	VkPipeline m_pipeline = VK_NULL_HANDLE;
+	VkPipeline m_wireframePipeline = VK_NULL_HANDLE;
 
 	VkDescriptorSetLayout m_descriptorSetLayout = VK_NULL_HANDLE;
 	VkDescriptorPool m_descriptorPool = VK_NULL_HANDLE;

@@ -1091,7 +1091,7 @@ void DrawPolygons(std::vector<RenderPolygon> *polygons)
 {
 	if (m_vulkanRenderer->BeginFrame())
 	{
-		m_vulkanRenderer->DrawPolygons(*polygons);
+		m_vulkanRenderer->DrawPolygonsWireframe(*polygons);
 		m_vulkanRenderer->EndFrame();
 	}
 }
