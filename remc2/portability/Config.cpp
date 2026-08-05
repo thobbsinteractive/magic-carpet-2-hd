@@ -174,6 +174,8 @@ Config::Settings::Multiplayer Config::GetMultiplayer(const json& settings)
 		multiplayerValues.m_ClientPort = ReadIntValue(multiplayer, "clientPort");
 		multiplayerValues.m_ClientServerPort = ReadIntValue(multiplayer, "clientServerPort");
 		multiplayerValues.m_ClientServerIp = ReadStringValue(multiplayer, "clientServerIp");
+		multiplayerValues.m_RecordPlayFile = ReadStringValue(multiplayer, "recordPlayFile");
+		multiplayerValues.m_Debug = ReadBoolValue(multiplayer, "debug");
 	}
 	return multiplayerValues;
 }
@@ -454,6 +456,8 @@ void Config::SaveMultiplayerToDoc(Config::Settings::Multiplayer multiplayerSetti
 	SetInt(multiplayer, "clientPort", multiplayerSettings.m_ClientPort);
 	SetInt(multiplayer, "clientServerPort", multiplayerSettings.m_ClientServerPort);
 	SetString(multiplayer, "clientServerIp", multiplayerSettings.m_ClientServerIp);
+	SetString(multiplayer, "recordPlayFile", multiplayerSettings.m_RecordPlayFile);
+	SetBool(multiplayer, "debug", multiplayerSettings.m_Debug);
 }
 
 void Config::SaveSoundToDoc(Config::Settings::Sound soundSettings)
