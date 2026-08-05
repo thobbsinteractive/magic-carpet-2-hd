@@ -27,6 +27,10 @@ void _strupr(char* s)
 #else //__linux__
 #endif //__linux__
 
+// Unattended network testing (--auto_test): drives the menus so a test script can run a
+// multiplayer session without anyone clicking through the front end.
+extern bool Iam_server;
+
 bool first_enter = true;
 char x_BYTE_D41AD_skip_screen = 0; // weak
 int8_t LoadLevelNumber_D419C = -1; // weak
@@ -579,6 +583,10 @@ void MenusAndIntros_76930(bool skipMenus)//257930
 {
 	//1 -351660
 	x_BYTE_E29DF_skip_screen = x_BYTE_D41AD_skip_screen;
+	// Skip the intro animations so an unattended test reaches the menu straight away.
+	// Set after E29DF has been read, so the network session number stays untouched.
+	if (CommandLineParams.AutoTest() && !skipMenus)
+		x_BYTE_D41AD_skip_screen = 1;
 	if (skipMenus)
 	{
 		x_BYTE_D41AD_skip_screen = 1;
@@ -5338,6 +5346,19 @@ char MultiplayerMenu_7DE80(type_menuButtons_E1F84* a2x)//25ee80
 
 	memset(printbuffer, 0, 10);
 	a2x->dword_4 = 0;
+	// Confirm the session-number dialog once and go straight on to the level selection.
+	if (CommandLineParams.AutoTest()) {
+		static bool autoSessionConfirmed = false;
+		if (!autoSessionConfirmed) {
+			autoSessionConfirmed = true;
+			debug_net_printf("AUTOTEST: confirming session %d\n", (int)(unsigned __int8)x_BYTE_E29DF_skip_screen);
+			x_WORD_E131A = 0;
+			x_DWORD_17DE38str.networkSession_17DEFA = (unsigned __int8)x_BYTE_E29DF_skip_screen;
+			ResetMouse_7B5A0();
+			a2x->dword_4 = sub_77680() != 0;
+			return 1;
+		}
+	}
 	v3 = j___clock();
 	GetFont_6FC50(1);
 	v22 = a2x->str_26.x1_26_0 + 10;
@@ -5745,8 +5766,24 @@ char sub_77680()//258680
 			x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].selectedLevel_10 = 50;
 		x_DWORD_17DE38str.array_BYTE_17DE68x[x_DWORD_17DE38str.serverIndex_17DEFC].action_9 = 2;
 		x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons = 0;
+		if (CommandLineParams.AutoTest())
+			debug_net_printf("AUTOTEST: level selection reached, myIdx=%d token=%d server=%d\n",
+				(int)x_DWORD_17DE38str.serverIndex_17DEFC, (int)GetIndexNetwork2_74515(), (int)Iam_server);
 		while (!a3a)
 		{
+			// Once every player has joined, the host starts the level.
+			if (CommandLineParams.AutoTest()) {
+				static int   autoFrames = 0;
+				static bool  autoLevelStarted = false;
+				autoFrames++;
+				if (Iam_server && !autoLevelStarted && x_DWORD_17DE38str.x_WORD_17DEFE >= 2 && autoFrames > 180) {
+					autoLevelStarted = true;
+					int me = x_DWORD_17DE38str.serverIndex_17DEFC;
+					x_DWORD_17DE38str.array_BYTE_17DE68x[me].action_9 = 5;
+					x_DWORD_17DE38str.array_BYTE_17DE68x[me].makeUpdate_0 = 1;
+					debug_net_printf("AUTOTEST: host starts the level\n");
+				}
+			}
 			if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 59)
 			{
 				x_D41A0_BYTEARRAY_4_struct.showHelp_10 = x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1;
@@ -5807,13 +5844,15 @@ bool DrawAndServe_7B250()//25c250
 		mainMenuButtons_E1BAC[0].dword_0 = 0x258350;
 		mainMenuButtons_E1BAC[0].selected_8 = 1;
 	}
-	/*
-	if (CommandLineParams.ModeNetwork()) {
-		if (first_enter)
-		{
+	// Pick the network-game button once, on behalf of the tester.
+	if (CommandLineParams.AutoTest()) {
+		static bool autoNetworkPicked = false;
+		if (!autoNetworkPicked) {
+			autoNetworkPicked = true;
 			mainMenuButtons_E1BAC[2].selected_8 = 1;
+			debug_net_printf("AUTOTEST: entering network game\n");
 		}
-	}*/
+	}
 
 	for (int i = 0; mainMenuButtons_E1BAC[i].xmin_10; i++)
 	{

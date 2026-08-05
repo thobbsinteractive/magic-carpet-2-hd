@@ -37545,6 +37545,33 @@ void PlayerEvents_51BB0()//232bb0
 	// not kept in sync between nodes, so the same "turn" is a different moment on each
 	// machine.  Feeding the array in after the exchange would also overwrite the only
 	// thing keeping the nodes together.
+	// Scripted endings for unattended tests: leave the game, or drop the network link to
+	// see how the other side copes with a peer that vanishes.
+	if ((x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
+		&& (CommandLineParams.QuitAfterS() > 0 || CommandLineParams.NetKillAfterS() > 0))
+	{
+		static long inGameSince = 0;
+		if (inGameSince == 0) inGameSince = (long)j___clock();
+		long secondsInGame = ((long)j___clock() - inGameSince) / 100;
+
+		if (CommandLineParams.NetKillAfterS() > 0 && secondsInGame >= CommandLineParams.NetKillAfterS()) {
+			static bool linkDropped = false;
+			if (!linkDropped) {
+				linkDropped = true;
+				debug_net_printf("AUTOTEST: dropping the network link now\n");
+				EndMyNetLib();
+			}
+		}
+		if (CommandLineParams.QuitAfterS() > 0 && secondsInGame >= CommandLineParams.QuitAfterS()) {
+			static bool leftGame = false;
+			if (!leftGame) {
+				leftGame = true;
+				debug_net_printf("AUTOTEST: leaving the game now\n");
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;
+			}
+		}
+	}
+
 	bool replayingOverNetwork = false;
 	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying
 		&& (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
@@ -37730,10 +37757,14 @@ void PlayerEvents_51BB0()//232bb0
 		case 0x11:
 			if (D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte1 == 8)
 			{
-				if (strlen(D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222]) + 1 != 1)
+				// Backspace removes the last character: loc_520C4 zeroes names_81[len - 1].
+				// Taking one off that (as this used to) ate two characters at a time, and on a
+				// one-character message it wrote the byte in front of the string - which is
+				// word_0x04f_2C2D_11309, the notification type.
+				if (strlen(D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222]) != 0)
 				{
 					D41A0_0.array_0x2BDE[i].byte_0x3E2_2BE4_12224--;
-					D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222][strlen(D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222]) - 2] = 0;
+					D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222][strlen(D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222]) - 1] = 0;
 				}
 			}
 			else if (D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte1)
@@ -38054,20 +38085,32 @@ void PlayerEvents_51BB0()//232bb0
 				}
 				else
 				{
+					// loc_522C2: your own message is always shown to you; whether someone
+					// else's reaches you is decided by the mode they sent it in
+					// (byte_0x3E1: 0 = in view, 1 = nearest, 2 = everyone, 3 = allies).
+					// This test used to be the wrong way round - the switch ran for the
+					// local player and remote messages were dropped without being read,
+					// so chat never arrived from anyone else in a network game.
 					bool bool1 = false;
 					if (i == D41A0_0.LevelIndex_0xc)
+					{
+						bool1 = true;
+					}
+					else
 					{
 						switch (D41A0_0.array_0x2BDE[i].byte_0x3E1_2BE4_12223)
 						{
 						case 0:
 							if (!(sub_61810(actEvent, Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]) == 0))
 								bool1 = true;
+							break;
 						case 1:
 							if (!(sub_61620(actEvent, Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]) == 0))
 								bool1 = true;
 							break;
 						case 2:
 							bool1 = true;
+							break;
 						case 3:
 							if ((1 << D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dword_0x3E6_2BE4_12228.playerColorIndex_0x38_56) & D41A0_0.array_0x2BDE[i].byte_0x3E3_2BE4_12225)
 								bool1 = true;

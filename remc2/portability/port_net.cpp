@@ -46,6 +46,7 @@
 //   ReceiveServerAddName() — all signatures unchanged from the UDP version.
 #define _CRT_SECURE_NO_WARNINGS
 #include "port_net.h"
+#include "../engine/CommandLineParser.h"
 #include <map>
 #include <set>
 #include <queue>
@@ -415,6 +416,66 @@ struct TcpRecvBuf {
 };
 
 // ---------------------------------------------------------------------------
+// Fault injection for automated testing (--net_delay / --net_jitter / --net_stall).
+//
+// Deliberately confined to the peer-to-peer game data: the control channel that
+// registers names and sets up sessions is never touched, so a test disturbs a running
+// game rather than preventing it from starting.  All three are off unless asked for on
+// the command line, so a normal game runs through the untouched path.
+// ---------------------------------------------------------------------------
+namespace NetFaults {
+	static int  s_delayMs = 0;
+	static int  s_jitterMs = 0;
+	static int  s_stallMs = 0;
+	static int  s_stallEvery = 0;
+	static bool s_configured = false;
+
+	void Configure(int delayMs, int jitterMs, int stallMs, int stallEvery)
+	{
+		s_delayMs = delayMs;
+		s_jitterMs = jitterMs;
+		s_stallMs = stallMs;
+		s_stallEvery = stallEvery;
+		s_configured = (delayMs > 0 || jitterMs > 0 || (stallMs > 0 && stallEvery > 0));
+		if (s_configured)
+			debug_net_printf("NETFAULT: delay=%dms jitter=%dms stall=%dms every %d messages\n",
+				delayMs, jitterMs, stallMs, stallEvery);
+	}
+
+	bool Enabled() { return s_configured; }
+
+	// Deterministic per-process pseudo-random, so a failing run can be repeated.
+	static unsigned NextRand()
+	{
+		static unsigned state = 12345;
+		state = state * 1103515245u + 12345u;
+		return (state >> 16) & 0x7FFF;
+	}
+
+	// Hold a freshly arrived message back for a while before handing it on.
+	//
+	// Only ever delays - never discards or reorders.  Over TCP a message that was sent
+	// does arrive, and in order; what an unreliable line actually costs is time, because
+	// the lost segment is retransmitted and everything queued behind it waits with it.
+	// A stall reproduces exactly that, so the test stays faithful to what the game can
+	// really meet on the wire.
+	int NextHoldMs()
+	{
+		int ms = s_delayMs;
+		if (s_jitterMs > 0) ms += (int)(NextRand() % (unsigned)(s_jitterMs + 1));
+		if (s_stallMs > 0 && s_stallEvery > 0) {
+			static int counter = 0;
+			if (++counter >= s_stallEvery) {
+				counter = 0;
+				ms += s_stallMs;
+				debug_net_printf("NETFAULT: stalling a message by %dms (retransmit-like)\n", s_stallMs);
+			}
+		}
+		return ms;
+	}
+}
+
+// ---------------------------------------------------------------------------
 // Name / connection registry  (unchanged API surface)
 // ---------------------------------------------------------------------------
 std::vector<std::string> NetworkName;
@@ -666,6 +727,10 @@ struct TcpSession {
 	// Send-side mutex: prevents interleaved writes from SendNetwork (main/bg thread)
 	// and PollSessions HEARTBEAT sends (network thread).
 	std::mutex              sendMtx;
+
+	// Arrivals deliberately held back by the test fault injector
+	struct HeldMessage { std::string raw; std::chrono::steady_clock::time_point releaseAt; };
+	std::deque<HeldMessage> heldMessages;
 
 	// Liveness tracking
 	std::chrono::steady_clock::time_point lastRx;
@@ -1199,6 +1264,25 @@ namespace MyNetworkLib {
 			if (!sess->alive) continue;
 
 			bool ok = sess->rbuf.Poll(sess->sock);
+
+			// Fault injection for testing: hold arrivals back for a while instead of
+			// acting on them at once.  Only the arrival time is affected - nothing is
+			// discarded or reordered, because TCP cannot do either.  The wait is recorded
+			// per message rather than slept through here, so this thread keeps polling,
+			// answering heartbeats and running the NCB passes; sleeping in this loop would
+			// freeze our own networking instead of simulating a silent peer.
+			if (NetFaults::Enabled() && !sess->rbuf.ready.empty()) {
+				auto now = std::chrono::steady_clock::now();
+				for (auto& raw : sess->rbuf.ready)
+					sess->heldMessages.push_back({ raw, now + std::chrono::milliseconds(NetFaults::NextHoldMs()) });
+				sess->rbuf.ready.clear();
+				auto due = std::chrono::steady_clock::now();
+				while (!sess->heldMessages.empty() && sess->heldMessages.front().releaseAt <= due) {
+					sess->rbuf.ready.push_back(sess->heldMessages.front().raw);
+					sess->heldMessages.pop_front();
+				}
+			}
+
 			for (auto& raw : sess->rbuf.ready) {
 				sess->Touch();
 				message_info u = Unpack_Message(raw);
@@ -2015,6 +2099,10 @@ void InitMyNetLib(bool iam_server, bool iam_client,
 #ifdef _WIN32
 	WSADATA wsa; WSAStartup(MAKEWORD(2, 2), &wsa);
 #endif
+	NetFaults::Configure(CommandLineParams.NetDelayMs(),
+		CommandLineParams.NetJitterMs(),
+		CommandLineParams.NetStallMs(),
+		CommandLineParams.NetStallEvery());
 	locNetworkClass = new MyNetworkLib::NetworkClass(
 		iam_server, iam_client, ip, networkPort, serverPort);
 	locNetworkClass->StartNetworkThread();
