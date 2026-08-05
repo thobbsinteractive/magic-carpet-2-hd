@@ -604,9 +604,6 @@
     <None Include="..\config.json">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="portability\shaders\wireframe.frag">
-      <Filter>Source Files\portability\shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="font\8x8-font.bmp">
@@ -626,6 +623,15 @@
       <Filter>Source Files\portability\shaders</Filter>
     </CustomBuild>
     <CustomBuild Include="portability\shaders\polygon.vert">
+      <Filter>Source Files\portability\shaders</Filter>
+    </CustomBuild>
+    <CustomBuild Include="portability\shaders\wireframe.frag">
+	  <Filter>Source Files\portability\shaders</Filter>
+    </CustomBuild>
+    <CustomBuild Include="portability\shaders\overlay.frag">
+      <Filter>Source Files\portability\shaders</Filter>
+    </CustomBuild>
+    <CustomBuild Include="portability\shaders\overlay.vert">
       <Filter>Source Files\portability\shaders</Filter>
     </CustomBuild>
   </ItemGroup>

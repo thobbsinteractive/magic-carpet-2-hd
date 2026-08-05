@@ -163,6 +163,8 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 		return false;
 	if (!CreatePaletteTexture())
 		return false;
+	if (!CreateOverlayPipeline())
+		return false;
 	if (!CreatePipeline())
 		return false;
 	if (!CreateWireframePipeline())
@@ -608,6 +610,107 @@ void VulkanPolygonRenderer::FreeTexture(uint32_t textureId)
 	m_textures.erase(it);
 }
 
+bool VulkanPolygonRenderer::CreateOverlayResources(uint32_t width, uint32_t height)
+{
+	m_overlayWidth = width;
+	m_overlayHeight = height;
+
+	// --- GPU image the surface gets copied into ---
+	VkImageCreateInfo imageInfo{};
+	imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	imageInfo.imageType = VK_IMAGE_TYPE_2D;
+	imageInfo.format = VK_FORMAT_B8G8R8A8_UNORM; // match SDL_PIXELFORMAT_ARGB8888 byte order
+	imageInfo.extent = { width, height, 1 };
+	imageInfo.mipLevels = 1;
+	imageInfo.arrayLayers = 1;
+	imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+	imageInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+	imageInfo.usage = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
+	imageInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+
+	VmaAllocationCreateInfo allocInfo{};
+	allocInfo.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+
+	if (vmaCreateImage(m_allocator, &imageInfo, &allocInfo, &m_overlayImage, &m_overlayImageAlloc, nullptr) != VK_SUCCESS)
+		return false;
+
+	VkImageViewCreateInfo viewInfo{};
+	viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	viewInfo.image = m_overlayImage;
+	viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+	viewInfo.format = imageInfo.format;
+	viewInfo.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+	if (vkCreateImageView(m_device, &viewInfo, nullptr, &m_overlayImageView) != VK_SUCCESS)
+		return false;
+
+	VkSamplerCreateInfo samplerInfo{};
+	samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+	samplerInfo.magFilter = VK_FILTER_NEAREST; // UI/HUD pixels - nearest avoids blurring text
+	samplerInfo.minFilter = VK_FILTER_NEAREST;
+	samplerInfo.addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+	samplerInfo.addressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+	if (vkCreateSampler(m_device, &samplerInfo, nullptr, &m_overlaySampler) != VK_SUCCESS)
+		return false;
+
+	// --- persistently-mapped staging buffer for per-frame surface uploads ---
+	VkDeviceSize stagingSize = (VkDeviceSize)width * height * 4;
+	VkBufferCreateInfo stagingInfo{};
+	stagingInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	stagingInfo.size = stagingSize;
+	stagingInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+
+	VmaAllocationCreateInfo stagingAllocInfo{};
+	stagingAllocInfo.usage = VMA_MEMORY_USAGE_CPU_TO_GPU;
+	stagingAllocInfo.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
+
+	VmaAllocationInfo resultInfo{};
+	if (vmaCreateBuffer(m_allocator, &stagingInfo, &stagingAllocInfo, &m_overlayStagingBuffer, &m_overlayStagingAlloc, &resultInfo) != VK_SUCCESS)
+		return false;
+	m_overlayStagingMapped = resultInfo.pMappedData;
+
+	// --- descriptor set layout + set (single combined image sampler) ---
+	VkDescriptorSetLayoutBinding binding{};
+	binding.binding = 0;
+	binding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	binding.descriptorCount = 1;
+	binding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+
+	VkDescriptorSetLayoutCreateInfo setLayoutInfo{};
+	setLayoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	setLayoutInfo.bindingCount = 1;
+	setLayoutInfo.pBindings = &binding;
+	if (vkCreateDescriptorSetLayout(m_device, &setLayoutInfo, nullptr, &m_overlayDescriptorSetLayout) != VK_SUCCESS)
+		return false;
+
+	VkDescriptorSetAllocateInfo dsAllocInfo{};
+	dsAllocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	dsAllocInfo.descriptorPool = m_descriptorPool; // reuse existing pool - must have COMBINED_IMAGE_SAMPLER capacity for +1
+	dsAllocInfo.descriptorSetCount = 1;
+	dsAllocInfo.pSetLayouts = &m_overlayDescriptorSetLayout;
+	if (vkAllocateDescriptorSets(m_device, &dsAllocInfo, &m_overlayDescriptorSet) != VK_SUCCESS)
+		return false;
+
+	VkDescriptorImageInfo imgInfo{};
+	imgInfo.sampler = m_overlaySampler;
+	imgInfo.imageView = m_overlayImageView;
+	imgInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+	VkWriteDescriptorSet write{};
+	write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	write.dstSet = m_overlayDescriptorSet;
+	write.dstBinding = 0;
+	write.descriptorCount = 1;
+	write.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	write.pImageInfo = &imgInfo;
+	vkUpdateDescriptorSets(m_device, 1, &write, 0, nullptr);
+
+	// Image starts UNDEFINED - transition to SHADER_READ_ONLY_OPTIMAL once via
+	// a one-time command buffer (or let the first UploadOverlaySurface do it -
+	// see the layout transition inside that function below).
+
+	return CreateOverlayPipeline();
+}
+
 bool VulkanPolygonRenderer::CreateWireframePipeline()
 {
 	auto vertCode = ReadFile(ShaderPath("polygon.vert.spv"));
@@ -843,6 +946,108 @@ bool VulkanPolygonRenderer::CreatePipeline()
 	return result == VK_SUCCESS;
 }
 
+bool VulkanPolygonRenderer::CreateOverlayPipeline()
+{
+	auto vertCode = ReadFile(ShaderPath("overlay.vert.spv"));
+	auto fragCode = ReadFile(ShaderPath("overlay.frag.spv"));
+	VkShaderModule vertModule = CreateShaderModule(m_device, vertCode);
+	VkShaderModule fragModule = CreateShaderModule(m_device, fragCode);
+	if (vertModule == VK_NULL_HANDLE || fragModule == VK_NULL_HANDLE)
+		return false;
+
+	VkPipelineShaderStageCreateInfo vertStage{};
+	vertStage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	vertStage.stage = VK_SHADER_STAGE_VERTEX_BIT;
+	vertStage.module = vertModule;
+	vertStage.pName = "main";
+
+	VkPipelineShaderStageCreateInfo fragStage{};
+	fragStage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	fragStage.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
+	fragStage.module = fragModule;
+	fragStage.pName = "main";
+
+	VkPipelineShaderStageCreateInfo stages[] = { vertStage, fragStage };
+
+	// No vertex input at all - the vertex shader generates positions from
+	// gl_VertexIndex, so vertexBindingDescriptionCount/attributeCount stay 0.
+	VkPipelineVertexInputStateCreateInfo vertexInput{};
+	vertexInput.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+
+	VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
+	inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+	inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+
+	VkPipelineViewportStateCreateInfo viewportState{};
+	viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+	viewportState.viewportCount = 1;
+	viewportState.scissorCount = 1;
+
+	VkPipelineRasterizationStateCreateInfo raster{};
+	raster.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+	raster.polygonMode = VK_POLYGON_MODE_FILL;
+	raster.cullMode = VK_CULL_MODE_NONE;
+	raster.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
+	raster.lineWidth = 1.0f;
+
+	VkPipelineMultisampleStateCreateInfo multisample{};
+	multisample.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+	multisample.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+
+	// Alpha-over blending - this is the key difference from your polygon
+	// pipelines, which have blending disabled.
+	VkPipelineColorBlendAttachmentState blendAttachment{};
+	blendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
+		VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+	blendAttachment.blendEnable = VK_TRUE;
+	blendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
+	blendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+	blendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
+	blendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
+	blendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+	blendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
+
+	VkPipelineColorBlendStateCreateInfo blend{};
+	blend.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+	blend.attachmentCount = 1;
+	blend.pAttachments = &blendAttachment;
+
+	VkDynamicState dynamicStates[] = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
+	VkPipelineDynamicStateCreateInfo dynamicState{};
+	dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+	dynamicState.dynamicStateCount = 2;
+	dynamicState.pDynamicStates = dynamicStates;
+
+	VkPipelineLayoutCreateInfo layoutInfo{};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+	layoutInfo.setLayoutCount = 1;
+	layoutInfo.pSetLayouts = &m_overlayDescriptorSetLayout;
+	if (vkCreatePipelineLayout(m_device, &layoutInfo, nullptr, &m_overlayPipelineLayout) != VK_SUCCESS)
+		return false;
+
+	VkGraphicsPipelineCreateInfo pipelineInfo{};
+	pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+	pipelineInfo.stageCount = 2;
+	pipelineInfo.pStages = stages;
+	pipelineInfo.pVertexInputState = &vertexInput;
+	pipelineInfo.pInputAssemblyState = &inputAssembly;
+	pipelineInfo.pViewportState = &viewportState;
+	pipelineInfo.pRasterizationState = &raster;
+	pipelineInfo.pMultisampleState = &multisample;
+	pipelineInfo.pColorBlendState = &blend;
+	pipelineInfo.pDynamicState = &dynamicState;
+	pipelineInfo.layout = m_overlayPipelineLayout;
+	pipelineInfo.renderPass = m_renderPass;
+	pipelineInfo.subpass = 0;
+
+	VkResult result = vkCreateGraphicsPipelines(m_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_overlayPipeline);
+
+	vkDestroyShaderModule(m_device, vertModule, nullptr);
+	vkDestroyShaderModule(m_device, fragModule, nullptr);
+
+	return result == VK_SUCCESS;
+}
+
 bool VulkanPolygonRenderer::CreateFrameData()
 {
 	VkCommandPoolCreateInfo poolInfo{};
@@ -880,6 +1085,55 @@ bool VulkanPolygonRenderer::CreateFrameData()
 	}
 
 	return true;
+}
+
+void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, VkCommandBuffer commandBuffer)
+{
+	// Normalize to a tight 32bpp buffer matching the image format, handling
+	// SDL's pitch padding if present.
+	uint32_t rowBytes = m_overlayWidth * 4;
+	if ((uint32_t)surface->pitch == rowBytes)
+	{
+		std::memcpy(m_overlayStagingMapped, surface->pixels, (size_t)rowBytes * m_overlayHeight);
+	}
+	else
+	{
+		uint8_t* dst = (uint8_t*)m_overlayStagingMapped;
+		const uint8_t* src = (const uint8_t*)surface->pixels;
+		for (uint32_t y = 0; y < m_overlayHeight; ++y)
+		{
+			std::memcpy(dst + y * rowBytes, src + y * surface->pitch, rowBytes);
+		}
+	}
+
+	VkImageMemoryBarrier toTransferDst{};
+	toTransferDst.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	toTransferDst.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED; // discard previous contents - we overwrite fully every frame
+	toTransferDst.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+	toTransferDst.srcAccessMask = 0;
+	toTransferDst.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	toTransferDst.image = m_overlayImage;
+	toTransferDst.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+	vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT,
+		0, 0, nullptr, 0, nullptr, 1, &toTransferDst);
+
+	VkBufferImageCopy region{};
+	region.bufferOffset = 0;
+	region.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
+	region.imageExtent = { m_overlayWidth, m_overlayHeight, 1 };
+	vkCmdCopyBufferToImage(commandBuffer, m_overlayStagingBuffer, m_overlayImage,
+		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+
+	VkImageMemoryBarrier toShaderRead{};
+	toShaderRead.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	toShaderRead.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+	toShaderRead.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+	toShaderRead.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	toShaderRead.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+	toShaderRead.image = m_overlayImage;
+	toShaderRead.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+	vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+		0, 0, nullptr, 0, nullptr, 1, &toShaderRead);
 }
 
 void VulkanPolygonRenderer::EnsureFrameBufferCapacity(FrameData& frame, size_t vertexBytes, size_t indexBytes)
@@ -938,7 +1192,7 @@ void VulkanPolygonRenderer::DestroyFrameData()
 	}
 }
 
-bool VulkanPolygonRenderer::BeginFrame()
+bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, const std::vector<RenderPolygon>& polygons)
 {
 	FrameData& frame = m_frames[m_currentFrame];
 	vkWaitForFences(m_device, 1, &frame.inFlight, VK_TRUE, UINT64_MAX);
@@ -969,6 +1223,9 @@ bool VulkanPolygonRenderer::BeginFrame()
 	rpBegin.renderArea.extent = m_swapchainExtent;
 	rpBegin.clearValueCount = 1;
 	rpBegin.pClearValues = &clearColor;
+
+	UploadOverlaySurface(surface, frame.commandBuffer);
+
 	vkCmdBeginRenderPass(frame.commandBuffer, &rpBegin, VK_SUBPASS_CONTENTS_INLINE);
 
 	vkCmdBindPipeline(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipeline);
@@ -980,6 +1237,11 @@ bool VulkanPolygonRenderer::BeginFrame()
 
 	float screenSize[2] = { (float)m_swapchainExtent.width, (float)m_swapchainExtent.height };
 	vkCmdPushConstants(frame.commandBuffer, m_pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(screenSize), screenSize);
+
+	if (polygons.size() > 0)
+		DrawPolygonsWireframe(polygons);
+
+	DrawOverlay(frame.commandBuffer);
 
 	return true;
 }
@@ -1135,6 +1397,14 @@ void VulkanPolygonRenderer::EndFrame()
 		Resize(m_windowWidth, m_windowHeight);
 
 	m_currentFrame = (m_currentFrame + 1) % kFramesInFlight;
+}
+
+void VulkanPolygonRenderer::DrawOverlay(VkCommandBuffer commandBuffer)
+{
+	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_overlayPipeline);
+	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+		m_overlayPipelineLayout, 0, 1, &m_overlayDescriptorSet, 0, nullptr);
+	vkCmdDraw(commandBuffer, 3, 1, 0, 0); // fullscreen triangle, no vertex/index buffers
 }
 
 void VulkanPolygonRenderer::Shutdown()

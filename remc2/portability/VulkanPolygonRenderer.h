@@ -66,7 +66,9 @@ public:
 	void SetFrontFace(VkFrontFace frontFace);
 	void SetCullMode(VkCullModeFlags cullMode); // default: VK_CULL_MODE_NONE
 
-	bool BeginFrame();
+	bool BeginFrame(SDL_Surface* surface, const std::vector<RenderPolygon>& polygons);
+	void UploadOverlaySurface(SDL_Surface* surface, VkCommandBuffer commandBuffer);
+	void DrawOverlay(VkCommandBuffer commandBuffer);
 	void DrawPolygons(const std::vector<RenderPolygon>& polygons);
 	void DrawPolygonsWireframe(const std::vector<RenderPolygon>& polygons);
 	void EndFrame();
@@ -117,11 +119,27 @@ private:
 	bool CreateDescriptorResources();
 	bool CreatePaletteTexture();
 	bool CreateFrameData();
+	bool CreateOverlayResources(uint32_t width, uint32_t height);
+	bool CreateOverlayPipeline();
 	void DestroyFrameData();
 	void EnsureFrameBufferCapacity(FrameData& frame, size_t vertexBytes, size_t indexBytes);
 	VkDescriptorSet AllocateTextureDescriptorSet(VkImageView view);
 
-private:
+	VkImage m_overlayImage = VK_NULL_HANDLE;
+	VmaAllocation m_overlayImageAlloc = VK_NULL_HANDLE;
+	VkImageView m_overlayImageView = VK_NULL_HANDLE;
+	VkSampler m_overlaySampler = VK_NULL_HANDLE;
+	VkDescriptorSetLayout m_overlayDescriptorSetLayout = VK_NULL_HANDLE;
+	VkDescriptorSet m_overlayDescriptorSet = VK_NULL_HANDLE;
+	VkPipelineLayout m_overlayPipelineLayout = VK_NULL_HANDLE;
+	VkPipeline m_overlayPipeline = VK_NULL_HANDLE;
+
+	VkBuffer m_overlayStagingBuffer = VK_NULL_HANDLE;
+	VmaAllocation m_overlayStagingAlloc = VK_NULL_HANDLE;
+	void* m_overlayStagingMapped = nullptr;
+	uint32_t m_overlayWidth = 0;
+	uint32_t m_overlayHeight = 0;
+
 	vkb::Instance m_vkbInstance{};
 	vkb::Device m_vkbDevice{};
 	vkb::Swapchain m_vkbSwapchain{};

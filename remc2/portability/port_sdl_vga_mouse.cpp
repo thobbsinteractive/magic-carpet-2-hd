@@ -57,6 +57,8 @@ bool subBlitLock = false;
 
 int m_frameNumber = 0;
 
+std::vector<RenderPolygon> m_polygons;
+
 // Initalize Color Masks.
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 Uint32 redMask = 0xff000000;
@@ -1087,14 +1089,19 @@ void VGA_Blit(Uint8* srcBuffer) {
 	SOUND_UPDATE();
 }
 
-void DrawPolygons(std::vector<RenderPolygon> *polygons)
+void SetPolygons(const std::vector<RenderPolygon>& polygons)
 {
-	if (m_vulkanRenderer->BeginFrame())
+	m_polygons = polygons;
+}
+
+void SubVulkanBlit(SDL_Surface* surface)
+{
+	if (m_vulkanRenderer->BeginFrame(surface, m_polygons))
 	{
-		m_vulkanRenderer->DrawPolygonsWireframe(*polygons);
 		m_vulkanRenderer->EndFrame();
 	}
 }
+
 
 void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight) {
 	while (subBlitLock);//fix problem with quick blitting
@@ -1137,13 +1144,20 @@ void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight) {
 
 	SDL_BlitSurface(m_gamePalletisedSurface, NULL, m_gameRGBASurface, NULL);
 
-	//WriteSurfaceToFile(m_gamePalletisedSurface);
+	if (m_vulkanRenderer)
+	{
+		SubVulkanBlit(m_gameRGBASurface);
+	}
+	else
+	{
+		//WriteSurfaceToFile(m_gamePalletisedSurface);
 
-	SDL_UpdateTexture(m_texture, NULL, m_gameRGBASurface->pixels, m_gameRGBASurface->pitch);
-	SDL_RenderCopy(m_renderer, m_texture, &rectSrc, &dscrect);
+		SDL_UpdateTexture(m_texture, NULL, m_gameRGBASurface->pixels, m_gameRGBASurface->pitch);
+		SDL_RenderCopy(m_renderer, m_texture, &rectSrc, &dscrect);
 
-	SDL_RenderPresent(m_renderer);
-	SDL_RenderClear(m_renderer);
+		SDL_RenderPresent(m_renderer);
+		SDL_RenderClear(m_renderer);
+	}
 	subBlitLock = false;
 }
 
