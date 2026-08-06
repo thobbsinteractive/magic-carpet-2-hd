@@ -198,7 +198,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			std::function<void(uint32_t, uint32_t)> resCallBack = OnMouseResolutionChanged;
 			EventDispatcher::I->RegisterEvent(new Event<uint32_t, uint32_t>(EventType::E_RESOLUTION_CHANGE, resCallBack));
 
-			std::function<void(ResourceType, const std::vector<RenderPolygon>&)> polyCallBack = OnPolygonsUpdated;
+			std::function<void(ResourceType, const std::vector<RenderPolygon>&)> polyCallBack = SetPolygons;
 			EventDispatcher::I->RegisterEvent(new Event<ResourceType, const std::vector<RenderPolygon>&>(EventType::E_RESOURCE_CHANGE, polyCallBack));
 		}
 		if (!VGA_LoadFont())
@@ -1093,7 +1093,7 @@ void VGA_Blit(Uint8* srcBuffer) {
 	SOUND_UPDATE();
 }
 
-void OnPolygonsUpdated(ResourceType state, const std::vector<RenderPolygon>& polygons)
+void SetPolygons(ResourceType state, const std::vector<RenderPolygon>& polygons)
 {
 	if (state == ResourceType::POLYGONS_UPDATED)
 		m_polygons = polygons;

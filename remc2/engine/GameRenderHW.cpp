@@ -710,7 +710,7 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v46--;
 				}
 				SubDrawCaveTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-				EventDispatcher::I->DispatchEvent(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, *polygons);
+				EventDispatcher::I->DispatchEvent<ResourceType, const std::vector<RenderPolygon>&>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, *polygons);
 				delete polygons;
 				return;
 			}
@@ -863,7 +863,7 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 				}
 				//Draw rest of terrain
 				SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-				EventDispatcher::I->DispatchEvent(EventType::E_RESOURCE_CHANGE, &polygons);
+				EventDispatcher::I->DispatchEvent<ResourceType, const std::vector<RenderPolygon>&>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, *polygons);
 				delete polygons;
 				Logger->trace("Finished Drawing Terrain Frame with Reflection");
 				return;
@@ -1048,7 +1048,7 @@ LABEL_259:
 	//adress 3de7d
 	//Draw Terrain with no reflection
 	SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-	EventDispatcher::I->DispatchEvent(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, *polygons);
+	EventDispatcher::I->DispatchEvent<ResourceType, const std::vector<RenderPolygon>&>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, *polygons);
 	delete polygons;
 }
 
