@@ -1,8 +1,8 @@
-#include "GameRenderGL.h"
+#include "GameRenderHW.h"
 
 #include "../utilities/RendererTests.h"
 
-GameRenderGL::GameRenderGL(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale) :
+GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale) :
 	m_ptrScreenBuffer_351628(ptrScreenBuffer), m_ptrColorPalette(pColorPalette), m_assignToSpecificCores(assignToSpecificCores),
 	m_ptrDWORD_E9C38_smalltit(new uint8_t[GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT])
 {
@@ -32,14 +32,14 @@ GameRenderGL::GameRenderGL(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 	}
 }
 
-GameRenderGL::~GameRenderGL()
+GameRenderHW::~GameRenderHW()
 {
 	delete[] m_ptrDWORD_E9C38_smalltit;
 	delete[] m_preBlurBuffer_E9C3C;
 	delete[] m_ptrStr_E9C38_smalltit;
 }
 
-void GameRenderGL::BuildTileRenderStepTable(TileStepQuadrant* table, int cols)
+void GameRenderHW::BuildTileRenderStepTable(TileStepQuadrant* table, int cols)
 {
 	uint8_t pos_cols = (uint8_t)cols;
 	uint8_t neg_cols = (uint8_t)(256 - cols);
@@ -79,7 +79,7 @@ void GameRenderGL::BuildTileRenderStepTable(TileStepQuadrant* table, int cols)
 	table[3].colStepY = 0xFF;
 }
 
-void GameRenderGL::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov)
+void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov)
 {
 	uint16_t v8; // ax
 	int v9; // ecx
@@ -325,7 +325,7 @@ void GameRenderGL::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	}
 }
 
-void GameRenderGL::ClearGraphicsBuffer(uint8_t colorIdx)
+void GameRenderHW::ClearGraphicsBuffer(uint8_t colorIdx)
 {
 	if (colorIdx > 255)
 	{
@@ -337,7 +337,7 @@ void GameRenderGL::ClearGraphicsBuffer(uint8_t colorIdx)
 /*
 * Sky texture is currently 256x256
 */
-void GameRenderGL::DrawSky_40950(int16_t roll)
+void GameRenderHW::DrawSky_40950(int16_t roll)
 {
 	int skyTextSize = 256;
 	if (x_BYTE_D41B5_texture_size == 128)
@@ -403,7 +403,7 @@ void GameRenderGL::DrawSky_40950(int16_t roll)
 /*
 * Draws Terrain, Sprites and Particals using a Painter's algorithm.
 */
-void GameRenderGL::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __int16 yaw, signed int posZ, int pitch, int16_t roll, int fov)
+void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __int16 yaw, signed int posZ, int pitch, int16_t roll, int fov)
 {
 	int sinIdx = 0;
 	int sinIdx2 = 0;
@@ -710,7 +710,7 @@ void GameRenderGL::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v46--;
 				}
 				SubDrawCaveTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-				SetPolygons(*polygons);
+				EventDispatcher::I->DispatchEvent(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, *polygons);
 				delete polygons;
 				return;
 			}
@@ -863,7 +863,7 @@ void GameRenderGL::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 				}
 				//Draw rest of terrain
 				SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-				SetPolygons(*polygons);
+				EventDispatcher::I->DispatchEvent(EventType::E_RESOURCE_CHANGE, &polygons);
 				delete polygons;
 				Logger->trace("Finished Drawing Terrain Frame with Reflection");
 				return;
@@ -1048,24 +1048,23 @@ LABEL_259:
 	//adress 3de7d
 	//Draw Terrain with no reflection
 	SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-
-	SetPolygons(*polygons);
+	EventDispatcher::I->DispatchEvent(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, *polygons);
 	delete polygons;
 }
 
-int32_t GameRenderGL::CalculateRotationTranslationX(int64_t cos_0x11, int64_t pnt1, int64_t sin_0x0d, int64_t pnt2)
+int32_t GameRenderHW::CalculateRotationTranslationX(int64_t cos_0x11, int64_t pnt1, int64_t sin_0x0d, int64_t pnt2)
 {
 	int64_t rotation = ((cos_0x11 * pnt1 - sin_0x0d * pnt2) >> 16);
 	return rotation + str_F2C20ar.dword0x24;
 }
 
-int32_t GameRenderGL::CalculateRotationTranslationY(int64_t pnt1, int64_t sin_0x0d, int64_t cos_0x11, int64_t pnt2)
+int32_t GameRenderHW::CalculateRotationTranslationY(int64_t pnt1, int64_t sin_0x0d, int64_t cos_0x11, int64_t pnt2)
 {
 	int64_t rotation = ((pnt1 * sin_0x0d + cos_0x11 * pnt2) >> 16);
 	return str_F2C20ar.dword0x10 - rotation;
 }
 
-void GameRenderGL::SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons)
+void GameRenderHW::SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons)
 {
 	int tileIdx_v57x = (m_tileRows * m_tileColumns) - m_tileColumns;
 	int tileColIdx_v58; // ah
@@ -1294,7 +1293,7 @@ void GameRenderGL::SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVer
 	} while (tileRowIdx_v281);
 }
 
-void GameRenderGL::SubDrawInverseTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons)
+void GameRenderHW::SubDrawInverseTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons)
 {
 	int v25z;
 	int v133x = (m_tileRows * m_tileColumns) - m_tileColumns;
@@ -1463,7 +1462,7 @@ void GameRenderGL::SubDrawInverseTerrainAndParticles(std::vector<int>& projected
 	}
 }
 
-void GameRenderGL::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons)
+void GameRenderHW::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons)
 {
 	int tileIdx_v160 = (m_tileRows * m_tileColumns) - m_tileColumns;
 
@@ -1634,7 +1633,7 @@ void GameRenderGL::SubDrawTerrainAndParticles(std::vector<int>& projectedVertexB
 	} while (rowNum_v282);
 }
 
-uint16_t GameRenderGL::sub_3FD60(int a2x, uint8_t playersColors_E88E0x[][3], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth)
+uint16_t GameRenderHW::sub_3FD60(int a2x, uint8_t playersColors_E88E0x[][3], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth)
 {
 	uint16_t result; // ax
 	type_entity_0x6E8E* v3x; // eax
@@ -1979,7 +1978,7 @@ uint16_t GameRenderGL::sub_3FD60(int a2x, uint8_t playersColors_E88E0x[][3], typ
 	return result;
 }
 
-void GameRenderGL::sub_88740(type_entity_0x6E8E* a1x, int16_t posX, int16_t posY)
+void GameRenderHW::sub_88740(type_entity_0x6E8E* a1x, int16_t posX, int16_t posY)
 {
 	int v3; // esi
 	type_entity_0x6E8E* v4x; // edx
@@ -2124,7 +2123,7 @@ LABEL_48:
 	}
 }
 
-void GameRenderGL::SetBillboards_3B560(int16_t roll)
+void GameRenderHW::SetBillboards_3B560(int16_t roll)
 {
 	int v1; // edx
 	int v2idx;
@@ -2717,7 +2716,7 @@ void GameRenderGL::SetBillboards_3B560(int16_t roll)
 	}
 }
 
-void GameRenderGL::DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1x, int16_t a2, int a3, int16_t a4)
+void GameRenderHW::DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1x, int16_t a2, int a3, int16_t a4)
 {
 	char* v5; // esi
 	int v9x; // eax
@@ -2802,7 +2801,7 @@ void GameRenderGL::DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1x, i
 }
 
 //Coordinates Already transformed into "Screen Space" (x & y, top left 0,0)
-void GameRenderGL::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index, std::vector<RenderPolygon> *polygons)
+void GameRenderHW::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index, std::vector<RenderPolygon> *polygons)
 {
 	//Set Texture coordinates for polys
 	vertexs[20] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][0];
@@ -2860,7 +2859,7 @@ void GameRenderGL::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int in
 	}
 }
 
-bool GameRenderGL::CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, ProjectionVertex v3, int maxCoordinate, int minCoordinate)
+bool GameRenderHW::CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, ProjectionVertex v3, int maxCoordinate, int minCoordinate)
 {
 	if ((((int64_t)v1.X << 16) > maxCoordinate) || (((int64_t)v1.Y << 16) > maxCoordinate) || (((int64_t)v2.X << 16) > maxCoordinate) ||
 		(((int64_t)v2.Y << 16) > maxCoordinate) || (((int64_t)v3.X << 16) > maxCoordinate) || (((int64_t)v3.Y << 16) > maxCoordinate))
@@ -2875,12 +2874,12 @@ bool GameRenderGL::CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, P
 	return false;
 }
 
-void GameRenderGL::DrawInverseSquareInProjectionSpace(int* vertexs, int index, std::vector<RenderPolygon>* polygons)
+void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int index, std::vector<RenderPolygon>* polygons)
 {
 	DrawInverseSquareInProjectionSpace(vertexs, index, x_DWORD_DDF50_texture_adresses.at(m_ptrStr_E9C38_smalltit[index].textIndex_41), polygons);
 }
 
-void GameRenderGL::DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture, std::vector<RenderPolygon>* polygons)
+void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture, std::vector<RenderPolygon>* polygons)
 {
 	//Set Texture coordinates for polys
 	vertexs[20] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][0];
@@ -2944,7 +2943,7 @@ void GameRenderGL::DrawInverseSquareInProjectionSpace(int* vertexs, int index, u
 	}
 }
 
-void GameRenderGL::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t playersColors_E88E0x[][3], int32_t x_DWORD_F5730[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth)
+void GameRenderHW::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t playersColors_E88E0x[][3], int32_t x_DWORD_F5730[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth)
 {
 	uint16_t result; // ax
 	type_entity_0x6E8E* v3x; // eax
@@ -3704,7 +3703,7 @@ void GameRenderGL::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F
 	} while (result);
 }
 
-void GameRenderGL::DrawSprite_41BD3(uint32 a1)
+void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 {
 	int8_t* ptrSpriteRenderSrc_v2x; // ebx
 	x_DWORD* v3; // esi
@@ -5247,7 +5246,7 @@ void GameRenderGL::DrawSprite_41BD3(uint32 a1)
 	}
 }
 
-x_DWORD* GameRenderGL::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int s0, int s1, int* line)
+x_DWORD* GameRenderHW::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int s0, int s1, int* line)
 {
 	do
 	{
@@ -5262,7 +5261,7 @@ x_DWORD* GameRenderGL::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int s0, 
 	return ptrPolys;
 }
 
-x_DWORD* GameRenderGL::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v4, int s0, int s1, int s4, int* line)
+x_DWORD* GameRenderHW::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v4, int s0, int s1, int s4, int* line)
 {
 	do
 	{
@@ -5279,7 +5278,7 @@ x_DWORD* GameRenderGL::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v4,
 	return ptrPolys;
 }
 
-x_DWORD* GameRenderGL::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line)
+x_DWORD* GameRenderHW::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line)
 {
 	do
 	{
@@ -5298,7 +5297,7 @@ x_DWORD* GameRenderGL::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2,
 	return ptrPolys;
 }
 
-x_DWORD* GameRenderGL::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2, int* v3, int* v4, int s0, int s1, int s2, int s3, int s4, int* line)
+x_DWORD* GameRenderHW::LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2, int* v3, int* v4, int s0, int s1, int s2, int s3, int s4, int* line)
 {
 	do
 	{

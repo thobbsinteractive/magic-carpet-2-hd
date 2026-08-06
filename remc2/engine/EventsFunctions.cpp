@@ -31464,7 +31464,7 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 							m_ptrGameRender = (GameRenderInterface*)new GameRenderOriginal();
 						}
 						else {
-							m_ptrGameRender = (GameRenderInterface*)new GameRenderGL(pdwScreenBuffer_351628, *xadatapald0dat2.colorPalette_var28, viewDistanceScale);
+							m_ptrGameRender = (GameRenderInterface*)new GameRenderHW(pdwScreenBuffer_351628, *xadatapald0dat2.colorPalette_var28, viewDistanceScale);
 						}
 					}
 				}

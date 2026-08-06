@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef GAME_RENDER_GL
-#define GAME_RENDER_GL
+#ifndef GAME_RENDER_HW
+#define GAME_RENDER_HW
 
 #include "GameRenderInterface.h"
 
@@ -27,7 +27,7 @@
 #include "ProjectionVertex.h"
 #include "../portability/RenderPolygon.h"
 
-class GameRenderGL : public GameRenderInterface
+class GameRenderHW : public GameRenderInterface
 {
 
 private:
@@ -123,8 +123,8 @@ private:
 	bool CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, ProjectionVertex v3, int maxCoordinate = 2147483647, int minCoordinate = -2147483647);
 
 public:
-	GameRenderGL(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale = 1);
-	~GameRenderGL();
+	GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale = 1);
+	~GameRenderHW();
 
 	void DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov);
 	void ClearGraphicsBuffer(uint8_t colorIdx);
@@ -133,4 +133,4 @@ public:
 	static int32_t CalculateRotationTranslationY(int64_t pnt1, int64_t sin_0x0d, int64_t cos_0x11, int64_t pnt2);
 };
 
-#endif //GAME_RENDER_GL
+#endif //GAME_RENDER_HW

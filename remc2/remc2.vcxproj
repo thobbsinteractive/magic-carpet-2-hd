@@ -404,7 +404,7 @@
     <ClInclude Include="engine\GameUiConstants.h" />
     <ClInclude Include="engine\Graphics.h" />
     <ClInclude Include="engine\GameRenderInterface.h" />
-    <ClInclude Include="engine\GameRenderGL.h" />
+    <ClInclude Include="engine\GameRenderHW.h" />
     <ClInclude Include="engine\GameRenderHD.h" />
     <ClInclude Include="engine\GameRenderNG.h" />
     <ClInclude Include="engine\globals.h" />
@@ -509,7 +509,7 @@
     <ClCompile Include="engine\DatTabIndexes.cpp" />
     <ClCompile Include="engine\EventsFunctions.cpp" />
     <ClCompile Include="engine\GameBitmap.cpp" />
-    <ClCompile Include="engine\GameRenderGL.cpp" />
+    <ClCompile Include="engine\GameRenderHW.cpp" />
     <ClCompile Include="engine\GameRenderHD.cpp" />
     <ClCompile Include="engine\GameRenderNG.cpp" />
     <ClCompile Include="engine\LevelInit.cpp" />
@@ -618,22 +618,22 @@
       <Message>Compiling %(Filename)%(Extension)</Message>
     </CustomBuild>
     <CustomBuild Include="portability\shaders\overlay.frag">
-			<Command>
+      <Command>
 				rem Compiling %(Identity)
 				if not exist "$(OutDir)shaders" mkdir "$(OutDir)shaders"
 				"$(VULKAN_SDK)\Bin\glslc.exe" "%(FullPath)" -o "$(OutDir)shaders\%(Filename)%(Extension).spv"
 			</Command>
-			<Outputs>$(OutDir)shaders\%(Filename)%(Extension).spv</Outputs>
-			<Message>Compiling %(Filename)%(Extension)</Message>
+      <Outputs>$(OutDir)shaders\%(Filename)%(Extension).spv</Outputs>
+      <Message>Compiling %(Filename)%(Extension)</Message>
     </CustomBuild>
     <CustomBuild Include="portability\shaders\overlay.vert">
-			<Command>
+      <Command>
 				rem Compiling %(Identity)
 				if not exist "$(OutDir)shaders" mkdir "$(OutDir)shaders"
 				"$(VULKAN_SDK)\Bin\glslc.exe" "%(FullPath)" -o "$(OutDir)shaders\%(Filename)%(Extension).spv"
 			</Command>
-			<Outputs>$(OutDir)shaders\%(Filename)%(Extension).spv</Outputs>
-			<Message>Compiling %(Filename)%(Extension)</Message>
+      <Outputs>$(OutDir)shaders\%(Filename)%(Extension).spv</Outputs>
+      <Message>Compiling %(Filename)%(Extension)</Message>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

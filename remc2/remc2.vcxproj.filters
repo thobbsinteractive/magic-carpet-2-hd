@@ -183,7 +183,7 @@
     <ClInclude Include="engine\GameRenderInterface.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
-    <ClInclude Include="engine\GameRenderGL.h">
+    <ClInclude Include="engine\GameRenderHW.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
     <ClInclude Include="portability\port_net.h">
@@ -467,7 +467,7 @@
     <ClCompile Include="engine\GameRenderOriginal.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
-    <ClCompile Include="engine\GameRenderGL.cpp">
+    <ClCompile Include="engine\GameRenderHW.cpp">
       <Filter>Source Files\engine</Filter>
     </ClCompile>
     <ClCompile Include="engine\ViewPort.cpp">
@@ -626,7 +626,7 @@
       <Filter>Source Files\portability\shaders</Filter>
     </CustomBuild>
     <CustomBuild Include="portability\shaders\wireframe.frag">
-	  <Filter>Source Files\portability\shaders</Filter>
+      <Filter>Source Files\portability\shaders</Filter>
     </CustomBuild>
     <CustomBuild Include="portability\shaders\overlay.frag">
       <Filter>Source Files\portability\shaders</Filter>

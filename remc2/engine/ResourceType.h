@@ -6,6 +6,7 @@ enum class ResourceType
 {
 	TEXTURE_LOADED,
 	TEXTURE_DISPOSED,
+	POLYGONS_UPDATED,
 };
 
 #endif //RESOURCE_TYPE_H

@@ -13,6 +13,7 @@
 extern DOS_Device* DOS_CON;
 #endif //USE_DOSBOX
 #include "../engine/EventDispatcher.h"
+#include "../engine/ResourceType.h"
 #include "GameKey.h"
 #include "KeyboardInputMapping.h"
 #include "VulkanPolygonRenderer.h"
@@ -196,6 +197,9 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 
 			std::function<void(uint32_t, uint32_t)> resCallBack = OnMouseResolutionChanged;
 			EventDispatcher::I->RegisterEvent(new Event<uint32_t, uint32_t>(EventType::E_RESOLUTION_CHANGE, resCallBack));
+
+			std::function<void(ResourceType, const std::vector<RenderPolygon>&)> polyCallBack = OnPolygonsUpdated;
+			EventDispatcher::I->RegisterEvent(new Event<ResourceType, const std::vector<RenderPolygon>&>(EventType::E_RESOURCE_CHANGE, polyCallBack));
 		}
 		if (!VGA_LoadFont())
 		{
@@ -1089,9 +1093,10 @@ void VGA_Blit(Uint8* srcBuffer) {
 	SOUND_UPDATE();
 }
 
-void SetPolygons(const std::vector<RenderPolygon>& polygons)
+void OnPolygonsUpdated(ResourceType state, const std::vector<RenderPolygon>& polygons)
 {
-	m_polygons = polygons;
+	if (state == ResourceType::POLYGONS_UPDATED)
+		m_polygons = polygons;
 }
 
 void SubVulkanBlit(SDL_Surface* surface)

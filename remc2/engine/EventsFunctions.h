@@ -30,7 +30,7 @@
 #include "GameRenderOriginal.h"
 #include "GameRenderHD.h"
 #include "GameRenderNG.h"
-#include "GameRenderGL.h"
+#include "GameRenderHW.h"
 #include "GameBitmap.h"
 #include "GameBitmapIndexes.h"
 #include "GameUiConstants.h"
