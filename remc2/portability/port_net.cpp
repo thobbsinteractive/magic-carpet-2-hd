@@ -141,6 +141,13 @@ const int32_t MESS_HEARTBEAT = 17; // keep-alive probe
 const int32_t MESS_HEARTBEAT_ACK = 20; // keep-alive reply
 const int32_t MESS_CLIENT_GET_IP = 18;
 const int32_t MESS_SERVER_GIVE_IP = 19;
+// First thing a caller says on a freshly opened peer connection.  Until now the two kinds
+// of connection were told apart by the port they arrived on: control on the server's port,
+// game data on each node's own.  One port has to carry both, so the connection now says
+// what it is instead - a data connection opens with this, a control connection opens with
+// one of the CLIENT_ messages above.  It also carries the caller's own port, which used to
+// be guessed from the name table.
+const int32_t MESS_PEER_HELLO = 21;
 // Marker put in the 'index' field of a GIVE_IP that is an announcement rather than an
 // address reply: the session's first NetBIOS name (…0) has been registered.
 const int32_t SERVER_NAME_REGISTERED = -777;
@@ -903,6 +910,21 @@ struct ClientCtrl {
 	int         port = 0; // the SOURCE port of the TCP connection from the client
 	int         dataPort = 0; // the client's clPort (data port), filled from GET_IP
 };
+
+// A connection that has been accepted but has not said yet what it is for.  One port serves
+// both roles, so the first frame decides: MESS_PEER_HELLO makes it a data session, a
+// CLIENT_ message makes it a control client.  Anything else, or nothing at all within the
+// timeout, and it is dropped.
+struct PendingConn {
+	socket_t    sock = SOCK_INVALID;
+	TcpRecvBuf  rbuf;
+	std::string addr;
+	int         srcPort = 0;
+	clock_t     since = 0;
+};
+static std::vector<PendingConn> pendingConns;
+static std::mutex pendingConnsMtx;
+static const long PENDING_TIMEOUT_MS = 5000;
 static std::vector<ClientCtrl> ctrlClients;
 // ONE recursive mutex protects all access to ctrlClients.
 // recursive_mutex is needed because PollCtrlClients (outer lock) calls
@@ -1001,6 +1023,16 @@ namespace MyNetworkLib {
 		clIam_client = iam_client;
 		IpPortIsSet = iam_server;
 
+		// The host used to hold two ports: a control port clients connect to, and a separate
+		// data port for peer traffic.  It is one port now - the control port serves both, and
+		// the host advertises it as its data port too.  One port per node is also what the
+		// planned server hand-over needs: a client that takes over hosting has to be
+		// reachable for control traffic on a port it already owns.
+		//
+		// Done before the log name is built, so the file is named after the port in use.
+		if (clIam_server && clServerPort > 0)
+			clPort = clServerPort;
+
 		// Give every instance its own debug log.  Two instances started from the same
 		// folder would otherwise both open "net_messages_log1.txt": the one starting
 		// second truncates ("wt") what the first has already written, and from then on
@@ -1048,8 +1080,16 @@ namespace MyNetworkLib {
 			clPort = 0; // ask the OS; StartPeerListen reports what we actually got
 		}
 
-		// Peer data port (may relocate if the configured one is taken).
-		if (!StartPeerListen(clPort))
+		// Peer data port (may relocate if the configured one is taken).  On the host that is
+		// the control socket it already has: opening a second one on the same port would
+		// fail, and there is nothing for it to do - AcceptIncoming() takes both kinds of
+		// connection off the one listener.
+		if (clIam_server && ctrlListenSock != SOCK_INVALID) {
+			peerListenSock = ctrlListenSock;
+			if (m_network_debug)
+				debug_net_printf("NetworkClass: one port %d for control and data\n", clPort);
+		}
+		else if (!StartPeerListen(clPort))
 			debug_net_printf("NetworkClass: FATAL - no data port available; peers cannot connect\n");
 	}
 
@@ -1106,28 +1146,148 @@ namespace MyNetworkLib {
 	}
 
 	// ---------------------------------------------------------------------------
-	void NetworkClass::AcceptCtrlClients()
+	// Accept on whichever listening sockets this node has and park the connection until it
+	// says what it is for.  Both kinds arrive here now, so nothing may be decided from the
+	// port alone.
+	void NetworkClass::AcceptIncoming()
 	{
-		if (ctrlListenSock == SOCK_INVALID) return;
-		while (true) {
-			sockaddr_in from{}; socklen_t fl = sizeof(from);
-			socket_t s = accept(ctrlListenSock, (sockaddr*)&from, &fl);
-			if (s == SOCK_INVALID) break;
-			set_nonblocking(s); set_nodelay(s);
-			char ip[INET_ADDRSTRLEN]; inet_ntop(AF_INET, &from.sin_addr, ip, sizeof(ip));
-			ClientCtrl cc; cc.sock = s; cc.addr = ip; cc.port = ntohs(from.sin_port);
-			// A node joining after the session's first name was registered has to be told
-			// about it now - it will not ask, because it considers itself set up as soon
-			// as the control connection is up.
-			if (serverAddname) {
-				shadow_myNCB sn{}; sn.ncb_command_0 = 0xFE;
-				TcpSendFull(s, Pack_Message(MESS_SERVER_GIVE_IP, sn, SERVER_NAME_REGISTERED, clPort));
+		const socket_t listeners[2] = { ctrlListenSock, peerListenSock };
+		for (int li = 0; li < 2; li++) {
+			socket_t ls = listeners[li];
+			if (ls == SOCK_INVALID) continue;
+			if (li == 1 && peerListenSock == ctrlListenSock) continue; // one merged socket
+			while (true) {
+				sockaddr_in from{}; socklen_t fl = sizeof(from);
+				socket_t s = accept(ls, (sockaddr*)&from, &fl);
+				if (s == SOCK_INVALID) break;
+				set_nonblocking(s); set_nodelay(s);
+				char ip[INET_ADDRSTRLEN]; inet_ntop(AF_INET, &from.sin_addr, ip, sizeof(ip));
+				PendingConn pc;
+				pc.sock = s; pc.addr = ip; pc.srcPort = ntohs(from.sin_port); pc.since = clock();
+				std::lock_guard<std::mutex> lk(pendingConnsMtx);
+				pendingConns.push_back(std::move(pc));
+				if (m_network_debug)
+					debug_net_printf("Accept: connection from %s:%d, waiting for its first message\n",
+						ip, (int)ntohs(from.sin_port));
 			}
+		}
+	}
+
+	// Turn a classified connection into a control client.
+	void NetworkClass::AdoptCtrlClient(PendingConn& pc, const std::string& firstRaw)
+	{
+		ClientCtrl cc;
+		cc.sock = pc.sock; cc.addr = pc.addr; cc.port = pc.srcPort;
+		cc.rbuf = pc.rbuf;               // whatever else already arrived stays queued
+		message_info u = Unpack_Message(firstRaw);
+		if (u.message == MESS_CLIENT_GET_IP || u.message == MESS_CLIENT_TESTADDNAME)
+			cc.dataPort = u.port;
+		// A node joining after the session's first name was registered has to be told
+		// about it now - it will not ask, because it considers itself set up as soon
+		// as the control connection is up.
+		if (serverAddname) {
+			shadow_myNCB sn{}; sn.ncb_command_0 = 0xFE;
+			TcpSendFull(pc.sock, Pack_Message(MESS_SERVER_GIVE_IP, sn, SERVER_NAME_REGISTERED, clPort));
+		}
+		{
 			std::lock_guard<std::recursive_mutex> lk(ctrlClientsMtx);
 			ctrlClients.push_back(std::move(cc));
-			if (m_network_debug)
-				debug_net_printf("AcceptCtrl: client %s:%d\n", ip, cc.port);
+		}
+		if (m_network_debug)
+			debug_net_printf("AcceptCtrl: client %s:%d\n", pc.addr.c_str(), pc.srcPort);
+		HandleServerMsg(firstRaw, pc.addr, u.port ? u.port : pc.srcPort);
+	}
 
+	// Turn a classified connection into a peer data session, attached to the LISTEN NCB that
+	// is waiting for one.
+	void NetworkClass::AdoptDataSession(PendingConn& pc, const std::string& firstRaw)
+	{
+		message_info u = Unpack_Message(firstRaw);
+		const int callerPort = u.port ? u.port : pc.srcPort;
+
+		// Find the LISTEN NCB that is waiting for an incoming data connection.
+		myNCB* listenNCB = nullptr;
+		{
+			std::lock_guard<std::mutex> lk(clientConnMutex);
+			for (auto* c : clientConnection) {
+				if (c->ncb_lsn_2 == 0) continue;
+				bool hasAlive = false;
+				{
+					std::lock_guard<std::mutex> slk(sessions_mutex);
+					auto it = tcpSessions.find(c);
+					hasAlive = (it != tcpSessions.end() && it->second->alive);
+				}
+				if (!hasAlive) { listenNCB = c; break; }
+			}
+		}
+		if (!listenNCB) {
+			// setListen hasn't run yet for this NCB — reject and let caller retry
+			if (m_network_debug)
+				debug_net_printf("AcceptPeer: WARNING no listenNCB ready, closing incoming connection from %s (will retry)\n",
+					pc.addr.c_str());
+			CLOSE_SOCKET(pc.sock);
+			return;
+		}
+
+		auto sess = std::make_shared<TcpSession>();
+		sess->sock = pc.sock;
+		sess->peerAddr = pc.addr;
+		sess->peerPort = callerPort;
+		sess->alive = true;
+		sess->ownerNCB = listenNCB;
+		sess->rbuf = pc.rbuf;            // anything that arrived behind the hello
+		sess->Touch();
+		AddSession(listenNCB, sess);
+		listenNCB->ncb_cmd_cplt_49 = NRC_GOODRET;
+		if (m_network_debug)
+			debug_net_printf("AcceptPeer: data connection from %s:%d, session listenNCB=%p name=[%.16s] call=[%.16s]\n",
+				pc.addr.c_str(), callerPort, (void*)listenNCB, listenNCB->ncb_name_26, listenNCB->ncb_callName_10);
+	}
+
+	// Read the first frame of every parked connection and hand it to whichever side owns it.
+	void NetworkClass::PollPendingConnections()
+	{
+		std::vector<PendingConn> take;
+		{
+			std::lock_guard<std::mutex> lk(pendingConnsMtx);
+			take.swap(pendingConns);
+		}
+		std::vector<PendingConn> keep;
+		for (auto& pc : take) {
+			bool ok = pc.rbuf.Poll(pc.sock);
+			if (!pc.rbuf.ready.empty()) {
+				const std::string first = pc.rbuf.ready.front();
+				pc.rbuf.ready.erase(pc.rbuf.ready.begin());
+				message_info u = Unpack_Message(first);
+				if (u.message == MESS_PEER_HELLO) {
+					AdoptDataSession(pc, first);
+				}
+				else if (u.message == MESS_CLIENT_GET_IP || u.message == MESS_CLIENT_TESTADDNAME
+					|| u.message == MESS_CLIENT_MESSAGE_LISTEN || u.message == MESS_CLIENT_MESSAGE_CALL
+					|| u.message == MESS_CLIENT_CANCEL || u.message == MESS_CLIENT_DELETE) {
+					AdoptCtrlClient(pc, first);
+				}
+				else {
+					if (m_network_debug)
+						debug_net_printf("Accept: connection from %s opened with %s, dropping it\n",
+							pc.addr.c_str(), MessageIndexToText(u.message));
+					CLOSE_SOCKET(pc.sock);
+				}
+				continue;
+			}
+			if (!ok) { CLOSE_SOCKET(pc.sock); continue; }
+			if ((long)((clock() - pc.since) * 1000 / CLOCKS_PER_SEC) >= PENDING_TIMEOUT_MS) {
+				if (m_network_debug)
+					debug_net_printf("Accept: connection from %s said nothing in %ld ms, dropping it\n",
+						pc.addr.c_str(), PENDING_TIMEOUT_MS);
+				CLOSE_SOCKET(pc.sock);
+				continue;
+			}
+			keep.push_back(std::move(pc));
+		}
+		if (!keep.empty()) {
+			std::lock_guard<std::mutex> lk(pendingConnsMtx);
+			for (auto& pc : keep) pendingConns.push_back(std::move(pc));
 		}
 	}
 
@@ -1188,67 +1348,6 @@ namespace MyNetworkLib {
 	// ---------------------------------------------------------------------------
 	// Accept incoming peer data connections (both roles)
 	// ---------------------------------------------------------------------------
-	void NetworkClass::AcceptPeerConnections()
-	{
-		if (peerListenSock == SOCK_INVALID) return;
-		while (true) {
-			sockaddr_in from{}; socklen_t fl = sizeof(from);
-			socket_t s = accept(peerListenSock, (sockaddr*)&from, &fl);
-			if (s == SOCK_INVALID) break;
-			set_nonblocking(s); set_nodelay(s);
-			char ip[INET_ADDRSTRLEN]; inet_ntop(AF_INET, &from.sin_addr, ip, sizeof(ip));
-			int callerClPort = ntohs(from.sin_port); // fallback na ephemeral
-			for (int i = 0; i < (int)NetworkName.size(); i++)
-				if (clientIpPort[i].adress == std::string(ip)) { callerClPort = clientIpPort[i].port; break; }
-			if (m_network_debug)
-				debug_net_printf("AcceptPeer: data connection from %s\n", ip);
-
-			// Find the LISTEN NCB that is waiting for an incoming data connection.
-			// setListen() (called from PollCtrlSocket → HandleClientMsg a few lines above
-			// in locUpdateNetworkSingleThread) sets ncb_lsn_2 = 20 before we get here,
-			// so this lookup should always succeed when the LISTEN_ACCEPT and the TCP
-			// connect() from the caller arrive in the same tick (true on loopback).
-			// If for some reason it hasn't run yet, close this socket and let the
-			// caller reconnect on the next tick.
-			myNCB* listenNCB = nullptr;
-			{
-				std::lock_guard<std::mutex> lk(clientConnMutex);
-				for (auto* c : clientConnection) {
-					if (c->ncb_lsn_2 == 0) continue;
-					bool hasAlive = false;
-					{
-						std::lock_guard<std::mutex> slk(sessions_mutex);
-						auto it = tcpSessions.find(c);
-						hasAlive = (it != tcpSessions.end() && it->second->alive);
-					}
-					if (!hasAlive) { listenNCB = c; break; }
-				}
-			}
-
-			if (!listenNCB) {
-				// setListen hasn't run yet for this NCB — reject and let caller retry
-				if (m_network_debug)
-					debug_net_printf("AcceptPeer: WARNING no listenNCB ready, closing incoming connection from %s (will retry)\n", ip);
-
-				CLOSE_SOCKET(s);
-				continue;
-			}
-
-			auto sess = std::make_shared<TcpSession>();
-			sess->sock = s;
-			sess->peerAddr = std::string(ip);
-			sess->peerPort = callerClPort;
-			sess->alive = true;
-			sess->ownerNCB = listenNCB;
-			sess->Touch();
-			AddSession(listenNCB, sess);
-			listenNCB->ncb_cmd_cplt_49 = NRC_GOODRET;
-			if (m_network_debug)
-				debug_net_printf("AcceptPeer: session listenNCB=%p name=[%.16s] call=[%.16s]\n", (void*)listenNCB, listenNCB->ncb_name_26, listenNCB->ncb_callName_10);
-
-		}
-	}
-
 	// ---------------------------------------------------------------------------
 	// Poll all data sessions
 	// ---------------------------------------------------------------------------
@@ -1402,6 +1501,9 @@ namespace MyNetworkLib {
 		sess->ownerNCB = ncb;
 		sess->Touch();
 		AddSession(ncb, sess);
+		// Announce what this connection is for; see MESS_PEER_HELLO.
+		shadow_myNCB hello{}; hello.ncb_command_0 = 0xFE;
+		sess->Send(Pack_Message(MESS_PEER_HELLO, hello, 0, clPort));
 		return true;
 	}
 
@@ -1622,9 +1724,10 @@ namespace MyNetworkLib {
 	void NetworkClass::locUpdateNetworkSingleThread()
 	{
 		if (clIam_client && ctrlSock == SOCK_INVALID) ConnectToServer();
-		if (clIam_server) { AcceptCtrlClients(); PollCtrlClients(); }
+		AcceptIncoming();
+		PollPendingConnections();
+		if (clIam_server) PollCtrlClients();
 		if (clIam_client) PollCtrlSocket();
-		AcceptPeerConnections();
 		PollSessions();
 		if (clIam_client) UpdateClient();
 	}

@@ -39123,6 +39123,13 @@ void write_pngs()
 }
 
 //----- (00056210) --------------------------------------------------------
+static int ClampPort(int port)
+{
+	if (port < 0) return 0;
+	if (port > 99999) return 99999;
+	return port;
+}
+
 void sub_56210_process_command_line(int argc, char** argv)//237210
 {
 	int32_t x_DWORD_355208;//3551CE+3A DWORD
@@ -39278,27 +39285,26 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 			{
 				x_BYTE_355238_music2 = 1;
 			}
-			else if (!_stricmp("client", (char*)actarg))//set to all one computer adress
+			// client <server ip> <server port> <own port>
+			else if (!_stricmp("client", (char*)actarg))
 			{
 				Iam_client = true;
 				strcpy(serverIP, (char*)argv[++argnumber]);
-				ServerPort = atoi(argv[++argnumber]);
-				if (ServerPort < 0)ServerPort = 0;
-				if (ServerPort > 99999)ServerPort = 99999;
-				NetworkPort = atoi(argv[++argnumber]);
-				if (NetworkPort < 0)
-					NetworkPort = 0;
-				if (NetworkPort > 99999)
-					NetworkPort = 99999;
+				ServerPort = ClampPort(atoi(argv[++argnumber]));
+				NetworkPort = ClampPort(atoi(argv[++argnumber]));
 			}
-			else if (!_stricmp("server", (char*)actarg))//set to all one computer adress
+			// server <own port> - and nothing else.  The host holds one port, which serves
+			// both the control traffic it answers and the game data it exchanges, so there is
+			// nothing left to say: its address is loopback and its data port is that same
+			// port.  It used to need a "client 127.0.0.1 <same port> <another port>" after
+			// this, which named the host twice and gave it a second port to keep track of.
+			else if (!_stricmp("server", (char*)actarg))
 			{
 				Iam_server = true;
-				ServerPort = atoi(argv[++argnumber]);
-				if (ServerPort < 0)
-					ServerPort = 0;
-				if (ServerPort > 99999)
-					ServerPort = 99999;
+				Iam_client = true;              // the host plays too, through its own server
+				ServerPort = ClampPort(atoi(argv[++argnumber]));
+				NetworkPort = ServerPort;
+				strcpy(serverIP, "127.0.0.1");
 			}
 		}
 		argnumber++;

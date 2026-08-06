@@ -94,6 +94,10 @@ typedef struct message_info {
 };
 #pragma pack()
 
+// Defined in port_net.cpp: a connection that has been accepted but has not said yet whether
+// it carries control traffic or game data.
+struct PendingConn;
+
 namespace MyNetworkLib {
 
 	class NetworkClass {
@@ -129,10 +133,14 @@ namespace MyNetworkLib {
 		std::map<std::string, PeerInfo> directPeers;
 
 		void ConnectToServer();
-		void AcceptCtrlClients();
+		// One port carries both roles, so an accepted connection is parked until its first
+		// message says whether it is a control client or a peer data session.
+		void AcceptIncoming();
+		void PollPendingConnections();
+		void AdoptCtrlClient(::PendingConn& pc, const std::string& firstRaw);
+		void AdoptDataSession(::PendingConn& pc, const std::string& firstRaw);
 		void PollCtrlClients();
 		void PollCtrlSocket();
-		void AcceptPeerConnections();
 		void PollSessions();
 		bool ConnectDataToPeer(myNCB* ncb, const std::string& addr, int dataPort);
 		void HandleServerMsg(const std::string& raw, const std::string& senderAddr, int senderDataPort);
