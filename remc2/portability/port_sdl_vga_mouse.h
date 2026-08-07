@@ -38,7 +38,7 @@ void VGA_Resize(int width, int height);
 void VGA_Blit(Uint8* srcBuffer);
 void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight);
 void SetPolygons(ResourceType state, const std::vector<RenderPolygon>& polygons);
-void SubVulkanBlit(SDL_Surface* surface);
+void SubVulkanBlit(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect);
 void VGA_Debug_Blit(int width, int height, Uint8* srcBuffer);
 void VGA_Set_Palette(Uint8* Palettebuffer);
 void VGA_Set_Palette2(Uint8* Palettebuffer);

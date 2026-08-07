@@ -1025,10 +1025,19 @@ bool VulkanPolygonRenderer::CreateOverlayPipeline()
 	if (vkCreatePipelineLayout(m_device, &layoutInfo, nullptr, &m_overlayPipelineLayout) != VK_SUCCESS)
 		return false;
 
+	VkPipelineDepthStencilStateCreateInfo depthStencil{};
+	depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+	depthStencil.depthTestEnable = VK_FALSE;
+	depthStencil.depthWriteEnable = VK_FALSE;
+	depthStencil.depthCompareOp = VK_COMPARE_OP_ALWAYS;
+	depthStencil.depthBoundsTestEnable = VK_FALSE;
+	depthStencil.stencilTestEnable = VK_FALSE;
+
 	VkGraphicsPipelineCreateInfo pipelineInfo{};
 	pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
 	pipelineInfo.stageCount = 2;
 	pipelineInfo.pStages = stages;
+	pipelineInfo.pDepthStencilState = &depthStencil;
 	pipelineInfo.pVertexInputState = &vertexInput;
 	pipelineInfo.pInputAssemblyState = &inputAssembly;
 	pipelineInfo.pViewportState = &viewportState;
@@ -1087,30 +1096,47 @@ bool VulkanPolygonRenderer::CreateFrameData()
 	return true;
 }
 
-void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, VkCommandBuffer commandBuffer)
+void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect, VkCommandBuffer commandBuffer)
 {
-	// Lazily (re)create the scratch surface if it's missing or no longer
-	// matches the overlay dimensions/format (e.g. after a Resize()).
+	constexpr Uint32 kOverlayTargetFormat = SDL_PIXELFORMAT_BGRA32;
+
 	if (!m_overlayScaledSurface ||
 		(uint32_t)m_overlayScaledSurface->w != m_overlayWidth ||
-		(uint32_t)m_overlayScaledSurface->h != m_overlayHeight ||
-		m_overlayScaledSurface->format->format != surface->format->format)
+		(uint32_t)m_overlayScaledSurface->h != m_overlayHeight)
 	{
 		if (m_overlayScaledSurface)
 		{
 			SDL_FreeSurface(m_overlayScaledSurface);
 		}
 		m_overlayScaledSurface = SDL_CreateRGBSurfaceWithFormat(
-			0, (int)m_overlayWidth, (int)m_overlayHeight, 32, surface->format->format);
+			0, (int)m_overlayWidth, (int)m_overlayHeight, 32, kOverlayTargetFormat);
 		assert(m_overlayScaledSurface && "Failed to create overlay scratch surface");
 	}
 
-	// Scale the source surface into the destination-sized scratch surface.
-	// SDL_BlitScaled handles both up- and down-scaling.
-	if (SDL_BlitScaled(surface, nullptr, m_overlayScaledSurface, nullptr) != 0)
+	// Clamp srcRect to the source surface bounds - guards against a rect
+	// computed from stale dimensions (e.g. after the source surface itself
+	// was resized elsewhere).
+	SDL_Rect clampedSrc{};
+	SDL_Rect srcBounds{ 0, 0, surface->w, surface->h };
+	SDL_IntersectRect(&srcRect, &srcBounds, &clampedSrc);
+
+	// Clamp destRect to the scratch surface bounds.
+	SDL_Rect clampedDest{};
+	SDL_Rect destBounds{ 0, 0, (int)m_overlayWidth, (int)m_overlayHeight };
+	SDL_IntersectRect(&destRect, &destBounds, &clampedDest);
+
+	// destRect doesn't cover the whole scratch surface, so clear it first -
+	// otherwise stale contents from a previous frame show up outside destRect.
+	bool fillsWholeSurface = (clampedDest.x == 0 && clampedDest.y == 0 &&
+		clampedDest.w == (int)m_overlayWidth && clampedDest.h == (int)m_overlayHeight);
+	if (!fillsWholeSurface)
 	{
-		// SDL_GetError() will have details; handle/log as appropriate.
-		assert(false && "SDL_BlitScaled failed");
+		SDL_FillRect(m_overlayScaledSurface, nullptr, 0); // zero = transparent black in BGRA32
+	}
+
+	if (SDL_BlitScaled(surface, &clampedSrc, m_overlayScaledSurface, &clampedDest) != 0)
+	{
+		fprintf(stderr, "UploadOverlaySurface: SDL_BlitScaled failed: %s\n", SDL_GetError());
 		return;
 	}
 
@@ -1221,7 +1247,7 @@ void VulkanPolygonRenderer::DestroyFrameData()
 	}
 }
 
-bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, const std::vector<RenderPolygon>& polygons)
+bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect, const std::vector<RenderPolygon>& polygons)
 {
 	FrameData& frame = m_frames[m_currentFrame];
 	vkWaitForFences(m_device, 1, &frame.inFlight, VK_TRUE, UINT64_MAX);
@@ -1253,7 +1279,7 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, const std::vector<R
 	rpBegin.clearValueCount = 1;
 	rpBegin.pClearValues = &clearColor;
 
-	UploadOverlaySurface(surface, frame.commandBuffer);
+	UploadOverlaySurface(surface, srcRect, destRect, frame.commandBuffer);
 
 	vkCmdBeginRenderPass(frame.commandBuffer, &rpBegin, VK_SUBPASS_CONTENTS_INLINE);
 

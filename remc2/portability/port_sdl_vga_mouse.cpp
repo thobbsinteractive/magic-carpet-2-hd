@@ -1099,9 +1099,9 @@ void SetPolygons(ResourceType state, const std::vector<RenderPolygon>& polygons)
 		m_polygons = polygons;
 }
 
-void SubVulkanBlit(SDL_Surface* surface)
+void SubVulkanBlit(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect)
 {
-	if (m_vulkanRenderer->BeginFrame(surface, m_polygons))
+	if (m_vulkanRenderer->BeginFrame(surface, srcRect, destRect, m_polygons))
 	{
 		m_vulkanRenderer->EndFrame();
 	}
@@ -1151,7 +1151,7 @@ void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight) {
 
 	if (m_vulkanRenderer)
 	{
-		SubVulkanBlit(m_gameRGBASurface);
+		SubVulkanBlit(m_gameRGBASurface, rectSrc, dscrect);
 	}
 	else
 	{
