@@ -193,6 +193,7 @@ private:
 	int m_windowWidth = 0;
 	int m_windowHeight = 0;
 	SDL_Window* m_window = nullptr;
+	SDL_Surface* m_overlayScaledSurface = nullptr;
 
 	bool m_initialized = false;
 };

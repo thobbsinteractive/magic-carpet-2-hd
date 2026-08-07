@@ -14,7 +14,7 @@ namespace
 {
 	std::string ShaderPath(const char* filename)
 	{
-		return std::string("shaders/") + filename;
+		return std::string("S://Repositories/magic-carpet-2-hd/x64/Debug-nonASA/shaders/") + filename;
 	}
 
 	std::vector<char> ReadFile(const std::string& path)
@@ -1089,20 +1089,45 @@ bool VulkanPolygonRenderer::CreateFrameData()
 
 void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, VkCommandBuffer commandBuffer)
 {
-	// Normalize to a tight 32bpp buffer matching the image format, handling
-	// SDL's pitch padding if present.
-	uint32_t rowBytes = m_overlayWidth * 4;
-	if ((uint32_t)surface->pitch == rowBytes)
+	// Lazily (re)create the scratch surface if it's missing or no longer
+	// matches the overlay dimensions/format (e.g. after a Resize()).
+	if (!m_overlayScaledSurface ||
+		(uint32_t)m_overlayScaledSurface->w != m_overlayWidth ||
+		(uint32_t)m_overlayScaledSurface->h != m_overlayHeight ||
+		m_overlayScaledSurface->format->format != surface->format->format)
 	{
-		std::memcpy(m_overlayStagingMapped, surface->pixels, (size_t)rowBytes * m_overlayHeight);
+		if (m_overlayScaledSurface)
+		{
+			SDL_FreeSurface(m_overlayScaledSurface);
+		}
+		m_overlayScaledSurface = SDL_CreateRGBSurfaceWithFormat(
+			0, (int)m_overlayWidth, (int)m_overlayHeight, 32, surface->format->format);
+		assert(m_overlayScaledSurface && "Failed to create overlay scratch surface");
+	}
+
+	// Scale the source surface into the destination-sized scratch surface.
+	// SDL_BlitScaled handles both up- and down-scaling.
+	if (SDL_BlitScaled(surface, nullptr, m_overlayScaledSurface, nullptr) != 0)
+	{
+		// SDL_GetError() will have details; handle/log as appropriate.
+		assert(false && "SDL_BlitScaled failed");
+		return;
+	}
+
+	SDL_Surface* scaled = m_overlayScaledSurface;
+	const uint32_t rowBytes = m_overlayWidth * 4;
+
+	if ((uint32_t)scaled->pitch == rowBytes)
+	{
+		std::memcpy(m_overlayStagingMapped, scaled->pixels, (size_t)rowBytes * m_overlayHeight);
 	}
 	else
 	{
 		uint8_t* dst = (uint8_t*)m_overlayStagingMapped;
-		const uint8_t* src = (const uint8_t*)surface->pixels;
+		const uint8_t* src = (const uint8_t*)scaled->pixels;
 		for (uint32_t y = 0; y < m_overlayHeight; ++y)
 		{
-			std::memcpy(dst + y * rowBytes, src + y * surface->pitch, rowBytes);
+			std::memcpy(dst + y * rowBytes, src + y * scaled->pitch, rowBytes);
 		}
 	}
 
@@ -1112,6 +1137,8 @@ void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, VkCommand
 	toTransferDst.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
 	toTransferDst.srcAccessMask = 0;
 	toTransferDst.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	toTransferDst.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	toTransferDst.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	toTransferDst.image = m_overlayImage;
 	toTransferDst.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 	vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT,
@@ -1130,6 +1157,8 @@ void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, VkCommand
 	toShaderRead.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 	toShaderRead.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
 	toShaderRead.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+	toShaderRead.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	toShaderRead.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	toShaderRead.image = m_overlayImage;
 	toShaderRead.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 	vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
