@@ -1096,7 +1096,7 @@ bool VulkanPolygonRenderer::CreateFrameData()
 	return true;
 }
 
-void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect, VkCommandBuffer commandBuffer)
+void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, SDL_Rect srcRect, VkCommandBuffer commandBuffer)
 {
 	constexpr Uint32 kOverlayTargetFormat = SDL_PIXELFORMAT_BGRA32;
 
@@ -1113,28 +1113,15 @@ void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, SDL_Rect 
 		assert(m_overlayScaledSurface && "Failed to create overlay scratch surface");
 	}
 
-	// Clamp srcRect to the source surface bounds - guards against a rect
-	// computed from stale dimensions (e.g. after the source surface itself
-	// was resized elsewhere).
+	// Clamp srcRect to the source surface bounds.
 	SDL_Rect clampedSrc{};
 	SDL_Rect srcBounds{ 0, 0, surface->w, surface->h };
 	SDL_IntersectRect(&srcRect, &srcBounds, &clampedSrc);
 
-	// Clamp destRect to the scratch surface bounds.
-	SDL_Rect clampedDest{};
-	SDL_Rect destBounds{ 0, 0, (int)m_overlayWidth, (int)m_overlayHeight };
-	SDL_IntersectRect(&destRect, &destBounds, &clampedDest);
-
-	// destRect doesn't cover the whole scratch surface, so clear it first -
-	// otherwise stale contents from a previous frame show up outside destRect.
-	bool fillsWholeSurface = (clampedDest.x == 0 && clampedDest.y == 0 &&
-		clampedDest.w == (int)m_overlayWidth && clampedDest.h == (int)m_overlayHeight);
-	if (!fillsWholeSurface)
-	{
-		SDL_FillRect(m_overlayScaledSurface, nullptr, 0); // zero = transparent black in BGRA32
-	}
-
-	if (SDL_BlitScaled(surface, &clampedSrc, m_overlayScaledSurface, &clampedDest) != 0)
+	// destRect is always the full scratch surface now - letterboxing to the
+	// window happens via viewport in DrawOverlay instead, so no partial-fill
+	// clear is needed here.
+	if (SDL_BlitScaled(surface, &clampedSrc, m_overlayScaledSurface, nullptr) != 0)
 	{
 		fprintf(stderr, "UploadOverlaySurface: SDL_BlitScaled failed: %s\n", SDL_GetError());
 		return;
@@ -1159,7 +1146,7 @@ void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, SDL_Rect 
 
 	VkImageMemoryBarrier toTransferDst{};
 	toTransferDst.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-	toTransferDst.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED; // discard previous contents - we overwrite fully every frame
+	toTransferDst.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
 	toTransferDst.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
 	toTransferDst.srcAccessMask = 0;
 	toTransferDst.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
@@ -1279,7 +1266,7 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 	rpBegin.clearValueCount = 1;
 	rpBegin.pClearValues = &clearColor;
 
-	UploadOverlaySurface(surface, srcRect, destRect, frame.commandBuffer);
+	UploadOverlaySurface(surface, srcRect, frame.commandBuffer);
 
 	vkCmdBeginRenderPass(frame.commandBuffer, &rpBegin, VK_SUBPASS_CONTENTS_INLINE);
 
@@ -1296,7 +1283,7 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 	if (polygons.size() > 0)
 		DrawPolygonsWireframe(polygons);
 
-	DrawOverlay(frame.commandBuffer);
+	DrawOverlay(destRect, frame.commandBuffer);
 
 	return true;
 }
@@ -1454,12 +1441,38 @@ void VulkanPolygonRenderer::EndFrame()
 	m_currentFrame = (m_currentFrame + 1) % kFramesInFlight;
 }
 
-void VulkanPolygonRenderer::DrawOverlay(VkCommandBuffer commandBuffer)
+void VulkanPolygonRenderer::DrawOverlay(SDL_Rect dscrect, VkCommandBuffer commandBuffer)
 {
+	VkViewport overlayViewport{};
+	overlayViewport.x = (float)dscrect.x;
+	overlayViewport.y = (float)dscrect.y;
+	overlayViewport.width = (float)dscrect.w;
+	overlayViewport.height = (float)dscrect.h;
+	overlayViewport.minDepth = 0.0f;
+	overlayViewport.maxDepth = 1.0f;
+	vkCmdSetViewport(commandBuffer, 0, 1, &overlayViewport);
+
+	// Scissor to the same rect so nothing spills into the letterbox bars,
+	// even though the fullscreen triangle's clip-space coords already cover
+	// the full -1..1 range - the viewport alone maps that range onto
+	// dscrect, but without a matching scissor, rasterization can still touch
+	// pixels outside it depending on the driver/triangle setup.
+	VkRect2D overlayScissor{};
+	overlayScissor.offset = { dscrect.x, dscrect.y };
+	overlayScissor.extent = { (uint32_t)dscrect.w, (uint32_t)dscrect.h };
+	vkCmdSetScissor(commandBuffer, 0, 1, &overlayScissor);
+
 	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_overlayPipeline);
 	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
 		m_overlayPipelineLayout, 0, 1, &m_overlayDescriptorSet, 0, nullptr);
-	vkCmdDraw(commandBuffer, 3, 1, 0, 0); // fullscreen triangle, no vertex/index buffers
+	vkCmdDraw(commandBuffer, 3, 1, 0, 0);
+
+	// Restore full-extent viewport/scissor so anything drawn after this in
+	// the same render pass isn't affected.
+	VkViewport fullViewport{ 0, 0, (float)m_swapchainExtent.width, (float)m_swapchainExtent.height, 0.0f, 1.0f };
+	VkRect2D fullScissor{ {0, 0}, m_swapchainExtent };
+	vkCmdSetViewport(commandBuffer, 0, 1, &fullViewport);
+	vkCmdSetScissor(commandBuffer, 0, 1, &fullScissor);
 }
 
 void VulkanPolygonRenderer::Shutdown()

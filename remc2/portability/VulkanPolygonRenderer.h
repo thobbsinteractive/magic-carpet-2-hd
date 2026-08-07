@@ -67,8 +67,8 @@ public:
 	void SetCullMode(VkCullModeFlags cullMode); // default: VK_CULL_MODE_NONE
 
 	bool BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect, const std::vector<RenderPolygon>& polygons);
-	void UploadOverlaySurface(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect, VkCommandBuffer commandBuffer);
-	void DrawOverlay(VkCommandBuffer commandBuffer);
+	void UploadOverlaySurface(SDL_Surface* surface, SDL_Rect srcRect, VkCommandBuffer commandBuffer);
+	void DrawOverlay(SDL_Rect dscrect, VkCommandBuffer commandBuffer);
 	void DrawPolygons(const std::vector<RenderPolygon>& polygons);
 	void DrawPolygonsWireframe(const std::vector<RenderPolygon>& polygons);
 	void EndFrame();
