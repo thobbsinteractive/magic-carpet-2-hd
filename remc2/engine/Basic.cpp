@@ -2196,8 +2196,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 	unsigned int v117; // ebx
 	x_BYTE* v118; // edi
 	x_BYTE* v119; // edx
-	x_BYTE* v118a; // alpha mirror of v118
-	x_BYTE* v119a; // alpha mirror of v119
+	x_BYTE* v118a = nullptr; // alpha mirror of v118
+	x_BYTE* v119a = nullptr; // alpha mirror of v119
 	int v120; // ecx
 	char v121; // al
 	char v122; // al
@@ -2226,8 +2226,6 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 
 	if (pdwScreenAlphaBuffer != nullptr)
 		pixel_buffer_alpha_index = pdwScreenAlphaBuffer + x_DWORD_18063C_sprite_sizex + screenWidth_18062C * x_DWORD_180650_positiony;
-	else
-		pixel_buffer_alpha_index = nullptr;
 
 	if (x_WORD_180660_VGA_type_resolution & 1)//if 320x200 is resolved, the value is halved
 	{
@@ -2323,7 +2321,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							v133 = v79;
 							startOffsetX = -1;
 							ptrScreenBufferLineStart = ptrScreenBuffer;
-							ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 							do
 							{
 								while (1)
@@ -2334,7 +2333,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 										if ((startOffsetX & 0x80u) == 0)
 											break;
 										ptrScreenBuffer += startOffsetX;
-										ptrScreenAlphaBuffer += startOffsetX;
+										if (pdwScreenAlphaBuffer != nullptr)
+											ptrScreenAlphaBuffer += startOffsetX;
 										width = width - startOffsetX;
 									}
 									if (!startOffsetX)
@@ -2347,14 +2347,17 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 										if ((width & 0x80u) == 0)
 											*ptrScreenBuffer = pixel;
 										--ptrScreenBuffer;
-										--ptrScreenAlphaBuffer;
+										if (pdwScreenAlphaBuffer != nullptr)
+											--ptrScreenAlphaBuffer;
 										--posWidth;
 									} while (posWidth);
 								}
 								ptrScreenBufferLineStart -= screenWidth_18062C;
-								ptrScreenAlphaBufferLineStart -= screenWidth_18062C;
+								if (pdwScreenAlphaBuffer != nullptr)
+									ptrScreenAlphaBufferLineStart -= screenWidth_18062C;
 								ptrScreenBuffer = ptrScreenBufferLineStart;
-								ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+								if (pdwScreenAlphaBuffer != nullptr)
+									ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 								width = __PAIR__(height, v133) - 256;
 							} while (height);
 						}
@@ -2373,7 +2376,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 				else if (x_WORD_E36D4 & 2)
 				{
 					ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + tilex + pixel_buffer_index);
-					ptrScreenAlphaBuffer = (screenWidth_18062C * (height + tiley) + tilex + pixel_buffer_alpha_index);
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBuffer = (screenWidth_18062C * (height + tiley) + tilex + pixel_buffer_alpha_index);
 					v92 = 0;
 					v93 = x_DWORD_180634_screen_width - tilex;
 					if (v93 >= 0)
@@ -2382,7 +2386,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						v135 = v93;
 						startOffsetX = -1;
 						ptrScreenBufferLineStart = ptrScreenBuffer;
-						ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+						if (pdwScreenAlphaBuffer != nullptr)
+							ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 						do
 						{
 							while (1)
@@ -2393,7 +2398,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 									if ((startOffsetX & 0x80u) == 0)
 										break;
 									ptrScreenBuffer -= startOffsetX;
-									ptrScreenAlphaBuffer -= startOffsetX;
+									if (pdwScreenAlphaBuffer != nullptr)
+										ptrScreenAlphaBuffer -= startOffsetX;
 									width = startOffsetX + width;
 								}
 								if (!startOffsetX)
@@ -2406,15 +2412,18 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 									if ((width & 0x80u) == 0)
 									{
 										*ptrScreenBuffer++ = v96;
-										ptrScreenAlphaBuffer++;
+										if (pdwScreenAlphaBuffer != nullptr)
+											ptrScreenAlphaBuffer++;
 									}
 									--v92;
 								} while (v92);
 							}
 							ptrScreenBufferLineStart -= screenWidth_18062C;
-							ptrScreenAlphaBufferLineStart -= screenWidth_18062C;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBufferLineStart -= screenWidth_18062C;
 							ptrScreenBuffer = ptrScreenBufferLineStart;
-							ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 							width = __PAIR__(height, v135) - 256;
 						} while (width);
 					}
@@ -2425,12 +2434,14 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 				if (x_DWORD_180634_screen_width - tilex >= 0)
 				{
 					ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-					ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_alpha_index);
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_alpha_index);
 					v69l = x_DWORD_180634_screen_width - tilex;
 					v69h = height;//ebx
 					v132 = v69l;//ebp-6
 					ptrScreenBufferLineStart = ptrScreenBuffer;//edx edi
-					ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 					v72l = 0;//ecx
 					do
 					{
@@ -2458,7 +2469,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 										if ((v69l & 0x80u) == 0)//fix
 										{
 											*ptrScreenBuffer++ = v78;
-											ptrScreenAlphaBuffer++;
+											if (pdwScreenAlphaBuffer != nullptr)
+												ptrScreenAlphaBuffer++;
 										}
 										v72l--;
 									} while (v72l);
@@ -2474,15 +2486,18 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 								if ((v69l & 0x80u) == 0)//fix
 								{
 									*ptrScreenBuffer++ = v74;
-									ptrScreenAlphaBuffer++;
+									if (pdwScreenAlphaBuffer != nullptr)
+										ptrScreenAlphaBuffer++;
 								}
 								v72l--;
 							} while (v72l);
 						}
 						ptrScreenBufferLineStart += screenWidth_18062C;
-						ptrScreenAlphaBufferLineStart += screenWidth_18062C;
+						if (pdwScreenAlphaBuffer != nullptr)
+							ptrScreenAlphaBufferLineStart += screenWidth_18062C;
 						ptrScreenBuffer = ptrScreenBufferLineStart;
-						ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+						if (pdwScreenAlphaBuffer != nullptr)
+							ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 
 						v69l = /*(v69l&0xff00)+*/v132;//fix
 						v69h--;
@@ -2495,11 +2510,13 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 			if (x_WORD_E36D4 & 2)
 			{
 				ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + width + tilex + pixel_buffer_index);
-				ptrScreenAlphaBuffer = (screenWidth_18062C * (height + tiley) + width + tilex + pixel_buffer_alpha_index);
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer = (screenWidth_18062C * (height + tiley) + width + tilex + pixel_buffer_alpha_index);
 				posWidth = 0;
 				startOffsetX = -1;
 				ptrScreenBufferLineStart = ptrScreenBuffer;
-				ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 				do
 				{
 					while (1)
@@ -2515,14 +2532,16 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 								break;
 							}
 							ptrScreenBuffer += startOffsetX;
-							ptrScreenAlphaBuffer += startOffsetX;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer += startOffsetX;
 							v12 = *texture++;
 							posWidth = v12;
 							do
 							{
 								v13 = *texture++;
 								*ptrScreenBuffer-- = v13;
-								ptrScreenAlphaBuffer--;
+								if (pdwScreenAlphaBuffer != nullptr)
+									ptrScreenAlphaBuffer--;
 								--posWidth;
 							} while (posWidth);
 						}
@@ -2533,25 +2552,30 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						{
 							pixel = *texture++;
 							*ptrScreenBuffer-- = pixel;
-							ptrScreenAlphaBuffer--;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer--;
 							--posWidth;
 						} while (posWidth);
 					}
 					ptrScreenBufferLineStart -= screenWidth_18062C;
-					ptrScreenAlphaBufferLineStart -= screenWidth_18062C;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBufferLineStart -= screenWidth_18062C;
 					ptrScreenBuffer = ptrScreenBufferLineStart;
-					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 					--height;
 				} while (height);
 			}
 			else
 			{
 				ptrScreenBuffer = (screenWidth_18062C * tiley + width + tilex + pixel_buffer_index);
-				ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + width + tilex + pixel_buffer_alpha_index);
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + width + tilex + pixel_buffer_alpha_index);
 				v15 = 0;
 				startOffsetX = -1;
 				ptrScreenBufferLineStart = ptrScreenBuffer;
-				ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 				do
 				{
 					while (1)
@@ -2565,14 +2589,16 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 								break;
 							}
 							ptrScreenBuffer += startOffsetX;
-							ptrScreenAlphaBuffer += startOffsetX;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer += startOffsetX;
 							v19 = *texture++;
 							v15 = v19;
 							do
 							{
 								v20 = *texture++;
 								*ptrScreenBuffer-- = v20;
-								ptrScreenAlphaBuffer--;
+								if (pdwScreenAlphaBuffer != nullptr)
+									ptrScreenAlphaBuffer--;
 								--v15;
 							} while (v15);
 						}
@@ -2583,12 +2609,18 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						{
 							v18 = *texture++;
 							*ptrScreenBuffer-- = v18;
-							ptrScreenAlphaBuffer--;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer--;
 							--v15;
 						} while (v15);
 					}
 					ptrScreenBufferLineStart += screenWidth_18062C;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBufferLineStart += screenWidth_18062C;
+
 					ptrScreenBuffer = ptrScreenBufferLineStart;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 					--height;
 				} while (height);
 			}
@@ -2598,11 +2630,13 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 			if (x_WORD_E36D4 & 2)
 			{
 				ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + tilex + pixel_buffer_index);
-				ptrScreenAlphaBuffer = (screenWidth_18062C * (height + tiley) + tilex + pixel_buffer_alpha_index);
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer = (screenWidth_18062C * (height + tiley) + tilex + pixel_buffer_alpha_index);
 				v29 = 0;
 				startOffsetX = -1;
 				ptrScreenBufferLineStart = ptrScreenBuffer;
-				ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 				do
 				{
 					while (1)
@@ -2630,13 +2664,16 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						qmemcpy(ptrScreenBuffer, texture, v29);
 						texture += v29;
 						ptrScreenBuffer += v29;
-						ptrScreenAlphaBuffer += v29;
+						if (pdwScreenAlphaBuffer != nullptr)
+							ptrScreenAlphaBuffer += v29;
 						v29 = 0;
 					}
 					ptrScreenBufferLineStart -= screenWidth_18062C;
-					ptrScreenAlphaBufferLineStart -= screenWidth_18062C;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBufferLineStart -= screenWidth_18062C;
 					ptrScreenBuffer = ptrScreenBufferLineStart;
-					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 					--height;
 				} while (height);
 			}
@@ -2644,10 +2681,12 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 			{
 				v35 = x_DWORD_E3890;
 				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-				ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_alpha_index);
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_alpha_index);
 				v37 = 0;
 				ptrScreenBufferLineStart = ptrScreenBuffer;
-				ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 				do
 				{
 					while (1)
@@ -2658,7 +2697,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							if ((startOffsetX & 0x80u) == 0)
 								break;
 							ptrScreenBuffer -= (char)startOffsetX;
-							ptrScreenAlphaBuffer -= (char)startOffsetX;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer -= (char)startOffsetX;
 						}
 						if (!startOffsetX)
 							break;
@@ -2669,24 +2709,29 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							v40 = *texture++;
 							v40 = *ptrScreenBuffer;
 							*ptrScreenBuffer++ = *(x_BYTE*)(v40 + v35);
-							ptrScreenAlphaBuffer++;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer++;
 							--v37;
 						} while (v37);
 					}
 					ptrScreenBufferLineStart += screenWidth_18062C;
-					ptrScreenAlphaBufferLineStart += screenWidth_18062C;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBufferLineStart += screenWidth_18062C;
 					ptrScreenBuffer = ptrScreenBufferLineStart;
-					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 					--height;
 				} while (height);
 			}
 			else if (x_WORD_E36D4 & 8)
 			{
 				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-				ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_alpha_index);
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_alpha_index);
 				v42 = 0;
 				ptrScreenBufferLineStart = ptrScreenBuffer;
-				ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 				v140 = height;
 				for (i = setbyte; ; i = setbyte)
 				{
@@ -2705,7 +2750,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 								{
 									i = setbyte;
 									++ptrScreenBuffer;
-									++ptrScreenAlphaBuffer;
+									if (pdwScreenAlphaBuffer != nullptr)
+										++ptrScreenAlphaBuffer;
 								}
 								--v42;
 							} while (v42);
@@ -2721,7 +2767,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							{
 								i = setbyte;
 								*ptrScreenBuffer++ = v45;
-								ptrScreenAlphaBuffer++;
+								if (pdwScreenAlphaBuffer != nullptr)
+									ptrScreenAlphaBuffer++;
 							}
 							--v42;
 						} while (v42);
@@ -2742,17 +2789,21 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						}
 					}
 					ptrScreenBufferLineStart += screenWidth_18062C;
-					ptrScreenAlphaBufferLineStart += screenWidth_18062C;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBufferLineStart += screenWidth_18062C;
 					ptrScreenBuffer = ptrScreenBufferLineStart;
-					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 				}
 			}
 			else if (x_WORD_E36D4 & 0x20)
 			{
 				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-				ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_alpha_index);
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_alpha_index);
 				ptrScreenBufferLineStart = ptrScreenBuffer;
-				ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 				v141 = height;
 				do
 				{
@@ -2764,7 +2815,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							if (v50 >= 0)
 								break;
 							ptrScreenBuffer += (setbyte * -v50);
-							ptrScreenAlphaBuffer += (setbyte * -v50);
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer += (setbyte * -v50);
 						}
 						if (!v50)
 							break;
@@ -2774,7 +2826,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							v52 = *texture++;
 							memset(ptrScreenBuffer, v52, setbyte);
 							ptrScreenBuffer += setbyte;
-							ptrScreenAlphaBuffer += setbyte;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer += setbyte;
 							v46 = __OFSUB__(v51--, 1);
 						} while (!(((v51 < 0) ^ v46) | (v51 == 0)));
 					}
@@ -2787,15 +2840,20 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						{
 							v55 = ptrScreenBufferLineStart;
 							ptrScreenBufferLineStart += screenWidth_18062C;
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBufferLineStart += screenWidth_18062C;
+
 							qmemcpy(ptrScreenBufferLineStart, (void*)v55, v54);
 							v46 = __OFSUB__(v53--, 1);
 						} while (!(((v53 < 0) ^ v46) | (v53 == 0)));
 						texture = (uint8_t*)v131;
 					}
 					ptrScreenBufferLineStart += screenWidth_18062C;
-					ptrScreenAlphaBufferLineStart += screenWidth_18062C;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBufferLineStart += screenWidth_18062C;
 					ptrScreenBuffer = ptrScreenBufferLineStart;
-					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 					--v141;
 				} while (v141);
 			}
@@ -2806,11 +2864,13 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 			else
 			{
 				ptrScreenBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_index);
-				ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_alpha_index);
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + tilex + pixel_buffer_alpha_index);
 				v62 = 0;
 				startOffsetX = -1;
 				ptrScreenBufferLineStart = ptrScreenBuffer;
-				ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 				do
 				{
 					while (1)
@@ -2827,7 +2887,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							qmemcpy(v65, v67, v62);
 							texture = (uint8_t*)&v67[v62];
 							ptrScreenBuffer = &v65[v62];
-							ptrScreenAlphaBuffer += (v65 - (&ptrScreenBuffer[-startOffsetX])) + v62; // see note below
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer += (v65 - (&ptrScreenBuffer[-startOffsetX])) + v62;
 							v62 = 0;
 						}
 						if (!startOffsetX)
@@ -2836,13 +2897,16 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						qmemcpy(ptrScreenBuffer, texture, v62);
 						texture += v62;
 						ptrScreenBuffer += v62;
-						ptrScreenAlphaBuffer += v62;
+						if (pdwScreenAlphaBuffer != nullptr)
+							ptrScreenAlphaBuffer += v62;
 						v62 = 0;
 					}
 					ptrScreenBufferLineStart += screenWidth_18062C;
-					ptrScreenAlphaBufferLineStart += screenWidth_18062C;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBufferLineStart += screenWidth_18062C;
 					ptrScreenBuffer = ptrScreenBufferLineStart;
-					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 					--height;
 				} while (height);
 			}
@@ -2861,10 +2925,12 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 		if (width <= v117)
 			return;
 		v118 = (x_BYTE*)(screenWidth_18062C * (height + tiley) + pixel_buffer_index);
-		v118a = (x_BYTE*)(screenWidth_18062C * (height + tiley) + pixel_buffer_alpha_index);
+		if (pdwScreenAlphaBuffer != nullptr)
+			v118a = (x_BYTE*)(screenWidth_18062C * (height + tiley) + pixel_buffer_alpha_index);
 		v117 = height;
 		v119 = v118;
-		v119a = v118a;
+		if (pdwScreenAlphaBuffer != nullptr)
+			v119a = v118a;
 		v139 = v117;
 		v120 = 0;
 		while (1)
@@ -2894,9 +2960,11 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 					else
 					{
 						v119 -= screenWidth_18062C;
-						v119a -= screenWidth_18062C;
+						if (pdwScreenAlphaBuffer != nullptr)
+							v119a -= screenWidth_18062C;
 						v118 = v119;
-						v118a = v119a;
+						if (pdwScreenAlphaBuffer != nullptr)
+							v118a = v119a;
 						v117 = __PAIR__(v117, v139) - 256;
 						if (!v117)
 							return;
@@ -2906,7 +2974,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 					break;
 			LABEL_225:
 				v118 -= v121;
-				v118a -= v121;
+				if (pdwScreenAlphaBuffer != nullptr)
+					v118a -= v121;
 				v123 = *texture++;
 				v120 = v123;
 				do
@@ -2916,7 +2985,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 					if ((v117 & 0x80u) != 0)
 					{
 						*v118++ = v124;
-						v118a++;
+						if (pdwScreenAlphaBuffer != nullptr)
+							v118a++;
 					}
 					v120--;
 				} while (v120);
@@ -2932,7 +3002,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 	if (x_WORD_E36D4 & 2)
 	{
 		ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + width + tilex + pixel_buffer_index);
-		ptrScreenAlphaBuffer = (screenWidth_18062C * (height + tiley) + width + tilex + pixel_buffer_alpha_index);
+		if (pdwScreenAlphaBuffer != nullptr)
+			ptrScreenAlphaBuffer = (screenWidth_18062C * (height + tiley) + width + tilex + pixel_buffer_alpha_index);
 		v106 = 0;
 		v107 = width + tilex + 1;
 		if (v107 >= 0)
@@ -2940,7 +3011,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 			width = v107;
 			v137 = v107;
 			ptrScreenBufferLineStart = ptrScreenBuffer;
-			ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+			if (pdwScreenAlphaBuffer != nullptr)
+				ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 			startOffsetX = -1;
 			do
 			{
@@ -2955,7 +3027,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							break;
 						}
 						ptrScreenBuffer += startOffsetX;
-						ptrScreenAlphaBuffer += startOffsetX;
+						if (pdwScreenAlphaBuffer != nullptr)
+							ptrScreenAlphaBuffer += startOffsetX;
 						width = startOffsetX + width;
 					}
 					if (!startOffsetX)
@@ -2968,14 +3041,17 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						if ((width & 0x80u) == 0)
 							*ptrScreenBuffer = v110;
 						ptrScreenBuffer--;
-						ptrScreenAlphaBuffer--;
+						if (pdwScreenAlphaBuffer != nullptr)
+							ptrScreenAlphaBuffer--;
 						v106--;
 					} while (v106);
 				}
 				ptrScreenBufferLineStart -= screenWidth_18062C;
-				ptrScreenAlphaBufferLineStart -= screenWidth_18062C;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBufferLineStart -= screenWidth_18062C;
 				ptrScreenBuffer = ptrScreenBufferLineStart;
-				ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 				width = __PAIR__(height, v137) - 256;
 			} while (height);
 		}
@@ -2983,7 +3059,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 	else
 	{
 		ptrScreenBuffer = (screenWidth_18062C * tiley + width + tilex + pixel_buffer_index);
-		ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + width + tilex + pixel_buffer_alpha_index);
+		if (pdwScreenAlphaBuffer != nullptr)
+			ptrScreenAlphaBuffer = (screenWidth_18062C * tiley + width + tilex + pixel_buffer_alpha_index);
 		v112 = 0;
 		v113 = width + tilex + 1;
 		if (v113 >= 0)
@@ -2991,7 +3068,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 			width = v113;
 			v138 = v113;
 			ptrScreenBufferLineStart = ptrScreenBuffer;
-			ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+			if (pdwScreenAlphaBuffer != nullptr)
+				ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 			startOffsetX = -1;
 			do
 			{
@@ -3006,7 +3084,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							break;
 						}
 						ptrScreenBuffer += startOffsetX;
-						ptrScreenAlphaBuffer += startOffsetX;
+						if (pdwScreenAlphaBuffer != nullptr)
+							ptrScreenAlphaBuffer += startOffsetX;
 						width = startOffsetX + width;
 					}
 					if (!startOffsetX)
@@ -3019,14 +3098,17 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						if ((width & 0x80u) == 0)
 							*ptrScreenBuffer = v116;
 						ptrScreenBuffer--;
-						ptrScreenAlphaBuffer--;
+						if (pdwScreenAlphaBuffer != nullptr)
+							ptrScreenAlphaBuffer--;
 						posWidth--;
 					} while (posWidth);
 				}
 				ptrScreenBufferLineStart += screenWidth_18062C;
-				ptrScreenAlphaBufferLineStart += screenWidth_18062C;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBufferLineStart += screenWidth_18062C;
 				ptrScreenBuffer = ptrScreenBufferLineStart;
-				ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 				width = __PAIR__(width, v138) - 256;
 			} while (height);
 		}
