@@ -31621,6 +31621,7 @@ void InGameLoop_47320()//228320
 	//fix res on begin level for hidden levels-neoriginal code
 
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::STARTED);
+	g_inGameLoop = true;
 
 	while (1)
 	{
@@ -31690,6 +31691,7 @@ void InGameLoop_47320()//228320
 			}
 		}
 	}
+	g_inGameLoop = false;
 	//Clear pause status
 	x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= ~GAME_PAUSED;
 

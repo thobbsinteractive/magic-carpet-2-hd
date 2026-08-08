@@ -36,6 +36,9 @@ class CommandLineParser {
 		int  NetStallEvery() const { return m_net_stall_every; };   // ...once per n messages
 		int  NetKillAfterS() const { return m_net_kill_after_s; };  // drop the link
 		int  QuitAfterS() const { return m_quit_after_s; };         // leave the game
+		// How many players the host waits for before it starts the level.  Two by default;
+		// a test that wants to disturb the lobby needs to hold the game there for longer.
+		int  AutoTestPlayers() const { return m_auto_test_players; };
         bool DoAlternativeGamespeedControl() const {return m_alternative_gamespeed_control ;};
         bool DoAnalyzeEntity() const {return m_analyze_entity ;};
         bool DoAutoChangeRes() const {return m_auto_change_res;};
@@ -101,6 +104,7 @@ class CommandLineParser {
 		int  m_net_stall_every;
 		int  m_net_kill_after_s;
 		int  m_quit_after_s;
+		int  m_auto_test_players;
         bool m_alternative_gamespeed_control;
         bool m_analyze_entity;
         bool m_auto_change_res;

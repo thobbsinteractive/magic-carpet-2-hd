@@ -31,6 +31,7 @@ void NetworkEnd_73D11(__int16 a1);
 void NetworkSendMessage2_74006(unsigned __int16 a1, uint8_t* a2, unsigned int a3);
 void NetworkReceiveMessage2_7404E(unsigned __int16 a1, uint8_t* a2, unsigned int a3);
 void ReceiveSendAll_7438A(uint8_t* a1, unsigned int a2);
+extern bool g_inGameLoop;
 void NetworkCancelAll_7449C();
 int16_t GetIndexNetwork_74536();
 uint8_t NetworkAllocation_74556();

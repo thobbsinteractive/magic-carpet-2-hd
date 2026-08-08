@@ -21,6 +21,10 @@ char connected_E12CE[8] = { 0, 0, 0, 0, 0, 0, 0, 0 }; // idb
 
 char nethID[7] = "TESTER";
 
+// True while the level is running.  A peer that disappears has to be dealt with differently
+// in the lobby (the menu code notices) and in the game (nobody does).
+bool g_inGameLoop = false;
+
 __int16 x_WORD_E131A = 0; // weak
 
 bool Iam_server = false;
@@ -349,6 +353,16 @@ void NetworkEvent_7373D(int16_t a1)//25473d
 			}
 			else
 			{
+				// Work out the survivors locally BEFORE asking the departing node for its
+				// list.  An orderly departure sends one and overwrites this; a node that was
+				// killed sends nothing, and NetworkReceiveMessage2_7404E quietly does
+				// nothing once the peer is already marked disconnected - which left this
+				// uninitialised stack array to decide who holds the token.  In the lobby
+				// that handed the token straight back to the dead player, and every
+				// survivor then called a corpse for ever.
+				for (i = 0; maxPlayers_E127A > i; i++)
+					locConnected[i] = (connected_E12CE[i] == 1);
+				locConnected[a1] = 0;                 // the node being handled here is gone
 				NetworkReceiveMessage2_7404E(IndexInNetwork2_E12A8, locConnected, 8u);
 				NetworkCanceling_73669(a1);
 				for (i = 0; maxPlayers_E127A > i; i++)
@@ -447,6 +461,12 @@ void NetworkSomeChange_73AA1(__int16 a1)//254aa1
 			}
 			else
 			{
+				// Same as in NetworkPlayerLeft above: seed the survivor list from what this
+				// node can see, so a peer that was killed - and therefore sent no list -
+				// cannot leave an uninitialised array to choose the next token holder.
+				for (i = 0; maxPlayers_E127A > i; i++)
+					locConnected[i] = (connected_E12CE[i] == 1);
+				locConnected[a1] = 0;                 // the node being handled here is gone
 				NetworkReceiveMessage2_7404E(IndexInNetwork2_E12A8, locConnected, 8);
 				NetworkRemoveClient_739AD(a1);
 				for (i = 0; maxPlayers_E127A > i; i++)
@@ -524,6 +544,22 @@ void NetworkSendMessage2_74006(unsigned __int16 a1, uint8_t* buffer, unsigned in
 {
 	if (x_BYTE_E1274)
 	{
+		// Who is actually written to, and who is skipped for being "not connected".  The
+		// receiving end already logs what arrives (queued DIRECT_SEND), so the two together
+		// say whether a turn was never sent, or sent and never picked up.
+		if (CommandLineParams.DoNetworkDebug() && a1 < 8)
+		{
+			static int lastSentTo[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+			const int connectedNow = (connected_E12CE[a1] == 1) ? 1 : 0;
+			if (lastSentTo[a1] != connectedNow)
+			{
+				lastSentTo[a1] = connectedNow;
+				debug_net_printf("SENDTO: slot %d %s (size=%u lsn=%d name=[%.16s] call=[%.16s])\n",
+					(int)a1, connectedNow ? "is written to" : "is SKIPPED - not connected",
+					size, (int)connection_E12AE[a1]->ncb_lsn_2,
+					connection_E12AE[a1]->ncb_name_26, connection_E12AE[a1]->ncb_callName_10);
+			}
+		}
 		if (connected_E12CE[a1] == 1)
 			NetworkSendMessage_74EF1(connection_E12AE[a1], buffer, size);
 	}
@@ -926,6 +962,62 @@ void NetworkSendMessage_74EF1(myNCB* connection, uint8_t* inbuffer, unsigned int
 }
 
 char oldConnected[8] = { -1, -1, -1, -1, -1, -1, -1, -1 }; // idb
+// A peer vanished without warning - killed process, lost machine - rather than leaving in
+// an orderly way.  NetworkSomeChange_73AA1 cannot be used for this: it starts by receiving
+// the survivor list from the node that is going away, and nobody sent one.  Everything is
+// therefore worked out locally, and because every node applies the same rule to the same
+// facts, they all reach the same answer without talking to each other.
+//
+// The original does not do any of this.  Its exchange (sub_7438A) neither checks return
+// codes nor reacts to them: on a LAN of the day, a machine that died ended the session.
+static void NetworkPeerVanished_73AA1b(int16_t lost)
+{
+	if (!x_BYTE_E1274 || !x_BYTE_E1275)
+		return;
+
+	NetworkCanceling_73669(lost);
+	D41A0_0.array_0x2BDE[lost].byte_0x006_2BE4_11236 = 0;   // no longer in the game
+	debug_net_printf("PEERGONE: player %d vanished (token holder was %d)\n",
+		(int)lost, (int)IndexInNetwork2_E12A8);
+
+	if (IndexInNetwork2_E12A8 != lost)
+		return;                                            // the token did not die with it
+
+	// The token passes to the lowest-numbered player still in the game - the same rule the
+	// control server uses, and computable by everyone from what they already know.
+	int16_t next = -1;
+	for (int i = 0; i < maxPlayers_E127A; i++)
+	{
+		if (i == lost) continue;
+		if (i == IndexInNetwork_E1276 || D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236)
+		{
+			next = (int16_t)i;
+			break;
+		}
+	}
+	if (next < 0)
+		return;
+
+	IndexInNetwork2_E12A8 = next;
+	debug_net_printf("PEERGONE: token moves to %d (I am %d)\n", (int)next, (int)IndexInNetwork_E1276);
+
+	// The survivors only ever had a session with the node that died, so they have to be
+	// introduced to each other again: the new token holder listens, everybody else calls it.
+	if (IndexInNetwork2_E12A8 == IndexInNetwork_E1276)
+	{
+		for (int i = 0; i < maxPlayers_E127A; i++)
+		{
+			if (i == IndexInNetwork_E1276 || i == lost) continue;
+			if (!D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236) continue;
+			NetworkListen_74B75(i);
+		}
+	}
+	else
+	{
+		NetworkCall_74809(IndexInNetwork2_E12A8);
+	}
+}
+
 void RemoveDeadClients()
 {
 	for (int i = 0; i < maxPlayers_E127A; i++)
@@ -938,6 +1030,12 @@ void RemoveDeadClients()
 				NetworkHangUp_74B19(connection_E12AE[i]);
 				x_DWORD_17DE38str.array_BYTE_17DE68x[i].makeUpdate_0 = 1;
 				x_DWORD_17DE38str.array_BYTE_17DE68x[i].action_9 = 1;
+				// In the lobby the line above is enough - SetMultiplayerColors_7CE50 picks
+				// it up and runs the hand-over.  Once the level is running nobody reads it,
+				// so the same work has to be done here or the survivors wait for a node
+				// that will never answer again.
+				if (g_inGameLoop)
+					NetworkPeerVanished_73AA1b((int16_t)i);
 			}
 			oldConnected[i] = connected_E12CE[i];
 		}
@@ -965,6 +1063,25 @@ signed int NetworkGetState_74FE1(__int16 a1)//255fe1
 		v2 = 2;
 	else
 		v2 = connection_E12AE[a1]->ncb_lsn_2 && !connection_E12AE[a1]->ncb_cmd_cplt_49;
+
+	// This is what decides whether a peer is sent anything at all, so when somebody is
+	// connected but never spoken to, this is the number to look at.  Reported only when it
+	// changes, or the per-turn call would bury the log.
+	if (CommandLineParams.DoNetworkDebug() && a1 != IndexInNetwork_E1276)
+	{
+		static signed int lastState[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+		static uint8_t    lastCplt[8] = { 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE };
+		if (a1 >= 0 && a1 < 8
+			&& (lastState[a1] != v2 || lastCplt[a1] != connection_E12AE[a1]->ncb_cmd_cplt_49))
+		{
+			lastState[a1] = v2;
+			lastCplt[a1] = connection_E12AE[a1]->ncb_cmd_cplt_49;
+			debug_net_printf("SLOTSTATE: slot %d connected=%d lsn=%d cplt=0x%02X cmd=0x%02X name=[%.16s] call=[%.16s]\n",
+				(int)a1, (int)v2, (int)connection_E12AE[a1]->ncb_lsn_2,
+				(int)connection_E12AE[a1]->ncb_cmd_cplt_49, (int)connection_E12AE[a1]->ncb_command_0,
+				connection_E12AE[a1]->ncb_name_26, connection_E12AE[a1]->ncb_callName_10);
+		}
+	}
 	return v2;
 }
 

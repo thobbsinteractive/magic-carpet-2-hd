@@ -5776,7 +5776,9 @@ char sub_77680()//258680
 				static int   autoFrames = 0;
 				static bool  autoLevelStarted = false;
 				autoFrames++;
-				if (Iam_server && !autoLevelStarted && x_DWORD_17DE38str.x_WORD_17DEFE >= 2 && autoFrames > 180) {
+				const int autoNeedPlayers = CommandLineParams.AutoTestPlayers() > 0
+					? CommandLineParams.AutoTestPlayers() : 2;
+				if (Iam_server && !autoLevelStarted && x_DWORD_17DE38str.x_WORD_17DEFE >= autoNeedPlayers && autoFrames > 180) {
 					autoLevelStarted = true;
 					int me = x_DWORD_17DE38str.serverIndex_17DEFC;
 					x_DWORD_17DE38str.array_BYTE_17DE68x[me].action_9 = 5;

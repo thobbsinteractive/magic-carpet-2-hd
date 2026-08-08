@@ -140,6 +140,10 @@ namespace MyNetworkLib {
 		void AdoptCtrlClient(::PendingConn& pc, const std::string& firstRaw);
 		void AdoptDataSession(::PendingConn& pc, const std::string& firstRaw);
 		void PollCtrlClients();
+		// Server: hand the current membership to every client.
+		void BroadcastRoster();
+		// The server went away: decide who takes the role over, and either take it or follow.
+		void HandleServerLoss();
 		void PollCtrlSocket();
 		void PollSessions();
 		bool ConnectDataToPeer(myNCB* ncb, const std::string& addr, int dataPort);
