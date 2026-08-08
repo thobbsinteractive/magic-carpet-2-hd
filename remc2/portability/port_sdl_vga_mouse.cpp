@@ -182,6 +182,7 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			}
 
 			SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
+			SDL_SetSurfaceBlendMode(m_gameRGBASurface, SDL_BLENDMODE_BLEND);
 
 			// Sure clear the screen first.. always nice.
 			SDL_RenderClear(m_renderer);
@@ -256,14 +257,13 @@ void CreateRenderSurfaces(int width, int height)
 		SDL_ConvertSurfaceFormat(
 			m_gamePalletisedSurface, SDL_PIXELFORMAT_INDEX8, 0);
 
-	m_gameRGBASurface =
-		SDL_CreateRGBSurface(
-			SDL_SWSURFACE, width, height, 24,
-			redMask, greenMask, blueMask, alphaMask);
+	m_gameRGBASurface = SDL_CreateRGBSurface(
+		SDL_SWSURFACE, width, height, 32,
+		redMask, greenMask, blueMask, alphaMask);
 
 	m_gameRGBASurface =
 		SDL_ConvertSurfaceFormat(
-			m_gameRGBASurface, SDL_PIXELFORMAT_RGB888, 0);
+			m_gameRGBASurface, SDL_PIXELFORMAT_RGBA32, 0);
 
 	m_texture = SDL_CreateTexture(m_renderer,
 		SDL_PIXELFORMAT_RGB888,
@@ -1060,7 +1060,7 @@ void ScaleDownMouseCoordsToVga(int16_t& x, int16_t& y)
 	}
 }
 
-void VGA_Blit(Uint8* srcBuffer) {
+void VGA_Blit(uint8_t* srcBuffer, uint8_t* alphaBuffer) {
 	if (unitTests)return;
 
 	oldWidth = m_gamePalletisedSurface->w;
@@ -1089,7 +1089,7 @@ void VGA_Blit(Uint8* srcBuffer) {
 	if (SDL_MUSTLOCK(m_gamePalletisedSurface)) {
 		SDL_UnlockSurface(m_gamePalletisedSurface);
 	}
-	SubBlit(m_iOrigw, m_iOrigh);
+	SubBlit(m_iOrigw, m_iOrigh, alphaBuffer);
 	SOUND_UPDATE();
 }
 
@@ -1108,7 +1108,7 @@ void SubVulkanBlit(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect)
 }
 
 
-void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight) {
+void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight, uint8_t* alphaBuffer) {
 	while (subBlitLock);//fix problem with quick blitting
 	subBlitLock = true;
 
@@ -1151,6 +1151,9 @@ void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight) {
 
 	if (m_vulkanRenderer)
 	{
+		if (alphaBuffer != nullptr)
+			ApplyAlphaBuffer(m_gameRGBASurface, alphaBuffer, m_gameRGBASurface->w, m_gameRGBASurface->h);
+
 		SubVulkanBlit(m_gameRGBASurface, rectSrc, dscrect);
 	}
 	else
@@ -1164,6 +1167,37 @@ void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight) {
 		SDL_RenderClear(m_renderer);
 	}
 	subBlitLock = false;
+}
+
+void ApplyAlphaBuffer(SDL_Surface* rgbaSurface, const uint8_t* alphaBuffer, int width, int height)
+{
+	// alphaBuffer is assumed to be width*height, row-major, matching rgbaSurface dimensions
+
+	if (SDL_MUSTLOCK(rgbaSurface))
+		SDL_LockSurface(rgbaSurface);
+
+	SDL_PixelFormat* fmt = rgbaSurface->format;
+	int bpp = fmt->BytesPerPixel; // should be 4 for RGBA/ARGB surfaces
+
+	for (int y = 0; y < height; y++)
+	{
+		uint8_t* row = static_cast<uint8_t*>(rgbaSurface->pixels) + y * rgbaSurface->pitch;
+		const uint8_t* alphaRow = alphaBuffer + y * width;
+
+		for (int x = 0; x < width; x++)
+		{
+			uint32_t* pixel = reinterpret_cast<uint32_t*>(row + x * bpp);
+			uint32_t p = *pixel;
+
+			// Clear existing alpha bits, then OR in the new alpha value
+			p = (p & ~fmt->Amask) | ((static_cast<uint32_t>(alphaRow[x]) << fmt->Ashift) & fmt->Amask);
+
+			*pixel = p;
+		}
+	}
+
+	if (SDL_MUSTLOCK(rgbaSurface))
+		SDL_UnlockSurface(rgbaSurface);
 }
 
 void VGA_Init_test() {//only for debug

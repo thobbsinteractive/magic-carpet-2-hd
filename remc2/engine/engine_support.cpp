@@ -1063,6 +1063,9 @@ void support_begin() {
 	pre_pdwScreenBuffer_351628 = (uint8_t*)malloc((GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT) * 3); // Allow x 3 padding for sprite rendering
 	pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
 
+	//alpha
+	pdwScreenBufferAlpha = (uint8_t*)malloc(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT);
+
 	//x_DWORD_E9C38_smalltit= (uint8_t*)malloc(64000);
 	//x_D41A0_BYTEARRAY_4_0xDE_heapbuffer= (uint8_t*)malloc(64000);
 

@@ -21504,6 +21504,11 @@ void DrawGameFrame_2BE30()//20CE30
 
 	SetTextBoxMinMaxForSetResolution();
 
+	if (x_WORD_180660_VGA_type_resolution & 1)
+		ClearGraphicsBuffer_72883((void*)pdwScreenBufferAlpha, 320, 200, 64);
+	else
+		ClearGraphicsBuffer_72883((void*)pdwScreenBufferAlpha, screenWidth_18062C, screenHeight_180624, 64);
+
 	if (x_WORD_180660_VGA_type_resolution != 1)
 	{
 		if (!DefaultResolutions())

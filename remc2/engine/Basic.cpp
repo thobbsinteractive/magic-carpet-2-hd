@@ -1460,7 +1460,7 @@ void VGA_BlitAny(uint8_t maxFps)//256200
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
 	VGA_DrawPlayerCoordData(0, 16);
 #endif
-	VGA_Blit(pdwScreenBuffer_351628);
+	VGA_Blit(pdwScreenBuffer_351628, pdwScreenBufferAlpha);
 
 	//set speed
 	LockFps(maxFps);

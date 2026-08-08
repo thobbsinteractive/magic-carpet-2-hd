@@ -1118,6 +1118,8 @@ void VulkanPolygonRenderer::UploadOverlaySurface(SDL_Surface* surface, SDL_Rect 
 	SDL_Rect srcBounds{ 0, 0, surface->w, surface->h };
 	SDL_IntersectRect(&srcRect, &srcBounds, &clampedSrc);
 
+	SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_NONE);
+
 	// destRect is always the full scratch surface now - letterboxing to the
 	// window happens via viewport in DrawOverlay instead, so no partial-fill
 	// clear is needed here.
