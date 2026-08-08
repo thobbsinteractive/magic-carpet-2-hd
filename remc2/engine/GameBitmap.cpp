@@ -1,17 +1,20 @@
 #include "GameBitmap.h"
 
-void GameBitmap::DrawColourizedBitmap(uint8_t* ptrBitmapData, uint8_t colour, uint8_t* ptrScreenBuffer, uint32_t stride, int16_t posX, int16_t posY, uint8_t posHeight, uint8_t scale)
+void GameBitmap::DrawColourizedBitmap(uint8_t* ptrBitmapData, uint8_t colour, uint8_t* ptrScreenBuffer, uint32_t stride, int16_t posX, int16_t posY, uint8_t posHeight, uint8_t scale, uint8_t* ptrScreenAlphaBuffer)
 {
 	ptrScreenBuffer = (stride * posY + posX + ptrScreenBuffer);
+	if (ptrScreenAlphaBuffer != nullptr)
+		ptrScreenAlphaBuffer = (stride * posY + posX + ptrScreenAlphaBuffer);
+
 	int8_t width = 0;
 	int8_t posWidth = 0;
 	int8_t startOffsetX = -1;
 	uint8_t pixel = 0;
 	uint8_t* ptrScreenBufferLineStart = ptrScreenBuffer;
+	uint8_t* ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 	int lineStartBytes = 0;
 	int countBytes = 0;
 	int scaledLinesDrawn = 0;
-
 	do
 	{
 		while (1)
@@ -20,11 +23,9 @@ void GameBitmap::DrawColourizedBitmap(uint8_t* ptrBitmapData, uint8_t colour, ui
 			{
 				startOffsetX = *ptrBitmapData++;
 				countBytes++;
-
 				//Is width byte
 				if (startOffsetX)
 					break;
-
 				//Move row
 				if (scaledLinesDrawn < scale - 1)
 				{
@@ -39,13 +40,16 @@ void GameBitmap::DrawColourizedBitmap(uint8_t* ptrBitmapData, uint8_t colour, ui
 					scaledLinesDrawn = 0;
 					lineStartBytes = countBytes;
 				}
-
 				ptrScreenBufferLineStart += stride;
 				ptrScreenBuffer = ptrScreenBufferLineStart;
+				if (ptrScreenAlphaBuffer != nullptr)
+				{
+					ptrScreenAlphaBufferLineStart += stride;
+					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+				}
 				if (!posHeight)
 					return;
 			}
-
 			//Is width byte
 			if ((startOffsetX & 0x80u) == 0)
 			{
@@ -55,13 +59,13 @@ void GameBitmap::DrawColourizedBitmap(uint8_t* ptrBitmapData, uint8_t colour, ui
 			//Is a change of start coordinate
 			int offset = (char)startOffsetX;
 			ptrScreenBuffer -= offset * scale;
+			if (ptrScreenAlphaBuffer != nullptr)
+				ptrScreenAlphaBuffer -= offset * scale;
 			if (!posHeight)
 				return;
 		}
-
 		posWidth = startOffsetX;
 		width = startOffsetX;
-
 		//Draw line
 		if (scale > 1)
 		{
@@ -69,10 +73,11 @@ void GameBitmap::DrawColourizedBitmap(uint8_t* ptrBitmapData, uint8_t colour, ui
 			{
 				pixel = *ptrBitmapData++;
 				countBytes++;
-
 				for (int s = 0; s < scale; s++)
 				{
 					*ptrScreenBuffer++ = colour;
+					if (ptrScreenAlphaBuffer != nullptr)
+						*ptrScreenAlphaBuffer++ = 255;
 				}
 				posWidth--;
 			} while (posWidth);
@@ -80,25 +85,32 @@ void GameBitmap::DrawColourizedBitmap(uint8_t* ptrBitmapData, uint8_t colour, ui
 		else
 		{
 			memset(ptrScreenBuffer, colour, width);
+			if (ptrScreenAlphaBuffer != nullptr)
+				memset(ptrScreenAlphaBuffer, 255, width);
 			ptrBitmapData += width;
 			ptrScreenBuffer += width;
+			if (ptrScreenAlphaBuffer != nullptr)
+				ptrScreenAlphaBuffer += width;
 			countBytes += width;
 		}
 	} while (posHeight);
 };
 
-void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, uint32_t stride, int16_t posX, int16_t posY, uint8_t posHeight, uint8_t scale)
+void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, uint32_t stride, int16_t posX, int16_t posY, uint8_t posHeight, uint8_t scale, uint8_t* ptrScreenAlphaBuffer)
 {
 	ptrScreenBuffer = (stride * posY + posX + ptrScreenBuffer);
+	if (ptrScreenAlphaBuffer != nullptr)
+		ptrScreenAlphaBuffer = (stride * posY + posX + ptrScreenAlphaBuffer);
+
 	int8_t width = 0;
 	int8_t posWidth = 0;
 	int8_t startOffsetX = -1;
 	uint8_t pixel = 0;
 	uint8_t* ptrScreenBufferLineStart = ptrScreenBuffer;
+	uint8_t* ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
 	int lineStartBytes = 0;
 	int countBytes = 0;
 	int scaledLinesDrawn = 0;
-
 	do
 	{
 		while (1)
@@ -107,11 +119,9 @@ void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, ui
 			{
 				startOffsetX = *ptrBitmapData++;
 				countBytes++;
-
 				//Is width byte
 				if (startOffsetX)
 					break;
-
 				//Move row
 				if (scaledLinesDrawn < scale - 1)
 				{
@@ -126,13 +136,16 @@ void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, ui
 					scaledLinesDrawn = 0;
 					lineStartBytes = countBytes;
 				}
-
 				ptrScreenBufferLineStart += stride;
 				ptrScreenBuffer = ptrScreenBufferLineStart;
+				if (ptrScreenAlphaBuffer != nullptr)
+				{
+					ptrScreenAlphaBufferLineStart += stride;
+					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+				}
 				if (!posHeight)
 					return;
 			}
-
 			//Is width byte
 			if ((startOffsetX & 0x80u) == 0)
 			{
@@ -142,13 +155,13 @@ void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, ui
 			//Is a change of start coordinate
 			int offset = (char)startOffsetX;
 			ptrScreenBuffer -= offset * scale;
+			if (ptrScreenAlphaBuffer != nullptr)
+				ptrScreenAlphaBuffer -= offset * scale;
 			if (!posHeight)
 				return;
 		}
-
 		posWidth = startOffsetX;
 		width = startOffsetX;
-
 		//Draw line
 		if (scale > 1)
 		{
@@ -156,10 +169,11 @@ void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, ui
 			{
 				pixel = *ptrBitmapData++;
 				countBytes++;
-
 				for (int s = 0; s < scale; s++)
 				{
 					*ptrScreenBuffer++ = pixel;
+					if (ptrScreenAlphaBuffer != nullptr)
+						*ptrScreenAlphaBuffer++ = 255;
 				}
 				posWidth--;
 			} while (posWidth);
@@ -167,20 +181,30 @@ void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, ui
 		else
 		{
 			qmemcpy(ptrScreenBuffer, ptrBitmapData, width);
+			if (ptrScreenAlphaBuffer != nullptr)
+				memset(ptrScreenAlphaBuffer, 255, width);
 			ptrBitmapData += width;
 			ptrScreenBuffer += width;
+			if (ptrScreenAlphaBuffer != nullptr)
+				ptrScreenAlphaBuffer += width;
 			countBytes += width;
 		}
 	} while (posHeight);
 };
 
-void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, uint32_t stride, int16_t posX, int16_t posY, uint16_t width, uint16_t height, uint8_t v134)
+void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, uint32_t stride, int16_t posX, int16_t posY, uint16_t width, uint16_t height, uint8_t v134, uint8_t* ptrScreenAlphaBuffer)
 {
 	ptrScreenBuffer = (stride * posY + posX + ptrScreenBuffer);
+	if (ptrScreenAlphaBuffer != nullptr)
+		ptrScreenAlphaBuffer = (stride * posY + posX + ptrScreenAlphaBuffer);
+
 	uint8_t pixel;
 	int32_t startOffsetX;
 	int32_t posWidth;
 	uint8_t* ptrScreenBufferLineStart = ptrScreenBuffer;
+	uint8_t* ptrScreenAlphaBufferLineStart = ptrScreenAlphaBuffer;
+
+	uint8_t widthByte = v134; // byte-precision sentinel - must match original 8-bit register wrap behavior
 
 	do
 	{
@@ -189,7 +213,6 @@ void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, ui
 			while (1)
 			{
 				startOffsetX = *ptrBitmapData++;
-
 				//Is width byte
 				if ((startOffsetX & 0x80u) == 0)
 				{
@@ -197,26 +220,39 @@ void GameBitmap::DrawBitmap(uint8_t* ptrBitmapData, uint8_t* ptrScreenBuffer, ui
 					break;
 				}
 				ptrScreenBuffer += startOffsetX;
-				width = width - startOffsetX;
+				if (ptrScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer += startOffsetX;
+				widthByte = widthByte - startOffsetX;
 			}
 			if (!startOffsetX)
 				break;
 			posWidth = startOffsetX;
-
 			//Draw Line
 			do
 			{
 				pixel = *ptrBitmapData++;
-				width = width + 1;
-				if ((width & 0x80u) == 0)
+				widthByte = widthByte + 1;
+				if ((widthByte & 0x80u) == 0)
+				{
 					*ptrScreenBuffer = pixel;
+					if (ptrScreenAlphaBuffer != nullptr)
+						*ptrScreenAlphaBuffer = 255;
+				}
 				--ptrScreenBuffer;
+				if (ptrScreenAlphaBuffer != nullptr)
+					--ptrScreenAlphaBuffer;
 				--posWidth;
 			} while (posWidth);
 		}
 		ptrScreenBufferLineStart += stride;
 		ptrScreenBuffer = ptrScreenBufferLineStart;
-		width = __PAIR__(height, v134) - 256;
+		if (ptrScreenAlphaBuffer != nullptr)
+		{
+			ptrScreenAlphaBufferLineStart += stride;
+			ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
+		}
+		widthByte = v134;
+		--height;
 	} while (height);
 };
 
@@ -225,21 +261,32 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 	int32_t startOffsetX; // eax
 	int16_t posHeight; // bx
 	uint8_t* ptrScreenBuffer;
+	uint8_t* ptrScreenAlphaBuffer = nullptr;
 	uint8_t* ptrBitmapData = nullptr; // edx
 	uint8_t* ptrBitmapPixel = nullptr; // esi
 	int32_t posWidth; // ecx
 	int v15; // [esp+0h] [ebp-Ch]
 	int32_t width; // [esp+0h] [ebp-Ch]
-	uint8_t* ptrScreenBufferLineStart; // [esp+4h] [ebp-8h]
+	uint8_t* ptrScreenBufferLineStart = nullptr;
+	uint8_t* ptrScreenAlphaBufferLineStart = nullptr;
+
+	constexpr uint8_t kTransparentBlendAlpha = 128; // TODO: pick the real value for this blend mode
 
 	if (x_WORD_180660_VGA_type_resolution == 1)
 	{
 		posHeight = a3.height_5 / 2;
 		startOffsetX = posY / 2 * screenWidth_18062C + posX / 2;
 		ptrScreenBuffer = (startOffsetX + pdwScreenBuffer_351628);
+		if (pdwScreenAlphaBuffer != nullptr)
+			ptrScreenAlphaBuffer = (startOffsetX + pdwScreenAlphaBuffer);
+
 		ptrBitmapData = a3.data;
+
 		for (ptrScreenBufferLineStart = startOffsetX + pdwScreenBuffer_351628; posHeight; ptrBitmapData += v15)
 		{
+			if (pdwScreenAlphaBuffer != nullptr)
+				ptrScreenAlphaBufferLineStart = startOffsetX + pdwScreenAlphaBuffer;
+
 			while (1)
 			{
 				while (1)
@@ -249,13 +296,18 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 						break;
 					posHeight--;
 					ptrScreenBufferLineStart += screenWidth_18062C;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBufferLineStart += screenWidth_18062C;
 					ptrScreenBuffer = ptrScreenBufferLineStart;
+					ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 					if (!posHeight)
 						return;
 				}
 				if ((startOffsetX & 0x80u) == 0)
 					break;
 				ptrScreenBuffer -= (char)startOffsetX;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaBuffer -= (char)startOffsetX;
 				if (!posHeight)
 					return;
 			}
@@ -270,6 +322,8 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 				HIBYTE(startOffsetX) = *ptrScreenBuffer;
 				LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
 				*ptrScreenBuffer++ = startOffsetX;
+				if (pdwScreenAlphaBuffer != nullptr)
+					*ptrScreenAlphaBuffer++ = kTransparentBlendAlpha;
 				posWidth--;
 			} while (posWidth);
 		}
@@ -280,14 +334,18 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 		{
 			startOffsetX = posX + screenWidth_18062C * posY;
 			posHeight = a3.height_5;
-
 			ptrScreenBuffer = (startOffsetX + pdwScreenBuffer_351628);
+			if (pdwScreenAlphaBuffer != nullptr)
+				ptrScreenAlphaBuffer = (startOffsetX + pdwScreenAlphaBuffer);
+
 			ptrScreenBufferLineStart = (startOffsetX + pdwScreenBuffer_351628);
+			if (pdwScreenAlphaBuffer != nullptr)
+				ptrScreenAlphaBufferLineStart = (startOffsetX + pdwScreenAlphaBuffer);
+
 			ptrBitmapData = a3.data;
 			int lineStartBytes = 0;
 			int countBytes = 0;
 			int scaledLinesDrawn = 0;
-
 			do
 			{
 				while (1)
@@ -296,11 +354,9 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 					{
 						LOBYTE(startOffsetX) = *ptrBitmapData++;
 						countBytes++;
-
 						//If it has value
 						if ((x_BYTE)startOffsetX)
 							break;
-
 						//Move row
 						if (scaledLinesDrawn < scale - 1)
 						{
@@ -315,13 +371,14 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 							scaledLinesDrawn = 0;
 							lineStartBytes = countBytes;
 						}
-
 						ptrScreenBufferLineStart += screenWidth_18062C;
+						if (pdwScreenAlphaBuffer != nullptr)
+							ptrScreenAlphaBufferLineStart += screenWidth_18062C;
 						ptrScreenBuffer = ptrScreenBufferLineStart;
+						ptrScreenAlphaBuffer = ptrScreenAlphaBufferLineStart;
 						if (!posHeight)
 							return;
 					}
-
 					//Is width byte
 					if ((startOffsetX & 0x80u) == 0)
 					{
@@ -331,6 +388,8 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 					//Is a change of start coordinate
 					int offset = (char)startOffsetX;
 					ptrScreenBuffer -= offset * scale;
+					if (pdwScreenAlphaBuffer != nullptr)
+						ptrScreenAlphaBuffer -= offset * scale;
 					if (!posHeight)
 						return;
 				}
@@ -347,6 +406,8 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 						HIBYTE(startOffsetX) = *ptrScreenBuffer;
 						LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
 						*ptrScreenBuffer++ = startOffsetX;
+						if (pdwScreenAlphaBuffer != nullptr)
+							*ptrScreenAlphaBuffer++ = kTransparentBlendAlpha;
 					}
 					ptrBitmapPixel++;
 					countBytes++;
@@ -407,11 +468,11 @@ void GameBitmap::DrawColourizedBitmap(int16_t posX, int16_t posY, bitmap_pos_str
 {
 	if (x_WORD_180660_VGA_type_resolution == 1)
 	{
-		DrawColourizedBitmap(a3.data, colour, pdwScreenBuffer_351628, screenWidth_18062C, posX / 2, posY / 2, a3.height_5 / 2, 1);
+		DrawColourizedBitmap(a3.data, colour, pdwScreenBuffer_351628, screenWidth_18062C, posX / 2, posY / 2, a3.height_5 / 2, 1, pdwScreenAlphaBuffer);
 	}
 	else
 	{
-		DrawColourizedBitmap(a3.data, colour, pdwScreenBuffer_351628, screenWidth_18062C, posX, posY, a3.height_5, scale);
+		DrawColourizedBitmap(a3.data, colour, pdwScreenBuffer_351628, screenWidth_18062C, posX, posY, a3.height_5, scale, pdwScreenAlphaBuffer);
 	}
 }
 

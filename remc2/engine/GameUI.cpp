@@ -51,7 +51,7 @@ uint8_t xx_array_E36C4[64] = { //fix it in future, this is only for extern contr
 };
 
 
-void(*ptrDrawBitmap_F01E8)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale); // eax
+void(*ptrDrawBitmap_F01E8)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t); // eax
 
 char x_BYTE_D3F48 = 0; // weak
 char x_BYTE_D47D8 = 0; // weak

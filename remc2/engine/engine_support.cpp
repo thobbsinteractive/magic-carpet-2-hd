@@ -1064,7 +1064,7 @@ void support_begin() {
 	pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
 
 	//alpha
-	pdwScreenBufferAlpha = (uint8_t*)malloc(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT);
+	pdwScreenAlphaBuffer = (uint8_t*)malloc(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT);
 
 	//x_DWORD_E9C38_smalltit= (uint8_t*)malloc(64000);
 	//x_D41A0_BYTEARRAY_4_0xDE_heapbuffer= (uint8_t*)malloc(64000);
