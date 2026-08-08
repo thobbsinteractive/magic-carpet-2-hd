@@ -30,7 +30,8 @@ float m_fTimeElapsed = 0.0f; // The time that has elapsed so far
 int m_iFrameCount = 0; // The number of frames that have occurred.
 float m_fFps; // The frames rendered per second. Needs to be stored to be shown every frame.
 
-uint8_t* x_DWORD_E9C3C; // weak
+uint8_t* ptrMemoryBuffer_E9C3C; // weak
+uint8_t* ptrDrawingAlphaBuffer; // weak
 
 uint8_t* x_DWORD_17DB50; // weak
 
@@ -1488,7 +1489,7 @@ void DrawBitmap_2BB40(int16_t posx, int16_t posy, bitmap_pos_struct_t tempposstr
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 	{
 		temp_screen_buffer = pdwScreenBuffer_351628;
-		pdwScreenBuffer_351628 = x_DWORD_E9C3C;
+		pdwScreenBuffer_351628 = ptrMemoryBuffer_E9C3C;
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			drawBitmap320_8F8B0(posx, posy, tempposstr);
 		else
@@ -1509,6 +1510,7 @@ void CopyAndShiftFrom17DB50_75D70(uint8_t* dest, uint32_t count)//256d70
 void DrawLine_2BC80(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx)//20cc80
 {
 	uint8_t* temp_screen_buffer; // ST14_4
+	uint8_t* temp_screen_alpha_buffer; // ST14_4
 
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		DrawLineLowRes_90164(posStartX, posStartY, posEndX, posEndY, colorIdx);
@@ -1518,17 +1520,20 @@ void DrawLine_2BC80(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 	{
 		temp_screen_buffer = pdwScreenBuffer_351628;
-		pdwScreenBuffer_351628 = x_DWORD_E9C3C;
+		temp_screen_alpha_buffer = pdwScreenAlphaBuffer;
+
+		pdwScreenBuffer_351628 = ptrMemoryBuffer_E9C3C;
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			DrawLineLowRes_90164(posStartX, posStartY, posEndX, posEndY, colorIdx);
 		else
 			DrawLineHighRes_901E4(posStartX, posStartY, posEndX, posEndY, colorIdx);
 
 		pdwScreenBuffer_351628 = temp_screen_buffer;
+		pdwScreenAlphaBuffer = temp_screen_alpha_buffer;
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// E9C3C: using guessed type int x_DWORD_E9C3C;
+// E9C3C: using guessed type int ptrMemoryBuffer_E9C3C;
 // 180628: using guessed type int pdwScreenBuffer_351628;
 // 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
@@ -1539,7 +1544,7 @@ void DrawText_2BC10(const char* textbuffer, int16_t posx, int16_t posy, uint8_t 
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)//shifted graphics
 	{
 		uint8_t* temp_screen_buffer = pdwScreenBuffer_351628;
-		pdwScreenBuffer_351628 = x_DWORD_E9C3C;
+		pdwScreenBuffer_351628 = ptrMemoryBuffer_E9C3C;
 		sub_6F940_sub_draw_text(textbuffer, posx, posy, color, scale);
 		pdwScreenBuffer_351628 = temp_screen_buffer;
 	}	
@@ -1621,7 +1626,7 @@ void LockFps(uint8_t maxFps)
 }
 
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// E9C3C: using guessed type int x_DWORD_E9C3C;
+// E9C3C: using guessed type int ptrMemoryBuffer_E9C3C;
 // 180628: using guessed type int pdwScreenBuffer_351628;
 
 //----- (0006EF10) --------------------------------------------------------
@@ -1810,7 +1815,8 @@ void drawBitmap640_8F8E8(int16_t posx, int16_t posy, bitmap_pos_struct_t temppst
 //----- (00090164) --------------------------------------------------------
 void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx)
 {
-	uint8_t* pixel; // edi
+	uint8_t* pixel;
+	uint8_t* alpha;
 	uint16_t v6; // dx
 	uint8_t v7; // ebx
 	int v8; // esi
@@ -1819,6 +1825,9 @@ void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX,
 	uint16_t v11; // [esp+14h] [ebp+10h]
 
 	pixel = &pdwScreenBuffer_351628[320 * (posStartY >> 1) + (posStartX >> 1)];
+	if (pdwScreenAlphaBuffer != nullptr)
+		alpha = &pdwScreenAlphaBuffer[320 * (posStartY >> 1) + (posStartX >> 1)];
+
 	v6 = posEndY >> 1;
 	v11 = posEndX >> 1;
 	v10 = (320 - v11);
@@ -1833,9 +1842,13 @@ void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX,
 			{
 				v7 = pixel[0];
 				*pixel++ = *(uint8_t*)(v8 + v7);
+				if (pdwScreenAlphaBuffer != nullptr)
+					*alpha++ = 255;
 				--v9;
 			} while (v9);
 			pixel += v10;
+			if (pdwScreenAlphaBuffer != nullptr)
+				alpha += v10;
 			--v6;
 		} while (v6);
 	}
@@ -1844,7 +1857,11 @@ void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX,
 		do
 		{
 			memset(pixel, colorIdx, v11);
+			if (pdwScreenAlphaBuffer != nullptr)
+				memset(alpha, 255, v11);
 			pixel += v10 + v11;
+			if (pdwScreenAlphaBuffer != nullptr)
+				alpha += v10 + v11;
 			--v6;
 		} while (v6);
 	}
@@ -1856,7 +1873,8 @@ void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX,
 //----- (000901E4) --------------------------------------------------------
 void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx)//2711e4
 {
-	x_BYTE* v5; // edi
+	uint8_t* pixel; // edi
+	uint8_t* alpha;
 	__int16 v6; // dx
 	int v7; // ebx
 	int v8; // esi
@@ -1868,7 +1886,11 @@ void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX
 		if (!DefaultResolutions())
 			helpWidth = screenWidth_18062C;
 
-	v5 = (x_BYTE*)(helpWidth * posStartY + pdwScreenBuffer_351628 + posStartX);
+	pixel = (uint8_t*)(helpWidth * posStartY + pdwScreenBuffer_351628 + posStartX);
+
+	if (pdwScreenAlphaBuffer != nullptr)
+		alpha = (uint8_t*)(helpWidth * posStartY + pdwScreenAlphaBuffer + posStartX);
+
 	v6 = posEndY;
 	v10 = (unsigned __int16)(helpWidth - posEndX);
 	if (x_WORD_E36D4 & 4)
@@ -1880,11 +1902,15 @@ void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX
 			v9 = posEndX;
 			do
 			{
-				BYTE1(v7) = *v5;
-				*v5++ = *(x_BYTE*)(v7 + v8);
+				BYTE1(v7) = *pixel;
+				*pixel++ = *(x_BYTE*)(v7 + v8);
+				if (pdwScreenAlphaBuffer != nullptr)
+					*alpha++ = 255;
 				v9--;
 			} while (v9);
-			v5 += v10;
+			pixel += v10;
+			if (pdwScreenAlphaBuffer != nullptr)
+				alpha += v10;
 			v6--;
 		} while (v6);
 	}
@@ -1892,8 +1918,12 @@ void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX
 	{
 		do
 		{
-			memset(v5, colorIdx, posEndX);
-			v5 += v10 + posEndX;
+			memset(pixel, colorIdx, posEndX);
+			if (pdwScreenAlphaBuffer != nullptr)
+				memset(alpha, 255, posEndX);
+			pixel += v10 + posEndX;
+			if (pdwScreenAlphaBuffer != nullptr)
+				alpha += v10 + posEndX;
 			v6--;
 		} while (v6);
 	}
@@ -2169,6 +2199,7 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 	const void* v55; // esi
 	unsigned int v62; // ecx
 	uint8_t* v65; // edi
+	uint8_t* v65a = nullptr; // alpha mirror of v65
 	char v66; // al
 	char* v67; // esi
 	uint8_t v69l;
@@ -2314,7 +2345,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						{
 							v79 = width + tilex;
 							ptrScreenBuffer = (screenWidth_18062C * (height + tiley) + v79 + pixel_buffer_index);
-							ptrScreenAlphaBuffer = (screenWidth_18062C * (height + tiley) + v79 + pixel_buffer_alpha_index);
+							if (pdwScreenAlphaBuffer != nullptr)
+								ptrScreenAlphaBuffer = (screenWidth_18062C * (height + tiley) + v79 + pixel_buffer_alpha_index);
 							posWidth = 0;
 							v79 = x_DWORD_180634_screen_width - v79 - 2;
 							width = v79;
@@ -2459,7 +2491,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 								if (!((v76 ^ v46) | v75))
 								{
 									ptrScreenBuffer -= v73;
-									ptrScreenAlphaBuffer -= v73;
+									if (pdwScreenAlphaBuffer != nullptr)
+										ptrScreenAlphaBuffer -= v73;
 									v77 = *texture++;
 									v72l = v77;
 									do
@@ -2881,6 +2914,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							if ((startOffsetX & 0x80u) == 0)
 								break;
 							v65 = &ptrScreenBuffer[-startOffsetX];
+							if (pdwScreenAlphaBuffer != nullptr)
+								v65a = &ptrScreenAlphaBuffer[-startOffsetX];
 							v66 = *texture;
 							v67 = (char*)(texture + 1);
 							v62 = v66;
@@ -2888,7 +2923,7 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							texture = (uint8_t*)&v67[v62];
 							ptrScreenBuffer = &v65[v62];
 							if (pdwScreenAlphaBuffer != nullptr)
-								ptrScreenAlphaBuffer += (v65 - (&ptrScreenBuffer[-startOffsetX])) + v62;
+								ptrScreenAlphaBuffer = &v65a[v62];
 							v62 = 0;
 						}
 						if (!startOffsetX)
@@ -2952,7 +2987,8 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 							if ((v117 & 0x80u) != 0)
 							{
 								*v118++ = v122;
-								v118a++;
+								if (pdwScreenAlphaBuffer != nullptr)
+									v118a++;
 							}
 							v120--;
 						} while (v120);

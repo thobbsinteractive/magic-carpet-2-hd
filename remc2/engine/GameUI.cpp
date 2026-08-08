@@ -98,7 +98,7 @@ void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, 
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 	{
 		temp_screen_buffer = pdwScreenBuffer_351628;
-		pdwScreenBuffer_351628 = (uint8_t*)x_DWORD_E9C3C;
+		pdwScreenBuffer_351628 = (uint8_t*)ptrMemoryBuffer_E9C3C;
 		func_draw(posX1, posY1, posX2, posY2, color);
 		//result = v7;
 		pdwScreenBuffer_351628 = temp_screen_buffer;
@@ -106,7 +106,7 @@ void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, 
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// E9C3C: using guessed type int x_DWORD_E9C3C;
+// E9C3C: using guessed type int ptrMemoryBuffer_E9C3C;
 // 180628: using guessed type int pdwScreenBuffer_351628;
 // 180660: using guessed type int16_t x_WORD_180660_VGA_type_resolution;
 
@@ -1733,7 +1733,7 @@ void sub_627F0_draw_minimap_entites_a(int16_t x, int16_t y, int16_t posX, int16_
 	}
 	//v99 = v9 * x_DWORD_18062C_resolution_x + (int)pdwScreenBuffer + v8;
 	v99x = &pdwScreenBuffer_351628[v9 * screenWidth_18062C + v8];
-	v100x = &x_DWORD_E9C3C[v9 * screenWidth_18062C + v8];
+	v100x = &ptrMemoryBuffer_E9C3C[v9 * screenWidth_18062C + v8];
 	LODWORD(v13) = 0x10000;
 	HIDWORD(v13) = 0x10000 >> 31;
 	v14 = v13 / v10;
@@ -2359,7 +2359,7 @@ void sub_63670_draw_minimap_a(int16_t x, int16_t y, int16_t posX, int16_t posY, 
 		scaling *= 2;
 	}
 	v70x = &pdwScreenBuffer_351628[v11 * screenWidth_18062C + v10];
-	v71x = &x_DWORD_E9C3C[v11 * screenWidth_18062C + v10];
+	v71x = &ptrMemoryBuffer_E9C3C[v11 * screenWidth_18062C + v10];
 	if (a10)
 	{
 		v15 = x_WORD_F4960;
@@ -3305,7 +3305,7 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 					startY_v8 = screenWidth_18062C * (posY_v6 - scale);
 					startX_v9 = posX_v4 - scale;
 
-					v13 = (x_BYTE*)(startY_v8 + startX_v9 + x_DWORD_E9C3C);
+					v13 = (x_BYTE*)(startY_v8 + startX_v9 + ptrMemoryBuffer_E9C3C);
 					v13[0] = colour_v5;
 					v13[1] = colour_v5;
 					v13[2] = colour_v5;
