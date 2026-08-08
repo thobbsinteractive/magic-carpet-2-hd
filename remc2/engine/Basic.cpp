@@ -1815,8 +1815,8 @@ void drawBitmap640_8F8E8(int16_t posx, int16_t posy, bitmap_pos_struct_t temppst
 //----- (00090164) --------------------------------------------------------
 void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx)
 {
-	uint8_t* pixel;
-	uint8_t* alpha;
+	uint8_t* pixel = nullptr;
+	uint8_t* alpha = nullptr;
 	uint16_t v6; // dx
 	uint8_t v7; // ebx
 	int v8; // esi
@@ -1873,8 +1873,8 @@ void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX,
 //----- (000901E4) --------------------------------------------------------
 void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx)//2711e4
 {
-	uint8_t* pixel; // edi
-	uint8_t* alpha;
+	uint8_t* pixel = nullptr; // edi
+	uint8_t* alpha = nullptr;
 	__int16 v6; // dx
 	int v7; // ebx
 	int v8; // esi
