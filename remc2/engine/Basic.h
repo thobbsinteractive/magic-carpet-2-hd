@@ -460,6 +460,7 @@ extern Pathstruct xadatatables;
 
 extern axis_2d x_WORD_E3760_mouse;
 extern uint8_t* ptrMemoryBuffer_E9C3C; // weak
+extern uint8_t* ptrMemoryAlphaBuffer;
 extern type_SPELLS_BEGIN_BUFFER_str SPELLS_BEGIN_BUFFER_str[];
 
 extern int16_t x_WORD_1806EE; // weak

@@ -31,7 +31,7 @@ int m_iFrameCount = 0; // The number of frames that have occurred.
 float m_fFps; // The frames rendered per second. Needs to be stored to be shown every frame.
 
 uint8_t* ptrMemoryBuffer_E9C3C; // weak
-uint8_t* ptrDrawingAlphaBuffer; // weak
+uint8_t* ptrMemoryAlphaBuffer; // weak
 
 uint8_t* x_DWORD_17DB50; // weak
 
