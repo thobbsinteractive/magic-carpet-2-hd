@@ -28030,7 +28030,9 @@ int AddHouse0A_2D_38330(type_entity_0x6E8E* event)//219330
 				event->struct_byte_0xc_12_15.dword &= 0xFFDFFFFE;
 				event->struct_byte_0xc_12_15.byte[2] |= 0x20u;
 				SetEntityIndexAndRot_49CD0(event, 177);
-				event->word_0x5A_90 += Entities_EA3E4[event->str_0x5E_94.word_0x68_104]->dword_0xA4_164x->playerColorIndex_0x38_56;
+				// this is fixed bug from original game!!!!!!
+				// claimed building used to fly wizard 0's white banner in multiplayer.
+				event->word_0x5A_90 += TransformPlayerColorIndex_616D0(Entities_EA3E4[event->str_0x5E_94.word_0x68_104]->dword_0xA4_164x->playerColorIndex_0x38_56);
 			}
 			else if (!(event->struct_byte_0xc_12_15.byte[2] & 0x20))
 			{
@@ -28039,7 +28041,9 @@ int AddHouse0A_2D_38330(type_entity_0x6E8E* event)//219330
 				PrepareEventSound_6E450(v8, -1, 4);
 				event->struct_byte_0xc_12_15.byte[0] &= 0xFEu;
 				SetEntityIndexAndRot_49CD0(event, 177);
-				event->word_0x5A_90 += Entities_EA3E4[event->str_0x5E_94.word_0x68_104]->dword_0xA4_164x->playerColorIndex_0x38_56;
+				// this is fixed bug from original game!!!!!!
+				// claimed building used to fly wizard 0's white banner in multiplayer.
+				event->word_0x5A_90 += TransformPlayerColorIndex_616D0(Entities_EA3E4[event->str_0x5E_94.word_0x68_104]->dword_0xA4_164x->playerColorIndex_0x38_56);
 			}
 		}
 		event->str_0x5E_94.word_0x68_104 = 0;
