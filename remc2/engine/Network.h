@@ -10,6 +10,24 @@
 #include "../portability/port_net.h"
 
 extern bool Iam_server;
+
+// Which automated match is being played, counting from 0.  The menu auto-navigation latches
+// key on this: they fire once per match rather than once per process, so a second match
+// re-enters the network game instead of sitting in the main menu for ever.
+extern int g_autotest_match;
+
+// Bit i is set when slot i currently holds a live connection; our own bit is always set.
+//
+// Not the same as the lobby's x_WORD_17DEFE, which counts slots that merely have an entry:
+// straight after a server hand-over that still includes peers this node no longer has a
+// session with.  Anything that must wait for the others to really be reachable again - the
+// automated test starting a level, above all - has to ask this instead, or it acts while it
+// is still alone and nobody hears it.
+//
+// A mask rather than a count, because the count alone cannot see a hand-over: losing the
+// old server and gaining the other survivor leaves it at two throughout, so a caller
+// watching for things to settle would never notice anything had happened.
+int NetworkConnectedMask();
 extern bool Iam_client;
 extern int NetworkPort;
 extern int ServerPort;
@@ -24,6 +42,15 @@ signed int NetworkTestCall_72FBB();
 void NetworkListenAll_7302E();
 // int NetworkInitConnection_7308F(signed __int16 *a1, int a2, __int16 a3);
 void NetworkCanceling_73669(__int16 a1);
+
+// Hand the current session back, if we are in one, so a NEW match can be joined.
+//
+// NetworkInitConnection_7308F refuses outright while the game still believes it is in a
+// session, and it does so before sending anything - so a second network game is turned away
+// with no traffic at all to show for it.  That is the reported "cannot start another network
+// game after finishing one".  Ending a multiplayer level has to call this; it is the same
+// teardown the game already performs when the local player leaves.
+void NetworkLeaveSession();
 void NetworkEvent_7373D(int16_t a1);
 void NetworkRemoveClient_739AD(__int16 a1);
 void NetworkSomeChange_73AA1(__int16 a1);

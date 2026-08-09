@@ -31552,6 +31552,12 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 					break;//must be here
 				}
 			}
+			// The level is over and we are on our way back to the menu.  Give the network
+			// session back here, or the next network game is refused before it sends a
+			// single packet - see NetworkLeaveSession().
+			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
+				NetworkLeaveSession();
+
 			nextMenu_E29D8 = MenuItem::MainMenu;
 			skipMenus = false;
 			setLevel = -1;
@@ -37573,6 +37579,39 @@ void PlayerEvents_51BB0()//232bb0
 			if (!leftGame) {
 				leftGame = true;
 				debug_net_printf("AUTOTEST: leaving the game now\n");
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;
+			}
+		}
+	}
+
+	// End this match and go round again, for the multi-match test.
+	//
+	// Deliberately NOT byte_0x004_2BE0_11234, which is what --quit_after sets: that one is
+	// tested at the top of sub_46830_main_loop as well, so it leaves the application
+	// altogether.  Bit 3 of dw_w_b_0_2BDE_11230.byte[2] only breaks InGameLoop_47320, and the
+	// outer while(1) then runs MenusAndIntros_76930 again - which is exactly the path a
+	// player takes back to the menu, and the one that has to rebuild the network state.
+	if ((x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
+		&& CommandLineParams.AutoTest() && CommandLineParams.AutoTestMatchSeconds() > 0
+		&& CommandLineParams.AutoTestMatches() > 1)
+	{
+		static long matchSince = 0;
+		static int  matchInProgress = -1;
+		if (matchInProgress != g_autotest_match) { matchInProgress = g_autotest_match; matchSince = 0; }
+		if (matchSince == 0) matchSince = (long)j___clock();
+
+		if (((long)j___clock() - matchSince) / 100 >= CommandLineParams.AutoTestMatchSeconds())
+		{
+			if (g_autotest_match + 1 < CommandLineParams.AutoTestMatches())
+			{
+				debug_net_printf("AUTOTEST: match %d over, returning to the menu for match %d\n",
+					g_autotest_match, g_autotest_match + 1);
+				g_autotest_match++;
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 8;
+			}
+			else
+			{
+				debug_net_printf("AUTOTEST: last match (%d) over, leaving\n", g_autotest_match);
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;
 			}
 		}

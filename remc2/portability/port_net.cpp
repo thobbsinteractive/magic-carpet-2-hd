@@ -108,6 +108,7 @@ static const int  MAX_RETRIES = 8;    // CALL / ADD_NAME retries
 
 // NetBIOS status codes
 #define NRC_GOODRET  0x00
+#define NRC_BUFLEN   0x06    // message longer than the buffer offered by the RECEIVE
 #define NRC_CMDTMO   0x05
 #define NRC_SCLOSED  0x0a
 #define NRC_CMDCAN   0x0b
@@ -1274,12 +1275,12 @@ namespace MyNetworkLib {
 		}
 		if (u.message == MESS_HEARTBEAT_ACK)
 			return;
-		HandleServerMsg(firstRaw, pc.addr, u.port ? u.port : pc.srcPort);
+		HandleServerMsg(firstRaw, pc.addr, u.port ? u.port : pc.srcPort, (intptr_t)pc.sock);
 	}
 
 	// Turn a classified connection into a peer data session, attached to the LISTEN NCB that
 	// is waiting for one.
-	void NetworkClass::AdoptDataSession(PendingConn& pc, const std::string& firstRaw)
+	bool NetworkClass::AdoptDataSession(PendingConn& pc, const std::string& firstRaw)
 	{
 		message_info u = Unpack_Message(firstRaw);
 		const int callerPort = u.port ? u.port : pc.srcPort;
@@ -1293,6 +1294,8 @@ namespace MyNetworkLib {
 		{
 			std::lock_guard<std::mutex> lk(clientConnMutex);
 			for (auto* c : clientConnection) {
+				const bool nameMatch = !callerName.empty()
+					&& callerName == TrimName(c->ncb_callName_10, (int)sizeof(c->ncb_callName_10));
 				bool hasAlive = false;
 				{
 					std::lock_guard<std::mutex> slk(sessions_mutex);
@@ -1304,8 +1307,7 @@ namespace MyNetworkLib {
 				// established LISTEN, so an anonymous connection cannot land on one the
 				// server has not approved yet.
 				if (c->ncb_lsn_2 != 0 && !anyFreeListen) anyFreeListen = c;
-				if (!callerName.empty()
-					&& callerName == TrimName(c->ncb_callName_10, (int)sizeof(c->ncb_callName_10))) {
+				if (nameMatch) {
 					// Deliberately NOT requiring ncb_lsn_2 here.  That field is set locally
 					// when MESS_SERVER_LISTEN_ACCEPT finds its way back, and the caller's data
 					// connection can beat that message home - measured 4 ms after the CALL was
@@ -1322,12 +1324,24 @@ namespace MyNetworkLib {
 		// An older peer that says nothing about itself still has to be let in.
 		if (!listenNCB) listenNCB = anyFreeListen;
 		if (!listenNCB) {
-			// setListen hasn't run yet for this NCB — reject and let caller retry
-			if (m_network_debug)
-				debug_net_printf("AcceptPeer: WARNING no listenNCB ready, closing incoming connection from %s (will retry)\n",
-					pc.addr.c_str());
-			CLOSE_SOCKET(pc.sock);
-			return;
+			// No LISTEN is armed for this caller yet.  Say "not yet" and leave the socket
+			// open: the connection goes back on the pending pile and is offered again.
+			//
+			// Closing it here used to be final, because nothing ever re-opens a refused data
+			// connection.  That is survivable when the two sides are milliseconds apart, but
+			// on a rejoin they are not: whoever gets through the menus first calls while the
+			// other is still working its way there - measured at ~790 ms with no LISTEN armed
+			// at all - and the second match then never formed a session.
+			if (m_network_debug) {
+				// Rate-limited: this is retried on every poll while the connection is parked.
+				static clock_t lastWhy = 0;
+				if (lastWhy == 0 || (long)((clock() - lastWhy) * 1000 / CLOCKS_PER_SEC) >= 1000) {
+					lastWhy = clock();
+					debug_net_printf("AcceptPeer: nobody listening for caller [%s] yet, connection parked\n",
+						callerName.c_str());
+				}
+			}
+			return false;
 		}
 
 		auto sess = std::make_shared<TcpSession>();
@@ -1351,6 +1365,7 @@ namespace MyNetworkLib {
 		if (m_network_debug)
 			debug_net_printf("AcceptPeer: data connection from %s:%d, session listenNCB=%p name=[%.16s] call=[%.16s]\n",
 				pc.addr.c_str(), callerPort, (void*)listenNCB, listenNCB->ncb_name_26, listenNCB->ncb_callName_10);
+		return true;
 	}
 
 	// Read the first frame of every parked connection and hand it to whichever side owns it.
@@ -1369,7 +1384,21 @@ namespace MyNetworkLib {
 				pc.rbuf.ready.erase(pc.rbuf.ready.begin());
 				message_info u = Unpack_Message(first);
 				if (u.message == MESS_PEER_HELLO) {
-					AdoptDataSession(pc, first);
+					if (!AdoptDataSession(pc, first)) {
+						// Nobody is listening for this caller yet.  Put the hello back and
+						// park the connection; PENDING_TIMEOUT_MS still bounds the wait, so a
+						// connection nobody ever claims is dropped rather than kept for ever.
+						if ((long)((clock() - pc.since) * 1000 / CLOCKS_PER_SEC) >= PENDING_TIMEOUT_MS) {
+							if (m_network_debug)
+								debug_net_printf("Accept: nobody claimed the data connection from %s in %ld ms, dropping it\n",
+									pc.addr.c_str(), PENDING_TIMEOUT_MS);
+							CLOSE_SOCKET(pc.sock);
+							continue;
+						}
+						pc.rbuf.ready.insert(pc.rbuf.ready.begin(), first);
+						keep.push_back(std::move(pc));
+						continue;
+					}
 				}
 				// A control connection can well open with a heartbeat: a client connects as
 				// soon as it starts and then stays quiet until it wants something, so the
@@ -1471,7 +1500,7 @@ namespace MyNetworkLib {
 				// Intercept GET_IP to learn client's data port
 				if (u.message == MESS_CLIENT_GET_IP) cc.dataPort = u.port;
 				if (u.message == MESS_CLIENT_TESTADDNAME) cc.dataPort = u.port;
-				HandleServerMsg(raw, cc.addr, cc.dataPort ? cc.dataPort : u.port);
+				HandleServerMsg(raw, cc.addr, cc.dataPort ? cc.dataPort : u.port, (intptr_t)cc.sock);
 			}
 			cc.rbuf.ready.clear();
 			// Idle is normal - a client only speaks when it wants something - so ask before
@@ -1810,9 +1839,25 @@ namespace MyNetworkLib {
 	// ---------------------------------------------------------------------------
 	void NetworkClass::HandleServerMsg(const std::string& raw,
 		const std::string& senderAddr,
-		int                senderDataPort)
+		int                senderDataPort,
+		intptr_t           senderSockRaw)
 	{
+		const socket_t senderSock = (senderSockRaw == -1) ? SOCK_INVALID : (socket_t)senderSockRaw;
 		message_info u = Unpack_Message(raw);
+
+		// Answer whoever asked, on the connection they asked over.  Routing a reply by
+		// ip+port used to send it to the wrong node whenever the sender's data port was not
+		// registered yet: SendToCtrlClient then falls back to matching on address alone, and
+		// on loopback every node is 127.0.0.1, so the reply went to the first match - which
+		// on a node that has just taken the server role is its own client connection.  The
+		// caller waited for a CALL_ACCEPT that the new server had handed to itself.
+		auto ReplyToSender = [&](const std::string& msg) -> bool {
+			if (senderSock != SOCK_INVALID) {
+				if (debug_net) { message_info m = Unpack_Message(msg); LogPkt("CTRL TX →", senderAddr, senderDataPort, m); }
+				return TcpSendFull(senderSock, msg);
+			}
+			return SendToCtrlClient(msg, senderAddr, senderDataPort);
+		};
 
 		if (u.message == MESS_CLIENT_GET_IP) {
 			shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
@@ -1832,7 +1877,7 @@ namespace MyNetworkLib {
 			shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
 			if (GetNameNetwork(u.data).empty()) {
 				AddNetworkName(u.data, ip);
-				SendToCtrlClient(Pack_Message(MESS_SERVER_TESTADDNAME_OK, n, u.index, -10), senderAddr, senderDataPort);
+				ReplyToSender(Pack_Message(MESS_SERVER_TESTADDNAME_OK, n, u.index, -10));
 				BroadcastRoster();   // membership changed
 				char cmp[16] = { 0 };
 				sprintf(cmp, "NETH2%c0", u.data[5]);
@@ -1854,10 +1899,10 @@ namespace MyNetworkLib {
 				}
 			}
 			else if (ExistNetworkName(u.data, ip)) {
-				SendToCtrlClient(Pack_Message(MESS_SERVER_TESTADDNAME_OK, n, u.index, -10), senderAddr, senderDataPort);
+				ReplyToSender(Pack_Message(MESS_SERVER_TESTADDNAME_OK, n, u.index, -10));
 			}
 			else {
-				SendToCtrlClient(Pack_Message(MESS_SERVER_TESTADDNAME_REJECT, n, u.index, -10), senderAddr, senderDataPort);
+				ReplyToSender(Pack_Message(MESS_SERVER_TESTADDNAME_REJECT, n, u.index, -10));
 			}
 		}
 		else if (u.message == MESS_CLIENT_MESSAGE_LISTEN) {
@@ -1884,9 +1929,8 @@ namespace MyNetworkLib {
 				}
 				struct CallAcceptInfo { char ip[64]; int dataPort; };
 				CallAcceptInfo ci{}; strncpy(ci.ip, listenerIp.c_str(), 63); ci.dataPort = callIP.port;
-				SendToCtrlClient(Pack_Message(MESS_SERVER_CALL_ACCEPT, u.messNCB, u.index, -10,
-					(char*)&ci, sizeof(ci)),
-					senderAddr, senderDataPort);
+				ReplyToSender(Pack_Message(MESS_SERVER_CALL_ACCEPT, u.messNCB, u.index, -10,
+					(char*)&ci, sizeof(ci)));
 
 				// Tell listener: caller IP + data port
 				struct ListenAcceptInfo { char ncb_data[sizeof(myNCB)]; char ip[64]; int dataPort; };
@@ -1909,7 +1953,7 @@ namespace MyNetworkLib {
 			}
 			else {
 				shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
-				SendToCtrlClient(Pack_Message(MESS_SERVER_CALL_REJECT, u.messNCB, u.index, -10), senderAddr, senderDataPort);
+				ReplyToSender(Pack_Message(MESS_SERVER_CALL_REJECT, u.messNCB, u.index, -10));
 			}
 		}
 		else if (u.message == MESS_CLIENT_CANCEL) {
@@ -2140,8 +2184,23 @@ namespace MyNetworkLib {
 
 			message_info u = Unpack_Message(raw);
 			if (u.size > conn.connection->ncb_bufferLength_8) {
+				// Too big for the buffer the game offered.  NetBIOS answers this with
+				// NRC_BUFLEN and as much of the message as fits - it does NOT stay pending.
+				//
+				// This used to `continue` after the message had already been popped off the
+				// queue above, so the message was destroyed AND the RECEIVE stayed pending
+				// for ever.  Nothing re-sends in lockstep, so both nodes then sat waiting on
+				// each other - measured at 54 s and counting.  Failing the command lets the
+				// game see the mismatch and act on it; silently swallowing it cannot be
+				// recovered from by anybody.
+				const uint16_t fits = conn.connection->ncb_bufferLength_8;
+				memcpy(conn.connection->ncb_buffer_4.p, u.data, fits);
+				conn.connection->ncb_retcode_1 = NRC_BUFLEN;
+				conn.connection->ncb_cmd_cplt_49 = NRC_BUFLEN;
+				toDelete.push_back(conn.index);
 				if (m_network_debug)
-					debug_net_printf("Pass1: RECEIVE idx=%d size=%u > buf=%u DROP\n", conn.index, u.size, conn.connection->ncb_bufferLength_8);
+					debug_net_printf("Pass1: RECEIVE idx=%d size=%u > buf=%u BUFLEN name=[%.16s] call=[%.16s]\n",
+						conn.index, u.size, fits, conn.connection->ncb_name_26, conn.connection->ncb_callName_10);
 
 				continue;
 			}
@@ -2513,6 +2572,36 @@ void printState(myNCB** connections) {
 				(!connections[i]->ncb_cmd_cplt_49) ? "ok" : "pending");
 	}
 }
+// See port_net.h for why the game layer needs this.
+int NetworkRosterPlayers(const char* namePrefix, bool present[8])
+{
+	for (int i = 0; i < 8; i++) present[i] = false;
+	if (!namePrefix) return -1;
+	const size_t prefixLen = strlen(namePrefix);
+
+	std::vector<RosterEntry> roster;
+	{
+		std::lock_guard<std::mutex> lk(rosterMtx);
+		roster = knownRoster;
+	}
+	if (roster.empty()) return -1;
+
+	int marked = 0;
+	for (auto& e : roster) {
+		// Names are padded with spaces, so the printable part ends at the first blank.
+		size_t end = 0;
+		while (end < sizeof(e.name) && e.name[end] != '\0' && e.name[end] != ' ') end++;
+		if (end <= prefixLen) continue;                              // too short to carry one
+		if (strncmp(e.name, namePrefix, prefixLen) != 0) continue;   // not one of ours
+		size_t p = prefixLen;
+		int idx = 0;
+		while (p < end && e.name[p] >= '0' && e.name[p] <= '9') { idx = idx * 10 + (e.name[p] - '0'); p++; }
+		if (p != end) continue;                                      // trailing junk
+		if (idx >= 0 && idx < 8 && !present[idx]) { present[idx] = true; marked++; }
+	}
+	return marked;
+}
+
 void printState2(char* text) {
 	if (m_network_debug)
 		debug_net_printf("%s", text);

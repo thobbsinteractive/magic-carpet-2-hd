@@ -25,6 +25,8 @@ void CommandLineParser::Init(int argc, char **argv) {
 	m_net_stall_every = 0;
 	m_net_kill_after_s = 0;
 	m_quit_after_s = 0;
+	m_auto_test_matches = 1;
+	m_auto_test_match_s = 0;
 	m_auto_test_players = 2;
     m_analyze_entity = true;
     m_alternative_gamespeed_control = true;
@@ -222,6 +224,8 @@ void CommandLineParser::InterpretParams() {
 		else if (param == "--net_stall_every")                  m_net_stall_every = atoi((++p)->c_str());
 		else if (param == "--net_kill_after")                   m_net_kill_after_s = atoi((++p)->c_str());
 		else if (param == "--quit_after")                       m_quit_after_s = atoi((++p)->c_str());
+		else if (param == "--auto_test_matches")                m_auto_test_matches = atoi((++p)->c_str());
+		else if (param == "--auto_test_match_seconds")          m_auto_test_match_s = atoi((++p)->c_str());
 		else if (param == "--auto_test_players")                m_auto_test_players = atoi((++p)->c_str());
         else if (param == "--no_alternative_gamespeed_control") m_alternative_gamespeed_control = false;
         else if (param == "--no_analyze_entity")                m_analyze_entity = false;

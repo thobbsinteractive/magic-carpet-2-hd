@@ -25,6 +25,9 @@ char nethID[7] = "TESTER";
 // in the lobby (the menu code notices) and in the game (nobody does).
 bool g_inGameLoop = false;
 
+// See Network.h.  Bumped when an automated match ends and another is due.
+int g_autotest_match = 0;
+
 __int16 x_WORD_E131A = 0; // weak
 
 bool Iam_server = false;
@@ -327,6 +330,64 @@ void NetworkCanceling_73669(__int16 a1)//254669
 	}
 }
 
+// See Network.h for why this is a mask and not the lobby's player count.
+int NetworkConnectedMask()
+{
+	int mask = 0;
+	for (int i = 0; i < maxPlayers_E127A && i < 8; i++)
+		if (connected_E12CE[i] == 1) mask |= (1 << i);
+	if (IndexInNetwork_E1276 >= 0 && IndexInNetwork_E1276 < 8)
+		mask |= (1 << IndexInNetwork_E1276);     // ourselves
+	return mask;
+}
+
+// Slots whose node vanished and whose hand-over was already done locally from the roster.
+// SetMultiplayerColors_7CE50 uses this to skip the orderly hand-over for them while still
+// running the rest of its per-slot bookkeeping.
+static bool g_vanishedHandled[8] = { false, false, false, false, false, false, false, false };
+
+// Fill in who is still in the session before the departing node is asked for its own list.
+//
+// The original hand-over starts by RECEIVING that list from the node that is leaving, which
+// works for an orderly departure and not at all for a node that was killed: nothing was
+// sent, NetworkReceiveMessage2_7404E quietly does nothing once the peer is marked
+// disconnected, and locConnected - an uninitialised stack array - was left to decide who
+// takes the token.  In the lobby that handed the token back to the dead player and every
+// survivor called a corpse for ever.
+//
+// connected_E12CE alone cannot answer this either: play is a star around the token holder,
+// so a node has no session with - and no view of - the other survivors.  The transport does
+// know, from the membership list the server broadcasts, so ask it and fall back to local
+// knowledge only if it has nothing to say.  Every node applies the same rule to the same
+// list, so they all reach the same answer without talking to each other.
+static void SeedSurvivors(uint8_t locConnected[8], int16_t leaving)
+{
+	bool present[8];
+	const int marked = NetworkRosterPlayers(nethID, present);
+	for (int i = 0; i < 8; i++)
+		locConnected[i] = (marked > 0) ? (uint8_t)(present[i] ? 1 : 0)
+		                               : (uint8_t)(connected_E12CE[i] == 1);
+	if (leaving >= 0 && leaving < 8)
+		locConnected[leaving] = 0;                 // the node being handled here is gone
+	locConnected[IndexInNetwork_E1276] = 1;        // we are certainly still here
+	if (CommandLineParams.DoNetworkDebug())
+		debug_net_printf("SEEDSURV: leaving=%d roster=%d survivors=[%d%d%d%d%d%d%d%d]\n",
+			(int)leaving, marked, locConnected[0], locConnected[1], locConnected[2],
+			locConnected[3], locConnected[4], locConnected[5], locConnected[6], locConnected[7]);
+}
+
+// See Network.h.  Not part of the original - the original never returns from a network match
+// to the menu and back into another one within a single run.
+void NetworkLeaveSession()
+{
+	if (!x_BYTE_E1274 || !x_BYTE_E1275) return;   // nothing allocated, or not in a session
+	if (IndexInNetwork_E1276 < 0) return;
+	if (CommandLineParams.DoNetworkDebug())
+		debug_net_printf("MATCHEND: leaving the network session (index %d)\n",
+			(int)IndexInNetwork_E1276);
+	NetworkCanceling_73669(IndexInNetwork_E1276);  // hang up peers, drop our name, clear the flag
+}
+
 //----- (0007373D) --------------------------------------------------------
 void NetworkEvent_7373D(int16_t a1)//25473d
 {
@@ -353,16 +414,7 @@ void NetworkEvent_7373D(int16_t a1)//25473d
 			}
 			else
 			{
-				// Work out the survivors locally BEFORE asking the departing node for its
-				// list.  An orderly departure sends one and overwrites this; a node that was
-				// killed sends nothing, and NetworkReceiveMessage2_7404E quietly does
-				// nothing once the peer is already marked disconnected - which left this
-				// uninitialised stack array to decide who holds the token.  In the lobby
-				// that handed the token straight back to the dead player, and every
-				// survivor then called a corpse for ever.
-				for (i = 0; maxPlayers_E127A > i; i++)
-					locConnected[i] = (connected_E12CE[i] == 1);
-				locConnected[a1] = 0;                 // the node being handled here is gone
+				SeedSurvivors(locConnected, a1);
 				NetworkReceiveMessage2_7404E(IndexInNetwork2_E12A8, locConnected, 8u);
 				NetworkCanceling_73669(a1);
 				for (i = 0; maxPlayers_E127A > i; i++)
@@ -461,12 +513,7 @@ void NetworkSomeChange_73AA1(__int16 a1)//254aa1
 			}
 			else
 			{
-				// Same as in NetworkPlayerLeft above: seed the survivor list from what this
-				// node can see, so a peer that was killed - and therefore sent no list -
-				// cannot leave an uninitialised array to choose the next token holder.
-				for (i = 0; maxPlayers_E127A > i; i++)
-					locConnected[i] = (connected_E12CE[i] == 1);
-				locConnected[a1] = 0;                 // the node being handled here is gone
+				SeedSurvivors(locConnected, a1);
 				NetworkReceiveMessage2_7404E(IndexInNetwork2_E12A8, locConnected, 8);
 				NetworkRemoveClient_739AD(a1);
 				for (i = 0; maxPlayers_E127A > i; i++)
@@ -983,13 +1030,19 @@ static void NetworkPeerVanished_73AA1b(int16_t lost)
 	if (IndexInNetwork2_E12A8 != lost)
 		return;                                            // the token did not die with it
 
+	// Who is left.  Taken from the roster rather than the in-game flags, so this works in
+	// the lobby too - there the flags are not filled in yet, and a node cannot see the
+	// players it holds no session with anyway.
+	uint8_t survivors[8];
+	SeedSurvivors(survivors, lost);
+
 	// The token passes to the lowest-numbered player still in the game - the same rule the
 	// control server uses, and computable by everyone from what they already know.
 	int16_t next = -1;
 	for (int i = 0; i < maxPlayers_E127A; i++)
 	{
 		if (i == lost) continue;
-		if (i == IndexInNetwork_E1276 || D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236)
+		if (survivors[i])
 		{
 			next = (int16_t)i;
 			break;
@@ -1008,7 +1061,7 @@ static void NetworkPeerVanished_73AA1b(int16_t lost)
 		for (int i = 0; i < maxPlayers_E127A; i++)
 		{
 			if (i == IndexInNetwork_E1276 || i == lost) continue;
-			if (!D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236) continue;
+			if (!survivors[i]) continue;
 			NetworkListen_74B75(i);
 		}
 	}
@@ -1028,14 +1081,23 @@ void RemoveDeadClients()
 			{
 				NetworkCancel_748F7(i);
 				NetworkHangUp_74B19(connection_E12AE[i]);
+				// The flags stay exactly as the original set them: action_9 = 1 is what makes
+				// SetMultiplayerColors_7CE50 blank the palette entry AND clear makeUpdate_0
+				// again.  Leaving the previous action in place instead means the slot keeps
+				// makeUpdate_0 set for ever - cases 2/3/4 never clear it - and re-runs that
+				// stale action every frame, which for a "select character" action re-rolls
+				// colours through FindFreeColorIndex_7D230 and lands two wizards on one
+				// colour.
 				x_DWORD_17DE38str.array_BYTE_17DE68x[i].makeUpdate_0 = 1;
 				x_DWORD_17DE38str.array_BYTE_17DE68x[i].action_9 = 1;
-				// In the lobby the line above is enough - SetMultiplayerColors_7CE50 picks
-				// it up and runs the hand-over.  Once the level is running nobody reads it,
-				// so the same work has to be done here or the survivors wait for a node
-				// that will never answer again.
-				if (g_inGameLoop)
-					NetworkPeerVanished_73AA1b((int16_t)i);
+				// What must NOT run for this slot is the ORDERLY hand-over that action_9 = 1
+				// normally triggers: NetworkSomeChange_73AA1 begins by receiving the survivor
+				// list from the node that is leaving, and a node that was killed sent none.
+				// Mark the slot so that dispatch is skipped, and do the hand-over here from
+				// the roster instead - which is right in the lobby for exactly the same
+				// reason it is right in the game.
+				g_vanishedHandled[i] = true;
+				NetworkPeerVanished_73AA1b((int16_t)i);
 			}
 			oldConnected[i] = connected_E12CE[i];
 		}
@@ -1212,7 +1274,13 @@ bool SetMultiplayerColors_7CE50()//25de50
 				sub_41A90_VGA_Palette_install(x_DWORD_17DE38str.palette_17DE38x);
 
 				x_DWORD_17DE38str.array_BYTE_17DE68x[i].makeUpdate_0 = 0;
-				NetworkSomeChange_73AA1(i);
+				// A slot whose node vanished has already been handed over from the roster in
+				// RemoveDeadClients; the orderly path below would try to receive a survivor
+				// list that nobody sent.
+				if (g_vanishedHandled[i])
+					g_vanishedHandled[i] = false;
+				else
+					NetworkSomeChange_73AA1(i);
 				if (i == x_DWORD_17DE38str.serverIndex_17DEFC)
 					result = true;
 				break;
@@ -1242,7 +1310,23 @@ bool SetMultiplayerColors_7CE50()//25de50
 				D41A0_0.LevelIndex_0xc = x_DWORD_17DE38str.serverIndex_17DEFC;
 				x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = x_DWORD_17DE38str.array_BYTE_17DE68x[GetIndexNetwork2_74515()].selectedLevel_10;
 				x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 |= Setting::MULTIPLAYER_MODE;
-				D41A0_0.NumberOfPlayers_0xe = x_DWORD_17DE38str.x_WORD_17DEFE;
+				// NumberOfPlayers_0xe is used everywhere as a LOOP BOUND over array_0x2BDE,
+				// not as a population count, and the two agree only while the players fill
+				// slots 0..N-1.  After a server hand-over they do not: the node that died
+				// leaves a hole, so the survivors sit at 1 and 2 while the count is 2 - and
+				// the player in slot 2 falls outside every loop.  It never spawns, its entity
+				// index is never filled in, and drawing its own status bar then divides by a
+				// zero read out of unrelated memory (integer divide-by-zero in
+				// DrawTopStatusBar_2D710, which killed that node a second into the level).
+				//
+				// Take the highest occupied slot instead.  For a normal contiguous game this
+				// is exactly the old number, so nothing changes there.
+				{
+					int highestSlot = -1;
+					for (int s = 0; s < 8; s++)
+						if (x_DWORD_17DE38str.array_BYTE_17DE68x[s].makeUpdate_0) highestSlot = s;
+					D41A0_0.NumberOfPlayers_0xe = (int16_t)(highestSlot + 1);
+				}
 				NetworkCancelAll_7449C();
 				m_ExitMenuLoop_E29DC = 1;
 				result = true;

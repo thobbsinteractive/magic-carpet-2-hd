@@ -5348,10 +5348,11 @@ char MultiplayerMenu_7DE80(type_menuButtons_E1F84* a2x)//25ee80
 	a2x->dword_4 = 0;
 	// Confirm the session-number dialog once and go straight on to the level selection.
 	if (CommandLineParams.AutoTest()) {
-		static bool autoSessionConfirmed = false;
-		if (!autoSessionConfirmed) {
-			autoSessionConfirmed = true;
-			debug_net_printf("AUTOTEST: confirming session %d\n", (int)(unsigned __int8)x_BYTE_E29DF_skip_screen);
+		static int autoSessionConfirmedFor = -1;
+		if (autoSessionConfirmedFor != g_autotest_match) {
+			autoSessionConfirmedFor = g_autotest_match;
+			debug_net_printf("AUTOTEST: confirming session %d (match %d)\n",
+				(int)(unsigned __int8)x_BYTE_E29DF_skip_screen, g_autotest_match);
 			x_WORD_E131A = 0;
 			x_DWORD_17DE38str.networkSession_17DEFA = (unsigned __int8)x_BYTE_E29DF_skip_screen;
 			ResetMouse_7B5A0();
@@ -5774,16 +5775,50 @@ char sub_77680()//258680
 			// Once every player has joined, the host starts the level.
 			if (CommandLineParams.AutoTest()) {
 				static int   autoFrames = 0;
-				static bool  autoLevelStarted = false;
+				static int   autoLevelStartedFor = -1;
+				// A second match comes back through this screen, so the settle counters have
+				// to start over with it - otherwise the level is rolled on the frame count
+				// and connection history left behind by the match before.
+				static int   autoMatchSeen = -1;
+				if (autoMatchSeen != g_autotest_match) { autoMatchSeen = g_autotest_match; autoFrames = 0; }
 				autoFrames++;
 				const int autoNeedPlayers = CommandLineParams.AutoTestPlayers() > 0
 					? CommandLineParams.AutoTestPlayers() : 2;
-				if (Iam_server && !autoLevelStarted && x_DWORD_17DE38str.x_WORD_17DEFE >= autoNeedPlayers && autoFrames > 180) {
-					autoLevelStarted = true;
+				// The peers must be connected, and STAY connected for a while, before the
+				// level is rolled.  After a server hand-over the new server reaches its
+				// player count at once - the slots are all still there - and a peer that has
+				// just died still reads as connected for a few frames, until its NCB is
+				// marked closed.  Starting on that broadcasts "start" to nobody: this node
+				// goes in-game while the other survivor is left behind in the lobby, and from
+				// then on they exchange different-sized records at each other.
+				// Watch WHICH peers are connected, not how many: a hand-over swaps the old
+				// server for the other survivor and leaves the count unchanged, so a counter
+				// alone never dips and the wait it is supposed to impose never happens.
+				static int  autoStableFrames = 0;
+				static int  autoLastMask = -1;
+				static bool autoWasServer = false;
+				const int   autoMask = NetworkConnectedMask();
+				int         autoConnected = 0;
+				for (int b = 0; b < 8; b++) if (autoMask & (1 << b)) autoConnected++;
+
+				// Becoming the server restarts the wait.  At the instant the role is taken
+				// over nothing else has moved yet - the dead server still reads as connected
+				// for another ~80 ms, so neither the count nor the mask has noticed - and the
+				// level would be rolled before the survivors have found each other.
+				if (Iam_server != autoWasServer) { autoWasServer = Iam_server; autoStableFrames = 0; }
+
+				if (autoMask != autoLastMask) { autoLastMask = autoMask; autoStableFrames = 0; }
+				else if (autoConnected >= autoNeedPlayers) autoStableFrames++;
+				else autoStableFrames = 0;
+
+				if (Iam_server && autoLevelStartedFor != g_autotest_match
+					&& x_DWORD_17DE38str.x_WORD_17DEFE >= autoNeedPlayers
+					&& autoStableFrames > 180 && autoFrames > 180) {
+					autoLevelStartedFor = g_autotest_match;
 					int me = x_DWORD_17DE38str.serverIndex_17DEFC;
 					x_DWORD_17DE38str.array_BYTE_17DE68x[me].action_9 = 5;
 					x_DWORD_17DE38str.array_BYTE_17DE68x[me].makeUpdate_0 = 1;
-					debug_net_printf("AUTOTEST: host starts the level\n");
+					debug_net_printf("AUTOTEST: host starts the level (match %d)\n", g_autotest_match);
 				}
 			}
 			if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 59)
@@ -5848,11 +5883,13 @@ bool DrawAndServe_7B250()//25c250
 	}
 	// Pick the network-game button once, on behalf of the tester.
 	if (CommandLineParams.AutoTest()) {
-		static bool autoNetworkPicked = false;
-		if (!autoNetworkPicked) {
-			autoNetworkPicked = true;
+		// Once per MATCH, not once per process: a second match comes back to this menu and
+		// has to pick the network game again.
+		static int autoNetworkPickedFor = -1;
+		if (autoNetworkPickedFor != g_autotest_match) {
+			autoNetworkPickedFor = g_autotest_match;
 			mainMenuButtons_E1BAC[2].selected_8 = 1;
-			debug_net_printf("AUTOTEST: entering network game\n");
+			debug_net_printf("AUTOTEST: entering network game (match %d)\n", g_autotest_match);
 		}
 	}
 

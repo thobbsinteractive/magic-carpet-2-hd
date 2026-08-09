@@ -73,12 +73,35 @@ $Tests = @(
     # The client must not run ahead while it is waiting for the host: a long pause in the
     # host's replies has to hold the client back, not let it simulate extra turns.
     @{ name = "host-freeze";     desc = "host unresponsive for 3 s at a time";extraHost=@();                        extraClient=@("--net_stall","3000","--net_stall_every","40"); runSeconds=60; checkLockstep=$true }
-    @{ name = "host-freeze-long";desc = "host unresponsive for 8 s at a time";extraHost=@();                        extraClient=@("--net_stall","8000","--net_stall_every","25"); runSeconds=60; checkLockstep=$true }
+    # 4 s, not 8: HEARTBEAT_TIMEOUT_MS is 5 s, so a longer silence IS a dead peer by
+    # definition and the session is torn down - measured as "PollSessions: timeout 5001ms".
+    # Asking the game to survive an outage longer than its own dead-peer timeout is a
+    # contradiction, and lengthening that timeout would blunt the detection every
+    # *-vanishes / *-dies-* scenario relies on.  4 s is the longest freeze that can still be
+    # ridden out, with a second to spare.
+    @{ name = "host-freeze-long";desc = "host unresponsive for 4 s at a time";extraHost=@();                        extraClient=@("--net_stall","4000","--net_stall_every","25"); runSeconds=60; checkLockstep=$true }
     @{ name = "client-quits";    desc = "client leaves, host must carry on";  extraHost=@();                        extraClient=@("--quit_after","20");     runSeconds=60; expect="hostSurvives" }
     @{ name = "host-quits";      desc = "host leaves, client must carry on";  extraHost=@("--quit_after","20");     extraClient=@();                        runSeconds=60; expect="clientSurvives" }
     @{ name = "client-vanishes"; desc = "client is killed outright";          extraHost=@();                        extraClient=@();                        runSeconds=60; killAfter="client" }
     @{ name = "host-vanishes";   desc = "host is killed outright";            extraHost=@();                        extraClient=@();                        runSeconds=60; killAfter="host" }
     @{ name = "link-lost";       desc = "client tears its own link down";     extraHost=@();                        extraClient=@("--net_kill_after","20"); runSeconds=60 }
+
+    # Two matches back to back in ONE process.  Every other scenario plays once and exits, so
+    # nothing until now touched what has to be torn down and rebuilt between matches: data
+    # sessions, pending NCB commands and the name registrations, all keyed by NCB pointers the
+    # game reuses.  Leaving a level goes back to the menu (not out of the program), so the
+    # second match runs through the same code a player would.
+    #
+    # KNOWN TO FAIL - this is the long-standing "cannot start another network game after
+    # finishing one", reproduced deterministically here for the first time.  Progress so far:
+    # the session is now handed back when a match ends (NetworkLeaveSession), which got the
+    # second match from "refused before sending a single packet" to both nodes reaching the
+    # level selection and the caller's data connection actually arriving.  What still breaks:
+    # the host arms its LISTENs, then its own join loop (sub_72E70) cancels them a second
+    # later - measured LISTEN armed at 34988, hung up at 35820, peer's connection offered from
+    # 36608 - so the connection finds nothing to attach to and the match never forms.  The
+    # next step is the join handshake, not the transport.
+    @{ name = "two-matches";     desc = "two matches in one process (KNOWN FAIL)"; matches=2; matchSeconds=20; runSeconds=110; expect="playsAllMatches" }
 
     # Three players.  With two, losing one leaves nobody to carry on with, so these are the
     # scenarios that say whether the session survives a node going away - and, when the node
@@ -89,9 +112,46 @@ $Tests = @(
     # wedged in a RECEIVE that never completed, because only the two nodes that did
     # exchange turns were ever looked at.
     @{ name = "baseline-3p";        desc = "3p: undisturbed session";              players=3; runSeconds=60 }
-    @{ name = "client-dies-lobby";  desc = "3p: a client is killed in the lobby";  players=3; killWhen="lobby"; killTarget="client2"; waitPlayers=2; runSeconds=70; expect="restStartLevel" }
+    # waitPlayers is deliberately HIGHER than the number of instances, so the host never
+    # reaches its start condition and everybody really is still in the lobby when the kill
+    # lands.  It used to be 2 against 3 players, which did the opposite: the host started the
+    # level as soon as two were present and the third was left behind in the lobby, never
+    # exchanging anything.  That is what "3rd: 0/0" was recording - and since the third node
+    # was also the one being killed, the scenario passed without ever testing it.
+    #
+    # Nobody can start the level once the host is gone either (the survivors still fall short
+    # of the required count), so what is asserted is what a lobby-phase death can actually
+    # show: the survivors elect a new server, find each other again, and keep exchanging.
+    @{ name = "client-dies-lobby";  desc = "3p: a client is killed in the lobby";  players=3; killWhen="lobby"; killTarget="client2"; waitPlayers=4; runSeconds=70; expect="restKeepPlaying" }
     @{ name = "client-dies-game";   desc = "3p: a client is killed in the game";   players=3; killWhen="game";  killTarget="client2"; waitPlayers=3; runSeconds=70; expect="restKeepPlaying" }
-    @{ name = "server-dies-lobby";  desc = "3p: the server is killed in the lobby";players=3; killWhen="lobby"; killTarget="host";    waitPlayers=2; runSeconds=70; expect="restStartLevel" }
+    # Kills the MIDDLE player, not the last one.  Both scenarios above take out client2 - the
+    # highest slot - which leaves the survivors packed at 0..N-1, so a hole in the middle of
+    # the player array was never exercised at all.  Here slot 1 goes and 0 and 2 stay.
+    #
+    # NOT a regression test for the level-start bound: measured against a binary without that
+    # fix, this still passes.  The bound is worked out once, when the level starts, and at
+    # that moment all three players are still present and contiguous - the hole only appears
+    # afterwards.  What this one covers is that a gap opening DURING play is survivable,
+    # which is worth having on its own.  The scenario below is the one that guards the fix.
+    @{ name = "client-dies-mid";    desc = "3p: the middle player is killed";      players=3; killWhen="game";  killTarget="client";  waitPlayers=3; runSeconds=70; expect="restKeepPlaying" }
+
+    # THE regression test for the level-start bound, with no server hand-over involved.
+    #
+    # The middle player is killed while everyone is still in the lobby, so the level starts
+    # with slots 0 and 2 occupied and a hole at 1.  That is the only shape that gets the bound
+    # wrong: worked out as a COUNT it comes to 2, so slot 2 - a live player - falls outside
+    # every loop, never spawns, and dies on its own status bar.  Taking the highest occupied
+    # slot instead gives 3 and it plays.
+    #
+    # The kill has to land after the third player has registered and before the host rolls the
+    # level, hence the pinned time rather than the usual 'lobby' 12 s.  The host's bar is 2, so
+    # it starts once the two survivors are settled - the connected-mask debounce makes it wait
+    # for that rather than firing on the stale count.
+    @{ name = "lobby-hole-at-start"; desc = "3p: middle player dies before the level starts"; players=3; killWhen="lobby"; killAtSeconds=8; killTarget="client"; waitPlayers=2; runSeconds=70; expect="restStartLevel" }
+    # The clients' lower bar (2) only bites once one of them has taken the server role over,
+    # so this asserts the whole chain: the host dies in the lobby, the survivors elect a new
+    # server, find each other again, roll the level and go on playing it.
+    @{ name = "server-dies-lobby";  desc = "3p: the server is killed in the lobby";players=3; killWhen="lobby"; killTarget="host";    waitPlayers=4; waitPlayersClients=2; runSeconds=70; expect="restStartLevel" }
     @{ name = "server-dies-game";   desc = "3p: the server is killed in the game"; players=3; killWhen="game";  killTarget="host";    waitPlayers=3; runSeconds=70; expect="restKeepPlaying" }
 )
 
@@ -155,6 +215,7 @@ function Measure-Session([string]$logPath, [int]$sinceMs = -1) {
         backlog = 0; maxQueue = 0; stalled = 0
         disconnects = 0; fatal = 0; stuck = 0
         deliveredAfterKill = 0; tookOver = $false; startedLevel = $false
+        matchesEntered = 0; deliveredLastMatch = 0
     }
     if (-not (Test-Path $logPath)) { return $result }
     $text = Get-Content $logPath -Raw
@@ -173,6 +234,19 @@ function Measure-Session([string]$logPath, [int]$sinceMs = -1) {
     if ($queues.Count -gt 0) { $result.maxQueue = ($queues | Measure-Object -Maximum).Maximum }
     $result.tookOver    = $text -match 'TAKEOVER'
     $result.startedLevel = $text -match 'host starts the level'
+
+    # Every node logs "entering network game" once per match, so this counts the matches this
+    # instance actually took part in - and the exchanges counted from the LAST of them say
+    # whether the rebuilt session carried turns, rather than the first match's traffic
+    # flattering the total.
+    $entries = [regex]::Matches($text, '(?m)^(\d+)\|AUTOTEST: entering network game')
+    $result.matchesEntered = $entries.Count
+    if ($entries.Count -gt 0) {
+        $lastEntryMs = [int]$entries[$entries.Count - 1].Groups[1].Value
+        foreach ($m in [regex]::Matches($text, '(?m)^(\d+)\|.*(RECEIVE.*DELIVERED|SendNetwork: sent)')) {
+            if ([int]$m.Groups[1].Value -ge $lastEntryMs) { $result.deliveredLastMatch++ }
+        }
+    }
 
     # Every log line starts with milliseconds since that instance started, so "what happened
     # after the node was killed" can be counted without a second log.
@@ -199,14 +273,31 @@ function Invoke-Test($test) {
     # holds the game there by asking for one more than will ever arrive.
     $wait = if ($test.waitPlayers) { [int]$test.waitPlayers } else { $players }
 
+    # The clients may be given a LOWER bar than the host, which is what lets a lobby-phase
+    # server death end with somebody actually rolling a level.  While the host is alive the
+    # clients' figure is inert - the gate also requires being the server, and they are not.
+    # Once the host dies and a survivor takes the role over, its own bar applies and it
+    # starts the level.  So this exercises the hand-over of the server role end to end,
+    # without the game code needing to know anything about the test.
+    $waitClients = if ($test.waitPlayersClients) { [int]$test.waitPlayersClients } else { $wait }
+
     # Not every scenario adds arguments; an absent entry must not become a null in the list.
     $extraHost   = if ($test.extraHost)   { $test.extraHost }   else { @() }
     $extraClient = if ($test.extraClient) { $test.extraClient } else { @() }
 
-    $common     = @('--network','--network_debug','--auto_test','--auto_test_players',"$wait")
-    $hostArgs   = $common + @('server', "$ServerPort")                              + $extraHost
-    $clientArgs = $common + @('client', '127.0.0.1', "$ServerPort", "$ClientData")  + $extraClient
-    $client2Args= $common + @('client', '127.0.0.1', "$ServerPort", "$Client2Data")
+    # Multi-match scenarios play, leave to the menu, and start again in the same process.
+    $matchArgs = @()
+    if ($test.matches) {
+        $matchArgs = @('--auto_test_matches', "$($test.matches)",
+                       '--auto_test_match_seconds', "$(if ($test.matchSeconds) { $test.matchSeconds } else { 20 })")
+    }
+
+    $commonBase   = @('--network','--network_debug','--auto_test','--auto_test_players')
+    $commonHost   = $commonBase + @("$wait")
+    $commonClient = $commonBase + @("$waitClients")
+    $hostArgs   = $commonHost   + @('server', "$ServerPort")                              + $matchArgs + $extraHost
+    $clientArgs = $commonClient + @('client', '127.0.0.1', "$ServerPort", "$ClientData")  + $matchArgs + $extraClient
+    $client2Args= $commonClient + @('client', '127.0.0.1', "$ServerPort", "$Client2Data") + $matchArgs
 
     $procs = @{}
     $started = @{}
@@ -225,11 +316,14 @@ function Invoke-Test($test) {
     # selection, or once it is running.
     if ($test.killWhen -or $test.killAfter) {
         $target = if ($test.killTarget) { $test.killTarget } else { $test.killAfter }
+        # killAtSeconds pins the moment exactly, for scenarios that need to land between two
+        # events rather than just "some time in the lobby".
         $when   = switch ($test.killWhen) {
             'lobby' { 12 }                                  # menus are through, level not started
             'game'  { 30 }                                  # level has been running a while
             default { [int]($test.runSeconds / 2) }
         }
+        if ($test.killAtSeconds) { $when = [int]$test.killAtSeconds }
         Start-Sleep -Seconds $when
         $killedAt = Get-Date
         $victim = $procs[$target]
@@ -324,9 +418,28 @@ function Invoke-Test($test) {
             $anyStarted = $false
             foreach ($k in $survivors.Keys) { if ($stats[$k] -and $stats[$k].startedLevel) { $anyStarted = $true } }
             if (-not $anyStarted) { $problems += "nobody started the level after the $killed went away" }
+            # ...and the match has to GO ON, not merely begin: same bar as restKeepPlaying,
+            # so "rolled a level and then froze" cannot pass as success.
             foreach ($k in $survivors.Keys) {
-                if ($alive[$k] -and $stats[$k].deliveredAfterKill -lt 10) {
-                    $problems += "$k exchanged nothing after the $killed was killed"
+                if ($alive[$k] -and $stats[$k].deliveredAfterKill -lt 20) {
+                    $problems += "$k stopped exchanging after the $killed was killed ($($stats[$k].deliveredAfterKill))"
+                }
+            }
+        }
+        # Every instance has to have played BOTH matches, and the second one has to have
+        # carried real traffic.  Counting total exchanges would not do: the first match alone
+        # produces plenty, so a session that never came back would still look busy.
+        'playsAllMatches' {
+            $wantMatches = if ($test.matches) { [int]$test.matches } else { 2 }
+            foreach ($k in @('host','client','client2')) {
+                if (-not $procs.ContainsKey($k)) { continue }
+                $s = $stats[$k]; if (-not $s) { continue }
+                if (-not $alive[$k]) { $problems += "$k did not survive to the end" }
+                if ($s.matchesEntered -lt $wantMatches) {
+                    $problems += "$k played $($s.matchesEntered) of $wantMatches matches"
+                }
+                elseif ($s.deliveredLastMatch -lt 20) {
+                    $problems += "$k exchanged almost nothing in the last match ($($s.deliveredLastMatch))"
                 }
             }
         }
