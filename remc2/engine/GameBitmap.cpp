@@ -270,8 +270,6 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 	uint8_t* ptrScreenBufferLineStart = nullptr;
 	uint8_t* ptrScreenAlphaBufferLineStart = nullptr;
 
-	constexpr uint8_t kTransparentBlendAlpha = 128; // TODO: pick the real value for this blend mode
-
 	if (x_WORD_180660_VGA_type_resolution == 1)
 	{
 		posHeight = a3.height_5 / 2;
@@ -319,11 +317,22 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 			do
 			{
 				LOBYTE(startOffsetX) = *ptrBitmapPixel++;
-				HIBYTE(startOffsetX) = *ptrScreenBuffer;
-				LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
-				*ptrScreenBuffer++ = startOffsetX;
+				uint8_t srcIndex = LOBYTE(startOffsetX);
+
 				if (pdwScreenAlphaBuffer != nullptr)
-					*ptrScreenAlphaBuffer++ = kTransparentBlendAlpha;
+				{
+					uint8_t dstIndex = *ptrScreenBuffer;
+					*ptrScreenBuffer++ = srcIndex; // write original pixel, unblended
+					*ptrScreenAlphaBuffer++ = DeriveBlendAlpha(
+						*xadatapald0dat2.colorPalette_var28, srcIndex, dstIndex,
+						x_BYTE_F6EE0_tablesx[0x4000 + (dstIndex << 8) + srcIndex]);
+				}
+				else
+				{
+					HIBYTE(startOffsetX) = *ptrScreenBuffer;
+					LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
+					*ptrScreenBuffer++ = startOffsetX;
+				}
 				posWidth--;
 			} while (posWidth);
 		}
@@ -403,11 +412,22 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 					for (int s = 0; s < scale; s++)
 					{
 						LOBYTE(startOffsetX) = *ptrBitmapPixel;
-						HIBYTE(startOffsetX) = *ptrScreenBuffer;
-						LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
-						*ptrScreenBuffer++ = startOffsetX;
+						uint8_t srcIndex = LOBYTE(startOffsetX);
+
 						if (pdwScreenAlphaBuffer != nullptr)
-							*ptrScreenAlphaBuffer++ = kTransparentBlendAlpha;
+						{
+							uint8_t dstIndex = *ptrScreenBuffer;
+							*ptrScreenBuffer++ = srcIndex; // write original pixel, unblended
+							*ptrScreenAlphaBuffer++ = DeriveBlendAlpha(
+								*xadatapald0dat2.colorPalette_var28, srcIndex, dstIndex,
+								x_BYTE_F6EE0_tablesx[0x4000 + (dstIndex << 8) + srcIndex]);
+						}
+						else
+						{
+							HIBYTE(startOffsetX) = *ptrScreenBuffer;
+							LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
+							*ptrScreenBuffer++ = startOffsetX;
+						}
 					}
 					ptrBitmapPixel++;
 					countBytes++;
@@ -543,29 +563,29 @@ void GameBitmap::ScaleMenuGraphic(uint16_t height, uint8_t scale, uint8_t* ptrSr
 	}
 };
 
-void GameBitmap::PaletteToRgb(TColor* ptrPalette, uint8_t colorIdx, uint8_t truColorOut[3])
+void GameBitmap::PaletteToRgb(uint8_t* ptrPalette, uint8_t colorIdx, uint8_t truColorOut[3])
 {
-	truColorOut[0] = (ptrPalette + (colorIdx * 3))->blue;
-	truColorOut[1] = (ptrPalette + (colorIdx * 3))->green;
-	truColorOut[2] = (ptrPalette + (colorIdx * 3))->red;
+	truColorOut[0] = ptrPalette[colorIdx * 3 + 2];
+	truColorOut[1] = ptrPalette[colorIdx * 3 + 1];
+	truColorOut[2] = ptrPalette[colorIdx * 3];
 }
 
-void GameBitmap::PaletteToRgba(TColor* ptrPalette, uint8_t colorIdx, uint8_t truColorOut[4])
+void GameBitmap::PaletteToRgba(uint8_t* ptrPalette, uint8_t colorIdx, uint8_t truColorOut[4])
 {
-	truColorOut[0] = (ptrPalette + (colorIdx * 3))->blue;
-	truColorOut[1] = (ptrPalette + (colorIdx * 3))->green;
-	truColorOut[2] = (ptrPalette + (colorIdx * 3))->red;
+	truColorOut[0] = ptrPalette[colorIdx * 3 + 2];
+	truColorOut[1] = ptrPalette[colorIdx * 3 + 1];
+	truColorOut[2] = ptrPalette[colorIdx * 3];
 
 	if (colorIdx != 255)
 		truColorOut[3] = 255;
 }
 
-uint8_t GameBitmap::DeriveBlendAlpha(TColor* ptrPalette, uint8_t srcIndex, uint8_t dstIndex, uint8_t resultIndex)
+uint8_t GameBitmap::DeriveBlendAlpha(uint8_t* ptrPalette, uint8_t srcIndex, uint8_t dstIndex, uint8_t resultIndex)
 {
 	uint8_t src[3], dst[3], result[3];
-	PaletteToRgba(ptrPalette, srcIndex, src);
-	PaletteToRgba(ptrPalette, dstIndex, dst);
-	PaletteToRgba(ptrPalette, resultIndex, result);
+	PaletteToRgb(ptrPalette, srcIndex, src);
+	PaletteToRgb(ptrPalette, dstIndex, dst);
+	PaletteToRgb(ptrPalette, resultIndex, result);
 
 	float alphaSum = 0.0f;
 	int   channels = 0;
