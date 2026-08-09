@@ -542,3 +542,47 @@ void GameBitmap::ScaleMenuGraphic(uint16_t height, uint8_t scale, uint8_t* ptrSr
 		}
 	}
 };
+
+void GameBitmap::PaletteToRgb(TColor* ptrPalette, uint8_t colorIdx, uint8_t truColorOut[3])
+{
+	truColorOut[0] = (ptrPalette + (colorIdx * 3))->blue;
+	truColorOut[1] = (ptrPalette + (colorIdx * 3))->green;
+	truColorOut[2] = (ptrPalette + (colorIdx * 3))->red;
+}
+
+void GameBitmap::PaletteToRgba(TColor* ptrPalette, uint8_t colorIdx, uint8_t truColorOut[4])
+{
+	truColorOut[0] = (ptrPalette + (colorIdx * 3))->blue;
+	truColorOut[1] = (ptrPalette + (colorIdx * 3))->green;
+	truColorOut[2] = (ptrPalette + (colorIdx * 3))->red;
+
+	if (colorIdx != 255)
+		truColorOut[3] = 255;
+}
+
+uint8_t GameBitmap::DeriveBlendAlpha(TColor* ptrPalette, uint8_t srcIndex, uint8_t dstIndex, uint8_t resultIndex)
+{
+	uint8_t src[3], dst[3], result[3];
+	PaletteToRgba(ptrPalette, srcIndex, src);
+	PaletteToRgba(ptrPalette, dstIndex, dst);
+	PaletteToRgba(ptrPalette, resultIndex, result);
+
+	float alphaSum = 0.0f;
+	int   channels = 0;
+
+	for (int c = 0; c < 3; ++c)
+	{
+		int denom = (int)src[c] - (int)dst[c];
+		if (denom != 0)
+		{
+			float a = (float)((int)result[c] - (int)dst[c]) / (float)denom;
+			alphaSum += std::clamp(a, 0.0f, 1.0f);
+			channels++;
+		}
+	}
+
+	if (channels == 0)
+		return 255; // src == dst on every channel; no info, treat as fully covered
+
+	return (uint8_t)(alphaSum / channels * 255.0f + 0.5f);
+}
