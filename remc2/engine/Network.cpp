@@ -210,8 +210,19 @@ int NetworkInitConnection_7308F(char* a2, __int16 a3)//25408f
 	x_BYTE_E1275 = 0;
 	connected_E12A6 = 0;
 	strcpy(nethID, (char*)a2);
+	extern char oldConnected[8];   // defined next to RemoveDeadClients, further down
 	for (i = 0; maxPlayers_E127A > i; i++)
+	{
 		connected_E12CE[i] = 0;
+		// ...and forget what was connected in the PREVIOUS match.  RemoveDeadClients reports
+		// a peer as vanished when connected_E12CE drops while oldConnected still says it was
+		// there, and oldConnected was never cleared between matches.  So a second match began
+		// by declaring every peer from the first one dead: it cancelled and hung up the
+		// LISTENs that had just been armed (measured armed at 34988, torn down at 35820),
+		// and the peer's data connection then arrived to find nothing to attach to.
+		// -1 is the "nothing known yet" value the array starts life with.
+		oldConnected[i] = -1;
+	}
 	for (i = 0; maxPlayers_E127A > i; i++)
 	{
 		WaitForNcb_diag(connection_E12AE[i], "join: player NCB before add name");
@@ -386,6 +397,8 @@ void NetworkLeaveSession()
 		debug_net_printf("MATCHEND: leaving the network session (index %d)\n",
 			(int)IndexInNetwork_E1276);
 	NetworkCanceling_73669(IndexInNetwork_E1276);  // hang up peers, drop our name, clear the flag
+	if (CommandLineParams.DoNetworkDebug())
+		debug_net_printf("MATCHEND: session released\n");
 }
 
 //----- (0007373D) --------------------------------------------------------

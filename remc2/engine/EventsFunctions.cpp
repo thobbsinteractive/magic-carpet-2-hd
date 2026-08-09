@@ -31323,6 +31323,14 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 		*/
 		//!!!!test area1
 
+		if (CommandLineParams.DoNetworkDebug()) {
+			static int menuSeenFor = -1;
+			if (menuSeenFor != g_autotest_match) {
+				menuSeenFor = g_autotest_match;
+				debug_net_printf("MATCHEND: entering MenusAndIntros for match %d (skipMenus=%d)\n",
+					g_autotest_match, (int)skipMenus);
+			}
+		}
 		MenusAndIntros_76930(skipMenus);//set language, intro, menu, atd. //257930
 
 		//debug
@@ -31557,6 +31565,9 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 			// single packet - see NetworkLeaveSession().
 			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 				NetworkLeaveSession();
+
+			if (CommandLineParams.DoNetworkDebug())
+				debug_net_printf("MATCHEND: level torn down, heading for the menu\n");
 
 			nextMenu_E29D8 = MenuItem::MainMenu;
 			skipMenus = false;

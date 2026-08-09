@@ -92,16 +92,25 @@ $Tests = @(
     # game reuses.  Leaving a level goes back to the menu (not out of the program), so the
     # second match runs through the same code a player would.
     #
-    # KNOWN TO FAIL - this is the long-standing "cannot start another network game after
-    # finishing one", reproduced deterministically here for the first time.  Progress so far:
-    # the session is now handed back when a match ends (NetworkLeaveSession), which got the
-    # second match from "refused before sending a single packet" to both nodes reaching the
-    # level selection and the caller's data connection actually arriving.  What still breaks:
-    # the host arms its LISTENs, then its own join loop (sub_72E70) cancels them a second
-    # later - measured LISTEN armed at 34988, hung up at 35820, peer's connection offered from
-    # 36608 - so the connection finds nothing to attach to and the match never forms.  The
-    # next step is the join handshake, not the transport.
-    @{ name = "two-matches";     desc = "two matches in one process (KNOWN FAIL)"; matches=2; matchSeconds=20; runSeconds=110; expect="playsAllMatches" }
+    # This is the long-standing "cannot start another network game after finishing one".  Two
+    # causes are fixed, and the second match now genuinely runs - both nodes rejoin, the host
+    # rolls the level, and the exchange count roughly doubles (840-860 against 410-440 when it
+    # does not get there):
+    #   - the session was never handed back when a match ended, so the next one was refused by
+    #     NetworkInitConnection_7308F before a single packet went out;
+    #   - oldConnected[] was never cleared between matches, so RemoveDeadClients opened the
+    #     second match by declaring every peer of the first one dead and hanging up the
+    #     LISTENs that had just been armed.
+    #
+    # STILL FLAKY - passes about one run in three.  When it fails the host dies at the match
+    # boundary, and NOT always in the same place: once inside NetworkCanceling_73669 (the log
+    # stops between "leaving the network session" and "session released"), once just after
+    # "entering MenusAndIntros for match 1".  Dying in varying places, and never once under a
+    # debugger, is the signature of memory being corrupted by the game thread tearing the
+    # session down while the network thread is still walking the same NCBs - not of one bad
+    # statement.  Next step is a run under PageHeap (gflags -p /enable remc2.exe /full, then
+    # cdb), which turns a corruption into a fault at the moment it happens.
+    @{ name = "two-matches";     desc = "two matches in one process (FLAKY ~1/3)"; matches=2; matchSeconds=20; runSeconds=80; expect="playsAllMatches" }
 
     # Three players.  With two, losing one leaves nobody to carry on with, so these are the
     # scenarios that say whether the session survives a node going away - and, when the node
@@ -430,11 +439,12 @@ function Invoke-Test($test) {
         # carried real traffic.  Counting total exchanges would not do: the first match alone
         # produces plenty, so a session that never came back would still look busy.
         'playsAllMatches' {
+            # Deliberately no "still running" check: the last match ends by leaving the
+            # program, so both instances are SUPPOSED to be gone by the time this is judged.
             $wantMatches = if ($test.matches) { [int]$test.matches } else { 2 }
             foreach ($k in @('host','client','client2')) {
                 if (-not $procs.ContainsKey($k)) { continue }
                 $s = $stats[$k]; if (-not $s) { continue }
-                if (-not $alive[$k]) { $problems += "$k did not survive to the end" }
                 if ($s.matchesEntered -lt $wantMatches) {
                     $problems += "$k played $($s.matchesEntered) of $wantMatches matches"
                 }
@@ -485,13 +495,24 @@ Write-Host "  instance: $GameDir2"
 Write-Host ""
 
 $results = @()
+$index   = 0
+$suiteStarted = Get-Date
 foreach ($test in $Tests) {
-    Write-Host ("  {0,-16} {1}" -f $test.name, $test.desc) -NoNewline
+    $index++
+    # Printed BEFORE the scenario runs, without a newline, so somebody watching the console
+    # can see which one is in progress rather than staring at nothing for a minute.
+    Write-Host ("  [{0,2}/{1}] {2,-20} {3}" -f $index, $Tests.Count, $test.name, $test.desc) -NoNewline
+    $started = Get-Date
     $r = Invoke-Test $test
+    $took = [int]((New-TimeSpan -Start $started -End (Get-Date)).TotalSeconds)
     $results += $r
-    if ($r.Result -eq "PASS") { Write-Host "  PASS" -ForegroundColor Green }
-    else                      { Write-Host "  FAIL" -ForegroundColor Red; Write-Host "        $($r.Detail)" -ForegroundColor Yellow }
+    if ($r.Result -eq "PASS") { Write-Host ("  PASS  {0,3}s" -f $took) -ForegroundColor Green }
+    else {
+        Write-Host ("  FAIL  {0,3}s" -f $took) -ForegroundColor Red
+        Write-Host "        $($r.Detail)" -ForegroundColor Yellow
+    }
 }
+$suiteTook = [int]((New-TimeSpan -Start $suiteStarted -End (Get-Date)).TotalMinutes)
 
 Stop-AllInstances
 
@@ -502,8 +523,8 @@ $results | Format-Table Name, Result, HostQ, ClientQ, Injected, Detail -AutoSize
 # looked green precisely when one thing was broken.
 $failed = @($results | Where-Object Result -eq "FAIL").Count
 Write-Host ""
-if ($failed -eq 0) { Write-Host "All $($results.Count) scenarios passed." -ForegroundColor Green }
-else               { Write-Host "$failed of $($results.Count) scenarios failed." -ForegroundColor Red }
+if ($failed -eq 0) { Write-Host "All $($results.Count) scenarios passed in $suiteTook min." -ForegroundColor Green }
+else               { Write-Host "$failed of $($results.Count) scenarios failed ($suiteTook min)." -ForegroundColor Red }
 Write-Host "Per-instance logs:"
 Write-Host "  $GameDir\net_messages_log1_$ServerPort.txt"
 Write-Host "  $GameDir2\net_messages_log1_$ClientData.txt"
