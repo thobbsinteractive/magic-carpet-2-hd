@@ -5811,8 +5811,25 @@ char sub_77680()//258680
 				else if (autoConnected >= autoNeedPlayers) autoStableFrames++;
 				else autoStableFrames = 0;
 
+				// ...and the count is not enough on its own.  It includes this node, and a peer
+				// that has just been killed goes on being counted until its NCB is marked
+				// closed, so "me and the player about to die" reaches the bar just as well as
+				// "me and the player that will still be here".  Measured: with three players and
+				// a bar of two, the host started 1.2 s after the middle player was killed, on a
+				// count made up of itself and that corpse, while the survivor had not finished
+				// its LISTEN - which NetworkCancelAll_7449C() then cancelled on the way into the
+				// level.  The survivor was stranded in the lobby for the rest of the run.
+				//
+				// So require the peers by NAME: everybody the transport still lists has to be in
+				// a session with us.  The list drops a killed node as soon as its control
+				// connection closes, which is immediate, rather than after the five-second data
+				// heartbeat - so this says "the players that are really here are all in" without
+				// waiting for the corpse to be declared.
+				const bool autoPeersAllIn = NetworkAllRosterPeersConnected();
+
 				if (Iam_server && autoLevelStartedFor != g_autotest_match
 					&& x_DWORD_17DE38str.x_WORD_17DEFE >= autoNeedPlayers
+					&& autoPeersAllIn
 					&& autoStableFrames > 180 && autoFrames > 180) {
 					autoLevelStartedFor = g_autotest_match;
 					int me = x_DWORD_17DE38str.serverIndex_17DEFC;

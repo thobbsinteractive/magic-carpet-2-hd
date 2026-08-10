@@ -28,6 +28,20 @@ extern int g_autotest_match;
 // old server and gaining the other survivor leaves it at two throughout, so a caller
 // watching for things to settle would never notice anything had happened.
 int NetworkConnectedMask();
+
+// True when every node the transport still lists as being in the session is also a slot this
+// node holds a session with.
+//
+// Counting connections cannot answer that question.  The count includes ourselves, and for
+// the seconds between a peer being killed and its NCB being marked closed it also includes a
+// node that is already gone - so "me plus a corpse" and "me plus a live player" are the same
+// number.  A host that starts the level on the count can therefore start while the player it
+// is really waiting for has not finished connecting, and that player is then left in the
+// lobby exchanging menu-sized records at a node that has moved on to turn-sized ones.
+//
+// False while the transport has no membership list yet: with nothing to compare against there
+// is nothing to assert, and the caller should keep waiting rather than assume the best.
+bool NetworkAllRosterPeersConnected();
 extern bool Iam_client;
 extern int NetworkPort;
 extern int ServerPort;

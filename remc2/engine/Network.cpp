@@ -352,6 +352,20 @@ int NetworkConnectedMask()
 	return mask;
 }
 
+// See Network.h.
+bool NetworkAllRosterPeersConnected()
+{
+	bool present[8];
+	const int marked = NetworkRosterPlayers(nethID, present);
+	if (marked <= 0)
+		return false;                       // the transport has no membership list yet
+	const int mask = NetworkConnectedMask();
+	for (int i = 0; i < 8; i++)
+		if (present[i] && !(mask & (1 << i)))
+			return false;                   // somebody on the list is not in a session with us
+	return true;
+}
+
 // Slots whose node vanished and whose hand-over was already done locally from the roster.
 // SetMultiplayerColors_7CE50 uses this to skip the orderly hand-over for them while still
 // running the rest of its per-slot bookkeeping.
@@ -1133,11 +1147,27 @@ void NetworkUpdateConnections_74F76()//255f76
 //----- (00074FE1) --------------------------------------------------------
 signed int NetworkGetState_74FE1(__int16 a1)//255fe1
 {
+	// A message longer than the buffer the RECEIVE offered comes back truncated, with this in
+	// the completion byte (NRC_BUFLEN in port_net.cpp).  It says nothing about the link: the
+	// session is up, the peer is talking, only that one message did not fit.  The test below
+	// reads every non-zero completion code as "no longer connected" though, and
+	// RemoveDeadClients() answers that by hanging the session up and declaring the peer gone -
+	// so a single oversized message ended a perfectly healthy session.
+	//
+	// It only bit when nothing followed quickly.  Any later command completing with
+	// NRC_GOODRET puts the slot back, which is why in the same run the host shrugged its
+	// BUFLEN off - a SEND came right behind it - while the third player, with nothing to send,
+	// kept 0x06 in the byte, was pronounced dead, and left both survivors talking to nobody.
+	const uint8_t NCB_CPLT_BUFLEN = 0x06;
+
 	signed int v2;
 	if (a1 == IndexInNetwork_E1276)
 		v2 = 2;
 	else
-		v2 = connection_E12AE[a1]->ncb_lsn_2 && !connection_E12AE[a1]->ncb_cmd_cplt_49;
+	{
+		const uint8_t cplt = connection_E12AE[a1]->ncb_cmd_cplt_49;
+		v2 = connection_E12AE[a1]->ncb_lsn_2 && (cplt == 0 || cplt == NCB_CPLT_BUFLEN);
+	}
 
 	// This is what decides whether a peer is sent anything at all, so when somebody is
 	// connected but never spoken to, this is the number to look at.  Reported only when it

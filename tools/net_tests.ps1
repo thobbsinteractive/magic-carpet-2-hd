@@ -102,15 +102,34 @@ $Tests = @(
     #     second match by declaring every peer of the first one dead and hanging up the
     #     LISTENs that had just been armed.
     #
-    # STILL FLAKY - passes about one run in three.  When it fails the host dies at the match
-    # boundary, and NOT always in the same place: once inside NetworkCanceling_73669 (the log
-    # stops between "leaving the network session" and "session released"), once just after
-    # "entering MenusAndIntros for match 1".  Dying in varying places, and never once under a
-    # debugger, is the signature of memory being corrupted by the game thread tearing the
-    # session down while the network thread is still walking the same NCBs - not of one bad
-    # statement.  Next step is a run under PageHeap (gflags -p /enable remc2.exe /full, then
-    # cdb), which turns a corruption into a fault at the moment it happens.
-    @{ name = "two-matches";     desc = "two matches in one process (FLAKY ~1/3)"; matches=2; matchSeconds=20; runSeconds=80; expect="playsAllMatches" }
+    # The third cause was a data race, and it is fixed too: measured 9 runs out of 9 after it,
+    # against 3 out of 7 before.
+    #
+    # The instance that vanished at the match boundary was killed by AddressSanitizer, which
+    # ends the process through internal__exit(1) - no CRT shutdown, no atexit, no exception
+    # filter, nothing in the Windows event log.  That is why it looked like a clean exit and
+    # why every ordinary way of tracing the termination came back empty; it is worth knowing
+    # for the next one of these.  What ASan caught was a heap-use-after-free in Unpack_Message
+    # called from PollCtrlSocket: the game thread walked into locUpdateNetworkSingleThread()
+    # from DeleteNetwork() while the network thread was already inside it, and the control
+    # receive buffer they then shared has no lock.  See the comment on that function in
+    # port_net.cpp.  The dying-in-varying-places symptom fits a corruption, as suspected here
+    # before - it just was not the NCBs, and ASan found it without needing PageHeap.
+    @{ name = "two-matches";     desc = "two matches in one process"; matches=2; matchSeconds=20; runSeconds=80; expect="playsAllMatches" }
+
+    # The same thing again with one more match, because the bug above lives at the BOUNDARY
+    # between matches, not inside one.  two-matches crosses a boundary once per run, so it
+    # samples the race once; this crosses it twice.  A race that comes back therefore shows up
+    # here roughly twice as often, and the second boundary is also the first one that starts
+    # from state a previous teardown rebuilt rather than from a fresh process - which is where
+    # a half-cleared table would show and a single boundary cannot tell you anything about.
+    #
+    # Nothing in the game had to change for this: --auto_test_matches is a count, and
+    # EventsFunctions.cpp loops on it (g_autotest_match + 1 < AutoTestMatches()).
+    #
+    # 20 s of play per match plus the menu, lobby and level load either side of each one; the
+    # 120 s budget leaves as much slack again as two-matches has.
+    @{ name = "three-matches";   desc = "three matches in one process"; matches=3; matchSeconds=20; runSeconds=120; expect="playsAllMatches" }
 
     # Three players.  With two, losing one leaves nobody to carry on with, so these are the
     # scenarios that say whether the session survives a node going away - and, when the node
@@ -156,6 +175,20 @@ $Tests = @(
     # level, hence the pinned time rather than the usual 'lobby' 12 s.  The host's bar is 2, so
     # it starts once the two survivors are settled - the connected-mask debounce makes it wait
     # for that rather than firing on the stale count.
+    # This used to be unreliable - 2 passes in 5 - and the failure was always the same: the
+    # survivors exchanged 184-186 turns and stopped, with the third instance on 1 of 2.  Two
+    # faults, both since fixed, and neither in the transport:
+    #   - NetworkGetState_74FE1 read a completion code of NRC_BUFLEN as "not connected", so one
+    #     oversized message had RemoveDeadClients() hang up a live session.  It only bit the
+    #     node with nothing to send next, which is why the host shrugged the same code off;
+    #   - the host started the level on a COUNT of connections, which includes itself and goes
+    #     on including a killed peer until the five-second heartbeat expires.  "Me and a corpse"
+    #     therefore reached the bar of two exactly like "me and the survivor", and the level was
+    #     rolled 1.2 s after the kill, while the survivor's LISTEN was still unfinished -
+    #     NetworkCancelAll_7449C() then cancelled it on the way in.  The start now also requires
+    #     NetworkAllRosterPeersConnected(), which asks by name instead of by number.
+    # Measured 6 passes in 6 after both, against 2 in 5 before.  Still worth running more than
+    # once if it ever fails again: what it exercises is a timing window, not a fixed sequence.
     @{ name = "lobby-hole-at-start"; desc = "3p: middle player dies before the level starts"; players=3; killWhen="lobby"; killAtSeconds=8; killTarget="client"; waitPlayers=2; runSeconds=70; expect="restStartLevel" }
     # The clients' lower bar (2) only bites once one of them has taken the server role over,
     # so this asserts the whole chain: the host dies in the lobby, the survivors elect a new

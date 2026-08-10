@@ -1616,7 +1616,14 @@ namespace MyNetworkLib {
 	{
 		if (ctrlSock == SOCK_INVALID) return;
 		bool ok = ctrlRecvBuf.Poll(ctrlSock);
-		for (auto& raw : ctrlRecvBuf.ready) {
+		// Work from a list of our own, not from the live buffer.  HandleClientMsg() below is a
+		// long way from here and reaches a good deal of the transport; anything down there that
+		// polls the control socket again would invalidate a reference held into ctrlRecvBuf,
+		// and the reference is what this loop iterates over.  The swap costs nothing and makes
+		// the guarantee local instead of a promise about code elsewhere.
+		std::vector<std::string> frames;
+		frames.swap(ctrlRecvBuf.ready);
+		for (auto& raw : frames) {
 			message_info u = Unpack_Message(raw);
 			if (debug_net) LogPkt("CTRL RX ←", clHost, clServerPort, u);
 			ctrlLastRx = clock();
@@ -1628,7 +1635,8 @@ namespace MyNetworkLib {
 			}
 			HandleClientMsg(raw);
 		}
-		ctrlRecvBuf.ready.clear();
+		// No clear() here: the swap above already emptied ctrlRecvBuf.ready, and clearing it
+		// now would throw away anything that arrived while the loop was running.
 
 		// Probe the server when the link has been quiet, and give up on it after the same
 		// silence the data sessions allow.  Without this a server that stops answering but
@@ -1707,7 +1715,11 @@ namespace MyNetworkLib {
 				}
 			}
 
-			for (auto& raw : sess->rbuf.ready) {
+			// Same reason as in PollCtrlSocket(): take the frames out of the session buffer
+			// before working on them, so no reference into rbuf.ready outlives it.
+			std::vector<std::string> frames;
+			frames.swap(sess->rbuf.ready);
+			for (auto& raw : frames) {
 				sess->Touch();
 				message_info u = Unpack_Message(raw);
 				if (debug_net) LogPkt("DATA RX ←", sess->peerAddr, sess->peerPort, u);
@@ -1751,7 +1763,8 @@ namespace MyNetworkLib {
 
 				}
 			}
-			sess->rbuf.ready.clear();
+			// Not cleared: frames.swap() above emptied rbuf.ready, and a clear() here would
+			// discard whatever arrived in the meantime.
 
 			if (!ok) {
 				if (m_network_debug)
@@ -2091,8 +2104,38 @@ namespace MyNetworkLib {
 	}
 
 	// ---------------------------------------------------------------------------
+	// One thread at a time, and never nested.
+	//
+	// Despite the name this is not confined to a single thread: the network thread runs it in
+	// a loop, and callers on the game thread have walked into it too.  Nothing inside is
+	// written for concurrent use - the receive buffers (ctrlRecvBuf, every session's rbuf)
+	// carry no lock at all, and the poll loops hold references INTO those buffers while they
+	// process a frame.  A second thread reaching Poll() at that moment appends to `ready`,
+	// which reallocates the vector, or clears it; either way the reference the first thread is
+	// iterating over now points at freed memory.  That is the crash: a heap-use-after-free in
+	// Unpack_Message() called from PollCtrlSocket(), which ASan turns into an immediate
+	// internal__exit(1) - the instance vanishes with no CRT shutdown and nothing in the log.
+	// It fired while the game thread was tearing a session down between matches, which is why
+	// only the two-matches scenario saw it, and only sometimes.
+	//
+	// A tick that finds another one already in progress returns rather than waiting for it.
+	// There is nothing for it to do that the running tick is not already doing, and making a
+	// caller wait here would put the network thread's latency on the game thread.
+	static std::atomic<bool> tickBusy{ false };
+	struct TickGuard {
+		std::atomic<bool>& flag; bool held;
+		explicit TickGuard(std::atomic<bool>& f) : flag(f), held(false) {
+			bool expected = false;
+			held = f.compare_exchange_strong(expected, true);
+		}
+		~TickGuard() { if (held) flag.store(false); }
+	};
+
 	void NetworkClass::locUpdateNetworkSingleThread()
 	{
+		TickGuard tick(tickBusy);
+		if (!tick.held) return;
+
 		if (clIam_client && ctrlSock == SOCK_INVALID) ConnectToServer();
 		AcceptIncoming();
 		PollPendingConnections();
@@ -2371,7 +2414,15 @@ namespace MyNetworkLib {
 	{
 		SendCtrl(Pack_Message(MESS_CLIENT_DELETE, myNCBtoShadow(*c), index, clPort,
 			c->ncb_name_26, sizeof(c->ncb_name_26)));
-		locUpdateNetworkSingleThread();
+		// No network tick from here.  This is the game thread - simulateInterupt(DELETE_NAME),
+		// reached from NetworkCanceling_73669() when a match is torn down - and the tick is
+		// the network thread's, running in a loop of its own.  Two threads inside it at once
+		// corrupt the unlocked receive buffers; see locUpdateNetworkSingleThread().
+		//
+		// Nothing is lost by not ticking: DELETE is fire-and-forget, the message above has
+		// already gone out over TCP, and the network thread comes round within a millisecond.
+		// The call was inherited from the single-threaded version, where it replaced a
+		// singleThreadSleep(400) that gave the send time to leave.
 		CleanMessages(*c);
 	}
 
