@@ -258,6 +258,7 @@ function Measure-Session([string]$logPath, [int]$sinceMs = -1) {
         disconnects = 0; fatal = 0; stuck = 0
         deliveredAfterKill = 0; tookOver = $false; startedLevel = $false
         matchesEntered = 0; deliveredLastMatch = 0
+        maxGap = 0; maxGapAt = 0
     }
     if (-not (Test-Path $logPath)) { return $result }
     $text = Get-Content $logPath -Raw
@@ -288,6 +289,22 @@ function Measure-Session([string]$logPath, [int]$sinceMs = -1) {
         foreach ($m in [regex]::Matches($text, '(?m)^(\d+)\|.*(RECEIVE.*DELIVERED|SendNetwork: sent)')) {
             if ([int]$m.Groups[1].Value -ge $lastEntryMs) { $result.deliveredLastMatch++ }
         }
+    }
+
+    # The largest hole in this instance's own timeline.  Both threads log through the same
+    # writer and the network thread ticks every couple of milliseconds, so a run that is being
+    # given CPU and disk has no hole worth mentioning - measured over four clean baseline-3p
+    # runs, the worst was 999 ms and every one of them was during start-up.  A hole of several
+    # seconds means this process was not running, which is a different thing from anything the
+    # counters above can describe.
+    $prevMs = -1
+    foreach ($m in [regex]::Matches($text, '(?m)^(\d+)\|')) {
+        $t = [int]$m.Groups[1].Value
+        if ($prevMs -ge 0 -and ($t - $prevMs) -gt $result.maxGap) {
+            $result.maxGap   = $t - $prevMs
+            $result.maxGapAt = $prevMs
+        }
+        $prevMs = $t
     }
 
     # Every log line starts with milliseconds since that instance started, so "what happened
@@ -500,9 +517,42 @@ function Invoke-Test($test) {
     if ($test.killAfter -eq 'host'   -and -not $alive.client) { $problems += "client died with the host" }
     if ($test.killAfter -eq 'client' -and -not $alive.host)   { $problems += "host died with the client" }
 
+    # A freeze that stops EVERY instance at once is the machine, not the game.
+    #
+    # Seen for real: baseline-3p failed with "client has 2 stuck NCB reports" and the host 391
+    # exchanges behind.  In the logs the host had a 20.5 s hole with nothing in it at all - not
+    # even the network thread's per-tick lines - and both clients had holes of 15.4 s and
+    # 15.9 s.  Lining the three timelines up on a 1.8 s hiccup they all shared put the ends of
+    # those holes within 100 ms of each other: three separate processes started running again
+    # at the same instant, which nothing inside any one of them can arrange.  Windows had
+    # stopped the world; Defender had done a cloud lookup on the freshly built binary minutes
+    # earlier and Windows Update was installing packages either side of the run.  The same
+    # binary then passed the same scenario four times in a row.
+    #
+    # Reported as STALL rather than FAIL, and the caller runs the scenario again: a suite that
+    # takes half an hour should not be thrown away because an update landed in the middle of
+    # it, and - the point of the whole thing - a machine freeze must not be filed as a network
+    # defect and sent somebody to look for it in the code.  A node that is genuinely wedged
+    # keeps logging, so it does not look like this; and a scenario that kills a node does not
+    # either, because the killed instance's log simply ends rather than resuming.  Two stalls
+    # in a row are reported as a failure, so a machine that cannot hold a run steady is not
+    # quietly ignored.
+    $judged = @()
+    foreach ($k in @('host','client','client2')) {
+        if ($procs.ContainsKey($k) -and $stats[$k]) { $judged += $stats[$k] }
+    }
+    # Above any pause the scenario itself asked for, so an injected freeze is not mistaken for
+    # the machine stopping.
+    $stallFloor = [math]::Max(3000, $maxHold + 2000)
+    $everyoneStalled = ($judged.Count -ge 2) -and -not ($judged | Where-Object { $_.maxGap -lt $stallFloor })
+    if ($problems.Count -gt 0 -and $everyoneStalled) {
+        $sizes = ($judged | ForEach-Object { "$([int]($_.maxGap / 1000))s" }) -join " / "
+        $problems = @("the machine stopped every instance at once (holes of $sizes in the logs, nothing in them)") + $problems
+    }
+
     return [pscustomobject]@{
         Name     = $test.name
-        Result   = if ($problems.Count -eq 0) { "PASS" } else { "FAIL" }
+        Result   = if ($problems.Count -eq 0) { "PASS" } elseif ($everyoneStalled) { "STALL" } else { "FAIL" }
         Detail   = if ($problems.Count -eq 0) { "" } else { $problems -join "; " }
         HostQ    = "$($h.delivered)/$($h.queued) maxQ=$($h.maxQueue)"
         ClientQ  = "$($c.delivered)/$($c.queued) maxQ=$($c.maxQueue)"
@@ -538,6 +588,18 @@ foreach ($test in $Tests) {
     $started = Get-Date
     $r = Invoke-Test $test
     $took = [int]((New-TimeSpan -Start $started -End (Get-Date)).TotalSeconds)
+    # The machine stopped the instances rather than the game going wrong - see the note in
+    # Invoke-Test.  Nothing was measured, so measure it again; if the second run stalls too,
+    # the machine is not fit to run the suite and that is reported rather than retried away.
+    if ($r.Result -eq "STALL") {
+        Write-Host ("  STALL {0,3}s" -f $took) -ForegroundColor DarkYellow
+        Write-Host "        $($r.Detail)" -ForegroundColor DarkGray
+        Write-Host ("  [{0,2}/{1}] {2,-20} {3}" -f $index, $Tests.Count, $test.name, "running it again") -NoNewline
+        $started = Get-Date
+        $r = Invoke-Test $test
+        $took = [int]((New-TimeSpan -Start $started -End (Get-Date)).TotalSeconds)
+        if ($r.Result -eq "STALL") { $r.Result = "FAIL" }
+    }
     $results += $r
     if ($r.Result -eq "PASS") { Write-Host ("  PASS  {0,3}s" -f $took) -ForegroundColor Green }
     else {
