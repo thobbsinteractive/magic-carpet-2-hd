@@ -37804,6 +37804,20 @@ void PlayerEvents_51BB0()//232bb0
 				SetCenterScreenForFlyAssistant_6EDB0();
 			}
 			SetMenuCursorPosition_52E90(&D41A0_0.array_0x2BDE[i], 3, true);
+			// Opening the panel starts a fresh message, so the slot it types into starts empty.
+			//
+			// Sending (0x13) leaves the text in names_81, and only zeroing the counter here
+			// meant the box came back up showing the message just sent, with the caret at the
+			// end of it - the text looked editable, but the first keypress dropped the whole
+			// line (loc_520C4 below: names_81[slot][0] = 0 while the counter is still 0).  That
+			// deferred wipe is what players report as "the previous message is still there and
+			// it blanks as I start typing".  Clearing here makes the box show what typing will
+			// actually produce.
+			//
+			// The eight slots stay usable: selecting one (0x23) does NOT clear, so picking a
+			// slot with Shift+F1..F8 and pressing Enter still sends what is stored in it.  Only
+			// the slot the panel opens on is treated as the scratch line.
+			D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222][0] = 0;
 			D41A0_0.array_0x2BDE[i].byte_0x3E2_2BE4_12224 = 0;
 			if (i == D41A0_0.LevelIndex_0xc)
 			{
