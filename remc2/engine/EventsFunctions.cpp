@@ -38150,7 +38150,23 @@ void PlayerEvents_51BB0()//232bb0
 					&& x_toupper(printbuffer[3]) == 'D'
 					&& x_toupper(printbuffer[4]) == 'Y')
 				{
-					if (i == D41A0_0.LevelIndex_0xc)
+					// WINDY is a single-player cheat and is ignored in a network game.
+					//
+					// Setting the top bit turns setting_byte2_23 (an int8_t) negative, and every
+					// "setting_byte2_23 < 0" test in PlayerInput.cpp is that byte being read as
+					// "cheats are on" - it hands out the debug keys, and it also lifts the castle
+					// experience gate in EventsFunctions.  None of that is exchanged with anyone:
+					// the other players neither agree to it nor ever find out, so one node would
+					// be playing by rules of its own while the rest keep to the game's.  There is
+					// already one key excluded from multiplayer this way (PlayerInput.cpp, the
+					// "setting_byte2_23 < 0 && !MULTIPLAYER_MODE" test); this is the same reason
+					// applied at the source.
+					//
+					// The word is still recognised and swallowed rather than passed on, so typing
+					// it in a network game does nothing at all - it is not broadcast as an
+					// ordinary chat line either.
+					if (i == D41A0_0.LevelIndex_0xc
+						&& !(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 						x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 |= 0x80u;
 				}
 				else
