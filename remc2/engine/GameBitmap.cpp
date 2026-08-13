@@ -325,12 +325,12 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 					*ptrScreenBuffer++ = srcIndex; // write original pixel, unblended
 					*ptrScreenAlphaBuffer++ = DeriveBlendAlpha(
 						*xadatapald0dat2.colorPalette_var28, srcIndex, dstIndex,
-						x_BYTE_F6EE0_tablesx[0x4000 + (dstIndex << 8) + srcIndex]);
+						x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + (dstIndex << 8) + srcIndex]);
 				}
 				else
 				{
 					HIBYTE(startOffsetX) = *ptrScreenBuffer;
-					LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
+					LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + startOffsetX];
 					*ptrScreenBuffer++ = startOffsetX;
 				}
 				posWidth--;
@@ -420,12 +420,12 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 							*ptrScreenBuffer++ = srcIndex; // write original pixel, unblended
 							*ptrScreenAlphaBuffer++ = DeriveBlendAlpha(
 								*xadatapald0dat2.colorPalette_var28, srcIndex, dstIndex,
-								x_BYTE_F6EE0_tablesx[0x4000 + (dstIndex << 8) + srcIndex]);
+								x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + (dstIndex << 8) + srcIndex]);
 						}
 						else
 						{
 							HIBYTE(startOffsetX) = *ptrScreenBuffer;
-							LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
+							LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + startOffsetX];
 							*ptrScreenBuffer++ = startOffsetX;
 						}
 					}

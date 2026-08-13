@@ -22397,7 +22397,7 @@ void ColorizeScreen_2E790(int posX, int posY, int width, int height, uint8_t col
 	{
 		for (int indexX = locPosX; indexX < locWidth + locPosX; indexX++)
 		{
-			pdwScreenBuffer_351628[screenWidth_18062C * indexY + indexX] = x_BYTE_F6EE0_tablesx[0x4000 + 256 * color
+			pdwScreenBuffer_351628[screenWidth_18062C * indexY + indexX] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + 256 * color
 				+ pdwScreenBuffer_351628[screenWidth_18062C * indexY + indexX]];
 		}
 	}

@@ -121,7 +121,7 @@ type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
 
 uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
 uint8_t* x_BYTE_F6EE0_tablesx_pre = (uint8_t*)x_BYTE_F6EE0_tablesx;
-uint8_t* x_BYTE_FAEE0_tablesx_pre = (uint8_t*)&x_BYTE_F6EE0_tablesx[16384];
+uint8_t* x_BYTE_FAEE0_tablesx_pre = (uint8_t*)&x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET];
 
 type_E9C38_smalltit Str_E9C38_smalltit[TILE_ROWS_COUNT * TILE_COLUMNS_COUNT];
 
