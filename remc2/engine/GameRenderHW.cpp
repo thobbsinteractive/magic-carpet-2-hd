@@ -238,16 +238,16 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 			LOBYTE(v39) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 2);
 			HIBYTE(v39) = v35[2];
 			LOBYTE(v40) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 3);
-			LOBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v39];
+			LOBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v39];
 			HIBYTE(v40) = v35[3];
-			HIBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v40];
+			HIBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v40];
 			v36 <<= 16;
 			LOBYTE(v39) = *(x_BYTE*)m_ptrBlurBuffer_E9C3C;
 			HIBYTE(v39) = *v35;
 			LOBYTE(v40) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 1);
-			LOBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v39];
+			LOBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v39];
 			HIBYTE(v40) = v35[1];
-			for (BYTE1(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v40]; ; BYTE1(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v42])
+			for (BYTE1(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v40]; ; BYTE1(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v42])
 			{
 				*(x_DWORD*)v35 = v36;
 				v35 += 4;
@@ -265,14 +265,14 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 				HIBYTE(v41) = v37[2];
 				LOBYTE(v41) = v35[2];
 				HIBYTE(v42) = v37[3];
-				LOBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v41];
+				LOBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v41];
 				LOBYTE(v42) = v35[3];
-				HIBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v42];
+				HIBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v42];
 				v36 <<= 16;
 				HIBYTE(v41) = *v37;
 				LOBYTE(v41) = *v35;
 				HIBYTE(v42) = v37[1];
-				LOBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v41];
+				LOBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v41];
 				LOBYTE(v42) = v35[1];
 			}
 		}
@@ -295,10 +295,10 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 					LOBYTE(v46) = v43[0];
 					LOBYTE(v47) = v43[1];
 					BYTE1(v46) = v43[v44];
-					LOBYTE(v48) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v46];
+					LOBYTE(v48) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v46];
 					BYTE1(v47) = v43[v44 + 1];
-					BYTE1(v48) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v47];
-					*v43++ = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v48];
+					BYTE1(v48) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v47];
+					*v43++ = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v48];
 					v45--;
 				} while (v45);
 				v53 += iScreenWidth_DE560;
@@ -4399,7 +4399,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												ptrSpriteRenderSrc_v62x += v65[2];
 
 												if ((x_BYTE)v63)
-													*ptrSpriteRenderDest_v64 = x_BYTE_F6EE0_tablesx[v63];
+													*ptrSpriteRenderDest_v64 = ColourLookupTable_F6EE0[v63];
 												ptrSpriteRenderDest_v64 += v66x[1].dword_0;
 
 												v65 += 4;
@@ -4411,7 +4411,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												ptrSpriteRenderSrc_v62x += *v65;
 
 												if ((x_BYTE)v63)
-													*ptrSpriteRenderDest_v64 = x_BYTE_F6EE0_tablesx[v63];
+													*ptrSpriteRenderDest_v64 = ColourLookupTable_F6EE0[v63];
 												ptrSpriteRenderDest_v64 += v66x->dword_0;
 											}
 											break;
@@ -4437,7 +4437,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												if (HIBYTE(v72))
 												{
 													LOBYTE(v72) = *ptrSpriteRenderDest_v69;
-													*ptrSpriteRenderDest_v69 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v72];
+													*ptrSpriteRenderDest_v69 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v72];
 												}
 												ptrSpriteRenderDest_v69 += v71x[1].dword_0;
 
@@ -4452,7 +4452,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												if (HIBYTE(v72))
 												{
 													LOBYTE(v72) = *ptrSpriteRenderDest_v69;
-													*ptrSpriteRenderDest_v69 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v72];
+													*ptrSpriteRenderDest_v69 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v72];
 												}
 												ptrSpriteRenderDest_v69 += v71x->dword_0;
 											}
@@ -4479,7 +4479,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												if ((x_BYTE)v78)
 												{
 													HIBYTE(v78) = *ptrSpriteRenderDest_v75;
-													*ptrSpriteRenderDest_v75 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v78];
+													*ptrSpriteRenderDest_v75 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v78];
 												}
 												ptrSpriteRenderDest_v75 += v77x[1].dword_0;
 
@@ -4494,7 +4494,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												if ((x_BYTE)v78)
 												{
 													HIBYTE(v78) = *ptrSpriteRenderDest_v75;
-													*ptrSpriteRenderDest_v75 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v78];
+													*ptrSpriteRenderDest_v75 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v78];
 												}
 												ptrSpriteRenderDest_v75 += v77x->dword_0;
 											}
@@ -4521,7 +4521,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												ptrSpriteRenderSrc_v80x += v82[2];
 
 												if ((x_BYTE)v84)
-													*ptrSpriteRenderDest_v81 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v84];
+													*ptrSpriteRenderDest_v81 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v84];
 												ptrSpriteRenderDest_v81 += v83x[1].dword_0;
 
 												v82 += 4;
@@ -4533,7 +4533,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												ptrSpriteRenderSrc_v80x += *v82;
 
 												if ((x_BYTE)v84)
-													*ptrSpriteRenderDest_v81 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v84];
+													*ptrSpriteRenderDest_v81 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v84];
 												ptrSpriteRenderDest_v81 += v83x->dword_0;
 											}
 											break;
@@ -4557,7 +4557,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												ptrSpriteRenderSrc_v86x += v89[2];
 
 												if (BYTE1(v87))
-													*ptrSpriteRenderDest_v88 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v87];
+													*ptrSpriteRenderDest_v88 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v87];
 												ptrSpriteRenderDest_v88 += v90x[1].dword_0;
 
 												v89 += 4;
@@ -4569,7 +4569,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												ptrSpriteRenderSrc_v86x += *v89;
 
 												if (BYTE1(v87))
-													*ptrSpriteRenderDest_v88 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v87];
+													*ptrSpriteRenderDest_v88 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v87];
 												ptrSpriteRenderDest_v88 += v90x->dword_0;
 											}
 											break;
@@ -4589,8 +4589,8 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												if (BYTE1(v95))
 												{
 													LOBYTE(v95) = *ptrSpriteRenderDest_v94;
-													LOBYTE(v92) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v95];
-													*ptrSpriteRenderDest_v94 = x_BYTE_F6EE0_tablesx[v92];
+													LOBYTE(v92) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v95];
+													*ptrSpriteRenderDest_v94 = ColourLookupTable_F6EE0[v92];
 												}
 												ptrSpriteRenderDest_v94 += v97x->dword_0;
 												v96 += 2;
@@ -4613,8 +4613,8 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												if ((x_BYTE)v101)
 												{
 													BYTE1(v101) = *ptrSpriteRenderDest_v100;
-													LOBYTE(v98) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v101];
-													*ptrSpriteRenderDest_v100 = x_BYTE_F6EE0_tablesx[v98];
+													LOBYTE(v98) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v101];
+													*ptrSpriteRenderDest_v100 = ColourLookupTable_F6EE0[v98];
 												}
 												ptrSpriteRenderDest_v100 += v103x->dword_0;
 												v102 += 2;
@@ -4644,7 +4644,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												if (v111)
 												{
 													LOBYTE(v105) = *ptrSpriteRenderDest_v106;
-													*ptrSpriteRenderDest_v106 = x_BYTE_F6EE0_tablesx[v105];
+													*ptrSpriteRenderDest_v106 = ColourLookupTable_F6EE0[v105];
 												}
 												ptrSpriteRenderDest_v106 += v108x[3].dword_0;
 												v107 += 4;
@@ -4657,7 +4657,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 												if (v110)
 												{
 													LOBYTE(v105) = *ptrSpriteRenderDest_v106;
-													*ptrSpriteRenderDest_v106 = x_BYTE_F6EE0_tablesx[v105];
+													*ptrSpriteRenderDest_v106 = ColourLookupTable_F6EE0[v105];
 												}
 												ptrSpriteRenderDest_v106 += v108x->dword_0;
 											}
@@ -5000,7 +5000,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							ptrSpriteRenderSrc_v14 += v15[2];
 
 							if ((x_BYTE)v13)
-								v16[1] = x_BYTE_F6EE0_tablesx[v13];
+								v16[1] = ColourLookupTable_F6EE0[v13];
 							v16 += 2;
 							v15 += 4;
 							if (!--v17)
@@ -5010,7 +5010,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							ptrSpriteRenderSrc_v14 += *v15;
 
 							if ((x_BYTE)v13)
-								*v16 = x_BYTE_F6EE0_tablesx[v13];
+								*v16 = ColourLookupTable_F6EE0[v13];
 						}
 						break;
 					case 2:
@@ -5034,7 +5034,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							if (HIBYTE(v21))
 							{
 								LOBYTE(v21) = v20[1];
-								v20[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v21];
+								v20[1] = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v21];
 							}
 							v20 += 2;
 							v19 += 4;
@@ -5047,7 +5047,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							if (HIBYTE(v21))
 							{
 								LOBYTE(v21) = *v20;
-								v20[0] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v21];
+								v20[0] = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v21];
 							}
 						}
 						break;
@@ -5072,7 +5072,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							if ((x_BYTE)v26)
 							{
 								HIBYTE(v26) = v25[1];
-								v25[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v26];
+								v25[1] = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v26];
 							}
 							v25 += 2;
 							v24 += 4;
@@ -5085,7 +5085,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							if ((x_BYTE)v26)
 							{
 								HIBYTE(v26) = v25[0];
-								v25[0] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v26];
+								v25[0] = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v26];
 							}
 						}
 						break;
@@ -5109,7 +5109,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							ptrSpriteRenderSrc_v28 += v29[2];
 
 							if ((x_BYTE)v31)
-								v30[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v31];
+								v30[1] = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v31];
 							v30 += 2;
 							v29 += 4;
 							if (!--v32)
@@ -5119,7 +5119,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							ptrSpriteRenderSrc_v28 += *v29;
 
 							if ((x_BYTE)v31)
-								*v30 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v31];
+								*v30 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v31];
 						}
 						break;
 					case 5:
@@ -5141,7 +5141,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							ptrSpriteRenderSrc_v34 += v35[2];
 
 							if (BYTE1(v33))
-								v36[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v33];
+								v36[1] = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v33];
 							v36 += 2;
 							v35 += 4;
 							if (!--v37)
@@ -5151,7 +5151,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							ptrSpriteRenderSrc_v34 += *v35;
 
 							if (BYTE1(v33))
-								*v36 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v33];
+								*v36 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v33];
 						}
 						break;
 					case 6:
@@ -5176,8 +5176,8 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							if (BYTE1(v42))
 							{
 								LOBYTE(v42) = v41[1];
-								LOBYTE(v38) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v42];
-								v41[1] = x_BYTE_F6EE0_tablesx[v38];
+								LOBYTE(v38) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v42];
+								v41[1] = ColourLookupTable_F6EE0[v38];
 							}
 							v41 += 2;
 							v40 += 4;
@@ -5190,8 +5190,8 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							if (BYTE1(v42))
 							{
 								LOBYTE(v42) = *v41;
-								LOBYTE(v38) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v42];
-								*v41 = x_BYTE_F6EE0_tablesx[v38];
+								LOBYTE(v38) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v42];
+								*v41 = ColourLookupTable_F6EE0[v38];
 							}
 						}
 						break;
@@ -5217,8 +5217,8 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							if ((x_BYTE)v48)
 							{
 								BYTE1(v48) = v47[1];
-								LOBYTE(v44) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v48];
-								v47[1] = x_BYTE_F6EE0_tablesx[v44];
+								LOBYTE(v44) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v48];
+								v47[1] = ColourLookupTable_F6EE0[v44];
 							}
 							v47 += 2;
 							v46 += 4;
@@ -5231,8 +5231,8 @@ void GameRenderHW::DrawSprite_41BD3(uint32 a1)
 							if ((x_BYTE)v48)
 							{
 								BYTE1(v48) = *v47;
-								LOBYTE(v44) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v48];
-								*v47 = x_BYTE_F6EE0_tablesx[v44];
+								LOBYTE(v44) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v48];
+								*v47 = ColourLookupTable_F6EE0[v44];
 							}
 						}
 						break;
