@@ -13,14 +13,12 @@ public:
 	HostDialog(wxWindow* parent, const Config::Settings::Multiplayer& cfg);
 
 	int GetServerPort() const { return m_cfg.m_ServerPort; }
-	int GetServerClientPort() const { return m_cfg.m_ServerClientPort; }
 	std::string GetRecordPlayFile() const { return m_cfg.m_RecordPlayFile; }
 	bool GetDebugSession() const { return m_cfg.m_Debug; }
 
 private:
 	Config::Settings::Multiplayer m_cfg;
 	wxSpinCtrl* m_ctrlServerPort = nullptr;
-	wxSpinCtrl* m_ctrlServerClientPort = nullptr;
 	wxTextCtrl* m_recordPlayFile = nullptr;
 	wxCheckBox* m_ctrlDebugNetwork = nullptr;
 
