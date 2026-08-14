@@ -246,16 +246,16 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 			LOBYTE(v39) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 2);
 			HIBYTE(v39) = v35[2];
 			LOBYTE(v40) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 3);
-			LOBYTE(v36) = x_BYTE_F6EE0_tablesx[16384 + v39];
+			LOBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v39];
 			HIBYTE(v40) = v35[3];
-			HIBYTE(v36) = x_BYTE_F6EE0_tablesx[16384 + v40];
+			HIBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v40];
 			v36 <<= 16;
 			LOBYTE(v39) = *(x_BYTE*)m_ptrBlurBuffer_E9C3C;
 			HIBYTE(v39) = *v35;
 			LOBYTE(v40) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 1);
-			LOBYTE(v36) = x_BYTE_F6EE0_tablesx[16384 + v39];
+			LOBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v39];
 			HIBYTE(v40) = v35[1];
-			for (BYTE1(v36) = x_BYTE_F6EE0_tablesx[16384 + v40]; ; BYTE1(v36) = x_BYTE_F6EE0_tablesx[16384 + v42])
+			for (BYTE1(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v40]; ; BYTE1(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v42])
 			{
 				*(x_DWORD*)v35 = v36;
 				v35 += 4;
@@ -273,14 +273,14 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 				HIBYTE(v41) = v37[2];
 				LOBYTE(v41) = v35[2];
 				HIBYTE(v42) = v37[3];
-				LOBYTE(v36) = x_BYTE_F6EE0_tablesx[16384 + v41];
+				LOBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v41];
 				LOBYTE(v42) = v35[3];
-				HIBYTE(v36) = x_BYTE_F6EE0_tablesx[16384 + v42];
+				HIBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v42];
 				v36 <<= 16;
 				HIBYTE(v41) = *v37;
 				LOBYTE(v41) = *v35;
 				HIBYTE(v42) = v37[1];
-				LOBYTE(v36) = x_BYTE_F6EE0_tablesx[16384 + v41];
+				LOBYTE(v36) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v41];
 				LOBYTE(v42) = v35[1];
 			}
 		}
@@ -303,10 +303,10 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 					LOBYTE(v46) = v43[0];
 					LOBYTE(v47) = v43[1];
 					BYTE1(v46) = v43[v44];
-					LOBYTE(v48) = x_BYTE_F6EE0_tablesx[16384 + v46];
+					LOBYTE(v48) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v46];
 					BYTE1(v47) = v43[v44 + 1];
-					BYTE1(v48) = x_BYTE_F6EE0_tablesx[16384 + v47];
-					*v43++ = x_BYTE_F6EE0_tablesx[16384 + v48];
+					BYTE1(v48) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v47];
+					*v43++ = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v48];
 					v45--;
 				} while (v45);
 				v53 += iScreenWidth_DE560;
@@ -4632,7 +4632,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 												if (HIBYTE(v72))
 												{
 													LOBYTE(v72) = *ptrSpriteRenderDest_v69;
-													*ptrSpriteRenderDest_v69 = x_BYTE_F6EE0_tablesx[16384 + v72];
+													*ptrSpriteRenderDest_v69 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v72];
 												}
 												ptrSpriteRenderDest_v69 += v71x[1].dword_0;
 
@@ -4647,7 +4647,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 												if (HIBYTE(v72))
 												{
 													LOBYTE(v72) = *ptrSpriteRenderDest_v69;
-													*ptrSpriteRenderDest_v69 = x_BYTE_F6EE0_tablesx[16384 + v72];
+													*ptrSpriteRenderDest_v69 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v72];
 												}
 												ptrSpriteRenderDest_v69 += v71x->dword_0;
 											}
@@ -4674,7 +4674,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 												if ((x_BYTE)v78)
 												{
 													HIBYTE(v78) = *ptrSpriteRenderDest_v75;
-													*ptrSpriteRenderDest_v75 = x_BYTE_F6EE0_tablesx[16384 + v78];
+													*ptrSpriteRenderDest_v75 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v78];
 												}
 												ptrSpriteRenderDest_v75 += v77x[1].dword_0;
 
@@ -4689,7 +4689,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 												if ((x_BYTE)v78)
 												{
 													HIBYTE(v78) = *ptrSpriteRenderDest_v75;
-													*ptrSpriteRenderDest_v75 = x_BYTE_F6EE0_tablesx[16384 + v78];
+													*ptrSpriteRenderDest_v75 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v78];
 												}
 												ptrSpriteRenderDest_v75 += v77x->dword_0;
 											}
@@ -4716,7 +4716,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 												ptrSpriteRenderSrc_v80x += v82[2];
 
 												if ((x_BYTE)v84)
-													*ptrSpriteRenderDest_v81 = x_BYTE_F6EE0_tablesx[16384 + v84];
+													*ptrSpriteRenderDest_v81 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v84];
 												ptrSpriteRenderDest_v81 += v83x[1].dword_0;
 
 												v82 += 4;
@@ -4728,7 +4728,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 												ptrSpriteRenderSrc_v80x += *v82;
 
 												if ((x_BYTE)v84)
-													*ptrSpriteRenderDest_v81 = x_BYTE_F6EE0_tablesx[16384 + v84];
+													*ptrSpriteRenderDest_v81 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v84];
 												ptrSpriteRenderDest_v81 += v83x->dword_0;
 											}
 											break;
@@ -4752,7 +4752,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 												ptrSpriteRenderSrc_v86x += v89[2];
 
 												if (BYTE1(v87))
-													*ptrSpriteRenderDest_v88 = x_BYTE_F6EE0_tablesx[16384 + v87];
+													*ptrSpriteRenderDest_v88 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v87];
 												ptrSpriteRenderDest_v88 += v90x[1].dword_0;
 
 												v89 += 4;
@@ -4764,7 +4764,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 												ptrSpriteRenderSrc_v86x += *v89;
 
 												if (BYTE1(v87))
-													*ptrSpriteRenderDest_v88 = x_BYTE_F6EE0_tablesx[16384 + v87];
+													*ptrSpriteRenderDest_v88 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v87];
 												ptrSpriteRenderDest_v88 += v90x->dword_0;
 											}
 											break;
@@ -4784,7 +4784,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 												if (BYTE1(v95))
 												{
 													LOBYTE(v95) = *ptrSpriteRenderDest_v94;
-													LOBYTE(v92) = x_BYTE_F6EE0_tablesx[16384 + v95];
+													LOBYTE(v92) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v95];
 													*ptrSpriteRenderDest_v94 = x_BYTE_F6EE0_tablesx[v92];
 												}
 												ptrSpriteRenderDest_v94 += v97x->dword_0;
@@ -4808,7 +4808,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 												if ((x_BYTE)v101)
 												{
 													BYTE1(v101) = *ptrSpriteRenderDest_v100;
-													LOBYTE(v98) = x_BYTE_F6EE0_tablesx[16384 + v101];
+													LOBYTE(v98) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v101];
 													*ptrSpriteRenderDest_v100 = x_BYTE_F6EE0_tablesx[v98];
 												}
 												ptrSpriteRenderDest_v100 += v103x->dword_0;
@@ -5229,7 +5229,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							if (HIBYTE(v21))
 							{
 								LOBYTE(v21) = v20[1];
-								v20[1] = x_BYTE_F6EE0_tablesx[16384 + v21];
+								v20[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v21];
 							}
 							v20 += 2;
 							v19 += 4;
@@ -5242,7 +5242,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							if (HIBYTE(v21))
 							{
 								LOBYTE(v21) = *v20;
-								v20[0] = x_BYTE_F6EE0_tablesx[16384 + v21];
+								v20[0] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v21];
 							}
 						}
 						break;
@@ -5267,7 +5267,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							if ((x_BYTE)v26)
 							{
 								HIBYTE(v26) = v25[1];
-								v25[1] = x_BYTE_F6EE0_tablesx[16384 + v26];
+								v25[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v26];
 							}
 							v25 += 2;
 							v24 += 4;
@@ -5280,7 +5280,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							if ((x_BYTE)v26)
 							{
 								HIBYTE(v26) = v25[0];
-								v25[0] = x_BYTE_F6EE0_tablesx[16384 + v26];
+								v25[0] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v26];
 							}
 						}
 						break;
@@ -5304,7 +5304,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							ptrSpriteRenderSrc_v28 += v29[2];
 
 							if ((x_BYTE)v31)
-								v30[1] = x_BYTE_F6EE0_tablesx[16384 + v31];
+								v30[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v31];
 							v30 += 2;
 							v29 += 4;
 							if (!--v32)
@@ -5314,7 +5314,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							ptrSpriteRenderSrc_v28 += *v29;
 
 							if ((x_BYTE)v31)
-								*v30 = x_BYTE_F6EE0_tablesx[16384 + v31];
+								*v30 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v31];
 						}
 						break;
 					case 5:
@@ -5336,7 +5336,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							ptrSpriteRenderSrc_v34 += v35[2];
 
 							if (BYTE1(v33))
-								v36[1] = x_BYTE_F6EE0_tablesx[16384 + v33];
+								v36[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v33];
 							v36 += 2;
 							v35 += 4;
 							if (!--v37)
@@ -5346,7 +5346,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							ptrSpriteRenderSrc_v34 += *v35;
 
 							if (BYTE1(v33))
-								*v36 = x_BYTE_F6EE0_tablesx[16384 + v33];
+								*v36 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v33];
 						}
 						break;
 					case 6:
@@ -5371,7 +5371,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							if (BYTE1(v42))
 							{
 								LOBYTE(v42) = v41[1];
-								LOBYTE(v38) = x_BYTE_F6EE0_tablesx[16384 + v42];
+								LOBYTE(v38) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v42];
 								v41[1] = x_BYTE_F6EE0_tablesx[v38];
 							}
 							v41 += 2;
@@ -5385,7 +5385,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							if (BYTE1(v42))
 							{
 								LOBYTE(v42) = *v41;
-								LOBYTE(v38) = x_BYTE_F6EE0_tablesx[16384 + v42];
+								LOBYTE(v38) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v42];
 								*v41 = x_BYTE_F6EE0_tablesx[v38];
 							}
 						}
@@ -5412,7 +5412,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							if ((x_BYTE)v48)
 							{
 								BYTE1(v48) = v47[1];
-								LOBYTE(v44) = x_BYTE_F6EE0_tablesx[16384 + v48];
+								LOBYTE(v44) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v48];
 								v47[1] = x_BYTE_F6EE0_tablesx[v44];
 							}
 							v47 += 2;
@@ -5426,7 +5426,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 							if ((x_BYTE)v48)
 							{
 								BYTE1(v48) = *v47;
-								LOBYTE(v44) = x_BYTE_F6EE0_tablesx[16384 + v48];
+								LOBYTE(v44) = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v48];
 								*v47 = x_BYTE_F6EE0_tablesx[v44];
 							}
 						}
@@ -10302,7 +10302,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v532);
 										v535 = v1172 + v532;
-										*v529 = x_BYTE_F6EE0_tablesx[16384 + v526];
+										*v529 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v536 = v528 - 1;
 										if (!v536)
@@ -10315,7 +10315,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v535);
 										v537 = v1172 + v535;
-										v529[1] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v538 = v536 - 1;
 										if (!v538)
@@ -10328,7 +10328,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v537);
 										v539 = v1172 + v537;
-										v529[2] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v540 = v538 - 1;
 										if (!v540)
@@ -10341,7 +10341,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v539);
 										v541 = v1172 + v539;
-										v529[3] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v542 = v540 - 1;
 										if (!v542)
@@ -10354,7 +10354,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v541);
 										v543 = v1172 + v541;
-										v529[4] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v544 = v542 - 1;
 										if (!v544)
@@ -10367,7 +10367,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v543);
 										v545 = v1172 + v543;
-										v529[5] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v546 = v544 - 1;
 										if (!v546)
@@ -10380,7 +10380,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v545);
 										v547 = v1172 + v545;
-										v529[6] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v548 = v546 - 1;
 										if (!v548)
@@ -10393,7 +10393,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v547);
 										v549 = v1172 + v547;
-										v529[7] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v550 = v548 - 1;
 										if (!v550)
@@ -10406,7 +10406,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v549);
 										v551 = v1172 + v549;
-										v529[8] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v552 = v550 - 1;
 										if (!v552)
@@ -10419,7 +10419,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v551);
 										v553 = v1172 + v551;
-										v529[9] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v554 = v552 - 1;
 										if (!v554)
@@ -10432,7 +10432,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v553);
 										v555 = v1172 + v553;
-										v529[10] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v556 = v554 - 1;
 										if (!v556)
@@ -10445,7 +10445,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v555);
 										v557 = v1172 + v555;
-										v529[11] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v558 = v556 - 1;
 										if (!v558)
@@ -10458,7 +10458,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v557);
 										v559 = v1172 + v557;
-										v529[12] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v560 = v558 - 1;
 										if (!v560)
@@ -10471,7 +10471,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v559);
 										v561 = v1172 + v559;
-										v529[13] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v562 = v560 - 1;
 										if (!v562)
@@ -10484,7 +10484,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v561);
 										v563 = v1172 + v561;
-										v529[14] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										v564 = v562 - 1;
 										if (!v564)
@@ -10497,7 +10497,7 @@ LABEL_129:
 										LOBYTE(v527) = BYTE2(Uincrement_v1124) + v180 + v527;
 										v180 = __CFADD__(v1172, v563);
 										v532 = v1172 + v563;
-										v529[15] = x_BYTE_F6EE0_tablesx[16384 + v526];
+										v529[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v526];
 										BYTE1(v527) += BYTE2(Vincrement_v1135) + v180;
 										LOWORD(v528) = v564 - 1;
 										if (!(x_WORD)v528)
@@ -10567,7 +10567,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v572);
 										v575 = v1173 + v572;
-										*v569 = x_BYTE_F6EE0_tablesx[16384 + v566];
+										*v569 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v576 = v568 - 1;
 										if (!v576)
@@ -10580,7 +10580,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v575);
 										v577 = v1173 + v575;
-										v569[1] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v578 = v576 - 1;
 										if (!v578)
@@ -10593,7 +10593,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v577);
 										v579 = v1173 + v577;
-										v569[2] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v580 = v578 - 1;
 										if (!v580)
@@ -10606,7 +10606,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v579);
 										v581 = v1173 + v579;
-										v569[3] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v582 = v580 - 1;
 										if (!v582)
@@ -10619,7 +10619,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v581);
 										v583 = v1173 + v581;
-										v569[4] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v584 = v582 - 1;
 										if (!v584)
@@ -10632,7 +10632,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v583);
 										v585 = v1173 + v583;
-										v569[5] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v586 = v584 - 1;
 										if (!v586)
@@ -10645,7 +10645,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v585);
 										v587 = v1173 + v585;
-										v569[6] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v588 = v586 - 1;
 										if (!v588)
@@ -10658,7 +10658,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v587);
 										v589 = v1173 + v587;
-										v569[7] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v590 = v588 - 1;
 										if (!v590)
@@ -10671,7 +10671,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v589);
 										v591 = v1173 + v589;
-										v569[8] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v592 = v590 - 1;
 										if (!v592)
@@ -10684,7 +10684,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v591);
 										v593 = v1173 + v591;
-										v569[9] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v594 = v592 - 1;
 										if (!v594)
@@ -10697,7 +10697,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v593);
 										v595 = v1173 + v593;
-										v569[10] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v596 = v594 - 1;
 										if (!v596)
@@ -10710,7 +10710,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v595);
 										v597 = v1173 + v595;
-										v569[11] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v598 = v596 - 1;
 										if (!v598)
@@ -10723,7 +10723,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v597);
 										v599 = v1173 + v597;
-										v569[12] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v600 = v598 - 1;
 										if (!v600)
@@ -10736,7 +10736,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v599);
 										v601 = v1173 + v599;
-										v569[13] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v602 = v600 - 1;
 										if (!v602)
@@ -10749,7 +10749,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v601);
 										v603 = v1173 + v601;
-										v569[14] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										v604 = v602 - 1;
 										if (!v604)
@@ -10762,7 +10762,7 @@ LABEL_129:
 										LOBYTE(v567) = BYTE2(Uincrement_v1124) + v180 + v567;
 										v180 = __CFADD__(v1173, v603);
 										v572 = v1173 + v603;
-										v569[15] = x_BYTE_F6EE0_tablesx[16384 + v566];
+										v569[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v566];
 										BYTE1(v567) += BYTE2(Vincrement_v1135) + v180;
 										LOWORD(v568) = v604 - 1;
 										if (!(x_WORD)v568)
@@ -10814,82 +10814,82 @@ LABEL_129:
 									for (i = v606; ; i += 16)
 									{
 										LOBYTE(v607) = *i;
-										*i = x_BYTE_F6EE0_tablesx[16384 + v607];
+										*i = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v611 = v609 - 1;
 										if (!v611)
 											break;
 										LOBYTE(v607) = i[1];
-										i[1] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v612 = v611 - 1;
 										if (!v612)
 											break;
 										LOBYTE(v607) = i[2];
-										i[2] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v613 = v612 - 1;
 										if (!v613)
 											break;
 										LOBYTE(v607) = i[3];
-										i[3] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v614 = v613 - 1;
 										if (!v614)
 											break;
 										LOBYTE(v607) = i[4];
-										i[4] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v615 = v614 - 1;
 										if (!v615)
 											break;
 										LOBYTE(v607) = i[5];
-										i[5] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v616 = v615 - 1;
 										if (!v616)
 											break;
 										LOBYTE(v607) = i[6];
-										i[6] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v617 = v616 - 1;
 										if (!v617)
 											break;
 										LOBYTE(v607) = i[7];
-										i[7] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v618 = v617 - 1;
 										if (!v618)
 											break;
 										LOBYTE(v607) = i[8];
-										i[8] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v619 = v618 - 1;
 										if (!v619)
 											break;
 										LOBYTE(v607) = i[9];
-										i[9] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v620 = v619 - 1;
 										if (!v620)
 											break;
 										LOBYTE(v607) = i[10];
-										i[10] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v621 = v620 - 1;
 										if (!v621)
 											break;
 										LOBYTE(v607) = i[11];
-										i[11] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v622 = v621 - 1;
 										if (!v622)
 											break;
 										LOBYTE(v607) = i[12];
-										i[12] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v623 = v622 - 1;
 										if (!v623)
 											break;
 										LOBYTE(v607) = i[13];
-										i[13] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v624 = v623 - 1;
 										if (!v624)
 											break;
 										LOBYTE(v607) = i[14];
-										i[14] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										v625 = v624 - 1;
 										if (!v625)
 											break;
 										LOBYTE(v607) = i[15];
-										i[15] = x_BYTE_F6EE0_tablesx[16384 + v607];
+										i[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v607];
 										LOWORD(v609) = v625 - 1;
 										if (!(x_WORD)v609)
 											break;
@@ -10933,82 +10933,82 @@ LABEL_129:
 									for (j = v627; ; j += 16)
 									{
 										BYTE1(v628) = *j;
-										*j = x_BYTE_F6EE0_tablesx[16384 + v628];
+										*j = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v632 = v630 - 1;
 										if (!v632)
 											break;
 										BYTE1(v628) = j[1];
-										j[1] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v633 = v632 - 1;
 										if (!v633)
 											break;
 										BYTE1(v628) = j[2];
-										j[2] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v634 = v633 - 1;
 										if (!v634)
 											break;
 										BYTE1(v628) = j[3];
-										j[3] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v635 = v634 - 1;
 										if (!v635)
 											break;
 										BYTE1(v628) = j[4];
-										j[4] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v636 = v635 - 1;
 										if (!v636)
 											break;
 										BYTE1(v628) = j[5];
-										j[5] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v637 = v636 - 1;
 										if (!v637)
 											break;
 										BYTE1(v628) = j[6];
-										j[6] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v638 = v637 - 1;
 										if (!v638)
 											break;
 										BYTE1(v628) = j[7];
-										j[7] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v639 = v638 - 1;
 										if (!v639)
 											break;
 										BYTE1(v628) = j[8];
-										j[8] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v640 = v639 - 1;
 										if (!v640)
 											break;
 										BYTE1(v628) = j[9];
-										j[9] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v641 = v640 - 1;
 										if (!v641)
 											break;
 										BYTE1(v628) = j[10];
-										j[10] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v642 = v641 - 1;
 										if (!v642)
 											break;
 										BYTE1(v628) = j[11];
-										j[11] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v643 = v642 - 1;
 										if (!v643)
 											break;
 										BYTE1(v628) = j[12];
-										j[12] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v644 = v643 - 1;
 										if (!v644)
 											break;
 										BYTE1(v628) = j[13];
-										j[13] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v645 = v644 - 1;
 										if (!v645)
 											break;
 										BYTE1(v628) = j[14];
-										j[14] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										v646 = v645 - 1;
 										if (!v646)
 											break;
 										BYTE1(v628) = j[15];
-										j[15] = x_BYTE_F6EE0_tablesx[16384 + v628];
+										j[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v628];
 										LOWORD(v630) = v646 - 1;
 										if (!(x_WORD)v630)
 											break;
@@ -11060,7 +11060,7 @@ LABEL_129:
 									{
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = *v650;
-										*v650 = x_BYTE_F6EE0_tablesx[16384 + v648];
+										*v650 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v653);
 										v654 = v1146 + v653;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11069,7 +11069,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[1];
-										v650[1] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v654);
 										v656 = v1146 + v654;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11078,7 +11078,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[2];
-										v650[2] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v656);
 										v658 = v1146 + v656;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11087,7 +11087,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[3];
-										v650[3] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v658);
 										v660 = v1146 + v658;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11096,7 +11096,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[4];
-										v650[4] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v660);
 										v662 = v1146 + v660;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11105,7 +11105,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[5];
-										v650[5] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v662);
 										v664 = v1146 + v662;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11114,7 +11114,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[6];
-										v650[6] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v664);
 										v666 = v1146 + v664;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11123,7 +11123,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[7];
-										v650[7] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v666);
 										v668 = v1146 + v666;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11132,7 +11132,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[8];
-										v650[8] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v668);
 										v670 = v1146 + v668;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11141,7 +11141,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[9];
-										v650[9] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v670);
 										v672 = v1146 + v670;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11150,7 +11150,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[10];
-										v650[10] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v672);
 										v674 = v1146 + v672;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11159,7 +11159,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[11];
-										v650[11] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v674);
 										v676 = v1146 + v674;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11168,7 +11168,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[12];
-										v650[12] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v676);
 										v678 = v1146 + v676;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11177,7 +11177,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[13];
-										v650[13] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v678);
 										v680 = v1146 + v678;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11186,7 +11186,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[14];
-										v650[14] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v680);
 										v682 = v1146 + v680;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11195,7 +11195,7 @@ LABEL_129:
 											break;
 										BYTE1(v648) = x_BYTE_F6EE0_tablesx[v31];
 										LOBYTE(v648) = v650[15];
-										v650[15] = x_BYTE_F6EE0_tablesx[16384 + v648];
+										v650[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v648];
 										v180 = __CFADD__((x_WORD)v1146, v682);
 										v653 = v1146 + v682;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11254,7 +11254,7 @@ LABEL_129:
 									{
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = *v687;
-										*v687 = x_BYTE_F6EE0_tablesx[16384 + v685];
+										*v687 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v690);
 										v691 = v1146 + v690;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11263,7 +11263,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[1];
-										v687[1] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v691);
 										v693 = v1146 + v691;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11272,7 +11272,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[2];
-										v687[2] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v693);
 										v695 = v1146 + v693;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11281,7 +11281,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[3];
-										v687[3] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v695);
 										v697 = v1146 + v695;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11290,7 +11290,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[4];
-										v687[4] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v697);
 										v699 = v1146 + v697;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11299,7 +11299,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[5];
-										v687[5] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v699);
 										v701 = v1146 + v699;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11308,7 +11308,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[6];
-										v687[6] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v701);
 										v703 = v1146 + v701;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11317,7 +11317,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[7];
-										v687[7] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v703);
 										v705 = v1146 + v703;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11326,7 +11326,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[8];
-										v687[8] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v705);
 										v707 = v1146 + v705;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11335,7 +11335,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[9];
-										v687[9] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v707);
 										v709 = v1146 + v707;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11344,7 +11344,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[10];
-										v687[10] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v709);
 										v711 = v1146 + v709;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11353,7 +11353,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[11];
-										v687[11] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v711);
 										v713 = v1146 + v711;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11362,7 +11362,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[12];
-										v687[12] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v713);
 										v715 = v1146 + v713;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11371,7 +11371,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[13];
-										v687[13] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v715);
 										v717 = v1146 + v715;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11380,7 +11380,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[14];
-										v687[14] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v717);
 										v719 = v1146 + v717;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11389,7 +11389,7 @@ LABEL_129:
 											break;
 										LOBYTE(v685) = x_BYTE_F6EE0_tablesx[v31];
 										BYTE1(v685) = v687[15];
-										v687[15] = x_BYTE_F6EE0_tablesx[16384 + v685];
+										v687[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v685];
 										v180 = __CFADD__((x_WORD)v1146, v719);
 										v690 = v1146 + v719;
 										BYTE1(v31) += BYTE2(v1146) + v180;
@@ -11459,7 +11459,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v728);
 										v731 = v1174 + v728;
-										*v725 = x_BYTE_F6EE0_tablesx[16384 + v722];
+										*v725 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v732 = v724 - 1;
 										if (!v732)
@@ -11473,7 +11473,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v731);
 										v733 = v1174 + v731;
-										v725[1] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v734 = v732 - 1;
 										if (!v734)
@@ -11485,7 +11485,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v733);
 										v735 = v1174 + v733;
-										v725[2] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v736 = v734 - 1;
 										if (!v736)
@@ -11497,7 +11497,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v735);
 										v737 = v1174 + v735;
-										v725[3] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v738 = v736 - 1;
 										if (!v738)
@@ -11509,7 +11509,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v737);
 										v739 = v1174 + v737;
-										v725[4] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v740 = v738 - 1;
 										if (!v740)
@@ -11521,7 +11521,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v739);
 										v741 = v1174 + v739;
-										v725[5] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v742 = v740 - 1;
 										if (!v742)
@@ -11533,7 +11533,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v741);
 										v743 = v1174 + v741;
-										v725[6] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v744 = v742 - 1;
 										if (!v744)
@@ -11545,7 +11545,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v743);
 										v745 = v1174 + v743;
-										v725[7] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v746 = v744 - 1;
 										if (!v746)
@@ -11557,7 +11557,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v745);
 										v747 = v1174 + v745;
-										v725[8] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v748 = v746 - 1;
 										if (!v748)
@@ -11569,7 +11569,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v747);
 										v749 = v1174 + v747;
-										v725[9] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v750 = v748 - 1;
 										if (!v750)
@@ -11581,7 +11581,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v749);
 										v751 = v1174 + v749;
-										v725[10] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v752 = v750 - 1;
 										if (!v752)
@@ -11593,7 +11593,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v751);
 										v753 = v1174 + v751;
-										v725[11] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v754 = v752 - 1;
 										if (!v754)
@@ -11605,7 +11605,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v753);
 										v755 = v1174 + v753;
-										v725[12] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v756 = v754 - 1;
 										if (!v756)
@@ -11617,7 +11617,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v755);
 										v757 = v1174 + v755;
-										v725[13] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v758 = v756 - 1;
 										if (!v758)
@@ -11629,7 +11629,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v757);
 										v759 = v1174 + v757;
-										v725[14] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										v760 = v758 - 1;
 										if (!v760)
@@ -11641,7 +11641,7 @@ LABEL_129:
 										LOBYTE(v723) = BYTE2(Uincrement_v1124) + v180 + v723;
 										v180 = __CFADD__(v1174, v759);
 										v728 = v1174 + v759;
-										v725[15] = x_BYTE_F6EE0_tablesx[16384 + v722];
+										v725[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v722];
 										BYTE1(v723) += BYTE2(Vincrement_v1135) + v180;
 										LOWORD(v724) = v760 - 1;
 										if (!(x_WORD)v724)
@@ -11711,7 +11711,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v768);
 										v771 = v1175 + v768;
-										*v765 = x_BYTE_F6EE0_tablesx[16384 + v762];
+										*v765 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v772 = v764 - 1;
 										if (!v772)
@@ -11725,7 +11725,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v771);
 										v773 = v1175 + v771;
-										v765[1] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v774 = v772 - 1;
 										if (!v774)
@@ -11739,7 +11739,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v773);
 										v775 = v1175 + v773;
-										v765[2] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v776 = v774 - 1;
 										if (!v776)
@@ -11753,7 +11753,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v775);
 										v777 = v1175 + v775;
-										v765[3] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v778 = v776 - 1;
 										if (!v778)
@@ -11767,7 +11767,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v777);
 										v779 = v1175 + v777;
-										v765[4] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v780 = v778 - 1;
 										if (!v780)
@@ -11781,7 +11781,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v779);
 										v781 = v1175 + v779;
-										v765[5] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v782 = v780 - 1;
 										if (!v782)
@@ -11795,7 +11795,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v781);
 										v783 = v1175 + v781;
-										v765[6] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v784 = v782 - 1;
 										if (!v784)
@@ -11809,7 +11809,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v783);
 										v785 = v1175 + v783;
-										v765[7] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v786 = v784 - 1;
 										if (!v786)
@@ -11823,7 +11823,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v785);
 										v787 = v1175 + v785;
-										v765[8] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v788 = v786 - 1;
 										if (!v788)
@@ -11837,7 +11837,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v787);
 										v789 = v1175 + v787;
-										v765[9] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v790 = v788 - 1;
 										if (!v790)
@@ -11851,7 +11851,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v789);
 										v791 = v1175 + v789;
-										v765[10] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v792 = v790 - 1;
 										if (!v792)
@@ -11865,7 +11865,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v791);
 										v793 = v1175 + v791;
-										v765[11] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v794 = v792 - 1;
 										if (!v794)
@@ -11879,7 +11879,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v793);
 										v795 = v1175 + v793;
-										v765[12] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v796 = v794 - 1;
 										if (!v796)
@@ -11893,7 +11893,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v795);
 										v797 = v1175 + v795;
-										v765[13] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v798 = v796 - 1;
 										if (!v798)
@@ -11907,7 +11907,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v797);
 										v799 = v1175 + v797;
-										v765[14] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										v800 = v798 - 1;
 										if (!v800)
@@ -11921,7 +11921,7 @@ LABEL_129:
 										LOBYTE(v763) = BYTE2(Uincrement_v1124) + v180 + v763;
 										v180 = __CFADD__(v1175, v799);
 										v768 = v1175 + v799;
-										v765[15] = x_BYTE_F6EE0_tablesx[16384 + v762];
+										v765[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v762];
 										BYTE1(v763) += BYTE2(Vincrement_v1135) + v180;
 										LOWORD(v764) = v800 - 1;
 										if (!(x_WORD)v764)
@@ -12000,7 +12000,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v810);
 										v813 = v1185 + v810;
-										*v805 = x_BYTE_F6EE0_tablesx[16384 + v802];
+										*v805 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v813) = BYTE2(v1146) + v180 + v813;
 										v1195 = v1194 - 1;
 										if (!v1195)
@@ -12019,7 +12019,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v813);
 										v815 = v1185 + v813;
-										v805[1] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v815) = BYTE2(v1146) + v180 + v815;
 										v1196 = v1195 - 1;
 										if (!v1196)
@@ -12038,7 +12038,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v815);
 										v817 = v1185 + v815;
-										v805[2] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v817) = BYTE2(v1146) + v180 + v817;
 										v1197 = v1196 - 1;
 										if (!v1197)
@@ -12057,7 +12057,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v817);
 										v819 = v1185 + v817;
-										v805[3] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v819) = BYTE2(v1146) + v180 + v819;
 										v1198 = v1197 - 1;
 										if (!v1198)
@@ -12076,7 +12076,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v819);
 										v821 = v1185 + v819;
-										v805[4] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v821) = BYTE2(v1146) + v180 + v821;
 										v1199 = v1198 - 1;
 										if (!v1199)
@@ -12095,7 +12095,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v821);
 										v823 = v1185 + v821;
-										v805[5] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v823) = BYTE2(v1146) + v180 + v823;
 										v1200 = v1199 - 1;
 										if (!v1200)
@@ -12114,7 +12114,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v823);
 										v825 = v1185 + v823;
-										v805[6] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v825) = BYTE2(v1146) + v180 + v825;
 										v1201 = v1200 - 1;
 										if (!v1201)
@@ -12133,7 +12133,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v825);
 										v827 = v1185 + v825;
-										v805[7] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v827) = BYTE2(v1146) + v180 + v827;
 										v1202 = v1201 - 1;
 										if (!v1202)
@@ -12152,7 +12152,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v827);
 										v829 = v1185 + v827;
-										v805[8] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v829) = BYTE2(v1146) + v180 + v829;
 										v1203 = v1202 - 1;
 										if (!v1203)
@@ -12171,7 +12171,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v829);
 										v831 = v1185 + v829;
-										v805[9] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v831) = BYTE2(v1146) + v180 + v831;
 										v1204 = v1203 - 1;
 										if (!v1204)
@@ -12190,7 +12190,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v831);
 										v833 = v1185 + v831;
-										v805[10] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v833) = BYTE2(v1146) + v180 + v833;
 										v1205 = v1204 - 1;
 										if (!v1205)
@@ -12209,7 +12209,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v833);
 										v835 = v1185 + v833;
-										v805[11] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v835) = BYTE2(v1146) + v180 + v835;
 										v1206 = v1205 - 1;
 										if (!v1206)
@@ -12228,7 +12228,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v835);
 										v837 = v1185 + v835;
-										v805[12] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v837) = BYTE2(v1146) + v180 + v837;
 										v1207 = v1206 - 1;
 										if (!v1207)
@@ -12247,7 +12247,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v837);
 										v839 = v1185 + v837;
-										v805[13] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v839) = BYTE2(v1146) + v180 + v839;
 										v1208 = v1207 - 1;
 										if (!v1208)
@@ -12266,7 +12266,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v839);
 										v841 = v1185 + v839;
-										v805[14] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v841) = BYTE2(v1146) + v180 + v841;
 										v1209 = v1208 - 1;
 										if (!v1209)
@@ -12285,7 +12285,7 @@ LABEL_129:
 										BYTE1(v803) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1185, v841);
 										v810 = v1185 + v841;
-										v805[15] = x_BYTE_F6EE0_tablesx[16384 + v802];
+										v805[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v802];
 										LOBYTE(v810) = BYTE2(v1146) + v180 + v810;
 										v1194 = v1209 - 1;
 										if (!v1194)
@@ -12366,7 +12366,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v851);
 										v854 = v1186 + v851;
-										*v846 = x_BYTE_F6EE0_tablesx[16384 + v843];
+										*v846 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v854) = BYTE2(v1146) + v180 + v854;
 										v1211 = v1210 - 1;
 										if (!v1211)
@@ -12385,7 +12385,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v854);
 										v856 = v1186 + v854;
-										v846[1] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v856) = BYTE2(v1146) + v180 + v856;
 										v1212 = v1211 - 1;
 										if (!v1212)
@@ -12404,7 +12404,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v856);
 										v858 = v1186 + v856;
-										v846[2] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v858) = BYTE2(v1146) + v180 + v858;
 										v1213 = v1212 - 1;
 										if (!v1213)
@@ -12423,7 +12423,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v858);
 										v860 = v1186 + v858;
-										v846[3] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v860) = BYTE2(v1146) + v180 + v860;
 										v1214 = v1213 - 1;
 										if (!v1214)
@@ -12442,7 +12442,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v860);
 										v862 = v1186 + v860;
-										v846[4] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v862) = BYTE2(v1146) + v180 + v862;
 										v1215 = v1214 - 1;
 										if (!v1215)
@@ -12461,7 +12461,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v862);
 										v864 = v1186 + v862;
-										v846[5] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v864) = BYTE2(v1146) + v180 + v864;
 										v1216 = v1215 - 1;
 										if (!v1216)
@@ -12480,7 +12480,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v864);
 										v866 = v1186 + v864;
-										v846[6] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v866) = BYTE2(v1146) + v180 + v866;
 										v1217 = v1216 - 1;
 										if (!v1217)
@@ -12499,7 +12499,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v866);
 										v868 = v1186 + v866;
-										v846[7] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v868) = BYTE2(v1146) + v180 + v868;
 										v1218 = v1217 - 1;
 										if (!v1218)
@@ -12518,7 +12518,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v868);
 										v870 = v1186 + v868;
-										v846[8] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v870) = BYTE2(v1146) + v180 + v870;
 										v1219 = v1218 - 1;
 										if (!v1219)
@@ -12537,7 +12537,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v870);
 										v872 = v1186 + v870;
-										v846[9] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v872) = BYTE2(v1146) + v180 + v872;
 										v1220 = v1219 - 1;
 										if (!v1220)
@@ -12556,7 +12556,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v872);
 										v874 = v1186 + v872;
-										v846[10] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v874) = BYTE2(v1146) + v180 + v874;
 										v1221 = v1220 - 1;
 										if (!v1221)
@@ -12575,7 +12575,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v874);
 										v876 = v1186 + v874;
-										v846[11] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v876) = BYTE2(v1146) + v180 + v876;
 										v1222 = v1221 - 1;
 										if (!v1222)
@@ -12594,7 +12594,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v876);
 										v878 = v1186 + v876;
-										v846[12] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v878) = BYTE2(v1146) + v180 + v878;
 										v1223 = v1222 - 1;
 										if (!v1223)
@@ -12613,7 +12613,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v878);
 										v880 = v1186 + v878;
-										v846[13] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v880) = BYTE2(v1146) + v180 + v880;
 										v1224 = v1223 - 1;
 										if (!v1224)
@@ -12632,7 +12632,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v880);
 										v882 = v1186 + v880;
-										v846[14] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v882) = BYTE2(v1146) + v180 + v882;
 										v1225 = v1224 - 1;
 										if (!v1225)
@@ -12651,7 +12651,7 @@ LABEL_129:
 										BYTE1(v844) += BYTE2(Vincrement_v1135) + v180;
 										v180 = __CFADD__(v1186, v882);
 										v851 = v1186 + v882;
-										v846[15] = x_BYTE_F6EE0_tablesx[16384 + v843];
+										v846[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v843];
 										LOBYTE(v851) = BYTE2(v1146) + v180 + v851;
 										v1210 = v1225 - 1;
 										if (!v1210)
@@ -12720,7 +12720,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = *v887;
-											*v887 = x_BYTE_F6EE0_tablesx[16384 + v884];
+											*v887 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v890);
 										LOWORD(v890) = Uincrement_v1124 + v890;
@@ -12737,7 +12737,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[1];
-											v887[1] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v893);
 										LOWORD(v893) = Uincrement_v1124 + v893;
@@ -12754,7 +12754,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[2];
-											v887[2] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v895);
 										LOWORD(v895) = Uincrement_v1124 + v895;
@@ -12771,7 +12771,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[3];
-											v887[3] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v897);
 										LOWORD(v897) = Uincrement_v1124 + v897;
@@ -12788,7 +12788,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[4];
-											v887[4] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v899);
 										LOWORD(v899) = Uincrement_v1124 + v899;
@@ -12805,7 +12805,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[5];
-											v887[5] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v901);
 										LOWORD(v901) = Uincrement_v1124 + v901;
@@ -12822,7 +12822,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[6];
-											v887[6] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v903);
 										LOWORD(v903) = Uincrement_v1124 + v903;
@@ -12839,7 +12839,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[7];
-											v887[7] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v905);
 										LOWORD(v905) = Uincrement_v1124 + v905;
@@ -12856,7 +12856,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[8];
-											v887[8] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v907);
 										LOWORD(v907) = Uincrement_v1124 + v907;
@@ -12873,7 +12873,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[9];
-											v887[9] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v909);
 										LOWORD(v909) = Uincrement_v1124 + v909;
@@ -12890,7 +12890,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[10];
-											v887[10] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v911);
 										LOWORD(v911) = Uincrement_v1124 + v911;
@@ -12907,7 +12907,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[11];
-											v887[11] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v913);
 										LOWORD(v913) = Uincrement_v1124 + v913;
@@ -12924,7 +12924,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[12];
-											v887[12] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v915);
 										LOWORD(v915) = Uincrement_v1124 + v915;
@@ -12941,7 +12941,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[13];
-											v887[13] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v917);
 										LOWORD(v917) = Uincrement_v1124 + v917;
@@ -12958,7 +12958,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[14];
-											v887[14] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v919);
 										LOWORD(v919) = Uincrement_v1124 + v919;
@@ -12975,7 +12975,7 @@ LABEL_129:
 										if (BYTE1(v884))
 										{
 											LOBYTE(v884) = v887[15];
-											v887[15] = x_BYTE_F6EE0_tablesx[16384 + v884];
+											v887[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v884];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v921);
 										LOWORD(v921) = Uincrement_v1124 + v921;
@@ -13048,7 +13048,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = *v927;
-											*v927 = x_BYTE_F6EE0_tablesx[16384 + v924];
+											*v927 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v930);
 										LOWORD(v930) = Uincrement_v1124 + v930;
@@ -13065,7 +13065,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[1];
-											v927[1] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v933);
 										LOWORD(v933) = Uincrement_v1124 + v933;
@@ -13082,7 +13082,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[2];
-											v927[2] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v935);
 										LOWORD(v935) = Uincrement_v1124 + v935;
@@ -13099,7 +13099,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[3];
-											v927[3] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v937);
 										LOWORD(v937) = Uincrement_v1124 + v937;
@@ -13116,7 +13116,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[4];
-											v927[4] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v939);
 										LOWORD(v939) = Uincrement_v1124 + v939;
@@ -13133,7 +13133,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[5];
-											v927[5] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v941);
 										LOWORD(v941) = Uincrement_v1124 + v941;
@@ -13150,7 +13150,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[6];
-											v927[6] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v943);
 										LOWORD(v943) = Uincrement_v1124 + v943;
@@ -13167,7 +13167,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[7];
-											v927[7] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v945);
 										LOWORD(v945) = Uincrement_v1124 + v945;
@@ -13184,7 +13184,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[8];
-											v927[8] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v947);
 										LOWORD(v947) = Uincrement_v1124 + v947;
@@ -13201,7 +13201,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[9];
-											v927[9] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v949);
 										LOWORD(v949) = Uincrement_v1124 + v949;
@@ -13218,7 +13218,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[10];
-											v927[10] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v951);
 										LOWORD(v951) = Uincrement_v1124 + v951;
@@ -13235,7 +13235,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[11];
-											v927[11] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v953);
 										LOWORD(v953) = Uincrement_v1124 + v953;
@@ -13252,7 +13252,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[12];
-											v927[12] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v955);
 										LOWORD(v955) = Uincrement_v1124 + v955;
@@ -13269,7 +13269,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[13];
-											v927[13] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v957);
 										LOWORD(v957) = Uincrement_v1124 + v957;
@@ -13286,7 +13286,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[14];
-											v927[14] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v959);
 										LOWORD(v959) = Uincrement_v1124 + v959;
@@ -13303,7 +13303,7 @@ LABEL_129:
 										if ((x_BYTE)v924)
 										{
 											BYTE1(v924) = v927[15];
-											v927[15] = x_BYTE_F6EE0_tablesx[16384 + v924];
+											v927[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v924];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v961);
 										LOWORD(v961) = Uincrement_v1124 + v961;
@@ -13382,7 +13382,7 @@ LABEL_129:
 											BYTE1(v964) = v972;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = *v967;
-											*v967 = x_BYTE_F6EE0_tablesx[16384 + v964];
+											*v967 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v971);
 										LOWORD(v971) = Uincrement_v1124 + v971;
@@ -13404,7 +13404,7 @@ LABEL_129:
 											BYTE1(v964) = v975;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[1];
-											v967[1] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v974);
 										LOWORD(v974) = Uincrement_v1124 + v974;
@@ -13426,7 +13426,7 @@ LABEL_129:
 											BYTE1(v964) = v977;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[2];
-											v967[2] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v976);
 										LOWORD(v976) = Uincrement_v1124 + v976;
@@ -13448,7 +13448,7 @@ LABEL_129:
 											BYTE1(v964) = v979;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[3];
-											v967[3] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v978);
 										LOWORD(v978) = Uincrement_v1124 + v978;
@@ -13470,7 +13470,7 @@ LABEL_129:
 											BYTE1(v964) = v981;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[4];
-											v967[4] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v980);
 										LOWORD(v980) = Uincrement_v1124 + v980;
@@ -13492,7 +13492,7 @@ LABEL_129:
 											BYTE1(v964) = v983;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[5];
-											v967[5] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v982);
 										LOWORD(v982) = Uincrement_v1124 + v982;
@@ -13514,7 +13514,7 @@ LABEL_129:
 											BYTE1(v964) = v985;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[6];
-											v967[6] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v984);
 										LOWORD(v984) = Uincrement_v1124 + v984;
@@ -13536,7 +13536,7 @@ LABEL_129:
 											BYTE1(v964) = v987;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[7];
-											v967[7] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v986);
 										LOWORD(v986) = Uincrement_v1124 + v986;
@@ -13558,7 +13558,7 @@ LABEL_129:
 											BYTE1(v964) = v989;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[8];
-											v967[8] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v988);
 										LOWORD(v988) = Uincrement_v1124 + v988;
@@ -13580,7 +13580,7 @@ LABEL_129:
 											BYTE1(v964) = v991;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[9];
-											v967[9] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v990);
 										LOWORD(v990) = Uincrement_v1124 + v990;
@@ -13602,7 +13602,7 @@ LABEL_129:
 											BYTE1(v964) = v993;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[10];
-											v967[10] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v992);
 										LOWORD(v992) = Uincrement_v1124 + v992;
@@ -13624,7 +13624,7 @@ LABEL_129:
 											BYTE1(v964) = v995;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[11];
-											v967[11] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v994);
 										LOWORD(v994) = Uincrement_v1124 + v994;
@@ -13646,7 +13646,7 @@ LABEL_129:
 											BYTE1(v964) = v997;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[12];
-											v967[12] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v996);
 										LOWORD(v996) = Uincrement_v1124 + v996;
@@ -13668,7 +13668,7 @@ LABEL_129:
 											BYTE1(v964) = v999;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[13];
-											v967[13] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v998);
 										LOWORD(v998) = Uincrement_v1124 + v998;
@@ -13690,7 +13690,7 @@ LABEL_129:
 											BYTE1(v964) = v1001;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[14];
-											v967[14] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1000);
 										LOWORD(v1000) = Uincrement_v1124 + v1000;
@@ -13712,7 +13712,7 @@ LABEL_129:
 											BYTE1(v964) = v1003;
 											BYTE1(v964) = x_BYTE_F6EE0_tablesx[v964];
 											LOBYTE(v964) = v967[15];
-											v967[15] = x_BYTE_F6EE0_tablesx[16384 + v964];
+											v967[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v964];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1002);
 										LOWORD(v1002) = Uincrement_v1124 + v1002;
@@ -13796,7 +13796,7 @@ LABEL_129:
 											BYTE1(v1005) = v1013;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = *v1008;
-											*v1008 = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											*v1008 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1012);
 										LOWORD(v1012) = Uincrement_v1124 + v1012;
@@ -13818,7 +13818,7 @@ LABEL_129:
 											BYTE1(v1005) = v1016;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[1];
-											v1008[1] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[1] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1015);
 										LOWORD(v1015) = Uincrement_v1124 + v1015;
@@ -13840,7 +13840,7 @@ LABEL_129:
 											BYTE1(v1005) = v1018;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[2];
-											v1008[2] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[2] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1017);
 										LOWORD(v1017) = Uincrement_v1124 + v1017;
@@ -13862,7 +13862,7 @@ LABEL_129:
 											BYTE1(v1005) = v1020;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[3];
-											v1008[3] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[3] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1019);
 										LOWORD(v1019) = Uincrement_v1124 + v1019;
@@ -13884,7 +13884,7 @@ LABEL_129:
 											BYTE1(v1005) = v1022;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[4];
-											v1008[4] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[4] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1021);
 										LOWORD(v1021) = Uincrement_v1124 + v1021;
@@ -13906,7 +13906,7 @@ LABEL_129:
 											BYTE1(v1005) = v1024;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[5];
-											v1008[5] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[5] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1023);
 										LOWORD(v1023) = Uincrement_v1124 + v1023;
@@ -13928,7 +13928,7 @@ LABEL_129:
 											BYTE1(v1005) = v1026;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[6];
-											v1008[6] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[6] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1025);
 										LOWORD(v1025) = Uincrement_v1124 + v1025;
@@ -13950,7 +13950,7 @@ LABEL_129:
 											BYTE1(v1005) = v1028;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[7];
-											v1008[7] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[7] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1027);
 										LOWORD(v1027) = Uincrement_v1124 + v1027;
@@ -13972,7 +13972,7 @@ LABEL_129:
 											BYTE1(v1005) = v1030;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[8];
-											v1008[8] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[8] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1029);
 										LOWORD(v1029) = Uincrement_v1124 + v1029;
@@ -13994,7 +13994,7 @@ LABEL_129:
 											BYTE1(v1005) = v1032;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[9];
-											v1008[9] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[9] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1031);
 										LOWORD(v1031) = Uincrement_v1124 + v1031;
@@ -14016,7 +14016,7 @@ LABEL_129:
 											BYTE1(v1005) = v1034;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[10];
-											v1008[10] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[10] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1033);
 										LOWORD(v1033) = Uincrement_v1124 + v1033;
@@ -14038,7 +14038,7 @@ LABEL_129:
 											BYTE1(v1005) = v1036;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[11];
-											v1008[11] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[11] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1035);
 										LOWORD(v1035) = Uincrement_v1124 + v1035;
@@ -14060,7 +14060,7 @@ LABEL_129:
 											BYTE1(v1005) = v1038;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[12];
-											v1008[12] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[12] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1037);
 										LOWORD(v1037) = Uincrement_v1124 + v1037;
@@ -14082,7 +14082,7 @@ LABEL_129:
 											BYTE1(v1005) = v1040;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[13];
-											v1008[13] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[13] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1039);
 										LOWORD(v1039) = Uincrement_v1124 + v1039;
@@ -14104,7 +14104,7 @@ LABEL_129:
 											BYTE1(v1005) = v1042;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[14];
-											v1008[14] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[14] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1041);
 										LOWORD(v1041) = Uincrement_v1124 + v1041;
@@ -14126,7 +14126,7 @@ LABEL_129:
 											BYTE1(v1005) = v1044;
 											LOBYTE(v1005) = x_BYTE_F6EE0_tablesx[v1005];
 											BYTE1(v1005) = v1008[15];
-											v1008[15] = x_BYTE_F6EE0_tablesx[16384 + v1005];
+											v1008[15] = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1005];
 										}
 										v180 = __CFADD__((x_WORD)Uincrement_v1124, (x_WORD)v1043);
 										LOWORD(v1043) = Uincrement_v1124 + v1043;
@@ -14219,7 +14219,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = *v1049;
-										v1056 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1056 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1053);
 									v1057 = v1182 + v1053;
@@ -14246,7 +14246,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[1];
-										v1059 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1059 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1057);
 									v1060 = v1182 + v1057;
@@ -14273,7 +14273,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[2];
-										v1062 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1062 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1060);
 									v1063 = v1182 + v1060;
@@ -14300,7 +14300,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[3];
-										v1065 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1065 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1063);
 									v1066 = v1182 + v1063;
@@ -14327,7 +14327,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[4];
-										v1068 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1068 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1066);
 									v1069 = v1182 + v1066;
@@ -14354,7 +14354,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[5];
-										v1071 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1071 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1069);
 									v1072 = v1182 + v1069;
@@ -14381,7 +14381,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[6];
-										v1074 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1074 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1072);
 									v1075 = v1182 + v1072;
@@ -14408,7 +14408,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[7];
-										v1077 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1077 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1075);
 									v1078 = v1182 + v1075;
@@ -14435,7 +14435,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[8];
-										v1080 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1080 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1078);
 									v1081 = v1182 + v1078;
@@ -14462,7 +14462,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[9];
-										v1083 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1083 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1081);
 									v1084 = v1182 + v1081;
@@ -14489,7 +14489,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[10];
-										v1086 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1086 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1084);
 									v1087 = v1182 + v1084;
@@ -14516,7 +14516,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[11];
-										v1089 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1089 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1087);
 									v1090 = v1182 + v1087;
@@ -14543,7 +14543,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[12];
-										v1092 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1092 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1090);
 									v1093 = v1182 + v1090;
@@ -14570,7 +14570,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[13];
-										v1095 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1095 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1093);
 									v1096 = v1182 + v1093;
@@ -14597,7 +14597,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[14];
-										v1098 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1098 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1096);
 									v1099 = v1182 + v1096;
@@ -14624,7 +14624,7 @@ LABEL_129:
 									{
 										LOBYTE(v1046) = x_BYTE_F6EE0_tablesx[v1046];
 										BYTE1(v1046) = v1049[15];
-										v1101 = x_BYTE_F6EE0_tablesx[16384 + v1046];
+										v1101 = x_BYTE_F6EE0_tablesx[COLOUR_BLEND_LOOKUP_OFFSET + v1046];
 									}
 									v180 = __CFADD__(v1182, v1099);
 									v1053 = v1182 + v1099;

@@ -195,6 +195,8 @@ extern uint8_t keyColor2_D4B7E; // weak
 extern type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
 
 extern uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
+const uint16_t COLOUR_BLEND_LOOKUP_OFFSET = 0x4000;
+
 extern uint8_t* x_BYTE_F6EE0_tablesx_pre;
 extern uint8_t* x_BYTE_FAEE0_tablesx_pre;
 
