@@ -21,16 +21,6 @@ HostDialog::HostDialog(wxWindow* parent, const Config::Settings::Multiplayer& cf
 	m_ctrlServerPort->SetToolTip("The Port the Server will run on.");
 	grid->Add(m_ctrlServerPort, 1, wxEXPAND);
 
-	// Host Port
-	grid->Add(new wxStaticText(this, wxID_ANY, "Host Client Port:"),
-		0, wxALIGN_CENTER_VERTICAL);
-	m_ctrlServerClientPort = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
-		wxDefaultPosition, wxSize(180, -1),
-		wxSP_ARROW_KEYS, 0, 65535, 3031);
-	m_ctrlServerClientPort->SetValue(cfg.m_ServerPort + 1);
-	m_ctrlServerClientPort->SetToolTip("The Port the Host Player will use. Should be different to Host Port.");
-	grid->Add(m_ctrlServerClientPort, 1, wxEXPAND);
-
 	// Session Recording File
 	grid->Add(new wxStaticText(this, wxID_ANY, "Record Session To:"),
 		0, wxALIGN_CENTER_VERTICAL);
@@ -96,13 +86,12 @@ void HostDialog::OnBrowseRecordingFile(wxCommandEvent&)
 
 void HostDialog::OnPortChanged(wxSpinEvent&)
 {
-	m_ctrlServerClientPort->SetValue(m_ctrlServerPort->GetValue() + 1);
+
 }
 
 void HostDialog::OnSave(wxCommandEvent&)
 {
 	m_cfg.m_ServerPort = m_ctrlServerPort->GetValue();
-	m_cfg.m_ServerClientPort = m_ctrlServerClientPort->GetValue();
 	m_cfg.m_RecordPlayFile = m_recordPlayFile->GetValue().Trim();
 	m_cfg.m_Debug = m_ctrlDebugNetwork->GetValue();
 	EndModal(wxID_SAVE);
@@ -111,7 +100,6 @@ void HostDialog::OnSave(wxCommandEvent&)
 void HostDialog::OnOK(wxCommandEvent&)
 {
 	m_cfg.m_ServerPort = m_ctrlServerPort->GetValue();
-	m_cfg.m_ServerClientPort = m_ctrlServerClientPort->GetValue();
 	m_cfg.m_RecordPlayFile = m_recordPlayFile->GetValue().Trim();
 	m_cfg.m_Debug = m_ctrlDebugNetwork->GetValue();
 	EndModal(wxID_OK);
@@ -251,7 +239,6 @@ void MultiplayerDialog::OnHost(wxCommandEvent&)
 	if (result == wxID_OK || result == wxID_SAVE)
 	{
 		m_cfg.m_ServerPort = dlg.GetServerPort();
-		m_cfg.m_ServerClientPort = dlg.GetServerClientPort();
 		m_cfg.m_RecordPlayFile = dlg.GetRecordPlayFile();
 		m_cfg.m_Debug = dlg.GetDebugSession();
 

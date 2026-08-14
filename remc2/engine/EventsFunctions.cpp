@@ -31323,6 +31323,14 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 		*/
 		//!!!!test area1
 
+		if (CommandLineParams.DoNetworkDebug()) {
+			static int menuSeenFor = -1;
+			if (menuSeenFor != g_autotest_match) {
+				menuSeenFor = g_autotest_match;
+				debug_net_printf("MATCHEND: entering MenusAndIntros for match %d (skipMenus=%d)\n",
+					g_autotest_match, (int)skipMenus);
+			}
+		}
 		MenusAndIntros_76930(skipMenus);//set language, intro, menu, atd. //257930
 
 		//debug
@@ -31552,6 +31560,15 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 					break;//must be here
 				}
 			}
+			// The level is over and we are on our way back to the menu.  Give the network
+			// session back here, or the next network game is refused before it sends a
+			// single packet - see NetworkLeaveSession().
+			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
+				NetworkLeaveSession();
+
+			if (CommandLineParams.DoNetworkDebug())
+				debug_net_printf("MATCHEND: level torn down, heading for the menu\n");
+
 			nextMenu_E29D8 = MenuItem::MainMenu;
 			skipMenus = false;
 			setLevel = -1;
@@ -31621,6 +31638,7 @@ void InGameLoop_47320()//228320
 	//fix res on begin level for hidden levels-neoriginal code
 
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::STARTED);
+	g_inGameLoop = true;
 
 	while (1)
 	{
@@ -31690,6 +31708,7 @@ void InGameLoop_47320()//228320
 			}
 		}
 	}
+	g_inGameLoop = false;
 	//Clear pause status
 	x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= ~GAME_PAUSED;
 
@@ -37576,6 +37595,39 @@ void PlayerEvents_51BB0()//232bb0
 		}
 	}
 
+	// End this match and go round again, for the multi-match test.
+	//
+	// Deliberately NOT byte_0x004_2BE0_11234, which is what --quit_after sets: that one is
+	// tested at the top of sub_46830_main_loop as well, so it leaves the application
+	// altogether.  Bit 3 of dw_w_b_0_2BDE_11230.byte[2] only breaks InGameLoop_47320, and the
+	// outer while(1) then runs MenusAndIntros_76930 again - which is exactly the path a
+	// player takes back to the menu, and the one that has to rebuild the network state.
+	if ((x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
+		&& CommandLineParams.AutoTest() && CommandLineParams.AutoTestMatchSeconds() > 0
+		&& CommandLineParams.AutoTestMatches() > 1)
+	{
+		static long matchSince = 0;
+		static int  matchInProgress = -1;
+		if (matchInProgress != g_autotest_match) { matchInProgress = g_autotest_match; matchSince = 0; }
+		if (matchSince == 0) matchSince = (long)j___clock();
+
+		if (((long)j___clock() - matchSince) / 100 >= CommandLineParams.AutoTestMatchSeconds())
+		{
+			if (g_autotest_match + 1 < CommandLineParams.AutoTestMatches())
+			{
+				debug_net_printf("AUTOTEST: match %d over, returning to the menu for match %d\n",
+					g_autotest_match, g_autotest_match + 1);
+				g_autotest_match++;
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 8;
+			}
+			else
+			{
+				debug_net_printf("AUTOTEST: last match (%d) over, leaving\n", g_autotest_match);
+				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;
+			}
+		}
+	}
+
 	bool replayingOverNetwork = false;
 	if (m_InputRecorder != nullptr && m_InputRecorder->m_IsPlaying
 		&& (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
@@ -37752,6 +37804,20 @@ void PlayerEvents_51BB0()//232bb0
 				SetCenterScreenForFlyAssistant_6EDB0();
 			}
 			SetMenuCursorPosition_52E90(&D41A0_0.array_0x2BDE[i], 3, true);
+			// Opening the panel starts a fresh message, so the slot it types into starts empty.
+			//
+			// Sending (0x13) leaves the text in names_81, and only zeroing the counter here
+			// meant the box came back up showing the message just sent, with the caret at the
+			// end of it - the text looked editable, but the first keypress dropped the whole
+			// line (loc_520C4 below: names_81[slot][0] = 0 while the counter is still 0).  That
+			// deferred wipe is what players report as "the previous message is still there and
+			// it blanks as I start typing".  Clearing here makes the box show what typing will
+			// actually produce.
+			//
+			// The eight slots stay usable: selecting one (0x23) does NOT clear, so picking a
+			// slot with Shift+F1..F8 and pressing Enter still sends what is stored in it.  Only
+			// the slot the panel opens on is treated as the scratch line.
+			D41A0_0.array_0x2BDE[i].names_81[D41A0_0.array_0x2BDE[i].byte_0x3E0_2BE4_12222][0] = 0;
 			D41A0_0.array_0x2BDE[i].byte_0x3E2_2BE4_12224 = 0;
 			if (i == D41A0_0.LevelIndex_0xc)
 			{
@@ -38084,7 +38150,23 @@ void PlayerEvents_51BB0()//232bb0
 					&& x_toupper(printbuffer[3]) == 'D'
 					&& x_toupper(printbuffer[4]) == 'Y')
 				{
-					if (i == D41A0_0.LevelIndex_0xc)
+					// WINDY is a single-player cheat and is ignored in a network game.
+					//
+					// Setting the top bit turns setting_byte2_23 (an int8_t) negative, and every
+					// "setting_byte2_23 < 0" test in PlayerInput.cpp is that byte being read as
+					// "cheats are on" - it hands out the debug keys, and it also lifts the castle
+					// experience gate in EventsFunctions.  None of that is exchanged with anyone:
+					// the other players neither agree to it nor ever find out, so one node would
+					// be playing by rules of its own while the rest keep to the game's.  There is
+					// already one key excluded from multiplayer this way (PlayerInput.cpp, the
+					// "setting_byte2_23 < 0 && !MULTIPLAYER_MODE" test); this is the same reason
+					// applied at the source.
+					//
+					// The word is still recognised and swallowed rather than passed on, so typing
+					// it in a network game does nothing at all - it is not broadcast as an
+					// ordinary chat line either.
+					if (i == D41A0_0.LevelIndex_0xc
+						&& !(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
 						x_D41A0_BYTEARRAY_4_struct.setting_byte2_23 |= 0x80u;
 				}
 				else
@@ -39123,6 +39205,13 @@ void write_pngs()
 }
 
 //----- (00056210) --------------------------------------------------------
+static int ClampPort(int port)
+{
+	if (port < 0) return 0;
+	if (port > 99999) return 99999;
+	return port;
+}
+
 void sub_56210_process_command_line(int argc, char** argv)//237210
 {
 	int32_t x_DWORD_355208;//3551CE+3A DWORD
@@ -39278,27 +39367,26 @@ void sub_56210_process_command_line(int argc, char** argv)//237210
 			{
 				x_BYTE_355238_music2 = 1;
 			}
-			else if (!_stricmp("client", (char*)actarg))//set to all one computer adress
+			// client <server ip> <server port> <own port>
+			else if (!_stricmp("client", (char*)actarg))
 			{
 				Iam_client = true;
 				strcpy(serverIP, (char*)argv[++argnumber]);
-				ServerPort = atoi(argv[++argnumber]);
-				if (ServerPort < 0)ServerPort = 0;
-				if (ServerPort > 99999)ServerPort = 99999;
-				NetworkPort = atoi(argv[++argnumber]);
-				if (NetworkPort < 0)
-					NetworkPort = 0;
-				if (NetworkPort > 99999)
-					NetworkPort = 99999;
+				ServerPort = ClampPort(atoi(argv[++argnumber]));
+				NetworkPort = ClampPort(atoi(argv[++argnumber]));
 			}
-			else if (!_stricmp("server", (char*)actarg))//set to all one computer adress
+			// server <own port> - and nothing else.  The host holds one port, which serves
+			// both the control traffic it answers and the game data it exchanges, so there is
+			// nothing left to say: its address is loopback and its data port is that same
+			// port.  It used to need a "client 127.0.0.1 <same port> <another port>" after
+			// this, which named the host twice and gave it a second port to keep track of.
+			else if (!_stricmp("server", (char*)actarg))
 			{
 				Iam_server = true;
-				ServerPort = atoi(argv[++argnumber]);
-				if (ServerPort < 0)
-					ServerPort = 0;
-				if (ServerPort > 99999)
-					ServerPort = 99999;
+				Iam_client = true;              // the host plays too, through its own server
+				ServerPort = ClampPort(atoi(argv[++argnumber]));
+				NetworkPort = ServerPort;
+				strcpy(serverIP, "127.0.0.1");
 			}
 		}
 		argnumber++;

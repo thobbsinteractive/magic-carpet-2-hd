@@ -170,7 +170,6 @@ Config::Settings::Multiplayer Config::GetMultiplayer(const json& settings)
 	{
 		const auto& multiplayer = settings["multiplayer"];
 		multiplayerValues.m_ServerPort = ReadIntValue(multiplayer, "serverPort");
-		multiplayerValues.m_ServerClientPort = ReadIntValue(multiplayer, "serverClientPort");
 		multiplayerValues.m_ClientPort = ReadIntValue(multiplayer, "clientPort");
 		multiplayerValues.m_ClientServerPort = ReadIntValue(multiplayer, "clientServerPort");
 		multiplayerValues.m_ClientServerIp = ReadStringValue(multiplayer, "clientServerIp");
@@ -451,7 +450,6 @@ void Config::SaveMultiplayerToDoc(Config::Settings::Multiplayer multiplayerSetti
 	auto& multiplayer = GetOrCreate(settingsEntry, "multiplayer");
 
 	SetInt(multiplayer, "serverPort", multiplayerSettings.m_ServerPort);
-	SetInt(multiplayer, "serverClientPort", multiplayerSettings.m_ServerClientPort);
 
 	SetInt(multiplayer, "clientPort", multiplayerSettings.m_ClientPort);
 	SetInt(multiplayer, "clientServerPort", multiplayerSettings.m_ClientServerPort);
