@@ -2431,7 +2431,7 @@ void DrawMapLowRes_63670(int16_t x, int16_t y, int16_t posX, int16_t posY, uint1
 					{
 						LOBYTE(v32) = mapTerrainType_10B4E0[v33];
 						BYTE1(v33) = mapShading_12B4E0[v33];
-						LOBYTE(v33) = ColourLookupTable_F6EE0[0x14000 + v32];
+						LOBYTE(v33) = ColourLookupTable_F6EE0[MAP_COLOUR_BLEND_LOOKUP_OFFSET + v32];
 						v34 = ColourLookupTable_F6EE0[v33];
 					}
 					*v30++ = v34;
@@ -2466,7 +2466,7 @@ void DrawMapLowRes_63670(int16_t x, int16_t y, int16_t posX, int16_t posY, uint1
 					{
 						LOBYTE(v40) = mapTerrainType_10B4E0[v41];
 						BYTE1(v41) = mapShading_12B4E0[v41];
-						LOBYTE(v41) = ColourLookupTable_F6EE0[0x14000 + v40];
+						LOBYTE(v41) = ColourLookupTable_F6EE0[MAP_COLOUR_BLEND_LOOKUP_OFFSET + v40];
 						LOBYTE(v41) = ColourLookupTable_F6EE0[v41];
 						BYTE1(v41) = *v37;
 						*v37 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v41];
@@ -2507,7 +2507,7 @@ void DrawMapLowRes_63670(int16_t x, int16_t y, int16_t posX, int16_t posY, uint1
 					{
 						LOBYTE(v46) = mapTerrainType_10B4E0[v47];
 						BYTE1(v47) = mapShading_12B4E0[v47];
-						LOBYTE(v47) = ColourLookupTable_F6EE0[0x14000 + v46];
+						LOBYTE(v47) = ColourLookupTable_F6EE0[MAP_COLOUR_BLEND_LOOKUP_OFFSET + v46];
 						v48 = ColourLookupTable_F6EE0[v47];
 					}
 					*v43++ = v48;
@@ -2541,7 +2541,7 @@ void DrawMapLowRes_63670(int16_t x, int16_t y, int16_t posX, int16_t posY, uint1
 				BYTE1(v55) = BYTE1(v52);
 				LOBYTE(v54) = mapTerrainType_10B4E0[v55];
 				BYTE1(v55) = mapShading_12B4E0[v55];
-				LOBYTE(v55) = ColourLookupTable_F6EE0[0x14000 + v54];
+				LOBYTE(v55) = ColourLookupTable_F6EE0[MAP_COLOUR_BLEND_LOOKUP_OFFSET + v54];
 				*ptrScreenBuffer_v51++ = ColourLookupTable_F6EE0[v55];
 				v50 += v66;
 				v52 += v67;
@@ -2572,7 +2572,7 @@ void DrawMapLowRes_63670(int16_t x, int16_t y, int16_t posX, int16_t posY, uint1
 				BYTE1(v61) = BYTE1(v58);
 				LOBYTE(v60) = mapTerrainType_10B4E0[v61];
 				BYTE1(v61) = mapShading_12B4E0[v61];
-				LOBYTE(v61) = ColourLookupTable_F6EE0[0x14000 + v60];
+				LOBYTE(v61) = ColourLookupTable_F6EE0[MAP_COLOUR_BLEND_LOOKUP_OFFSET + v60];
 				LOBYTE(v61) = ColourLookupTable_F6EE0[v61];
 				BYTE1(v61) = *ptrScreenBuffer_v57;
 				v62 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v61];
@@ -2736,7 +2736,7 @@ void DrawMapHighRes_63C90(int16_t x, int16_t y, int16_t posX, int16_t posY, uint
 					{
 						LOBYTE(v30) = mapTerrainType_10B4E0[v31];
 						HIBYTE(v31) = mapShading_12B4E0[v31];
-						LOBYTE(v31) = ColourLookupTable_F6EE0[0x14000 + v30];
+						LOBYTE(v31) = ColourLookupTable_F6EE0[MAP_COLOUR_BLEND_LOOKUP_OFFSET + v30];
 						v32 = ColourLookupTable_F6EE0[v31];
 					}
 					*v28++ = v32;
@@ -2770,7 +2770,7 @@ void DrawMapHighRes_63C90(int16_t x, int16_t y, int16_t posX, int16_t posY, uint
 					{
 						LOBYTE(v37) = mapTerrainType_10B4E0[v38];
 						BYTE1(v38) = mapShading_12B4E0[v38];
-						LOBYTE(v38) = ColourLookupTable_F6EE0[0x14000 + v37];
+						LOBYTE(v38) = ColourLookupTable_F6EE0[MAP_COLOUR_BLEND_LOOKUP_OFFSET + v37];
 						LOBYTE(v38) = ColourLookupTable_F6EE0[v38];
 						BYTE1(v38) = *v35;
 						*v35 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v38];
@@ -2810,7 +2810,7 @@ void DrawMapHighRes_63C90(int16_t x, int16_t y, int16_t posX, int16_t posY, uint
 					{
 						LOBYTE(v43) = mapTerrainType_10B4E0[v44];
 						HIBYTE(v44) = mapShading_12B4E0[v44];
-						LOBYTE(v44) = ColourLookupTable_F6EE0[0x14000 + v43];
+						LOBYTE(v44) = ColourLookupTable_F6EE0[MAP_COLOUR_BLEND_LOOKUP_OFFSET + v43];
 						v45 = ColourLookupTable_F6EE0[v44];
 					}
 					*v41++ = v45;
@@ -2843,7 +2843,7 @@ void DrawMapHighRes_63C90(int16_t x, int16_t y, int16_t posX, int16_t posY, uint
 				HIBYTE(v51) = HIBYTE(v47);
 				LOBYTE(v50) = mapTerrainType_10B4E0[v51];
 				HIBYTE(v51) = mapShading_12B4E0[v51];
-				LOBYTE(v51) = ColourLookupTable_F6EE0[0x14000 + v50];
+				LOBYTE(v51) = ColourLookupTable_F6EE0[MAP_COLOUR_BLEND_LOOKUP_OFFSET + v50];
 				*v48++ = ColourLookupTable_F6EE0[v51];
 				v46 += v58;
 				v47 += v59;
@@ -2873,7 +2873,7 @@ void DrawMapHighRes_63C90(int16_t x, int16_t y, int16_t posX, int16_t posY, uint
 				HIBYTE(v57) = HIBYTE(v53);
 				LOBYTE(v56) = mapTerrainType_10B4E0[v57];
 				HIBYTE(v57) = mapShading_12B4E0[v57];
-				LOBYTE(v57) = ColourLookupTable_F6EE0[0x14000 + v56];
+				LOBYTE(v57) = ColourLookupTable_F6EE0[MAP_COLOUR_BLEND_LOOKUP_OFFSET + v56];
 				LOBYTE(v57) = ColourLookupTable_F6EE0[v57];
 				HIBYTE(v57) = v54[0];
 				*v54++ = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v57];//here adress 2451b8
