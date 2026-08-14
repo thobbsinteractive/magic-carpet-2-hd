@@ -268,7 +268,7 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 			{
 				LOBYTE(startOffsetX) = *ptrBitmapPixel++;
 				HIBYTE(startOffsetX) = *ptrScreenBuffer;
-				LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
+				LOBYTE(startOffsetX) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + startOffsetX];
 				*ptrScreenBuffer++ = startOffsetX;
 				posWidth--;
 			} while (posWidth);
@@ -345,7 +345,7 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 					{
 						LOBYTE(startOffsetX) = *ptrBitmapPixel;
 						HIBYTE(startOffsetX) = *ptrScreenBuffer;
-						LOBYTE(startOffsetX) = x_BYTE_F6EE0_tablesx[0x4000 + startOffsetX];
+						LOBYTE(startOffsetX) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + startOffsetX];
 						*ptrScreenBuffer++ = startOffsetX;
 					}
 					ptrBitmapPixel++;
