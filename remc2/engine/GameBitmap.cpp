@@ -482,29 +482,29 @@ void GameBitmap::ScaleMenuGraphic(uint16_t height, uint8_t scale, uint8_t* ptrSr
 	}
 };
 
-void GameBitmap::PaletteToRgb(TColor* ptrPalette, uint8_t colorIdx, uint8_t truColorOut[3])
+void GameBitmap::PaletteToRgb(uint8_t* ptrPalette, uint8_t colorIdx, uint8_t truColorOut[3])
 {
-	truColorOut[0] = (ptrPalette + (colorIdx * 3))->blue;
-	truColorOut[1] = (ptrPalette + (colorIdx * 3))->green;
-	truColorOut[2] = (ptrPalette + (colorIdx * 3))->red;
+	truColorOut[0] = ptrPalette[colorIdx * 3 + 2];
+	truColorOut[1] = ptrPalette[colorIdx * 3 + 1];
+	truColorOut[2] = ptrPalette[colorIdx * 3];
 }
 
-void GameBitmap::PaletteToRgba(TColor* ptrPalette, uint8_t colorIdx, uint8_t truColorOut[4])
+void GameBitmap::PaletteToRgba(uint8_t* ptrPalette, uint8_t colorIdx, uint8_t truColorOut[4])
 {
-	truColorOut[0] = (ptrPalette + (colorIdx * 3))->blue;
-	truColorOut[1] = (ptrPalette + (colorIdx * 3))->green;
-	truColorOut[2] = (ptrPalette + (colorIdx * 3))->red;
+	truColorOut[0] = ptrPalette[colorIdx * 3 + 2];
+	truColorOut[1] = ptrPalette[colorIdx * 3 + 1];
+	truColorOut[2] = ptrPalette[colorIdx * 3];
 
 	if (colorIdx != 255)
 		truColorOut[3] = 255;
 }
 
-uint8_t GameBitmap::DeriveBlendAlpha(TColor* ptrPalette, uint8_t srcIndex, uint8_t dstIndex, uint8_t resultIndex)
+uint8_t GameBitmap::DeriveBlendAlpha(uint8_t* ptrPalette, uint8_t srcIndex, uint8_t dstIndex, uint8_t resultIndex)
 {
 	uint8_t src[3], dst[3], result[3];
-	PaletteToRgba(ptrPalette, srcIndex, src);
-	PaletteToRgba(ptrPalette, dstIndex, dst);
-	PaletteToRgba(ptrPalette, resultIndex, result);
+	PaletteToRgb(ptrPalette, srcIndex, src);
+	PaletteToRgb(ptrPalette, dstIndex, dst);
+	PaletteToRgb(ptrPalette, resultIndex, result);
 
 	float alphaSum = 0.0f;
 	int   channels = 0;
