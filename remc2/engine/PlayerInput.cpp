@@ -2544,11 +2544,11 @@ void ChangeGameResolution_46B40()//227b40
 	memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
 	sub_41A90_VGA_Palette_install((TColor*)*xadatapald0dat2.colorPalette_var28);
 
-	if (pre_x_DWORD_E9C3C)
+	if (pre_ptrMemoryBuffer_E9C3C)
 	{
-		FreeMem_83E80(pre_x_DWORD_E9C3C);
-		pre_x_DWORD_E9C3C = 0;
-		x_DWORD_E9C3C = 0;
+		FreeMem_83E80(pre_ptrMemoryBuffer_E9C3C);
+		pre_ptrMemoryBuffer_E9C3C = 0;
+		ptrMemoryBuffer_E9C3C = 0;
 	}
 
 	sub_54600_mouse_reset();

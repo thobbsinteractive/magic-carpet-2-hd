@@ -134,7 +134,7 @@ extern MenuItem nextMenu_E29D8;
 extern int16_t m_ExitMenuLoop_E29DC;
 extern char x_BYTE_E29DF_skip_screen;
 extern char x_BYTE_E29E0;
-extern uint8_t* pre_x_DWORD_E9C3C;
+extern uint8_t* pre_ptrMemoryBuffer_E9C3C;
 extern uint8_t x_BYTE_EB39E_keys[10];
 extern uint8_t uiBackGroundColorIdx_EB3A8;
 extern int32_t times_17DBB8[4];

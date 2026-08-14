@@ -131,7 +131,7 @@ void GameRenderOriginal::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_
 			{
 				if (x_D41A0_BYTEARRAY_4_struct.m_wHighSpeedSystem)
 				{
-					if (x_DWORD_E9C3C)
+					if (ptrMemoryBuffer_E9C3C)
 					{
 						if (D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize == 40)
 						{
@@ -143,11 +143,11 @@ void GameRenderOriginal::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_
 				}
 			}
 		}
-		if (D41A0_0.str_0x21AE.xxxx_0x21B1 && D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 && x_DWORD_E9C3C)
+		if (D41A0_0.str_0x21AE.xxxx_0x21B1 && D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 && ptrMemoryBuffer_E9C3C)
 		{
 			//Blur
 			v35 = ViewPortRenderBufferStart_DE558;
-			viewPort.SetRenderViewPortSize_BCD45(x_DWORD_E9C3C, 0, 0, 0);
+			viewPort.SetRenderViewPortSize_BCD45(ptrMemoryBuffer_E9C3C, 0, 0, 0);
 			DrawTerrainAndParticles_3C080(vPosX, vPosY, vYaw, posZ, pitch, roll, fov);
 			//Apply Blur
 			viewPort.SetRenderViewPortSize_BCD45(v35, 0, 0, 0);
@@ -157,21 +157,21 @@ void GameRenderOriginal::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_
 			
 			if (D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 != 1)
 			{
-				v37 = (x_BYTE*)x_DWORD_E9C3C;
+				v37 = (x_BYTE*)ptrMemoryBuffer_E9C3C;
 				goto LABEL_33;
 			}
-			v37 = (x_BYTE*)x_DWORD_E9C3C;
+			v37 = (x_BYTE*)ptrMemoryBuffer_E9C3C;
 			v38 = (signed int)(unsigned __int16)viewPort.Width_DE564 >> 2;
-			LOBYTE(v39) = *(x_BYTE*)(x_DWORD_E9C3C + 2);
+			LOBYTE(v39) = *(x_BYTE*)(ptrMemoryBuffer_E9C3C + 2);
 			HIBYTE(v39) = v35[2];
-			LOBYTE(v40) = *(x_BYTE*)(x_DWORD_E9C3C + 3);
+			LOBYTE(v40) = *(x_BYTE*)(ptrMemoryBuffer_E9C3C + 3);
 			LOBYTE(v36) = x_BYTE_F6EE0_tablesx[16384 + v39];
 			HIBYTE(v40) = v35[3];
 			HIBYTE(v36) = x_BYTE_F6EE0_tablesx[16384 + v40];
 			v36 <<= 16;
-			LOBYTE(v39) = *(x_BYTE*)x_DWORD_E9C3C;
+			LOBYTE(v39) = *(x_BYTE*)ptrMemoryBuffer_E9C3C;
 			HIBYTE(v39) = *v35;
-			LOBYTE(v40) = *(x_BYTE*)(x_DWORD_E9C3C + 1);
+			LOBYTE(v40) = *(x_BYTE*)(ptrMemoryBuffer_E9C3C + 1);
 			LOBYTE(v36) = x_BYTE_F6EE0_tablesx[16384 + v39];
 			HIBYTE(v40) = v35[1];
 			for (BYTE1(v36) = x_BYTE_F6EE0_tablesx[16384 + v40]; ; BYTE1(v36) = x_BYTE_F6EE0_tablesx[16384 + v42])
@@ -247,7 +247,7 @@ void GameRenderOriginal::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_
 		v31 = 20 * (signed int)v29 >> 16;
 		DrawTerrainAndParticles_3C080(v31 + vPosX, v30 + vPosY, vYaw, posZ, pitch, roll, fov);
 		v32 = ViewPortRenderBufferStart_DE558;
-		viewPort.SetRenderViewPortSize_BCD45(x_DWORD_E9C3C, 0, 0, 0);
+		viewPort.SetRenderViewPortSize_BCD45(ptrMemoryBuffer_E9C3C, 0, 0, 0);
 		x_DWORD_D4324 = 0 - (iScreenWidth_DE560 / 40);
 		DrawTerrainAndParticles_3C080(vPosX - v31, vPosY - v30, vYaw, posZ, pitch, roll, fov);
 		viewPort.SetRenderViewPortSize_BCD45(v32, 0, 0, 0);

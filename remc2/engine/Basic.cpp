@@ -30,7 +30,7 @@ float m_fTimeElapsed = 0.0f; // The time that has elapsed so far
 int m_iFrameCount = 0; // The number of frames that have occurred.
 float m_fFps; // The frames rendered per second. Needs to be stored to be shown every frame.
 
-uint8_t* x_DWORD_E9C3C; // weak
+uint8_t* ptrMemoryBuffer_E9C3C; // weak
 
 uint8_t* x_DWORD_17DB50; // weak
 
@@ -1488,7 +1488,7 @@ void DrawBitmap_2BB40(int16_t posx, int16_t posy, bitmap_pos_struct_t tempposstr
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 	{
 		temp_screen_buffer = pdwScreenBuffer_351628;
-		pdwScreenBuffer_351628 = x_DWORD_E9C3C;
+		pdwScreenBuffer_351628 = ptrMemoryBuffer_E9C3C;
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			drawBitmap320_8F8B0(posx, posy, tempposstr);
 		else
@@ -1518,7 +1518,7 @@ void DrawLine_2BC80(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 	{
 		temp_screen_buffer = pdwScreenBuffer_351628;
-		pdwScreenBuffer_351628 = x_DWORD_E9C3C;
+		pdwScreenBuffer_351628 = ptrMemoryBuffer_E9C3C;
 		if (x_WORD_180660_VGA_type_resolution & 1)
 			DrawLineLowRes_90164(posStartX, posStartY, posEndX, posEndY, colorIdx);
 		else
@@ -1528,7 +1528,7 @@ void DrawLine_2BC80(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16
 	}
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// E9C3C: using guessed type int x_DWORD_E9C3C;
+// E9C3C: using guessed type int ptrMemoryBuffer_E9C3C;
 // 180628: using guessed type int pdwScreenBuffer_351628;
 // 180660: using guessed type __int16 x_WORD_180660_VGA_type_resolution;
 
@@ -1539,7 +1539,7 @@ void DrawText_2BC10(const char* textbuffer, int16_t posx, int16_t posy, uint8_t 
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)//shifted graphics
 	{
 		uint8_t* temp_screen_buffer = pdwScreenBuffer_351628;
-		pdwScreenBuffer_351628 = x_DWORD_E9C3C;
+		pdwScreenBuffer_351628 = ptrMemoryBuffer_E9C3C;
 		sub_6F940_sub_draw_text(textbuffer, posx, posy, color, scale);
 		pdwScreenBuffer_351628 = temp_screen_buffer;
 	}	
@@ -1621,7 +1621,7 @@ void LockFps(uint8_t maxFps)
 }
 
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// E9C3C: using guessed type int x_DWORD_E9C3C;
+// E9C3C: using guessed type int ptrMemoryBuffer_E9C3C;
 // 180628: using guessed type int pdwScreenBuffer_351628;
 
 //----- (0006EF10) --------------------------------------------------------
@@ -1810,7 +1810,7 @@ void drawBitmap640_8F8E8(int16_t posx, int16_t posy, bitmap_pos_struct_t temppst
 //----- (00090164) --------------------------------------------------------
 void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx)
 {
-	uint8_t* pixel; // edi
+	uint8_t* pixel;
 	uint16_t v6; // dx
 	uint8_t v7; // ebx
 	int v8; // esi
@@ -1856,7 +1856,7 @@ void DrawLineLowRes_90164(int16_t posStartX, int16_t posStartY, int16_t posEndX,
 //----- (000901E4) --------------------------------------------------------
 void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX, int16_t posEndY, uint8_t colorIdx)//2711e4
 {
-	x_BYTE* v5; // edi
+	uint8_t* pixel; // edi
 	__int16 v6; // dx
 	int v7; // ebx
 	int v8; // esi
@@ -1868,7 +1868,7 @@ void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX
 		if (!DefaultResolutions())
 			helpWidth = screenWidth_18062C;
 
-	v5 = (x_BYTE*)(helpWidth * posStartY + pdwScreenBuffer_351628 + posStartX);
+	pixel = (uint8_t*)(helpWidth * posStartY + pdwScreenBuffer_351628 + posStartX);
 	v6 = posEndY;
 	v10 = (unsigned __int16)(helpWidth - posEndX);
 	if (x_WORD_E36D4 & 4)
@@ -1880,11 +1880,11 @@ void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX
 			v9 = posEndX;
 			do
 			{
-				BYTE1(v7) = *v5;
-				*v5++ = *(x_BYTE*)(v7 + v8);
+				BYTE1(v7) = *pixel;
+				*pixel++ = *(x_BYTE*)(v7 + v8);
 				v9--;
 			} while (v9);
-			v5 += v10;
+			pixel += v10;
 			v6--;
 		} while (v6);
 	}
@@ -1892,8 +1892,8 @@ void DrawLineHighRes_901E4(int16_t posStartX, int16_t posStartY, int16_t posEndX
 	{
 		do
 		{
-			memset(v5, colorIdx, posEndX);
-			v5 += v10 + posEndX;
+			memset(pixel, colorIdx, posEndX);
+			pixel += v10 + posEndX;
 			v6--;
 		} while (v6);
 	}
