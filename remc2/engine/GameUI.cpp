@@ -2256,13 +2256,13 @@ char sub_63570(type_entity_0x6E8E* a1x, type_entity_0x6E8E* a2x)//244570
 void DrawMinimap_63600(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10)//244600
 {
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
-		sub_63670_draw_minimap_a(x, y, posX, posY, width, height, yaw, scaling, a10);
+		DrawMapLowRes_63670(x, y, posX, posY, width, height, yaw, scaling, a10);
 	else
-		sub_63C90_draw_minimap_b(x, y, posX, posY, width, height, yaw, scaling, a10);
+		DrawMapHighRes_63C90(x, y, posX, posY, width, height, yaw, scaling, a10);
 }
 
 //----- (00063670) --------------------------------------------------------
-void sub_63670_draw_minimap_a(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10)//244670
+void DrawMapLowRes_63670(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10)//244670
 {
 	int v10; // eax
 	int v11; // esi
@@ -2594,7 +2594,7 @@ void sub_63670_draw_minimap_a(int16_t x, int16_t y, int16_t posX, int16_t posY, 
 }
 
 //----- (00063C90) --------------------------------------------------------
-void sub_63C90_draw_minimap_b(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10)//244c90
+void DrawMapHighRes_63C90(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10)//244c90
 {
 	//bool v14; // al
 	int16_t* v15; // ebx
