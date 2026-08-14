@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
 
-#ifndef PROJECTION_POLYGON
-#define PROJECTION_POLYGON
+#ifndef PROJECTION_VERTEX
+#define PROJECTION_VERTEX
 
-class ProjectionPolygon
+class ProjectionVertex
 {
 public:
 
@@ -15,8 +15,8 @@ public:
 	int Brightness = 0;
 	int Unknown = 0;
 
-	ProjectionPolygon(int* vertexs);
+	ProjectionVertex(int* vertexs);
 	std::string Print();
 };
 
-#endif //PROJECTION_POLYGON
+#endif //PROJECTION_VERTEX

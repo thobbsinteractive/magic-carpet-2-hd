@@ -27,7 +27,6 @@
 #include "engine/GameRenderOriginal.h"
 #include "engine/GameRenderHD.h"
 #include "engine/GameRenderNG.h"
-#include "engine/GameRenderGL.h"
 #include "engine/GameBitmap.h"
 #include "engine/GameBitmapIndexes.h"
 #include "engine/GameUiConstants.h"

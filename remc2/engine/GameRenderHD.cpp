@@ -1408,9 +1408,9 @@ void GameRenderHD::SubDrawInverseTerrainAndParticles(std::vector<int>& projected
 		v134x = v133x;
 		for (n = (m_tileColumns - 1); n; --n)
 		{
-			//ProjectionPolygon 4: X
+			//ProjectionVertex 4: X
 			projectedVertexBuffer[18] = m_ptrStr_E9C38_smalltit[v134x].pnt3_24;
-			//ProjectionPolygon 4: Y
+			//ProjectionVertex 4: Y
 			projectedVertexBuffer[19] = m_ptrStr_E9C38_smalltit[v134x].pnt4_28;
 
 			v135 = m_ptrStr_E9C38_smalltit[v134x].pnt5_32;
@@ -1420,28 +1420,28 @@ void GameRenderHD::SubDrawInverseTerrainAndParticles(std::vector<int>& projected
 			if (m_ptrStr_E9C38_smalltit[v134x].triangleFeatures_38 & 4)
 				break;
 
-			//ProjectionPolygon 3: X
+			//ProjectionVertex 3: X
 			projectedVertexBuffer[12] = m_ptrStr_E9C38_smalltit[v134x].pnt3_24;
-			//ProjectionPolygon 3: Y
+			//ProjectionVertex 3: Y
 			projectedVertexBuffer[13] = m_ptrStr_E9C38_smalltit[v134x].pnt4_28;
 
 			projectedVertexBuffer[16] = m_ptrStr_E9C38_smalltit[v134x].pnt5_32;
 			v137 = m_ptrStr_E9C38_smalltit[v134x].triangleFeatures_38;
 
-			//ProjectionPolygon 2: X
+			//ProjectionVertex 2: X
 			projectedVertexBuffer[6] = m_ptrStr_E9C38_smalltit[v134x - m_tileColumns].pnt3_24;
-			//ProjectionPolygon 2: Y
+			//ProjectionVertex 2: Y
 			projectedVertexBuffer[7] = m_ptrStr_E9C38_smalltit[v134x - m_tileColumns].pnt4_28;
 
 			projectedVertexBuffer[10] = m_ptrStr_E9C38_smalltit[v134x - m_tileColumns].pnt5_32;
 			v138 = m_ptrStr_E9C38_smalltit[v134x - m_tileColumns].triangleFeatures_38 | v137 | v136;
 
-			//ProjectionPolygon 1: X
+			//ProjectionVertex 1: X
 			projectedVertexBuffer[0] = m_ptrStr_E9C38_smalltit[v134x - (m_tileColumns + 1)].pnt3_24;
 			v139 = m_ptrStr_E9C38_smalltit[v134x - (m_tileColumns + 1)].pnt4_28;
 			v140x = v134x - m_tileColumns;
 			v140x--;
-			//ProjectionPolygon 1: Y
+			//ProjectionVertex 1: Y
 			projectedVertexBuffer[1] = v139;
 
 			projectedVertexBuffer[4] = m_ptrStr_E9C38_smalltit[v140x].pnt5_32;
@@ -1476,27 +1476,27 @@ void GameRenderHD::SubDrawInverseTerrainAndParticles(std::vector<int>& projected
 			v147x = v133x + (m_tileColumns - 2);
 			do
 			{
-				//ProjectionPolygon 4: X
+				//ProjectionVertex 4: X
 				projectedVertexBuffer[18] = m_ptrStr_E9C38_smalltit[v147x].pnt3_24;
-				//ProjectionPolygon 4: Y
+				//ProjectionVertex 4: Y
 				projectedVertexBuffer[19] = m_ptrStr_E9C38_smalltit[v147x].pnt4_28;
 
 				projectedVertexBuffer[22] = m_ptrStr_E9C38_smalltit[v147x].pnt5_32;
 				v148 = m_ptrStr_E9C38_smalltit[v147x].triangleFeatures_38;
 
-				//ProjectionPolygon 3: X
+				//ProjectionVertex 3: X
 				projectedVertexBuffer[12] = m_ptrStr_E9C38_smalltit[v147x + 1].pnt3_24;
-				//ProjectionPolygon 3: Y
+				//ProjectionVertex 3: Y
 				projectedVertexBuffer[13] = m_ptrStr_E9C38_smalltit[v147x + 1].pnt4_28;
 
 				projectedVertexBuffer[16] = m_ptrStr_E9C38_smalltit[v147x + 1].pnt5_32;
 				v149 = m_ptrStr_E9C38_smalltit[v147x + 1].triangleFeatures_38 | v148;
 
-				//ProjectionPolygon 2: X
+				//ProjectionVertex 2: X
 				projectedVertexBuffer[6] = m_ptrStr_E9C38_smalltit[v147x - (m_tileColumns - 1)].pnt3_24;
 				v150 = m_ptrStr_E9C38_smalltit[v147x - (m_tileColumns - 1)].pnt4_28;
 				v151x = v147x + 1;
-				//ProjectionPolygon 2: Y
+				//ProjectionVertex 2: Y
 				projectedVertexBuffer[7] = v150;
 				v152 = m_ptrStr_E9C38_smalltit[v151x - m_tileColumns].pnt5_32;
 
@@ -1504,11 +1504,11 @@ void GameRenderHD::SubDrawInverseTerrainAndParticles(std::vector<int>& projected
 				projectedVertexBuffer[10] = v152;
 				v153 = m_ptrStr_E9C38_smalltit[v151x].triangleFeatures_38;
 
-				//ProjectionPolygon 1: X
+				//ProjectionVertex 1: X
 				projectedVertexBuffer[0] = m_ptrStr_E9C38_smalltit[v151x - 1].pnt3_24;
 				v154 = m_ptrStr_E9C38_smalltit[v151x - 1].pnt4_28;
 				v151x--;
-				//ProjectionPolygon 1: Y
+				//ProjectionVertex 1: Y
 				projectedVertexBuffer[1] = v154;
 
 				projectedVertexBuffer[4] = m_ptrStr_E9C38_smalltit[v151x].pnt5_32;
@@ -2951,10 +2951,10 @@ void GameRenderHD::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int in
 	x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses.at(m_ptrStr_E9C38_smalltit[index].textIndex_41);
 
 	//Render
-	auto vertex0 = ProjectionPolygon(&vertexs[0]);
-	auto vertex6 = ProjectionPolygon(&vertexs[6]);
-	auto vertex12 = ProjectionPolygon(&vertexs[12]);
-	auto vertex18 = ProjectionPolygon(&vertexs[18]);
+	auto vertex0 = ProjectionVertex(&vertexs[0]);
+	auto vertex6 = ProjectionVertex(&vertexs[6]);
+	auto vertex12 = ProjectionVertex(&vertexs[12]);
+	auto vertex18 = ProjectionVertex(&vertexs[18]);
 
 	uint8_t drawEveryNthLine = m_renderThreads.size() + 1;
 
@@ -3015,7 +3015,7 @@ void GameRenderHD::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int in
 	}
 }
 
-bool GameRenderHD::CheckIfThreadRenderTriangle(ProjectionPolygon v1, ProjectionPolygon v2, ProjectionPolygon v3, ProjectionPolygon v4)
+bool GameRenderHD::CheckIfThreadRenderTriangle(ProjectionVertex v1, ProjectionVertex v2, ProjectionVertex v3, ProjectionVertex v4)
 {
 	double triArea1 = std::abs(v4.X * (v3.Y - v1.Y) + v3.X * (v1.Y - v4.Y) + v1.X * (v4.Y - v3.Y)) / 2.0;
 	double triArea2 = std::abs(v2.X * (v3.Y - v1.Y) + v3.X * (v1.Y - v2.Y) + v1.X * (v2.Y - v3.Y)) / 2.0;
@@ -3030,7 +3030,7 @@ bool GameRenderHD::CheckIfThreadRenderTriangle(ProjectionPolygon v1, ProjectionP
 	return skipThread;
 }
 
-bool GameRenderHD::CheckViewPortCull(ProjectionPolygon v1, ProjectionPolygon v2, ProjectionPolygon v3, int maxCoordinate, int minCoordinate)
+bool GameRenderHD::CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, ProjectionVertex v3, int maxCoordinate, int minCoordinate)
 {
 	if ((((int64_t)v1.X << 16) > maxCoordinate) || (((int64_t)v1.Y << 16) > maxCoordinate) || (((int64_t)v2.X << 16) > maxCoordinate) ||
 		(((int64_t)v2.Y << 16) > maxCoordinate) || (((int64_t)v3.X << 16) > maxCoordinate) || (((int64_t)v3.Y << 16) > maxCoordinate))
@@ -3067,10 +3067,10 @@ void GameRenderHD::DrawInverseSquareInProjectionSpace(int* vertexs, int index, u
 	x_DWORD_DE55C_ActTexture = pTexture;
 
 	//Render
-	auto vertex0 = ProjectionPolygon(&vertexs[0]);
-	auto vertex6 = ProjectionPolygon(&vertexs[6]);
-	auto vertex12 = ProjectionPolygon(&vertexs[12]);
-	auto vertex18 = ProjectionPolygon(&vertexs[18]);
+	auto vertex0 = ProjectionVertex(&vertexs[0]);
+	auto vertex6 = ProjectionVertex(&vertexs[6]);
+	auto vertex12 = ProjectionVertex(&vertexs[12]);
+	auto vertex18 = ProjectionVertex(&vertexs[18]);
 
 	//Logger->debug("Idx: {} {}", index, vertex0.Print());
 	//Logger->debug("Idx: {} {}", index, vertex6.Print());
@@ -5441,7 +5441,7 @@ void GameRenderHD::DrawSprite_41BD3(uint32 a1)
 	}
 }
 
-void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* vertex1, const ProjectionPolygon* vertex2, const ProjectionPolygon* vertex3, uint8_t startLine, uint8_t drawEveryNthLine)
+void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionVertex* vertex1, const ProjectionVertex* vertex2, const ProjectionVertex* vertex3, uint8_t startLine, uint8_t drawEveryNthLine)
 {
 	uint8_t line1 = startLine;
 	uint8_t line2 = startLine;
@@ -5469,9 +5469,9 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* 
 	uint8_t line24 = startLine;
 	uint8_t line25 = startLine;
 
-	const ProjectionPolygon* v3; // esi
-	const ProjectionPolygon* v4; // edi
-	const ProjectionPolygon* v5; // ecx
+	const ProjectionVertex* v3; // esi
+	const ProjectionVertex* v4; // edi
+	const ProjectionVertex* v5; // ecx
 	int y1; // eax
 	int y2; // ebx
 	int y3; // edx
