@@ -37581,7 +37581,8 @@ void PlayerEvents_51BB0()//232bb0
 			static bool linkDropped = false;
 			if (!linkDropped) {
 				linkDropped = true;
-				debug_net_printf("AUTOTEST: dropping the network link now\n");
+				if (CommandLineParams.DoNetworkDebug())
+					debug_net_printf("AUTOTEST: dropping the network link now\n");
 				EndMyNetLib();
 			}
 		}
@@ -37589,7 +37590,8 @@ void PlayerEvents_51BB0()//232bb0
 			static bool leftGame = false;
 			if (!leftGame) {
 				leftGame = true;
-				debug_net_printf("AUTOTEST: leaving the game now\n");
+				if (CommandLineParams.DoNetworkDebug())
+					debug_net_printf("AUTOTEST: leaving the game now\n");
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;
 			}
 		}
@@ -37615,14 +37617,16 @@ void PlayerEvents_51BB0()//232bb0
 		{
 			if (g_autotest_match + 1 < CommandLineParams.AutoTestMatches())
 			{
-				debug_net_printf("AUTOTEST: match %d over, returning to the menu for match %d\n",
-					g_autotest_match, g_autotest_match + 1);
+				if (CommandLineParams.DoNetworkDebug())
+					debug_net_printf("AUTOTEST: match %d over, returning to the menu for match %d\n",
+						g_autotest_match, g_autotest_match + 1);
 				g_autotest_match++;
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 8;
 			}
 			else
 			{
-				debug_net_printf("AUTOTEST: last match (%d) over, leaving\n", g_autotest_match);
+				if (CommandLineParams.DoNetworkDebug())
+					debug_net_printf("AUTOTEST: last match (%d) over, leaving\n", g_autotest_match);
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;
 			}
 		}

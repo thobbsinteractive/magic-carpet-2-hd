@@ -454,8 +454,9 @@ namespace NetFaults {
 		s_stallEvery = stallEvery;
 		s_configured = (delayMs > 0 || jitterMs > 0 || (stallMs > 0 && stallEvery > 0));
 		if (s_configured)
-			debug_net_printf("NETFAULT: delay=%dms jitter=%dms stall=%dms every %d messages\n",
-				delayMs, jitterMs, stallMs, stallEvery);
+			if (m_network_debug)
+				debug_net_printf("NETFAULT: delay=%dms jitter=%dms stall=%dms every %d messages\n",
+					delayMs, jitterMs, stallMs, stallEvery);
 	}
 
 	bool Enabled() { return s_configured; }
@@ -484,7 +485,8 @@ namespace NetFaults {
 			if (++counter >= s_stallEvery) {
 				counter = 0;
 				ms += s_stallMs;
-				debug_net_printf("NETFAULT: stalling a message by %dms (retransmit-like)\n", s_stallMs);
+				if (m_network_debug)
+					debug_net_printf("NETFAULT: stalling a message by %dms (retransmit-like)\n", s_stallMs);
 			}
 		}
 		return ms;
@@ -615,14 +617,16 @@ bool AddListenName2(const shadow_myNCB* c)
 	// the outside.
 	TypeIpPort id1 = GetIpPortFromName(c->ncb_callName_10);
 	if (id1.adress == "x999") {
-		debug_net_printf("CALLREJ: no address for the listener [%.16s] (caller [%.16s])\n",
-			c->ncb_callName_10, c->ncb_name_26);
+		if (m_network_debug)
+			debug_net_printf("CALLREJ: no address for the listener [%.16s] (caller [%.16s])\n",
+				c->ncb_callName_10, c->ncb_name_26);
 		return false;
 	}
 	TypeIpPort id2 = GetIpPortFromName(c->ncb_name_26);
 	if (id2.adress == "x999") {
-		debug_net_printf("CALLREJ: no address for the caller [%.16s] (listener [%.16s])\n",
-			c->ncb_name_26, c->ncb_callName_10);
+		if (m_network_debug)
+			debug_net_printf("CALLREJ: no address for the caller [%.16s] (listener [%.16s])\n",
+				c->ncb_name_26, c->ncb_callName_10);
 		return false;
 	}
 	int idx = GetNameListenIndex(c->ncb_name_26);
@@ -632,8 +636,9 @@ bool AddListenName2(const shadow_myNCB* c)
 			armed += "[" + TrimName(ListenName[i].c_str(), (int)ListenName[i].size()) + "->"
 				+ TrimName(ListenName2[i].c_str(), (int)ListenName2[i].size()) + "] ";
 		}
-		debug_net_printf("CALLREJ: nobody is listening for [%.16s]; armed listens: %s\n",
-			c->ncb_name_26, armed.empty() ? "none" : armed.c_str());
+		if (m_network_debug)
+			debug_net_printf("CALLREJ: nobody is listening for [%.16s]; armed listens: %s\n",
+				c->ncb_name_26, armed.empty() ? "none" : armed.c_str());
 		return false;
 	}
 	clientListenID[idx] = id1;
@@ -891,10 +896,12 @@ static bool StartPeerListen(int& port)
 	a.sin_addr.s_addr = INADDR_ANY;
 	if (::bind(peerListenSock, (sockaddr*)&a, sizeof(a)) != 0) {
 		int e = sock_errno();
-		debug_net_printf("PeerListen: data port %d unavailable (err=%d) - taking an OS-assigned port instead\n", port, e);
+		if (m_network_debug)
+			debug_net_printf("PeerListen: data port %d unavailable (err=%d) - taking an OS-assigned port instead\n", port, e);
 		sockaddr_in any{}; any.sin_family = AF_INET; any.sin_port = 0; any.sin_addr.s_addr = INADDR_ANY;
 		if (::bind(peerListenSock, (sockaddr*)&any, sizeof(any)) != 0) {
-			debug_net_printf("PeerListen: FATAL - no data port could be bound (err=%d)\n", sock_errno());
+			if (m_network_debug)
+				debug_net_printf("PeerListen: FATAL - no data port could be bound (err=%d)\n", sock_errno());
 			CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
 		}
 		sockaddr_in got{}; socklen_t gl = sizeof(got);
@@ -902,7 +909,8 @@ static bool StartPeerListen(int& port)
 			CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
 		}
 		port = ntohs(got.sin_port);
-		debug_net_printf("PeerListen: using data port %d\n", port);
+		if (m_network_debug)
+			debug_net_printf("PeerListen: using data port %d\n", port);
 	}
 	else if (port == 0) {
 		// Caller asked the OS to choose; report back what we actually got, because this
@@ -912,7 +920,8 @@ static bool StartPeerListen(int& port)
 			CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
 		}
 		port = ntohs(got.sin_port);
-		debug_net_printf("PeerListen: using data port %d\n", port);
+		if (m_network_debug)
+			debug_net_printf("PeerListen: using data port %d\n", port);
 	}
 	listen(peerListenSock, 8);
 	if (m_network_debug)
@@ -1167,8 +1176,9 @@ namespace MyNetworkLib {
 			else {
 				// Always report this: hosting is impossible and every later symptom
 				// (clients looping on "server disconnected") follows from it.
-				debug_net_printf("NetworkClass: FATAL - cannot listen on control port %d (err=%d); "
-					"another program or game instance already uses it\n", clServerPort, sock_errno());
+				if (m_network_debug)
+					debug_net_printf("NetworkClass: FATAL - cannot listen on control port %d (err=%d); "
+						"another program or game instance already uses it\n", clServerPort, sock_errno());
 				CLOSE_SOCKET(ctrlListenSock); ctrlListenSock = SOCK_INVALID;
 			}
 		}
@@ -1180,8 +1190,9 @@ namespace MyNetworkLib {
 		if (!clIam_server && clPort == clServerPort &&
 			(clHost.compare(0, 4, "127.") == 0 || clHost == "localhost" || clHost == "::1"))
 		{
-			debug_net_printf("NetworkClass: data port %d is the local server's control port - "
-				"taking an OS-assigned data port instead\n", clPort);
+			if (m_network_debug)
+				debug_net_printf("NetworkClass: data port %d is the local server's control port - "
+					"taking an OS-assigned data port instead\n", clPort);
 			clPort = 0; // ask the OS; StartPeerListen reports what we actually got
 		}
 
@@ -1195,7 +1206,8 @@ namespace MyNetworkLib {
 				debug_net_printf("NetworkClass: one port %d for control and data\n", clPort);
 		}
 		else if (!StartPeerListen(clPort))
-			debug_net_printf("NetworkClass: FATAL - no data port available; peers cannot connect\n");
+			if (m_network_debug)
+				debug_net_printf("NetworkClass: FATAL - no data port available; peers cannot connect\n");
 	}
 
 	NetworkClass::~NetworkClass()
@@ -1377,8 +1389,9 @@ namespace MyNetworkLib {
 				static clock_t lastWhy = 0;
 				if (lastWhy == 0 || (long)((clock() - lastWhy) * 1000 / CLOCKS_PER_SEC) >= 1000) {
 					lastWhy = clock();
-					debug_net_printf("AcceptPeer: nobody listening for caller [%s] yet, connection parked\n",
-						callerName.c_str());
+					if (m_network_debug)
+						debug_net_printf("AcceptPeer: nobody listening for caller [%s] yet, connection parked\n",
+							callerName.c_str());
 				}
 			}
 			return false;
@@ -1517,7 +1530,8 @@ namespace MyNetworkLib {
 				snprintf(b, sizeof(b), "%s@%s:%d ", e.name, e.ip, e.port);
 				list += b;
 			}
-			debug_net_printf("ROSTER: %d member(s) sent: %s\n", (int)entries.size(), list.c_str());
+			if (m_network_debug)
+				debug_net_printf("ROSTER: %d member(s) sent: %s\n", (int)entries.size(), list.c_str());
 		}
 	}
 
@@ -1550,8 +1564,9 @@ namespace MyNetworkLib {
 			if (ok && cc.lastRx != 0) {
 				const long silence = MsSince(cc.lastRx);
 				if (silence >= HEARTBEAT_TIMEOUT_MS) {
-					debug_net_printf("PollCtrlClients: client %s:%d silent for %ld ms - dropping it\n",
-						cc.addr.c_str(), cc.port, silence);
+					if (m_network_debug)
+						debug_net_printf("PollCtrlClients: client %s:%d silent for %ld ms - dropping it\n",
+							cc.addr.c_str(), cc.port, silence);
 					ok = false;
 				}
 				else if (silence >= HEARTBEAT_PROBE_MS && MsSince(cc.lastProbe) >= HEARTBEAT_PROBE_MS) {
@@ -1595,7 +1610,8 @@ namespace MyNetworkLib {
 			roster = knownRoster;
 		}
 		if (roster.empty()) {
-			debug_net_printf("TAKEOVER: server lost, but no membership is known - staying put\n");
+			if (m_network_debug)
+				debug_net_printf("TAKEOVER: server lost, but no membership is known - staying put\n");
 			return;
 		}
 
@@ -1611,15 +1627,17 @@ namespace MyNetworkLib {
 			break;
 		}
 		if (!successor) {
-			debug_net_printf("TAKEOVER: server [%s] lost and nobody else is left\n", deadName.c_str());
+			if (m_network_debug)
+				debug_net_printf("TAKEOVER: server [%s] lost and nobody else is left\n", deadName.c_str());
 			return;
 		}
 
 		if (!myNetName.empty() && myNetName == successor->name) {
 			// Our turn.  We already listen on our own port - the control and data ports are
 			// one - so there is nothing to open, only a table to seed and a role to assume.
-			debug_net_printf("TAKEOVER: server [%s] is gone, [%s] takes over on %s:%d\n",
-				deadName.c_str(), successor->name, successor->ip, successor->port);
+			if (m_network_debug)
+				debug_net_printf("TAKEOVER: server [%s] is gone, [%s] takes over on %s:%d\n",
+					deadName.c_str(), successor->name, successor->ip, successor->port);
 
 			NetworkName.clear();
 			clientIpPort.clear();
@@ -1644,8 +1662,9 @@ namespace MyNetworkLib {
 			BroadcastRoster();
 		}
 		else {
-			debug_net_printf("TAKEOVER: server [%s] is gone, following [%s] to %s:%d\n",
-				deadName.c_str(), successor->name, successor->ip, successor->port);
+			if (m_network_debug)
+				debug_net_printf("TAKEOVER: server [%s] is gone, following [%s] to %s:%d\n",
+					deadName.c_str(), successor->name, successor->ip, successor->port);
 			clHost = successor->ip;
 			clServerPort = successor->port;
 			// ConnectToServer() picks this up on the next tick; until it answers we keep
@@ -1686,7 +1705,8 @@ namespace MyNetworkLib {
 		if (ok && ctrlLastRx != 0) {
 			const long silence = MsSince(ctrlLastRx);
 			if (silence >= HEARTBEAT_TIMEOUT_MS) {
-				debug_net_printf("PollCtrlSocket: server silent for %ld ms - treating it as gone\n", silence);
+				if (m_network_debug)
+					debug_net_printf("PollCtrlSocket: server silent for %ld ms - treating it as gone\n", silence);
 				ok = false;
 			}
 			else if (silence >= HEARTBEAT_PROBE_MS && MsSince(ctrlLastProbe) >= HEARTBEAT_PROBE_MS) {
@@ -1787,8 +1807,9 @@ namespace MyNetworkLib {
 						static int s_backlogReports = 0;
 						if (s_backlogReports < 10) {
 							s_backlogReports++;
-							debug_net_printf("PollSessions: NOTE data queue depth %zu for peer %s:%d - "
-								"receives now run one turn behind\n", depth, sess->peerAddr.c_str(), sess->peerPort);
+							if (m_network_debug)
+								debug_net_printf("PollSessions: NOTE data queue depth %zu for peer %s:%d - "
+									"receives now run one turn behind\n", depth, sess->peerAddr.c_str(), sess->peerPort);
 						}
 					}
 				}
@@ -2059,7 +2080,8 @@ namespace MyNetworkLib {
 					snprintf(b, sizeof(b), "%s@%s:%d ", e.name, e.ip, e.port);
 					list += b;
 				}
-				debug_net_printf("ROSTER: %d member(s) received: %s\n", (int)entries.size(), list.c_str());
+				if (m_network_debug)
+					debug_net_printf("ROSTER: %d member(s) received: %s\n", (int)entries.size(), list.c_str());
 			}
 			return;
 		}

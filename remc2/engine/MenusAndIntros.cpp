@@ -5368,8 +5368,8 @@ char MultiplayerMenu_7DE80(type_menuButtons_E1F84* a2x)//25ee80
 			// what is on screen matches what was joined.
 			const uint8_t autoSession = 0;
 			x_BYTE_E29DF_skip_screen = (char)autoSession;
-			debug_net_printf("AUTOTEST: confirming session %d (match %d)\n",
-				(int)autoSession, g_autotest_match);
+			if (CommandLineParams.DoNetworkDebug())
+				debug_net_printf("AUTOTEST: confirming session %d (match %d)\n", (int)autoSession, g_autotest_match);
 			x_WORD_E131A = 0;
 			x_DWORD_17DE38str.networkSession_17DEFA = autoSession;
 			ResetMouse_7B5A0();
@@ -5852,7 +5852,8 @@ char sub_77680()//258680
 					int me = x_DWORD_17DE38str.serverIndex_17DEFC;
 					x_DWORD_17DE38str.array_BYTE_17DE68x[me].action_9 = 5;
 					x_DWORD_17DE38str.array_BYTE_17DE68x[me].makeUpdate_0 = 1;
-					debug_net_printf("AUTOTEST: host starts the level (match %d)\n", g_autotest_match);
+					if (CommandLineParams.DoNetworkDebug())
+						debug_net_printf("AUTOTEST: host starts the level (match %d)\n", g_autotest_match);
 				}
 			}
 			if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 59)
@@ -5923,7 +5924,8 @@ bool DrawAndServe_7B250()//25c250
 		if (autoNetworkPickedFor != g_autotest_match) {
 			autoNetworkPickedFor = g_autotest_match;
 			mainMenuButtons_E1BAC[2].selected_8 = 1;
-			debug_net_printf("AUTOTEST: entering network game (match %d)\n", g_autotest_match);
+			if (CommandLineParams.DoNetworkDebug())
+				debug_net_printf("AUTOTEST: entering network game (match %d)\n", g_autotest_match);
 		}
 	}
 
