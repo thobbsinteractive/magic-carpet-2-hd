@@ -5351,10 +5351,27 @@ char MultiplayerMenu_7DE80(type_menuButtons_E1F84* a2x)//25ee80
 		static int autoSessionConfirmedFor = -1;
 		if (autoSessionConfirmedFor != g_autotest_match) {
 			autoSessionConfirmedFor = g_autotest_match;
+			// A fixed number, not whatever the dialog happens to be showing.
+			//
+			// It used to take x_BYTE_E29DF_skip_screen, which is not a session number at all:
+			// MenusAndIntros.cpp:585 copies it from x_BYTE_D41AD_skip_screen, the intro-skip
+			// flag, so it holds 0 or 1 depending on how the intros happened to be got rid of.
+			// While every instance ended up with the same value that was merely untidy - they
+			// all joined session 1 and the tests passed.  Measured when it stopped agreeing:
+			// the host confirmed session 0 and the client session 1, so they were in different
+			// sessions, neither ever appeared in the other's player list, no CALL was made, and
+			// both sat in the lobby to the end of the run reporting "myIdx=0".  Every scenario
+			// failed with 0 exchanges and nothing in the transport was wrong.
+			//
+			// Nothing here depends on WHICH session is used, only on all instances naming the
+			// same one, so it is pinned.  Also written back to the byte the dialog prints, so
+			// what is on screen matches what was joined.
+			const uint8_t autoSession = 0;
+			x_BYTE_E29DF_skip_screen = (char)autoSession;
 			debug_net_printf("AUTOTEST: confirming session %d (match %d)\n",
-				(int)(unsigned __int8)x_BYTE_E29DF_skip_screen, g_autotest_match);
+				(int)autoSession, g_autotest_match);
 			x_WORD_E131A = 0;
-			x_DWORD_17DE38str.networkSession_17DEFA = (unsigned __int8)x_BYTE_E29DF_skip_screen;
+			x_DWORD_17DE38str.networkSession_17DEFA = autoSession;
 			ResetMouse_7B5A0();
 			a2x->dword_4 = sub_77680() != 0;
 			return 1;

@@ -203,6 +203,16 @@ void InitMyNetLib(bool iam_server, bool iam_client, char* ip, int networkPort, i
 // membership list yet - in which case the caller must fall back to what it knows itself.
 int NetworkRosterPlayers(const char* namePrefix, bool present[8]);
 
+// "CONNECTED TO: <ip>:<port>" / "DISCONNECTED TO: <ip>:<port>" lines, with " (self)" appended
+// when the peer is this same instance.  Each lives five seconds from the event.
+//
+// Call the count first - it is what expires the old ones - then read them by index, 0 being
+// the oldest still up.  Drawing them in that order gives what a reader expects: a new event
+// appears below the ones already there, and as they time out the rest move up.  The text is
+// copied into out, because it is written on the network thread.
+int  NetworkConnectionNoticeCount();
+bool NetworkConnectionNotice(int index, char* out, int outSize);
+
 void debug_net_printf(const char* format, ...);
 
 void timeState(bool start, const char* text);

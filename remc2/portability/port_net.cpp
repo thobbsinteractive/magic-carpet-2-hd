@@ -958,6 +958,46 @@ static std::mutex rosterMtx;
 // What this node registered itself as, so it can find its own place in that list.
 static std::string myNetName;
 
+// ---------------------------------------------------------------------------
+// Connect / disconnect notice for the game to show on screen.
+//
+// Written here on the network thread and read by the drawing code on the game thread, so the
+// text is copied out under the lock rather than handed over as a pointer into this string -
+// the receive buffers were shared that way and it cost a heap-use-after-free (see the note on
+// locUpdateNetworkSingleThread).
+//
+// A list rather than one line, because events come in bursts: everybody joins within a second
+// of each other, and when a node goes away its peers all notice at once.  Each notice carries
+// its own stamp and lives its own five seconds, so a new one appears BELOW those still up, and
+// as the older ones expire from the front the rest move up a line.  Four at a time is as many
+// as fit above the rest of the overlay; the oldest is dropped if more arrive.
+static const long   NOTICE_SHOW_MS = 5000;  // how long one notice stays on screen
+static const size_t NOTICE_MAX = 4;         // lines the display has room for
+struct ConnectionNotice {
+	std::string text;
+	clock_t     at;
+};
+static std::mutex                   noticeMtx;
+static std::deque<ConnectionNotice> notices;
+
+// The peer is this same instance.  Every node on one machine answers on the loopback address,
+// so the port is the only thing that tells them apart, and our own data port is ours.
+static bool IsSelfPeer(const std::string& addr, int port, int ourPort)
+{
+	return port == ourPort && (addr == "127.0.0.1" || addr == "::1" || addr == "localhost");
+}
+
+static void PublishConnectionNotice(bool connected, const std::string& addr, int port, bool self)
+{
+	char line[128];
+	snprintf(line, sizeof(line), "%s TO: %s:%d%s",
+		connected ? "CONNECTED" : "DISCONNECTED", addr.c_str(), port, self ? " (self)" : "");
+	std::lock_guard<std::mutex> lk(noticeMtx);
+	notices.push_back({ line, clock() });
+	while (notices.size() > NOTICE_MAX)
+		notices.pop_front();
+}
+
 // Control-channel liveness.  A closed socket is noticed at once, but a node that stops
 // answering while its socket stays open - a frozen process, a suspended machine, a route
 // that drops packets without a reset - used to hold everyone else forever: measured, a
@@ -1353,6 +1393,8 @@ namespace MyNetworkLib {
 		sess->rbuf = pc.rbuf;            // anything that arrived behind the hello
 		sess->Touch();
 		AddSession(listenNCB, sess);
+		PublishConnectionNotice(true, sess->peerAddr, sess->peerPort,
+			IsSelfPeer(sess->peerAddr, sess->peerPort, clPort));
 		// Adopting the connection IS the establishment of the session, so mark the LISTEN
 		// established here rather than waiting for MESS_SERVER_LISTEN_ACCEPT to come back
 		// and let setListen() do it.  The CALL side already does exactly this when its own
@@ -1770,6 +1812,10 @@ namespace MyNetworkLib {
 				if (m_network_debug)
 					debug_net_printf("PollSessions: peer %s:%d disconnected\n", sess->peerAddr.c_str(), sess->peerPort);
 
+				// Outside the debug test above: the notice is a feature of the game, not
+				// diagnostics, so it has to appear whether or not logging is switched on.
+				PublishConnectionNotice(false, sess->peerAddr, sess->peerPort,
+					IsSelfPeer(sess->peerAddr, sess->peerPort, clPort));
 				sess->alive = false;
 				if (sess->ownerNCB) {
 					sess->ownerNCB->ncb_retcode_1 = NRC_SCLOSED;
@@ -1784,6 +1830,10 @@ namespace MyNetworkLib {
 				if (m_network_debug)
 					debug_net_printf("PollSessions: timeout %ldms peer=%s:%d\n", silence, sess->peerAddr.c_str(), sess->peerPort);
 
+				// A peer that went silent is gone as surely as one whose socket closed - this
+				// is the path a killed or frozen node leaves by, so it announces itself too.
+				PublishConnectionNotice(false, sess->peerAddr, sess->peerPort,
+					IsSelfPeer(sess->peerAddr, sess->peerPort, clPort));
 				sess->alive = false;
 				if (sess->ownerNCB) {
 					sess->ownerNCB->ncb_retcode_1 = NRC_SCLOSED;
@@ -1839,6 +1889,8 @@ namespace MyNetworkLib {
 		sess->ownerNCB = ncb;
 		sess->Touch();
 		AddSession(ncb, sess);
+		PublishConnectionNotice(true, sess->peerAddr, sess->peerPort,
+			IsSelfPeer(sess->peerAddr, sess->peerPort, clPort));
 		// Announce what this connection is for, and say who is calling: the listener has one
 		// LISTEN armed per player and has to attach this connection to the right one.  With
 		// two players either choice happens to be correct; with three, guessing hands the
@@ -2624,6 +2676,29 @@ void printState(myNCB** connections) {
 	}
 }
 // See port_net.h for why the game layer needs this.
+// How many connect / disconnect notices are still on screen.  Drops the ones whose five
+// seconds are up, which is what makes the rest move up a line: they are drawn from this list
+// in order, so losing the front entry shifts everything below it.
+int NetworkConnectionNoticeCount()
+{
+	std::lock_guard<std::mutex> lk(noticeMtx);
+	while (!notices.empty() && MsSince(notices.front().at) >= NOTICE_SHOW_MS)
+		notices.pop_front();
+	return (int)notices.size();
+}
+
+// Notice number index, 0 being the oldest one still up and so the top line.  See the note
+// where these are published: the text is copied into the caller's buffer under the lock,
+// because the writer is the network thread and this is read from the game thread every frame.
+bool NetworkConnectionNotice(int index, char* out, int outSize)
+{
+	if (!out || outSize <= 0 || index < 0) return false;
+	std::lock_guard<std::mutex> lk(noticeMtx);
+	if ((size_t)index >= notices.size()) return false;
+	snprintf(out, outSize, "%s", notices[index].text.c_str());
+	return true;
+}
+
 int NetworkRosterPlayers(const char* namePrefix, bool present[8])
 {
 	for (int i = 0; i < 8; i++) present[i] = false;
