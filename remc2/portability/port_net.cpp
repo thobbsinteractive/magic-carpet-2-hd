@@ -889,11 +889,11 @@ static bool StartPeerListen(int& port)
 	set_nonblocking(peerListenSock);
 	sockaddr_in a{}; a.sin_family = AF_INET; a.sin_port = htons((unsigned short)port);
 	a.sin_addr.s_addr = INADDR_ANY;
-	if (bind(peerListenSock, (sockaddr*)&a, sizeof(a)) != 0) {
+	if (::bind(peerListenSock, (sockaddr*)&a, sizeof(a)) != 0) {
 		int e = sock_errno();
 		debug_net_printf("PeerListen: data port %d unavailable (err=%d) - taking an OS-assigned port instead\n", port, e);
 		sockaddr_in any{}; any.sin_family = AF_INET; any.sin_port = 0; any.sin_addr.s_addr = INADDR_ANY;
-		if (bind(peerListenSock, (sockaddr*)&any, sizeof(any)) != 0) {
+		if (::bind(peerListenSock, (sockaddr*)&any, sizeof(any)) != 0) {
 			debug_net_printf("PeerListen: FATAL - no data port could be bound (err=%d)\n", sock_errno());
 			CLOSE_SOCKET(peerListenSock); peerListenSock = SOCK_INVALID; return false;
 		}
@@ -1158,7 +1158,7 @@ namespace MyNetworkLib {
 			sockaddr_in a{}; a.sin_family = AF_INET;
 			a.sin_port = htons((unsigned short)clServerPort);
 			a.sin_addr.s_addr = INADDR_ANY;
-			if (bind(ctrlListenSock, (sockaddr*)&a, sizeof(a)) == 0) {
+			if (::bind(ctrlListenSock, (sockaddr*)&a, sizeof(a)) == 0) {
 				listen(ctrlListenSock, 16);
 				if (m_network_debug)
 					debug_net_printf("NetworkClass: ctrl listen on port %d\n", clServerPort);
