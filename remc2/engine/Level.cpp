@@ -1047,10 +1047,10 @@ void LoadSpr_47160()//228160
 	{
 		DataFileIO::LoadFileArray_84250(psxadatamsprd00dat);
 		filearray_2aa18c[filearrayindex_MSPRD00DATTAB] = { &MSPRD00TAB_BEGIN_BUFFER,&MSPRD00TAB_END_BUFFER,&MSPRD00DAT_BEGIN_BUFFER,&posistruct5 };
-		if (pre_x_DWORD_E9C3C)
-			FreeMem_83E80(pre_x_DWORD_E9C3C);
-		pre_x_DWORD_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
-		x_DWORD_E9C3C = &pre_x_DWORD_E9C3C[200000];
+		if (pre_ptrMemoryBuffer_E9C3C)
+			FreeMem_83E80(pre_ptrMemoryBuffer_E9C3C);
+		pre_ptrMemoryBuffer_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
+		ptrMemoryBuffer_E9C3C = &pre_ptrMemoryBuffer_E9C3C[200000];
 		help_VGA_type_resolution = 1;
 	}
 	else
@@ -1061,10 +1061,10 @@ void LoadSpr_47160()//228160
 			LoadFixedMenuGraphics();
 
 		filearray_2aa18c[filearrayindex_MSPRD00DATTAB] = { &HSPRD00TAB_BEGIN_BUFFER,&HSPRD00TAB_END_BUFFER,&HSPRD00DAT_BEGIN_BUFFER,&posistruct5 };
-		if (pre_x_DWORD_E9C3C)
-			FreeMem_83E80(pre_x_DWORD_E9C3C);
-		pre_x_DWORD_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
-		x_DWORD_E9C3C = &pre_x_DWORD_E9C3C[200000];
+		if (pre_ptrMemoryBuffer_E9C3C)
+			FreeMem_83E80(pre_ptrMemoryBuffer_E9C3C);
+		pre_ptrMemoryBuffer_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
+		ptrMemoryBuffer_E9C3C = &pre_ptrMemoryBuffer_E9C3C[200000];
 		CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_HFONT3DATTAB]);//2aa1d4
 		help_VGA_type_resolution = 8;
 

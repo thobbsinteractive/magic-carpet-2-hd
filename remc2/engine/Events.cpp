@@ -3136,7 +3136,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_63670_draw_minimap_a((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		DrawMapLowRes_63670((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
@@ -3149,7 +3149,7 @@ void pre_sub_4A190_0x6E8E(uint32_t adress, type_entity_0x6E8E* a1_6E8E)//pre 22b
         std::cout << "FIXME: 64bit @ function " << __FUNCTION__ << ", line " << __LINE__ << std::endl;
 		allert_error();
 #else
-		sub_63C90_draw_minimap_b((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
+		DrawMapHighRes_63C90((intptr_t)a1_6E8E, 0, 0, 0, 0, 0, 0, 0, 0);
 		allert_error();
 #endif
 		break;
