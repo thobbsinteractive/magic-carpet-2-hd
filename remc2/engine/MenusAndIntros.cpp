@@ -37,7 +37,7 @@ int8_t LoadLevelNumber_D419C = -1; // weak
 char IsPlayingCDTrack_17E09D; // weak
 
 int16_t x_WORD_17DBC4 = 0; // weak//times_17DBB8[3] 34ebc4
-uint8_t* pre_x_DWORD_E9C3C;
+uint8_t* pre_ptrMemoryBuffer_E9C3C;
 
 char x_BYTE_E1B9C[8] = { '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0' }; // idb x_WORD_E1964x[0x238+
 char x_BYTE_E1BA4[8] = { '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0' }; // idb x_WORD_E1964x[0x240+
@@ -2057,17 +2057,17 @@ void LoadAndSetGraphicsAndPalette_7AC00()//25BC00
 
 	if (!(x_WORD_180660_VGA_type_resolution & 8))
 	{
-		/*if (x_DWORD_E9C3C)
+		/*if (ptrMemoryBuffer_E9C3C)
 		{
-			sub_83E80_freemem4(x_DWORD_E9C3C);
-			x_DWORD_E9C3C = 0;
+			sub_83E80_freemem4(ptrMemoryBuffer_E9C3C);
+			ptrMemoryBuffer_E9C3C = 0;
 		}*/
 		//fix
-		if (pre_x_DWORD_E9C3C)
+		if (pre_ptrMemoryBuffer_E9C3C)
 		{
-			FreeMem_83E80(pre_x_DWORD_E9C3C);
-			pre_x_DWORD_E9C3C = 0;
-			x_DWORD_E9C3C = 0;
+			FreeMem_83E80(pre_ptrMemoryBuffer_E9C3C);
+			pre_ptrMemoryBuffer_E9C3C = 0;
+			ptrMemoryBuffer_E9C3C = 0;
 		}
 		//fix
 		sub_54600_mouse_reset();//235600 //mouse reset
@@ -2077,11 +2077,11 @@ void LoadAndSetGraphicsAndPalette_7AC00()//25BC00
 			x_WORD_E29DA_type_resolution = x_WORD_180660_VGA_type_resolution;
 			x_WORD_180660_VGA_type_resolution = 8;
 			/*
-			x_DWORD_E9C3C = (uint8_t*)sub_83CD0_malloc2(307200);
+			ptrMemoryBuffer_E9C3C = (uint8_t*)sub_83CD0_malloc2(307200);
 			*/
 			//fix
-			pre_x_DWORD_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
-			x_DWORD_E9C3C = &pre_x_DWORD_E9C3C[200000];
+			pre_ptrMemoryBuffer_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
+			ptrMemoryBuffer_E9C3C = &pre_ptrMemoryBuffer_E9C3C[200000];
 			//fix
 			CreateIndexes_6EB90(&filearray_2aa18c[filearrayindex_POINTERSDATTAB]);
 			memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
@@ -2125,11 +2125,11 @@ void sub_7ADE0(char a1)//25bde0
 	if (a1 == 1)
 	{
 		//fix
-		if (pre_x_DWORD_E9C3C)
+		if (pre_ptrMemoryBuffer_E9C3C)
 		{
-			FreeMem_83E80(pre_x_DWORD_E9C3C);
-			pre_x_DWORD_E9C3C = 0;
-			x_DWORD_E9C3C = 0;
+			FreeMem_83E80(pre_ptrMemoryBuffer_E9C3C);
+			pre_ptrMemoryBuffer_E9C3C = 0;
+			ptrMemoryBuffer_E9C3C = 0;
 		}
 		//fix
 		sub_54600_mouse_reset();//mouse reset
@@ -2137,8 +2137,8 @@ void sub_7ADE0(char a1)//25bde0
 		x_WORD_180660_VGA_type_resolution = 1;
 		x_WORD_E29DA_type_resolution = 1;
 		//fix
-		pre_x_DWORD_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
-		x_DWORD_E9C3C = &pre_x_DWORD_E9C3C[2000000];
+		pre_ptrMemoryBuffer_E9C3C = (uint8_t*)Malloc_83CD0(3000000);
+		ptrMemoryBuffer_E9C3C = &pre_ptrMemoryBuffer_E9C3C[2000000];
 		//fix
 		CreateIndexes_6EB90(&(filearray_2aa18c[filearrayindex_POINTERSDATTAB]));
 		memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);

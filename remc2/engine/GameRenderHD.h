@@ -24,7 +24,7 @@
 #include "TextureMaps.h"
 #include "defs.h"
 #include "RenderThread.h"
-#include "ProjectionPolygon.h"
+#include "ProjectionVertex.h"
 
 class GameRenderHD : public GameRenderInterface
 {
@@ -112,7 +112,7 @@ private:
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture);
 	void DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t playersColors_E88E0x[][3], int32_t x_DWORD_F5730[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth);
-	void DrawTriangleInProjectionSpace_B6253(const ProjectionPolygon* vertex1, const ProjectionPolygon* vertex2, const ProjectionPolygon* vertex3, uint8_t startLine, uint8_t drawEveryNthLine);
+	void DrawTriangleInProjectionSpace_B6253(const ProjectionVertex* vertex1, const ProjectionVertex* vertex2, const ProjectionVertex* vertex3, uint8_t startLine, uint8_t drawEveryNthLine);
 	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int s0, int s1, int* line);
 	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v4, int s0, int s1, int s4, int* line);
 	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line);
@@ -127,8 +127,8 @@ private:
 	void StopWorkerThreads();
 	void WaitForRenderFinish();
 	void BuildTileRenderStepTable(TileStepQuadrant* table, int cols);
-	bool CheckIfThreadRenderTriangle(ProjectionPolygon v1, ProjectionPolygon v2, ProjectionPolygon v3, ProjectionPolygon v4);
-	bool CheckViewPortCull(ProjectionPolygon v1, ProjectionPolygon v2, ProjectionPolygon v3, int maxCoordinate = 2147483647, int minCoordinate = -2147483647);
+	bool CheckIfThreadRenderTriangle(ProjectionVertex v1, ProjectionVertex v2, ProjectionVertex v3, ProjectionVertex v4);
+	bool CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, ProjectionVertex v3, int maxCoordinate = 2147483647, int minCoordinate = -2147483647);
 
 public:
 	GameRenderHD(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t renderThreads, bool assignToSpecificCores, float sizePercentToThreadRender = 10.0, uint8_t viewDistanceScale = 1);

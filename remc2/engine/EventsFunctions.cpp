@@ -21446,14 +21446,14 @@ void sub_2BBB0(int16_t posX, int16_t posY, bitmap_pos_struct_t a3, uint8_t scale
 	if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 	{
 		temp_screen_buffer = pdwScreenBuffer_351628;
-		pdwScreenBuffer_351628 = (uint8_t*)x_DWORD_E9C3C;
+		pdwScreenBuffer_351628 = (uint8_t*)ptrMemoryBuffer_E9C3C;
 		/*result = */ptrDrawBitmap_F01EC(posX, posY, a3, scale);
 		pdwScreenBuffer_351628 = temp_screen_buffer;
 	}
 	//return result;
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
-// E9C3C: using guessed type int x_DWORD_E9C3C;
+// E9C3C: using guessed type int ptrMemoryBuffer_E9C3C;
 // F01EC: using guessed type int (*ptrDrawBitmap_F01EC)(x_DWORD, x_DWORD, x_DWORD);
 // 180628: using guessed type int pdwScreenBuffer_351628;
 
@@ -22392,7 +22392,7 @@ void ColorizeScreen_2E790(int posX, int posY, int width, int height, uint8_t col
 	{
 		for (int indexX = locPosX; indexX < locWidth + locPosX; indexX++)
 		{
-			pdwScreenBuffer_351628[screenWidth_18062C * indexY + indexX] = x_BYTE_F6EE0_tablesx[0x4000 + 256 * color
+			pdwScreenBuffer_351628[screenWidth_18062C * indexY + indexX] = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + 256 * color
 				+ pdwScreenBuffer_351628[screenWidth_18062C * indexY + indexX]];
 		}
 	}
@@ -30641,7 +30641,7 @@ int sub_40D10()//221d10//fix vga
 	v30 = (int*)&loc_A0000_vga_buffer;
 	v28 = pdwScreenBuffer_351628;
 	v27 = 200;
-	v29 = x_DWORD_E9C3C;
+	v29 = ptrMemoryBuffer_E9C3C;
 	while (v27)
 	{
 		v2 = 10;
@@ -30826,7 +30826,7 @@ int sub_40D10()//221d10//fix vga
 	memset((void*)pdwScreenBuffer_351628, 0, 0xFA00u);
 	return result;
 }
-// E9C3C: using guessed type int x_DWORD_E9C3C;
+// E9C3C: using guessed type int ptrMemoryBuffer_E9C3C;
 // 180628: using guessed type int pdwScreenBuffer_351628;
 
 //----- (00040F80) --------------------------------------------------------
@@ -30837,7 +30837,7 @@ void BlendAndBlit_40F80()//221f80
 		const int stride = (uint16_t)iScreenWidth_DE560;
 		const int width_dwords = (uint16_t)viewPort.Width_DE564 >> 2;
 		const int half_height = (uint16_t)viewPort.Height_DE568 / 2;
-		uint8_t* scan = x_DWORD_E9C3C;
+		uint8_t* scan = ptrMemoryBuffer_E9C3C;
 		uint8_t* vp = ViewPortRenderBufferStart_DE558;
 		for (int row = half_height; row; row--) {
 			uint8_t* s = scan;
@@ -54086,7 +54086,7 @@ void sub_BD1B6(uint8_t* a1)
 	sub_9951B(0);
 	//v57 = 4096;
 	savedregs = 4096;
-	v2 = sub_BD320(0, (int8_t*)pdwScreenBuffer_351628, (int8_t*)x_DWORD_E9C3C, 0, savedregs, a1);
+	v2 = sub_BD320(0, (int8_t*)pdwScreenBuffer_351628, (int8_t*)ptrMemoryBuffer_E9C3C, 0, savedregs, a1);
 	v7 = v4;
 	v6 = v3;
 	v5 = v2;
@@ -54176,7 +54176,7 @@ void /*__spoils<ecx>*/ sub_BD2CB(uint8_t* a1)//29e2cb
 	sub_9951B(0);
 	//v9 = 4096;
 	savedregs = 4096;
-	v2 = sub_BD320(0, (int8_t*)pdwScreenBuffer_351628, (int8_t*)x_DWORD_E9C3C, 0, savedregs, a1);
+	v2 = sub_BD320(0, (int8_t*)pdwScreenBuffer_351628, (int8_t*)ptrMemoryBuffer_E9C3C, 0, savedregs, a1);
 	v7 = v4;
 	v6 = v3;
 	v5 = v2;
@@ -60660,7 +60660,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 				a1x->byte_0x46_70 = 6;
 			else
 				a1x->byte_0x46_70 = 8;
-			if (x_DWORD_E9C3C && (D41A0_0.terrain_2FECE.MapType == MapType_t::Day))
+			if (ptrMemoryBuffer_E9C3C && (D41A0_0.terrain_2FECE.MapType == MapType_t::Day))
 			{
 				StopCdPlayback_86860(x_WORD_1803EC);
 				sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/GTD2.DAT");
@@ -60764,7 +60764,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 		if (a1x->dword_0xA4_164x->playerColorIndex_0x38_56 == D41A0_0.LevelIndex_0xc)
 		{
 			PrepareEventSound_6E450(a1x - D41A0_0.struct_0x6E8E, -1, 19);
-			if (x_DWORD_E9C3C)
+			if (ptrMemoryBuffer_E9C3C)
 			{
 				//v22 = (int)x_D41A0_BYTEARRAY_0;
 				D41A0_0.str_0x21AE.xxxx_0x21B1 = 1;
@@ -60803,7 +60803,7 @@ signed int sub_5E8C0_endGameSeq(type_entity_0x6E8E* a1x)//23f8c0 //end game sequ
 }
 // D41A0: using guessed type int x_D41A0_BYTEARRAY_0;
 // D41A4: using guessed type int x_DWORD_D41A4;
-// E9C3C: using guessed type int x_DWORD_E9C3C;
+// E9C3C: using guessed type int ptrMemoryBuffer_E9C3C;
 // EA3E4: using guessed type int Entities_EA3E4[];
 // EB398: using guessed type __int16 x_WORD_EB398;
 // 1803EC: using guessed type __int16 x_WORD_1803EC;

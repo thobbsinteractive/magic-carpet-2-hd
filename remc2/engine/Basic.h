@@ -194,7 +194,10 @@ extern uint8_t keyColor1_D4B7C; // weak
 extern uint8_t keyColor2_D4B7E; // weak
 extern type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
 
-extern uint8_t x_BYTE_F6EE0_tablesx[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
+extern uint8_t ColourLookupTable_F6EE0[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites
+const uint32_t COLOUR_BLEND_LOOKUP_OFFSET = 0x4000;
+const uint32_t MAP_COLOUR_BLEND_LOOKUP_OFFSET = 0x14000;
+
 extern uint8_t* x_BYTE_F6EE0_tablesx_pre;
 extern uint8_t* x_BYTE_FAEE0_tablesx_pre;
 
@@ -459,7 +462,7 @@ extern Pathstruct xadatatables;
 #define psxazero14 47
 
 extern axis_2d x_WORD_E3760_mouse;
-extern uint8_t* x_DWORD_E9C3C; // weak
+extern uint8_t* ptrMemoryBuffer_E9C3C; // Looks like a generic buffer, used for video and sound operations
 extern type_SPELLS_BEGIN_BUFFER_str SPELLS_BEGIN_BUFFER_str[];
 
 extern int16_t x_WORD_1806EE; // weak
