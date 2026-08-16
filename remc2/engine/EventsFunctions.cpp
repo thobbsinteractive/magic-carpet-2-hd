@@ -902,9 +902,9 @@ int sub_76840();
 //int sub_7F7D0(uint8_t** a1, uint8_t** a2, uint8_t* a3, char* a4);
 //uint32_t DrawText_7FAE0(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
 //void DrawText_7FB90(char* a1, int16_t a2, int16_t a3, uint8_t a4);
-// int sub_7FCB0_draw_text_with_border(int a1, x_BYTE *a2, int a3, int a4, int a5, char a6, unsigned __int8 a7, __int16 a8);
+// int DrawTextWithBoarder_7FCB0(int a1, x_BYTE *a2, int a3, int a4, int a5, char a6, unsigned __int8 a7, __int16 a8);
 // int sub_81260(int a1, int a2, int a3, __int16 a4, __int16 a5);
-void sub_81360_draw_bitmap_line(int16_t a1, int16_t a2, int16_t a3, int16_t a4, __int16 a5);
+void DrawBitmapLine_81360(int16_t a1, int16_t a2, int16_t a3, int16_t a4, __int16 a5);
 // unsigned int sub_81CA0(int a1, int a2, __int16 a3, __int16 a4, int a5);
 void sub_82AB0(unsigned __int8 a1);
 void sub_83B50();
@@ -46715,7 +46715,7 @@ bool DrawFrameAnim_7E5A0(__int16 posx, __int16 posy, Type_MapScreenPortals_E17CC
 }
 
 //----- (0007E840) --------------------------------------------------------
-void sub_7E840_draw_textbox_with_line(typeTextBoxtextBoxStr_E24BCx* testBoxStr, __int16 borderColor, __int16 lineColor)//25f840
+void DrawTextBoxWithLine_7E840(typeTextBoxtextBoxStr_E24BCx* testBoxStr, __int16 borderColor, __int16 lineColor)//25f840
 {
 	int i = 0;
 	if (!testBoxStr[i].minx2_2)
@@ -46724,8 +46724,8 @@ void sub_7E840_draw_textbox_with_line(typeTextBoxtextBoxStr_E24BCx* testBoxStr, 
 	{
 		if (testBoxStr[i].minx2_2)
 		{
-			sub_81360_draw_bitmap_line(testBoxStr[i].minx_6, testBoxStr[i].miny_8, testBoxStr[i].maxx_12, testBoxStr[i].maxy_14, lineColor);//262360
-			sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[testBoxStr[i].textIndex_0], testBoxStr[i].minx2_2, (testBoxStr[i].minx2_2 + 180), testBoxStr[i].miny2_4, 0, 0, borderColor);//260cb0
+			DrawBitmapLine_81360(testBoxStr[i].minx_6, testBoxStr[i].miny_8, testBoxStr[i].maxx_12, testBoxStr[i].maxy_14, lineColor);//262360
+			DrawTextWithBoarder_7FCB0(x_DWORD_E9C4C_langindexbuffer[testBoxStr[i].textIndex_0], testBoxStr[i].minx2_2, (testBoxStr[i].minx2_2 + 180), testBoxStr[i].miny2_4, 0, 0, borderColor);//260cb0
 			/*
 			Save Current Game
 			Exit Game
@@ -46905,7 +46905,7 @@ int DrawMapObject_812D0(__int16 a1, __int16 a2)//2622d0
 }
 
 //----- (00081360) --------------------------------------------------------
-void sub_81360_draw_bitmap_line(int16_t minx, int16_t miny, int16_t maxx, int16_t maxy, __int16 a5)//262360
+void DrawBitmapLine_81360(int16_t minx, int16_t miny, int16_t maxx, int16_t maxy, __int16 a5)//262360
 {
 	int32_t v5; // edi
 	int32_t v6; // esi

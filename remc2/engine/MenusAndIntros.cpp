@@ -1254,7 +1254,7 @@ char LanguageSettingDialog_779E0(type_menuButtons_E1F84* a1y)//2589E0
 					}
 					memset(textBoxStr, 0, 2 * sizeof(typeTextBoxtextBoxStr_E24BCx));//26db3a
 					textBoxStr[0] = textBoxStr_E24BCx[textIndex];
-					sub_7E840_draw_textbox_with_line(textBoxStr, 83, 100);//25f840 adress 258d6a - add text?
+					DrawTextBoxWithLine_7E840(textBoxStr, 83, 100);//25f840 adress 258d6a - add text?
 				}
 				else if (codeBranch == 3)
 				{
@@ -1632,7 +1632,7 @@ char SetKeysDialog_79610()//25a610
 	temp_screen_buffer = pdwScreenBuffer_351628;
 	pdwScreenBuffer_351628 = x_DWORD_E9C38_smalltit;
 	for (int v2_int = 0; str_BYTE_E25ED_2BB[v2_int].word_0; v2_int++)
-		sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[str_BYTE_E25ED_2BB[v2_int].word_12], str_BYTE_E25ED_2BB[v2_int].word_0, v39, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
+		DrawTextWithBoarder_7FCB0(x_DWORD_E9C4C_langindexbuffer[str_BYTE_E25ED_2BB[v2_int].word_12], str_BYTE_E25ED_2BB[v2_int].word_0, v39, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
 	pdwScreenBuffer_351628 = temp_screen_buffer;
 	ResetMouse_7B5A0();
 	for (int v2_int = 0; str_BYTE_E25ED_2BB[v2_int].word_0; v2_int++)
@@ -1685,7 +1685,7 @@ char SetKeysDialog_79610()//25a610
 			if (!str_BYTE_E25ED_2BB[v14_int].word_14)
 			{
 				sub_79E10(textBuff, *keyIter);
-				sub_7FCB0_draw_text_with_border(textBuff, keyNameX, buttonAreaWidth, str_BYTE_E25ED_2BB[v14_int].word_2, 4, 0, 0);
+				DrawTextWithBoarder_7FCB0(textBuff, keyNameX, buttonAreaWidth, str_BYTE_E25ED_2BB[v14_int].word_2, 4, 0, 0);
 			}
 			keyIter++;
 			v14_int++;
@@ -1701,7 +1701,7 @@ char SetKeysDialog_79610()//25a610
 				{
 					memset(textBuff, 0, 60);
 					sub_79E10(textBuff, *keyIter2);
-					sub_7FCB0_draw_text_with_border(textBuff, keyNameX, buttonAreaWidth, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
+					DrawTextWithBoarder_7FCB0(textBuff, keyNameX, buttonAreaWidth, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
 					if (elapsedTime > 0x32)
 					{
 						str_BYTE_E25ED_2BB[v2_int].word_14 = 2;
@@ -2438,7 +2438,7 @@ signed int DrawBitmapAndPlaySound_7E320()//25f320
 							bitmap_pos_struct2_t* tempx_DWORD_17DEC4 = x_DWORD_17DE38str.x_DWORD_17DEC4;
 							xy_DWORD_17DEC0_spritestr = xy_DWORD_17DEC8_spritestr;
 							x_DWORD_17DE38str.x_DWORD_17DEC4 = x_DWORD_17DE38str.x_DWORD_17DECC;
-							sub_7E840_draw_textbox_with_line(textBoxStr, 238, 264);
+							DrawTextBoxWithLine_7E840(textBoxStr, 238, 264);
 							xy_DWORD_17DEC0_spritestr = tempSpriteStr;
 							x_DWORD_17DE38str.x_DWORD_17DEC4 = tempx_DWORD_17DEC4;
 							return 0;
@@ -2918,7 +2918,7 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 					textBoxStr[0].maxx_12 = mapScreenPortals_E17CC[index2].portalPosX_12 + 16 - posx;
 					textBoxStr[0].maxy_14 = mapScreenPortals_E17CC[index2].portalPosY_14 - 4 - posy;
 					textBoxStr[0].textIndex_0 = 464;
-					sub_7E840_draw_textbox_with_line(textBoxStr, 238, 264);
+					DrawTextBoxWithLine_7E840(textBoxStr, 238, 264);
 					if (index3 != -1)
 					{
 						if ((time - x_DWORD_17DB70str.time_17DB70) / 0x64u > 8)
@@ -2944,7 +2944,7 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 					textBoxStr[0].maxx_12 = mapScreenPortals_E17CC[index3].portalPosX_12 + 16 - posx;
 					textBoxStr[0].maxy_14 = mapScreenPortals_E17CC[index3].portalPosY_14 - 4 - posy;
 					textBoxStr[0].textIndex_0 = 465;
-					sub_7E840_draw_textbox_with_line(textBoxStr, 238, 264);
+					DrawTextBoxWithLine_7E840(textBoxStr, 238, 264);
 					if (index2 != -1)
 					{
 						if ((time - x_DWORD_17DB70str.time_17DB70) / 0x64u > 8)
@@ -3598,7 +3598,7 @@ void PresentLevelDescription_80C30(__int16 posX, __int16 posY, __int16 addWidth)
 		}
 		GetFont_6FC50(1);
 		uint8_t colorIndex = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
-		sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[23 + levelIdx_v3], posX + 4 * GetLetterWidth_6FC10(), posX + addWidth - 3 * GetLetterWidth_6FC10(), posY, 5, colorIndex, 1);
+		DrawTextWithBoarder_7FCB0(x_DWORD_E9C4C_langindexbuffer[23 + levelIdx_v3], posX + 4 * GetLetterWidth_6FC10(), posX + addWidth - 3 * GetLetterWidth_6FC10(), posY, 5, colorIndex, 1);
 		//"You must explore the outer Netherworlds while you learn its magic. Your first destination is the ancient city of Jahwl."+
 	}
 	if (x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 != 3 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40 && !IsPlayingCDTrack_17E09D)
@@ -4022,7 +4022,7 @@ void sub_82510(/*__int16 a1*//*, int *a2*/)//263510
 				//v6 += 44;
 				v6y++;
 			}
-			sub_7E840_draw_textbox_with_line(v10x, 238, 264);//draw help
+			DrawTextBoxWithLine_7E840(v10x, 238, 264);//draw help
 		}
 		else if (switchbit == 3)
 		{
@@ -4318,7 +4318,7 @@ void ShowEndCredits_833C0()//2643c0
 			if (!_stricmp(off_DB558[index3], "!"))
 				break;
 			uint8_t colorIndex = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
-			sub_7FCB0_draw_text_with_border(off_DB558[index3], 10, 620, (signed __int16)(i + 200), 5, colorIndex, 0);
+			DrawTextWithBoarder_7FCB0(off_DB558[index3], 10, 620, (signed __int16)(i + 200), 5, colorIndex, 0);
 			index1++;
 		}
 		if (!reachedEnd && (time2 - time) / 100 > 2)
@@ -5724,7 +5724,7 @@ int DrawScrollDialog2_7B660(int a1, int a2, __int16 a3, type_str_word_26* a4x, c
 	{
 		v31 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x16u, 0x10u, 9u);
 		//"Exit Game" 16a 1c6 28 1 4c//adress 25cc27
-		sub_7FCB0_draw_text_with_border(/*v30,*/ a5, a1 + 10, v30, v46, 1, v31, 0);
+		DrawTextWithBoarder_7FCB0(/*v30,*/ a5, a1 + 10, v30, v46, 1, v31, 0);
 	}
 LABEL_31:
 	if (v44)
@@ -5877,7 +5877,7 @@ char sub_77680()//258680
 					typeTextBoxtextBoxStr_E24BCx textBoxStr[2];
 					memset(textBoxStr, 0, 2 * sizeof(typeTextBoxtextBoxStr_E24BCx));
 					textBoxStr[0] = textBoxStr_E2570[textIndex];
-					sub_7E840_draw_textbox_with_line(textBoxStr, 21, 27);
+					DrawTextBoxWithLine_7E840(textBoxStr, 21, 27);
 				}
 				else if (timeState == 3)
 				{
@@ -6002,7 +6002,7 @@ bool DrawAndServe_7B250()//25c250
 		memset(textBoxStr, 0, 36);
 		textBoxStr[0] = textBoxStr_E25DC[x_WORD_17DBC4];
 		int index = 0;
-		sub_7E840_draw_textbox_with_line(textBoxStr, 80, 89);
+		DrawTextBoxWithLine_7E840(textBoxStr, 80, 89);
 		if (!mainMenuButtons_E1BAC[0].xmin_10)
 			return 0;
 		do
@@ -6039,7 +6039,7 @@ bool DrawAndServe_7B250()//25c250
 			}
 			memset(textBoxStr, 0, 36);
 			textBoxStr[0] = textBoxStr_E25DC[index2];
-			sub_7E840_draw_textbox_with_line(textBoxStr, 80, 89);
+			DrawTextBoxWithLine_7E840(textBoxStr, 80, 89);
 			int time = j___clock();
 			times_17DBB8[1] = time;
 			times_17DBB8[0] = time;

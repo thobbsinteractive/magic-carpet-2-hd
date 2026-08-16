@@ -655,7 +655,7 @@ void sub_2EBB0_draw_text_with_border_630x340(char* textString)//20fbb0
 		x_DWORD_D41D0 = textString;
 		x_WORD_E36D4 = 64;
 		pdwScreenBuffer_351628 += 0x26C0;
-		/*result = */sub_7FCB0_draw_text_with_border(/*64,*/ textString, 0, 630, 340, 5, x_BYTE_EB3B6, 0);
+		/*result = */DrawTextWithBoarder_7FCB0(/*64,*/ textString, 0, 630, 340, 5, x_BYTE_EB3B6, 0);
 		x_WORD_E36D4 = 0;
 		pdwScreenBuffer_351628 -= 0x26C0;
 	}
@@ -663,7 +663,7 @@ void sub_2EBB0_draw_text_with_border_630x340(char* textString)//20fbb0
 }
 
 //----- (0007FCB0) --------------------------------------------------------
-void sub_7FCB0_draw_text_with_border(char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8)//260cb0
+void DrawTextWithBoarder_7FCB0(char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8)//260cb0
 {
 	int v8; // esi
 	signed __int16 j; // di
@@ -1408,8 +1408,6 @@ void sub_90478_VGA_Blit320(uint8_t maxFps)//271478
 #if _DEBUG
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
 #endif
-	// Not inside the _DEBUG block above: this one is for players, not for us.
-	VGA_DrawNetworkNotice(0, 16);
 	VGA_Blit(pdwScreenBuffer_351628);
 #endif
 	//if(dos_key_vect_9)dos_key_vect_9();
@@ -1447,7 +1445,6 @@ void sub_75200_VGA_Blit640(uint16_t height, uint8_t maxFps)//256200
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
 #endif
 	// Not inside the _DEBUG block above: this one is for players, not for us.
-	VGA_DrawNetworkNotice(0, 16);
 	VGA_Blit(pdwScreenBuffer_351628);
 
 	//set speed
@@ -1463,10 +1460,8 @@ void VGA_BlitAny(uint8_t maxFps)//256200
 	std::chrono::duration<double, std::milli> timeDelta = CalculateTimeDelta();
 #if _DEBUG
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
-	VGA_DrawPlayerCoordData(0, 80);
+	VGA_DrawPlayerCoordData(0, 16);
 #endif
-	// Not inside the _DEBUG block above: this one is for players, not for us.
-	VGA_DrawNetworkNotice(0, 16);
 	VGA_Blit(pdwScreenBuffer_351628);
 
 	//set speed
@@ -1583,25 +1578,6 @@ void VGA_CalculateAndPrintFps(int x, int y, float timeDelta)
 	fpsStr.append(std::to_string(std::round(m_fFps*10)/10).substr(0,5));
 
 	VGA_Draw_stringXYtoBuffer(fpsStr.c_str(), x, y, pdwScreenBuffer_351628);
-}
-
-// The newest connect / disconnect notice from the transport, for as long as it is fresh.
-// Drawn like the FPS counter and one line below it (that one uses the 16-pixel font, so
-// row 16 is the first free one), and drawn in every build rather than only in _DEBUG:
-// knowing that somebody joined or dropped out is part of playing a network game.
-void VGA_DrawNetworkNotice(int x, int y)
-{
-	// Oldest first, one 16-pixel line each: a notice that arrives while others are still
-	// up is added below them, and as they expire from the front the rest move up.
-	const int count = NetworkConnectionNoticeCount();
-	for (int i = 0; i < count; i++)
-	{
-		char notice[128];
-		if (!NetworkConnectionNotice(i, notice, sizeof(notice)))
-			break;
-
-		VGA_Draw_stringXYtoBuffer(notice, x, y + i * 16, pdwScreenBuffer_351628);
-	}
 }
 
 void VGA_DrawPlayerCoordData(int x, int y)
