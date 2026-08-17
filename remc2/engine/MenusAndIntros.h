@@ -242,3 +242,4 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
 signed int DrawBitmapAndPlaySound_7E320();
 int GetMapMenuDialogIndex_7E320(uint32_t adress, type_menuButtons_E1F84* a1x);
 signed int sub_7E640(type_menuButtons_E1F84* a1x);
+void OnNetworkMessageReceived(std::string message);

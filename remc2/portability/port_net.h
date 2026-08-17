@@ -9,6 +9,7 @@
 #include <fstream>
 
 #include "../engine/defs.h"
+#include "../engine/EventDispatcher.h"
 #include "../portability/port_outputs.h"
 
 #include <thread>

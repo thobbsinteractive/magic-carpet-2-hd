@@ -857,6 +857,10 @@ void MainMenu_76FA0()//257fa0
 		int16_t tempMousePosX = x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx;
 		int16_t tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
 		int scanCode = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
+
+		std::function<void(std::string)> resCallBack = OnNetworkMessageReceived;
+		EventDispatcher::I->RegisterEvent(new Event<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, resCallBack));
+
 		while (!m_ExitMenuLoop_E29DC)
 		{
 			g_state_monitor.Update();
@@ -930,6 +934,9 @@ void MainMenu_76FA0()//257fa0
 			}
 			sub_7A060_get_mouse_and_keyboard_events();
 		}
+
+		EventDispatcher::I->UnregisterEvent<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, OnNetworkMessageReceived);
+
 		ClearPauseMenuState_41BC0();
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
 		sub_753D0();
@@ -941,6 +948,11 @@ void MainMenu_76FA0()//257fa0
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
 		sub_753D0();
 	}
+}
+
+void OnNetworkMessageReceived(std::string message)
+{
+	DrawTextBox(message, 160, 360, 50, 80);
 }
 
 //----- (00077350) --------------------------------------------------------
@@ -2427,7 +2439,7 @@ signed int DrawBitmapAndPlaySound_7E320()//25f320
 					if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1)
 						return 0;
 					int index2 = 0;
-					if (!textBoxStr_E2516[index2].minx2_2)
+					if (!textBoxStr_E2516[index2].left_2)
 						return 0;
 					do //adress 25f4e7
 					{
@@ -2444,7 +2456,7 @@ signed int DrawBitmapAndPlaySound_7E320()//25f320
 							return 0;
 						}
 						index2++;
-					} while (textBoxStr_E2516[index2].minx2_2);
+					} while (textBoxStr_E2516[index2].left_2);
 					return 0;
 				}
 			}
@@ -2911,11 +2923,11 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 				{
 					memset(textBoxStr, 0, 36);
 					textBoxStr[0] = textBoxStr_E24F2[0];
-					textBoxStr[0].minx2_2 = mapScreenPortals_E17CC[index2].portalPosX_12 - 80 - posx;
-					textBoxStr[0].miny2_4 = mapScreenPortals_E17CC[index2].portalPosY_14 - 60 - posy;
+					textBoxStr[0].left_2 = mapScreenPortals_E17CC[index2].portalPosX_12 - 80 - posx;
+					textBoxStr[0].top_4 = mapScreenPortals_E17CC[index2].portalPosY_14 - 60 - posy;
 					textBoxStr[0].minx_6 = mapScreenPortals_E17CC[index2].portalPosX_12 + 16 - posx;
 					textBoxStr[0].miny_8 = mapScreenPortals_E17CC[index2].portalPosY_14 - 60 - posy;
-					textBoxStr[0].maxx_12 = mapScreenPortals_E17CC[index2].portalPosX_12 + 16 - posx;
+					textBoxStr[0].width_12 = mapScreenPortals_E17CC[index2].portalPosX_12 + 16 - posx;
 					textBoxStr[0].maxy_14 = mapScreenPortals_E17CC[index2].portalPosY_14 - 4 - posy;
 					textBoxStr[0].textIndex_0 = 464;
 					DrawTextBoxWithLine_7E840(textBoxStr, 238, 264);
@@ -2937,11 +2949,11 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 				if (x_DWORD_17DB70str.x_BYTE_17DB8F == 3)
 				{
 					memset(textBoxStr, 0, 36);
-					textBoxStr[0].minx2_2 = mapScreenPortals_E17CC[index3].portalPosX_12 - 80 - posx;
-					textBoxStr[0].miny2_4 = mapScreenPortals_E17CC[index3].portalPosY_14 - 60 - posy;
+					textBoxStr[0].left_2 = mapScreenPortals_E17CC[index3].portalPosX_12 - 80 - posx;
+					textBoxStr[0].top_4 = mapScreenPortals_E17CC[index3].portalPosY_14 - 60 - posy;
 					textBoxStr[0].minx_6 = mapScreenPortals_E17CC[index3].portalPosX_12 + 16 - posx;
 					textBoxStr[0].miny_8 = mapScreenPortals_E17CC[index3].portalPosY_14 - 60 - posy;
-					textBoxStr[0].maxx_12 = mapScreenPortals_E17CC[index3].portalPosX_12 + 16 - posx;
+					textBoxStr[0].width_12 = mapScreenPortals_E17CC[index3].portalPosX_12 + 16 - posx;
 					textBoxStr[0].maxy_14 = mapScreenPortals_E17CC[index3].portalPosY_14 - 4 - posy;
 					textBoxStr[0].textIndex_0 = 465;
 					DrawTextBoxWithLine_7E840(textBoxStr, 238, 264);
@@ -4000,7 +4012,7 @@ void sub_82510(/*__int16 a1*//*, int *a2*/)//263510
 				v4 = unk_17DBA8str.unk_17DBB4 + 1;
 				unk_17DBA8str.unk_17DBB4 = v4;
 				//if (!unk_E2516[9 * v4 + 1])
-				if (!textBoxStr_E2516[v4].minx2_2)
+				if (!textBoxStr_E2516[v4].left_2)
 					unk_17DBA8str.unk_17DBB4 = 0;
 				unk_17DBA8str.unk_17DBA8 = unk_17DBA8str.unk_17DBAC;//a2[0] = a2[1];
 			}
@@ -5870,7 +5882,7 @@ char sub_77680()//258680
 					if ((time - oldTimes[0]) / 0x64u > 1)
 					{
 						textIndex++;
-						if (!textBoxStr_E2570[textIndex].minx2_2)
+						if (!textBoxStr_E2570[textIndex].left_2)
 							textIndex = 0;
 						oldTimes[0] = time;
 					}
@@ -5995,7 +6007,7 @@ bool DrawAndServe_7B250()//25c250
 		if ((times_17DBB8[1] - times_17DBB8[0]) / 0x64u > 1)
 		{
 			x_WORD_17DBC4++;
-			if (!textBoxStr_E25DC[x_WORD_17DBC4].minx2_2)
+			if (!textBoxStr_E25DC[x_WORD_17DBC4].left_2)
 				x_WORD_17DBC4 = 0;
 			times_17DBB8[0] = times_17DBB8[1];
 		}
@@ -6029,12 +6041,12 @@ bool DrawAndServe_7B250()//25c250
 			return 0;
 		}
 		int index2 = 0;
-		if (textBoxStr_E25DC[index2].minx2_2)
+		if (textBoxStr_E25DC[index2].left_2)
 		{
 			while (textBoxStr_E25DC[index2].byte_17 != mainMenuButtons_E1BAC[jx].byte_22)
 			{
 				index2++;
-				if (!textBoxStr_E25DC[index2].minx2_2)
+				if (!textBoxStr_E25DC[index2].left_2)
 					return 0;
 			}
 			memset(textBoxStr, 0, 36);

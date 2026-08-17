@@ -1005,6 +1005,8 @@ static void PublishConnectionNotice(bool connected, const std::string& addr, int
 	notices.push_back({ line, clock() });
 	while (notices.size() > NOTICE_MAX)
 		notices.pop_front();
+
+	EventDispatcher::I->DispatchEvent(EventType::E_SHOW_NETWORK_MESSAGE, std::string(line));
 }
 
 // Control-channel liveness.  A closed socket is noticed at once, but a node that stops

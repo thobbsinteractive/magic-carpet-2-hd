@@ -270,7 +270,7 @@ void convert_struct_to_array_0x2BDE(type_str_0x2BDE* input, uint8_t* output) {
 	//char CurrentNotificationText_0x01c_2BFA_11258[49];//28//11258 - byte* jmeno2?
 	memcpy(output + 0x1c, input->CurrentNotificationText_0x01c_2BFA_11258, 49);
 	//uint16_t word_0x04d_2C2B_11307;//77 //11307 - word
-	memcpy(output + 0x4d, &input->word_0x04d_2C2B_11307, 2);
+	memcpy(output + 0x4d, &input->CurrentNotificationDuration_0x04d_2C2B_11307, 2);
 	//uint16_t word_0x04f_2C2D_11309;//79 //11309 - word
 	memcpy(output + 0x4f, &input->word_0x04f_2C2D_11309, 2);
 	//char names_81[8][48];//81 ?8
