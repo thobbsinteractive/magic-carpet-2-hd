@@ -1,6 +1,7 @@
 #include "Basic.h"
 #include "engine_support.h"
 #include "CommandLineParser.h"
+#include "../portability/port_net.h"
 
 std::string gameDataPath;
 std::string cdDataPath;
@@ -654,7 +655,7 @@ void sub_2EBB0_draw_text_with_border_630x340(char* textString)//20fbb0
 		x_DWORD_D41D0 = textString;
 		x_WORD_E36D4 = 64;
 		pdwScreenBuffer_351628 += 0x26C0;
-		/*result = */sub_7FCB0_draw_text_with_border(/*64,*/ textString, 0, 630, 340, 5, x_BYTE_EB3B6, 0);
+		/*result = */DrawTextWithBoarder_7FCB0(/*64,*/ textString, 0, 630, 340, 5, x_BYTE_EB3B6, 0);
 		x_WORD_E36D4 = 0;
 		pdwScreenBuffer_351628 -= 0x26C0;
 	}
@@ -662,7 +663,7 @@ void sub_2EBB0_draw_text_with_border_630x340(char* textString)//20fbb0
 }
 
 //----- (0007FCB0) --------------------------------------------------------
-void sub_7FCB0_draw_text_with_border(char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8)//260cb0
+void DrawTextWithBoarder_7FCB0(char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8)//260cb0
 {
 	int v8; // esi
 	signed __int16 j; // di
@@ -1443,6 +1444,7 @@ void sub_75200_VGA_Blit640(uint16_t height, uint8_t maxFps)//256200
 #if _DEBUG
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
 #endif
+	// Not inside the _DEBUG block above: this one is for players, not for us.
 	VGA_Blit(pdwScreenBuffer_351628);
 
 	//set speed

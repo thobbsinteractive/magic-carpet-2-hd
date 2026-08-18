@@ -902,9 +902,9 @@ int sub_76840();
 //int sub_7F7D0(uint8_t** a1, uint8_t** a2, uint8_t* a3, char* a4);
 //uint32_t DrawText_7FAE0(char* a1, __int16 a2, __int16 a3, __int16 a4, unsigned __int8 a5);
 //void DrawText_7FB90(char* a1, int16_t a2, int16_t a3, uint8_t a4);
-// int sub_7FCB0_draw_text_with_border(int a1, x_BYTE *a2, int a3, int a4, int a5, char a6, unsigned __int8 a7, __int16 a8);
+// int DrawTextWithBoarder_7FCB0(int a1, x_BYTE *a2, int a3, int a4, int a5, char a6, unsigned __int8 a7, __int16 a8);
 // int sub_81260(int a1, int a2, int a3, __int16 a4, __int16 a5);
-void sub_81360_draw_bitmap_line(int16_t a1, int16_t a2, int16_t a3, int16_t a4, __int16 a5);
+void DrawBitmapLine_81360(int16_t a1, int16_t a2, int16_t a3, int16_t a4, __int16 a5);
 // unsigned int sub_81CA0(int a1, int a2, __int16 a3, __int16 a4, int a5);
 void sub_82AB0(unsigned __int8 a1);
 void sub_83B50();
@@ -22121,8 +22121,8 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 				{
 				case 0u:
 					//v9 = *(x_WORD *)(v7x + x_D41A0_BYTEARRAY_0 + 11230 + 77);
-					D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307--;// = v9 - 1;
-					if (D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307 + 1 <= 0)
+					D41A0_0.array_0x2BDE[v7y].CurrentNotificationDuration_0x04d_2C2B_11307--;// = v9 - 1;
+					if (D41A0_0.array_0x2BDE[v7y].CurrentNotificationDuration_0x04d_2C2B_11307 + 1 <= 0)
 						goto LABEL_24;
 					sprintf(printbuffer, "%s %s", D41A0_0.array_0x2BDE[v7y].WizardName_0x39f_2BFA_12157, D41A0_0.array_0x2BDE[v7y].CurrentNotificationText_0x01c_2BFA_11258);
 					DrawText_2BC10(printbuffer, textPosX, textPosY, (*xadataclrd0dat.colorPalette_var28)[3840], scale);
@@ -22132,11 +22132,11 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 					break;
 				case 1u:
 					//v13 = *(x_WORD *)(v7x + x_D41A0_BYTEARRAY_0 + 11230 + 77);
-					D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307--;
-					if (D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307 + 1 <= 0)
+					D41A0_0.array_0x2BDE[v7y].CurrentNotificationDuration_0x04d_2C2B_11307--;
+					if (D41A0_0.array_0x2BDE[v7y].CurrentNotificationDuration_0x04d_2C2B_11307 + 1 <= 0)
 						goto LABEL_24;
 					sprintf(printbuffer, "[%s] %s", D41A0_0.array_0x2BDE[v7y].WizardName_0x39f_2BFA_12157, D41A0_0.array_0x2BDE[v7y].CurrentNotificationText_0x01c_2BFA_11258);
-					if (D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307 <= 100)
+					if (D41A0_0.array_0x2BDE[v7y].CurrentNotificationDuration_0x04d_2C2B_11307 <= 100)
 					{
 						v15 = (*xadataclrd0dat.colorPalette_var28)[3840];
 					}
@@ -22153,8 +22153,8 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 				case 2u:
 				case 4u:
 					//v11 = *(x_WORD *)(v7x + x_D41A0_BYTEARRAY_0 + 11230 + 77);
-					D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307--;
-					if (D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307 + 1 <= 0)
+					D41A0_0.array_0x2BDE[v7y].CurrentNotificationDuration_0x04d_2C2B_11307--;
+					if (D41A0_0.array_0x2BDE[v7y].CurrentNotificationDuration_0x04d_2C2B_11307 + 1 <= 0)
 						goto LABEL_24;
 					if (D41A0_0.array_0x2BDE[v7y].word_0x04f_2C2D_11309 == 3 || v22 == D41A0_0.LevelIndex_0xc)
 					{
@@ -22168,8 +22168,8 @@ void DrawTextPauseEndOfLevel_2CE30(int16_t posX, int16_t posY, uint8_t scale)//2
 					break;
 				case 3u:
 					//v17 = *(x_WORD *)(v7x + x_D41A0_BYTEARRAY_0 + 11230 + 77);
-					D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307--;
-					if (D41A0_0.array_0x2BDE[v7y].word_0x04d_2C2B_11307 + 1 <= 0)
+					D41A0_0.array_0x2BDE[v7y].CurrentNotificationDuration_0x04d_2C2B_11307--;
+					if (D41A0_0.array_0x2BDE[v7y].CurrentNotificationDuration_0x04d_2C2B_11307 + 1 <= 0)
 					{
 					LABEL_24:
 						D41A0_0.array_0x2BDE[v7y].word_0x04f_2C2D_11309 = 0;
@@ -31638,6 +31638,10 @@ void InGameLoop_47320()//228320
 	//fix res on begin level for hidden levels-neoriginal code
 
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::STARTED);
+
+	std::function<void(std::string)> resCallBack = OnNetworkMessageReceivedInGame;
+	EventDispatcher::I->RegisterEvent(new Event<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, resCallBack));
+
 	g_inGameLoop = true;
 
 	while (1)
@@ -31712,6 +31716,8 @@ void InGameLoop_47320()//228320
 	//Clear pause status
 	x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= ~GAME_PAUSED;
 
+	EventDispatcher::I->UnregisterEvent<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, OnNetworkMessageReceivedInGame);
+
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::GAMEPLAY_ENDED);
 
 	if(IsRecording())
@@ -31744,6 +31750,11 @@ void intervalsave(int index) {
 	SaveLevel_55080(0, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, outname);
 	D41A0_0 = temp0x39;
 };
+
+void OnNetworkMessageReceivedInGame(std::string message)
+{
+	SetCurrentNotificationMessage_19760((char*)message.c_str(), 3u, 100);
+}
 
 //long debugcounter_47560_2=0;
 //----- (00047560) --------------------------------------------------------
@@ -37581,7 +37592,8 @@ void PlayerEvents_51BB0()//232bb0
 			static bool linkDropped = false;
 			if (!linkDropped) {
 				linkDropped = true;
-				debug_net_printf("AUTOTEST: dropping the network link now\n");
+				if (CommandLineParams.DoNetworkDebug())
+					debug_net_printf("AUTOTEST: dropping the network link now\n");
 				EndMyNetLib();
 			}
 		}
@@ -37589,7 +37601,8 @@ void PlayerEvents_51BB0()//232bb0
 			static bool leftGame = false;
 			if (!leftGame) {
 				leftGame = true;
-				debug_net_printf("AUTOTEST: leaving the game now\n");
+				if (CommandLineParams.DoNetworkDebug())
+					debug_net_printf("AUTOTEST: leaving the game now\n");
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;
 			}
 		}
@@ -37615,14 +37628,16 @@ void PlayerEvents_51BB0()//232bb0
 		{
 			if (g_autotest_match + 1 < CommandLineParams.AutoTestMatches())
 			{
-				debug_net_printf("AUTOTEST: match %d over, returning to the menu for match %d\n",
-					g_autotest_match, g_autotest_match + 1);
+				if (CommandLineParams.DoNetworkDebug())
+					debug_net_printf("AUTOTEST: match %d over, returning to the menu for match %d\n",
+						g_autotest_match, g_autotest_match + 1);
 				g_autotest_match++;
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].dw_w_b_0_2BDE_11230.byte[2] |= 8;
 			}
 			else
 			{
-				debug_net_printf("AUTOTEST: last match (%d) over, leaving\n", g_autotest_match);
+				if (CommandLineParams.DoNetworkDebug())
+					debug_net_printf("AUTOTEST: last match (%d) over, leaving\n", g_autotest_match);
 				D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].byte_0x004_2BE0_11234 = 1;
 			}
 		}
@@ -37779,7 +37794,7 @@ void PlayerEvents_51BB0()//232bb0
 			{
 				strcpy(D41A0_0.array_0x2BDE[i].CurrentNotificationText_0x01c_2BFA_11258, x_DWORD_E9C4C_langindexbuffer[HAS_BEEN_BANISHED]);//has been banished from the realm.
 				D41A0_0.array_0x2BDE[i].word_0x04f_2C2D_11309 = 1;
-				D41A0_0.array_0x2BDE[i].word_0x04d_2C2B_11307 = 100;
+				D41A0_0.array_0x2BDE[i].CurrentNotificationDuration_0x04d_2C2B_11307 = 100;
 				D41A0_0.array_0x2BDE[i].dw_w_b_0_2BDE_11230.word[1] = 8;
 				NetworkEvent_7373D(i);
 				D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236 = 0;
@@ -37911,7 +37926,7 @@ void PlayerEvents_51BB0()//232bb0
 		case 0x1D: //Banished
 			strcpy(D41A0_0.array_0x2BDE[i].CurrentNotificationText_0x01c_2BFA_11258, x_DWORD_E9C4C_langindexbuffer[HAS_BEEN_BANISHED]);//has been banished from the realm.
 			D41A0_0.array_0x2BDE[i].word_0x04f_2C2D_11309 = 1;
-			D41A0_0.array_0x2BDE[i].word_0x04d_2C2B_11307 = 100;
+			D41A0_0.array_0x2BDE[i].CurrentNotificationDuration_0x04d_2C2B_11307 = 100;
 			D41A0_0.array_0x2BDE[i].dw_w_b_0_2BDE_11230.word[1] = 8;//SKIP FROM GAMELOOP
 			NetworkEvent_7373D(i);
 			D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236 = 0;
@@ -38063,7 +38078,7 @@ void PlayerEvents_51BB0()//232bb0
 				if (i == D41A0_0.LevelIndex_0xc)
 				{
 					strcpy(D41A0_0.array_0x2BDE[i].CurrentNotificationText_0x01c_2BFA_11258, x_DWORD_E9C4C_langindexbuffer[SPELLS_BEGIN_BUFFER_str[spellIndex].subspell[D41A0_0.playerInputs_0x6E3E[i].str_0x6E3E_byte2].hintText_0x16x]);
-					D41A0_0.array_0x2BDE[i].word_0x04d_2C2B_11307 = 20;
+					D41A0_0.array_0x2BDE[i].CurrentNotificationDuration_0x04d_2C2B_11307 = 20;
 					D41A0_0.array_0x2BDE[i].word_0x04f_2C2D_11309 = 3;
 				}
 				if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 4)
@@ -38208,7 +38223,7 @@ void PlayerEvents_51BB0()//232bb0
 					if (bool1)
 					{
 						strcpy(D41A0_0.array_0x2BDE[i].CurrentNotificationText_0x01c_2BFA_11258, printbuffer);
-						D41A0_0.array_0x2BDE[i].word_0x04d_2C2B_11307 = 200;
+						D41A0_0.array_0x2BDE[i].CurrentNotificationDuration_0x04d_2C2B_11307 = 200;
 						D41A0_0.array_0x2BDE[i].word_0x04f_2C2D_11309 = 2;
 					}
 				}
@@ -41074,7 +41089,7 @@ void sub_58F00_game_objectives()//239f00
 					{
 						if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE && (x_WORD)v24 != D41A0_0.LevelIndex_0xc)
 						{
-							D41A0_0.array_0x2BDE[v24].word_0x04d_2C2B_11307 = 60;
+							D41A0_0.array_0x2BDE[v24].CurrentNotificationDuration_0x04d_2C2B_11307 = 60;
 							D41A0_0.array_0x2BDE[v24].word_0x04f_2C2D_11309 = 4;
 							if (v14)
 								sprintf(D41A0_0.array_0x2BDE[v24].CurrentNotificationText_0x01c_2BFA_11258, "%s", (char*)x_DWORD_E9C4C_langindexbuffer[431]);//Has Completed All Objectives.
@@ -46710,18 +46725,23 @@ bool DrawFrameAnim_7E5A0(__int16 posx, __int16 posy, Type_MapScreenPortals_E17CC
 	return result;
 }
 
+void DrawTextBox(std::string message, uint16_t left, uint16_t right, uint16_t top, int16_t borderColour)
+{
+	DrawTextWithBoarder_7FCB0((char*)message.c_str(), left, right, top, 0, 0, borderColour);
+}
+
 //----- (0007E840) --------------------------------------------------------
-void sub_7E840_draw_textbox_with_line(typeTextBoxtextBoxStr_E24BCx* testBoxStr, __int16 borderColor, __int16 lineColor)//25f840
+void DrawTextBoxWithLine_7E840(typeTextBoxtextBoxStr_E24BCx* testBoxStr, __int16 borderColor, __int16 lineColor)//25f840
 {
 	int i = 0;
-	if (!testBoxStr[i].minx2_2)
+	if (!testBoxStr[i].left_2)
 		return;
 	do
 	{
-		if (testBoxStr[i].minx2_2)
+		if (testBoxStr[i].left_2)
 		{
-			sub_81360_draw_bitmap_line(testBoxStr[i].minx_6, testBoxStr[i].miny_8, testBoxStr[i].maxx_12, testBoxStr[i].maxy_14, lineColor);//262360
-			sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[testBoxStr[i].textIndex_0], testBoxStr[i].minx2_2, (testBoxStr[i].minx2_2 + 180), testBoxStr[i].miny2_4, 0, 0, borderColor);//260cb0
+			DrawBitmapLine_81360(testBoxStr[i].minx_6, testBoxStr[i].miny_8, testBoxStr[i].width_12, testBoxStr[i].maxy_14, lineColor);//262360
+			DrawTextWithBoarder_7FCB0(x_DWORD_E9C4C_langindexbuffer[testBoxStr[i].textIndex_0], testBoxStr[i].left_2, (testBoxStr[i].left_2 + 180), testBoxStr[i].top_4, 0, 0, borderColor);//260cb0
 			/*
 			Save Current Game
 			Exit Game
@@ -46742,7 +46762,7 @@ void sub_7E840_draw_textbox_with_line(typeTextBoxtextBoxStr_E24BCx* testBoxStr, 
 			*/
 		}
 		i++;
-	} while (testBoxStr[i].minx2_2);
+	} while (testBoxStr[i].left_2);
 }
 
 //----- (0007E8D0) --------------------------------------------------------
@@ -46901,7 +46921,7 @@ int DrawMapObject_812D0(__int16 a1, __int16 a2)//2622d0
 }
 
 //----- (00081360) --------------------------------------------------------
-void sub_81360_draw_bitmap_line(int16_t minx, int16_t miny, int16_t maxx, int16_t maxy, __int16 a5)//262360
+void DrawBitmapLine_81360(int16_t minx, int16_t miny, int16_t maxx, int16_t maxy, __int16 a5)//262360
 {
 	int32_t v5; // edi
 	int32_t v6; // esi
@@ -60347,7 +60367,7 @@ void sub_5E310_multiplayer_test_die(type_entity_0x6E8E* a1x)//23f310
 			v15 += 2;
 		} while (v17);*/
 		D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x04f_2C2D_11309 = 1;
-		D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x04d_2C2B_11307 = 100;
+		D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].CurrentNotificationDuration_0x04d_2C2B_11307 = 100;
 		for (i = 0; i < 26; i++)
 		{
 			//v18 = a1x->dword_0xA4_164 + 2 * i;
@@ -60508,7 +60528,7 @@ void sub_5E7C0_multiplayer_test_banished(type_entity_0x6E8E* a1x)//23f7c0
 	v6 += 2;
 } while ((x_BYTE)v1);*/
 				D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x04f_2C2D_11309 = 1;
-				D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x04d_2C2B_11307 = 200;
+				D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].CurrentNotificationDuration_0x04d_2C2B_11307 = 200;
 			}
 			D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].byte_0x006_2BE4_11236 = 0;
 		}

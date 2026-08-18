@@ -277,12 +277,12 @@ extern __int16 x_WORD_E29DA_type_resolution; // weak
 #pragma pack(push, 1)
 typedef struct {//lenght 18
 	int16_t textIndex_0;
-	int16_t minx2_2;
-	int16_t miny2_4;
+	int16_t left_2;
+	int16_t top_4;
 	int16_t minx_6;
 	int16_t miny_8;
 	int16_t word_10;
-	int16_t maxx_12;
+	int16_t width_12;
 	int16_t maxy_14;
 	int8_t byte_16;
 	int8_t byte_17;
@@ -488,7 +488,6 @@ void sub_2A340(/*int a1, type_str_0x6E8E* a2, type_str_0x6E8E* a3, int a4, *//*t
 void sub_2AA90(/*type_str_0x6E8E* a1, */type_entity_0x6E8E* a2, type_entity_0x6E8E* a3);
 void ClearGraphicsBuffer_72883(void* ptrBuffer, uint16_t width, uint16_t height, char value);
 int _wcpp_1_unwind_leave__62(void); //weak
-//int sub_7FCB0_draw_text_with_border(/*int a1,*/ char* a2, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8);//560cb0
 int GetManaSphereIndexFromId_36A50(/*signed int a1, */char a2);
 void SetManaSphereColorAndRot_36920(/*signed __int16 a1, */type_entity_0x6E8E* a2);
 void sub_48A20(int a1, char a2, char a3, int a4, int a5, unsigned __int8 a6);
@@ -539,7 +538,8 @@ void ResetMouse_7B5A0();
 void FadeClearBlit_7B5D0();
 void ClearScrollDialogVars_7C020(type_str_word_26* a1x);
 char sub_7C200(uint8_t a1);
-void sub_7E840_draw_textbox_with_line(typeTextBoxtextBoxStr_E24BCx* testBoxStr, __int16 borderColor, __int16 lineColor);
+void DrawTextBoxWithLine_7E840(typeTextBoxtextBoxStr_E24BCx* testBoxStr, __int16 borderColor, __int16 lineColor);
+void DrawTextBox(std::string message, uint16_t left, uint16_t right, uint16_t top, int16_t borderColour = 80);
 void CreateAnimObject_7E8D0(type_animStruct* animStruct, __int16 x1, __int16 y1, __int16 x2, __int16 y2, __int16 countX, __int16 countY);
 bool MoveAnimObject_7E9D0(x_WORD* x1, x_WORD* y1, type_animStruct* a3);
 void DrawAnimSprite_81CA0(__int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5);
@@ -1641,6 +1641,7 @@ signed int ReadKeyboardKeysInMenu_7C050();
 void sub_848A0();
 void InitialiseSpells_54A50(int playerIndex2, int playerIndex);
 void intervalsave(int index);
+void OnNetworkMessageReceivedInGame(std::string message);
 void sub_72350(type_animations1* a1);
 void sub_72550(type_E9C08** a1);
 void CopyScreen_85B20(uint8_t* src, uint8_t* dest, uint16_t rows_count);
