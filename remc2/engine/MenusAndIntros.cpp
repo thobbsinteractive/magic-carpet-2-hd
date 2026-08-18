@@ -464,6 +464,7 @@ char x_BYTE_E29E1 = 1; // weak
 
 int16_t x_WORD_17DE26; // weak
 
+std::vector<Type_MenuPopup*>* m_MenuMessages = nullptr;
 
 intptr_t unknown_libname_2_findfirst(char* path, uint16_t  /*a2*/, _finddata_t* c_file) {//findfirst
 	intptr_t hFile;
@@ -861,6 +862,8 @@ void MainMenu_76FA0()//257fa0
 		std::function<void(std::string)> resCallBack = OnNetworkMessageReceived;
 		EventDispatcher::I->RegisterEvent(new Event<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, resCallBack));
 
+		m_MenuMessages = new std::vector<Type_MenuPopup*>();
+
 		while (!m_ExitMenuLoop_E29DC)
 		{
 			g_state_monitor.Update();
@@ -911,6 +914,8 @@ void MainMenu_76FA0()//257fa0
 
 			DrawText_7FB90((char*)VersionNumber, 10, 465, getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 255, 0, 0));
 
+			DrawMenuPopupMessage();
+
 			if (DrawAndServe_7B250())//25c250
 			{
 				tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
@@ -937,6 +942,9 @@ void MainMenu_76FA0()//257fa0
 
 		EventDispatcher::I->UnregisterEvent<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, OnNetworkMessageReceived);
 
+		delete m_MenuMessages;
+		m_MenuMessages = nullptr;
+
 		ClearPauseMenuState_41BC0();
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
 		sub_753D0();
@@ -950,9 +958,47 @@ void MainMenu_76FA0()//257fa0
 	}
 }
 
+void DrawMenuPopupMessage()
+{
+	if (m_MenuMessages != nullptr && !m_MenuMessages->empty())
+	{
+		for (auto& popup : *m_MenuMessages)
+		{
+			popup->Duration--;
+			if (popup->Duration > 0)
+				DrawTextBox(popup->Message, popup->Left, popup->Right, popup->Top, popup->BorderColour);
+				
+		}
+
+		m_MenuMessages->erase(
+			std::remove_if(m_MenuMessages->begin(), m_MenuMessages->end(),
+				[](Type_MenuPopup* popup)
+				{
+					return popup->Duration <= 0;
+				}),
+			m_MenuMessages->end());
+	}
+}
+
+void AddMenuPopupMessage(Type_MenuPopup* popup)
+{
+	if (m_MenuMessages != nullptr)
+	{
+		m_MenuMessages->push_back(popup);
+	}
+}
+
+void ClearMenuPopupMessages()
+{
+	if (m_MenuMessages != nullptr && !m_MenuMessages->empty())
+	{
+		m_MenuMessages->clear();
+	}
+}
+
 void OnNetworkMessageReceived(std::string message)
 {
-	DrawTextBox(message, 160, 360, 50, 80);
+	AddMenuPopupMessage(new Type_MenuPopup{ message, 400, 160, 360, 50, 80 });
 }
 
 //----- (00077350) --------------------------------------------------------
