@@ -464,6 +464,7 @@ char x_BYTE_E29E1 = 1; // weak
 
 int16_t x_WORD_17DE26; // weak
 
+std::vector<Type_MenuPopup*>* m_MenuMessages = nullptr;
 
 intptr_t unknown_libname_2_findfirst(char* path, uint16_t  /*a2*/, _finddata_t* c_file) {//findfirst
 	intptr_t hFile;
@@ -857,6 +858,12 @@ void MainMenu_76FA0()//257fa0
 		int16_t tempMousePosX = x_DWORD_17DE38str.x_DWORD_17DEE4_mouse_positionx;
 		int16_t tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
 		int scanCode = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
+
+		std::function<void(std::string)> resCallBack = OnNetworkMessageReceived;
+		EventDispatcher::I->RegisterEvent(new Event<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, resCallBack));
+
+		m_MenuMessages = new std::vector<Type_MenuPopup*>();
+
 		while (!m_ExitMenuLoop_E29DC)
 		{
 			g_state_monitor.Update();
@@ -907,6 +914,8 @@ void MainMenu_76FA0()//257fa0
 
 			DrawText_7FB90((char*)VersionNumber, 10, 465, getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 255, 0, 0));
 
+			DrawMenuPopupMessage();
+
 			if (DrawAndServe_7B250())//25c250
 			{
 				tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
@@ -930,6 +939,12 @@ void MainMenu_76FA0()//257fa0
 			}
 			sub_7A060_get_mouse_and_keyboard_events();
 		}
+
+		EventDispatcher::I->UnregisterEvent<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, OnNetworkMessageReceived);
+
+		delete m_MenuMessages;
+		m_MenuMessages = nullptr;
+
 		ClearPauseMenuState_41BC0();
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
 		sub_753D0();
@@ -941,6 +956,49 @@ void MainMenu_76FA0()//257fa0
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
 		sub_753D0();
 	}
+}
+
+void DrawMenuPopupMessage()
+{
+	if (m_MenuMessages != nullptr && !m_MenuMessages->empty())
+	{
+		for (auto& popup : *m_MenuMessages)
+		{
+			popup->Duration--;
+			if (popup->Duration > 0)
+				DrawTextBox(popup->Message, popup->Left, popup->Right, popup->Top, popup->BorderColour);
+				
+		}
+
+		m_MenuMessages->erase(
+			std::remove_if(m_MenuMessages->begin(), m_MenuMessages->end(),
+				[](Type_MenuPopup* popup)
+				{
+					return popup->Duration <= 0;
+				}),
+			m_MenuMessages->end());
+	}
+}
+
+void AddMenuPopupMessage(Type_MenuPopup* popup)
+{
+	if (m_MenuMessages != nullptr)
+	{
+		m_MenuMessages->push_back(popup);
+	}
+}
+
+void ClearMenuPopupMessages()
+{
+	if (m_MenuMessages != nullptr && !m_MenuMessages->empty())
+	{
+		m_MenuMessages->clear();
+	}
+}
+
+void OnNetworkMessageReceived(std::string message)
+{
+	AddMenuPopupMessage(new Type_MenuPopup{ message, 400, 160, 360, 50, 80 });
 }
 
 //----- (00077350) --------------------------------------------------------
@@ -1254,7 +1312,7 @@ char LanguageSettingDialog_779E0(type_menuButtons_E1F84* a1y)//2589E0
 					}
 					memset(textBoxStr, 0, 2 * sizeof(typeTextBoxtextBoxStr_E24BCx));//26db3a
 					textBoxStr[0] = textBoxStr_E24BCx[textIndex];
-					sub_7E840_draw_textbox_with_line(textBoxStr, 83, 100);//25f840 adress 258d6a - add text?
+					DrawTextBoxWithLine_7E840(textBoxStr, 83, 100);//25f840 adress 258d6a - add text?
 				}
 				else if (codeBranch == 3)
 				{
@@ -1632,7 +1690,7 @@ char SetKeysDialog_79610()//25a610
 	temp_screen_buffer = pdwScreenBuffer_351628;
 	pdwScreenBuffer_351628 = x_DWORD_E9C38_smalltit;
 	for (int v2_int = 0; str_BYTE_E25ED_2BB[v2_int].word_0; v2_int++)
-		sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[str_BYTE_E25ED_2BB[v2_int].word_12], str_BYTE_E25ED_2BB[v2_int].word_0, v39, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
+		DrawTextWithBoarder_7FCB0(x_DWORD_E9C4C_langindexbuffer[str_BYTE_E25ED_2BB[v2_int].word_12], str_BYTE_E25ED_2BB[v2_int].word_0, v39, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
 	pdwScreenBuffer_351628 = temp_screen_buffer;
 	ResetMouse_7B5A0();
 	for (int v2_int = 0; str_BYTE_E25ED_2BB[v2_int].word_0; v2_int++)
@@ -1685,7 +1743,7 @@ char SetKeysDialog_79610()//25a610
 			if (!str_BYTE_E25ED_2BB[v14_int].word_14)
 			{
 				sub_79E10(textBuff, *keyIter);
-				sub_7FCB0_draw_text_with_border(textBuff, keyNameX, buttonAreaWidth, str_BYTE_E25ED_2BB[v14_int].word_2, 4, 0, 0);
+				DrawTextWithBoarder_7FCB0(textBuff, keyNameX, buttonAreaWidth, str_BYTE_E25ED_2BB[v14_int].word_2, 4, 0, 0);
 			}
 			keyIter++;
 			v14_int++;
@@ -1701,7 +1759,7 @@ char SetKeysDialog_79610()//25a610
 				{
 					memset(textBuff, 0, 60);
 					sub_79E10(textBuff, *keyIter2);
-					sub_7FCB0_draw_text_with_border(textBuff, keyNameX, buttonAreaWidth, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
+					DrawTextWithBoarder_7FCB0(textBuff, keyNameX, buttonAreaWidth, str_BYTE_E25ED_2BB[v2_int].word_2, 4, 0, 0);
 					if (elapsedTime > 0x32)
 					{
 						str_BYTE_E25ED_2BB[v2_int].word_14 = 2;
@@ -2427,7 +2485,7 @@ signed int DrawBitmapAndPlaySound_7E320()//25f320
 					if (x_D41A0_BYTEARRAY_4_struct.showHelp_10 != 1)
 						return 0;
 					int index2 = 0;
-					if (!textBoxStr_E2516[index2].minx2_2)
+					if (!textBoxStr_E2516[index2].left_2)
 						return 0;
 					do //adress 25f4e7
 					{
@@ -2438,13 +2496,13 @@ signed int DrawBitmapAndPlaySound_7E320()//25f320
 							bitmap_pos_struct2_t* tempx_DWORD_17DEC4 = x_DWORD_17DE38str.x_DWORD_17DEC4;
 							xy_DWORD_17DEC0_spritestr = xy_DWORD_17DEC8_spritestr;
 							x_DWORD_17DE38str.x_DWORD_17DEC4 = x_DWORD_17DE38str.x_DWORD_17DECC;
-							sub_7E840_draw_textbox_with_line(textBoxStr, 238, 264);
+							DrawTextBoxWithLine_7E840(textBoxStr, 238, 264);
 							xy_DWORD_17DEC0_spritestr = tempSpriteStr;
 							x_DWORD_17DE38str.x_DWORD_17DEC4 = tempx_DWORD_17DEC4;
 							return 0;
 						}
 						index2++;
-					} while (textBoxStr_E2516[index2].minx2_2);
+					} while (textBoxStr_E2516[index2].left_2);
 					return 0;
 				}
 			}
@@ -2911,14 +2969,14 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 				{
 					memset(textBoxStr, 0, 36);
 					textBoxStr[0] = textBoxStr_E24F2[0];
-					textBoxStr[0].minx2_2 = mapScreenPortals_E17CC[index2].portalPosX_12 - 80 - posx;
-					textBoxStr[0].miny2_4 = mapScreenPortals_E17CC[index2].portalPosY_14 - 60 - posy;
+					textBoxStr[0].left_2 = mapScreenPortals_E17CC[index2].portalPosX_12 - 80 - posx;
+					textBoxStr[0].top_4 = mapScreenPortals_E17CC[index2].portalPosY_14 - 60 - posy;
 					textBoxStr[0].minx_6 = mapScreenPortals_E17CC[index2].portalPosX_12 + 16 - posx;
 					textBoxStr[0].miny_8 = mapScreenPortals_E17CC[index2].portalPosY_14 - 60 - posy;
-					textBoxStr[0].maxx_12 = mapScreenPortals_E17CC[index2].portalPosX_12 + 16 - posx;
+					textBoxStr[0].width_12 = mapScreenPortals_E17CC[index2].portalPosX_12 + 16 - posx;
 					textBoxStr[0].maxy_14 = mapScreenPortals_E17CC[index2].portalPosY_14 - 4 - posy;
 					textBoxStr[0].textIndex_0 = 464;
-					sub_7E840_draw_textbox_with_line(textBoxStr, 238, 264);
+					DrawTextBoxWithLine_7E840(textBoxStr, 238, 264);
 					if (index3 != -1)
 					{
 						if ((time - x_DWORD_17DB70str.time_17DB70) / 0x64u > 8)
@@ -2937,14 +2995,14 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4)//25e4
 				if (x_DWORD_17DB70str.x_BYTE_17DB8F == 3)
 				{
 					memset(textBoxStr, 0, 36);
-					textBoxStr[0].minx2_2 = mapScreenPortals_E17CC[index3].portalPosX_12 - 80 - posx;
-					textBoxStr[0].miny2_4 = mapScreenPortals_E17CC[index3].portalPosY_14 - 60 - posy;
+					textBoxStr[0].left_2 = mapScreenPortals_E17CC[index3].portalPosX_12 - 80 - posx;
+					textBoxStr[0].top_4 = mapScreenPortals_E17CC[index3].portalPosY_14 - 60 - posy;
 					textBoxStr[0].minx_6 = mapScreenPortals_E17CC[index3].portalPosX_12 + 16 - posx;
 					textBoxStr[0].miny_8 = mapScreenPortals_E17CC[index3].portalPosY_14 - 60 - posy;
-					textBoxStr[0].maxx_12 = mapScreenPortals_E17CC[index3].portalPosX_12 + 16 - posx;
+					textBoxStr[0].width_12 = mapScreenPortals_E17CC[index3].portalPosX_12 + 16 - posx;
 					textBoxStr[0].maxy_14 = mapScreenPortals_E17CC[index3].portalPosY_14 - 4 - posy;
 					textBoxStr[0].textIndex_0 = 465;
-					sub_7E840_draw_textbox_with_line(textBoxStr, 238, 264);
+					DrawTextBoxWithLine_7E840(textBoxStr, 238, 264);
 					if (index2 != -1)
 					{
 						if ((time - x_DWORD_17DB70str.time_17DB70) / 0x64u > 8)
@@ -3598,7 +3656,7 @@ void PresentLevelDescription_80C30(__int16 posX, __int16 posY, __int16 addWidth)
 		}
 		GetFont_6FC50(1);
 		uint8_t colorIndex = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
-		sub_7FCB0_draw_text_with_border(x_DWORD_E9C4C_langindexbuffer[23 + levelIdx_v3], posX + 4 * GetLetterWidth_6FC10(), posX + addWidth - 3 * GetLetterWidth_6FC10(), posY, 5, colorIndex, 1);
+		DrawTextWithBoarder_7FCB0(x_DWORD_E9C4C_langindexbuffer[23 + levelIdx_v3], posX + 4 * GetLetterWidth_6FC10(), posX + addWidth - 3 * GetLetterWidth_6FC10(), posY, 5, colorIndex, 1);
 		//"You must explore the outer Netherworlds while you learn its magic. Your first destination is the ancient city of Jahwl."+
 	}
 	if (x_DWORD_17DE28str.DisplayLevelDescriptionText_17DE34 != 3 && x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 & 0x40 && !IsPlayingCDTrack_17E09D)
@@ -4000,7 +4058,7 @@ void sub_82510(/*__int16 a1*//*, int *a2*/)//263510
 				v4 = unk_17DBA8str.unk_17DBB4 + 1;
 				unk_17DBA8str.unk_17DBB4 = v4;
 				//if (!unk_E2516[9 * v4 + 1])
-				if (!textBoxStr_E2516[v4].minx2_2)
+				if (!textBoxStr_E2516[v4].left_2)
 					unk_17DBA8str.unk_17DBB4 = 0;
 				unk_17DBA8str.unk_17DBA8 = unk_17DBA8str.unk_17DBAC;//a2[0] = a2[1];
 			}
@@ -4022,7 +4080,7 @@ void sub_82510(/*__int16 a1*//*, int *a2*/)//263510
 				//v6 += 44;
 				v6y++;
 			}
-			sub_7E840_draw_textbox_with_line(v10x, 238, 264);//draw help
+			DrawTextBoxWithLine_7E840(v10x, 238, 264);//draw help
 		}
 		else if (switchbit == 3)
 		{
@@ -4318,7 +4376,7 @@ void ShowEndCredits_833C0()//2643c0
 			if (!_stricmp(off_DB558[index3], "!"))
 				break;
 			uint8_t colorIndex = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
-			sub_7FCB0_draw_text_with_border(off_DB558[index3], 10, 620, (signed __int16)(i + 200), 5, colorIndex, 0);
+			DrawTextWithBoarder_7FCB0(off_DB558[index3], 10, 620, (signed __int16)(i + 200), 5, colorIndex, 0);
 			index1++;
 		}
 		if (!reachedEnd && (time2 - time) / 100 > 2)
@@ -5351,10 +5409,27 @@ char MultiplayerMenu_7DE80(type_menuButtons_E1F84* a2x)//25ee80
 		static int autoSessionConfirmedFor = -1;
 		if (autoSessionConfirmedFor != g_autotest_match) {
 			autoSessionConfirmedFor = g_autotest_match;
-			debug_net_printf("AUTOTEST: confirming session %d (match %d)\n",
-				(int)(unsigned __int8)x_BYTE_E29DF_skip_screen, g_autotest_match);
+			// A fixed number, not whatever the dialog happens to be showing.
+			//
+			// It used to take x_BYTE_E29DF_skip_screen, which is not a session number at all:
+			// MenusAndIntros.cpp:585 copies it from x_BYTE_D41AD_skip_screen, the intro-skip
+			// flag, so it holds 0 or 1 depending on how the intros happened to be got rid of.
+			// While every instance ended up with the same value that was merely untidy - they
+			// all joined session 1 and the tests passed.  Measured when it stopped agreeing:
+			// the host confirmed session 0 and the client session 1, so they were in different
+			// sessions, neither ever appeared in the other's player list, no CALL was made, and
+			// both sat in the lobby to the end of the run reporting "myIdx=0".  Every scenario
+			// failed with 0 exchanges and nothing in the transport was wrong.
+			//
+			// Nothing here depends on WHICH session is used, only on all instances naming the
+			// same one, so it is pinned.  Also written back to the byte the dialog prints, so
+			// what is on screen matches what was joined.
+			const uint8_t autoSession = 0;
+			x_BYTE_E29DF_skip_screen = (char)autoSession;
+			if (CommandLineParams.DoNetworkDebug())
+				debug_net_printf("AUTOTEST: confirming session %d (match %d)\n", (int)autoSession, g_autotest_match);
 			x_WORD_E131A = 0;
-			x_DWORD_17DE38str.networkSession_17DEFA = (unsigned __int8)x_BYTE_E29DF_skip_screen;
+			x_DWORD_17DE38str.networkSession_17DEFA = autoSession;
 			ResetMouse_7B5A0();
 			a2x->dword_4 = sub_77680() != 0;
 			return 1;
@@ -5707,7 +5782,7 @@ int DrawScrollDialog2_7B660(int a1, int a2, __int16 a3, type_str_word_26* a4x, c
 	{
 		v31 = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x16u, 0x10u, 9u);
 		//"Exit Game" 16a 1c6 28 1 4c//adress 25cc27
-		sub_7FCB0_draw_text_with_border(/*v30,*/ a5, a1 + 10, v30, v46, 1, v31, 0);
+		DrawTextWithBoarder_7FCB0(/*v30,*/ a5, a1 + 10, v30, v46, 1, v31, 0);
 	}
 LABEL_31:
 	if (v44)
@@ -5835,7 +5910,8 @@ char sub_77680()//258680
 					int me = x_DWORD_17DE38str.serverIndex_17DEFC;
 					x_DWORD_17DE38str.array_BYTE_17DE68x[me].action_9 = 5;
 					x_DWORD_17DE38str.array_BYTE_17DE68x[me].makeUpdate_0 = 1;
-					debug_net_printf("AUTOTEST: host starts the level (match %d)\n", g_autotest_match);
+					if (CommandLineParams.DoNetworkDebug())
+						debug_net_printf("AUTOTEST: host starts the level (match %d)\n", g_autotest_match);
 				}
 			}
 			if (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode == 59)
@@ -5852,14 +5928,14 @@ char sub_77680()//258680
 					if ((time - oldTimes[0]) / 0x64u > 1)
 					{
 						textIndex++;
-						if (!textBoxStr_E2570[textIndex].minx2_2)
+						if (!textBoxStr_E2570[textIndex].left_2)
 							textIndex = 0;
 						oldTimes[0] = time;
 					}
 					typeTextBoxtextBoxStr_E24BCx textBoxStr[2];
 					memset(textBoxStr, 0, 2 * sizeof(typeTextBoxtextBoxStr_E24BCx));
 					textBoxStr[0] = textBoxStr_E2570[textIndex];
-					sub_7E840_draw_textbox_with_line(textBoxStr, 21, 27);
+					DrawTextBoxWithLine_7E840(textBoxStr, 21, 27);
 				}
 				else if (timeState == 3)
 				{
@@ -5906,7 +5982,8 @@ bool DrawAndServe_7B250()//25c250
 		if (autoNetworkPickedFor != g_autotest_match) {
 			autoNetworkPickedFor = g_autotest_match;
 			mainMenuButtons_E1BAC[2].selected_8 = 1;
-			debug_net_printf("AUTOTEST: entering network game (match %d)\n", g_autotest_match);
+			if (CommandLineParams.DoNetworkDebug())
+				debug_net_printf("AUTOTEST: entering network game (match %d)\n", g_autotest_match);
 		}
 	}
 
@@ -5976,14 +6053,14 @@ bool DrawAndServe_7B250()//25c250
 		if ((times_17DBB8[1] - times_17DBB8[0]) / 0x64u > 1)
 		{
 			x_WORD_17DBC4++;
-			if (!textBoxStr_E25DC[x_WORD_17DBC4].minx2_2)
+			if (!textBoxStr_E25DC[x_WORD_17DBC4].left_2)
 				x_WORD_17DBC4 = 0;
 			times_17DBB8[0] = times_17DBB8[1];
 		}
 		memset(textBoxStr, 0, 36);
 		textBoxStr[0] = textBoxStr_E25DC[x_WORD_17DBC4];
 		int index = 0;
-		sub_7E840_draw_textbox_with_line(textBoxStr, 80, 89);
+		DrawTextBoxWithLine_7E840(textBoxStr, 80, 89);
 		if (!mainMenuButtons_E1BAC[0].xmin_10)
 			return 0;
 		do
@@ -6010,17 +6087,17 @@ bool DrawAndServe_7B250()//25c250
 			return 0;
 		}
 		int index2 = 0;
-		if (textBoxStr_E25DC[index2].minx2_2)
+		if (textBoxStr_E25DC[index2].left_2)
 		{
 			while (textBoxStr_E25DC[index2].byte_17 != mainMenuButtons_E1BAC[jx].byte_22)
 			{
 				index2++;
-				if (!textBoxStr_E25DC[index2].minx2_2)
+				if (!textBoxStr_E25DC[index2].left_2)
 					return 0;
 			}
 			memset(textBoxStr, 0, 36);
 			textBoxStr[0] = textBoxStr_E25DC[index2];
-			sub_7E840_draw_textbox_with_line(textBoxStr, 80, 89);
+			DrawTextBoxWithLine_7E840(textBoxStr, 80, 89);
 			int time = j___clock();
 			times_17DBB8[1] = time;
 			times_17DBB8[0] = time;
