@@ -2700,29 +2700,6 @@ void printState(myNCB** connections) {
 	}
 }
 // See port_net.h for why the game layer needs this.
-// How many connect / disconnect notices are still on screen.  Drops the ones whose five
-// seconds are up, which is what makes the rest move up a line: they are drawn from this list
-// in order, so losing the front entry shifts everything below it.
-int NetworkConnectionNoticeCount()
-{
-	std::lock_guard<std::mutex> lk(noticeMtx);
-	while (!notices.empty() && MsSince(notices.front().at) >= NOTICE_SHOW_MS)
-		notices.pop_front();
-	return (int)notices.size();
-}
-
-// Notice number index, 0 being the oldest one still up and so the top line.  See the note
-// where these are published: the text is copied into the caller's buffer under the lock,
-// because the writer is the network thread and this is read from the game thread every frame.
-bool NetworkConnectionNotice(int index, char* out, int outSize)
-{
-	if (!out || outSize <= 0 || index < 0) return false;
-	std::lock_guard<std::mutex> lk(noticeMtx);
-	if ((size_t)index >= notices.size()) return false;
-	snprintf(out, outSize, "%s", notices[index].text.c_str());
-	return true;
-}
-
 int NetworkRosterPlayers(const char* namePrefix, bool present[8])
 {
 	for (int i = 0; i < 8; i++) present[i] = false;

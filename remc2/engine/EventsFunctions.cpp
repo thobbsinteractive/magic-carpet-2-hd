@@ -31569,6 +31569,13 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 			if (CommandLineParams.DoNetworkDebug())
 				debug_net_printf("MATCHEND: level torn down, heading for the menu\n");
 
+			// The scoreboard belongs to the match that has just ended, so it is worked out here,
+			// while its numbers still stand.  The menu turns it into a popup when it opens its own
+			// message list; one posted from inside the game would go with the list the menu
+			// deletes on its way out.
+			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
+				g_matchResultPending = MatchScoreResultLine();
+
 			nextMenu_E29D8 = MenuItem::MainMenu;
 			skipMenus = false;
 			setLevel = -1;
@@ -37562,6 +37569,86 @@ type_entity_0x6E8E* sub_51A00(axis_3d* position)//232a00
 
 int debugcounter_233d56 = 0;
 //----- (00051BB0) --------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Multiplayer scoreboard, for the result line shown when the game ends.
+//
+// Everything here is per match and lives only in memory: the game has no scoring of its own,
+// the player structure carries no counter to hold one, and nothing about a knock-out is sent
+// over the wire beyond the action that caused it.  That is why this is worked out on each node
+// from the same inputs every node already runs - the simulations are in step, so each of them
+// arrives at the same table and the players all see the same result.
+//
+// Order is "who lasted longest": whoever is still standing comes first, then the knocked-out
+// in reverse order of when they went, so the last one to fall is ahead of the first.
+// ---------------------------------------------------------------------------
+static int  matchKills[8];        // opponents this player put down
+static int  matchOutSeq[8];       // order of knock-outs, 0 = never went out
+static bool matchPlayed[8];       // slots that took part at all
+static int  matchOutCounter = 0;
+
+void MatchScoreReset()
+{
+	for (int i = 0; i < 8; i++) { matchKills[i] = 0; matchOutSeq[i] = 0; matchPlayed[i] = false; }
+	matchOutCounter = 0;
+}
+
+void MatchScoreMarkPlaying(int player)
+{
+	if (player >= 0 && player < 8) matchPlayed[player] = true;
+}
+
+// Credits the kill and remembers when the victim went.  The killer is read off the victim:
+// applying damage stores the index of the entity that landed the hit in the victim's
+// word_0x26_38 (see sub_1B6B0, where str_0x5E_94.word_0x62_98 is copied into it), and that
+// entity's owner is the player behind it - directly for a wizard, through the owner index for
+// anything it cast.  A victim that fell to something with no owner (its own doing, terrain)
+// still gets its place in the order; nobody is credited.
+void MatchScoreRecordKnockOut(int victim, type_entity_0x6E8E* victimEntity)
+{
+	if (victim < 0 || victim >= 8) return;
+	if (matchOutSeq[victim]) return;                 // already counted, this can be re-entered
+	matchPlayed[victim] = true;
+	matchOutSeq[victim] = ++matchOutCounter;
+
+	if (!victimEntity) return;
+	const int16_t hitBy = victimEntity->word_0x26_38;
+	if (hitBy <= 0) return;
+	type_entity_0x6E8E* killerEntity = Entities_EA3E4[hitBy];
+	if (!killerEntity) return;
+	if (!killerEntity->dword_0xA4_164x)              // a projectile: follow it back to its owner
+		killerEntity = Entities_EA3E4[killerEntity->id_0x1A_26];
+	if (!killerEntity || !killerEntity->dword_0xA4_164x) return;
+
+	const int killer = killerEntity->dword_0xA4_164x->playerColorIndex_0x38_56;
+	if (killer < 0 || killer >= 8 || killer == victim) return;   // suicide credits nobody
+	matchKills[killer]++;
+	matchPlayed[killer] = true;
+}
+
+// "Player 1(killed 2), Player 2(killed 0), Player 3(killed 0)"
+std::string MatchScoreResultLine()
+{
+	int order[8], n = 0;
+	for (int i = 0; i < 8; i++) if (matchPlayed[i]) order[n++] = i;
+
+	// Still standing first (their sequence is 0), then the latest knock-out down to the first.
+	for (int a = 0; a < n; a++)
+		for (int b = a + 1; b < n; b++) {
+			const int sa = matchOutSeq[order[a]] ? matchOutSeq[order[a]] : 0x7FFFFFFF;
+			const int sb = matchOutSeq[order[b]] ? matchOutSeq[order[b]] : 0x7FFFFFFF;
+			if (sb > sa) { const int t = order[a]; order[a] = order[b]; order[b] = t; }
+		}
+
+	std::string line;
+	for (int i = 0; i < n; i++) {
+		char part[64];
+		snprintf(part, sizeof(part), "%sPlayer %d(killed %d)",
+			i ? ", " : "", order[i] + 1, matchKills[order[i]]);
+		line += part;
+	}
+	return line;
+}
+
 void PlayerEvents_51BB0()//232bb0
 {
 	type_entity_0x6E8E* ifsEvent;
@@ -37721,6 +37808,9 @@ void PlayerEvents_51BB0()//232bb0
 
 		//adress 232d2f
 		actEvent = Entities_EA3E4[D41A0_0.array_0x2BDE[i].playerIndex_0x00a_2BE4_11240];
+		// Anybody the loop runs for is in this match, which is how the result table knows which
+		// slots to list - the array has eight of them and a game rarely fills it.
+		MatchScoreMarkPlaying(i);
 		if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & 0x20)
 		{
 			sub_53A40(&D41A0_0.playerInputs_0x6E3E[i]);
@@ -37747,6 +37837,7 @@ void PlayerEvents_51BB0()//232bb0
 				D41A0_0.array_0x2BDE[i].byte_0x004_2BE0_11234 = 1;
 			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
 				DisableEntitesDrawing_5E660(actEvent);
+			MatchScoreRecordKnockOut(i, actEvent);
 			NetworkEvent_7373D(i);
 			D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236 = 0;
 			break;
@@ -37796,6 +37887,7 @@ void PlayerEvents_51BB0()//232bb0
 				D41A0_0.array_0x2BDE[i].word_0x04f_2C2D_11309 = 1;
 				D41A0_0.array_0x2BDE[i].CurrentNotificationDuration_0x04d_2C2B_11307 = 100;
 				D41A0_0.array_0x2BDE[i].dw_w_b_0_2BDE_11230.word[1] = 8;
+				MatchScoreRecordKnockOut(i, actEvent);
 				NetworkEvent_7373D(i);
 				D41A0_0.array_0x2BDE[i].byte_0x006_2BE4_11236 = 0;
 				if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)

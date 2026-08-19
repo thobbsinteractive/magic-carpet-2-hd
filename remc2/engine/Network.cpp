@@ -198,6 +198,11 @@ void NetworkListenAll_7302E()//25402e
 //----- (0007308F) --------------------------------------------------------
 int NetworkInitConnection_7308F(char* a2, __int16 a3)//25408f
 {
+	// A new match: the previous game's scoreboard, and the result of it still hanging in the
+	// menu, both belong to the game that is over - this is the moment they go.
+	MatchScoreReset();
+	ClearMatchResultMessage();
+
 	uint8 addNameResult;
 	int i;
 	int result;

@@ -180,6 +180,14 @@ extern type_E1BAC_0x3c4 str_E1BAC_0x2ec[];
 
 extern std::vector<Type_MenuPopup*>* m_MenuMessages;
 
+// Result of the multiplayer game that has just finished, waiting to be shown.  It is set as
+// the level is torn down, which is too early to make a popup of: the menu creates its own
+// message list when it starts and deletes it when it leaves, so anything added while the
+// game was still running would be thrown away.  The menu picks this up instead, and posts it
+// with a Duration below zero so it stays until the next match clears it.
+extern std::string g_matchResultPending;
+void ClearMatchResultMessage();
+
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
 void InitLanguage_76A40();

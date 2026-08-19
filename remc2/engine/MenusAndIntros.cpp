@@ -465,6 +465,7 @@ char x_BYTE_E29E1 = 1; // weak
 int16_t x_WORD_17DE26; // weak
 
 std::vector<Type_MenuPopup*>* m_MenuMessages = nullptr;
+std::string g_matchResultPending;
 
 intptr_t unknown_libname_2_findfirst(char* path, uint16_t  /*a2*/, _finddata_t* c_file) {//findfirst
 	intptr_t hFile;
@@ -864,6 +865,9 @@ void MainMenu_76FA0()//257fa0
 
 		m_MenuMessages = new std::vector<Type_MenuPopup*>();
 
+		if (!g_matchResultPending.empty())
+			AddMenuPopupMessage(new Type_MenuPopup{ g_matchResultPending, -1, 60, 560, 30, 80 });
+
 		while (!m_ExitMenuLoop_E29DC)
 		{
 			g_state_monitor.Update();
@@ -964,8 +968,12 @@ void DrawMenuPopupMessage()
 	{
 		for (auto& popup : *m_MenuMessages)
 		{
-			popup->Duration--;
+			// Below zero means "until somebody takes it down" - the result of a finished game
+			// hangs there through the menu until the next match starts.  Counting it down would
+			// wrap it back to positive eventually, so it is left alone.
 			if (popup->Duration > 0)
+				popup->Duration--;
+			if (popup->Duration != 0)
 				DrawTextBox(popup->Message, popup->Left, popup->Right, popup->Top, popup->BorderColour);
 				
 		}
@@ -974,7 +982,7 @@ void DrawMenuPopupMessage()
 			std::remove_if(m_MenuMessages->begin(), m_MenuMessages->end(),
 				[](Type_MenuPopup* popup)
 				{
-					return popup->Duration <= 0;
+					return popup->Duration == 0;   // negative ones stay
 				}),
 			m_MenuMessages->end());
 	}
@@ -985,6 +993,19 @@ void AddMenuPopupMessage(Type_MenuPopup* popup)
 	if (m_MenuMessages != nullptr)
 	{
 		m_MenuMessages->push_back(popup);
+	}
+}
+
+// Drops the result of the previous game: called when the next match starts, which is what
+// "stays until the following game" means.
+void ClearMatchResultMessage()
+{
+	g_matchResultPending.clear();
+	if (m_MenuMessages != nullptr) {
+		for (auto it = m_MenuMessages->begin(); it != m_MenuMessages->end(); ) {
+			if ((*it)->Duration < 0) { delete *it; it = m_MenuMessages->erase(it); }
+			else ++it;
+		}
 	}
 }
 
