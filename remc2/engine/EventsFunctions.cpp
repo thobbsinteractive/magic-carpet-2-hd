@@ -31574,7 +31574,11 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 			// message list; one posted from inside the game would go with the list the menu
 			// deletes on its way out.
 			if (x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)
+			{
 				g_matchResultPending = MatchScoreResultLine();
+				if (CommandLineParams.DoNetworkDebug())
+					debug_net_printf("MATCHEND: result %s\n", g_matchResultPending.c_str());
+			}
 
 			nextMenu_E29D8 = MenuItem::MainMenu;
 			skipMenus = false;
@@ -37592,8 +37596,12 @@ void MatchScoreReset()
 	matchOutCounter = 0;
 }
 
+// Both of these are called from paths a single-player game runs too, so they check the mode
+// themselves: the scoreboard exists for the multiplayer result line and must not so much as
+// record anything outside it.
 void MatchScoreMarkPlaying(int player)
 {
+	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)) return;
 	if (player >= 0 && player < 8) matchPlayed[player] = true;
 }
 
@@ -37605,6 +37613,7 @@ void MatchScoreMarkPlaying(int player)
 // still gets its place in the order; nobody is credited.
 void MatchScoreRecordKnockOut(int victim, type_entity_0x6E8E* victimEntity)
 {
+	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE)) return;
 	if (victim < 0 || victim >= 8) return;
 	if (matchOutSeq[victim]) return;                 // already counted, this can be re-entered
 	matchPlayed[victim] = true;
@@ -37623,6 +37632,9 @@ void MatchScoreRecordKnockOut(int victim, type_entity_0x6E8E* victimEntity)
 	if (killer < 0 || killer >= 8 || killer == victim) return;   // suicide credits nobody
 	matchKills[killer]++;
 	matchPlayed[killer] = true;
+	if (CommandLineParams.DoNetworkDebug())
+		debug_net_printf("SCORE: player %d put down player %d (now %d)\n",
+			killer + 1, victim + 1, matchKills[killer]);
 }
 
 // "Player 1(killed 2), Player 2(killed 0), Player 3(killed 0)"
@@ -39632,6 +39644,15 @@ void ClearSettings_567C0()//2377c0 // clean level
 //----- (00056A30) --------------------------------------------------------
 void LevelInitGame_56A30(int16_t level, std::string customLevelPath)//237a30
 {
+	// The game that is starting owns the scoreboard from here, and the result of the previous
+	// one has been read by now - this is what "hangs there until the next game" means.
+	//
+	// Not at NetworkInitConnection_7308F, which is where it first went: that runs when the
+	// player enters the multiplayer session menu, 300 ms after the level was torn down, so the
+	// result was wiped before the menu ever drew it.
+	MatchScoreReset();
+	ClearMatchResultMessage();
+
 	if (CommandLineParams.DoMouseOff()) { mouseturnoff = true; }
 	if (level > -1) {
 		x_D41A0_BYTEARRAY_4_struct.levelnumber_43w = (uint16_t)level;
@@ -60622,6 +60643,10 @@ void sub_5E7C0_multiplayer_test_banished(type_entity_0x6E8E* a1x)//23f7c0
 				D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].word_0x04f_2C2D_11309 = 1;
 				D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].CurrentNotificationDuration_0x04d_2C2B_11307 = 200;
 			}
+			// An AI opponent leaving the realm counts on the scoreboard exactly like a human
+			// one: it holds a player slot, and whoever put it down gets the kill.  Its way out
+			// is here rather than through PlayerEvents, which is why it needs its own hook.
+			MatchScoreRecordKnockOut(a1x->dword_0xA4_164x->playerColorIndex_0x38_56, a1x);
 			D41A0_0.array_0x2BDE[a1x->dword_0xA4_164x->playerColorIndex_0x38_56].byte_0x006_2BE4_11236 = 0;
 		}
 	}

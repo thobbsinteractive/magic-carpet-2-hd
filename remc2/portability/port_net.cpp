@@ -964,6 +964,42 @@ struct RosterEntry {
 // Everyone's copy of the membership, in name order.
 static std::vector<RosterEntry> knownRoster;
 static std::mutex rosterMtx;
+
+// A peer that drops out of the membership list is not coming back under that name, so any
+// command still waiting for it has to be told.  Without this the slot it occupied keeps a
+// LISTEN pending for ever (measured: "lsn=0 cplt=pending" on the host for the rest of the
+// run), the game never re-arms it, and a newcomer can only be accommodated by taking a
+// different slot - which is what handing out a fresh name did.  Releasing the slot is what
+// lets a name be used again once its holder is gone.
+static void ReleasePendingForName(const char* goneName)
+{
+	if (!goneName || !goneName[0]) return;
+	std::string want = TrimName(goneName, (int)strlen(goneName));
+	std::lock_guard<std::mutex> lk(connections_mutex);
+	for (auto& c : handleConnections) {
+		if (!c.connection) continue;
+		std::string call = TrimName(c.connection->ncb_callName_10, 16);
+		if (call != want) continue;
+		if (c.connection->ncb_cmd_cplt_49 != NRC_PENDING) continue;
+		c.connection->ncb_retcode_1 = NRC_SCLOSED;
+		c.connection->ncb_cmd_cplt_49 = NRC_SCLOSED;
+		if (m_network_debug)
+			debug_net_printf("PEERGONE: released a pending command waiting for [%s]\n", want.c_str());
+	}
+}
+
+// Names that were in the previous list and are missing from the new one.
+static void ReleasePendingForVanished(const std::vector<RosterEntry>& before,
+	const std::vector<RosterEntry>& after)
+{
+	for (auto& b : before) {
+		bool stillThere = false;
+		for (auto& a : after)
+			if (strncmp(a.name, b.name, sizeof(a.name)) == 0) { stillThere = true; break; }
+		if (!stillThere) ReleasePendingForName(b.name);
+	}
+}
+
 // What this node registered itself as, so it can find its own place in that list.
 static std::string myNetName;
 
@@ -1511,10 +1547,13 @@ namespace MyNetworkLib {
 		std::sort(entries.begin(), entries.end(),
 			[](const RosterEntry& a, const RosterEntry& b) { return strncmp(a.name, b.name, sizeof(a.name)) < 0; });
 
+		std::vector<RosterEntry> previous;
 		{
 			std::lock_guard<std::mutex> lk(rosterMtx);
+			previous = knownRoster;
 			knownRoster = entries;
 		}
+		ReleasePendingForVanished(previous, entries);
 
 		shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
 		std::string msg = Pack_Message(MESS_SERVER_ROSTER, n, (int32_t)entries.size(), clPort,
@@ -1963,6 +2002,27 @@ namespace MyNetworkLib {
 		if (u.message == MESS_CLIENT_TESTADDNAME) {
 			TypeIpPort ip{ senderAddr, u.port };
 			shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
+			// The host claims the session's first name before anybody else claims anything.
+			//
+			// Every node drops its name when a match ends and asks for one again for the next, so
+			// between matches the whole name space is briefly free.  A node arriving in that gap
+			// used to be handed the first name - measured: the newcomer ended up as NETH200 and the
+			// machine actually hosting the session was pushed to NETH201, after which nothing was
+			// exchanged at all.  The protocol already says joiners should wait for the server to
+			// register (MESS_SERVER_GIVE_IP / SERVER_NAME_REGISTERED); this makes the server hold
+			// them off rather than trusting each of them to wait.
+			{
+				char firstName[16] = { 0 };
+				snprintf(firstName, sizeof(firstName), "NETH2%c0", u.data[5]);
+				while (strlen(firstName) < 15) strcat(firstName, " ");
+				const bool wantsFirstName = (memcmp(u.data, firstName, 15) == 0);
+				if (!serverAddname && !wantsFirstName) {
+					if (m_network_debug)
+						debug_net_printf("NAME: [%.15s] must wait, the host has not claimed its own yet\n", u.data);
+					ReplyToSender(Pack_Message(MESS_SERVER_TESTADDNAME_REJECT, n, u.index, -10));
+					return;
+				}
+			}
 			if (GetNameNetwork(u.data).empty()) {
 				AddNetworkName(u.data, ip);
 				ReplyToSender(Pack_Message(MESS_SERVER_TESTADDNAME_OK, n, u.index, -10));
@@ -2049,6 +2109,17 @@ namespace MyNetworkLib {
 		}
 		else if (u.message == MESS_CLIENT_DELETE) {
 			CleanMessages(myNCBfromShadow(u.messNCB));
+			{
+				// The host handing its own name back ends the "server is registered" state, so the
+				// rule above applies again to the next match rather than only to the first.
+				char firstName[16] = { 0 };
+				snprintf(firstName, sizeof(firstName), "NETH2%c0", u.data[5]);
+				while (strlen(firstName) < 15) strcat(firstName, " ");
+				if (memcmp(u.data, firstName, 15) == 0) {
+					serverAddname = false;
+					receiveServerAddName = false;
+				}
+			}
 			RemoveNetworkName(u.data);
 			BroadcastRoster();   // membership changed
 		}
@@ -2071,10 +2142,13 @@ namespace MyNetworkLib {
 				e.ip[sizeof(e.ip) - 1] = 0;
 				entries.push_back(e);
 			}
+			std::vector<RosterEntry> previous;
 			{
 				std::lock_guard<std::mutex> lk(rosterMtx);
+				previous = knownRoster;
 				knownRoster = entries;
 			}
+			ReleasePendingForVanished(previous, entries);
 			if (m_network_debug) {
 				std::string list;
 				for (auto& e : entries) {

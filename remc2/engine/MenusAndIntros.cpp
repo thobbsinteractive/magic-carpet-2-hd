@@ -866,7 +866,11 @@ void MainMenu_76FA0()//257fa0
 		m_MenuMessages = new std::vector<Type_MenuPopup*>();
 
 		if (!g_matchResultPending.empty())
+		{
+			if (CommandLineParams.DoNetworkDebug())
+				debug_net_printf("MENU: showing result %s\n", g_matchResultPending.c_str());
 			AddMenuPopupMessage(new Type_MenuPopup{ g_matchResultPending, -1, 60, 560, 30, 80 });
+		}
 
 		while (!m_ExitMenuLoop_E29DC)
 		{
@@ -986,6 +990,31 @@ void DrawMenuPopupMessage()
 				}),
 			m_MenuMessages->end());
 	}
+}
+
+// The same messages, drawn as plain text.
+//
+// The bordered box the main menu uses cannot be drawn on the multiplayer screens: those do
+// not repaint their background every frame, so the box smears across the picture in
+// horizontal streaks a frame at a time.  Text alone leaves nothing behind.
+void DrawMenuPopupMessagePlain(int x, int y)
+{
+	if (m_MenuMessages == nullptr || m_MenuMessages->empty())
+		return;
+	int line = 0;
+	for (auto& popup : *m_MenuMessages)
+	{
+		if (popup->Duration > 0)
+			popup->Duration--;
+		if (popup->Duration != 0)
+			DrawText_7FB90((char*)popup->Message.c_str(), x, y + line * 16,
+				getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 255, 0, 0));
+		line++;
+	}
+	m_MenuMessages->erase(
+		std::remove_if(m_MenuMessages->begin(), m_MenuMessages->end(),
+			[](Type_MenuPopup* popup) { return popup->Duration == 0; }),
+		m_MenuMessages->end());
 }
 
 void AddMenuPopupMessage(Type_MenuPopup* popup)
@@ -5972,6 +6001,11 @@ char sub_77680()//258680
 				SetCursor_8CD27(xy_DWORD_17DED4_spritestr[15]);
 			}
 			UpdateNetInfo();
+			// The multiplayer screens have a loop of their own, so they have to draw the popups
+			// themselves - the main menu's call does not reach here.  Without this the result of
+			// the last game is held and correctly cleared, but invisible to anybody who walks
+			// straight from the level into setting up the next one.
+			DrawMenuPopupMessagePlain(20, 40);
 			if (x_WORD_180660_VGA_type_resolution & 1)
 				sub_90478_VGA_Blit320();
 			else

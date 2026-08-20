@@ -323,7 +323,21 @@ function Invoke-Test($test) {
     $dirs = @($GameDir, $GameDir2); if ($players -ge 3) { $dirs += $GameDir3 }
     foreach ($d in $dirs) {
         $dest = Join-Path $d "remc2.exe"
-        if ((Resolve-Path $Exe).Path -ne $dest) { Copy-Item $Exe $dest -Force }
+        # An instance that has just been killed can still hold its own exe for a moment -
+        # more so under AddressSanitizer, which has a teardown of its own - and the copy then
+        # throws.  With $ErrorActionPreference = "Stop" that ends the whole suite, which is
+        # how a 23-scenario run once stopped at the fifth.  Wait for the handle to go.
+        if ((Resolve-Path $Exe).Path -ne $dest) {
+            $copied = $false
+            for ($try = 1; $try -le 10 -and -not $copied; $try++) {
+                try { Copy-Item $Exe $dest -Force -ErrorAction Stop; $copied = $true }
+                catch {
+                    if ($try -eq 5) { Stop-AllInstances }   # something is still running
+                    Start-Sleep -Milliseconds 500
+                }
+            }
+            if (-not $copied) { throw "Cannot refresh $dest - it is held by another process." }
+        }
         Get-ChildItem $d -Filter 'net_messages_log1_*.txt' -ErrorAction SilentlyContinue |
             Remove-Item -Force -ErrorAction SilentlyContinue
     }

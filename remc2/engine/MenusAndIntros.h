@@ -187,6 +187,7 @@ extern std::vector<Type_MenuPopup*>* m_MenuMessages;
 // with a Duration below zero so it stays until the next match clears it.
 extern std::string g_matchResultPending;
 void ClearMatchResultMessage();
+void DrawMenuPopupMessagePlain(int x, int y);
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
