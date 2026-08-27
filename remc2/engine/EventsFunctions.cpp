@@ -37654,8 +37654,7 @@ std::string MatchScoreResultLine()
 	std::string line;
 	for (int i = 0; i < n; i++) {
 		char part[64];
-		snprintf(part, sizeof(part), "%sPlayer %d(killed %d)\n",
-			i ? ", " : "", order[i] + 1, matchKills[order[i]]);
+		snprintf(part, sizeof(part), "Player %d (killed %d)\n", order[i] + 1, matchKills[order[i]]);
 		line += part;
 	}
 	return line;
