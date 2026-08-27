@@ -841,6 +841,14 @@ void MainMenu_76FA0()//257fa0
 	StopMusic_8E020();//26f020
 	StartMusic_8E160(4, 0x7Fu);//26f160
 	x_WORD_17DE26 = 0;
+
+	if (!g_matchResultPending.empty())
+	{
+		if (CommandLineParams.DoNetworkDebug())
+			debug_net_printf("MENU: showing result %s\n", g_matchResultPending.c_str());
+		ShowScores();
+	}
+
 	VGA_cleanKeyBuffer();
 	if (x_BYTE_E29E1 || x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE || (NewGameDialog_77350(0), !m_ExitMenuLoop_E29DC))
 	{
@@ -864,13 +872,6 @@ void MainMenu_76FA0()//257fa0
 		EventDispatcher::I->RegisterEvent(new Event<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, resCallBack));
 
 		m_MenuMessages = new std::vector<Type_MenuPopup*>();
-
-		if (!g_matchResultPending.empty())
-		{
-			if (CommandLineParams.DoNetworkDebug())
-				debug_net_printf("MENU: showing result %s\n", g_matchResultPending.c_str());
-			AddMenuPopupMessage(new Type_MenuPopup{ g_matchResultPending, -1, 60, 560, 30, 80 });
-		}
 
 		while (!m_ExitMenuLoop_E29DC)
 		{
@@ -990,31 +991,6 @@ void DrawMenuPopupMessage()
 				}),
 			m_MenuMessages->end());
 	}
-}
-
-// The same messages, drawn as plain text.
-//
-// The bordered box the main menu uses cannot be drawn on the multiplayer screens: those do
-// not repaint their background every frame, so the box smears across the picture in
-// horizontal streaks a frame at a time.  Text alone leaves nothing behind.
-void DrawMenuPopupMessagePlain(int x, int y)
-{
-	if (m_MenuMessages == nullptr || m_MenuMessages->empty())
-		return;
-	int line = 0;
-	for (auto& popup : *m_MenuMessages)
-	{
-		if (popup->Duration > 0)
-			popup->Duration--;
-		if (popup->Duration != 0)
-			DrawText_7FB90((char*)popup->Message.c_str(), x, y + line * 16,
-				getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 255, 0, 0));
-		line++;
-	}
-	m_MenuMessages->erase(
-		std::remove_if(m_MenuMessages->begin(), m_MenuMessages->end(),
-			[](Type_MenuPopup* popup) { return popup->Duration == 0; }),
-		m_MenuMessages->end());
 }
 
 void AddMenuPopupMessage(Type_MenuPopup* popup)
@@ -4465,6 +4441,146 @@ void ShowEndCredits_833C0()//2643c0
 	x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
 }
 
+void ShowScores()
+{
+	int time = j___clock();
+
+	char dataPath[MAX_PATH];
+
+	sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SCREENS/HSCREEN0.DAT");
+
+	bool noFade = false;
+	x_DWORD_17DE38str.palette_17DE38x = (TColor*)*xadatapald0dat2.colorPalette_var28;
+	x_DWORD_17DE38str.x_WORD_17DEEC = 0;
+	x_DWORD_17DE38str.x_DWORD_17DE40 = pdwScreenBuffer_351628;
+	x_DWORD_17DE38str.x_DWORD_17DEE0_filedesc = NULL;
+	x_DWORD_17DE38str.x_DWORD_17DEDC = 0;
+	x_DWORD_17DE38str.x_DWORD_17DE48c = x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226;
+	FadeClearBlit_7B5D0();
+	x_DWORD_17DE38str.x_DWORD_17DE54 = x_DWORD_17DE38str.x_DWORD_17DE48c + 0x49ADB;
+	x_DWORD_17DE38str.x_DWORD_17DEC4 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4D313);
+	x_DWORD_17DE38str.x_DWORD_17DE58 = x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4D313;
+	x_DWORD_17DE38str.x_DWORD_17DEC8 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4ECC2);
+	x_DWORD_17DE38str.x_DWORD_17DECC = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4F31C);
+	x_DWORD_17DE38str.x_DWORD_17DED4 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4F31C);
+	x_DWORD_17DE38str.x_DWORD_17DED8 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4FA72);
+	x_DWORD_17DE38str.x_DWORD_17DE60 = x_DWORD_17DE38str.x_DWORD_17DE44;
+	x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map = x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4FA72;
+	x_DWORD_17DE38str.x_DWORD_17DE3C = (TcolNext*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x17BA72);
+	x_DWORD_17DE38str.x_DWORD_17DEC0 = (bitmap_pos_struct2_t*)(x_DWORD_17DE38str.x_DWORD_17DE48c + 0x4CCAD);
+	x_DWORD_17DE38str.x_DWORD_17DE5C_border_bitmap = x_DWORD_17DE38str.x_DWORD_17DE48c + 0x17FA72;
+
+	while (sub_9A10A_check_keyboard())
+	{
+		LastPressedKey_1806E4 = 0;
+		sub_7A060_get_mouse_and_keyboard_events();
+	}
+
+	SetCursor_8CD27((*filearray_2aa18c[filearrayindex_POINTERSDATTAB].posistruct)[0]); //Set cursor to Null (Don't Draw)
+	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE54, 0x1641FC, 1214);
+	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC0, 0x1646BA, 589);
+	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DE58, 0x164907, 1191);
+	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC8, 0x164DAE, 543);
+	sub_7AA70_load_and_decompres_dat_file(dataPath, (uint8_t*)x_DWORD_17DE38str.palette_17DE38x, 0x178B5F, 768);
+	sub_7AA70_load_and_decompres_dat_file(dataPath, x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map, 0x16554D, 79378);
+	sub_7AA70_load_and_decompres_dat_file(0, 0, 0, 0);
+	if (x_WORD_180660_VGA_type_resolution & 1)
+	{
+		sub_98709_create_index_dattab_power(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
+	}
+	else
+	{
+		sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC0, x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr);
+	}
+	if (x_WORD_180660_VGA_type_resolution & 1)
+	{
+		sub_98709_create_index_dattab_power(x_DWORD_17DE38str.x_DWORD_17DEC8, x_DWORD_17DE38str.x_DWORD_17DECC, x_DWORD_17DE38str.x_DWORD_17DE58, xy_DWORD_17DEC8_spritestr);
+	}
+	else
+	{
+		sub_9874D_create_index_dattab(x_DWORD_17DE38str.x_DWORD_17DEC8, x_DWORD_17DE38str.x_DWORD_17DECC, x_DWORD_17DE38str.x_DWORD_17DE58, xy_DWORD_17DEC8_spritestr);
+	}
+	x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
+	x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons = 0;
+	if (x_WORD_180660_VGA_type_resolution & 1)
+	{
+		sub_98709_create_index_dattab_power_add((uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC0, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr, 6);
+	}
+	else
+	{
+		sub_9874D_create_index_dattab_add((uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC0, (uint8_t*)x_DWORD_17DE38str.x_DWORD_17DEC4, x_DWORD_17DE38str.x_DWORD_17DE54, xy_DWORD_17DEC0_spritestr, 6);
+	}
+	x_DWORD_17DE38str.x_DWORD_17DEC0++;
+
+	auto lines = SplitLines(g_matchResultPending);
+
+	while (!x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode && !x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons)
+	{
+		int timeDiff = (j___clock() - time) / 100;
+
+		if (x_WORD_180660_VGA_type_resolution & 1)
+			CopyScreen((void*)x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map, (void*)pdwScreenBuffer_351628, 320, 200);
+		else
+			CopyScreen((void*)x_DWORD_17DE38str.x_DWORD_17DE64_game_world_map, (void*)pdwScreenBuffer_351628, 640, 480);
+
+		int i = 0;
+		for (const std::string& line : lines)
+		{
+			i += xy_DWORD_17DEC0_spritestr[65].height_5 + 2;
+			uint8_t colorIndex = getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 0x3Fu, 0x3Fu, 0x3Fu);
+			DrawTextWithBoarder_7FCB0((char*)line.c_str(), 10, 620, (signed __int16)(i + 200), 5, colorIndex, 0);
+		}
+
+		if (timeDiff > 5)
+			sub_7A060_get_mouse_and_keyboard_events();
+
+		if (noFade)
+		{
+			if (x_WORD_180660_VGA_type_resolution & 1)
+				sub_90478_VGA_Blit320();
+			else
+				sub_75200_VGA_Blit640(480);
+		}
+		else
+		{
+			sub_90B27_VGA_pal_fadein_fadeout(x_DWORD_17DE38str.palette_17DE38x, 0x20u, 0);
+			noFade = true;
+		}
+	}
+	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
+	memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
+	if (x_WORD_180660_VGA_type_resolution & 1)
+		ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, 0);
+	else
+		ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, 0);
+	if (x_WORD_180660_VGA_type_resolution & 1)
+		sub_90478_VGA_Blit320();
+	else
+		sub_75200_VGA_Blit640(480);
+	while (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode || x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons)
+		sub_7A060_get_mouse_and_keyboard_events();
+	x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
+}
+
+std::vector<std::string> SplitLines(const std::string& text) {
+	std::vector<std::string> lines;
+	size_t start = 0;
+	size_t end;
+	while ((end = text.find('\n', start)) != std::string::npos) {
+		std::string line = text.substr(start, end - start);
+		if (!line.empty() && line.back() == '\r') {
+			line.pop_back();
+		}
+		lines.push_back(line);
+		start = end + 1;
+	}
+	// last line (if there's no trailing newline)
+	if (start < text.size()) {
+		lines.push_back(text.substr(start));
+	}
+	return lines;
+}
+
 //----- (00083850) --------------------------------------------------------
 void ShowWelcomeScreen_83850()//264850
 {
@@ -6001,11 +6117,7 @@ char sub_77680()//258680
 				SetCursor_8CD27(xy_DWORD_17DED4_spritestr[15]);
 			}
 			UpdateNetInfo();
-			// The multiplayer screens have a loop of their own, so they have to draw the popups
-			// themselves - the main menu's call does not reach here.  Without this the result of
-			// the last game is held and correctly cleared, but invisible to anybody who walks
-			// straight from the level into setting up the next one.
-			DrawMenuPopupMessagePlain(20, 40);
+
 			if (x_WORD_180660_VGA_type_resolution & 1)
 				sub_90478_VGA_Blit320();
 			else

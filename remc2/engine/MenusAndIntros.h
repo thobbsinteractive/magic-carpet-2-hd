@@ -187,7 +187,6 @@ extern std::vector<Type_MenuPopup*>* m_MenuMessages;
 // with a Duration below zero so it stays until the next match clears it.
 extern std::string g_matchResultPending;
 void ClearMatchResultMessage();
-void DrawMenuPopupMessagePlain(int x, int y);
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -225,6 +224,8 @@ void PlayInGameFmv_82670();
 void DrawEndGameTable_82C20(__int16 a1);
 void PlayIntros_83250(char a1);
 void ShowEndCredits_833C0();
+void ShowScores();
+std::vector<std::string> SplitLines(const std::string& text);
 void ShowWelcomeScreen_83850();
 void DrawNetGameMapBackground_85C8B(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
 bool DrawAndServe_pre_sub_7B250(uint32_t var, type_menuButtons_E1F84* var2x);

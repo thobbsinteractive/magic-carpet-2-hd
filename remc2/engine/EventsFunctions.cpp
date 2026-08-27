@@ -37654,7 +37654,7 @@ std::string MatchScoreResultLine()
 	std::string line;
 	for (int i = 0; i < n; i++) {
 		char part[64];
-		snprintf(part, sizeof(part), "%sPlayer %d(killed %d)",
+		snprintf(part, sizeof(part), "%sPlayer %d(killed %d)\n",
 			i ? ", " : "", order[i] + 1, matchKills[order[i]]);
 		line += part;
 	}
@@ -52295,13 +52295,13 @@ int16_t sub_90B27_VGA_pal_fadein_fadeout(TColor* newpalbufferx, uint8_t shadow_l
 	{
 		if (x_BYTE_E390C_VGA_pal_not_begin)
 		{
-			x_WORD_181B44++;
-			if (shadow_levels == x_WORD_181B44)
+			CurrentPaletteFade_181B44++;
+			if (shadow_levels == CurrentPaletteFade_181B44)
 				x_BYTE_E390C_VGA_pal_not_begin = 0;
 		}
 		else
 		{
-			x_WORD_181B44 = 0;
+			CurrentPaletteFade_181B44 = 0;
 			x_BYTE_E390C_VGA_pal_not_begin = 1;
 			sub_A0D2C_VGA_get_Palette(x_BYTE_181544_oldpalbufferx);
 			if (!newpalbufferx)
@@ -52317,9 +52317,9 @@ int16_t sub_90B27_VGA_pal_fadein_fadeout(TColor* newpalbufferx, uint8_t shadow_l
 			//LOWORD(v6) = x_BYTE_181544_oldpalbuffer[i];
 			//v10 = &v5[-v6];
 			//outbuffer[i] = x_BYTE_181544_oldpalbuffer[i] + ((unk_181B42 >> 16)* (newpalbuffer[i] - x_BYTE_181544_oldpalbuffer[i])/ shadow_levels);
-			outbufferx[i].red = x_BYTE_181544_oldpalbufferx[i].red + ((x_WORD_181B44) * (newpalbufferx[i].red - x_BYTE_181544_oldpalbufferx[i].red) / shadow_levels);
-			outbufferx[i].green = x_BYTE_181544_oldpalbufferx[i].green + ((x_WORD_181B44) * (newpalbufferx[i].green - x_BYTE_181544_oldpalbufferx[i].green) / shadow_levels);
-			outbufferx[i].blue = x_BYTE_181544_oldpalbufferx[i].blue + ((x_WORD_181B44) * (newpalbufferx[i].blue - x_BYTE_181544_oldpalbufferx[i].blue) / shadow_levels);
+			outbufferx[i].red = x_BYTE_181544_oldpalbufferx[i].red + ((CurrentPaletteFade_181B44) * (newpalbufferx[i].red - x_BYTE_181544_oldpalbufferx[i].red) / shadow_levels);
+			outbufferx[i].green = x_BYTE_181544_oldpalbufferx[i].green + ((CurrentPaletteFade_181B44) * (newpalbufferx[i].green - x_BYTE_181544_oldpalbufferx[i].green) / shadow_levels);
+			outbufferx[i].blue = x_BYTE_181544_oldpalbufferx[i].blue + ((CurrentPaletteFade_181B44) * (newpalbufferx[i].blue - x_BYTE_181544_oldpalbufferx[i].blue) / shadow_levels);
 		}
 		//sub_9A0FC_wait_to_screen_beam();
 		sub_41A90_VGA_Palette_install(outbufferx);
@@ -52334,7 +52334,7 @@ int16_t sub_90B27_VGA_pal_fadein_fadeout(TColor* newpalbufferx, uint8_t shadow_l
 			newpalbufferx = zero_bufferx;
 			memset(zero_bufferx, 0, 768);
 		}
-		for (x_WORD_181B44 = 0; x_WORD_181B44 < shadow_levels; x_WORD_181B44++)
+		for (CurrentPaletteFade_181B44 = 0; CurrentPaletteFade_181B44 < shadow_levels; CurrentPaletteFade_181B44++)
 		{
 			for (i = 0; i < 0x100; i++)
 			{
@@ -52356,9 +52356,9 @@ int16_t sub_90B27_VGA_pal_fadein_fadeout(TColor* newpalbufferx, uint8_t shadow_l
 				//v4 = x_BYTE_181544_oldpalbuffer[i];
 				//v10 = &v3[-v4];
 				//outbuffer[i] = x_BYTE_181544_oldpalbuffer[i] + ((unk_181B42 >> 16) * (newpalbuffer[i] - x_BYTE_181544_oldpalbuffer[i]) / shadow_levels);//352b42 352544
-				outbufferx[i].red = x_BYTE_181544_oldpalbufferx[i].red + ((x_WORD_181B44) * (newpalbufferx[i].red - x_BYTE_181544_oldpalbufferx[i].red) / shadow_levels);//352b42 352544
-				outbufferx[i].green = x_BYTE_181544_oldpalbufferx[i].green + ((x_WORD_181B44) * (newpalbufferx[i].green - x_BYTE_181544_oldpalbufferx[i].green) / shadow_levels);//352b42 352544
-				outbufferx[i].blue = x_BYTE_181544_oldpalbufferx[i].blue + ((x_WORD_181B44) * (newpalbufferx[i].blue - x_BYTE_181544_oldpalbufferx[i].blue) / shadow_levels);//352b42 352544
+				outbufferx[i].red = x_BYTE_181544_oldpalbufferx[i].red + ((CurrentPaletteFade_181B44) * (newpalbufferx[i].red - x_BYTE_181544_oldpalbufferx[i].red) / shadow_levels);//352b42 352544
+				outbufferx[i].green = x_BYTE_181544_oldpalbufferx[i].green + ((CurrentPaletteFade_181B44) * (newpalbufferx[i].green - x_BYTE_181544_oldpalbufferx[i].green) / shadow_levels);//352b42 352544
+				outbufferx[i].blue = x_BYTE_181544_oldpalbufferx[i].blue + ((CurrentPaletteFade_181B44) * (newpalbufferx[i].blue - x_BYTE_181544_oldpalbufferx[i].blue) / shadow_levels);//352b42 352544
 			}
 			//sub_9A0FC_wait_to_screen_beam();
 			sub_41A90_VGA_Palette_install(outbufferx);
@@ -52372,7 +52372,7 @@ int16_t sub_90B27_VGA_pal_fadein_fadeout(TColor* newpalbufferx, uint8_t shadow_l
 		VGA_Init();
 	}*/
 	//return 0;
-	return x_WORD_181B44;
+	return CurrentPaletteFade_181B44;
 }
 
 //----- (00090B27) --------------------------------------------------------
@@ -52391,12 +52391,12 @@ __int16 sub_90B27_VGA_pal_fadein_fadeout_orig(char*  /*a1*/, unsigned __int8  /*
   {
 	if ( x_BYTE_E390C_VGA_pal_not_begin )
 	{
-	  if ( a2 == ++x_WORD_181B44 )
+	  if ( a2 == ++CurrentPaletteFade_181B44 )
 		x_BYTE_E390C_VGA_pal_not_begin = 0;
 	}
 	else
 	{
-	  x_WORD_181B44 = 0;
+	  CurrentPaletteFade_181B44 = 0;
 	  x_BYTE_E390C_VGA_pal_not_begin = 1;
 	  sub_A0D2C_VGA_get_Palette(x_BYTE_181544_oldpalbuffer);
 	  if ( !a1 )
@@ -52427,7 +52427,7 @@ __int16 sub_90B27_VGA_pal_fadein_fadeout_orig(char*  /*a1*/, unsigned __int8  /*
 	  a1 = (char *)&unk_181844;
 	  memset(&unk_181844, 0, 768);
 	}
-	for ( x_WORD_181B44 = 0; a2 >= x_WORD_181B44; ++x_WORD_181B44 )
+	for ( CurrentPaletteFade_181B44 = 0; a2 >= CurrentPaletteFade_181B44; ++CurrentPaletteFade_181B44 )
 	{
 	  for ( i = 0; (signed __int16)i < 768; i++ )
 	  {
@@ -52446,12 +52446,12 @@ __int16 sub_90B27_VGA_pal_fadein_fadeout_orig(char*  /*a1*/, unsigned __int8  /*
 	}
 	x_BYTE_E390C_VGA_pal_not_begin = 0;
   }
-  return x_WORD_181B44;*/
+  return CurrentPaletteFade_181B44;*/
 	return 0;
 }
 // 8C250: using guessed type x_DWORD memset(x_DWORD, x_DWORD, x_DWORD);
 // E390C: using guessed type char x_BYTE_E390C_VGA_pal_not_begin;
-// 181B44: using guessed type __int16 x_WORD_181B44;
+// 181B44: using guessed type __int16 CurrentPaletteFade_181B44;
 // 90B27: using guessed type char var_30C[768];
 
 //----- (00090D27) --------------------------------------------------------
