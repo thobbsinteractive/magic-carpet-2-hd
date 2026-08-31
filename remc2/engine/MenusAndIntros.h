@@ -117,16 +117,6 @@ typedef struct {//lenght 18
 type_BYTE_E25ED_0x;
 #pragma pack(pop)
 
-typedef struct {
-	std::string Message;
-	int16_t Duration;
-	uint16_t Left; 
-	uint16_t Right; 
-	uint16_t Top; 
-	int16_t BorderColour;
-}
-Type_MenuPopup;
-
 // from sub_main
 extern int8_t LoadLevelNumber_D419C;
 extern char x_BYTE_D41AD_skip_screen;
@@ -178,15 +168,9 @@ extern type_BYTE_E25ED_0x str_BYTE_E25ED_0x[];
 extern type_x_BYTE_E25ED_2BB str_BYTE_E25ED_2BB[];
 extern type_E1BAC_0x3c4 str_E1BAC_0x2ec[];
 
-extern std::vector<Type_MenuPopup*>* m_MenuMessages;
-
 // Result of the multiplayer game that has just finished, waiting to be shown.  It is set as
-// the level is torn down, which is too early to make a popup of: the menu creates its own
-// message list when it starts and deletes it when it leaves, so anything added while the
-// game was still running would be thrown away.  The menu picks this up instead, and posts it
-// with a Duration below zero so it stays until the next match clears it.
+// the level is torn down and displayed after the exit of the level
 extern std::string g_matchResultPending;
-void ClearMatchResultMessage();
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -264,7 +248,3 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
 signed int DrawBitmapAndPlaySound_7E320();
 int GetMapMenuDialogIndex_7E320(uint32_t adress, type_menuButtons_E1F84* a1x);
 signed int sub_7E640(type_menuButtons_E1F84* a1x);
-void DrawMenuPopupMessage();
-void AddMenuPopupMessage(Type_MenuPopup* popup);
-void ClearMenuPopupMessages();
-void OnNetworkMessageReceived(std::string message);

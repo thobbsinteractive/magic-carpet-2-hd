@@ -1648,7 +1648,6 @@ signed int ReadKeyboardKeysInMenu_7C050();
 void sub_848A0();
 void InitialiseSpells_54A50(int playerIndex2, int playerIndex);
 void intervalsave(int index);
-void OnNetworkMessageReceivedInGame(std::string message);
 void sub_72350(type_animations1* a1);
 void sub_72550(type_E9C08** a1);
 void CopyScreen_85B20(uint8_t* src, uint8_t* dest, uint16_t rows_count);

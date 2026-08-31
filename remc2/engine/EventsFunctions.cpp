@@ -31650,9 +31650,6 @@ void InGameLoop_47320()//228320
 
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::STARTED);
 
-	std::function<void(std::string)> resCallBack = OnNetworkMessageReceivedInGame;
-	EventDispatcher::I->RegisterEvent(new Event<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, resCallBack));
-
 	g_inGameLoop = true;
 
 	while (1)
@@ -31727,8 +31724,6 @@ void InGameLoop_47320()//228320
 	//Clear pause status
 	x_D41A0_BYTEARRAY_4_struct.OptionsSettingFlag_24 &= ~GAME_PAUSED;
 
-	EventDispatcher::I->UnregisterEvent<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, OnNetworkMessageReceivedInGame);
-
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::GAMEPLAY_ENDED);
 
 	if(IsRecording())
@@ -31761,11 +31756,6 @@ void intervalsave(int index) {
 	SaveLevel_55080(0, x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, outname);
 	D41A0_0 = temp0x39;
 };
-
-void OnNetworkMessageReceivedInGame(std::string message)
-{
-	SetCurrentNotificationMessage_19760((char*)message.c_str(), 3u, 100);
-}
 
 //long debugcounter_47560_2=0;
 //----- (00047560) --------------------------------------------------------
@@ -39650,7 +39640,6 @@ void LevelInitGame_56A30(int16_t level, std::string customLevelPath)//237a30
 	// player enters the multiplayer session menu, 300 ms after the level was torn down, so the
 	// result was wiped before the menu ever drew it.
 	MatchScoreReset();
-	ClearMatchResultMessage();
 
 	if (CommandLineParams.DoMouseOff()) { mouseturnoff = true; }
 	if (level > -1) {

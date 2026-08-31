@@ -464,7 +464,6 @@ char x_BYTE_E29E1 = 1; // weak
 
 int16_t x_WORD_17DE26; // weak
 
-std::vector<Type_MenuPopup*>* m_MenuMessages = nullptr;
 std::string g_matchResultPending;
 
 intptr_t unknown_libname_2_findfirst(char* path, uint16_t  /*a2*/, _finddata_t* c_file) {//findfirst
@@ -868,11 +867,6 @@ void MainMenu_76FA0()//257fa0
 		int16_t tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
 		int scanCode = x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode;
 
-		std::function<void(std::string)> resCallBack = OnNetworkMessageReceived;
-		EventDispatcher::I->RegisterEvent(new Event<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, resCallBack));
-
-		m_MenuMessages = new std::vector<Type_MenuPopup*>();
-
 		while (!m_ExitMenuLoop_E29DC)
 		{
 			g_state_monitor.Update();
@@ -923,8 +917,6 @@ void MainMenu_76FA0()//257fa0
 
 			DrawText_7FB90((char*)VersionNumber, 10, 465, getPaletteIndex_5BE80(x_DWORD_17DE38str.palette_17DE38x, 255, 0, 0));
 
-			DrawMenuPopupMessage();
-
 			if (DrawAndServe_7B250())//25c250
 			{
 				tempMousePosY = x_DWORD_17DE38str.x_DWORD_17DEE6_mouse_positiony;
@@ -949,11 +941,6 @@ void MainMenu_76FA0()//257fa0
 			sub_7A060_get_mouse_and_keyboard_events();
 		}
 
-		EventDispatcher::I->UnregisterEvent<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, OnNetworkMessageReceived);
-
-		delete m_MenuMessages;
-		m_MenuMessages = nullptr;
-
 		ClearPauseMenuState_41BC0();
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
 		sub_753D0();
@@ -965,66 +952,6 @@ void MainMenu_76FA0()//257fa0
 		D41A0_0.m_GameSettings.m_Display.m_uiScreenSize = 0;
 		sub_753D0();
 	}
-}
-
-void DrawMenuPopupMessage()
-{
-	if (m_MenuMessages != nullptr && !m_MenuMessages->empty())
-	{
-		for (auto& popup : *m_MenuMessages)
-		{
-			// Below zero means "until somebody takes it down" - the result of a finished game
-			// hangs there through the menu until the next match starts.  Counting it down would
-			// wrap it back to positive eventually, so it is left alone.
-			if (popup->Duration > 0)
-				popup->Duration--;
-			if (popup->Duration != 0)
-				DrawTextBox(popup->Message, popup->Left, popup->Right, popup->Top, popup->BorderColour);
-				
-		}
-
-		m_MenuMessages->erase(
-			std::remove_if(m_MenuMessages->begin(), m_MenuMessages->end(),
-				[](Type_MenuPopup* popup)
-				{
-					return popup->Duration == 0;   // negative ones stay
-				}),
-			m_MenuMessages->end());
-	}
-}
-
-void AddMenuPopupMessage(Type_MenuPopup* popup)
-{
-	if (m_MenuMessages != nullptr)
-	{
-		m_MenuMessages->push_back(popup);
-	}
-}
-
-// Drops the result of the previous game: called when the next match starts, which is what
-// "stays until the following game" means.
-void ClearMatchResultMessage()
-{
-	g_matchResultPending.clear();
-	if (m_MenuMessages != nullptr) {
-		for (auto it = m_MenuMessages->begin(); it != m_MenuMessages->end(); ) {
-			if ((*it)->Duration < 0) { delete *it; it = m_MenuMessages->erase(it); }
-			else ++it;
-		}
-	}
-}
-
-void ClearMenuPopupMessages()
-{
-	if (m_MenuMessages != nullptr && !m_MenuMessages->empty())
-	{
-		m_MenuMessages->clear();
-	}
-}
-
-void OnNetworkMessageReceived(std::string message)
-{
-	AddMenuPopupMessage(new Type_MenuPopup{ message, 400, 160, 360, 50, 80 });
 }
 
 //----- (00077350) --------------------------------------------------------
@@ -4560,6 +4487,8 @@ void ShowScores()
 	while (x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode || x_DWORD_17DE38str.x_WORD_17DEEE_mouse_buttons)
 		sub_7A060_get_mouse_and_keyboard_events();
 	x_DWORD_17DE38str.x_BYTE_17DF10_get_key_scancode = 0;
+
+	g_matchResultPending.clear();
 }
 
 std::vector<std::string> SplitLines(const std::string& text) {

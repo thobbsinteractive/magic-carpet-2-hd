@@ -183,6 +183,12 @@ typedef struct//lenght 613 // end 17E09D
 } type_x_DWORD_17DE38str;
 #pragma pack (pop)
 
+typedef struct {
+	std::string Message;
+	int16_t Duration;
+}
+Type_Message;
+
 //extern int16_t m_iViewPortX_EA3D0; // weak?x_DWORD_E9C4C_langindexbuffer[481]
 //extern uint16_t m_uiViewPortWidth_EA3C4; // weak?x_DWORD_E9C4C_langindexbuffer[478]
 
@@ -512,6 +518,8 @@ volatile extern int16_t GameTimerTurn_17DB54; // 34EB54
 
 extern uint32_t PitFrequency_F4240;
 
+extern std::vector<Type_Message*>* m_Messages;
+
 bool DefaultResolutions();
 bool IsDefaultResolution(int width, int height);
 bool IsDefaultResolution320(int width, int height);
@@ -580,6 +588,8 @@ void DrawText_2BC10(const char* textbuffer, int16_t posx, int16_t posy, uint8_t 
 void SetFrameStart(std::chrono::system_clock::time_point frameStart);
 std::chrono::duration<double, std::milli> CalculateTimeDelta();
 void VGA_CalculateAndPrintFps(int x, int y, float timeDelta);
+void AddMessage(Type_Message* message);
+void VGA_DrawMessages();
 void VGA_DrawPlayerCoordData(int x, int y);
 void VGA_BlitAny(uint8_t maxFps = 0);
 void LockFps(uint8_t maxFps);
