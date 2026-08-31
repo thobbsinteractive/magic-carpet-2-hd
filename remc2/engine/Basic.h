@@ -589,6 +589,7 @@ void SetFrameStart(std::chrono::system_clock::time_point frameStart);
 std::chrono::duration<double, std::milli> CalculateTimeDelta();
 void VGA_CalculateAndPrintFps(int x, int y, float timeDelta);
 void AddMessage(Type_Message* message);
+void ClearMessages();
 void VGA_DrawMessages();
 void VGA_DrawPlayerCoordData(int x, int y);
 void VGA_BlitAny(uint8_t maxFps = 0);

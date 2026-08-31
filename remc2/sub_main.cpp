@@ -589,6 +589,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		std::function<void(std::string)> resCallBack = OnNetworkMessageReceived;
 		EventDispatcher::I->RegisterEvent(new Event<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, resCallBack));
+		m_Messages = new std::vector<Type_Message*>();
 
 		if (assignToSpecificCores)
 		{
@@ -675,7 +676,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		}
 
 		EventDispatcher::I->UnregisterEvent<std::string>(EventType::E_SHOW_NETWORK_MESSAGE, OnNetworkMessageReceived);
-		m_Messages->clear();
+		ClearMessages();
 		delete m_Messages;
 
 		sub_5BC20();//23CC20 //remove devices?

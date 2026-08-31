@@ -4458,7 +4458,7 @@ void ShowScores()
 			DrawTextWithBoarder_7FCB0((char*)line.c_str(), 10, 620, (signed __int16)(i + 200), 5, colorIndex, 0);
 		}
 
-		if (timeDiff > 5)
+		if (timeDiff > 2)
 			sub_7A060_get_mouse_and_keyboard_events();
 
 		if (noFade)

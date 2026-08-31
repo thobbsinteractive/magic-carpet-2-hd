@@ -1446,6 +1446,7 @@ void sub_75200_VGA_Blit640(uint16_t height, uint8_t maxFps)//256200
 #if _DEBUG
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
 #endif
+	VGA_DrawMessages();
 	// Not inside the _DEBUG block above: this one is for players, not for us.
 	VGA_Blit(pdwScreenBuffer_351628);
 
@@ -1588,6 +1589,14 @@ void AddMessage(Type_Message* message)
 	if (m_Messages != nullptr)
 	{
 		m_Messages->push_back(message);
+	}
+}
+
+void ClearMessages()
+{
+	if (m_Messages != nullptr && !m_Messages->empty())
+	{
+		m_Messages->clear();
 	}
 }
 
