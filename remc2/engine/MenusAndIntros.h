@@ -168,6 +168,10 @@ extern type_BYTE_E25ED_0x str_BYTE_E25ED_0x[];
 extern type_x_BYTE_E25ED_2BB str_BYTE_E25ED_2BB[];
 extern type_E1BAC_0x3c4 str_E1BAC_0x2ec[];
 
+// Result of the multiplayer game that has just finished, waiting to be shown.  It is set as
+// the level is torn down and displayed after the exit of the level
+extern std::string g_matchResultPending;
+
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
 void InitLanguage_76A40();
@@ -204,6 +208,8 @@ void PlayInGameFmv_82670();
 void DrawEndGameTable_82C20(__int16 a1);
 void PlayIntros_83250(char a1);
 void ShowEndCredits_833C0();
+void ShowScores();
+std::vector<std::string> SplitLines(const std::string& text);
 void ShowWelcomeScreen_83850();
 void DrawNetGameMapBackground_85C8B(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
 bool DrawAndServe_pre_sub_7B250(uint32_t var, type_menuButtons_E1F84* var2x);

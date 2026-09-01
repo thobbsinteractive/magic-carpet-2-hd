@@ -51,7 +51,7 @@ uint8_t xx_array_E36C4[64] = { //fix it in future, this is only for extern contr
 };
 
 
-void(*ptrDrawBitmap_F01E8)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t); // eax
+void(*ptrDrawBitmap_F01E8)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale); // eax
 
 char x_BYTE_D3F48 = 0; // weak
 char x_BYTE_D47D8 = 0; // weak
@@ -4748,7 +4748,7 @@ void DrawOkCancelMenu_30A60(int16_t posTextX, int16_t posTextY, uint8_t scale)//
 void ShowMessage_52D70(uint16_t playerIndex, char* cheatMessage)//233d70
 {
 	strcpy(D41A0_0.array_0x2BDE[playerIndex].CurrentNotificationText_0x01c_2BFA_11258, cheatMessage);
-	D41A0_0.array_0x2BDE[playerIndex].word_0x04d_2C2B_11307 = 100;
+	D41A0_0.array_0x2BDE[playerIndex].CurrentNotificationDuration_0x04d_2C2B_11307 = 100;
 	D41A0_0.array_0x2BDE[playerIndex].word_0x04f_2C2D_11309 = 1;
 }
 

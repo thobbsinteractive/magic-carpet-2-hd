@@ -79,12 +79,13 @@ void WaitForNcb_diag(myNCB* ncb, const char* what)
 		if (waited >= 3 && waited - reported >= 3)
 		{
 			reported = waited;
-			debug_net_printf("STUCK: %s pending %lds - cmd=0x%02X ret=0x%02X lsn=%d name=[%.16s] call=[%.16s]\n",
-				what, waited, (int)ncb->ncb_command_0, (int)ncb->ncb_retcode_1, (int)ncb->ncb_lsn_2,
-				ncb->ncb_name_26, ncb->ncb_callName_10);
+			if (CommandLineParams.DoNetworkDebug())
+				debug_net_printf("STUCK: %s pending %lds - cmd=0x%02X ret=0x%02X lsn=%d name=[%.16s] call=[%.16s]\n",
+					what, waited, (int)ncb->ncb_command_0, (int)ncb->ncb_retcode_1, (int)ncb->ncb_lsn_2,
+					ncb->ncb_name_26, ncb->ncb_callName_10);
 		}
 	}
-	if (reported)
+	if (reported && CommandLineParams.DoNetworkDebug())
 		debug_net_printf("STUCK: %s completed after %lds with 0x%02X\n",
 			what, ((long)j___clock() - start) / 100, (int)ncb->ncb_cmd_cplt_49);
 }
@@ -408,8 +409,8 @@ void NetworkLeaveSession()
 	if (!x_BYTE_E1274 || !x_BYTE_E1275) return;   // nothing allocated, or not in a session
 	if (IndexInNetwork_E1276 < 0) return;
 	if (CommandLineParams.DoNetworkDebug())
-		debug_net_printf("MATCHEND: leaving the network session (index %d)\n",
-			(int)IndexInNetwork_E1276);
+		debug_net_printf("MATCHEND: leaving the network session (index %d)\n", (int)IndexInNetwork_E1276);
+
 	NetworkCanceling_73669(IndexInNetwork_E1276);  // hang up peers, drop our name, clear the flag
 	if (CommandLineParams.DoNetworkDebug())
 		debug_net_printf("MATCHEND: session released\n");
@@ -841,7 +842,8 @@ uint8_t NetworkAddName_74767(/*signed __int16* a1,*/ myNCB* connection, char* na
 		if (waited - addNameReported >= 30)
 		{
 			addNameReported = waited;
-			debug_net_printf("WAITING: add name [%.16s] not answered for %lds\n", connection->ncb_name_26, waited);
+			if (CommandLineParams.DoNetworkDebug())
+				debug_net_printf("WAITING: add name [%.16s] not answered for %lds\n", connection->ncb_name_26, waited);
 		}
 		WaitToConnect_7C230();//25d36d
 	}
@@ -1051,8 +1053,9 @@ static void NetworkPeerVanished_73AA1b(int16_t lost)
 
 	NetworkCanceling_73669(lost);
 	D41A0_0.array_0x2BDE[lost].byte_0x006_2BE4_11236 = 0;   // no longer in the game
-	debug_net_printf("PEERGONE: player %d vanished (token holder was %d)\n",
-		(int)lost, (int)IndexInNetwork2_E12A8);
+	if (CommandLineParams.DoNetworkDebug())
+		debug_net_printf("PEERGONE: player %d vanished (token holder was %d)\n",
+			(int)lost, (int)IndexInNetwork2_E12A8);
 
 	if (IndexInNetwork2_E12A8 != lost)
 		return;                                            // the token did not die with it
@@ -1079,7 +1082,8 @@ static void NetworkPeerVanished_73AA1b(int16_t lost)
 		return;
 
 	IndexInNetwork2_E12A8 = next;
-	debug_net_printf("PEERGONE: token moves to %d (I am %d)\n", (int)next, (int)IndexInNetwork_E1276);
+	if (CommandLineParams.DoNetworkDebug())
+		debug_net_printf("PEERGONE: token moves to %d (I am %d)\n", (int)next, (int)IndexInNetwork_E1276);
 
 	// The survivors only ever had a session with the node that died, so they have to be
 	// introduced to each other again: the new token holder listens, everybody else calls it.
@@ -1125,6 +1129,22 @@ void RemoveDeadClients()
 				// reason it is right in the game.
 				g_vanishedHandled[i] = true;
 				NetworkPeerVanished_73AA1b((int16_t)i);
+
+				// ...and leave the slot able to take somebody new.  The original only tore it down:
+				// the LISTEN armed for the peer is cancelled and hung up just above, and nothing
+				// ever arms another one, so a newcomer that takes the freed name and the freed index
+				// calls into a slot nobody is listening on.  Measured before this: the newcomer
+				// reported "myIdx=1" and both sides exchanged nothing for the rest of the run.
+				//
+				// Only the listening node re-arms.  A joining node always calls the first one, and
+				// index 0 is the side that listens (NetworkInitConnection_7308F: index 0 listens on
+				// every other slot, everybody else calls).
+				if (IndexInNetwork_E1276 == 0 && i != IndexInNetwork_E1276)
+				{
+					if (CommandLineParams.DoNetworkDebug())
+						debug_net_printf("SLOTFREE: listening again on slot %d for a newcomer\n", i);
+					NetworkListen_74B75(i);
+				}
 			}
 			oldConnected[i] = connected_E12CE[i];
 		}

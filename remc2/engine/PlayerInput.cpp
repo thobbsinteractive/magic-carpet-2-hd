@@ -2438,7 +2438,7 @@ void ReadOkayCancelButtonEvents_19E00()//1fae00
 }
 
 //----- (00019760) --------------------------------------------------------
-void SetCurrentNotificationMessage_19760(const char* message, unsigned __int8 a2, __int16 a3)//1fa760
+void SetCurrentNotificationMessage_19760(const char* message, unsigned __int8 a2, __int16 duration)//1fa760
 {
 	int maxLength = sizeof(D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].CurrentNotificationText_0x01c_2BFA_11258);
 
@@ -2472,7 +2472,7 @@ void SetCurrentNotificationMessage_19760(const char* message, unsigned __int8 a2
 		v4 += 2;
 	} while (v6);*/
 	//result = (int)x_D41A0_BYTEARRAY_0;
-	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x04d_2C2B_11307 = a3;
+	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].CurrentNotificationDuration_0x04d_2C2B_11307 = duration;
 	D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].word_0x04f_2C2D_11309 = a2;
 	//	return result;
 }

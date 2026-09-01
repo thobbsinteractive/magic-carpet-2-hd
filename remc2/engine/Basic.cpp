@@ -1,6 +1,7 @@
 #include "Basic.h"
 #include "engine_support.h"
 #include "CommandLineParser.h"
+#include "../portability/port_net.h"
 
 std::string gameDataPath;
 std::string cdDataPath;
@@ -345,6 +346,8 @@ Pathstruct xadatatables = { "",(uint8_t**)&x_DWORD_D41BC_langbuffer,&LANG_BEGIN_
 //zero
 //#define psxazero14 47
 
+std::vector<Type_Message*>* m_Messages = nullptr;
+
 bool IsDefaultResolution320(int width, int height)
 {
 	return (width == 320 && height == 200);
@@ -655,7 +658,7 @@ void sub_2EBB0_draw_text_with_border_630x340(char* textString)//20fbb0
 		x_DWORD_D41D0 = textString;
 		x_WORD_E36D4 = 64;
 		pdwScreenBuffer_351628 += 0x26C0;
-		/*result = */sub_7FCB0_draw_text_with_border(/*64,*/ textString, 0, 630, 340, 5, x_BYTE_EB3B6, 0);
+		/*result = */DrawTextWithBoarder_7FCB0(/*64,*/ textString, 0, 630, 340, 5, x_BYTE_EB3B6, 0);
 		x_WORD_E36D4 = 0;
 		pdwScreenBuffer_351628 -= 0x26C0;
 	}
@@ -663,7 +666,7 @@ void sub_2EBB0_draw_text_with_border_630x340(char* textString)//20fbb0
 }
 
 //----- (0007FCB0) --------------------------------------------------------
-void sub_7FCB0_draw_text_with_border(char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8)//260cb0
+void DrawTextWithBoarder_7FCB0(char* textString, int32_t a3, int32_t a4, int a5, uint8_t a6, unsigned __int8 a7, uint32_t a8)//260cb0
 {
 	int v8; // esi
 	signed __int16 j; // di
@@ -1444,6 +1447,8 @@ void sub_75200_VGA_Blit640(uint16_t height, uint8_t maxFps)//256200
 #if _DEBUG
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
 #endif
+	VGA_DrawMessages();
+	// Not inside the _DEBUG block above: this one is for players, not for us.
 	VGA_Blit(pdwScreenBuffer_351628);
 
 	//set speed
@@ -1461,6 +1466,7 @@ void VGA_BlitAny(uint8_t maxFps)//256200
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
 	VGA_DrawPlayerCoordData(0, 16);
 #endif
+	VGA_DrawMessages();
 	VGA_Blit(pdwScreenBuffer_351628, pdwScreenAlphaBuffer);
 
 	//set speed
@@ -1581,6 +1587,49 @@ void VGA_CalculateAndPrintFps(int x, int y, float timeDelta)
 	fpsStr.append(std::to_string(std::round(m_fFps*10)/10).substr(0,5));
 
 	VGA_Draw_stringXYtoBuffer(fpsStr.c_str(), x, y, pdwScreenBuffer_351628);
+}
+
+void AddMessage(Type_Message* message)
+{
+	if (m_Messages != nullptr)
+	{
+		m_Messages->push_back(message);
+	}
+}
+
+void ClearMessages()
+{
+	if (m_Messages != nullptr && !m_Messages->empty())
+	{
+		m_Messages->clear();
+	}
+}
+
+void VGA_DrawMessages()
+{
+	if (m_Messages != nullptr && !m_Messages->empty())
+	{
+		int i = 0;
+		for (auto& message : *m_Messages)
+		{
+			// Below zero means "until somebody takes it down" - the result of a finished game
+			// hangs there through the menu until the next match starts.  Counting it down would
+			// wrap it back to positive eventually, so it is left alone.
+			if (message->Duration > 0)
+				message->Duration--;
+			if (message->Duration != 0)
+				VGA_Draw_stringXYtoBuffer(message->Message.c_str(), 0, i * 16, pdwScreenBuffer_351628);
+
+		}
+
+		m_Messages->erase(
+			std::remove_if(m_Messages->begin(), m_Messages->end(),
+				[](Type_Message* message)
+				{
+					return message->Duration == 0;   // negative ones stay
+				}),
+			m_Messages->end());
+	}
 }
 
 void VGA_DrawPlayerCoordData(int x, int y)
@@ -2728,7 +2777,10 @@ void sub_8F935_bitmap_draw_final(uint8_t width, uint8_t height, uint16_t tiley, 
 						{
 							startOffsetX = *texture++;
 							if ((startOffsetX & 0x80u) == 0)
+							{
+								//Start Drawing
 								break;
+							}
 							ptrScreenBuffer -= (char)startOffsetX;
 							if (pdwScreenAlphaBuffer != nullptr)
 								ptrScreenAlphaBuffer -= (char)startOffsetX;
