@@ -345,6 +345,8 @@ Pathstruct xadatatables = { "",(uint8_t**)&x_DWORD_D41BC_langbuffer,&LANG_BEGIN_
 //zero
 //#define psxazero14 47
 
+std::vector<Type_Message*>* m_Messages = nullptr;
+
 bool IsDefaultResolution320(int width, int height)
 {
 	return (width == 320 && height == 200);
@@ -1444,6 +1446,7 @@ void sub_75200_VGA_Blit640(uint16_t height, uint8_t maxFps)//256200
 #if _DEBUG
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
 #endif
+	VGA_DrawMessages();
 	// Not inside the _DEBUG block above: this one is for players, not for us.
 	VGA_Blit(pdwScreenBuffer_351628);
 
@@ -1462,6 +1465,7 @@ void VGA_BlitAny(uint8_t maxFps)//256200
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
 	VGA_DrawPlayerCoordData(0, 16);
 #endif
+	VGA_DrawMessages();
 	VGA_Blit(pdwScreenBuffer_351628);
 
 	//set speed
@@ -1578,6 +1582,49 @@ void VGA_CalculateAndPrintFps(int x, int y, float timeDelta)
 	fpsStr.append(std::to_string(std::round(m_fFps*10)/10).substr(0,5));
 
 	VGA_Draw_stringXYtoBuffer(fpsStr.c_str(), x, y, pdwScreenBuffer_351628);
+}
+
+void AddMessage(Type_Message* message)
+{
+	if (m_Messages != nullptr)
+	{
+		m_Messages->push_back(message);
+	}
+}
+
+void ClearMessages()
+{
+	if (m_Messages != nullptr && !m_Messages->empty())
+	{
+		m_Messages->clear();
+	}
+}
+
+void VGA_DrawMessages()
+{
+	if (m_Messages != nullptr && !m_Messages->empty())
+	{
+		int i = 0;
+		for (auto& message : *m_Messages)
+		{
+			// Below zero means "until somebody takes it down" - the result of a finished game
+			// hangs there through the menu until the next match starts.  Counting it down would
+			// wrap it back to positive eventually, so it is left alone.
+			if (message->Duration > 0)
+				message->Duration--;
+			if (message->Duration != 0)
+				VGA_Draw_stringXYtoBuffer(message->Message.c_str(), 0, i * 16, pdwScreenBuffer_351628);
+
+		}
+
+		m_Messages->erase(
+			std::remove_if(m_Messages->begin(), m_Messages->end(),
+				[](Type_Message* message)
+				{
+					return message->Duration == 0;   // negative ones stay
+				}),
+			m_Messages->end());
+	}
 }
 
 void VGA_DrawPlayerCoordData(int x, int y)
