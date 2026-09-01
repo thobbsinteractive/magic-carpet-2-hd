@@ -117,16 +117,6 @@ typedef struct {//lenght 18
 type_BYTE_E25ED_0x;
 #pragma pack(pop)
 
-typedef struct {
-	std::string Message;
-	int16_t Duration;
-	uint16_t Left; 
-	uint16_t Right; 
-	uint16_t Top; 
-	int16_t BorderColour;
-}
-Type_MenuPopup;
-
 // from sub_main
 extern int8_t LoadLevelNumber_D419C;
 extern char x_BYTE_D41AD_skip_screen;
@@ -178,7 +168,9 @@ extern type_BYTE_E25ED_0x str_BYTE_E25ED_0x[];
 extern type_x_BYTE_E25ED_2BB str_BYTE_E25ED_2BB[];
 extern type_E1BAC_0x3c4 str_E1BAC_0x2ec[];
 
-extern std::vector<Type_MenuPopup*>* m_MenuMessages;
+// Result of the multiplayer game that has just finished, waiting to be shown.  It is set as
+// the level is torn down and displayed after the exit of the level
+extern std::string g_matchResultPending;
 
 // functions
 void MenusAndIntros_76930(bool skipMenus = false);
@@ -216,6 +208,8 @@ void PlayInGameFmv_82670();
 void DrawEndGameTable_82C20(__int16 a1);
 void PlayIntros_83250(char a1);
 void ShowEndCredits_833C0();
+void ShowScores();
+std::vector<std::string> SplitLines(const std::string& text);
 void ShowWelcomeScreen_83850();
 void DrawNetGameMapBackground_85C8B(uint8_t* a1, uint8_t* a2, int a3, int a4, int a5, int a6);
 bool DrawAndServe_pre_sub_7B250(uint32_t var, type_menuButtons_E1F84* var2x);
@@ -254,7 +248,3 @@ void DrawAnimTextsAndPlaySounds_7D400(__int16 posx, __int16 posy, char a4);
 signed int DrawBitmapAndPlaySound_7E320();
 int GetMapMenuDialogIndex_7E320(uint32_t adress, type_menuButtons_E1F84* a1x);
 signed int sub_7E640(type_menuButtons_E1F84* a1x);
-void DrawMenuPopupMessage();
-void AddMenuPopupMessage(Type_MenuPopup* popup);
-void ClearMenuPopupMessages();
-void OnNetworkMessageReceived(std::string message);

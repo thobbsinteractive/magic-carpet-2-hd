@@ -1129,6 +1129,22 @@ void RemoveDeadClients()
 				// reason it is right in the game.
 				g_vanishedHandled[i] = true;
 				NetworkPeerVanished_73AA1b((int16_t)i);
+
+				// ...and leave the slot able to take somebody new.  The original only tore it down:
+				// the LISTEN armed for the peer is cancelled and hung up just above, and nothing
+				// ever arms another one, so a newcomer that takes the freed name and the freed index
+				// calls into a slot nobody is listening on.  Measured before this: the newcomer
+				// reported "myIdx=1" and both sides exchanged nothing for the rest of the run.
+				//
+				// Only the listening node re-arms.  A joining node always calls the first one, and
+				// index 0 is the side that listens (NetworkInitConnection_7308F: index 0 listens on
+				// every other slot, everybody else calls).
+				if (IndexInNetwork_E1276 == 0 && i != IndexInNetwork_E1276)
+				{
+					if (CommandLineParams.DoNetworkDebug())
+						debug_net_printf("SLOTFREE: listening again on slot %d for a newcomer\n", i);
+					NetworkListen_74B75(i);
+				}
 			}
 			oldConnected[i] = connected_E12CE[i];
 		}

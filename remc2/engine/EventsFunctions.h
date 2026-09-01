@@ -506,6 +506,13 @@ void NetworkUpdateConnections2_74374();
 int16_t GetIndexNetwork2_74515();
 void sub_7A060_get_mouse_and_keyboard_events();
 void sub_7AA70_load_and_decompres_dat_file(const char* a1, uint8_t* a2, int a3, int a4);
+// Multiplayer scoreboard for the end-of-game result line.  Worked out on every node from
+// the same inputs, so all of them arrive at the same table without anything being sent.
+void MatchScoreReset();
+void MatchScoreMarkPlaying(int player);
+void MatchScoreRecordKnockOut(int victim, type_entity_0x6E8E* victimEntity);
+std::string MatchScoreResultLine();
+
 void PlayerEvents_51BB0();
 void DrawAndEventsInGame_47560(int16_t turn);
 //x_DWORD /*__cdecl*/ toupper(x_DWORD); //weak
@@ -1641,7 +1648,6 @@ signed int ReadKeyboardKeysInMenu_7C050();
 void sub_848A0();
 void InitialiseSpells_54A50(int playerIndex2, int playerIndex);
 void intervalsave(int index);
-void OnNetworkMessageReceivedInGame(std::string message);
 void sub_72350(type_animations1* a1);
 void sub_72550(type_E9C08** a1);
 void CopyScreen_85B20(uint8_t* src, uint8_t* dest, uint16_t rows_count);
