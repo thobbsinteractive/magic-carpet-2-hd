@@ -199,6 +199,9 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			std::function<void(uint32_t, uint32_t)> resCallBack = OnMouseResolutionChanged;
 			EventDispatcher::I->RegisterEvent(new Event<uint32_t, uint32_t>(EventType::E_RESOLUTION_CHANGE, resCallBack));
 
+			std::function<void(ResourceType, const uint8_t*, uint32_t, uint32_t)> textureCallBack = SetTexture;
+			EventDispatcher::I->RegisterEvent(new Event<ResourceType, const uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, textureCallBack));
+
 			std::function<void(ResourceType, const std::vector<RenderPolygon>&)> polyCallBack = SetPolygons;
 			EventDispatcher::I->RegisterEvent(new Event<ResourceType, const std::vector<RenderPolygon>&>(EventType::E_RESOURCE_CHANGE, polyCallBack));
 		}
@@ -1097,6 +1100,12 @@ void SetPolygons(ResourceType state, const std::vector<RenderPolygon>& polygons)
 {
 	if (state == ResourceType::POLYGONS_UPDATED)
 		m_polygons = polygons;
+}
+
+void SetTexture(ResourceType state, const uint8_t *pixels, uint32_t width, uint32_t height)
+{
+	if (state == ResourceType::TEXTURE_LOADED)
+		m_vulkanRenderer->UploadTexture(pixels, width, height);
 }
 
 void SubVulkanBlit(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect)

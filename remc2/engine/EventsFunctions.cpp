@@ -43101,7 +43101,7 @@ void sub_5B7A0_prepare_textures()//23C7A0
 
 			x_DWORD_DDF50_texture_adresses.at(texture_addresses_index++) = ptrTexture;
 
-			EventDispatcher::I->DispatchEvent(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED, ptrTexture, x_BYTE_D41B5_texture_size);
+			EventDispatcher::I->DispatchEvent<ResourceType, const uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED, ptrTexture, (uint32_t)x_BYTE_D41B5_texture_size, (uint32_t)x_BYTE_D41B5_texture_size);
 		}
 	}
 	sub_5B840_load_Palette_and_help_Palette();//23C840
