@@ -1,5 +1,9 @@
 #include "Network.h"
 
+// Defined in EventsFunctions.cpp; declared here rather than by including that header, which
+// this file does not otherwise need.
+void DestroyPlayerCastle(int player);
+
 //#define PRINT_UPDATE_CONNECTIONS
 
 //char x_BYTE_E126D = 0; // weak
@@ -1129,6 +1133,11 @@ void RemoveDeadClients()
 				// reason it is right in the game.
 				g_vanishedHandled[i] = true;
 				NetworkPeerVanished_73AA1b((int16_t)i);
+				// A node that vanished left its castle behind just as surely as one that walked out
+				// of the menu - a dropped connection is the same thing to everyone still playing.
+				// Every survivor notices the same peer, so they all do this for the same player and
+				// the castle goes on every screen without anything being sent.
+				DestroyPlayerCastle(i);
 
 				// ...and leave the slot able to take somebody new.  The original only tore it down:
 				// the LISTEN armed for the peer is cancelled and hung up just above, and nothing
@@ -1139,7 +1148,12 @@ void RemoveDeadClients()
 				// Only the listening node re-arms.  A joining node always calls the first one, and
 				// index 0 is the side that listens (NetworkInitConnection_7308F: index 0 listens on
 				// every other slot, everybody else calls).
-				if (IndexInNetwork_E1276 == 0 && i != IndexInNetwork_E1276)
+				// Only while the session is still up (x_BYTE_E1275).  Ending a match takes the peers
+				// away as well, and arming a LISTEN on a session that is being torn down is pointless
+				// at best.  (It was suspected of breaking the next match too - it was not; that was
+				// the scores screen waiting for a keypress.  The guard is kept because it is right,
+				// not because it fixed that.)
+				if (x_BYTE_E1275 && IndexInNetwork_E1276 == 0 && i != IndexInNetwork_E1276)
 				{
 					if (CommandLineParams.DoNetworkDebug())
 						debug_net_printf("SLOTFREE: listening again on slot %d for a newcomer\n", i);

@@ -845,7 +845,11 @@ void MainMenu_76FA0()//257fa0
 	{
 		if (CommandLineParams.DoNetworkDebug())
 			debug_net_printf("MENU: showing result %s\n", g_matchResultPending.c_str());
-		ShowScores();
+		// The scores screen waits for a keypress, and the automated tests press nothing:
+		// a run would stop here after the first match, which is reported as "host played
+		// 1 of 2 matches" with the transport perfectly healthy.
+		if (!CommandLineParams.AutoTest())
+			ShowScores();
 	}
 
 	VGA_cleanKeyBuffer();

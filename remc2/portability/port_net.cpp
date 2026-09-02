@@ -2002,7 +2002,7 @@ namespace MyNetworkLib {
 		if (u.message == MESS_CLIENT_TESTADDNAME) {
 			TypeIpPort ip{ senderAddr, u.port };
 			shadow_myNCB n{}; n.ncb_command_0 = 0xFE;
-			// The host claims the session's first name before anybody else claims anything.
+			// The session's first name belongs to the node hosting it.
 			//
 			// Every node drops its name when a match ends and asks for one again for the next, so
 			// between matches the whole name space is briefly free.  A node arriving in that gap
@@ -2010,18 +2010,31 @@ namespace MyNetworkLib {
 			// machine actually hosting the session was pushed to NETH201, after which nothing was
 			// exchanged at all.  The protocol already says joiners should wait for the server to
 			// register (MESS_SERVER_GIVE_IP / SERVER_NAME_REGISTERED); this makes the server hold
-			// them off rather than trusting each of them to wait.
+			// them off - but ONLY for that one name.  Refusing every name until the host has
+			// registered was tried and breaks restarting: after a match the client asks first, is
+			// turned away from all eight indices and gives up, and the menu reports it could not
+			// join.  A joiner arriving first simply takes the second name and waits in the lobby.
 			{
 				char firstName[16] = { 0 };
 				snprintf(firstName, sizeof(firstName), "NETH2%c0", u.data[5]);
 				while (strlen(firstName) < 15) strcat(firstName, " ");
 				const bool wantsFirstName = (memcmp(u.data, firstName, 15) == 0);
-				if (!serverAddname && !wantsFirstName) {
+				// ...and the first name belongs to the node hosting the session, nobody else.
+				//
+				// Its own registration comes over its own control connection, so it is the request
+				// whose data port is the port this server listens on.  Letting anybody else have
+				// that name makes the game treat the joiner as node 0 while the transport server is
+				// somebody else - the two disagree about who is who, and the session comes apart as
+				// soon as they have to work together.
+				const bool senderIsHost = (u.port == clPort);
+				if (wantsFirstName && !senderIsHost) {
 					if (m_network_debug)
-						debug_net_printf("NAME: [%.15s] must wait, the host has not claimed its own yet\n", u.data);
+						debug_net_printf("NAME: [%.15s] belongs to the host, refusing it to %s:%d\n",
+							u.data, senderAddr.c_str(), u.port);
 					ReplyToSender(Pack_Message(MESS_SERVER_TESTADDNAME_REJECT, n, u.index, -10));
 					return;
 				}
+
 			}
 			if (GetNameNetwork(u.data).empty()) {
 				AddNetworkName(u.data, ip);
