@@ -417,7 +417,6 @@ void InitTmaps(unsigned __int16 a1)//251f50
 			if (index3x)
 			{
 				int index4 = sub_70C60_decompress_tmap(i, (uint8_t*)index3x->partstr_0);
-				//WriteTextureMapToBmp(i, index3x->partstr_0, D41A0_0.terrain_2FECE.MapType);
 				if (index4 != -1)
 				{
 					if (bigSprites)
@@ -489,6 +488,13 @@ void InitTmaps(unsigned __int16 a1)//251f50
 					str_DWORD_F66F0x[v6] = &index3x->partstr_0;
 					x_DWORD_F5730[v6] = v5;
 					index6x = str_DWORD_F66F0x[v6];
+
+					if ((*index6x)->word_0 != NULL_TEXTURE)
+					{
+						//WriteTextureMapToBmp(i, index3x->partstr_0, D41A0_0.terrain_2FECE.MapType);
+						EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, const uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED, i, (uint8_t*)(*index6x)->textureBuffer, (uint32_t)(*index6x)->width, (uint32_t)(*index6x)->height);
+					}
+
 					//if (**(uint8_t**)index6 & 1)
 					if ((*index6x)->word_0 & 1)
 						index = sub_721C0_initTmap(animations_E9C08x, index6x, i);

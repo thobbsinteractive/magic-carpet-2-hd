@@ -56,7 +56,7 @@ public:
 
 	// Uploads an 8-bit indexed texture (width*height bytes, one palette
 	// index per texel) and returns a TextureId to use in RenderPolygon.
-	uint32_t UploadTexture(const uint8_t* indexedPixels, uint32_t width, uint32_t height);
+	uint32_t UploadTexture(uint32_t index, const uint8_t* indexedPixels, uint32_t width, uint32_t height);
 
 	// Frees a previously uploaded texture's GPU resources.
 	void FreeTexture(uint32_t textureId);
@@ -180,7 +180,6 @@ private:
 	void* m_paletteStagingMapped = nullptr;
 
 	std::unordered_map<uint32_t, Texture> m_textures;
-	uint32_t m_nextTextureId = 1;
 
 	static constexpr int kFramesInFlight = 2;
 	FrameData m_frames[kFramesInFlight];

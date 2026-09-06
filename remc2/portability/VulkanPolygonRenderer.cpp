@@ -487,7 +487,7 @@ VkDescriptorSet VulkanPolygonRenderer::AllocateTextureDescriptorSet(VkImageView 
 	return set;
 }
 
-uint32_t VulkanPolygonRenderer::UploadTexture(const uint8_t* indexedPixels, uint32_t width, uint32_t height)
+uint32_t VulkanPolygonRenderer::UploadTexture(uint32_t index, const uint8_t* indexedPixels, uint32_t width, uint32_t height)
 {
 	VkDeviceSize size = (VkDeviceSize)width * height;
 
@@ -592,9 +592,8 @@ uint32_t VulkanPolygonRenderer::UploadTexture(const uint8_t* indexedPixels, uint
 
 	tex.descriptorSet = AllocateTextureDescriptorSet(tex.view);
 
-	uint32_t id = m_nextTextureId++;
-	m_textures[id] = tex;
-	return id;
+	m_textures[index] = tex;
+	return index;
 }
 
 void VulkanPolygonRenderer::FreeTexture(uint32_t textureId)

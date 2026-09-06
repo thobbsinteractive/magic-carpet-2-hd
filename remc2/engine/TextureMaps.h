@@ -8,6 +8,7 @@
 #include "Basic.h"
 
 const int max_sprites = 600;
+const int NULL_TEXTURE = 52528;
 
 extern type_BIG_SPRITES_BUFFER BIG_SPRITES_BUFFERx[max_sprites];
 
