@@ -492,7 +492,7 @@ void InitTmaps(unsigned __int16 a1)//251f50
 					if ((*index6x)->word_0 != NULL_TEXTURE)
 					{
 						//WriteTextureMapToBmp(i, index3x->partstr_0, D41A0_0.terrain_2FECE.MapType);
-						EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, const uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED, i, (uint8_t*)(*index6x)->textureBuffer, (uint32_t)(*index6x)->width, (uint32_t)(*index6x)->height);
+						EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, const uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::SPRITE_LOADED, i, (uint8_t*)(*index6x)->textureBuffer, (uint32_t)(*index6x)->width, (uint32_t)(*index6x)->height);
 					}
 
 					//if (**(uint8_t**)index6 & 1)
@@ -649,6 +649,21 @@ int sub_70C60_decompress_tmap(uint16_t texture_index, uint8_t* texture_buffer)//
 		result = -2;
 	}
 	return result;
+}
+
+void WriteTextureMapToBmp(uint16_t texture_index, uint8_t* ptrPalette, uint8_t* ptextureMap, uint16_t width, uint16_t height)
+{
+	char name[MAX_PATH];
+	std::string path = GetSubDirectoryPath("BufferOut");
+	if (myaccess(path.c_str(), 0) < 0)
+	{
+		std::string exepath = get_exe_path();
+		mymkdir((exepath + "/" + "BufferOut").c_str());
+	}
+
+	sprintf(name, "TmapOut%03d%s", texture_index, ".bmp");
+	path = GetSubDirectoryFilePath("BufferOut", name);
+	BitmapIO::WriteRGBAImageBufferAsImageBMP(path.c_str(), width, height, ptrPalette, ptextureMap);
 }
 
 void WriteTextureMapToBmp(uint16_t texture_index, type_particle_str* ptextureMap, MapType_t mapType)

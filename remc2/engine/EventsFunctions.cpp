@@ -43099,7 +43099,9 @@ void sub_5B7A0_prepare_textures()//23C7A0
 		{
 			uint8_t* ptrTexture = (uint8_t*)((ypos * x_BYTE_D41B5_texture_size << 8) + (xpos * x_BYTE_D41B5_texture_size) + BLOCK32DAT_BEGIN_BUFFER);
 
-			x_DWORD_DDF50_texture_adresses.at(texture_addresses_index++) = ptrTexture;
+			EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, const uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED, texture_addresses_index++, ptrTexture, x_BYTE_D41B5_texture_size, x_BYTE_D41B5_texture_size);
+			//WriteTextureMapToBmp(texture_addresses_index++, *xadatapald0dat2.colorPalette_var28, ptrTexture, x_BYTE_D41B5_texture_size, x_BYTE_D41B5_texture_size);
+			x_DWORD_DDF50_texture_adresses.at(texture_addresses_index) = ptrTexture;
 		}
 	}
 	sub_5B840_load_Palette_and_help_Palette();//23C840
