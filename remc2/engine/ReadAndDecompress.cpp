@@ -1,4 +1,5 @@
 #include "ReadAndDecompress.h"
+#include "TextureMaps.h"
 uint8_t BigTextureBuffer[128 * 128 * 160];
 
 //----- (00054630) --------------------------------------------------------
@@ -17,25 +18,39 @@ void sub_54630_load_psxblock(uint16_t TextSize)//235630
 	}
 }
 
-void UpdateTileTextures(uint8_t tileSize, uint8_t* tileBuffer)
+void UpdateTileTextures(uint8_t tileSize, uint8_t* tileBuffer, MapType_t mapType)
 {
+	constexpr int kTilesWide = 8;
+	constexpr int kTilesTall = 19;
+
 	int texture_addresses_index = 0;
-	for (int ypos = 0; ypos < (signed int)(256 / (256 / tileSize)); ypos++)
+	int stride = tileSize * kTilesWide; // bytes per row of the whole atlas (1 byte/pixel = palette index)
+
+	std::vector<uint8_t> tilePixels(static_cast<size_t>(tileSize) * tileSize);
+
+	for (int ypos = 0; ypos < kTilesTall; ypos++)
 	{
-		for (int xpos = 0; xpos < (256 / tileSize); xpos++)
+		for (int xpos = 0; xpos < kTilesWide; xpos++)
 		{
-			uint8_t* ptrTexture = (uint8_t*)((ypos * tileSize << 8) + (xpos * tileSize) + tileBuffer);
+			uint8_t* ptrTexture = tileBuffer + (ypos * tileSize * stride) + (xpos * tileSize);
 
-			x_DWORD_DDF50_texture_adresses.at(texture_addresses_index++) = ptrTexture;
-
-			if (texture_addresses_index < 255)
+			for (int row = 0; row < tileSize; row++)
 			{
-				EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, const uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED, texture_addresses_index, ptrTexture, tileSize, tileSize);
-				//WriteTextureMapToBmp(texture_addresses_index, *xadatapald0dat2.colorPalette_var28, ptrTexture, tileSize, tileSize);
+				std::memcpy(
+					tilePixels.data() + row * tileSize,
+					ptrTexture + row * stride,
+					tileSize);
 			}
+
+			EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, const uint8_t*, uint32_t, uint32_t>(
+				EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED,
+				texture_addresses_index++, tilePixels.data(), tileSize, tileSize);
+
+			//WriteTextureMapToBmp(texture_addresses_index, tilePixels.data(), tileSize, tileSize, mapType);	
 		}
 	}
 }
+
 //----- (00054660) --------------------------------------------------------
 void sub_54660_read_and_decompress_sky_and_blocks(MapType_t GraphicsType, uint8_t GraphicsSize)//235660
 {
@@ -158,9 +173,9 @@ void sub_54660_read_and_decompress_sky_and_blocks(MapType_t GraphicsType, uint8_
 	}
 	}
 	if (GraphicsSize < 128)
-		UpdateTileTextures(GraphicsSize, BLOCK32DAT_BEGIN_BUFFER);
+		UpdateTileTextures(GraphicsSize, BLOCK32DAT_BEGIN_BUFFER, GraphicsType);
 	else
-		UpdateTileTextures(GraphicsSize, BigTextureBuffer);
+		UpdateTileTextures(GraphicsSize, BigTextureBuffer, GraphicsType);
 }
 
 
