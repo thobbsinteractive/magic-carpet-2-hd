@@ -789,17 +789,17 @@ static const std::vector<FieldRange>& field_table()
 		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].array_0x52_82.roll", i);  tbl.push_back({ ENTBASE(i,array_0x52_82) + 4,2,strdup(nm),0 });
 		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].array_0x52_82.fov", i);   tbl.push_back({ ENTBASE(i,array_0x52_82) + 6,2,strdup(nm),0 });
 		ESC(word_0x5A_90, 2); ESC(byte_0x5C_92, 1); ESC(byte_0x5D_93, 1);
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.dword_0x5E_94", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,dword_0x5E_94),4,strdup(nm),0 });
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x62_98", i);   tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x62_98),2,strdup(nm),0 });
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.dword_0x64_100", i); tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,dword_0x64_100),4,strdup(nm),0 });
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x68_104", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x68_104),2,strdup(nm),0 });
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.dword_0x70_112", i); tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,dword_0x70_112),4,strdup(nm),0 });
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x74_116", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x74_116),2,strdup(nm),0 });
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x76_118", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x76_118),2,strdup(nm),0 });
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x78_120", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x78_120),2,strdup(nm),0 });
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x7A_122", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x7A_122),2,strdup(nm),0 });
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x7C_124", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x7C_124),2,strdup(nm),0 });
-		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x80_128", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,word_0x80_128),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.dword_0x5E_94", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[0].amount.dword),4,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x62_98", i);   tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[0].source),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.dword_0x64_100", i); tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[1].amount.dword),4,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x68_104", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[1].source),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.dword_0x70_112", i); tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[3].amount.dword),4,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x74_116", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[3].source),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x76_118", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[4].amount.word[0]),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x78_120", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[4].amount.word[1]),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x7A_122", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[4].source),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x7C_124", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[5].amount.word[0]),2,strdup(nm),0 });
+		snprintf(nm, sizeof(nm), "struct_0x6E8E[%d].str_0x5E_94.word_0x80_128", i);  tbl.push_back({ ENTBASE(i,str_0x5E_94) + offsetof(type_str_0x5E_94,channel[5].source),2,strdup(nm),0 });
 		ESC(word_0x82_130, 2); ESC(word_0x84_132, 2); ESC(word_0x86_134, 2);
 		ESC(dword_0x88_136, 4); ESC(dword_0x8C_140, 4); ESC(dword_0x90_144, 4);
 		ESC(playerEntityIndex_0x94_148, 2); ESC(word_0x96_150, 2); ESC(word_0x98_152, 2);
@@ -1081,7 +1081,11 @@ void support_begin() {
 		//x_D41A0_BYTEARRAY_4_struct.player_name_57 =new char[256];
 		//x_D41A0_BYTEARRAY_4_struct.savestring_89 = new char[256];
 
-	x_BYTE_14B4E0_second_heightmap = new uint8_t[65536];
+	// Zero-initialised: the game maintains this plane on every map type (the
+	// painters raise and lower it) but only the cave generator seeds it, so on
+	// a day/night level it starts as whatever is here. In the original that is
+	// a zeroed BSS block; a bare new[] made it uninitialised heap.
+	x_BYTE_14B4E0_second_heightmap = new uint8_t[65536]();
 	off_D41A8_sky = new uint8_t[1024 * 1024];
 	memcpy(off_D41A8_sky, &x_BYTE_14B4E0_second_heightmap, 4);
 
@@ -1197,7 +1201,10 @@ int test_0x6E8E_id_pointer(uint32_t adress) {
 	return 0;
 }
 int test_D41A0_id_pointer(uint32_t adress) {
-	if ((adress >= 0x2bfa) && (adress < 0x2bfa + 49))return 2;//text
+	// CurrentNotificationText_0x01c of every player (array_0x2BDE, 0x84C each): the text comes
+	// from the language file, so it differs whenever the two runs use different languages
+	for (uint32_t player = 0; player < 8; player++)
+		if ((adress >= 0x2bfa + player * 0x84c) && (adress < 0x2bfa + player * 0x84c + 49))return 2;//text
 	if ((adress >= 0x2f79) && (adress < 0x2f79 + 1))return 2;//text
 	if ((adress >= 0x2fbd) && (adress < 0x2fbd + 1))return 2;//handle click button
 
