@@ -74,12 +74,6 @@ public:
 	void EndFrame();
 
 private:
-	struct Vertex
-	{
-		float x, y;			// screen-space pixel coords
-		float u, v;			// texel-space coords (divided by texture size in shader via push constant... see .cpp)
-		float brightness;	// 0-1
-	};
 
 	struct Texture
 	{

@@ -108,6 +108,7 @@ private:
 	void SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons);
 	void DrawSprite_41BD3(uint32 a1);
 	void DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index, std::vector<RenderPolygon>* polygons);
+	HWVertex MakeHWVertex(const ProjectionVertex& v, uint32_t textureIndex);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, std::vector<RenderPolygon>* polygons);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture, std::vector<RenderPolygon> *polygons);
 	void DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t playersColors_E88E0x[][3], int32_t x_DWORD_F5730[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth);

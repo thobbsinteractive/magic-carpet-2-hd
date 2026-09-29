@@ -2,6 +2,9 @@
 
 #include "../utilities/RendererTests.h"
 
+static constexpr float kTerrainTexSize = 32.0f;
+static constexpr float kBrightnessMax = 16777216.0f;   // 1<<24, my estimate: verify with real values
+
 GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale) :
 	m_ptrScreenBuffer_351628(ptrScreenBuffer), m_ptrColorPalette(pColorPalette), m_assignToSpecificCores(assignToSpecificCores),
 	m_ptrDWORD_E9C38_smalltit(new uint8_t[GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT])
@@ -2800,63 +2803,60 @@ void GameRenderHW::DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1x, i
 	}
 }
 
-//Coordinates Already transformed into "Screen Space" (x & y, top left 0,0)
-void GameRenderHW::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index, std::vector<RenderPolygon> *polygons)
+HWVertex GameRenderHW::MakeHWVertex(const ProjectionVertex& v, uint32_t textureIndex)
 {
+	HWVertex h;
+	h.X = (float)v.X / (float)viewPort.Width_DE564 * 2.0f - 1.0f;
+	h.Y = (float)v.Y / (float)viewPort.Height_DE568 * 2.0f - 1.0f;   // flip here if upside down
+	h.W = 1.0f;
+	h.U = (float)v.U / 65536.0f;   // 16.16 fixed point -> texels 0..32
+	h.V = (float)v.V / 65536.0f;
+	h.V = (float)v.V;
+	h.Shade = 1;// (float)v.Brightness / kBrightnessMax;
+	h.Layer = textureIndex;
+	return h;
+}
+
+//Coordinates Already transformed into "Screen Space" (x & y, top left 0,0)
+void GameRenderHW::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index, std::vector<RenderPolygon>* polygons)
+{
+	const auto& tile = m_ptrStr_E9C38_smalltit[index];
+
 	//Set Texture coordinates for polys
-	vertexs[20] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][0];
-	vertexs[21] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][1];
-	vertexs[14] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][2];
-	vertexs[15] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][3];
-	vertexs[8] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][4];
-	vertexs[9] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][5];
-	vertexs[2] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][6];
-	vertexs[3] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][7];
+	const auto& uv = UVTable_D4350[tile.textUV_42];
+	vertexs[20] = uv[0];
+	vertexs[21] = uv[1];
+	vertexs[14] = uv[2];
+	vertexs[15] = uv[3];
+	vertexs[8] = uv[4];
+	vertexs[9] = uv[5];
+	vertexs[2] = uv[6];
+	vertexs[3] = uv[7];
 
-	//Get Texture
-	x_DWORD_DE55C_ActTexture = x_DWORD_DDF50_texture_adresses.at(m_ptrStr_E9C38_smalltit[index].textIndex_41);
-
-	//Render
-	auto vertex0 = ProjectionVertex(&vertexs[0]);
-	auto vertex6 = ProjectionVertex(&vertexs[6]);
-	auto vertex12 = ProjectionVertex(&vertexs[12]);
-	auto vertex18 = ProjectionVertex(&vertexs[18]);
+	ProjectionVertex vertex0(&vertexs[0]);
+	ProjectionVertex vertex6(&vertexs[6]);
+	ProjectionVertex vertex12(&vertexs[12]);
+	ProjectionVertex vertex18(&vertexs[18]);
 
 	if (CheckViewPortCull(vertex18, vertex12, vertex0) || CheckViewPortCull(vertex0, vertex12, vertex6))
 		return;
 
-	if ((uint8_t)m_ptrStr_E9C38_smalltit[index].triangleFeatures_38 & 1)
-	{
-		RenderPolygon poly1;
-		poly1.TextureId = index;
-		poly1.Vertices.push_back(ProjectionVertex(vertex18));
-		poly1.Vertices.push_back(ProjectionVertex(vertex12));
-		poly1.Vertices.push_back(ProjectionVertex(vertex0));
-		polygons->push_back(poly1);
+	HWVertex h0 = MakeHWVertex(vertex0, tile.textIndex_41);
+	HWVertex h6 = MakeHWVertex(vertex6, tile.textIndex_41);
+	HWVertex h12 = MakeHWVertex(vertex12, tile.textIndex_41);
+	HWVertex h18 = MakeHWVertex(vertex18, tile.textIndex_41);
 
-		RenderPolygon poly2;
-		poly2.TextureId = index;
-		poly2.Vertices.push_back(ProjectionVertex(vertex0));
-		poly2.Vertices.push_back(ProjectionVertex(vertex12));
-		poly2.Vertices.push_back(ProjectionVertex(vertex6));
-		polygons->push_back(poly2);
-	}
+	RenderPolygon poly;
+	poly.TextureId = tile.textIndex_41;
+	poly.Vertices.reserve(4);
+
+	// Fan (a,b,c,d) splits into (a,b,c) and (a,c,d), so the first vertex picks the diagonal.
+	if ((uint8_t)tile.triangleFeatures_38 & 1)
+		poly.Vertices = { h12, h6, h0, h18 };    // diagonal 12-0
 	else
-	{
-		RenderPolygon poly1;
-		poly1.TextureId = index;
-		poly1.Vertices.push_back(ProjectionVertex(vertex18));
-		poly1.Vertices.push_back(ProjectionVertex(vertex12));
-		poly1.Vertices.push_back(ProjectionVertex(vertex6));
-		polygons->push_back(poly1);
+		poly.Vertices = { h18, h12, h6, h0 };    // diagonal 18-6
 
-		RenderPolygon poly2;
-		poly2.TextureId = index;
-		poly2.Vertices.push_back(ProjectionVertex(vertex18));
-		poly2.Vertices.push_back(ProjectionVertex(vertex6));
-		poly2.Vertices.push_back(ProjectionVertex(vertex0));
-		polygons->push_back(poly2);
-	}
+	polygons->push_back(std::move(poly));
 }
 
 bool GameRenderHW::CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, ProjectionVertex v3, int maxCoordinate, int minCoordinate)
@@ -2881,66 +2881,43 @@ void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int index, s
 
 void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture, std::vector<RenderPolygon>* polygons)
 {
+	const auto& tile = m_ptrStr_E9C38_smalltit[index];
+
 	//Set Texture coordinates for polys
-	vertexs[20] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][0];
-	vertexs[21] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][1];
-	vertexs[14] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][2];
-	vertexs[15] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][3];
-	vertexs[8] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][4];
-	vertexs[9] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][5];
-	vertexs[2] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][6];
-	vertexs[3] = UVTable_D4350[m_ptrStr_E9C38_smalltit[index].textUV_42][7];
-	x_BYTE_E126D = 5;
+	const auto& uv = UVTable_D4350[tile.textUV_42];
+	vertexs[20] = uv[0];
+	vertexs[21] = uv[1];
+	vertexs[14] = uv[2];
+	vertexs[15] = uv[3];
+	vertexs[8] = uv[4];
+	vertexs[9] = uv[5];
+	vertexs[2] = uv[6];
+	vertexs[3] = uv[7];
 
-	//Get Texture
-	x_DWORD_DE55C_ActTexture = pTexture;
-
-	//Render
-	auto vertex0 = ProjectionVertex(&vertexs[0]);
-	auto vertex6 = ProjectionVertex(&vertexs[6]);
-	auto vertex12 = ProjectionVertex(&vertexs[12]);
-	auto vertex18 = ProjectionVertex(&vertexs[18]);
-
-	//Logger->debug("Idx: {} {}", index, vertex0.Print());
-	//Logger->debug("Idx: {} {}", index, vertex6.Print());
-	//Logger->debug("Idx: {} {}", index, vertex12.Print());
-	//Logger->debug("Idx: {} {}", index, vertex18.Print());
+	ProjectionVertex vertex0(&vertexs[0]);
+	ProjectionVertex vertex6(&vertexs[6]);
+	ProjectionVertex vertex12(&vertexs[12]);
+	ProjectionVertex vertex18(&vertexs[18]);
 
 	if (CheckViewPortCull(vertex18, vertex12, vertex0) || CheckViewPortCull(vertex0, vertex12, vertex6))
 		return;
 
-	if (m_ptrStr_E9C38_smalltit[index].triangleFeatures_38 & 1)
-	{
-		RenderPolygon poly1;
-		poly1.TextureId = index;
-		poly1.Vertices.push_back(ProjectionVertex(vertex18));
-		poly1.Vertices.push_back(ProjectionVertex(vertex0));
-		poly1.Vertices.push_back(ProjectionVertex(vertex12));
-		polygons->push_back(poly1);
+	HWVertex h0 = MakeHWVertex(vertex0, tile.textIndex_41);
+	HWVertex h6 = MakeHWVertex(vertex6, tile.textIndex_41);
+	HWVertex h12 = MakeHWVertex(vertex12, tile.textIndex_41);
+	HWVertex h18 = MakeHWVertex(vertex18, tile.textIndex_41);
 
-		RenderPolygon poly2;
-		poly2.TextureId = index;
-		poly2.Vertices.push_back(ProjectionVertex(vertex0));
-		poly2.Vertices.push_back(ProjectionVertex(vertex6));
-		poly2.Vertices.push_back(ProjectionVertex(vertex12));
-		polygons->push_back(poly2);
-	}
+	RenderPolygon poly;
+	poly.TextureId = tile.textIndex_41;
+	poly.Vertices.reserve(4);
+
+	// Fan (a,b,c,d) splits into (a,b,c) and (a,c,d), so the first vertex picks the diagonal.
+	if ((uint8_t)tile.triangleFeatures_38 & 1)
+		poly.Vertices = { h12, h6, h0, h18 };    // diagonal 12-0
 	else
-	{
-		RenderPolygon poly1;
-		poly1.TextureId = index;
-		poly1.Vertices.push_back(ProjectionVertex(vertex18));
-		poly1.Vertices.push_back(ProjectionVertex(vertex6));
-		poly1.Vertices.push_back(ProjectionVertex(vertex12));
-		polygons->push_back(poly1);
+		poly.Vertices = { h18, h12, h6, h0 };    // diagonal 18-6
 
-		RenderPolygon poly2;
-		poly2.TextureId = index;
-		poly2.Vertices.push_back(ProjectionVertex(vertex18));
-		poly2.Vertices.push_back(ProjectionVertex(vertex0));
-		poly2.Vertices.push_back(ProjectionVertex(vertex6));
-		polygons->push_back(poly2);
-	}
+	polygons->push_back(std::move(poly));
 }
 
 void GameRenderHW::DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t playersColors_E88E0x[][3], int32_t x_DWORD_F5730[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth)

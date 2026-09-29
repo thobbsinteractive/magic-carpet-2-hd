@@ -1,24 +1,17 @@
 #version 450
 
-layout(location = 0) in vec2 inPos;        // screen-space pixel coords
-layout(location = 1) in vec2 inUV;         // texel-space texture coords
-layout(location = 2) in float inBrightness;// 0-1
+layout(location = 0) in vec3  inPosW;    // NDC x, y, and w (w = 1 for the affine look)
+layout(location = 1) in vec2  inUV;      // texel coordinates, 0..32
+layout(location = 2) in float inShade;   // 0..1
 
-layout(location = 0) out vec2 fragUV;
-layout(location = 1) out float fragBrightness;
-
-layout(push_constant) uniform PushConstants
-{
-	vec2 screenSize;
-} pc;
+layout(location = 0) out vec2  fragUV;
+layout(location = 1) out float fragShade;
 
 void main()
 {
-	// Screen pixel space -> NDC. No projection matrix needed since the
-	// existing software projection code already produced screen coords.
-	vec2 ndc = (inPos / pc.screenSize) * 2.0 - 1.0;
-	gl_Position = vec4(ndc, 0.0, 1.0);
-
-	fragUV = inUV;
-	fragBrightness = inBrightness;
+    // Pre-multiplying by w means the hardware divide returns x, y unchanged.
+    // With w = 1 the UVs interpolate linearly in screen space (the original look).
+    gl_Position = vec4(inPosW.xy * inPosW.z, 0.0, inPosW.z);
+    fragUV    = inUV;
+    fragShade = inShade;
 }

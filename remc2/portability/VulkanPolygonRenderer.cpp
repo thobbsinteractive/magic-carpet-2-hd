@@ -736,16 +736,16 @@ bool VulkanPolygonRenderer::CreateWireframePipeline()
 
 	VkVertexInputBindingDescription binding{};
 	binding.binding = 0;
-	binding.stride = sizeof(Vertex);
+	binding.stride = sizeof(HWVertex);
 	binding.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 
 	// Keep all 3 attributes bound even though the wireframe fragment shader
 	// only consumes brightness - the vertex shader still writes uv out, and
 	// vertex input layout must match the shared Vertex struct/vertex shader.
 	VkVertexInputAttributeDescription attrs[3]{};
-	attrs[0] = { 0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, x) };
-	attrs[1] = { 1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, u) };
-	attrs[2] = { 2, 0, VK_FORMAT_R32_SFLOAT, offsetof(Vertex, brightness) };
+	attrs[0] = { 0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(HWVertex, X) };
+	attrs[1] = { 1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(HWVertex, U) };
+	attrs[2] = { 2, 0, VK_FORMAT_R32_SFLOAT, offsetof(HWVertex, Shade) };
 
 	VkPipelineVertexInputStateCreateInfo vertexInput{};
 	vertexInput.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -854,13 +854,14 @@ bool VulkanPolygonRenderer::CreatePipeline()
 
 	VkVertexInputBindingDescription binding{};
 	binding.binding = 0;
-	binding.stride = sizeof(Vertex);
+	binding.stride = sizeof(HWVertex);
 	binding.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 
-	VkVertexInputAttributeDescription attrs[3]{};
-	attrs[0] = { 0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, x) };
-	attrs[1] = { 1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, u) };
-	attrs[2] = { 2, 0, VK_FORMAT_R32_SFLOAT, offsetof(Vertex, brightness) };
+	VkVertexInputAttributeDescription attrs[4]{};
+	attrs[0] = { 0, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(HWVertex, X) };      // x, y, w
+	attrs[1] = { 1, 0, VK_FORMAT_R32G32_SFLOAT,    offsetof(HWVertex, U) };      // u, v
+	attrs[2] = { 2, 0, VK_FORMAT_R32_SFLOAT,       offsetof(HWVertex, Shade) };  // shade
+	attrs[3] = { 3, 0, VK_FORMAT_R32_UINT,         offsetof(HWVertex, Layer) };  // layer
 
 	VkPipelineVertexInputStateCreateInfo vertexInput{};
 	vertexInput.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -1089,7 +1090,7 @@ bool VulkanPolygonRenderer::CreateFrameData()
 
 		// Reasonable starting size; EnsureFrameBufferCapacity grows these
 		// on demand if a frame submits more geometry.
-		EnsureFrameBufferCapacity(frame, sizeof(Vertex) * 4096, sizeof(uint32_t) * 8192);
+		EnsureFrameBufferCapacity(frame, sizeof(HWVertex) * 4096, sizeof(uint32_t) * 8192);
 	}
 
 	return true;
@@ -1282,7 +1283,7 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 	vkCmdPushConstants(frame.commandBuffer, m_pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(screenSize), screenSize);
 
 	if (polygons.size() > 0)
-		DrawPolygonsWireframe(polygons);
+		DrawPolygons(polygons);
 
 	DrawOverlay(destRect, frame.commandBuffer);
 
@@ -1293,7 +1294,7 @@ void VulkanPolygonRenderer::DrawPolygonsWireframe(const std::vector<RenderPolygo
 {
 	FrameData& frame = m_frames[m_currentFrame];
 
-	std::vector<Vertex> vertices;
+	std::vector<HWVertex> vertices;
 	std::vector<uint32_t> indices;
 	vertices.reserve(polygons.size() * 4);
 	indices.reserve(polygons.size() * 6);
@@ -1306,13 +1307,7 @@ void VulkanPolygonRenderer::DrawPolygonsWireframe(const std::vector<RenderPolygo
 		uint32_t baseVertex = (uint32_t)vertices.size();
 		for (const auto& v : poly.Vertices)
 		{
-			Vertex vert{};
-			vert.x = (float)v.X;
-			vert.y = (float)v.Y;
-			vert.u = (float)v.U;
-			vert.v = (float)v.V;
-			vert.brightness = (float)v.Brightness / 255.0f;
-			vertices.push_back(vert);
+			vertices.push_back(v);
 		}
 		FanTriangulate(baseVertex, (uint32_t)poly.Vertices.size(), indices);
 	}
@@ -1320,8 +1315,8 @@ void VulkanPolygonRenderer::DrawPolygonsWireframe(const std::vector<RenderPolygo
 	if (vertices.empty() || indices.empty())
 		return;
 
-	EnsureFrameBufferCapacity(frame, vertices.size() * sizeof(Vertex), indices.size() * sizeof(uint32_t));
-	std::memcpy(frame.vertexMapped, vertices.data(), vertices.size() * sizeof(Vertex));
+	EnsureFrameBufferCapacity(frame, vertices.size() * sizeof(HWVertex), indices.size() * sizeof(uint32_t));
+	std::memcpy(frame.vertexMapped, vertices.data(), vertices.size() * sizeof(HWVertex));
 	std::memcpy(frame.indexMapped, indices.data(), indices.size() * sizeof(uint32_t));
 
 	VkDeviceSize offset = 0;
@@ -1346,7 +1341,7 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	std::stable_sort(sorted.begin(), sorted.end(),
 		[](const RenderPolygon& a, const RenderPolygon& b) { return a.TextureId < b.TextureId; });
 
-	std::vector<Vertex> vertices;
+	std::vector<HWVertex> vertices;
 	std::vector<uint32_t> indices;
 	vertices.reserve(polygons.size() * 4);
 	indices.reserve(polygons.size() * 6);
@@ -1372,13 +1367,7 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 		uint32_t baseVertex = (uint32_t)vertices.size();
 		for (const auto& v : poly.Vertices)
 		{
-			Vertex vert{};
-			vert.x = (float)v.X;
-			vert.y = (float)v.Y;
-			vert.u = (float)v.U;
-			vert.v = (float)v.V;
-			vert.brightness = (float)v.Brightness / 255.0f;
-			vertices.push_back(vert);
+			vertices.push_back(v);
 		}
 		FanTriangulate(baseVertex, (uint32_t)poly.Vertices.size(), indices);
 	}
@@ -1388,8 +1377,8 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	if (vertices.empty() || indices.empty())
 		return;
 
-	EnsureFrameBufferCapacity(frame, vertices.size() * sizeof(Vertex), indices.size() * sizeof(uint32_t));
-	std::memcpy(frame.vertexMapped, vertices.data(), vertices.size() * sizeof(Vertex));
+	EnsureFrameBufferCapacity(frame, vertices.size() * sizeof(HWVertex), indices.size() * sizeof(uint32_t));
+	std::memcpy(frame.vertexMapped, vertices.data(), vertices.size() * sizeof(HWVertex));
 	std::memcpy(frame.indexMapped, indices.data(), indices.size() * sizeof(uint32_t));
 
 	VkDeviceSize offset = 0;
