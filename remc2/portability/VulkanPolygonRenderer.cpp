@@ -381,9 +381,11 @@ void VulkanPolygonRenderer::SetPalette(const uint8_t* rgb768)
 	uint8_t* dst = static_cast<uint8_t*>(m_paletteStagingMapped);
 	for (int i = 0; i < 256; i++)
 	{
-		dst[i * 4 + 0] = rgb768[i * 3 + 0];
-		dst[i * 4 + 1] = rgb768[i * 3 + 1];
-		dst[i * 4 + 2] = rgb768[i * 3 + 2];
+		for (int c = 0; c < 3; c++)
+		{
+			uint8_t v = rgb768[i * 3 + c] & 0x3F;          // 6-bit VGA value
+			dst[i * 4 + c] = (uint8_t)((v << 2) | (v >> 4)); // 63 -> 255, not 252
+		}
 		dst[i * 4 + 3] = 255;
 	}
 
@@ -1338,8 +1340,6 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	// call (minimizes descriptor set binds; this is a CPU-side sort, cheap
 	// relative to typical retro polygon counts per frame).
 	std::vector<RenderPolygon> sorted = polygons;
-	std::stable_sort(sorted.begin(), sorted.end(),
-		[](const RenderPolygon& a, const RenderPolygon& b) { return a.TextureId < b.TextureId; });
 
 	std::vector<HWVertex> vertices;
 	std::vector<uint32_t> indices;
@@ -1349,7 +1349,7 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	struct Batch { uint32_t textureId; uint32_t indexOffset; uint32_t indexCount; };
 	std::vector<Batch> batches;
 
-	uint32_t currentTexture = sorted.empty() ? 0 : sorted[0].TextureId;
+	uint32_t currentTexture = polygons.empty() ? 0 : polygons[0].TextureId;
 	uint32_t batchIndexStart = 0;
 
 	for (const auto& poly : sorted)

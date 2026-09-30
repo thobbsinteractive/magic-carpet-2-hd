@@ -1,6 +1,6 @@
 #version 450
 
-layout(location = 0) in vec3  inPosW;    // NDC x, y, and w (w = 1 for the affine look)
+layout(location = 0) in vec3  inPosW;    // NDC x, y, and w
 layout(location = 1) in vec2  inUV;      // texel coordinates, 0..32
 layout(location = 2) in float inShade;   // 0..1
 
@@ -9,8 +9,6 @@ layout(location = 1) out float fragShade;
 
 void main()
 {
-    // Pre-multiplying by w means the hardware divide returns x, y unchanged.
-    // With w = 1 the UVs interpolate linearly in screen space (the original look).
     gl_Position = vec4(inPosW.xy * inPosW.z, 0.0, inPosW.z);
     fragUV    = inUV;
     fragShade = inShade;

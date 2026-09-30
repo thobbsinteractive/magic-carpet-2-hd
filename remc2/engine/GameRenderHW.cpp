@@ -3,7 +3,7 @@
 #include "../utilities/RendererTests.h"
 
 static constexpr float kTerrainTexSize = 32.0f;
-static constexpr float kBrightnessMax = 16777216.0f;   // 1<<24, my estimate: verify with real values
+static constexpr float kBrightnessMax = 4161536.0f;   // 63.5 * 65536, the observed maximum
 
 GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale) :
 	m_ptrScreenBuffer_351628(ptrScreenBuffer), m_ptrColorPalette(pColorPalette), m_assignToSpecificCores(assignToSpecificCores),
@@ -2811,8 +2811,7 @@ HWVertex GameRenderHW::MakeHWVertex(const ProjectionVertex& v, uint32_t textureI
 	h.W = 1.0f;
 	h.U = (float)v.U / 65536.0f;   // 16.16 fixed point -> texels 0..32
 	h.V = (float)v.V / 65536.0f;
-	h.V = (float)v.V;
-	h.Shade = 1;// (float)v.Brightness / kBrightnessMax;
+	h.Shade = std::clamp((float)v.Brightness / kBrightnessMax, 0.0f, 1.0f);
 	h.Layer = textureIndex;
 	return h;
 }
