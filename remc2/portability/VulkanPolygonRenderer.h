@@ -181,7 +181,7 @@ private:
 	uint32_t m_currentImageIndex = 0;
 
 	VkFrontFace m_frontFace = VK_FRONT_FACE_CLOCKWISE;
-	VkCullModeFlags m_cullMode = VK_CULL_MODE_BACK_BIT;
+	VkCullModeFlags m_cullMode = VK_CULL_MODE_NONE;
 
 	int m_windowWidth = 0;
 	int m_windowHeight = 0;
