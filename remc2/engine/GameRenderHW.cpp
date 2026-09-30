@@ -2807,12 +2807,15 @@ HWVertex GameRenderHW::MakeHWVertex(const ProjectionVertex& v, uint32_t textureI
 {
 	HWVertex h;
 	h.X = (float)v.X / (float)viewPort.Width_DE564 * 2.0f - 1.0f;
-	h.Y = (float)v.Y / (float)viewPort.Height_DE568 * 2.0f - 1.0f;   // flip here if upside down
+	h.Y = (float)v.Y / (float)viewPort.Height_DE568 * 2.0f - 1.0f;
 	h.W = 1.0f;
-	h.U = (float)v.U / 65536.0f;   // 16.16 fixed point -> texels 0..32
-	h.V = (float)v.V / 65536.0f;
+
+	float tileX = (float)(textureIndex % kTilesWide) * kTile;
+	float tileY = (float)(textureIndex / kTilesWide) * kTile;
+	h.U = tileX + (float)v.U / 65536.0f;    // 0..32 inside the tile, plus the tile's origin
+	h.V = tileY + (float)v.V / 65536.0f;
+
 	h.Shade = std::clamp((float)v.Brightness / kBrightnessMax, 0.0f, 1.0f);
-	h.Layer = textureIndex;
 	return h;
 }
 
@@ -2846,7 +2849,7 @@ void GameRenderHW::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int in
 	HWVertex h18 = MakeHWVertex(vertex18, tile.textIndex_41);
 
 	RenderPolygon poly;
-	poly.TextureId = tile.textIndex_41;
+	poly.TextureId = kTerrainAtlasId;
 	poly.Vertices.reserve(4);
 
 	// Fan (a,b,c,d) splits into (a,b,c) and (a,c,d), so the first vertex picks the diagonal.
@@ -2907,7 +2910,7 @@ void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int index, u
 	HWVertex h18 = MakeHWVertex(vertex18, tile.textIndex_41);
 
 	RenderPolygon poly;
-	poly.TextureId = tile.textIndex_41;
+	poly.TextureId = kTerrainAtlasId;
 	poly.Vertices.reserve(4);
 
 	// Fan (a,b,c,d) splits into (a,b,c) and (a,c,d), so the first vertex picks the diagonal.

@@ -10,8 +10,9 @@ layout(location = 0) out vec4 outColor;
 
 void main()
 {
-    ivec2 texel = clamp(ivec2(floor(fragUV)), ivec2(0), ivec2(31));
-    uint idx = texelFetch(uIndexTex, texel, 0).r;
+	ivec2 size  = textureSize(uIndexTex, 0); // 256 x 608
+	ivec2 texel = clamp(ivec2(floor(fragUV)), ivec2(0), size - 1);
+	uint idx = texelFetch(uIndexTex, texel, 0).r;
     vec3 color = texelFetch(uPalette, ivec2(int(idx), 0), 0).rgb;
 
     float shade = clamp(fragShade, 0.0, 1.0);

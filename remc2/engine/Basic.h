@@ -521,6 +521,8 @@ extern uint32_t PitFrequency_F4240;
 
 extern std::vector<Type_Message*>* m_Messages;
 
+constexpr uint32_t kTerrainAtlasId = 0;
+
 bool DefaultResolutions();
 bool IsDefaultResolution(int width, int height);
 bool IsDefaultResolution320(int width, int height);

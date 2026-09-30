@@ -23,32 +23,11 @@ void UpdateTileTextures(uint8_t tileSize, uint8_t* tileBuffer, MapType_t mapType
 	constexpr int kTilesWide = 8;
 	constexpr int kTilesTall = 19;
 
-	int texture_addresses_index = 0;
-	int stride = tileSize * kTilesWide; // bytes per row of the whole atlas (1 byte/pixel = palette index)
-
-	std::vector<uint8_t> tilePixels(static_cast<size_t>(tileSize) * tileSize);
-
-	for (int ypos = 0; ypos < kTilesTall; ypos++)
-	{
-		for (int xpos = 0; xpos < kTilesWide; xpos++)
-		{
-			uint8_t* ptrTexture = tileBuffer + (ypos * tileSize * stride) + (xpos * tileSize);
-
-			for (int row = 0; row < tileSize; row++)
-			{
-				std::memcpy(
-					tilePixels.data() + row * tileSize,
-					ptrTexture + row * stride,
-					tileSize);
-			}
-
-			EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, const uint8_t*, uint32_t, uint32_t>(
-				EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED,
-				texture_addresses_index++, tilePixels.data(), tileSize, tileSize);
-
-			//WriteTextureMapToBmp(texture_addresses_index, tilePixels.data(), tileSize, tileSize, mapType);	
-		}
-	}
+	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, const uint8_t*, uint32_t, uint32_t>(
+		EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED,
+		kTerrainAtlasId, tileBuffer, tileSize * kTilesWide, tileSize * kTilesTall);
+	
+	//WriteTextureMapToBmp(kTerrainAtlasId, tileBuffer, tileSize * kTilesWide, tileSize * kTilesTall, mapType);	
 }
 
 //----- (00054660) --------------------------------------------------------

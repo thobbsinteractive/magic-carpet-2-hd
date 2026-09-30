@@ -32,6 +32,9 @@ class GameRenderHW : public GameRenderInterface
 
 private:
 
+	const float kTile = 32.0f;
+	const uint32_t kTilesWide = 8;
+
 	struct TileStepQuadrant {
 		uint8_t startX;      // [0] starting X map coordinate offset
 		uint8_t startY;      // [1] starting Y map coordinate offset
