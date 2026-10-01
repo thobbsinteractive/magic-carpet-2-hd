@@ -23,7 +23,7 @@ void UpdateTileTextures(uint8_t tileSize, uint8_t* tileBuffer, MapType_t mapType
 	constexpr int kTilesWide = 8;
 	constexpr int kTilesTall = 19;
 
-	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, const uint8_t*, uint32_t, uint32_t>(
+	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(
 		EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED,
 		kTerrainAtlasId, tileBuffer, tileSize * kTilesWide, tileSize * kTilesTall);
 	

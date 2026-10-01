@@ -37,6 +37,9 @@ GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 
 GameRenderHW::~GameRenderHW()
 {
+	EventDispatcher::I->DispatchEvent<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_DISPOSED, NULL);
+	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_DISPOSED, 0, NULL, 0, 0);
+
 	delete[] m_ptrDWORD_E9C38_smalltit;
 	delete[] m_preBlurBuffer_E9C3C;
 	delete[] m_ptrStr_E9C38_smalltit;
@@ -713,7 +716,7 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v46--;
 				}
 				SubDrawCaveTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-				EventDispatcher::I->DispatchEvent<ResourceType, const std::vector<RenderPolygon>&>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, *polygons);
+				EventDispatcher::I->DispatchEvent<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, polygons);
 				delete polygons;
 				return;
 			}
@@ -866,7 +869,7 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 				}
 				//Draw rest of terrain
 				SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-				EventDispatcher::I->DispatchEvent<ResourceType, const std::vector<RenderPolygon>&>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, *polygons);
+				EventDispatcher::I->DispatchEvent<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, polygons);
 				delete polygons;
 				Logger->trace("Finished Drawing Terrain Frame with Reflection");
 				return;
@@ -1051,7 +1054,7 @@ LABEL_259:
 	//adress 3de7d
 	//Draw Terrain with no reflection
 	SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-	EventDispatcher::I->DispatchEvent<ResourceType, const std::vector<RenderPolygon>&>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, *polygons);
+	EventDispatcher::I->DispatchEvent<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, polygons);
 	delete polygons;
 }
 
