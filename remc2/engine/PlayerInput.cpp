@@ -1,6 +1,7 @@
 #include "PlayerInput.h"
 
 #include "../utilities/DataFileIO.h"
+#include "../shared/EventDispatcher.h"
 #include "Animation.h"
 #include "Basic.h"
 #include "Events.h"
@@ -10,7 +11,6 @@
 #include "MenusAndIntros.h"
 #include "Sound.h"
 #include "engine_support.h"
-#include "EventDispatcher.h"
 #include "DatTabIndexes.h"
 
 

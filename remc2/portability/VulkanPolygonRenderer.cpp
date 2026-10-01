@@ -55,10 +55,41 @@ namespace
 	}
 }
 
+VulkanPolygonRenderer::VulkanPolygonRenderer()
+{
+	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> textureCallBack =
+		[this](ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height) {
+		SetTexture(state, index, pixels, width, height);
+		};
+
+	EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, textureCallBack));
+
+	std::function<void(ResourceType, std::vector<RenderPolygon>*)> polyCallBack = 
+		[this](ResourceType state, std::vector<RenderPolygon>* polygons) {
+		SetPolygons(state, polygons);
+		};
+
+	EventDispatcher::I->RegisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, polyCallBack));
+}
+
 VulkanPolygonRenderer::~VulkanPolygonRenderer()
 {
 	if (m_initialized)
 		Shutdown();
+
+	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> textureCallBack =
+		[this](ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height) {
+		SetTexture(state, index, pixels, width, height);
+		};
+
+	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, textureCallBack));
+
+	std::function<void(ResourceType, std::vector<RenderPolygon>*)> polyCallBack =
+		[this](ResourceType state, std::vector<RenderPolygon>* polygons) {
+		SetPolygons(state, polygons);
+		};
+
+	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, polyCallBack));
 }
 
 void VulkanPolygonRenderer::SetFrontFace(VkFrontFace frontFace)
@@ -174,6 +205,22 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 
 	m_initialized = true;
 	return true;
+}
+
+void VulkanPolygonRenderer::SetPolygons(ResourceType state, std::vector<RenderPolygon>* polygons)
+{
+	if (state == ResourceType::POLYGONS_UPDATED)
+		m_polygons = *polygons;
+	else if (state == ResourceType::POLYGONS_DISPOSED)
+		m_polygons.clear();
+}
+
+void VulkanPolygonRenderer::SetTexture(ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height)
+{
+	if (state == ResourceType::TEXTURE_LOADED)
+		UploadTexture(index, pixels, width, height);
+	if (state == ResourceType::TEXTURE_DISPOSED)
+		FreeTexture(index);
 }
 
 bool VulkanPolygonRenderer::CreateSwapchain(int width, int height)
@@ -1238,7 +1285,7 @@ void VulkanPolygonRenderer::DestroyFrameData()
 	}
 }
 
-bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect, const std::vector<RenderPolygon>& polygons)
+bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect)
 {
 	FrameData& frame = m_frames[m_currentFrame];
 	vkWaitForFences(m_device, 1, &frame.inFlight, VK_TRUE, UINT64_MAX);
@@ -1284,8 +1331,8 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 	float screenSize[2] = { (float)m_swapchainExtent.width, (float)m_swapchainExtent.height };
 	vkCmdPushConstants(frame.commandBuffer, m_pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(screenSize), screenSize);
 
-	if (polygons.size() > 0)
-		DrawPolygons(polygons);
+	if (m_polygons.size() > 0)
+		DrawPolygons(m_polygons);
 
 	DrawOverlay(destRect, frame.commandBuffer);
 

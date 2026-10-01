@@ -17,6 +17,7 @@
 //#include "../utilities/DataFileIO.h"
 //#include "../utilities/BitmapIO.h"
 
+#include "../shared/EventDispatcher.h"
 #include "UVTable_D4350.h"
 #include "Type_D404C.h"
 #include "Type_D94F0_Bldgprmbuffer.h"
@@ -36,9 +37,6 @@
 #include "GameUiConstants.h"
 #include "LangTextIndexes.h"
 #include "Terrain.h"
-
-#include "EventDispatcher.h"
-#include "ResourceType.h"
 
 //#include "../portability/port_net.h"
 

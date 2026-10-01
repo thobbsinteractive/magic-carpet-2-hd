@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include "Event.h"
+#include "ResourceType.h"
 
 class EventDispatcher
 {

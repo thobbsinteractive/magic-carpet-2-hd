@@ -12,8 +12,6 @@
 #ifdef USE_DOSBOX
 extern DOS_Device* DOS_CON;
 #endif //USE_DOSBOX
-#include "../engine/EventDispatcher.h"
-#include "../engine/ResourceType.h"
 #include "GameKey.h"
 #include "KeyboardInputMapping.h"
 #include "VulkanPolygonRenderer.h"
@@ -57,8 +55,6 @@ int oldWidth;
 bool subBlitLock = false;
 
 int m_frameNumber = 0;
-
-std::vector<RenderPolygon> m_polygons;
 
 // Initalize Color Masks.
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -198,12 +194,6 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 
 			std::function<void(uint32_t, uint32_t)> resCallBack = OnMouseResolutionChanged;
 			EventDispatcher::I->RegisterEvent(new Event<uint32_t, uint32_t>(EventType::E_RESOLUTION_CHANGE, resCallBack));
-
-			std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> textureCallBack = SetTexture;
-			EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, textureCallBack));
-
-			std::function<void(ResourceType, std::vector<RenderPolygon>*)> polyCallBack = SetPolygons;
-			EventDispatcher::I->RegisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, polyCallBack));
 		}
 		if (!VGA_LoadFont())
 		{
@@ -1096,25 +1086,9 @@ void VGA_Blit(uint8_t* srcBuffer, uint8_t* alphaBuffer) {
 	SOUND_UPDATE();
 }
 
-void SetPolygons(ResourceType state, std::vector<RenderPolygon>* polygons)
-{
-	if (state == ResourceType::POLYGONS_UPDATED)
-		m_polygons = *polygons;
-	else if (state == ResourceType::POLYGONS_DISPOSED)
-		m_polygons.clear();
-}
-
-void SetTexture(ResourceType state, uint32_t index, uint8_t *pixels, uint32_t width, uint32_t height)
-{
-	if (state == ResourceType::TEXTURE_LOADED)
-		m_vulkanRenderer->UploadTexture(index, pixels, width, height);
-	if (state == ResourceType::TEXTURE_DISPOSED)
-		m_vulkanRenderer->FreeTexture(index);
-}
-
 void SubVulkanBlit(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect)
 {
-	if (m_vulkanRenderer->BeginFrame(surface, srcRect, destRect, m_polygons))
+	if (m_vulkanRenderer->BeginFrame(surface, srcRect, destRect))
 	{
 		m_vulkanRenderer->EndFrame();
 	}

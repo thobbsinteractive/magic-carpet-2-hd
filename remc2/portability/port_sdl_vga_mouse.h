@@ -11,11 +11,11 @@
 
 #include "SDL2/SDL.h"
 
-#include "port_sdl_sound.h"
-#include "port_filesystem.h"
+#include "../shared/EventDispatcher.h"
 #include "../engine/Scene.h"
 #include "../engine/GameState.h"
-#include "../engine/ResourceType.h"
+#include "port_sdl_sound.h"
+#include "port_filesystem.h"
 #include "RenderPolygon.h"
 
 typedef struct

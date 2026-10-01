@@ -14,7 +14,10 @@
 #include <fstream>
 #include <algorithm>
 #include <unordered_map>
+#include <functional>
 
+#include "../shared/ResourceType.h"
+#include "../shared/EventDispatcher.h"
 #include "RenderPolygon.h"
 
 struct SDL_Window;
@@ -34,7 +37,7 @@ struct SDL_Window;
 class VulkanPolygonRenderer
 {
 public:
-	VulkanPolygonRenderer() = default;
+	VulkanPolygonRenderer();
 	~VulkanPolygonRenderer();
 
 	VulkanPolygonRenderer(const VulkanPolygonRenderer&) = delete;
@@ -66,7 +69,7 @@ public:
 	void SetFrontFace(VkFrontFace frontFace);
 	void SetCullMode(VkCullModeFlags cullMode); // default: VK_CULL_MODE_NONE
 
-	bool BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect, const std::vector<RenderPolygon>& polygons);
+	bool BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, SDL_Rect destRect);
 	void UploadOverlaySurface(SDL_Surface* surface, SDL_Rect srcRect, VkCommandBuffer commandBuffer);
 	void DrawOverlay(SDL_Rect dscrect, VkCommandBuffer commandBuffer);
 	void DrawPolygons(const std::vector<RenderPolygon>& polygons);
@@ -105,6 +108,10 @@ private:
 		VkDeviceSize indexBufferSize = 0;
 	};
 
+	std::vector<RenderPolygon> m_polygons;
+
+	void SetPolygons(ResourceType state, std::vector<RenderPolygon>* polygons);
+	void SetTexture(ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height);
 	bool CreateSwapchain(int width, int height);
 	void DestroySwapchain();
 	bool CreateRenderPass();

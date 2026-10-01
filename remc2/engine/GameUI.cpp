@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "EventDispatcher.h"
+#include "../shared/EventDispatcher.h"
 #include "Basic.h"
 #include "GameBitmapIndexes.h"
 #include "LangTextIndexes.h"
@@ -12,7 +12,6 @@
 #include "MenusAndIntros.h"
 #include "Type_D93C0_Bldgprmbuffer.h"
 #include "MapColourIndexs.h"
-
 
 char FontType_D419D = 1; // weak
 int16_t x_WORD_D41D4 = 1; // weak

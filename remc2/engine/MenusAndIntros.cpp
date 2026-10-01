@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include "../utilities/StateMonitor.h"
-#include "EventDispatcher.h"
+#include "../shared/EventDispatcher.h"
 #include "CommandLineParser.h"
 #include "GameUI.h"
 #include "Level.h"
