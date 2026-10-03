@@ -1156,7 +1156,7 @@ void GameRenderHW::SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVer
 				}
 				if (!(v67 & 2))
 				{
-					DrawInverseSquareInProjectionSpace(&projectedVertexBuffer[0], jx, x_DWORD_DDF50_texture_adresses.at(1), polygons);
+					DrawInverseSquareInProjectionSpace(&projectedVertexBuffer[0], jx, polygons, 1);
 				}
 			}
 			projectedVertexBuffer[18] = m_ptrStr_E9C38_smalltit[jx].pnt1_16;
@@ -1247,7 +1247,7 @@ void GameRenderHW::SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVer
 					}
 					if (!(v93 & 2))
 					{
-						DrawInverseSquareInProjectionSpace(&projectedVertexBuffer[0], v83x, x_DWORD_DDF50_texture_adresses.at(1), polygons);
+						DrawInverseSquareInProjectionSpace(&projectedVertexBuffer[0], v83x, polygons, 1);
 					}
 				}
 				projectedVertexBuffer[18] = m_ptrStr_E9C38_smalltit[v83x].pnt1_16;
@@ -2823,9 +2823,9 @@ HWVertex GameRenderHW::MakeHWVertex(const ProjectionVertex& v, uint32_t textureI
 }
 
 //Coordinates Already transformed into "Screen Space" (x & y, top left 0,0)
-void GameRenderHW::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int index, std::vector<RenderPolygon>* polygons)
+void GameRenderHW::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int tileIndex, std::vector<RenderPolygon>* polygons)
 {
-	const auto& tile = m_ptrStr_E9C38_smalltit[index];
+	const auto& tile = m_ptrStr_E9C38_smalltit[tileIndex];
 
 	//Set Texture coordinates for polys
 	const auto& uv = UVTable_D4350[tile.textUV_42];
@@ -2879,14 +2879,9 @@ bool GameRenderHW::CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, P
 	return false;
 }
 
-void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int index, std::vector<RenderPolygon>* polygons)
+void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int tileIndex, std::vector<RenderPolygon>* polygons, int overrideTextIndex)
 {
-	DrawInverseSquareInProjectionSpace(vertexs, index, x_DWORD_DDF50_texture_adresses.at(m_ptrStr_E9C38_smalltit[index].textIndex_41), polygons);
-}
-
-void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int index, uint8_t* pTexture, std::vector<RenderPolygon>* polygons)
-{
-	const auto& tile = m_ptrStr_E9C38_smalltit[index];
+	const auto& tile = m_ptrStr_E9C38_smalltit[tileIndex];
 
 	//Set Texture coordinates for polys
 	const auto& uv = UVTable_D4350[tile.textUV_42];
@@ -2907,10 +2902,10 @@ void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int index, u
 	if (CheckViewPortCull(vertex18, vertex12, vertex0) || CheckViewPortCull(vertex0, vertex12, vertex6))
 		return;
 
-	HWVertex h0 = MakeHWVertex(vertex0, tile.textIndex_41);
-	HWVertex h6 = MakeHWVertex(vertex6, tile.textIndex_41);
-	HWVertex h12 = MakeHWVertex(vertex12, tile.textIndex_41);
-	HWVertex h18 = MakeHWVertex(vertex18, tile.textIndex_41);
+	HWVertex h0 = MakeHWVertex(vertex0, overrideTextIndex > -1 ? overrideTextIndex : tile.textIndex_41);
+	HWVertex h6 = MakeHWVertex(vertex6, overrideTextIndex > -1 ? overrideTextIndex : tile.textIndex_41);
+	HWVertex h12 = MakeHWVertex(vertex12, overrideTextIndex > -1 ? overrideTextIndex : tile.textIndex_41);
+	HWVertex h18 = MakeHWVertex(vertex18, overrideTextIndex > -1 ? overrideTextIndex : tile.textIndex_41);
 
 	RenderPolygon poly;
 	poly.TextureId = kTerrainAtlasId;
