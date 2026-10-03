@@ -29,6 +29,14 @@ extern bool big_sprites_inited;
 
 extern uint8_t* m_pColorPalette;
 
+struct FlcState {
+	int  width = 0;
+	int  height = 0;
+	bool skipZero = false;
+};
+
+static uint16_t FlcRd16(uint8_t* p);
+
 bool MainInitTmaps_71520(unsigned __int16 a1);
 int sub_70EF0(unsigned __int16 a1);
 signed int GetIndex_71CD0(type_x_DWORD_E9C28_str* a1);
@@ -43,10 +51,15 @@ subtype_x_DWORD_E9C28_str* LoadTMapMetadata_71E70(type_x_DWORD_E9C28_str* a1y, u
 void sub_70A60_open_tmaps();
 void sub_70BF0_close_tmaps();
 int sub_70C60_decompress_tmap(uint16_t texture_index, uint8_t* texture_buffer);
-void WriteTextureMapToBmp(uint16_t texture_index, uint8_t* ptextureMap, uint16_t width, uint16_t height, MapType_t mapType);
-void WriteTextureMapToBmp(uint16_t texture_index, type_particle_str* ptextureMap, MapType_t mapType);
+void WriteTextureMapToBmp(uint16_t textureIndex, uint8_t* ptextureMap, uint16_t width, uint16_t height, MapType_t mapType);
+void WriteTextureMapToBmp(uint16_t textureIndex, uint16_t frameIndex, uint8_t* ptextureMap, uint16_t width, uint16_t height, MapType_t mapType);
 uint8_t* LoadTMapColorPalette(MapType_t mapType);
 type_animations1* sub_721C0_initTmap(type_E9C08* a1, type_particle_str** a2x, __int16 a3);
 void ResetAnimation_72410(type_animations1* animation);
+
+std::vector<uint8_t*> GetRawFrames(uint16_t frameCount, type_particle_str* ptextureMap, size_t startOffset = 0);
+uint8_t* ApplyDeltaFlc(uint8_t* p, uint8_t* img, const FlcState& st);
+void ApplyByteRun(uint8_t* p, uint8_t* end, uint8_t* img, const FlcState& st);
+uint8_t* ApplyFlcFrame(uint8_t* src, uint8_t* img, FlcState& st);
 
 #endif //TEXTURE_MAPS_H

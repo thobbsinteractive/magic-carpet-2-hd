@@ -45381,7 +45381,7 @@ void sub_72350(type_animations1* a1x)//253350 //animates sprite
 		if (a1x->FrameIndex_22 > a1x->CountOfFrames_16)
 		{
 			a1x->FrameIndex_22 = 1;
-			a1x->dword_8 = a1x->word_14;
+			a1x->dword_8 = a1x->NextFrameOffset_14;
 		}
 
 		if (str_DWORD_F66F0x[a1x->word_26] != NULL)
@@ -45414,14 +45414,14 @@ void sub_72350(type_animations1* a1x)//253350 //animates sprite
 			}
 		}*/
 
-		a1x->FrameIndex_22 = a1x->FrameIndex_22 + 1;
+		a1x->FrameIndex_22++;
 	}
 	else
 	{
 		if (a1x->FrameIndex_22 > a1x->CountOfFrames_16)
 		{
 			a1x->FrameIndex_22 = 1;
-			a1x->dword_8 = a1x->word_14;
+			a1x->dword_8 = a1x->NextFrameOffset_14;
 		}
 		//v1 = *(x_DWORD*)a1x->particle_str_4;
 		sub_765FC(a1x->Width_18, 0);
@@ -45456,7 +45456,7 @@ void sub_723B0(type_animations1* a1x, char a2)
 		memset((void*)(&a1x->Particles_4[1]), 0, a1x->Width_18 * a1x->Height_20);
 		a1x->FrameIndex_22 = 1;
 		//result = a1x->word_14;
-		a1x->dword_8 = a1x->word_14;
+		a1x->dword_8 = a1x->NextFrameOffset_14;
 	}
 	//return result;
 }
