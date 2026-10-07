@@ -17,7 +17,7 @@ extern FILE* x_DWORD_DB740_tmaps00file;
 extern FILE* x_DWORD_DB744_tmaps10file;
 extern FILE* x_DWORD_DB748_tmaps20file;
 
-extern type_particle_str** str_DWORD_F66F0x[504];
+extern Type_Sprite** m_ptrLoadedSprites_F66F0x[504];
 extern char m_LevelSpriteList_F5340[504];
 extern int32_t x_DWORD_F5730[504];
 extern subtype_x_DWORD_E9C28_str* str_F5F10[504];
@@ -54,10 +54,10 @@ int sub_70C60_decompress_tmap(uint16_t texture_index, uint8_t* texture_buffer);
 void WriteTextureMapToBmp(uint16_t textureIndex, uint8_t* ptextureMap, uint16_t width, uint16_t height, MapType_t mapType);
 void WriteTextureMapToBmp(uint16_t textureIndex, uint16_t frameIndex, uint8_t* ptextureMap, uint16_t width, uint16_t height, MapType_t mapType);
 uint8_t* LoadTMapColorPalette(MapType_t mapType);
-type_animations1* sub_721C0_initTmap(type_E9C08* a1, type_particle_str** a2x, __int16 a3);
+type_animations1* sub_721C0_initTmap(type_E9C08* a1, Type_Sprite** a2x, __int16 a3);
 void ResetAnimation_72410(type_animations1* animation);
 
-std::vector<uint8_t*> GetRawFrames(uint16_t frameCount, type_particle_str* ptextureMap, size_t startOffset = 0);
+std::vector<uint8_t*> GetRawFrames(uint16_t frameCount, Type_Sprite* ptextureMap, size_t startOffset = 0);
 uint8_t* ApplyDeltaFlc(uint8_t* p, uint8_t* img, const FlcState& st);
 void ApplyByteRun(uint8_t* p, uint8_t* end, uint8_t* img, const FlcState& st);
 uint8_t* ApplyFlcFrame(uint8_t* src, uint8_t* img, FlcState& st);

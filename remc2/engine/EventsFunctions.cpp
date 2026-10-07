@@ -78,7 +78,7 @@ fix sub_4A050_new_event
 fix sub_49090
 fix x_WORD_D93C0_bldgprmbuffer
 
-x_DWORD_F66F0x[504]; ok, rewrited to type_particle_str// idb//2c76f0 //type_particle_str
+x_DWORD_F66F0x[504]; ok, rewrited to Sprite// idb//2c76f0 //Sprite
 int x_DWORD_F5730[504]; must rewrite later!!!
 int x_DWORD_F5F10[504]; not used? // idb ?
 x_BYTE_D4750 ok
@@ -13623,7 +13623,7 @@ void sub_221F0(type_entity_0x6E8E* a1x, __int16 a2)//2031f0
 	{
 		v3 = particlesParameters_D951C[a2].word_0;//x_WORD_D951C[7 * a2];
 		/*LOBYTE(v2) = */sub_71AB0(v3, 1);
-		if (str_DWORD_F66F0x[v3])
+		if (m_ptrLoadedSprites_F66F0x[v3])
 		{
 			//v2 = *(unsigned __int16 *)(GetAnimationByIndex_724F0(animations_E9C08x, v3) + 16);
 			a1x->dword_0x10_16 = (unsigned __int16)GetAnimationByIndex_724F0(animations_E9C08x, v3)->CountOfFrames_16;//0x203258 mov ax, [eax+10h]
@@ -21288,7 +21288,7 @@ void sub_2B860(type_entity_0x6E8E* a1x, unsigned __int8 a2)//20c860
 		SetEntityIndexAndRot_49CD0(a1x, 291);
 		SetEntityShiftRot_49EA0(a1x, 384, 768);
 		sub_71AB0(v5, 0);
-		if (str_DWORD_F66F0x[v5])
+		if (m_ptrLoadedSprites_F66F0x[v5])
 		{
 			a1x->dword_0x10_16 = GetAnimationByIndex_724F0(animations_E9C08x, v5)->CountOfFrames_16;
 			a1x->word_0x2C_44 = a1x->dword_0x10_16;
@@ -31096,9 +31096,9 @@ void write_pngs2()
 
 	for (int k = 0; k < 0x1F8u; k++)
 	{
-		if (str_DWORD_F66F0x[k] != 0)
+		if (m_ptrLoadedSprites_F66F0x[k] != 0)
 		{
-			type_particle_str* actimg = *str_DWORD_F66F0x[k];
+			Type_Sprite* actimg = *m_ptrLoadedSprites_F66F0x[k];
 			//int lenght = actimg->word_0;
 			int width = actimg->width;
 			int height = actimg->height;
@@ -45113,8 +45113,8 @@ void sub_713A0()//2523a0
 	sub_720C0(&x_DWORD_E9C28_str);
 	sub_72550(&animations_E9C08x);
 	CleanF5538_716A0();
-	memset(str_DWORD_F66F0x, 0, 504 * sizeof(type_particle_str**));
-	memset(str_F5F10, 0, 504 * sizeof(type_particle_str**));
+	memset(m_ptrLoadedSprites_F66F0x, 0, 504 * sizeof(Type_Sprite**));
+	memset(str_F5F10, 0, 504 * sizeof(Type_Sprite**));
 	memset(x_DWORD_F5730, 0, 2016);
 	x_BYTE_DB738 = 0;
 	sub_70BF0_close_tmaps();
@@ -45170,13 +45170,13 @@ void sub_715B0()//2525b0
 {
 	unsigned __int16 v0; // bx
 	//int result; // eax
-	type_particle_str** v2x; // ecx
+	Type_Sprite** v2x; // ecx
 	//char v3; // cl
 	char v4; // cl
 	type_animations1* v5x; // eax
 	__int16 v6; // si
 	unsigned __int16 i; // bx
-	type_particle_str** v8x; // edi
+	Type_Sprite** v8x; // edi
 	//char v9; // cl
 	type_animations1* v10x; // eax
 
@@ -45184,7 +45184,7 @@ void sub_715B0()//2525b0
 	do
 	{
 		//result = 4 * v0;
-		v2x = str_DWORD_F66F0x[v0];
+		v2x = m_ptrLoadedSprites_F66F0x[v0];
 		if (v2x)
 		{
 			//result = *v2;
@@ -45201,7 +45201,7 @@ void sub_715B0()//2525b0
 						if (v6 != str_TMAPS00TAB_BEGIN_BUFFER[i].word_8)
 							break;
 						//result = 4 * i;
-						v8x = str_DWORD_F66F0x[i];
+						v8x = m_ptrLoadedSprites_F66F0x[i];
 						if (v8x)
 						{
 							//result = *v8;
@@ -45299,7 +45299,7 @@ void sub_71780()//252780
 	{
 		for (j = 0; j < 0x1F8u && !v6; j++)
 		{
-			if (i == x_BYTE_F5538[j] && !str_DWORD_F66F0x[j])
+			if (i == x_BYTE_F5538[j] && !m_ptrLoadedSprites_F66F0x[j])
 			{
 				if (sub_71E60(x_DWORD_E9C28_str) <= sub_70EF0(j))
 				{
@@ -45319,10 +45319,10 @@ void sub_71780()//252780
 //----- (00071AB0) --------------------------------------------------------
 void sub_71AB0(__int16 a1, char a2)//252ab0
 {
-	//type_particle_str* v2x; // eax
+	//Sprite* v2x; // eax
 	__int16 v3; // si
 	__int16 i; // bx
-	type_particle_str** v5x; // ecx
+	Type_Sprite** v5x; // ecx
 	type_animations1* v6x; // eax
 
 	//LOWORD(v2) = 5 * a1;
@@ -45332,7 +45332,7 @@ void sub_71AB0(__int16 a1, char a2)//252ab0
 		//LOWORD(v2) = v3;
 		if (str_TMAPS00TAB_BEGIN_BUFFER[i].word_8 != v3)
 			break;
-		v5x = str_DWORD_F66F0x[i];
+		v5x = m_ptrLoadedSprites_F66F0x[i];
 		if (v5x)
 		{
 			//v2x = *v5x;
@@ -45384,9 +45384,9 @@ void sub_72350(type_animations1* a1x)//253350 //animates sprite
 			a1x->dword_8 = a1x->NextFrameOffset_14;
 		}
 
-		if (str_DWORD_F66F0x[a1x->word_26] != NULL)
+		if (m_ptrLoadedSprites_F66F0x[a1x->word_26] != NULL)
 		{
-			type_particle_str* baseadr = *str_DWORD_F66F0x[a1x->word_26];
+			Type_Sprite* baseadr = *m_ptrLoadedSprites_F66F0x[a1x->word_26];
 			if (baseadr != NULL)
 			{
 				int animwidth = baseadr->width;
@@ -45398,7 +45398,7 @@ void sub_72350(type_animations1* a1x)//253350 //animates sprite
 
 		//memcpy();
 		/*{
-			if (str_DWORD_F66F0x[ianim] != NULL)
+			if (m_ptrLoadedSprites_F66F0x[ianim] != NULL)
 			{
 				uint8_t* baseadr = *(uint8_t * *)x_DWORD_F66F0x[ianim];
 				if (baseadr != NULL)
@@ -45429,8 +45429,8 @@ void sub_72350(type_animations1* a1x)//253350 //animates sprite
 		/*v3 = sub_76619(v1 + a1x->dword_8, v1);
 		a1x->dword_8 = v3 - v1;
 		a1x->word_22 = a1x->word_22 + 1;*/
-		v3x = sub_76619(&a1x->Particles_4->textureBuffer[a1x->dword_8], a1x->Particles_4->textureBuffer);
-		a1x->dword_8 = v3x - a1x->Particles_4->textureBuffer;
+		v3x = sub_76619(&a1x->Sprite_4->textureBuffer[a1x->dword_8], a1x->Sprite_4->textureBuffer);
+		a1x->dword_8 = v3x - a1x->Sprite_4->textureBuffer;
 		a1x->FrameIndex_22++;
 	}
 }
@@ -45453,7 +45453,7 @@ void sub_723B0(type_animations1* a1x, char a2)
 	else
 	{
 		//memset((void*)(*(x_DWORD*)a1x->dword_4 + 6), 0, a1x->word_18 * a1x->word_20);
-		memset((void*)(&a1x->Particles_4[1]), 0, a1x->Width_18 * a1x->Height_20);
+		memset((void*)(&a1x->Sprite_4[1]), 0, a1x->Width_18 * a1x->Height_20);
 		a1x->FrameIndex_22 = 1;
 		//result = a1x->word_14;
 		a1x->dword_8 = a1x->NextFrameOffset_14;

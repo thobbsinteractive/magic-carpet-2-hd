@@ -109,16 +109,18 @@ private:
 	void SubDrawTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons);
 	void SubDrawInverseTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons);
 	void SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons);
-	void DrawSprite_41BD3(uint32 a1);
+	void DrawSprite_41BD3(uint32_t a1, std::vector<RenderPolygon>* polygons, int spriteIndex, int spriteFrame);
+	void EmitSpriteQuad(std::vector<RenderPolygon>* polygons, int spriteIndex, int spriteFrame,
+		float x, float y, float rx, float ry, float dx, float dy, bool flipV);
 	void DrawSquareInProjectionSpace(std::vector<int>& vertexs, int tileIndex, std::vector<RenderPolygon>* polygons);
 	HWVertex MakeHWVertex(const ProjectionVertex& v, uint32_t textureIndex);
 	void DrawInverseSquareInProjectionSpace(int* vertexs, int tileIndex, std::vector<RenderPolygon>* polygons, int overrideTextIndex = -1);
-	void DrawSprites_3E360(int a2x, type_particle_str** str_DWORD_F66F0x[], uint8_t playersColors_E88E0x[][3], int32_t x_DWORD_F5730[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth);
+	void DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F66F0x[], uint8_t playersColors_E88E0x[][3], int32_t x_DWORD_F5730[], type_entity_0x6E8E* Entities_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, ViewPort viewPort, uint16_t screenWidth, std::vector<RenderPolygon>* polygons);
 	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int s0, int s1, int* line);
 	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v4, int s0, int s1, int s4, int* line);
 	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2, int* v3, int s0, int s1, int s2, int s3, int* line);
 	x_DWORD* LoadPolygon(x_DWORD* ptrPolys, int* v0, int* v1, int* v2, int* v3, int* v4, int s0, int s1, int s2, int s3, int s4, int* line);
-	uint16_t sub_3FD60(int a2x, uint8_t playersColors_E88E0x[][3], type_entity_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, type_particle_str** str_DWORD_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth);
+	uint16_t DrawTileBillboards_3FD60(int a2x, uint8_t playersColors_E88E0x[][3], type_entity_0x6E8E* x_DWORD_EA3E4[], type_str_unk_1804B0ar str_unk_1804B0ar, Type_Sprite** m_ptrLoadedSprites_F66F0x[], int32_t x_DWORD_F5730[], ViewPort viewPort, uint16_t screenWidth, std::vector<RenderPolygon>* polygons);
 	void sub_88740(type_entity_0x6E8E* a1, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);
 	void DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1, int16_t a2, int a3, int16_t a4);
