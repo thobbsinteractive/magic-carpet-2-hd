@@ -109,7 +109,7 @@ private:
 	void SubDrawTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons);
 	void SubDrawInverseTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons);
 	void SubDrawCaveTerrainAndParticles(std::vector<int>& projectedVertexBuffer, int pitch, std::vector<RenderPolygon>* polygons);
-	void DrawSprite_41BD3(uint32_t a1, std::vector<RenderPolygon>* polygons, int spriteIndex, int spriteFrame);
+	void DrawSprite_41BD3(uint32_t pass, std::vector<RenderPolygon>* polygons, int spriteIndex, int spriteFrame);
 	void EmitSpriteQuad(std::vector<RenderPolygon>* polygons, int spriteIndex, int spriteFrame,
 		float x, float y, float rx, float ry, float dx, float dy, bool flipV);
 	void DrawSquareInProjectionSpace(std::vector<int>& vertexs, int tileIndex, std::vector<RenderPolygon>* polygons);
