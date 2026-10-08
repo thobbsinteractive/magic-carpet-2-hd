@@ -26,8 +26,9 @@ vec3 palette(uint i)
 
 void main()
 {
-	ivec2 size  = textureSize(uIndexTex, 0);
-	ivec2 texel = clamp(ivec2(floor(fragUV)), ivec2(0), size - 1);
+	ivec2 size = textureSize(uIndexTex, 0);
+	vec2  uv   = (pc.mode == MODE_TERRAIN) ? fragUV : fragUV * vec2(size);
+	ivec2 texel = clamp(ivec2(floor(uv)), ivec2(0), size - 1);
 	uint  idx   = texelFetch(uIndexTex, texel, 0).r;
 
 	float shade = clamp(fragShade, 0.0, 1.0);

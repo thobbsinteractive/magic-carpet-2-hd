@@ -2,6 +2,7 @@
 
 #define VMA_IMPLEMENTATION
 #include <vma/vk_mem_alloc.h>
+#include "../engine/Basic.h"
 
 // ---------------------------------------------------------------------
 // NOTE: shader bytecode is loaded from .spv files at runtime (see
@@ -955,13 +956,11 @@ bool VulkanPolygonRenderer::CreatePipeline()
 	dynamicState.dynamicStateCount = 2;
 	dynamicState.pDynamicStates = dynamicStates;
 
-	// Push constant: screen size, used by the vertex shader to map pixel
-	// coords -> NDC (orthographic, no matrix needed since input is already
-	// screen-space).
+	// Fragment-stage push constants: mode, tint, alpha (matches `PC` in polygon.frag)
 	VkPushConstantRange pushConstant{};
-	pushConstant.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+	pushConstant.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
 	pushConstant.offset = 0;
-	pushConstant.size = sizeof(float) * 2;
+	pushConstant.size = sizeof(uint32_t) * 2 + sizeof(float);   // 12 bytes
 
 	VkPipelineLayoutCreateInfo layoutInfo{};
 	layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -1328,9 +1327,6 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 	vkCmdSetViewport(frame.commandBuffer, 0, 1, &viewport);
 	vkCmdSetScissor(frame.commandBuffer, 0, 1, &scissor);
 
-	float screenSize[2] = { (float)m_swapchainExtent.width, (float)m_swapchainExtent.height };
-	vkCmdPushConstants(frame.commandBuffer, m_pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(screenSize), screenSize);
-
 	if (m_polygons.size() > 0)
 		DrawPolygons(m_polygons);
 
@@ -1382,44 +1378,63 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 {
 	FrameData& frame = m_frames[m_currentFrame];
 
-	// Build the full vertex/index list for the frame up front, grouped so
-	// each contiguous run of polygons sharing a TextureId becomes one draw
-	// call (minimizes descriptor set binds; this is a CPU-side sort, cheap
-	// relative to typical retro polygon counts per frame).
-	std::vector<RenderPolygon> sorted = polygons;
-
 	std::vector<HWVertex> vertices;
 	std::vector<uint32_t> indices;
 	vertices.reserve(polygons.size() * 4);
 	indices.reserve(polygons.size() * 6);
 
-	struct Batch { uint32_t textureId; uint32_t indexOffset; uint32_t indexCount; };
+	struct Batch
+	{
+		uint32_t textureId;
+		uint32_t mode;
+		uint32_t tint;
+		uint32_t indexOffset;
+		uint32_t indexCount;
+	};
 	std::vector<Batch> batches;
 
-	uint32_t currentTexture = polygons.empty() ? 0 : polygons[0].TextureId;
+	auto modeOf = [](const RenderPolygon& p) -> uint32_t {
+		return p.TextureId == kTerrainAtlasId ? 255u : (uint32_t)p.SpriteMode;
+		};
+	auto tintOf = [](const RenderPolygon& p) -> uint32_t {
+		return p.TextureId == kTerrainAtlasId ? 0u : (uint32_t)p.Tint;
+		};
+
+	bool haveBatch = false;
+	uint32_t curTexture = 0, curMode = 0, curTint = 0;
 	uint32_t batchIndexStart = 0;
 
-	for (const auto& poly : sorted)
+	for (const auto& poly : polygons)
 	{
 		if (poly.Vertices.size() < 3)
 			continue;
 
-		if (poly.TextureId != currentTexture)
+		const uint32_t m = modeOf(poly);
+		const uint32_t t = tintOf(poly);
+
+		if (!haveBatch)
 		{
-			batches.push_back({ currentTexture, batchIndexStart, (uint32_t)indices.size() - batchIndexStart });
+			curTexture = poly.TextureId; curMode = m; curTint = t;
 			batchIndexStart = (uint32_t)indices.size();
-			currentTexture = poly.TextureId;
+			haveBatch = true;
+		}
+		else if (poly.TextureId != curTexture || m != curMode || t != curTint)
+		{
+			batches.push_back({ curTexture, curMode, curTint,
+				batchIndexStart, (uint32_t)indices.size() - batchIndexStart });
+			batchIndexStart = (uint32_t)indices.size();
+			curTexture = poly.TextureId; curMode = m; curTint = t;
 		}
 
 		uint32_t baseVertex = (uint32_t)vertices.size();
 		for (const auto& v : poly.Vertices)
-		{
 			vertices.push_back(v);
-		}
 		FanTriangulate(baseVertex, (uint32_t)poly.Vertices.size(), indices);
 	}
-	if (!sorted.empty())
-		batches.push_back({ currentTexture, batchIndexStart, (uint32_t)indices.size() - batchIndexStart });
+
+	if (haveBatch)
+		batches.push_back({ curTexture, curMode, curTint,
+			batchIndexStart, (uint32_t)indices.size() - batchIndexStart });
 
 	if (vertices.empty() || indices.empty())
 		return;
@@ -1432,11 +1447,19 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	vkCmdBindVertexBuffers(frame.commandBuffer, 0, 1, &frame.vertexBuffer, &offset);
 	vkCmdBindIndexBuffer(frame.commandBuffer, frame.indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
+	struct PC { uint32_t mode; uint32_t tint; float alpha; };
+
 	for (const auto& batch : batches)
 	{
 		auto it = m_textures.find(batch.textureId);
 		if (it == m_textures.end())
-			continue; // unknown texture id - skip rather than crash
+		{
+			continue;
+		}
+
+		PC pc{ batch.mode, batch.tint, 0.5f };
+		vkCmdPushConstants(frame.commandBuffer, m_pipelineLayout,
+			VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(pc), &pc);
 
 		vkCmdBindDescriptorSets(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
 			m_pipelineLayout, 0, 1, &it->second.descriptorSet, 0, nullptr);
