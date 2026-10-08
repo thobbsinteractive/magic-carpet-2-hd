@@ -54,7 +54,7 @@ int sub_70C60_decompress_tmap(uint16_t texture_index, uint8_t* texture_buffer);
 void WriteTextureMapToBmp(uint16_t textureIndex, uint8_t* ptextureMap, uint16_t width, uint16_t height, MapType_t mapType);
 void WriteTextureMapToBmp(uint16_t textureIndex, uint16_t frameIndex, uint8_t* ptextureMap, uint16_t width, uint16_t height, MapType_t mapType);
 uint8_t* LoadTMapColorPalette(MapType_t mapType);
-type_animations1* sub_721C0_initTmap(type_E9C08* a1, Type_Sprite** a2x, __int16 a3);
+type_animations1* sub_721C0_initTmap(type_E9C08* a1, Type_Sprite** a2x, int16_t index);
 void ResetAnimation_72410(type_animations1* animation);
 
 std::vector<uint8_t*> GetRawFrames(uint16_t frameCount, Type_Sprite* ptextureMap, size_t startOffset = 0);

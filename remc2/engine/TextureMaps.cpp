@@ -496,6 +496,13 @@ void InitTmaps(unsigned __int16 a1)//251f50
 					//if (**(uint8_t**)index6 & 1)
 					if ((*index6x)->word_0 & 1)
 						index = sub_721C0_initTmap(animations_E9C08x, index6x, i);
+					else
+					{
+						m_spriteFrameCount[i] = std::max<uint16_t>(1, 1);
+						EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(
+							EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED, i, (uint8_t*)(*index6x)->textureBuffer, (*index6x)->width, (*index6x)->height);
+					}
+
 					if (v2 < 480)
 					{
 						if (v2 != 311)
@@ -870,7 +877,7 @@ uint8_t* LoadTMapColorPalette(MapType_t mapType)
 	return Palettebuffer;
 }
 
-type_animations1* sub_721C0_initTmap(type_E9C08* a1x, Type_Sprite** a2x, __int16 a3)//2531c0
+type_animations1* sub_721C0_initTmap(type_E9C08* a1x, Type_Sprite** a2x, int16_t index)//2531c0
 {
 	signed __int16 v3; // cx
 	signed __int16 v4; // si
@@ -918,7 +925,7 @@ type_animations1* sub_721C0_initTmap(type_E9C08* a1x, Type_Sprite** a2x, __int16
 	a1x->dword_2[v12].FrameIndex_22 = 1;
 	a1x->dword_2[v12].dword_0 = 1;
 	a1x->dword_2[v12].word_24 = v12;
-	a1x->dword_2[v12].word_26 = a3;
+	a1x->dword_2[v12].word_26 = index;
 
 
 	auto frames = GetRawFrames(frameCount_v9, a1x->dword_2[v12].Sprite_4, a1x->dword_2[v12].NextFrameOffset_14);
@@ -936,11 +943,11 @@ type_animations1* sub_721C0_initTmap(type_E9C08* a1x, Type_Sprite** a2x, __int16
 
 	frames.clear();
 
-	WriteTextureMapToBmp(v12, rawData, a1x->dword_2[v12].Width_18, a1x->dword_2[v12].Height_20 * a1x->dword_2[v12].CountOfFrames_16, D41A0_0.terrain_2FECE.MapType);
+	//WriteTextureMapToBmp(v12, rawData, a1x->dword_2[v12].Width_18, a1x->dword_2[v12].Height_20 * a1x->dword_2[v12].CountOfFrames_16, D41A0_0.terrain_2FECE.MapType);
 
-	m_spriteFrameCount[v12] = std::max<uint16_t>(1, a1x->dword_2[v12].CountOfFrames_16);
+	m_spriteFrameCount[index] = std::max<uint16_t>(1, a1x->dword_2[v12].CountOfFrames_16);
 	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(
-		EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED, v12, rawData, a1x->dword_2[v12].Width_18, a1x->dword_2[v12].Height_20 * a1x->dword_2[v12].CountOfFrames_16);
+		EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED, index, rawData, a1x->dword_2[v12].Width_18, a1x->dword_2[v12].Height_20 * a1x->dword_2[v12].CountOfFrames_16);
 	
 	delete[] rawData;
 

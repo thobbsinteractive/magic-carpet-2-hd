@@ -347,6 +347,7 @@ Pathstruct xadatatables = { "",(uint8_t**)&x_DWORD_D41BC_langbuffer,&LANG_BEGIN_
 //#define psxazero14 47
 
 std::vector<Type_Message*>* m_Messages = nullptr;
+std::array<uint16_t, 504> m_spriteFrameCount{};   // 0 = not uploaded yet
 
 bool IsDefaultResolution320(int width, int height)
 {

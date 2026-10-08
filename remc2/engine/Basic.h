@@ -523,6 +523,8 @@ extern std::vector<Type_Message*>* m_Messages;
 
 constexpr uint32_t kTerrainAtlasId = 1024;
 
+extern std::array<uint16_t, 504> m_spriteFrameCount;
+
 bool DefaultResolutions();
 bool IsDefaultResolution(int width, int height);
 bool IsDefaultResolution320(int width, int height);
