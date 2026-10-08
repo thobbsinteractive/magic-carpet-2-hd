@@ -11,12 +11,10 @@ struct HWVertex
 	uint32_t Layer = 0;                   // texture array layer = textIndex_41
 };
 
-// A single convex, screen-space polygon ready for rasterization.
-// Vertices must be wound consistently (CW or CCW - see
-// VulkanPolygonRenderer::SetFrontFace) and are triangulated as a fan
-// (0,1,2 / 0,2,3 / ...), so any convex N-gon works without pre-splitting.
 struct RenderPolygon
 {
-	std::vector<HWVertex> Vertices;	// 3+ vertices, fan order
-	uint32_t TextureId = 0;					// id returned by VulkanPolygonRenderer::UploadTexture
+	std::vector<HWVertex> Vertices;   // 3+ vertices, fan order
+	uint32_t TextureId = 0;           // id returned by VulkanPolygonRenderer::UploadTexture
+	uint8_t  SpriteMode = 0xFF;       // 0xFF = terrain; 0..8 = original visibilityIdx
+	uint8_t  Tint = 0;                // dword0x07 low byte (modes 4/5)
 };
