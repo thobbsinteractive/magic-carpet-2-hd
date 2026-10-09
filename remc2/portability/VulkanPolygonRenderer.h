@@ -18,6 +18,7 @@
 
 #include "../shared/ResourceType.h"
 #include "../shared/EventDispatcher.h"
+#include "../engine/Basic.h"
 #include "RenderPolygon.h"
 
 struct SDL_Window;

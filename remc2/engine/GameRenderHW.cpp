@@ -3773,7 +3773,7 @@ void GameRenderHW::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 	} while (result);
 }
 
-void GameRenderHW::DrawSprite_41BD3(uint32_t a1, std::vector<RenderPolygon>* polygons, int spriteIndex, int spriteFrame)
+void GameRenderHW::DrawSprite_41BD3(uint32_t pass, std::vector<RenderPolygon>* polygons, int spriteIndex, int spriteFrame)
 {
 	auto& s = str_F2C20ar;
 	constexpr float kFix = 1.0f / 65536.0f;
@@ -3782,12 +3782,12 @@ void GameRenderHW::DrawSprite_41BD3(uint32_t a1, std::vector<RenderPolygon>* pol
 	{
 		// ---- rotated path: same integer prologue as the original ----
 		// (kept exactly, the overlay calls below read the adjusted values)
-		if (a1 == 1)
+		if (pass == 1)
 		{
 			s.dword0x04_screenY -= ((s.cos_0x11 * s.dword0x09_realWidth >> 1) + s.sin_0x0d * s.dword0x0c_realHeight) >> 16;
 			s.dword0x03_screenX -= (s.cos_0x11 * s.dword0x0c_realHeight - (s.sin_0x0d * s.dword0x09_realWidth >> 1)) >> 16;
 		}
-		else if (a1 == 0 || a1 == 2)
+		else if (pass == 0 || pass == 2)
 		{
 			s.dword0x04_screenY -= s.cos_0x11 * s.dword0x09_realWidth >> 17;
 			s.dword0x03_screenX -= -(s.sin_0x0d * s.dword0x09_realWidth) >> 17;
@@ -3801,10 +3801,10 @@ void GameRenderHW::DrawSprite_41BD3(uint32_t a1, std::vector<RenderPolygon>* pol
 			// right = (cos, -sin), down = (sin, cos); a1 != 1 is the flipped reflection
 			EmitSpriteQuad(polygons, spriteIndex, spriteFrame,
 				(float)s.dword0x04_screenY, (float)s.dword0x03_screenX,
-				c, -sn, sn, c, a1 != 1);
+				c, -sn, sn, c, pass != 1);
 		}
 
-		if (a1 == 1)
+		if (pass == 1)
 		{
 			if (!x_D41A0_BYTEARRAY_4_struct.byteindex_207
 				&& s.dword0x14x->class_0x3F_63 == 3
@@ -3825,12 +3825,12 @@ void GameRenderHW::DrawSprite_41BD3(uint32_t a1, std::vector<RenderPolygon>* pol
 
 	// ---- axis-aligned path ----
 	const int q = (s.dword0x0c_realHeight + s.dword0x09_realWidth) >> 2;
-	if (a1 == 1)
+	if (pass == 1)
 	{
 		s.dword0x04_screenY += -(s.sin_0x0d * q >> 16) - q;
 		s.dword0x03_screenX += -(s.cos_0x11 * q >> 16) - q;
 	}
-	else if (a1 == 2)
+	else if (pass == 2)
 	{
 		s.dword0x04_screenY += (s.sin_0x0d * q >> 16) - q;
 		s.dword0x03_screenX += (s.cos_0x11 * q >> 16) - q;
@@ -3841,7 +3841,7 @@ void GameRenderHW::DrawSprite_41BD3(uint32_t a1, std::vector<RenderPolygon>* pol
 		s.dword0x03_screenX >= (uint16_t)viewPort.Height_DE568 || s.dword0x03_screenX + s.dword0x0c_realHeight <= 0)
 		return;
 
-	if (a1 == 1 && x_D41A0_BYTEARRAY_4_struct.showHelp_10)
+	if (pass == 1 && x_D41A0_BYTEARRAY_4_struct.showHelp_10)
 		sub_88740(s.dword0x14x,
 			(int16_t)(s.dword0x04_screenY + (s.dword0x09_realWidth >> 1)),
 			(int16_t)(s.dword0x03_screenX + (s.dword0x0c_realHeight >> 1)));

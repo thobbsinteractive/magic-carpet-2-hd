@@ -2,7 +2,6 @@
 
 #define VMA_IMPLEMENTATION
 #include <vma/vk_mem_alloc.h>
-#include "../engine/Basic.h"
 
 // ---------------------------------------------------------------------
 // NOTE: shader bytecode is loaded from .spv files at runtime (see
