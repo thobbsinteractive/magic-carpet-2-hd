@@ -530,7 +530,12 @@ void InitTmaps(unsigned __int16 a1)//251f50
 					//if (**(uint8_t**)index6 & 1)
 					if ((*index6x)->word_0 & 1)
 						index = sub_721C0_initTmap(animations_E9C08x, index6x, i);
-					else if ((*index6x)->word_0 != NULL_TEXTURE)
+					else if ((*index6x)->height > 512)
+					{
+						//Error
+						Logger->error("Bad Texture Data!");
+					}
+					else
 					{
 						m_spriteFrameCount[i] = std::max<uint16_t>(1, 1);
 						EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(
