@@ -38,9 +38,13 @@ void main()
 	if (isTerrain)
 	{
 		float shade = clamp(fragShade, 0.0, 2.0);
-		vec3  rgb   = min(palette(idx) * shade, vec3(1.0));
-		float a     = (pc.mode == MODE_WATER && idx < WATER_TEXELS) ? pc.alpha : 1.0;
-		outColor = vec4(rgb, a);
+		vec3  c     = min(palette(idx) * shade, vec3(1.0));
+		if (idx >= 12u) { outColor = vec4(c, 1.0); return; }
+
+		float lum  = dot(c, vec3(0.30, 0.59, 0.11));
+		vec3  blue = vec3(0.0, 0.047, 0.078);               // replace with onBlack * 2 from the dump
+		c = mix(blue, c, clamp(lum * 4.0, 0.0, 1.0));      // darker texel -> more blue
+		outColor = vec4(c, pc.alpha);
 		return;
 	}
 

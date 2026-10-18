@@ -5,6 +5,7 @@
 static constexpr float kTerrainTexSize = 32.0f;
 static constexpr float kBrightnessMax = 4161536.0f;   // 63.5 * 65536, the observed maximum
 static constexpr float kBrightnessNeutral = 32.0f * 65536.0f;   // row 32 = fully lit, same as sprites
+static constexpr float kWaterAlpha = 0.8f;   // 0 = invisible, 1 = opaque
 
 GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale) :
 	m_ptrScreenBuffer_351628(ptrScreenBuffer), m_ptrColorPalette(pColorPalette), m_assignToSpecificCores(assignToSpecificCores),
@@ -864,10 +865,8 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v124x++;
 					v123--;
 				}
-				if (posZ < 4096)
-				{
-					SubDrawInverseTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-				}
+				SubDrawInverseTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
+
 				//Draw rest of terrain
 				SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
 				EventDispatcher::I->DispatchEvent<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, polygons);
@@ -2884,7 +2883,7 @@ void GameRenderHW::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int ti
 	if (tile.triangleFeatures_38 & 0x80)   // water tile (only set when reflections are on)
 	{
 		poly.SpriteMode = 26;
-		poly.Alpha = 0.5f;
+		poly.Alpha = kWaterAlpha;
 	}
 	poly.Vertices.reserve(4);
 
