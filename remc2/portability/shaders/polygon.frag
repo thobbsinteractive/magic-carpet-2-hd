@@ -18,6 +18,8 @@ layout(push_constant) uniform PC
 layout(location = 0) out vec4 outColor;
 
 const uint MODE_TERRAIN = 255u;
+const uint MODE_WATER   = 26u;
+const uint WATER_TEXELS = 12u;   // palette indices below this are the water surface
 
 vec3 palette(uint i)
 {
@@ -26,16 +28,19 @@ vec3 palette(uint i)
 
 void main()
 {
+	const bool isTerrain = (pc.mode == MODE_TERRAIN) || (pc.mode == MODE_WATER);
+
 	ivec2 size  = textureSize(uIndexTex, 0);
-	vec2  uv    = (pc.mode == MODE_TERRAIN) ? fragUV : fragUV * vec2(size);
+	vec2  uv    = isTerrain ? fragUV : fragUV * vec2(size);
 	ivec2 texel = clamp(ivec2(floor(uv)), ivec2(0), size - 1);
 	uint  idx   = texelFetch(uIndexTex, texel, 0).r;
 
-	// ---- terrain: shade may brighten above 1.0 ----
-	if (pc.mode == MODE_TERRAIN)
+	if (isTerrain)
 	{
 		float shade = clamp(fragShade, 0.0, 2.0);
-		outColor = vec4(min(palette(idx) * shade, vec3(1.0)), 1.0);
+		vec3  rgb   = min(palette(idx) * shade, vec3(1.0));
+		float a     = (pc.mode == MODE_WATER && idx < WATER_TEXELS) ? pc.alpha : 1.0;
+		outColor = vec4(rgb, a);
 		return;
 	}
 

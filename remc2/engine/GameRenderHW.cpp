@@ -2881,6 +2881,11 @@ void GameRenderHW::DrawSquareInProjectionSpace(std::vector<int>& vertexs, int ti
 
 	RenderPolygon poly;
 	poly.TextureId = kTerrainAtlasId;
+	if (tile.triangleFeatures_38 & 0x80)   // water tile (only set when reflections are on)
+	{
+		poly.SpriteMode = 26;
+		poly.Alpha = 0.5f;
+	}
 	poly.Vertices.reserve(4);
 
 	// Fan (a,b,c,d) splits into (a,b,c) and (a,c,d), so the first vertex picks the diagonal.
@@ -2941,9 +2946,9 @@ void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int tileInde
 
 	// Fan (a,b,c,d) splits into (a,b,c) and (a,c,d), so the first vertex picks the diagonal.
 	if ((uint8_t)tile.triangleFeatures_38 & 1)
-		poly.Vertices = { h12, h6, h0, h18 };    // diagonal 12-0
+		poly.Vertices = { h12, h18, h0, h6 };    // diagonal 12-0
 	else
-		poly.Vertices = { h18, h12, h6, h0 };    // diagonal 18-6
+		poly.Vertices = { h18, h0, h6, h12 };    // diagonal 18-6
 
 	polygons->push_back(std::move(poly));
 }

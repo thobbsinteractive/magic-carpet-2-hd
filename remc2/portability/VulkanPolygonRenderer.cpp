@@ -1400,13 +1400,15 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	std::vector<Batch> batches;
 
 	auto modeOf = [](const RenderPolygon& p) -> uint32_t {
-		return p.TextureId == kTerrainAtlasId ? 255u : (uint32_t)p.SpriteMode;
+		if (p.TextureId == kTerrainAtlasId)
+			return p.SpriteMode == 26 ? 26u : 255u;
+		return (uint32_t)p.SpriteMode;
 		};
 	auto tintOf = [](const RenderPolygon& p) -> uint32_t {
 		return p.TextureId == kTerrainAtlasId ? 0u : (uint32_t)p.Tint;
 		};
 	auto alphaOf = [](const RenderPolygon& p) -> float {
-		return p.TextureId == kTerrainAtlasId ? 1.0f : p.Alpha;
+		return p.Alpha;   // terrain defaults to 1.0
 		};
 
 	bool haveBatch = false;
@@ -1459,6 +1461,25 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	vkCmdBindIndexBuffer(frame.commandBuffer, frame.indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 	struct PC { uint32_t mode; uint32_t tint; float alpha; };
+
+	static int dbgFrame = 0;
+	if ((dbgFrame++ % 120) == 0)
+	{
+		int water = 0, land = 0, missingTex = 0;
+		for (const auto& b : batches)
+		{
+			if (m_textures.find(b.textureId) == m_textures.end()) missingTex++;
+			if (b.textureId == kTerrainAtlasId)
+			{
+				if (b.mode == 26) water++; else land++;
+				if (b.mode == 26)
+					Logger->info("ATLAS water batch alpha={} indices={}", b.alpha, b.indexCount);
+			}
+		}
+		Logger->info("DRAWPOLY polys={} batches={} atlasWater={} atlasLand={} missingTex={} atlasLoaded={}",
+			polygons.size(), batches.size(), water, land, missingTex,
+			m_textures.count(kTerrainAtlasId));
+	}
 
 	for (const auto& batch : batches)
 	{
