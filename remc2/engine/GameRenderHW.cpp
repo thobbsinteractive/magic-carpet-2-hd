@@ -4,6 +4,7 @@
 
 static constexpr float kTerrainTexSize = 32.0f;
 static constexpr float kBrightnessMax = 4161536.0f;   // 63.5 * 65536, the observed maximum
+static constexpr float kBrightnessNeutral = 32.0f * 65536.0f;   // row 32 = fully lit, same as sprites
 
 GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale) :
 	m_ptrScreenBuffer_351628(ptrScreenBuffer), m_ptrColorPalette(pColorPalette), m_assignToSpecificCores(assignToSpecificCores),
@@ -2845,7 +2846,7 @@ HWVertex GameRenderHW::MakeHWVertex(const ProjectionVertex& v, uint32_t textureI
 	h.U = tileX + (float)v.U / 65536.0f;    // 0..32 inside the tile, plus the tile's origin
 	h.V = tileY + (float)v.V / 65536.0f;
 
-	h.Shade = std::clamp((float)v.Brightness / kBrightnessMax, 0.0f, 1.0f);
+	h.Shade = std::clamp((float)v.Brightness / kBrightnessNeutral, 0.0f, 2.0f);  // >1 brightens
 	return h;
 }
 
