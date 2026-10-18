@@ -3892,6 +3892,13 @@ void GameRenderHW::EmitSpriteQuad(std::vector<RenderPolygon>* polygons, int spri
 	RenderPolygon poly;
 	poly.TextureId = (uint32_t)spriteIndex;
 	poly.SpriteMode = (uint8_t)s.dword0x01_visibilityIdx;
+
+	switch (poly.SpriteMode)
+	{
+		case 2: case 3: case 6: case 7: poly.Alpha = 0.5f; break;
+		default:                        poly.Alpha = 1.0f; break;
+	}
+
 	poly.Tint = (uint8_t)(s.dword0x07 & 0xFF);
 	poly.Vertices.resize(4);
 	for (int i = 0; i < 4; i++)

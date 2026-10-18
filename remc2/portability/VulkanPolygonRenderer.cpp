@@ -942,7 +942,13 @@ bool VulkanPolygonRenderer::CreatePipeline()
 	VkPipelineColorBlendAttachmentState blendAttachment{};
 	blendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
 		VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-	blendAttachment.blendEnable = VK_FALSE; // no transparency in the base pass; enable + set factors if you need it
+	blendAttachment.blendEnable = VK_TRUE;
+	blendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
+	blendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+	blendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
+	blendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
+	blendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+	blendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
 
 	VkPipelineColorBlendStateCreateInfo blend{};
 	blend.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
@@ -1387,6 +1393,7 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 		uint32_t textureId;
 		uint32_t mode;
 		uint32_t tint;
+		float    alpha;
 		uint32_t indexOffset;
 		uint32_t indexCount;
 	};
@@ -1398,9 +1405,13 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	auto tintOf = [](const RenderPolygon& p) -> uint32_t {
 		return p.TextureId == kTerrainAtlasId ? 0u : (uint32_t)p.Tint;
 		};
+	auto alphaOf = [](const RenderPolygon& p) -> float {
+		return p.TextureId == kTerrainAtlasId ? 1.0f : p.Alpha;
+		};
 
 	bool haveBatch = false;
 	uint32_t curTexture = 0, curMode = 0, curTint = 0;
+	float    curAlpha = 1.0f;
 	uint32_t batchIndexStart = 0;
 
 	for (const auto& poly : polygons)
@@ -1410,19 +1421,20 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 
 		const uint32_t m = modeOf(poly);
 		const uint32_t t = tintOf(poly);
+		const float    a = alphaOf(poly);
 
 		if (!haveBatch)
 		{
-			curTexture = poly.TextureId; curMode = m; curTint = t;
+			curTexture = poly.TextureId; curMode = m; curTint = t; curAlpha = a;
 			batchIndexStart = (uint32_t)indices.size();
 			haveBatch = true;
 		}
-		else if (poly.TextureId != curTexture || m != curMode || t != curTint)
+		else if (poly.TextureId != curTexture || m != curMode || t != curTint || a != curAlpha)
 		{
-			batches.push_back({ curTexture, curMode, curTint,
+			batches.push_back({ curTexture, curMode, curTint, curAlpha,
 				batchIndexStart, (uint32_t)indices.size() - batchIndexStart });
 			batchIndexStart = (uint32_t)indices.size();
-			curTexture = poly.TextureId; curMode = m; curTint = t;
+			curTexture = poly.TextureId; curMode = m; curTint = t; curAlpha = a;
 		}
 
 		uint32_t baseVertex = (uint32_t)vertices.size();
@@ -1432,7 +1444,7 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	}
 
 	if (haveBatch)
-		batches.push_back({ curTexture, curMode, curTint,
+		batches.push_back({ curTexture, curMode, curTint, curAlpha,
 			batchIndexStart, (uint32_t)indices.size() - batchIndexStart });
 
 	if (vertices.empty() || indices.empty())
@@ -1452,11 +1464,9 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	{
 		auto it = m_textures.find(batch.textureId);
 		if (it == m_textures.end())
-		{
 			continue;
-		}
 
-		PC pc{ batch.mode, batch.tint, 0.5f };
+		PC pc{ batch.mode, batch.tint, batch.alpha };
 		vkCmdPushConstants(frame.commandBuffer, m_pipelineLayout,
 			VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(pc), &pc);
 
