@@ -5,7 +5,7 @@
 static constexpr float kTerrainTexSize = 32.0f;
 static constexpr float kBrightnessMax = 4161536.0f;   // 63.5 * 65536, the observed maximum
 static constexpr float kBrightnessNeutral = 32.0f * 65536.0f;   // row 32 = fully lit, same as sprites
-static constexpr float kWaterAlpha = 0.8f;   // 0 = invisible, 1 = opaque
+static constexpr float kWaterAlpha = 0.55f;   // 0 = invisible, 1 = opaque
 
 GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale) :
 	m_ptrScreenBuffer_351628(ptrScreenBuffer), m_ptrColorPalette(pColorPalette), m_assignToSpecificCores(assignToSpecificCores),
@@ -631,8 +631,8 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 		v29 = viewPort.Height_DE568;
 		v25x = ViewPortRenderBufferStart_DE558;
 		v30 = (v26 - (__CFSHL__((signed int)v26 >> 31, 2) + 4 * ((signed int)v26 >> 31))) >> 2;
-		LOBYTE(v28) = keyColor1_D4B7C;
-		HIBYTE(v28) = keyColor1_D4B7C;
+		LOBYTE(v28) = m_BackGroundColour_D4B7C;
+		HIBYTE(v28) = m_BackGroundColour_D4B7C;
 		v31 = v28;
 		v32 = v28 << 16;
 		LOWORD(v32) = v31;

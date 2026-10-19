@@ -394,7 +394,7 @@ void GameRenderNG::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	{
 		uint8_t* line = ViewPortRenderBufferStart_DE558;
 		for (int row = 0; row < viewPort.Height_DE568; row++, line += iScreenWidth_DE560)
-			memset(line, keyColor1_D4B7C, DrawnWidth());
+			memset(line, m_BackGroundColour_D4B7C, DrawnWidth());
 	}
 	else
 		DrawSky_40950(roll);

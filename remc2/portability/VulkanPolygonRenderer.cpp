@@ -57,6 +57,13 @@ namespace
 
 VulkanPolygonRenderer::VulkanPolygonRenderer()
 {
+	std::function<void(ResourceType, uint8_t)> setClearColourIdxCallBack =
+		[this](ResourceType state, uint8_t index) {
+		SetClearColourIndex(index);
+		};
+
+	EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, setClearColourIdxCallBack));
+
 	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> textureCallBack =
 		[this](ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height) {
 		SetTexture(state, index, pixels, width, height);
@@ -90,6 +97,14 @@ VulkanPolygonRenderer::~VulkanPolygonRenderer()
 		};
 
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, polyCallBack));
+
+	std::function<void(ResourceType, uint8_t)> setClearColourIdxCallBack =
+		[this](ResourceType state, uint8_t index) {
+		SetClearColourIndex(index);
+		};
+
+	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, setClearColourIdxCallBack));
+
 }
 
 void VulkanPolygonRenderer::SetFrontFace(VkFrontFace frontFace)
@@ -436,6 +451,13 @@ void VulkanPolygonRenderer::SetPalette(const uint8_t* rgb768)
 		dst[i * 4 + 3] = 255;
 	}
 
+	if (m_clearPaletteIndex >= 0 && m_clearPaletteIndex < 256)
+	{
+		const uint8_t* p = dst + m_clearPaletteIndex * 4;     // already expanded to 8-bit RGBA
+		m_clearColor = { { p[0] / 255.0f, p[1] / 255.0f, p[2] / 255.0f, 1.0f } };
+		m_clearColorSet = true;                               // once; remove this line to follow palette changes
+	}
+
 	// One-shot copy + layout transition. Simple and correct; if you call
 	// SetPalette() every frame, consider batching this into your normal
 	// frame command buffer instead of a dedicated submit.
@@ -493,6 +515,12 @@ void VulkanPolygonRenderer::SetPalette(const uint8_t* rgb768)
 	vkQueueWaitIdle(m_graphicsQueue);
 
 	vkDestroyCommandPool(m_device, pool, nullptr);
+}
+
+void VulkanPolygonRenderer::SetClearColourIndex(uint8_t paletteIndex) 
+{
+	m_clearPaletteIndex = paletteIndex;
+	m_clearColorSet = false; 
 }
 
 VkDescriptorSet VulkanPolygonRenderer::AllocateTextureDescriptorSet(VkImageView view)
@@ -1311,7 +1339,7 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 	vkBeginCommandBuffer(frame.commandBuffer, &beginInfo);
 
 	VkClearValue clearColor{};
-	clearColor.color = { { 0.0f, 0.0f, 0.0f, 1.0f } };
+	clearColor.color = m_clearColor;
 
 	VkRenderPassBeginInfo rpBegin{};
 	rpBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;

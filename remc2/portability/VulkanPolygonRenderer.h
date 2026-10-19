@@ -57,6 +57,7 @@ public:
 	// (If you're feeding it straight from VGA_Get_Palette()/tempPalettebuffer,
 	// multiply by 4 first - those are 6-bit VGA DAC values, see VGA_Set_Palette.)
 	void SetPalette(const uint8_t* rgb768);
+	void SetClearColourIndex(uint8_t paletteIndex);
 
 	// Uploads an 8-bit indexed texture (width*height bytes, one palette
 	// index per texel) and returns a TextureId to use in RenderPolygon.
@@ -190,6 +191,10 @@ private:
 
 	VkFrontFace m_frontFace = VK_FRONT_FACE_CLOCKWISE;
 	VkCullModeFlags m_cullMode = VK_CULL_MODE_BACK_BIT;
+
+	VkClearColorValue m_clearColor{ { 0.0f, 0.0f, 0.0f, 1.0f } };
+	int  m_clearPaletteIndex = -1;      // -1 = keep black
+	bool m_clearColorSet = false;
 
 	int m_windowWidth = 0;
 	int m_windowHeight = 0;

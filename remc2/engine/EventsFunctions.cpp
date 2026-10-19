@@ -31562,6 +31562,7 @@ void InGameLoop_47320()//228320
 	//fix res on begin level for hidden levels-neoriginal code
 
 	EventDispatcher::I->DispatchEvent(EventType::E_GAME_STATE_CHANGE, GameState::STARTED);
+	EventDispatcher::I->DispatchEvent<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, ResourceType::CLEAR_COLOURIDX_SET, m_BackGroundColour_D4B7C);
 
 	g_inGameLoop = true;
 
