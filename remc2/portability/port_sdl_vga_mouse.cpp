@@ -287,6 +287,7 @@ void SetPalette(SDL_Color* colours) {
 	if (m_vulkanRenderer)
 	{
 		m_vulkanRenderer->SetPalette(tempPalettebuffer);
+		m_vulkanRenderer->SetColourLookupTable(ColourLookupTable_F6EE0);
 	}
 }
 

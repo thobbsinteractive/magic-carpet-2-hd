@@ -209,6 +209,10 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 		return false;
 	if (!CreatePaletteTexture())
 		return false;
+	if (!CreateBlendLutTexture())          // m_blendLutView, calls SetBlendLut -> UploadStagedImage
+		return false;
+	if (!CreateShadeLutTexture())          // m_shadeLutView, calls SetShadeLut -> UploadStagedImage
+		return false;
 	if (!CreateOverlayResources((uint32_t)windowWidth, (uint32_t)windowHeight))
 		return false;
 	if (!CreatePipeline())
@@ -342,36 +346,39 @@ bool VulkanPolygonRenderer::CreateRenderPass()
 
 bool VulkanPolygonRenderer::CreateDescriptorResources()
 {
-	// binding 0: palette (256x1 RGBA8), binding 1: current indexed texture (R8_UINT)
-	VkDescriptorSetLayoutBinding bindings[2]{};
-	bindings[0].binding = 0;
-	bindings[0].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	bindings[0].descriptorCount = 1;
-	bindings[0].stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+	// binding 0: palette (256x1 RGBA8)
+	// binding 1: current indexed texture (R8_UINT)
+	// binding 2: blend LUT (256x256 R8_UINT), tint modes 4/5
+	// binding 3: shade LUT (256x64 R8_UINT), lighting rows
+	constexpr uint32_t kBindingCount = 4;
 
-	bindings[1].binding = 1;
-	bindings[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	bindings[1].descriptorCount = 1;
-	bindings[1].stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+	VkDescriptorSetLayoutBinding bindings[kBindingCount]{};
+	for (uint32_t i = 0; i < kBindingCount; i++)
+	{
+		bindings[i].binding = i;
+		bindings[i].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+		bindings[i].descriptorCount = 1;
+		bindings[i].stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+	}
 
 	VkDescriptorSetLayoutCreateInfo layoutInfo{};
 	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = 2;
+	layoutInfo.bindingCount = kBindingCount;
 	layoutInfo.pBindings = bindings;
 	if (vkCreateDescriptorSetLayout(m_device, &layoutInfo, nullptr, &m_descriptorSetLayout) != VK_SUCCESS)
 		return false;
 
-	// Pool sized for a generous number of distinct textures; grow if you
-	// expect more than 256 live textures at once.
+	// Each texture set uses kBindingCount combined image samplers. The overlay set
+	// allocated later from this pool uses 1 more, so leave headroom.
 	const uint32_t kMaxTextures = 256;
 	VkDescriptorPoolSize poolSize{};
 	poolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	poolSize.descriptorCount = kMaxTextures * 2;
+	poolSize.descriptorCount = kMaxTextures * kBindingCount + 8;
 
 	VkDescriptorPoolCreateInfo poolInfo{};
 	poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
-	poolInfo.maxSets = kMaxTextures;
+	poolInfo.maxSets = kMaxTextures + 8;
 	poolInfo.poolSizeCount = 1;
 	poolInfo.pPoolSizes = &poolSize;
 	if (vkCreateDescriptorPool(m_device, &poolInfo, nullptr, &m_descriptorPool) != VK_SUCCESS)
@@ -379,13 +386,13 @@ bool VulkanPolygonRenderer::CreateDescriptorResources()
 
 	VkSamplerCreateInfo samplerInfo{};
 	samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-	samplerInfo.magFilter = VK_FILTER_NEAREST; // indexed textures must not be filtered
+	samplerInfo.magFilter = VK_FILTER_NEAREST;
 	samplerInfo.minFilter = VK_FILTER_NEAREST;
 	samplerInfo.mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST;
 	samplerInfo.addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
 	samplerInfo.addressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
 	samplerInfo.addressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
-	samplerInfo.unnormalizedCoordinates = VK_TRUE; // sample with texel coords (U/V as-is)
+	samplerInfo.unnormalizedCoordinates = VK_TRUE;
 	if (vkCreateSampler(m_device, &samplerInfo, nullptr, &m_nearestSampler) != VK_SUCCESS)
 		return false;
 
@@ -523,8 +530,186 @@ void VulkanPolygonRenderer::SetClearColourIndex(uint8_t paletteIndex)
 	m_clearColorSet = false; 
 }
 
+bool VulkanPolygonRenderer::CreateShadeLutTexture()
+{
+	VkImageCreateInfo img{};
+	img.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	img.imageType = VK_IMAGE_TYPE_2D;
+	img.format = VK_FORMAT_R8_UINT;
+	img.extent = { 256, kShadeRows, 1 };
+	img.mipLevels = 1; img.arrayLayers = 1;
+	img.samples = VK_SAMPLE_COUNT_1_BIT;
+	img.tiling = VK_IMAGE_TILING_OPTIMAL;
+	img.usage = VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+	img.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+
+	VmaAllocationCreateInfo ai{};
+	ai.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+	if (vmaCreateImage(m_allocator, &img, &ai, &m_shadeLutImage, &m_shadeLutAllocation, nullptr) != VK_SUCCESS)
+		return false;
+
+	VkImageViewCreateInfo view{};
+	view.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	view.image = m_shadeLutImage;
+	view.viewType = VK_IMAGE_VIEW_TYPE_2D;
+	view.format = VK_FORMAT_R8_UINT;
+	view.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+	if (vkCreateImageView(m_device, &view, nullptr, &m_shadeLutView) != VK_SUCCESS)
+		return false;
+
+	VkBufferCreateInfo buf{};
+	buf.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	buf.size = 256 * kShadeRows;
+	buf.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+	VmaAllocationCreateInfo sai{};
+	sai.usage = VMA_MEMORY_USAGE_CPU_ONLY;
+	sai.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
+	VmaAllocationInfo out{};
+	if (vmaCreateBuffer(m_allocator, &buf, &sai, &m_shadeLutStaging, &m_shadeLutStagingAllocation, &out) != VK_SUCCESS)
+		return false;
+	m_shadeLutStagingMapped = out.pMappedData;
+
+	// Safe default until the game's table arrives: every row is the identity (no shading)
+	std::vector<uint8_t> identity(256 * kShadeRows);
+	for (uint32_t r = 0; r < kShadeRows; r++)
+		for (uint32_t x = 0; x < 256; x++)
+			identity[r * 256 + x] = (uint8_t)x;
+	SetShadeLut(identity.data());
+	return true;
+}
+
+bool VulkanPolygonRenderer::CreateBlendLutTexture()
+{
+	VkImageCreateInfo img{};
+	img.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	img.imageType = VK_IMAGE_TYPE_2D;
+	img.format = VK_FORMAT_R8_UINT;
+	img.extent = { 256, 256, 1 };
+	img.mipLevels = 1; img.arrayLayers = 1;
+	img.samples = VK_SAMPLE_COUNT_1_BIT;
+	img.tiling = VK_IMAGE_TILING_OPTIMAL;
+	img.usage = VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+	img.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+
+	VmaAllocationCreateInfo ai{};
+	ai.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+	if (vmaCreateImage(m_allocator, &img, &ai, &m_blendLutImage, &m_blendLutAllocation, nullptr) != VK_SUCCESS)
+		return false;
+
+	VkImageViewCreateInfo view{};
+	view.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	view.image = m_blendLutImage;
+	view.viewType = VK_IMAGE_VIEW_TYPE_2D;
+	view.format = VK_FORMAT_R8_UINT;
+	view.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+	if (vkCreateImageView(m_device, &view, nullptr, &m_blendLutView) != VK_SUCCESS)
+		return false;
+
+	VkBufferCreateInfo buf{};
+	buf.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	buf.size = 256 * 256;
+	buf.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+	VmaAllocationCreateInfo sai{};
+	sai.usage = VMA_MEMORY_USAGE_CPU_ONLY;
+	sai.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
+	VmaAllocationInfo out{};
+	if (vmaCreateBuffer(m_allocator, &buf, &sai, &m_blendLutStaging, &m_blendLutStagingAllocation, &out) != VK_SUCCESS)
+		return false;
+	m_blendLutStagingMapped = out.pMappedData;
+
+	// Puts the image in SHADER_READ_ONLY so descriptors that reference it are valid
+	std::vector<uint8_t> zeros(256 * 256, 0);
+	SetBlendLut(zeros.data());
+	return true;
+}
+
+void VulkanPolygonRenderer::SetBlendLut(const uint8_t* lut65536)
+{
+	std::memcpy(m_blendLutStagingMapped, lut65536, 256 * 256);
+	UploadStagedImage(m_blendLutImage, m_blendLutStaging, 256, 256);
+}
+
+void VulkanPolygonRenderer::SetShadeLut(const uint8_t* table)
+{
+	std::memcpy(m_shadeLutStagingMapped, table, 256 * kShadeRows);
+	UploadStagedImage(m_shadeLutImage, m_shadeLutStaging, 256, kShadeRows);
+
+	// Optional: row 0 is where the fog ends. Once LITROW shows it is the haze colour, use it for the clear colour.
+	// m_clearPaletteIndex = table[1];
+	// RefreshClearColour();
+}
+
+// The same one-shot copy as SetBlendLut, with the image and size as parameters (SetBlendLut can call this too)
+void VulkanPolygonRenderer::UploadStagedImage(VkImage image, VkBuffer staging, uint32_t width, uint32_t height)
+{
+	VkCommandPoolCreateInfo poolInfo{};
+	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+	poolInfo.queueFamilyIndex = m_graphicsQueueFamily;
+	poolInfo.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
+	VkCommandPool pool;
+	vkCreateCommandPool(m_device, &poolInfo, nullptr, &pool);
+
+	VkCommandBufferAllocateInfo cbInfo{};
+	cbInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	cbInfo.commandPool = pool;
+	cbInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	cbInfo.commandBufferCount = 1;
+	VkCommandBuffer cmd;
+	vkAllocateCommandBuffers(m_device, &cbInfo, &cmd);
+
+	VkCommandBufferBeginInfo begin{};
+	begin.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	begin.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+	vkBeginCommandBuffer(cmd, &begin);
+
+	VkImageMemoryBarrier toTransfer{};
+	toTransfer.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	toTransfer.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	toTransfer.newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+	toTransfer.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	toTransfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	toTransfer.image = image;
+	toTransfer.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+	toTransfer.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	vkCmdPipelineBarrier(cmd, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT,
+		0, 0, nullptr, 0, nullptr, 1, &toTransfer);
+
+	VkBufferImageCopy copy{};
+	copy.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
+	copy.imageExtent = { width, height, 1 };
+	vkCmdCopyBufferToImage(cmd, staging, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &copy);
+
+	VkImageMemoryBarrier toRead = toTransfer;
+	toRead.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+	toRead.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+	toRead.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+	toRead.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+	vkCmdPipelineBarrier(cmd, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+		0, 0, nullptr, 0, nullptr, 1, &toRead);
+
+	vkEndCommandBuffer(cmd);
+
+	VkSubmitInfo submit{};
+	submit.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submit.commandBufferCount = 1;
+	submit.pCommandBuffers = &cmd;
+	vkQueueSubmit(m_graphicsQueue, 1, &submit, VK_NULL_HANDLE);
+	vkQueueWaitIdle(m_graphicsQueue);
+	vkDestroyCommandPool(m_device, pool, nullptr);
+}
+
+void VulkanPolygonRenderer::RefreshClearColour()
+{
+	if (m_clearPaletteIndex < 0 || !m_paletteStagingMapped)
+		return;
+	const uint8_t* p = static_cast<const uint8_t*>(m_paletteStagingMapped) + m_clearPaletteIndex * 4;
+	m_clearColor = { { p[0] / 255.0f, p[1] / 255.0f, p[2] / 255.0f, 1.0f } };
+}
+
 VkDescriptorSet VulkanPolygonRenderer::AllocateTextureDescriptorSet(VkImageView view)
 {
+	constexpr uint32_t kBindingCount = 4;
+
 	VkDescriptorSetAllocateInfo allocInfo{};
 	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 	allocInfo.descriptorPool = m_descriptorPool;
@@ -545,23 +730,40 @@ VkDescriptorSet VulkanPolygonRenderer::AllocateTextureDescriptorSet(VkImageView 
 	texInfo.imageView = view;
 	texInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
-	VkWriteDescriptorSet writes[2]{};
-	writes[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	writes[0].dstSet = set;
-	writes[0].dstBinding = 0;
-	writes[0].descriptorCount = 1;
-	writes[0].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	writes[0].pImageInfo = &paletteInfo;
+	VkDescriptorImageInfo lutInfo{};
+	lutInfo.sampler = m_nearestSampler;
+	lutInfo.imageView = m_blendLutView;
+	lutInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
-	writes[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	writes[1].dstSet = set;
-	writes[1].dstBinding = 1;
-	writes[1].descriptorCount = 1;
-	writes[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	writes[1].pImageInfo = &texInfo;
+	VkDescriptorImageInfo shadeInfo{};
+	shadeInfo.sampler = m_nearestSampler;
+	shadeInfo.imageView = m_shadeLutView;
+	shadeInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
-	vkUpdateDescriptorSets(m_device, 2, writes, 0, nullptr);
+	VkWriteDescriptorSet writes[kBindingCount]{};
+	const VkDescriptorImageInfo* infos[kBindingCount] = { &paletteInfo, &texInfo, &lutInfo, &shadeInfo };
+	for (uint32_t i = 0; i < kBindingCount; i++)
+	{
+		writes[i].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		writes[i].dstSet = set;
+		writes[i].dstBinding = i;
+		writes[i].descriptorCount = 1;
+		writes[i].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+		writes[i].pImageInfo = infos[i];
+	}
+
+	vkUpdateDescriptorSets(m_device, kBindingCount, writes, 0, nullptr);
 	return set;
+}
+
+void VulkanPolygonRenderer::SetColourLookupTable(uint8_t* colourLookupTable)
+{
+	std::vector<uint8_t> lut(65536);
+	for (int i = 0; i < 65536; i++)
+		lut[i] = colourLookupTable[COLOUR_BLEND_LOOKUP_OFFSET + i];
+	SetBlendLut(lut.data());
+
+	SetShadeLut(colourLookupTable);   // rows 0..63 sit at the start of the table, as in DrawTriangleRow
 }
 
 uint32_t VulkanPolygonRenderer::UploadTexture(uint32_t index, const uint8_t* indexedPixels, uint32_t width, uint32_t height)
@@ -1488,7 +1690,7 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	vkCmdBindVertexBuffers(frame.commandBuffer, 0, 1, &frame.vertexBuffer, &offset);
 	vkCmdBindIndexBuffer(frame.commandBuffer, frame.indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
-	struct PC { uint32_t mode; uint32_t tint; float alpha; };
+	struct PC { uint32_t mode; uint32_t tint; float alpha; uint32_t fogIndex; };
 
 	static int dbgFrame = 0;
 	if ((dbgFrame++ % 120) == 0)
@@ -1515,7 +1717,7 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 		if (it == m_textures.end())
 			continue;
 
-		PC pc{ batch.mode, batch.tint, batch.alpha };
+		PC pc{ batch.mode, batch.tint, batch.alpha, (uint32_t)(std::max)(m_clearPaletteIndex, 0) };
 		vkCmdPushConstants(frame.commandBuffer, m_pipelineLayout,
 			VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(pc), &pc);
 

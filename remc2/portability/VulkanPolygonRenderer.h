@@ -57,6 +57,7 @@ public:
 	// (If you're feeding it straight from VGA_Get_Palette()/tempPalettebuffer,
 	// multiply by 4 first - those are 6-bit VGA DAC values, see VGA_Set_Palette.)
 	void SetPalette(const uint8_t* rgb768);
+	void SetColourLookupTable(uint8_t* colourLookupTable);
 	void SetClearColourIndex(uint8_t paletteIndex);
 
 	// Uploads an 8-bit indexed texture (width*height bytes, one palette
@@ -79,6 +80,27 @@ public:
 	void EndFrame();
 
 private:
+
+	static constexpr uint32_t kShadeRows = 64;
+
+	VkImage       m_shadeLutImage = VK_NULL_HANDLE;
+	VmaAllocation m_shadeLutAllocation = nullptr;
+	VkImageView   m_shadeLutView = VK_NULL_HANDLE;
+	VkBuffer      m_shadeLutStaging = VK_NULL_HANDLE;
+	VmaAllocation m_shadeLutStagingAllocation = nullptr;
+	void* m_shadeLutStagingMapped = nullptr;
+
+	VkImage       m_blendLutImage = VK_NULL_HANDLE;
+	VmaAllocation m_blendLutAllocation = nullptr;
+	VkImageView   m_blendLutView = VK_NULL_HANDLE;
+	VkBuffer      m_blendLutStaging = VK_NULL_HANDLE;
+	VmaAllocation m_blendLutStagingAllocation = nullptr;
+	void* m_blendLutStagingMapped = nullptr;
+
+	bool CreateShadeLutTexture();
+	bool CreateBlendLutTexture();
+	void UploadStagedImage(VkImage image, VkBuffer staging, uint32_t width, uint32_t height);
+	void RefreshClearColour();
 
 	struct Texture
 	{
@@ -114,6 +136,8 @@ private:
 
 	void SetPolygons(ResourceType state, std::vector<RenderPolygon>* polygons);
 	void SetTexture(ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height);
+	void SetShadeLut(const uint8_t* table);   // first kShadeRows * 256 bytes of ColourLookupTable_F6EE0
+	void SetBlendLut(const uint8_t* lut65536);
 	bool CreateSwapchain(int width, int height);
 	void DestroySwapchain();
 	bool CreateRenderPass();
