@@ -18,7 +18,7 @@ void sub_54630_load_psxblock(uint16_t TextSize)//235630
 	}
 }
 
-void UpdateTileTextures(uint8_t tileSize, uint8_t* tileBuffer, MapType_t mapType)
+void UpdateTileTextures(uint32_t tileSize, uint8_t* tileBuffer, MapType_t mapType)
 {
 	constexpr int kTilesWide = 8;
 	constexpr int kTilesTall = 19;
@@ -28,6 +28,13 @@ void UpdateTileTextures(uint8_t tileSize, uint8_t* tileBuffer, MapType_t mapType
 		kTerrainAtlasId, tileBuffer, tileSize * kTilesWide, tileSize * kTilesTall);
 	
 	//WriteTextureMapToBmp(kTerrainAtlasId, tileBuffer, tileSize * kTilesWide, tileSize * kTilesTall, mapType);	
+}
+
+void UpdateSkyTexture(uint32_t size, uint8_t* skyBuffer)
+{
+	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(
+		EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_LOADED,
+		kSkyId, skyBuffer, size, size);
 }
 
 //----- (00054660) --------------------------------------------------------
@@ -100,6 +107,7 @@ void sub_54660_read_and_decompress_sky_and_blocks(MapType_t GraphicsType, uint8_
 			}
 			sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SKYN0-0.DAT");
 			DataFileIO::ReadFileAndDecompress(dataPath, &off_D41A8_sky);//2a51a8
+			UpdateSkyTexture(256, off_D41A8_sky);
 			break;
 		}
 		case 128:
@@ -116,6 +124,7 @@ void sub_54660_read_and_decompress_sky_and_blocks(MapType_t GraphicsType, uint8_
 			}
 			sprintf(dataPath, "%s/%s", highResGraphicsPath.c_str(), "skyn1024.data");
 			ReadGraphicsfile(dataPath, off_D41A8_sky);//2a51a8
+			UpdateSkyTexture(1024, off_D41A8_sky);
 			break;
 		}
 		}

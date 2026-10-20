@@ -19,6 +19,7 @@ layout(push_constant) uniform PC
 layout(location = 0) out vec4 outColor;
 
 const uint  MODE_TERRAIN = 255u;
+const uint  MODE_SKY = 254u;
 const uint  MODE_WATER   = 26u;
 const uint  WATER_TEXELS = 12u;
 
@@ -51,6 +52,9 @@ void main()
 	uint  idx   = texelFetch(uIndexTex, texel, 0).r;
 
 	const float row = fragShade * 32.0;
+
+	if (pc.mode == MODE_SKY)
+		outColor = vec4(palette(idx), 1.0);
 
 	// ---- terrain and water ----
 	if (isTerrain)

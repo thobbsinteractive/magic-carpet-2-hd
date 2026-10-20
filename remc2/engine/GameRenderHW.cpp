@@ -366,69 +366,83 @@ void GameRenderHW::ClearGraphicsBuffer(uint8_t colorIdx)
 /*
 * Sky texture is currently 256x256
 */
-void GameRenderHW::DrawSky_40950(int16_t roll)
+void GameRenderHW::DrawSky_40950(
+	int16_t roll,
+	std::vector<RenderPolygon>* polygons)
 {
-	int skyTextSize = 256;
-	if (x_BYTE_D41B5_texture_size == 128)
-	{
-		skyTextSize = 1024;
-	}
-	int lineWidthSQ = skyTextSize * skyTextSize;
+	if (!polygons ||
+		viewPort.Width_DE564 <= 0 ||
+		viewPort.Height_DE568 <= 0)
+		return;
 
-	bsaxis_2d errLine[3840]; // for 4K
-	uint32 beginX;
-	uint32 beginY;
-	int roundRoll = roll & 0x7FF;
-	int sinRoll = (Maths::sin_DB750[roundRoll] * skyTextSize) / viewPort.Width_DE564;
-	int cosRoll = (Maths::sin_DB750[512 + roundRoll] * skyTextSize) / viewPort.Width_DE564;
-	int errorX = 0;
-	int errorY = 0;
-	int8_t oldErrorX = 0;
-	int8_t oldErrorY = 0;
+	constexpr float kSkySize = 256.0f;
+	constexpr float kFixedOne = 65536.0f;
 
-	// prepare sky texture lookup table
-	for (uint16_t width = 0; width < viewPort.Width_DE564; width++)
-	{
-		errLine[width].x = BYTE2(errorX) - oldErrorX;
-		errLine[width].y = BYTE2(errorY) - oldErrorY;
-		oldErrorX = BYTE2(errorX);
-		oldErrorY = BYTE2(errorY);
-		errorY += sinRoll;
-		errorX += cosRoll;
-	}
+	const float width = (float)viewPort.Width_DE564;
+	const float height = (float)viewPort.Height_DE568;
 
-	uint8_t* viewPortRenderBufferStart = ViewPortRenderBufferStart_DE558;
-	int addX = (-(str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x22) >> 16) + str_F2C20ar.dword0x24;
-	int addY = str_F2C20ar.dword0x10 - (str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x22 >> 16);
-	beginX = (yaw_F2CC0 << 15) * (skyTextSize / 256) - (addX * cosRoll - addY * sinRoll);
-	beginY = -(cosRoll * addY + sinRoll * addX);
+	const int roundRoll = roll & 0x7FF;
+	const int sinRoll =
+		(Maths::sin_DB750[roundRoll] * 256) /
+		viewPort.Width_DE564;
+	const int cosRoll =
+		(Maths::sin_DB750[512 + roundRoll] * 256) /
+		viewPort.Width_DE564;
 
-	for (int height = 0; height < viewPort.Height_DE568; height += 1)
-	{
-		uint8* viewPortLineRenderBufferStart = viewPortRenderBufferStart;
+	const int addX =
+		(-(str_F2C20ar.sin_0x0d * str_F2C20ar.dword0x22) >> 16)
+		+ str_F2C20ar.dword0x24;
 
-		uint32 texturePixelIndexX = (beginX >> 16);
-		uint32 texturePixelIndexY = (beginY >> 16);
-		if (skyTextSize == 0x100)
-		{
-			texturePixelIndexX = BYTE2(beginX);
-			texturePixelIndexY = BYTE2(beginY);
-		}
+	const int addY =
+		str_F2C20ar.dword0x10 -
+		(str_F2C20ar.cos_0x11 * str_F2C20ar.dword0x22 >> 16);
 
-		//Scales sky texture to viewport
-		for (uint16_t width = 0; width < viewPort.Width_DE564; width++)
-		{
-			*viewPortLineRenderBufferStart = off_D41A8_sky[(texturePixelIndexX + skyTextSize * texturePixelIndexY) % lineWidthSQ];
-			texturePixelIndexX = (texturePixelIndexX + errLine[width].x + skyTextSize) % skyTextSize;
-			texturePixelIndexY = (texturePixelIndexY + errLine[width].y + skyTextSize) % skyTextSize;
-			viewPortLineRenderBufferStart++;
-		}
-		viewPortRenderBufferStart = viewPortRenderBufferStart + iScreenWidth_DE560;
-		beginX -= sinRoll;
-		beginY += cosRoll;
-	}
+	// Preserve the original software renderer's starting offsets.
+	const uint32_t beginX =
+		(yaw_F2CC0 << 15) -
+		(addX * cosRoll - addY * sinRoll);
+
+	const uint32_t beginY =
+		-(cosRoll * addY + sinRoll * addX);
+
+	// BYTE2() in the original renderer: the high byte is the
+	// initial texel coordinate for the 256x256 texture.
+	const float baseU =
+		(float)((beginX >> 16) & 0xFF) / kSkySize;
+	const float baseV =
+		(float)((beginY >> 16) & 0xFF) / kSkySize;
+
+	// Texture-space movement per screen pixel.
+	const float duDx = (float)cosRoll / kFixedOne / kSkySize;
+	const float dvDx = (float)sinRoll / kFixedOne / kSkySize;
+	const float duDy = (float)-sinRoll / kFixedOne / kSkySize;
+	const float dvDy = (float)cosRoll / kFixedOne / kSkySize;
+
+	auto makeVertex = [&](float x, float y) {
+		HWVertex v{};
+		v.X = x / width * 2.0f - 1.0f;
+		v.Y = y / height * 2.0f - 1.0f;
+		v.W = 1.0f;
+
+		v.U = baseU + x * duDx + y * duDy;
+		v.V = baseV + x * dvDx + y * dvDy;
+		v.Shade = 1.0f;
+
+		return v;
+		};
+
+	RenderPolygon sky{};
+	sky.TextureId = kSkyId;
+	sky.SpriteMode = 0xFE;
+	sky.Vertices = {
+		makeVertex(0.0f,  0.0f),
+		makeVertex(width, 0.0f),
+		makeVertex(width, height),
+		makeVertex(0.0f,  height)
+	};
+
+	polygons->push_back(std::move(sky));
 }
-
 /*
 * Draws Terrain, Sprites and Particals using a Painter's algorithm.
 */
@@ -645,6 +659,8 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	str_F2C20ar.sin_0x0d = Maths::sin_DB750[v23];
 	str_F2C20ar.dword0x13_FogStart = static_cast<int>(m_fogStart);
 
+	std::vector<RenderPolygon>* polygons = new std::vector<RenderPolygon>();
+
 	if (!D41A0_0.m_GameSettings.m_Graphics.m_wSky || isCaveLevel_D41B6)
 	{
 		v26 = viewPort.Width_DE564;
@@ -667,10 +683,8 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	}
 	else
 	{
-		DrawSky_40950(roll);
+		DrawSky_40950(roll, polygons);
 	}
-
-	std::vector<RenderPolygon>* polygons = new std::vector<RenderPolygon>();
 
 	//Cave Level Render
 	if (isCaveLevel_D41B6)//21d3e3 cleaned screen
