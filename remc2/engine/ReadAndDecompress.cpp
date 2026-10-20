@@ -167,22 +167,22 @@ void sub_54800_read_and_decompress_tables(MapType_t a1)//235800
 	{
 		sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/TABLESD.DAT");
 		DataFileIO::ReadFileAndDecompress(dataPath, &x_BYTE_F6EE0_tablesx_pre);//2c7ee0
-		m_BackGroundColour_D4B7E = 0x00;
-		m_BackGroundColour_D4B7C = 0xfe;
+		m_BackgroundColour_D4B7E = 0x00;
+		m_BackgroundColour_D4B7C = 0xfe;
 	}
 	else if (a1 == MapType_t::Night)
 	{
 		sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/TABLESN.DAT");
 		DataFileIO::ReadFileAndDecompress(dataPath, &x_BYTE_F6EE0_tablesx_pre);
-		m_BackGroundColour_D4B7E = 0xff;
-		m_BackGroundColour_D4B7C = 0x00;
+		m_BackgroundColour_D4B7E = 0xff;
+		m_BackgroundColour_D4B7C = 0x00;
 	}
 	else if (a1 == MapType_t::Cave)
 	{
 		sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/TABLESC.DAT");
 		DataFileIO::ReadFileAndDecompress(dataPath, &x_BYTE_F6EE0_tablesx_pre);
-		m_BackGroundColour_D4B7C = 0xfe;
-		m_BackGroundColour_D4B7E = 0xff;
+		m_BackgroundColour_D4B7C = 0xfe;
+		m_BackgroundColour_D4B7E = 0xff;
 	}
 }
 

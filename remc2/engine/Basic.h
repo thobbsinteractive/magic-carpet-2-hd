@@ -196,8 +196,8 @@ extern type_str_unk_1804B0ar str_unk_1804B0ar;
 extern __int16 x_WORD_180660_VGA_type_resolution;
 extern uint8_t playersColors_E88E0x[8][3];
 extern uint8_t unk_F0A20x[1024];//2c1a20
-extern uint8_t m_BackGroundColour_D4B7C; // weak
-extern uint8_t m_BackGroundColour_D4B7E; // weak
+extern uint8_t m_BackgroundColour_D4B7C; // weak
+extern uint8_t m_BackgroundColour_D4B7E; // weak
 extern type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
 
 extern uint8_t ColourLookupTable_F6EE0[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites

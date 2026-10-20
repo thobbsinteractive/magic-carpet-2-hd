@@ -7,6 +7,7 @@
 
 #include <array>
 #include <thread>
+#include <cmath>
 
 #include "../utilities/Maths.h"
 #include "../utilities/BitmapIO.h"
@@ -80,6 +81,11 @@ private:
 
 	uint8_t m_viewDistanceScale = 1;
 
+	// Squared distances in 1/65536 of a tile squared (64 bit: the 32-bit values overflow past view distance 6)
+	int64_t m_cutOffDistance = 0;
+	int64_t m_fogStart = 0;
+	int64_t m_fogEnd = 0;
+
 	uint8_t* m_ptrDWORD_E9C38_smalltit = nullptr;
 	uint8_t* m_ptrScreenBuffer_351628 = nullptr;
 	uint8_t* m_ptrColorPalette = nullptr;
@@ -126,9 +132,11 @@ private:
 	void DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1, int16_t a2, int a3, int16_t a4);
 	void BuildTileRenderStepTable(TileStepQuadrant* table, int cols);
 	bool CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, ProjectionVertex v3, int maxCoordinate = 2147483647, int minCoordinate = -2147483647);
+	int SpriteLight(int64_t distance) const;
+	int FogLight(int light, int64_t distance) const;
 
 public:
-	GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale = 1);
+	GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale = 1, float fogScale = 1.0f);
 	~GameRenderHW();
 
 	void DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov);

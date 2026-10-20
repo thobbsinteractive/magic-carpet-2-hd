@@ -116,8 +116,8 @@ int help_VGA_type_resolution = 0;
 int16_t x_WORD_180660_VGA_type_resolution; // weak
 uint8_t playersColors_E88E0x[8][3];
 uint8_t unk_F0A20x[1024];
-uint8_t m_BackGroundColour_D4B7C = 0xfe;
-uint8_t m_BackGroundColour_D4B7E = 0x00;
+uint8_t m_BackgroundColour_D4B7C = 0xfe;
+uint8_t m_BackgroundColour_D4B7E = 0x00;
 type_entity_0x6E8E* Entities_EA3E4[1001];//2bb3e4
 
 uint8_t ColourLookupTable_F6EE0[83456];// (uint8_t*)&x_BYTE_F6EE0_tablesbuff;//animated sprites

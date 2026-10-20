@@ -7,7 +7,7 @@ static constexpr float kBrightnessMax = 4161536.0f;   // 63.5 * 65536, the obser
 static constexpr float kBrightnessNeutral = 32.0f * 65536.0f;   // row 32 = fully lit, same as sprites
 static constexpr float kWaterAlpha = 0.55f;   // 0 = invisible, 1 = opaque
 
-GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale) :
+GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale, float fogScale) :
 	m_ptrScreenBuffer_351628(ptrScreenBuffer), m_ptrColorPalette(pColorPalette), m_assignToSpecificCores(assignToSpecificCores),
 	m_ptrDWORD_E9C38_smalltit(new uint8_t[GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT])
 {
@@ -15,6 +15,27 @@ GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 	m_ptrBlurBuffer_E9C3C = &m_preBlurBuffer_E9C3C[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
 
 	m_viewDistanceScale = viewDistanceScale;
+
+	{
+		const int64_t scale = m_viewDistanceScale;
+		const int64_t cutOff = 400 * scale * scale;
+		int64_t fogEnd = cutOff - 39 * scale * scale;
+		int64_t fogStart = cutOff - 175 * scale * scale;
+		if (fogScale > 0 && fogScale != 1.0f)
+		{
+			const double fogScale2 = static_cast<double>(fogScale) * fogScale;
+			fogEnd = std::llround(fogEnd * fogScale2);
+			if (fogEnd > cutOff)
+				fogEnd = cutOff;
+			fogStart = std::llround(fogStart * fogScale2);
+			if (fogStart > fogEnd - 1)
+				fogStart = fogEnd - 1;
+		}
+		m_cutOffDistance = cutOff << 16;
+		m_fogEnd = fogEnd << 16;
+		m_fogStart = fogStart << 16;
+	}
+
 	m_tileRows = TILE_ROWS_COUNT * viewDistanceScale;
 	m_tileColumns = TILE_COLUMNS_COUNT * viewDistanceScale;
 
@@ -440,7 +461,7 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	int v32; // eax
 	int v33; // ecx
 	signed int y_v34; // esi
-	int dist_v35; // ebx
+	int64_t dist_v35; // ebx
 	uint16_t v36; // dx
 	int v37; // eax
 	__int16 v38; // ax
@@ -458,7 +479,7 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	signed int v55; // esi
 	int v56x;
 	signed int v109; // esi
-	int v110; // ebx
+	int64_t v110; // ebx
 	uint16_t v111; // dx
 	__int16 tickIdx; // ax
 	int v113; // eax
@@ -485,7 +506,7 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	//char v196; // ch
 	int v197; // ecx
 	signed int v198; // esi
-	int v199; // ebx
+	int64_t v199; // ebx
 	uint16_t v200; // di
 	__int16 v201; // ax
 	int v202; // eax
@@ -610,18 +631,19 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 		m_tileRows_v17--;
 	}
 
-	str_F2C20ar.dword0x15_tileRenderCutOffDistance = (400 * (m_viewDistanceScale * m_viewDistanceScale)) << 16; //Distance cut-off for tile render
+	// Cut-off and fog distances come from the members (64 bit, see the constructor)
+	str_F2C20ar.dword0x15_tileRenderCutOffDistance = static_cast<int>(m_cutOffDistance); //Distance cut-off for tile render
 	v278x = 0;
-	str_F2C20ar.dword0x12_FogThickness = 136 << 16;
+	str_F2C20ar.dword0x12_FogThickness = static_cast<int>(m_fogEnd - m_fogStart);
 	v22 = v277[0];
 	str_F2C20ar.dword0x22 = pitch * (uint16_t)viewPort.Width_DE564 >> 8;
 	LOBYTE(v279) = v22 + HIBYTE(posX);
 	HIBYTE(v279) = v277[1] + HIBYTE(posY);
 	v23 = roll & 0x7FF;
 	str_F2C20ar.cos_0x11 = Maths::sin_DB750[512 + v23];
-	str_F2C20ar.dword0x16_FogEnd = ((400 * (m_viewDistanceScale * m_viewDistanceScale)) - (39 + (20 * (m_viewDistanceScale - 1)))) << 16;
+	str_F2C20ar.dword0x16_FogEnd = static_cast<int>(m_fogEnd);
 	str_F2C20ar.sin_0x0d = Maths::sin_DB750[v23];
-	str_F2C20ar.dword0x13_FogStart = ((400 * (m_viewDistanceScale * m_viewDistanceScale)) - (175 + (20 * (m_viewDistanceScale - 1)))) << 16;
+	str_F2C20ar.dword0x13_FogStart = static_cast<int>(m_fogStart);
 
 	if (!D41A0_0.m_GameSettings.m_Graphics.m_wSky || isCaveLevel_D41B6)
 	{
@@ -631,8 +653,8 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 		v29 = viewPort.Height_DE568;
 		v25x = ViewPortRenderBufferStart_DE558;
 		v30 = (v26 - (__CFSHL__((signed int)v26 >> 31, 2) + 4 * ((signed int)v26 >> 31))) >> 2;
-		LOBYTE(v28) = m_BackGroundColour_D4B7C;
-		HIBYTE(v28) = m_BackGroundColour_D4B7C;
+		LOBYTE(v28) = m_BackgroundColour_D4B7C;
+		HIBYTE(v28) = m_BackgroundColour_D4B7C;
 		v31 = v28;
 		v32 = v28 << 16;
 		LOWORD(v32) = v31;
@@ -730,9 +752,9 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 
 				v33 = ((uint8_t)mapShading_12B4E0[v279] << 8) + 128;
 				y_v34 = m_ptrStr_E9C38_smalltit[v278x].y_12;
-				dist_v35 = y_v34 * y_v34 + m_ptrStr_E9C38_smalltit[v278x].x_0 * m_ptrStr_E9C38_smalltit[v278x].x_0;
+				dist_v35 = (int64_t)y_v34 * y_v34 + (int64_t)m_ptrStr_E9C38_smalltit[v278x].x_0 * m_ptrStr_E9C38_smalltit[v278x].x_0;
 				m_ptrStr_E9C38_smalltit[v278x].haveBillboard_36 = 0;
-				if (y_v34 <= -256 || dist_v35 >= str_F2C20ar.dword0x15_tileRenderCutOffDistance)
+				if (y_v34 <= -256 || dist_v35 >= m_cutOffDistance)
 				{
 					m_ptrStr_E9C38_smalltit[v278x].triangleFeatures_38 |= 2u;
 					goto LABEL_46;
@@ -755,17 +777,7 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 						v37 = 0;
 				}
 				v39 = (v33 << 8) + 8 * v37;
-				if (dist_v35 <= str_F2C20ar.dword0x13_FogStart)
-					goto LABEL_39;
-				if (dist_v35 < str_F2C20ar.dword0x16_FogEnd)
-				{
-					v39 = v39 * (signed __int64)(str_F2C20ar.dword0x16_FogEnd - dist_v35) / str_F2C20ar.dword0x12_FogThickness;
-				LABEL_39:
-					m_ptrStr_E9C38_smalltit[v278x].pnt5_32 = v39;
-					goto LABEL_40;
-				}
-				m_ptrStr_E9C38_smalltit[v278x].pnt5_32 = 0;
-			LABEL_40:
+				m_ptrStr_E9C38_smalltit[v278x].pnt5_32 = FogLight(v39, dist_v35);
 				if (mapAngle_13B4E0[v279] & 8)
 					m_ptrStr_E9C38_smalltit[v278x].triangleFeatures_38 |= 0x80u;
 				//v41x = v278x;
@@ -865,8 +877,10 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v124x++;
 					v123--;
 				}
-				SubDrawInverseTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-
+				if (posZ < 4096)
+				{
+					SubDrawInverseTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
+				}
 				//Draw rest of terrain
 				SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
 				EventDispatcher::I->DispatchEvent<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, polygons);
@@ -880,9 +894,9 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 			{
 				projectedVertexBuffer[31] = ((uint8_t)mapShading_12B4E0[v279] << 8) + 128;
 				v109 = m_ptrStr_E9C38_smalltit[v278x].y_12;
-				v110 = v109 * v109 + m_ptrStr_E9C38_smalltit[v278x].x_0 * m_ptrStr_E9C38_smalltit[v278x].x_0;
+				v110 = (int64_t)v109 * v109 + (int64_t)m_ptrStr_E9C38_smalltit[v278x].x_0 * m_ptrStr_E9C38_smalltit[v278x].x_0;
 				m_ptrStr_E9C38_smalltit[v278x].haveBillboard_36 = 0;
-				if (v109 <= -256 || v110 >= str_F2C20ar.dword0x15_tileRenderCutOffDistance)
+				if (v109 <= -256 || v110 >= m_cutOffDistance)
 				{
 					m_ptrStr_E9C38_smalltit[v278x].triangleFeatures_38 |= 2u;
 					goto LABEL_140;
@@ -905,17 +919,7 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v113 = 0;
 				}
 				v116 = (projectedVertexBuffer[31] << 8) + 8 * v113;
-				if (v110 <= str_F2C20ar.dword0x13_FogStart)
-					goto LABEL_133;
-				if (v110 < str_F2C20ar.dword0x16_FogEnd)
-				{
-					v116 = v116 * (signed __int64)(str_F2C20ar.dword0x16_FogEnd - v110) / str_F2C20ar.dword0x12_FogThickness;
-				LABEL_133:
-					m_ptrStr_E9C38_smalltit[v278x].pnt5_32 = v116;
-					goto LABEL_134;
-				}
-				m_ptrStr_E9C38_smalltit[v278x].pnt5_32 = 0;
-			LABEL_134:
+				m_ptrStr_E9C38_smalltit[v278x].pnt5_32 = FogLight(v116, v110);
 				v117x = v278x;
 				m_ptrStr_E9C38_smalltit[v278x].pnt2_20 = str_F2C20ar.dword0x22 + str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].alt_4 / v109;
 				m_ptrStr_E9C38_smalltit[v278x].pnt4_28 = str_F2C20ar.dword0x22 + str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v117x].inverse_alt_8 / v109;
@@ -961,9 +965,9 @@ LABEL_259:
 			}
 			v197 = ((uint8_t)mapShading_12B4E0[v279] << 8) + 128;
 			v198 = m_ptrStr_E9C38_smalltit[v278x].y_12;
-			v199 = v198 * v198 + m_ptrStr_E9C38_smalltit[v278x].x_0 * m_ptrStr_E9C38_smalltit[v278x].x_0;
+			v199 = (int64_t)v198 * v198 + (int64_t)m_ptrStr_E9C38_smalltit[v278x].x_0 * m_ptrStr_E9C38_smalltit[v278x].x_0;
 			m_ptrStr_E9C38_smalltit[v278x].haveBillboard_36 = 0;
-			if (v198 > -256 && v199 < str_F2C20ar.dword0x15_tileRenderCutOffDistance)
+			if (v198 > -256 && v199 < m_cutOffDistance)
 				break;
 			m_ptrStr_E9C38_smalltit[v278x].triangleFeatures_38 |= 2u;
 		LABEL_256:
@@ -986,28 +990,18 @@ LABEL_259:
 		if (!(mapAngle_13B4E0[v200] & 8) || (m_ptrStr_E9C38_smalltit[v278x].alt_4 -= v202 >> 10, v197 >= 14464))
 			v202 = 0;
 		v203 = (v197 << 8) + 8 * v202;
-		if (v199 > str_F2C20ar.dword0x13_FogStart)
-		{
-			if (v199 >= str_F2C20ar.dword0x16_FogEnd)
-			{
-				m_ptrStr_E9C38_smalltit[v278x].pnt5_32 = 0;
-			LABEL_254:
-				m_ptrStr_E9C38_smalltit[v278x].pnt2_20 = str_F2C20ar.dword0x22 + str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].alt_4 / v198;
-				LOBYTE(v204) = v277[2] + v279;
-				HIBYTE(v204) = v277[3] + HIBYTE(v279);
-				v205x = v278x;
-				m_ptrStr_E9C38_smalltit[v278x].textIndex_41 = mapTerrainType_10B4E0[v204];
-				m_ptrStr_E9C38_smalltit[v205x].textAtyp_43 = Maths::x_BYTE_D41D8[m_ptrStr_E9C38_smalltit[v205x].textIndex_41];
-				m_ptrStr_E9C38_smalltit[v205x].textUV_42 = projectedVertexBuffer[32] + (((signed int)(uint8_t)mapAngle_13B4E0[v204] >> 2) & 0x1C);
-				LOBYTE(v204) = v277[4] + v204;
-				HIBYTE(v204) += v277[5];
-				m_ptrStr_E9C38_smalltit[v278x].haveBillboard_36 = mapEntityIndex_15B4E0[v204];
-				goto LABEL_256;
-			}
-			v203 = v203 * (signed __int64)(str_F2C20ar.dword0x16_FogEnd - v199) / str_F2C20ar.dword0x12_FogThickness;
-		}
-		m_ptrStr_E9C38_smalltit[v278x].pnt5_32 = v203;
-		goto LABEL_254;
+		m_ptrStr_E9C38_smalltit[v278x].pnt5_32 = FogLight(v203, v199);
+		m_ptrStr_E9C38_smalltit[v278x].pnt2_20 = str_F2C20ar.dword0x22 + str_F2C20ar.dword0x18 * m_ptrStr_E9C38_smalltit[v278x].alt_4 / v198;
+		LOBYTE(v204) = v277[2] + v279;
+		HIBYTE(v204) = v277[3] + HIBYTE(v279);
+		v205x = v278x;
+		m_ptrStr_E9C38_smalltit[v278x].textIndex_41 = mapTerrainType_10B4E0[v204];
+		m_ptrStr_E9C38_smalltit[v205x].textAtyp_43 = Maths::x_BYTE_D41D8[m_ptrStr_E9C38_smalltit[v205x].textIndex_41];
+		m_ptrStr_E9C38_smalltit[v205x].textUV_42 = projectedVertexBuffer[32] + (((signed int)(uint8_t)mapAngle_13B4E0[v204] >> 2) & 0x1C);
+		LOBYTE(v204) = v277[4] + v204;
+		HIBYTE(v204) += v277[5];
+		m_ptrStr_E9C38_smalltit[v278x].haveBillboard_36 = mapEntityIndex_15B4E0[v204];
+		goto LABEL_256;
 	}//21edb7 nothing changed
 	v208 = roll & 0x7FF;//21edb7
 
@@ -1647,7 +1641,7 @@ uint16_t GameRenderHW::DrawTileBillboards_3FD60(int a2x, uint8_t playersColors_E
 	int v5; // eax
 	int v6; // ecx
 	int v7; // esi
-	int v8; // edx
+	int64_t v8; // edx
 	Type_SpriteDef_D951C* v9x; // esi
 	int v10; // ecx
 	int v11; // ST0C_4
@@ -1705,21 +1699,10 @@ uint16_t GameRenderHW::DrawTileBillboards_3FD60(int a2x, uint8_t playersColors_E
 				v6 = (v4 * str_F2C20ar.cos2_0x0f - v5 * str_F2C20ar.sin2_0x17) >> 16;
 				v40 = (str_F2C20ar.sin2_0x17 * v4 + str_F2C20ar.cos2_0x0f * v5) >> 16;
 				v7 = (str_F2C20ar.sin2_0x17 * v4 + str_F2C20ar.cos2_0x0f * v5) >> 16;
-				v8 = v40 * v40 + v6 * v6;
-				if (v7 > 64 && v8 < str_F2C20ar.dword0x15_tileRenderCutOffDistance)
+				v8 = (int64_t)v40 * v40 + (int64_t)v6 * v6;
+				if (v7 > 64 && v8 < m_cutOffDistance)
 				{
-					if (v8 <= str_F2C20ar.dword0x13_FogStart)
-					{
-						str_F2C20ar.dword0x00 = 0x2000;
-					}
-					else if (v8 < str_F2C20ar.dword0x16_FogEnd)
-					{
-						str_F2C20ar.dword0x00 = 32 * (str_F2C20ar.dword0x16_FogEnd - (v40 * v40 + v6 * v6)) / str_F2C20ar.dword0x12_FogThickness << 8;
-					}
-					else
-					{
-						str_F2C20ar.dword0x00 = 0;
-					}
+					str_F2C20ar.dword0x00 = SpriteLight(v8);
 					v9x = &spriteDefsTable_D951C[v41x->word_0x5A_90];
 					v10 = v6 * str_F2C20ar.dword0x18 / v40;
 					v11 = str_F2C20ar.dword0x18 * v42 / v40 + str_F2C20ar.dword0x22;
@@ -2911,6 +2894,26 @@ bool GameRenderHW::CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, P
 	return false;
 }
 
+// The light of a sprite by its distance (fog): 0x2000 full, 0 in the fog end.
+int GameRenderHW::SpriteLight(int64_t distance) const
+{
+	if (distance <= m_fogStart)
+		return 0x2000;
+	if (distance < m_fogEnd)
+		return static_cast<int>(32 * (m_fogEnd - distance) / (m_fogEnd - m_fogStart)) << 8;
+	return 0;
+}
+
+// The light of a tile corner, faded by its distance.
+int GameRenderHW::FogLight(int light, int64_t distance) const
+{
+	if (distance <= m_fogStart)
+		return light;
+	if (distance >= m_fogEnd)
+		return 0;
+	return static_cast<int>(light * (m_fogEnd - distance) / (m_fogEnd - m_fogStart));
+}
+
 void GameRenderHW::DrawInverseSquareInProjectionSpace(int* vertexs, int tileIndex, std::vector<RenderPolygon>* polygons, int overrideTextIndex)
 {
 	const auto& tile = m_ptrStr_E9C38_smalltit[tileIndex];
@@ -2964,7 +2967,7 @@ void GameRenderHW::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 	type_entity_0x6E8E* v3x; // eax
 	__int16 v4; // cx
 	int v5; // ecx
-	int v6; // edx
+	int64_t v6; // edx
 	Type_SpriteDef_D951C* v7x; // edi
 	int v8; // ecx
 	int v9; // ST18_4
@@ -2999,7 +3002,7 @@ void GameRenderHW::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 	int v48; // eax
 	int v49; // ecx
 	type_D404C* v50x; // ebx
-	int v51; // edx
+	int64_t v51; // edx
 	Type_SpriteDef_D951C* v52x; // edi
 	int v53; // ecx
 	int v54; // ST1C_4
@@ -3070,13 +3073,10 @@ void GameRenderHW::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 					v98 = sub_B5C60_getTerrainAlt2(v3x->position_0x4C_76.x, v4) - str_F2C20ar.dword0x20;
 					v5 = (str_F2C20ar.cos2_0x0f * v96 - str_F2C20ar.sin2_0x17 * v97) >> 16;
 					v99 = (str_F2C20ar.sin2_0x17 * v96 + str_F2C20ar.cos2_0x0f * v97) >> 16;
-					v6 = v99 * v99 + v5 * v5;
-					if (v99 > 64 && v6 < str_F2C20ar.dword0x15_tileRenderCutOffDistance)
+					v6 = (int64_t)v99 * v99 + (int64_t)v5 * v5;
+					if (v99 > 64 && v6 < m_cutOffDistance)
 					{
-						if (v6 <= str_F2C20ar.dword0x13_FogStart)
-							str_F2C20ar.dword0x00 = 0x2000;
-						else
-							str_F2C20ar.dword0x00 = v6 < str_F2C20ar.dword0x16_FogEnd ? 32 * (str_F2C20ar.dword0x16_FogEnd - (v99 * v99 + v5 * v5)) / str_F2C20ar.dword0x12_FogThickness << 8 : 0;
+						str_F2C20ar.dword0x00 = SpriteLight(v6);
 						v7x = &spriteDefsTable_D951C[str_F2C20ar.dword0x14x->word_0x5A_90];
 						if (!v7x->lightingTableIdx_10)
 						{
@@ -3427,21 +3427,10 @@ void GameRenderHW::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 					break;
 				}
 			}
-			v51 = v100 * v100 + v49 * v49;
-			if (v100 > 64 && v51 < str_F2C20ar.dword0x15_tileRenderCutOffDistance)
+			v51 = (int64_t)v100 * v100 + (int64_t)v49 * v49;
+			if (v100 > 64 && v51 < m_cutOffDistance)
 			{
-				if (v51 <= str_F2C20ar.dword0x13_FogStart)
-				{
-					str_F2C20ar.dword0x00 = 0x2000;
-				}
-				else if (v51 < str_F2C20ar.dword0x16_FogEnd)
-				{
-					str_F2C20ar.dword0x00 = 32 * (str_F2C20ar.dword0x16_FogEnd - (v100 * v100 + v49 * v49)) / str_F2C20ar.dword0x12_FogThickness << 8;
-				}
-				else
-				{
-					str_F2C20ar.dword0x00 = 0;
-				}
+				str_F2C20ar.dword0x00 = SpriteLight(v51);
 				v52x = &spriteDefsTable_D951C[str_F2C20ar.dword0x14x->word_0x5A_90];
 				v53 = v49 * str_F2C20ar.dword0x18 / v100;
 				v54 = str_F2C20ar.dword0x18 * (v48 - str_F2C20ar.dword0x20) / v100 + str_F2C20ar.dword0x22;
