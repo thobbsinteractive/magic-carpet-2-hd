@@ -1117,7 +1117,7 @@ x_BYTE x_BYTE_D41A4_11 = 0;
 x_BYTE x_BYTE_D41A4_12 = 0;
 x_BYTE x_BYTE_D41A4_13 = 0;
 
-uint8_t x_BYTE_D41B5_texture_size = 32; // weak
+uint8_t TileTextureSize_D41B5 = 32; // weak
 
 char x_BYTE_D41C4 = 99; // weak
 char x_BYTE_D41C6_old_graphics_mode = 40; // weak
@@ -39665,7 +39665,7 @@ void LevelInitGame_56A30(int16_t level, std::string customLevelPath)//237a30
 		Logger->debug("LevelInitGame_56A30:LevelDecompress_533B0 passed");
 
 	}
-	sub_54660_read_and_decompress_sky_and_blocks(D41A0_0.terrain_2FECE.MapType, x_BYTE_D41B5_texture_size);//235660
+	ReadAndDecompressSkyAndBlocks_54660(D41A0_0.terrain_2FECE.MapType, TileTextureSize_D41B5);//235660
 	sub_54800_read_and_decompress_tables(D41A0_0.terrain_2FECE.MapType);//235800
 	//237ab3
 	if (!(x_D41A0_BYTEARRAY_4_struct.setting_byte1_22 & Setting::MULTIPLAYER_MODE))
@@ -39745,7 +39745,7 @@ void sub_56D60(unsigned int a1, char a2)//237d60
 	LevelDecompress_533B0(x_D41A0_BYTEARRAY_4_struct.levelnumber_43w, &D41A0_0.terrain_2FECE);
 	if (a2)
 	{
-		sub_54660_read_and_decompress_sky_and_blocks(D41A0_0.terrain_2FECE.MapType, x_BYTE_D41B5_texture_size);
+		ReadAndDecompressSkyAndBlocks_54660(D41A0_0.terrain_2FECE.MapType, TileTextureSize_D41B5);
 		sub_54800_read_and_decompress_tables(D41A0_0.terrain_2FECE.MapType);
 	}
 	//v3 = x_D41A0_BYTEARRAY_0 + 196302;
@@ -43034,24 +43034,24 @@ void sub_5B7A0_prepare_textures()//23C7A0
 {
 	if (bigTextures)
 	{
-		x_BYTE_D41B5_texture_size = texturepixels;
+		TileTextureSize_D41B5 = texturepixels;
 	}
 
 	uint8_t* oldbuf = BLOCK32DAT_BEGIN_BUFFER;
-	if (x_BYTE_D41B5_texture_size == 128)
+	if (TileTextureSize_D41B5 == 128)
 		BLOCK32DAT_BEGIN_BUFFER = BigTextureBuffer;
 
-	//x_BYTE_D41B5_texture_size = 16;
+	//TileTextureSize_D41B5 = 16;
 
 	//v0 = x_BYTE_D41B5;
-	sub_3B4D0_fill_unk_D4350_256(x_BYTE_D41B5_texture_size);//21C4D0
-	//v1 = 256 % (256 / x_BYTE_D41B5_texture_size);
+	sub_3B4D0_fill_unk_D4350_256(TileTextureSize_D41B5);//21C4D0
+	//v1 = 256 % (256 / TileTextureSize_D41B5);
 	int texture_addresses_index = 0;
-	for (int ypos = 0; ypos < (signed int)(256 / (256 / x_BYTE_D41B5_texture_size)); ypos++)
+	for (int ypos = 0; ypos < (signed int)(256 / (256 / TileTextureSize_D41B5)); ypos++)
 	{
-		for (int xpos = 0; xpos < (256 / x_BYTE_D41B5_texture_size); xpos++)
+		for (int xpos = 0; xpos < (256 / TileTextureSize_D41B5); xpos++)
 		{
-			uint8_t* ptrTexture = (uint8_t*)((ypos * x_BYTE_D41B5_texture_size << 8) + (xpos * x_BYTE_D41B5_texture_size) + BLOCK32DAT_BEGIN_BUFFER);
+			uint8_t* ptrTexture = (uint8_t*)((ypos * TileTextureSize_D41B5 << 8) + (xpos * TileTextureSize_D41B5) + BLOCK32DAT_BEGIN_BUFFER);
 			x_DWORD_DDF50_texture_adresses.at(texture_addresses_index++) = ptrTexture;
 		}
 	}
@@ -47373,7 +47373,7 @@ void sub_83B50()//264B50
 	//result = x_D41A0_BYTEARRAY_4;//2A51A4d == ff //fix
 	if (!(x_D41A0_BYTEARRAY_4_struct.pointer_0xE2_heapbuffer_226))//2A51B2F = ff
 	{
-		x_BYTE_D41B5_texture_size = 32;
+		TileTextureSize_D41B5 = 32;
 		/*if ( (unsigned int)x_DWORD_17FEAC <= 0x800000 )//fix
 		{
 		  if ( (unsigned int)x_DWORD_17FEAC <= 0x700000 )
@@ -47438,7 +47438,7 @@ void sub_83B50()//264B50
 			myprintf("ERROR 1: NOT ENOUGH MEMORY. (%ld / %ld)\n");
 			exit(1);
 		}
-		sub_54630_load_psxblock(x_BYTE_D41B5_texture_size);
+		sub_54630_load_psxblock(TileTextureSize_D41B5);
 		sub_5B7A0_prepare_textures();//23C7A0
 	}
 	//return result;

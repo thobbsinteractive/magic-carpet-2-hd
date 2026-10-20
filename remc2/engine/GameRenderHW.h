@@ -33,7 +33,6 @@ class GameRenderHW : public GameRenderInterface
 
 private:
 
-	const float kTile = 32.0f;
 	const uint32_t kTilesWide = 8;
 
 	struct TileStepQuadrant {

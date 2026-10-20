@@ -38,7 +38,7 @@ void UpdateSkyTexture(uint32_t size, uint8_t* skyBuffer)
 }
 
 //----- (00054660) --------------------------------------------------------
-void sub_54660_read_and_decompress_sky_and_blocks(MapType_t GraphicsType, uint8_t GraphicsSize)//235660
+void ReadAndDecompressSkyAndBlocks_54660(MapType_t GraphicsType, uint8_t GraphicsSize)//235660
 {
 	char dataPath[MAX_PATH];
 
@@ -60,6 +60,7 @@ void sub_54660_read_and_decompress_sky_and_blocks(MapType_t GraphicsType, uint8_
 			DataFileIO::ReadFileAndDecompress(dataPath, &BLOCK32DAT_BEGIN_BUFFER);//2bac2c
 			sprintf(dataPath, "%s/%s", cdDataPath.c_str(), "DATA/SKYD0-0.DAT");
 			DataFileIO::ReadFileAndDecompress(dataPath, &off_D41A8_sky);//2a51a8
+			UpdateSkyTexture(256, off_D41A8_sky);
 			break;
 		}
 		case 128:
@@ -68,6 +69,7 @@ void sub_54660_read_and_decompress_sky_and_blocks(MapType_t GraphicsType, uint8_
 			ReadGraphicsfile(dataPath, BigTextureBuffer);//advance graphics
 			sprintf(dataPath, "%s/%s", highResGraphicsPath.c_str(), "skyd1024.data");
 			ReadGraphicsfile(dataPath, off_D41A8_sky);//2a51a8
+			UpdateSkyTexture(1024, off_D41A8_sky);
 			break;
 		}
 		}

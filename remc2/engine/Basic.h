@@ -263,7 +263,7 @@ extern uint8_t MinTrackIdx_180471;
 extern uint8_t MaxTrackIdx_180472;
 
 extern TColor unk_17D838x[]; // weak
-extern uint8_t x_BYTE_D41B5_texture_size;
+extern uint8_t TileTextureSize_D41B5;
 
 #pragma pack (push,1)
 typedef struct {

@@ -418,7 +418,7 @@ void GameRenderHD::DrawSky_40950(int16_t roll, uint8_t startLine, uint8_t drawEv
 	}
 
 	int skyTextSize = 256;
-	if (x_BYTE_D41B5_texture_size == 128)
+	if (TileTextureSize_D41B5 == 128)
 	{
 		skyTextSize = 1024;
 	}
@@ -6790,7 +6790,7 @@ void GameRenderHD::DrawTriangleInProjectionSpace_B6253(const ProjectionVertex* v
 	bool v1300; // [esp+64h] [ebp-24h]
 	bool v1301; // [esp+64h] [ebp-24h]
 
-	int maxPixelIdx = (x_BYTE_D41B5_texture_size << 8);
+	int maxPixelIdx = (TileTextureSize_D41B5 << 8);
 
 	/*if(CommandLineParams.DoDebugafterload())
 	{

@@ -2,7 +2,6 @@
 
 #include "../utilities/RendererTests.h"
 
-static constexpr float kTerrainTexSize = 32.0f;
 static constexpr float kBrightnessMax = 4161536.0f;   // 63.5 * 65536, the observed maximum
 static constexpr float kBrightnessNeutral = 32.0f * 65536.0f;   // row 32 = fully lit, same as sprites
 static constexpr float kWaterAlpha = 0.55f;   // 0 = invisible, 1 = opaque
@@ -2836,8 +2835,8 @@ HWVertex GameRenderHW::MakeHWVertex(const ProjectionVertex& v, uint32_t textureI
 	h.Y = (float)v.Y / (float)viewPort.Height_DE568 * 2.0f - 1.0f;
 	h.W = 1.0f;
 
-	float tileX = (float)(textureIndex % kTilesWide) * kTile;
-	float tileY = (float)(textureIndex / kTilesWide) * kTile;
+	float tileX = (float)(textureIndex % kTilesWide) * TileTextureSize_D41B5;
+	float tileY = (float)(textureIndex / kTilesWide) * TileTextureSize_D41B5;
 	h.U = tileX + (float)v.U / 65536.0f;    // 0..32 inside the tile, plus the tile's origin
 	h.V = tileY + (float)v.V / 65536.0f;
 

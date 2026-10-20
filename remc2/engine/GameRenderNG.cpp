@@ -234,7 +234,7 @@ void GameRenderNG::SmoothViewPort()
 void GameRenderNG::DrawSky_40950(int16_t roll)
 {
 	SkyPlan& sky = m_sky;
-	sky.size = x_BYTE_D41B5_texture_size == 128 ? 1024 : 256;
+	sky.size = TileTextureSize_D41B5 == 128 ? 1024 : 256;
 	sky.mask = sky.size - 1;
 	const int width = viewPort.Width_DE564;
 	const int rollIndex = roll & 0x7FF;
