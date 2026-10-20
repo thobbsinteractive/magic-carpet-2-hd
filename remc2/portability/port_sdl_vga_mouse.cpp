@@ -283,12 +283,6 @@ void SetPalette(SDL_Color* colours) {
 		SDL_SetPaletteColors(m_gamePalletisedSurface->format->palette, m_currentPalletColours, 0, 256);
 		//SubBlit(m_iOrigw, m_iOrigh);
 	}
-
-	if (m_vulkanRenderer)
-	{
-		m_vulkanRenderer->SetPalette(tempPalettebuffer);
-		m_vulkanRenderer->SetColourLookupTable(ColourLookupTable_F6EE0);
-	}
 }
 
 void Set_basic_Palette0() {

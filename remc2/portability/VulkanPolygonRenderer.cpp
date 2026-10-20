@@ -64,6 +64,16 @@ VulkanPolygonRenderer::VulkanPolygonRenderer()
 
 	EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, setClearColourIdxCallBack));
 
+	std::function<void(ResourceType, uint8_t*)> setPaletteLookupCallBack =
+		[this](ResourceType state, uint8_t* data) {
+		if (state == ResourceType::PALETTE_SET)
+			SetPalette(data);
+		if (state == ResourceType::LOOKUPTABLE_SET)
+			SetColourLookupTable(data);
+		};
+
+	EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint8_t*>(EventType::E_RESOURCE_CHANGE, setPaletteLookupCallBack));
+
 	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> textureCallBack =
 		[this](ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height) {
 		SetTexture(state, index, pixels, width, height);
@@ -104,6 +114,16 @@ VulkanPolygonRenderer::~VulkanPolygonRenderer()
 		};
 
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, setClearColourIdxCallBack));
+
+	std::function<void(ResourceType, uint8_t*)> setPaletteLookupCallBack =
+		[this](ResourceType state, uint8_t* data) {
+		if (state == ResourceType::PALETTE_SET)
+			SetPalette(data);
+		if (state == ResourceType::LOOKUPTABLE_SET)
+			SetColourLookupTable(data);
+		};
+
+	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t*>(EventType::E_RESOURCE_CHANGE, setPaletteLookupCallBack));
 
 }
 
