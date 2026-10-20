@@ -891,6 +891,7 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v124x++;
 					v123--;
 				}
+				
 				SubDrawInverseTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
 
 				//Draw rest of terrain

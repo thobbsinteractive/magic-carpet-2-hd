@@ -323,9 +323,7 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 				{
 					uint8_t dstIndex = *ptrScreenBuffer;
 					*ptrScreenBuffer++ = srcIndex; // write original pixel, unblended
-					*ptrScreenAlphaBuffer++ = DeriveBlendAlpha(
-						*xadatapald0dat2.colorPalette_var28, srcIndex, dstIndex,
-						ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + (dstIndex << 8) + srcIndex]);
+					*ptrScreenAlphaBuffer++ = 160;
 				}
 				else
 				{
@@ -418,9 +416,7 @@ void GameBitmap::DrawTransparentBitmap_2DE80(int16_t posX, int16_t posY, bitmap_
 						{
 							uint8_t dstIndex = *ptrScreenBuffer;
 							*ptrScreenBuffer++ = srcIndex; // write original pixel, unblended
-							*ptrScreenAlphaBuffer++ = DeriveBlendAlpha(
-								*xadatapald0dat2.colorPalette_var28, srcIndex, dstIndex,
-								ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + (dstIndex << 8) + srcIndex]);
+							*ptrScreenAlphaBuffer++ = 160;
 						}
 						else
 						{
@@ -578,31 +574,4 @@ void GameBitmap::PaletteToRgba(uint8_t* ptrPalette, uint8_t colorIdx, uint8_t tr
 
 	if (colorIdx != 255)
 		truColorOut[3] = 255;
-}
-
-uint8_t GameBitmap::DeriveBlendAlpha(uint8_t* ptrPalette, uint8_t srcIndex, uint8_t dstIndex, uint8_t resultIndex)
-{
-	uint8_t src[3], dst[3], result[3];
-	PaletteToRgb(ptrPalette, srcIndex, src);
-	PaletteToRgb(ptrPalette, dstIndex, dst);
-	PaletteToRgb(ptrPalette, resultIndex, result);
-
-	float alphaSum = 0.0f;
-	int   channels = 0;
-
-	for (int c = 0; c < 3; ++c)
-	{
-		int denom = (int)src[c] - (int)dst[c];
-		if (denom != 0)
-		{
-			float a = (float)((int)result[c] - (int)dst[c]) / (float)denom;
-			alphaSum += std::clamp(a, 0.0f, 1.0f);
-			channels++;
-		}
-	}
-
-	if (channels == 0)
-		return 255; // src == dst on every channel; no info, treat as fully covered
-
-	return (uint8_t)(alphaSum / channels * 255.0f + 0.5f);
 }
