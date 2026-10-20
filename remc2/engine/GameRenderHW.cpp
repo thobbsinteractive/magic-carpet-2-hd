@@ -891,10 +891,8 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 					v124x++;
 					v123--;
 				}
-				if (posZ < 4096)
-				{
-					SubDrawInverseTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
-				}
+				SubDrawInverseTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
+
 				//Draw rest of terrain
 				SubDrawTerrainAndParticles(projectedVertexBuffer, pitch, polygons);
 				EventDispatcher::I->DispatchEvent<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, polygons);
