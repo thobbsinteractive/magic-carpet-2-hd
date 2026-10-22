@@ -48703,6 +48703,13 @@ void DrawPopupTextBox_87610()//268610
 			str_unk_1804B0ar.type_sub_0[0].frameWidth_0x28,
 			str_unk_1804B0ar.type_sub_0[0].frameHeight_0x2a,
 			str_unk_1804B0ar.type_sub_0[0].color2_0x31);
+		AlphaRectangle(
+			str_unk_1804B0ar.type_sub_0[0].framePosX_0x24,
+			str_unk_1804B0ar.type_sub_0[0].framePosY_0x26,
+			str_unk_1804B0ar.type_sub_0[0].frameWidth_0x28,
+			str_unk_1804B0ar.type_sub_0[0].frameHeight_0x2a,
+			100
+		);
 		DrawTextboxText_895D0(str_unk_1804B0ar.type_sub_0, textForDraw, scale);
 		DrawTextboxFrame_89690(str_unk_1804B0ar.type_sub_0, scale);
 		str_unk_1804B0ar.PopupStatusByte_0x9e &= 0xF7;
@@ -48727,6 +48734,13 @@ void DrawPopupTextBox_87610()//268610
 			str_unk_1804B0ar.type_sub_0[0].frameWidth_0x28,
 			str_unk_1804B0ar.type_sub_0[0].frameHeight_0x2a,
 			str_unk_1804B0ar.type_sub_0[0].color2_0x31);
+		AlphaRectangle(
+			str_unk_1804B0ar.type_sub_0[0].framePosX_0x24,
+			str_unk_1804B0ar.type_sub_0[0].framePosY_0x26,
+			str_unk_1804B0ar.type_sub_0[0].frameWidth_0x28,
+			str_unk_1804B0ar.type_sub_0[0].frameHeight_0x2a,
+			100
+		);
 		DrawTextboxText_895D0(str_unk_1804B0ar.type_sub_0, textForDraw, scale);
 		DrawTextboxLine_89A30(str_unk_1804B0ar.type_sub_0);
 		DrawTextboxFrame_89690(str_unk_1804B0ar.type_sub_0, scale);
@@ -48749,6 +48763,13 @@ void DrawPopupTextBox_87610()//268610
 			str_unk_1804B0ar.type_sub_0[0].frameWidth_0x28,
 			str_unk_1804B0ar.type_sub_0[0].frameHeight_0x2a,
 			str_unk_1804B0ar.type_sub_0[0].color2_0x31);
+		AlphaRectangle(
+			str_unk_1804B0ar.type_sub_0[0].framePosX_0x24,
+			str_unk_1804B0ar.type_sub_0[0].framePosY_0x26,
+			str_unk_1804B0ar.type_sub_0[0].frameWidth_0x28,
+			str_unk_1804B0ar.type_sub_0[0].frameHeight_0x2a,
+			100
+		);
 		posY = str_unk_1804B0ar.type_sub_0[0].textboxPosY_0xa;
 		while (v4 < str_unk_1804B0ar.byte_0xa0)
 		{

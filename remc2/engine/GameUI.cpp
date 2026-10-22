@@ -610,6 +610,7 @@ void DrawCurrentObjectiveTextbox_30630(uint8_t scale)//211630
 			ConstrainTextboxSizes_89520(&textbox, scale);
 			ComputeFrameSizes_89980(&textbox, scale);
 			ColorizeScreen_2E790(textbox.framePosX_0x24, textbox.framePosY_0x26, textbox.frameWidth_0x28, textbox.frameHeight_0x2a, textbox.color2_0x31);
+			AlphaRectangle(textbox.framePosX_0x24, textbox.framePosY_0x26, textbox.frameWidth_0x28, textbox.frameHeight_0x2a, 100);
 			DrawTextboxText_895D0(&textbox, text, scale);
 			DrawTextboxFrame_89690(&textbox, scale);
 		}
@@ -943,6 +944,33 @@ uint8_t CalculateScaleOffset(uint8_t scale)
 	if (scale > 2)
 		return (uint8_t)std::floor(((double)scale - 1) / 2);
 	return 0;
+}
+
+void AlphaRectangle(int posX, int posY, int width, int height, uint8_t alphaAmount)
+{
+	if (pdwScreenAlphaBuffer == nullptr)
+		return;
+
+	int locPosX = posX;
+	int locPosY = posY;
+	int locWidth = width;
+	int locHeight = height;
+
+	if (x_WORD_180660_VGA_type_resolution == 1)
+	{
+		locPosX = posX / 2;
+		locPosY = posY / 2;
+		locWidth = width / 2;
+		locHeight = height / 2;
+	}
+
+	for (int indexY = locPosY; indexY < locPosY + locHeight; indexY++)
+	{
+		for (int indexX = locPosX; indexX < locWidth + locPosX; indexX++)
+		{
+			pdwScreenAlphaBuffer[screenWidth_18062C * indexY + indexX] = alphaAmount;
+		}
+	}
 }
 
 int debugcounter2 = 0;
