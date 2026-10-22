@@ -45,16 +45,27 @@ vec3 litColour(uint idx, float row)
 void main()
 {
 	const bool isTerrain = (pc.mode == MODE_TERRAIN) || (pc.mode == MODE_WATER);
+	const bool isSky     = (pc.mode == MODE_SKY);
 
-	ivec2 size  = textureSize(uIndexTex, 0);
-	vec2  uv    = isTerrain ? fragUV : fragUV * vec2(size);
-	ivec2 texel = clamp(ivec2(floor(uv)), ivec2(0), size - 1);
-	uint  idx   = texelFetch(uIndexTex, texel, 0).r;
+	ivec2 size = textureSize(uIndexTex, 0);
+	vec2  uv   = isTerrain ? fragUV : fragUV * vec2(size);
+	ivec2 texel = ivec2(floor(uv));
+
+	if (isSky)
+		texel = ((texel % size) + size) % size;   // wrap, negatives included
+	else
+		texel = clamp(texel, ivec2(0), size - 1);
+
+	uint  idx = texelFetch(uIndexTex, texel, 0).r;
 
 	const float row = fragShade * 32.0;
 
-	if (pc.mode == MODE_SKY)
+	// ---- sky: tiles, opaque, no transparency ----
+	if (isSky)
+	{
 		outColor = vec4(palette(idx), 1.0);
+		return;
+	}
 
 	// ---- terrain and water ----
 	if (isTerrain)
