@@ -181,41 +181,13 @@
     </Link>
     <PostBuildEvent>
       <Command>
-				XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
-				XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
-			</Command>
+		XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
+      </Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Deploy-Enhanced-Assets|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <PostBuildEvent>
-      <Command>
-				XCOPY "$(SolutionDir)enhancedassets\biggraphics" "$(TargetDir)biggraphics\" /S /Y
-				XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
-				XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
-			</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -243,47 +215,13 @@
     </Link>
     <PostBuildEvent>
       <Command>
-				XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
-				XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
-			</Command>
+        XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
+        XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
+      </Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Deploy-Enhanced-Assets|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OmitFramePointers>false</OmitFramePointers>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <!-- The only configuration in this project that was missing /utf-8; spdlog's base.h
-           refuses to compile without it. -->
-      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalDependencies>SDL2maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-    <PostBuildEvent>
-      <Command>
-				XCOPY "$(SolutionDir)enhancedassets\biggraphics" "$(TargetDir)biggraphics\" /S /Y
-				XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
-				XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
-			</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -311,13 +249,13 @@
     </Link>
     <PostBuildEvent>
       <Command>
-				XCOPY "$(SolutionDir)config.json" "$(TargetDir)" /Y
-				XCOPY "$(SolutionDir)Install Guide.txt" "$(TargetDir)" /Y
-				XCOPY "$(SolutionDir)EXTRACT" "$(TargetDir)EXTRACT\" /S /Y
-				XCOPY "$(SolutionDir)remc2\font" "$(TargetDir)font\" /S /Y
-				XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
-				XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
-			</Command>
+		XCOPY "$(SolutionDir)config.json" "$(TargetDir)" /Y
+		XCOPY "$(SolutionDir)Install Guide.txt" "$(TargetDir)" /Y
+		XCOPY "$(SolutionDir)EXTRACT" "$(TargetDir)EXTRACT\" /S /Y
+		XCOPY "$(SolutionDir)remc2\font" "$(TargetDir)font\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
+      </Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -351,13 +289,13 @@
     </Link>
     <PostBuildEvent>
       <Command>
-				XCOPY "$(SolutionDir)config.json" "$(TargetDir)" /Y
-				XCOPY "$(SolutionDir)Install Guide.txt" "$(TargetDir)" /Y
-				XCOPY "$(SolutionDir)EXTRACT" "$(TargetDir)EXTRACT\" /S /Y
-				XCOPY "$(SolutionDir)remc2\font" "$(TargetDir)font\" /S /Y
-				XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
-				XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
-			</Command>
+		XCOPY "$(SolutionDir)config.json" "$(TargetDir)" /Y
+		XCOPY "$(SolutionDir)Install Guide.txt" "$(TargetDir)" /Y
+		XCOPY "$(SolutionDir)EXTRACT" "$(TargetDir)EXTRACT\" /S /Y
+		XCOPY "$(SolutionDir)remc2\font" "$(TargetDir)font\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
+	  </Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -378,6 +316,12 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>SDL2maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+		XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
+	  </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|x64'">
     <ClCompile>
@@ -393,6 +337,12 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>
+		XCOPY "$(SolutionDir)enhancedassets\music-ogg" "$(TargetDir)music-ogg\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\awe32data" "$(TargetDir)awe32data\" /S /Y
+	  </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="build_config.h" />
