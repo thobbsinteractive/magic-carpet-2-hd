@@ -4,7 +4,7 @@
 
 static constexpr float kBrightnessMax = 4161536.0f;   // 63.5 * 65536, the observed maximum
 static constexpr float kBrightnessNeutral = 32.0f * 65536.0f;   // row 32 = fully lit, same as sprites
-static constexpr float kWaterAlpha = 0.55f;   // 0 = invisible, 1 = opaque
+static constexpr float kWaterAlpha = 0.75f;   // 0 = invisible, 1 = opaque
 
 GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale, float fogScale) :
 	m_ptrScreenBuffer_351628(ptrScreenBuffer), m_ptrColorPalette(pColorPalette), m_assignToSpecificCores(assignToSpecificCores),
