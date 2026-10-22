@@ -74,10 +74,7 @@ void main()
 		float alpha = 1.0;
 
 		if (pc.mode == MODE_WATER && idx < WATER_TEXELS)
-		{
-			c = min(c * WATER_GAIN + WATER_LIFT, vec3(1.0));
-			alpha = pc.alpha;
-		}
+			alpha = pc.alpha;      // no gain, no lift; fog comes only from litColour
 
 		outColor = vec4(c, alpha);
 		return;
