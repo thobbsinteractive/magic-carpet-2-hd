@@ -92,6 +92,7 @@ uint16_t x_WORD_18072E_cursor_sizey; // weak
 uint8_t* x_DWORD_180730_cursor_data; // weak//351730
 
 uint8_t* ptrScreenPos_180708; // weak
+uint8_t* ptrScreenAlphaPos;
 uint8_t* ptrCursorBitmapPos_18070C; // weak
 uint8_t* x_DWORD_180714; // weak
 uint8_t* x_DWORD_180718; // weak
@@ -2141,6 +2142,8 @@ void DrawCursor_8C635()//26d635
 	x_DWORD_180714 = x_DWORD_180700;
 	x_DWORD_180718 = x_DWORD_1806F0;
 	ptrScreenPos_180708 = x_DWORD_180704_mouse_byte_index1 + pdwScreenBuffer_351628;
+	if (pdwScreenAlphaBuffer != nullptr)
+		ptrScreenAlphaPos = x_DWORD_180704_mouse_byte_index1 + pdwScreenAlphaBuffer;
 	ptrCursorBitmapPos_18070C = x_DWORD_180730_cursor_data;
 
 	int lineStartBytes = 0;
@@ -2159,9 +2162,15 @@ void DrawCursor_8C635()//26d635
 			for (int s = 0; s < scale; s++)
 			{
 				if (ptrCursorBitmapPos_18070C[0] != 0xfe)
+				{
 					ptrScreenPos_180708[0] = ptrCursorBitmapPos_18070C[0];
+					if (pdwScreenAlphaBuffer != nullptr)
+						*ptrScreenAlphaPos = 255;
+				}
 
 				ptrScreenPos_180708++;
+				if (pdwScreenAlphaBuffer != nullptr)
+					ptrScreenAlphaPos++;
 			}
 
 			ptrCursorBitmapPos_18070C++;
@@ -2183,6 +2192,8 @@ void DrawCursor_8C635()//26d635
 			ptrCursorBitmapPos_18070C += x_DWORD_180734 - x_DWORD_1806FC_mouse_invx;
 		}
 		ptrScreenPos_180708 += screenWidth_18062C - (x_DWORD_1806FC_mouse_invx * scale);
+		if (pdwScreenAlphaBuffer != nullptr)
+			ptrScreenAlphaPos += screenWidth_18062C - (x_DWORD_1806FC_mouse_invx * scale);
 	}
 }
 // E3760: using guessed type int x_DWORD_E3760;
