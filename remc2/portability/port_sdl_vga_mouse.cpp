@@ -294,6 +294,7 @@ void Set_basic_Palette0() {
 		colors[i].r = tempPalettebuffer[i * 3];
 		colors[i].g = tempPalettebuffer[i * 3 + 1];
 		colors[i].b = tempPalettebuffer[i * 3 + 2];
+		colors[i].a = 255;
 	}
 	SetPalette(colors);
 }
@@ -305,12 +306,14 @@ void Set_basic_Palette1() {
 			colors[i].r = 0;
 			colors[i].g = 0;
 			colors[i].b = 0;
+			colors[i].a = 255;
 		}
 		else
 		{
 			colors[i].r = 255;
 			colors[i].g = 255;
 			colors[i].b = 255;
+			colors[i].a = 255;
 		}
 		tempPalettebuffer[i * 3] = colors[i].r / 4;
 		tempPalettebuffer[i * 3 + 1] = colors[i].g / 4;
@@ -328,6 +331,7 @@ void Set_basic_Palette3() {
 		colors[i].r = tempPalettebuffer[i * 3];
 		colors[i].g = tempPalettebuffer[i * 3 + 1];
 		colors[i].b = tempPalettebuffer[i * 3 + 2];
+		colors[i].a = 255;
 	}
 	SetPalette(colors);
 }
@@ -651,6 +655,7 @@ void VGA_Set_file_Palette(char* filename) {
 		colors[i].r = 4 * Palettebuffer[i * 3];
 		colors[i].g = 4 * Palettebuffer[i * 3 + 1];
 		colors[i].b = 4 * Palettebuffer[i * 3 + 2];
+		colors[i].a = 255;
 	}
 	SetPalette(colors);
 }
@@ -663,6 +668,7 @@ void VGA_Set_Palette(Uint8* Palettebuffer) {
 		colors[i].r = 4 * Palettebuffer[i * 3];
 		colors[i].g = 4 * Palettebuffer[i * 3 + 1];
 		colors[i].b = 4 * Palettebuffer[i * 3 + 2];
+		colors[i].a = 255;
 	}
 	SetPalette(colors);
 }
@@ -674,6 +680,7 @@ void VGA_Set_Palette2(Uint8* Palettebuffer) {
 		colors[i].r = Palettebuffer[i * 3];
 		colors[i].g = Palettebuffer[i * 3 + 1];
 		colors[i].b = Palettebuffer[i * 3 + 2];
+		colors[i].a = 255;
 	}
 	SetPalette(colors);
 }
@@ -1191,6 +1198,7 @@ void VGA_Init_test() {//only for debug
 		colors[i].r = i;
 		colors[i].g = i;
 		colors[i].b = i;
+		colors[i].a = 255;
 	}
 
 	/* Create display */
