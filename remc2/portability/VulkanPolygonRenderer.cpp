@@ -57,14 +57,14 @@ namespace
 
 VulkanPolygonRenderer::VulkanPolygonRenderer()
 {
-	std::function<void(ResourceType, uint8_t)> setClearColourIdxCallBack =
+	m_SetClearColourIdxCallBack =
 		[this](ResourceType state, uint8_t index) {
 		SetClearColourIndex(index);
 		};
 
-	EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, setClearColourIdxCallBack));
+	EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, m_SetClearColourIdxCallBack));
 
-	std::function<void(ResourceType, uint8_t*)> setPaletteLookupCallBack =
+	m_SetPaletteLookupCallBack =
 		[this](ResourceType state, uint8_t* data) {
 		if (state == ResourceType::PALETTE_SET)
 			SetPalette(data);
@@ -72,21 +72,21 @@ VulkanPolygonRenderer::VulkanPolygonRenderer()
 			SetColourLookupTable(data);
 		};
 
-	EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint8_t*>(EventType::E_RESOURCE_CHANGE, setPaletteLookupCallBack));
+	EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint8_t*>(EventType::E_RESOURCE_CHANGE, m_SetPaletteLookupCallBack));
 
-	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> textureCallBack =
+	m_TextureCallBack =
 		[this](ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height) {
 		SetTexture(state, index, pixels, width, height);
 		};
 
-	EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, textureCallBack));
+	EventDispatcher::I->RegisterEvent(new Event<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, m_TextureCallBack));
 
-	std::function<void(ResourceType, std::vector<RenderPolygon>*)> polyCallBack = 
+	m_PolyCallBack = 
 		[this](ResourceType state, std::vector<RenderPolygon>* polygons) {
 		SetPolygons(state, polygons);
 		};
 
-	EventDispatcher::I->RegisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, polyCallBack));
+	EventDispatcher::I->RegisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, m_PolyCallBack));
 }
 
 VulkanPolygonRenderer::~VulkanPolygonRenderer()
@@ -94,36 +94,10 @@ VulkanPolygonRenderer::~VulkanPolygonRenderer()
 	if (m_initialized)
 		Shutdown();
 
-	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> textureCallBack =
-		[this](ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height) {
-		SetTexture(state, index, pixels, width, height);
-		};
-
-	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, textureCallBack));
-
-	std::function<void(ResourceType, std::vector<RenderPolygon>*)> polyCallBack =
-		[this](ResourceType state, std::vector<RenderPolygon>* polygons) {
-		SetPolygons(state, polygons);
-		};
-
-	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, polyCallBack));
-
-	std::function<void(ResourceType, uint8_t)> setClearColourIdxCallBack =
-		[this](ResourceType state, uint8_t index) {
-		SetClearColourIndex(index);
-		};
-
-	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, setClearColourIdxCallBack));
-
-	std::function<void(ResourceType, uint8_t*)> setPaletteLookupCallBack =
-		[this](ResourceType state, uint8_t* data) {
-		if (state == ResourceType::PALETTE_SET)
-			SetPalette(data);
-		if (state == ResourceType::LOOKUPTABLE_SET)
-			SetColourLookupTable(data);
-		};
-
-	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t*>(EventType::E_RESOURCE_CHANGE, setPaletteLookupCallBack));
+	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, m_TextureCallBack));
+	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, m_PolyCallBack));
+	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, m_SetClearColourIdxCallBack));
+	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t*>(EventType::E_RESOURCE_CHANGE, m_SetPaletteLookupCallBack));
 
 }
 
@@ -516,7 +490,9 @@ void VulkanPolygonRenderer::SetPalette(const uint8_t* rgb768)
 	toTransfer.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 	toTransfer.srcAccessMask = 0;
 	toTransfer.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-	vkCmdPipelineBarrier(cmd, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT,
+	vkCmdPipelineBarrier(cmd,
+		VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,     // wait for earlier frames' palette reads
+		VK_PIPELINE_STAGE_TRANSFER_BIT,
 		0, 0, nullptr, 0, nullptr, 1, &toTransfer);
 
 	VkBufferImageCopy copy{};
@@ -1721,14 +1697,17 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 			if (m_textures.find(b.textureId) == m_textures.end()) missingTex++;
 			if (b.textureId == kTerrainAtlasId)
 			{
-				if (b.mode == 26) water++; else land++;
-				if (b.mode == 26)
-					Logger->info("ATLAS water batch alpha={} indices={}", b.alpha, b.indexCount);
+				if (b.mode == 26) 
+					water++; 
+				else land++;
+				
+				/*if (b.mode == 26)
+					Logger->info("ATLAS water batch alpha={} indices={}", b.alpha, b.indexCount);*/
 			}
 		}
-		Logger->info("DRAWPOLY polys={} batches={} atlasWater={} atlasLand={} missingTex={} atlasLoaded={}",
-			polygons.size(), batches.size(), water, land, missingTex,
-			m_textures.count(kTerrainAtlasId));
+		//Logger->info("DRAWPOLY polys={} batches={} atlasWater={} atlasLand={} missingTex={} atlasLoaded={}",
+		//	polygons.size(), batches.size(), water, land, missingTex,
+		//	m_textures.count(kTerrainAtlasId));
 	}
 
 	for (const auto& batch : batches)

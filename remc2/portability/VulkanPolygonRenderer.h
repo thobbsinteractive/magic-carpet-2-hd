@@ -226,6 +226,11 @@ private:
 	SDL_Surface* m_overlayScaledSurface = nullptr;
 
 	bool m_initialized = false;
+
+	std::function<void(ResourceType, uint8_t)> m_SetClearColourIdxCallBack;
+	std::function<void(ResourceType, uint8_t*)> m_SetPaletteLookupCallBack;
+	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> m_TextureCallBack;
+	std::function<void(ResourceType, std::vector<RenderPolygon>*)> m_PolyCallBack;
 };
 
 #endif //VULKANPOLYGONRENDER_H 
