@@ -4616,15 +4616,22 @@ void ShowWelcomeScreen_83850()//264850
 		{
 			afterFade = true;
 			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, 0);
+			ClearScreenAlphaBuffer(640, 480, 255);
 			sub_75200_VGA_Blit640(480, menuFps);
 			sub_90B27_VGA_pal_fadein_fadeout((TColor*)*xadatapald0dat2.colorPalette_var28, 0x20u, 0);
 		}
 	}
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 	if (x_WORD_180660_VGA_type_resolution & 1)
+	{
 		ClearGraphicsBuffer_72883(pdwScreenBuffer_351628, 320, 200, 0);
+		ClearScreenAlphaBuffer(320, 200, 255);
+	}
 	else
+	{
 		ClearGraphicsBuffer_72883(pdwScreenBuffer_351628, 640, 480, 0);
+		ClearScreenAlphaBuffer(640, 480, 255);
+	}
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_90478_VGA_Blit320(menuFps);
 	else

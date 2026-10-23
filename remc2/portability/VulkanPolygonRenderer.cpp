@@ -211,8 +211,8 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 		return false;
 	if (!CreatePipeline())
 		return false;
-	if (!CreateWireframePipeline())
-		return false;
+	//if (!CreateWireframePipeline())
+	//	return false;
 	if (!CreateFrameData())
 		return false;
 

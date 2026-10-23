@@ -40,7 +40,7 @@ extern uint8_t xx_array_E36C4[64];
 
 constexpr uint8_t ALPHA_HIDDEN = 0x00;
 constexpr uint8_t ALPHA_VISIBLE = 0xFF;
-constexpr uint8_t ALPHA_BLENDED = 0xFF; // change if blended panels should be partial
+constexpr uint8_t ALPHA_BLENDED = 200; // change if blended panels should be partial
 
 constexpr std::array WizardsNames_D93A0 { 
     "Zanzamar"sv, "Nyphur"sv, "Rahn"sv, "Belix"sv, "Jark"sv, "Elyssia"sv, "Yragore"sv, "Prish"sv  
