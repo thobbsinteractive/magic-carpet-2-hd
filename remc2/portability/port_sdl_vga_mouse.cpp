@@ -528,9 +528,11 @@ void Draw_letterToBuffer(int letter_number, int pozx, int pozy, uint8_t* buffer,
 			{
 				case 'S':
 				buffer[(dstrect.y + yy) * m_gamePalletisedSurface->w + (dstrect.x + xx)] = m_smallFontBuffer[srcx + (srcy * 128)];
+				pdwScreenAlphaBuffer[(dstrect.y + yy) * m_gamePalletisedSurface->w + (dstrect.x + xx)] = 255;
 				break;
 			default:
 				buffer[(dstrect.y + yy) * m_gamePalletisedSurface->w + (dstrect.x + xx)] = m_fontBuffer[srcx + (srcy * 256)];
+				pdwScreenAlphaBuffer[(dstrect.y + yy) * m_gamePalletisedSurface->w + (dstrect.x + xx)] = 255;
 				break;
 			}
 		}
