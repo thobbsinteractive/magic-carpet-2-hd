@@ -91,5 +91,7 @@ void WriteSurfaceToFile(SDL_Surface* surface, const char* filename);
 
 extern uint8_t LastPressedKey_1806E4; // weak//3516e4
 extern int8_t pressedKeys_180664[128]; // idb
+extern std::vector<uint8_t> m_uiAlpha;
+extern bool m_uiAlphaValid;
 
 #endif //PORT_SDL_VGA_MOUSE

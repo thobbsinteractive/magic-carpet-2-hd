@@ -31,6 +31,8 @@ VulkanPolygonRenderer* m_vulkanRenderer = nullptr;
 
 uint8_t LastPressedKey_1806E4; //3516e4
 int8_t pressedKeys_180664[128]; // idb
+std::vector<uint8_t> m_uiAlpha;
+bool m_uiAlphaValid = false;
 
 uint16_t m_iOrigw = 640;
 uint16_t m_iOrigh = 480;
@@ -177,8 +179,8 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 				throw std::runtime_error("CreateRenderer failed");
 			}
 
-			SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
-			SDL_SetSurfaceBlendMode(m_gameRGBASurface, SDL_BLENDMODE_BLEND);
+			SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_NONE);
+			SDL_SetSurfaceBlendMode(m_gameRGBASurface, SDL_BLENDMODE_NONE);
 
 			// Sure clear the screen first.. always nice.
 			SDL_RenderClear(m_renderer);
@@ -1143,7 +1145,13 @@ void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight, uint8_t* alp
 	if (m_vulkanRenderer)
 	{
 		if (alphaBuffer != nullptr)
-			ApplyAlphaBuffer(m_gameRGBASurface, alphaBuffer, m_gameRGBASurface->w, m_gameRGBASurface->h);
+		{
+			m_uiAlpha.assign(alphaBuffer, alphaBuffer + (size_t)m_gameRGBASurface->w * m_gameRGBASurface->h);   // copy, don't keep the pointer
+			m_uiAlphaValid = true;
+		}
+
+		if (m_uiAlphaValid)
+			ApplyAlphaBuffer(m_gameRGBASurface, m_uiAlpha.data(), m_gameRGBASurface->w, m_gameRGBASurface->h);
 
 		SubVulkanBlit(m_gameRGBASurface, rectSrc, dscrect);
 	}
