@@ -1412,7 +1412,7 @@ void sub_90478_VGA_Blit320(uint8_t maxFps)//271478
 #if _DEBUG
 	VGA_CalculateAndPrintFps(0, 0, timeDelta.count());
 #endif
-	VGA_Blit(pdwScreenBuffer_351628);
+	VGA_Blit(pdwScreenBuffer_351628, pdwScreenAlphaBuffer);
 #endif
 	//if(dos_key_vect_9)dos_key_vect_9();
 	//VGA_mouse_clear_keys();
@@ -1450,7 +1450,7 @@ void sub_75200_VGA_Blit640(uint16_t height, uint8_t maxFps)//256200
 #endif
 	VGA_DrawMessages();
 	// Not inside the _DEBUG block above: this one is for players, not for us.
-	VGA_Blit(pdwScreenBuffer_351628);
+	VGA_Blit(pdwScreenBuffer_351628, pdwScreenAlphaBuffer);
 
 	//set speed
 	LockFps(maxFps);

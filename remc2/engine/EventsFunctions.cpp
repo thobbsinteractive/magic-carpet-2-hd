@@ -31410,9 +31410,15 @@ void sub_46830_main_loop(unsigned __int16 actLevel)//227830
 				RestoreSoundVolume_59BF0();
 				sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 				if (x_WORD_180660_VGA_type_resolution & 1)
+				{
 					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, getPaletteIndex_5BE80((TColor*)*xadatapald0dat2.colorPalette_var28, 0, 0, 0));
+					ClearScreenAlphaBuffer(320, 200, 255);
+				}
 				else
+				{
 					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, getPaletteIndex_5BE80((TColor*)*xadatapald0dat2.colorPalette_var28, 0, 0, 0));
+					ClearScreenAlphaBuffer(640, 480, 255);
+				}
 				if (x_WORD_180660_VGA_type_resolution & 1)
 					sub_90478_VGA_Blit320(maxGameFps);
 				else
@@ -43173,9 +43179,15 @@ void Initialize()//23c8d0
 	x_BYTE_D4B80 = 1;
 	x_WORD_180660_VGA_type_resolution = 1;//fix it
 	if (x_WORD_180660_VGA_type_resolution & 1)
+	{
 		ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, 0);//253883
+		ClearScreenAlphaBuffer(320, 200, 255);
+	}
 	else
+	{
 		ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, 0);//2538a9
+		ClearScreenAlphaBuffer(640, 480, 255);
+	}
 
 	//VGA_Write_basic_Palette(basic_pal_buffer);
 
@@ -43184,6 +43196,7 @@ void Initialize()//23c8d0
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);//271B27 tady se zapina vga
 	//fixed
 	ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 640, 480, 0);//fixed
+	ClearScreenAlphaBuffer(640, 480, 255);
 	//sub_75200_VGA_Blit640(480);//debug
 	//sub_75200_VGA_Blit640(480);//debug
 	//fixed
@@ -45541,6 +45554,13 @@ void ClearGraphicsBuffer_72883(void* ptrScreenBuffer, uint16_t width, uint16_t h
 	memset32(ptrScreenBuffer, value, width * height);
 }
 
+void ClearScreenAlphaBuffer(uint16_t width, uint16_t height, char value)
+{
+	if (pdwScreenAlphaBuffer != nullptr)
+		ClearGraphicsBuffer_72883((void*)pdwScreenAlphaBuffer, width, height, value);
+}
+
+
 void WriteBufferToBMP(uint16_t width, uint16_t height, uint8_t* ptrPalette, uint8_t* ptrBuffer, const char* filename)
 {
 	std::string path = GetSubDirectoryPath("BufferOut");
@@ -46648,9 +46668,15 @@ void FadeClearBlit_7B5D0()
 	sub_90B27_VGA_pal_fadein_fadeout(0, 0x10u, 0);
 	memset((void*)*xadatapald0dat2.colorPalette_var28, 0, 768);
 	if (x_WORD_180660_VGA_type_resolution & 1)
+	{
 		ClearGraphicsBuffer_72883(pdwScreenBuffer_351628, 320, 200, 0);
+		ClearScreenAlphaBuffer(320, 200, 255);
+	}
 	else
+	{
 		ClearGraphicsBuffer_72883(pdwScreenBuffer_351628, 640, 480, 0);
+		ClearScreenAlphaBuffer(640, 480, 255);
+	}
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		sub_90478_VGA_Blit320(menuFps);
 	else

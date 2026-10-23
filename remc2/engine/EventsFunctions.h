@@ -487,6 +487,7 @@ int GetManaSphereColorIndexFromEntityId_369F0(int playerEntityIndex);
 void sub_2A340(/*int a1, type_str_0x6E8E* a2, type_str_0x6E8E* a3, int a4, *//*type_str_0x6E8E* a5, */type_entity_0x6E8E* a6);
 void sub_2AA90(/*type_str_0x6E8E* a1, */type_entity_0x6E8E* a2, type_entity_0x6E8E* a3);
 void ClearGraphicsBuffer_72883(void* ptrBuffer, uint16_t width, uint16_t height, char value);
+void ClearScreenAlphaBuffer(uint16_t width, uint16_t height, char value);
 int _wcpp_1_unwind_leave__62(void); //weak
 int GetManaSphereIndexFromId_36A50(/*signed int a1, */char a2);
 void SetManaSphereColorAndRot_36920(/*signed __int16 a1, */type_entity_0x6E8E* a2);
