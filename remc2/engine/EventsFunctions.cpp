@@ -45549,12 +45549,12 @@ void sub_727F0(unsigned __int8 a1, unsigned __int8 a2, unsigned __int8 a3, unsig
 	__outx_BYTE(0x3C9u, a4);*/
 }
 
-void ClearGraphicsBuffer_72883(void* ptrScreenBuffer, uint16_t width, uint16_t height, char value)//2538a9
+void ClearGraphicsBuffer_72883(void* ptrScreenBuffer, uint16_t width, uint16_t height, uint8_t value)//2538a9
 {
 	memset32(ptrScreenBuffer, value, width * height);
 }
 
-void ClearScreenAlphaBuffer(uint16_t width, uint16_t height, char value)
+void ClearScreenAlphaBuffer(uint16_t width, uint16_t height, uint8_t value)
 {
 	if (pdwScreenAlphaBuffer != nullptr)
 		ClearGraphicsBuffer_72883((void*)pdwScreenAlphaBuffer, width, height, value);
@@ -52534,6 +52534,8 @@ void sub_90E07_VGA_set_video_mode_640x480_and_Palette(TColor* Palettex)//271e07
 	sub_41A90_VGA_Palette_install(Palettex);
 	//removed sub_8D12F_set_mouse_viewport(); //set min/max of viewport
 	sub_A0D50_set_viewport(0, 0, 640, 480);
+
+	EventDispatcher::I->DispatchEvent<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, ResourceType::CLEAR_COLOURIDX_SET, 0);
 }
 
 //----- (00090EA0) --------------------------------------------------------
