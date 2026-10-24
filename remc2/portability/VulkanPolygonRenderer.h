@@ -38,7 +38,7 @@ struct SDL_Window;
 class VulkanPolygonRenderer
 {
 public:
-	VulkanPolygonRenderer();
+	VulkanPolygonRenderer(std::string shaderFolder);
 	~VulkanPolygonRenderer();
 
 	VulkanPolygonRenderer(const VulkanPolygonRenderer&) = delete;
@@ -66,6 +66,9 @@ public:
 
 	// Frees a previously uploaded texture's GPU resources.
 	void FreeTexture(uint32_t textureId);
+
+	std::string VulkanPolygonRenderer::ShaderPath(const char* filename);
+	std::vector<char> VulkanPolygonRenderer::ReadFile(const std::string& path);
 
 	// If your projection code winds vertices clockwise in screen space,
 	// leave this at default; flip if you get back-face culling artifacts.
@@ -226,6 +229,7 @@ private:
 	SDL_Surface* m_overlayScaledSurface = nullptr;
 
 	bool m_initialized = false;
+	std::string m_ShaderFolder;
 
 	std::function<void(ResourceType, uint8_t)> m_SetClearColourIdxCallBack;
 	std::function<void(ResourceType, uint8_t*)> m_SetPaletteLookupCallBack;

@@ -12,24 +12,6 @@
 
 namespace
 {
-	std::string ShaderPath(const char* filename)
-	{
-		return std::string("S://Repositories/magic-carpet-2-hd/x64/Debug-nonASA/shaders/") + filename;
-	}
-
-	std::vector<char> ReadFile(const std::string& path)
-	{
-		std::ifstream file(path, std::ios::ate | std::ios::binary);
-		if (!file.is_open())
-			throw std::runtime_error("Failed to open shader file: " + path);
-
-		size_t fileSize = (size_t)file.tellg();
-		std::vector<char> buffer(fileSize);
-		file.seekg(0);
-		file.read(buffer.data(), fileSize);
-		return buffer;
-	}
-
 	VkShaderModule CreateShaderModule(VkDevice device, const std::vector<char>& code)
 	{
 		VkShaderModuleCreateInfo createInfo{};
@@ -55,8 +37,10 @@ namespace
 	}
 }
 
-VulkanPolygonRenderer::VulkanPolygonRenderer()
+VulkanPolygonRenderer::VulkanPolygonRenderer(std::string shaderFolder)
 {
+	m_ShaderFolder = shaderFolder;
+
 	m_SetClearColourIdxCallBack =
 		[this](ResourceType state, uint8_t index) {
 		SetClearColourIndex(index);
@@ -99,6 +83,24 @@ VulkanPolygonRenderer::~VulkanPolygonRenderer()
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, m_SetClearColourIdxCallBack));
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t*>(EventType::E_RESOURCE_CHANGE, m_SetPaletteLookupCallBack));
 
+}
+
+std::string VulkanPolygonRenderer::ShaderPath(const char* filename)
+{
+	return m_ShaderFolder + "/" + filename;
+}
+
+std::vector<char> VulkanPolygonRenderer::ReadFile(const std::string& path)
+{
+	std::ifstream file(path, std::ios::ate | std::ios::binary);
+	if (!file.is_open())
+		throw std::runtime_error("Failed to open shader file: " + path);
+
+	size_t fileSize = (size_t)file.tellg();
+	std::vector<char> buffer(fileSize);
+	file.seekg(0);
+	file.read(buffer.data(), fileSize);
+	return buffer;
 }
 
 void VulkanPolygonRenderer::SetFrontFace(VkFrontFace frontFace)

@@ -268,7 +268,7 @@ void CreateRenderSurfaces(int width, int height)
 
 bool CreateRenderer(int width, int height)
 {
-	m_vulkanRenderer = new VulkanPolygonRenderer();
+	m_vulkanRenderer = new VulkanPolygonRenderer(GetSubDirectoryPath("shaders"));
 	return m_vulkanRenderer->Init(m_window, width, height);
 }
 
