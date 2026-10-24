@@ -1993,7 +1993,7 @@ uint16_t GameRenderHW::DrawTileBillboards_3FD60(int a2x, uint8_t playersColors_E
 						str_F2C20ar.dword0x01_visibilityIdx = v39;
 						str_F2C20ar.dword0x09_realWidth++;
 						str_F2C20ar.dword0x0c_realHeight++;
-						DrawSprite_41BD3((uint32_t)SpritePass::Reflection, polygons, spriteBase, spriteFrame);
+						DrawSprite_41BD3((uint32_t)SpritePass::Reflection, polygons, spriteBase + spriteFrame, spriteFrame);
 						break;
 					default:
 						goto LABEL_70;
@@ -3384,7 +3384,7 @@ void GameRenderHW::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 									else
 										str_F2C20ar.dword0x00 = v47 + 0x2000;
 									str_F2C20ar.dword0x01_visibilityIdx = 8;
-									DrawSprite_41BD3((uint32_t)SpritePass::Shadow, polygons, spriteBase, spriteFrame);
+									DrawSprite_41BD3((uint32_t)SpritePass::Shadow, polygons, spriteBase + spriteFrame, spriteFrame);
 								}
 								break;
 							default:
@@ -3767,7 +3767,12 @@ void GameRenderHW::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 					}
 					str_F2C20ar.dword0x09_realWidth++;
 					str_F2C20ar.dword0x0c_realHeight++;
-					DrawSprite_41BD3((uint32_t)SpritePass::Main, polygons, spriteBase, spriteFrame);
+
+					//Logger->info("def={} kind={} tex={} anim={} frames={}",
+					//	str_F2C20ar.dword0x14x->word_0x5A_90, v52x->kind_12, spriteBase + spriteFrame,
+					//	str_F2C20ar.dword0x14x->animationFrame_0x5C_92, m_spriteFrameCount[spriteBase + spriteFrame]);
+
+					DrawSprite_41BD3((uint32_t)SpritePass::Main, polygons, spriteBase + spriteFrame, spriteFrame);
 					break;
 				default:
 					goto LABEL_164;
