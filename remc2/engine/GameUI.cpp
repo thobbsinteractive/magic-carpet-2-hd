@@ -1,5 +1,6 @@
 #include "GameUI.h"
 
+#include <algorithm>
 #include <array>
 
 #include "EventDispatcher.h"
@@ -78,6 +79,55 @@ char* x_InterlockedExchange(char**  Target, char*  Value)
 	return temp;
 };
 
+// The line cut to the drawing area of DrawLine_BD542 (x_DWORD_180648_map_resolution2_x x x_DWORD_180644_map_resolution2_y):
+// it clips with 16-bit sums, so a line with ends far apart (an entity far out of a big screen) overflows them and draws out
+// of the screen buffer. false: no part of the line in the area.
+static bool ClipLine_BD542(int16_t& posX1, int16_t& posY1, int16_t& posX2, int16_t& posY2)
+{
+	const double maxX = x_DWORD_180648_map_resolution2_x - 1;
+	const double maxY = x_DWORD_180644_map_resolution2_y - 1;
+	if (maxX < 0 || maxY < 0)
+		return false;
+	const double x1 = posX1;
+	const double y1 = posY1;
+	const double dx = posX2 - x1;
+	const double dy = posY2 - y1;
+	const double p[4] = { -dx, dx, -dy, dy };
+	const double q[4] = { x1, maxX - x1, y1, maxY - y1 };
+	double start = 0;
+	double end = 1;
+	for (int i = 0; i < 4; i++)
+	{
+		if (p[i] == 0)
+		{
+			if (q[i] < 0)
+				return false;
+			continue;
+		}
+		const double t = q[i] / p[i];
+		if (p[i] < 0)
+		{
+			if (t > end)
+				return false;
+			if (t > start)
+				start = t;
+		}
+		else
+		{
+			if (t < start)
+				return false;
+			if (t < end)
+				end = t;
+		}
+	}
+	auto toArea = [](double value, double max) { return static_cast<int16_t>(std::clamp(value + 0.5, 0.0, max)); };
+	posX1 = toArea(x1 + start * dx, maxX);
+	posY1 = toArea(y1 + start * dy, maxY);
+	posX2 = toArea(x1 + end * dx, maxX);
+	posY2 = toArea(y1 + end * dy, maxY);
+	return true;
+}
+
 //----- (0002BD10) --------------------------------------------------------
 void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, uint8_t color, uint8_t thickness)//20cd10
 {
@@ -91,7 +141,11 @@ void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, 
 	if (x_WORD_180660_VGA_type_resolution & 1)
 		func_draw = &DrawLine_BD524;
 	else
+	{
 		func_draw = &DrawLine_BD542;
+		if (!ClipLine_BD542(posX1, posY1, posX2, posY2))
+			return;
+	}
 	func_draw(posX1, posY1, posX2, posY2, color);
 
 	//result = (int)x_D41A0_BYTEARRAY_0;
