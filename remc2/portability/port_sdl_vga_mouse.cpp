@@ -959,7 +959,13 @@ int PollSdlEvents()
 			}
 			break;
 		}
-		case SDL_QUIT: return 0;
+		case SDL_QUIT://Alt+F4 or the close button of the window: quit at once as Exit_thread (unsaved progress is lost)
+#ifndef __ANDROID__
+			Logger->info("Window closed: quitting");
+			throw thread_exit_exception();
+#else
+			return 0;
+#endif
 		}
 	}
 	gamepad_poll_data(&gpe);
