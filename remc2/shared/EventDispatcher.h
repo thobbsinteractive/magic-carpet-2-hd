@@ -15,7 +15,7 @@ public:
 		for (auto el : _eventList)
 		{
 			for (auto e : el.second)
-				delete[] e;
+				delete e;
 		}
 	};
 
