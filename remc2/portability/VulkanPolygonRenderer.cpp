@@ -71,6 +71,13 @@ VulkanPolygonRenderer::VulkanPolygonRenderer(std::string shaderFolder)
 		};
 
 	EventDispatcher::I->RegisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, m_PolyCallBack));
+
+	m_ViewPortCallBack =
+		[this](uint16_t posX, uint16_t posY, uint16_t width, uint16_t height) {
+		m_gameViewPort = { posX, posY, width, height };
+		};
+
+	EventDispatcher::I->RegisterEvent(new Event<uint16_t, uint16_t, uint16_t, uint16_t>(EventType::E_VIEWPORT_CHANGE, m_ViewPortCallBack));
 }
 
 VulkanPolygonRenderer::~VulkanPolygonRenderer()
@@ -82,6 +89,7 @@ VulkanPolygonRenderer::~VulkanPolygonRenderer()
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, m_PolyCallBack));
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, m_SetClearColourIdxCallBack));
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t*>(EventType::E_RESOURCE_CHANGE, m_SetPaletteLookupCallBack));
+	EventDispatcher::I->UnregisterEvent(new Event<uint16_t, uint16_t, uint16_t, uint16_t>(EventType::E_VIEWPORT_CHANGE, m_ViewPortCallBack));
 
 }
 
@@ -182,6 +190,8 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 	if (!CreateSwapchain(windowWidth, windowHeight))
 		return false;
 	if (!CreateRenderPass())
+		return false;
+	if (!CreateOffscreenRenderPass())
 		return false;
 
 	// Framebuffers depend on render pass + swapchain image views.
@@ -338,6 +348,146 @@ bool VulkanPolygonRenderer::CreateRenderPass()
 	rpInfo.pDependencies = &dependency;
 
 	return vkCreateRenderPass(m_device, &rpInfo, nullptr, &m_renderPass) == VK_SUCCESS;
+}
+
+// Same attachment format/samples as m_renderPass so m_pipeline is compatible with it,
+// but it ends in SHADER_READ_ONLY_OPTIMAL so the result can be sampled for the upscale.
+bool VulkanPolygonRenderer::CreateOffscreenRenderPass()
+{
+	VkAttachmentDescription colorAttachment{};
+	colorAttachment.format = m_swapchainFormat;
+	colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+	colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+	colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	colorAttachment.finalLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+	VkAttachmentReference colorRef{};
+	colorRef.attachment = 0;
+	colorRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+	VkSubpassDescription subpass{};
+	subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+	subpass.colorAttachmentCount = 1;
+	subpass.pColorAttachments = &colorRef;
+
+	VkSubpassDependency dependencies[2]{};
+	// The previous frame's upscale must finish reading the image before we draw into it again.
+	dependencies[0].srcSubpass = VK_SUBPASS_EXTERNAL;
+	dependencies[0].dstSubpass = 0;
+	dependencies[0].srcStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependencies[0].srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+	dependencies[0].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependencies[0].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+	// The upscale samples the image after the polygons are written.
+	dependencies[1].srcSubpass = 0;
+	dependencies[1].dstSubpass = VK_SUBPASS_EXTERNAL;
+	dependencies[1].srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependencies[1].srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+	dependencies[1].dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+	dependencies[1].dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+
+	VkRenderPassCreateInfo rpInfo{};
+	rpInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+	rpInfo.attachmentCount = 1;
+	rpInfo.pAttachments = &colorAttachment;
+	rpInfo.subpassCount = 1;
+	rpInfo.pSubpasses = &subpass;
+	rpInfo.dependencyCount = 2;
+	rpInfo.pDependencies = dependencies;
+
+	return vkCreateRenderPass(m_device, &rpInfo, nullptr, &m_offscreenRenderPass) == VK_SUCCESS;
+}
+
+bool VulkanPolygonRenderer::CreateOffscreenTarget(uint32_t width, uint32_t height)
+{
+	VkImageCreateInfo imageInfo{};
+	imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	imageInfo.imageType = VK_IMAGE_TYPE_2D;
+	imageInfo.format = m_swapchainFormat;
+	imageInfo.extent = { width, height, 1 };
+	imageInfo.mipLevels = 1;
+	imageInfo.arrayLayers = 1;
+	imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+	imageInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+	imageInfo.usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
+	imageInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+
+	VmaAllocationCreateInfo allocInfo{};
+	allocInfo.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+
+	if (vmaCreateImage(m_allocator, &imageInfo, &allocInfo, &m_offscreenImage, &m_offscreenImageAlloc, nullptr) != VK_SUCCESS)
+		return false;
+
+	VkImageViewCreateInfo viewInfo{};
+	viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	viewInfo.image = m_offscreenImage;
+	viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+	viewInfo.format = imageInfo.format;
+	viewInfo.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+	if (vkCreateImageView(m_device, &viewInfo, nullptr, &m_offscreenImageView) != VK_SUCCESS)
+		return false;
+
+	VkFramebufferCreateInfo fbInfo{};
+	fbInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+	fbInfo.renderPass = m_offscreenRenderPass;
+	fbInfo.attachmentCount = 1;
+	fbInfo.pAttachments = &m_offscreenImageView;
+	fbInfo.width = width;
+	fbInfo.height = height;
+	fbInfo.layers = 1;
+	if (vkCreateFramebuffer(m_device, &fbInfo, nullptr, &m_offscreenFramebuffer) != VK_SUCCESS)
+		return false;
+
+	// Sampled by the overlay shaders, so it uses the overlay's descriptor layout and nearest sampler.
+	VkDescriptorSetAllocateInfo dsAllocInfo{};
+	dsAllocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	dsAllocInfo.descriptorPool = m_descriptorPool;
+	dsAllocInfo.descriptorSetCount = 1;
+	dsAllocInfo.pSetLayouts = &m_overlayDescriptorSetLayout;
+	if (vkAllocateDescriptorSets(m_device, &dsAllocInfo, &m_offscreenDescriptorSet) != VK_SUCCESS)
+		return false;
+
+	VkDescriptorImageInfo imgInfo{};
+	imgInfo.sampler = m_overlaySampler;
+	imgInfo.imageView = m_offscreenImageView;
+	imgInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+	VkWriteDescriptorSet write{};
+	write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	write.dstSet = m_offscreenDescriptorSet;
+	write.dstBinding = 0;
+	write.descriptorCount = 1;
+	write.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	write.pImageInfo = &imgInfo;
+	vkUpdateDescriptorSets(m_device, 1, &write, 0, nullptr);
+
+	m_offscreenWidth = width;
+	m_offscreenHeight = height;
+	return true;
+}
+
+// Caller must make sure the GPU is no longer using the target (vkDeviceWaitIdle).
+void VulkanPolygonRenderer::DestroyOffscreenTarget()
+{
+	if (m_offscreenDescriptorSet)
+		vkFreeDescriptorSets(m_device, m_descriptorPool, 1, &m_offscreenDescriptorSet);
+	if (m_offscreenFramebuffer)
+		vkDestroyFramebuffer(m_device, m_offscreenFramebuffer, nullptr);
+	if (m_offscreenImageView)
+		vkDestroyImageView(m_device, m_offscreenImageView, nullptr);
+	if (m_offscreenImage)
+		vmaDestroyImage(m_allocator, m_offscreenImage, m_offscreenImageAlloc);
+
+	m_offscreenDescriptorSet = VK_NULL_HANDLE;
+	m_offscreenFramebuffer = VK_NULL_HANDLE;
+	m_offscreenImageView = VK_NULL_HANDLE;
+	m_offscreenImage = VK_NULL_HANDLE;
+	m_offscreenImageAlloc = VK_NULL_HANDLE;
+	m_offscreenWidth = 0;
+	m_offscreenHeight = 0;
 }
 
 bool VulkanPolygonRenderer::CreateDescriptorResources()
@@ -984,7 +1134,10 @@ bool VulkanPolygonRenderer::CreateOverlayResources(uint32_t width, uint32_t heig
 	// a one-time command buffer (or let the first UploadOverlaySurface do it -
 	// see the layout transition inside that function below).
 
-	return CreateOverlayPipeline();
+	// Alpha-blended for the HUD overlay; opaque for upscaling the offscreen polygon image,
+	// since the polygon pipeline leaves alpha < 1 wherever transparent polygons were drawn.
+	return CreateOverlayPipeline(true, m_overlayPipeline) &&
+		CreateOverlayPipeline(false, m_viewPortBlitPipeline);
 }
 
 bool VulkanPolygonRenderer::CreateWireframePipeline()
@@ -1227,7 +1380,7 @@ bool VulkanPolygonRenderer::CreatePipeline()
 	return result == VK_SUCCESS;
 }
 
-bool VulkanPolygonRenderer::CreateOverlayPipeline()
+bool VulkanPolygonRenderer::CreateOverlayPipeline(bool alphaBlend, VkPipeline& pipeline)
 {
 	auto vertCode = ReadFile(ShaderPath("overlay.vert.spv"));
 	auto fragCode = ReadFile(ShaderPath("overlay.frag.spv"));
@@ -1275,12 +1428,11 @@ bool VulkanPolygonRenderer::CreateOverlayPipeline()
 	multisample.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
 	multisample.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
 
-	// Alpha-over blending - this is the key difference from your polygon
-	// pipelines, which have blending disabled.
+	// Alpha-over blending when alphaBlend is set, otherwise a straight copy.
 	VkPipelineColorBlendAttachmentState blendAttachment{};
 	blendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
 		VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-	blendAttachment.blendEnable = VK_TRUE;
+	blendAttachment.blendEnable = alphaBlend ? VK_TRUE : VK_FALSE;
 	blendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
 	blendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
 	blendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
@@ -1299,12 +1451,16 @@ bool VulkanPolygonRenderer::CreateOverlayPipeline()
 	dynamicState.dynamicStateCount = 2;
 	dynamicState.pDynamicStates = dynamicStates;
 
-	VkPipelineLayoutCreateInfo layoutInfo{};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-	layoutInfo.setLayoutCount = 1;
-	layoutInfo.pSetLayouts = &m_overlayDescriptorSetLayout;
-	if (vkCreatePipelineLayout(m_device, &layoutInfo, nullptr, &m_overlayPipelineLayout) != VK_SUCCESS)
-		return false;
+	// Layout is shared by both overlay pipelines.
+	if (m_overlayPipelineLayout == VK_NULL_HANDLE)
+	{
+		VkPipelineLayoutCreateInfo layoutInfo{};
+		layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+		layoutInfo.setLayoutCount = 1;
+		layoutInfo.pSetLayouts = &m_overlayDescriptorSetLayout;
+		if (vkCreatePipelineLayout(m_device, &layoutInfo, nullptr, &m_overlayPipelineLayout) != VK_SUCCESS)
+			return false;
+	}
 
 	VkPipelineDepthStencilStateCreateInfo depthStencil{};
 	depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
@@ -1330,7 +1486,7 @@ bool VulkanPolygonRenderer::CreateOverlayPipeline()
 	pipelineInfo.renderPass = m_renderPass;
 	pipelineInfo.subpass = 0;
 
-	VkResult result = vkCreateGraphicsPipelines(m_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_overlayPipeline);
+	VkResult result = vkCreateGraphicsPipelines(m_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline);
 
 	vkDestroyShaderModule(m_device, vertModule, nullptr);
 	vkDestroyShaderModule(m_device, fragModule, nullptr);
@@ -1531,6 +1687,46 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 		return false; // skip this frame; caller should just try again next tick
 	}
 
+	// Polygon vertices are NDC relative to the game viewport, so map that
+	// viewport (game-resolution pixels) into the letterboxed destRect.
+	SDL_Rect polyRect = destRect;
+	if (m_gameViewPort.w > 0 && m_gameViewPort.h > 0 && srcRect.w > 0 && srcRect.h > 0)
+	{
+		const float scaleX = (float)destRect.w / (float)srcRect.w;
+		const float scaleY = (float)destRect.h / (float)srcRect.h;
+		polyRect.x = destRect.x + (int)(m_gameViewPort.x * scaleX);
+		polyRect.y = destRect.y + (int)(m_gameViewPort.y * scaleY);
+		polyRect.w = (int)(m_gameViewPort.w * scaleX);
+		polyRect.h = (int)(m_gameViewPort.h * scaleY);
+	}
+
+	// Scissor must stay within the framebuffer.
+	const int scissorX0 = (std::max)(polyRect.x, 0);
+	const int scissorY0 = (std::max)(polyRect.y, 0);
+	const int scissorX1 = (std::min)(polyRect.x + polyRect.w, (int)m_swapchainExtent.width);
+	const int scissorY1 = (std::min)(polyRect.y + polyRect.h, (int)m_swapchainExtent.height);
+
+	// Polygons are rendered at the game viewport's resolution, or the full game
+	// resolution until the first E_VIEWPORT_CHANGE arrives.
+	const uint32_t targetWidth = (uint32_t)(m_gameViewPort.w > 0 ? m_gameViewPort.w : srcRect.w);
+	const uint32_t targetHeight = (uint32_t)(m_gameViewPort.h > 0 ? m_gameViewPort.h : srcRect.h);
+
+	// Vulkan requires a non-zero viewport, so skip the polygons when there is nowhere to draw them.
+	bool drawPolygons = m_polygons.size() > 0 && targetWidth > 0 && targetHeight > 0 &&
+		polyRect.w > 0 && polyRect.h > 0 && scissorX1 > scissorX0 && scissorY1 > scissorY0;
+
+	if (drawPolygons && (targetWidth != m_offscreenWidth || targetHeight != m_offscreenHeight))
+	{
+		// The other frame in flight may still be sampling the old target.
+		vkDeviceWaitIdle(m_device);
+		DestroyOffscreenTarget();
+		if (!CreateOffscreenTarget(targetWidth, targetHeight))
+		{
+			DestroyOffscreenTarget();
+			drawPolygons = false;
+		}
+	}
+
 	vkResetFences(m_device, 1, &frame.inFlight);
 	vkResetCommandBuffer(frame.commandBuffer, 0);
 
@@ -1541,6 +1737,31 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 	VkClearValue clearColor{};
 	clearColor.color = m_clearColor;
 
+	UploadOverlaySurface(surface, srcRect, frame.commandBuffer);
+
+	if (drawPolygons)
+	{
+		VkRenderPassBeginInfo offscreenBegin{};
+		offscreenBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		offscreenBegin.renderPass = m_offscreenRenderPass;
+		offscreenBegin.framebuffer = m_offscreenFramebuffer;
+		offscreenBegin.renderArea.extent = { m_offscreenWidth, m_offscreenHeight };
+		offscreenBegin.clearValueCount = 1;
+		offscreenBegin.pClearValues = &clearColor;
+
+		vkCmdBeginRenderPass(frame.commandBuffer, &offscreenBegin, VK_SUBPASS_CONTENTS_INLINE);
+		vkCmdBindPipeline(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipeline);
+
+		VkViewport offscreenViewport{ 0.0f, 0.0f, (float)m_offscreenWidth, (float)m_offscreenHeight, 0.0f, 1.0f };
+		VkRect2D offscreenScissor{ { 0, 0 }, { m_offscreenWidth, m_offscreenHeight } };
+		vkCmdSetViewport(frame.commandBuffer, 0, 1, &offscreenViewport);
+		vkCmdSetScissor(frame.commandBuffer, 0, 1, &offscreenScissor);
+
+		DrawPolygons(m_polygons);
+
+		vkCmdEndRenderPass(frame.commandBuffer);
+	}
+
 	VkRenderPassBeginInfo rpBegin{};
 	rpBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 	rpBegin.renderPass = m_renderPass;
@@ -1549,19 +1770,21 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 	rpBegin.clearValueCount = 1;
 	rpBegin.pClearValues = &clearColor;
 
-	UploadOverlaySurface(surface, srcRect, frame.commandBuffer);
-
 	vkCmdBeginRenderPass(frame.commandBuffer, &rpBegin, VK_SUBPASS_CONTENTS_INLINE);
 
-	vkCmdBindPipeline(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipeline);
+	if (drawPolygons)
+	{
+		// Upscale the viewport-resolution image into the viewport's area of the window.
+		VkViewport viewport{ (float)polyRect.x, (float)polyRect.y, (float)polyRect.w, (float)polyRect.h, 0.0f, 1.0f };
+		VkRect2D scissor{ { scissorX0, scissorY0 }, { (uint32_t)(scissorX1 - scissorX0), (uint32_t)(scissorY1 - scissorY0) } };
+		vkCmdSetViewport(frame.commandBuffer, 0, 1, &viewport);
+		vkCmdSetScissor(frame.commandBuffer, 0, 1, &scissor);
 
-	VkViewport viewport{ 0, 0, (float)m_swapchainExtent.width, (float)m_swapchainExtent.height, 0.0f, 1.0f };
-	VkRect2D scissor{ {0, 0}, m_swapchainExtent };
-	vkCmdSetViewport(frame.commandBuffer, 0, 1, &viewport);
-	vkCmdSetScissor(frame.commandBuffer, 0, 1, &scissor);
-
-	if (m_polygons.size() > 0)
-		DrawPolygons(m_polygons);
+		vkCmdBindPipeline(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_viewPortBlitPipeline);
+		vkCmdBindDescriptorSets(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+			m_overlayPipelineLayout, 0, 1, &m_offscreenDescriptorSet, 0, nullptr);
+		vkCmdDraw(frame.commandBuffer, 3, 1, 0, 0);
+	}
 
 	DrawOverlay(destRect, frame.commandBuffer);
 
@@ -1812,6 +2035,9 @@ void VulkanPolygonRenderer::Shutdown()
 	m_textures.clear();
 
 	DestroyFrameData();
+	DestroyOffscreenTarget();
+	vkDestroyPipeline(m_device, m_viewPortBlitPipeline, nullptr);
+	vkDestroyRenderPass(m_device, m_offscreenRenderPass, nullptr);
 
 	vmaDestroyBuffer(m_allocator, m_paletteStagingBuffer, m_paletteStagingAllocation);
 	vkDestroyImageView(m_device, m_paletteView, nullptr);

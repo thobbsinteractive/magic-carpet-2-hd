@@ -150,7 +150,10 @@ private:
 	bool CreatePaletteTexture();
 	bool CreateFrameData();
 	bool CreateOverlayResources(uint32_t width, uint32_t height);
-	bool CreateOverlayPipeline();
+	bool CreateOverlayPipeline(bool alphaBlend, VkPipeline& pipeline);
+	bool CreateOffscreenRenderPass();
+	bool CreateOffscreenTarget(uint32_t width, uint32_t height);
+	void DestroyOffscreenTarget();
 	void DestroyFrameData();
 	void EnsureFrameBufferCapacity(FrameData& frame, size_t vertexBytes, size_t indexBytes);
 	VkDescriptorSet AllocateTextureDescriptorSet(VkImageView view);
@@ -169,6 +172,18 @@ private:
 	void* m_overlayStagingMapped = nullptr;
 	uint32_t m_overlayWidth = 0;
 	uint32_t m_overlayHeight = 0;
+
+	// Polygons are rendered into this image at the game viewport's resolution,
+	// then upscaled into the window with m_viewPortBlitPipeline.
+	VkRenderPass m_offscreenRenderPass = VK_NULL_HANDLE;
+	VkImage m_offscreenImage = VK_NULL_HANDLE;
+	VmaAllocation m_offscreenImageAlloc = VK_NULL_HANDLE;
+	VkImageView m_offscreenImageView = VK_NULL_HANDLE;
+	VkFramebuffer m_offscreenFramebuffer = VK_NULL_HANDLE;
+	VkDescriptorSet m_offscreenDescriptorSet = VK_NULL_HANDLE;
+	uint32_t m_offscreenWidth = 0;
+	uint32_t m_offscreenHeight = 0;
+	VkPipeline m_viewPortBlitPipeline = VK_NULL_HANDLE;
 
 	vkb::Instance m_vkbInstance{};
 	vkb::Device m_vkbDevice{};
@@ -228,6 +243,9 @@ private:
 	SDL_Window* m_window = nullptr;
 	SDL_Surface* m_overlayScaledSurface = nullptr;
 
+	// Game world viewport in game-resolution pixels; w/h of 0 = not yet set, use full destRect
+	SDL_Rect m_gameViewPort{ 0, 0, 0, 0 };
+
 	bool m_initialized = false;
 	std::string m_ShaderFolder;
 
@@ -235,6 +253,7 @@ private:
 	std::function<void(ResourceType, uint8_t*)> m_SetPaletteLookupCallBack;
 	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> m_TextureCallBack;
 	std::function<void(ResourceType, std::vector<RenderPolygon>*)> m_PolyCallBack;
+	std::function<void(uint16_t, uint16_t, uint16_t, uint16_t)> m_ViewPortCallBack;
 };
 
 #endif //VULKANPOLYGONRENDER_H 
