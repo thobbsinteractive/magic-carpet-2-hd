@@ -69,6 +69,7 @@ void ViewPort::SetRenderViewPortSize_40BF0(int width, int height, int viewPortWi
 	}
 	str_F2C20ar.dword0x0e_ptrScreenRenderBufferStart = width_help + screenWidth_18062C * height_help;
 	SetRenderViewPortSize_BCD45(str_F2C20ar.dword0x0e_ptrScreenRenderBufferStart + pdwScreenBuffer_351628, screenWidth_18062C, viewPortWidth_help, viewPortHeight_help);
+	EventDispatcher::I->DispatchEvent<uint16_t, uint16_t, uint16_t, uint16_t>(EventType::E_VIEWPORT_CHANGE, (uint16_t)width_help, (uint16_t)height_help, Width_DE564, Height_DE568);
 }
 
 void ViewPort::SetRenderViewPortSize_40C50(uint8_t viewPortSizeSetting)//221c50

@@ -2647,6 +2647,9 @@ void ChangeGameResolution_46B40()//227b40
 
 	if (EventDispatcher::I != nullptr)
 		EventDispatcher::I->DispatchEvent(EventType::E_RESOLUTION_CHANGE, screenWidth_18062C, screenHeight_180624);
+
+	// Recalculate the viewport for the new resolution (dispatches E_VIEWPORT_CHANGE)
+	viewPort.ResizeViewPort_2CA90(D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize);
 }
 
 //----- (00075C50) --------------------------------------------------------
