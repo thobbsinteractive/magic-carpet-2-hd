@@ -516,7 +516,8 @@ bool VulkanPolygonRenderer::CreateDescriptorResources()
 
 	// Each texture set uses kBindingCount combined image samplers. The overlay set
 	// allocated later from this pool uses 1 more, so leave headroom.
-	const uint32_t kMaxTextures = 256;
+	// Live textures: up to 504 sprite IDs (m_spriteFrameCount) + terrain atlas + sky.
+	const uint32_t kMaxTextures = 512;
 	VkDescriptorPoolSize poolSize{};
 	poolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 	poolSize.descriptorCount = kMaxTextures * kBindingCount + 8;

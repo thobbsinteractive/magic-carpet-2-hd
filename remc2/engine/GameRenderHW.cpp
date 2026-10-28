@@ -61,6 +61,11 @@ GameRenderHW::~GameRenderHW()
 {
 	EventDispatcher::I->DispatchEvent<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_DISPOSED, NULL);
 	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_DISPOSED, kTerrainAtlasId, NULL, 0, 0);
+	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_DISPOSED, kSkyId, NULL, 0, 0);
+
+	// Sprite textures are uploaded by the level loader (TextureMaps.cpp) under their sprite index
+	for (uint32_t spriteId = 0; spriteId < m_spriteFrameCount.size(); spriteId++)
+		EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_DISPOSED, spriteId, NULL, 0, 0);
 
 	delete[] m_ptrDWORD_E9C38_smalltit;
 	delete[] m_preBlurBuffer_E9C3C;
