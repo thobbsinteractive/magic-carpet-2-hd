@@ -6,7 +6,11 @@
 #include <SDL2/SDL_vulkan.h>
 #include <vulkan/vulkan.h>
 #include <VkBootstrap.h>
+#if __has_include(<vma/vk_mem_alloc.h>)
 #include <vma/vk_mem_alloc.h>
+#else
+#include <vk_mem_alloc.h>
+#endif
 #include <vector>
 #include <cstdint>
 #include <cstring>
@@ -67,8 +71,8 @@ public:
 	// Frees a previously uploaded texture's GPU resources.
 	void FreeTexture(uint32_t textureId);
 
-	std::string VulkanPolygonRenderer::ShaderPath(const char* filename);
-	std::vector<char> VulkanPolygonRenderer::ReadFile(const std::string& path);
+	std::string ShaderPath(const char* filename);
+	std::vector<char> ReadFile(const std::string& path);
 
 	// If your projection code winds vertices clockwise in screen space,
 	// leave this at default; flip if you get back-face culling artifacts.
