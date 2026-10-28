@@ -1144,10 +1144,16 @@ void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight, uint8_t* alp
 
 	if (m_vulkanRenderer)
 	{
+		const size_t surfaceSize = (size_t)m_gameRGBASurface->w * m_gameRGBASurface->h;
 		if (alphaBuffer != nullptr)
 		{
-			m_uiAlpha.assign(alphaBuffer, alphaBuffer + (size_t)m_gameRGBASurface->w * m_gameRGBASurface->h);   // copy, don't keep the pointer
+			m_uiAlpha.assign(alphaBuffer, alphaBuffer + surfaceSize);   // copy, don't keep the pointer
 			m_uiAlphaValid = true;
+		}
+		else if (m_uiAlphaValid && m_uiAlpha.size() != surfaceSize)
+		{
+			// The cached alpha was captured at a previous resolution (e.g. 320x200 intro -> 640x480 menu)
+			m_uiAlphaValid = false;
 		}
 
 		if (m_uiAlphaValid)
