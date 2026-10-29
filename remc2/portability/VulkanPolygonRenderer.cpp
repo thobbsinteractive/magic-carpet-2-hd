@@ -86,15 +86,14 @@ VulkanPolygonRenderer::VulkanPolygonRenderer(std::string shaderFolder)
 
 VulkanPolygonRenderer::~VulkanPolygonRenderer()
 {
-	if (m_initialized)
-		Shutdown();
-
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, m_TextureCallBack));
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, m_PolyCallBack));
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, m_SetClearColourIdxCallBack));
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t*>(EventType::E_RESOURCE_CHANGE, m_SetPaletteLookupCallBack));
 	EventDispatcher::I->UnregisterEvent(new Event<uint16_t, uint16_t, uint16_t, uint16_t>(EventType::E_VIEWPORT_CHANGE, m_ViewPortCallBack));
 
+	if (m_initialized)
+		Shutdown();
 }
 
 std::string VulkanPolygonRenderer::ShaderPath(const char* filename)
@@ -2046,12 +2045,29 @@ void VulkanPolygonRenderer::Shutdown()
 	vkDestroyPipeline(m_device, m_viewPortBlitPipeline, nullptr);
 	vkDestroyRenderPass(m_device, m_offscreenRenderPass, nullptr);
 
+	vkDestroyPipeline(m_device, m_overlayPipeline, nullptr);
+	vkDestroyPipelineLayout(m_device, m_overlayPipelineLayout, nullptr);
+	vkDestroyDescriptorSetLayout(m_device, m_overlayDescriptorSetLayout, nullptr);
+	vkDestroySampler(m_device, m_overlaySampler, nullptr);
+	vkDestroyImageView(m_device, m_overlayImageView, nullptr);
+	vmaDestroyImage(m_allocator, m_overlayImage, m_overlayImageAlloc);
+	vmaDestroyBuffer(m_allocator, m_overlayStagingBuffer, m_overlayStagingAlloc);
+
+	vmaDestroyBuffer(m_allocator, m_shadeLutStaging, m_shadeLutStagingAllocation);
+	vkDestroyImageView(m_device, m_shadeLutView, nullptr);
+	vmaDestroyImage(m_allocator, m_shadeLutImage, m_shadeLutAllocation);
+	vmaDestroyBuffer(m_allocator, m_blendLutStaging, m_blendLutStagingAllocation);
+	vkDestroyImageView(m_device, m_blendLutView, nullptr);
+	vmaDestroyImage(m_allocator, m_blendLutImage, m_blendLutAllocation);
+
 	vmaDestroyBuffer(m_allocator, m_paletteStagingBuffer, m_paletteStagingAllocation);
 	vkDestroyImageView(m_device, m_paletteView, nullptr);
 	vmaDestroyImage(m_allocator, m_paletteImage, m_paletteAllocation);
 
 	vkDestroyPipeline(m_device, m_pipeline, nullptr);
 	vkDestroyPipelineLayout(m_device, m_pipelineLayout, nullptr);
+	vkDestroyPipeline(m_device, m_wireframePipeline, nullptr);
+	vkDestroyPipelineLayout(m_device, m_wireframePipelineLayout, nullptr);
 	vkDestroySampler(m_device, m_nearestSampler, nullptr);
 	vkDestroyDescriptorPool(m_device, m_descriptorPool, nullptr);
 	vkDestroyDescriptorSetLayout(m_device, m_descriptorSetLayout, nullptr);
