@@ -921,6 +921,8 @@ void VulkanPolygonRenderer::SetColourLookupTable(uint8_t* colourLookupTable)
 
 uint32_t VulkanPolygonRenderer::UploadTexture(uint32_t index, const uint8_t* indexedPixels, uint32_t width, uint32_t height)
 {
+	FreeTexture(index);
+
 	VkDeviceSize size = (VkDeviceSize)width * height;
 
 	VkBufferCreateInfo stagingInfo{};
