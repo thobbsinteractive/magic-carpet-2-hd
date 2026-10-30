@@ -82,6 +82,12 @@ VulkanPolygonRenderer::VulkanPolygonRenderer(std::string shaderFolder)
 		};
 
 	EventDispatcher::I->RegisterEvent(new Event<uint16_t, uint16_t, uint16_t, uint16_t>(EventType::E_VIEWPORT_CHANGE, m_ViewPortCallBack));
+
+	m_BlurEffectCallBack =
+		[this](bool active) {
+		};
+
+	EventDispatcher::I->RegisterEvent(new Event<bool>(EventType::E_BLUR_EFFECT_CHANGE, m_BlurEffectCallBack));
 }
 
 VulkanPolygonRenderer::~VulkanPolygonRenderer()
@@ -91,6 +97,7 @@ VulkanPolygonRenderer::~VulkanPolygonRenderer()
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, m_SetClearColourIdxCallBack));
 	EventDispatcher::I->UnregisterEvent(new Event<ResourceType, uint8_t*>(EventType::E_RESOURCE_CHANGE, m_SetPaletteLookupCallBack));
 	EventDispatcher::I->UnregisterEvent(new Event<uint16_t, uint16_t, uint16_t, uint16_t>(EventType::E_VIEWPORT_CHANGE, m_ViewPortCallBack));
+	EventDispatcher::I->UnregisterEvent(new Event<bool>(EventType::E_BLUR_EFFECT_CHANGE, m_BlurEffectCallBack));
 
 	if (m_initialized)
 		Shutdown();

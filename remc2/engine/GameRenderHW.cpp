@@ -11,9 +11,6 @@ GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 	m_ptrScreenBuffer_351628(ptrScreenBuffer), m_ptrColorPalette(pColorPalette), m_assignToSpecificCores(assignToSpecificCores),
 	m_ptrDWORD_E9C38_smalltit(new uint8_t[GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT])
 {
-	m_preBlurBuffer_E9C3C = new uint8_t[((GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT) * 3)]; // Allow x 3 padding for sprite rendering
-	m_ptrBlurBuffer_E9C3C = &m_preBlurBuffer_E9C3C[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
-
 	pdwScreenAlphaBuffer = new uint8_t[GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT];
 
 	m_viewDistanceScale = viewDistanceScale;
@@ -62,6 +59,7 @@ GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 
 GameRenderHW::~GameRenderHW()
 {
+	SetBlurActive(false);
 	EventDispatcher::I->DispatchEvent<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_DISPOSED, NULL);
 	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_DISPOSED, kTerrainAtlasId, NULL, 0, 0);
 	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_DISPOSED, kSkyId, NULL, 0, 0);
@@ -71,7 +69,6 @@ GameRenderHW::~GameRenderHW()
 		EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_DISPOSED, spriteId, NULL, 0, 0);
 
 	delete[] m_ptrDWORD_E9C38_smalltit;
-	delete[] m_preBlurBuffer_E9C3C;
 	delete[] m_ptrStr_E9C38_smalltit;
 	delete[] pdwScreenAlphaBuffer;
 	pdwScreenAlphaBuffer = nullptr;
@@ -117,6 +114,15 @@ void GameRenderHW::BuildTileRenderStepTable(TileStepQuadrant* table, int cols)
 	table[3].colStepY = 0xFF;
 }
 
+void GameRenderHW::SetBlurActive(bool active)
+{
+	if (m_blurActive == active)
+		return;
+
+	m_blurActive = active;
+	EventDispatcher::I->DispatchEvent<bool>(EventType::E_BLUR_EFFECT_CHANGE, active);
+}
+
 void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov)
 {
 	uint16_t v8; // ax
@@ -142,26 +148,12 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	uint32_t v29; // edx
 	int v30; // ebx
 	int v31; // edi
-	uint8_t* v32; // ST2C_4
-	__int64 v34; // rax
-	uint8_t* v35; // edi
-	int v36; // eax
-	x_BYTE* v37; // esi
-	signed int v38; // ecx
-	uint16_t v39; // bx
-	uint16_t v40; // dx
-	uint16_t v41; // bx
-	uint16_t v42; // dx
 	x_BYTE* v43; // edi
 	int v44; // esi
 	int v45; // ecx
 	int v46; // eax
 	int v47; // ebx
 	int v48; // edx
-	int v49; // [esp+0h] [ebp-1Ch]
-	int v50; // [esp+4h] [ebp-18h]
-	signed int v51; // [esp+8h] [ebp-14h]
-	char v52; // [esp+Ch] [ebp-10h]
 	uint8_t* v53; // [esp+14h] [ebp-8h]
 	int i; // [esp+18h] [ebp-4h]
 	int vPosX; // [esp+34h] [ebp+18h]
@@ -214,6 +206,7 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	if (D41A0_0.m_GameSettings.str_0x2192.xxxx_0x2193 && D41A0_0.m_GameSettings.m_Display.m_uiScreenSize && screenWidth_18062C == 640)
 	{
 		//VR interlaced render
+		SetBlurActive(false);
 		viewPort.SetRenderViewPortSize_BCD45(
 			m_ptrScreenBuffer_351628,
 			2 * screenWidth_18062C,
@@ -235,85 +228,18 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	}
 	else if (D41A0_0.m_GameSettings.m_Display.m_uiScreenSize != 1 || D41A0_0.m_GameSettings.str_0x2192.xxxx_0x2193)
 	{
-		v52 = D41A0_0.m_GameSettings.m_Display.xxxx_0x2191;
-		if (x_WORD_180660_VGA_type_resolution == 1)
+		bool blurActive = D41A0_0.m_GameSettings.m_Display.xxxx_0x2191;
+		if (x_WORD_180660_VGA_type_resolution == 1
+			&& !D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221
+			&& x_D41A0_BYTEARRAY_4_struct.m_wHighSpeedSystem
+			&& D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize == 40)
 		{
-			if (!D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221)
-			{
-				if (x_D41A0_BYTEARRAY_4_struct.m_wHighSpeedSystem)
-				{
-					if (m_ptrBlurBuffer_E9C3C)
-					{
-						if (D41A0_0.m_GameSettings.m_Graphics.m_wViewPortSize == 40)
-						{
-							v34 = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]->actSpeed_0x82_130;
-							if ((signed int)((HIDWORD(v34) ^ v34) - HIDWORD(v34)) > 80)
-								D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 = 1;
-						}
-					}
-				}
-			}
+			// Motion blur when the player is moving fast
+			int32_t speed = Entities_EA3E4[D41A0_0.array_0x2BDE[D41A0_0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240]->actSpeed_0x82_130;
+			if (std::abs(speed) > 80)
+				blurActive = true;
 		}
-		if (D41A0_0.str_0x21AE.xxxx_0x21B1 && D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 && m_ptrBlurBuffer_E9C3C)
-		{
-			//Blur
-			v35 = ViewPortRenderBufferStart_DE558;
-			viewPort.SetRenderViewPortSize_BCD45(m_ptrBlurBuffer_E9C3C, 0, 0, 0);
-			DrawTerrainAndParticles_3C080(vPosX, vPosY, vYaw, posZ, pitch, roll, fov);
-			//Apply Blur
-			viewPort.SetRenderViewPortSize_BCD45(v35, 0, 0, 0);
-			v51 = (signed int)(uint16_t)viewPort.Width_DE564 >> 2;
-			v49 = iScreenWidth_DE560 - (uint16_t)viewPort.Width_DE564;
-			v50 = (uint16_t)viewPort.Height_DE568;
-
-			if (D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 != 1)
-			{
-				v37 = (x_BYTE*)m_ptrBlurBuffer_E9C3C;
-				goto LABEL_33;
-			}
-			v37 = (x_BYTE*)m_ptrBlurBuffer_E9C3C;
-			v38 = (signed int)(uint16_t)viewPort.Width_DE564 >> 2;
-			LOBYTE(v39) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 2);
-			HIBYTE(v39) = v35[2];
-			LOBYTE(v40) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 3);
-			LOBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v39];
-			HIBYTE(v40) = v35[3];
-			HIBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v40];
-			v36 <<= 16;
-			LOBYTE(v39) = *(x_BYTE*)m_ptrBlurBuffer_E9C3C;
-			HIBYTE(v39) = *v35;
-			LOBYTE(v40) = *(x_BYTE*)(m_ptrBlurBuffer_E9C3C + 1);
-			LOBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v39];
-			HIBYTE(v40) = v35[1];
-			for (BYTE1(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v40]; ; BYTE1(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v42])
-			{
-				*(x_DWORD*)v35 = v36;
-				v35 += 4;
-				v37 += 4;
-				if (!--v38)
-				{
-					HIWORD(v36) = HIWORD(v49);
-					v37 += v49;
-					v35 += v49;
-					if (!--v50)
-						goto LABEL_44;
-				LABEL_33:
-					v38 = v51;
-				}
-				HIBYTE(v41) = v37[2];
-				LOBYTE(v41) = v35[2];
-				HIBYTE(v42) = v37[3];
-				LOBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v41];
-				LOBYTE(v42) = v35[3];
-				HIBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v42];
-				v36 <<= 16;
-				HIBYTE(v41) = *v37;
-				LOBYTE(v41) = *v35;
-				HIBYTE(v42) = v37[1];
-				LOBYTE(v36) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v41];
-				LOBYTE(v42) = v35[1];
-			}
-		}
+		SetBlurActive(D41A0_0.str_0x21AE.xxxx_0x21B1 && blurActive);
 
 		DrawTerrainAndParticles_3C080(vPosX, vPosY, vYaw, posZ, pitch, roll, fov);
 
@@ -342,11 +268,10 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 				v53 += iScreenWidth_DE560;
 			}
 		}
-	LABEL_44:
-		D41A0_0.m_GameSettings.m_Display.xxxx_0x2191 = v52;
 	}
 	else
 	{
+		SetBlurActive(false);
 		v28 = 5 * Maths::sin_DB750[vYaw];
 		v29 = Maths::sin_DB750[512 + vYaw];
 		x_DWORD_D4790 = 20;
@@ -354,11 +279,8 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 		v30 = 4 * v28 >> 16;
 		v31 = 20 * (signed int)v29 >> 16;
 		DrawTerrainAndParticles_3C080(v31 + vPosX, v30 + vPosY, vYaw, posZ, pitch, roll, fov);
-		v32 = ViewPortRenderBufferStart_DE558;
-		viewPort.SetRenderViewPortSize_BCD45(m_ptrBlurBuffer_E9C3C, 0, 0, 0);
 		x_DWORD_D4324 = 0 - (iScreenWidth_DE560 / 40);
 		DrawTerrainAndParticles_3C080(vPosX - v31, vPosY - v30, vYaw, posZ, pitch, roll, fov);
-		viewPort.SetRenderViewPortSize_BCD45(v32, 0, 0, 0);
 		x_DWORD_D4324 = 0;
 	}
 }

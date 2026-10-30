@@ -88,11 +88,10 @@ private:
 	uint8_t* m_ptrDWORD_E9C38_smalltit = nullptr;
 	uint8_t* m_ptrScreenBuffer_351628 = nullptr;
 	uint8_t* m_ptrColorPalette = nullptr;
-	uint8_t* m_preBlurBuffer_E9C3C = nullptr;
-	uint8_t* m_ptrBlurBuffer_E9C3C = nullptr;
 
 	bool m_multiThreadRender = false;
 	bool m_assignToSpecificCores = false;
+	bool m_blurActive = false;
 
 	int x_DWORD_D4794 = 0;
 	int x_DWORD_D4798 = 0;
@@ -138,6 +137,7 @@ public:
 	GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uint8_t viewDistanceScale = 1, float fogScale = 1.0f);
 	~GameRenderHW();
 
+	void SetBlurActive(bool active);
 	void DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov);
 	void ClearGraphicsBuffer(uint8_t colorIdx);
 

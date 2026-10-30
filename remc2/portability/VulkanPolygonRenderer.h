@@ -258,6 +258,7 @@ private:
 	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> m_TextureCallBack;
 	std::function<void(ResourceType, std::vector<RenderPolygon>*)> m_PolyCallBack;
 	std::function<void(uint16_t, uint16_t, uint16_t, uint16_t)> m_ViewPortCallBack;
+	std::function<void(bool)> m_BlurEffectCallBack;
 };
 
 #endif //VULKANPOLYGONRENDER_H 
