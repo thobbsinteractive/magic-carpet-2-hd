@@ -3666,10 +3666,6 @@ void GameRenderHW::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 					str_F2C20ar.dword0x09_realWidth++;
 					str_F2C20ar.dword0x0c_realHeight++;
 
-					//Logger->info("def={} kind={} tex={} anim={} frames={}",
-					//	str_F2C20ar.dword0x14x->word_0x5A_90, v52x->kind_12, spriteBase + spriteFrame,
-					//	str_F2C20ar.dword0x14x->animationFrame_0x5C_92, m_spriteFrameCount[spriteBase + spriteFrame]);
-
 					DrawSprite_41BD3((uint32_t)SpritePass::Main, polygons, spriteBase + spriteFrame, spriteFrame);
 					break;
 				default:
@@ -3761,6 +3757,21 @@ void GameRenderHW::DrawSprite_41BD3(uint32_t pass, std::vector<RenderPolygon>* p
 			(float)s.dword0x04_screenY, (float)s.dword0x03_screenX, 1, 0, 0, 1, false);
 }
 
+uint32_t GameRenderHW::SpriteFrameRow(int spriteIndex, int spriteFrame)
+{
+	const uint32_t frames = m_spriteFrameCount[spriteIndex];
+	if (frames <= 1)
+		return 0;
+
+	if (m_ptrLoadedSprites_F66F0x[spriteIndex] && ((*m_ptrLoadedSprites_F66F0x[spriteIndex])->word_0 & 1))
+	{
+		if (const type_animations1* anim = GetAnimationByIndex_724F0(animations_E9C08x, spriteIndex))
+			return (uint32_t)std::clamp(anim->FrameIndex_22 - 2, 0, (int)frames - 1);
+	}
+
+	return std::min<uint32_t>((uint32_t)spriteFrame, frames - 1);
+}
+
 void GameRenderHW::EmitSpriteQuad(std::vector<RenderPolygon>* polygons, int spriteIndex, int spriteFrame,
 	float x, float y, float rx, float ry, float dx, float dy, bool flipV)
 {
@@ -3771,7 +3782,7 @@ void GameRenderHW::EmitSpriteQuad(std::vector<RenderPolygon>* polygons, int spri
 	if (frames == 0)
 		return;
 
-	const uint32_t frame = std::min<uint32_t>((uint32_t)spriteFrame, frames - 1);
+	const uint32_t frame = SpriteFrameRow(spriteIndex, spriteFrame);
 
 	const float w = (float)s.dword0x09_realWidth;
 	const float h = (float)s.dword0x0c_realHeight;
