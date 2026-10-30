@@ -2735,7 +2735,7 @@ HWVertex GameRenderHW::MakeHWVertex(const ProjectionVertex& v, uint32_t textureI
 
 	float tileX = (float)(textureIndex % kTilesWide) * TileTextureSize_D41B5;
 	float tileY = (float)(textureIndex / kTilesWide) * TileTextureSize_D41B5;
-	h.U = tileX + (float)v.U / 65536.0f;    // 0..32 inside the tile, plus the tile's origin
+	h.U = tileX + (float)v.U / 65536.0f;    // 0..TileTextureSize_D41B5 inside the tile, plus the tile's origin
 	h.V = tileY + (float)v.V / 65536.0f;
 
 	h.Shade = std::clamp((float)v.Brightness / kBrightnessNeutral, 0.0f, 2.0f);  // >1 brightens
