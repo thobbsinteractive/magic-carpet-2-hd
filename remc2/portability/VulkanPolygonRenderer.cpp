@@ -1747,8 +1747,12 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 	vkBeginCommandBuffer(frame.commandBuffer, &beginInfo);
 
+	// The viewport clears to the map's clear colour; the window it is blitted into clears to black.
 	VkClearValue clearColor{};
 	clearColor.color = m_clearColor;
+
+	VkClearValue windowClearColor{};
+	windowClearColor.color = { { 0.0f, 0.0f, 0.0f, 1.0f } };
 
 	UploadOverlaySurface(surface, srcRect, frame.commandBuffer);
 
@@ -1781,7 +1785,7 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* surface, SDL_Rect srcRect, S
 	rpBegin.framebuffer = m_framebuffers[m_currentImageIndex];
 	rpBegin.renderArea.extent = m_swapchainExtent;
 	rpBegin.clearValueCount = 1;
-	rpBegin.pClearValues = &clearColor;
+	rpBegin.pClearValues = &windowClearColor;
 
 	vkCmdBeginRenderPass(frame.commandBuffer, &rpBegin, VK_SUBPASS_CONTENTS_INLINE);
 
