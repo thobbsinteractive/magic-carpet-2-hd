@@ -1,4 +1,5 @@
 #include "GameRenderHW.h"
+#include "globals.h"
 
 #include "../utilities/RendererTests.h"
 
@@ -12,6 +13,8 @@ GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 {
 	m_preBlurBuffer_E9C3C = new uint8_t[((GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT) * 3)]; // Allow x 3 padding for sprite rendering
 	m_ptrBlurBuffer_E9C3C = &m_preBlurBuffer_E9C3C[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
+
+	pdwScreenAlphaBuffer = new uint8_t[GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT];
 
 	m_viewDistanceScale = viewDistanceScale;
 
@@ -70,6 +73,8 @@ GameRenderHW::~GameRenderHW()
 	delete[] m_ptrDWORD_E9C38_smalltit;
 	delete[] m_preBlurBuffer_E9C3C;
 	delete[] m_ptrStr_E9C38_smalltit;
+	delete[] pdwScreenAlphaBuffer;
+	pdwScreenAlphaBuffer = nullptr;
 }
 
 void GameRenderHW::BuildTileRenderStepTable(TileStepQuadrant* table, int cols)
