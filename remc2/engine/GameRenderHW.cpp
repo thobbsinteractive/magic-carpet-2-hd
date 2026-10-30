@@ -148,14 +148,6 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	uint32_t v29; // edx
 	int v30; // ebx
 	int v31; // edi
-	x_BYTE* v43; // edi
-	int v44; // esi
-	int v45; // ecx
-	int v46; // eax
-	int v47; // ebx
-	int v48; // edx
-	uint8_t* v53; // [esp+14h] [ebp-8h]
-	int i; // [esp+18h] [ebp-4h]
 	int vPosX; // [esp+34h] [ebp+18h]
 	int vPosY; // [esp+38h] [ebp+1Ch]
 	LOBYTE(v8) = HIBYTE(posX);
@@ -242,32 +234,6 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 		SetBlurActive(D41A0_0.str_0x21AE.xxxx_0x21B1 && blurActive);
 
 		DrawTerrainAndParticles_3C080(vPosX, vPosY, vYaw, posZ, pitch, roll, fov);
-
-		if (D41A0_0.m_GameSettings.str_0x2192.xxxx_0x2192)
-		{
-			v53 = ViewPortRenderBufferStart_DE558;
-			for (i = (uint16_t)viewPort.Height_DE568 - 1; i; i--)
-			{
-				v43 = (x_BYTE*)v53;
-				v44 = iScreenWidth_DE560;
-				v45 = (uint16_t)viewPort.Width_DE564 - 1;
-				HIWORD(v46) = 0;
-				HIWORD(v47) = 0;
-				HIWORD(v48) = 0;
-				do
-				{
-					LOBYTE(v46) = v43[0];
-					LOBYTE(v47) = v43[1];
-					BYTE1(v46) = v43[v44];
-					LOBYTE(v48) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v46];
-					BYTE1(v47) = v43[v44 + 1];
-					BYTE1(v48) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v47];
-					*v43++ = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + v48];
-					v45--;
-				} while (v45);
-				v53 += iScreenWidth_DE560;
-			}
-		}
 	}
 	else
 	{
