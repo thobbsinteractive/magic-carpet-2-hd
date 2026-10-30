@@ -1103,20 +1103,34 @@ type_animations1* sub_721C0_initTmap(type_E9C08* a1x, Type_Sprite** a2x, int16_t
 	a1x->dword_2[v12].word_26 = index;
 
 
-	auto frames = GetRawFrames(frameCount_v9, a1x->dword_2[v12].Sprite_4, a1x->dword_2[v12].NextFrameOffset_14);
-	auto rawData = new uint8_t[a1x->dword_2[v12].CountOfFrames_16 * a1x->dword_2[v12].Width_18 * a1x->dword_2[v12].Height_20];
+	auto rawData = new uint8_t[a1x->dword_2[v12].CountOfFrames_16 * a1x->dword_2[v12].Width_18 * a1x->dword_2[v12].Height_20]();
 	size_t frameBytes = a1x->dword_2[v12].Width_18 * a1x->dword_2[v12].Height_20;
 
-	for (int f = 0; f < frames.size(); f++)
+	if (bigSprites && index >= 0 && index < max_sprites && v7x == BIG_SPRITES_BUFFERx[index].actdatax)
 	{
-		memcpy(rawData + (frameBytes * f), frames[f], frameBytes);
-		//WriteTextureMapToBmp(v12, f, frames[f], a1x->dword_2[v12].Width_18, a1x->dword_2[v12].Height_20, D41A0_0.terrain_2FECE.MapType);
+		// High-res sprite: the buffer only holds frame 0 and the frame count, the frames are
+		// already decoded in BIG_SPRITES_BUFFERx (sub_72350 copies them in the same way).
+		for (int f = 0; f < a1x->dword_2[v12].CountOfFrames_16 && f < max_sprites_frames; f++)
+		{
+			if (BIG_SPRITES_BUFFERx[index].frames[f])
+				memcpy(rawData + (frameBytes * f), BIG_SPRITES_BUFFERx[index].frames[f], frameBytes);
+		}
 	}
+	else
+	{
+		auto frames = GetRawFrames(frameCount_v9, a1x->dword_2[v12].Sprite_4, a1x->dword_2[v12].NextFrameOffset_14);
 
-	for (uint8_t* frame : frames)
-		delete[] frame;
+		for (int f = 0; f < frames.size(); f++)
+		{
+			memcpy(rawData + (frameBytes * f), frames[f], frameBytes);
+			//WriteTextureMapToBmp(v12, f, frames[f], a1x->dword_2[v12].Width_18, a1x->dword_2[v12].Height_20, D41A0_0.terrain_2FECE.MapType);
+		}
 
-	frames.clear();
+		for (uint8_t* frame : frames)
+			delete[] frame;
+
+		frames.clear();
+	}
 
 	//WriteTextureMapToBmp(v12, rawData, a1x->dword_2[v12].Width_18, a1x->dword_2[v12].Height_20 * a1x->dword_2[v12].CountOfFrames_16, D41A0_0.terrain_2FECE.MapType);
 
