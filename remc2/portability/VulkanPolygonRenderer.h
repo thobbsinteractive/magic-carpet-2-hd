@@ -154,10 +154,29 @@ private:
 	bool CreatePaletteTexture();
 	bool CreateFrameData();
 	bool CreateOverlayResources(uint32_t width, uint32_t height);
-	bool CreateOverlayPipeline(bool alphaBlend, VkPipeline& pipeline);
-	bool CreateOffscreenRenderPass();
+	enum class OverlayBlend
+	{
+		Opaque,     // straight copy
+		Alpha,      // alpha-over, for the HUD
+		Constant,   // src * blend constant + dst * (1 - blend constant), for the blur history
+	};
+
+	struct ColourTarget
+	{
+		VkImage image = VK_NULL_HANDLE;
+		VmaAllocation allocation = VK_NULL_HANDLE;
+		VkImageView view = VK_NULL_HANDLE;
+		VkFramebuffer framebuffer = VK_NULL_HANDLE;
+		VkDescriptorSet descriptorSet = VK_NULL_HANDLE;   // overlay layout, for sampling the target
+	};
+
+	bool CreateOverlayPipeline(OverlayBlend blendMode, VkPipeline& pipeline);
+	bool CreateOffscreenRenderPass(VkAttachmentLoadOp loadOp, VkImageLayout initialLayout, VkRenderPass& renderPass);
 	bool CreateOffscreenTarget(uint32_t width, uint32_t height);
 	void DestroyOffscreenTarget();
+	bool CreateColourTarget(uint32_t width, uint32_t height, VkRenderPass renderPass, ColourTarget& target);
+	void DestroyColourTarget(ColourTarget& target);
+	void DrawBlur(VkCommandBuffer commandBuffer);
 	void DestroyFrameData();
 	void EnsureFrameBufferCapacity(FrameData& frame, size_t vertexBytes, size_t indexBytes);
 	VkDescriptorSet AllocateTextureDescriptorSet(VkImageView view);
@@ -180,14 +199,20 @@ private:
 	// Polygons are rendered into this image at the game viewport's resolution,
 	// then upscaled into the window with m_viewPortBlitPipeline.
 	VkRenderPass m_offscreenRenderPass = VK_NULL_HANDLE;
-	VkImage m_offscreenImage = VK_NULL_HANDLE;
-	VmaAllocation m_offscreenImageAlloc = VK_NULL_HANDLE;
-	VkImageView m_offscreenImageView = VK_NULL_HANDLE;
-	VkFramebuffer m_offscreenFramebuffer = VK_NULL_HANDLE;
-	VkDescriptorSet m_offscreenDescriptorSet = VK_NULL_HANDLE;
+	ColourTarget m_offscreenTarget;
 	uint32_t m_offscreenWidth = 0;
 	uint32_t m_offscreenHeight = 0;
 	VkPipeline m_viewPortBlitPipeline = VK_NULL_HANDLE;
+
+	// Motion blur: while active, each frame is blended into m_blurTarget (same size as the
+	// offscreen target) and that is upscaled into the window instead of the offscreen image.
+	static constexpr float kBlurNewFrameWeight = 0.5f;
+	VkRenderPass m_blurSeedRenderPass = VK_NULL_HANDLE;
+	VkRenderPass m_blurRenderPass = VK_NULL_HANDLE;
+	ColourTarget m_blurTarget;
+	VkPipeline m_blurPipeline = VK_NULL_HANDLE;
+	bool m_blurActive = false;
+	bool m_blurSeed = true;   // the history holds nothing useful, so the next blur frame copies instead of blends
 
 	vkb::Instance m_vkbInstance{};
 	vkb::Device m_vkbDevice{};
