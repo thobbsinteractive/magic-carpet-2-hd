@@ -2,6 +2,7 @@
 
 #include "../engine/Basic.h"
 #include "../engine/engine_support.h"
+#include "../engine/Graphics.h"
 
 Pathstruct pstr[100] = {
 xasearchd_2bac30 ,//00
@@ -158,13 +159,13 @@ long DataFileIO::FileLengthBytes(FILE* file)
 }
 
 //----- (00055C00) --------------------------------------------------------
-bool DataFileIO::sub_55C00_TestSaveFile2(int16_t a1)//236c00
+bool DataFileIO::TestSaveFile2_55C00(int16_t a1)//236c00
 {
-	return sub_55750_TestExistingSaveFile(0, a1);
+	return TestExistingSaveFile_55750(0, a1);
 }
 
 //----- (00055750) --------------------------------------------------------
-bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelindex, bool loadRegressionTest)//236750 //load in game
+bool DataFileIO::TestExistingSaveFile_55750(uint8_t fileindex, int levelindex, bool loadRegressionTest)//236750 //load in game
 {
 	FILE* saveslevfile;
 	int32_t readState;
@@ -193,7 +194,7 @@ bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelinde
 		{
 			readState = DataFileIO::Read(saveslevfile, readbuffer, 8);
 			correctReadState = readState != 8;
-			if (readState == 8 && *(uint32_t*)&readbuffer[4] != D41A0_0.dword_0x4)
+			if (readState == 8 && *(uint32_t*)&readbuffer[4] != world_D41A0.levelId_0x4)
 				correctReadState = true;
 			filesize2 = DataFileIO::FileLengthBytes(saveslevfile);
 			DataFileIO::Close(saveslevfile);
@@ -215,7 +216,7 @@ bool DataFileIO::sub_55750_TestExistingSaveFile(uint8_t fileindex, int levelinde
 }
 
 //----- (00090D3F) --------------------------------------------------------
-char* DataFileIO::sub_90D3F_unload_file_array(int psindex)//271d3f
+char* DataFileIO::UnloadFileArray_90D3F(int psindex)//271d3f
 {
 	char* result; // eax
 
@@ -254,12 +255,12 @@ bool DataFileIO::LoadFileArray_84250(int psindex)//265250
 				psindex++;
 				continue;
 			}
-			sub_41A90_VGA_Palette_install((TColor*)*xadatapald0dat2.colorPalette_var28);//install Palette for text mode(show error)
+			VgaPaletteInstall_41A90((TColor*)*xadatapald0dat2.colorPalette_var28);//install Palette for text mode(show error)
 			myprintf("ERROR: File %s.\n","palette");
 		}
 		else
 		{
-			sub_41A90_VGA_Palette_install((TColor*)*xadatapald0dat2.colorPalette_var28);//install Palette for text mode(show error)
+			VgaPaletteInstall_41A90((TColor*)*xadatapald0dat2.colorPalette_var28);//install Palette for text mode(show error)
 			myprintf("ERROR: Allocation %s.\n","palette");
 		}
 		myprintf("Press return to continue\n");
@@ -320,7 +321,7 @@ signed int DataFileIO::UnpackAndLoadMemoryFromPath(Pathstruct path)//27B32d
 	}
 	else
 	{
-		path.var36_size_buffer = (signed int)sub_AB9E1_get_file_unpack_size(path.path);
+		path.var36_size_buffer = (signed int)GetFileUnpackSize_AB9E1(path.path);
 		if (path.var36_size_buffer <= 0 && PackedGameData())//regression tests without the game: zeros (palette, empty sprites)
 		{
 			path.var36_size_buffer = 0x100000;//more than any file of pstr (BLOCK32 is 26000h)
@@ -362,7 +363,7 @@ signed int DataFileIO::UnpackAndLoadMemoryFromPath(Pathstruct path)//27B32d
 }
 
 //----- (000AB9E1) --------------------------------------------------------
-signed int DataFileIO::sub_AB9E1_get_file_unpack_size(const char* path)//28c9e1
+signed int DataFileIO::GetFileUnpackSize_AB9E1(const char* path)//28c9e1
 {
 	uint8_t v2[10]; // [esp+0h] [ebp-1Ch]
 	//unsigned __int8 v3; // [esp+4h] [ebp-18h]
@@ -416,7 +417,7 @@ signed int DataFileIO::sub_AB9E1_get_file_unpack_size(const char* path)//28c9e1
 // 99682: using guessed type x_DWORD strncmp(x_DWORD, x_DWORD, x_DWORD);
 
 //----- (00098C48) --------------------------------------------------------
-signed int DataFileIO::sub_98C48_open_nwrite_close(const char* filename, uint8_t* buffer, uint32_t count)//279c48
+signed int DataFileIO::OpenWriteClose_98C48(const char* filename, uint8_t* buffer, uint32_t count)//279c48
 {
 	int result; // ST14_4
 	FILE* file; // [esp+4h] [ebp-8h]

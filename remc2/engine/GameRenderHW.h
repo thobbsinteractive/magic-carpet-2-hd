@@ -54,7 +54,7 @@ private:
 
 	TileStepQuadrant* m_tileRenderStepTable_D4328x;
 
-	char x_BYTE_D4750[60] = {
+	char directionTable_D4750[60] = {
 		0x00,0x00,0x02,0x03,0x04,0x05,//0
 		0x01,0x00,0x06,0x07,0x04,0x05,//6
 		0x00,0x01,0x01,0x02,0x02,0x03,0x03,0x04,0x04,0x03,0x03,0x02,0x02,0x01,0x01,0x00,//12
@@ -79,9 +79,9 @@ private:
 	bool m_assignToSpecificCores = false;
 	bool m_blurActive = false;
 
-	int x_DWORD_D4794 = 0;
-	int x_DWORD_D4798 = 0;
-	int x_DWORD_D4324 = 0;
+	int viewOffsetX_D4794 = 0;
+	int viewOffsetY_D4798 = 0;
+	int viewShiftX_D4324 = 0;
 	char shadows_F2CC7 = 0;
 	char notDay_D4320 = 0;
 	bool m_reflectionPass = false;   // set while the reflection pass emits its polygons (RenderPolygon::Reflection)
@@ -119,7 +119,7 @@ private:
 	void DrawSprites_3E360(int tileIndex, std::vector<RenderPolygon>* polygons);
 	void DrawTileBillboards_3FD60(int tileIndex, std::vector<RenderPolygon>* polygons);
 	void SetEntityHelpText_88740(type_entity_0x6E8E* a1, int16_t posX, int16_t posY);
-	void DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* a1, int16_t a2, int a3, int16_t a4);
+	void DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* entity, int16_t screenX, int screenY, int16_t spriteWidth);
 	void BuildTileRenderStepTable(TileStepQuadrant* table, int cols);
 	bool CheckViewPortCull(ProjectionVertex v1, ProjectionVertex v2, ProjectionVertex v3, int maxCoordinate = 2147483647, int minCoordinate = -2147483647);
 	int SpriteLight(int64_t distance) const;

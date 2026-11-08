@@ -50,6 +50,7 @@ after NetworkCancel_748F7 not changed
 
 #include <filesystem>
 #include "./engine/EventsFunctions.h"
+#include "engine/Vr.h"
 
 InputRecorder* m_InputRecorder = nullptr;
 Scene m_CurrentScene = Scene::PREAMBLE_MENU;
@@ -81,7 +82,7 @@ char outname[512];
 char buffer[512];
 sprintf(outname, "c:\\prenos\\remc2\\outstr.txt");
 FILE* file = fopen(outname, "wt");
-sprintf(buffer, "type_E17CC_0 str_E17CC_0[48] = {\n");
+sprintf(buffer, "type_E17CC_0 introSoundEvents_E17CC[48] = {\n");
 fwrite(buffer, strlen(buffer), 1, file);
 for (int i = 0; i < 0x100; i++)
 {
@@ -98,7 +99,7 @@ fclose(file);
 
 
 /*
-memcpy((uint8_t*)str_x_DWORD_D4C52ar_0x2F22, x_DWORD_D4C52ar + 0x2F22, 4000);
+memcpy((uint8_t*)class0ECreateTable_D7B74, x_DWORD_D4C52ar + 0x2F22, 4000);
 char outname[512];
 char buffer[512];
 sprintf(outname, "c:\\prenos\\remc2\\outstr.txt");
@@ -108,8 +109,8 @@ fwrite(buffer, strlen(buffer), 1, file);
 for (int i = 0; i < 168; i++)
 {
 	sprintf(buffer, "{0x%04X,0x%02X,0x%04X,0x%04X},\n",
-		str_x_DWORD_D4C52ar_0x2F22[i].dword_0, str_x_DWORD_D4C52ar_0x2F22[i].word_4, str_x_DWORD_D4C52ar_0x2F22[i].adress_6,
-		str_x_DWORD_D4C52ar_0x2F22[i].dword_10);
+		class0ECreateTable_D7B74[i].dword_0, class0ECreateTable_D7B74[i].word_4, class0ECreateTable_D7B74[i].adress_6,
+		class0ECreateTable_D7B74[i].dword_10);
 	fwrite(buffer, strlen(buffer), 1, file);
 }
 sprintf(buffer, "};\n");
@@ -203,7 +204,7 @@ uint8_t unk_E17CC_0x194x[0xE6C] = {
 	char buffer[512];
 	sprintf(outname, "c:\\prenos\\remc2\\outstr.txt");
 	FILE* file = fopen(outname, "wt");
-	sprintf(buffer, "type_D4C52ar2 x_DWORD_D4C52ar_strA0[32]={\n");
+	sprintf(buffer, "type_D4C52ar2 classAActions_D4C52[32]={\n");
 	fwrite(buffer, strlen(buffer), 1, file);
 	for (int i = 0; i < 500; i++)
 	{
@@ -273,7 +274,7 @@ type_SPELLS_BEGIN_BUFFER_str;
 
 void begin_plugin() {
 	//convert_x_WORD_E2970y_to_x_WORD_E2970();
-	//x_D41A0_BYTEARRAY_4_struct.dwordindex_2388 = 10022;//fix sound param
+	//gameState_D41A4.dwordindex_2388 = 10022;//fix sound param
 }
 
 void initposistruct() {//fix it
@@ -289,47 +290,47 @@ void initposistruct() {//fix it
 	posistruct10 = (bitmap_pos_struct_t*)malloc(sizeof(bitmap_pos_struct_t) * 1700);
 	posistruct11 = (bitmap_pos_struct_t*)malloc(sizeof(bitmap_pos_struct_t) * 1700);
 
-	x_DWORD_EA3D4 = (bitmap_pos_struct_t*)malloc(sizeof(bitmap_pos_struct_t) * 1700);
+	fontSprites_EA3D4 = (bitmap_pos_struct_t*)malloc(sizeof(bitmap_pos_struct_t) * 1700);
 };
 
 //----- (00056730) --------------------------------------------------------
-int sub_56730_clean_memory()//237730
+int CleanMemory_56730()//237730
 {
-	return sub_8B5A0();
+	return FreeJoystickMemory_8B5A0();
 }
 
 //----- (0008B5A0) --------------------------------------------------------
-int sub_8B5A0()//26c5a0
+int FreeJoystickMemory_8B5A0()//26c5a0
 {
-	if (x_BYTE_E36D1)
+	if (joystickEnabled_E36D1)
 	{
-		switch (unk_18058Cstr.x_WORD_1805C2_joystick)
+		switch (inputState_18058C.joystickMode_1805C2)
 		{
 		case 1:
-			sub_8B770();
+			FreeJoystickBuffer_8B770();
 			break;
 		case 9:
-			sub_75900();
+			ShutdownJoystickDevice_75900();
 			break;
 		default:
 			break;
 		}
-		x_BYTE_E36D1 = 0;
+		joystickEnabled_E36D1 = 0;
 	}
 	return 0;
 }
-// E36D1: using guessed type char x_BYTE_E36D1;
+// E36D1: using guessed type char joystickEnabled_E36D1;
 // 1805C2: using guessed type __int16 x_WORD_1805C2_joystick;
 
 //----- (00053CF0) --------------------------------------------------------
-int sub_53CF0_access(const char* a1)//234cf0
+int FileAccess_53CF0(const char* a1)//234cf0
 {
 	return myaccess(a1, 0);
 }
 // 98CF2: using guessed type x_DWORD access(x_DWORD, x_DWORD);
 
 //----- (000560D0) --------------------------------------------------------
-void sub_560D0_create_sound_dir()//2370d0
+void CreateSoundDir_560D0()//2370d0
 {
 	FILE* diginifile2; // eax
 	FILE* diginifile; // ebx
@@ -377,13 +378,13 @@ void sub_560D0_create_sound_dir()//2370d0
 // D41A4: using guessed type int x_DWORD_D41A4;
 
 //----- (0008B770) --------------------------------------------------------
-int sub_8B770()//26c770
+int FreeJoystickBuffer_8B770()//26c770
 {
-	return sub_9B234((int*)unk_18058Cstr.unk_1805CE);
+	return FreeAndClear_9B234((int*)inputState_18058C.serialBuffer_1805CE);
 }
 
 //----- (00053EF0) --------------------------------------------------------
-bool sub_53EF0_fileexist(const char* path, const char* path2)//234ef0//fix a2
+bool IsEitherFileMissing_53EF0(const char* path, const char* path2)//234ef0//fix a2
 {
 	FILE* testfile1; // eax
 	FILE* testfile2; // eax
@@ -400,7 +401,7 @@ bool sub_53EF0_fileexist(const char* path, const char* path2)//234ef0//fix a2
 }
 
 //----- (0009B234) --------------------------------------------------------
-int sub_9B234(int* a1)//27C234
+int FreeAndClear_9B234(int* a1)//27C234
 {
 	int result; // eax
 
@@ -417,9 +418,9 @@ int sub_9B234(int* a1)//27C234
 // A0E6B: using guessed type x_DWORD free(x_DWORD);
 
 //----- (00075900) --------------------------------------------------------
-void sub_75900()
+void ShutdownJoystickDevice_75900()
 {
-	sub_75AB0();
+	ResetVrDevice_75AB0();
 }
 
 //----- (00053F80) --------------------------------------------------------
@@ -446,9 +447,9 @@ char LoadFilesFromCDAndGameData(const char* cdPath, const char* gamePath, const 
 	int v20; // [esp+18Ch] [ebp-8h]
 	//FILE* v21; // [esp+190h] [ebp-4h]
 
-	if (!sub_53F60(cdPath))//234F90 - 234F60
+	if (!IsFileMissing_53F60(cdPath))//234F90 - 234F60
 		return 2;
-	if (!sub_53F60(gamePath))//234FA5 - 234F60
+	if (!IsFileMissing_53F60(gamePath))//234FA5 - 234F60
 		return 1;
 	sprintf(printbuffer, "%s/%s.TAB", cdPath, fileName);//234FCA - 269F3D5
 	sprintf(printbuffer2, "%s/%s.TAB", gamePath, fileName);//234FE3 - 269F3D5
@@ -493,7 +494,7 @@ char LoadFilesFromCDAndGameData(const char* cdPath, const char* gamePath, const 
 		}
 		v20 += v12;
 		v13 = v20;
-		settextposition(x_DWORD_F4720.x, x_DWORD_F4720.y);
+		settextposition(textPosition_F4720.x, textPosition_F4720.y);
 		v14 = 100 * v13 / v18;
 		if (v14 > 100)
 			v14 = 100;
@@ -507,14 +508,14 @@ char LoadFilesFromCDAndGameData(const char* cdPath, const char* gamePath, const 
 }
 
 //----- (00053F60) --------------------------------------------------------
-bool sub_53F60(const char* a1)//234f60
+bool IsFileMissing_53F60(const char* a1)//234f60
 {
 	return myaccess(a1, 0) != NULL;//234F69 - 279CF2
 }
 // 98CF2: using guessed type x_DWORD access(x_DWORD, x_DWORD);
 
 //----- (0008C2CD) --------------------------------------------------------
-void sub_8C2CD()//26d2cd
+void NoOp_8C2CD()//26d2cd
 {
 	;
 }
@@ -522,7 +523,7 @@ void sub_8C2CD()//26d2cd
 //----- (0005C430) --------------------------------------------------------
 void NetworkAllocation2_5C430()//23d430
 {
-	x_D41A0_BYTEARRAY_4_struct.isNetwork_216w = NetworkAllocation_74556();//255556 push ebp 355250
+	gameState_D41A4.isNetwork_216w = NetworkAllocation_74556();//255556 push ebp 355250
 }
 
 //----- (00055F70) --------------------------------------------------------
@@ -647,14 +648,14 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		initposistruct();
 
-		sub_56210_process_command_line(argc, argv);//236FD4 - 237210
+		ProcessCommandLine_56210(argc, argv);//236FD4 - 237210
 		if (CommandLineParams.ModeNetwork()) {
 			if (Iam_server || Iam_client)
 				InitNetworkInfo();
 		}
 
 		if (CommandLineParams.DoCopySkipConfig() || config_skip_screen) {
-			x_BYTE_D41AD_skip_screen = config_skip_screen;
+			skipScreen_D41AD = config_skip_screen;
 		}
 
 		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
@@ -670,7 +671,7 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 
 		Initialize();//236FDC - 23C8D0//rozdil 1E1000
 
-		sub_46830_main_loop(actLevel);//227830
+		MainLoop_46830(actLevel);//227830
 
 		if (CommandLineParams.GetPlaybackPath().length() > 0 &&
 			std::filesystem::exists(CommandLineParams.GetPlaybackPath().c_str()))
@@ -686,8 +687,8 @@ int sub_main(int argc, char** argv, char**  /*envp*/)//236F70
 		ClearMessages();
 		delete m_Messages;
 
-		sub_5BC20();//23CC20 //remove devices?
-		sub_56730_clean_memory();//237730
+		ShutdownGame_5BC20();//23CC20 //remove devices?
+		CleanMemory_56730();//237730
 
 		if (CommandLineParams.ModeNetwork()) {
 			if (Iam_server || Iam_client)

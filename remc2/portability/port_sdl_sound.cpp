@@ -257,7 +257,7 @@ void SOUND_init_MIDI_sequence(uint8_t*  /*datax*/, type_E3808_music_header* head
 {
 	if (unitTests)return;
 	//uint8_t* acttrack = &header[32 + track_number * 32];
-	uint8_t* acttrack = headerx->str_8.track_10[track_number].xmiData_0;
+	uint8_t* acttrack = headerx->trackTable_8.track_10[track_number].xmiData_0;
 	//int testsize = *(uint32_t*)(&header[32 + (track_number + 1) * 32] + 18) - *(uint32_t*)(acttrack + 18);
 	int testsize2 = *(uint32_t*)(acttrack + 26);
 
@@ -784,7 +784,7 @@ void SOUND_start_sample(HSAMPLE S) {
 
 // The original AIL driver calls the EOS callback (sample+0x850) when the last buffer finishes.
 // SDL_mixer forbids Mix_* calls from the channel-finished callback and the game's EOS handler
-// (sub_9EE70) starts the next sample, so it is run later from a one-shot SDL timer thread.
+// (PlayNextSampleCallback_9EE70) starts the next sample, so it is run later from a one-shot SDL timer thread.
 static Uint32 SDLCALL EosTimerCallback(Uint32 interval, void* param)
 {
 	HSAMPLE S = (HSAMPLE)param;

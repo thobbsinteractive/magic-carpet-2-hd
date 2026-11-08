@@ -32,7 +32,7 @@
 class GameRenderNG : public GameRenderInterface
 {
 public:
-	// the texture columns of a sprite (x_DWORD_E9C38_smalltit + 36960): step from the previous column, offset in the row
+	// the texture columns of a sprite (smalltitBuffer_E9C38 + 36960): step from the previous column, offset in the row
 	struct SpriteColumn
 	{
 		int32_t step;
@@ -43,7 +43,7 @@ public:
 	{
 		int x, y, u, v, light, unused;
 	};
-	// a line of a rotated sprite (x_DWORD_E9C38_smalltit + 45920): first step on the view line, steps, skipped columns
+	// a line of a rotated sprite (smalltitBuffer_E9C38 + 45920): first step on the view line, steps, skipped columns
 	struct SpriteSpan
 	{
 		int32_t start;
@@ -87,7 +87,7 @@ private:
 	int m_tileColumns = 40;
 	int m_tileRows = 21;
 	int m_cameraRow = 1;//the tile row with the camera (ForEachTileFarToNear)
-	type_E9C38_smalltit* m_tiles = Str_E9C38_smalltit;//the original grid, own storage for a bigger one
+	type_E9C38_smalltit* m_tiles = terrainTiles_E9C38;//the original grid, own storage for a bigger one
 	std::vector<type_E9C38_smalltit> m_ownTiles;
 	int64_t m_cutOffDistance = 0;//64 bits: a view distance from 10
 	int64_t m_fogStart = 0;
@@ -183,7 +183,7 @@ private:
 		int flatLight, int bandTop, int bandBottom);
 	template <int Mode>
 	void DrawTriangleRow(uint8_t* line, int left, int right, int u, int v, int light, int du, int dv, int dl, const uint8_t* texture, int flatLight);
-	void sub_3FD60(int tileIndex);
+	void DrawTileSpriteReflections_3FD60(int tileIndex);
 	void SetEntityHelpText_88740(type_entity_0x6E8E* entity, int16_t posX, int16_t posY);
 	void SetBillboards_3B560(int16_t roll);
 	void DrawSorcererNameAndHealthBar_2CB30(type_entity_0x6E8E* entity, int16_t screenX, int screenY, int16_t spriteWidth);
