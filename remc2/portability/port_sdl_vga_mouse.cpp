@@ -1066,6 +1066,14 @@ void VGA_Set_mouse(int16_t x, int16_t y)
 
 void ScaleUpMouseCoordsToVga(int16_t& x, int16_t& y)
 {
+	if (lowResScaledUi)
+	{
+		// The low res UI at a resolution narrower than 640: the 640 x 480 mouse area to the UI's (doubled) coordinates
+		x = (int16_t)(x * UiScreenWidth() / 640);
+		y = (int16_t)(y * UiScreenHeight() / 480);
+		return;
+	}
+
 	if (m_iOrigw > 640)
 	{
 		float fx = 1;
@@ -1089,6 +1097,13 @@ void ScaleUpMouseCoordsToVga(int16_t& x, int16_t& y)
 
 void ScaleDownMouseCoordsToVga(int16_t& x, int16_t& y)
 {
+	if (lowResScaledUi)
+	{
+		x = (int16_t)(x * 640 / UiScreenWidth());
+		y = (int16_t)(y * 480 / UiScreenHeight());
+		return;
+	}
+
 	if (m_iOrigw > 640)
 	{
 		float fx = 1;

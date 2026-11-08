@@ -796,8 +796,8 @@ void DrawCurrentObjectiveTextbox_30630(uint8_t scale)//211630
 			if (!DefaultResolutions())
 			{
 				textbox.minPosX_0x14 = 40 * scale;
-				textbox.maxPosX_0x16 = screenWidth_18062C - (40 * scale);
-				textbox.maxPosY_0x1a = screenHeight_180624 / 2;
+				textbox.maxPosX_0x16 = UiScreenWidth() - (40 * scale);
+				textbox.maxPosY_0x1a = UiScreenHeight() / 2;
 			}
 
 			textbox.color1_0x30 = (*xadataclrd0dat.colorPalette_var28)[3840];
@@ -809,10 +809,10 @@ void DrawCurrentObjectiveTextbox_30630(uint8_t scale)//211630
 
 			if (!DefaultResolutions())
 			{
-				textbox.maxTextboxWidth_0x0 = screenWidth_18062C / 2;
-				textbox.maxTextboxHeight_0x2 = screenHeight_180624 / 2 - 100;
-				textbox.maxTextboxWidth2_0xc = screenWidth_18062C / 2;
-				textbox.maxTextboxHeight2_0xe = screenHeight_180624 / 2;
+				textbox.maxTextboxWidth_0x0 = UiScreenWidth() / 2;
+				textbox.maxTextboxHeight_0x2 = UiScreenHeight() / 2 - 100;
+				textbox.maxTextboxWidth2_0xc = UiScreenWidth() / 2;
+				textbox.maxTextboxHeight2_0xe = UiScreenHeight() / 2;
 			}
 
 			ComputeTextboxSizesFromTextWords_89420(&textbox, text, scale);
@@ -984,8 +984,8 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
 	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
 	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
-		if ((!DefaultResolutions())&&(videoMode_180660 != 1))
-			viewPort.SetViewPortScreenCoordinates_2CA60(384 * scale, 0, screenWidth_18062C - 384, screenHeight_180624 - 80);
+		if (!DefaultResolutions())
+			viewPort.SetViewPortScreenCoordinates_2CA60(384 * scale, 0, UiScreenWidth() - 384, UiScreenHeight() - 80);
 		else
 			viewPort.SetViewPortScreenCoordinates_2CA60(384, 0, 256, 400);
 		break;
@@ -3840,13 +3840,12 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 	int16_t helpHeight = 480;
 	if (videoMode_180660 & 1)
 		helpHeight = 400;
-	if (videoMode_180660 != 1)
-		if(!DefaultResolutions())
-		{
-			scale = gameUiScale;
-			helpHeight = screenHeight_180624;
-			offsetPosX = (screenWidth_18062C - (640 * scale)) / 2;
-		}
+	if(!DefaultResolutions())
+	{
+		scale = gameUiScale;
+		helpHeight = UiScreenHeight();
+		offsetPosX = (UiScreenWidth() - (640 * scale)) / 2;
+	}
 
 	if (a1x->playerSlot_0x007_2BE4_11237 == world_D41A0.LevelIndex_0xc)
 	{
@@ -4365,11 +4364,10 @@ void GetOkayCancelButtonPositions_30BE0(int16_t* ptrX, int16_t* ptrY, uint8_t sc
 {
 	*ptrX = 270;
 	*ptrY = 104;
-	if (videoMode_180660 != 1)
-		if (!DefaultResolutions())
-		{
-			*ptrX = (screenWidth_18062C / 2) - (50 * scale);
-			*ptrY = (screenHeight_180624 / 2) - (32 * scale);
+	if (!DefaultResolutions())
+	{
+		*ptrX = (UiScreenWidth() / 2) - (50 * scale);
+		*ptrY = (UiScreenHeight() / 2) - (32 * scale);
 	}
 }
 
@@ -4698,13 +4696,12 @@ void DrawInGameOptionsMenu_30050(uint8_t scale)//211050
 	v1 = 0;
 	
 	int optionMenuXPos = (640 - gameState_D41A4.optionsMenuWidth_186) / 2;
-	if (videoMode_180660 != 1)
-		if (!DefaultResolutions())
-		{
-			optionMenuXPos = (screenWidth_18062C - (gameState_D41A4.optionsMenuWidth_186 * scale)) / 2;
-		    menuBtnPosY = (screenHeight_180624 / 2) - ((OPTIONS_MENU_BTN_COUNT * (OPTIONS_MENU_BTN_HEIGHT * scale)) / 2);
-			okayBtnPosY = menuBtnPosY + ((OPTIONS_MENU_BTN_HEIGHT * scale) * OPTIONS_MENU_BTN_COUNT) + (4 * scale);
-		}
+	if (!DefaultResolutions())
+	{
+		optionMenuXPos = (UiScreenWidth() - (gameState_D41A4.optionsMenuWidth_186 * scale)) / 2;
+		menuBtnPosY = (UiScreenHeight() / 2) - ((OPTIONS_MENU_BTN_COUNT * (OPTIONS_MENU_BTN_HEIGHT * scale)) / 2);
+		okayBtnPosY = menuBtnPosY + ((OPTIONS_MENU_BTN_HEIGHT * scale) * OPTIONS_MENU_BTN_COUNT) + (4 * scale);
+	}
 
 	while (1)
 	{
@@ -4768,11 +4765,10 @@ void DrawInGameOptionsMenu_30050(uint8_t scale)//211050
 	}
 
 	int okayBtnXPos = (gameState_D41A4.optionsMenuWidth_186 - OPTIONS_MENU_BTN_WIDTH) / 2 + (640 - gameState_D41A4.optionsMenuWidth_186) / 2;
-	if (videoMode_180660 != 1)
-		if (!DefaultResolutions())
-		{
-			okayBtnXPos = ((gameState_D41A4.optionsMenuWidth_186 * scale) - (OPTIONS_MENU_BTN_WIDTH * scale)) / 2 + (screenWidth_18062C - (gameState_D41A4.optionsMenuWidth_186 * scale)) / 2;
-		}
+	if (!DefaultResolutions())
+	{
+		okayBtnXPos = ((gameState_D41A4.optionsMenuWidth_186 * scale) - (OPTIONS_MENU_BTN_WIDTH * scale)) / 2 + (UiScreenWidth() - (gameState_D41A4.optionsMenuWidth_186 * scale)) / 2;
+	}
 
 	/*v16 = v8 + *(unsigned __int8 *)(**filearray_2aa18c[6] + 1012);
 	v9 = *(unsigned __int8 *)(**filearray_2aa18c[6] + 1018);
@@ -4798,18 +4794,17 @@ void DrawInGameOptionsMenu_30050(uint8_t scale)//211050
 	}
 
 	int okayBtnTextXPos = (640 - gameState_D41A4.optionsMenuWidth_186) / 2 + (gameState_D41A4.optionsMenuWidth_186 - OPTIONS_MENU_BTN_WIDTH) / 2;
-	if (videoMode_180660 != 1)
-		if (!DefaultResolutions())
-		{
-			okayBtnTextXPos = (screenWidth_18062C - (gameState_D41A4.optionsMenuWidth_186 * scale)) / 2 + ((gameState_D41A4.optionsMenuWidth_186 * scale) - (OPTIONS_MENU_BTN_WIDTH * scale)) / 2;
-		}
+	if (!DefaultResolutions())
+	{
+		okayBtnTextXPos = (UiScreenWidth() - (gameState_D41A4.optionsMenuWidth_186 * scale)) / 2 + ((gameState_D41A4.optionsMenuWidth_186 * scale) - (OPTIONS_MENU_BTN_WIDTH * scale)) / 2;
+	}
 
 	if (okayBtnTextXPos > inputState_18058C.mouse_1805B0.x || okayBtnTextXPos + (OPTIONS_MENU_BTN_WIDTH * scale) <= inputState_18058C.mouse_1805B0.x || inputState_18058C.mouse_1805B0.y < okayBtnPosY || inputState_18058C.mouse_1805B0.y >= (okayBtnPosY + (OPTIONS_MENU_BTN_HEIGHT * scale)))
 		v12 = (*xadataclrd0dat.colorPalette_var28)[4095];
 	else
 		v12 = (*xadataclrd0dat.colorPalette_var28)[3840];
 		
-	if ((!DefaultResolutions())&& (videoMode_180660 != 1))
+	if (!DefaultResolutions())
 		DrawText_2BC10((char*)"OK", okayBtnTextXPos + (33 * scale), okayBtnPosY + (2 * scale), v12, scale);
 	else
 		DrawText_2BC10((char*)"OK", (640 - gameState_D41A4.optionsMenuWidth_186) / 2 + (gameState_D41A4.optionsMenuWidth_186 - OPTIONS_MENU_BTN_WIDTH) / 2 + 33, 379, v12);	
@@ -4905,7 +4900,7 @@ void DrawLangStringDebugViewer_30870()//211870
 
 	if (!DefaultResolutions())
 	{
-		textbox.maxPosX_0x16 = screenWidth_18062C - 4;
+		textbox.maxPosX_0x16 = UiScreenWidth() - 4;
 	}
 
 	v0 = langStrings_E9C4C[debugLangIndex_D41D4];
@@ -4918,9 +4913,9 @@ void DrawLangStringDebugViewer_30870()//211870
 	textbox.maxTextboxHeight_0x2 = 310;
 	if (!DefaultResolutions())
 	{
-		textbox.maxPosX_0x16 = screenWidth_18062C - 40;
-		textbox.maxTextboxWidth_0x0 = screenWidth_18062C / 2;
-		textbox.maxTextboxHeight_0x2 = screenHeight_180624 / 2 - 90;
+		textbox.maxPosX_0x16 = UiScreenWidth() - 40;
+		textbox.maxTextboxWidth_0x0 = UiScreenWidth() / 2;
+		textbox.maxTextboxHeight_0x2 = UiScreenHeight() / 2 - 90;
 	}
 	ComputeTextboxSizesFromTextWords_89420(&textbox, v0);
 	ConstrainTextboxSizes_89520(&textbox);
@@ -5048,19 +5043,14 @@ void DrawGameFrame_2BE30()//20CE30
 
 	SetTextBoxMinMaxForSetResolution();
 
-	if (videoMode_180660 & 1)
-		ClearScreenAlphaBuffer(320, 200, 0);
-	else
-		ClearScreenAlphaBuffer(screenWidth_18062C, screenHeight_180624, 0);
+	// 320x200 in the low res UI, or the screen at the game resolution
+	ClearScreenAlphaBuffer(screenWidth_18062C, screenHeight_180624, 0);
 
-	if (videoMode_180660 != 1)
+	if (!DefaultResolutions())
 	{
-		if (!DefaultResolutions())
-		{
-			scale = gameUiScale;
-			spellLeftPosX = screenWidth_18062C - (130 * scale);
-			spellRightPosX = screenWidth_18062C - (66 * scale);
-		}
+		scale = gameUiScale;
+		spellLeftPosX = UiScreenWidth() - (130 * scale);
+		spellRightPosX = UiScreenWidth() - (66 * scale);
 	}
 
 	x_DWORD_D41C8 = 0;
@@ -5101,20 +5091,10 @@ void DrawGameFrame_2BE30()//20CE30
 			redrawFrame_D41C4 = 0;
 			oldViewPortSize_D41C6 = world_D41A0.m_GameSettings.m_Graphics.m_wViewPortSize;
 			if (world_D41A0.m_GameSettings.m_Graphics.m_wViewPortSize < 40)
-			{
-				if (videoMode_180660 & 1)
-					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, uiBackGroundColorIdx_EB3A8);
-				else
-					ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, screenWidth_18062C, screenHeight_180624, uiBackGroundColorIdx_EB3A8);
-			}
-		}
-		if (world_D41A0.m_GameSettings.m_Graphics.m_wViewPortSize < 40)
-		{
-			if (videoMode_180660 & 1)
-				ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, uiBackGroundColorIdx_EB3A8);
-			else
 				ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, screenWidth_18062C, screenHeight_180624, uiBackGroundColorIdx_EB3A8);
 		}
+		if (world_D41A0.m_GameSettings.m_Graphics.m_wViewPortSize < 40)
+			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, screenWidth_18062C, screenHeight_180624, uiBackGroundColorIdx_EB3A8);
 
 		viewPort.SetRenderViewPortSize_40C50(world_D41A0.m_GameSettings.m_Graphics.m_wViewPortSize);
 		m_ptrGameRender->DrawWorld_411A0(//draw terrain and particles
@@ -5307,17 +5287,14 @@ void DrawGameFrame_2BE30()//20CE30
 	case 0xC:
 	case 0xE:
 		playerEntity = Entities_EA3E4[world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].playerIndex_0x00a_2BE4_11240];
-		if (videoMode_180660 & 1)
-			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, 320, 200, uiBackGroundColorIdx_EB3A8);
-		else
-			ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, screenWidth_18062C, screenHeight_180624, uiBackGroundColorIdx_EB3A8);
+		ClearGraphicsBuffer_72883((void*)pdwScreenBuffer_351628, screenWidth_18062C, screenHeight_180624, uiBackGroundColorIdx_EB3A8);
 
 		int locViewportPosx;
 		int locViewportWidth;
 		int locViewportHeight;
 		int locMinimapHeight;
 
-		if (videoMode_180660 == 1)
+		if (videoMode_180660 == 1 && DefaultResolutions())
 		{
 			locViewportPosx = 384;//320x200
 			locViewportWidth = 256;
@@ -5326,12 +5303,13 @@ void DrawGameFrame_2BE30()//20CE30
 		}
 		else
 		{
-			locViewportPosx = 0.6 * screenWidth_18062C;//bigger than 320x200
+			// In the UI's coordinates (doubled in the low res UI)
+			locViewportPosx = 0.6 * UiScreenWidth();//bigger than 320x200
 			if (locViewportPosx > 384)
 				locViewportPosx = 384;
-			locViewportWidth = screenWidth_18062C - locViewportPosx;
-			locViewportHeight = screenHeight_180624;
-			locMinimapHeight = screenHeight_180624;
+			locViewportWidth = UiScreenWidth() - locViewportPosx;
+			locViewportHeight = UiScreenHeight();
+			locMinimapHeight = UiScreenHeight();
 			if (locMinimapHeight > 400)
 				locMinimapHeight = 400;
 
@@ -5339,11 +5317,11 @@ void DrawGameFrame_2BE30()//20CE30
 			{
 				locViewportPosx *= scale;
 				locMinimapHeight *= scale;
-				locViewportWidth = screenWidth_18062C - locViewportPosx;
+				locViewportWidth = UiScreenWidth() - locViewportPosx;
 
-				if (locMinimapHeight > screenHeight_180624)
+				if (locMinimapHeight > UiScreenHeight())
 				{
-					locMinimapHeight = screenHeight_180624;
+					locMinimapHeight = UiScreenHeight();
 				}
 			}
 		}
@@ -5614,13 +5592,17 @@ int DrawSpiderWeb()
 	int offsetX = 0;
 	int offsetY = 0;
 
-	if (videoMode_180660 != 1 && !DefaultResolutions())
+	if (!DefaultResolutions())
 	{
-		scale = (std::min)(screenWidth_18062C / webWidth, screenHeight_180624 / webHeight);
-		scale = (std::max)(scale, 1); // screen smaller than the web: draw 1x
+		// The low res UI's bitmaps are not scaled: there it is only centred (in its doubled coordinates)
+		if (videoMode_180660 != 1)
+		{
+			scale = (std::min)(UiScreenWidth() / webWidth, UiScreenHeight() / webHeight);
+			scale = (std::max)(scale, 1); // screen smaller than the web: draw 1x
+		}
 
-		offsetX = (screenWidth_18062C - webWidth * scale) / 2;
-		offsetY = (screenHeight_180624 - webHeight * scale) / 2;
+		offsetX = (UiScreenWidth() - webWidth * scale) / 2;
+		offsetY = (UiScreenHeight() - webHeight * scale) / 2;
 	}
 
 	// Pass 2: draw. Positions are tracked in unscaled web space.
@@ -5825,12 +5807,11 @@ void DrawSorcererScores_2D1D0(uint8_t scale)//20e1d0
 		helpHeight = 400;
 	else
 		helpHeight = 480;
-	if (videoMode_180660 != 1)
-		if (!DefaultResolutions())
-		{
-			helpWidth = screenWidth_18062C;
-			helpHeight = screenHeight_180624;
-		}
+	if (!DefaultResolutions())
+	{
+		helpWidth = UiScreenWidth();
+		helpHeight = UiScreenHeight();
+	}
 
 	v0 = 0;
 	GetFont_6FC50(FontType_D419D);
@@ -6030,14 +6011,13 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 		posY = 400;
 	else
 		posY = 480;
-	if (videoMode_180660 != 1)
-		if (!DefaultResolutions())
-		{
-			scale = gameUiScale;
-			posX = (screenWidth_18062C - (640 * scale)) / 2;
-			posY = screenHeight_180624;
-		}
-	posIconsXStart = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[EDGE_PANEL].width_4 * scale;
+	if (!DefaultResolutions())
+	{
+		scale = gameUiScale;
+		posX = (UiScreenWidth() - (640 * scale)) / 2;
+		posY = UiScreenHeight();
+	}
+	posIconsXStart =(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[EDGE_PANEL].width_4 * scale;
 	spellIconHeight = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].height_5 * scale;
 	posIconsY2 = posY - (2 * spellIconHeight);
 	spellIconWidth = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].width_4 * scale;
@@ -6287,9 +6267,8 @@ void DrawLoadingBar_54960()//235960
 		posY = 400;
 	else
 		posY = 480;
-	if (videoMode_180660 != 1)
-		if (!DefaultResolutions())
-			posY = screenHeight_180624;
+	if (!DefaultResolutions())
+		posY = UiScreenHeight();
 	SetMousePositionInMemory_5BDC0(426, posY - 72 + 17);
 }
 
@@ -6657,15 +6636,15 @@ void SetTextBoxMinMaxForSetResolution()
 		const int scale = gameUiScale;
 		helpPopup_1804B0.type_sub_0[0].minPosX_0x14 = 40 * scale;
 		helpPopup_1804B0.type_sub_0[0].minPosY_0x18 = 80 * scale;
-		helpPopup_1804B0.type_sub_0[0].maxPosX_0x16 = screenWidth_18062C - (40 * scale);
-		helpPopup_1804B0.type_sub_0[0].maxPosY_0x1a = screenHeight_180624 - (220 * scale);
-		helpPopup_1804B0.type_sub_0[0].maxTextboxHeight2_0xe = screenHeight_180624 - 80;
+		helpPopup_1804B0.type_sub_0[0].maxPosX_0x16 = UiScreenWidth() - (40 * scale);
+		helpPopup_1804B0.type_sub_0[0].maxPosY_0x1a = UiScreenHeight() - (220 * scale);
+		helpPopup_1804B0.type_sub_0[0].maxTextboxHeight2_0xe = UiScreenHeight() - 80;
 
 		helpPopup_1804B0.type_sub_0[1] = helpPopup_1804B0.type_sub_0[0];
 		helpPopup_1804B0.type_sub_0[1].minPosX_0x14 = 30 * scale;
 		helpPopup_1804B0.type_sub_0[1].minPosY_0x18 = 30 * scale;
-		helpPopup_1804B0.type_sub_0[1].maxPosX_0x16 = screenWidth_18062C - (30 * scale);
-		helpPopup_1804B0.type_sub_0[1].maxPosY_0x1a = screenHeight_180624 - (110 * scale);
+		helpPopup_1804B0.type_sub_0[1].maxPosX_0x16 = UiScreenWidth() - (30 * scale);
+		helpPopup_1804B0.type_sub_0[1].maxPosY_0x1a = UiScreenHeight() - (110 * scale);
 	}
 	else
 	{
@@ -6894,9 +6873,9 @@ void DrawPopupTextBox_87610()//268610
 
 			if (!DefaultResolutions())
 			{
-				helpPopup_1804B0.type_sub_0[0].maxTextboxWidth_0x0 = screenWidth_18062C / 2;
-				helpPopup_1804B0.type_sub_0[0].maxTextboxHeight_0x2 = screenHeight_180624 / 6; // 80 on the original 480 high screen
-				helpPopup_1804B0.type_sub_0[0].maxTextboxWidth2_0xc = screenWidth_18062C / 2;
+				helpPopup_1804B0.type_sub_0[0].maxTextboxWidth_0x0 = UiScreenWidth() / 2;
+				helpPopup_1804B0.type_sub_0[0].maxTextboxHeight_0x2 = UiScreenHeight() / 6; // 80 on the original 480 high screen
+				helpPopup_1804B0.type_sub_0[0].maxTextboxWidth2_0xc = UiScreenWidth() / 2;
 			}
 
 			ComputeTextboxSizesFromTextWords_89420(helpPopup_1804B0.type_sub_0, textForDraw, scale);
@@ -7307,9 +7286,9 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 					if (!DefaultResolutions())
 					{
 						if (v0)
-							str_E2A74[10].axis_2[3] = screenWidth_18062C - (40 * scale);
+							str_E2A74[10].axis_2[3] = UiScreenWidth() - (40 * scale);
 						else
-							str_E2A74[10].axis_2[3] = screenWidth_18062C - (100 * scale);
+							str_E2A74[10].axis_2[3] = UiScreenWidth() - (100 * scale);
 					}
 
 					str_E2A74[10].axis_2[4] = (32 * scale);
@@ -7342,9 +7321,9 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 					if (!DefaultResolutions())
 					{
 						if (v0 == 1)
-							str_E2A74[11].axis_2[3] = screenWidth_18062C - (100 * scale);
+							str_E2A74[11].axis_2[3] = UiScreenWidth() - (100 * scale);
 						else
-							str_E2A74[11].axis_2[3] = screenWidth_18062C - (40 * scale);
+							str_E2A74[11].axis_2[3] = UiScreenWidth() - (40 * scale);
 					}
 
 					str_E2A74[11].axis_2[4] = (32 * scale);
@@ -7377,9 +7356,9 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 					if (!DefaultResolutions())
 					{
 						if (v0 == 2)
-							str_E2A74[12].axis_2[3] = screenWidth_18062C - (100 * scale);
+							str_E2A74[12].axis_2[3] = UiScreenWidth() - (100 * scale);
 						else
-							str_E2A74[12].axis_2[3] = screenWidth_18062C - (40 * scale);
+							str_E2A74[12].axis_2[3] = UiScreenWidth() - (40 * scale);
 					}
 
 					str_E2A74[12].axis_2[4] = (32 * scale);
@@ -7424,8 +7403,8 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 
 			if (!DefaultResolutions())
 			{
-				str_E2A74[40].axis_2[3] = screenWidth_18062C - (100 * scale);
-				str_E2A74[42].axis_2[3] = screenWidth_18062C - (80 * scale);
+				str_E2A74[40].axis_2[3] = UiScreenWidth() - (100 * scale);
+				str_E2A74[42].axis_2[3] = UiScreenWidth() - (80 * scale);
 			}
 		}
 		v16 = 0;
@@ -7449,7 +7428,7 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 
 				if (!DefaultResolutions())
 				{
-					str_E2A74[41].axis_2[3] = screenWidth_18062C - (100 * scale);
+					str_E2A74[41].axis_2[3] = UiScreenWidth() - (100 * scale);
 				}
 			}
 		}
@@ -7465,7 +7444,7 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 
 				if (!DefaultResolutions())
 				{
-					str_E2A74[41].axis_2[3] = screenWidth_18062C - (40 * scale);
+					str_E2A74[41].axis_2[3] = UiScreenWidth() - (40 * scale);
 				}
 			}
 		}
@@ -7575,9 +7554,9 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 		str_E2A74[36].axis_2[4] = 16 * scale;
 		str_E2A74[37].axis_2[3] = 470 * scale;
 		str_E2A74[37].axis_2[4] = 32 * scale;
-		str_E2A74[38].axis_2[3] = screenWidth_18062C - (100 * scale);
+		str_E2A74[38].axis_2[3] = UiScreenWidth() - (100 * scale);
 		str_E2A74[38].axis_2[4] = 32 * scale;
-		str_E2A74[39].axis_2[3] = screenWidth_18062C - (40 * scale);
+		str_E2A74[39].axis_2[3] = UiScreenWidth() - (40 * scale);
 		str_E2A74[39].axis_2[4] = 32 * scale;
 	}
 }
@@ -7875,11 +7854,9 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 		if ((videoMode_180660 & 1) != 0)
 			maxScreenHeight = 400;
 		else
-		{
 			maxScreenHeight = 480;
-			if (!DefaultResolutions())
-				maxScreenHeight = screenHeight_180624;
-		}
+		if (!DefaultResolutions())
+			maxScreenHeight = UiScreenHeight();
 		sizeFromYEnd = maxScreenHeight - 2 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].height_5 * scale);
 		spellIndex = spellIndex_D94FF[locEvent1->playerData_0xA4_164x->str_611.spellIndex_0x458_1112];
 		isStandardSpell = locEvent1->playerData_0xA4_164x->str_611.SpellsEnabled_0x333_819x.SpellEnabled[spellIndex] != 0;
@@ -7904,7 +7881,7 @@ void SetSpellHelpPopupCoordinates_88D40(uint8_t scale)
 		int posX3 = posX2 + 3 * ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON2_PANEL2].width_4 * scale) / 2;
 		if (!DefaultResolutions())
 		{
-			int xKoef = (screenWidth_18062C - (640 * scale)) / 2;
+			int xKoef = (UiScreenWidth() - (640 * scale)) / 2;
 			posX3 += xKoef;
 			posX2 += xKoef;
 			posX1 += xKoef;
