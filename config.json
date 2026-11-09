@@ -117,7 +117,24 @@
 						"antiAliasing: Multisample anti-aliasing (MSAA) samples: 0 = off (1x), 2, 4 or 8. Capped to what the graphics card supports"
 					],
 					"bilinearFiltering": true,
-					"antiAliasing": 2
+					"antiAliasing": 2,
+					"lookingGlass": {
+						"description": [
+							"Quilt output for Looking Glass (lenticular) displays. Hardware renderer only",
+							"enabled: Draws a quilt of rows x columns views. Replaces the in-game resolution with the cell size and the window resolution with the whole quilt",
+							"rows, columns: The quilt's grid of views. Max 16 each. The leftmost view is the bottom left cell, then left to right and bottom to top",
+							"cellWidth, cellHeight: The resolution of each view: the menus, the UI and the 3D view are drawn at this size",
+							"viewSpacing: Sideways camera step between neighbouring views, in world units (a tile is 256)",
+							"convergence: Distance in world units that sits at the display surface (no parallax): nearer pops out, further sinks in. 0 = parallel views (everything in front of the display)"
+						],
+						"enabled": false,
+						"rows": 6,
+						"columns": 8,
+						"cellWidth": 420,
+						"cellHeight": 560,
+						"viewSpacing": 8,
+						"convergence": 1024
+					}
 				}
 			},
 			"game": {

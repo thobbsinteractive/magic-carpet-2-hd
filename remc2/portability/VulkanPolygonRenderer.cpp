@@ -70,12 +70,12 @@ VulkanPolygonRenderer::VulkanPolygonRenderer(std::string shaderFolder, bool enab
 
 	RegisterEvent(new Event<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, m_TextureCallBack));
 
-	m_PolyCallBack = 
-		[this](ResourceType state, std::vector<RenderPolygon>* polygons) {
-		SetPolygons(state, polygons);
+	m_PolyCallBack =
+		[this](ResourceType state, std::vector<std::vector<RenderPolygon>>* views) {
+		SetPolygons(state, views);
 		};
 
-	RegisterEvent(new Event<ResourceType, std::vector<RenderPolygon>*>(EventType::E_RESOURCE_CHANGE, m_PolyCallBack));
+	RegisterEvent(new Event<ResourceType, std::vector<std::vector<RenderPolygon>>*>(EventType::E_RESOURCE_CHANGE, m_PolyCallBack));
 
 	m_ViewPortCallBack =
 		[this](uint16_t posX, uint16_t posY, uint16_t width, uint16_t height) {
@@ -148,6 +148,19 @@ void VulkanPolygonRenderer::SetBilinearFiltering(bool enabled)
 void VulkanPolygonRenderer::SetAntiAliasing(int samples)
 {
 	m_requestedMsaaSamples = samples;
+}
+
+void VulkanPolygonRenderer::SetViewGrid(int rows, int columns)
+{
+	m_viewRows = (std::max)(rows, 1);
+	m_viewColumns = (std::max)(columns, 1);
+	while (m_viewRows * m_viewColumns > kMaxViews)
+	{
+		if (m_viewRows > m_viewColumns)
+			m_viewRows--;
+		else
+			m_viewColumns--;
+	}
 }
 
 // The highest sample count up to the requested one that the device can render colour attachments with.
@@ -275,12 +288,12 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 	return true;
 }
 
-void VulkanPolygonRenderer::SetPolygons(ResourceType state, std::vector<RenderPolygon>* polygons)
+void VulkanPolygonRenderer::SetPolygons(ResourceType state, std::vector<std::vector<RenderPolygon>>* views)
 {
 	if (state == ResourceType::POLYGONS_UPDATED)
-		m_polygons.swap(*polygons);   // take it rather than copy it: the sender reuses the list it gets back (the previous frame's)
+		m_views.swap(*views);   // take them rather than copy them: the sender reuses the lists it gets back (the previous frame's)
 	else if (state == ResourceType::POLYGONS_DISPOSED)
-		m_polygons.clear();
+		m_views.clear();
 }
 
 void VulkanPolygonRenderer::SetTexture(ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height)
@@ -465,16 +478,23 @@ bool VulkanPolygonRenderer::CreateOffscreenRenderPass(VkAttachmentLoadOp loadOp,
 	return vkCreateRenderPass(m_device, &rpInfo, nullptr, &renderPass) == VK_SUCCESS;
 }
 
-bool VulkanPolygonRenderer::CreateOffscreenTarget(uint32_t width, uint32_t height)
+bool VulkanPolygonRenderer::CreateOffscreenTarget(uint32_t width, uint32_t height, size_t viewCount)
 {
 	// The blur history is only ever drawn with the blur render passes, which are compatible with each other.
 	if (m_msaaSamples != VK_SAMPLE_COUNT_1_BIT && !CreateMsaaImage(width, height))
 		return false;
 
-	if (!CreateColourTarget(width, height, m_offscreenRenderPass, m_offscreenTarget, m_msaaView) ||
-		!CreateColourTarget(width, height, m_offscreenRenderPass, m_reflectionTarget, m_msaaView) ||
-		!CreateColourTarget(width, height, m_blurRenderPass, m_blurTarget))
+	if (!CreateColourTarget(width, height, m_offscreenRenderPass, m_reflectionTarget, m_msaaView))
 		return false;
+
+	m_viewTargets.resize(viewCount);
+	m_blurTargets.resize(viewCount);
+	for (size_t view = 0; view < viewCount; view++)
+	{
+		if (!CreateColourTarget(width, height, m_offscreenRenderPass, m_viewTargets[view], m_msaaView) ||
+			!CreateColourTarget(width, height, m_blurRenderPass, m_blurTargets[view]))
+			return false;
+	}
 
 	m_offscreenWidth = width;
 	m_offscreenHeight = height;
@@ -598,9 +618,13 @@ bool VulkanPolygonRenderer::CreateColourTarget(uint32_t width, uint32_t height, 
 // Caller must make sure the GPU is no longer using the target (vkDeviceWaitIdle).
 void VulkanPolygonRenderer::DestroyOffscreenTarget()
 {
-	DestroyColourTarget(m_offscreenTarget);
+	for (ColourTarget& target : m_viewTargets)
+		DestroyColourTarget(target);
+	for (ColourTarget& target : m_blurTargets)
+		DestroyColourTarget(target);
+	m_viewTargets.clear();
+	m_blurTargets.clear();
 	DestroyColourTarget(m_reflectionTarget);
-	DestroyColourTarget(m_blurTarget);
 	DestroyMsaaImage();
 	m_offscreenWidth = 0;
 	m_offscreenHeight = 0;
@@ -647,15 +671,17 @@ bool VulkanPolygonRenderer::CreateDescriptorResources()
 	// Each texture set uses kBindingCount combined image samplers. The HUD, colour target (offscreen,
 	// reflection, blur) and no-reflection sets allocated later from this pool use a few more: leave headroom.
 	// Live textures: up to 504 sprite IDs (m_spriteFrameCount) + terrain atlas + sky.
+	// Plus the offscreen and blur targets of every view.
 	const uint32_t kMaxTextures = 512;
+	const uint32_t kViewTargetSets = 2 * kMaxViews;
 	VkDescriptorPoolSize poolSize{};
 	poolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	poolSize.descriptorCount = kMaxTextures * kBindingCount + 16;
+	poolSize.descriptorCount = kMaxTextures * kBindingCount + kViewTargetSets + 16;
 
 	VkDescriptorPoolCreateInfo poolInfo{};
 	poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
-	poolInfo.maxSets = kMaxTextures + 16;
+	poolInfo.maxSets = kMaxTextures + kViewTargetSets + 16;
 	poolInfo.poolSizeCount = 1;
 	poolInfo.pPoolSizes = &poolSize;
 	if (vkCreateDescriptorPool(m_device, &poolInfo, nullptr, &m_descriptorPool) != VK_SUCCESS)
@@ -1964,40 +1990,68 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 		return false; // skip this frame; caller should just try again next tick
 	}
 
+	// destRect holds the whole quilt: rows x columns cells, each showing the whole frame (the game resolution scaled into it).
+	// As a Looking Glass quilt, cell 0 (the leftmost view) is the bottom left one, then left to right and bottom to top.
+	const int columns = m_viewColumns;
+	const int rows = m_viewRows;
+	const size_t cellCount = (size_t)rows * columns;
+	const auto cellRect = [&](size_t cell) -> SDL_Rect {
+		const int column = (int)(cell % columns);
+		const int row = rows - 1 - (int)(cell / columns);   // from the top of the window
+		const int x0 = destRect.x + destRect.w * column / columns;
+		const int y0 = destRect.y + destRect.h * row / rows;
+		const int x1 = destRect.x + destRect.w * (column + 1) / columns;
+		const int y1 = destRect.y + destRect.h * (row + 1) / rows;
+		return SDL_Rect{ x0, y0, x1 - x0, y1 - y0 };
+		};
+
 	// Polygon vertices are NDC relative to the game viewport, so map that
-	// viewport (game-resolution pixels) into the letterboxed destRect.
-	SDL_Rect polyRect = destRect;
-	if (m_gameViewPort.w > 0 && m_gameViewPort.h > 0 && srcRect.w > 0 && srcRect.h > 0)
-	{
-		const float scaleX = (float)destRect.w / (float)srcRect.w;
-		const float scaleY = (float)destRect.h / (float)srcRect.h;
-		polyRect.x = destRect.x + (int)(m_gameViewPort.x * scaleX);
-		polyRect.y = destRect.y + (int)(m_gameViewPort.y * scaleY);
-		polyRect.w = (int)(m_gameViewPort.w * scaleX);
-		polyRect.h = (int)(m_gameViewPort.h * scaleY);
-	}
+	// viewport (game-resolution pixels) into the letterboxed cell.
+	const auto polyRectIn = [&](const SDL_Rect& cell) -> SDL_Rect {
+		SDL_Rect polyRect = cell;
+		if (m_gameViewPort.w > 0 && m_gameViewPort.h > 0 && srcRect.w > 0 && srcRect.h > 0)
+		{
+			const float scaleX = (float)cell.w / (float)srcRect.w;
+			const float scaleY = (float)cell.h / (float)srcRect.h;
+			polyRect.x = cell.x + (int)(m_gameViewPort.x * scaleX);
+			polyRect.y = cell.y + (int)(m_gameViewPort.y * scaleY);
+			polyRect.w = (int)(m_gameViewPort.w * scaleX);
+			polyRect.h = (int)(m_gameViewPort.h * scaleY);
+		}
+		return polyRect;
+		};
 
 	// Scissor must stay within the framebuffer.
-	const int scissorX0 = (std::max)(polyRect.x, 0);
-	const int scissorY0 = (std::max)(polyRect.y, 0);
-	const int scissorX1 = (std::min)(polyRect.x + polyRect.w, (int)m_swapchainExtent.width);
-	const int scissorY1 = (std::min)(polyRect.y + polyRect.h, (int)m_swapchainExtent.height);
+	const auto scissorOf = [&](const SDL_Rect& rect) -> VkRect2D {
+		const int x0 = (std::max)(rect.x, 0);
+		const int y0 = (std::max)(rect.y, 0);
+		const int x1 = (std::min)(rect.x + rect.w, (int)m_swapchainExtent.width);
+		const int y1 = (std::min)(rect.y + rect.h, (int)m_swapchainExtent.height);
+		return VkRect2D{ { x0, y0 }, { (uint32_t)(std::max)(x1 - x0, 0), (uint32_t)(std::max)(y1 - y0, 0) } };
+		};
 
-	// Polygons are rendered at the game viewport's resolution, or the full game
-	// resolution until the first E_VIEWPORT_CHANGE arrives.
+	// A list per cell gives each cell its own view; anything else (the stereo modes) shows the first list everywhere.
+	const size_t viewCount = m_views.size() == cellCount ? cellCount : (std::min)(m_views.size(), (size_t)1);
+	const auto viewOfCell = [&](size_t cell) { return viewCount == cellCount ? cell : 0; };
+
+	// Each view is rendered at the game viewport's resolution (with Looking Glass the game resolution is the cell
+	// size), or the full game resolution until the first E_VIEWPORT_CHANGE arrives.
 	const uint32_t targetWidth = (uint32_t)(m_gameViewPort.w > 0 ? m_gameViewPort.w : srcRect.w);
 	const uint32_t targetHeight = (uint32_t)(m_gameViewPort.h > 0 ? m_gameViewPort.h : srcRect.h);
 
 	// Vulkan requires a non-zero viewport, so skip the polygons when there is nowhere to draw them.
-	bool drawPolygons = m_polygons.size() > 0 && targetWidth > 0 && targetHeight > 0 &&
-		polyRect.w > 0 && polyRect.h > 0 && scissorX1 > scissorX0 && scissorY1 > scissorY0;
+	const SDL_Rect firstPolyRect = polyRectIn(cellRect(0));
+	const VkRect2D firstScissor = scissorOf(firstPolyRect);
+	bool drawPolygons = viewCount > 0 && targetWidth > 0 && targetHeight > 0 &&
+		firstPolyRect.w > 0 && firstPolyRect.h > 0 && firstScissor.extent.width > 0 && firstScissor.extent.height > 0 &&
+		std::any_of(m_views.begin(), m_views.begin() + viewCount, [](const std::vector<RenderPolygon>& view) { return !view.empty(); });
 
-	if (drawPolygons && (targetWidth != m_offscreenWidth || targetHeight != m_offscreenHeight))
+	if (drawPolygons && (targetWidth != m_offscreenWidth || targetHeight != m_offscreenHeight || m_viewTargets.size() != viewCount))
 	{
-		// The other frame in flight may still be sampling the old target.
+		// The other frame in flight may still be sampling the old targets.
 		vkDeviceWaitIdle(m_device);
 		DestroyOffscreenTarget();
-		if (!CreateOffscreenTarget(targetWidth, targetHeight))
+		if (!CreateOffscreenTarget(targetWidth, targetHeight, viewCount))
 		{
 			DestroyOffscreenTarget();
 			drawPolygons = false;
@@ -2022,33 +2076,65 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 
 	if (drawPolygons)
 	{
-		// With water the sky and the reflection go into m_reflectionTarget first (DrawPolygons then starts the terrain pass)
-		const size_t reflectionEnd = ReflectionEnd(m_polygons);
+		// The geometry of every view goes into the frame's buffers at once: the draws only read them when the GPU runs
+		std::vector<HWVertex> vertices;
+		std::vector<uint32_t> indices;
+		std::vector<Batch> batches;
+		std::vector<size_t> firstBatch(viewCount + 1);
+		std::vector<size_t> reflectionEnds(viewCount);
+		size_t polygonCount = 0;
+		for (size_t view = 0; view < viewCount; view++)
+			polygonCount += m_views[view].size();
+		vertices.reserve(polygonCount * 4);
+		indices.reserve(polygonCount * 6);
+		for (size_t view = 0; view < viewCount; view++)
+		{
+			// With water the sky and the reflection go into m_reflectionTarget first (DrawBatches then starts the terrain pass)
+			reflectionEnds[view] = ReflectionEnd(m_views[view]);
+			firstBatch[view] = batches.size();
+			AppendViewGeometry(m_views[view], reflectionEnds[view], vertices, indices, batches);
+		}
+		firstBatch[viewCount] = batches.size();
 
-		VkRenderPassBeginInfo offscreenBegin{};
-		offscreenBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-		offscreenBegin.renderPass = m_offscreenRenderPass;
-		offscreenBegin.framebuffer = reflectionEnd != kNoReflectionPass ? m_reflectionTarget.framebuffer : m_offscreenTarget.framebuffer;
-		offscreenBegin.renderArea.extent = { m_offscreenWidth, m_offscreenHeight };
-		offscreenBegin.clearValueCount = 1;
-		offscreenBegin.pClearValues = &clearColor;
+		if (!vertices.empty() && !indices.empty())
+		{
+			EnsureFrameBufferCapacity(frame, vertices.size() * sizeof(HWVertex), indices.size() * sizeof(uint32_t));
+			std::memcpy(frame.vertexMapped, vertices.data(), vertices.size() * sizeof(HWVertex));
+			std::memcpy(frame.indexMapped, indices.data(), indices.size() * sizeof(uint32_t));
+		}
 
-		vkCmdBeginRenderPass(frame.commandBuffer, &offscreenBegin, VK_SUBPASS_CONTENTS_INLINE);
-		vkCmdBindPipeline(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipeline);
-		vkCmdBindDescriptorSets(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
-			m_pipelineLayout, 1, 1, &m_noReflectionSet, 0, nullptr);
+		for (size_t view = 0; view < viewCount; view++)
+		{
+			const ColourTarget& target = m_viewTargets[view];
 
-		VkViewport offscreenViewport{ 0.0f, 0.0f, (float)m_offscreenWidth, (float)m_offscreenHeight, 0.0f, 1.0f };
-		VkRect2D offscreenScissor{ { 0, 0 }, { m_offscreenWidth, m_offscreenHeight } };
-		vkCmdSetViewport(frame.commandBuffer, 0, 1, &offscreenViewport);
-		vkCmdSetScissor(frame.commandBuffer, 0, 1, &offscreenScissor);
+			VkRenderPassBeginInfo offscreenBegin{};
+			offscreenBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+			offscreenBegin.renderPass = m_offscreenRenderPass;
+			offscreenBegin.framebuffer = reflectionEnds[view] != kNoReflectionPass ? m_reflectionTarget.framebuffer : target.framebuffer;
+			offscreenBegin.renderArea.extent = { m_offscreenWidth, m_offscreenHeight };
+			offscreenBegin.clearValueCount = 1;
+			offscreenBegin.pClearValues = &clearColor;
 
-		DrawPolygons(m_polygons, reflectionEnd);
+			vkCmdBeginRenderPass(frame.commandBuffer, &offscreenBegin, VK_SUBPASS_CONTENTS_INLINE);
+			vkCmdBindPipeline(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipeline);
+			vkCmdBindDescriptorSets(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+				m_pipelineLayout, 1, 1, &m_noReflectionSet, 0, nullptr);
 
-		vkCmdEndRenderPass(frame.commandBuffer);
+			VkViewport offscreenViewport{ 0.0f, 0.0f, (float)m_offscreenWidth, (float)m_offscreenHeight, 0.0f, 1.0f };
+			VkRect2D offscreenScissor{ { 0, 0 }, { m_offscreenWidth, m_offscreenHeight } };
+			vkCmdSetViewport(frame.commandBuffer, 0, 1, &offscreenViewport);
+			vkCmdSetScissor(frame.commandBuffer, 0, 1, &offscreenScissor);
 
+			DrawBatches(frame.commandBuffer, batches.data() + firstBatch[view], firstBatch[view + 1] - firstBatch[view],
+				reflectionEnds[view], target);
+
+			vkCmdEndRenderPass(frame.commandBuffer);
+
+			if (m_blurActive)
+				DrawBlur(frame.commandBuffer, target, m_blurTargets[view]);
+		}
 		if (m_blurActive)
-			DrawBlur(frame.commandBuffer);
+			m_blurSeed = false;
 	}
 	else
 	{
@@ -2066,23 +2152,32 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 
 	vkCmdBeginRenderPass(frame.commandBuffer, &rpBegin, VK_SUBPASS_CONTENTS_INLINE);
 
-	if (drawPolygons)
+	for (size_t cell = 0; cell < cellCount; cell++)
 	{
-		// Upscale the viewport-resolution image (or the blur history) into the viewport's area of the window.
-		VkViewport viewport{ (float)polyRect.x, (float)polyRect.y, (float)polyRect.w, (float)polyRect.h, 0.0f, 1.0f };
-		VkRect2D scissor{ { scissorX0, scissorY0 }, { (uint32_t)(scissorX1 - scissorX0), (uint32_t)(scissorY1 - scissorY0) } };
-		vkCmdSetViewport(frame.commandBuffer, 0, 1, &viewport);
-		vkCmdSetScissor(frame.commandBuffer, 0, 1, &scissor);
+		const SDL_Rect cellArea = cellRect(cell);
+		if (drawPolygons)
+		{
+			// Upscale the view's image (or its blur history) into the viewport's area of the cell.
+			const SDL_Rect polyRect = polyRectIn(cellArea);
+			const VkRect2D scissor = scissorOf(polyRect);
+			if (polyRect.w > 0 && polyRect.h > 0 && scissor.extent.width > 0 && scissor.extent.height > 0)
+			{
+				VkViewport viewport{ (float)polyRect.x, (float)polyRect.y, (float)polyRect.w, (float)polyRect.h, 0.0f, 1.0f };
+				vkCmdSetViewport(frame.commandBuffer, 0, 1, &viewport);
+				vkCmdSetScissor(frame.commandBuffer, 0, 1, &scissor);
 
-		const VkDescriptorSet viewPortImage = m_blurActive ? m_blurTarget.descriptorSet : m_offscreenTarget.descriptorSet;
-		vkCmdBindPipeline(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_viewPortBlitPipeline);
-		vkCmdBindDescriptorSets(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
-			m_overlayPipelineLayout, 0, 1, &viewPortImage, 0, nullptr);
-		vkCmdDraw(frame.commandBuffer, 3, 1, 0, 0);
+				const size_t view = viewOfCell(cell);
+				const VkDescriptorSet viewPortImage = m_blurActive ? m_blurTargets[view].descriptorSet : m_viewTargets[view].descriptorSet;
+				vkCmdBindPipeline(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_viewPortBlitPipeline);
+				vkCmdBindDescriptorSets(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+					m_overlayPipelineLayout, 0, 1, &viewPortImage, 0, nullptr);
+				vkCmdDraw(frame.commandBuffer, 3, 1, 0, 0);
+			}
+		}
+
+		if (drawHud && cellArea.w > 0 && cellArea.h > 0)
+			DrawOverlay(cellArea, frame.commandBuffer);
 	}
-
-	if (drawHud)
-		DrawOverlay(destRect, frame.commandBuffer);
 
 	return true;
 }
@@ -2105,7 +2200,7 @@ size_t VulkanPolygonRenderer::ReflectionEnd(const std::vector<RenderPolygon>& po
 
 // Ends the reflection pass and starts the terrain pass on the offscreen target, beginning with a copy of the
 // reflection (the water blends with it, everything else draws over it as before) and with set 1 = the reflection.
-void VulkanPolygonRenderer::BeginTerrainPass(VkCommandBuffer commandBuffer)
+void VulkanPolygonRenderer::BeginTerrainPass(VkCommandBuffer commandBuffer, const ColourTarget& target)
 {
 	vkCmdEndRenderPass(commandBuffer);
 
@@ -2115,7 +2210,7 @@ void VulkanPolygonRenderer::BeginTerrainPass(VkCommandBuffer commandBuffer)
 	VkRenderPassBeginInfo begin{};
 	begin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 	begin.renderPass = m_offscreenRenderPass;
-	begin.framebuffer = m_offscreenTarget.framebuffer;
+	begin.framebuffer = target.framebuffer;
 	begin.renderArea.extent = { m_offscreenWidth, m_offscreenHeight };
 	begin.clearValueCount = 1;
 	begin.pClearValues = &clearColor;
@@ -2134,12 +2229,13 @@ void VulkanPolygonRenderer::BeginTerrainPass(VkCommandBuffer commandBuffer)
 
 // Blends the frame just drawn into the blur history: history = new * weight + history * (1 - weight).
 // The first frame after the history becomes invalid is copied instead (weight 1, history not loaded).
-void VulkanPolygonRenderer::DrawBlur(VkCommandBuffer commandBuffer)
+// The caller clears m_blurSeed once every view's history has been drawn.
+void VulkanPolygonRenderer::DrawBlur(VkCommandBuffer commandBuffer, const ColourTarget& frame, const ColourTarget& history)
 {
 	VkRenderPassBeginInfo blurBegin{};
 	blurBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 	blurBegin.renderPass = m_blurSeed ? m_blurSeedRenderPass : m_blurRenderPass;
-	blurBegin.framebuffer = m_blurTarget.framebuffer;
+	blurBegin.framebuffer = history.framebuffer;
 	blurBegin.renderArea.extent = { m_offscreenWidth, m_offscreenHeight };
 
 	vkCmdBeginRenderPass(commandBuffer, &blurBegin, VK_SUBPASS_CONTENTS_INLINE);
@@ -2155,12 +2251,10 @@ void VulkanPolygonRenderer::DrawBlur(VkCommandBuffer commandBuffer)
 
 	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_blurPipeline);
 	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
-		m_overlayPipelineLayout, 0, 1, &m_offscreenTarget.descriptorSet, 0, nullptr);
+		m_overlayPipelineLayout, 0, 1, &frame.descriptorSet, 0, nullptr);
 	vkCmdDraw(commandBuffer, 3, 1, 0, 0);
 
 	vkCmdEndRenderPass(commandBuffer);
-
-	m_blurSeed = false;
 }
 
 void VulkanPolygonRenderer::DrawPolygonsWireframe(const std::vector<RenderPolygon>& polygons)
@@ -2202,28 +2296,9 @@ void VulkanPolygonRenderer::DrawPolygonsWireframe(const std::vector<RenderPolygo
 	vkCmdDrawIndexed(frame.commandBuffer, (uint32_t)indices.size(), 1, 0, 0, 0);
 }
 
-void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polygons, size_t reflectionEnd)
+void VulkanPolygonRenderer::AppendViewGeometry(const std::vector<RenderPolygon>& polygons, size_t reflectionEnd,
+	std::vector<HWVertex>& vertices, std::vector<uint32_t>& indices, std::vector<Batch>& batches)
 {
-	FrameData& frame = m_frames[m_currentFrame];
-
-	std::vector<HWVertex> vertices;
-	std::vector<uint32_t> indices;
-	vertices.reserve(polygons.size() * 4);
-	indices.reserve(polygons.size() * 6);
-
-	struct Batch
-	{
-		uint32_t textureId;
-		uint32_t mode;
-		uint32_t tint;
-		float    alpha;
-		bool     terrainPass;   // from reflectionEnd on
-		uint32_t frames;        // sprite frames stacked in the texture; the same for every polygon of a texture
-		uint32_t indexOffset;
-		uint32_t indexCount;
-	};
-	std::vector<Batch> batches;
-
 	auto modeOf = [](const RenderPolygon& p) -> uint32_t {
 		if (p.TextureId == kTerrainAtlasId)
 			return p.SpriteMode == 26 ? 26u : 255u;
@@ -2279,55 +2354,32 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 	if (haveBatch)
 		batches.push_back({ curTexture, curMode, curTint, curAlpha, curTerrainPass, curFrames,
 			batchIndexStart, (uint32_t)indices.size() - batchIndexStart });
+}
 
-	if (vertices.empty() || indices.empty())
+void VulkanPolygonRenderer::DrawBatches(VkCommandBuffer commandBuffer, const Batch* batches, size_t batchCount,
+	size_t reflectionEnd, const ColourTarget& target)
+{
+	FrameData& frame = m_frames[m_currentFrame];
+
+	if (batchCount > 0)
 	{
-		if (reflectionEnd != kNoReflectionPass)
-			BeginTerrainPass(frame.commandBuffer);   // BeginFrame ends whichever pass is open
-		return;
+		VkDeviceSize offset = 0;
+		vkCmdBindVertexBuffers(commandBuffer, 0, 1, &frame.vertexBuffer, &offset);
+		vkCmdBindIndexBuffer(commandBuffer, frame.indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 	}
-
-	EnsureFrameBufferCapacity(frame, vertices.size() * sizeof(HWVertex), indices.size() * sizeof(uint32_t));
-	std::memcpy(frame.vertexMapped, vertices.data(), vertices.size() * sizeof(HWVertex));
-	std::memcpy(frame.indexMapped, indices.data(), indices.size() * sizeof(uint32_t));
-
-	VkDeviceSize offset = 0;
-	vkCmdBindVertexBuffers(frame.commandBuffer, 0, 1, &frame.vertexBuffer, &offset);
-	vkCmdBindIndexBuffer(frame.commandBuffer, frame.indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 	struct PC { uint32_t mode; uint32_t tint; float alpha; uint32_t flags; };
-
-	static int dbgFrame = 0;
-	if ((dbgFrame++ % 120) == 0)
-	{
-		int water = 0, land = 0, missingTex = 0;
-		for (const auto& b : batches)
-		{
-			if (m_textures.find(b.textureId) == m_textures.end()) missingTex++;
-			if (b.textureId == kTerrainAtlasId)
-			{
-				if (b.mode == 26) 
-					water++; 
-				else land++;
-				
-				/*if (b.mode == 26)
-					Logger->info("ATLAS water batch alpha={} indices={}", b.alpha, b.indexCount);*/
-			}
-		}
-		//Logger->info("DRAWPOLY polys={} batches={} atlasWater={} atlasLand={} missingTex={} atlasLoaded={}",
-		//	polygons.size(), batches.size(), water, land, missingTex,
-		//	m_textures.count(kTerrainAtlasId));
-	}
 
 	// polygon.frag flags bits 8-15: the sky (clear) colour index, the top of the day water's ramp; bits 16-31: sprite frames
 	const uint32_t skyIndex = (uint32_t)(m_clearPaletteIndex >= 0 ? m_clearPaletteIndex : 0xFE) << 8;
 
 	bool inTerrainPass = reflectionEnd == kNoReflectionPass;
-	for (const auto& batch : batches)
+	for (size_t batchIndex = 0; batchIndex < batchCount; batchIndex++)
 	{
+		const Batch& batch = batches[batchIndex];
 		if (batch.terrainPass && !inTerrainPass)
 		{
-			BeginTerrainPass(frame.commandBuffer);
+			BeginTerrainPass(commandBuffer, target);
 			inTerrainPass = true;
 		}
 
@@ -2336,17 +2388,17 @@ void VulkanPolygonRenderer::DrawPolygons(const std::vector<RenderPolygon>& polyg
 			continue;
 
 		PC pc{ batch.mode, batch.tint, batch.alpha, skyIndex | (std::min)(batch.frames, 0xFFFFu) << 16 };
-		vkCmdPushConstants(frame.commandBuffer, m_pipelineLayout,
+		vkCmdPushConstants(commandBuffer, m_pipelineLayout,
 			VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(pc), &pc);
 
-		vkCmdBindDescriptorSets(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
 			m_pipelineLayout, 0, 1, &it->second.descriptorSet, 0, nullptr);
-		vkCmdDrawIndexed(frame.commandBuffer, batch.indexCount, 1, batch.indexOffset, 0, 0);
+		vkCmdDrawIndexed(commandBuffer, batch.indexCount, 1, batch.indexOffset, 0, 0);
 	}
 
 	// The offscreen target must get the reflection even if nothing came after it
 	if (!inTerrainPass)
-		BeginTerrainPass(frame.commandBuffer);
+		BeginTerrainPass(commandBuffer, target);
 }
 
 void VulkanPolygonRenderer::EndFrame()

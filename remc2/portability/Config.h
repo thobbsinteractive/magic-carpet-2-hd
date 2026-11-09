@@ -96,10 +96,23 @@ public:
 			bool m_AssignToSpecificCores = false;
 		};
 
+		// Looking Glass (lenticular) output: a quilt of rows x columns cells, each the whole frame at the cell size
+		struct LookingGlass
+		{
+			bool m_Enabled = false;
+			int m_Rows = 6;
+			int m_Columns = 8;
+			int m_CellWidth = 420;    // the game resolution (menus, UI and each view); the window is the whole quilt
+			int m_CellHeight = 560;
+			int m_ViewSpacing = 8;    // camera step between neighbouring views, in world units (a tile is 256)
+			int m_Convergence = 1024;   // distance at the display surface (zero parallax), in world units; 0 = parallel views
+		};
+
 		struct Hardware
 		{
 			bool m_BilinearFiltering = false;
 			int m_AntiAliasing = 0;   // MSAA samples: 0 = off, 2, 4 or 8 (capped to what the GPU supports)
+			LookingGlass m_LookingGlass;
 		};
 
 		struct Graphics

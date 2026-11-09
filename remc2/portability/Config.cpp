@@ -394,6 +394,24 @@ Config::Settings::Hardware Config::GetHardware(const json& graphics)
 		const auto& hardware = graphics["hardware"];
 		hardwareValues.m_BilinearFiltering = ReadBoolValue(hardware, "bilinearFiltering");
 		hardwareValues.m_AntiAliasing = ReadIntValue(hardware, "antiAliasing");
+		if (hardware.contains("lookingGlass"))
+		{
+			const auto& lookingGlass = hardware["lookingGlass"];
+			auto& values = hardwareValues.m_LookingGlass;
+			values.m_Enabled = ReadBoolValue(lookingGlass, "enabled");
+			if (lookingGlass.contains("rows"))
+				values.m_Rows = ReadIntValue(lookingGlass, "rows");
+			if (lookingGlass.contains("columns"))
+				values.m_Columns = ReadIntValue(lookingGlass, "columns");
+			if (lookingGlass.contains("cellWidth"))
+				values.m_CellWidth = ReadIntValue(lookingGlass, "cellWidth");
+			if (lookingGlass.contains("cellHeight"))
+				values.m_CellHeight = ReadIntValue(lookingGlass, "cellHeight");
+			if (lookingGlass.contains("viewSpacing"))
+				values.m_ViewSpacing = ReadIntValue(lookingGlass, "viewSpacing");
+			if (lookingGlass.contains("convergence"))
+				values.m_Convergence = ReadIntValue(lookingGlass, "convergence");
+		}
 	}
 	return hardwareValues;
 }
@@ -556,6 +574,14 @@ void Config::SaveHardwareToDoc(Config::Settings::Hardware hardware)
 	auto& h = GetOrCreate(gfx, "hardware");
 	SetBool(h, "bilinearFiltering", hardware.m_BilinearFiltering);
 	SetInt(h, "antiAliasing", hardware.m_AntiAliasing);
+	auto& lg = GetOrCreate(h, "lookingGlass");
+	SetBool(lg, "enabled", hardware.m_LookingGlass.m_Enabled);
+	SetInt(lg, "rows", hardware.m_LookingGlass.m_Rows);
+	SetInt(lg, "columns", hardware.m_LookingGlass.m_Columns);
+	SetInt(lg, "cellWidth", hardware.m_LookingGlass.m_CellWidth);
+	SetInt(lg, "cellHeight", hardware.m_LookingGlass.m_CellHeight);
+	SetInt(lg, "viewSpacing", hardware.m_LookingGlass.m_ViewSpacing);
+	SetInt(lg, "convergence", hardware.m_LookingGlass.m_Convergence);
 }
 
 void Config::SaveGameToDoc(Config::Settings::Game gameSettings)

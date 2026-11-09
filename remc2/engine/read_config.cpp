@@ -1,5 +1,6 @@
 #include "read_config.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <ctype.h>
 
@@ -50,6 +51,11 @@ int numberOfRenderThreads = 0;
 bool assignToSpecificCores = false;
 bool bilinearFiltering = false;
 int antiAliasing = 0;
+bool lookingGlassEnabled = false;
+int viewRows = 1;
+int viewColumns = 1;
+int viewSpacing = 8;
+int viewConvergence = 0;
 bool openGLRender = false;
 bool invertYAxis = true;
 bool invertXAxis = false;
@@ -189,6 +195,26 @@ bool SetConfig() {
 	startWindowed = settingsValue.m_Graphics.m_StartWindowed;
 	gameResWidth = settingsValue.m_Graphics.m_GameDetail.m_GameResWidth;
 	gameResHeight = settingsValue.m_Graphics.m_GameDetail.m_GameResHeight;
+
+	// Looking Glass (hardware renderer only): the game runs at the cell size (menus, UI and each view) and the window
+	// shows the whole quilt of rows x columns cells
+	const auto& lookingGlass = settingsValue.m_Graphics.m_Hardware.m_LookingGlass;
+	lookingGlassEnabled = lookingGlass.m_Enabled && settingsValue.m_Graphics.m_Render == "HW";
+	if (lookingGlassEnabled)
+	{
+		viewRows = std::clamp(lookingGlass.m_Rows, 1, MAX_VIEW_GRID);
+		viewColumns = std::clamp(lookingGlass.m_Columns, 1, MAX_VIEW_GRID);
+		viewSpacing = lookingGlass.m_ViewSpacing;
+		viewConvergence = (std::max)(lookingGlass.m_Convergence, 0);
+		gameResWidth = lookingGlass.m_CellWidth;
+		gameResHeight = lookingGlass.m_CellHeight;
+	}
+	else
+	{
+		viewRows = 1;
+		viewColumns = 1;
+	}
+
 	if (gameResWidth < 320 || gameResHeight < 200)
 	{
 		gameResWidth = 320;
@@ -198,6 +224,11 @@ bool SetConfig() {
 	{
 		gameResWidth = GAME_RES_MAX_WIDTH;
 		gameResHeight = GAME_RES_MAX_HEIGHT;
+	}
+	if (lookingGlassEnabled)
+	{
+		windowResWidth = gameResWidth * viewColumns;
+		windowResHeight = gameResHeight * viewRows;
 	}
 	gameUiScale = settingsValue.m_Graphics.m_GameDetail.m_GameUiScale;
 	if (gameUiScale < 1)

@@ -307,6 +307,7 @@ bool CreateRenderer(int width, int height)
 	m_vulkanRenderer = new VulkanPolygonRenderer(GetSubDirectoryPath("shaders"), CommandLineParams.DoVulkanValidation());
 	m_vulkanRenderer->SetBilinearFiltering(bilinearFiltering);
 	m_vulkanRenderer->SetAntiAliasing(antiAliasing);
+	m_vulkanRenderer->SetViewGrid(viewRows, viewColumns);
 	try
 	{
 		return m_vulkanRenderer->Init(m_window, width, height);
@@ -1177,23 +1178,27 @@ void SubBlit(uint16_t originalResWidth, uint16_t originalResHeight, uint8_t* alp
 	rectSrc.w = originalResWidth;
 	rectSrc.h = originalResHeight;
 
+	// The Vulkan renderer puts the whole Looking Glass quilt (rows x columns frames) into dscrect
+	const int outputWidth = m_vulkanRenderer ? originalResWidth * viewColumns : originalResWidth;
+	const int outputHeight = m_vulkanRenderer ? originalResHeight * viewRows : originalResHeight;
+
 	SDL_Rect dscrect;
 	if (m_bMaintainAspectRatio)
 	{
-		float widthRatio = (float)m_iWindowWidth / (float)originalResWidth;
-		float heightRatio = (float)m_iWindowHeight / (float)originalResHeight;
+		float widthRatio = (float)m_iWindowWidth / (float)outputWidth;
+		float heightRatio = (float)m_iWindowHeight / (float)outputHeight;
 
 		if (widthRatio >= heightRatio)
 		{
-			dscrect.w = (int)((float)originalResWidth * heightRatio);
-			dscrect.h = (int)((float)originalResHeight * heightRatio);
+			dscrect.w = (int)((float)outputWidth * heightRatio);
+			dscrect.h = (int)((float)outputHeight * heightRatio);
 			dscrect.x = (m_iWindowWidth - dscrect.w) / 2;
 			dscrect.y = 0;
 		}
 		else
 		{
-			dscrect.w = (int)((float)originalResWidth * widthRatio);
-			dscrect.h = (int)((float)originalResHeight * widthRatio);
+			dscrect.w = (int)((float)outputWidth * widthRatio);
+			dscrect.h = (int)((float)outputHeight * widthRatio);
 			dscrect.x = 0;
 			dscrect.y = (m_iWindowHeight - dscrect.h) / 2;
 		}

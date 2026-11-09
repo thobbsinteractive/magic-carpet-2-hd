@@ -59,6 +59,15 @@ extern int numberOfRenderThreads;
 extern bool assignToSpecificCores;
 extern bool bilinearFiltering;
 extern int antiAliasing;   // MSAA samples, 0 = off
+// Looking Glass quilt of the hardware renderer (graphics.hardware.lookingGlass): viewRows x viewColumns cells, each the
+// whole frame at the game resolution (the cell size), the 3D view seen from a camera stepped sideways by viewSpacing
+// world units per view. Disabled = 1 x 1, the normal single view.
+constexpr int MAX_VIEW_GRID = 16;
+extern bool lookingGlassEnabled;
+extern int viewRows;
+extern int viewColumns;
+extern int viewSpacing;
+extern int viewConvergence;   // distance at the display surface (zero parallax), world units; 0 = parallel views
 extern bool invertYAxis;
 extern bool invertXAxis;
 extern float mouseScaleX;

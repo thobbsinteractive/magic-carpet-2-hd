@@ -27,12 +27,11 @@
 
 struct SDL_Window;
 
-// Minimal Vulkan renderer that takes a per-frame list of RenderPolygon
+// Minimal Vulkan renderer that takes per-frame lists of RenderPolygon, one per view
 // (screen-space, palette-textured, Gouraud-shaded) and rasterizes them.
 //
-// Usage per frame:
-//     renderer.BeginFrame();
-//     renderer.DrawPolygons(polygons);
+// The lists arrive with the E_RESOURCE_CHANGE / POLYGONS_UPDATED event; per frame:
+//     renderer.BeginFrame(...);   // draws every view, then the views and the HUD into the grid's cells
 //     renderer.EndFrame();
 //
 // Textures are 8-bit palette-indexed (one byte per texel = palette index,
@@ -84,12 +83,17 @@ public:
 	void SetBilinearFiltering(bool enabled);
 	void SetAntiAliasing(int samples);   // MSAA samples: 0/1 = off, 2, 4 or 8; capped to what the GPU supports
 
+	// Looking Glass quilt: destRect is split into rows x columns cells, each showing the whole frame (the 3D view and the
+	// HUD at the game resolution). The game sends one polygon list per cell, the leftmost view first: list 0 goes in the
+	// bottom left cell, then left to right and bottom to top. A single list is shown in every cell. 1 x 1 = the normal frame.
+	static constexpr int kMaxViews = 256;
+	void SetViewGrid(int rows, int columns);
+
 	// hudSurface is the 8-bit palettised screen; hudAlpha is one alpha byte per pixel of it, or nullptr for opaque.
 	bool BeginFrame(SDL_Surface* hudSurface, const uint8_t* hudAlpha, SDL_Rect srcRect, SDL_Rect destRect);
 	bool UploadHud(SDL_Surface* hudSurface, const uint8_t* hudAlpha, VkCommandBuffer commandBuffer);   // false = nothing to draw
 	void DrawOverlay(SDL_Rect dscrect, VkCommandBuffer commandBuffer);
 	static constexpr size_t kNoReflectionPass = (size_t)-1;
-	void DrawPolygons(const std::vector<RenderPolygon>& polygons, size_t reflectionEnd = kNoReflectionPass);
 	void DrawPolygonsWireframe(const std::vector<RenderPolygon>& polygons);
 	void EndFrame();
 
@@ -146,9 +150,25 @@ private:
 		VkDeviceSize indexBufferSize = 0;
 	};
 
-	std::vector<RenderPolygon> m_polygons;
+	// One polygon list per view, as GameRenderHW sends them
+	std::vector<std::vector<RenderPolygon>> m_views;
+	int m_viewRows = 1;
+	int m_viewColumns = 1;
 
-	void SetPolygons(ResourceType state, std::vector<RenderPolygon>* polygons);
+	// A run of polygons drawn with one texture and one set of push constants
+	struct Batch
+	{
+		uint32_t textureId;
+		uint32_t mode;
+		uint32_t tint;
+		float    alpha;
+		bool     terrainPass;   // from reflectionEnd on
+		uint32_t frames;        // sprite frames stacked in the texture; the same for every polygon of a texture
+		uint32_t indexOffset;
+		uint32_t indexCount;
+	};
+
+	void SetPolygons(ResourceType state, std::vector<std::vector<RenderPolygon>>* views);
 	void SetTexture(ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height);
 	void SetShadeLut(const uint8_t* table);   // first kShadeRows * 256 bytes of ColourLookupTable_F6EE0
 	void SetBlendLut(const uint8_t* lut65536);
@@ -185,7 +205,7 @@ private:
 		VkRenderPass renderPass = VK_NULL_HANDLE, VkSampleCountFlagBits samples = VK_SAMPLE_COUNT_1_BIT);
 	bool CreateOffscreenRenderPass(VkAttachmentLoadOp loadOp, VkImageLayout initialLayout, VkRenderPass& renderPass,
 		VkSampleCountFlagBits samples = VK_SAMPLE_COUNT_1_BIT);
-	bool CreateOffscreenTarget(uint32_t width, uint32_t height);
+	bool CreateOffscreenTarget(uint32_t width, uint32_t height, size_t viewCount);
 	void DestroyOffscreenTarget();
 	// msaaView: the multisampled image the render pass resolves into target, or VK_NULL_HANDLE without MSAA
 	bool CreateColourTarget(uint32_t width, uint32_t height, VkRenderPass renderPass, ColourTarget& target,
@@ -194,9 +214,15 @@ private:
 	void DestroyMsaaImage();
 	VkSampleCountFlagBits PickMsaaSamples(int requested) const;
 	void DestroyColourTarget(ColourTarget& target);
-	void DrawBlur(VkCommandBuffer commandBuffer);
+	void DrawBlur(VkCommandBuffer commandBuffer, const ColourTarget& frame, const ColourTarget& history);
 	size_t ReflectionEnd(const std::vector<RenderPolygon>& polygons) const;
-	void BeginTerrainPass(VkCommandBuffer commandBuffer);
+	void BeginTerrainPass(VkCommandBuffer commandBuffer, const ColourTarget& target);
+	// Appends a view's polygons to the frame's geometry (indices are absolute into vertices)
+	void AppendViewGeometry(const std::vector<RenderPolygon>& polygons, size_t reflectionEnd,
+		std::vector<HWVertex>& vertices, std::vector<uint32_t>& indices, std::vector<Batch>& batches);
+	// Draws a view's batches into target (through m_reflectionTarget first when reflectionEnd is set)
+	void DrawBatches(VkCommandBuffer commandBuffer, const Batch* batches, size_t batchCount, size_t reflectionEnd,
+		const ColourTarget& target);
 	void DestroyFrameData();
 	void EnsureFrameBufferCapacity(FrameData& frame, size_t vertexBytes, size_t indexBytes);
 	VkDescriptorSet AllocateTextureDescriptorSet(VkImageView view);
@@ -230,8 +256,10 @@ private:
 
 	// Polygons are rendered into this image at the game viewport's resolution,
 	// then upscaled into the window with m_viewPortBlitPipeline.
+	// One offscreen target per view, at the viewport's resolution divided by the grid; the reflection target is shared
+	// (each view's reflection pass runs just before its terrain pass)
 	VkRenderPass m_offscreenRenderPass = VK_NULL_HANDLE;
-	ColourTarget m_offscreenTarget;
+	std::vector<ColourTarget> m_viewTargets;
 	ColourTarget m_reflectionTarget;
 	VkDescriptorSet m_noReflectionSet = VK_NULL_HANDLE;
 	uint32_t m_offscreenWidth = 0;
@@ -255,7 +283,7 @@ private:
 	static constexpr float kBlurNewFrameWeight = 1.0f - COLOUR_BLEND_ALPHA;
 	VkRenderPass m_blurSeedRenderPass = VK_NULL_HANDLE;
 	VkRenderPass m_blurRenderPass = VK_NULL_HANDLE;
-	ColourTarget m_blurTarget;
+	std::vector<ColourTarget> m_blurTargets;   // one history per view
 	VkPipeline m_blurPipeline = VK_NULL_HANDLE;
 	bool m_blurActive = false;
 	bool m_blurSeed = true;   // the history holds nothing useful, so the next blur frame copies instead of blends
@@ -327,7 +355,7 @@ private:
 	std::function<void(ResourceType, uint8_t)> m_SetClearColourIdxCallBack;
 	std::function<void(ResourceType, uint8_t*)> m_SetPaletteLookupCallBack;
 	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> m_TextureCallBack;
-	std::function<void(ResourceType, std::vector<RenderPolygon>*)> m_PolyCallBack;
+	std::function<void(ResourceType, std::vector<std::vector<RenderPolygon>>*)> m_PolyCallBack;
 	std::function<void(uint16_t, uint16_t, uint16_t, uint16_t)> m_ViewPortCallBack;
 	std::function<void(bool)> m_BlurEffectCallBack;
 
