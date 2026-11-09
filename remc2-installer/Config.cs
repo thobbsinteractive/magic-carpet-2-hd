@@ -98,6 +98,21 @@ namespace remc2_installer
 		public string[] description { get; set; }
 		public bool bilinearFiltering { get; set; } = true;
 		public int antiAliasing { get; set; } = 2;   // MSAA samples: 0 = off (1x), 2, 4 or 8
+		public LookingGlass lookingGlass { get; set; }
+	}
+
+	public class LookingGlass
+	{
+		public string[] description { get; set; }
+		public bool enabled { get; set; } = false;
+		public int rows { get; set; } = 6;
+		public int columns { get; set; } = 8;
+		public int cellWidth { get; set; } = 420;
+		public int cellHeight { get; set; } = 560;
+		public int viewSpacing { get; set; } = 8;
+		public int convergence { get; set; } = 2048;
+		public bool display { get; set; } = true;
+		public string bridgePath { get; set; } = "";
 	}
 
 	public class Game

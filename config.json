@@ -135,7 +135,7 @@
 						"cellWidth": 420,
 						"cellHeight": 560,
 						"viewSpacing": 8,
-						"convergence": 1024,
+						"convergence": 2048,
 						"display": true,
 						"bridgePath": ""
 					}
