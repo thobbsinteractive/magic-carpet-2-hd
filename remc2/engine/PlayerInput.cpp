@@ -2277,7 +2277,7 @@ int SelectSpellCategory_6D420(int16_t posX, int16_t posY)//24e420
 		spellMenuPosY = 480;
 	if (!DefaultResolutions())
 	{
-		spellMenuPosY = UiScreenHeight();
+		spellMenuPosY = UiScreenHeight() - LowResHudOffset(lookingGlassHudOffsets.spellMenuY);   // as DrawBottomSpellsMenu_2ECC0
 		if (UiScreenWidth() > 640)
 		{
 			scale = gameUiScale;

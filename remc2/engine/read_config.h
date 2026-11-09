@@ -29,6 +29,8 @@
 #ifndef READ_CONFIG
 #define READ_CONFIG
 
+constexpr int MAX_VIEW_GRID = 16;
+
 bool SetConfig();std::vector<Maths::Zone> ReadZones(std::vector<Maths::Zone> zonesArray);
 extern int config_skip_screen;
 extern int texturepixels;
@@ -60,19 +62,26 @@ extern int numberOfRenderThreads;
 extern bool assignToSpecificCores;
 extern bool bilinearFiltering;
 extern int antiAliasing;   // MSAA samples, 0 = off
-// Looking Glass quilt of the hardware renderer (graphics.hardware.lookingGlass): viewRows x viewColumns cells, each the
-// whole frame at the game resolution (the cell size), the 3D view seen from a camera stepped sideways by viewSpacing
-// world units per view. Disabled = 1 x 1, the normal single view.
-constexpr int MAX_VIEW_GRID = 16;
 extern bool lookingGlassEnabled;
 extern int viewRows;
 extern int viewColumns;
 extern int viewSpacing;
-extern int viewConvergence;   // distance at the display surface (zero parallax), world units; 0 = parallel views
-// The hologram on the Looking Glass itself (lookingGlass.display, and Bridge found the display): the window is
-// fullscreen on lookingGlassDevice and the renderer interleaves the quilt with its calibration
+extern int viewConvergence;
 extern bool lookingGlassDisplay;
 extern LookingGlassDevice lookingGlassDevice;
+
+struct LookingGlassHudOffsets
+{
+	int mapX = 0;
+	int mapY = 0;
+	int topBarX = 0;
+	int topBarY = 0;
+	int spellIconsX = 0;
+	int spellIconsY = 0;
+	int spellMenuY = 0;
+};
+extern LookingGlassHudOffsets lookingGlassHudOffsets;
+
 extern bool invertYAxis;
 extern bool invertXAxis;
 extern float mouseScaleX;

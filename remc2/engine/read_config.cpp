@@ -59,6 +59,7 @@ int viewSpacing = 8;
 int viewConvergence = 0;
 bool lookingGlassDisplay = false;
 LookingGlassDevice lookingGlassDevice;
+LookingGlassHudOffsets lookingGlassHudOffsets;
 bool openGLRender = false;
 bool invertYAxis = true;
 bool invertXAxis = false;
@@ -209,6 +210,13 @@ bool SetConfig() {
 		viewColumns = std::clamp(lookingGlass.m_Columns, 1, MAX_VIEW_GRID);
 		viewSpacing = lookingGlass.m_ViewSpacing;
 		viewConvergence = (std::max)(lookingGlass.m_Convergence, 0);
+		lookingGlassHudOffsets.mapX = lookingGlass.m_MapOffsetX;
+		lookingGlassHudOffsets.mapY = lookingGlass.m_MapOffsetY;
+		lookingGlassHudOffsets.topBarX = lookingGlass.m_TopBarOffsetX;
+		lookingGlassHudOffsets.topBarY = lookingGlass.m_TopBarOffsetY;
+		lookingGlassHudOffsets.spellIconsX = lookingGlass.m_SpellIconsOffsetX;
+		lookingGlassHudOffsets.spellIconsY = lookingGlass.m_SpellIconsOffsetY;
+		lookingGlassHudOffsets.spellMenuY = lookingGlass.m_SpellMenuOffsetY;
 		gameResWidth = lookingGlass.m_CellWidth;
 		gameResHeight = lookingGlass.m_CellHeight;
 	}

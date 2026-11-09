@@ -326,7 +326,7 @@ void DrawBar_2D190(int16_t posStartX, int16_t posStartY, int16_t maxPosEndX, int
 }
 
 //----- (0002D710) --------------------------------------------------------
-void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
+void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale, int mapX, int mapY, int topBarX, int topBarY)//20e710
 {
     int16_t posX; // bx
 	type_entity_0x6E8E* v2x; // ecx
@@ -355,10 +355,10 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 	//ptrDrawBitmap_F01E8(2, 2, **filearray_2aa18c[6] + 240);
 
 	//Panel around MiniMap
-	ptrDrawBitmap_F01E8((2 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MINI_MAP_PANEL], scale);
+	ptrDrawBitmap_F01E8((2 * scale) + mapX, (2 * scale) + mapY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MINI_MAP_PANEL], scale);
 
 	//v1 = *(uint8_t *)(*filearray_2aa18c[6] + 244) + 2;
-	posX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MINI_MAP_PANEL].width_4 * scale) + (2 * scale);
+	posX = ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MINI_MAP_PANEL].width_4 * scale) + (2 * scale) + topBarX;
 	//adress 20e7db
 	v18 = gameState_D41A4.manaStats_242ar.totalMana_4;
 	//v20 = a1x->dword_0xA4_164;
@@ -370,22 +370,22 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 		{
 			//ptrDrawBitmap_F01E8(v1, 2, **filearray_2aa18c[6] + 330);
 			//Draw Castle Health Panel Hit
-			ptrDrawBitmap_F01E8(posX, (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL_HIT], scale);
+			ptrDrawBitmap_F01E8(posX, (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL_HIT], scale);
 			a1x->playerData_0xA4_164x->castleDestroyedBlink_0x195_405--;
 		}
 		else
 		{
 			//Draw Castle Health Panel
-			ptrDrawBitmap_F01E8(posX, (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL], scale);
+			ptrDrawBitmap_F01E8(posX, (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL], scale);
 		}
 		//DrawBitmap_2BB40(v1 + 2, 2, (uint8_t**)(6 * (v23[4] + 43) + **filearray_2aa18c[6]));
 		
 		//Castle Icon
-		DrawBitmap_2BB40(posX + (2 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v23x->param_0x10_16 + 43], scale);
+		DrawBitmap_2BB40(posX + (2 * scale), (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v23x->param_0x10_16 + 43], scale);
 		//Castle Health And Mana Icon
-		DrawBitmap_2BB40(posX + (38 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_MANA_ICONS], scale);
+		DrawBitmap_2BB40(posX + (38 * scale), (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_MANA_ICONS], scale);
 		barStartXPos = posX + (58 * scale);
-		DrawBar_2D190(posX + (58 * scale), 10 * scale, 64 * scale, 10 * scale, ((v23x->life_0x8 << 6) / v23x->maxLife_0x4) * scale, 0x7Bu);
+		DrawBar_2D190(posX + (58 * scale), 10 * scale + topBarY, 64 * scale, 10 * scale, ((v23x->life_0x8 << 6) / v23x->maxLife_0x4) * scale, 0x7Bu);
 		v17 = (v23x->mana_0x90_144 + a1x->playerData_0xA4_164x->extraMana_0x13C_316) << 6;
 		if (v23x->mana_0x90_144 + a1x->playerData_0xA4_164x->extraMana_0x13C_316 == v23x->maxMana_0x8C_140)
 		{
@@ -406,7 +406,7 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 		}
 		else
 		{
-			DrawBar_2D190(barStartXPos, 28 * scale, 64 * scale, 10 * scale, ((v23x->maxMana_0x8C_140 << 6) / v18) * scale, manaMaxColourIdx);
+			DrawBar_2D190(barStartXPos, 28 * scale + topBarY, 64 * scale, 10 * scale, ((v23x->maxMana_0x8C_140 << 6) / v18) * scale, manaMaxColourIdx);
 			v16 = manaColourIdx;
 			v5 = v17;
 			//v4 = v17;
@@ -414,19 +414,19 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 		}
 		//LODWORD(v6) = v5;
 		//HIDWORD(v6) = v4 >> 31;
-		DrawBar_2D190(barStartXPos, 28 * scale, 64 * scale, 10 * scale, /*v6*/(v5 / v3) * scale, v16);
+		DrawBar_2D190(barStartXPos, 28 * scale + topBarY, 64 * scale, 10 * scale, /*v6*/(v5 / v3) * scale, v16);
 
 		//Draw Mana Goal Lines
 		if (!(gameState_D41A4.setting_byte1_22 & Setting::MULTIPLAYER_MODE) && world_D41A0.terrain_2FECE.manaGoalPercent_0x2FED5)
 		{
-			DrawLine_2BC80(barStartXPos + ((world_D41A0.terrain_2FECE.manaGoalPercent_0x2FED5 << 6) / 100) * scale, 26 * scale, 2 * scale, 2 * scale, v26);
-			DrawLine_2BC80(barStartXPos + ((world_D41A0.terrain_2FECE.manaGoalPercent_0x2FED5 << 6) / 100) * scale, 38 * scale, 2 * scale, 2 * scale, v26);
+			DrawLine_2BC80(barStartXPos + ((world_D41A0.terrain_2FECE.manaGoalPercent_0x2FED5 << 6) / 100) * scale, 26 * scale + topBarY, 2 * scale, 2 * scale, v26);
+			DrawLine_2BC80(barStartXPos + ((world_D41A0.terrain_2FECE.manaGoalPercent_0x2FED5 << 6) / 100) * scale, 38 * scale + topBarY, 2 * scale, 2 * scale, v26);
 		}
 	}
 	else
 	{
 		//Panel Next to MiniMap
-		ptrDrawBitmap_F01E8(posX, (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[PANEL], scale);
+		ptrDrawBitmap_F01E8(posX, (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[PANEL], scale);
 	}
 	//v8 = *(uint8_t *)(**filearray_2aa18c[6] + 250) + v1;
 	//adress 20eaa0
@@ -436,7 +436,7 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 		//20eca6
 		//VGA_Debug_Blit(640, 480, pdwScreenBuffer_351628);
 	    //2nd Panel 
-		ptrDrawBitmap_F01E8(posX, (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[PANEL], scale);
+		ptrDrawBitmap_F01E8(posX, (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[PANEL], scale);
 		//VGA_Debug_Blit(640, 480, pdwScreenBuffer_351628);
 	}
 	else
@@ -444,13 +444,13 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 		if (a1x->playerData_0xA4_164x->castleDamagedBlink_0x197_407 > 0 && gameState_D41A4.colorIndex_121[1])
 		{
 			//Draw Balloon Health Panel Hit
-			ptrDrawBitmap_F01E8(posX, (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL_HIT], scale);
+			ptrDrawBitmap_F01E8(posX, (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL_HIT], scale);
 			a1x->playerData_0xA4_164x->castleDamagedBlink_0x197_407--;
 		}
 		else
 		{
 			//Draw Balloon Health Panel Hit
-			ptrDrawBitmap_F01E8(posX, (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL], scale);
+			ptrDrawBitmap_F01E8(posX, (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL], scale);
 		}
 		switch (v23x->param_0x10_16)
 		{
@@ -472,10 +472,10 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 			break;
 		}
 		//Draw Balloon Icon
-		DrawBitmap_2BB40(posX + (2 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[numBalloons_v25 + BALLON1_ICON - 1], scale);
+		DrawBitmap_2BB40(posX + (2 * scale), (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[numBalloons_v25 + BALLON1_ICON - 1], scale);
 		balloonIdx_v24 = 0;
 		//Draw Balloon Health Icon
-		DrawBitmap_2BB40(posX + (38 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_MANA_ICONS], scale);
+		DrawBitmap_2BB40(posX + (38 * scale), (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_MANA_ICONS], scale);
 		if (numBalloons_v25 > 0)
 		{
 			do
@@ -487,10 +487,10 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 				{
 					//Life
 					if (v9x->life_0x8 >= 0)
-						DrawBar_2D190(v21, (2 * balloonIdx_v24 * scale) + (12 * scale), 64 * scale, 2 * scale, ((v9x->life_0x8 << 6) / v9x->maxLife_0x4) * scale, 0x7Bu);
+						DrawBar_2D190(v21, (2 * balloonIdx_v24 * scale) + (12 * scale) + topBarY, 64 * scale, 2 * scale, ((v9x->life_0x8 << 6) / v9x->maxLife_0x4) * scale, 0x7Bu);
 
 					//Mana collected
-					DrawBar_2D190(v21, (2 * balloonIdx_v24 * scale) + (30 * scale), 64 * scale, 2 * scale, ((v9x->mana_0x90_144 << 6) / v9x->maxMana_0x8C_140) * scale, manaColourIdx);
+					DrawBar_2D190(v21, (2 * balloonIdx_v24 * scale) + (30 * scale) + topBarY, 64 * scale, 2 * scale, ((v9x->mana_0x90_144 << 6) / v9x->maxMana_0x8C_140) * scale, manaColourIdx);
 				}
 				balloonIdx_v24++;
 			} while (balloonIdx_v24 < numBalloons_v25);
@@ -501,36 +501,36 @@ void DrawTopStatusBar_2D710(type_entity_0x6E8E* a1x, uint8_t scale)//20e710
 	if (a1x->playerData_0xA4_164x->PlayerHitFrameTime_406 > 0 && gameState_D41A4.colorIndex_121[1])
 	{
 		//Player Health Panel on Hit
-		ptrDrawBitmap_F01E8(posX, 2 * scale, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL_HIT], scale);
+		ptrDrawBitmap_F01E8(posX, 2 * scale + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL_HIT], scale);
 		a1x->playerData_0xA4_164x->PlayerHitFrameTime_406--;
 	}
 	else
 	{//adress 20ed35
 		//Player Health Panel
-		ptrDrawBitmap_F01E8(posX, 2 * scale, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL], scale);
+		ptrDrawBitmap_F01E8(posX, 2 * scale + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL], scale);
 	}
 
 	if ((a1x->flags_0xc_12_15.byte[0] & 0x20 || a1x->playerData_0xA4_164x->invulnerableTimer_0x159_345) && gameState_D41A4.colorIndex_121[2])
 	{
 		//Draw Player Health and Mana flickering
-		GameBitmap::DrawTransparentBitmap_2DE80(posX + (2 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[PLAYER_ICON], scale);
-		GameBitmap::DrawTransparentBitmap_2DE80(posX + (38 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_MANA_ICONS], scale);
+		GameBitmap::DrawTransparentBitmap_2DE80(posX + (2 * scale), (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[PLAYER_ICON], scale);
+		GameBitmap::DrawTransparentBitmap_2DE80(posX + (38 * scale), (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_MANA_ICONS], scale);
 	}
 	else
 	{
 		//Draw Player Health and Mana
-		DrawBitmap_2BB40(posX + (2 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[PLAYER_ICON], scale);
-		DrawBitmap_2BB40(posX + (38 * scale), (2 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_MANA_ICONS], scale);
+		DrawBitmap_2BB40(posX + (2 * scale), (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[PLAYER_ICON], scale);
+		DrawBitmap_2BB40(posX + (38 * scale), (2 * scale) + topBarY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_MANA_ICONS], scale);
 	}
 	//VGA_Debug_Blit(640, 480, pdwScreenBuffer_351628);
 	posX = posX + (58 * scale);
-	DrawBar_2D190(posX, 10 * scale, 64 * scale, 10 * scale, ((a1x->life_0x8 << 6) / a1x->maxLife_0x4) * scale, 0x7Bu);
+	DrawBar_2D190(posX, 10 * scale + topBarY, 64 * scale, 10 * scale, ((a1x->life_0x8 << 6) / a1x->maxLife_0x4) * scale, 0x7Bu);
 	//adress 20ee1a
 	//1b8 1c 40 0a 03 aa
 	//0xfa00/4c79=3
 	//v18=0x4c79
-	DrawBar_2D190(posX, 28 * scale, 64 * scale, 10 * scale, ((a1x->maxMana_0x8C_140 << 6) / v18) * scale, manaMaxColourIdx);
-	DrawBar_2D190(posX, 28 * scale, 64 * scale, 10 * scale, ((a1x->mana_0x90_144 << 6) / v18) * scale, manaColourIdx);
+	DrawBar_2D190(posX, 28 * scale + topBarY, 64 * scale, 10 * scale, ((a1x->maxMana_0x8C_140 << 6) / v18) * scale, manaMaxColourIdx);
+	DrawBar_2D190(posX, 28 * scale + topBarY, 64 * scale, 10 * scale, ((a1x->mana_0x90_144 << 6) / v18) * scale, manaColourIdx);
 	//VGA_Debug_Blit(640, 480, pdwScreenBuffer_351628);
 }
 
@@ -3843,7 +3843,7 @@ void MoveCursorToSelectedSpell_6D200(type_str_0x2BDE* a1x)//24e200
 	if(!DefaultResolutions())
 	{
 		scale = gameUiScale;
-		helpHeight = UiScreenHeight();
+		helpHeight = UiScreenHeight() - LowResHudOffset(lookingGlassHudOffsets.spellMenuY);   // the bottom of the spell menu
 		offsetPosX = (UiScreenWidth() - (640 * scale)) / 2;
 	}
 
@@ -5046,12 +5046,17 @@ void DrawGameFrame_2BE30()//20CE30
 	// 320x200 in the low res UI, or the screen at the game resolution
 	ClearScreenAlphaBuffer(screenWidth_18062C, screenHeight_180624, 0);
 
+	// The HUD moved in from the edges (Looking Glass, low res UI; 0 otherwise)
+	const int mapPosX = LowResHudOffset(lookingGlassHudOffsets.mapX);
+	const int mapPosY = LowResHudOffset(lookingGlassHudOffsets.mapY);
 	if (!DefaultResolutions())
 	{
 		scale = gameUiScale;
-		spellLeftPosX = UiScreenWidth() - (130 * scale);
-		spellRightPosX = UiScreenWidth() - (66 * scale);
+		const int spellIconsInset = LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
+		spellLeftPosX = UiScreenWidth() - (130 * scale) - spellIconsInset;
+		spellRightPosX = UiScreenWidth() - (66 * scale) - spellIconsInset;
 	}
+	const int spellIconsPosY = (2 * scale) + LowResHudOffset(lookingGlassHudOffsets.spellIconsY);
 
 	x_DWORD_D41C8 = 0;
 	if (world_D41A0.m_GameSettings.display_0x2196.transparency_0x2198)
@@ -5202,8 +5207,8 @@ void DrawGameFrame_2BE30()//20CE30
 			if (world_D41A0.m_GameSettings.m_Display.m_wMiniMap)
 			{
 				DrawMinimap_63600(//draw minimap
-					0,
-					0,
+					mapPosX,
+					mapPosY,
 					world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].positions_0x1d1_2BDE_11695[world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1].axis_2BDE_11695.x,
 					world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].positions_0x1d1_2BDE_11695[world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1].axis_2BDE_11695.y,
 					128 * scale,
@@ -5212,8 +5217,8 @@ void DrawGameFrame_2BE30()//20CE30
 					256 / scale,
 					0);
 				DrawMinimapEntites_61880(//draw entites in minimap
-					0,
-					0,
+					mapPosX,
+					mapPosY,
 					world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].positions_0x1d1_2BDE_11695[world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1].axis_2BDE_11695.x,
 					world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].positions_0x1d1_2BDE_11695[world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1].axis_2BDE_11695.y,
 					128 * scale,
@@ -5222,8 +5227,8 @@ void DrawGameFrame_2BE30()//20CE30
 					256 / scale,
 					scale);
 				DrawMinimapMarks_644F0(
-					0,
-					0,
+					mapPosX,
+					mapPosY,
 					world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].positions_0x1d1_2BDE_11695[world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1].axis_2BDE_11695.x,
 					world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].positions_0x1d1_2BDE_11695[world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].ActPlayerIndex_0x00e_2BDE_11244 + 1].axis_2BDE_11695.y,
 					128 * scale,
@@ -5240,7 +5245,7 @@ void DrawGameFrame_2BE30()//20CE30
 				//Left
 				DrawSpellIcon_2E260(
 					spellLeftPosX,
-					2 * scale,
+					spellIconsPosY,
 					Entities_EA3E4[playerEntity->playerData_0xA4_164x->str_611.SpellsEnabled_0x333_819x.SpellEnabled[playerEntity->playerData_0xA4_164x->str_611.SpellIndexLeft_0x451_1105]],
 					false,
 					scale);
@@ -5248,12 +5253,13 @@ void DrawGameFrame_2BE30()//20CE30
 				//Right
 				DrawSpellIcon_2E260(
 					spellRightPosX,
-					2 * scale,
+					spellIconsPosY,
 					Entities_EA3E4[playerEntity->playerData_0xA4_164x->str_611.SpellsEnabled_0x333_819x.SpellEnabled[playerEntity->playerData_0xA4_164x->str_611.SpellIndexRight_0x453_1107]],
 					false,
 					scale);
 
-				DrawTopStatusBar_2D710(playerEntity, scale);
+				DrawTopStatusBar_2D710(playerEntity, scale, mapPosX, mapPosY,
+					LowResHudOffset(lookingGlassHudOffsets.topBarX), LowResHudOffset(lookingGlassHudOffsets.topBarY));
 			}
 			switch (world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221)
 			{
@@ -6015,7 +6021,7 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 	{
 		scale = gameUiScale;
 		posX = (UiScreenWidth() - (640 * scale)) / 2;
-		posY = UiScreenHeight();
+		posY = UiScreenHeight() - LowResHudOffset(lookingGlassHudOffsets.spellMenuY);   // moved up from the bottom (Looking Glass)
 	}
 	posIconsXStart =(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[EDGE_PANEL].width_4 * scale;
 	spellIconHeight = (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SPELL_ICON_PANEL].height_5 * scale;

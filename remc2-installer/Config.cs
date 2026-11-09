@@ -113,6 +113,13 @@ namespace remc2_installer
 		public int convergence { get; set; } = 2048;
 		public bool display { get; set; } = true;
 		public string bridgePath { get; set; } = "";
+		public int mapOffsetX { get; set; } = 25;
+		public int mapOffsetY { get; set; } = 25;
+		public int topBarOffsetX { get; set; } = 25;
+		public int topBarOffsetY { get; set; } = 25;
+		public int spellIconsOffsetX { get; set; } = 25;
+		public int spellIconsOffsetY { get; set; } = 25;
+		public int spellMenuOffsetY { get; set; } = 25;
 	}
 
 	public class Game

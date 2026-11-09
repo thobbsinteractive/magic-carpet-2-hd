@@ -126,7 +126,8 @@
 							"viewSpacing: Sideways camera step between neighbouring views, in world units (a tile is 256)",
 							"convergence: Distance in world units that sits at the display surface (no parallax): nearer pops out, further sinks in. 0 = parallel views (everything in front of the display)",
 							"display: Shows the quilt as a hologram on the Looking Glass: fullscreen on it, interleaved with its calibration from Looking Glass Bridge (Windows, Bridge running). false = the quilt's cells side by side in a normal window",
-							"bridgePath: Looking Glass Bridge's install folder. Empty = the newest in C:/Program Files/Looking Glass"
+							"bridgePath: Looking Glass Bridge's install folder. Empty = the newest in C:/Program Files/Looking Glass",
+							"mapOffsetX/Y, topBarOffsetX/Y, spellIconsOffsetX/Y, spellMenuOffsetY: Moves the in-game HUD in from the screen's edges, in pixels of the cell (low res UI only): the map and the top bar from the top left, the spell icons from the top right, the spell menu up from the bottom"
 						],
 						"enabled": false,
 						"rows": 6,
@@ -136,7 +137,14 @@
 						"viewSpacing": 8,
 						"convergence": 2048,
 						"display": true,
-						"bridgePath": ""
+						"bridgePath": "",
+						"mapOffsetX": 25,
+						"mapOffsetY": 25,
+						"topBarOffsetX": 25,
+						"topBarOffsetY": 25,
+						"spellIconsOffsetX": 25,
+						"spellIconsOffsetY": 25,
+						"spellMenuOffsetY": 25
 					}
 				}
 			},

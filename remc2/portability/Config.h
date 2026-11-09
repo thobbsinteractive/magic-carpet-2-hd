@@ -108,6 +108,16 @@ public:
 			int m_Convergence = 2048;   // distance at the display surface (zero parallax), in world units; 0 = parallel views
 			bool m_Display = false;     // the hologram on the Looking Glass (calibration from Bridge); false = the quilt in a window
 			std::string m_BridgePath;   // Looking Glass Bridge's folder; empty = the newest in the default install location
+			// The in-game HUD of the low res UI moved in from the screen's edges (the lenticules lose the edges), in
+			// pixels of the cell: the map and the top bar from the top left, the spell icons from the top right, the
+			// spell menu up from the bottom
+			int m_MapOffsetX = 25;
+			int m_MapOffsetY = 25;
+			int m_TopBarOffsetX = 25;
+			int m_TopBarOffsetY = 25;
+			int m_SpellIconsOffsetX = 25;
+			int m_SpellIconsOffsetY = 25;
+			int m_SpellMenuOffsetY = 25;
 		};
 
 		struct Hardware

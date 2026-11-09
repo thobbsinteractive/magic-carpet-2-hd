@@ -415,6 +415,16 @@ Config::Settings::Hardware Config::GetHardware(const json& graphics)
 				values.m_Display = ReadBoolValue(lookingGlass, "display");
 			if (lookingGlass.contains("bridgePath"))
 				values.m_BridgePath = ReadStringValue(lookingGlass, "bridgePath");
+			const std::pair<const char*, int*> hudOffsets[] = {
+				{ "mapOffsetX", &values.m_MapOffsetX }, { "mapOffsetY", &values.m_MapOffsetY },
+				{ "topBarOffsetX", &values.m_TopBarOffsetX }, { "topBarOffsetY", &values.m_TopBarOffsetY },
+				{ "spellIconsOffsetX", &values.m_SpellIconsOffsetX }, { "spellIconsOffsetY", &values.m_SpellIconsOffsetY },
+				{ "spellMenuOffsetY", &values.m_SpellMenuOffsetY } };
+			for (const auto& [name, value] : hudOffsets)
+			{
+				if (lookingGlass.contains(name))
+					*value = ReadIntValue(lookingGlass, name);
+			}
 		}
 	}
 	return hardwareValues;
@@ -588,6 +598,13 @@ void Config::SaveHardwareToDoc(Config::Settings::Hardware hardware)
 	SetInt(lg, "convergence", hardware.m_LookingGlass.m_Convergence);
 	SetBool(lg, "display", hardware.m_LookingGlass.m_Display);
 	SetString(lg, "bridgePath", hardware.m_LookingGlass.m_BridgePath);
+	SetInt(lg, "mapOffsetX", hardware.m_LookingGlass.m_MapOffsetX);
+	SetInt(lg, "mapOffsetY", hardware.m_LookingGlass.m_MapOffsetY);
+	SetInt(lg, "topBarOffsetX", hardware.m_LookingGlass.m_TopBarOffsetX);
+	SetInt(lg, "topBarOffsetY", hardware.m_LookingGlass.m_TopBarOffsetY);
+	SetInt(lg, "spellIconsOffsetX", hardware.m_LookingGlass.m_SpellIconsOffsetX);
+	SetInt(lg, "spellIconsOffsetY", hardware.m_LookingGlass.m_SpellIconsOffsetY);
+	SetInt(lg, "spellMenuOffsetY", hardware.m_LookingGlass.m_SpellMenuOffsetY);
 }
 
 void Config::SaveGameToDoc(Config::Settings::Game gameSettings)
