@@ -148,7 +148,12 @@ void VGA_Init(Uint32  /*flags*/, int windowWidth, int windowHeight, int gameResW
 			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 			SDL_Rect display = GetDisplayByIndex(displayIndex);
-			if (windowWidth > display.w || windowHeight > display.h)
+			if (lookingGlassDisplay)
+			{
+				// The hologram: the window covers the Looking Glass, where Bridge says it is
+				display = SDL_Rect{ lookingGlassDevice.x, lookingGlassDevice.y, lookingGlassDevice.width, lookingGlassDevice.height };
+			}
+			else if (windowWidth > display.w || windowHeight > display.h)
 			{
 				display = FindDisplayByResolution(windowWidth, windowHeight);
 			}
@@ -308,6 +313,8 @@ bool CreateRenderer(int width, int height)
 	m_vulkanRenderer->SetBilinearFiltering(bilinearFiltering);
 	m_vulkanRenderer->SetAntiAliasing(antiAliasing);
 	m_vulkanRenderer->SetViewGrid(viewRows, viewColumns);
+	if (lookingGlassDisplay)
+		m_vulkanRenderer->SetLookingGlassDevice(lookingGlassDevice);
 	try
 	{
 		return m_vulkanRenderer->Init(m_window, width, height);
@@ -891,7 +898,15 @@ void ToggleFullscreen() {
 }
 
 void ToggleFullscreen(bool fullScreen) {
-	
+	if (lookingGlassDisplay)
+	{
+		// Always fullscreen on the Looking Glass: the interleave needs the window to be exactly the display
+		SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		m_settingWindowGrabbed = true;
+		SDL_SetWindowGrab(m_window, SDL_TRUE);
+		return;
+	}
+
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0) {
 		SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());

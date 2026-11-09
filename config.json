@@ -125,7 +125,9 @@
 							"rows, columns: The quilt's grid of views. Max 16 each. The leftmost view is the bottom left cell, then left to right and bottom to top",
 							"cellWidth, cellHeight: The resolution of each view: the menus, the UI and the 3D view are drawn at this size",
 							"viewSpacing: Sideways camera step between neighbouring views, in world units (a tile is 256)",
-							"convergence: Distance in world units that sits at the display surface (no parallax): nearer pops out, further sinks in. 0 = parallel views (everything in front of the display)"
+							"convergence: Distance in world units that sits at the display surface (no parallax): nearer pops out, further sinks in. 0 = parallel views (everything in front of the display)",
+							"display: Shows the quilt as a hologram on the Looking Glass: fullscreen on it, interleaved with its calibration from Looking Glass Bridge (Windows, Bridge running). false = the quilt's cells side by side in a normal window",
+							"bridgePath: Looking Glass Bridge's install folder. Empty = the newest in C:/Program Files/Looking Glass"
 						],
 						"enabled": false,
 						"rows": 6,
@@ -133,7 +135,9 @@
 						"cellWidth": 420,
 						"cellHeight": 560,
 						"viewSpacing": 8,
-						"convergence": 1024
+						"convergence": 1024,
+						"display": true,
+						"bridgePath": ""
 					}
 				}
 			},

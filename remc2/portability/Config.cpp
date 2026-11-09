@@ -411,6 +411,10 @@ Config::Settings::Hardware Config::GetHardware(const json& graphics)
 				values.m_ViewSpacing = ReadIntValue(lookingGlass, "viewSpacing");
 			if (lookingGlass.contains("convergence"))
 				values.m_Convergence = ReadIntValue(lookingGlass, "convergence");
+			if (lookingGlass.contains("display"))
+				values.m_Display = ReadBoolValue(lookingGlass, "display");
+			if (lookingGlass.contains("bridgePath"))
+				values.m_BridgePath = ReadStringValue(lookingGlass, "bridgePath");
 		}
 	}
 	return hardwareValues;
@@ -582,6 +586,8 @@ void Config::SaveHardwareToDoc(Config::Settings::Hardware hardware)
 	SetInt(lg, "cellHeight", hardware.m_LookingGlass.m_CellHeight);
 	SetInt(lg, "viewSpacing", hardware.m_LookingGlass.m_ViewSpacing);
 	SetInt(lg, "convergence", hardware.m_LookingGlass.m_Convergence);
+	SetBool(lg, "display", hardware.m_LookingGlass.m_Display);
+	SetString(lg, "bridgePath", hardware.m_LookingGlass.m_BridgePath);
 }
 
 void Config::SaveGameToDoc(Config::Settings::Game gameSettings)

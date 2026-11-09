@@ -1322,7 +1322,128 @@ bool VulkanPolygonRenderer::CreateOverlayResources()
 		CreateOverlayPipeline(OverlayBlend::Opaque, m_viewPortBlitPipeline) &&
 		CreateOverlayPipeline(OverlayBlend::Opaque, m_reflectionCopyPipeline, "overlay.frag.spv", VK_NULL_HANDLE,
 			m_offscreenRenderPass, m_msaaSamples) &&
-		CreateOverlayPipeline(OverlayBlend::Constant, m_blurPipeline);
+		CreateOverlayPipeline(OverlayBlend::Constant, m_blurPipeline) &&
+		(!m_lenticular || CreateLenticularResources());
+}
+
+void VulkanPolygonRenderer::SetLookingGlassDevice(const LookingGlassDevice& device)
+{
+	m_lenticular = device.found;
+	m_lenticularWidth = (uint32_t)device.width;
+	m_lenticularHeight = (uint32_t)device.height;
+	m_lenticularConstants.pitch = device.pitch;
+	m_lenticularConstants.tilt = device.tilt;
+	m_lenticularConstants.center = device.center;
+	m_lenticularConstants.subp = device.subp;
+	m_lenticularConstants.invView = device.invView;
+	m_lenticularConstants.ri = device.ri;
+	m_lenticularConstants.bi = device.bi;
+	m_lenticularConstants.flipX = device.flipX ? 1 : 0;
+}
+
+// The quilt's render pass (the swapchain's format and one sample: the window's pipelines are compatible with it) and
+// the interleave's pipeline (lenticular.frag: the quilt sampled through the overlay layout, the calibration as push
+// constants)
+bool VulkanPolygonRenderer::CreateLenticularResources()
+{
+	// The interleave works in screen fractions, so it only lines up with the lenticules at the display's own size
+	if (m_swapchainExtent.width != m_lenticularWidth || m_swapchainExtent.height != m_lenticularHeight)
+		Logger->warn("Looking Glass: the window is {}x{}, not the display's {}x{}: the hologram will not line up "
+			"(is Windows scaling the display?)", m_swapchainExtent.width, m_swapchainExtent.height, m_lenticularWidth, m_lenticularHeight);
+
+	VkAttachmentDescription colorAttachment{};
+	colorAttachment.format = m_swapchainFormat;
+	colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+	colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+	colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	colorAttachment.finalLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+	VkAttachmentReference colorRef{ 0, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL };
+	VkSubpassDescription subpass{};
+	subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+	subpass.colorAttachmentCount = 1;
+	subpass.pColorAttachments = &colorRef;
+
+	// In: the previous frame's interleave has finished reading the quilt (and the views' passes are done, as for the
+	// window's pass). Out: the interleave reads what was drawn.
+	VkSubpassDependency dependencies[2]{};
+	dependencies[0].srcSubpass = VK_SUBPASS_EXTERNAL;
+	dependencies[0].dstSubpass = 0;
+	dependencies[0].srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+	dependencies[0].srcAccessMask = 0;
+	dependencies[0].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependencies[0].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+	dependencies[1].srcSubpass = 0;
+	dependencies[1].dstSubpass = VK_SUBPASS_EXTERNAL;
+	dependencies[1].srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependencies[1].srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+	dependencies[1].dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+	dependencies[1].dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+
+	VkRenderPassCreateInfo rpInfo{};
+	rpInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+	rpInfo.attachmentCount = 1;
+	rpInfo.pAttachments = &colorAttachment;
+	rpInfo.subpassCount = 1;
+	rpInfo.pSubpasses = &subpass;
+	rpInfo.dependencyCount = 2;
+	rpInfo.pDependencies = dependencies;
+	if (vkCreateRenderPass(m_device, &rpInfo, nullptr, &m_quiltRenderPass) != VK_SUCCESS)
+		return false;
+
+	VkPushConstantRange pushRange{};
+	pushRange.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+	pushRange.offset = 0;
+	pushRange.size = sizeof(LenticularPushConstants);
+
+	VkPipelineLayoutCreateInfo layoutInfo{};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+	layoutInfo.setLayoutCount = 1;
+	layoutInfo.pSetLayouts = &m_overlayDescriptorSetLayout;
+	layoutInfo.pushConstantRangeCount = 1;
+	layoutInfo.pPushConstantRanges = &pushRange;
+	if (vkCreatePipelineLayout(m_device, &layoutInfo, nullptr, &m_lenticularPipelineLayout) != VK_SUCCESS)
+		return false;
+
+	return CreateOverlayPipeline(OverlayBlend::Opaque, m_lenticularPipeline, "lenticular.frag.spv", m_lenticularPipelineLayout);
+}
+
+bool VulkanPolygonRenderer::EnsureQuiltTarget(uint32_t width, uint32_t height)
+{
+	if (m_quiltTarget.framebuffer && m_quiltExtent.width == width && m_quiltExtent.height == height)
+		return true;
+	// The other frame in flight may still be reading the old quilt
+	vkDeviceWaitIdle(m_device);
+	DestroyColourTarget(m_quiltTarget);
+	m_quiltExtent = { 0, 0 };
+	if (!CreateColourTarget(width, height, m_quiltRenderPass, m_quiltTarget))
+	{
+		DestroyColourTarget(m_quiltTarget);
+		return false;
+	}
+	m_quiltExtent = { width, height };
+	return true;
+}
+
+// The quilt interleaved over the whole window (the display): every pixel picks its subpixels' views
+void VulkanPolygonRenderer::DrawLenticular(VkCommandBuffer commandBuffer)
+{
+	VkViewport viewport{ 0.0f, 0.0f, (float)m_swapchainExtent.width, (float)m_swapchainExtent.height, 0.0f, 1.0f };
+	VkRect2D scissor{ { 0, 0 }, m_swapchainExtent };
+	vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
+	vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
+
+	LenticularPushConstants constants = m_lenticularConstants;
+	constants.columns = m_viewColumns;
+	constants.rows = m_viewRows;
+	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_lenticularPipeline);
+	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_lenticularPipelineLayout, 0, 1,
+		&m_quiltTarget.descriptorSet, 0, nullptr);
+	vkCmdPushConstants(commandBuffer, m_lenticularPipelineLayout, VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(constants), &constants);
+	vkCmdDraw(commandBuffer, 3, 1, 0, 0);
 }
 
 // (Re)creates the HUD index/alpha image and its staging buffer when the game resolution changes.
@@ -1995,13 +2116,41 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 	const int columns = m_viewColumns;
 	const int rows = m_viewRows;
 	const size_t cellCount = (size_t)rows * columns;
+	// With a Looking Glass display the cells go into the quilt image instead. Each view fills the whole display, so a
+	// cell has the display's shape: the frame (the game resolution, 1:1) fits it in one direction and is centred with
+	// black bars in the other, for screens of another shape than the cells in the config (the menus, loading screens)
+	bool lenticular = m_lenticular && srcRect.w > 0 && srcRect.h > 0;
+	int cellWidth = srcRect.w;
+	int cellHeight = srcRect.h;
+	if (lenticular && m_lenticularWidth > 0 && m_lenticularHeight > 0)
+	{
+		const double displayAspect = (double)m_lenticularWidth / (double)m_lenticularHeight;
+		if ((double)srcRect.w / (double)srcRect.h > displayAspect)
+			cellHeight = (int)std::lround((double)srcRect.w / displayAspect);   // wider: bars above and below
+		else
+			cellWidth = (int)std::lround((double)srcRect.h * displayAspect);    // taller: bars at the sides
+	}
+	const VkExtent2D quiltExtent{ (uint32_t)(cellWidth * columns), (uint32_t)(cellHeight * rows) };
+	if (lenticular && !EnsureQuiltTarget(quiltExtent.width, quiltExtent.height))
+	{
+		Logger->error("Looking Glass: could not create the {}x{} quilt image, showing the quilt instead", quiltExtent.width, quiltExtent.height);
+		m_lenticular = lenticular = false;
+	}
+	const SDL_Rect cellsRect = lenticular ? SDL_Rect{ 0, 0, (int)quiltExtent.width, (int)quiltExtent.height } : destRect;
+	const VkExtent2D cellsExtent = lenticular ? quiltExtent : m_swapchainExtent;
+
 	const auto cellRect = [&](size_t cell) -> SDL_Rect {
 		const int column = (int)(cell % columns);
 		const int row = rows - 1 - (int)(cell / columns);   // from the top of the window
-		const int x0 = destRect.x + destRect.w * column / columns;
-		const int y0 = destRect.y + destRect.h * row / rows;
-		const int x1 = destRect.x + destRect.w * (column + 1) / columns;
-		const int y1 = destRect.y + destRect.h * (row + 1) / rows;
+		const int x0 = cellsRect.x + cellsRect.w * column / columns;
+		const int y0 = cellsRect.y + cellsRect.h * row / rows;
+		const int x1 = cellsRect.x + cellsRect.w * (column + 1) / columns;
+		const int y1 = cellsRect.y + cellsRect.h * (row + 1) / rows;
+		if (lenticular)
+		{
+			// The frame at 1:1, centred in the cell (the quilt's clear colour makes the bars)
+			return SDL_Rect{ x0 + (x1 - x0 - srcRect.w) / 2, y0 + (y1 - y0 - srcRect.h) / 2, srcRect.w, srcRect.h };
+		}
 		return SDL_Rect{ x0, y0, x1 - x0, y1 - y0 };
 		};
 
@@ -2025,8 +2174,8 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 	const auto scissorOf = [&](const SDL_Rect& rect) -> VkRect2D {
 		const int x0 = (std::max)(rect.x, 0);
 		const int y0 = (std::max)(rect.y, 0);
-		const int x1 = (std::min)(rect.x + rect.w, (int)m_swapchainExtent.width);
-		const int y1 = (std::min)(rect.y + rect.h, (int)m_swapchainExtent.height);
+		const int x1 = (std::min)(rect.x + rect.w, (int)cellsExtent.width);
+		const int y1 = (std::min)(rect.y + rect.h, (int)cellsExtent.height);
 		return VkRect2D{ { x0, y0 }, { (uint32_t)(std::max)(x1 - x0, 0), (uint32_t)(std::max)(y1 - y0, 0) } };
 		};
 
@@ -2142,15 +2291,29 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 		m_blurSeed = true;
 	}
 
-	VkRenderPassBeginInfo rpBegin{};
-	rpBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-	rpBegin.renderPass = m_renderPass;
-	rpBegin.framebuffer = m_framebuffers[m_currentImageIndex];
-	rpBegin.renderArea.extent = m_swapchainExtent;
-	rpBegin.clearValueCount = 1;
-	rpBegin.pClearValues = &windowClearColor;
-
-	vkCmdBeginRenderPass(frame.commandBuffer, &rpBegin, VK_SUBPASS_CONTENTS_INLINE);
+	// The quilt first, into its own image, when the window shows it interleaved
+	if (lenticular)
+	{
+		VkRenderPassBeginInfo quiltBegin{};
+		quiltBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		quiltBegin.renderPass = m_quiltRenderPass;
+		quiltBegin.framebuffer = m_quiltTarget.framebuffer;
+		quiltBegin.renderArea.extent = quiltExtent;
+		quiltBegin.clearValueCount = 1;
+		quiltBegin.pClearValues = &windowClearColor;
+		vkCmdBeginRenderPass(frame.commandBuffer, &quiltBegin, VK_SUBPASS_CONTENTS_INLINE);
+	}
+	else
+	{
+		VkRenderPassBeginInfo rpBegin{};
+		rpBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		rpBegin.renderPass = m_renderPass;
+		rpBegin.framebuffer = m_framebuffers[m_currentImageIndex];
+		rpBegin.renderArea.extent = m_swapchainExtent;
+		rpBegin.clearValueCount = 1;
+		rpBegin.pClearValues = &windowClearColor;
+		vkCmdBeginRenderPass(frame.commandBuffer, &rpBegin, VK_SUBPASS_CONTENTS_INLINE);
+	}
 
 	for (size_t cell = 0; cell < cellCount; cell++)
 	{
@@ -2176,7 +2339,23 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 		}
 
 		if (drawHud && cellArea.w > 0 && cellArea.h > 0)
-			DrawOverlay(cellArea, frame.commandBuffer);
+			DrawOverlay(cellArea, frame.commandBuffer, cellsExtent);
+	}
+
+	if (lenticular)
+	{
+		// Then the window: the quilt interleaved for the display (EndFrame ends this pass)
+		vkCmdEndRenderPass(frame.commandBuffer);
+
+		VkRenderPassBeginInfo rpBegin{};
+		rpBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		rpBegin.renderPass = m_renderPass;
+		rpBegin.framebuffer = m_framebuffers[m_currentImageIndex];
+		rpBegin.renderArea.extent = m_swapchainExtent;
+		rpBegin.clearValueCount = 1;
+		rpBegin.pClearValues = &windowClearColor;
+		vkCmdBeginRenderPass(frame.commandBuffer, &rpBegin, VK_SUBPASS_CONTENTS_INLINE);
+		DrawLenticular(frame.commandBuffer);
 	}
 
 	return true;
@@ -2435,7 +2614,7 @@ void VulkanPolygonRenderer::EndFrame()
 	m_currentFrame = (m_currentFrame + 1) % kFramesInFlight;
 }
 
-void VulkanPolygonRenderer::DrawOverlay(SDL_Rect dscrect, VkCommandBuffer commandBuffer)
+void VulkanPolygonRenderer::DrawOverlay(SDL_Rect dscrect, VkCommandBuffer commandBuffer, VkExtent2D extent)
 {
 	VkViewport overlayViewport{};
 	overlayViewport.x = (float)dscrect.x;
@@ -2465,8 +2644,8 @@ void VulkanPolygonRenderer::DrawOverlay(SDL_Rect dscrect, VkCommandBuffer comman
 
 	// Restore full-extent viewport/scissor so anything drawn after this in
 	// the same render pass isn't affected.
-	VkViewport fullViewport{ 0, 0, (float)m_swapchainExtent.width, (float)m_swapchainExtent.height, 0.0f, 1.0f };
-	VkRect2D fullScissor{ {0, 0}, m_swapchainExtent };
+	VkViewport fullViewport{ 0, 0, (float)extent.width, (float)extent.height, 0.0f, 1.0f };
+	VkRect2D fullScissor{ {0, 0}, extent };
 	vkCmdSetViewport(commandBuffer, 0, 1, &fullViewport);
 	vkCmdSetScissor(commandBuffer, 0, 1, &fullScissor);
 }
@@ -2488,6 +2667,10 @@ void VulkanPolygonRenderer::Shutdown()
 
 	DestroyFrameData();
 	DestroyOffscreenTarget();
+	DestroyColourTarget(m_quiltTarget);
+	vkDestroyPipeline(m_device, m_lenticularPipeline, nullptr);
+	vkDestroyPipelineLayout(m_device, m_lenticularPipelineLayout, nullptr);
+	vkDestroyRenderPass(m_device, m_quiltRenderPass, nullptr);
 	vkDestroyPipeline(m_device, m_viewPortBlitPipeline, nullptr);
 	vkDestroyPipeline(m_device, m_reflectionCopyPipeline, nullptr);
 	vkDestroyPipeline(m_device, m_blurPipeline, nullptr);

@@ -24,6 +24,7 @@
 #include "../shared/EventDispatcher.h"
 #include "../engine/Basic.h"
 #include "RenderPolygon.h"
+#include "LookingGlassBridge.h"
 
 struct SDL_Window;
 
@@ -88,11 +89,14 @@ public:
 	// bottom left cell, then left to right and bottom to top. A single list is shown in every cell. 1 x 1 = the normal frame.
 	static constexpr int kMaxViews = 256;
 	void SetViewGrid(int rows, int columns);
+	// The hologram on a Looking Glass (before Init): the cells are drawn into a quilt image at the game resolution each,
+	// and the window (the display) shows it interleaved by lenticular.frag with the device's calibration
+	void SetLookingGlassDevice(const LookingGlassDevice& device);
 
 	// hudSurface is the 8-bit palettised screen; hudAlpha is one alpha byte per pixel of it, or nullptr for opaque.
 	bool BeginFrame(SDL_Surface* hudSurface, const uint8_t* hudAlpha, SDL_Rect srcRect, SDL_Rect destRect);
 	bool UploadHud(SDL_Surface* hudSurface, const uint8_t* hudAlpha, VkCommandBuffer commandBuffer);   // false = nothing to draw
-	void DrawOverlay(SDL_Rect dscrect, VkCommandBuffer commandBuffer);
+	void DrawOverlay(SDL_Rect dscrect, VkCommandBuffer commandBuffer, VkExtent2D extent);   // extent: the render target's
 	static constexpr size_t kNoReflectionPass = (size_t)-1;
 	void DrawPolygonsWireframe(const std::vector<RenderPolygon>& polygons);
 	void EndFrame();
@@ -265,6 +269,34 @@ private:
 	uint32_t m_offscreenWidth = 0;
 	uint32_t m_offscreenHeight = 0;
 	VkPipeline m_viewPortBlitPipeline = VK_NULL_HANDLE;
+
+	// Looking Glass display: the quilt (cells of the game resolution, view 0 bottom left) is drawn into m_quiltTarget,
+	// the swapchain's format so the window's pipelines draw into it, then interleaved into the window
+	struct LenticularPushConstants
+	{
+		float pitch;
+		float tilt;
+		float center;
+		float subp;
+		int32_t invView;
+		int32_t ri;
+		int32_t bi;
+		int32_t columns;
+		int32_t rows;
+		int32_t flipX;
+	};
+	bool m_lenticular = false;
+	LenticularPushConstants m_lenticularConstants{};
+	uint32_t m_lenticularWidth = 0;    // the display's size, to check the window against
+	uint32_t m_lenticularHeight = 0;
+	VkRenderPass m_quiltRenderPass = VK_NULL_HANDLE;
+	ColourTarget m_quiltTarget;
+	VkExtent2D m_quiltExtent{ 0, 0 };
+	VkPipelineLayout m_lenticularPipelineLayout = VK_NULL_HANDLE;
+	VkPipeline m_lenticularPipeline = VK_NULL_HANDLE;
+	bool CreateLenticularResources();
+	bool EnsureQuiltTarget(uint32_t width, uint32_t height);
+	void DrawLenticular(VkCommandBuffer commandBuffer);
 
 	// MSAA: the offscreen render pass draws into this multisampled image and resolves it into the target it is
 	// drawn for (the reflection, then the offscreen target: one after the other, so they share it).

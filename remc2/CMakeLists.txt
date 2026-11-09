@@ -228,6 +228,8 @@ set(SOURCE_FILES__portability
     "portability/port_sdl_vga_mouse.h"
     "portability/VulkanPolygonRenderer.cpp"
     "portability/VulkanPolygonRenderer.h"
+    "portability/LookingGlassBridge.cpp"
+    "portability/LookingGlassBridge.h"
     "portability/RenderPolygon.h"
     "portability/port_sdl_joystick.cpp"
     "portability/port_sdl_joystick.h"

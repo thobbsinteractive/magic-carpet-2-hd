@@ -1,6 +1,7 @@
 #include "read_config.h"
 
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <ctype.h>
 
@@ -56,6 +57,8 @@ int viewRows = 1;
 int viewColumns = 1;
 int viewSpacing = 8;
 int viewConvergence = 0;
+bool lookingGlassDisplay = false;
+LookingGlassDevice lookingGlassDevice;
 bool openGLRender = false;
 bool invertYAxis = true;
 bool invertXAxis = false;
@@ -225,7 +228,29 @@ bool SetConfig() {
 		gameResWidth = GAME_RES_MAX_WIDTH;
 		gameResHeight = GAME_RES_MAX_HEIGHT;
 	}
-	if (lookingGlassEnabled)
+	lookingGlassDisplay = false;
+	if (lookingGlassEnabled && lookingGlass.m_Display)
+	{
+		// The hologram: the window is the display (fullscreen on it), the quilt is interleaved into it
+		lookingGlassDevice = QueryLookingGlassDevice(lookingGlass.m_BridgePath);
+		lookingGlassDisplay = lookingGlassDevice.found;
+		if (!lookingGlassDisplay)
+			Logger->warn("Looking Glass: no display, showing the quilt in a window instead");
+		else
+		{
+			const float cellAspect = (float)gameResWidth / (float)gameResHeight;
+			const float displayAspect = (float)lookingGlassDevice.width / (float)lookingGlassDevice.height;
+			if (std::abs(cellAspect - displayAspect) > 0.01f)
+				Logger->warn("Looking Glass: the cells ({}x{}) are not the display's shape ({}x{}), the views are stretched",
+					gameResWidth, gameResHeight, lookingGlassDevice.width, lookingGlassDevice.height);
+		}
+	}
+	if (lookingGlassDisplay)
+	{
+		windowResWidth = lookingGlassDevice.width;
+		windowResHeight = lookingGlassDevice.height;
+	}
+	else if (lookingGlassEnabled)
 	{
 		windowResWidth = gameResWidth * viewColumns;
 		windowResHeight = gameResHeight * viewRows;

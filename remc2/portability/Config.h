@@ -106,6 +106,8 @@ public:
 			int m_CellHeight = 560;
 			int m_ViewSpacing = 8;    // camera step between neighbouring views, in world units (a tile is 256)
 			int m_Convergence = 1024;   // distance at the display surface (zero parallax), in world units; 0 = parallel views
+			bool m_Display = false;     // the hologram on the Looking Glass (calibration from Bridge); false = the quilt in a window
+			std::string m_BridgePath;   // Looking Glass Bridge's folder; empty = the newest in the default install location
 		};
 
 		struct Hardware

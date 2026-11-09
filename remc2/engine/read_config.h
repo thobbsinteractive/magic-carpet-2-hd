@@ -16,6 +16,7 @@
 #endif
 
 #include "../portability/Config.h"
+#include "../portability/LookingGlassBridge.h"
 #include "../portability/port_time.h"
 #include "../portability/port_filesystem.h"
 #include "../portability/port_sdl_sound.h"
@@ -68,6 +69,10 @@ extern int viewRows;
 extern int viewColumns;
 extern int viewSpacing;
 extern int viewConvergence;   // distance at the display surface (zero parallax), world units; 0 = parallel views
+// The hologram on the Looking Glass itself (lookingGlass.display, and Bridge found the display): the window is
+// fullscreen on lookingGlassDevice and the renderer interleaves the quilt with its calibration
+extern bool lookingGlassDisplay;
+extern LookingGlassDevice lookingGlassDevice;
 extern bool invertYAxis;
 extern bool invertXAxis;
 extern float mouseScaleX;
