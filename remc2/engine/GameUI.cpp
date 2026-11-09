@@ -805,6 +805,9 @@ void DrawCurrentObjectiveTextbox_30630(uint8_t scale)//211630
 			textbox.minPosY_0x18 = 80 * scale;
 			textbox.maxTextboxWidth_0x0 = 320;
 			textbox.maxTextboxHeight_0x2 = 300;
+			textbox.minPosX_0x14 += LowResHudOffset(lookingGlassHudOffsets.topBarX);
+			textbox.maxPosX_0x16 -= LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
+			textbox.minPosY_0x18 += LowResHudOffset(lookingGlassHudOffsets.topBarY);
 			textbox.maxTextboxWidth2_0xc = 320;
 
 			if (!DefaultResolutions())
@@ -1708,20 +1711,20 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 								{
 									if (v31 == 83 || v31 == 84)
 										DrawBitmap_2BB40(
-											2 * posx - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
-											2 * posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 / 2,
+											x + 2 * posx - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
+											y + 2 * posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 / 2,
 											(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
 								}
 								else
 								{
-									DrawBitmap_2BB40(2 * posx, 2 * posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
+									DrawBitmap_2BB40(x + 2 * posx, y + 2 * posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
 								}
 							}
 							else
 							{
 								DrawBitmap_2BB40(
-									2 * posx - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
-									2 * posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5,
+									x + 2 * posx - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2,
+									y + 2 * posy - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5,
 									(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31]);
 							}
 						}
@@ -1729,8 +1732,8 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 						{
 							//Draw other stuff (ballon icons)
 							DrawBitmap_2BB40(
-								posx - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2) * scale,
-								posy - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 * scale),
+								x + posx - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2) * scale,
+								y + posy - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 * scale),
 								(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31], scale);
 						}
 						else
@@ -1738,11 +1741,11 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 							//Draw Flag
 							
 							//DrawBitmap_2BB40(posx, posy - *(uint8_t *)(6 * v31 + **filearray_2aa18c[6] + 5), (uint8_t**)(6 * v31 + **filearray_2aa18c[6]));
-							DrawBitmap_2BB40(posx, posy - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31], scale);
+							DrawBitmap_2BB40(x + posx, y + posy - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31], scale);
 						}
 					}
 					if (v88)
-						SetHelpItemTarget_885E0(jy, (int16_t)posx, (int16_t)posy, v88);
+						SetHelpItemTarget_885E0(jy, (int16_t)(v8 + posx), (int16_t)(v9 + posy), v88);   // v8, v9: the map's position
 				}
 			}
 		}
@@ -1774,9 +1777,9 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 								v66 = playersColors_E88E0x[GetTrueWizardNumber_61790(v60x->playerData_0xA4_164x->playerColorIndex_0x38_56)][0];
 								DrawMinimapPlayerDot(ptrMapBufferStart_v84, nullptr, v63, v64, width, height, v66, scale, true);
 								if (videoMode_180660 == 1)
-									DrawText_2BC10(world_D41A0.players_0x2BDE[v87].WizardName_0x39f_2BFA_12157, 2 * v63 + 4, 2 * v64, v66);
+									DrawText_2BC10(world_D41A0.players_0x2BDE[v87].WizardName_0x39f_2BFA_12157, x + 2 * v63 + 4, y + 2 * v64, v66);
 								else
-									DrawText_2BC10(world_D41A0.players_0x2BDE[v87].WizardName_0x39f_2BFA_12157, v63 - CalculateScaleOffset(scale) + (4 * scale), v64 - CalculateScaleOffset(scale), v66, scale);
+									DrawText_2BC10(world_D41A0.players_0x2BDE[v87].WizardName_0x39f_2BFA_12157, x + v63 - CalculateScaleOffset(scale) + (4 * scale), y + v64 - CalculateScaleOffset(scale), v66, scale);
 							}
 						}
 					}
@@ -2352,14 +2355,14 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 										  (uint8_t**)(6 * v36 + **filearray_2aa18c[6]));*/
 									if (v36 == 83 || v36 == 84)
 										DrawBitmap_2BB40(
-											2 * v59 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].width_4 / 2,
-											2 * v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5 / 2,
+											x + 2 * v59 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].width_4 / 2,
+											y + 2 * v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5 / 2,
 											(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36]);
 								}
 								else
 								{
 									//DrawBitmap_2BB40(2 * v59, 2 * v60 - *(uint8_t *)(**filearray_2aa18c[6] + 6 * v36 + 5), (uint8_t**)(**filearray_2aa18c[6] + 6 * v36));
-									DrawBitmap_2BB40(2 * v59, 2 * v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36]);
+									DrawBitmap_2BB40(x + 2 * v59, y + 2 * v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36]);
 								}
 							}
 							else
@@ -2369,8 +2372,8 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 								  2 * v60 - *(uint8_t *)(6 * v36 + **filearray_2aa18c[6] + 5),
 									(uint8_t**)(6 * v36 + **filearray_2aa18c[6]));*/
 								DrawBitmap_2BB40(
-									2 * v59 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].width_4 / 2,
-									2 * v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5,
+									x + 2 * v59 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].width_4 / 2,
+									y + 2 * v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5,
 									(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36]);
 							}
 						}
@@ -2381,18 +2384,18 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 							  v60 - *(uint8_t *)(6 * v36 + **filearray_2aa18c[6] + 5),
 								(uint8_t**)(6 * v36 + **filearray_2aa18c[6]));*/
 							DrawBitmap_2BB40(
-								v59 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].width_4 / 2,
-								v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5,
+								x + v59 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].width_4 / 2,
+								y + v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5,
 								(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36]);
 						}
 						else
 						{
 							//DrawBitmap_2BB40(v59, v60 - *(uint8_t *)(6 * v36 + **filearray_2aa18c[6] + 5), (uint8_t**)(6 * v36 + **filearray_2aa18c[6]));
-							DrawBitmap_2BB40(v59, v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36]);
+							DrawBitmap_2BB40(x + v59, y + v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36]);
 						}
 					}
 					if (v104)
-						SetHelpItemTarget_885E0(iy, (int16_t)v59, (int16_t)v60, v104);
+						SetHelpItemTarget_885E0(iy, (int16_t)(v8 + v59), (int16_t)(v9 + v60), v104);   // v8, v9: the map's position
 				}
 			}
 		}
@@ -2422,9 +2425,9 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 								v73 = playersColors_E88E0x[GetTrueWizardNumber_61790(v66x->playerData_0xA4_164x->playerColorIndex_0x38_56)][1];
 								DrawMinimapPlayerDot(v99x, v100x, v69, v70, width, height, v73, scale, false);
 								if (videoMode_180660 == 1)
-									DrawText_2BC10(world_D41A0.players_0x2BDE[j].WizardName_0x39f_2BFA_12157, 2 * v69 + 4, 2 * v70, v73);
+									DrawText_2BC10(world_D41A0.players_0x2BDE[j].WizardName_0x39f_2BFA_12157, x + 2 * v69 + 4, y + 2 * v70, v73);
 								else
-									DrawText_2BC10(world_D41A0.players_0x2BDE[j].WizardName_0x39f_2BFA_12157, v69 - CalculateScaleOffset(scale) + (4 * scale), v70 - CalculateScaleOffset(scale), v73, scale);
+									DrawText_2BC10(world_D41A0.players_0x2BDE[j].WizardName_0x39f_2BFA_12157, x + v69 - CalculateScaleOffset(scale) + (4 * scale), y + v70 - CalculateScaleOffset(scale), v73, scale);
 							}
 						}
 					}
@@ -2992,6 +2995,8 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 
 	v8 = 0x1000000;
 	v81 = 0;
+	const int uiX = x;
+	const int uiY = y;
 	if (videoMode_180660 & 1)
 	{
 		x >>= 1;
@@ -3074,7 +3079,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[3840];
 			v51x.v51y = v72x->position_0x4C_76;
 			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
-				SetHelpItemTarget_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
+				SetHelpItemTarget_885E0(v72x, x + v51x.v62xw_42, y + v51x.v63xw_44, 0x52u);
 			v36x = &v72x->position_0x4C_76;
 			v17x = &v72x->position_0x4C_76;
 			v16x = &v75x->position_0x4C_76;
@@ -3089,7 +3094,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[0xff0];
 			v51x.v51y = v65y;
 			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
-				SetHelpItemTarget_885E0(0, v51x.v62xw_42, v51x.v63xw_44, 0x51u);
+				SetHelpItemTarget_885E0(0, x + v51x.v62xw_42, y + v51x.v63xw_44, 0x51u);
 			v36x = &v65y;
 			v17x = &v65y;
 			v16x = &v75x->position_0x4C_76;
@@ -3110,7 +3115,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				break;
 			v51x.v51y = v72x->position_0x4C_76;
 			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
-				SetHelpItemTarget_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
+				SetHelpItemTarget_885E0(v72x, x + v51x.v62xw_42, y + v51x.v63xw_44, 0x52u);
 			v19 = Maths::DistanceXY_58490(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 			if (v19 < v8)
 			{
@@ -3135,7 +3140,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				{
 					v51x.v51y = v72x->position_0x4C_76;
 					if (DrawObjectiveRectangle_64CE0(&v51x, scale))
-						SetHelpItemTarget_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
+						SetHelpItemTarget_885E0(v72x, x + v51x.v62xw_42, y + v51x.v63xw_44, 0x52u);
 					v20 = Maths::DistanceXY_58490(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 					if (v20 < v8)
 					{
@@ -3214,9 +3219,9 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				while (v31 < 7)
 				{
 					v32 = 3 * v31;
-					v37x[2 * v32] = v25 + x + v37x[6 * v31];
+					v37x[2 * v32] = v25 + uiX + v37x[6 * v31];
 					v33 = v37x[1 + (6 * v31++)];
-					v37x[1 + 2 * v32] = v77 + y + v33;
+					v37x[1 + 2 * v32] = v77 + uiY + v33;
 				}
 				//adress 245be1
 				//v34 = v30;
@@ -5281,7 +5286,8 @@ void DrawGameFrame_2BE30()//20CE30
 				DrawPauseMenu_2FD90(scale);
 				break;
 			}
-			DrawTextPauseEndOfLevel_2CE30(132 * scale, 50 * scale, scale);
+			DrawTextPauseEndOfLevel_2CE30(132 * scale + LowResHudOffset(lookingGlassHudOffsets.topBarX),
+				50 * scale + LowResHudOffset(lookingGlassHudOffsets.topBarY), scale);
 			if (world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].MenuState_0x3DF_2BE4_12221 == (int)MenuState::SHOW_BOTTOM_MENU)
 				DrawBottomSpellsMenu_2ECC0();
 		}
@@ -6651,6 +6657,15 @@ void SetTextBoxMinMaxForSetResolution()
 		helpPopup_1804B0.type_sub_0[1].minPosY_0x18 = 30 * scale;
 		helpPopup_1804B0.type_sub_0[1].maxPosX_0x16 = UiScreenWidth() - (30 * scale);
 		helpPopup_1804B0.type_sub_0[1].maxPosY_0x1a = UiScreenHeight() - (110 * scale);
+		const int left = LowResHudOffset(lookingGlassHudOffsets.topBarX);
+		const int right = LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
+		const int top = LowResHudOffset(lookingGlassHudOffsets.topBarY);
+		for (auto& popup : helpPopup_1804B0.type_sub_0)
+		{
+			popup.minPosX_0x14 += left;
+			popup.maxPosX_0x16 -= right;
+			popup.minPosY_0x18 += top;
+		}
 	}
 	else
 	{
@@ -7256,8 +7271,8 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 	else
 	{
 		//You are here
-		str_E2A74[2].axis_2[3] = (64 * scale);
-		str_E2A74[2].axis_2[4] = (66 * scale);
+		str_E2A74[2].axis_2[3] = (64 * scale) + LowResHudOffset(lookingGlassHudOffsets.mapX);
+		str_E2A74[2].axis_2[4] = (66 * scale) + LowResHudOffset(lookingGlassHudOffsets.mapY);
 	}
 	if (!v34 && !(helpPopup_1804B0.PopupStatusByte_0x9e & 4))
 		str_E2A74[4].axis_2[0] |= 1u;
@@ -7292,12 +7307,12 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 					if (!DefaultResolutions())
 					{
 						if (v0)
-							str_E2A74[10].axis_2[3] = UiScreenWidth() - (40 * scale);
+							str_E2A74[10].axis_2[3] = UiScreenWidth() - (40 * scale) - LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
 						else
-							str_E2A74[10].axis_2[3] = UiScreenWidth() - (100 * scale);
+							str_E2A74[10].axis_2[3] = UiScreenWidth() - (100 * scale) - LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
 					}
 
-					str_E2A74[10].axis_2[4] = (32 * scale);
+					str_E2A74[10].axis_2[4] = (32 * scale) + LowResHudOffset(lookingGlassHudOffsets.spellIconsY);
 				}
 			}
 			else
@@ -7327,12 +7342,12 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 					if (!DefaultResolutions())
 					{
 						if (v0 == 1)
-							str_E2A74[11].axis_2[3] = UiScreenWidth() - (100 * scale);
+							str_E2A74[11].axis_2[3] = UiScreenWidth() - (100 * scale) - LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
 						else
-							str_E2A74[11].axis_2[3] = UiScreenWidth() - (40 * scale);
+							str_E2A74[11].axis_2[3] = UiScreenWidth() - (40 * scale) - LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
 					}
 
-					str_E2A74[11].axis_2[4] = (32 * scale);
+					str_E2A74[11].axis_2[4] = (32 * scale) + LowResHudOffset(lookingGlassHudOffsets.spellIconsY);
 				}
 			}
 			else
@@ -7362,12 +7377,12 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 					if (!DefaultResolutions())
 					{
 						if (v0 == 2)
-							str_E2A74[12].axis_2[3] = UiScreenWidth() - (100 * scale);
+							str_E2A74[12].axis_2[3] = UiScreenWidth() - (100 * scale) - LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
 						else
-							str_E2A74[12].axis_2[3] = UiScreenWidth() - (40 * scale);
+							str_E2A74[12].axis_2[3] = UiScreenWidth() - (40 * scale) - LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
 					}
 
-					str_E2A74[12].axis_2[4] = (32 * scale);
+					str_E2A74[12].axis_2[4] = (32 * scale) + LowResHudOffset(lookingGlassHudOffsets.spellIconsY);
 				}
 			}
 		}
@@ -7402,15 +7417,15 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 			//Your current objective is to fly to a point
 			str_E2A74[40].axis_2[3] = 540;
 			str_E2A74[40].axis_2[0] |= 1u;
-			str_E2A74[40].axis_2[4] = (40 * scale);
+			str_E2A74[40].axis_2[4] = (40 * scale) + LowResHudOffset(lookingGlassHudOffsets.spellIconsY);
 			str_E2A74[42].axis_2[0] |= 1u;
-			str_E2A74[42].axis_2[4] = (16 * scale);
+			str_E2A74[42].axis_2[4] = (16 * scale) + LowResHudOffset(lookingGlassHudOffsets.spellIconsY);
 			str_E2A74[42].axis_2[3] = 560;
 
 			if (!DefaultResolutions())
 			{
-				str_E2A74[40].axis_2[3] = UiScreenWidth() - (100 * scale);
-				str_E2A74[42].axis_2[3] = UiScreenWidth() - (80 * scale);
+				str_E2A74[40].axis_2[3] = UiScreenWidth() - (100 * scale) - LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
+				str_E2A74[42].axis_2[3] = UiScreenWidth() - (80 * scale) - LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
 			}
 		}
 		v16 = 0;
@@ -7429,12 +7444,12 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 			if (v16)
 			{
 				str_E2A74[41].axis_2[3] = 540;
-				str_E2A74[41].axis_2[4] = (48 * scale);
+				str_E2A74[41].axis_2[4] = (48 * scale) + LowResHudOffset(lookingGlassHudOffsets.spellIconsY);
 				str_E2A74[41].axis_2[0] |= 1u;
 
 				if (!DefaultResolutions())
 				{
-					str_E2A74[41].axis_2[3] = UiScreenWidth() - (100 * scale);
+					str_E2A74[41].axis_2[3] = UiScreenWidth() - (100 * scale) - LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
 				}
 			}
 		}
@@ -7445,12 +7460,12 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 			if (v19)
 			{
 				str_E2A74[41].axis_2[0] |= 1u;
-				str_E2A74[41].axis_2[4] = (48 * scale);
+				str_E2A74[41].axis_2[4] = (48 * scale) + LowResHudOffset(lookingGlassHudOffsets.spellIconsY);
 				str_E2A74[41].axis_2[3] = 600;
 
 				if (!DefaultResolutions())
 				{
-					str_E2A74[41].axis_2[3] = UiScreenWidth() - (40 * scale);
+					str_E2A74[41].axis_2[3] = UiScreenWidth() - (40 * scale) - LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
 				}
 			}
 		}
@@ -7564,6 +7579,20 @@ void GetHelpPopupTextAndCoords_87CF0(uint8_t scale)//268cf0
 		str_E2A74[38].axis_2[4] = 32 * scale;
 		str_E2A74[39].axis_2[3] = UiScreenWidth() - (40 * scale);
 		str_E2A74[39].axis_2[4] = 32 * scale;
+
+		// The HUD moved in from the edges (Looking Glass, low res UI; 0 otherwise): these are all set just above
+		const int topBarX = LowResHudOffset(lookingGlassHudOffsets.topBarX);
+		const int topBarY = LowResHudOffset(lookingGlassHudOffsets.topBarY);
+		for (const int item : { 5, 29, 30, 31, 32, 33, 34, 36, 37 })
+		{
+			str_E2A74[item].axis_2[3] += topBarX;
+			str_E2A74[item].axis_2[4] += topBarY;
+		}
+		for (const int item : { 38, 39 })
+		{
+			str_E2A74[item].axis_2[3] -= LowResHudOffset(lookingGlassHudOffsets.spellIconsX);
+			str_E2A74[item].axis_2[4] += LowResHudOffset(lookingGlassHudOffsets.spellIconsY);
+		}
 	}
 }
 
