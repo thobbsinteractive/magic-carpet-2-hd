@@ -36,6 +36,8 @@ set(SOURCE_FILES_CONFIGURATOR
     "ThreadingDialog.h"
     "HardwareDialog.cpp"
     "HardwareDialog.h"
+    "LookingGlassDialog.cpp"
+    "LookingGlassDialog.h"
 	"ZoneEditorCtrl.cpp"
     "ZoneEditorCtrl.h"
     "ZoneEditorDialog.cpp"
