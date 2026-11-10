@@ -537,7 +537,6 @@ bool UseLowResScaledUi();      // the game resolution asks for it
 int UiScreenWidth();           // the screen in the UI's coordinates: pixels, doubled in the low res UI
 int UiScreenHeight();
 void SetLowResScaledUiScreen(); // the screen at the game resolution with the low res UI (Graphics.cpp)
-int LowResHudOffset(int pixels);
 bool IsDefaultResolution(int width, int height);
 bool IsDefaultResolution320(int width, int height);
 bool IsDefaultResolution640(int width, int height);

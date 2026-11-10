@@ -60,6 +60,7 @@ namespace remc2_installer
 		public GameDetail gameDetail { get; set; }
 		public Threading threading { get; set; }
 		public Hardware hardware { get; set; }
+		public InGameUi inGameUi { get; set; }
 	}
 
 	public class GameDetail
@@ -113,13 +114,21 @@ namespace remc2_installer
 		public int convergence { get; set; } = 2048;
 		public bool display { get; set; } = true;
 		public string bridgePath { get; set; } = "";
-		public int mapOffsetX { get; set; } = 25;
-		public int mapOffsetY { get; set; } = 25;
-		public int topBarOffsetX { get; set; } = 25;
-		public int topBarOffsetY { get; set; } = 25;
-		public int spellIconsOffsetX { get; set; } = 25;
-		public int spellIconsOffsetY { get; set; } = 25;
-		public int spellMenuOffsetY { get; set; } = 25;
+	}
+
+	public class InGameUi
+	{
+		public string[] description { get; set; }
+		public UiElement topBar { get; set; } = new UiElement { alignment = "left" };
+		public UiElement spellIcons { get; set; } = new UiElement { alignment = "right" };
+		public UiElement spellMenu { get; set; } = new UiElement { alignment = "center" };
+	}
+
+	public class UiElement
+	{
+		public string alignment { get; set; } = "left";   // left, center or right
+		public int marginX { get; set; }   // from the aligned edge (left/right), or from the middle (center)
+		public int marginY { get; set; }   // down from the top, or up from the bottom for the spell menu
 	}
 
 	public class Game

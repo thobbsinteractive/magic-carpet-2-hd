@@ -59,17 +59,41 @@ int viewSpacing = 8;
 int viewConvergence = 0;
 bool lookingGlassDisplay = false;
 LookingGlassDevice lookingGlassDevice;
-LookingGlassHudOffsets lookingGlassHudOffsets;
 bool openGLRender = false;
 bool invertYAxis = true;
 bool invertXAxis = false;
 float mouseScaleX = 1.0f;
 float mouseScaleY = 1.0f;
 bool disableLRButtonsMenuOpen = false;
+UiElementLayout topBarLayout = { UiAlignment::Left };
+UiElementLayout spellIconsLayout = { UiAlignment::Right };
+UiElementLayout spellMenuLayout = { UiAlignment::Center };
 
 gamepad_config_t gpc;
 MouseInputMapping_t mouseMapping;
 KeyboardInputMapping_t inputMapping;
+
+UiAlignment ParseUiAlignment(std::string alignment, UiAlignment defaultAlignment)
+{
+	for (auto& c : alignment)
+		c = (char)tolower((unsigned char)c);
+	if (alignment == "left")
+		return UiAlignment::Left;
+	if (alignment == "center" || alignment == "centre")
+		return UiAlignment::Center;
+	if (alignment == "right")
+		return UiAlignment::Right;
+	return defaultAlignment;
+}
+
+UiElementLayout ReadUiElementLayout(const Config::Settings::UiElement& element, UiAlignment defaultAlignment)
+{
+	UiElementLayout layout;
+	layout.alignment = ParseUiAlignment(element.m_Alignment, defaultAlignment);
+	layout.marginX = element.m_MarginX;
+	layout.marginY = element.m_MarginY;
+	return layout;
+}
 
 std::string findConfigFile() {
 	// find location of Config and read it
@@ -210,13 +234,6 @@ bool SetConfig() {
 		viewColumns = std::clamp(lookingGlass.m_Columns, 1, MAX_VIEW_GRID);
 		viewSpacing = lookingGlass.m_ViewSpacing;
 		viewConvergence = (std::max)(lookingGlass.m_Convergence, 0);
-		lookingGlassHudOffsets.mapX = lookingGlass.m_MapOffsetX;
-		lookingGlassHudOffsets.mapY = lookingGlass.m_MapOffsetY;
-		lookingGlassHudOffsets.topBarX = lookingGlass.m_TopBarOffsetX;
-		lookingGlassHudOffsets.topBarY = lookingGlass.m_TopBarOffsetY;
-		lookingGlassHudOffsets.spellIconsX = lookingGlass.m_SpellIconsOffsetX;
-		lookingGlassHudOffsets.spellIconsY = lookingGlass.m_SpellIconsOffsetY;
-		lookingGlassHudOffsets.spellMenuY = lookingGlass.m_SpellMenuOffsetY;
 		gameResWidth = lookingGlass.m_CellWidth;
 		gameResHeight = lookingGlass.m_CellHeight;
 	}
@@ -317,6 +334,9 @@ bool SetConfig() {
 	m_render = settingsValue.m_Graphics.m_Render;
 	bilinearFiltering = settingsValue.m_Graphics.m_Hardware.m_BilinearFiltering;
 	antiAliasing = settingsValue.m_Graphics.m_Hardware.m_AntiAliasing;
+	topBarLayout = ReadUiElementLayout(settingsValue.m_Graphics.m_InGameUi.m_TopBar, UiAlignment::Left);
+	spellIconsLayout = ReadUiElementLayout(settingsValue.m_Graphics.m_InGameUi.m_SpellIcons, UiAlignment::Right);
+	spellMenuLayout = ReadUiElementLayout(settingsValue.m_Graphics.m_InGameUi.m_SpellMenu, UiAlignment::Center);
 	multiThreadedRender = settingsValue.m_Graphics.m_Threading.m_IsActive;
 	sizePercentToThreadRender = settingsValue.m_Graphics.m_Threading.m_SizePercentToThreadRender;
 	numberOfRenderThreads = settingsValue.m_Graphics.m_Threading.m_NumberOfRenderThreads;

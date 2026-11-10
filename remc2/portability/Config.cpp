@@ -339,6 +339,7 @@ Config::Settings::Graphics Config::GetGraphics(const json& settings)
 		graphicsValues.m_GameDetail = GetGameDetail(graphics);
 		graphicsValues.m_Threading = GetThreading(graphics);
 		graphicsValues.m_Hardware = GetHardware(graphics);
+		graphicsValues.m_InGameUi = GetInGameUi(graphics);
 	}
 	return graphicsValues;
 }
@@ -415,19 +416,36 @@ Config::Settings::Hardware Config::GetHardware(const json& graphics)
 				values.m_Display = ReadBoolValue(lookingGlass, "display");
 			if (lookingGlass.contains("bridgePath"))
 				values.m_BridgePath = ReadStringValue(lookingGlass, "bridgePath");
-			const std::pair<const char*, int*> hudOffsets[] = {
-				{ "mapOffsetX", &values.m_MapOffsetX }, { "mapOffsetY", &values.m_MapOffsetY },
-				{ "topBarOffsetX", &values.m_TopBarOffsetX }, { "topBarOffsetY", &values.m_TopBarOffsetY },
-				{ "spellIconsOffsetX", &values.m_SpellIconsOffsetX }, { "spellIconsOffsetY", &values.m_SpellIconsOffsetY },
-				{ "spellMenuOffsetY", &values.m_SpellMenuOffsetY } };
-			for (const auto& [name, value] : hudOffsets)
-			{
-				if (lookingGlass.contains(name))
-					*value = ReadIntValue(lookingGlass, name);
-			}
 		}
 	}
 	return hardwareValues;
+}
+
+Config::Settings::InGameUi Config::GetInGameUi(const json& graphics)
+{
+	Config::Settings::InGameUi inGameUiValues;
+	if (graphics.contains("inGameUi"))
+	{
+		const auto& inGameUi = graphics["inGameUi"];
+		inGameUiValues.m_TopBar = GetUiElement(inGameUi, "topBar", inGameUiValues.m_TopBar);
+		inGameUiValues.m_SpellIcons = GetUiElement(inGameUi, "spellIcons", inGameUiValues.m_SpellIcons);
+		inGameUiValues.m_SpellMenu = GetUiElement(inGameUi, "spellMenu", inGameUiValues.m_SpellMenu);
+	}
+	return inGameUiValues;
+}
+
+Config::Settings::UiElement Config::GetUiElement(const json& inGameUi, const char* name, const Config::Settings::UiElement& defaults)
+{
+	Config::Settings::UiElement elementValues = defaults;
+	if (inGameUi.contains(name) && inGameUi[name].is_object())
+	{
+		const auto& element = inGameUi[name];
+		if (element.contains("alignment") && element["alignment"].is_string())
+			elementValues.m_Alignment = ReadStringValue(element, "alignment");
+		elementValues.m_MarginX = ReadIntValue(element, "marginX");
+		elementValues.m_MarginY = ReadIntValue(element, "marginY");
+	}
+	return elementValues;
 }
 
 Config::Settings::Sound Config::GetSound(const json& settings)
@@ -544,6 +562,7 @@ void Config::SaveGraphicsToDoc(Config::Settings::Graphics graphics)
 	SaveGameDetailToDoc(graphics.m_GameDetail);
 	SaveThreadingToDoc(graphics.m_Threading);
 	SaveHardwareToDoc(graphics.m_Hardware);
+	SaveInGameUiToDoc(graphics.m_InGameUi);
 }
 
 void Config::SaveGameDetailToDoc(Config::Settings::GameDetail gameDetail)
@@ -598,13 +617,24 @@ void Config::SaveHardwareToDoc(Config::Settings::Hardware hardware)
 	SetInt(lg, "convergence", hardware.m_LookingGlass.m_Convergence);
 	SetBool(lg, "display", hardware.m_LookingGlass.m_Display);
 	SetString(lg, "bridgePath", hardware.m_LookingGlass.m_BridgePath);
-	SetInt(lg, "mapOffsetX", hardware.m_LookingGlass.m_MapOffsetX);
-	SetInt(lg, "mapOffsetY", hardware.m_LookingGlass.m_MapOffsetY);
-	SetInt(lg, "topBarOffsetX", hardware.m_LookingGlass.m_TopBarOffsetX);
-	SetInt(lg, "topBarOffsetY", hardware.m_LookingGlass.m_TopBarOffsetY);
-	SetInt(lg, "spellIconsOffsetX", hardware.m_LookingGlass.m_SpellIconsOffsetX);
-	SetInt(lg, "spellIconsOffsetY", hardware.m_LookingGlass.m_SpellIconsOffsetY);
-	SetInt(lg, "spellMenuOffsetY", hardware.m_LookingGlass.m_SpellMenuOffsetY);
+}
+
+void Config::SaveInGameUiToDoc(Config::Settings::InGameUi inGameUi)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& gfx = GetOrCreate(settingsEntry, "graphics");
+	auto& ui = GetOrCreate(gfx, "inGameUi");
+	const std::pair<const char*, const Settings::UiElement*> elements[] = {
+		{ "topBar", &inGameUi.m_TopBar },
+		{ "spellIcons", &inGameUi.m_SpellIcons },
+		{ "spellMenu", &inGameUi.m_SpellMenu } };
+	for (const auto& [name, element] : elements)
+	{
+		auto& e = GetOrCreate(ui, name);
+		SetString(e, "alignment", element->m_Alignment);
+		SetInt(e, "marginX", element->m_MarginX);
+		SetInt(e, "marginY", element->m_MarginY);
+	}
 }
 
 void Config::SaveGameToDoc(Config::Settings::Game gameSettings)

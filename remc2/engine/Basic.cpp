@@ -415,13 +415,6 @@ int UiScreenHeight()
 	return (videoMode_180660 & 1) ? 2 * screenHeight_180624 : screenHeight_180624;
 }
 
-int LowResHudOffset(int pixels)
-{
-	if (!lowResScaledUi || !lookingGlassEnabled)
-		return 0;
-	return (videoMode_180660 & 1) ? 2 * pixels : pixels;
-}
-
 //----- (00083E80) --------------------------------------------------------
 void FreeMem_83E80(uint8_t* ptr)//264e80
 {
