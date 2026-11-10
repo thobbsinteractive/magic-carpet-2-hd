@@ -15,6 +15,7 @@ extern DOS_Device* DOS_CON;
 #include "GameKey.h"
 #include "KeyboardInputMapping.h"
 #include "VulkanPolygonRenderer.h"
+#include "LookingGlassRenderer.h"
 
 SDL_Window* m_window = nullptr;
 SDL_Renderer* m_renderer = nullptr;
@@ -309,12 +310,22 @@ void CreateRenderSurfaces(int width, int height)
 
 bool CreateRenderer(int width, int height)
 {
-	m_vulkanRenderer = new VulkanPolygonRenderer(GetSubDirectoryPath("shaders"), CommandLineParams.DoVulkanValidation());
+	const std::string shaderFolder = GetSubDirectoryPath("shaders");
+	if (lookingGlassEnabled)
+	{
+		// The quilt of views (the game sends its grid with the polygons): side by side in the window, or interleaved on
+		// the Looking Glass display
+		auto* lookingGlassRenderer = new LookingGlassRenderer(shaderFolder, CommandLineParams.DoVulkanValidation());
+		if (lookingGlassDisplay)
+			lookingGlassRenderer->SetLookingGlassDevice(lookingGlassDevice);
+		m_vulkanRenderer = lookingGlassRenderer;
+	}
+	else
+	{
+		m_vulkanRenderer = new VulkanPolygonRenderer(shaderFolder, CommandLineParams.DoVulkanValidation());
+	}
 	m_vulkanRenderer->SetBilinearFiltering(bilinearFiltering);
 	m_vulkanRenderer->SetAntiAliasing(antiAliasing);
-	m_vulkanRenderer->SetViewGrid(viewRows, viewColumns);
-	if (lookingGlassDisplay)
-		m_vulkanRenderer->SetLookingGlassDevice(lookingGlassDevice);
 	try
 	{
 		return m_vulkanRenderer->Init(m_window, width, height);

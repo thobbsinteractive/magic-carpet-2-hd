@@ -230,6 +230,8 @@ set(SOURCE_FILES__portability
     "portability/VulkanPolygonRenderer.h"
     "portability/LookingGlassBridge.cpp"
     "portability/LookingGlassBridge.h"
+    "portability/LookingGlassRenderer.cpp"
+    "portability/LookingGlassRenderer.h"
     "portability/RenderPolygon.h"
     "portability/port_sdl_joystick.cpp"
     "portability/port_sdl_joystick.h"

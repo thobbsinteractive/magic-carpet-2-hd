@@ -24,7 +24,6 @@
 #include "../shared/EventDispatcher.h"
 #include "../engine/Basic.h"
 #include "RenderPolygon.h"
-#include "LookingGlassBridge.h"
 
 struct SDL_Window;
 
@@ -32,8 +31,12 @@ struct SDL_Window;
 // (screen-space, palette-textured, Gouraud-shaded) and rasterizes them.
 //
 // The lists arrive with the E_RESOURCE_CHANGE / POLYGONS_UPDATED event; per frame:
-//     renderer.BeginFrame(...);   // draws every view, then the views and the HUD into the grid's cells
+//     renderer.BeginFrame(...);   // draws every view, then the views and the HUD into the frame's cells
 //     renderer.EndFrame();
+//
+// The event's RenderViews also says how the views are laid out: the window is split into rows x columns cells (1 x 1
+// normally, 1 x 2 for the VR eyes side by side). A derived renderer (LookingGlassRenderer) draws the cells somewhere
+// else by overriding the cell hooks (GetFrameCells, GetCellRect, Begin/EndCellsRenderPass).
 //
 // Textures are 8-bit palette-indexed (one byte per texel = palette index,
 // same convention as m_gamePalletisedSurface in the SDL path). Upload once
@@ -44,7 +47,7 @@ class VulkanPolygonRenderer
 public:
 	// enableValidation loads the Khronos validation layers: very slow, so only when chasing a Vulkan bug.
 	VulkanPolygonRenderer(std::string shaderFolder, bool enableValidation = false);
-	~VulkanPolygonRenderer();
+	virtual ~VulkanPolygonRenderer();
 
 	VulkanPolygonRenderer(const VulkanPolygonRenderer&) = delete;
 	VulkanPolygonRenderer& operator=(const VulkanPolygonRenderer&) = delete;
@@ -53,7 +56,8 @@ public:
 	// match the SDL window's drawable size in pixels.
 	bool Init(SDL_Window* window, int windowWidth, int windowHeight);
 
-	void Shutdown();
+	// A derived renderer destroys its own resources first, then calls this
+	virtual void Shutdown();
 
 	// Call when the window is resized (recreates swapchain + framebuffers).
 	void Resize(int windowWidth, int windowHeight);
@@ -84,15 +88,6 @@ public:
 	void SetBilinearFiltering(bool enabled);
 	void SetAntiAliasing(int samples);   // MSAA samples: 0/1 = off, 2, 4 or 8; capped to what the GPU supports
 
-	// Looking Glass quilt: destRect is split into rows x columns cells, each showing the whole frame (the 3D view and the
-	// HUD at the game resolution). The game sends one polygon list per cell, the leftmost view first: list 0 goes in the
-	// bottom left cell, then left to right and bottom to top. A single list is shown in every cell. 1 x 1 = the normal frame.
-	static constexpr int kMaxViews = 256;
-	void SetViewGrid(int rows, int columns);
-	// The hologram on a Looking Glass (before Init): the cells are drawn into a quilt image at the game resolution each,
-	// and the window (the display) shows it interleaved by lenticular.frag with the device's calibration
-	void SetLookingGlassDevice(const LookingGlassDevice& device);
-
 	// hudSurface is the 8-bit palettised screen; hudAlpha is one alpha byte per pixel of it, or nullptr for opaque.
 	bool BeginFrame(SDL_Surface* hudSurface, const uint8_t* hudAlpha, SDL_Rect srcRect, SDL_Rect destRect);
 	bool UploadHud(SDL_Surface* hudSurface, const uint8_t* hudAlpha, VkCommandBuffer commandBuffer);   // false = nothing to draw
@@ -101,7 +96,33 @@ public:
 	void DrawPolygonsWireframe(const std::vector<RenderPolygon>& polygons);
 	void EndFrame();
 
-private:
+protected:
+
+	// ── Cell hooks: where the frame's cells go (overridden by LookingGlassRenderer) ──────────────────────────────
+	// One cell per view: each shows the whole frame (the view's polygons and the HUD). The game sends one polygon list
+	// per cell; with any other number of lists the first one is shown in every cell.
+	struct FrameCells
+	{
+		size_t count = 1;
+		SDL_Rect rect{ 0, 0, 0, 0 };   // the area the cells are laid out in, in the cells' render target
+		VkExtent2D extent{ 0, 0 };     // the cells' render target (the scissor's limits)
+	};
+	// Called once per frame before anything is recorded. Base: the game's rows x columns cells over destRect in the window.
+	virtual FrameCells GetFrameCells(const SDL_Rect& srcRect, const SDL_Rect& destRect);
+	// Where cell (0 .. count - 1) goes. Base: its part of the grid over cells.rect, cell 0 bottom left, then left to
+	// right and bottom to top.
+	virtual SDL_Rect GetCellRect(size_t cell, const FrameCells& cells, const SDL_Rect& srcRect) const;
+	// Begins the render pass the cells are drawn in. Base: the window's (swapchain) render pass.
+	virtual void BeginCellsRenderPass(VkCommandBuffer commandBuffer, const VkClearValue& clearColor);
+	// After the cells: whatever goes into the window last. Base: nothing (EndFrame ends the window's render pass).
+	virtual void EndCellsRenderPass(VkCommandBuffer commandBuffer, const VkClearValue& clearColor);
+	// Called at the end of Init (the swapchain, the render passes and the overlay layout exist). Base: nothing.
+	virtual bool CreateExtraResources();
+	// The most views (cells) a frame can have, to size the descriptor pool in Init; a bigger grid from the game is cut
+	// down to it. Base: enough for the VR eyes and small grids.
+	virtual int MaxViews() const { return 16; }
+
+	void BeginWindowRenderPass(VkCommandBuffer commandBuffer, const VkClearValue& clearColor);
 
 	static constexpr uint32_t kShadeRows = 64;
 
@@ -154,10 +175,11 @@ private:
 		VkDeviceSize indexBufferSize = 0;
 	};
 
-	// One polygon list per view, as GameRenderHW sends them
+	// One polygon list per view, as GameRenderHW sends them, and the grid of cells they are shown in (RenderViews)
 	std::vector<std::vector<RenderPolygon>> m_views;
 	int m_viewRows = 1;
 	int m_viewColumns = 1;
+	void SetViewGrid(int rows, int columns);
 
 	// A run of polygons drawn with one texture and one set of push constants
 	struct Batch
@@ -172,7 +194,7 @@ private:
 		uint32_t indexCount;
 	};
 
-	void SetPolygons(ResourceType state, std::vector<std::vector<RenderPolygon>>* views);
+	void SetPolygons(ResourceType state, RenderViews* views);
 	void SetTexture(ResourceType state, uint32_t index, uint8_t* pixels, uint32_t width, uint32_t height);
 	void SetShadeLut(const uint8_t* table);   // first kShadeRows * 256 bytes of ColourLookupTable_F6EE0
 	void SetBlendLut(const uint8_t* lut65536);
@@ -270,34 +292,6 @@ private:
 	uint32_t m_offscreenHeight = 0;
 	VkPipeline m_viewPortBlitPipeline = VK_NULL_HANDLE;
 
-	// Looking Glass display: the quilt (cells of the game resolution, view 0 bottom left) is drawn into m_quiltTarget,
-	// the swapchain's format so the window's pipelines draw into it, then interleaved into the window
-	struct LenticularPushConstants
-	{
-		float pitch;
-		float tilt;
-		float center;
-		float subp;
-		int32_t invView;
-		int32_t ri;
-		int32_t bi;
-		int32_t columns;
-		int32_t rows;
-		int32_t flipX;
-	};
-	bool m_lenticular = false;
-	LenticularPushConstants m_lenticularConstants{};
-	uint32_t m_lenticularWidth = 0;    // the display's size, to check the window against
-	uint32_t m_lenticularHeight = 0;
-	VkRenderPass m_quiltRenderPass = VK_NULL_HANDLE;
-	ColourTarget m_quiltTarget;
-	VkExtent2D m_quiltExtent{ 0, 0 };
-	VkPipelineLayout m_lenticularPipelineLayout = VK_NULL_HANDLE;
-	VkPipeline m_lenticularPipeline = VK_NULL_HANDLE;
-	bool CreateLenticularResources();
-	bool EnsureQuiltTarget(uint32_t width, uint32_t height);
-	void DrawLenticular(VkCommandBuffer commandBuffer);
-
 	// MSAA: the offscreen render pass draws into this multisampled image and resolves it into the target it is
 	// drawn for (the reflection, then the offscreen target: one after the other, so they share it).
 	// Unused (null) when m_msaaSamples is 1.
@@ -387,7 +381,7 @@ private:
 	std::function<void(ResourceType, uint8_t)> m_SetClearColourIdxCallBack;
 	std::function<void(ResourceType, uint8_t*)> m_SetPaletteLookupCallBack;
 	std::function<void(ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t)> m_TextureCallBack;
-	std::function<void(ResourceType, std::vector<std::vector<RenderPolygon>>*)> m_PolyCallBack;
+	std::function<void(ResourceType, RenderViews*)> m_PolyCallBack;
 	std::function<void(uint16_t, uint16_t, uint16_t, uint16_t)> m_ViewPortCallBack;
 	std::function<void(bool)> m_BlurEffectCallBack;
 

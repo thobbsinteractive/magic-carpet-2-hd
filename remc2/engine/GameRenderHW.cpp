@@ -59,7 +59,7 @@ GameRenderHW::GameRenderHW(uint8_t* ptrScreenBuffer, uint8_t* pColorPalette, uin
 GameRenderHW::~GameRenderHW()
 {
 	SetBlurActive(false);
-	EventDispatcher::I->DispatchEvent<ResourceType, std::vector<std::vector<RenderPolygon>>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_DISPOSED, NULL);
+	EventDispatcher::I->DispatchEvent<ResourceType, RenderViews*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_DISPOSED, nullptr);
 	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_DISPOSED, kTerrainAtlasId, NULL, 0, 0);
 	EventDispatcher::I->DispatchEvent<ResourceType, uint32_t, uint8_t*, uint32_t, uint32_t>(EventType::E_RESOURCE_CHANGE, ResourceType::TEXTURE_DISPOSED, kSkyId, NULL, 0, 0);
 
@@ -193,13 +193,16 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	vPosX = viewOffsetX_D4794 + posX;
 	vPosY = viewOffsetY_D4798 + posY;
 
-	// The original's stereo modes draw both eyes into one list (the GPU shows the last); the plain mode draws the view grid
+	// VR: the eyes side by side (1 x 2). The plain mode: the view grid (1 x 1, or a Looking Glass quilt).
+	// The original's red/blue stereo mode still draws both eyes into one list (the GPU shows the last)
 	m_primaryView = true;
 
 	if (world_D41A0.m_GameSettings.graphics_0x2192.xxxx_0x2193 && world_D41A0.m_GameSettings.m_Display.m_uiScreenSize && screenWidth_18062C == 640)
 	{
-		//VR interlaced render
-		m_views.resize(1);
+		//VR interlaced render: each eye is projected into half the screen and goes into its own cell, left then right
+		m_frameViews.rows = 1;
+		m_frameViews.columns = 2;
+		m_frameViews.lists.resize(2);
 		SetBlurActive(false);
 		viewPort.SetRenderViewPortSize_BCD45(
 			m_ptrScreenBuffer_351628,
@@ -212,10 +215,10 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 		viewShiftX_D4324 = -5;
 		v25 = 4 * v23 >> 16;
 		v26 = 20 * (signed int)v24 >> 16;
-		DrawTerrainAndParticles_3C080(vPosX - v26, vPosY - v25, vYaw, posZ, pitch, roll, fov, &m_views[0]);
+		DrawTerrainAndParticles_3C080(vPosX - v26, vPosY - v25, vYaw, posZ, pitch, roll, fov, &m_frameViews.lists[0]);
 		viewPort.SetRenderViewPortSize_BCD45(m_ptrScreenBuffer_351628 + (screenWidth_18062C / 2), 0, 0, 0);
 		viewShiftX_D4324 = 5;
-		DrawTerrainAndParticles_3C080(vPosX + v26, vPosY + v25, vYaw, posZ, pitch, roll, fov, &m_views[0]);
+		DrawTerrainAndParticles_3C080(vPosX + v26, vPosY + v25, vYaw, posZ, pitch, roll, fov, &m_frameViews.lists[1]);
 		viewShiftX_D4324 = 0;
 		viewPort.SetRenderViewPortSize_BCD45(m_ptrScreenBuffer_351628, screenWidth_18062C, screenWidth_18062C, screenHeight_180624);
 	}
@@ -240,34 +243,38 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 		const int primary = (viewCount - 1) / 2;
 		const int rightX = Maths::sin_DB750[512 + vYaw];
 		const int rightY = Maths::sin_DB750[vYaw];
-		m_views.resize(viewCount);
+		m_frameViews.rows = viewRows;
+		m_frameViews.columns = viewColumns;
+		m_frameViews.lists.resize(viewCount);
 		for (int view = 0; view < viewCount; view++)
 		{
 			const int offset = (2 * view - (viewCount - 1)) * viewSpacing / 2;
 			m_primaryView = view == primary;
 			m_viewOffset = offset;
 			DrawTerrainAndParticles_3C080(vPosX + (offset * rightX >> 16), vPosY + (offset * rightY >> 16),
-				vYaw, posZ, pitch, roll, fov, &m_views[view]);
+				vYaw, posZ, pitch, roll, fov, &m_frameViews.lists[view]);
 		}
 		m_primaryView = true;
 		m_viewOffset = 0;
 	}
 	else
 	{
-		m_views.resize(1);
+		m_frameViews.rows = 1;
+		m_frameViews.columns = 1;
+		m_frameViews.lists.resize(1);
 		SetBlurActive(false);
 		v28 = 5 * Maths::sin_DB750[vYaw];
 		v29 = Maths::sin_DB750[512 + vYaw];
 		viewShiftX_D4324 = iScreenWidth_DE560 / 40;
 		v30 = 4 * v28 >> 16;
 		v31 = 20 * (signed int)v29 >> 16;
-		DrawTerrainAndParticles_3C080(v31 + vPosX, v30 + vPosY, vYaw, posZ, pitch, roll, fov, &m_views[0]);
+		DrawTerrainAndParticles_3C080(v31 + vPosX, v30 + vPosY, vYaw, posZ, pitch, roll, fov, &m_frameViews.lists[0]);
 		viewShiftX_D4324 = 0 - (iScreenWidth_DE560 / 40);
-		DrawTerrainAndParticles_3C080(vPosX - v31, vPosY - v30, vYaw, posZ, pitch, roll, fov, &m_views[0]);
+		DrawTerrainAndParticles_3C080(vPosX - v31, vPosY - v30, vYaw, posZ, pitch, roll, fov, &m_frameViews.lists[0]);
 		viewShiftX_D4324 = 0;
 	}
 
-	EventDispatcher::I->DispatchEvent<ResourceType, std::vector<std::vector<RenderPolygon>>*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, &m_views);
+	EventDispatcher::I->DispatchEvent<ResourceType, RenderViews*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, &m_frameViews);
 }
 
 /*

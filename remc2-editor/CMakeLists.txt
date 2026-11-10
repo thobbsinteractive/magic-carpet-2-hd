@@ -42,6 +42,8 @@ set(SOURCE_FILES_EDITOR
     "../remc2/portability/VulkanPolygonRenderer.h"
     "../remc2/portability/LookingGlassBridge.cpp"
     "../remc2/portability/LookingGlassBridge.h"
+    "../remc2/portability/LookingGlassRenderer.cpp"
+    "../remc2/portability/LookingGlassRenderer.h"
     "../remc2/portability/RenderPolygon.h"
     "../remc2/utilities/SafeQueue.h"
     "../remc2/engine/Level.cpp"

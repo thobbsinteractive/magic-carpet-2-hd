@@ -411,6 +411,9 @@
     <ClInclude Include="engine\axis_3d.h">
       <Filter>Header Files\engine</Filter>
     </ClInclude>
+    <ClInclude Include="portability\LookingGlassRenderer.h">
+      <Filter>Header Files\portability</Filter>
+    </ClInclude>
     <ClInclude Include="portability\LookingGlassBridge.h">
       <Filter>Header Files\portability</Filter>
     </ClInclude>
@@ -694,6 +697,9 @@
     </ClCompile>
     <ClCompile Include="lib\stb_impl.cpp">
       <Filter>Source Files\portability\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="portability\LookingGlassRenderer.cpp">
+      <Filter>Source Files\portability</Filter>
     </ClCompile>
     <ClCompile Include="portability\LookingGlassBridge.cpp">
       <Filter>Source Files\portability</Filter>

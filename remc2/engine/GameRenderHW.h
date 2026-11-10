@@ -37,8 +37,9 @@ private:
 	const float kTileUVInset = 1.0f / 64.0f;   // texels kept clear of each tile edge in the atlas
 
 	static constexpr size_t kReservedSprites = 200;
-	// One polygon list per view (viewRows x viewColumns, row by row); sent to the renderer together once a frame
-	std::vector<std::vector<RenderPolygon>> m_views;
+	// One polygon list per view and the views' layout (1 x 1, the VR eyes 1 x 2, or the viewRows x viewColumns quilt);
+	// sent to the renderer together once a frame
+	RenderViews m_frameViews;
 	// The centre view: the only one that draws into the HUD (sorcerer names, health bars) and sets the help text
 	bool m_primaryView = true;
 	// The camera's sideways step of the view being drawn (world units); with viewConvergence it shears the projection
