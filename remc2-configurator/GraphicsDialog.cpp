@@ -91,7 +91,7 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	main->Add(m_btnAnaglyph, 0, wxALIGN_CENTER | wxLEFT | wxBOTTOM, 10);
 	m_btnAnaglyph->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
 		AnaglyphDialog dlg(this, m_cfg.m_Hardware.m_Anaglyph);
-		SetDialogMinSize(dlg, wxSize(400, 250));
+		SetDialogMinSize(dlg, wxSize(675, 650));
 		if (dlg.ShowModal() == wxID_OK)
 			m_cfg.m_Hardware.m_Anaglyph = dlg.GetSettings();
 		});
