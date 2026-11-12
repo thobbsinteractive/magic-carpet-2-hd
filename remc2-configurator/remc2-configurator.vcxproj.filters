@@ -48,6 +48,9 @@
     <ClCompile Include="HardwareDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AnaglyphDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="LookingGlassDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HardwareDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnaglyphDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LookingGlassDialog.h">

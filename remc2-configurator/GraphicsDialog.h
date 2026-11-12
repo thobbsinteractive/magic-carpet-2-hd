@@ -6,6 +6,7 @@
 #include "ThreadingDialog.h"
 #include "HardwareDialog.h"
 #include "LookingGlassDialog.h"
+#include "AnaglyphDialog.h"
 
 class GraphicsDialog : public wxDialog
 {
@@ -23,6 +24,7 @@ private:
 	wxChoice* m_choiceRender = nullptr;
 	wxButton* m_btnHardwareSettings = nullptr;
 	wxButton* m_btnLookingGlass = nullptr;
+	wxButton* m_btnAnaglyph = nullptr;
 	wxButton* m_btnRenderThreads = nullptr;
 
 	Config::Settings::Graphics m_cfg;

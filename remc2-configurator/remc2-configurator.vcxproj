@@ -173,6 +173,7 @@
     <ClCompile Include="ThreadingDialog.cpp" />
     <ClCompile Include="HardwareDialog.cpp" />
     <ClCompile Include="LookingGlassDialog.cpp" />
+    <ClCompile Include="AnaglyphDialog.cpp" />
     <ClCompile Include="UiAlignmentDialog.cpp" />
     <ClCompile Include="ZoneEditorCtrl.cpp" />
     <ClCompile Include="ZoneEditorDialog.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="ThreadingDialog.h" />
     <ClInclude Include="HardwareDialog.h" />
     <ClInclude Include="LookingGlassDialog.h" />
+    <ClInclude Include="AnaglyphDialog.h" />
     <ClInclude Include="UiAlignmentDialog.h" />
     <ClInclude Include="ZoneEditorCtrl.h" />
     <ClInclude Include="ZoneEditorDialog.h" />

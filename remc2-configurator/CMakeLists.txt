@@ -38,6 +38,8 @@ set(SOURCE_FILES_CONFIGURATOR
     "HardwareDialog.h"
     "LookingGlassDialog.cpp"
     "LookingGlassDialog.h"
+    "AnaglyphDialog.cpp"
+    "AnaglyphDialog.h"
     "UiAlignmentDialog.cpp"
     "UiAlignmentDialog.h"
 	"ZoneEditorCtrl.cpp"
