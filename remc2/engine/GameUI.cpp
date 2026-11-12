@@ -3356,7 +3356,7 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 			v3 = 1;
 			if (!(gameState_D41A4.FrameTimingIndex_26 & 3))
 			{
-				DrawRectangle(pdwScreenBuffer_351628, posX_v4 - scale - CalculateScaleOffset(scale), posY_v6 - scale - CalculateScaleOffset(scale), 3 * scale, 3 * scale, scale, screenWidth_18062C, colour_v5);
+				DrawRectangle(a1->v53xdw_6, posX_v4 - scale - CalculateScaleOffset(scale), posY_v6 - scale - CalculateScaleOffset(scale), 3 * scale, 3 * scale, scale, screenWidth_18062C, colour_v5);
 
 				if (1 == world_D41A0.m_GameSettings.m_Display.m_uiScreenSize)
 				{
@@ -3364,7 +3364,7 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 					startY_v8 = screenWidth_18062C * (posY_v6 - scale);
 					startX_v9 = posX_v4 - scale;
 
-					v13 = (x_BYTE*)(startY_v8 + startX_v9 + ptrMemoryBuffer_E9C3C);
+					v13 = (x_BYTE*)(startY_v8 + startX_v9 + ptrMemoryBuffer_E9C3C + (a1->v53xdw_6 - pdwScreenBuffer_351628));
 					v13[0] = colour_v5;
 					v13[1] = colour_v5;
 					v13[2] = colour_v5;
