@@ -129,7 +129,7 @@ LookingGlassDialog::LookingGlassDialog(wxWindow* parent, const Config::Settings:
 
 	SetSizer(main);
 
-	m_chkEnabled->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&) { UpdateEnabled(); });
+	m_chkEnabled->Bind(wxEVT_CHECKBOX, &LookingGlassDialog::OnEnabledChanged, this);
 	m_chkDisplay->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&) { UpdateEnabled(); });
 	m_choicePreset->Bind(wxEVT_CHOICE, &LookingGlassDialog::OnPreset, this);
 	for (wxSpinCtrl* spin : { m_spinColumns, m_spinRows, m_spinCellWidth, m_spinCellHeight })
@@ -189,6 +189,22 @@ void LookingGlassDialog::UpdateQuiltSize()
 	m_lblQuiltSize->SetLabel(wxString::Format("%d x %d (%d views)",
 		m_spinCellWidth->GetValue() * columns, m_spinCellHeight->GetValue() * rows, columns * rows));
 	Layout();
+}
+
+// Ticked when it was off: says what turning it on also sets (applied when this dialog is OK'd)
+void LookingGlassDialog::OnEnabledChanged(wxCommandEvent&)
+{
+	UpdateEnabled();
+	if (!TurnedOn())
+		return;
+
+	wxMessageBox(wxString::Format(
+		"For the Looking Glass, these graphics settings have been auto-changed:\n"
+		"-View Distance: 1x\n"
+		"-In-game UI margins: 25 pixels\n"
+		"They are applied when you press OK in the Looking Glass Settings Dialog",
+		kViewDistanceScale, kUiMargin),
+		"Game Detail Settings auto changed!", wxOK | wxICON_INFORMATION, this);
 }
 
 void LookingGlassDialog::UpdateEnabled()

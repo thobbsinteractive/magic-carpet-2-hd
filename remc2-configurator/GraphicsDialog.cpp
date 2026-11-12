@@ -82,7 +82,22 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 		LookingGlassDialog dlg(this, m_cfg.m_Hardware.m_LookingGlass);
 		SetDialogMinSize(dlg, wxSize(455, 460));
 		if (dlg.ShowModal() == wxID_OK)
+		{
 			m_cfg.m_Hardware.m_LookingGlass = dlg.GetSettings();
+			// Turned on: the view distance and UI margins it needs (the dialog told the user when it was ticked)
+			if (dlg.TurnedOn())
+			{
+				m_spinViewDistanceScale->SetValue(LookingGlassDialog::kViewDistanceScale);
+				auto& ui = m_cfg.m_InGameUi;
+				for (Config::Settings::UiElement* element : { &ui.m_TopBar, &ui.m_SpellIcons, &ui.m_SpellMenu })
+				{
+					// a centred element's X margin is its offset from the middle: it stays centred
+					if (element->m_Alignment != "center")
+						element->m_MarginX = LookingGlassDialog::kUiMargin;
+					element->m_MarginY = LookingGlassDialog::kUiMargin;
+				}
+			}
+		}
 		});
 
 	// ── Anaglyph 3D button (hardware renderer only) ───────────────────────────
