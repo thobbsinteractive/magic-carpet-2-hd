@@ -16,6 +16,7 @@ extern DOS_Device* DOS_CON;
 #include "KeyboardInputMapping.h"
 #include "VulkanPolygonRenderer.h"
 #include "LookingGlassRenderer.h"
+#include "AnaglyphRenderer.h"
 
 SDL_Window* m_window = nullptr;
 SDL_Renderer* m_renderer = nullptr;
@@ -322,7 +323,11 @@ bool CreateRenderer(int width, int height)
 	}
 	else
 	{
-		m_vulkanRenderer = new VulkanPolygonRenderer(shaderFolder, CommandLineParams.DoVulkanValidation());
+		// The plain frame, and the anaglyph's two eyes combined red / cyan while F11 has it on
+		auto* anaglyphRenderer = new AnaglyphRenderer(shaderFolder, CommandLineParams.DoVulkanValidation());
+		anaglyphRenderer->SetColours(anaglyphLeftColour, anaglyphRightColour);
+		anaglyphRenderer->SetGhostReduction(anaglyphGhostReduction);
+		m_vulkanRenderer = anaglyphRenderer;
 	}
 	m_vulkanRenderer->SetBilinearFiltering(bilinearFiltering);
 	m_vulkanRenderer->SetAntiAliasing(antiAliasing);
@@ -1703,6 +1708,9 @@ uint16_t TranslateSdlKeysToGameKeys(uint16_t scancode)
 		break;
 	case SDL_SCANCODE_F9://f9
 		return GameKey::F9;
+		break;
+	case SDL_SCANCODE_F11://f11: the anaglyph on / off
+		return GameKey::F11;
 		break;
 	case SDL_SCANCODE_F10://f10
 		return GameKey::F10;

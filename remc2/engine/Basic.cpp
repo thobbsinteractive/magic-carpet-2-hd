@@ -399,6 +399,7 @@ bool DefaultResolutions()
 }
 
 bool lowResScaledUi = false;
+bool anaglyphMode = false;
 
 bool UseLowResScaledUi()
 {

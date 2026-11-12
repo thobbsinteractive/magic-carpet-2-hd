@@ -533,6 +533,7 @@ bool DefaultResolutions();
 // Narrower than 640 it uses the low res UI (videoMode_180660 == 1: the MSPRD sprites and FONTS0), whose coordinates
 // are doubled (640-based) and halved when drawn, so the layout works in UiScreenWidth/Height, not the screen's pixels.
 extern bool lowResScaledUi;    // set while in a level in this mode
+extern bool anaglyphMode;      // F11: the hardware renderer draws both eyes, combined red / cyan (AnaglyphRenderer)
 bool UseLowResScaledUi();      // the game resolution asks for it
 int UiScreenWidth();           // the screen in the UI's coordinates: pixels, doubled in the low res UI
 int UiScreenHeight();

@@ -232,6 +232,8 @@ set(SOURCE_FILES__portability
     "portability/LookingGlassBridge.h"
     "portability/LookingGlassRenderer.cpp"
     "portability/LookingGlassRenderer.h"
+    "portability/AnaglyphRenderer.cpp"
+    "portability/AnaglyphRenderer.h"
     "portability/RenderPolygon.h"
     "portability/port_sdl_joystick.cpp"
     "portability/port_sdl_joystick.h"

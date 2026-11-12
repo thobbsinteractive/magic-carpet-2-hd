@@ -121,6 +121,12 @@ protected:
 	// The most views (cells) a frame can have, to size the descriptor pool in Init; a bigger grid from the game is cut
 	// down to it. Base: enough for the VR eyes and small grids.
 	virtual int MaxViews() const { return 16; }
+	// How many of the game's lists this frame draws, each into its own image. Base: one per cell, or the first list
+	// for every cell when the counts differ.
+	virtual size_t GetFrameViewCount(size_t cellCount) const;
+	// Draws a cell's view port area (viewport and scissor already set) from the view images. Base: upscales view's image.
+	virtual void DrawCellViews(VkCommandBuffer commandBuffer, size_t cell, size_t view);
+	VkDescriptorSet GetViewImage(size_t view) const;
 
 	void BeginWindowRenderPass(VkCommandBuffer commandBuffer, const VkClearValue& clearColor);
 
@@ -179,6 +185,8 @@ protected:
 	std::vector<std::vector<RenderPolygon>> m_views;
 	int m_viewRows = 1;
 	int m_viewColumns = 1;
+	ViewComposition m_viewComposition = ViewComposition::Cells;   // the anaglyph's two eyes: AnaglyphRenderer combines them
+	bool m_darkLevel = false;   // the frame is from a night or cave level (RenderViews::darkLevel)
 	void SetViewGrid(int rows, int columns);
 
 	// A run of polygons drawn with one texture and one set of push constants

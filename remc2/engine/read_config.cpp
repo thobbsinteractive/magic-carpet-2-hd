@@ -59,6 +59,9 @@ int viewSpacing = 8;
 int viewConvergence = 0;
 bool lookingGlassDisplay = false;
 LookingGlassDevice lookingGlassDevice;
+uint8_t anaglyphLeftColour[3] = { 255, 0, 0 };
+uint8_t anaglyphRightColour[3] = { 0, 168, 168 };
+float anaglyphGhostReduction = 0.1f;
 bool openGLRender = false;
 bool invertYAxis = true;
 bool invertXAxis = false;
@@ -93,6 +96,17 @@ UiElementLayout ReadUiElementLayout(const Config::Settings::UiElement& element, 
 	layout.marginX = element.m_MarginX;
 	layout.marginY = element.m_MarginY;
 	return layout;
+}
+
+// "#RRGGBB" (the # optional) to 0 - 255 per channel; false (rgb unchanged) if it isn't one
+bool ParseHexColour(const std::string& text, uint8_t rgb[3])
+{
+	const size_t start = (!text.empty() && text[0] == '#') ? 1 : 0;
+	if (text.size() != start + 6 || !std::all_of(text.begin() + start, text.end(), [](char c) { return std::isxdigit((unsigned char)c) != 0; }))
+		return false;
+	for (int channel = 0; channel < 3; channel++)
+		rgb[channel] = (uint8_t)std::stoi(text.substr(start + 2 * channel, 2), nullptr, 16);
+	return true;
 }
 
 std::string findConfigFile() {
@@ -228,6 +242,15 @@ bool SetConfig() {
 	// shows the whole quilt of rows x columns cells
 	const auto& lookingGlass = settingsValue.m_Graphics.m_Hardware.m_LookingGlass;
 	lookingGlassEnabled = lookingGlass.m_Enabled && settingsValue.m_Graphics.m_Render == "HW";
+
+	// Anaglyph lens colours (F11 in game); a colour that isn't "#RRGGBB" keeps red / cyan
+	const auto& anaglyph = settingsValue.m_Graphics.m_Hardware.m_Anaglyph;
+	if (!ParseHexColour(anaglyph.m_LeftColour, anaglyphLeftColour))
+		Logger->warn("anaglyph leftColour '{}' isn't #RRGGBB: using red", anaglyph.m_LeftColour);
+	if (!ParseHexColour(anaglyph.m_RightColour, anaglyphRightColour))
+		Logger->warn("anaglyph rightColour '{}' isn't #RRGGBB: using #00A8A8", anaglyph.m_RightColour);
+	anaglyphGhostReduction = std::clamp(anaglyph.m_GhostReduction, 0.0f, 0.5f);
+
 	if (lookingGlassEnabled)
 	{
 		viewRows = std::clamp(lookingGlass.m_Rows, 1, MAX_VIEW_GRID);

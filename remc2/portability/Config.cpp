@@ -417,6 +417,16 @@ Config::Settings::Hardware Config::GetHardware(const json& graphics)
 			if (lookingGlass.contains("bridgePath"))
 				values.m_BridgePath = ReadStringValue(lookingGlass, "bridgePath");
 		}
+		if (hardware.contains("anaglyph"))
+		{
+			const auto& anaglyph = hardware["anaglyph"];
+			if (anaglyph.contains("leftColour"))
+				hardwareValues.m_Anaglyph.m_LeftColour = ReadStringValue(anaglyph, "leftColour");
+			if (anaglyph.contains("rightColour"))
+				hardwareValues.m_Anaglyph.m_RightColour = ReadStringValue(anaglyph, "rightColour");
+			if (anaglyph.contains("ghostReduction"))
+				hardwareValues.m_Anaglyph.m_GhostReduction = ReadFloatValue(anaglyph, "ghostReduction");
+		}
 	}
 	return hardwareValues;
 }
@@ -617,6 +627,10 @@ void Config::SaveHardwareToDoc(Config::Settings::Hardware hardware)
 	SetInt(lg, "convergence", hardware.m_LookingGlass.m_Convergence);
 	SetBool(lg, "display", hardware.m_LookingGlass.m_Display);
 	SetString(lg, "bridgePath", hardware.m_LookingGlass.m_BridgePath);
+	auto& anaglyph = GetOrCreate(h, "anaglyph");
+	SetString(anaglyph, "leftColour", hardware.m_Anaglyph.m_LeftColour);
+	SetString(anaglyph, "rightColour", hardware.m_Anaglyph.m_RightColour);
+	SetFloat(anaglyph, "ghostReduction", hardware.m_Anaglyph.m_GhostReduction);
 }
 
 void Config::SaveInGameUiToDoc(Config::Settings::InGameUi inGameUi)

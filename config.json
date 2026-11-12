@@ -138,6 +138,16 @@
 						"convergence": 2048,
 						"display": true,
 						"bridgePath": ""
+					},
+					"anaglyph": {
+						"description": [
+							"Anaglyph stereo for coloured glasses: F11 in game turns it on and off. Hardware renderer only",
+							"leftColour, rightColour: The left and right lens colours as #RRGGBB. Default red (#FF0000) left, cyan dimmed to 66% (#00A8A8) right, like the original stereo mode. #00FFFF for full strength cyan, #0000FF for glasses with a pure blue right lens",
+							"ghostReduction: How much of the other eye's image each lens lets through, cancelled out to remove ghosting. 0 = off, up to 0.5. Raise it if you see ghosts, lower it if the picture looks washed out"
+						],
+						"leftColour": "#FF0000",
+						"rightColour": "#00A8A8",
+						"ghostReduction": 0.1
 					}
 				},
 				"inGameUi": {

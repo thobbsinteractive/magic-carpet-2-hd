@@ -44,6 +44,8 @@ set(SOURCE_FILES_EDITOR
     "../remc2/portability/LookingGlassBridge.h"
     "../remc2/portability/LookingGlassRenderer.cpp"
     "../remc2/portability/LookingGlassRenderer.h"
+    "../remc2/portability/AnaglyphRenderer.cpp"
+    "../remc2/portability/AnaglyphRenderer.h"
     "../remc2/portability/RenderPolygon.h"
     "../remc2/utilities/SafeQueue.h"
     "../remc2/engine/Level.cpp"

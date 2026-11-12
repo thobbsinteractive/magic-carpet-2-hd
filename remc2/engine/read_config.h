@@ -89,6 +89,10 @@ extern int viewSpacing;
 extern int viewConvergence;
 extern bool lookingGlassDisplay;
 extern LookingGlassDevice lookingGlassDevice;
+extern uint8_t anaglyphLeftColour[3];    // the anaglyph glasses' lenses (F11 in game), rgb 0 - 255
+extern uint8_t anaglyphRightColour[3];
+extern float anaglyphGhostReduction;   // 0 - 0.5: how much of the other eye each lens lets through, cancelled out
+bool ParseHexColour(const std::string& text, uint8_t rgb[3]);
 
 extern bool invertYAxis;
 extern bool invertXAxis;

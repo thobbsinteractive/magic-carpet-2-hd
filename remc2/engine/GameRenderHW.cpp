@@ -193,11 +193,35 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	vPosX = viewOffsetX_D4794 + posX;
 	vPosY = viewOffsetY_D4798 + posY;
 
-	// VR: the eyes side by side (1 x 2). The plain mode: the view grid (1 x 1, or a Looking Glass quilt).
-	// The original's red/blue stereo mode still draws both eyes into one list (the GPU shows the last)
+	// Anaglyph (F11): the two eyes combined red / cyan. VR: the eyes side by side (1 x 2). The plain mode: the view grid
+	// (1 x 1, or a Looking Glass quilt). The original's red/blue stereo mode still draws both eyes into one list (the GPU
+	// shows the last)
 	m_primaryView = true;
+	m_frameViews.composition = ViewComposition::Cells;
 
-	if (world_D41A0.m_GameSettings.graphics_0x2192.xxxx_0x2193 && world_D41A0.m_GameSettings.m_Display.m_uiScreenSize && screenWidth_18062C == 640)
+	if (anaglyphMode)
+	{
+		// The original stereo mode's eyes (sideways along the camera's right axis, the projection centre shifted
+		// 1/40 of the screen), each into its own list: the renderer combines them through the glasses' colours
+		m_frameViews.rows = 1;
+		m_frameViews.columns = 1;
+		m_frameViews.composition = ViewComposition::Anaglyph;
+		m_frameViews.darkLevel = world_D41A0.terrain_2FECE.MapType != MapType_t::Day;   // half-colour, so the dark scene reaches the left eye
+		m_frameViews.lists.resize(2);
+		SetBlurActive(false);
+		v28 = 5 * Maths::sin_DB750[vYaw];
+		v29 = Maths::sin_DB750[512 + vYaw];
+		v30 = 4 * v28 >> 16;
+		v31 = 20 * (signed int)v29 >> 16;
+		viewShiftX_D4324 = 0 - (iScreenWidth_DE560 / 40);
+		DrawTerrainAndParticles_3C080(vPosX - v31, vPosY - v30, vYaw, posZ, pitch, roll, fov, &m_frameViews.lists[0]);   // left
+		m_primaryView = false;   // the HUD's names and health bars once, from the left eye
+		viewShiftX_D4324 = iScreenWidth_DE560 / 40;
+		DrawTerrainAndParticles_3C080(v31 + vPosX, v30 + vPosY, vYaw, posZ, pitch, roll, fov, &m_frameViews.lists[1]);   // right
+		m_primaryView = true;
+		viewShiftX_D4324 = 0;
+	}
+	else if (world_D41A0.m_GameSettings.graphics_0x2192.xxxx_0x2193 && world_D41A0.m_GameSettings.m_Display.m_uiScreenSize && screenWidth_18062C == 640)
 	{
 		//VR interlaced render: each eye is projected into half the screen and goes into its own cell, left then right
 		m_frameViews.rows = 1;

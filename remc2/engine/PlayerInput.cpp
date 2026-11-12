@@ -402,6 +402,15 @@ void ProcessKeyboardPresses_17190()//1f8190
 						LastPressedKey_1806E4 = 0;
 						break;
 					}
+					case 0x57: {//f11 anaglyph (red / cyan glasses) on / off: the hardware renderer only
+						if (m_render == "HW")
+						{
+							anaglyphMode = !anaglyphMode;
+							SetCurrentNotificationMessage_19760(anaglyphMode ? "Anaglyph On" : "Anaglyph Off", 3u, 50);
+						}
+						LastPressedKey_1806E4 = 0;
+						break;
+					}
 					case 0x1f: {//s
 						if (!(gameState_D41A4.OptionsSettingFlag_24 & GAME_PAUSED)
 							&& videoMode_180660 & 1

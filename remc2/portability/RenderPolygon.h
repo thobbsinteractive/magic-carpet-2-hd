@@ -29,9 +29,19 @@ struct RenderPolygon
 // frame (its view and the HUD): list 0 goes in the bottom left cell, then left to right and bottom to top. With any
 // other number of lists than cells, the first list is shown in every cell.
 //   1 x 1: the normal frame. 1 x 2: the VR (side by side) eyes, left then right. rows x columns: a Looking Glass quilt.
+// With ViewComposition::Anaglyph the grid is 1 x 1 and the two lists are the left and the right eye, combined into the one
+// cell through coloured filters (red / cyan glasses); a renderer that can't combine them shows the left eye.
+enum class ViewComposition
+{
+	Cells,      // one list per cell
+	Anaglyph,   // two lists (left, right eye) combined into every cell
+};
+
 struct RenderViews
 {
 	int rows = 1;
 	int columns = 1;
+	ViewComposition composition = ViewComposition::Cells;
+	bool darkLevel = false;   // a night or cave level: the anaglyph shows the left eye as brightness (half-colour)
 	std::vector<std::vector<RenderPolygon>> lists;
 };

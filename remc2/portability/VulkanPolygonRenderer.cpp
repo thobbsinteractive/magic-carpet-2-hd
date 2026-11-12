@@ -281,12 +281,38 @@ void VulkanPolygonRenderer::SetPolygons(ResourceType state, RenderViews* views)
 	{
 		m_views.swap(views->lists);   // take them rather than copy them: the sender reuses the lists it gets back (the previous frame's)
 		SetViewGrid(views->rows, views->columns);
+		m_viewComposition = views->composition;
+		m_darkLevel = views->darkLevel;
 	}
 	else if (state == ResourceType::POLYGONS_DISPOSED)
 	{
 		m_views.clear();
 		SetViewGrid(1, 1);
+		m_viewComposition = ViewComposition::Cells;
+		m_darkLevel = false;
 	}
+}
+
+// How many of the lists are drawn (each into its own image): one per cell, or the first one for every cell
+size_t VulkanPolygonRenderer::GetFrameViewCount(size_t cellCount) const
+{
+	return m_views.size() == cellCount ? cellCount : (std::min)(m_views.size(), (size_t)1);
+}
+
+// The image of a view (its blur history while blurring)
+VkDescriptorSet VulkanPolygonRenderer::GetViewImage(size_t view) const
+{
+	return m_blurActive ? m_blurTargets[view].descriptorSet : m_viewTargets[view].descriptorSet;
+}
+
+// Upscales the cell's view into it (the viewport and the scissor are set to the view port's area of the cell)
+void VulkanPolygonRenderer::DrawCellViews(VkCommandBuffer commandBuffer, size_t cell, size_t view)
+{
+	const VkDescriptorSet viewPortImage = GetViewImage(view);
+	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_viewPortBlitPipeline);
+	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+		m_overlayPipelineLayout, 0, 1, &viewPortImage, 0, nullptr);
+	vkCmdDraw(commandBuffer, 3, 1, 0, 0);
 }
 
 // The views' layout as the game sent it, kept to at most MaxViews() cells
@@ -2082,8 +2108,9 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 		return VkRect2D{ { x0, y0 }, { (uint32_t)(std::max)(x1 - x0, 0), (uint32_t)(std::max)(y1 - y0, 0) } };
 		};
 
-	// A list per cell gives each cell its own view; anything else (the stereo modes) shows the first list everywhere.
-	const size_t viewCount = m_views.size() == cellCount ? cellCount : (std::min)(m_views.size(), (size_t)1);
+	// A list per cell gives each cell its own view; anything else shows the first list everywhere (or what a derived
+	// renderer makes of them: the anaglyph's two eyes)
+	const size_t viewCount = GetFrameViewCount(cellCount);
 	const auto viewOfCell = [&](size_t cell) { return viewCount == cellCount ? cell : 0; };
 
 	// Each view is rendered at the game viewport's resolution (with Looking Glass the game resolution is the cell
@@ -2211,12 +2238,7 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 				vkCmdSetViewport(frame.commandBuffer, 0, 1, &viewport);
 				vkCmdSetScissor(frame.commandBuffer, 0, 1, &scissor);
 
-				const size_t view = viewOfCell(cell);
-				const VkDescriptorSet viewPortImage = m_blurActive ? m_blurTargets[view].descriptorSet : m_viewTargets[view].descriptorSet;
-				vkCmdBindPipeline(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_viewPortBlitPipeline);
-				vkCmdBindDescriptorSets(frame.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
-					m_overlayPipelineLayout, 0, 1, &viewPortImage, 0, nullptr);
-				vkCmdDraw(frame.commandBuffer, 3, 1, 0, 0);
+				DrawCellViews(frame.commandBuffer, cell, viewOfCell(cell));
 			}
 		}
 
