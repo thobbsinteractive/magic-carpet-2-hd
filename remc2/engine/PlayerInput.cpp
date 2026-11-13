@@ -2130,8 +2130,11 @@ void HandleArrowKeyPresses_1A8A0()//1fb8a0
 	{
 		if (inputState_18058C.arrowKeys_1805C0 & 8)
 		{
-			if (!(gameState_D41A4.arrowKeyFlags_183 & 1) && !(gameState_D41A4.arrowKeyFlags_183 & 2))
+			if (!disableLRKeyRoll && !(gameState_D41A4.arrowKeyFlags_183 & 1) && !(gameState_D41A4.arrowKeyFlags_183 & 2))
+			{
+				//Barrel Roll
 				HandleButtonClick_191B0(6, 128);
+			}
 		}
 	}
 	gameState_D41A4.arrowKeyFlags_183 &= 0xFC;

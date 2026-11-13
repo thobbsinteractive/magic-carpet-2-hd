@@ -182,6 +182,7 @@ namespace remc2_installer
 		public string map { get; set; }
 		public string spellMenu { get; set; }
 		public string spellMenuMark { get; set; }
+		public bool disableLRKeyRoll { get; set; }
 	}
 
 	public class GamePad

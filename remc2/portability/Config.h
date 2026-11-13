@@ -186,6 +186,7 @@ public:
 			uint16_t m_Map = 0;
 			uint16_t m_SpellMenu = 0;
 			uint16_t m_SpellMenuMark = 0;
+			bool m_DisableLRKeyRoll = false;
 		};
 
 		struct GamePad
