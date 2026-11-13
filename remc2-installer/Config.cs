@@ -60,6 +60,7 @@ namespace remc2_installer
 		public GameDetail gameDetail { get; set; }
 		public Threading threading { get; set; }
 		public Hardware hardware { get; set; }
+		public InGameUi inGameUi { get; set; }
 	}
 
 	public class GameDetail
@@ -99,6 +100,45 @@ namespace remc2_installer
 		public string[] description { get; set; }
 		public bool bilinearFiltering { get; set; } = true;
 		public int antiAliasing { get; set; } = 2;   // MSAA samples: 0 = off (1x), 2, 4 or 8
+		public LookingGlass lookingGlass { get; set; }
+		public Anaglyph anaglyph { get; set; }
+	}
+
+	public class Anaglyph
+	{
+		public string[] description { get; set; }
+		public string leftColour { get; set; } = "#FF0000";
+		public string rightColour { get; set; } = "#00A8A8";
+		public float ghostReduction { get; set; } = 0.1f;
+	}
+
+	public class LookingGlass
+	{
+		public string[] description { get; set; }
+		public bool enabled { get; set; } = false;
+		public int rows { get; set; } = 6;
+		public int columns { get; set; } = 8;
+		public int cellWidth { get; set; } = 420;
+		public int cellHeight { get; set; } = 560;
+		public int viewSpacing { get; set; } = 8;
+		public int convergence { get; set; } = 2048;
+		public bool display { get; set; } = true;
+		public string bridgePath { get; set; } = "";
+	}
+
+	public class InGameUi
+	{
+		public string[] description { get; set; }
+		public UiElement topBar { get; set; } = new UiElement { alignment = "left" };
+		public UiElement spellIcons { get; set; } = new UiElement { alignment = "right" };
+		public UiElement spellMenu { get; set; } = new UiElement { alignment = "center" };
+	}
+
+	public class UiElement
+	{
+		public string alignment { get; set; } = "left";   // left, center or right
+		public int marginX { get; set; }   // from the aligned edge (left/right), or from the middle (center)
+		public int marginY { get; set; }   // down from the top, or up from the bottom for the spell menu
 	}
 
 	public class Game
@@ -143,6 +183,7 @@ namespace remc2_installer
 		public string map { get; set; }
 		public string spellMenu { get; set; }
 		public string spellMenuMark { get; set; }
+		public bool disableLRKeyRoll { get; set; }
 	}
 
 	public class GamePad

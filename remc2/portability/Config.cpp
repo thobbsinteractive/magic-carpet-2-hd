@@ -232,6 +232,7 @@ Config::Settings::Controls Config::GetControls(const json& settings)
 				controlValues.m_Keyboard.m_Map = ReadKeyScancode(keyboard, "map");
 				controlValues.m_Keyboard.m_SpellMenu = ReadKeyScancode(keyboard, "spellMenu");
 				controlValues.m_Keyboard.m_SpellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
+				controlValues.m_Keyboard.m_DisableLRKeyRoll = ReadBoolValue(keyboard, "disableLRKeyRoll");
 				break;
 			}
 		}
@@ -340,6 +341,7 @@ Config::Settings::Graphics Config::GetGraphics(const json& settings)
 		graphicsValues.m_GameDetail = GetGameDetail(graphics);
 		graphicsValues.m_Threading = GetThreading(graphics);
 		graphicsValues.m_Hardware = GetHardware(graphics);
+		graphicsValues.m_InGameUi = GetInGameUi(graphics);
 	}
 	return graphicsValues;
 }
@@ -396,8 +398,67 @@ Config::Settings::Hardware Config::GetHardware(const json& graphics)
 		const auto& hardware = graphics["hardware"];
 		hardwareValues.m_BilinearFiltering = ReadBoolValue(hardware, "bilinearFiltering");
 		hardwareValues.m_AntiAliasing = ReadIntValue(hardware, "antiAliasing");
+		if (hardware.contains("lookingGlass"))
+		{
+			const auto& lookingGlass = hardware["lookingGlass"];
+			auto& values = hardwareValues.m_LookingGlass;
+			values.m_Enabled = ReadBoolValue(lookingGlass, "enabled");
+			if (lookingGlass.contains("rows"))
+				values.m_Rows = ReadIntValue(lookingGlass, "rows");
+			if (lookingGlass.contains("columns"))
+				values.m_Columns = ReadIntValue(lookingGlass, "columns");
+			if (lookingGlass.contains("cellWidth"))
+				values.m_CellWidth = ReadIntValue(lookingGlass, "cellWidth");
+			if (lookingGlass.contains("cellHeight"))
+				values.m_CellHeight = ReadIntValue(lookingGlass, "cellHeight");
+			if (lookingGlass.contains("viewSpacing"))
+				values.m_ViewSpacing = ReadIntValue(lookingGlass, "viewSpacing");
+			if (lookingGlass.contains("convergence"))
+				values.m_Convergence = ReadIntValue(lookingGlass, "convergence");
+			if (lookingGlass.contains("display"))
+				values.m_Display = ReadBoolValue(lookingGlass, "display");
+			if (lookingGlass.contains("bridgePath"))
+				values.m_BridgePath = ReadStringValue(lookingGlass, "bridgePath");
+		}
+		if (hardware.contains("anaglyph"))
+		{
+			const auto& anaglyph = hardware["anaglyph"];
+			if (anaglyph.contains("leftColour"))
+				hardwareValues.m_Anaglyph.m_LeftColour = ReadStringValue(anaglyph, "leftColour");
+			if (anaglyph.contains("rightColour"))
+				hardwareValues.m_Anaglyph.m_RightColour = ReadStringValue(anaglyph, "rightColour");
+			if (anaglyph.contains("ghostReduction"))
+				hardwareValues.m_Anaglyph.m_GhostReduction = ReadFloatValue(anaglyph, "ghostReduction");
+		}
 	}
 	return hardwareValues;
+}
+
+Config::Settings::InGameUi Config::GetInGameUi(const json& graphics)
+{
+	Config::Settings::InGameUi inGameUiValues;
+	if (graphics.contains("inGameUi"))
+	{
+		const auto& inGameUi = graphics["inGameUi"];
+		inGameUiValues.m_TopBar = GetUiElement(inGameUi, "topBar", inGameUiValues.m_TopBar);
+		inGameUiValues.m_SpellIcons = GetUiElement(inGameUi, "spellIcons", inGameUiValues.m_SpellIcons);
+		inGameUiValues.m_SpellMenu = GetUiElement(inGameUi, "spellMenu", inGameUiValues.m_SpellMenu);
+	}
+	return inGameUiValues;
+}
+
+Config::Settings::UiElement Config::GetUiElement(const json& inGameUi, const char* name, const Config::Settings::UiElement& defaults)
+{
+	Config::Settings::UiElement elementValues = defaults;
+	if (inGameUi.contains(name) && inGameUi[name].is_object())
+	{
+		const auto& element = inGameUi[name];
+		if (element.contains("alignment") && element["alignment"].is_string())
+			elementValues.m_Alignment = ReadStringValue(element, "alignment");
+		elementValues.m_MarginX = ReadIntValue(element, "marginX");
+		elementValues.m_MarginY = ReadIntValue(element, "marginY");
+	}
+	return elementValues;
 }
 
 Config::Settings::Sound Config::GetSound(const json& settings)
@@ -514,6 +575,7 @@ void Config::SaveGraphicsToDoc(Config::Settings::Graphics graphics)
 	SaveGameDetailToDoc(graphics.m_GameDetail);
 	SaveThreadingToDoc(graphics.m_Threading);
 	SaveHardwareToDoc(graphics.m_Hardware);
+	SaveInGameUiToDoc(graphics.m_InGameUi);
 }
 
 void Config::SaveGameDetailToDoc(Config::Settings::GameDetail gameDetail)
@@ -559,6 +621,38 @@ void Config::SaveHardwareToDoc(Config::Settings::Hardware hardware)
 	auto& h = GetOrCreate(gfx, "hardware");
 	SetBool(h, "bilinearFiltering", hardware.m_BilinearFiltering);
 	SetInt(h, "antiAliasing", hardware.m_AntiAliasing);
+	auto& lg = GetOrCreate(h, "lookingGlass");
+	SetBool(lg, "enabled", hardware.m_LookingGlass.m_Enabled);
+	SetInt(lg, "rows", hardware.m_LookingGlass.m_Rows);
+	SetInt(lg, "columns", hardware.m_LookingGlass.m_Columns);
+	SetInt(lg, "cellWidth", hardware.m_LookingGlass.m_CellWidth);
+	SetInt(lg, "cellHeight", hardware.m_LookingGlass.m_CellHeight);
+	SetInt(lg, "viewSpacing", hardware.m_LookingGlass.m_ViewSpacing);
+	SetInt(lg, "convergence", hardware.m_LookingGlass.m_Convergence);
+	SetBool(lg, "display", hardware.m_LookingGlass.m_Display);
+	SetString(lg, "bridgePath", hardware.m_LookingGlass.m_BridgePath);
+	auto& anaglyph = GetOrCreate(h, "anaglyph");
+	SetString(anaglyph, "leftColour", hardware.m_Anaglyph.m_LeftColour);
+	SetString(anaglyph, "rightColour", hardware.m_Anaglyph.m_RightColour);
+	SetFloat(anaglyph, "ghostReduction", hardware.m_Anaglyph.m_GhostReduction);
+}
+
+void Config::SaveInGameUiToDoc(Config::Settings::InGameUi inGameUi)
+{
+	auto& settingsEntry = GetOrCreateActiveSettingsEntry();
+	auto& gfx = GetOrCreate(settingsEntry, "graphics");
+	auto& ui = GetOrCreate(gfx, "inGameUi");
+	const std::pair<const char*, const Settings::UiElement*> elements[] = {
+		{ "topBar", &inGameUi.m_TopBar },
+		{ "spellIcons", &inGameUi.m_SpellIcons },
+		{ "spellMenu", &inGameUi.m_SpellMenu } };
+	for (const auto& [name, element] : elements)
+	{
+		auto& e = GetOrCreate(ui, name);
+		SetString(e, "alignment", element->m_Alignment);
+		SetInt(e, "marginX", element->m_MarginX);
+		SetInt(e, "marginY", element->m_MarginY);
+	}
 }
 
 void Config::SaveGameToDoc(Config::Settings::Game gameSettings)
@@ -600,6 +694,7 @@ void Config::SaveControlsToDoc(Config::Settings::Controls controlSettings)
 	SetString(keyboard, "map", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Map));
 	SetString(keyboard, "spellMenu", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenu));
 	SetString(keyboard, "spellMenuMark", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenuMark));
+	SetBool(keyboard, "disableLRKeyRoll", controlSettings.m_Keyboard.m_DisableLRKeyRoll);
 
 	if (!controls.contains("gamePad"))
 		controls["gamePad"] = json::array({ json::object() });

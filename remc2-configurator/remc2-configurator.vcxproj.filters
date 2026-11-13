@@ -42,7 +42,16 @@
     <ClCompile Include="GraphicsDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UiAlignmentDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="HardwareDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnaglyphDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LookingGlassDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ThreadingDialog.cpp">
@@ -98,7 +107,16 @@
     <ClInclude Include="GraphicsDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UiAlignmentDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="HardwareDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnaglyphDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LookingGlassDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThreadingDialog.h">

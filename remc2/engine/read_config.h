@@ -16,6 +16,7 @@
 #endif
 
 #include "../portability/Config.h"
+#include "../portability/LookingGlassBridge.h"
 #include "../portability/port_time.h"
 #include "../portability/port_filesystem.h"
 #include "../portability/port_sdl_sound.h"
@@ -28,7 +29,29 @@
 #ifndef READ_CONFIG
 #define READ_CONFIG
 
-bool SetConfig();std::vector<Maths::Zone> ReadZones(std::vector<Maths::Zone> zonesArray);
+constexpr int MAX_VIEW_GRID = 16;
+
+// Horizontal alignment of an in-game UI element on the screen
+enum class UiAlignment
+{
+	Left,
+	Center,
+	Right
+};
+
+// Where an in-game UI element sits on the screen: aligned to the left, center or right, then moved by the margins
+// (in screen pixels). Only used when not at the default 320x200 / 640x480 resolutions
+struct UiElementLayout
+{
+	UiAlignment alignment = UiAlignment::Left;
+	int marginX = 0;   // from the aligned edge (left/right), or from the middle (center, + = right)
+	int marginY = 0;   // down from the top (top bar, spell icons) or up from the bottom (spell menu)
+};
+
+bool SetConfig();
+std::vector<Maths::Zone> ReadZones(std::vector<Maths::Zone> zonesArray);
+UiAlignment ParseUiAlignment(std::string alignment, UiAlignment defaultAlignment);
+UiElementLayout ReadUiElementLayout(const Config::Settings::UiElement& element, UiAlignment defaultAlignment);
 extern int config_skip_screen;
 extern int texturepixels;
 extern int maxGameFps;
@@ -60,11 +83,27 @@ extern int numberOfRenderThreads;
 extern bool assignToSpecificCores;
 extern bool bilinearFiltering;
 extern int antiAliasing;   // MSAA samples, 0 = off
+extern bool lookingGlassEnabled;
+extern int viewRows;
+extern int viewColumns;
+extern int viewSpacing;
+extern int viewConvergence;
+extern bool lookingGlassDisplay;
+extern LookingGlassDevice lookingGlassDevice;
+extern uint8_t anaglyphLeftColour[3];    // the anaglyph glasses' lenses (F11 in game), rgb 0 - 255
+extern uint8_t anaglyphRightColour[3];
+extern float anaglyphGhostReduction;   // 0 - 0.5: how much of the other eye each lens lets through, cancelled out
+bool ParseHexColour(const std::string& text, uint8_t rgb[3]);
+
 extern bool invertYAxis;
 extern bool invertXAxis;
 extern float mouseScaleX;
 extern float mouseScaleY;
 extern bool disableLRButtonsMenuOpen;
+extern bool disableLRKeyRoll;
+extern UiElementLayout topBarLayout;     // the mini-map and the health/mana bars
+extern UiElementLayout spellIconsLayout; // the selected left/right spell icons
+extern UiElementLayout spellMenuLayout;  // the spell selection menu at the bottom
 
 #define   GAMEPAD_ITEM_DISABLED  0x0
 #define    GAMEPAD_ITEM_ENABLED  0x1

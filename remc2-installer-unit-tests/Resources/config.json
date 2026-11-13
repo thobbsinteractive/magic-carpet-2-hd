@@ -118,7 +118,62 @@
 						"antiAliasing: Multisample anti-aliasing (MSAA) samples: 0 = off (1x), 2, 4 or 8. Capped to what the graphics card supports"
 					],
 					"bilinearFiltering": true,
-					"antiAliasing": 2
+					"antiAliasing": 2,
+					"lookingGlass": {
+						"description": [
+							"Quilt output for Looking Glass (lenticular) displays. Hardware renderer only",
+							"enabled: Draws a quilt of rows x columns views. Replaces the in-game resolution with the cell size and the window resolution with the whole quilt",
+							"rows, columns: The quilt's grid of views. Max 16 each. The leftmost view is the bottom left cell, then left to right and bottom to top",
+							"cellWidth, cellHeight: The resolution of each view: the menus, the UI and the 3D view are drawn at this size",
+							"viewSpacing: Sideways camera step between neighbouring views, in world units (a tile is 256)",
+							"convergence: Distance in world units that sits at the display surface (no parallax): nearer pops out, further sinks in. 0 = parallel views (everything in front of the display)",
+							"display: Shows the quilt as a hologram on the Looking Glass: fullscreen on it, interleaved with its calibration from Looking Glass Bridge (Windows, Bridge running). false = the quilt's cells side by side in a normal window",
+							"bridgePath: Looking Glass Bridge's install folder. Empty = the newest in C:/Program Files/Looking Glass"
+						],
+						"enabled": false,
+						"rows": 6,
+						"columns": 8,
+						"cellWidth": 420,
+						"cellHeight": 560,
+						"viewSpacing": 8,
+						"convergence": 2048,
+						"display": true,
+						"bridgePath": ""
+					},
+					"anaglyph": {
+						"description": [
+							"Anaglyph stereo for coloured glasses: F11 in game turns it on and off. Hardware renderer only",
+							"leftColour, rightColour: The left and right lens colours as #RRGGBB. Default red (#FF0000) left, cyan dimmed to 66% (#00A8A8) right, like the original stereo mode. #00FFFF for full strength cyan, #0000FF for glasses with a pure blue right lens",
+							"ghostReduction: How much of the other eye's image each lens lets through, cancelled out to remove ghosting. 0 = off, up to 0.5. Raise it if you see ghosts, lower it if the picture looks washed out"
+						],
+						"leftColour": "#FF0000",
+						"rightColour": "#00A8A8",
+						"ghostReduction": 0.1
+					}
+				},
+				"inGameUi": {
+					"description": [
+						"Position of the in-game UI elements. Not used at the 320x200 and 640x480 resolutions, where the original positions are kept",
+						"topBar: The mini-map and the health and mana bars. spellIcons: The selected left and right spell icons. spellMenu: The spell selection menu at the bottom of the screen",
+						"alignment: Horizontal position on the screen: 'left', 'center' or 'right'",
+						"marginX: Pixels in from the left edge (left), in from the right edge (right), or moved from the middle (center: + = right, - = left)",
+						"marginY: Pixels down from the top of the screen (topBar, spellIcons) or up from the bottom of the screen (spellMenu)"
+					],
+					"topBar": {
+						"alignment": "left",
+						"marginX": 0,
+						"marginY": 0
+					},
+					"spellIcons": {
+						"alignment": "right",
+						"marginX": 0,
+						"marginY": 0
+					},
+					"spellMenu": {
+						"alignment": "center",
+						"marginX": 0,
+						"marginY": 0
+					}
 				}
 			},
 			"game": {
@@ -155,7 +210,8 @@
 					{
 						"description": [
 							"spellMenu: Ctrl by default. Opens the Spell menu",
-							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed"
+							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed",
+							"disableLRKeyRoll: when enabled stops pressing the left and right keys together from barrel rolling the carpet"
 						],
 						"name": "Modern",
 						"isActive": true,
@@ -165,12 +221,14 @@
 						"right": "D",
 						"map": "TAB",
 						"spellMenu": "LCTRL",
-						"spellMenuMark": "LSHIFT"
+						"spellMenuMark": "LSHIFT",
+						"disableLRKeyRoll": false
 					},
 					{
 						"description": [
 							"spellMenu: Ctrl by default. Opens the Spell menu",
-							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed"
+							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed",
+							"disableLRKeyRoll: when enabled stops pressing the left and right keys together from barrel rolling the carpet"
 						],
 						"name": "Classic",
 						"isActive": false,
@@ -180,7 +238,8 @@
 						"right": "RIGHT",
 						"map": "RETURN",
 						"spellMenu": "RCTRL",
-						"spellMenuMark": "RSHIFT"
+						"spellMenuMark": "RSHIFT",
+						"disableLRKeyRoll": false
 					}
 				],
 				"gamePad": [

@@ -97,10 +97,49 @@ public:
 			bool m_AssignToSpecificCores = false;
 		};
 
+		// Looking Glass (lenticular) output: a quilt of rows x columns cells, each the whole frame at the cell size
+		struct LookingGlass
+		{
+			bool m_Enabled = false;
+			int m_Rows = 6;
+			int m_Columns = 8;
+			int m_CellWidth = 420;    // the game resolution (menus, UI and each view); the window is the whole quilt
+			int m_CellHeight = 560;
+			int m_ViewSpacing = 8;    // camera step between neighbouring views, in world units (a tile is 256)
+			int m_Convergence = 2048;   // distance at the display surface (zero parallax), in world units; 0 = parallel views
+			bool m_Display = false;     // the hologram on the Looking Glass (calibration from Bridge); false = the quilt in a window
+			std::string m_BridgePath;   // Looking Glass Bridge's folder; empty = the newest in the default install location
+		};
+
+		// Anaglyph stereo (F11 in game): the glasses' lens colours, "#RRGGBB"
+		struct Anaglyph
+		{
+			std::string m_LeftColour = "#FF0000";
+			std::string m_RightColour = "#00A8A8";
+			float m_GhostReduction = 0.1f;   // how much of the other eye each lens lets through, cancelled out (0 - 0.5; 0 = off)
+		};
+
 		struct Hardware
 		{
 			bool m_BilinearFiltering = false;
 			int m_AntiAliasing = 0;   // MSAA samples: 0 = off, 2, 4 or 8 (capped to what the GPU supports)
+			LookingGlass m_LookingGlass;
+			Anaglyph m_Anaglyph;
+		};
+
+		// Position of one element of the in-game UI on the screen (not used at the 320x200 / 640x480 default resolutions)
+		struct UiElement
+		{
+			std::string m_Alignment = "left";   // "left", "center" or "right"
+			int m_MarginX = 0;   // from the aligned edge (left/right), or from the middle (center, + = right)
+			int m_MarginY = 0;   // down from the top (top bar, spell icons) or up from the bottom (spell menu)
+		};
+
+		struct InGameUi
+		{
+			UiElement m_TopBar = { "left" };      // the mini-map and the health/mana bars
+			UiElement m_SpellIcons = { "right" }; // the selected left/right spell icons
+			UiElement m_SpellMenu = { "center" }; // the spell selection menu at the bottom
 		};
 
 		struct Graphics
@@ -114,6 +153,7 @@ public:
 			GameDetail m_GameDetail;
 			Threading m_Threading;
 			Hardware m_Hardware;
+			InGameUi m_InGameUi;
 		};
 
 		struct Game
@@ -147,6 +187,7 @@ public:
 			uint16_t m_Map = 0;
 			uint16_t m_SpellMenu = 0;
 			uint16_t m_SpellMenuMark = 0;
+			bool m_DisableLRKeyRoll = false;
 		};
 
 		struct GamePad
@@ -223,6 +264,8 @@ public:
 	Settings::GameDetail GetGameDetail(const json& graphics);
 	Settings::Threading GetThreading(const json& graphics);
 	Settings::Hardware GetHardware(const json& graphics);
+	Settings::InGameUi GetInGameUi(const json& graphics);
+	Settings::UiElement GetUiElement(const json& inGameUi, const char* name, const Settings::UiElement& defaults);
 	Settings::Sound GetSound(const json& settings);
 	Settings::Paths GetPaths(const json& settings);
 	Settings::Controls GetControls(const json& settings);
@@ -237,6 +280,7 @@ public:
 	void SaveGameDetailToDoc(Settings::GameDetail gameDetail);
 	void SaveThreadingToDoc(Settings::Threading threading);
 	void SaveHardwareToDoc(Settings::Hardware hardware);
+	void SaveInGameUiToDoc(Settings::InGameUi inGameUi);
 	void SaveGameToDoc(Settings::Game gameSettings);
 	void SaveControlsToDoc(Settings::Controls controlSettings);
 };
