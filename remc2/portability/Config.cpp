@@ -231,6 +231,7 @@ Config::Settings::Controls Config::GetControls(const json& settings)
 				controlValues.m_Keyboard.m_Map = ReadKeyScancode(keyboard, "map");
 				controlValues.m_Keyboard.m_SpellMenu = ReadKeyScancode(keyboard, "spellMenu");
 				controlValues.m_Keyboard.m_SpellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
+				controlValues.m_Keyboard.m_DisableLRKeyRoll = ReadBoolValue(keyboard, "disableLRKeyRoll");
 				break;
 			}
 		}
@@ -690,6 +691,7 @@ void Config::SaveControlsToDoc(Config::Settings::Controls controlSettings)
 	SetString(keyboard, "map", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Map));
 	SetString(keyboard, "spellMenu", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenu));
 	SetString(keyboard, "spellMenuMark", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenuMark));
+	SetBool(keyboard, "disableLRKeyRoll", controlSettings.m_Keyboard.m_DisableLRKeyRoll);
 
 	if (!controls.contains("gamePad"))
 		controls["gamePad"] = json::array({ json::object() });

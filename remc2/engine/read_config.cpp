@@ -68,6 +68,7 @@ bool invertXAxis = false;
 float mouseScaleX = 1.0f;
 float mouseScaleY = 1.0f;
 bool disableLRButtonsMenuOpen = false;
+bool disableLRKeyRoll = false;
 UiElementLayout topBarLayout = { UiAlignment::Left };
 UiElementLayout spellIconsLayout = { UiAlignment::Right };
 UiElementLayout spellMenuLayout = { UiAlignment::Center };
@@ -399,6 +400,7 @@ bool SetConfig() {
 	inputMapping.Map = settingsValue.m_Controls.m_Keyboard.m_Map;
 	inputMapping.SpellMenu = settingsValue.m_Controls.m_Keyboard.m_SpellMenu;
 	inputMapping.SpellMenuMark = settingsValue.m_Controls.m_Keyboard.m_SpellMenuMark;
+	disableLRKeyRoll = settingsValue.m_Controls.m_Keyboard.m_DisableLRKeyRoll;
 
 	gpc.axis_yaw = settingsValue.m_Controls.m_GamePad.m_AxisYaw;
 	gpc.axis_pitch = settingsValue.m_Controls.m_GamePad.m_AxisPitch;

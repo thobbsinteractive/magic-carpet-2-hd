@@ -99,6 +99,7 @@ extern bool invertXAxis;
 extern float mouseScaleX;
 extern float mouseScaleY;
 extern bool disableLRButtonsMenuOpen;
+extern bool disableLRKeyRoll;
 extern UiElementLayout topBarLayout;     // the mini-map and the health/mana bars
 extern UiElementLayout spellIconsLayout; // the selected left/right spell icons
 extern UiElementLayout spellMenuLayout;  // the spell selection menu at the bottom
