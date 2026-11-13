@@ -72,6 +72,7 @@ public:
 			int m_GameResWidth = 640;
 			int m_GameResHeight = 480;
 			int m_GameUiScale = 1;
+			int m_MapEntityScale = 1;
 			bool m_UseHighResGraphics = false;
 			std::string m_HighResGraphicsFolder = "";
 			bool m_UseFixedMenuGraphics = false;

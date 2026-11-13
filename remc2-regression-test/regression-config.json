@@ -24,6 +24,7 @@
 					"gameResWidth": 320,
 					"gameResHeight": 320,
 					"gameUiScale": 1,
+					"mapEntityScale": 1,
 					"useEnhancedGraphics": false,
 					"bigGraphicsFolder": "biggraphics",
 					"sky": true,

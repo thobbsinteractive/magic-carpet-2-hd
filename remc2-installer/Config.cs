@@ -68,6 +68,7 @@ namespace remc2_installer
 		public int gameResWidth { get; set; }
 		public int gameResHeight { get; set; }
 		public int gameUiScale { get; set; }
+		public int mapEntityScale { get; set; }
 		public bool useHighResGraphics { get; set; }
 		public string highResGraphicsFolder { get; set; }
 		public bool useFixedMenuGraphics { get; set; }

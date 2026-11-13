@@ -64,6 +64,7 @@
 					"description": [
 						"gameResWidth: In Game resolution. If using software render keep this low",
 						"gameUiScale: Scale of the Game Mini/Map and UI '2' recommended for HD, 3 for higher. (Max 8) Will not allow spell menu to be wider than screen width",
+						"mapEntityScale: Makes the map markings bigger on top of their normal or gameUiScale size. 1 = normal, up to 4 = 4x bigger",
 						"useHighResGraphics: If set to true, highResGraphicsFolder must be set as well",
 						"highResGraphicsFolder: Directory with 128x128 textures. Path is relative to .exe",
 						"useFixedMenuGraphics: If set to true, fixedMenuGraphicsFolder folder must be set as well",
@@ -81,6 +82,7 @@
 					"gameResWidth": 1920,
 					"gameResHeight": 1080,
 					"gameUiScale": 2,
+					"mapEntityScale": 1,
 					"useHighResGraphics": true,
 					"highResGraphicsFolder": "graphics/high-res",
 					"useFixedMenuGraphics": true,

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <filesystem>
 #include <iostream>
 #include <fstream>
@@ -353,6 +354,7 @@ Config::Settings::GameDetail Config::GetGameDetail(const json& graphics)
 		gameDetailValues.m_GameResWidth = ReadIntValue(gameDetail, "gameResWidth");
 		gameDetailValues.m_GameResHeight = ReadIntValue(gameDetail, "gameResHeight");
 		gameDetailValues.m_GameUiScale = ReadIntValue(gameDetail, "gameUiScale");
+		gameDetailValues.m_MapEntityScale = std::clamp(gameDetail.contains("mapEntityScale") ? ReadIntValue(gameDetail, "mapEntityScale") : 1, 1, 4);
 		gameDetailValues.m_UseHighResGraphics = ReadBoolValue(gameDetail, "useHighResGraphics");
 		gameDetailValues.m_HighResGraphicsFolder = ReadStringValue(gameDetail, "highResGraphicsFolder");
 		gameDetailValues.m_UseFixedMenuGraphics = ReadBoolValue(gameDetail, "useFixedMenuGraphics");
@@ -522,6 +524,7 @@ void Config::SaveGameDetailToDoc(Config::Settings::GameDetail gameDetail)
 	SetInt(gd, "gameResWidth", gameDetail.m_GameResWidth);
 	SetInt(gd, "gameResHeight", gameDetail.m_GameResHeight);
 	SetInt(gd, "gameUiScale", gameDetail.m_GameUiScale);
+	SetInt(gd, "mapEntityScale", gameDetail.m_MapEntityScale);
 	SetBool(gd, "useHighResGraphics", gameDetail.m_UseHighResGraphics);
 	SetString(gd, "highResGraphicsFolder", gameDetail.m_HighResGraphicsFolder);
 	SetBool(gd, "useFixedMenuGraphics", gameDetail.m_UseFixedMenuGraphics);
