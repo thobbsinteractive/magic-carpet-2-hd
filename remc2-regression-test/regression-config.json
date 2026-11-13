@@ -22,7 +22,7 @@
 				"startWindowed": false,
 				"gameDetail": {
 					"gameResWidth": 320,
-					"gameResHeight": 320,
+					"gameResHeight": 200,
 					"gameUiScale": 1,
 					"useEnhancedGraphics": false,
 					"bigGraphicsFolder": "biggraphics",

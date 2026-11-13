@@ -403,10 +403,6 @@ bool anaglyphMode = false;
 
 bool UseLowResScaledUi()
 {
-	// Not in the regression tests: they compare with the original, whose levels run at 320x200
-	// (the mouse's pitch / roll and its scaling follow the screen in this mode)
-	if (CommandLineParams.ModeRegressionsTestType() != -1)
-		return false;
 	return !IsDefaultResolution(gameResWidth, gameResHeight) && gameResWidth < 640;
 }
 
