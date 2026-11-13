@@ -298,14 +298,25 @@ void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, 
 		func_draw = &DrawLine_BD524;
 	else
 		func_draw = &DrawLine_BD542;
-	func_draw(posX1, posY1, posX2, posY2, color);
+
+	//A thick line is drawn as thickness x thickness copies of the 1 pixel line, each moved by a pixel, centred on the line.
+	//The 1 pixel line clips every pixel, so the copies can't go outside the buffer
+	if (thickness < 1)
+		thickness = 1;
+	const int offset = (thickness - 1) / 2;
+	auto drawThickLine = [&]() {
+		for (int dy = -offset; dy < thickness - offset; dy++)
+			for (int dx = -offset; dx < thickness - offset; dx++)
+				func_draw(posX1 + dx, posY1 + dy, posX2 + dx, posY2 + dy, color);
+	};
+	drawThickLine();
 
 	//result = (int)x_D41A0_BYTEARRAY_0;
 	if (world_D41A0.m_GameSettings.m_Display.m_uiScreenSize == 1)
 	{
 		temp_screen_buffer = pdwScreenBuffer_351628;
 		pdwScreenBuffer_351628 = (uint8_t*)ptrMemoryBuffer_E9C3C;
-		func_draw(posX1, posY1, posX2, posY2, color);
+		drawThickLine();
 		//result = v7;
 		pdwScreenBuffer_351628 = temp_screen_buffer;
 	}
@@ -1155,6 +1166,76 @@ uint8_t CalculateScaleOffset(uint8_t scale)
 	return 0;
 }
 
+//The mapEntityScale from the config. Not used at the default resolutions (320x200, 640x480), which keep the original sizes
+static uint8_t MapEntityScale()
+{
+	if (DefaultResolutions())
+		return 1;
+	return (uint8_t)mapEntityScale;
+}
+
+//Draws one dot of the castle rope as a scale x scale block centred on (posX, posY), blended into the map and clipped to the map shape
+static void DrawCastleRopeDot(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, uint8_t scale)
+{
+	const int offset = CalculateScaleOffset(scale);
+	const uint8_t ropeColour = (uint8_t)(*xadataclrd0dat.colorPalette_var28)[4095];
+	for (int y = posY - offset; y < posY - offset + scale; y++)
+	{
+		if (y < 0 || y >= height)
+			continue;
+		for (int x = posX - offset; x < posX - offset + scale; x++)
+		{
+			if (x < 0 || x >= width || x < mapSpans_F4960[1 + 2 * y] || x >= mapSpans_F4960[2 * y])
+				continue;
+			uint8_t* pixel = &mapBuffer[y * screenWidth_18062C + x];
+			const uint8_t colour = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + 256 * *pixel + ropeColour];
+			*pixel = colour;
+			if (mapBuffer2 != nullptr)
+				mapBuffer2[y * screenWidth_18062C + x] = colour;
+		}
+	}
+}
+
+//Size multiplier for the map markings: the UI scale times the mapEntityScale
+static uint8_t MapMarkScale(uint8_t scale)
+{
+	return (uint8_t)(scale * MapEntityScale());
+}
+
+//The icons (flags, balloons) grow at half the rate of the other markings, so they don't get too big:
+//half the mapEntityScale rounded up: 1 and 2 = 1x, 3 and 4 = 2x
+static uint8_t MapIconEntityScale()
+{
+	return (uint8_t)((MapEntityScale() + 1) / 2);
+}
+
+//Size multiplier for the map icons: the UI scale times half the mapEntityScale
+static uint8_t MapIconScale(uint8_t scale)
+{
+	return (uint8_t)(scale * MapIconEntityScale());
+}
+
+//Fills a size x size block with its top left at (posX, posY), clipped to the width x height of the map
+static void DrawMapBlock(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, int size, uint8_t colour, bool setAlpha)
+{
+	for (int y = posY; y < posY + size; y++)
+	{
+		if (y < 0 || y >= height)
+			continue;
+		for (int x = posX; x < posX + size; x++)
+		{
+			if (x < 0 || x >= width)
+				continue;
+			uint8_t* pixel = &mapBuffer[y * screenWidth_18062C + x];
+			*pixel = colour;
+			if (setAlpha)
+				SetAlphaAt(pixel, ALPHA_VISIBLE);
+			if (mapBuffer2 != nullptr)
+				mapBuffer2[y * screenWidth_18062C + x] = colour;
+		}
+	}
+}
+
 //Draws an enemy player's position on the minimap as a scale x scale block centred on (posX, posY), clipped to the minimap shape
 void DrawMinimapPlayerDot(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, uint8_t colour, uint8_t scale, bool setAlpha)
 {
@@ -1293,6 +1374,11 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 	}
 	debugcounter2++;
 
+	//All the map markings except the objective arrow are drawn at markScale
+	const uint8_t markScale = MapMarkScale(scale);
+	const uint8_t iconScale = MapIconScale(scale);
+	const int blipShift = CalculateScaleOffset(markScale) - CalculateScaleOffset(scale);
+
 	v8 = x;
 	v9 = y;
 	v11 = world_D41A0.terrain_2FECE.MapType;
@@ -1358,13 +1444,12 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 		v27 = v82 + projection.X(v23, v24) - v20;
 		v75 = Maths::IntegerSqrt_7277A(v27 * v27 + (v26 - v21) * (v26 - v21));
 		v72 = (uint16_t)Maths::Atan2_72633(v25 - v20, v26 - v21);
-		for (i = world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].Turn_2BE0_11248 & 3;
+		//castle rope: a dotted line from the player to their castle, the dots and the gaps between them grow with the map marking scale
+		for (i = (world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].Turn_2BE0_11248 & 3) * markScale;
 			;
-			*(x_BYTE*)(ptrMapBufferStart_v84 + v20 + (i * Maths::sin_DB750[v72] >> 16) + screenWidth_18062C * v85) = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + 256
-			* *(uint8_t*)(ptrMapBufferStart_v84 + v20 + (i * Maths::sin_DB750[v72] >> 16) + screenWidth_18062C * v85)
-			+ (uint8_t)(*xadataclrd0dat.colorPalette_var28)[4095]])//castle rope
+			DrawCastleRopeDot(ptrMapBufferStart_v84, nullptr, v29, v85, width, height, markScale))
 		{
-			i += 4;
+			i += 4 * markScale;
 			if (i > v75)
 				break;
 
@@ -1690,15 +1775,7 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 							if (v78 > 1)
 								blipSize = 2;
 
-							for (int y = 0; y < (blipSize * scale); y++)
-							{
-								for (int x = 0; x < (blipSize * scale); x++)
-								{
-									ptrBlipBufferIdx_v56[x] = BlipColourIdx_v94;
-									SetAlphaAt((uint8_t*)&ptrBlipBufferIdx_v56[x], ALPHA_VISIBLE);
-								}
-								ptrBlipBufferIdx_v56 += screenWidth_18062C;
-							}
+							DrawMapBlock(ptrMapBufferStart_v84, nullptr, posx - blipShift, posy - blipShift, width, height, blipSize * markScale, BlipColourIdx_v94, true);
 						}
 						else if (videoMode_180660 == 1)
 						{
@@ -1729,16 +1806,16 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 						{
 							//Draw other stuff (ballon icons)
 							DrawBitmap_2BB40(
-								posx - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2) * scale,
-								posy - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 * scale),
-								(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31], scale);
+								posx - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].width_4 / 2) * iconScale,
+								posy - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 * iconScale),
+								(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31], iconScale);
 						}
 						else
 						{
 							//Draw Flag
 							
 							//DrawBitmap_2BB40(posx, posy - *(uint8_t *)(6 * v31 + **filearray_2aa18c[6] + 5), (uint8_t**)(6 * v31 + **filearray_2aa18c[6]));
-							DrawBitmap_2BB40(posx, posy - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 * scale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31], scale);
+							DrawBitmap_2BB40(posx, posy - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31].height_5 * iconScale), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v31], iconScale);
 						}
 					}
 					if (v88)
@@ -1772,11 +1849,11 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 							if (v64 >= 0 && v64 < height && v63 >= mapSpans_F4960[1 + 2 * v64] && v63 < mapSpans_F4960[2 * v64])
 							{
 								v66 = playersColors_E88E0x[GetTrueWizardNumber_61790(v60x->playerData_0xA4_164x->playerColorIndex_0x38_56)][0];
-								DrawMinimapPlayerDot(ptrMapBufferStart_v84, nullptr, v63, v64, width, height, v66, scale, true);
+								DrawMinimapPlayerDot(ptrMapBufferStart_v84, nullptr, v63, v64, width, height, v66, markScale, true);
 								if (videoMode_180660 == 1)
 									DrawText_2BC10(world_D41A0.players_0x2BDE[v87].WizardName_0x39f_2BFA_12157, 2 * v63 + 4, 2 * v64, v66);
-								else
-									DrawText_2BC10(world_D41A0.players_0x2BDE[v87].WizardName_0x39f_2BFA_12157, v63 - CalculateScaleOffset(scale) + (4 * scale), v64 - CalculateScaleOffset(scale), v66, scale);
+								else //name to the right of the dot, at the UI scale
+									DrawText_2BC10(world_D41A0.players_0x2BDE[v87].WizardName_0x39f_2BFA_12157, v63 - CalculateScaleOffset(markScale) + markScale + (3 * scale), v64 - CalculateScaleOffset(markScale), v66, scale);
 							}
 						}
 					}
@@ -1787,7 +1864,7 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 	}
 
 	//Draw center Cross
-	if (scale == 1)
+	if (markScale == 1)
 	{
 		int v71 = 0;
 		int crossWidth_v67 = width / 12;
@@ -1812,35 +1889,31 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 	}
 
 	//Draw center Cross at other scales (2x or greater)
-	int crossWidth_v67 = width / 12;
+	//A markScale x markScale block centred on the same pixel as the 1x cross, with four arms of equal length and width,
+	//every pixel blended once
+	const int crossWidth_v67 = width / 12;
+	const int blockX = (width / 2 - 1) - CalculateScaleOffset(markScale);
+	const int blockY = (height / 2) - CalculateScaleOffset(markScale);
 
-	uint8_t* crossCenter = (uint8_t*)(screenWidth_18062C * ((int)height / 2) + width / 2 + ptrMapBufferStart_v84 - 1);
+	auto blendCrossPixel = [&](int px, int py) {
+		uint8_t* pixel = ptrMapBufferStart_v84 + screenWidth_18062C * py + px;
+		*pixel = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + 256 * CentreCrossColour_v93 + *pixel];
+	};
 
-	for (int s = 0; s < scale; s++)
+	//Centre block
+	for (int py = blockY; py < blockY + markScale; py++)
+		for (int px = blockX; px < blockX + markScale; px++)
+			blendCrossPixel(px, py);
+
+	//Arms, crossWidth_v67 long out from each side of the block
+	for (int i = 1; i <= crossWidth_v67; i++)
 	{
-		uint8_t* ptrCrossWest_v68 = (crossCenter - CalculateScaleOffset(scale)) + (screenWidth_18062C * s);
-		uint8_t* ptrCrossEast_v77 = (crossCenter + (scale - CalculateScaleOffset(scale)) + 1) + (screenWidth_18062C * s);
-
-		for (int i = 0; i < crossWidth_v67; i++)
+		for (int t = 0; t < markScale; t++)
 		{
-			*ptrCrossWest_v68 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossWest_v68];
-			*ptrCrossEast_v77 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossEast_v77];
-			ptrCrossWest_v68--;
-			ptrCrossEast_v77++;
-		}
-	}
-
-	for (int s = 0; s < scale; s++)
-	{
-		uint8_t* ptrCrossNorth_v81 = (crossCenter - CalculateScaleOffset(scale)) + 1 + s;
-		uint8_t* ptrCrossSouth_v70 = ((crossCenter - CalculateScaleOffset(scale)) + screenWidth_18062C) + 1 + s;
-
-		for (int i = 0; i < crossWidth_v67; i++)
-		{
-			*ptrCrossNorth_v81 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossNorth_v81];
-			*ptrCrossSouth_v70 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + 256 * CentreCrossColour_v93 + (uint8_t)*ptrCrossSouth_v70];
-			ptrCrossNorth_v81 -= screenWidth_18062C;
-			ptrCrossSouth_v70 += screenWidth_18062C;
+			blendCrossPixel(blockX - i, blockY + t);             //West
+			blendCrossPixel(blockX + markScale - 1 + i, blockY + t); //East
+			blendCrossPixel(blockX + t, blockY - i);             //North
+			blendCrossPixel(blockX + t, blockY + markScale - 1 + i); //South
 		}
 	}
 }
@@ -1872,9 +1945,6 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 	int v29; // edx
 	int v30; // eax
 	int v31; // ebx
-	uint8_t* v32x; // edx
-	uint8_t* v33x; // ST44_4
-	char v34; // bl
 	type_entity_0x6E8E* iy; // ebx
 	uint8_t v36; // al
 	uint8_t v37; // ah
@@ -1903,8 +1973,6 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 	int v60; // edi
 	uint8_t* v61x; // ecx
 	uint8_t* v62x; // edx
-	uint8_t* v63; // edx
-	uint8_t* v64; // ecx
 	int v65; // eax
 	type_entity_0x6E8E* v66x; // ebx
 	int v67; // edx
@@ -2021,21 +2089,19 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 		v29 = v98 + projection.X(v25, v26) - v21;
 		v91 = Maths::IntegerSqrt_7277A(v29 * v29 + (v28 - v24) * (v28 - v24));
 		v89 = (uint16_t)Maths::Atan2_72633(v27 - v21, v28 - v24);
-		v30 = world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].Turn_2BE0_11248 & 3;
+		//castle rope: a dotted line from the player to their castle, the dots and the gaps between them grow with the map marking scale
+		const uint8_t ropeScale = MapMarkScale(scale);
+		v30 = (world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].Turn_2BE0_11248 & 3) * ropeScale;
 		while (1)
 		{
-			v30 += 4;
+			v30 += 4 * ropeScale;
 			if (v30 > v91)
 				break;
 			v31 = v21 + (v30 * Maths::sin_DB750[v89] >> 16);
 			v94 = v24 + (-v30 * (signed int)Maths::sin_DB750[0x200 + v89] >> 16);
 			if (v31 < 0 || v31 >= width || v94 < 0 || v94 >= height || v31 < mapSpans_F4960[1 + 2 * v94] || v31 >= mapSpans_F4960[2 * v94])
 				break;
-			v32x = &v99x[screenWidth_18062C * v94 + v31];
-			v33x = &v100x[screenWidth_18062C * v94 + v31]; //(char*)(v100 + v31 + x_DWORD_18062C_resolution_x * v94);
-			v34 = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + 256 * *v32x + (uint8_t)(*xadataclrd0dat.colorPalette_var28)[4095]];
-			*v33x = v34;
-			*v32x = v34;
+			DrawCastleRopeDot(v99x, v100x, v31, v94, width, height, ropeScale);
 		}
 	}
 	for (iy = &world_D41A0.entities_0x6E8E[1]; iy <= &world_D41A0.entities_0x6E8E[0x3e8 - 1]; iy++)
@@ -2325,19 +2391,9 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 					{
 						if (v36 <= 1u)
 						{
-							*v62x = v110;
-							*v61x = v110;
-							if (v92 > 1)
-							{
-								v62x[1] = v110;
-								v61x[1] = v110;
-								v63 = &v62x[screenWidth_18062C];
-								*v63 = v110;
-								v64 = &v61x[screenWidth_18062C];
-								*v64 = v110;
-								v63[1] = v110;
-								v64[1] = v110;
-							}
+							const int blipSize = (v92 > 1 ? 2 : 1) * MapEntityScale();
+							const int blipOffset = CalculateScaleOffset(MapEntityScale());
+							DrawMapBlock(v99x, v100x, v59 - blipOffset, v60 - blipOffset, width, height, blipSize, v110, false);
 						}
 						else if (videoMode_180660 == 1)
 						{
@@ -2381,14 +2437,14 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 							  v60 - *(uint8_t *)(6 * v36 + **filearray_2aa18c[6] + 5),
 								(uint8_t**)(6 * v36 + **filearray_2aa18c[6]));*/
 							DrawBitmap_2BB40(
-								v59 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].width_4 / 2,
-								v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5,
-								(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36]);
+								v59 - ((*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].width_4 / 2) * MapIconEntityScale(),
+								v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5 * MapIconEntityScale(),
+								(*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36], MapIconEntityScale());
 						}
 						else
 						{
 							//DrawBitmap_2BB40(v59, v60 - *(uint8_t *)(6 * v36 + **filearray_2aa18c[6] + 5), (uint8_t**)(6 * v36 + **filearray_2aa18c[6]));
-							DrawBitmap_2BB40(v59, v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36]);
+							DrawBitmap_2BB40(v59, v60 - (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36].height_5 * MapIconEntityScale(), (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[v36], MapIconEntityScale());
 						}
 					}
 					if (v104)
@@ -2420,11 +2476,12 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 							if (v70 >= 0 && v70 < height && v69 >= mapSpans_F4960[1 + 2 * v70] && v69 < mapSpans_F4960[2 * v70])
 							{
 								v73 = playersColors_E88E0x[GetTrueWizardNumber_61790(v66x->playerData_0xA4_164x->playerColorIndex_0x38_56)][1];
-								DrawMinimapPlayerDot(v99x, v100x, v69, v70, width, height, v73, scale, false);
+								const uint8_t markScale = MapMarkScale(scale);
+								DrawMinimapPlayerDot(v99x, v100x, v69, v70, width, height, v73, markScale, false);
 								if (videoMode_180660 == 1)
 									DrawText_2BC10(world_D41A0.players_0x2BDE[j].WizardName_0x39f_2BFA_12157, 2 * v69 + 4, 2 * v70, v73);
-								else
-									DrawText_2BC10(world_D41A0.players_0x2BDE[j].WizardName_0x39f_2BFA_12157, v69 - CalculateScaleOffset(scale) + (4 * scale), v70 - CalculateScaleOffset(scale), v73, scale);
+								else //name to the right of the dot, at the UI scale
+									DrawText_2BC10(world_D41A0.players_0x2BDE[j].WizardName_0x39f_2BFA_12157, v69 - CalculateScaleOffset(markScale) + markScale + (3 * scale), v70 - CalculateScaleOffset(markScale), v73, scale);
 							}
 						}
 					}
@@ -2931,6 +2988,8 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 	debugcounter_644F0++;
 	*/
 
+	const uint8_t markScale = MapMarkScale(scale);
+
 	axis_3d* v36x; // [esp-4h] [ebp-BEh]
 
 	int v37x[0xa8]; // [esp+0h] [ebp-BAh]
@@ -3073,7 +3132,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 		{
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[3840];
 			v51x.v51y = v72x->position_0x4C_76;
-			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
+			if (DrawObjectiveRectangle_64CE0(&v51x, markScale))
 				SetHelpItemTarget_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 			v36x = &v72x->position_0x4C_76;
 			v17x = &v72x->position_0x4C_76;
@@ -3088,7 +3147,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 		{
 			v51x.v64xb_46 = (*xadataclrd0dat.colorPalette_var28)[0xff0];
 			v51x.v51y = v65y;
-			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
+			if (DrawObjectiveRectangle_64CE0(&v51x, markScale))
 				SetHelpItemTarget_885E0(0, v51x.v62xw_42, v51x.v63xw_44, 0x51u);
 			v36x = &v65y;
 			v17x = &v65y;
@@ -3109,7 +3168,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 			if (ix <= Entities_EA3E4[0])
 				break;
 			v51x.v51y = v72x->position_0x4C_76;
-			if (DrawObjectiveRectangle_64CE0(&v51x, scale))
+			if (DrawObjectiveRectangle_64CE0(&v51x, markScale))
 				SetHelpItemTarget_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 			v19 = Maths::DistanceXY_58490(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 			if (v19 < v8)
@@ -3134,7 +3193,7 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				if (v72x->levelPar3_0x46_70 == v79)
 				{
 					v51x.v51y = v72x->position_0x4C_76;
-					if (DrawObjectiveRectangle_64CE0(&v51x, scale))
+					if (DrawObjectiveRectangle_64CE0(&v51x, markScale))
 						SetHelpItemTarget_885E0(v72x, v51x.v62xw_42, v51x.v63xw_44, 0x52u);
 					v20 = Maths::DistanceXY_58490(&v75x->position_0x4C_76, &v72x->position_0x4C_76);
 					if (v20 < v8)
@@ -3220,13 +3279,13 @@ void DrawMinimapMarks_644F0(int16_t x, int16_t y, int16_t posX, int16_t posY, ui
 				}
 				//adress 245be1
 				//v34 = v30;
-				DrawLine_2BD10(v37x[0], v37x[1], v37x[6], v37x[7], colour_v30);
-				DrawLine_2BD10(v37x[6], v37x[7], v37x[18], v37x[19], colour_v30);
-				DrawLine_2BD10(v37x[18], v37x[19], v37x[24], v37x[25], colour_v30);
-				DrawLine_2BD10(v37x[24], v37x[25], v37x[30], v37x[31], colour_v30);
-				DrawLine_2BD10(v37x[30], v37x[31], v37x[36], v37x[37], colour_v30);
-				DrawLine_2BD10(v37x[36], v37x[37], v37x[12], v37x[13], colour_v30);
-				DrawLine_2BD10(v37x[12], v37x[13], v37x[0], v37x[1], colour_v30);
+				DrawLine_2BD10(v37x[0], v37x[1], v37x[6], v37x[7], colour_v30, markScale);
+				DrawLine_2BD10(v37x[6], v37x[7], v37x[18], v37x[19], colour_v30, markScale);
+				DrawLine_2BD10(v37x[18], v37x[19], v37x[24], v37x[25], colour_v30, markScale);
+				DrawLine_2BD10(v37x[24], v37x[25], v37x[30], v37x[31], colour_v30, markScale);
+				DrawLine_2BD10(v37x[30], v37x[31], v37x[36], v37x[37], colour_v30, markScale);
+				DrawLine_2BD10(v37x[36], v37x[37], v37x[12], v37x[13], colour_v30, markScale);
+				DrawLine_2BD10(v37x[12], v37x[13], v37x[0], v37x[1], colour_v30, markScale);
 			}
 		}
 	}
@@ -3241,15 +3300,6 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 	int posX_v4; // ebx
 	char colour_v5; // al
 	int posY_v6; // ecx
-	int screenWidth_v7; // esi
-	int startY_v8; // ecx
-	int startX_v9; // ebx
-	x_BYTE* v10; // edx
-	x_BYTE* v11; // edx
-	x_BYTE* v12; // edx
-	x_BYTE* v13; // edx
-	x_BYTE* v14; // edx
-	x_BYTE* v15; // edx
 
 	v1 = a1->v51y.x - a1->v56xdw_18;
 	v2 = a1->v51y.y - a1->v57xdw_22;
@@ -3273,25 +3323,15 @@ char DrawObjectiveRectangle_64CE0(v51x_struct* a1, uint8_t scale)//245ce0
 			v3 = 1;
 			if (!(gameState_D41A4.FrameTimingIndex_26 & 3))
 			{
-				DrawRectangle(pdwScreenBuffer_351628, posX_v4 - scale - CalculateScaleOffset(scale), posY_v6 - scale - CalculateScaleOffset(scale), 3 * scale, 3 * scale, scale, screenWidth_18062C, colour_v5);
-
-				if (1 == world_D41A0.m_GameSettings.m_Display.m_uiScreenSize)
+				const int rectX = posX_v4 - scale - CalculateScaleOffset(scale);
+				const int rectY = posY_v6 - scale - CalculateScaleOffset(scale);
+				//The rectangle grows with the map marking scale, skip it if it would go past the edge of the map
+				if (rectX + 3 * scale <= a1->v58xdw_26 && rectY + 3 * scale <= a1->v59xdw_30)
 				{
-					screenWidth_v7 = screenWidth_18062C;
-					startY_v8 = screenWidth_18062C * (posY_v6 - scale);
-					startX_v9 = posX_v4 - scale;
+					DrawRectangle(pdwScreenBuffer_351628, rectX, rectY, 3 * scale, 3 * scale, scale, screenWidth_18062C, colour_v5);
 
-					v13 = (x_BYTE*)(startY_v8 + startX_v9 + ptrMemoryBuffer_E9C3C);
-					v13[0] = colour_v5;
-					v13[1] = colour_v5;
-					v13[2] = colour_v5;
-					v14 = &v13[screenWidth_v7];
-					v14[0] = colour_v5;
-					v14[2] = colour_v5;
-					v15 = &v14[screenWidth_v7];
-					v15[0] = colour_v5;
-					v15[1] = colour_v5;
-					v15[2] = colour_v5;
+					if (1 == world_D41A0.m_GameSettings.m_Display.m_uiScreenSize)
+						DrawRectangle(ptrMemoryBuffer_E9C3C, rectX, rectY, 3 * scale, 3 * scale, scale, screenWidth_18062C, colour_v5);
 				}
 			}
 		}
