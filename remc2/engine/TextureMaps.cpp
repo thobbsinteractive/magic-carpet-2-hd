@@ -471,6 +471,11 @@ void InitTmaps(unsigned __int16 a1)//251f50
 		if (v2 != str_TMAPS00TAB_BEGIN_BUFFER[i].group_8)
 			break;
 		v6 = i;
+		// An unused slot in the TMAPS files is a 1 byte placeholder (too small for even the sprite header). It is left
+		// unloaded, so MainInitTmaps_71520 fails for it and the renderers skip anything that uses it, instead of reading
+		// the cache's leftover bytes as a picture.
+		if (str_TMAPS00TAB_BEGIN_BUFFER[i].size_0 < (int32_t)sizeof(Type_Sprite))
+			continue;
 		if (!m_ptrLoadedSprites_F66F0x[i])
 		{
 			index3x = LoadTMapMetadata_71E70(tmapCache_E9C28, (unsigned __int16)(4 * ((unsigned int)(str_TMAPS00TAB_BEGIN_BUFFER[i].size_0 + 13) >> 2)), i);
@@ -553,11 +558,6 @@ void InitTmaps(unsigned __int16 a1)//251f50
 					//if (**(uint8_t**)index6 & 1)
 					if ((*index6x)->flags_0 & 1)
 						index = InitTmapAnimation_721C0(animations_E9C08x, index6x, i);
-					else if ((*index6x)->height > 512 || (*index6x)->width == 0 || (*index6x)->height == 0)
-					{
-						//Error
-						Logger->error("Bad Texture Data!");
-					}
 					else
 					{
 						m_spriteFrameCount[i] = std::max<uint16_t>(1, 1);
