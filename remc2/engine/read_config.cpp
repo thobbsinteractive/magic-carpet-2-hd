@@ -33,6 +33,7 @@ int windowResHeight = 480;
 int gameResWidth = 640;
 int gameResHeight = 480;
 int gameUiScale = 1;
+int mapEntityScale = 1;
 bool maintainAspectRatio = false;
 bool startWindowed = false;
 bool bigTextures = false;
@@ -68,6 +69,7 @@ bool invertXAxis = false;
 float mouseScaleX = 1.0f;
 float mouseScaleY = 1.0f;
 bool disableLRButtonsMenuOpen = false;
+bool disableLRKeyRoll = false;
 UiElementLayout topBarLayout = { UiAlignment::Left };
 UiElementLayout spellIconsLayout = { UiAlignment::Right };
 UiElementLayout spellMenuLayout = { UiAlignment::Center };
@@ -313,6 +315,7 @@ bool SetConfig() {
 			gameUiScale--;
 		}
 	}
+	mapEntityScale = std::clamp(settingsValue.m_Graphics.m_GameDetail.m_MapEntityScale, 1, 4);
 	highResGraphicsFolder = settingsValue.m_Graphics.m_GameDetail.m_HighResGraphicsFolder;
 	if (settingsValue.m_Graphics.m_GameDetail.m_UseHighResGraphics && strlen(highResGraphicsFolder.c_str()) > 0
 		&& std::filesystem::is_directory(GetSubDirectoryPath(highResGraphicsFolder.c_str())))
@@ -399,6 +402,7 @@ bool SetConfig() {
 	inputMapping.Map = settingsValue.m_Controls.m_Keyboard.m_Map;
 	inputMapping.SpellMenu = settingsValue.m_Controls.m_Keyboard.m_SpellMenu;
 	inputMapping.SpellMenuMark = settingsValue.m_Controls.m_Keyboard.m_SpellMenuMark;
+	disableLRKeyRoll = settingsValue.m_Controls.m_Keyboard.m_DisableLRKeyRoll;
 
 	gpc.axis_yaw = settingsValue.m_Controls.m_GamePad.m_AxisYaw;
 	gpc.axis_pitch = settingsValue.m_Controls.m_GamePad.m_AxisPitch;

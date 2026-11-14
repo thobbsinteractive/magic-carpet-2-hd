@@ -72,6 +72,7 @@ public:
 			int m_GameResWidth = 640;
 			int m_GameResHeight = 480;
 			int m_GameUiScale = 1;
+			int m_MapEntityScale = 1;
 			bool m_UseHighResGraphics = false;
 			std::string m_HighResGraphicsFolder = "";
 			bool m_UseFixedMenuGraphics = false;
@@ -186,6 +187,7 @@ public:
 			uint16_t m_Map = 0;
 			uint16_t m_SpellMenu = 0;
 			uint16_t m_SpellMenuMark = 0;
+			bool m_DisableLRKeyRoll = false;
 		};
 
 		struct GamePad

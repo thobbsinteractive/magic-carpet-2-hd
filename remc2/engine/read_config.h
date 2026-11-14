@@ -62,6 +62,7 @@ extern int windowResHeight;
 extern int gameResWidth;
 extern int gameResHeight;
 extern int gameUiScale;
+extern int mapEntityScale; // extra multiplier (1-4) for the size of the map markings
 extern bool maintainAspectRatio;
 extern bool startWindowed;
 extern bool bigTextures;
@@ -99,6 +100,7 @@ extern bool invertXAxis;
 extern float mouseScaleX;
 extern float mouseScaleY;
 extern bool disableLRButtonsMenuOpen;
+extern bool disableLRKeyRoll;
 extern UiElementLayout topBarLayout;     // the mini-map and the health/mana bars
 extern UiElementLayout spellIconsLayout; // the selected left/right spell icons
 extern UiElementLayout spellMenuLayout;  // the spell selection menu at the bottom

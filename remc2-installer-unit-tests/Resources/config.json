@@ -64,6 +64,7 @@
 					"description": [
 						"gameResWidth: In Game resolution. If using software render keep this low",
 						"gameUiScale: Scale of the Game Mini/Map and UI '2' recommended for HD, 3 for higher. (Max 8) Will not allow spell menu to be wider than screen width",
+						"mapEntityScale: Makes the map markings bigger on top of their normal or gameUiScale size. 1 = normal, up to 4 = 4x bigger",
 						"useHighResGraphics: If set to true, highResGraphicsFolder must be set as well",
 						"highResGraphicsFolder: Directory with 128x128 textures. Path is relative to .exe",
 						"useFixedMenuGraphics: If set to true, fixedMenuGraphicsFolder folder must be set as well",
@@ -81,6 +82,7 @@
 					"gameResWidth": 1920,
 					"gameResHeight": 1080,
 					"gameUiScale": 2,
+					"mapEntityScale": 1,
 					"useHighResGraphics": false,
 					"highResGraphicsFolder": "graphics/high-res",
 					"useFixedMenuGraphics": false,
@@ -208,7 +210,8 @@
 					{
 						"description": [
 							"spellMenu: Ctrl by default. Opens the Spell menu",
-							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed"
+							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed",
+							"disableLRKeyRoll: when enabled stops pressing the left and right keys together from barrel rolling the carpet"
 						],
 						"name": "Modern",
 						"isActive": true,
@@ -218,12 +221,14 @@
 						"right": "D",
 						"map": "TAB",
 						"spellMenu": "LCTRL",
-						"spellMenuMark": "LSHIFT"
+						"spellMenuMark": "LSHIFT",
+						"disableLRKeyRoll": false
 					},
 					{
 						"description": [
 							"spellMenu: Ctrl by default. Opens the Spell menu",
-							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed"
+							"spellMenuMark: LShift By default, Hold down with spell menu open to mark a spell to the mouse button pressed",
+							"disableLRKeyRoll: when enabled stops pressing the left and right keys together from barrel rolling the carpet"
 						],
 						"name": "Classic",
 						"isActive": false,
@@ -233,7 +238,8 @@
 						"right": "RIGHT",
 						"map": "RETURN",
 						"spellMenu": "RCTRL",
-						"spellMenuMark": "RSHIFT"
+						"spellMenuMark": "RSHIFT",
+						"disableLRKeyRoll": false
 					}
 				],
 				"gamePad": [

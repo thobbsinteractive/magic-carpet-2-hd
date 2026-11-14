@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <filesystem>
 #include <iostream>
 #include <fstream>
@@ -231,6 +232,7 @@ Config::Settings::Controls Config::GetControls(const json& settings)
 				controlValues.m_Keyboard.m_Map = ReadKeyScancode(keyboard, "map");
 				controlValues.m_Keyboard.m_SpellMenu = ReadKeyScancode(keyboard, "spellMenu");
 				controlValues.m_Keyboard.m_SpellMenuMark = ReadKeyScancode(keyboard, "spellMenuMark");
+				controlValues.m_Keyboard.m_DisableLRKeyRoll = ReadBoolValue(keyboard, "disableLRKeyRoll");
 				break;
 			}
 		}
@@ -354,6 +356,7 @@ Config::Settings::GameDetail Config::GetGameDetail(const json& graphics)
 		gameDetailValues.m_GameResWidth = ReadIntValue(gameDetail, "gameResWidth");
 		gameDetailValues.m_GameResHeight = ReadIntValue(gameDetail, "gameResHeight");
 		gameDetailValues.m_GameUiScale = ReadIntValue(gameDetail, "gameUiScale");
+		gameDetailValues.m_MapEntityScale = std::clamp(gameDetail.contains("mapEntityScale") ? ReadIntValue(gameDetail, "mapEntityScale") : 1, 1, 4);
 		gameDetailValues.m_UseHighResGraphics = ReadBoolValue(gameDetail, "useHighResGraphics");
 		gameDetailValues.m_HighResGraphicsFolder = ReadStringValue(gameDetail, "highResGraphicsFolder");
 		gameDetailValues.m_UseFixedMenuGraphics = ReadBoolValue(gameDetail, "useFixedMenuGraphics");
@@ -583,6 +586,7 @@ void Config::SaveGameDetailToDoc(Config::Settings::GameDetail gameDetail)
 	SetInt(gd, "gameResWidth", gameDetail.m_GameResWidth);
 	SetInt(gd, "gameResHeight", gameDetail.m_GameResHeight);
 	SetInt(gd, "gameUiScale", gameDetail.m_GameUiScale);
+	SetInt(gd, "mapEntityScale", gameDetail.m_MapEntityScale);
 	SetBool(gd, "useHighResGraphics", gameDetail.m_UseHighResGraphics);
 	SetString(gd, "highResGraphicsFolder", gameDetail.m_HighResGraphicsFolder);
 	SetBool(gd, "useFixedMenuGraphics", gameDetail.m_UseFixedMenuGraphics);
@@ -690,6 +694,7 @@ void Config::SaveControlsToDoc(Config::Settings::Controls controlSettings)
 	SetString(keyboard, "map", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_Map));
 	SetString(keyboard, "spellMenu", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenu));
 	SetString(keyboard, "spellMenuMark", m_ConfigToSdlScancode.GetName(controlSettings.m_Keyboard.m_SpellMenuMark));
+	SetBool(keyboard, "disableLRKeyRoll", controlSettings.m_Keyboard.m_DisableLRKeyRoll);
 
 	if (!controls.contains("gamePad"))
 		controls["gamePad"] = json::array({ json::object() });

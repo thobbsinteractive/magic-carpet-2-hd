@@ -69,6 +69,7 @@ namespace remc2_installer
 		public int gameResWidth { get; set; }
 		public int gameResHeight { get; set; }
 		public int gameUiScale { get; set; }
+		public int mapEntityScale { get; set; }
 		public bool useHighResGraphics { get; set; }
 		public string highResGraphicsFolder { get; set; }
 		public bool useFixedMenuGraphics { get; set; }
@@ -182,6 +183,7 @@ namespace remc2_installer
 		public string map { get; set; }
 		public string spellMenu { get; set; }
 		public string spellMenuMark { get; set; }
+		public bool disableLRKeyRoll { get; set; }
 	}
 
 	public class GamePad
