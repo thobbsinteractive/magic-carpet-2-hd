@@ -62,6 +62,7 @@ extern int windowResHeight;
 extern int gameResWidth;
 extern int gameResHeight;
 extern int gameUiScale;
+extern int mapEntityScale; // extra multiplier (1-4) for the size of the map markings
 extern bool maintainAspectRatio;
 extern bool startWindowed;
 extern bool bigTextures;
