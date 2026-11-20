@@ -9,6 +9,9 @@
 #define      GP_BTN_RELEASED  0x40
 #define       GP_BTN_PRESSED  0x80
 
+#define            GP_BTN_MAX  63
+#define           GP_BTN(btn)  ((((uint32_t)(btn)) <= GP_BTN_MAX) ? (1ULL << (btn)) : 0ULL)
+
 struct gamepad_event {
 	int16_t axis_yaw;
 	int16_t axis_pitch;
@@ -30,10 +33,17 @@ void set_scene(const Scene scene_id);
 void joystick_set_env(const int32_t x, const int32_t y);
 void gamepad_sdl_init(void);
 void gamepad_sdl_close(void);
+void gamepad_open(const int device_index);
+void gamepad_close(void);
+void gamepad_device_added(const int device_index);
+void gamepad_device_removed(const int32_t instance_id);
+bool gamepad_is_used(const int32_t instance_id);
 void gamepad_init(const int gameResWidth, const int gameResHeight);
 void gamepad_poll_data(gamepad_event_t *gpe);
 void OnResolutionChanged(uint32_t width, uint32_t height);
 
+void haptic_open(void);
+int8_t haptic_load_effects(void);
 void haptic_run_effect(const int effect_id);
 void haptic_rumble_effect(const float strength, const uint32_t length);
 void haptic_rumble_triggers_effect(const uint16_t strength_l, const uint16_t strength_r, const uint32_t length);

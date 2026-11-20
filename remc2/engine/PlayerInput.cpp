@@ -2146,13 +2146,13 @@ void HandleArrowKeyPresses_1A8A0()//1fb8a0
 int16_t m_JoystickYaw = 0;
 int16_t m_JoystickPitch = 0;
 
-static void OnJoystickAxis(int16_t yaw, int16_t pitch)
+void OnJoystickAxis(int16_t yaw, int16_t pitch)
 {
 	m_JoystickYaw = yaw;
 	m_JoystickPitch = pitch;
 }
 
-static uint8_t* GetFlightJoystickState()
+uint8_t* GetFlightJoystickState()
 {
 	static uint8_t flightJoystick[44] = {};
 	static bool initialized = false;
@@ -2192,9 +2192,21 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 		const int8_t joystickX = (int8_t)joystick[40];
 		const int8_t joystickY = (int8_t)joystick[41];
 
-		if (joystickX || joystickY)
+		// the last used device steers, the mouse has priority
+		static bool joystickSteers = false;
+		static int16_t lastMouseX = x;
+		static int16_t lastMouseY = y;
+		const bool mouseMoved = (x != lastMouseX) || (y != lastMouseY);
+		lastMouseX = x;
+		lastMouseY = y;
+		if (mouseMoved)
+			joystickSteers = false;
+		else if (joystickX || joystickY)
+			joystickSteers = true;
+
+		if (joystickSteers)
 		{
-			// joystick out of its dead zone: -127..127 from ReadJoystick_8BBE0
+			// -127..127 from ReadJoystick_8BBE0, a released stick flies level
 			roll = joystickX;
 			pitch = -joystickY;
 		}

@@ -49,6 +49,8 @@ struct gamepad_state {
 	uint8_t nav_mode;               ///< true during menu navigation
 	uint8_t last_trig_fire_R;       ///< detection of movement based on the right trigger button's axis value
 	uint8_t last_trig_fire_L;       ///< detection of movement based on the left trigger button's axis value
+	int32_t mouse_x;                ///< last seen real mouse x position
+	int32_t mouse_y;                ///< last seen real mouse y position
 };
 typedef struct gamepad_state gamepad_state_t;
 
@@ -89,66 +91,122 @@ typedef struct haptic_state haptic_state_t;
 gamepad_state_t gps = {};
 haptic_state_t hs = {};
 
-int8_t haptic_load_effects(void);
+SDL_JoystickID m_gameControllerInstanceId = -1;
+
+void haptic_open(void)
+{
+	if (gpc.haptic_enabled && (SDL_InitSubSystem(SDL_INIT_HAPTIC) == 0) && SDL_JoystickIsHaptic(m_gameController)) {
+		m_haptic = SDL_HapticOpenFromJoystick(m_gameController);
+		if (m_haptic == NULL) {
+			Logger->info("unable to init force feedback. SDL Error: {}", SDL_GetError() );
+		} else {
+			hs.cap = SDL_HapticQuery(m_haptic);
+			hs.rumble = SDL_HapticRumbleSupported(m_haptic);
+#ifdef _MSC_VER
+			hs.rumble_trig = SDL_JoystickHasRumbleTriggers(m_gameController);
+#endif
+			hs.initialized = 1;
+			hs.enabled = 1;
+			haptic_load_effects();
+			if (hs.rumble) {
+				if (SDL_HapticRumbleInit(m_haptic) < 0) {
+					hs.rumble = 0;
+				}
+			}
+			if (hs.cap & SDL_HAPTIC_GAIN) {
+				SDL_HapticSetGain(m_haptic, gpc.haptic_gain_max);
+			}
+			Logger->info("found haptic support (cap {}), effect cnt {}, rumble {}, rumble_trig {}", hs.cap, SDL_HapticNumEffects(m_haptic), hs.rumble, hs.rumble_trig);
+		}
+	}
+}
+
+void gamepad_open(const int device_index)
+{
+	if (m_gameController != NULL) {
+		return;
+	}
+
+	m_gameController = SDL_JoystickOpen(device_index);
+	if (m_gameController == NULL) {
+		Logger->debug("joystick/gamepad {} could not be opened. SDL Error: {}", device_index, SDL_GetError() );
+		return;
+	}
+
+	m_gameControllerInstanceId = SDL_JoystickInstanceID(m_gameController);
+	Logger->info("Found '{}' joystick (device {}, instance {})", SDL_JoystickName(m_gameController), device_index, m_gameControllerInstanceId);
+	gps.initialized = 1;
+	gps.last_trig_fire_R = 0;
+	gps.last_trig_fire_L = 0;
+	haptic_open();
+}
+
+void gamepad_close(void)
+{
+	if (m_haptic) {
+		SDL_HapticClose(m_haptic);
+		m_haptic = NULL;
+	}
+	hs = {};
+
+	if (m_gameController) {
+		SDL_JoystickClose(m_gameController);
+		m_gameController = NULL;
+	}
+	m_gameControllerInstanceId = -1;
+	gps.initialized = 0;
+}
 
 /// \brief initialization of the SDL joystick subsystem
 void gamepad_sdl_init(void)
 {
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
 		Logger->error("SDL joystick could not be initialized! SDL_Error: {}", SDL_GetError());
-	} else {
-		m_gameController = SDL_JoystickOpen(0);
-		if(m_gameController == NULL) {
-			Logger->debug("joystick/gamepad not detected. SDL Error: {}", SDL_GetError() );
-		} else {
-			Logger->info("Found '{}' joystick", SDL_JoystickName(m_gameController) );
-			if (SDL_JoystickEventState(SDL_ENABLE) != 1) {
-				Logger->error("unable to initialize joystick/gamepad events. SDL Error: {}", SDL_GetError() );
-			} else {
-				gps.initialized = 1;
-				std::function<void(Scene)> callBack = set_scene;
-				EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBack));
+		return;
+	}
 
-				std::function<void(uint32_t, uint32_t)> resCallBack = OnResolutionChanged;
-				EventDispatcher::I->RegisterEvent(new Event<uint32_t, uint32_t>(EventType::E_RESOLUTION_CHANGE, resCallBack));
-			}
-			if (gpc.haptic_enabled && (SDL_InitSubSystem(SDL_INIT_HAPTIC) == 0) && SDL_JoystickIsHaptic(m_gameController)) {
-				m_haptic = SDL_HapticOpenFromJoystick(m_gameController);
-				if (m_haptic == NULL) {
-					Logger->info("unable to init force feedback. SDL Error: {}", SDL_GetError() );
-				} else {
-					hs.cap = SDL_HapticQuery(m_haptic);
-					hs.rumble = SDL_HapticRumbleSupported(m_haptic);
-#ifdef _MSC_VER
-					//hs.rumble_trig = SDL_JoystickHasRumbleTriggers(m_gameController);
-#endif
-					hs.initialized = 1;
-					hs.enabled = 1;
-					haptic_load_effects();
-					if (hs.rumble) {
-						if (SDL_HapticRumbleInit(m_haptic) < 0) {
-							hs.rumble = 0;
-						}
-					}
-					if (hs.cap & SDL_HAPTIC_GAIN) {
-						SDL_HapticSetGain(m_haptic, gpc.haptic_gain_max);
-					}
-					Logger->info("found haptic support (cap {}), effect cnt {}, rumble {}, rumble_trig {}", hs.cap, SDL_HapticNumEffects(m_haptic), hs.rumble, hs.rumble_trig);
-				}
-			}
-		}
+	if (SDL_JoystickEventState(SDL_ENABLE) != 1) {
+		Logger->error("unable to initialize joystick/gamepad events. SDL Error: {}", SDL_GetError() );
+		return;
+	}
+
+	std::function<void(Scene)> callBack = set_scene;
+	EventDispatcher::I->RegisterEvent(new Event<Scene>(EventType::E_SCENE_CHANGE, callBack));
+
+	std::function<void(uint32_t, uint32_t)> resCallBack = OnResolutionChanged;
+	EventDispatcher::I->RegisterEvent(new Event<uint32_t, uint32_t>(EventType::E_RESOLUTION_CHANGE, resCallBack));
+
+	if (gpc.controller_id < SDL_NumJoysticks()) {
+		gamepad_open(gpc.controller_id);
+	} else {
+		Logger->debug("joystick/gamepad {} not detected ({} connected)", gpc.controller_id, SDL_NumJoysticks());
 	}
 }
 
 /// \brief cleanup of the SDL joystick subsystem, to be used only on program exit
 void gamepad_sdl_close(void)
 {
-	SDL_JoystickClose(m_gameController);
-	m_gameController = NULL;
-	if (m_haptic) {
-		SDL_HapticClose(m_haptic);
-		m_haptic = NULL;
+	gamepad_close();
+}
+
+void gamepad_device_added(const int device_index)
+{
+	if ((m_gameController == NULL) && (device_index == gpc.controller_id)) {
+		gamepad_open(device_index);
 	}
+}
+
+void gamepad_device_removed(const SDL_JoystickID instance_id)
+{
+	if (gamepad_is_used(instance_id)) {
+		Logger->info("joystick (instance {}) disconnected", instance_id);
+		gamepad_close();
+	}
+}
+
+bool gamepad_is_used(const SDL_JoystickID instance_id)
+{
+	return (m_gameController != NULL) && (instance_id == m_gameControllerInstanceId);
 }
 
 /// \brief initialize gamepad maximal coordinate values, default operating mode, etc
@@ -449,6 +507,18 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 	// in flight the stick feeds E_JOYSTICK_AXIS and no mouse events are emulated
 	const bool in_flight = (gps.scene_id == Scene::FLIGHT);
 
+	// the real mouse has priority: when it moved, the joystick pointer continues from where the mouse is
+	int mouse_x = 0;
+	int mouse_y = 0;
+	SDL_GetMouseState(&mouse_x, &mouse_y);
+	const bool mouse_moved = (mouse_x != gps.mouse_x) || (mouse_y != gps.mouse_y);
+	gps.mouse_x = mouse_x;
+	gps.mouse_y = mouse_y;
+	if (mouse_moved) {
+		gps.x = mouse_x;
+		gps.y = mouse_y;
+	}
+
 	// decide if we are handling flight mode or menu navigation mode
 	// default mode, based on scene
 	if (gps.nav_mode) {
@@ -471,32 +541,34 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 	// flight yaw/pitch is always done via two axes
 	if (in_flight) {
 		gamepad_axis_flight_event(&stick);
-	} else {
+	} else if (!mouse_moved) {
 		conv_state |= gamepad_axis_flight_conv(&stick, &flight);
 	}
 
-	// menu navigation
-	nav.x = gps.x;
-	nav.y = gps.y;
+	if (!mouse_moved) {
+		// menu navigation
+		nav.x = gps.x;
+		nav.y = gps.y;
 
-	if (gpc.hat_nav_conf & GAMEPAD_ITEM_ENABLED) {
-		// menu navigation is done via a hat control
-		hat.x = gpe->hat_nav;
-		hat.x_conf = gpc.hat_nav_conf;
-		conv_state |= gamepad_hat_nav_conv(&hat, &nav);
-	} else if (gpc.axis_nav_ns_conf & gpc.axis_nav_ew_conf & GAMEPAD_ITEM_ENABLED) {
-		// menu navigation is done via two axes
-		stick.x = gpe->axis_nav_ns;
-		stick.y = gpe->axis_nav_ew;
-		conv_state |= gamepad_axis_nav_conv(&stick, &nav);
-	}
+		if (gpc.hat_nav_conf & GAMEPAD_ITEM_ENABLED) {
+			// menu navigation is done via a hat control
+			hat.x = gpe->hat_nav;
+			hat.x_conf = gpc.hat_nav_conf;
+			conv_state |= gamepad_hat_nav_conv(&hat, &nav);
+		} else if (gpc.axis_nav_ns_conf & gpc.axis_nav_ew_conf & GAMEPAD_ITEM_ENABLED) {
+			// menu navigation is done via two axes
+			stick.x = gpe->axis_nav_ns;
+			stick.y = gpe->axis_nav_ew;
+			conv_state |= gamepad_axis_nav_conv(&stick, &nav);
+		}
 
-	if (flight_mode) {
-		gps.x = flight.x;
-		gps.y = flight.y;
-	} else {
-		gps.x = nav.x;
-		gps.y = nav.y;
+		if (flight_mode) {
+			gps.x = flight.x;
+			gps.y = flight.y;
+		} else {
+			gps.x = nav.x;
+			gps.y = nav.y;
+		}
 	}
 
 	if (gps.x < JOY_MIN_X) {
@@ -555,35 +627,35 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 
 	// temporary place for testing haptic effects
 	if (gpe->btn_pressed) {
-		if (gpe->btn_pressed & (1 << gpc.button_fire_R)) {
+		if (gpe->btn_pressed & GP_BTN(gpc.button_fire_R)) {
 			button_state |= 0x8;
 		}
-		if (gpe->btn_pressed & (1 << gpc.button_fire_L)) {
+		if (gpe->btn_pressed & GP_BTN(gpc.button_fire_L)) {
 			button_state |= 0x2;
 			//haptic_rumble_triggers_effect(0, 32000, 1000);
 		}
-		if (gps.scene_id != Scene::FLIGHT && (gpe->btn_pressed & (1 << gpc.button_menu_select))) {
+		if (gps.scene_id != Scene::FLIGHT && (gpe->btn_pressed & GP_BTN(gpc.button_menu_select))) {
 			button_state |= 0x2;
 		}
-		if (gps.scene_id != Scene::FLIGHT_MENU && (gpe->btn_pressed & (1 << gpc.button_spell))) {
+		if (gps.scene_id != Scene::FLIGHT_MENU && (gpe->btn_pressed & GP_BTN(gpc.button_spell))) {
 			SetPress(true, inputMapping.SpellMenu);
 			//haptic_rumble_triggers_effect(32000, 0, 1000);
 		}
-		if (gpe->btn_pressed & (1 << gpc.button_minimap)) {
+		if (gpe->btn_pressed & GP_BTN(gpc.button_minimap)) {
 			SetPress(true, inputMapping.Map);
 			//haptic_run_effect(hs.quake);
 			//haptic_rumble_effect(0.5, 2000);
 		}
-		if (gpe->btn_pressed & (1 << gpc.button_pause_menu)) {
+		if (gpe->btn_pressed & GP_BTN(gpc.button_pause_menu)) {
 			SetPress(true, SDL_SCANCODE_P);
 		}
-		if (gpe->btn_pressed & (1 << gpc.button_fwd)) {
+		if (gpe->btn_pressed & GP_BTN(gpc.button_fwd)) {
 			SetPress(true, inputMapping.Forward);
 		}
-		if (gpe->btn_pressed & (1 << gpc.button_back)) {
+		if (gpe->btn_pressed & GP_BTN(gpc.button_back)) {
 			SetPress(true, inputMapping.Backwards);
 		}
-		if (gpe->btn_pressed & (1 << gpc.button_esc)) {
+		if (gpe->btn_pressed & GP_BTN(gpc.button_esc)) {
 			SetPress(true, SDL_SCANCODE_ESCAPE);
 		}
 		if (gps.scene_id == Scene::DEAD) {
@@ -592,31 +664,31 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 	}
 
 	if (gpe->btn_released) {
-		if (gpe->btn_released & (1 << gpc.button_fire_R)) {
+		if (gpe->btn_released & GP_BTN(gpc.button_fire_R)) {
 			button_state |= 0x10;
 		}
-		if (gpe->btn_released & (1 << gpc.button_fire_L)) {
+		if (gpe->btn_released & GP_BTN(gpc.button_fire_L)) {
 			button_state |= 0x4;
 		}
-		if (gps.scene_id != Scene::FLIGHT && (gpe->btn_released & (1 << gpc.button_menu_select))) {
+		if (gps.scene_id != Scene::FLIGHT && (gpe->btn_released & GP_BTN(gpc.button_menu_select))) {
 			button_state |= 0x4;
 		}
-		if (gps.scene_id != Scene::FLIGHT_MENU && (gpe->btn_released & (1 << gpc.button_spell))) {
+		if (gps.scene_id != Scene::FLIGHT_MENU && (gpe->btn_released & GP_BTN(gpc.button_spell))) {
 			SetPress(false, inputMapping.SpellMenu);
 		}
-		if (gpe->btn_released & (1 << gpc.button_minimap)) {
+		if (gpe->btn_released & GP_BTN(gpc.button_minimap)) {
 			SetPress(false, inputMapping.Map);
 		}
-		if (gpe->btn_released & (1 << gpc.button_pause_menu)) {
+		if (gpe->btn_released & GP_BTN(gpc.button_pause_menu)) {
 			SetPress(false, SDL_SCANCODE_P);
 		}
-		if (gpe->btn_released & (1 << gpc.button_fwd)) {
+		if (gpe->btn_released & GP_BTN(gpc.button_fwd)) {
 			SetPress(false, inputMapping.Forward);
 		}
-		if (gpe->btn_released & (1 << gpc.button_back)) {
+		if (gpe->btn_released & GP_BTN(gpc.button_back)) {
 			SetPress(false, inputMapping.Backwards);
 		}
-		if (gpe->btn_released & (1 << gpc.button_esc)) {
+		if (gpe->btn_released & GP_BTN(gpc.button_esc)) {
 			SetPress(false, SDL_SCANCODE_ESCAPE);
 		}
 		if (gps.scene_id == Scene::DEAD) {
@@ -641,15 +713,9 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 		goto announce;
 	}
 
-	if (conv_state) {
-		gps.dead_zone_announced = 0;
-	} else {
-		if (gps.dead_zone_announced) {
-			// do NOT flood MouseEvents() on frames where the joystick is resting
-			return;
-		} else {
-			gps.dead_zone_announced = 1;
-		}
+	if (!conv_state) {
+		// joystick resting: leave the pointer to the mouse
+		return;
 	}
 
 announce:
@@ -724,8 +790,10 @@ void set_scene(const Scene scene_id)
 	int16_t maxX = 640;
 	int16_t maxY = 480;
 
+	if (gps.scene_id != scene_id) {
+		gps.dead_zone_announced = 0;
+	}
 	gps.scene_id = scene_id;
-	gps.dead_zone_announced = 0;
 	switch (scene_id) {
 		case Scene::PREAMBLE_MENU:
 			gps.max_x = 640;
@@ -737,11 +805,6 @@ void set_scene(const Scene scene_id)
 			gps.rest_y = (maxY * mouseScaleY) / 2;
 			gps.max_x = maxX * mouseScaleX;
 			gps.max_y = maxY * mouseScaleY;
-			if (screenWidth_18062C > 640 && screenHeight_180624 > 480)
-				VGA_Set_mouse(screenWidth_18062C / 2, screenHeight_180624 / 2);
-			else
-				VGA_Set_mouse(320, 200);
-
 			gps.nav_mode = 0;
 			break;
 		case Scene::FLIGHT_MENU:
@@ -770,10 +833,6 @@ void OnResolutionChanged(uint32_t width, uint32_t height)
 		gps.rest_y = (maxY * mouseScaleY) / 2;
 		gps.max_x = maxX * mouseScaleX;
 		gps.max_y = maxY * mouseScaleY;
-		if (screenWidth_18062C > 640 && screenHeight_180624 > 480)
-			VGA_Set_mouse(screenWidth_18062C / 2, screenHeight_180624 / 2);
-		else
-			VGA_Set_mouse(320, 200);
 	}
 }
 

@@ -242,8 +242,8 @@
 						"name": "XBox Controller",
 						"isActive": true,
 						"controllerId": 0,
-						"buttonMiniMap": 3,
-						"buttonSpell": 1,
+						"buttonMiniMap": 4,
+						"buttonSpell": 3,
 						"buttonPauseMenu": 7,
 						"buttonEsc": 8,
 						"buttonFireL": 5,
@@ -274,7 +274,93 @@
 						"axisYawInv": false,
 						"axisYawDeadZone": 3000,
 						"axisYawSensitivity": {
-							"zones": []
+							"zones": [
+								{
+									"start": 0,
+									"end": 2000,
+									"factor": 0.515
+								},
+								{
+									"start": 2000,
+									"end": 4000,
+									"factor": 0.546
+								},
+								{
+									"start": 4000,
+									"end": 6000,
+									"factor": 0.576
+								},
+								{
+									"start": 6000,
+									"end": 8000,
+									"factor": 0.607
+								},
+								{
+									"start": 8000,
+									"end": 10000,
+									"factor": 0.637
+								},
+								{
+									"start": 10000,
+									"end": 12000,
+									"factor": 0.668
+								},
+								{
+									"start": 12000,
+									"end": 14000,
+									"factor": 0.698
+								},
+								{
+									"start": 14000,
+									"end": 16000,
+									"factor": 0.729
+								},
+								{
+									"start": 16000,
+									"end": 18000,
+									"factor": 0.759
+								},
+								{
+									"start": 18000,
+									"end": 20000,
+									"factor": 0.790
+								},
+								{
+									"start": 20000,
+									"end": 22000,
+									"factor": 0.820
+								},
+								{
+									"start": 22000,
+									"end": 24000,
+									"factor": 0.851
+								},
+								{
+									"start": 24000,
+									"end": 26000,
+									"factor": 0.881
+								},
+								{
+									"start": 26000,
+									"end": 28000,
+									"factor": 0.912
+								},
+								{
+									"start": 28000,
+									"end": 30000,
+									"factor": 0.943
+								},
+								{
+									"start": 30000,
+									"end": 32000,
+									"factor": 0.973
+								},
+								{
+									"start": 32000,
+									"end": 32768,
+									"factor": 0.994
+								}
+							]
 						},
 						"axisPitch": 4,
 						"axisPitchInv": false,

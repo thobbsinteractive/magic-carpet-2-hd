@@ -61,6 +61,8 @@ void FlyAssistant_1A7A0();
 void HandleMouseButtons_18F80(type_entity_0x6E8E* a1);
 void HandleArrowKeyPresses_1A8A0();
 void ComputeMousePlayerMovement_17060(int16_t x, int16_t y);
+void OnJoystickAxis(int16_t yaw, int16_t pitch);
+uint8_t* GetFlightJoystickState();
 int SelectSpellCategory_6D420(int16_t posX, int16_t posY);
 char UpdateSubSpellIndex_6D4C0(type_str_611* a1);
 void ReadOptionMenuEvents_19AB0();
