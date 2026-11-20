@@ -805,10 +805,13 @@ GameRenderHW::SpriteChoice GameRenderHW::ChooseSprite(type_entity_0x6E8E* entity
 // The screen position of a sprite: across and height in the view space at the depth, rotated by the roll
 void GameRenderHW::ProjectSprite(int across, int height, int depth)
 {
-	const int x = across * spriteRender_F2C20.projectionScale_0x18 / depth;
-	const int y = spriteRender_F2C20.projectionScale_0x18 * height / depth + spriteRender_F2C20.horizonOffset_0x22;
-	spriteRender_F2C20.screenY_0x04 = ((x * spriteRender_F2C20.cos_0x11 - spriteRender_F2C20.sin_0x0d * y) >> 16) + spriteRender_F2C20.centerX_0x24;
-	spriteRender_F2C20.screenX_0x03 = spriteRender_F2C20.centerY_0x10 - ((spriteRender_F2C20.sin_0x0d * x + y * spriteRender_F2C20.cos_0x11) >> 16);
+	const int64_t scale = spriteRender_F2C20.projectionScale_0x18;
+	const int64_t cos = spriteRender_F2C20.cos_0x11;
+	const int64_t sin = spriteRender_F2C20.sin_0x0d;
+	const int64_t x = across * scale / depth;
+	const int64_t y = scale * height / depth + spriteRender_F2C20.horizonOffset_0x22;
+	spriteRender_F2C20.screenY_0x04 = static_cast<int>(((x * cos - sin * y) >> 16) + spriteRender_F2C20.centerX_0x24);
+	spriteRender_F2C20.screenX_0x03 = static_cast<int>(spriteRender_F2C20.centerY_0x10 - ((sin * x + y * cos) >> 16));
 }
 
 // The sprite's drawing mode by its lighting table, lit (dword0x00 = 0x2000) or in the fog
