@@ -2186,8 +2186,8 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 
 		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].roll = roll;
 		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].pitch = pitch;
-		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].nextEntity_0x6E3E_word6 = inputState_18058C.joyAxisX_180590;
-		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].entityIndex2_0x6E3E_word8 = inputState_18058C.joyAxisY_180594;
+		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].nextEntity_0x6E3E_word6 = inputState_18058C.headTrackerYaw_180590;
+		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].entityIndex2_0x6E3E_word8 = inputState_18058C.headTrackerPitch_180594;
 	}
 }
 
@@ -3228,8 +3228,8 @@ int ReadGameUserInputs_89D10()//26ad10
 			if (pressedKeys_180664[keys_EB39E[5]])//CTRL
 				inputState_18058C.MouseButtonState_18059C |= 0x10;
 		}
-		inputState_18058C.joyAxisY_180594 *= 4;
-		inputState_18058C.joyAxisX_180590 = (inputState_18058C.joyAxisX_180590 << 11) / 360;
+		inputState_18058C.headTrackerPitch_180594 *= 4;
+		inputState_18058C.headTrackerYaw_180590 = (inputState_18058C.headTrackerYaw_180590 << 11) / 360;
 		if (inputState_18058C.joystickMode_1805C2 == 8)
 			goto LABEL_53;
 		if (inputState_18058C.joystickMode_1805C2 == 12)
@@ -3267,14 +3267,14 @@ int ReadGameUserInputs_89D10()//26ad10
 			if (pressedKeys_180664[keys_EB39E[5]])//CTRL
 				inputState_18058C.MouseButtonState_18059C |= 0x10;
 		}
-		inputState_18058C.joyAxisX_180590 = -2048 * vrJoystick_17D6CC[0] / 0xFFFFu & 0x7FF;
+		inputState_18058C.headTrackerYaw_180590 = -2048 * vrJoystick_17D6CC[0] / 0xFFFFu & 0x7FF;
 		if (LastPressedKey_1806E4 == 46)
 			SetMouseMinMaxVert_759B0();
 		if (inputState_18058C.joystickMode_1805C2 == 9)
 			goto LABEL_53;
 		if (inputState_18058C.joystickMode_1805C2 == 13)
 			goto LABEL_217;
-		inputState_18058C.joyAxisY_180594 = 0;
+		inputState_18058C.headTrackerPitch_180594 = 0;
 		return v61;
 	case 4:
 	LABEL_53:
@@ -3284,9 +3284,9 @@ int ReadGameUserInputs_89D10()//26ad10
 	case 6:
 		memset(&v56, 0, 50);
 		GetJoystickButtons_8C140(*(x_WORD*)&externControl_E36C4[0], (uint8_t*)&v56);
-		inputState_18058C.joyAxisX_180590 = *(uint32_t*)&externControl_E36C4[4];
+		inputState_18058C.headTrackerYaw_180590 = *(uint32_t*)&externControl_E36C4[4];
 		v28 = *(int16_t*)&externControl_E36C4[62];
-		inputState_18058C.joyAxisY_180594 = *(uint32_t*)&externControl_E36C4[8];
+		inputState_18058C.headTrackerPitch_180594 = *(uint32_t*)&externControl_E36C4[8];
 		if (!v28)
 		{
 			inputState_18058C.mouse_1805B0.x = mouse_E3760.x;

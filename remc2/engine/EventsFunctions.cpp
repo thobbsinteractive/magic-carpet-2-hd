@@ -3361,12 +3361,12 @@ int16_t ApplySetting_89B60(uint8_t a1)//26ab60
 	bool v3; // zf
 
 	v1 = -1;
-	inputState_18058C.joyCenterZ_1805AC = 0;
-	inputState_18058C.joyCenterY_1805A8 = 0;
-	inputState_18058C.joyCenterX_1805A4 = 0;
-	inputState_18058C.joyAxisZ_180598 = 0;
-	inputState_18058C.joyAxisY_180594 = 0;
-	inputState_18058C.joyAxisX_180590 = 0;
+	inputState_18058C.headTrackerCenterRoll_1805AC = 0;
+	inputState_18058C.headTrackerCenterPitch_1805A8 = 0;
+	inputState_18058C.headTrackerCenterYaw_1805A4 = 0;
+	inputState_18058C.headTrackerRoll_180598 = 0;
+	inputState_18058C.headTrackerPitch_180594 = 0;
+	inputState_18058C.headTrackerYaw_180590 = 0;
 	inputState_18058C.x_DWORD_1805A0 = 0;
 	inputState_18058C.MouseButtonState_18059C = 0;
 	inputState_18058C.x_WORD_1805C8 = 0;
