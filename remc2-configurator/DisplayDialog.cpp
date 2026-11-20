@@ -1,5 +1,7 @@
 #include "DisplayDialog.h"
 #include "GraphicsFoldersDialog.h"
+#include "UiAlignmentDialog.h"
+#include <algorithm>
 
 // ── Resolution table ─────────────────────────────────────────────────────────
 const DisplayDialog::ResEntry DisplayDialog::s_resolutions[] =
@@ -72,7 +74,7 @@ static bool ShowCustomResDlg(wxWindow* parent, wxChoice* choice, int customIdx,
 // ── DisplayDialog ────────────────────────────────────────────────────────────
 DisplayDialog::DisplayDialog(wxWindow* parent, const Config::Settings::Graphics& cfg)
 	: wxDialog(parent, wxID_ANY, "Display Settings",
-		wxDefaultPosition, wxSize(270, 300), 
+		wxDefaultPosition, wxSize(270, 350),
 		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	m_cfg = cfg;
@@ -82,7 +84,7 @@ DisplayDialog::DisplayDialog(wxWindow* parent, const Config::Settings::Graphics&
 	m_customIGHeight = cfg.m_GameDetail.m_GameResHeight;
 
 	auto* main = new wxBoxSizer(wxVERTICAL);
-	auto* grid = new wxFlexGridSizer(/*rows*/6, /*cols*/2, /*vgap*/10, /*hgap*/12);
+	auto* grid = new wxFlexGridSizer(/*rows*/8, /*cols*/2, /*vgap*/10, /*hgap*/12);
 	grid->AddGrowableCol(1, 1);
 
 	// ── Display index ────────────────────────────────────────────────────────
@@ -138,6 +140,29 @@ DisplayDialog::DisplayDialog(wxWindow* parent, const Config::Settings::Graphics&
 		"changes (largest scale where 640 x scale fits in 4/5 of the width). "
 		"(Max 8) Will not allow spell menu to be wider than screen width.");
 	grid->Add(m_spinUiScale, 0, wxEXPAND);
+
+	// ── Map entity scale ──────────────────────────────────────────────────────
+	grid->Add(new wxStaticText(this, wxID_ANY, "Map marking scale:"),
+		0, wxALIGN_CENTER_VERTICAL);
+	m_spinMapEntityScale = new wxSpinCtrl(this, wxID_ANY,
+		wxEmptyString, wxDefaultPosition, wxDefaultSize,
+		wxSP_ARROW_KEYS, 1, 4,
+		(std::clamp)(cfg.m_GameDetail.m_MapEntityScale, 1, 4));
+	m_spinMapEntityScale->SetToolTip(
+		"Makes the markings on the mini-map and full screen map bigger, on top of "
+		"their normal or UI scaled size. 1 = normal size, up to 4x bigger.");
+	grid->Add(m_spinMapEntityScale, 0, wxEXPAND);
+
+	// ── UI Alignment button (under the UI Scale) ─────────────────────────────
+	grid->AddSpacer(0);
+	auto* btnUiAlignment = new wxButton(this, wxID_ANY, "UI Alignment...");
+	btnUiAlignment->SetToolTip("Position of the top bar, the spell icons and the spell menu on the screen.");
+	btnUiAlignment->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
+		UiAlignmentDialog dlg(this, m_cfg.m_InGameUi);
+		if (dlg.ShowModal() == wxID_OK)
+			m_cfg.m_InGameUi = dlg.GetSettings();
+	});
+	grid->Add(btnUiAlignment, 0, wxEXPAND);
 
 	// ── Maintain aspect ratio ─────────────────────────────────────────────────
 	grid->Add(new wxStaticText(this, wxID_ANY, "Maintain aspect ratio:"),
@@ -267,6 +292,7 @@ Config::Settings::Graphics DisplayDialog::GetSettings() const
 	}
 
 	cfg.m_GameDetail.m_GameUiScale = m_spinUiScale->GetValue();
+	cfg.m_GameDetail.m_MapEntityScale = m_spinMapEntityScale->GetValue();
 	cfg.m_MaintainAspectRatio = m_chkAspect->GetValue();
 	cfg.m_StartWindowed = m_chkWindowed->GetValue();
 	return cfg;
