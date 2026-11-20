@@ -37,6 +37,7 @@ void gamepad_open(const int device_index);
 void gamepad_close(void);
 void gamepad_device_added(const int device_index);
 void gamepad_device_removed(const int32_t instance_id);
+void gamepad_release_all(void);
 bool gamepad_is_used(const int32_t instance_id);
 void gamepad_init(const int gameResWidth, const int gameResHeight);
 void gamepad_poll_data(gamepad_event_t *gpe);

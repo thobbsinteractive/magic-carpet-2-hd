@@ -51,6 +51,7 @@ struct gamepad_state {
 	uint8_t last_trig_fire_L;       ///< detection of movement based on the left trigger button's axis value
 	int32_t mouse_x;                ///< last seen real mouse x position
 	int32_t mouse_y;                ///< last seen real mouse y position
+	uint8_t mouse_buttons;          ///< mouse buttons held by the joystick: 0x2 left, 0x8 right
 };
 typedef struct gamepad_state gamepad_state_t;
 
@@ -200,8 +201,40 @@ void gamepad_device_removed(const SDL_JoystickID instance_id)
 {
 	if (gamepad_is_used(instance_id)) {
 		Logger->info("joystick (instance {}) disconnected", instance_id);
+		gamepad_release_all();
 		gamepad_close();
 	}
+}
+
+/// \brief release everything the joystick may be holding: flight axes, simulated keys and mouse buttons
+void gamepad_release_all(void)
+{
+	EventDispatcher::I->DispatchEvent(EventType::E_JOYSTICK_AXIS, (int16_t)0, (int16_t)0);
+	gps.dead_zone_announced = 1;
+
+	SetPress(false, inputMapping.Forward);
+	SetPress(false, inputMapping.Backwards);
+	SetPress(false, inputMapping.Left);
+	SetPress(false, inputMapping.Right);
+	SetPress(false, inputMapping.SpellMenu);
+	SetPress(false, inputMapping.Map);
+	SetPress(false, SDL_SCANCODE_P);
+	SetPress(false, SDL_SCANCODE_ESCAPE);
+	SetPress(false, SDL_SCANCODE_SPACE);
+
+	uint32_t release = 0;
+	if (gps.mouse_buttons & 0x2) {
+		release |= 0x4;
+	}
+	if (gps.mouse_buttons & 0x8) {
+		release |= 0x10;
+	}
+	if (release) {
+		MouseButtonEvents(release);
+	}
+	gps.mouse_buttons = 0;
+	gps.last_trig_fire_R = 0;
+	gps.last_trig_fire_L = 0;
 }
 
 bool gamepad_is_used(const SDL_JoystickID instance_id)
@@ -698,6 +731,20 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 
 	if (gpe->btn_pressed || gpe->btn_released) {
 		Logger->trace("joy pressed {}  released {}  mouse {}", gpe->btn_pressed, gpe->btn_released, button_state);
+	}
+
+	// mouse buttons held by the joystick, released if it gets disconnected
+	if (button_state & 0x2) {
+		gps.mouse_buttons |= 0x2;
+	}
+	if (button_state & 0x4) {
+		gps.mouse_buttons &= ~0x2;
+	}
+	if (button_state & 0x8) {
+		gps.mouse_buttons |= 0x8;
+	}
+	if (button_state & 0x10) {
+		gps.mouse_buttons &= ~0x8;
 	}
 
 	if (in_flight) {
