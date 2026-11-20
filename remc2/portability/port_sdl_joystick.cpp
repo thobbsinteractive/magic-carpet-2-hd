@@ -223,6 +223,38 @@ uint16_t gamepad_axis_flight_conv(vec2d_t *stick, pointer_sys_t *point)
 	return ret;
 }
 
+uint16_t gamepad_axis_flight_event(vec2d_t *stick)
+{
+	uint16_t ret = 0;
+	AdjustStickCoords(stick, &gpc.axis_yaw_sensitivity, &gpc.axis_pitch_sensitivity);
+	int16_t axis_yaw = stick->x;
+	int16_t axis_pitch = stick->y;
+
+	if ((axis_yaw < gpc.axis_yaw_dead_zone) && (axis_yaw > -gpc.axis_yaw_dead_zone)) {
+		axis_yaw = 0;
+	} else {
+		ret = GP_FLIGHT_UPDATE;
+	}
+
+	if ((axis_pitch < gpc.axis_pitch_dead_zone) && (axis_pitch > -gpc.axis_pitch_dead_zone)) {
+		axis_pitch = 0;
+	} else {
+		ret = GP_FLIGHT_UPDATE;
+	}
+
+	if (ret) {
+		gps.dead_zone_announced = 0;
+	} else if (gps.dead_zone_announced) {
+		// stick resting: announce the centred position once, then stay quiet
+		return ret;
+	} else {
+		gps.dead_zone_announced = 1;
+	}
+
+	EventDispatcher::I->DispatchEvent(EventType::E_JOYSTICK_AXIS, axis_yaw, axis_pitch);
+	return ret;
+}
+
 /// \brief menu navigation support via conversion from stick coordinates to pointer coordinates
 /// \param  stick input axis values
 /// \param  point output simulated mouse pointer values
@@ -414,6 +446,8 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 	vec2d stick;
 	vec1d hat;
 	bool trig_fire_R = 0, trig_fire_L = 0;
+	// in flight the stick feeds E_JOYSTICK_AXIS and no mouse events are emulated
+	const bool in_flight = (gps.scene_id == Scene::FLIGHT);
 
 	// decide if we are handling flight mode or menu navigation mode
 	// default mode, based on scene
@@ -435,7 +469,11 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 	flight.x = gps.x;
 	flight.y = gps.y;
 	// flight yaw/pitch is always done via two axes
-	conv_state |= gamepad_axis_flight_conv(&stick, &flight);
+	if (in_flight) {
+		gamepad_axis_flight_event(&stick);
+	} else {
+		conv_state |= gamepad_axis_flight_conv(&stick, &flight);
+	}
 
 	// menu navigation
 	nav.x = gps.x;
@@ -590,6 +628,15 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 		Logger->trace("joy pressed {}  released {}  mouse {}", gpe->btn_pressed, gpe->btn_released, button_state);
 	}
 
+	if (in_flight) {
+		// no pointer emulation in flight, axis data was already sent via E_JOYSTICK_AXIS.
+		// buttons and triggers still fire, at the current pointer position so roll and pitch are unaffected
+		if (button_state) {
+			MouseButtonEvents(button_state & 0x7f);
+		}
+		return;
+	}
+
 	if (button_state) {
 		goto announce;
 	}
@@ -678,6 +725,7 @@ void set_scene(const Scene scene_id)
 	int16_t maxY = 480;
 
 	gps.scene_id = scene_id;
+	gps.dead_zone_announced = 0;
 	switch (scene_id) {
 		case Scene::PREAMBLE_MENU:
 			gps.max_x = 640;

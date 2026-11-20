@@ -274,63 +274,7 @@
 						"axisYawInv": false,
 						"axisYawDeadZone": 3000,
 						"axisYawSensitivity": {
-							"zones": [
-								{
-									"start": 0,
-									"end": 8000,
-									"factor": 0.1
-								},
-								{
-									"start": 8000,
-									"end": 15000,
-									"factor": 0.2
-								},
-								{
-									"start": 15000,
-									"end": 20000,
-									"factor": 0.3
-								},
-								{
-									"start": 20000,
-									"end": 25000,
-									"factor": 0.35
-								},
-								{
-									"start": 25000,
-									"end": 26000,
-									"factor": 0.4
-								},
-								{
-									"start": 26000,
-									"end": 27000,
-									"factor": 0.5
-								},
-								{
-									"start": 27000,
-									"end": 28000,
-									"factor": 0.6
-								},
-								{
-									"start": 28000,
-									"end": 29000,
-									"factor": 0.7
-								},
-								{
-									"start": 29000,
-									"end": 30000,
-									"factor": 0.8
-								},
-								{
-									"start": 30000,
-									"end": 31000,
-									"factor": 0.9
-								},
-								{
-									"start": 31000,
-									"end": 32767,
-									"factor": 1.0
-								}
-							]
+							"zones": []
 						},
 						"axisPitch": 4,
 						"axisPitchInv": false,
@@ -339,58 +283,88 @@
 							"zones": [
 								{
 									"start": 0,
+									"end": 2000,
+									"factor": 0.515
+								},
+								{
+									"start": 2000,
+									"end": 4000,
+									"factor": 0.546
+								},
+								{
+									"start": 4000,
+									"end": 6000,
+									"factor": 0.576
+								},
+								{
+									"start": 6000,
 									"end": 8000,
-									"factor": 0.1
+									"factor": 0.607
 								},
 								{
 									"start": 8000,
-									"end": 15000,
-									"factor": 0.2
+									"end": 10000,
+									"factor": 0.637
 								},
 								{
-									"start": 15000,
+									"start": 10000,
+									"end": 12000,
+									"factor": 0.668
+								},
+								{
+									"start": 12000,
+									"end": 14000,
+									"factor": 0.698
+								},
+								{
+									"start": 14000,
+									"end": 16000,
+									"factor": 0.729
+								},
+								{
+									"start": 16000,
+									"end": 18000,
+									"factor": 0.759
+								},
+								{
+									"start": 18000,
 									"end": 20000,
-									"factor": 0.3
+									"factor": 0.790
 								},
 								{
 									"start": 20000,
-									"end": 25000,
-									"factor": 0.35
+									"end": 22000,
+									"factor": 0.820
 								},
 								{
-									"start": 25000,
+									"start": 22000,
+									"end": 24000,
+									"factor": 0.851
+								},
+								{
+									"start": 24000,
 									"end": 26000,
-									"factor": 0.4
+									"factor": 0.881
 								},
 								{
 									"start": 26000,
-									"end": 27000,
-									"factor": 0.5
-								},
-								{
-									"start": 27000,
 									"end": 28000,
-									"factor": 0.6
+									"factor": 0.912
 								},
 								{
 									"start": 28000,
-									"end": 29000,
-									"factor": 0.7
-								},
-								{
-									"start": 29000,
 									"end": 30000,
-									"factor": 0.8
+									"factor": 0.943
 								},
 								{
 									"start": 30000,
-									"end": 31000,
-									"factor": 0.9
+									"end": 32000,
+									"factor": 0.973
 								},
 								{
-									"start": 31000,
-									"end": 32767,
-									"factor": 1.0
+									"start": 32000,
+									"end": 32768,
+									"factor": 0.994
 								}
 							]
 						}

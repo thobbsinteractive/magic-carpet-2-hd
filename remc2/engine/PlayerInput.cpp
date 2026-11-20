@@ -2143,6 +2143,37 @@ void HandleArrowKeyPresses_1A8A0()//1fb8a0
 	}
 }
 
+int16_t m_JoystickYaw = 0;
+int16_t m_JoystickPitch = 0;
+
+static void OnJoystickAxis(int16_t yaw, int16_t pitch)
+{
+	m_JoystickYaw = yaw;
+	m_JoystickPitch = pitch;
+}
+
+static uint8_t* GetFlightJoystickState()
+{
+	static uint8_t flightJoystick[44] = {};
+	static bool initialized = false;
+	if (!initialized && EventDispatcher::I)
+	{
+		std::function<void(int16_t, int16_t)> joystickAxisCallBack = OnJoystickAxis;
+		EventDispatcher::I->RegisterEvent(new Event<int16_t, int16_t>(EventType::E_JOYSTICK_AXIS, joystickAxisCallBack));
+
+		InitJoystickState_8BB40(flightJoystick, 4); // 2 axes, 2 buttons
+		*(x_DWORD*)&flightJoystick[8] = 0;      // x min
+		*(x_DWORD*)&flightJoystick[12] = 65535; // x max
+		*(x_DWORD*)&flightJoystick[16] = 32768; // x centre
+		*(x_DWORD*)&flightJoystick[20] = 0;     // y min
+		*(x_DWORD*)&flightJoystick[24] = 65535; // y max
+		*(x_DWORD*)&flightJoystick[28] = 32768; // y centre
+		flightJoystick[36] = 1;                 // calibrated, reading
+		initialized = true;
+	}
+	return flightJoystick;
+}
+
 //----- (00017060) --------------------------------------------------------
 void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 {
@@ -2156,7 +2187,18 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 
 	if (!gameState_D41A4.speedIndex)
 	{
-		if (videoMode_180660 == 1 && DefaultResolutions())
+		uint8_t* joystick = GetFlightJoystickState();
+		ReadJoystick_8BBE0(joystick);
+		const int8_t joystickX = (int8_t)joystick[40];
+		const int8_t joystickY = (int8_t)joystick[41];
+
+		if (joystickX || joystickY)
+		{
+			// joystick out of its dead zone: -127..127 from ReadJoystick_8BBE0
+			roll = joystickX;
+			pitch = -joystickY;
+		}
+		else if (videoMode_180660 == 1 && DefaultResolutions())
 		{
 			roll = ((x << 7) - 40960) / 320;
 			pitch = ((y << 7) - 25600) / -200;
@@ -4099,18 +4141,9 @@ signed int ReadJoystick_8BBE0(uint8_t* a1)//fix//26cbe0
 			v5 = 10000;
 			//_disable();
 			v1 = 1;
-			//__outx_BYTE(0x201u, v2);
-			do
-			{
-				// v6 = __inx_BYTE(0x201u);
-				if (!(v6 & 3))
-					break;
-				if (v6 & 1)
-					++v43;
-				if (v6 & 2)
-					++v42;
-				--v5;
-			} while (v5);
+			v43 = (int)m_JoystickYaw + 32768;
+			v42 = (int)m_JoystickPitch + 32768;
+			v6 = 0xF0; // buttons are active low in the high nibble: none pressed (they are sent as mouse buttons)
 			//_enable();
 			v44 = v6;
 			if (!v5)
@@ -4638,6 +4671,11 @@ void MouseEvents(uint32_t buttons, int x, int y)
 		return;
 	UpdateMouseEventData_8CB3A(buttons, x, y);
 };
+
+void MouseButtonEvents(uint32_t buttons)
+{
+	MouseEvents(buttons, mouse_E3760.x, mouse_E3760.y);
+}
 
 int x_BYTE_E3767;
 int mouseButtonStates_180710;

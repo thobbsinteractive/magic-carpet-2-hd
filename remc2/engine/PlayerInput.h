@@ -31,6 +31,10 @@ typedef struct {
 #pragma pack(pop)
 
 
+// SDL joystick axes received via E_JOYSTICK_AXIS, read by ReadJoystick_8BBE0 in place of the game port (0x201)
+extern int16_t m_JoystickYaw;
+extern int16_t m_JoystickPitch;
+
 extern char cursorSpriteIndex_D419E; // weak//2a519e
 extern char IsPauseMenuOpen_D47D9; // weak
 extern int debugcounter_47560;
