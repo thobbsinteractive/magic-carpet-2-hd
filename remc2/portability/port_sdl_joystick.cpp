@@ -420,56 +420,40 @@ uint16_t gamepad_hat_nav_conv(const vec1d_t *hat, pointer_sys_t *point)
 	return ret;
 }
 
-/// \brief longitudinal and transversal hat movement converted to hardcoded keyboard keypresses
+#define GP_MOV_FWD    0x1 ///< movement wanted: forward
+#define GP_MOV_BACK   0x2 ///< movement wanted: backwards
+#define GP_MOV_LEFT   0x4 ///< movement wanted: strafe left
+#define GP_MOV_RIGHT  0x8 ///< movement wanted: strafe right
+
+/// \brief longitudinal and transversal hat movement
 /// \param  hat input value
-void gamepad_hat_mov_conv(const vec1d_t *hat)
+/// \return wanted movement, bitwise OR of GP_MOV_*
+uint8_t gamepad_hat_mov_conv(const vec1d_t *hat)
 {
-	uint16_t ret = 0;
+	uint8_t mov = 0;
 
 	if (hat->x & SDL_HAT_UP) {
-		SetPress(false, inputMapping.Backwards);
-		SetPress(true, inputMapping.Forward);
-		ret = GP_MOV_UPDATE;
+		mov |= GP_MOV_FWD;
 	}
-
 	if (hat->x & SDL_HAT_DOWN) {
-		SetPress(false, inputMapping.Forward);
-		SetPress(true, inputMapping.Backwards);
-		ret = GP_MOV_UPDATE;
+		mov |= GP_MOV_BACK;
 	}
-
 	if (hat->x & SDL_HAT_RIGHT) {
-		SetPress(false, inputMapping.Left);
-		SetPress(true, inputMapping.Right);
-		ret = GP_MOV_UPDATE;
+		mov |= GP_MOV_RIGHT;
 	}
-
 	if (hat->x & SDL_HAT_LEFT) {
-		SetPress(false, inputMapping.Right);
-		SetPress(true, inputMapping.Left);
-		ret = GP_MOV_UPDATE;
+		mov |= GP_MOV_LEFT;
 	}
 
-	if (hat->x == 0) {
-		if (gps.mov_key_announced < GP_MAX_KEY_RELEASE_ANN) {
-			SetPress(false, inputMapping.Forward);
-			SetPress(false, inputMapping.Backwards);
-			SetPress(false, inputMapping.Right);
-			SetPress(false, inputMapping.Left);
-			gps.mov_key_announced++;
-		}
-	}
-
-	if (ret) {
-		gps.mov_key_announced = 0;
-	}
+	return mov;
 }
 
-/// \brief longitudinal and transversal movement via conversion from stick coordinates to key presses
+/// \brief longitudinal and transversal movement via axes
 /// \param  stick input axis values
-void gamepad_axis_mov_conv(vec2d_t *stick)
+/// \return wanted movement, bitwise OR of GP_MOV_*
+uint8_t gamepad_axis_mov_conv(vec2d_t *stick)
 {
-	uint16_t ret = 0;
+	uint8_t mov = 0;
 	int16_t axis_long_inv = 1;
 	int16_t axis_long = stick->x;
 	int16_t axis_trans = stick->y;
@@ -478,46 +462,57 @@ void gamepad_axis_mov_conv(vec2d_t *stick)
 		axis_long_inv = -1;
 	}
 
-	if ((axis_long < gpc.axis_long_dead_zone) && (axis_long > -gpc.axis_long_dead_zone)) {
-		// player seems to always have some inertia, so the following wont't actually stop
-		// longitudinal movement
-		if (gps.mov_key_announced < GP_MAX_KEY_RELEASE_ANN) {
-			SetPress(false, inputMapping.Forward);
-			SetPress(false, inputMapping.Backwards);
-		}
-	} else {
-		if (axis_long * axis_long_inv > 0) {
-			SetPress(false, inputMapping.Backwards);
-			SetPress(true, inputMapping.Forward);
-		} else {
-			SetPress(false, inputMapping.Forward);
-			SetPress(true, inputMapping.Backwards);
-		}
-		ret = GP_MOV_UPDATE;
+	if ((axis_long >= gpc.axis_long_dead_zone) || (axis_long <= -gpc.axis_long_dead_zone)) {
+		mov |= (axis_long * axis_long_inv > 0) ? GP_MOV_FWD : GP_MOV_BACK;
 	}
 
-	if ((axis_trans < gpc.axis_trans_dead_zone) && (axis_trans > -gpc.axis_trans_dead_zone)) {
-		if (gps.mov_key_announced < GP_MAX_KEY_RELEASE_ANN) {
-			SetPress(false, inputMapping.Right);
-			SetPress(false, inputMapping.Left);
-		}
-	} else {
-		if (axis_trans > 0) {
-			SetPress(false, inputMapping.Left);
-			SetPress(true, inputMapping.Right);
-		} else {
-			SetPress(false, inputMapping.Right);
-			SetPress(true, inputMapping.Left);
-		}
-		ret = GP_MOV_UPDATE;
+	if ((axis_trans >= gpc.axis_trans_dead_zone) || (axis_trans <= -gpc.axis_trans_dead_zone)) {
+		mov |= (axis_trans > 0) ? GP_MOV_RIGHT : GP_MOV_LEFT;
 	}
 
-	if (!ret) {
+	return mov;
+}
+
+/// \brief press and release the movement keys for the movement wanted by the hat and the axes together
+/// \param  mov wanted movement, bitwise OR of GP_MOV_*
+/// a control at rest must not release a key another control is holding, so the hat and the axes
+/// are combined first. when nothing moves the keys are released only a few times, which leaves
+/// the keyboard usable
+void gamepad_apply_mov(const uint8_t mov)
+{
+	if (!mov) {
 		if (gps.mov_key_announced < GP_MAX_KEY_RELEASE_ANN) {
+			// player seems to always have some inertia, so this won't actually stop longitudinal movement
+			SetPress(false, inputMapping.Forward);
+			SetPress(false, inputMapping.Backwards);
+			SetPress(false, inputMapping.Right);
+			SetPress(false, inputMapping.Left);
 			gps.mov_key_announced++;
 		}
+		return;
+	}
+	gps.mov_key_announced = 0;
+
+	if (mov & GP_MOV_FWD) {
+		SetPress(false, inputMapping.Backwards);
+		SetPress(true, inputMapping.Forward);
+	} else if (mov & GP_MOV_BACK) {
+		SetPress(false, inputMapping.Forward);
+		SetPress(true, inputMapping.Backwards);
 	} else {
-		gps.mov_key_announced = 0;
+		SetPress(false, inputMapping.Forward);
+		SetPress(false, inputMapping.Backwards);
+	}
+
+	if (mov & GP_MOV_RIGHT) {
+		SetPress(false, inputMapping.Left);
+		SetPress(true, inputMapping.Right);
+	} else if (mov & GP_MOV_LEFT) {
+		SetPress(false, inputMapping.Right);
+		SetPress(true, inputMapping.Left);
+	} else {
+		SetPress(false, inputMapping.Right);
+		SetPress(false, inputMapping.Left);
 	}
 }
 
@@ -626,11 +621,15 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 
 	// longitudinal/transversal movement 
 	// (aka forward/back/strafe right/strafe left)
+	// the hat and the axes can both be enabled: combine them before touching the keys
+	bool mov_enabled = false;
+	uint8_t mov = 0;
 	if (gpc.hat_mov_conf & GAMEPAD_ITEM_ENABLED) {
 		// if movement is done via a hat
 		hat.x = gpe->hat_mov;
 		hat.x_conf = gpc.hat_mov_conf;
-		gamepad_hat_mov_conv(&hat);
+		mov |= gamepad_hat_mov_conv(&hat);
+		mov_enabled = true;
 	}
 
 	if (((gpc.axis_long_conf & GAMEPAD_ITEM_ENABLED) || (gpc.axis_trans_conf & GAMEPAD_ITEM_ENABLED)) && (gps.scene_id != Scene::SPELL_MENU)) {
@@ -638,7 +637,12 @@ void gamepad_event_mgr(gamepad_event_t *gpe)
 		stick.x = gpe->axis_long;
 		stick.x_conf = gpc.axis_long_conf;
 		stick.y = gpe->axis_trans;
-		gamepad_axis_mov_conv(&stick);
+		mov |= gamepad_axis_mov_conv(&stick);
+		mov_enabled = true;
+	}
+
+	if (mov_enabled) {
+		gamepad_apply_mov(mov);
 	}
 
 	// trigger commands
