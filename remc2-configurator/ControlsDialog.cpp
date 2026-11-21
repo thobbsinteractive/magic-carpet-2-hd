@@ -537,8 +537,8 @@ void ControlsDialog::OnClassicLayout(wxCommandEvent&)
 void ControlsDialog::OnXBoxPreset(wxCommandEvent&)
 {
 	m_controllerId->SetValue(0);
-	m_buttonMiniMap->SetValue(3);
-	m_buttonSpell->SetValue(1);
+	m_buttonMiniMap->SetValue(4);
+	m_buttonSpell->SetValue(3);
 	m_buttonPauseMenu->SetValue(7);
 	m_buttonEsc->SetValue(8);
 	m_buttonFireL->SetValue(5);
@@ -567,39 +567,51 @@ void ControlsDialog::OnXBoxPreset(wxCommandEvent&)
 	m_axisFireL->SetValue(5);
 	m_axisYaw->SetValue(3);
 	m_axisYawInv->SetValue(false);
-	m_axisYawDeadZone->SetValue(3000);
+	m_axisYawDeadZone->SetValue(500);
 	m_axisPitch->SetValue(4);
 	m_axisPitchInv->SetValue(false);
-	m_axisPitchDeadZone->SetValue(3000);
+	m_axisPitchDeadZone->SetValue(1000);
 
 	m_axisYawSensitivity.clear();
 	m_axisYawSensitivity = {
-		{    0,  8000, 0.1 },
-		{ 8000, 15000, 0.2 },
-		{15000, 20000, 0.3 },
-		{20000, 25000, 0.35},
-		{25000, 26000, 0.4 },
-		{26000, 27000, 0.5 },
-		{27000, 28000, 0.6 },
-		{28000, 29000, 0.7 },
-		{29000, 30000, 0.8 },
-		{30000, 31000, 0.9 },
-		{31000, 32767, 1.0 }
+		{    0,  1000, 0.015},
+		{ 1000,  2000, 0.046},
+		{ 2000,  3000, 0.076},
+		{ 3000,  4000, 0.107},
+		{ 4000,  5000, 0.137},
+		{ 5000,  6000, 0.168},
+		{ 6000,  7000, 0.198},
+		{ 7000,  8000, 0.229},
+		{ 8000,  9000, 0.259},
+		{ 9000, 10000, 0.290},
+		{10000, 11000, 0.320},
+		{11000, 12000, 0.351},
+		{12000, 13000, 0.381},
+		{13000, 14000, 0.412},
+		{14000, 15000, 0.443},
+		{15000, 16000, 0.473},
+		{16000, 17000, 0.504},
+		{17000, 18000, 0.534},
+		{18000, 19000, 0.565},
+		{19000, 20000, 0.595},
+		{20000, 21000, 0.626},
+		{21000, 22000, 0.656},
+		{22000, 23000, 0.687},
+		{23000, 24000, 0.717},
+		{24000, 25000, 0.748},
+		{25000, 26000, 0.778},
+		{26000, 27000, 0.809},
+		{27000, 28000, 0.839},
+		{28000, 29000, 0.870},
+		{29000, 30000, 0.900},
+		{30000, 31000, 0.931},
+		{31000, 32000, 0.961},
+		{32000, 32768, 1.000}
 	};
 
 	m_axisPitchSensitivity.clear();
 	m_axisPitchSensitivity = {
-		{    0,  8000, 0.1 },
-		{ 8000, 15000, 0.2 },
-		{15000, 20000, 0.3 },
-		{20000, 25000, 0.35},
-		{25000, 26000, 0.4 },
-		{26000, 27000, 0.5 },
-		{27000, 28000, 0.6 },
-		{28000, 29000, 0.7 },
-		{29000, 30000, 0.8 },
-		{30000, 31000, 0.9 },
-		{31000, 32767, 1.0 }
+		{    0, 32768, 0.600}
 	};
 }
 

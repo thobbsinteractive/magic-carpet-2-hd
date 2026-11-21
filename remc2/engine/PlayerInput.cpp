@@ -4284,7 +4284,8 @@ LABEL_46:
 			v15 = v43 - v14;
 			if (v43 - v14 < 0)
 			{
-				v20 = (*(x_DWORD*)(a1 + 8) - v14) >> 3;
+				//v20 = (*(x_DWORD*)(a1 + 8) - v14) >> 3; // original 1/8 dead zone
+				v20 = 0;
 				v21 = v15 - v20;
 				v22 = *(x_DWORD*)(a1 + 8) - v14 - 2 * v20;
 				if (v21 <= 0)
@@ -4304,7 +4305,8 @@ LABEL_46:
 			}
 			else
 			{
-				v16 = (*(x_DWORD*)(a1 + 12) - v14) >> 3;
+				//v16 = (*(x_DWORD*)(a1 + 12) - v14) >> 3; // original 1/8 dead zone
+				v16 = 0;
 				v17 = v15 - v16;
 				v18 = *(x_DWORD*)(a1 + 12) - v14 - 2 * v16;
 				if (v17 >= 0)
@@ -4325,7 +4327,8 @@ LABEL_46:
 			v24 = v42 - *(x_DWORD*)(a1 + 28);
 			if (v24 < 0)
 			{
-				v30 = (*(x_DWORD*)(a1 + 20) - *(x_DWORD*)(a1 + 28)) >> 3;
+				//v30 = (*(x_DWORD*)(a1 + 20) - *(x_DWORD*)(a1 + 28)) >> 3; // original 1/8 dead zone
+				v30 = 0;
 				v31 = v24 - v30;
 				v32 = *(x_DWORD*)(a1 + 20) - *(x_DWORD*)(a1 + 28) - 2 * v30;
 				if (v31 <= 0)
@@ -4348,7 +4351,8 @@ LABEL_46:
 			else
 			{
 				v25 = *(x_DWORD*)(a1 + 28);
-				v26 = (*(x_DWORD*)(a1 + 24) - v25) >> 3;
+				//v26 = (*(x_DWORD*)(a1 + 24) - v25) >> 3; // original 1/8 dead zone
+				v26 = 0;
 				v27 = v24 - v26;
 				v28 = *(x_DWORD*)(a1 + 24) - v25 - 2 * v26;
 				if (v27 >= 0)

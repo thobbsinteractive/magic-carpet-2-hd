@@ -255,6 +255,14 @@ void gamepad_init(const int gameResWidth, const int gameResHeight)
 
 void AdjustStickCoords(vec2d_t* stick, std::vector<Maths::Zone>* zonesX, std::vector<Maths::Zone>* zonesY)
 {
+	// -32768 can not be negated as int16_t and would bypass the zones: use the same range on both sides
+	if (stick->x < -INT16_MAX) {
+		stick->x = -INT16_MAX;
+	}
+	if (stick->y < -INT16_MAX) {
+		stick->y = -INT16_MAX;
+	}
+
 	if (stick->x >= 0)
 	{
 		stick->x = ((int16_t)Maths::CurveCoords(stick->x, stick->x, *zonesX));
