@@ -172,12 +172,15 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 	m_windowHeight = windowHeight;
 
 	vkb::InstanceBuilder instanceBuilder;
-	auto instRet = instanceBuilder
+	instanceBuilder
 		.set_app_name("remc2")
 		.request_validation_layers(m_enableValidation)   // slow; --vulkan_validation turns them on
 		.use_default_debug_messenger()
-		.require_api_version(1, 2, 0)
-		.build();
+		.require_api_version(1, 2, 0);
+	const std::vector<std::string> instanceExtensions = GetRequiredInstanceExtensions();
+	for (const std::string& extension : instanceExtensions)
+		instanceBuilder.enable_extension(extension.c_str());
+	auto instRet = instanceBuilder.build();
 
 	if (!instRet)
 		throw std::runtime_error("Failed to create Vulkan instance: " + instRet.error().message());
@@ -193,22 +196,45 @@ bool VulkanPolygonRenderer::Init(SDL_Window* window, int windowWidth, int window
 	}
 
 	vkb::PhysicalDeviceSelector selector{ m_vkbInstance };
-	auto physRet = selector
+	selector
 		.set_surface(m_surface)
-		.set_minimum_version(1, 2)
-		.select();
+		.set_minimum_version(1, 2);
+	const std::vector<std::string> deviceExtensions = GetRequiredDeviceExtensions();
+	for (const std::string& extension : deviceExtensions)
+		selector.add_required_extension(extension.c_str());
 
-	if (!physRet)
-		throw std::runtime_error("Failed to select Vulkan physical device: " + physRet.error().message());
+	// A derived renderer may need a particular GPU (the one a VR headset is connected to)
+	std::optional<vkb::PhysicalDevice> physicalDevice;
+	const VkPhysicalDevice requiredDevice = GetRequiredPhysicalDevice(m_instance);
+	if (requiredDevice != VK_NULL_HANDLE)
+	{
+		auto devicesRet = selector.select_devices();
+		if (!devicesRet)
+			throw std::runtime_error("Failed to select Vulkan physical device: " + devicesRet.error().message());
+		for (const vkb::PhysicalDevice& device : devicesRet.value())
+		{
+			if (device.physical_device == requiredDevice)
+				physicalDevice = device;
+		}
+		if (!physicalDevice)
+			throw std::runtime_error("The GPU the VR headset needs is not suitable for the renderer");
+	}
+	else
+	{
+		auto physRet = selector.select();
+		if (!physRet)
+			throw std::runtime_error("Failed to select Vulkan physical device: " + physRet.error().message());
+		physicalDevice = physRet.value();
+	}
 
-	vkb::DeviceBuilder deviceBuilder{ physRet.value() };
+	vkb::DeviceBuilder deviceBuilder{ *physicalDevice };
 	auto devRet = deviceBuilder.build();
 	if (!devRet)
 		throw std::runtime_error("Failed to create Vulkan device: " + devRet.error().message());
 
 	m_vkbDevice = devRet.value();
 	m_device = m_vkbDevice.device;
-	m_physicalDevice = physRet.value().physical_device;
+	m_physicalDevice = physicalDevice->physical_device;
 	m_msaaSamples = PickMsaaSamples(m_requestedMsaaSamples);
 
 	auto gq = m_vkbDevice.get_queue(vkb::QueueType::graphics);
@@ -580,7 +606,7 @@ void VulkanPolygonRenderer::DestroyMsaaImage()
 }
 
 bool VulkanPolygonRenderer::CreateColourTarget(uint32_t width, uint32_t height, VkRenderPass renderPass, ColourTarget& target,
-	VkImageView msaaView)
+	VkImageView msaaView, VkImageUsageFlags extraUsage)
 {
 	VkImageCreateInfo imageInfo{};
 	imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -591,7 +617,7 @@ bool VulkanPolygonRenderer::CreateColourTarget(uint32_t width, uint32_t height, 
 	imageInfo.arrayLayers = 1;
 	imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
 	imageInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
-	imageInfo.usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
+	imageInfo.usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | extraUsage;
 	imageInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
 
 	VmaAllocationCreateInfo allocInfo{};
@@ -2065,6 +2091,8 @@ void VulkanPolygonRenderer::DestroyFrameData()
 
 bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* hudAlpha, SDL_Rect srcRect, SDL_Rect destRect)
 {
+	OnBeginFrame();
+
 	FrameData& frame = m_frames[m_currentFrame];
 	vkWaitForFences(m_device, 1, &frame.inFlight, VK_TRUE, UINT64_MAX);
 
@@ -2489,6 +2517,7 @@ void VulkanPolygonRenderer::EndFrame()
 	submit.signalSemaphoreCount = 1;
 	submit.pSignalSemaphores = &frame.renderFinished;
 	vkQueueSubmit(m_graphicsQueue, 1, &submit, frame.inFlight);
+	OnFrameSubmitted();
 
 	VkPresentInfoKHR present{};
 	present.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;

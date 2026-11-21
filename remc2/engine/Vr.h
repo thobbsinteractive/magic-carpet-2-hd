@@ -44,3 +44,14 @@ void ComputeTrackerAngles_AC250(int a1, int a2, int a3, int a4, int a5, x_DWORD*
 uint8_t* InitMovingAverage_B1138(uint8_t** a1, signed int a2);
 int AddMovingAverage_B11E8(uint32_t* a1, int a2);
 void DrawVrFrame_BD1B6(uint8_t* a1);
+
+// ── OpenXR headset ───────────────────────────────────────────────────────────────────────────────────────────
+// The OpenXR renderer sends the head's orientation with E_VR_HEAD_POSE; it is kept here as the original head
+// tracker's angles (vrJoystick_17D6CC) and reaches the camera the original's way: the player input's head yaw and
+// pitch (playerInputs word6 / word8), which Player.cpp adds to the camera's rotation.
+void RegisterVrHeadsetEvents();      // listens for E_VR_HEAD_POSE (once; before the renderer sends any)
+void UnregisterVrHeadsetEvents();
+bool IsVrHeadsetActive();            // a headset is tracking: GameRenderHW draws the two eyes for it
+// The head's yaw (0 - 2047, as headTrackerYaw_180590) and pitch (as headTrackerPitch_180594, a horizon shift) for the player input
+void GetVrHeadsetAxes(int32_t& headTrackerYaw, int32_t& headTrackerPitch);
+int16_t GetVrHeadsetRoll();         // the head's roll (0 - 2047) for the camera: GameRenderHW adds it to the eyes' roll

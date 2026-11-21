@@ -1,6 +1,7 @@
 #include "GameRenderHW.h"
 #include <algorithm>
 #include "globals.h"
+#include "Vr.h"
 
 #include "../utilities/RendererTests.h"
 
@@ -199,7 +200,30 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	m_primaryView = true;
 	m_frameViews.composition = ViewComposition::Cells;
 
-	if (anaglyphMode)
+	if (IsVrHeadsetActive())
+	{
+		// OpenXR headset: the eyes where the original's VR mode puts them (sideways along the camera's right axis, with
+		// the projection centre shifted), but each at the whole view port: the renderer gives each its own image (1 x 2)
+		m_frameViews.rows = 1;
+		m_frameViews.columns = 2;
+		m_frameViews.lists.resize(2);
+		SetBlurActive(false);
+		v22 = Maths::sin_DB750[vYaw];
+		v23 = 5 * v22;
+		v24 = Maths::sin_DB750[512 + vYaw];
+		v25 = 4 * v23 >> 16;
+		v26 = 20 * (signed int)v24 >> 16;
+		// The original shifts each eye 5 pixels of its 312 wide view
+		const int eyeShift = (std::max)(1, (int)(uint16_t)viewPort.Width_DE564 * 5 / 312);
+		// The head's roll on top of the carpet's: the view only (yaw and pitch come with the player input)
+		const int16_t eyeRoll = (roll + GetVrHeadsetRoll()) & 0x7FF;
+		viewShiftX_D4324 = -eyeShift;
+		DrawTerrainAndParticles_3C080(vPosX - v26, vPosY - v25, vYaw, posZ, pitch, eyeRoll, fov, &m_frameViews.lists[0]);
+		viewShiftX_D4324 = eyeShift;
+		DrawTerrainAndParticles_3C080(vPosX + v26, vPosY + v25, vYaw, posZ, pitch, eyeRoll, fov, &m_frameViews.lists[1]);
+		viewShiftX_D4324 = 0;
+	}
+	else if (anaglyphMode)
 	{
 		// The original stereo mode's eyes (sideways along the camera's right axis, the projection centre shifted
 		// 1/40 of the screen), each into its own list: the renderer combines them through the glasses' colours

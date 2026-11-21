@@ -6,6 +6,7 @@
 #include <ctype.h>
 
 #include "global_types.h"
+#include "../portability/OpenXRDevice.h"
 #include <filesystem>
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,6 +64,7 @@ LookingGlassDevice lookingGlassDevice;
 uint8_t anaglyphLeftColour[3] = { 255, 0, 0 };
 uint8_t anaglyphRightColour[3] = { 0, 168, 168 };
 float anaglyphGhostReduction = 0.1f;
+bool openXREnabled = false;
 bool openGLRender = false;
 bool invertYAxis = true;
 bool invertXAxis = false;
@@ -253,6 +255,35 @@ bool SetConfig() {
 		Logger->warn("anaglyph rightColour '{}' isn't #RRGGBB: using #00A8A8", anaglyph.m_RightColour);
 	anaglyphGhostReduction = std::clamp(anaglyph.m_GhostReduction, 0.0f, 0.5f);
 
+	// A VR headset through OpenXR (hardware renderer only; Looking Glass wins if both are on)
+	openXREnabled = settingsValue.m_Graphics.m_Hardware.m_OpenXR.m_Enabled && settingsValue.m_Graphics.m_Render == "HW"
+		&& !lookingGlassEnabled;
+	if (openXREnabled)
+	{
+		// As with Looking Glass (the cell size): while a headset is found the game runs at the eye resolution, so the
+		// views, the UI, the map and the menus are laid out for the eye rather than stretched into it. The configured
+		// eyeWidth x eyeHeight, or the headset eye's shape at the in-game resolution's height
+		const auto& openXR = settingsValue.m_Graphics.m_Hardware.m_OpenXR;
+		const OpenXREyeSize eye = QueryOpenXREyeSize();
+		if (!eye.found)
+			Logger->info("OpenXR: no headset found, the game resolution stays {}x{}", gameResWidth, gameResHeight);
+		else if (openXR.m_EyeWidth > 0 && openXR.m_EyeHeight > 0)
+		{
+			gameResWidth = openXR.m_EyeWidth;
+			gameResHeight = openXR.m_EyeHeight;
+			Logger->info("OpenXR: game resolution {}x{} (eyeWidth, eyeHeight)", gameResWidth, gameResHeight);
+			const double eyeAspect = (double)gameResWidth / gameResHeight;
+			const double headsetAspect = (double)eye.width / eye.height;
+			if (std::abs(eyeAspect - headsetAspect) > 0.01 * headsetAspect)
+				Logger->warn("OpenXR: the eye resolution ({}x{}) is not the headset eye's shape ({}x{}), the view is stretched",
+					gameResWidth, gameResHeight, eye.width, eye.height);
+		}
+		else
+		{
+			gameResWidth = (int)std::lround((double)gameResHeight * eye.width / eye.height) & ~7;
+			Logger->info("OpenXR: game resolution {}x{}, the headset eye's shape ({}x{})", gameResWidth, gameResHeight, eye.width, eye.height);
+		}
+	}
 	if (lookingGlassEnabled)
 	{
 		viewRows = std::clamp(lookingGlass.m_Rows, 1, MAX_VIEW_GRID);

@@ -102,6 +102,7 @@ namespace remc2_installer
 		public int antiAliasing { get; set; } = 2;   // MSAA samples: 0 = off (1x), 2, 4 or 8
 		public LookingGlass lookingGlass { get; set; }
 		public Anaglyph anaglyph { get; set; }
+		public OpenXR openXR { get; set; }
 	}
 
 	public class Anaglyph
@@ -110,6 +111,14 @@ namespace remc2_installer
 		public string leftColour { get; set; } = "#FF0000";
 		public string rightColour { get; set; } = "#00A8A8";
 		public float ghostReduction { get; set; } = 0.1f;
+	}
+
+	public class OpenXR
+	{
+		public string[] description { get; set; }
+		public bool enabled { get; set; } = false;
+		public int eyeWidth { get; set; } = 1680;
+		public int eyeHeight { get; set; } = 1760;
 	}
 
 	public class LookingGlass

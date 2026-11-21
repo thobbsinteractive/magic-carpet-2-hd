@@ -2243,6 +2243,9 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 
 		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].roll = roll;
 		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].pitch = pitch;
+		// An OpenXR headset looks around as the original's head tracker did: its yaw and pitch go with the input
+		if (IsVrHeadsetActive())
+			GetVrHeadsetAxes(inputState_18058C.headTrackerYaw_180590, inputState_18058C.headTrackerPitch_180594);
 		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].nextEntity_0x6E3E_word6 = inputState_18058C.headTrackerYaw_180590;
 		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].entityIndex2_0x6E3E_word8 = inputState_18058C.headTrackerPitch_180594;
 	}

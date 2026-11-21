@@ -153,10 +153,25 @@ if (NOT TARGET vk-bootstrap::vk-bootstrap)
     FetchContent_MakeAvailable(vk-bootstrap)
 endif ()
 
+# VR headsets (OpenXRRenderer): the OpenXR loader finds the active runtime (SteamVR, Meta, Monado, ...) at run time
+find_package(OpenXR CONFIG QUIET)
+if (NOT TARGET OpenXR::openxr_loader)
+    message(STATUS "OpenXR not found, fetching release-1.1.49")
+    set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+    set(BUILD_API_LAYERS OFF CACHE BOOL "" FORCE)
+    FetchContent_Declare(OpenXR
+        GIT_REPOSITORY https://github.com/KhronosGroup/OpenXR-SDK.git
+        GIT_TAG release-1.1.49
+        GIT_SHALLOW TRUE
+    )
+    FetchContent_MakeAvailable(OpenXR)
+endif ()
+
 set(VULKAN_LIBRARIES
     Vulkan::Vulkan
     GPUOpen::VulkanMemoryAllocator
     vk-bootstrap::vk-bootstrap
+    OpenXR::openxr_loader
     ${CMAKE_DL_LIBS}
 )
 

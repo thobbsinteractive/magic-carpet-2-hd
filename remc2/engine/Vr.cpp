@@ -21,6 +21,12 @@
 #include "PrintMessages.h"
 #include "ReadAndDecompress.h"
 #include "Type_DB080_CdTrack.h"
+#include "../shared/EventDispatcher.h"
+#include "../shared/VrHeadPose.h"
+
+#include <algorithm>
+#include <cmath>
+#include <functional>
 
 
 #if defined(__linux__) || defined(__APPLE__)
@@ -106,6 +112,77 @@ char* vrRecord3_17D6C0; // weak
 int vrMemBlock_17D6C8; // weak
 
 __int16 vrJoystick_17D6CC[3]; // weak
+
+// ── OpenXR headset ───────────────────────────────────────────────────────────────────────────────────────────
+// The headset's orientation as the original head tracker's angles in vrJoystick_17D6CC (0x10000 = a full turn,
+// [0] yaw clockwise as a compass heading, [1] pitch + = up, [2] roll), from E_VR_HEAD_POSE
+static bool vrHeadsetActive = false;
+static std::function<void(VrHeadPose)> vrHeadPoseCallBack;
+static IEvent* vrHeadPoseEvent = nullptr;
+
+static int16_t RadiansToTrackerAngle(float radians)
+{
+	constexpr float kTrackerUnitsPerRadian = 65536.0f / (2.0f * 3.14159265358979f);
+	return (int16_t)(int32_t)std::lround(radians * kTrackerUnitsPerRadian);
+}
+
+static void SetVrHeadPose(VrHeadPose pose)
+{
+	vrHeadsetActive = pose.active;
+	if (!pose.active)
+	{
+		memset(vrJoystick_17D6CC, 0, sizeof(vrJoystick_17D6CC));
+		return;
+	}
+	// OpenXR's yaw turns left (anticlockwise seen from above); the tracker's heading turns right
+	vrJoystick_17D6CC[0] = RadiansToTrackerAngle(-pose.yaw);
+	vrJoystick_17D6CC[1] = RadiansToTrackerAngle(pose.pitch);
+	vrJoystick_17D6CC[2] = RadiansToTrackerAngle(pose.roll);
+}
+
+void RegisterVrHeadsetEvents()
+{
+	if (vrHeadPoseEvent || !EventDispatcher::I)
+		return;
+	vrHeadPoseCallBack = [](VrHeadPose pose) { SetVrHeadPose(pose); };
+	vrHeadPoseEvent = new Event<VrHeadPose>(EventType::E_VR_HEAD_POSE, vrHeadPoseCallBack);
+	EventDispatcher::I->RegisterEvent(vrHeadPoseEvent);
+}
+
+void UnregisterVrHeadsetEvents()
+{
+	if (vrHeadPoseEvent && EventDispatcher::I)
+		EventDispatcher::I->UnregisterEvent(vrHeadPoseEvent);   // also deletes it
+	vrHeadPoseEvent = nullptr;
+	SetVrHeadPose(VrHeadPose{});
+}
+
+bool IsVrHeadsetActive()
+{
+	return vrHeadsetActive;
+}
+
+void GetVrHeadsetAxes(int32_t& headTrackerYaw, int32_t& headTrackerPitch)
+{
+	// Yaw: 0 - 2047. The original's VR tracker modes (2, 9, 13) negate the tracker's heading here, but with an OpenXR
+	// headset that turned the view the opposite way to the head, so it goes in unnegated
+	headTrackerYaw = 2048 * vrJoystick_17D6CC[0] / 0xFFFF & 0x7FF;
+
+	// Pitch: the camera's pitch is a horizon shift (pitch * view port width / 256 pixels), so the head's angle becomes
+	// that shift for a 90 degree wide view: looking up moves the horizon down (the camera's pitch is + looking down).
+	// Checked on a real headset (phone through ALVR); the Meta XR Simulator's mouse look makes it seem the other way
+	constexpr float kTrackerUnitsPerRadian = 65536.0f / (2.0f * 3.14159265358979f);
+	const float pitch = (std::clamp)((float)vrJoystick_17D6CC[1] / kTrackerUnitsPerRadian, -1.3f, 1.3f);
+	headTrackerPitch = (int32_t)std::lround(-128.0f * std::tan(pitch));
+}
+
+int16_t GetVrHeadsetRoll()
+{
+	// The tracker's roll (0x10000 a full turn, + tilted left) as the camera's (0 - 2047, + the other way: checked on a
+	// headset, unnegated it doubled the tilt). Only the view: the original never sent the tracker's roll with the player
+	// input, so it changes nothing in the game (or a recording, or the other players)
+	return (int16_t)((-2048 * (int32_t)vrJoystick_17D6CC[2] / 0x10000) & 0x7FF);
+}
 
 uint8_t vrBuffer_17D6D4[50]; // weak
 

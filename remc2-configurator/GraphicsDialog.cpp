@@ -3,7 +3,7 @@
 // ── GraphicsDialog ────────────────────────────────────────────────────────────
 GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphics& cfg)
 	: wxDialog(parent, wxID_ANY, "Graphics Settings",
-		wxDefaultPosition, wxSize(245, 440),
+		wxDefaultPosition, wxSize(245, 475),
 		wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX)
 {
 	m_cfg = cfg;
@@ -74,6 +74,21 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 	m_btnHardwareSettings = new wxButton(this, wxID_ANY, "Hardware Settings...");
 	main->Add(m_btnHardwareSettings, 0, wxALIGN_CENTER | wxLEFT | wxTOP | wxBOTTOM, 10);
 
+	// ── VR Headset button (hardware renderer only) ────────────────────────────
+	m_btnVr = new wxButton(this, wxID_ANY, "VR Headset...");
+	m_btnVr->SetToolTip("VR headset output through OpenXR, and the eye resolution. Hardware renderer only.");
+	main->Add(m_btnVr, 0, wxALIGN_CENTER | wxLEFT | wxBOTTOM, 10);
+	m_btnVr->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
+		VrDialog dlg(this, m_cfg.m_Hardware.m_OpenXR);
+		if (dlg.ShowModal() == wxID_OK)
+		{
+			m_cfg.m_Hardware.m_OpenXR = dlg.GetSettings();
+			// One or the other: a VR headset turns Looking Glass off
+			if (m_cfg.m_Hardware.m_OpenXR.m_Enabled)
+				m_cfg.m_Hardware.m_LookingGlass.m_Enabled = false;
+		}
+		});
+
 	// ── Looking Glass button (hardware renderer only) ─────────────────────────
 	m_btnLookingGlass = new wxButton(this, wxID_ANY, "Looking Glass...");
 	m_btnLookingGlass->SetToolTip("Settings for Looking Glass light field displays.");
@@ -84,6 +99,9 @@ GraphicsDialog::GraphicsDialog(wxWindow* parent, const Config::Settings::Graphic
 		if (dlg.ShowModal() == wxID_OK)
 		{
 			m_cfg.m_Hardware.m_LookingGlass = dlg.GetSettings();
+			// One or the other: Looking Glass turns the VR headset off
+			if (m_cfg.m_Hardware.m_LookingGlass.m_Enabled)
+				m_cfg.m_Hardware.m_OpenXR.m_Enabled = false;
 			// Turned on: the view distance and UI margins it needs (the dialog told the user when it was ticked)
 			if (dlg.TurnedOn())
 			{
@@ -186,6 +204,7 @@ void GraphicsDialog::UpdateRenderButtons()
 	m_btnHardwareSettings->Show(hardware);
 	m_btnLookingGlass->Show(hardware);
 	m_btnAnaglyph->Show(hardware);
+	m_btnVr->Show(hardware);
 	m_btnRenderThreads->Show(!hardware);
 	Layout();
 }
@@ -200,6 +219,9 @@ Config::Settings::Graphics GraphicsDialog::GetSettings() const
 	cfg.m_GameDetail.m_ViewDistanceScale = m_spinViewDistanceScale->GetValue();
 	cfg.m_GameDetail.m_FogScale = static_cast<float>(m_spinFogScale->GetValue());
 	cfg.m_Render = m_choiceRender->GetSelection() == RENDER_HARDWARE ? "HW" : "NG";
+	// A VR headset (OpenXR) only with the hardware renderer
+	if (cfg.m_Render != "HW")
+		cfg.m_Hardware.m_OpenXR.m_Enabled = false;
 
 	return cfg;
 }

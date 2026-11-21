@@ -40,6 +40,8 @@ set(SOURCE_FILES_CONFIGURATOR
     "LookingGlassDialog.h"
     "AnaglyphDialog.cpp"
     "AnaglyphDialog.h"
+    "VrDialog.cpp"
+    "VrDialog.h"
     "UiAlignmentDialog.cpp"
     "UiAlignmentDialog.h"
 	"ZoneEditorCtrl.cpp"

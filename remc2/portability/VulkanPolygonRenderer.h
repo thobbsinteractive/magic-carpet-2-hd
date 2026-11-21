@@ -11,6 +11,8 @@
 #else
 #include <vk_mem_alloc.h>
 #endif
+#include <optional>
+#include <string>
 #include <vector>
 #include <cstdint>
 #include <cstring>
@@ -54,7 +56,7 @@ public:
 
 	// Creates instance/device/swapchain/pipeline. windowWidth/Height should
 	// match the SDL window's drawable size in pixels.
-	bool Init(SDL_Window* window, int windowWidth, int windowHeight);
+	virtual bool Init(SDL_Window* window, int windowWidth, int windowHeight);
 
 	// A derived renderer destroys its own resources first, then calls this
 	virtual void Shutdown();
@@ -127,6 +129,16 @@ protected:
 	// Draws a cell's view port area (viewport and scissor already set) from the view images. Base: upscales view's image.
 	virtual void DrawCellViews(VkCommandBuffer commandBuffer, size_t cell, size_t view);
 	VkDescriptorSet GetViewImage(size_t view) const;
+
+	// ── Device and frame hooks (overridden by OpenXRRenderer) ────────────────────────────────────────────────────
+	// Init: extensions the instance / device must have, and the GPU to use (VK_NULL_HANDLE: the first suitable one)
+	virtual std::vector<std::string> GetRequiredInstanceExtensions() { return {}; }
+	virtual std::vector<std::string> GetRequiredDeviceExtensions() { return {}; }
+	virtual VkPhysicalDevice GetRequiredPhysicalDevice(VkInstance instance) { return VK_NULL_HANDLE; }
+	// At the start of BeginFrame, before anything is waited on or recorded. Base: nothing.
+	virtual void OnBeginFrame() {}
+	// In EndFrame, once the frame's commands are submitted (before the window is presented). Base: nothing.
+	virtual void OnFrameSubmitted() {}
 
 	void BeginWindowRenderPass(VkCommandBuffer commandBuffer, const VkClearValue& clearColor);
 
@@ -243,7 +255,7 @@ protected:
 	void DestroyOffscreenTarget();
 	// msaaView: the multisampled image the render pass resolves into target, or VK_NULL_HANDLE without MSAA
 	bool CreateColourTarget(uint32_t width, uint32_t height, VkRenderPass renderPass, ColourTarget& target,
-		VkImageView msaaView = VK_NULL_HANDLE);
+		VkImageView msaaView = VK_NULL_HANDLE, VkImageUsageFlags extraUsage = 0);
 	bool CreateMsaaImage(uint32_t width, uint32_t height);
 	void DestroyMsaaImage();
 	VkSampleCountFlagBits PickMsaaSamples(int requested) const;

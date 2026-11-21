@@ -149,6 +149,16 @@
 						"leftColour": "#FF0000",
 						"rightColour": "#00A8A8",
 						"ghostReduction": 0.1
+					},
+					"openXR": {
+						"description": [
+							"VR headset output through OpenXR (SteamVR, Meta, Monado or a simulator). Hardware renderer only, not with Looking Glass",
+							"enabled: The head looks around (as the original VR head tracker) and the game draws the two eyes for the headset; the window shows them side by side. Without a headset the game plays normally",
+							"eyeWidth, eyeHeight: The resolution of each eye: the menus, the UI and the 3D view are drawn at this size (it replaces the in-game resolution while a headset is found). Keep it the headset eye's shape or the view is stretched. Default 1680x1760, a Meta Quest 3 eye. 1080x1080 for a phone through ALVR / PhoneVR. 0 = the headset eye's shape at the in-game resolution's height"
+						],
+						"enabled": false,
+						"eyeWidth": 1680,
+						"eyeHeight": 1760
 					}
 				},
 				"inGameUi": {

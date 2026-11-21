@@ -438,10 +438,13 @@
     <ClInclude Include="portability\LookingGlassBridge.h" />
     <ClInclude Include="portability\LookingGlassRenderer.h" />
     <ClInclude Include="portability\AnaglyphRenderer.h" />
+    <ClInclude Include="portability\OpenXRDevice.h" />
+    <ClInclude Include="portability\OpenXRRenderer.h" />
     <ClInclude Include="portability\VulkanPolygonRenderer.h" />
     <ClInclude Include="shared\Event.h" />
     <ClInclude Include="shared\EventDispatcher.h" />
     <ClInclude Include="shared\EventType.h" />
+    <ClInclude Include="shared\VrHeadPose.h" />
     <ClInclude Include="shared\IEvent.h" />
     <ClInclude Include="shared\ResourceType.h" />
     <ClInclude Include="utilities\BitmapIO.h" />
@@ -547,6 +550,7 @@
     <ClCompile Include="portability\LookingGlassBridge.cpp" />
     <ClCompile Include="portability\LookingGlassRenderer.cpp" />
     <ClCompile Include="portability\AnaglyphRenderer.cpp" />
+    <ClCompile Include="portability\OpenXRRenderer.cpp" />
     <ClCompile Include="portability\VulkanPolygonRenderer.cpp" />
     <ClCompile Include="shared\EventDispatcher.cpp" />
     <ClCompile Include="utilities\BitmapIO.cpp" />

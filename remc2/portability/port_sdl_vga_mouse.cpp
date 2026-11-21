@@ -17,6 +17,8 @@ extern DOS_Device* DOS_CON;
 #include "VulkanPolygonRenderer.h"
 #include "LookingGlassRenderer.h"
 #include "AnaglyphRenderer.h"
+#include "OpenXRRenderer.h"
+#include "../engine/Vr.h"
 
 SDL_Window* m_window = nullptr;
 SDL_Renderer* m_renderer = nullptr;
@@ -320,6 +322,12 @@ bool CreateRenderer(int width, int height)
 		if (lookingGlassDisplay)
 			lookingGlassRenderer->SetLookingGlassDevice(lookingGlassDevice);
 		m_vulkanRenderer = lookingGlassRenderer;
+	}
+	else if (openXREnabled)
+	{
+		// A VR headset: its head pose goes to the game's VR code (Vr.cpp), the eyes the game draws go to the headset
+		RegisterVrHeadsetEvents();
+		m_vulkanRenderer = new OpenXRRenderer(shaderFolder, CommandLineParams.DoVulkanValidation());
 	}
 	else
 	{
@@ -1394,6 +1402,7 @@ void FreeRenderer()
 {
 	delete m_vulkanRenderer;
 	m_vulkanRenderer = nullptr;
+	UnregisterVrHeadsetEvents();   // no headset any more: the camera looks straight ahead
 }
 
 int16_t VGA_get_shift_status() {

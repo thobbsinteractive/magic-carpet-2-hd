@@ -17,6 +17,7 @@
 		"vulkan",
 		"vulkan-memory-allocator",
 		"vk-bootstrap",
+		"openxr-loader",
 		{
 			"name": "shaderc",
 			"host": true,

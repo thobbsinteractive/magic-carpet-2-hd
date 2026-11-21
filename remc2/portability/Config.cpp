@@ -430,6 +430,16 @@ Config::Settings::Hardware Config::GetHardware(const json& graphics)
 			if (anaglyph.contains("ghostReduction"))
 				hardwareValues.m_Anaglyph.m_GhostReduction = ReadFloatValue(anaglyph, "ghostReduction");
 		}
+		if (hardware.contains("openXR"))
+		{
+			const auto& openXR = hardware["openXR"];
+			auto& values = hardwareValues.m_OpenXR;
+			values.m_Enabled = ReadBoolValue(openXR, "enabled");
+			if (openXR.contains("eyeWidth"))
+				values.m_EyeWidth = ReadIntValue(openXR, "eyeWidth");
+			if (openXR.contains("eyeHeight"))
+				values.m_EyeHeight = ReadIntValue(openXR, "eyeHeight");
+		}
 	}
 	return hardwareValues;
 }
@@ -635,6 +645,10 @@ void Config::SaveHardwareToDoc(Config::Settings::Hardware hardware)
 	SetString(anaglyph, "leftColour", hardware.m_Anaglyph.m_LeftColour);
 	SetString(anaglyph, "rightColour", hardware.m_Anaglyph.m_RightColour);
 	SetFloat(anaglyph, "ghostReduction", hardware.m_Anaglyph.m_GhostReduction);
+	auto& xr = GetOrCreate(h, "openXR");
+	SetBool(xr, "enabled", hardware.m_OpenXR.m_Enabled);
+	SetInt(xr, "eyeWidth", hardware.m_OpenXR.m_EyeWidth);
+	SetInt(xr, "eyeHeight", hardware.m_OpenXR.m_EyeHeight);
 }
 
 void Config::SaveInGameUiToDoc(Config::Settings::InGameUi inGameUi)

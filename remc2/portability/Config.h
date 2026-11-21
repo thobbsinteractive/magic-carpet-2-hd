@@ -119,12 +119,21 @@ public:
 			float m_GhostReduction = 0.1f;   // how much of the other eye each lens lets through, cancelled out (0 - 0.5; 0 = off)
 		};
 
+		// VR headset output through OpenXR: the head steers the camera, the eyes go to the headset
+		struct OpenXR
+		{
+			bool m_Enabled = false;
+			int m_EyeWidth = 1680;    // the game resolution (menus, UI and each eye) while a headset is found: a Meta Quest 3
+			int m_EyeHeight = 1760;   // eye; 0 = the headset eye's shape at the in-game resolution's height
+		};
+
 		struct Hardware
 		{
 			bool m_BilinearFiltering = false;
 			int m_AntiAliasing = 0;   // MSAA samples: 0 = off, 2, 4 or 8 (capped to what the GPU supports)
 			LookingGlass m_LookingGlass;
 			Anaglyph m_Anaglyph;
+			OpenXR m_OpenXR;
 		};
 
 		// Position of one element of the in-game UI on the screen (not used at the 320x200 / 640x480 default resolutions)
