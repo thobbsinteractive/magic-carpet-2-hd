@@ -2146,6 +2146,37 @@ void HandleArrowKeyPresses_1A8A0()//1fb8a0
 	}
 }
 
+int16_t m_JoystickYaw = 0;
+int16_t m_JoystickPitch = 0;
+
+void OnJoystickAxis(int16_t yaw, int16_t pitch)
+{
+	m_JoystickYaw = yaw;
+	m_JoystickPitch = pitch;
+}
+
+uint8_t* GetFlightJoystickState()
+{
+	static uint8_t flightJoystick[44] = {};
+	static bool initialized = false;
+	if (!initialized && EventDispatcher::I)
+	{
+		std::function<void(int16_t, int16_t)> joystickAxisCallBack = OnJoystickAxis;
+		EventDispatcher::I->RegisterEvent(new Event<int16_t, int16_t>(EventType::E_JOYSTICK_AXIS, joystickAxisCallBack));
+
+		InitJoystickState_8BB40(flightJoystick, 4); // 2 axes, 2 buttons
+		*(x_DWORD*)&flightJoystick[8] = 0;      // x min
+		*(x_DWORD*)&flightJoystick[12] = 65535; // x max
+		*(x_DWORD*)&flightJoystick[16] = 32768; // x centre
+		*(x_DWORD*)&flightJoystick[20] = 0;     // y min
+		*(x_DWORD*)&flightJoystick[24] = 65535; // y max
+		*(x_DWORD*)&flightJoystick[28] = 32768; // y centre
+		flightJoystick[36] = 1;                 // calibrated, reading
+		initialized = true;
+	}
+	return flightJoystick;
+}
+
 //----- (00017060) --------------------------------------------------------
 void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 {
@@ -2159,7 +2190,30 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 
 	if (!gameState_D41A4.speedIndex)
 	{
-		if (videoMode_180660 == 1 && DefaultResolutions())
+		uint8_t* joystick = GetFlightJoystickState();
+		ReadJoystick_8BBE0(joystick);
+		const int8_t joystickX = (int8_t)joystick[40];
+		const int8_t joystickY = (int8_t)joystick[41];
+
+		// the last used device steers, the mouse has priority
+		static bool joystickSteers = false;
+		static int16_t lastMouseX = x;
+		static int16_t lastMouseY = y;
+		const bool mouseMoved = (x != lastMouseX) || (y != lastMouseY);
+		lastMouseX = x;
+		lastMouseY = y;
+		if (mouseMoved)
+			joystickSteers = false;
+		else if (joystickX || joystickY)
+			joystickSteers = true;
+
+		if (joystickSteers)
+		{
+			// -127..127 from ReadJoystick_8BBE0, a released stick flies level
+			roll = joystickX;
+			pitch = -joystickY;
+		}
+		else if (videoMode_180660 == 1 && DefaultResolutions())
 		{
 			roll = ((x << 7) - 40960) / 320;
 			pitch = ((y << 7) - 25600) / -200;
@@ -2189,8 +2243,8 @@ void ComputeMousePlayerMovement_17060(int16_t x, int16_t y)//1f8060
 
 		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].roll = roll;
 		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].pitch = pitch;
-		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].nextEntity_0x6E3E_word6 = inputState_18058C.joyAxisX_180590;
-		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].entityIndex2_0x6E3E_word8 = inputState_18058C.joyAxisY_180594;
+		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].nextEntity_0x6E3E_word6 = inputState_18058C.headTrackerYaw_180590;
+		world_D41A0.playerInputs_0x6E3E[world_D41A0.LevelIndex_0xc].entityIndex2_0x6E3E_word8 = inputState_18058C.headTrackerPitch_180594;
 	}
 }
 
@@ -3231,8 +3285,8 @@ int ReadGameUserInputs_89D10()//26ad10
 			if (pressedKeys_180664[keys_EB39E[5]])//CTRL
 				inputState_18058C.MouseButtonState_18059C |= 0x10;
 		}
-		inputState_18058C.joyAxisY_180594 *= 4;
-		inputState_18058C.joyAxisX_180590 = (inputState_18058C.joyAxisX_180590 << 11) / 360;
+		inputState_18058C.headTrackerPitch_180594 *= 4;
+		inputState_18058C.headTrackerYaw_180590 = (inputState_18058C.headTrackerYaw_180590 << 11) / 360;
 		if (inputState_18058C.joystickMode_1805C2 == 8)
 			goto LABEL_53;
 		if (inputState_18058C.joystickMode_1805C2 == 12)
@@ -3270,14 +3324,14 @@ int ReadGameUserInputs_89D10()//26ad10
 			if (pressedKeys_180664[keys_EB39E[5]])//CTRL
 				inputState_18058C.MouseButtonState_18059C |= 0x10;
 		}
-		inputState_18058C.joyAxisX_180590 = -2048 * vrJoystick_17D6CC[0] / 0xFFFFu & 0x7FF;
+		inputState_18058C.headTrackerYaw_180590 = -2048 * vrJoystick_17D6CC[0] / 0xFFFFu & 0x7FF;
 		if (LastPressedKey_1806E4 == 46)
 			SetMouseMinMaxVert_759B0();
 		if (inputState_18058C.joystickMode_1805C2 == 9)
 			goto LABEL_53;
 		if (inputState_18058C.joystickMode_1805C2 == 13)
 			goto LABEL_217;
-		inputState_18058C.joyAxisY_180594 = 0;
+		inputState_18058C.headTrackerPitch_180594 = 0;
 		return v61;
 	case 4:
 	LABEL_53:
@@ -3287,9 +3341,9 @@ int ReadGameUserInputs_89D10()//26ad10
 	case 6:
 		memset(&v56, 0, 50);
 		GetJoystickButtons_8C140(*(x_WORD*)&externControl_E36C4[0], (uint8_t*)&v56);
-		inputState_18058C.joyAxisX_180590 = *(uint32_t*)&externControl_E36C4[4];
+		inputState_18058C.headTrackerYaw_180590 = *(uint32_t*)&externControl_E36C4[4];
 		v28 = *(int16_t*)&externControl_E36C4[62];
-		inputState_18058C.joyAxisY_180594 = *(uint32_t*)&externControl_E36C4[8];
+		inputState_18058C.headTrackerPitch_180594 = *(uint32_t*)&externControl_E36C4[8];
 		if (!v28)
 		{
 			inputState_18058C.mouse_1805B0.x = mouse_E3760.x;
@@ -4102,18 +4156,9 @@ signed int ReadJoystick_8BBE0(uint8_t* a1)//fix//26cbe0
 			v5 = 10000;
 			//_disable();
 			v1 = 1;
-			//__outx_BYTE(0x201u, v2);
-			do
-			{
-				// v6 = __inx_BYTE(0x201u);
-				if (!(v6 & 3))
-					break;
-				if (v6 & 1)
-					++v43;
-				if (v6 & 2)
-					++v42;
-				--v5;
-			} while (v5);
+			v43 = (int)m_JoystickYaw + 32768;
+			v42 = (int)m_JoystickPitch + 32768;
+			v6 = 0xF0; // buttons are active low in the high nibble: none pressed (they are sent as mouse buttons)
 			//_enable();
 			v44 = v6;
 			if (!v5)
@@ -4242,7 +4287,8 @@ LABEL_46:
 			v15 = v43 - v14;
 			if (v43 - v14 < 0)
 			{
-				v20 = (*(x_DWORD*)(a1 + 8) - v14) >> 3;
+				//v20 = (*(x_DWORD*)(a1 + 8) - v14) >> 3; // original 1/8 dead zone
+				v20 = 0;
 				v21 = v15 - v20;
 				v22 = *(x_DWORD*)(a1 + 8) - v14 - 2 * v20;
 				if (v21 <= 0)
@@ -4262,7 +4308,8 @@ LABEL_46:
 			}
 			else
 			{
-				v16 = (*(x_DWORD*)(a1 + 12) - v14) >> 3;
+				//v16 = (*(x_DWORD*)(a1 + 12) - v14) >> 3; // original 1/8 dead zone
+				v16 = 0;
 				v17 = v15 - v16;
 				v18 = *(x_DWORD*)(a1 + 12) - v14 - 2 * v16;
 				if (v17 >= 0)
@@ -4283,7 +4330,8 @@ LABEL_46:
 			v24 = v42 - *(x_DWORD*)(a1 + 28);
 			if (v24 < 0)
 			{
-				v30 = (*(x_DWORD*)(a1 + 20) - *(x_DWORD*)(a1 + 28)) >> 3;
+				//v30 = (*(x_DWORD*)(a1 + 20) - *(x_DWORD*)(a1 + 28)) >> 3; // original 1/8 dead zone
+				v30 = 0;
 				v31 = v24 - v30;
 				v32 = *(x_DWORD*)(a1 + 20) - *(x_DWORD*)(a1 + 28) - 2 * v30;
 				if (v31 <= 0)
@@ -4306,7 +4354,8 @@ LABEL_46:
 			else
 			{
 				v25 = *(x_DWORD*)(a1 + 28);
-				v26 = (*(x_DWORD*)(a1 + 24) - v25) >> 3;
+				//v26 = (*(x_DWORD*)(a1 + 24) - v25) >> 3; // original 1/8 dead zone
+				v26 = 0;
 				v27 = v24 - v26;
 				v28 = *(x_DWORD*)(a1 + 24) - v25 - 2 * v26;
 				if (v27 >= 0)
@@ -4641,6 +4690,11 @@ void MouseEvents(uint32_t buttons, int x, int y)
 		return;
 	UpdateMouseEventData_8CB3A(buttons, x, y);
 };
+
+void MouseButtonEvents(uint32_t buttons)
+{
+	MouseEvents(buttons, mouse_E3760.x, mouse_E3760.y);
+}
 
 int x_BYTE_E3767;
 int mouseButtonStates_180710;

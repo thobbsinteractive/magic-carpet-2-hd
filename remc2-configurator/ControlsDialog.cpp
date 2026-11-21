@@ -252,6 +252,10 @@ void ControlsDialog::CreateJoystickPage()
 	presetSizer->Add(m_xboxPresetButton, 0, wxEXPAND | wxALL, 5);
 	m_xboxPresetButton->Bind(wxEVT_BUTTON, &ControlsDialog::OnXBoxPreset, this);
 
+	m_thrustmasterPresetButton = new wxButton(m_joystickPage, wxID_ANY, "Thrustmaster T.16000M");
+	presetSizer->Add(m_thrustmasterPresetButton, 0, wxEXPAND | wxALL, 5);
+	m_thrustmasterPresetButton->Bind(wxEVT_BUTTON, &ControlsDialog::OnThrustmasterPreset, this);
+
 	leftCol->Add(presetSizer, 0, wxEXPAND | wxALL, 5);
 
 	// -- Controller --
@@ -545,8 +549,8 @@ void ControlsDialog::OnClassicLayout(wxCommandEvent&)
 void ControlsDialog::OnXBoxPreset(wxCommandEvent&)
 {
 	m_controllerId->SetValue(0);
-	m_buttonMiniMap->SetValue(3);
-	m_buttonSpell->SetValue(1);
+	m_buttonMiniMap->SetValue(4);
+	m_buttonSpell->SetValue(3);
 	m_buttonPauseMenu->SetValue(7);
 	m_buttonEsc->SetValue(8);
 	m_buttonFireL->SetValue(5);
@@ -575,40 +579,109 @@ void ControlsDialog::OnXBoxPreset(wxCommandEvent&)
 	m_axisFireL->SetValue(5);
 	m_axisYaw->SetValue(3);
 	m_axisYawInv->SetValue(false);
-	m_axisYawDeadZone->SetValue(3000);
+	m_axisYawDeadZone->SetValue(500);
 	m_axisPitch->SetValue(4);
 	m_axisPitchInv->SetValue(false);
-	m_axisPitchDeadZone->SetValue(3000);
+	m_axisPitchDeadZone->SetValue(1000);
 
 	m_axisYawSensitivity.clear();
 	m_axisYawSensitivity = {
-		{    0,  8000, 0.1 },
-		{ 8000, 15000, 0.2 },
-		{15000, 20000, 0.3 },
-		{20000, 25000, 0.35},
-		{25000, 26000, 0.4 },
-		{26000, 27000, 0.5 },
-		{27000, 28000, 0.6 },
-		{28000, 29000, 0.7 },
-		{29000, 30000, 0.8 },
-		{30000, 31000, 0.9 },
-		{31000, 32767, 1.0 }
+		{    0,  1000, 0.011},
+		{ 1000,  2000, 0.035},
+		{ 2000,  3000, 0.057},
+		{ 3000,  4000, 0.080},
+		{ 4000,  5000, 0.103},
+		{ 5000,  6000, 0.126},
+		{ 6000,  7000, 0.149},
+		{ 7000,  8000, 0.172},
+		{ 8000,  9000, 0.194},
+		{ 9000, 10000, 0.217},
+		{10000, 11000, 0.240},
+		{11000, 12000, 0.263},
+		{12000, 13000, 0.286},
+		{13000, 14000, 0.309},
+		{14000, 15000, 0.332},
+		{15000, 16000, 0.355},
+		{16000, 17000, 0.378},
+		{17000, 18000, 0.401},
+		{18000, 19000, 0.424},
+		{19000, 20000, 0.446},
+		{20000, 21000, 0.470},
+		{21000, 22000, 0.492},
+		{22000, 23000, 0.515},
+		{23000, 24000, 0.538},
+		{24000, 25000, 0.561},
+		{25000, 26000, 0.584},
+		{26000, 27000, 0.607},
+		{27000, 28000, 0.629},
+		{28000, 29000, 0.652},
+		{29000, 30000, 0.675},
+		{30000, 31000, 0.698},
+		{31000, 32000, 0.721},
+		{32000, 32768, 0.750}
 	};
 
 	m_axisPitchSensitivity.clear();
 	m_axisPitchSensitivity = {
-		{    0,  8000, 0.1 },
-		{ 8000, 15000, 0.2 },
-		{15000, 20000, 0.3 },
-		{20000, 25000, 0.35},
-		{25000, 26000, 0.4 },
-		{26000, 27000, 0.5 },
-		{27000, 28000, 0.6 },
-		{28000, 29000, 0.7 },
-		{29000, 30000, 0.8 },
-		{30000, 31000, 0.9 },
-		{31000, 32767, 1.0 }
+		{    0, 32768, 0.600}
 	};
+}
+
+// Thrustmaster T.16000M (SDL joystick, 1-based indices; 0 = disabled)
+// Axes:    1 = stick X, 2 = stick Y, 3 = twist (rudder), 4 = throttle slider
+// Buttons: 1 = trigger, 2 = thumb centre, 3 = thumb left, 4 = thumb right, 5-16 = base
+// Hat:     1 = 8-way hat on top of the stick
+void ControlsDialog::OnThrustmasterPreset(wxCommandEvent&)
+{
+	m_controllerId->SetValue(0);
+	m_buttonFireL->SetValue(1);
+	m_buttonFireR->SetValue(2);
+	m_buttonSpell->SetValue(7);
+	m_buttonMiniMap->SetValue(3);
+	m_buttonPauseMenu->SetValue(6);
+	m_buttonEsc->SetValue(5);
+	m_buttonMenuSelect->SetValue(1);
+
+	// No analog triggers and no rumble on this stick
+	m_triggerDeadZone->SetValue(3000);
+	m_axisFireL->SetValue(0);
+	m_axisFireR->SetValue(0);
+	m_hapticEnabled->SetValue(false);
+	m_hapticMaxGain->SetValue(0);
+
+	// Hat moves forward/back/strafe alongside the axes
+	m_hatNav->SetValue(0);
+	m_hatNavInv->SetValue(false);
+	m_hatMov->SetValue(1);
+	m_hatMovInv->SetValue(false);
+
+	// Throttle and twist are not used; the hat moves forward/back/strafe
+	m_axisLong->SetValue(0);
+	m_axisLongDeadZone->SetValue(12000);
+	m_axisLongNavDeadZone->SetValue(6000);
+	m_axisLongInv->SetValue(true);
+	m_axisTrans->SetValue(0);
+	m_axisTransInv->SetValue(false);
+	m_axisTransDeadZone->SetValue(12000);
+	m_axisTransNavDeadZone->SetValue(6000);
+
+	// Stick moves the menu pointer
+	m_axisNavNs->SetValue(2);
+	m_axisNavNsInv->SetValue(false);
+	m_axisNavEw->SetValue(1);
+	m_axisNavEwInv->SetValue(false);
+
+	// Stick X/Y steer the carpet
+	m_axisYaw->SetValue(1);
+	m_axisYawInv->SetValue(false);
+	m_axisYawDeadZone->SetValue(500);
+	m_axisPitch->SetValue(2);
+	m_axisPitchInv->SetValue(false);
+	m_axisPitchDeadZone->SetValue(1000);
+
+	// No zones: CurveCoords falls back to a factor of 1.0, i.e. a straight linear response
+	m_axisYawSensitivity.clear();
+	m_axisPitchSensitivity.clear();
 }
 
 void ControlsDialog::LoadKeyboardLayout(const wxString& layoutName)
