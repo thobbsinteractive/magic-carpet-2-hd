@@ -577,33 +577,33 @@ signed int ReadSerialTracker_8B790(type_unk_18058Cstr a1)//26c790
 	v3 = SerialSendS_9B260((x_DWORD**)((char*)a1.serialBuffer_1805CE));
 	v4 = (double)*(signed int*)((char*)&a1.serialBuffer_1805CE[10]) * flt_D1F40;
 	_CHP(v3);
-	a1.joyAxisX_180590 = (signed int)v4;
+	a1.headTrackerYaw_180590 = (signed int)v4;
 	v5 = (double)*(signed int*)((char*)&a1.serialBuffer_1805CE[6]) * flt_D1F40;
 	_CHP(v6);
-	a1.joyAxisY_180594 = (signed int)v5;
+	a1.headTrackerPitch_180594 = (signed int)v5;
 	v7 = (double)*(signed int*)((char*)&a1.serialBuffer_1805CE[14]) * flt_D1F40;
 	_CHP(v8);
-	a1.joyAxisZ_180598 = (signed int)v7;
+	a1.headTrackerRoll_180598 = (signed int)v7;
 	if (LastPressedKey_1806E4 == 0x2e)
 	{
-		inputState_18058C.joyCenterX_1805A4 = inputState_18058C.joyAxisX_180590;
-		inputState_18058C.joyCenterY_1805A8 = inputState_18058C.joyAxisY_180594;
-		inputState_18058C.joyCenterZ_1805AC = inputState_18058C.joyAxisZ_180598;
+		inputState_18058C.headTrackerCenterYaw_1805A4 = inputState_18058C.headTrackerYaw_180590;
+		inputState_18058C.headTrackerCenterPitch_1805A8 = inputState_18058C.headTrackerPitch_180594;
+		inputState_18058C.headTrackerCenterRoll_1805AC = inputState_18058C.headTrackerRoll_180598;
 	}
 	else
 	{
-		v9 = a1.joyAxisY_180594;
-		v10 = a1.joyAxisZ_180598;
-		v11 = a1.joyCenterY_1805A8;
-		a1.joyAxisX_180590 -= a1.joyCenterX_1805A4;
+		v9 = a1.headTrackerPitch_180594;
+		v10 = a1.headTrackerRoll_180598;
+		v11 = a1.headTrackerCenterPitch_1805A8;
+		a1.headTrackerYaw_180590 -= a1.headTrackerCenterYaw_1805A4;
 		v12 = v9 - v11;
-		v13 = a1.joyCenterZ_1805AC;
-		a1.joyAxisY_180594 = v12;
-		a1.joyAxisZ_180598 = v10 - v13;
+		v13 = a1.headTrackerCenterRoll_1805AC;
+		a1.headTrackerPitch_180594 = v12;
+		a1.headTrackerRoll_180598 = v10 - v13;
 	}
-	v14 = -a1.joyAxisY_180594;
-	a1.joyAxisX_180590 = -a1.joyAxisX_180590;
-	a1.joyAxisY_180594 = v14;
+	v14 = -a1.headTrackerPitch_180594;
+	a1.headTrackerYaw_180590 = -a1.headTrackerYaw_180590;
+	a1.headTrackerPitch_180594 = v14;
 	return v2;
 }
 // 9B4F6: using guessed type double /*__fastcall*/ _CHP(x_DWORD);
