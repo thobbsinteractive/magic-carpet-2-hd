@@ -68,6 +68,7 @@ void GameLoop_34610_349D0()
 
 void GameFrame_34530_348F0()
 {
+	SetFrameStart(std::chrono::system_clock::now());
 	Type_Mc1Settings_AE408_AE3F8* settings = mc1Settings_AE408_AE3F8;
 	if (!mc1State_AE400_AE3F0->screenSize_0x219B_8603)
 		UpdatePalette_34690_34A50();
