@@ -1,5 +1,6 @@
 #include "Mc1Minimap.h"
 
+#include <algorithm>
 #include <cstring>
 
 #include "Mc1Blocks.h"
@@ -8,7 +9,7 @@
 #include "Mc1Graphics.h"
 #include "Mc1Shared.h"
 
-int16_t minimapRows_12C1F0_12C1E0[0x1E0][2];
+int16_t minimapRows_12C1F0_12C1E0[GAME_RES_MAX_HEIGHT][2];
 
 // 99B58: two palette colours of each player (the dots and the names)
 const uint8_t playerColors_99B58_99B58[8][2] = {
@@ -49,6 +50,9 @@ void DrawMinimapTerrain_49300_49640(int32_t screenX, int32_t screenY, int32_t wo
 		height >>= 1;
 		scale *= 2;
 	}
+	// port: the rows of the minimap (a scaled one in the 640 UI) within the buffer
+	if (height > GAME_RES_MAX_HEIGHT)
+		height = GAME_RES_MAX_HEIGHT;
 	uint8_t* screen = *workScreen_12EFF4_12EFE4 + screenX + screenY * *screenWidth_12EFF0_12EFE0;
 	if (mode)
 	{
@@ -117,7 +121,7 @@ static bool MinimapPoint(const Type_Mc1Position& position, int32_t worldX, int32
 }
 
 void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t worldX, int32_t worldY, int32_t width, int32_t height,
-	int32_t yaw, int32_t scale, int32_t /*unused*/, int32_t /*mode*/)
+	int32_t yaw, int32_t scale, int32_t /*unused*/, int32_t /*mode*/, uint8_t uiScale)
 {
 	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
 	Type_Mc1Settings_AE408_AE3F8* settings = mc1Settings_AE408_AE3F8;
@@ -128,7 +132,10 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 		scale *= 2;
 		width >>= 1;
 		height >>= 1;
+		uiScale = 1; // port: the low res UI stays the original
 	}
+	if (height > GAME_RES_MAX_HEIGHT)
+		height = GAME_RES_MAX_HEIGHT;
 	uint8_t* screen = *workScreen_12EFF4_12EFE4 + screenX + screenY * *screenWidth_12EFF0_12EFE0;
 	const int32_t k = 0x10000 / scale;
 	const int32_t centreX = width / 2;
@@ -265,6 +272,14 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 		uint8_t* pixel = screen + x + y * *screenWidth_12EFF0_12EFE0;
 		if (sprite <= 1)
 		{
+			if (uiScale > 1)
+			{
+				// port: the dot as a square of the UI scale, within the minimap
+				const int32_t side = (std::min)(size * uiScale, (std::min)(width - x, height - y));
+				for (int32_t dy = 0; dy < side; dy++)
+					memset(pixel + dy * *screenWidth_12EFF0_12EFE0, color, side);
+				continue;
+			}
 			pixel[0] = color;
 			if (size > 1)
 			{
@@ -275,11 +290,12 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 			continue;
 		}
 		const bitmap_pos_struct_t& bitmap = spritesIndex[sprite];
+		// port: the sprites at the minimap's place on the screen (0, 0 in the original) and by the UI scale
 		auto draw = [&](int32_t drawX, int32_t drawY) {
 			if (*videoMode_12F02E_12F01E & 1)
 				DrawBitmap320_60CE0_611F0((int16_t)drawX, (int16_t)drawY, bitmap, 1);
 			else
-				DrawBitmap640_60D18_61228((int16_t)drawX, (int16_t)drawY, bitmap, 1);
+				DrawBitmap640_60D18_61228((int16_t)(screenX + drawX), (int16_t)(screenY + drawY), bitmap, uiScale);
 		};
 		if (*videoMode_12F02E_12F01E == 1)
 		{
@@ -292,9 +308,9 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 				draw(x * 2 - bitmap.width_4 / 2, y * 2 - bitmap.height_5 / 2);
 		}
 		else if (sprite < 0x3C)
-			draw(x, y - bitmap.height_5);
+			draw(x, y - bitmap.height_5 * uiScale);
 		else
-			draw(x - bitmap.width_4 / 2, y - bitmap.height_5);
+			draw(x - bitmap.width_4 * uiScale / 2, y - bitmap.height_5 * uiScale);
 	}
 
 	// the names of the other players at their wizards
@@ -314,7 +330,7 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 			if (*videoMode_12F02E_12F01E == 1)
 				DrawText_5A180_5A690(name, (int16_t)(x * 2 + 2), (int16_t)(y * 2), *PlayerColor(PlayerOf(other), 1));
 			else
-				DrawText_5A180_5A690(name, (int16_t)(x + 2), (int16_t)y, *PlayerColor(PlayerOf(other), 1));
+				DrawText_5A180_5A690(name, (int16_t)(screenX + x + 2 * uiScale), (int16_t)(screenY + y), *PlayerColor(PlayerOf(other), 1));
 		}
 	}
 

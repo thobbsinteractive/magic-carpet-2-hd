@@ -79,6 +79,7 @@ void DrawLine_2BD10(int16_t posX1, int16_t posY1, int16_t posX2, int16_t posY2, 
 // In-game UI layout (config: graphics.inGameUi). Used at resolutions other than 320x200 / 640x480;
 // at those the getters return the original hard coded positions
 bool UseInGameUiLayout();
+uint8_t GetInGameUiScale();  // gameUiScale with the in-game UI layout, else 1
 int GetUiElementPosX(const UiElementLayout& layout, int elementWidth);
 int GetTopBarWidth(uint8_t scale);
 void GetTopBarPosition(int16_t* posX, int16_t* posY);  // top left of the mini-map / top bar

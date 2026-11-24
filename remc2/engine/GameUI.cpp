@@ -379,6 +379,11 @@ int GetTopBarWidth(uint8_t scale)
 		+ 3 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL].width_4) * scale;
 }
 
+uint8_t GetInGameUiScale()
+{
+	return UseInGameUiLayout() ? (uint8_t)gameUiScale : 1;
+}
+
 void GetTopBarPosition(int16_t* posX, int16_t* posY)
 {
 	*posX = 0;
