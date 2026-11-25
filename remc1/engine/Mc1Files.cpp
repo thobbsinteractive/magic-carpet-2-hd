@@ -206,7 +206,11 @@ int32_t LoadFileEntry_634E0_639F0(Type_Mc1FileEntry* entry)
 		entry->size_0x24 = GetFileUnpackSize_63910_63E20(entry);
 		if ((int32_t)entry->size_0x24 <= 0)
 			return 0;
-		*entry->data_0x1C = (uint8_t*)allocate(entry->size_0x24);
+		// port: the blocks (the tile textures, 256 bytes a row) with 10000h zeroed bytes after them: the renderers read a
+		// texel at the tile + (v << 8 | u) up to FFFFh, past the end of the data for the last tiles when v leaves the tile
+		// (the large triangles at the high resolutions); DOS had more of its heap there, MC2 its memory pool
+		const uint32_t padding = entry->data_0x1C == &blockData_AE3F0_AE3E0 ? 0x10000 : 0;
+		*entry->data_0x1C = (uint8_t*)allocate(entry->size_0x24 + padding);
 		if (!*entry->data_0x1C)
 			return -1;
 		if (ReadPackedFile_3EEA0_3F1E0(path, *entry->data_0x1C) != (int32_t)entry->size_0x24)

@@ -169,7 +169,7 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 		const int32_t toX = ((cosK * dx - dy * sinK) >> 16) + centreX;
 		const int32_t toY = ((cosK * dy + dx * sinK) >> 16) + centreY;
 		const int32_t length = IntegerSqrt_410CE_4140E((toX - fromX) * (toX - fromX) + (toY - fromY) * (toY - fromY));
-		const uint16_t angle = Atan2_40F87_412C7((int16_t)(toX - fromX), (int16_t)(toY - fromY));
+		const uint16_t angle = Atan2_40F87_412C7((int16_t)(toX - fromX), (int16_t)(toY - fromY)) & 0x7FF;
 		for (int32_t r = ((state->players_0x340B_13323[state->currentPlayer_0x08_8].turn_0x12_18 & 3) + 4) * markScale; r <= length;
 			r += 4 * markScale)
 		{
