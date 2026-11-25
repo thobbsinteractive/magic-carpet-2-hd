@@ -56,6 +56,12 @@ int Mc1Main(int argc, char** argv)
 	}
 	EventDispatcher::I = new EventDispatcher();
 
+	// port: the buffers of remc2 (support_begin) as in MC2, the work screen (pdwScreenBuffer_351628) among them: big enough
+	// for every game resolution, with room either side for the sprites drawn past the edges. Released also when the
+	// regression tests leave by thread_exit_exception
+	support_begin();
+	struct SupportGuard { ~SupportGuard() { support_end(); } } supportGuard;
+
 	// -game select shows the Magic Carpet Plus selector, -game mc1 / mc1hw start the game directly
 	int16_t game = SELECTED_MAGIC_CARPET;
 	if (CommandLineParams.GetGameType() == GameType::SELECT)

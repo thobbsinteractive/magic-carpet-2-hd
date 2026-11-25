@@ -623,7 +623,7 @@ void ToggleResolution_34C80_35040()
 		FreeFileGroup_61610_61B20(screenFilesMcga_997BC_997BC);
 		*videoMode_12F02E_12F01E = 8;
 		LoadFileGroup_40440_40780(screenFilesHires_99898_99898);
-		blurSize = 640 * 480;
+		blurSize = gameResWidth * gameResHeight;
 	}
 	else
 	{
@@ -634,15 +634,18 @@ void ToggleResolution_34C80_35040()
 	}
 	*blurBuffer_AE404_AE3F4 = (uint8_t*)Malloc_42540_42880(blurSize);
 	RelocateTabs_59500_59A10(tabRelocations_99974_99974);
+
 	//!!!!! the original gives the work screen as the palette (the new one is zero: black until the next fade)
 	if (*videoMode_12F02E_12F01E & 1)
-		SetVideoMode320x200AndPalette_61B90_620A0((TColor*)*workScreen_12EFF4_12EFE4);
+		SetGameVideoMode320x200AndPalette(*workScreen_12EFF4_12EFE4);
 	else
-		SetVideoMode640x480AndPalette_61C30_62140((TColor*)*workScreen_12EFF4_12EFE4);
+		SetGameVideoMode640AndPalette(*workScreen_12EFF4_12EFE4);
+
 	if (*videoMode_12F02E_12F01E & 1)
 		ClearScreen320_411D7_41517(*workScreen_12EFF4_12EFE4, 320, 200, 0);
 	else
-		ClearScreen640_411FD_4153D(*workScreen_12EFF4_12EFE4, 640, 480, 0);
+		ClearScreen640_411FD_4153D(*workScreen_12EFF4_12EFE4, *screenWidth_12EFF0_12EFE0, *screenHeight_12EFF8_12EFE8, 0); // port: the screen size, the work screen is the buffer of remc2
+
 	InstallMouse_5C214_5C724();
 	SetCursor_5C05C_5C56C(pointersIndex[0]);
 	mc1Settings_AE408_AE3F8->flag_0x17_23 = 0;

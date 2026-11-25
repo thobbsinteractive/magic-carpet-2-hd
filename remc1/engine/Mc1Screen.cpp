@@ -15,6 +15,7 @@
 #include "../../remc2/engine/read_config.h"
 #include "../../remc2/portability/port_sdl_joystick.h"
 #include "../../remc2/portability/port_sdl_vga_mouse.h"
+#include "../../remc2/shared/EventDispatcher.h"
 
 uint8_t graphicsInitialized_93A84_93A84 = 0;
 uint8_t highResScreen_90708_90708 = 0; // 1 after 31600 / 31640 set the mode for screen size 1
@@ -89,12 +90,50 @@ void FreeCursorBuffers()
 	*cursorBackground2_12EF88_12EF78 = nullptr;
 }
 
+// port: the screen at the game resolution, for the window and the gamepad (MC2 ChangeGameResolution_46B40)
+static bool gameResolutionScreen = false;
+
+static void ResolutionChanged()
+{
+	if (EventDispatcher::I != nullptr)
+		EventDispatcher::I->DispatchEvent(EventType::E_RESOLUTION_CHANGE, screenWidth_18062C, screenHeight_180624);
+}
+
+void SetGameVideoMode320x200AndPalette(uint8_t* palette)
+{
+	SetVideoMode320x200AndPalette_61B90_620A0((TColor*)palette);
+	if (gameResolutionScreen)
+	{
+		gameResolutionScreen = false;
+		ResolutionChanged();
+	}
+}
+
+void SetGameVideoMode640AndPalette(uint8_t* palette)
+{
+	if (!IsDefaultResolution(gameResWidth, gameResHeight))
+	{
+		screenWidth_18062C = gameResWidth;
+		screenHeight_180624 = gameResHeight;
+		VgaSetVideoModeAltAndPalette_90E07((TColor*)palette);
+		gameResolutionScreen = true;
+		ResolutionChanged();
+		return;
+	}
+	SetVideoMode640x480AndPalette_61C30_62140((TColor*)palette);
+	if (gameResolutionScreen)
+	{
+		gameResolutionScreen = false;
+		ResolutionChanged();
+	}
+}
+
 void SetScreenModeAndPalette_315C0_31600()
 {
 	if (*videoMode_12F02E_12F01E & 1)
-		SetVideoMode320x200AndPalette_61B90_620A0((TColor*)palette_AE428_AE418);
+		SetGameVideoMode320x200AndPalette(palette_AE428_AE418);
 	else
-		SetVideoMode640x480AndPalette_61C30_62140((TColor*)palette_AE428_AE418);
+		SetGameVideoMode640AndPalette(palette_AE428_AE418);
 	highResScreen_90708_90708 = 0;
 }
 

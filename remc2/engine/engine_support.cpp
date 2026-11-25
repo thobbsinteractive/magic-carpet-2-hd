@@ -1157,6 +1157,11 @@ void End_thread(int backCode)
 		exit(backCode);
 }
 
+uint8_t* GetScreenBufferAllocation()
+{
+	return pre_pdwScreenBuffer_351628 ? &pre_pdwScreenBuffer_351628[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)] : nullptr;
+}
+
 void support_begin() {
 	readbuffer = (uint8_t*)malloc(1000000);//fix it max 64000
 	printbuffer = (char*)malloc(printBufferSize);
@@ -1210,6 +1215,9 @@ void support_end() {
 	if (printbuffer)free(printbuffer);//char* buffer; // [esp+0h] [ebp-2h]
 	if (printbuffer2)free(printbuffer2);//char v11; // [esp+40h] [ebp+3Eh]
 	if (pre_pdwScreenBuffer_351628)free(pre_pdwScreenBuffer_351628);
+	// GetScreenBufferAllocation tells MC1 whether the buffer is there
+	pre_pdwScreenBuffer_351628 = nullptr;
+	pdwScreenBuffer_351628 = nullptr;
 	//free(smalltitBuffer_E9C38);
 	/*for (int i = 0;i < 0x1c;i++)
 		free(off_D918C[i]);*/

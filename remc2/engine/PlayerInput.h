@@ -43,6 +43,14 @@ extern int x_DWORD_17FF38; // weak
 extern int x_DWORD_17FF40; // weak
 
 void ProcessKeyboardPresses_17190();
+char StopSoundAndMusic_5BF10();
+void FindNearestEntity_70940();
+void HandleOptionsMenuButtonClick_19A70();
+void SwitchHelpMode_18AA0();
+int SelectSpell_6D4F0(type_str_611* a1, int16_t mouseX);
+void ChangeGameResolution_46B40();
+int ClearVgaMemory_906B4();
+signed int InitScanlineOffsets_90668(int a1);
 void MouseAndKeysEvents_17A00(int16_t turn);
 void PauseUnpauseGame_18BB0();
 void HandleButtonClick_191B0(int16_t hiSetting, char loSetting);

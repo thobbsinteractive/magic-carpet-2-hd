@@ -10,6 +10,7 @@
 #include "../../remc2/utilities/DataFileIO.h"
 #include "../../remc2/utilities/DataFileRNC.h"
 #include "../../remc2/engine/DatTabIndexes.h"
+#include "../../remc2/engine/engine_support.h"
 
 std::string mc1DataPath;
 std::string mc1InstallPath;
@@ -162,8 +163,20 @@ void FreeFileGroup_61610_61B20(Type_Mc1FileEntry* group)
 		FreeFileEntry_634A0_639B0(entry);
 }
 
+// port: *WScreen (the work screen, pdwScreenBuffer_351628) is the screen buffer of remc2 (support_begin), big enough for
+// every resolution, not a block of 12C00h / 4B000h of the heap: it is neither allocated nor freed here
+static bool IsWorkScreen(const Type_Mc1FileEntry* entry)
+{
+	return entry->data_0x1C == workScreen_12EFF4_12EFE4 && GetScreenBufferAllocation();
+}
+
 void FreeFileEntry_634A0_639B0(Type_Mc1FileEntry* entry)
 {
+	if (IsWorkScreen(entry))
+	{
+		*entry->data_0x1C = GetScreenBufferAllocation();
+		return;
+	}
 	if (*entry->data_0x1C)
 	{
 		Free_426E0_42A20(*entry->data_0x1C);
@@ -176,7 +189,13 @@ int32_t LoadFileEntry_634E0_639F0(Type_Mc1FileEntry* entry)
 	void* (*allocate)(uint32_t) = (entry->flags_0x28 & 1) ? LowMalloc_425C0_42900 : Malloc_42540_42880;
 	FreeFileEntry_634A0_639B0(entry);
 	const char* path = EntryPath(entry);
-	if (path[0] == '*')
+	if (IsWorkScreen(entry))
+	{
+		// zeroed as the block of Malloc_42540_42880 in the original
+		*entry->data_0x1C = GetScreenBufferAllocation();
+		memset(*entry->data_0x1C, 0, entry->size_0x24);
+	}
+	else if (path[0] == '*')
 	{
 		*entry->data_0x1C = (uint8_t*)allocate(entry->size_0x24);
 		if (!*entry->data_0x1C)

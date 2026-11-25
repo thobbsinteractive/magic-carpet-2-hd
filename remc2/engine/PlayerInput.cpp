@@ -79,18 +79,6 @@ int x_DWORD_17FF38; // weak
 int x_DWORD_17FF40; // weak
 int16_t scanlineOffsets_1811E4[400]; // fix it -  weak
 
-
-char StopSoundAndMusic_5BF10();
-void FindNearestEntity_70940();
-void HandleOptionsMenuButtonClick_19A70();
-void SwitchHelpMode_18AA0();
-int SelectSpell_6D4F0(type_str_611* a1, int16_t mouseX);
-void ChangeGameResolution_46B40();
-int ClearVgaMemory_906B4();
-signed int InitScanlineOffsets_90668(int a1);
-void VgaSetVideoModeAltAndPalette_90E07(TColor* Palette);
-
-
 int debugcounter_47560 = 0;
 //----- (00017190) --------------------------------------------------------
 void ProcessKeyboardPresses_17190()//1f8190

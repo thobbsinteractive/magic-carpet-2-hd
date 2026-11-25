@@ -100,7 +100,7 @@ static void ClearScreen()
 	if (*videoMode_12F02E_12F01E & 1)
 		ClearScreen320_411D7_41517(*workScreen_12EFF4_12EFE4, 320, 0xC8, 0);
 	else
-		ClearScreen640_411FD_4153D(*workScreen_12EFF4_12EFE4, 640, 0x1E0, 0);
+		ClearScreen640_411FD_4153D(*workScreen_12EFF4_12EFE4, *screenWidth_12EFF0_12EFE0, *screenHeight_12EFF8_12EFE8, 0); // port: as MC2, the screen size
 }
 
 // 30D90 from the last record of the player (the camera)

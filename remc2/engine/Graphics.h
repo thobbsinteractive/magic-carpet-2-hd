@@ -53,6 +53,7 @@ int16_t VgaPalFadeInFadeOut_90B27(TColor* a1x, uint8_t shadow_levels, bool a3, i
 void ResetPaletteFade_90D27();
 void VgaSetVideoMode320x200AndPalette_90D6E(TColor* Palette);
 void VgaSetVideoMode640x480AndPalette_90E07(TColor* Palette);
+void VgaSetVideoModeAltAndPalette_90E07(TColor* Palette); // at the screen size set before (the game resolution), PlayerInput.cpp
 int SetVideoMode_9937E(__int16 a1);
 signed int SetVgaPaletteBank_9951B(__int16 a1);
 int TestVgaDriver_995B0();
