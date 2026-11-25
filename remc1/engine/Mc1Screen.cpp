@@ -7,6 +7,7 @@
 
 #include "Mc1Files.h"
 #include "Mc1Game.h"
+#include "Mc1Panel.h"
 #include "Mc1Render.h"
 #include "Mc1Sound.h"
 #include "../../remc2/engine/Basic.h"
@@ -321,9 +322,19 @@ void SetMapViewPort_309D0_30A10(int32_t size)
 	}
 	else
 	{
-		*viewPortOffset_B5CA0_B5C90 = *screenWidth_12EFF0_12EFE0 - size * 16;
-		width = (uint16_t)(size * 16);
-		height = (uint16_t)(size * 12);
+		// port: from the right edge of the map (17Eh wide, 2231E) to the right of the screen, from the top down to the
+		// spells table (Mc1SpellTablePosition) less the original gap of 2; the original size * 16 x size * 12 at 180h
+		// (256 x 192 at 640x480, as here). Rounded to 4 pixels as the renderers draw groups of 4: the left edge up (180h
+		// as the original), the width and height down, so the view port stays within the screen and clear of the map and
+		// the table
+		(void)size;
+		const uint8_t scale = Mc1UiScale();
+		int16_t tableX, tableY;
+		Mc1SpellTablePosition(&tableX, &tableY, scale);
+		const int32_t left = (0x17E + 3) & ~3;
+		*viewPortOffset_B5CA0_B5C90 = left;
+		width = (uint16_t)((std::max)((int32_t)*screenWidth_12EFF0_12EFE0 - left, 0) & ~3);
+		height = (uint16_t)((std::max)(tableY - 2 * scale, 0) & ~3);
 	}
 	viewPort.SetRenderViewPortSize_BCD45(*workScreen_12EFF4_12EFE4 + *viewPortOffset_B5CA0_B5C90, *screenWidth_12EFF0_12EFE0, width, height);
 }

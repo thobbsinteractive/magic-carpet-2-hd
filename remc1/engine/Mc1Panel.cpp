@@ -85,18 +85,27 @@ void Mc1SpellIconsPosition(int16_t* leftPosX, int16_t* rightPosX, int16_t* posY)
 		GetSpellIconsPosition(leftPosX, rightPosX, posY);
 }
 
+// the spells table: 4 x 6 cells of 40h and the height of the cell sprite (3)
+int32_t Mc1SpellTableWidth(uint8_t scale)
+{
+	return 4 * 0x40 * scale;
+}
+
+int32_t Mc1SpellTableHeight(uint8_t scale)
+{
+	return 6 * spritesIndex[3].height_5 * scale;
+}
+
 void Mc1SpellTablePosition(int16_t* posX, int16_t* posY, uint8_t scale)
 {
 	*posX = 0x180;
-	*posY = LowRes() ? 0xA2 : 0xC2;
-	if (!LaidOutUi())
+	*posY = 0xA2;
+	if (LowRes())
 		return;
-	// the spells screen is 640x480 laid out as the MC2 spell menu (640 wide, up from the bottom): the table at 180h,
-	// as far up from the bottom as in 640x480, scaled
-	int16_t menuX, bottomY;
-	GetSpellMenuPosition(&menuX, &bottomY);
-	*posX = (int16_t)(menuX + 0x180 * scale);
-	*posY = (int16_t)(std::max)(bottomY - (0x1E0 - 0xC2) * scale, 0);
+	// port: against the right edge of the screen and as far up from the bottom as the original C2h at 640x480 (scaled),
+	// under the view port of the map (SetMapViewPort_309D0_30A10): 180h, C2h at 640x480
+	*posX = (int16_t)(std::max)(UiScreenWidth() - Mc1SpellTableWidth(scale), 0);
+	*posY = (int16_t)(std::max)(UiScreenHeight() - (0x1E0 - 0xC2) * scale, 0);
 }
 
 // the edges the UI is clipped to: 640x400 (the low res UI's doubled coordinates) or 640x480 in the original, the

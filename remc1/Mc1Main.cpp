@@ -90,8 +90,7 @@ int Mc1Main(int argc, char** argv)
 		std::vector<std::string> gameArgs;
 		gameArgs.push_back(argc > 0 ? argv[0] : "remc2");
 		for (const std::string& param : CommandLineParams.GetUnknownParams())
-			gameArgs.push_back(param);
-		std::vector<char*> gameArgv;
+			gameArgs.push_back(param);		std::vector<char*> gameArgv;
 		for (std::string& arg : gameArgs)
 			gameArgv.push_back(&arg[0]);
 		gameArgv.push_back(nullptr);

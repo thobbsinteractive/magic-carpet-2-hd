@@ -24,8 +24,11 @@ int Mc1GetTopBarWidth(uint8_t scale);
 void Mc1GetTopBarPosition(int16_t* posX, int16_t* posY);
 // the two spell icons of the mouse buttons (1FEh and 23Eh, 2 in the original): GetSpellIconsPosition
 void Mc1SpellIconsPosition(int16_t* leftPosX, int16_t* rightPosX, int16_t* posY);
-// the top left of the spell table of the spells mode (180h, A2h / C2h in the original): the spells screen laid out as
-// the MC2 spell menu (GetSpellMenuPosition)
+// the size of the spell table of the spells mode (4 x 6 cells), scaled
+int32_t Mc1SpellTableWidth(uint8_t scale);
+int32_t Mc1SpellTableHeight(uint8_t scale);
+// the top left of the spell table of the spells mode (180h, A2h / C2h in the original): port, in the 640 UI against the
+// right edge of the screen, as far up from the bottom as the original (scaled)
 void Mc1SpellTablePosition(int16_t* posX, int16_t* posY, uint8_t scale);
 
 // the castle with its life, mana and size, the balloons, the wizard; the flashes of pd+187h..189h counted down.
