@@ -191,22 +191,23 @@ static void DrawGame(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& play
 		return;
 	}
 	SetFont_5A3C0_5A8D0(1);
-	const int32_t x = 0x84;
-	int32_t y = 0x32;
+	const int32_t x = topBarX + 0x84 * scale;
+	int32_t y = topBarY + 0x32 * scale;
+	const int32_t lineHeight = GetLineHeight_5A3B0_5A8C0() * ((*videoMode_12F02E_12F01E & 1) ? 1 : scale);
 	if (player.levelResult_0x02_2 & 2)
 	{
 		// the texts 60 and 61 (the level is completed)
 		DrawText_5A180_5A690((const char*)textPointers_AE238_AE228[60], x, (int16_t)y,
-			state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey());
-		y += GetLineHeight_5A3B0_5A8C0();
+			state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey(), scale);
+		y += lineHeight;
 		DrawText_5A180_5A690((const char*)textPointers_AE238_AE228[61], x, (int16_t)y,
-			state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey());
-		y += GetLineHeight_5A3B0_5A8C0();
+			state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey(), scale);
+		y += lineHeight;
 	}
 	if (settings->flags_0x00_0 & 0x10000)
 	{
-		DrawText_5A180_5A690("PAUSED!", x, (int16_t)y, state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey());
-		y += GetLineHeight_5A3B0_5A8C0();
+		DrawText_5A180_5A690("PAUSED!", x, (int16_t)y, state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey(), scale);
+		y += lineHeight;
 	}
 	// the messages from the players: 0 a message, 1 being typed, 2 a text, 3 a message to all (blinking first)
 	char buffer[0x100];
@@ -220,29 +221,29 @@ static void DrawGame(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& play
 			if (message.time_0x40_64 <= 0)
 				break;
 			snprintf(buffer, sizeof(buffer), "%s %s", name, message.text_0x00_0);
-			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red());
-			y += GetLineHeight_5A3B0_5A8C0();
+			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red(), scale);
+			y += lineHeight;
 			message.time_0x40_64--;
 			break;
 		case 1:
 			snprintf(buffer, sizeof(buffer), ">%s?", message.text_0x00_0);
-			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red());
-			y += GetLineHeight_5A3B0_5A8C0();
+			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red(), scale);
+			y += lineHeight;
 			break;
 		case 2:
 			if (message.time_0x40_64 <= 0)
 				break;
 			snprintf(buffer, sizeof(buffer), "%s", message.text_0x00_0);
-			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red());
-			y += GetLineHeight_5A3B0_5A8C0();
+			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red(), scale);
+			y += lineHeight;
 			message.time_0x40_64--;
 			break;
 		case 3:
 			if (message.time_0x40_64 <= 0)
 				break;
 			snprintf(buffer, sizeof(buffer), "[%s] %s", name, message.text_0x00_0);
-			DrawText_5A180_5A690(buffer, x, (int16_t)y, message.time_0x40_64 > 100 ? BlinkRed() : Red());
-			y += GetLineHeight_5A3B0_5A8C0();
+			DrawText_5A180_5A690(buffer, x, (int16_t)y, message.time_0x40_64 > 100 ? BlinkRed() : Red(), scale);
+			y += lineHeight;
 			message.time_0x40_64--;
 			break;
 		}
