@@ -88,8 +88,13 @@ void Mc1SpellIconsPosition(int16_t* leftPosX, int16_t* rightPosX, int16_t* posY)
 	*leftPosX = 0x1FE;
 	*rightPosX = 0x23E;
 	*posY = 2;
-	if (LaidOutUi())
-		GetSpellIconsPosition(leftPosX, rightPosX, posY);
+	if (!LaidOutUi())
+		return;
+	const int32_t scale = Mc1UiScale();
+	const int32_t posX = GetUiElementPosX(spellIconsLayout, 132 * scale);
+	*leftPosX = (int16_t)(posX + 2 * scale);
+	*rightPosX = (int16_t)(posX + 66 * scale);
+	*posY = (int16_t)(2 * scale + (std::clamp)(spellIconsLayout.marginY, 0, UiScreenHeight()));
 }
 
 // the spells table: 4 x 6 cells of 40h and the height of the cell sprite (3)
