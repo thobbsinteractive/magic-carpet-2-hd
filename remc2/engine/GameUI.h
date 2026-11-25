@@ -165,7 +165,13 @@ void DrawMapLowRes_63670(int16_t x, int16_t y, int16_t posX, int16_t posY, uint1
 void DrawMapHighRes_63C90(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, int a10);
 void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
 void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY, uint16_t width, uint16_t height, int16_t yaw, int16_t scaling, uint8_t scale);
+constexpr int MAP_SPANS_COUNT = 1664 * 8;
+extern int16_t mapSpans_F4960[MAP_SPANS_COUNT];
 uint8_t CalculateScaleOffset(uint8_t scale);
+void DrawMapBlock(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, int size, uint8_t colour, bool setAlpha);
+void DrawCastleRopeDot(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, uint8_t scale, uint8_t ropeColour);
+uint8_t MapMarkScale(uint8_t scale);  // the map markings (dots, rope, cross): the UI scale times the mapEntityScale, 1 at the default resolutions
+uint8_t MapIconScale(uint8_t scale);  // the map icons (flags, balloons): the UI scale times half the mapEntityScale rounded up
 void DrawMinimapPlayerDot(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, uint8_t colour, uint8_t scale, bool setAlpha);
 void DrawRectangle(uint8_t* ptrImageBufferStart, int posX, int poxY, int width, int height, uint8_t lineThickness, uint32_t pitch, uint8_t colour);
 

@@ -262,7 +262,7 @@ void(*ptrDrawBitmap_F01E8)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale)
 
 char cdChecked_D3F48 = 0; // weak
 char savedScreenSize_D47D8 = 0; // weak
-int16_t mapSpans_F4960[1664 * 8]; // Was 1664. Seems to be used in rendering the map 2x indexes ar a time. fix it -  weak
+int16_t mapSpans_F4960[MAP_SPANS_COUNT]; // Was 1664. Seems to be used in rendering the map 2x indexes ar a time. fix it -  weak
 char spellIndex_D94FF[29] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,0,3,0 }; // idb
 int16_t mousePosX_E375C = 320; // weak
 int16_t mousePosY_E375E = 200; // weak
@@ -1261,10 +1261,9 @@ static uint8_t MapEntityScale()
 }
 
 //Draws one dot of the castle rope as a scale x scale block centred on (posX, posY), blended into the map and clipped to the map shape
-static void DrawCastleRopeDot(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, uint8_t scale)
+void DrawCastleRopeDot(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, uint8_t scale, uint8_t ropeColour)
 {
 	const int offset = CalculateScaleOffset(scale);
-	const uint8_t ropeColour = (uint8_t)(*xadataclrd0dat.colorPalette_var28)[4095];
 	for (int y = posY - offset; y < posY - offset + scale; y++)
 	{
 		if (y < 0 || y >= height)
@@ -1282,8 +1281,8 @@ static void DrawCastleRopeDot(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX,
 	}
 }
 
-//Size multiplier for the map markings: the UI scale times the mapEntityScale
-static uint8_t MapMarkScale(uint8_t scale)
+//Size multiplier for the map markings: the UI scale times the mapEntityScale (also the MC1 maps, remc1 Mc1Minimap.cpp)
+uint8_t MapMarkScale(uint8_t scale)
 {
 	return (uint8_t)(scale * MapEntityScale());
 }
@@ -1295,14 +1294,14 @@ static uint8_t MapIconEntityScale()
 	return (uint8_t)((MapEntityScale() + 1) / 2);
 }
 
-//Size multiplier for the map icons: the UI scale times half the mapEntityScale
-static uint8_t MapIconScale(uint8_t scale)
+//Size multiplier for the map icons: the UI scale times half the mapEntityScale (also the MC1 maps)
+uint8_t MapIconScale(uint8_t scale)
 {
 	return (uint8_t)(scale * MapIconEntityScale());
 }
 
 //Fills a size x size block with its top left at (posX, posY), clipped to the width x height of the map
-static void DrawMapBlock(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, int size, uint8_t colour, bool setAlpha)
+void DrawMapBlock(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, int size, uint8_t colour, bool setAlpha)
 {
 	for (int y = posY; y < posY + size; y++)
 	{
@@ -1533,7 +1532,7 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 		//castle rope: a dotted line from the player to their castle, the dots and the gaps between them grow with the map marking scale
 		for (i = (world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].Turn_2BE0_11248 & 3) * markScale;
 			;
-			DrawCastleRopeDot(ptrMapBufferStart_v84, nullptr, v29, v85, width, height, markScale))
+			DrawCastleRopeDot(ptrMapBufferStart_v84, nullptr, v29, v85, width, height, markScale, (uint8_t)(*xadataclrd0dat.colorPalette_var28)[4095]))
 		{
 			i += 4 * markScale;
 			if (i > v75)
@@ -2187,7 +2186,7 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 			v94 = v24 + (-v30 * (signed int)Maths::sin_DB750[0x200 + v89] >> 16);
 			if (v31 < 0 || v31 >= width || v94 < 0 || v94 >= height || v31 < mapSpans_F4960[1 + 2 * v94] || v31 >= mapSpans_F4960[2 * v94])
 				break;
-			DrawCastleRopeDot(v99x, v100x, v31, v94, width, height, ropeScale);
+			DrawCastleRopeDot(v99x, v100x, v31, v94, width, height, ropeScale, (uint8_t)(*xadataclrd0dat.colorPalette_var28)[4095]);
 		}
 	}
 	for (iy = &world_D41A0.entities_0x6E8E[1]; iy <= &world_D41A0.entities_0x6E8E[0x3e8 - 1]; iy++)

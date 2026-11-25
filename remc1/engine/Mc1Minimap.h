@@ -7,8 +7,7 @@
 // MC1 minimap (20FB0): the terrain turned by the yaw of the camera (49300), then the entities over it (48710)
 
 // the rows of the minimap: [y][0] the end, [y][1] the start (a circle in the game, the whole width in the map mode);
-// port: 1E0h rows in the original, the screen height here for the minimap scaled by the UI scale
-extern int16_t minimapRows_12C1F0_12C1E0[GAME_RES_MAX_HEIGHT][2];
+extern int16_t (* const minimapRows_12C1F0_12C1E0)[2];
 // two palette colours of each player (the dots and the names)
 extern const uint8_t playerColors_99B58_99B58[8][2];
 
