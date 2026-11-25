@@ -19,6 +19,7 @@
 #include "Mc1Sound.h"
 #include "Mc1Terrain.h"
 #include "Mc1World.h"
+#include "../../remc2/engine/Basic.h"
 #include "../../remc2/engine/read_config.h"
 #include "../../remc2/engine/Scene.h"
 #include "../../remc2/shared/EventDispatcher.h"
@@ -989,15 +990,18 @@ void SetMousePosition_59750_59C60(int16_t x, int16_t y)
 		return;
 	if (x == -1)
 		return;
+	// the last pixel but one: 27Eh x 18Eh / 1DEh; port: of the screen at the other resolutions (the same at 640x480)
+	const bool low = (*videoMode_12F02E_12F01E & 1) != 0;
 	if (x > 0)
 	{
-		if (x > 0x27E)
-			x = 0x27E;
+		const int16_t maxX = low ? 0x27E : (int16_t)(UiScreenWidth() - 2);
+		if (x > maxX)
+			x = maxX;
 		mousePos_9AD90_9AD90->x = x;
 	}
 	if (y > 0)
 	{
-		const int16_t maxY = (*videoMode_12F02E_12F01E & 1) ? 0x18E : 0x1DE;
+		const int16_t maxY = low ? 0x18E : (int16_t)(UiScreenHeight() - 2);
 		if (y > maxY)
 			y = maxY;
 		mousePos_9AD90_9AD90->y = y;

@@ -331,7 +331,9 @@ void SetMapViewPort_309D0_30A10(int32_t size)
 		const uint8_t scale = Mc1UiScale();
 		int16_t tableX, tableY;
 		Mc1SpellTablePosition(&tableX, &tableY, scale);
-		const int32_t left = (0x17E + 3) & ~3;
+		int32_t mapWidth, mapHeight;
+		Mc1MapSize(&mapWidth, &mapHeight, scale);
+		const int32_t left = (std::min)((mapWidth + 3) & ~3, (int32_t)*screenWidth_12EFF0_12EFE0);
 		*viewPortOffset_B5CA0_B5C90 = left;
 		width = (uint16_t)((std::max)((int32_t)*screenWidth_12EFF0_12EFE0 - left, 0) & ~3);
 		height = (uint16_t)((std::max)(tableY - 2 * scale, 0) & ~3);

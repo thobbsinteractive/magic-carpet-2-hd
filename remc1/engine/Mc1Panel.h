@@ -30,6 +30,7 @@ int32_t Mc1SpellTableHeight(uint8_t scale);
 // the top left of the spell table of the spells mode (180h, A2h / C2h in the original): port, in the 640 UI against the
 // right edge of the screen, as far up from the bottom as the original (scaled)
 void Mc1SpellTablePosition(int16_t* posX, int16_t* posY, uint8_t scale);
+void Mc1MapSize(int32_t* width, int32_t* height, uint8_t scale);
 
 // the castle with its life, mana and size, the balloons, the wizard; the flashes of pd+187h..189h counted down.
 // posX, posY: the top left of the panel (the minimap's frame is at 2, 2 of it)

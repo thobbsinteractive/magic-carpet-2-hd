@@ -53,7 +53,14 @@ static bool LaidOutUi()
 
 uint8_t Mc1UiScale()
 {
-	return LowRes() ? 1 : GetInGameUiScale();
+	if (LowRes())
+		return 1;
+	// port: the MC2 scale is limited by the width only (640 * scale, read_config.cpp); the MC1 screens keep the 640x480
+	// layout up from the bottom (the spells table, the map's view port), so 480 * scale fits the height too
+	uint8_t scale = GetInGameUiScale();
+	while (scale > 1 && 0x1E0 * scale > UiScreenHeight())
+		scale--;
+	return scale;
 }
 
 int Mc1GetTopBarWidth(uint8_t scale)
@@ -106,6 +113,16 @@ void Mc1SpellTablePosition(int16_t* posX, int16_t* posY, uint8_t scale)
 	// under the view port of the map (SetMapViewPort_309D0_30A10): 180h, C2h at 640x480
 	*posX = (int16_t)(std::max)(UiScreenWidth() - Mc1SpellTableWidth(scale), 0);
 	*posY = (int16_t)(std::max)(UiScreenHeight() - (0x1E0 - 0xC2) * scale, 0);
+}
+
+void Mc1MapSize(int32_t* width, int32_t* height, uint8_t scale)
+{
+	// port: as the MC2 map screen (GameUI.cpp, the minimap at the left of the view port), 17Eh x 19Eh scaled, short of
+	// the spells table (2 pixels as the original 17Eh and 180h) and within the screen
+	int16_t tableX, tableY;
+	Mc1SpellTablePosition(&tableX, &tableY, scale);
+	*width = (std::max)((std::min)(0x17E * scale, tableX - 2), 0);
+	*height = (std::min)(0x19E * scale, UiScreenHeight());
 }
 
 // the edges the UI is clipped to: 640x400 (the low res UI's doubled coordinates) or 640x480 in the original, the
@@ -527,6 +544,7 @@ void DrawPlayersTable_22880_22880()
 	// the table of the active players in the middle of the map: a row a player with its name and mana (sprite 85), a
 	// column of the kills (pd+1Eh) for each of the 8 players (sprite 86); the width counts only the active players
 	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
+	const uint8_t scale = Mc1UiScale();
 	SetFont_5A3C0_5A8D0(1);
 	int32_t count = 0;
 	for (int32_t i = 0; i < state->playerCount_0x0A_10; i++)
@@ -534,8 +552,12 @@ void DrawPlayersTable_22880_22880()
 			count++;
 	const bitmap_pos_struct_t& head = spritesIndex[85];
 	const bitmap_pos_struct_t& cell = spritesIndex[86];
-	const int32_t x0 = (0x280 - (cell.width_4 * count + head.width_4)) / 2;
-	int32_t y = ((*videoMode_12F02E_12F01E == 1 ? 0x190 : 0x1E0) - head.height_5 * count) / 2;
+	const int32_t headWidth = head.width_4 * scale;
+	const int32_t headHeight = head.height_5 * scale;
+	const int32_t cellWidth = cell.width_4 * scale;
+	const int32_t cellHeight = cell.height_5 * scale;
+	const int32_t x0 = (UiWidth() - (cellWidth * count + headWidth)) / 2;
+	int32_t y = (UiHeight() - headHeight * count) / 2;
 	char text[0x100];
 	for (int32_t row = 0; row < state->playerCount_0x0A_10; row++)
 	{
@@ -544,27 +566,27 @@ void DrawPlayersTable_22880_22880()
 			continue;
 		Type_Mc1Entity* wizard = &Entities()[player.entityIndex_0x0A_10];
 		int32_t x = x0;
-		DrawSprite(x, y, head);
-		FillRect(x + 4, y + 4, head.width_4 - 8, head.height_5 - 8, playerColors_99B58_99B58[row][0]);
-		DrawText_5A180_5A690(player.name_0x40A_1034, x + 8, (int16_t)(y + 6), playerColors_99B58_99B58[row][1]);
+		DrawSprite(x, y, head, scale);
+		FillRect(x + 4 * scale, y + 4 * scale, headWidth - 8 * scale, headHeight - 8 * scale, playerColors_99B58_99B58[row][0]);
+		DrawText_5A180_5A690(player.name_0x40A_1034, x + 8 * scale, (int16_t)(y + 6 * scale), playerColors_99B58_99B58[row][1], scale);
 		sprintf(text, "%d", wizard->dword_0x88_136);
-		DrawText_5A180_5A690(text, x + 8, (int16_t)(y + 0x14), playerColors_99B58_99B58[row][1]);
-		x += head.width_4;
-		for (int32_t column = 0; column < 8; column++, x += cell.width_4)
+		DrawText_5A180_5A690(text, x + 8 * scale, (int16_t)(y + 0x14 * scale), playerColors_99B58_99B58[row][1], scale);
+		x += headWidth;
+		for (int32_t column = 0; column < 8; column++, x += cellWidth)
 		{
 			if (column != row && state->players_0x340B_13323[column].active_0x06_6 == 1)
 			{
-				DrawSprite(x, y, cell);
-				FillRect(x + 4, y + 4, cell.width_4 - 8, cell.height_5 - 8, playerColors_99B58_99B58[column][0]);
+				DrawSprite(x, y, cell, scale);
+				FillRect(x + 4 * scale, y + 4 * scale, cellWidth - 8 * scale, cellHeight - 8 * scale, playerColors_99B58_99B58[column][0]);
 				sprintf(text, "%03d", ReadS16(wizard->playerData_0xA0_160 + 0x1E + column * 2));
-				DrawText_5A180_5A690(text, x + 8, (int16_t)(y + 0x0A), playerColors_99B58_99B58[column][1]);
+				DrawText_5A180_5A690(text, x + 8 * scale, (int16_t)(y + 0x0A * scale), playerColors_99B58_99B58[column][1], scale);
 			}
 			else if (column == row)
 			{
-				DrawSprite(x, y, cell);
-				FillRect(x + 4, y + 4, cell.width_4 - 8, cell.height_5 - 8, colorLookup_AD168_AD158[0]);
+				DrawSprite(x, y, cell, scale);
+				FillRect(x + 4 * scale, y + 4 * scale, cellWidth - 8 * scale, cellHeight - 8 * scale, colorLookup_AD168_AD158[0]);
 			}
 		}
-		y += head.height_5;
+		y += headHeight;
 	}
 }

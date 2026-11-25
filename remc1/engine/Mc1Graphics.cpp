@@ -1,5 +1,7 @@
 #include "Mc1Graphics.h"
 
+#include <algorithm>
+
 #include "Mc1Files.h"
 #include "Mc1Game.h"
 #include "Mc1Shared.h"
@@ -48,30 +50,34 @@ uint16_t GetLineHeight_5A3B0_5A8C0()
 	return currentFont_AE44C_AE43C[33].height_5;
 }
 
-int32_t DrawText_5A180_5A690(const char* text, int32_t posX, int32_t posY, uint8_t color)
+int32_t DrawText_5A180_5A690(const char* text, int32_t posX, int32_t posY, uint8_t color, uint8_t scale)
 {
 	const uint8_t* c = (const uint8_t*)text;
 	int32_t x = posX;
+	const bool low = (*videoMode_12F02E_12F01E & 1) != 0;
+	const int32_t right = low ? 0x280 : (std::max)(0x280, (int32_t)*screenWidth_12EFF0_12EFE0);
+	if (low)
+		scale = 1;
 	*drawFlags_9ADFC_9ADFC = 0x40;
 	if (*c)
 	{
-		while ((int16_t)x < 0x280)
+		while ((int16_t)x < right)
 		{
 			switch (*c)
 			{
 			case 0x0A:
-				posY += GetLineHeight_5A3B0_5A8C0();
+				posY += GetLineHeight_5A3B0_5A8C0() * scale;
 				x = posX;
 				break;
 			case 0x0D:
 				break;
 			case 0x09:
 			case 0x20:
-				x += GetSpaceWidth_5A3A0_5A8B0();
+				x += GetSpaceWidth_5A3A0_5A8B0() * scale;
 				break;
 			default:
-				DrawGlyph_58768_58C78((int16_t)x, (int16_t)posY, currentFont_AE44C_AE43C[*c + 1], color, 1);
-				x += currentFont_AE44C_AE43C[*c + 1].width_4;
+				DrawGlyph_58768_58C78((int16_t)x, (int16_t)posY, currentFont_AE44C_AE43C[*c + 1], color, scale);
+				x += currentFont_AE44C_AE43C[*c + 1].width_4 * scale;
 				break;
 			}
 			if (!*++c)

@@ -293,8 +293,15 @@ static void DrawMap(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& playe
 	}
 	else
 	{
-		DrawMinimapTerrain_49300_49640(0, 0, camera.x_0x00_0, camera.y_0x02_2, 0x17E, 0x19E, camera.yaw_0x06_6, 0xAA, width, 1);
-		DrawMinimapEntities_48710_48A50(0, 0, camera.x_0x00_0, camera.y_0x02_2, 0x17E, 0x19E, camera.yaw_0x06_6, 0xAA, width, 1);
+		const uint8_t scale = Mc1UiScale();
+		int32_t mapWidth, mapHeight;
+		Mc1MapSize(&mapWidth, &mapHeight, scale);
+		DrawMinimapTerrain_49300_49640(0, 0, camera.x_0x00_0, camera.y_0x02_2, mapWidth, mapHeight, camera.yaw_0x06_6, 0xAA / scale, width, 1);
+		DrawMinimapEntities_48710_48A50(0, 0, camera.x_0x00_0, camera.y_0x02_2, mapWidth, mapHeight, camera.yaw_0x06_6, 0xAA / scale, width, 1,
+			scale);
+		if (mousePos_9AD90_9AD90->y >= mapHeight - (0x19E - 0x17E) * scale)
+			DrawPlayersTable_22880_22880();
+		return;
 	}
 	if (mousePos_9AD90_9AD90->y >= 0x17E)
 		DrawPlayersTable_22880_22880();
