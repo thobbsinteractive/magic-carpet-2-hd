@@ -15,6 +15,9 @@
 #include "Mc1Sound.h"
 #include "Mc1TextureMaps.h"
 #include "../../remc2/engine/Vr.h"
+#include "../../remc2/engine/read_config.h"
+#include "../../remc2/portability/port_sdl_vga_mouse.h"
+#include "../../remc2/shared/EventDispatcher.h"
 
 // 9AD0C: the character of a scan code (UK keyboard); 70h-73h are a pointer (its value in DOSBox), 7Ch-7Fh the
 // variable 9AD88 (0 or 1), no letter or digit there
@@ -236,12 +239,52 @@ void SetPlayerCommand_188A0_188A0(uint16_t command, uint8_t param)
 	}
 }
 
+// port: the SDL stick in flight, sent by port_sdl_joystick as E_JOYSTICK_AXIS (-32767..32767) in place of mouse motion
+static int16_t joystickYaw = 0;
+static int16_t joystickPitch = 0;
+
+static void OnJoystickAxis(int16_t yaw, int16_t pitch)
+{
+	joystickYaw = yaw;
+	joystickPitch = pitch;
+}
+
+// port: the last used device steers, the mouse has priority (as MC2 ComputeMousePlayerMovement_17060)
+static bool JoystickSteers()
+{
+	static bool registered = false;
+	if (!registered && EventDispatcher::I)
+	{
+		std::function<void(int16_t, int16_t)> callBack = OnJoystickAxis;
+		EventDispatcher::I->RegisterEvent(new Event<int16_t, int16_t>(EventType::E_JOYSTICK_AXIS, callBack));
+		registered = true;
+	}
+
+	static bool joystickSteers = false;
+	static int16_t lastMouseX = mousePos_9AD90_9AD90->x;
+	static int16_t lastMouseY = mousePos_9AD90_9AD90->y;
+	const bool mouseMoved = mousePos_9AD90_9AD90->x != lastMouseX || mousePos_9AD90_9AD90->y != lastMouseY;
+	lastMouseX = mousePos_9AD90_9AD90->x;
+	lastMouseY = mousePos_9AD90_9AD90->y;
+	if (sdlInputLocked || mouseMoved)
+		joystickSteers = false;
+	else if (joystickYaw || joystickPitch)
+		joystickSteers = true;
+	return joystickSteers;
+}
+
 void MouseToMove_169E0_169E0()
 {
 	if (mc1Settings_AE408_AE3F8->speedIndex_0x96_150)
 		return;
 	int32_t moveX, moveY;
-	if (*videoMode_12F02E_12F01E == 1)
+	if (JoystickSteers())
+	{
+		// the stick as the offset of the mouse from the centre, a released stick flies level
+		moveX = joystickYaw * 0x7F / 0x7FFF;
+		moveY = -joystickPitch * 0x7F / 0x7FFF;
+	}
+	else if (*videoMode_12F02E_12F01E == 1)
 	{
 		moveX = (mousePos_9AD90_9AD90->x * 0x80 - 0xA000) / 0x140;
 		moveY = -(mousePos_9AD90_9AD90->y * 0x80 - 0x6400) / 0xC8;
@@ -259,6 +302,13 @@ void MouseToMove_169E0_169E0()
 		moveY = -0x7F;
 	if (moveY > 0x7F)
 		moveY = 0x7F;
+	if (!sdlInputLocked)
+	{
+		if (!invertYAxis)
+			moveY = -moveY;
+		if (invertXAxis)
+			moveX = -moveX;
+	}
 	CurrentInput().moveX_0x03_3 = (int8_t)moveX;
 	CurrentInput().moveY_0x04_4 = (int8_t)moveY;
 }
