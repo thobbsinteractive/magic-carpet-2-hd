@@ -14,4 +14,7 @@ struct VrHeadPose
 	// the right). The runtime's fields of view are asymmetric (wider to the temple), so straight ahead is nearer the
 	// nose: the left eye's is +, the right eye's -. The image must be drawn so, or the eyes do not meet
 	float eyeCentreX[2] = { 0.0f, 0.0f };
+	// Each eye's field of view from the runtime, as tangents: tan(angleLeft), tan(angleRight), tan(angleUp),
+	// tan(angleDown) (left and down -). All 0: not known (the game keeps its own field of view)
+	float eyeFovTan[2][4] = {};
 };

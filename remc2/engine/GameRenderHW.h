@@ -44,6 +44,8 @@ private:
 	bool m_primaryView = true;
 	// The camera's sideways step of the view being drawn (world units); with viewConvergence it shears the projection
 	int m_viewOffset = 0;
+	// The headset's eye being drawn (0 left, 1 right; -1 none): drawn at that eye's field of view (GetVrEyeFov)
+	int m_vrEye = -1;
 
 	struct TileStepQuadrant {
 		uint8_t startX;      // [0] starting X map coordinate offset

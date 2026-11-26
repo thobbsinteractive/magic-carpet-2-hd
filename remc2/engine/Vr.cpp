@@ -118,6 +118,7 @@ __int16 vrJoystick_17D6CC[3]; // weak
 // [0] yaw clockwise as a compass heading, [1] pitch + = up, [2] roll), from E_VR_HEAD_POSE
 static bool vrHeadsetActive = false;
 static float vrEyeCentreX[2] = { 0.0f, 0.0f };   // VrHeadPose::eyeCentreX
+static float vrEyeFovTan[2][4] = {};              // VrHeadPose::eyeFovTan
 static std::function<void(VrHeadPose)> vrHeadPoseCallBack;
 static IEvent* vrHeadPoseEvent = nullptr;
 
@@ -132,6 +133,7 @@ static void SetVrHeadPose(VrHeadPose pose)
 	vrHeadsetActive = pose.active;
 	vrEyeCentreX[0] = pose.eyeCentreX[0];
 	vrEyeCentreX[1] = pose.eyeCentreX[1];
+	memcpy(vrEyeFovTan, pose.eyeFovTan, sizeof(vrEyeFovTan));
 	if (!pose.active)
 	{
 		memset(vrJoystick_17D6CC, 0, sizeof(vrJoystick_17D6CC));
@@ -165,6 +167,8 @@ bool IsVrHeadsetActive()
 	return vrHeadsetActive;
 }
 
+static float VrFovSpanX();
+
 void GetVrHeadsetAxes(int32_t& headTrackerYaw, int32_t& headTrackerPitch)
 {
 	// Yaw: 0 - 2047. The original's VR tracker modes (2, 9, 13) negate the tracker's heading here, but with an OpenXR
@@ -172,16 +176,46 @@ void GetVrHeadsetAxes(int32_t& headTrackerYaw, int32_t& headTrackerPitch)
 	headTrackerYaw = 2048 * vrJoystick_17D6CC[0] / 0xFFFF & 0x7FF;
 
 	// Pitch: the camera's pitch is a horizon shift (pitch * view port width / 256 pixels), so the head's angle becomes
-	// that shift for a 90 degree wide view: looking up moves the horizon down (the camera's pitch is + looking down).
+	// that shift at the eyes' projection (GameRenderHW: width / the field of view's tangent span pixels a tangent; 90
+	// degrees, span 2, while the headset's is not known): looking up moves the horizon down (+ is looking down).
 	// Checked on a real headset (phone through ALVR); the Meta XR Simulator's mouse look makes it seem the other way
 	constexpr float kTrackerUnitsPerRadian = 65536.0f / (2.0f * 3.14159265358979f);
 	const float pitch = (std::clamp)((float)vrJoystick_17D6CC[1] / kTrackerUnitsPerRadian, -1.3f, 1.3f);
-	headTrackerPitch = (int32_t)std::lround(-128.0f * std::tan(pitch));
+	headTrackerPitch = (int32_t)std::lround(-256.0f / VrFovSpanX() * std::tan(pitch));
 }
 
 float GetVrEyeCentreX(int eye)
 {
 	return vrEyeCentreX[eye & 1];
+}
+
+bool GetVrEyeFov(int eye, float& tanLeft, float& tanRight, float& tanUp, float& tanDown)
+{
+	const float* fov = vrEyeFovTan[eye & 1];
+	if (!vrHeadsetActive || fov[1] - fov[0] <= 0.0f || fov[2] - fov[3] <= 0.0f)
+		return false;
+	tanLeft = fov[0];
+	tanRight = fov[1];
+	tanUp = fov[2];
+	tanDown = fov[3];
+	return true;
+}
+
+// The headset's horizontal field of view (tan right - tan left, the eyes' average); 2 (90 degrees) if not known
+static float VrFovSpanX()
+{
+	float span = 0.0f;
+	int eyes = 0;
+	for (int eye = 0; eye < 2; eye++)
+	{
+		float tanLeft, tanRight, tanUp, tanDown;
+		if (GetVrEyeFov(eye, tanLeft, tanRight, tanUp, tanDown))
+		{
+			span += tanRight - tanLeft;
+			eyes++;
+		}
+	}
+	return eyes ? span / eyes : 2.0f;
 }
 
 int16_t GetVrHeadsetRoll()

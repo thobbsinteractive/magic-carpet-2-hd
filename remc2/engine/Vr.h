@@ -56,4 +56,6 @@ bool IsVrHeadsetActive();            // a headset is tracking: GameRenderHW draw
 void GetVrHeadsetAxes(int32_t& headTrackerYaw, int32_t& headTrackerPitch);
 // Where straight ahead is in the eye's image (0 left, 1 right), from its centre, a fraction of its width (+ right)
 float GetVrEyeCentreX(int eye);
+// The eye's field of view from the runtime as tangents (left and down -); false while it is not known
+bool GetVrEyeFov(int eye, float& tanLeft, float& tanRight, float& tanUp, float& tanDown);
 int16_t GetVrHeadsetRoll();         // the head's roll (0 - 2047) for the camera: GameRenderHW adds it to the eyes' roll

@@ -713,8 +713,16 @@ void OpenXRRenderer::SendHeadPose(bool active, const XrPosef* pose)
 			{
 				const float tanLeft = std::tan(m_views[eye].fov.angleLeft);
 				const float tanRight = std::tan(m_views[eye].fov.angleRight);
-				if (tanRight - tanLeft > 0.0f)
+				const float tanUp = std::tan(m_views[eye].fov.angleUp);
+				const float tanDown = std::tan(m_views[eye].fov.angleDown);
+				if (tanRight - tanLeft > 0.0f && tanUp - tanDown > 0.0f)
+				{
 					headPose.eyeCentreX[eye] = -tanLeft / (tanRight - tanLeft) - 0.5f;
+					headPose.eyeFovTan[eye][0] = tanLeft;
+					headPose.eyeFovTan[eye][1] = tanRight;
+					headPose.eyeFovTan[eye][2] = tanUp;
+					headPose.eyeFovTan[eye][3] = tanDown;
+				}
 			}
 		}
 	}

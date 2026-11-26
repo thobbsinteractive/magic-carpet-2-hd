@@ -222,9 +222,11 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 			// original's 5 of 312 pixels outwards: that pulled the eyes apart (openXR eyeCentreOffset: + towards the nose)
 			const float centre = GetVrEyeCentreX(eye) - side * openXREyeCentreOffset;
 			viewShiftX_D4324 = (int)std::lround(viewWidth * centre);
+			m_vrEye = eye;   // at this eye's field of view
 			DrawTerrainAndParticles_3C080(vPosX + (offset * rightX >> 16), vPosY + (offset * rightY >> 16), vYaw, posZ, pitch,
 				eyeRoll, fov, &m_frameViews.lists[openXRSwapEyes ? 1 - eye : eye]);
 		}
+		m_vrEye = -1;
 		viewShiftX_D4324 = 0;
 	}
 	else if (anaglyphMode)
@@ -442,6 +444,12 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 			(uint16_t)viewPort.Width_DE564 * (uint16_t)viewPort.Width_DE564
 			+ (uint16_t)viewPort.Height_DE568 * (uint16_t)viewPort.Height_DE568)
 		* fov >> 11;
+	float eyeTanLeft, eyeTanRight, eyeTanUp, eyeTanDown;
+	if (m_vrEye >= 0 && GetVrEyeFov(m_vrEye, eyeTanLeft, eyeTanRight, eyeTanUp, eyeTanDown))
+	{
+		spriteRender_F2C20.projectionScale_0x18 = (int)std::lround((uint16_t)viewPort.Width_DE564 / (eyeTanRight - eyeTanLeft));
+		spriteRender_F2C20.centerY_0x10 = (int)std::lround((uint16_t)viewPort.Height_DE568 * eyeTanUp / (eyeTanUp - eyeTanDown));
+	}
 	const TileStepQuadrant& steps = m_tileRenderStepTable_D4328x[quadrant];
 
 	int a1 = 0;
