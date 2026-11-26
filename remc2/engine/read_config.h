@@ -95,6 +95,9 @@ extern uint8_t anaglyphRightColour[3];
 extern float anaglyphGhostReduction;   // 0 - 0.5: how much of the other eye each lens lets through, cancelled out
 bool ParseHexColour(const std::string& text, uint8_t rgb[3]);
 extern bool openXREnabled;   // a VR headset through OpenXR (OpenXRRenderer)
+extern int openXREyeSeparation;       // the eye cameras apart, in map units (256 a tile)
+extern float openXREyeCentreOffset;   // added to each eye's straight ahead, a fraction of its width, + towards the nose
+extern bool openXRSwapEyes;           // the left eye's image to the right eye and back
 
 extern bool invertYAxis;
 extern bool invertXAxis;

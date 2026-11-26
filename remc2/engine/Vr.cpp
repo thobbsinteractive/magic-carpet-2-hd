@@ -117,6 +117,7 @@ __int16 vrJoystick_17D6CC[3]; // weak
 // The headset's orientation as the original head tracker's angles in vrJoystick_17D6CC (0x10000 = a full turn,
 // [0] yaw clockwise as a compass heading, [1] pitch + = up, [2] roll), from E_VR_HEAD_POSE
 static bool vrHeadsetActive = false;
+static float vrEyeCentreX[2] = { 0.0f, 0.0f };   // VrHeadPose::eyeCentreX
 static std::function<void(VrHeadPose)> vrHeadPoseCallBack;
 static IEvent* vrHeadPoseEvent = nullptr;
 
@@ -129,6 +130,8 @@ static int16_t RadiansToTrackerAngle(float radians)
 static void SetVrHeadPose(VrHeadPose pose)
 {
 	vrHeadsetActive = pose.active;
+	vrEyeCentreX[0] = pose.eyeCentreX[0];
+	vrEyeCentreX[1] = pose.eyeCentreX[1];
 	if (!pose.active)
 	{
 		memset(vrJoystick_17D6CC, 0, sizeof(vrJoystick_17D6CC));
@@ -174,6 +177,11 @@ void GetVrHeadsetAxes(int32_t& headTrackerYaw, int32_t& headTrackerPitch)
 	constexpr float kTrackerUnitsPerRadian = 65536.0f / (2.0f * 3.14159265358979f);
 	const float pitch = (std::clamp)((float)vrJoystick_17D6CC[1] / kTrackerUnitsPerRadian, -1.3f, 1.3f);
 	headTrackerPitch = (int32_t)std::lround(-128.0f * std::tan(pitch));
+}
+
+float GetVrEyeCentreX(int eye)
+{
+	return vrEyeCentreX[eye & 1];
 }
 
 int16_t GetVrHeadsetRoll()

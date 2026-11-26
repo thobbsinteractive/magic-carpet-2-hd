@@ -208,19 +208,23 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 		m_frameViews.columns = 2;
 		m_frameViews.lists.resize(2);
 		SetBlurActive(false);
-		v22 = Maths::sin_DB750[vYaw];
-		v23 = 5 * v22;
-		v24 = Maths::sin_DB750[512 + vYaw];
-		v25 = 4 * v23 >> 16;
-		v26 = 20 * (signed int)v24 >> 16;
-		// The original shifts each eye 5 pixels of its 312 wide view
-		const int eyeShift = (std::max)(1, (int)(uint16_t)viewPort.Width_DE564 * 5 / 312);
 		// The head's roll on top of the carpet's: the view only (yaw and pitch come with the player input)
 		const int16_t eyeRoll = (roll + GetVrHeadsetRoll()) & 0x7FF;
-		viewShiftX_D4324 = -eyeShift;
-		DrawTerrainAndParticles_3C080(vPosX - v26, vPosY - v25, vYaw, posZ, pitch, eyeRoll, fov, &m_frameViews.lists[0]);
-		viewShiftX_D4324 = eyeShift;
-		DrawTerrainAndParticles_3C080(vPosX + v26, vPosY + v25, vYaw, posZ, pitch, eyeRoll, fov, &m_frameViews.lists[1]);
+		const int rightX = Maths::sin_DB750[512 + vYaw];
+		const int rightY = Maths::sin_DB750[vYaw];
+		const int viewWidth = (uint16_t)viewPort.Width_DE564;
+		for (int eye = 0; eye < 2; eye++)
+		{
+			// The left eye (0) half the separation to the camera's left, the right one to its right (openXR eyeSeparation)
+			const int side = eye ? 1 : -1;
+			const int offset = side * openXREyeSeparation / 2;
+			// Straight ahead where the runtime's (asymmetric) field of view of the eye has it, nearer the nose, not the
+			// original's 5 of 312 pixels outwards: that pulled the eyes apart (openXR eyeCentreOffset: + towards the nose)
+			const float centre = GetVrEyeCentreX(eye) - side * openXREyeCentreOffset;
+			viewShiftX_D4324 = (int)std::lround(viewWidth * centre);
+			DrawTerrainAndParticles_3C080(vPosX + (offset * rightX >> 16), vPosY + (offset * rightY >> 16), vYaw, posZ, pitch,
+				eyeRoll, fov, &m_frameViews.lists[openXRSwapEyes ? 1 - eye : eye]);
+		}
 		viewShiftX_D4324 = 0;
 	}
 	else if (anaglyphMode)

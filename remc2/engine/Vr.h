@@ -54,4 +54,6 @@ void UnregisterVrHeadsetEvents();
 bool IsVrHeadsetActive();            // a headset is tracking: GameRenderHW draws the two eyes for it
 // The head's yaw (0 - 2047, as headTrackerYaw_180590) and pitch (as headTrackerPitch_180594, a horizon shift) for the player input
 void GetVrHeadsetAxes(int32_t& headTrackerYaw, int32_t& headTrackerPitch);
+// Where straight ahead is in the eye's image (0 left, 1 right), from its centre, a fraction of its width (+ right)
+float GetVrEyeCentreX(int eye);
 int16_t GetVrHeadsetRoll();         // the head's roll (0 - 2047) for the camera: GameRenderHW adds it to the eyes' roll

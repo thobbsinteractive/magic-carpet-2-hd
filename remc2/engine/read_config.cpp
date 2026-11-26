@@ -65,6 +65,9 @@ uint8_t anaglyphLeftColour[3] = { 255, 0, 0 };
 uint8_t anaglyphRightColour[3] = { 0, 168, 168 };
 float anaglyphGhostReduction = 0.1f;
 bool openXREnabled = false;
+int openXREyeSeparation = 40;
+float openXREyeCentreOffset = 0.0f;
+bool openXRSwapEyes = false;
 bool openGLRender = false;
 bool invertYAxis = true;
 bool invertXAxis = false;
@@ -258,6 +261,9 @@ bool SetConfig() {
 	// A VR headset through OpenXR (hardware renderer only; Looking Glass wins if both are on)
 	openXREnabled = settingsValue.m_Graphics.m_Hardware.m_OpenXR.m_Enabled && settingsValue.m_Graphics.m_Render == "HW"
 		&& !lookingGlassEnabled;
+	openXREyeSeparation = (std::max)(settingsValue.m_Graphics.m_Hardware.m_OpenXR.m_EyeSeparation, 0);
+	openXREyeCentreOffset = std::clamp(settingsValue.m_Graphics.m_Hardware.m_OpenXR.m_EyeCentreOffset, -0.25f, 0.25f);
+	openXRSwapEyes = settingsValue.m_Graphics.m_Hardware.m_OpenXR.m_SwapEyes;
 	if (openXREnabled)
 	{
 		// As with Looking Glass (the cell size): while a headset is found the game runs at the eye resolution, so the

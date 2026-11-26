@@ -705,6 +705,18 @@ void OpenXRRenderer::SendHeadPose(bool active, const XrPosef* pose)
 		headPose.yaw = std::atan2(-forward.x, -forward.z);
 		headPose.pitch = std::asin((std::clamp)(forward.y, -1.0f, 1.0f));
 		headPose.roll = std::asin((std::clamp)(right.y, -1.0f, 1.0f));
+		// The runtime maps each eye's image across its field of view, tan(angleLeft) at the left edge to tan(angleRight)
+		// at the right: straight ahead (tan 0) is at -tanLeft / (tanRight - tanLeft) of the width
+		if (m_viewsValid)
+		{
+			for (uint32_t eye = 0; eye < kEyeCount; eye++)
+			{
+				const float tanLeft = std::tan(m_views[eye].fov.angleLeft);
+				const float tanRight = std::tan(m_views[eye].fov.angleRight);
+				if (tanRight - tanLeft > 0.0f)
+					headPose.eyeCentreX[eye] = -tanLeft / (tanRight - tanLeft) - 0.5f;
+			}
+		}
 	}
 	m_headPoseActive = headPose.active;
 	EventDispatcher::I->DispatchEvent<VrHeadPose>(EventType::E_VR_HEAD_POSE, headPose);

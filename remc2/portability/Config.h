@@ -125,6 +125,9 @@ public:
 			bool m_Enabled = false;
 			int m_EyeWidth = 1680;    // the game resolution (menus, UI and each eye) while a headset is found: a Meta Quest 3
 			int m_EyeHeight = 1760;   // eye; 0 = the headset eye's shape at the in-game resolution's height
+			int m_EyeSeparation = 40;        // the cameras apart, in map units (256 a tile): the original's 2 x 20
+			float m_EyeCentreOffset = 0.0f;  // added to each eye's straight ahead (from the runtime's field of view), a fraction of the eye's width, + towards the nose
+			bool m_SwapEyes = false;         // the left eye's image to the right eye and back
 		};
 
 		struct Hardware
