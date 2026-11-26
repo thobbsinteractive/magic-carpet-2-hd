@@ -1866,8 +1866,8 @@ uint16_t GameRenderHD::DrawTileSpriteReflections_3FD60(int a2x, uint8_t playersC
 					v9x = RenderSpriteDef(v41x->spriteIndex_0x5A_90);
 					v10 = v6 * spriteRender_F2C20.projectionScale_0x18 / v40;
 					v11 = spriteRender_F2C20.projectionScale_0x18 * v42 / v40 + spriteRender_F2C20.horizonOffset_0x22;
-					spriteRender_F2C20.screenY_0x04 = ((v10 * spriteRender_F2C20.cos_0x11 - spriteRender_F2C20.sin_0x0d * v11) >> 16) + spriteRender_F2C20.centerX_0x24;
-					spriteRender_F2C20.screenX_0x03 = spriteRender_F2C20.centerY_0x10 - ((spriteRender_F2C20.sin_0x0d * v10 + v11 * spriteRender_F2C20.cos_0x11) >> 16);
+					spriteRender_F2C20.screenY_0x04 = static_cast<int>(((static_cast<int64_t>(v10) * spriteRender_F2C20.cos_0x11 - static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v11) >> 16) + spriteRender_F2C20.centerX_0x24);
+					spriteRender_F2C20.screenX_0x03 = static_cast<int>(spriteRender_F2C20.centerY_0x10 - ((static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v10 + static_cast<int64_t>(v11) * spriteRender_F2C20.cos_0x11) >> 16));
 					v12 = v9x->kind_12;
 					x_BYTE_F2CC6 = 0;
 					switch (v12)
@@ -4252,8 +4252,8 @@ void GameRenderHD::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 						{
 							v8 = v5 * spriteRender_F2C20.projectionScale_0x18 / v99;
 							v9 = spriteRender_F2C20.projectionScale_0x18 * v98 / v99 + spriteRender_F2C20.horizonOffset_0x22;
-							spriteRender_F2C20.screenY_0x04 = ((v8 * spriteRender_F2C20.cos_0x11 - spriteRender_F2C20.sin_0x0d * v9) >> 16) + spriteRender_F2C20.centerX_0x24;
-							spriteRender_F2C20.screenX_0x03 = spriteRender_F2C20.centerY_0x10 - ((spriteRender_F2C20.sin_0x0d * v8 + v9 * spriteRender_F2C20.cos_0x11) >> 16);
+							spriteRender_F2C20.screenY_0x04 = static_cast<int>(((static_cast<int64_t>(v8) * spriteRender_F2C20.cos_0x11 - static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v9) >> 16) + spriteRender_F2C20.centerX_0x24);
+							spriteRender_F2C20.screenX_0x03 = static_cast<int>(spriteRender_F2C20.centerY_0x10 - ((static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v8 + static_cast<int64_t>(v9) * spriteRender_F2C20.cos_0x11) >> 16));
 							v10 = v7x->kind_12;
 							x_BYTE_F2CC6 = 0;
 							switch (v10)
@@ -4591,8 +4591,8 @@ void GameRenderHD::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 				v52x = RenderSpriteDef(spriteRender_F2C20.entity_0x14x->spriteIndex_0x5A_90);
 				v53 = v49 * spriteRender_F2C20.projectionScale_0x18 / v100;
 				v54 = spriteRender_F2C20.projectionScale_0x18 * (v48 - spriteRender_F2C20.cameraZ_0x20) / v100 + spriteRender_F2C20.horizonOffset_0x22;
-				spriteRender_F2C20.screenY_0x04 = ((v53 * spriteRender_F2C20.cos_0x11 - spriteRender_F2C20.sin_0x0d * v54) >> 16) + spriteRender_F2C20.centerX_0x24;
-				spriteRender_F2C20.screenX_0x03 = spriteRender_F2C20.centerY_0x10 - ((spriteRender_F2C20.sin_0x0d * v53 + v54 * spriteRender_F2C20.cos_0x11) >> 16);
+				spriteRender_F2C20.screenY_0x04 = static_cast<int>(((static_cast<int64_t>(v53) * spriteRender_F2C20.cos_0x11 - static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v54) >> 16) + spriteRender_F2C20.centerX_0x24);
+				spriteRender_F2C20.screenX_0x03 = static_cast<int>(spriteRender_F2C20.centerY_0x10 - ((static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v53 + static_cast<int64_t>(v54) * spriteRender_F2C20.cos_0x11) >> 16));
 				v55 = v52x->kind_12;
 				x_BYTE_F2CC6 = 0;
 				switch (v55)

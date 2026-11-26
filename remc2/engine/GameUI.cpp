@@ -937,6 +937,30 @@ void SetPauseMenuClosed_41B60()//222b60
 		IsPauseMenuOpen_D47D9--;
 }
 
+static Scene GetMenuScene(uint16_t menuState)
+{
+	if (gameState_D41A4.OptionsSettingFlag_24 & GAME_PAUSED)
+		return Scene::FLIGHT_MENU;
+
+	switch (menuState)
+	{
+	case (int)MenuState::SHOW_CHAT_MENU:
+		return Scene::CHAT_MENU;
+	case (int)MenuState::SHOW_BOTTOM_MENU:
+	case (int)MenuState::SHOW_MAP_BOTTOM_MENU:
+		return Scene::SPELL_MENU;
+	case (int)MenuState::SHOW_IN_GAME_OPTIONS:
+	case (int)MenuState::SHOW_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
+		return Scene::FLIGHT_MENU;
+	default:
+		return Scene::FLIGHT;
+	}
+}
+
 //----- (00052E90) --------------------------------------------------------
 void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState, bool useSound, uint8_t scale)//233e90
 {
@@ -999,7 +1023,6 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 		if (newMenuState == currentMenuState && !(gameState_D41A4.OptionsSettingFlag_24 & GAME_PAUSED))
 		{
 			RestoreMousePosition_548B0(playStr);
-			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
 		}
 		break;
 	case (int)MenuState::SHOW_CHAT_MENU:
@@ -1012,8 +1035,6 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
 	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		RestoreMousePosition_548B0(playStr);
-		if (!(gameState_D41A4.OptionsSettingFlag_24 & GAME_PAUSED))
-			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
 		FlvInitSet_473B0();
 		break;
 	default:
@@ -1092,6 +1113,11 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	}
 	if (useSound)
 		PrepareEventSound_6E450(0, playStr->playerSlot_0x007_2BE4_11237, 14);
+
+	const Scene menuScene = GetMenuScene(newMenuState);
+	if (GetCurrentScene() != menuScene)
+		EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, menuScene);
+
 	CheckCdPresent_53120();
 }
 
@@ -4538,7 +4564,6 @@ void DrawOkCancelMenu_30A60(int16_t posTextX, int16_t posTextY, uint8_t scale)//
 			DrawBitmap_2BB40(inputState_18058C.mouse_1805B0.x, inputState_18058C.mouse_1805B0.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[cursorSpriteIndex_D419E], scale);
 		}
 	}
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 }
 
 //----- (00052D70) --------------------------------------------------------
@@ -4690,7 +4715,6 @@ void DrawChatMenu_2F6B0(uint8_t scale)//2106b0
 	{
 		DrawBitmap_2BB40(inputState_18058C.mouse_1805B0.x, inputState_18058C.mouse_1805B0.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[cursorSpriteIndex_D419E], scale);
 	}
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::CHAT_MENU);
 }
 // 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
 // D419E: using guessed type char cursorSpriteIndex_D419E;
@@ -4770,7 +4794,6 @@ void DrawPauseMenu_2FD90(uint8_t scale)//210d90
 			}
 			posY += heigth;
 			DrawBitmap_2BB40(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SHOW_ICON], scale);//Settings button
-			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 		}
 		if (inputState_18058C.joystickMode_1805C2 == 8
 			|| inputState_18058C.joystickMode_1805C2 == 12
@@ -4931,8 +4954,6 @@ void DrawInGameOptionsMenu_30050(uint8_t scale)//211050
 		DrawText_2BC10((char*)"OK", okayBtnTextXPos + (33 * scale), okayBtnPosY + (2 * scale), v12, scale);
 	else
 		DrawText_2BC10((char*)"OK", (640 - gameState_D41A4.optionsMenuWidth_186) / 2 + (gameState_D41A4.optionsMenuWidth_186 - OPTIONS_MENU_BTN_WIDTH) / 2 + 33, 379, v12);	
-
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 
 	if (inputState_18058C.joystickMode_1805C2 == 8
 		|| inputState_18058C.joystickMode_1805C2 == 12
@@ -6373,7 +6394,6 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 	{
 		DrawBitmap_2BB40(inputState_18058C.mouse_1805B0.x, inputState_18058C.mouse_1805B0.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[cursorSpriteIndex_D419E]);
 	}
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::SPELL_MENU);
 }
 
 //----- (00054960) --------------------------------------------------------

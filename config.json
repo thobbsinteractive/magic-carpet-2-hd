@@ -286,8 +286,8 @@
 						"name": "XBox Controller",
 						"isActive": true,
 						"controllerId": 0,
-						"buttonMiniMap": 3,
-						"buttonSpell": 1,
+						"buttonMiniMap": 4,
+						"buttonSpell": 3,
 						"buttonPauseMenu": 7,
 						"buttonEsc": 8,
 						"buttonFireL": 5,
@@ -316,125 +316,185 @@
 						"axisFireL": 5,
 						"axisYaw": 3,
 						"axisYawInv": false,
-						"axisYawDeadZone": 3000,
+						"axisYawDeadZone": 500,
 						"axisYawSensitivity": {
 							"zones": [
 								{
 									"start": 0,
+									"end": 1000,
+									"factor": 0.015
+								},
+								{
+									"start": 1000,
+									"end": 2000,
+									"factor": 0.046
+								},
+								{
+									"start": 2000,
+									"end": 3000,
+									"factor": 0.076
+								},
+								{
+									"start": 3000,
+									"end": 4000,
+									"factor": 0.107
+								},
+								{
+									"start": 4000,
+									"end": 5000,
+									"factor": 0.137
+								},
+								{
+									"start": 5000,
+									"end": 6000,
+									"factor": 0.168
+								},
+								{
+									"start": 6000,
+									"end": 7000,
+									"factor": 0.198
+								},
+								{
+									"start": 7000,
 									"end": 8000,
-									"factor": 0.1
+									"factor": 0.229
 								},
 								{
 									"start": 8000,
+									"end": 9000,
+									"factor": 0.259
+								},
+								{
+									"start": 9000,
+									"end": 10000,
+									"factor": 0.290
+								},
+								{
+									"start": 10000,
+									"end": 11000,
+									"factor": 0.320
+								},
+								{
+									"start": 11000,
+									"end": 12000,
+									"factor": 0.351
+								},
+								{
+									"start": 12000,
+									"end": 13000,
+									"factor": 0.381
+								},
+								{
+									"start": 13000,
+									"end": 14000,
+									"factor": 0.412
+								},
+								{
+									"start": 14000,
 									"end": 15000,
-									"factor": 0.2
+									"factor": 0.443
 								},
 								{
 									"start": 15000,
+									"end": 16000,
+									"factor": 0.473
+								},
+								{
+									"start": 16000,
+									"end": 17000,
+									"factor": 0.504
+								},
+								{
+									"start": 17000,
+									"end": 18000,
+									"factor": 0.534
+								},
+								{
+									"start": 18000,
+									"end": 19000,
+									"factor": 0.565
+								},
+								{
+									"start": 19000,
 									"end": 20000,
-									"factor": 0.3
+									"factor": 0.595
 								},
 								{
 									"start": 20000,
+									"end": 21000,
+									"factor": 0.626
+								},
+								{
+									"start": 21000,
+									"end": 22000,
+									"factor": 0.656
+								},
+								{
+									"start": 22000,
+									"end": 23000,
+									"factor": 0.687
+								},
+								{
+									"start": 23000,
+									"end": 24000,
+									"factor": 0.717
+								},
+								{
+									"start": 24000,
 									"end": 25000,
-									"factor": 0.35
+									"factor": 0.748
 								},
 								{
 									"start": 25000,
 									"end": 26000,
-									"factor": 0.4
+									"factor": 0.778
 								},
 								{
 									"start": 26000,
 									"end": 27000,
-									"factor": 0.5
+									"factor": 0.809
 								},
 								{
 									"start": 27000,
 									"end": 28000,
-									"factor": 0.6
+									"factor": 0.839
 								},
 								{
 									"start": 28000,
 									"end": 29000,
-									"factor": 0.7
+									"factor": 0.870
 								},
 								{
 									"start": 29000,
 									"end": 30000,
-									"factor": 0.8
+									"factor": 0.900
 								},
 								{
 									"start": 30000,
 									"end": 31000,
-									"factor": 0.9
+									"factor": 0.931
 								},
 								{
 									"start": 31000,
-									"end": 32767,
-									"factor": 1.0
+									"end": 32000,
+									"factor": 0.961
+								},
+								{
+									"start": 32000,
+									"end": 32768,
+									"factor": 1.000
 								}
 							]
 						},
 						"axisPitch": 4,
 						"axisPitchInv": false,
-						"axisPitchDeadZone": 3000,
+						"axisPitchDeadZone": 1000,
 						"axisPitchSensitivity": {
 							"zones": [
 								{
 									"start": 0,
-									"end": 8000,
-									"factor": 0.1
-								},
-								{
-									"start": 8000,
-									"end": 15000,
-									"factor": 0.2
-								},
-								{
-									"start": 15000,
-									"end": 20000,
-									"factor": 0.3
-								},
-								{
-									"start": 20000,
-									"end": 25000,
-									"factor": 0.35
-								},
-								{
-									"start": 25000,
-									"end": 26000,
-									"factor": 0.4
-								},
-								{
-									"start": 26000,
-									"end": 27000,
-									"factor": 0.5
-								},
-								{
-									"start": 27000,
-									"end": 28000,
-									"factor": 0.6
-								},
-								{
-									"start": 28000,
-									"end": 29000,
-									"factor": 0.7
-								},
-								{
-									"start": 29000,
-									"end": 30000,
-									"factor": 0.8
-								},
-								{
-									"start": 30000,
-									"end": 31000,
-									"factor": 0.9
-								},
-								{
-									"start": 31000,
-									"end": 32767,
-									"factor": 1.0
+									"end": 32768,
+									"factor": 0.6000
 								}
 							]
 						}
