@@ -8,3 +8,6 @@ void FreeMc1Renderer();
 // port (HW renderer): the alpha of the screen over the 3D view of the GPU, set before the blit and reset after it
 void Mc1HwAlphaBeforeBlit();
 void Mc1HwAlphaAfterBlit();
+// port (HW renderer): the red-blue stereo (F10, screen size 1) is the GPU's anaglyph (as F11), not the software one
+// (no stereo palette, no join of the eyes in 30B30)
+bool Mc1HwAnaglyphStereo();

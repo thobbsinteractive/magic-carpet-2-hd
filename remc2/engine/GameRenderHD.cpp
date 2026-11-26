@@ -354,6 +354,10 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 		DrawTerrainAndParticles_3C080(vPosX - v31, vPosY - v30, vYaw, posZ, pitch, roll, fov);
 		viewPort.SetRenderViewPortSize_BCD45(v32, 0, 0, 0);
 		viewShiftX_D4324 = 0;
+		const size_t eyeSize = (size_t)iScreenWidth_DE560 * (uint16_t)viewPort.Height_DE568;
+		if (RenderMc1() && ptrMemoryBuffer_E9C3C && ptrMemoryBuffer_E9C3C != m_ptrBlurBuffer_E9C3C
+			&& eyeSize <= (size_t)gameResWidth * gameResHeight)
+			memcpy(ptrMemoryBuffer_E9C3C, m_ptrBlurBuffer_E9C3C, eyeSize);
 	}
 }
 

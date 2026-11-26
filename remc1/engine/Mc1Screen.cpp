@@ -219,6 +219,8 @@ void SetStereoScreen_31600_31640()
 		ClearScreenAndBlitVfx_5B500_5BA10();
 	if (!*blurBuffer_AE404_AE3F4 || state->vfx_0x219E_8606)
 		return;
+	if (Mc1HwAnaglyphStereo())
+		return; // port: the GPU's anaglyph in the colours of the game, without the palette of 8 reds, 8 greens, 4 blues
 	const uint16_t mode = *screenWidth_12EFF0_12EFE0 == 320 ? 0x10E : 0x111;
 	if (HasVesaMode_30D30_30D70(mode))
 	{
@@ -276,7 +278,7 @@ void BlendAndBlit_30B30_30B70()
 
 static void BlendAndBlit(Type_Mc1State_AE400_AE3F0* state)
 {
-	if (state->screenSize_0x219B_8603 == 1 && !highResScreen_90708_90708)
+	if (state->screenSize_0x219B_8603 == 1 && !highResScreen_90708_90708 && !Mc1HwAnaglyphStereo()) // port: HW joins the eyes on the GPU
 	{
 		const int groups = (uint16_t)viewPort.Width_DE564 >> 2;
 		uint8_t* screen = ViewPortRenderBufferStart_DE558;

@@ -173,6 +173,11 @@ void Mc1HwAlphaBeforeBlit()
 	}
 }
 
+bool Mc1HwAnaglyphStereo()
+{
+	return m_render == "HW";
+}
+
 // the screens without the world (the menus) are shown whole
 void Mc1HwAlphaAfterBlit()
 {

@@ -119,6 +119,7 @@ private:
 	void EmitSpriteQuad(std::vector<RenderPolygon>* polygons, int spriteIndex, int spriteFrame,
 		float x, float y, float rx, float ry, float dx, float dy, bool flipV, uint8_t tint);
 	static bool Mc1SoftwareMode();
+	static bool Mc1AnaglyphStereo();   // MC1 F10 red-blue: drawn as the anaglyph (F11)
 	void DrawMc1Software(int posX, int posY, int16_t yaw, int16_t posZ, int16_t pitch, int16_t roll, int16_t fov);
 	bool ProjectTileCorners(int* vertexs, int tileIndex, uint32_t textureIndex, HWVertex corners[4]);
 	void DrawSquareInProjectionSpace(std::vector<int>& vertexs, int tileIndex, std::vector<RenderPolygon>* polygons);
