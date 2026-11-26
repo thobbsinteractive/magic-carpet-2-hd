@@ -200,6 +200,14 @@ void GameRenderNG::SetScreenBuffers()
 	m_columnsCapacity = lines - 1;
 	m_largeScratch.resize(m_rowsOffset + 4 * lines + 0x100);
 	m_scratch = m_largeScratch.data();
+	// MC1: its own blur buffer (ptrMemoryBuffer_E9C3C, the screen size: 34C80 allocates gameResWidth x gameResHeight),
+	// as below 640x480, since the red-blue stereo (F10) joins the second eye from it in 30B30 after the frame
+	if (RenderMc1() && ptrMemoryBuffer_E9C3C && screenWidth_18062C <= gameResWidth && screenHeight_180624 <= gameResHeight)
+	{
+		m_largeBlurBuffer.clear();
+		m_blurBuffer = ptrMemoryBuffer_E9C3C;
+		return;
+	}
 	m_largeBlurBuffer.resize(screenWidth_18062C * screenHeight_180624);
 	m_blurBuffer = m_largeBlurBuffer.data();
 }
