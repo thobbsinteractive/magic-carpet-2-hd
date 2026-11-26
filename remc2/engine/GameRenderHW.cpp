@@ -534,15 +534,12 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	polygons->clear();
 	polygons->reserve(1 + 2 * (size_t)m_tileRows * m_tileColumns + kReservedSprites);
 
+	const uint8_t colour = RenderMc1() ? 0xFF : m_BackgroundColour_D4B7C;   // MC1 2A700: 0xFF
+	EventDispatcher::I->DispatchEvent<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, ResourceType::CLEAR_COLOURIDX_SET, colour);
+
 	if (!world_D41A0.m_GameSettings.m_Graphics.m_wSky || isCaveLevel_D41B6)
 	{
 		// The background colour over the view port, 4 bytes at a time (as the original, the width rounded down to 4)
-		const uint8_t colour = RenderMc1() ? 0xFF : m_BackgroundColour_D4B7C;   // MC1 2A700: 0xFF
-		if (RenderMc1() && m_mc1ClearColour != colour)
-		{
-			m_mc1ClearColour = colour;
-			EventDispatcher::I->DispatchEvent<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, ResourceType::CLEAR_COLOURIDX_SET, colour);
-		}
 		const int fill = colour | colour << 8 | colour << 16 | colour << 24;
 		const int filled = ((uint16_t)viewPort.Width_DE564 / 4) * 4;
 		uint8_t* line = ViewPortRenderBufferStart_DE558;

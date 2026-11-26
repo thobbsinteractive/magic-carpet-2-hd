@@ -95,7 +95,6 @@ private:
 	char notDay_D4320 = 0;
 	bool m_reflectionPass = false;   // set while the reflection pass emits its polygons (RenderPolygon::Reflection)
 	std::unique_ptr<GameRenderNG> m_mc1Software;   // MC1 stereogram, red-blue, VFX1: drawn in software, created when first needed
-	int m_mc1ClearColour = -1;   // MC1: the clear colour last sent to the GPU
 	char x_BYTE_F2CC6 = 0;
 	int16_t yaw_F2CC0 = 0;
 	int16_t cameraY_F2CC2 = 0;
