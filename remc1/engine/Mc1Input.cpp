@@ -14,7 +14,9 @@
 #include "Mc1Shared.h"
 #include "Mc1Sound.h"
 #include "Mc1TextureMaps.h"
+#include "../../remc2/engine/Basic.h"
 #include "../../remc2/engine/Vr.h"
+#include "../../remc2/portability/port_filesystem.h"
 #include "../../remc2/engine/read_config.h"
 #include "../../remc2/portability/port_sdl_vga_mouse.h"
 #include "../../remc2/shared/EventDispatcher.h"
@@ -568,6 +570,13 @@ void FunctionKeys_16B00_16B00()
 		case 2:
 			state->screenSize_0x219B_8603 = 0;
 			break;
+		}
+		break;
+	case 0x57: // port: F11, the anaglyph (red / cyan glasses) on / off, the hardware renderer only (as MC2)
+		if (m_render == "HW")
+		{
+			anaglyphMode = !anaglyphMode;
+			ShowMessage(anaglyphMode ? "Anaglyph On" : "Anaglyph Off", 0x32, 2);
 		}
 		break;
 	default:
