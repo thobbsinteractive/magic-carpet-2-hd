@@ -293,8 +293,10 @@ void MouseToMove_169E0_169E0()
 	}
 	else
 	{
-		moveX = (mousePos_9AD90_9AD90->x * 0x80 - 0xA000) / 0x140;
-		moveY = -((mousePos_9AD90_9AD90->y * 0x80 - 0x7800) / 0xF0);
+		const int32_t centreX = UiScreenWidth() / 2;
+		const int32_t centreY = UiScreenHeight() / 2;
+		moveX = (mousePos_9AD90_9AD90->x * 0x80 - centreX * 0x80) / centreX;
+		moveY = -((mousePos_9AD90_9AD90->y * 0x80 - centreY * 0x80) / centreY);
 	}
 	if (moveX < -0x7F)
 		moveX = -0x7F;

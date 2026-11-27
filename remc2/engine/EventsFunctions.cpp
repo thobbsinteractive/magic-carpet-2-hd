@@ -3076,19 +3076,14 @@ void CreateFileArrayIndexes_6EBF0(filearray_struct* a1)//24FBF0
 //----- (0006EDB0) --------------------------------------------------------
 void SetCenterScreenForFlyAssistant_6EDB0()//24FDB0
 {
-	uint32_t display_w = screenWidth_18062C, display_h = screenHeight_180624;
-	uint32_t new_x, new_y;
-
-	if (videoMode_180660 & 1) {
-		// 640x480 virtual screen
-		display_w = 640;
-		display_h = 480;
+	uint32_t display_w = 640, display_h = 480;
+	if (!DefaultResolutions())
+	{
+		display_w = UiScreenWidth();
+		display_h = UiScreenHeight();
 	}
 
-	new_x = display_w >> 1;
-	new_y = display_h >> 1;
-
-	VGA_Set_mouse(new_x, new_y);
+	VGA_Set_mouse(display_w >> 1, display_h >> 1);
 }
 
 //----- (0006FE20) --------------------------------------------------------

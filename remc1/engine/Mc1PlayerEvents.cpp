@@ -979,7 +979,9 @@ void SetCenterMouse_59720_59C30()
 	if (*videoMode_12F02E_12F01E == 1)
 		SetMousePosition_59750_59C60(0x140, 0xC8);
 	else
-		SetMousePosition_59750_59C60(0x140, 0xF0);
+		// 140h x F0h at 640x480; port: the centre of the UI's coordinates at the other resolutions, where the flight
+		// takes its straight ahead (MouseToMove_169E0)
+		SetMousePosition_59750_59C60((int16_t)(UiScreenWidth() / 2), (int16_t)(UiScreenHeight() / 2));
 }
 
 void SetMousePosition_59750_59C60(int16_t x, int16_t y)
@@ -1006,10 +1008,5 @@ void SetMousePosition_59750_59C60(int16_t x, int16_t y)
 			y = maxY;
 		mousePos_9AD90_9AD90->y = y;
 	}
-	else
-		y = mousePos_9AD90_9AD90->y;
-	if (*videoMode_12F02E_12F01E & 1)
-		VGA_Set_mouse(x / 2, y / 2);
-	else
-		VGA_Set_mouse(x, y);
+	VGA_Set_mouse(mousePos_9AD90_9AD90->x, mousePos_9AD90_9AD90->y);
 }
