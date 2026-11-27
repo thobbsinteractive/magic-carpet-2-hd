@@ -26,6 +26,7 @@
 #include "Mc1System.h"
 #include "../../remc2/engine/Graphics.h"
 #include "../../remc2/engine/PlayerInput.h"
+#include "../../remc2/engine/CommandLineParser.h"
 #include "../../remc2/engine/read_config.h"
 #include "../../remc2/portability/port_sdl_vga_mouse.h"
 #include "../../remc2/portability/port_filesystem.h"
@@ -56,6 +57,12 @@ uint8_t byte_A9058_A9058 = 0;
 static Type_Mc1Player_340B* CurrentPlayer()
 {
 	return &mc1State_AE400_AE3F0->players_0x340B_13323[mc1State_AE400_AE3F0->currentPlayer_0x08_8];
+}
+
+static bool AutoHighResolution()
+{
+	return CommandLineParams.DoAutoChangeRes() && gameResWidth >= 640 && gameResHeight >= 480
+		&& mc1State_AE400_AE3F0->options_0x21AD_8621[10] && *videoMode_12F02E_12F01E == 1 && !sdlInputLocked;
 }
 
 int Main_404F0_40830(int argc, char** argv)
@@ -138,7 +145,7 @@ int TopProcedure_340B0(int argc, char** argv)
 				if (!(mc1Settings_AE408_AE3F8->flags_0x00_0 & 4))
 				{
 					SetFullScreen_31A00_31A40();
-					if (screenMode == 8)
+					if (screenMode == 8 || AutoHighResolution())
 						ToggleResolution_34C80_35040();
 					RestoreScreenSize_31A60_31AA0();
 				}
@@ -260,7 +267,7 @@ int TopProcedure_34470(int argc, char** argv)
 				if (!(mc1Settings_AE408_AE3F8->flags_0x00_0 & 4))
 				{
 					SetFullScreen_31A00_31A40();
-					if (screenMode == 8)
+					if (screenMode == 8 || AutoHighResolution())
 						ToggleResolution_34C80_35040();
 					RestoreScreenSize_31A60_31AA0();
 				}
