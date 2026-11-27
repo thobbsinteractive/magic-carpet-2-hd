@@ -43,6 +43,10 @@ bool Mc1TerrainTypeFlat(uint8_t terrainType); // 90168: the types shaded flat (m
 bool Mc1StereogramMode(); // screen size 2 without VFX1: the world is a depth image turned into a random dot stereogram
 inline int Mc1StereogramShade(int depth) // 2A700 / 2F170: the depth as the shade of the depth image
 {
+	if (depth > 0x1400)
+		depth = 0x1400;
+	else if (depth < 0)
+		depth = 0;
 	return 0x400000 - (0x1400 - depth) * 0x15E;
 }
 // 30D90: the random dot stereogram from the depth image (width/height of the view port, rows by pitch)

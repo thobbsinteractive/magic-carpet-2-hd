@@ -713,7 +713,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 		m_tileRows_v17--;
 	}
 
-	spriteRender_F2C20.tileCutOffDistance_0x15 = (400 * (m_viewDistanceScale * m_viewDistanceScale)) << 16; //Distance cut-off for tile render
+	spriteRender_F2C20.tileCutOffDistance_0x15 = Mc1StereogramMode() ? 400 << 16 : (400 * (m_viewDistanceScale * m_viewDistanceScale)) << 16;
 	v278x = 0;
 	spriteRender_F2C20.fogThickness_0x12 = (136 * m_viewDistanceScale * m_viewDistanceScale) << 16;
 	v22 = v277[0];
@@ -4574,7 +4574,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 			}
 			v51 = v100 * v100 + v49 * v49;
 			// MC1 2F170: no cut off, the depth as the shade
-			if (v100 > 64 && (mc1Depth || v51 < spriteRender_F2C20.tileCutOffDistance_0x15))
+			if (v100 > 64 && ((mc1Depth && m_viewDistanceScale == 1) || v51 < spriteRender_F2C20.tileCutOffDistance_0x15)) // MC1 2F170: no cut off in the depth image, within the original grid (view distance 1)
 			{
 				if (mc1Depth)
 				{

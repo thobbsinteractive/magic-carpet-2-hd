@@ -403,7 +403,8 @@ void GameRenderNG::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 		}
 	}
 
-	spriteRender_F2C20.tileCutOffDistance_0x15 = static_cast<int>(m_cutOffDistance);//21d2df
+	m_drawCutOff = Mc1StereogramMode() ? m_standardCutOff : m_cutOffDistance;
+	spriteRender_F2C20.tileCutOffDistance_0x15 = static_cast<int>(m_drawCutOff);//21d2df
 	spriteRender_F2C20.fogThickness_0x12 = static_cast<int>(m_fogEnd - m_fogStart);
 	spriteRender_F2C20.horizonOffset_0x22 = pitch * viewPort.Width_DE564 >> 8;
 	const int rollIndex = roll & 0x7FF;
@@ -484,7 +485,7 @@ void GameRenderNG::ProjectTiles(TerrainProjection projection, uint8_t mapX, uint
 			int depth = tile.y_12;
 			const int64_t distance = static_cast<int64_t>(depth) * depth + static_cast<int64_t>(tile.x_0) * tile.x_0;
 			tile.haveBillboard_36 = 0;
-			if (depth <= -256 || distance >= m_cutOffDistance)
+			if (depth <= -256 || distance >= m_drawCutOff)
 				tile.triangleFeatures_38 |= 2;
 			else
 			{
@@ -1046,7 +1047,7 @@ void GameRenderNG::DrawEntity(type_entity_0x6E8E* entity, const type_E9C38_small
 		//21f40c
 		const int height = GetTerrainAlt2_B5C60(entity->position_0x4C_76.x, entity->position_0x4C_76.y) - spriteRender_F2C20.cameraZ_0x20;
 		const int64_t distance = static_cast<int64_t>(depth) * depth + static_cast<int64_t>(across) * across;
-		if (depth > 64 && distance < m_cutOffDistance)
+		if (depth > 64 && distance < m_drawCutOff)
 		{
 			spriteRender_F2C20.fogShade_0x00 = SpriteLight(distance);
 			const Type_SpriteDef_D951C& def = *RenderSpriteDef(spriteRender_F2C20.entity_0x14x->spriteIndex_0x5A_90);
@@ -1108,7 +1109,7 @@ void GameRenderNG::DrawEntity(type_entity_0x6E8E* entity, const type_E9C38_small
 		}
 	}
 	const int64_t distance = static_cast<int64_t>(depth) * depth + static_cast<int64_t>(across) * across;
-	if (depth <= 64 || (!mc1Depth && distance >= m_cutOffDistance))//MC1 2F170: no cut off
+	if (depth <= 64 || (mc1Depth ? m_viewDistanceScale > 1 && distance >= m_standardCutOff : distance >= m_drawCutOff))
 		return;
 	// a longer view: the game logic (EmuUpdateState_21490) reacts to the seen flag, only the entities of the original grid and
 	// cut-off set it (the rows behind the camera and the far tiles are drawn only here)
@@ -1171,7 +1172,7 @@ void GameRenderNG::DrawTileSpriteReflections_3FD60(int tileIndex)
 				int depth;
 				EntityViewPosition(entity, m_tiles[tileIndex], across, depth);
 				const int64_t distance = static_cast<int64_t>(depth) * depth + static_cast<int64_t>(across) * across;
-				if (depth > 64 && distance < m_cutOffDistance)
+				if (depth > 64 && distance < m_drawCutOff)
 				{
 					spriteRender_F2C20.fogShade_0x00 = SpriteLight(distance);
 					const Type_SpriteDef_D951C& def = *RenderSpriteDef(entity->spriteIndex_0x5A_90);

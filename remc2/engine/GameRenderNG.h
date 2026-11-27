@@ -90,6 +90,7 @@ private:
 	type_E9C38_smalltit* m_tiles = terrainTiles_E9C38;//the original grid, own storage for a bigger one
 	std::vector<type_E9C38_smalltit> m_ownTiles;
 	int64_t m_cutOffDistance = 0;//64 bits: a view distance from 10
+	int64_t m_drawCutOff = 0;//this frame's cut-off: m_cutOffDistance, or view distance 1 for the MC1 stereogram
 	int64_t m_fogStart = 0;
 	int64_t m_fogEnd = 0;
 	int64_t m_standardFogStart = 0;//the fog of view distance 1 (FadesInStandardFog)
