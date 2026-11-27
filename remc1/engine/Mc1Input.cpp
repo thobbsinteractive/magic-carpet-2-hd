@@ -245,7 +245,7 @@ void SetPlayerCommand_188A0_188A0(uint16_t command, uint8_t param)
 static int16_t joystickYaw = 0;
 static int16_t joystickPitch = 0;
 
-static void OnJoystickAxis(int16_t yaw, int16_t pitch)
+static void Mc1OnJoystickAxis(int16_t yaw, int16_t pitch)
 {
 	joystickYaw = yaw;
 	joystickPitch = pitch;
@@ -257,7 +257,7 @@ static bool JoystickSteers()
 	static bool registered = false;
 	if (!registered && EventDispatcher::I)
 	{
-		std::function<void(int16_t, int16_t)> callBack = OnJoystickAxis;
+		std::function<void(int16_t, int16_t)> callBack = Mc1OnJoystickAxis;
 		EventDispatcher::I->RegisterEvent(new Event<int16_t, int16_t>(EventType::E_JOYSTICK_AXIS, callBack));
 		registered = true;
 	}
