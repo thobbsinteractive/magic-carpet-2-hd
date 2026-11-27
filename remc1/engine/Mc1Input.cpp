@@ -275,6 +275,13 @@ static bool JoystickSteers()
 	return joystickSteers;
 }
 
+// port: disableLRButtonsMenuOpen (config.json, as MC2 PlayerInput): both mouse buttons do not open or close the spells
+// mode (the map); not while the recorded input plays (sdlInputLocked), which is the original's
+static bool Mc1LRButtonsMenuOpenDisabled()
+{
+	return disableLRButtonsMenuOpen && !sdlInputLocked;
+}
+
 void MouseToMove_169E0_169E0()
 {
 	if (mc1Settings_AE408_AE3F8->speedIndex_0x96_150)
@@ -1199,11 +1206,20 @@ static void ProcessGameInput(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_34
 	}
 	if (*mouseLeftPressed_12EFDE_12EFCE && *mouseRightPressed_12EFDC_12EFCC)
 	{
-		// both buttons: the spells mode
-		if (!(settings->flags_0x00_0 & 0x200) && wizard->life_0x0C_12 >= 0)
-			SetPlayerCommand_188A0_188A0(0x14, 2);
-		*mouseRightPressed_12EFDC_12EFCC = 0;
-		*mouseLeftPressed_12EFDE_12EFCE = 0;
+		if (Mc1LRButtonsMenuOpenDisabled())
+		{
+			// port: disableLRButtonsMenuOpen (as MC2): both buttons fire, the left one stays pressed (MC2 clears the
+			// right one only); Return still opens the spells mode
+			*mouseRightPressed_12EFDC_12EFCC = 0;
+		}
+		else
+		{
+			// both buttons: the spells mode
+			if (!(settings->flags_0x00_0 & 0x200) && wizard->life_0x0C_12 >= 0)
+				SetPlayerCommand_188A0_188A0(0x14, 2);
+			*mouseRightPressed_12EFDC_12EFCC = 0;
+			*mouseLeftPressed_12EFDE_12EFCE = 0;
+		}
 	}
 	if (key >= 2 && key <= 0x0B)
 	{
@@ -1269,7 +1285,8 @@ static void ProcessSpellsInput(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_
 		}
 		key = 0;
 	}
-	if ((*mouseLeftPressed_12EFDE_12EFCE && *mouseRightPressed_12EFDC_12EFCC) || key == 0x1C)
+	// both buttons or Return back to the game; port: Return only with disableLRButtonsMenuOpen (as MC2 case 7)
+	if ((*mouseLeftPressed_12EFDE_12EFCE && *mouseRightPressed_12EFDC_12EFCC && !Mc1LRButtonsMenuOpenDisabled()) || key == 0x1C)
 	{
 		key = 0;
 		*mouseRightPressed_12EFDC_12EFCC = 0;
