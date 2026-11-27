@@ -647,6 +647,7 @@ void ToggleResolution_34C80_35040()
 		ClearScreen640_411FD_4153D(*workScreen_12EFF4_12EFE4, *screenWidth_12EFF0_12EFE0, *screenHeight_12EFF8_12EFE8, 0); // port: the screen size, the work screen is the buffer of remc2
 
 	InstallMouse_5C214_5C724();
+	SetCenterMouse_59720_59C30();
 	SetCursor_5C05C_5C56C(pointersIndex[0]);
 	mc1Settings_AE408_AE3F8->flag_0x17_23 = 0;
 }
