@@ -528,6 +528,10 @@ void UpdatePlayerWizard_45C90_45FD0(Type_Mc1Entity* wizard)
 		wizard->actionIndex_0x46_70 = 2;
 		wizard->word_0x2E_46 = 0;
 		QueueSound_55370_558A0(EntityIndex(wizard), -1, 0x10);
+		// port: the gamepad of remc2 to the dead scene, a button is Space (the rebirth, which sets the flight again by
+		// SetPlayerMode_3DC90), as MC2 5E0A0; only this computer's wizard
+		if (ReadS16(playerData + 0x30) == mc1State_AE400_AE3F0->currentPlayer_0x08_8)
+			Mc1SetScene(Scene::DEAD);
 		return;
 	}
 	if (settings->flags_0x00_0 & 0x10000)

@@ -472,11 +472,29 @@ void SetPlayerMode_3DC90_3DFD0(Type_Mc1Player_340B* player, uint8_t mode)
 		}
 		QueueSound_55370_558A0(0, player->index_0x07_7, 0x0E);
 		// port: the scene of the gamepad of remc2 (MC2 SetMenuCursorPosition_52E90, DrawBottomSpellsMenu_2ECC0)
-		static const Scene scenes[5] = { Scene::FLIGHT, Scene::FLIGHT_MENU, Scene::SPELL_MENU, Scene::CHAT_MENU, Scene::FLIGHT_MENU };
-		if (mode < 5)
-			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, scenes[mode]);
+		Mc1SetModeScene(mode);
 	}
 	CheckCd_3DD10_3E050();
+}
+
+// port: the scene of remc2 (E_SCENE_CHANGE) for the gamepad (port_sdl_joystick): flight (the stick steers) or a menu (it
+// moves the pointer), dead (a button is Space, the rebirth). Sent when it changes: MC1 has no listener of its own (MC2
+// keeps its scene in sub_main), so the last one sent is kept here
+void Mc1SetScene(Scene scene)
+{
+	static int lastScene = -1;
+	if (lastScene == (int)scene || !EventDispatcher::I)
+		return;
+	lastScene = (int)scene;
+	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, scene);
+}
+
+// the scene of the player's mode: 0 the flight, 1 / 4 the menus over the flight, 2 the map and the spells, 3 a message
+void Mc1SetModeScene(uint8_t mode)
+{
+	static const Scene scenes[5] = { Scene::FLIGHT, Scene::FLIGHT_MENU, Scene::SPELL_MENU, Scene::CHAT_MENU, Scene::FLIGHT_MENU };
+	if (mode < 5)
+		Mc1SetScene(scenes[mode]);
 }
 
 void CheckCd_3DD10_3E050()

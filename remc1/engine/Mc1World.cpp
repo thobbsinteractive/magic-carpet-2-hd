@@ -60,10 +60,13 @@ void GameLoop_34610_349D0()
 {
 	mc1Settings_AE408_AE3F8->flag_0x17_23 = 0;
 	CurrentPlayer().levelResult_0x02_2 = 0;
+	// port: the gamepad of remc2 into the level: the scene of the player's mode (the level starts in the flight, mode 0,
+	// set without SetPlayerMode_3DC90, which sends it later)
+	Mc1SetModeScene(CurrentPlayer().mode_0x44A_1098);
 	while (!CurrentPlayer().exitGame_0x04_4 && !(CurrentPlayer().levelResult_0x02_2 & 8))
 		GameFrame_34530_348F0();
 	// port: the gamepad of remc2 back to the menus (MC2 DrawEndGameTable_82C20)
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::PREAMBLE_MENU);
+	Mc1SetScene(Scene::PREAMBLE_MENU);
 }
 
 void GameFrame_34530_348F0()

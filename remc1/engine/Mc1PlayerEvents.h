@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Mc1GameState.h"
+#include "../../remc2/engine/Scene.h"
 
 // MC1 the commands of the players in a frame (MC2 PlayerEvents_51BB0), the movie input, the wizard of a player
 
@@ -14,6 +15,9 @@ extern uint8_t networkActive_939B0_939B0[8];
 
 void PlayerEvents_3C9D0_3CD10();
 void SetPlayerMode_3DC90_3DFD0(Type_Mc1Player_340B* player, uint8_t mode);
+// port: the scene of remc2 for the gamepad (E_SCENE_CHANGE), sent when it changes; and the scene of a player's mode
+void Mc1SetScene(Scene scene);
+void Mc1SetModeScene(uint8_t mode);
 void CheckCd_3DD10_3E050();
 void RecordOrPlayMovieInput_3E9D0_3ED10(Type_Mc1PlayerInput* input);
 void CloseMovie_3EC50_3EF90();
