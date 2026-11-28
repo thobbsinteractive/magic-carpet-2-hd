@@ -1509,14 +1509,25 @@ void Emu8000Core::RenderBlock(int16_t* out, uint32_t numFrames)
 
     if (m_outputRate == kNativeSampleRate)
     {
-        m_nativeL.resize(numFrames);
-        m_nativeR.resize(numFrames);
-        RenderNative(m_nativeL.data(), m_nativeR.data(), numFrames);
         if (m_chip == Chip::Box86)
         {
             // 86Box gives int32 directly and clips it to int16 - no conversion
             // through float, so the result can be compared byte by byte with
-            // emu8k_ref.exe.
+            // emu8k_ref.exe. The output of our core is not used and the driver
+            // reads the 86Box chip (PortIn16Raw); the core runs only while
+            // its voice state can be asked (SetRenderOwnCore), else only its
+            // frame counters go on.
+            if (m_renderOwnCore)
+            {
+                m_nativeL.resize(numFrames);
+                m_nativeR.resize(numFrames);
+                RenderNative(m_nativeL.data(), m_nativeR.data(), numFrames);
+            }
+            else
+            {
+                m_waveCounter += numFrames;
+                m_traceFrames += numFrames;
+            }
             for (uint32_t i = 0; i < numFrames; ++i)
             {
                 int32_t l = 0;
@@ -1527,6 +1538,9 @@ void Emu8000Core::RenderBlock(int16_t* out, uint32_t numFrames)
             }
             return;
         }
+        m_nativeL.resize(numFrames);
+        m_nativeR.resize(numFrames);
+        RenderNative(m_nativeL.data(), m_nativeR.data(), numFrames);
         for (uint32_t i = 0; i < numFrames; ++i)
             emit(i, m_nativeL[i], m_nativeR[i]);
         return;
