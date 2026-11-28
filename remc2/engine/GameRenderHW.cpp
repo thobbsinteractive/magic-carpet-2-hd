@@ -223,9 +223,13 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 			const float centre = GetVrEyeCentreX(eye) - side * openXREyeCentreOffset;
 			viewShiftX_D4324 = (int)std::lround(viewWidth * centre);
 			m_vrEye = eye;   // at this eye's field of view
+			// The HUD (sorcerer names, health bars) is one image for both eyes (OpenXRRenderer's panel): drawn from the
+			// left eye only, or the names come twice, a little apart
+			m_primaryView = eye == 0;
 			DrawTerrainAndParticles_3C080(vPosX + (offset * rightX >> 16), vPosY + (offset * rightY >> 16), vYaw, posZ, pitch,
 				eyeRoll, fov, &m_frameViews.lists[openXRSwapEyes ? 1 - eye : eye]);
 		}
+		m_primaryView = true;
 		m_vrEye = -1;
 		viewShiftX_D4324 = 0;
 	}

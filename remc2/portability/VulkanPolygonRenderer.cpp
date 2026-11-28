@@ -2180,6 +2180,7 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 	windowClearColor.color = { { 0.0f, 0.0f, 0.0f, 1.0f } };
 
 	const bool drawHud = UploadHud(hudSurface, hudAlpha, frame.commandBuffer);
+	m_frameHasHud = drawHud;
 
 	if (drawPolygons)
 	{
@@ -2270,7 +2271,7 @@ bool VulkanPolygonRenderer::BeginFrame(SDL_Surface* hudSurface, const uint8_t* h
 			}
 		}
 
-		if (drawHud && cellArea.w > 0 && cellArea.h > 0)
+		if (drawHud && DrawHudInCells() && cellArea.w > 0 && cellArea.h > 0)
 			DrawOverlay(cellArea, frame.commandBuffer, cellsExtent);
 	}
 

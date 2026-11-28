@@ -128,7 +128,11 @@ protected:
 	virtual size_t GetFrameViewCount(size_t cellCount) const;
 	// Draws a cell's view port area (viewport and scissor already set) from the view images. Base: upscales view's image.
 	virtual void DrawCellViews(VkCommandBuffer commandBuffer, size_t cell, size_t view);
+	// Whether the cells get the HUD over them. Base: yes. OpenXRRenderer: not while it shows the HUD on its own layer
+	virtual bool DrawHudInCells() const { return true; }
 	VkDescriptorSet GetViewImage(size_t view) const;
+	// This frame has a HUD (uploaded, DrawOverlay can draw it), for a derived renderer drawing it elsewhere
+	bool m_frameHasHud = false;
 
 	// ── Device and frame hooks (overridden by OpenXRRenderer) ────────────────────────────────────────────────────
 	// Init: extensions the instance / device must have, and the GPU to use (VK_NULL_HANDLE: the first suitable one)

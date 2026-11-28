@@ -327,7 +327,9 @@ bool CreateRenderer(int width, int height)
 	{
 		// A VR headset: its head pose goes to the game's VR code (Vr.cpp), the eyes the game draws go to the headset
 		RegisterVrHeadsetEvents();
-		m_vulkanRenderer = new OpenXRRenderer(shaderFolder, CommandLineParams.DoVulkanValidation());
+		auto* openXRRenderer = new OpenXRRenderer(shaderFolder, CommandLineParams.DoVulkanValidation());
+		openXRRenderer->SetHudPanel(openXRHudDistance, openXRHudAngle);
+		m_vulkanRenderer = openXRRenderer;
 	}
 	else
 	{

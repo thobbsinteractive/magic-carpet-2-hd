@@ -158,14 +158,18 @@
 							"eyeWidth, eyeHeight: The resolution of each eye: the menus, the UI and the 3D view are drawn at this size (it replaces the in-game resolution while a headset is found). Keep it the headset eye's shape or the view is stretched. Default 1680x1760, a Meta Quest 3 eye. 1080x1080 for a phone through ALVR / PhoneVR. 0 = the headset eye's shape at the in-game resolution's height",
 							"eyeSeparation: How far apart the two eye cameras are, in map units (256 = one tile). Default 10: the world at a natural size (the original VR mode had 40, which makes it look a miniature). Bigger = stronger 3D but a smaller looking world, 0 = flat",
 							"eyeCentreOffset: Fine-tunes where straight ahead is in each eye (worked out from the headset's field of view), as a fraction of the eye's width; + moves it towards the nose (the eyes converge more), - towards the temples. Default 0, -0.25 to 0.25",
-							"swapEyes: true swaps the left and right eye images, if the 3D looks inside out"
+							"swapEyes: true swaps the left and right eye images, if the 3D looks inside out",
+							"hudDistance: The HUD (spells, map, mana) is a panel that moves with the head; how far in front of it, in metres. Default 2, 0.3 to 20",
+							"hudAngle: How wide the HUD's panel looks, in degrees. Smaller keeps its corners nearer the middle of the view; default 20, 20 to 120"
 						],
 						"enabled": false,
 						"eyeWidth": 1680,
 						"eyeHeight": 1760,
 						"eyeSeparation": 10,
 						"eyeCentreOffset": 0.0,
-						"swapEyes": false
+						"swapEyes": false,
+						"hudDistance": 2.0,
+						"hudAngle": 20.0
 					}
 				},
 				"inGameUi": {
@@ -174,7 +178,8 @@
 						"topBar: The mini-map and the health and mana bars. spellIcons: The selected left and right spell icons. spellMenu: The spell selection menu at the bottom of the screen",
 						"alignment: Horizontal position on the screen: 'left', 'center' or 'right'",
 						"marginX: Pixels in from the left edge (left), in from the right edge (right), or moved from the middle (center: + = right, - = left)",
-						"marginY: Pixels down from the top of the screen (topBar, spellIcons) or up from the bottom of the screen (spellMenu)"
+						"marginY: Pixels down from the top of the screen (topBar, spellIcons) or up from the bottom of the screen (spellMenu)",
+						"With openXR (VR) enabled the spellMenu is centred and 100 pixels up from the bottom, nearer the middle of the HUD panel, whatever is set here"
 					],
 					"topBar": {
 						"alignment": "left",

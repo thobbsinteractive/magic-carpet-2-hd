@@ -98,6 +98,8 @@ extern bool openXREnabled;   // a VR headset through OpenXR (OpenXRRenderer)
 extern int openXREyeSeparation;       // the eye cameras apart, in map units (256 a tile)
 extern float openXREyeCentreOffset;   // added to each eye's straight ahead, a fraction of its width, + towards the nose
 extern bool openXRSwapEyes;           // the left eye's image to the right eye and back
+extern float openXRHudDistance;       // the HUD's panel in front of the head, in metres (0.3 - 20)
+extern float openXRHudAngle;          // how wide the HUD's panel looks, in degrees (20 - 120)
 
 extern bool invertYAxis;
 extern bool invertXAxis;

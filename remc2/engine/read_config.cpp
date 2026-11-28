@@ -68,6 +68,8 @@ bool openXREnabled = false;
 int openXREyeSeparation = 10;
 float openXREyeCentreOffset = 0.0f;
 bool openXRSwapEyes = false;
+float openXRHudDistance = 2.0f;
+float openXRHudAngle = 20.0f;
 bool openGLRender = false;
 bool invertYAxis = true;
 bool invertXAxis = false;
@@ -264,6 +266,8 @@ bool SetConfig() {
 	openXREyeSeparation = (std::max)(settingsValue.m_Graphics.m_Hardware.m_OpenXR.m_EyeSeparation, 0);
 	openXREyeCentreOffset = std::clamp(settingsValue.m_Graphics.m_Hardware.m_OpenXR.m_EyeCentreOffset, -0.25f, 0.25f);
 	openXRSwapEyes = settingsValue.m_Graphics.m_Hardware.m_OpenXR.m_SwapEyes;
+	openXRHudDistance = std::clamp(settingsValue.m_Graphics.m_Hardware.m_OpenXR.m_HudDistance, 0.3f, 20.0f);
+	openXRHudAngle = std::clamp(settingsValue.m_Graphics.m_Hardware.m_OpenXR.m_HudAngle, 20.0f, 120.0f);
 	if (openXREnabled)
 	{
 		// As with Looking Glass (the cell size): while a headset is found the game runs at the eye resolution, so the
@@ -400,6 +404,14 @@ bool SetConfig() {
 	topBarLayout = ReadUiElementLayout(settingsValue.m_Graphics.m_InGameUi.m_TopBar, UiAlignment::Left);
 	spellIconsLayout = ReadUiElementLayout(settingsValue.m_Graphics.m_InGameUi.m_SpellIcons, UiAlignment::Right);
 	spellMenuLayout = ReadUiElementLayout(settingsValue.m_Graphics.m_InGameUi.m_SpellMenu, UiAlignment::Center);
+	if (openXREnabled)
+	{
+		// VR: the HUD is a panel in front of the head (OpenXRRenderer), its bottom edge low in the view: the spell menu
+		// centred and raised 100 pixels from it, nearer the middle
+		spellMenuLayout.alignment = UiAlignment::Center;
+		spellMenuLayout.marginX = 0;
+		spellMenuLayout.marginY = 100;
+	}
 	multiThreadedRender = settingsValue.m_Graphics.m_Threading.m_IsActive;
 	sizePercentToThreadRender = settingsValue.m_Graphics.m_Threading.m_SizePercentToThreadRender;
 	numberOfRenderThreads = settingsValue.m_Graphics.m_Threading.m_NumberOfRenderThreads;

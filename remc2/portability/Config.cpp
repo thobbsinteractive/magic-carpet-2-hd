@@ -445,6 +445,10 @@ Config::Settings::Hardware Config::GetHardware(const json& graphics)
 				values.m_EyeCentreOffset = ReadFloatValue(openXR, "eyeCentreOffset");
 			if (openXR.contains("swapEyes"))
 				values.m_SwapEyes = ReadBoolValue(openXR, "swapEyes");
+			if (openXR.contains("hudDistance"))
+				values.m_HudDistance = ReadFloatValue(openXR, "hudDistance");
+			if (openXR.contains("hudAngle"))
+				values.m_HudAngle = ReadFloatValue(openXR, "hudAngle");
 		}
 	}
 	return hardwareValues;
@@ -658,6 +662,8 @@ void Config::SaveHardwareToDoc(Config::Settings::Hardware hardware)
 	SetInt(xr, "eyeSeparation", hardware.m_OpenXR.m_EyeSeparation);
 	SetFloat(xr, "eyeCentreOffset", hardware.m_OpenXR.m_EyeCentreOffset);
 	SetBool(xr, "swapEyes", hardware.m_OpenXR.m_SwapEyes);
+	SetFloat(xr, "hudDistance", hardware.m_OpenXR.m_HudDistance);
+	SetFloat(xr, "hudAngle", hardware.m_OpenXR.m_HudAngle);
 }
 
 void Config::SaveInGameUiToDoc(Config::Settings::InGameUi inGameUi)

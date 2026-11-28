@@ -128,6 +128,8 @@ public:
 			int m_EyeSeparation = 10;        // the cameras apart, in map units (256 a tile); the original VR mode had 40, which makes the world look a miniature
 			float m_EyeCentreOffset = 0.0f;  // added to each eye's straight ahead (from the runtime's field of view), a fraction of the eye's width, + towards the nose
 			bool m_SwapEyes = false;         // the left eye's image to the right eye and back
+			float m_HudDistance = 2.0f;      // the HUD's panel in front of the head, in metres
+			float m_HudAngle = 20.0f;        // how wide the HUD's panel looks, in degrees
 		};
 
 		struct Hardware

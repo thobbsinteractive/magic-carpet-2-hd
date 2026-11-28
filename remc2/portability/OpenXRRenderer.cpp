@@ -348,6 +348,17 @@ bool OpenXRRenderer::CreateEyeSwapchains()
 			xrDestroySwapchain(m_screen.handle);
 		m_screen = EyeSwapchain{};
 	}
+
+	// The HUD's panel, an eye's size (8 bit with alpha, as the eyes): without it the HUD goes into the eyes' images
+	m_hud.width = m_eyes[0].width;
+	m_hud.height = m_eyes[0].height;
+	if (!CreateSwapchain(m_hud, format))
+	{
+		Logger->warn("OpenXR: could not create the HUD's image: the HUD is drawn into the eyes");
+		if (m_hud.handle != XR_NULL_HANDLE)
+			xrDestroySwapchain(m_hud.handle);
+		m_hud = EyeSwapchain{};
+	}
 	return true;
 }
 
@@ -438,6 +449,23 @@ bool OpenXRRenderer::EnsureStereoTarget(uint32_t width, uint32_t height)
 	return true;
 }
 
+// The HUD drawn alone: a target as the stereo image's (its render pass), the game's size of one eye
+bool OpenXRRenderer::EnsureHudTarget(uint32_t width, uint32_t height)
+{
+	if (m_hudTarget.framebuffer && m_hudExtent.width == width && m_hudExtent.height == height)
+		return true;
+	vkDeviceWaitIdle(m_device);
+	DestroyColourTarget(m_hudTarget);
+	m_hudExtent = { 0, 0 };
+	if (!CreateColourTarget(width, height, m_stereoRenderPass, m_hudTarget, VK_NULL_HANDLE, VK_IMAGE_USAGE_TRANSFER_SRC_BIT))
+	{
+		DestroyColourTarget(m_hudTarget);
+		return false;
+	}
+	m_hudExtent = { width, height };
+	return true;
+}
+
 // ── Shut down ────────────────────────────────────────────────────────────────────────────────────────────────
 void OpenXRRenderer::Shutdown()
 {
@@ -449,6 +477,8 @@ void OpenXRRenderer::Shutdown()
 	DestroyXrSession();   // before the Vulkan device it uses
 	DestroyColourTarget(m_stereoTarget);
 	m_stereoExtent = { 0, 0 };
+	DestroyColourTarget(m_hudTarget);
+	m_hudExtent = { 0, 0 };
 	vkDestroyRenderPass(m_device, m_stereoRenderPass, nullptr);
 	m_stereoRenderPass = VK_NULL_HANDLE;
 	VulkanPolygonRenderer::Shutdown();
@@ -457,7 +487,7 @@ void OpenXRRenderer::Shutdown()
 void OpenXRRenderer::DestroyXrSession()
 {
 	SendHeadPose(false);
-	for (EyeSwapchain* swapchain : { &m_eyes[0], &m_eyes[1], &m_screen })
+	for (EyeSwapchain* swapchain : { &m_eyes[0], &m_eyes[1], &m_screen, &m_hud })
 	{
 		if (swapchain->handle != XR_NULL_HANDLE)
 			xrDestroySwapchain(swapchain->handle);
@@ -604,7 +634,7 @@ void OpenXRRenderer::OnFrameSubmitted()
 // frame stopped before it was submitted)
 void OpenXRRenderer::EndXrFrame(bool submit)
 {
-	for (EyeSwapchain* swapchain : { &m_eyes[0], &m_eyes[1], &m_screen })
+	for (EyeSwapchain* swapchain : { &m_eyes[0], &m_eyes[1], &m_screen, &m_hud })
 	{
 		if (!swapchain->acquired)
 			continue;
@@ -614,15 +644,19 @@ void OpenXRRenderer::EndXrFrame(bool submit)
 	}
 	const bool submitEyes = submit && m_eyesCopied;
 	const bool submitScreen = submit && m_screenCopied;
+	const bool submitHud = submit && m_hudCopied;
 	m_eyesCopied = false;
 	m_screenCopied = false;
+	m_hudCopied = false;
 	if (!m_xrFrameBegun)
 		return;
 
 	XrCompositionLayerProjectionView projectionViews[kEyeCount]{};
 	XrCompositionLayerProjection layer{ XR_TYPE_COMPOSITION_LAYER_PROJECTION };
 	XrCompositionLayerQuad screenLayer{ XR_TYPE_COMPOSITION_LAYER_QUAD };
-	const XrCompositionLayerBaseHeader* layers[] = { reinterpret_cast<const XrCompositionLayerBaseHeader*>(&layer) };
+	XrCompositionLayerQuad hudLayer{ XR_TYPE_COMPOSITION_LAYER_QUAD };
+	const XrCompositionLayerBaseHeader* layers[] = { reinterpret_cast<const XrCompositionLayerBaseHeader*>(&layer),
+		reinterpret_cast<const XrCompositionLayerBaseHeader*>(&hudLayer) };
 	const XrCompositionLayerBaseHeader* screenLayers[] = { reinterpret_cast<const XrCompositionLayerBaseHeader*>(&screenLayer) };
 
 	XrFrameEndInfo endInfo{ XR_TYPE_FRAME_END_INFO };
@@ -684,6 +718,25 @@ void OpenXRRenderer::EndXrFrame(bool submit)
 		layer.views = projectionViews;
 		endInfo.layerCount = 1;
 		endInfo.layers = layers;
+
+		// The HUD over them: a flat panel hudDistance straight ahead of the head (in its own space, so it moves with it),
+		// hudAngle wide, its shape the HUD's. The runtime puts it into both eyes, so it is one panel at that distance.
+		// Its alpha blends it: drawn on transparent black, its colour is already multiplied by it
+		if (submitHud)
+		{
+			const float width = 2.0f * m_hudDistance * std::tan(m_hudAngle * 3.14159265f / 360.0f);
+			hudLayer.layerFlags = XR_COMPOSITION_LAYER_BLEND_TEXTURE_SOURCE_ALPHA_BIT;
+			hudLayer.space = m_viewSpace;
+			hudLayer.eyeVisibility = XR_EYE_VISIBILITY_BOTH;
+			hudLayer.subImage.swapchain = m_hud.handle;
+			hudLayer.subImage.imageRect.offset = { 0, 0 };
+			hudLayer.subImage.imageRect.extent = { m_hud.width, m_hud.height };
+			hudLayer.subImage.imageArrayIndex = 0;
+			hudLayer.pose.orientation = { 0.0f, 0.0f, 0.0f, 1.0f };
+			hudLayer.pose.position = { 0.0f, 0.0f, -m_hudDistance };
+			hudLayer.size = { width, width / m_hudAspect };
+			endInfo.layerCount = 2;
+		}
 	}
 	xrEndFrame(m_session, &endInfo);
 	m_xrFrameBegun = false;
@@ -748,6 +801,9 @@ VulkanPolygonRenderer::FrameCells OpenXRRenderer::GetFrameCells(const SDL_Rect& 
 	}
 	if (!m_frameStereo && !m_frameScreen)
 		return VulkanPolygonRenderer::GetFrameCells(srcRect, destRect);
+	// The HUD's own image, one eye's size; without it the HUD goes into the eyes (DrawHudInCells)
+	if (m_frameStereo && m_hud.handle != XR_NULL_HANDLE && !EnsureHudTarget((uint32_t)srcRect.w, (uint32_t)srcRect.h))
+		Logger->error("OpenXR: could not create the {}x{} HUD image", srcRect.w, srcRect.h);
 
 	m_frameSrcRect = srcRect;
 	m_frameDestRect = destRect;
@@ -783,11 +839,73 @@ void OpenXRRenderer::EndCellsRenderPass(VkCommandBuffer commandBuffer, const VkC
 
 	vkCmdEndRenderPass(commandBuffer);
 	if (m_frameStereo)
+	{
 		CopyEyesToHeadset(commandBuffer);
+		if (HudPanelActive())
+			DrawHudPanel(commandBuffer);
+	}
 	else
 		CopyScreenToHeadset(commandBuffer);
 	BeginWindowRenderPass(commandBuffer, clearColor);
 	DrawMirror(commandBuffer);
+	// The HUD left out of the eyes (it is on its own layer in the headset): over each eye of the mirror
+	if (m_frameStereo && !DrawHudInCells() && m_frameHasHud)
+	{
+		const SDL_Rect& area = m_frameDestRect;
+		for (uint32_t eye = 0; eye < kEyeCount; eye++)
+		{
+			const int left = area.x + area.w * (int)eye / (int)kEyeCount;
+			const int right = area.x + area.w * (int)(eye + 1) / (int)kEyeCount;
+			DrawOverlay(SDL_Rect{ left, area.y, right - left, area.h }, commandBuffer, m_swapchainExtent);
+		}
+	}
+}
+
+// The eyes' frames leave the HUD out while it has its own layer: the panel's image and its target exist
+bool OpenXRRenderer::DrawHudInCells() const
+{
+	return !(m_frameStereo && m_hud.handle != XR_NULL_HANDLE && m_hudExtent.width > 0);
+}
+
+bool OpenXRRenderer::HudPanelActive() const
+{
+	return !DrawHudInCells() && m_frameHasHud && m_xrFrameBegun && m_frameState.shouldRender;
+}
+
+// The HUD alone on transparent black (the HUD pipeline blends it: its colour comes out multiplied by its alpha, the alpha
+// as it is) into m_hudTarget, then scaled into the panel's headset image
+void OpenXRRenderer::DrawHudPanel(VkCommandBuffer commandBuffer)
+{
+	XrSwapchainImageAcquireInfo acquireInfo{ XR_TYPE_SWAPCHAIN_IMAGE_ACQUIRE_INFO };
+	if (XR_FAILED(xrAcquireSwapchainImage(m_hud.handle, &acquireInfo, &m_hud.acquiredIndex)))
+		return;
+	m_hud.acquired = true;
+	XrSwapchainImageWaitInfo imageWaitInfo{ XR_TYPE_SWAPCHAIN_IMAGE_WAIT_INFO };
+	imageWaitInfo.timeout = XR_INFINITE_DURATION;
+	if (XR_FAILED(xrWaitSwapchainImage(m_hud.handle, &imageWaitInfo)))
+		return;   // released (not submitted) when the frame ends
+
+	VkClearValue transparent{};
+	transparent.color = { { 0.0f, 0.0f, 0.0f, 0.0f } };
+	VkRenderPassBeginInfo hudBegin{};
+	hudBegin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+	hudBegin.renderPass = m_stereoRenderPass;
+	hudBegin.framebuffer = m_hudTarget.framebuffer;
+	hudBegin.renderArea.extent = m_hudExtent;
+	hudBegin.clearValueCount = 1;
+	hudBegin.pClearValues = &transparent;
+	vkCmdBeginRenderPass(commandBuffer, &hudBegin, VK_SUBPASS_CONTENTS_INLINE);
+	DrawOverlay(SDL_Rect{ 0, 0, (int)m_hudExtent.width, (int)m_hudExtent.height }, commandBuffer, m_hudExtent);
+	vkCmdEndRenderPass(commandBuffer);
+
+	ImageBarrier(commandBuffer, m_hudTarget.image, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+		VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT, VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+		VK_PIPELINE_STAGE_TRANSFER_BIT, VK_ACCESS_TRANSFER_READ_BIT);
+	BlitIntoXrImage(commandBuffer, m_hudTarget.image, SDL_Rect{ 0, 0, (int)m_hudExtent.width, (int)m_hudExtent.height },
+		m_hud.images[m_hud.acquiredIndex].image, m_hud.width, m_hud.height);
+
+	m_hudAspect = (float)m_hudExtent.width / (float)m_hudExtent.height;
+	m_hudCopied = true;
 }
 
 void OpenXRRenderer::CopyEyesToHeadset(VkCommandBuffer commandBuffer)

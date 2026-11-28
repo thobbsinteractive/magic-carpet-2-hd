@@ -27,6 +27,8 @@ public:
 
 	bool Init(SDL_Window* window, int windowWidth, int windowHeight) override;
 	void Shutdown() override;
+	// The HUD's panel, which moves with the head (openXR hudDistance, hudAngle): metres in front, degrees wide
+	void SetHudPanel(float distance, float angle) { m_hudDistance = distance; m_hudAngle = angle; }
 
 protected:
 	std::vector<std::string> GetRequiredInstanceExtensions() override;
@@ -38,6 +40,7 @@ protected:
 	FrameCells GetFrameCells(const SDL_Rect& srcRect, const SDL_Rect& destRect) override;
 	void BeginCellsRenderPass(VkCommandBuffer commandBuffer, const VkClearValue& clearColor) override;
 	void EndCellsRenderPass(VkCommandBuffer commandBuffer, const VkClearValue& clearColor) override;
+	bool DrawHudInCells() const override;
 
 private:
 	static constexpr uint32_t kEyeCount = 2;
@@ -71,6 +74,11 @@ private:
 	void CopyEyesToHeadset(VkCommandBuffer commandBuffer);
 	void CopyScreenToHeadset(VkCommandBuffer commandBuffer);
 	void DrawMirror(VkCommandBuffer commandBuffer);
+	// The HUD on its own layer, a panel in front of the head: drawn alone (on transparent black) into m_hudTarget,
+	// copied into its headset image
+	bool HudPanelActive() const;
+	bool EnsureHudTarget(uint32_t width, uint32_t height);
+	void DrawHudPanel(VkCommandBuffer commandBuffer);
 
 	XrInstance m_xrInstance = XR_NULL_HANDLE;
 	XrSystemId m_systemId = XR_NULL_SYSTEM_ID;
@@ -96,6 +104,14 @@ private:
 	VkRenderPass m_stereoRenderPass = VK_NULL_HANDLE;
 	ColourTarget m_stereoTarget;
 	VkExtent2D m_stereoExtent{ 0, 0 };
+
+	EyeSwapchain m_hud;            // the HUD panel's headset image (with its alpha)
+	ColourTarget m_hudTarget;      // the HUD drawn alone, then copied into m_hud
+	VkExtent2D m_hudExtent{ 0, 0 };
+	float m_hudDistance = 2.0f;
+	float m_hudAngle = 20.0f;
+	bool m_hudCopied = false;      // this frame's HUD is in m_hud's image
+	float m_hudAspect = 1.0f;      // the HUD's width / height: the panel's shape
 
 	// This frame
 	bool m_frameStereo = false;    // the game sent the eyes (1 x 2) and they go into the stereo image
