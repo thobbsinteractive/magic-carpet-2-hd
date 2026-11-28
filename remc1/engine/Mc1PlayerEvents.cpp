@@ -19,6 +19,7 @@
 #include "Mc1Sound.h"
 #include "Mc1Terrain.h"
 #include "Mc1World.h"
+#include "../../remc2/engine/Basic.h"
 #include "../../remc2/engine/read_config.h"
 #include "../../remc2/engine/Scene.h"
 #include "../../remc2/shared/EventDispatcher.h"
@@ -492,11 +493,29 @@ void SetPlayerMode_3DC90_3DFD0(Type_Mc1Player_340B* player, uint8_t mode)
 		}
 		QueueSound_55370_558A0(0, player->index_0x07_7, 0x0E);
 		// port: the scene of the gamepad of remc2 (MC2 SetMenuCursorPosition_52E90, DrawBottomSpellsMenu_2ECC0)
-		static const Scene scenes[5] = { Scene::FLIGHT, Scene::FLIGHT_MENU, Scene::SPELL_MENU, Scene::CHAT_MENU, Scene::FLIGHT_MENU };
-		if (mode < 5)
-			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, scenes[mode]);
+		Mc1SetModeScene(mode);
 	}
 	CheckCd_3DD10_3E050();
+}
+
+// port: the scene of remc2 (E_SCENE_CHANGE) for the gamepad (port_sdl_joystick): flight (the stick steers) or a menu (it
+// moves the pointer), dead (a button is Space, the rebirth). Sent when it changes: MC1 has no listener of its own (MC2
+// keeps its scene in sub_main), so the last one sent is kept here
+void Mc1SetScene(Scene scene)
+{
+	static int lastScene = -1;
+	if (lastScene == (int)scene || !EventDispatcher::I)
+		return;
+	lastScene = (int)scene;
+	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, scene);
+}
+
+// the scene of the player's mode: 0 the flight, 1 / 4 the menus over the flight, 2 the map and the spells, 3 a message
+void Mc1SetModeScene(uint8_t mode)
+{
+	static const Scene scenes[5] = { Scene::FLIGHT, Scene::FLIGHT_MENU, Scene::SPELL_MENU, Scene::CHAT_MENU, Scene::FLIGHT_MENU };
+	if (mode < 5)
+		Mc1SetScene(scenes[mode]);
 }
 
 void CheckCd_3DD10_3E050()
@@ -999,7 +1018,9 @@ void SetCenterMouse_59720_59C30()
 	if (*videoMode_12F02E_12F01E == 1)
 		SetMousePosition_59750_59C60(0x140, 0xC8);
 	else
-		SetMousePosition_59750_59C60(0x140, 0xF0);
+		// 140h x F0h at 640x480; port: the centre of the UI's coordinates at the other resolutions, where the flight
+		// takes its straight ahead (MouseToMove_169E0)
+		SetMousePosition_59750_59C60((int16_t)(UiScreenWidth() / 2), (int16_t)(UiScreenHeight() / 2));
 }
 
 void SetMousePosition_59750_59C60(int16_t x, int16_t y)
@@ -1010,23 +1031,21 @@ void SetMousePosition_59750_59C60(int16_t x, int16_t y)
 		return;
 	if (x == -1)
 		return;
+	// the last pixel but one: 27Eh x 18Eh / 1DEh; port: of the screen at the other resolutions (the same at 640x480)
+	const bool low = (*videoMode_12F02E_12F01E & 1) != 0;
 	if (x > 0)
 	{
-		if (x > 0x27E)
-			x = 0x27E;
+		const int16_t maxX = low ? 0x27E : (int16_t)(UiScreenWidth() - 2);
+		if (x > maxX)
+			x = maxX;
 		mousePos_9AD90_9AD90->x = x;
 	}
 	if (y > 0)
 	{
-		const int16_t maxY = (*videoMode_12F02E_12F01E & 1) ? 0x18E : 0x1DE;
+		const int16_t maxY = low ? 0x18E : (int16_t)(UiScreenHeight() - 2);
 		if (y > maxY)
 			y = maxY;
 		mousePos_9AD90_9AD90->y = y;
 	}
-	else
-		y = mousePos_9AD90_9AD90->y;
-	if (*videoMode_12F02E_12F01E & 1)
-		VGA_Set_mouse(x / 2, y / 2);
-	else
-		VGA_Set_mouse(x, y);
+	VGA_Set_mouse(mousePos_9AD90_9AD90->x, mousePos_9AD90_9AD90->y);
 }

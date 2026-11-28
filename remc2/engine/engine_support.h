@@ -474,6 +474,12 @@ class thread_exit_exception : public std::exception {};
 void End_thread(int backCode);
 
 void support_begin();
+// the screen buffer allocated by support_begin (pdwScreenBuffer_351628 there): GAME_RES_MAX_WIDTH x GAME_RES_MAX_HEIGHT
+// with padding either side; MC1 points its work screen at it
+uint8_t* GetScreenBufferAllocation();
+// only the screen buffer of support_begin / support_end: MC1 needs none of the other MC2 tables
+void AllocateScreenBuffer();
+void FreeScreenBuffer();
 void support_end();
 
 void loadfromsnapshot(const char* filename, uint8_t* adress, uint32_t adressdos, uint32_t size);

@@ -7,14 +7,14 @@
 #pragma pack(push, 1)
 typedef struct {
 	int32_t x_DWORD_18058C;
-	int32_t joyAxisX_180590; // [4]//inputState_18058C.x_DWORD_180590//1
-	int32_t joyAxisY_180594; // [8]//inputState_18058C.x_DWORD_180594//2
-	int32_t joyAxisZ_180598; // [12]//inputState_18058C.x_DWORD_180598//3
+	int32_t headTrackerYaw_180590; // [4]//inputState_18058C.x_DWORD_180590//1
+	int32_t headTrackerPitch_180594; // [8]//inputState_18058C.x_DWORD_180594//2
+	int32_t headTrackerRoll_180598; // [12]//inputState_18058C.x_DWORD_180598//3
 	int32_t MouseButtonState_18059C; // [16]//inputState_18058C.x_DWORD_18059C//4
 	int32_t x_DWORD_1805A0; // weak//unk_18058Car[20]//5
-	int32_t joyCenterX_1805A4; // weak//unk_18058Car[0x18]//6
-	int32_t joyCenterY_1805A8; // weak//unk_18058Car[28]//7
-	int32_t joyCenterZ_1805AC; // weak//unk_18058Car[0x20]//8
+	int32_t headTrackerCenterYaw_1805A4; // weak//unk_18058Car[0x18]//6
+	int32_t headTrackerCenterPitch_1805A8; // weak//unk_18058Car[28]//7
+	int32_t headTrackerCenterRoll_1805AC; // weak//unk_18058Car[0x20]//8
 	axis_2d_32 mouse_1805B0;
 	//int32_t x_DWORD_1805B0_mouse.x; // weak//unk_18058Car[36]
 	//int32_t x_DWORD_1805B0_mouse.y; // weak//unk_18058Car[40]
@@ -31,6 +31,10 @@ typedef struct {
 #pragma pack(pop)
 
 
+// SDL joystick axes received via E_JOYSTICK_AXIS, read by ReadJoystick_8BBE0 in place of the game port (0x201)
+extern int16_t m_JoystickYaw;
+extern int16_t m_JoystickPitch;
+
 extern char cursorSpriteIndex_D419E; // weak//2a519e
 extern char IsPauseMenuOpen_D47D9; // weak
 extern int debugcounter_47560;
@@ -43,6 +47,14 @@ extern int x_DWORD_17FF38; // weak
 extern int x_DWORD_17FF40; // weak
 
 void ProcessKeyboardPresses_17190();
+char StopSoundAndMusic_5BF10();
+void FindNearestEntity_70940();
+void HandleOptionsMenuButtonClick_19A70();
+void SwitchHelpMode_18AA0();
+int SelectSpell_6D4F0(type_str_611* a1, int16_t mouseX);
+void ChangeGameResolution_46B40();
+int ClearVgaMemory_906B4();
+signed int InitScanlineOffsets_90668(int a1);
 void MouseAndKeysEvents_17A00(int16_t turn);
 void PauseUnpauseGame_18BB0();
 void HandleButtonClick_191B0(int16_t hiSetting, char loSetting);
@@ -57,6 +69,8 @@ void FlyAssistant_1A7A0();
 void HandleMouseButtons_18F80(type_entity_0x6E8E* a1);
 void HandleArrowKeyPresses_1A8A0();
 void ComputeMousePlayerMovement_17060(int16_t x, int16_t y);
+void OnJoystickAxis(int16_t yaw, int16_t pitch);
+uint8_t* GetFlightJoystickState();
 int SelectSpellCategory_6D420(int16_t posX, int16_t posY);
 char UpdateSubSpellIndex_6D4C0(type_str_611* a1);
 void ReadOptionMenuEvents_19AB0();

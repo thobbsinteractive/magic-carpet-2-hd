@@ -1157,17 +1157,33 @@ void End_thread(int backCode)
 		exit(backCode);
 }
 
+uint8_t* GetScreenBufferAllocation()
+{
+	return pre_pdwScreenBuffer_351628 ? &pre_pdwScreenBuffer_351628[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)] : nullptr;
+}
+
+void AllocateScreenBuffer()
+{
+	pre_pdwScreenBuffer_351628 = (uint8_t*)malloc((GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT) * 3); // Allow x 3 padding for sprite rendering
+	pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
+}
+
+void FreeScreenBuffer()
+{
+	if (pre_pdwScreenBuffer_351628)
+		free(pre_pdwScreenBuffer_351628);
+	// GetScreenBufferAllocation tells MC1 whether the buffer is there
+	pre_pdwScreenBuffer_351628 = nullptr;
+	pdwScreenBuffer_351628 = nullptr;
+}
+
 void support_begin() {
 	readbuffer = (uint8_t*)malloc(1000000);//fix it max 64000
 	printbuffer = (char*)malloc(printBufferSize);
 	//printbuffer[0] = '\0';
 	printbuffer2 = (char*)malloc(printBufferSize);
 
-	//pre_pdwScreenBuffer_351628 = (uint8_t*)malloc(2228224);// 640x480
-	//pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[1114112];// 640x480
-
-	pre_pdwScreenBuffer_351628 = (uint8_t*)malloc((GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT) * 3); // Allow x 3 padding for sprite rendering
-	pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
+	AllocateScreenBuffer();
 
 	//smalltitBuffer_E9C38= (uint8_t*)malloc(64000);
 	//x_D41A0_BYTEARRAY_4_0xDE_heapbuffer= (uint8_t*)malloc(64000);
@@ -1209,7 +1225,7 @@ void support_end() {
 	if (readbuffer)free(readbuffer);
 	if (printbuffer)free(printbuffer);//char* buffer; // [esp+0h] [ebp-2h]
 	if (printbuffer2)free(printbuffer2);//char v11; // [esp+40h] [ebp+3Eh]
-	if (pre_pdwScreenBuffer_351628)free(pre_pdwScreenBuffer_351628);
+	FreeScreenBuffer();
 	//free(smalltitBuffer_E9C38);
 	/*for (int i = 0;i < 0x1c;i++)
 		free(off_D918C[i]);*/

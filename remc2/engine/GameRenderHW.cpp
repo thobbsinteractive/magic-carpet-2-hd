@@ -206,7 +206,7 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	m_primaryView = true;
 	m_frameViews.composition = ViewComposition::Cells;
 
-	if (anaglyphMode)
+	if (anaglyphMode || Mc1AnaglyphStereo())
 	{
 		// The original stereo mode's eyes (sideways along the camera's right axis, the projection centre shifted
 		// 1/40 of the screen), each into its own list: the renderer combines them through the glasses' colours
@@ -308,8 +308,8 @@ void GameRenderHW::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 	EventDispatcher::I->DispatchEvent<ResourceType, RenderViews*>(EventType::E_RESOURCE_CHANGE, ResourceType::POLYGONS_UPDATED, &m_frameViews);
 }
 
-// MC1 30D90: the views which need the screen buffers - the stereogram (screen size 2), red-blue (screen size 1: the
-// second eye into the blur buffer, joined by 30B30) and VFX1 (both eyes side by side, 640x480)
+// MC1 30D90: the views which need the screen buffers - the stereogram (screen size 2) and VFX1 (both eyes side by side,
+// 640x480). The red-blue (screen size 1) is the GPU's anaglyph (Mc1AnaglyphStereo)
 bool GameRenderHW::Mc1SoftwareMode()
 {
 	if (!RenderMc1())
@@ -317,7 +317,17 @@ bool GameRenderHW::Mc1SoftwareMode()
 	const auto& settings = world_D41A0.m_GameSettings;
 	if (settings.graphics_0x2192.xxxx_0x2193)
 		return settings.m_Display.m_uiScreenSize && screenWidth_18062C == 640;
-	return settings.m_Display.m_uiScreenSize == 1 || settings.m_Display.m_uiScreenSize == 2;
+	return settings.m_Display.m_uiScreenSize == 2;
+}
+
+// MC1 F10 red-blue stereo (screen size 1 without VFX1): drawn as F11's anaglyph (the game skips its stereo palette and
+// the join of the eyes in 30B30 with this renderer)
+bool GameRenderHW::Mc1AnaglyphStereo()
+{
+	if (!RenderMc1())
+		return false;
+	const auto& settings = world_D41A0.m_GameSettings;
+	return !settings.graphics_0x2192.xxxx_0x2193 && settings.m_Display.m_uiScreenSize == 1;
 }
 
 // drawn in software (GameRenderNG) into the screen buffer, shown over the 3D view (no polygons) through the alpha of
@@ -534,15 +544,12 @@ void GameRenderHW::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 	polygons->clear();
 	polygons->reserve(1 + 2 * (size_t)m_tileRows * m_tileColumns + kReservedSprites);
 
+	const uint8_t colour = RenderMc1() ? 0xFF : m_BackgroundColour_D4B7C;   // MC1 2A700: 0xFF
+	EventDispatcher::I->DispatchEvent<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, ResourceType::CLEAR_COLOURIDX_SET, colour);
+
 	if (!world_D41A0.m_GameSettings.m_Graphics.m_wSky || isCaveLevel_D41B6)
 	{
 		// The background colour over the view port, 4 bytes at a time (as the original, the width rounded down to 4)
-		const uint8_t colour = RenderMc1() ? 0xFF : m_BackgroundColour_D4B7C;   // MC1 2A700: 0xFF
-		if (RenderMc1() && m_mc1ClearColour != colour)
-		{
-			m_mc1ClearColour = colour;
-			EventDispatcher::I->DispatchEvent<ResourceType, uint8_t>(EventType::E_RESOURCE_CHANGE, ResourceType::CLEAR_COLOURIDX_SET, colour);
-		}
 		const int fill = colour | colour << 8 | colour << 16 | colour << 24;
 		const int filled = ((uint16_t)viewPort.Width_DE564 / 4) * 4;
 		uint8_t* line = ViewPortRenderBufferStart_DE558;
@@ -857,10 +864,13 @@ GameRenderHW::SpriteChoice GameRenderHW::ChooseSprite(type_entity_0x6E8E* entity
 // The screen position of a sprite: across and height in the view space at the depth, rotated by the roll
 void GameRenderHW::ProjectSprite(int across, int height, int depth)
 {
-	const int x = across * spriteRender_F2C20.projectionScale_0x18 / depth;
-	const int y = spriteRender_F2C20.projectionScale_0x18 * height / depth + spriteRender_F2C20.horizonOffset_0x22;
-	spriteRender_F2C20.screenY_0x04 = ((x * spriteRender_F2C20.cos_0x11 - spriteRender_F2C20.sin_0x0d * y) >> 16) + spriteRender_F2C20.centerX_0x24;
-	spriteRender_F2C20.screenX_0x03 = spriteRender_F2C20.centerY_0x10 - ((spriteRender_F2C20.sin_0x0d * x + y * spriteRender_F2C20.cos_0x11) >> 16);
+	const int64_t scale = spriteRender_F2C20.projectionScale_0x18;
+	const int64_t cos = spriteRender_F2C20.cos_0x11;
+	const int64_t sin = spriteRender_F2C20.sin_0x0d;
+	const int64_t x = across * scale / depth;
+	const int64_t y = scale * height / depth + spriteRender_F2C20.horizonOffset_0x22;
+	spriteRender_F2C20.screenY_0x04 = static_cast<int>(((x * cos - sin * y) >> 16) + spriteRender_F2C20.centerX_0x24);
+	spriteRender_F2C20.screenX_0x03 = static_cast<int>(spriteRender_F2C20.centerY_0x10 - ((sin * x + y * cos) >> 16));
 }
 
 // The sprite's drawing mode by its lighting table, lit (dword0x00 = 0x2000) or in the fog

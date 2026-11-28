@@ -27,6 +27,7 @@
 #include "Mc1System.h"
 #include "../../remc2/engine/Graphics.h"
 #include "../../remc2/engine/PlayerInput.h"
+#include "../../remc2/engine/CommandLineParser.h"
 #include "../../remc2/engine/read_config.h"
 #include "../../remc2/portability/port_sdl_vga_mouse.h"
 #include "../../remc2/portability/port_filesystem.h"
@@ -59,6 +60,12 @@ uint8_t byte_A9058_A9058 = 0;
 static Type_Mc1Player_340B* CurrentPlayer()
 {
 	return &mc1State_AE400_AE3F0->players_0x340B_13323[mc1State_AE400_AE3F0->currentPlayer_0x08_8];
+}
+
+static bool AutoHighResolution()
+{
+	return CommandLineParams.DoAutoChangeRes() && gameResWidth >= 640 && gameResHeight >= 480
+		&& mc1State_AE400_AE3F0->options_0x21AD_8621[10] && *videoMode_12F02E_12F01E == 1 && !sdlInputLocked;
 }
 
 int Main_404F0_40830(int argc, char** argv)
@@ -145,7 +152,7 @@ int TopProcedure_340B0(int argc, char** argv)
 				if (!(mc1Settings_AE408_AE3F8->flags_0x00_0 & 4))
 				{
 					SetFullScreen_31A00_31A40();
-					if (screenMode == 8)
+					if (screenMode == 8 || AutoHighResolution())
 						ToggleResolution_34C80_35040();
 					RestoreScreenSize_31A60_31AA0();
 				}
@@ -271,7 +278,7 @@ int TopProcedure_34470(int argc, char** argv)
 				if (!(mc1Settings_AE408_AE3F8->flags_0x00_0 & 4))
 				{
 					SetFullScreen_31A00_31A40();
-					if (screenMode == 8)
+					if (screenMode == 8 || AutoHighResolution())
 						ToggleResolution_34C80_35040();
 					RestoreScreenSize_31A60_31AA0();
 				}
@@ -636,7 +643,7 @@ void ToggleResolution_34C80_35040()
 		FreeFileGroup_61610_61B20(screenFilesMcga_997BC_997BC);
 		*videoMode_12F02E_12F01E = 8;
 		LoadFileGroup_40440_40780(screenFilesHires_99898_99898);
-		blurSize = 640 * 480;
+		blurSize = gameResWidth * gameResHeight;
 	}
 	else
 	{
@@ -647,16 +654,20 @@ void ToggleResolution_34C80_35040()
 	}
 	*blurBuffer_AE404_AE3F4 = (uint8_t*)Malloc_42540_42880(blurSize);
 	RelocateTabs_59500_59A10(tabRelocations_99974_99974);
+
 	//!!!!! the original gives the work screen as the palette (the new one is zero: black until the next fade)
 	if (*videoMode_12F02E_12F01E & 1)
-		SetVideoMode320x200AndPalette_61B90_620A0((TColor*)*workScreen_12EFF4_12EFE4);
+		SetGameVideoMode320x200AndPalette(*workScreen_12EFF4_12EFE4);
 	else
-		SetVideoMode640x480AndPalette_61C30_62140((TColor*)*workScreen_12EFF4_12EFE4);
+		SetGameVideoMode640AndPalette(*workScreen_12EFF4_12EFE4);
+
 	if (*videoMode_12F02E_12F01E & 1)
 		ClearScreen320_411D7_41517(*workScreen_12EFF4_12EFE4, 320, 200, 0);
 	else
-		ClearScreen640_411FD_4153D(*workScreen_12EFF4_12EFE4, 640, 480, 0);
+		ClearScreen640_411FD_4153D(*workScreen_12EFF4_12EFE4, *screenWidth_12EFF0_12EFE0, *screenHeight_12EFF8_12EFE8, 0); // port: the screen size, the work screen is the buffer of remc2
+
 	InstallMouse_5C214_5C724();
+	SetCenterMouse_59720_59C30();
 	SetCursor_5C05C_5C56C(pointersIndex[0]);
 	mc1Settings_AE408_AE3F8->flag_0x17_23 = 0;
 }

@@ -7,6 +7,7 @@
 
 #include "Mc1Files.h"
 #include "Mc1Game.h"
+#include "Mc1Panel.h"
 #include "Mc1Render.h"
 #include "Mc1Sound.h"
 #include "../../remc2/engine/Basic.h"
@@ -15,6 +16,7 @@
 #include "../../remc2/engine/read_config.h"
 #include "../../remc2/portability/port_sdl_joystick.h"
 #include "../../remc2/portability/port_sdl_vga_mouse.h"
+#include "../../remc2/shared/EventDispatcher.h"
 
 uint8_t graphicsInitialized_93A84_93A84 = 0;
 uint8_t highResScreen_90708_90708 = 0; // 1 after 31600 / 31640 set the mode for screen size 1
@@ -89,12 +91,50 @@ void FreeCursorBuffers()
 	*cursorBackground2_12EF88_12EF78 = nullptr;
 }
 
+// port: the screen at the game resolution, for the window and the gamepad (MC2 ChangeGameResolution_46B40)
+static bool gameResolutionScreen = false;
+
+static void ResolutionChanged()
+{
+	if (EventDispatcher::I != nullptr)
+		EventDispatcher::I->DispatchEvent(EventType::E_RESOLUTION_CHANGE, screenWidth_18062C, screenHeight_180624);
+}
+
+void SetGameVideoMode320x200AndPalette(uint8_t* palette)
+{
+	SetVideoMode320x200AndPalette_61B90_620A0((TColor*)palette);
+	if (gameResolutionScreen)
+	{
+		gameResolutionScreen = false;
+		ResolutionChanged();
+	}
+}
+
+void SetGameVideoMode640AndPalette(uint8_t* palette)
+{
+	if (!IsDefaultResolution(gameResWidth, gameResHeight))
+	{
+		screenWidth_18062C = gameResWidth;
+		screenHeight_180624 = gameResHeight;
+		VgaSetVideoModeAltAndPalette_90E07((TColor*)palette);
+		gameResolutionScreen = true;
+		ResolutionChanged();
+		return;
+	}
+	SetVideoMode640x480AndPalette_61C30_62140((TColor*)palette);
+	if (gameResolutionScreen)
+	{
+		gameResolutionScreen = false;
+		ResolutionChanged();
+	}
+}
+
 void SetScreenModeAndPalette_315C0_31600()
 {
 	if (*videoMode_12F02E_12F01E & 1)
-		SetVideoMode320x200AndPalette_61B90_620A0((TColor*)palette_AE428_AE418);
+		SetGameVideoMode320x200AndPalette(palette_AE428_AE418);
 	else
-		SetVideoMode640x480AndPalette_61C30_62140((TColor*)palette_AE428_AE418);
+		SetGameVideoMode640AndPalette(palette_AE428_AE418);
 	highResScreen_90708_90708 = 0;
 }
 
@@ -179,6 +219,8 @@ void SetStereoScreen_31600_31640()
 		ClearScreenAndBlitVfx_5B500_5BA10();
 	if (!*blurBuffer_AE404_AE3F4 || state->vfx_0x219E_8606)
 		return;
+	if (Mc1HwAnaglyphStereo())
+		return; // port: the GPU's anaglyph in the colours of the game, without the palette of 8 reds, 8 greens, 4 blues
 	const uint16_t mode = *screenWidth_12EFF0_12EFE0 == 320 ? 0x10E : 0x111;
 	if (HasVesaMode_30D30_30D70(mode))
 	{
@@ -236,7 +278,7 @@ void BlendAndBlit_30B30_30B70()
 
 static void BlendAndBlit(Type_Mc1State_AE400_AE3F0* state)
 {
-	if (state->screenSize_0x219B_8603 == 1 && !highResScreen_90708_90708)
+	if (state->screenSize_0x219B_8603 == 1 && !highResScreen_90708_90708 && !Mc1HwAnaglyphStereo()) // port: HW joins the eyes on the GPU
 	{
 		const int groups = (uint16_t)viewPort.Width_DE564 >> 2;
 		uint8_t* screen = ViewPortRenderBufferStart_DE558;
@@ -282,9 +324,21 @@ void SetMapViewPort_309D0_30A10(int32_t size)
 	}
 	else
 	{
-		*viewPortOffset_B5CA0_B5C90 = *screenWidth_12EFF0_12EFE0 - size * 16;
-		width = (uint16_t)(size * 16);
-		height = (uint16_t)(size * 12);
+		// port: from the right edge of the map (17Eh wide, 2231E) to the right of the screen, from the top down to the
+		// spells table (Mc1SpellTablePosition) less the original gap of 2; the original size * 16 x size * 12 at 180h
+		// (256 x 192 at 640x480, as here). Rounded to 4 pixels as the renderers draw groups of 4: the left edge up (180h
+		// as the original), the width and height down, so the view port stays within the screen and clear of the map and
+		// the table
+		(void)size;
+		const uint8_t scale = Mc1UiScale();
+		int16_t tableX, tableY;
+		Mc1SpellTablePosition(&tableX, &tableY, scale);
+		int32_t mapWidth, mapHeight;
+		Mc1MapSize(&mapWidth, &mapHeight, scale);
+		const int32_t left = (std::min)((mapWidth + 3) & ~3, (int32_t)*screenWidth_12EFF0_12EFE0);
+		*viewPortOffset_B5CA0_B5C90 = left;
+		width = (uint16_t)((std::max)((int32_t)*screenWidth_12EFF0_12EFE0 - left, 0) & ~3);
+		height = (uint16_t)((std::max)(tableY - 2 * scale, 0) & ~3);
 	}
 	viewPort.SetRenderViewPortSize_BCD45(*workScreen_12EFF4_12EFE4 + *viewPortOffset_B5CA0_B5C90, *screenWidth_12EFF0_12EFE0, width, height);
 }

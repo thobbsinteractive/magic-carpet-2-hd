@@ -1063,7 +1063,7 @@ int PollSdlEvents()
 		}
 		case SDL_JOYAXISMOTION:
 		{
-			if (event.jaxis.which == gpc.controller_id) {
+			if (gamepad_is_used(event.jaxis.which)) {
 				// motion on controller 0
 				//gps.initialized = 1;
 				// actual axis data is being read via gamepad_poll_data()
@@ -1074,7 +1074,7 @@ int PollSdlEvents()
 		}
 		case SDL_JOYHATMOTION:
 		{
-			if (event.jhat.which == gpc.controller_id) {
+			if (gamepad_is_used(event.jhat.which)) {
 				//gps.initialized = 1;
 				// actual axis data is being read via gamepad_poll_data()
 				Logger->trace("hat {} event detected", event.jhat.hat + 1);
@@ -1083,9 +1083,9 @@ int PollSdlEvents()
 		}
 		case SDL_JOYBUTTONDOWN:
 		{
-			if (event.jbutton.which == gpc.controller_id) {
+			if (gamepad_is_used(event.jbutton.which)) {
 				//gps.initialized = 1;
-				gpe.btn_pressed = 1 << (event.jbutton.button + 1);
+				gpe.btn_pressed |= GP_BTN(event.jbutton.button + 1);
 				Logger->trace("key {} press detected", event.jbutton.button + 1);
 				gpe.flag |= GP_BTN_PRESSED;
 			}
@@ -1093,12 +1093,22 @@ int PollSdlEvents()
 		}
 		case SDL_JOYBUTTONUP:
 		{
-			if (event.jbutton.which == gpc.controller_id) {
+			if (gamepad_is_used(event.jbutton.which)) {
 				//gps.initialized = 1;
-				gpe.btn_released = 1 << (event.jbutton.button + 1);
+				gpe.btn_released |= GP_BTN(event.jbutton.button + 1);
 				Logger->trace("key {} release detected", event.jbutton.button + 1);
 				gpe.flag |= GP_BTN_RELEASED;
 			}
+			break;
+		}
+		case SDL_JOYDEVICEADDED:
+		{
+			gamepad_device_added(event.jdevice.which);
+			break;
+		}
+		case SDL_JOYDEVICEREMOVED:
+		{
+			gamepad_device_removed(event.jdevice.which);
 			break;
 		}
 		case SDL_QUIT: return 0;
@@ -1116,7 +1126,7 @@ void SetMouseEvents(uint32_t buttons, int16_t x, int16_t y)
 	MouseEvents(buttons, x, y);
 }
 
-void VGA_Set_mouse(int16_t x, int16_t y) 
+void VGA_Set_mouse(int16_t x, int16_t y)
 {
 	ScaleDownMouseCoordsToVga(x, y);
 	if (!sdlInputLocked)

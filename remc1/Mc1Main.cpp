@@ -56,6 +56,12 @@ int Mc1Main(int argc, char** argv)
 	}
 	EventDispatcher::I = new EventDispatcher();
 
+	// port: the screen buffer of MC2 (support_begin, without its MC2 tables) for the work screen (pdwScreenBuffer_351628):
+	// big enough for every game resolution, with room either side for the sprites drawn past the edges. Released also when
+	// the regression tests leave by thread_exit_exception
+	AllocateScreenBuffer();
+	struct ScreenBufferGuard { ~ScreenBufferGuard() { FreeScreenBuffer(); } } screenBufferGuard;
+
 	// -game select shows the Magic Carpet Plus selector, -game mc1 / mc1hw start the game directly
 	int16_t game = SELECTED_MAGIC_CARPET;
 	if (CommandLineParams.GetGameType() == GameType::SELECT)
@@ -84,8 +90,7 @@ int Mc1Main(int argc, char** argv)
 		std::vector<std::string> gameArgs;
 		gameArgs.push_back(argc > 0 ? argv[0] : "remc2");
 		for (const std::string& param : CommandLineParams.GetUnknownParams())
-			gameArgs.push_back(param);
-		std::vector<char*> gameArgv;
+			gameArgs.push_back(param);		std::vector<char*> gameArgv;
 		for (std::string& arg : gameArgs)
 			gameArgv.push_back(&arg[0]);
 		gameArgv.push_back(nullptr);
