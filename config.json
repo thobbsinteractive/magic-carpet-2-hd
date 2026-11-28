@@ -179,7 +179,7 @@
 						"alignment: Horizontal position on the screen: 'left', 'center' or 'right'",
 						"marginX: Pixels in from the left edge (left), in from the right edge (right), or moved from the middle (center: + = right, - = left)",
 						"marginY: Pixels down from the top of the screen (topBar, spellIcons) or up from the bottom of the screen (spellMenu)",
-						"With openXR (VR) enabled the spellMenu is centred and 100 pixels up from the bottom, nearer the middle of the HUD panel, whatever is set here"
+						"With openXR (VR) enabled the spellMenu is centred and 200 pixels up from the bottom, nearer the middle of the HUD panel, whatever is set here"
 					],
 					"topBar": {
 						"alignment": "left",

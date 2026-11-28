@@ -407,10 +407,10 @@ bool SetConfig() {
 	if (openXREnabled)
 	{
 		// VR: the HUD is a panel in front of the head (OpenXRRenderer), its bottom edge low in the view: the spell menu
-		// centred and raised 100 pixels from it, nearer the middle
+		// centred and raised 200 pixels from it, nearer the middle
 		spellMenuLayout.alignment = UiAlignment::Center;
 		spellMenuLayout.marginX = 0;
-		spellMenuLayout.marginY = 100;
+		spellMenuLayout.marginY = 200;
 	}
 	multiThreadedRender = settingsValue.m_Graphics.m_Threading.m_IsActive;
 	sizePercentToThreadRender = settingsValue.m_Graphics.m_Threading.m_SizePercentToThreadRender;
