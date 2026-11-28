@@ -1,5 +1,6 @@
 #include "Mc1Minimap.h"
 
+#include <algorithm>
 #include <cstring>
 
 #include "Mc1Blocks.h"
@@ -8,16 +9,17 @@
 #include "Mc1Graphics.h"
 #include "Mc1Shared.h"
 
-int16_t minimapRows_12C1F0_12C1E0[0x1E0][2];
+static_assert(MAP_SPANS_COUNT / 2 >= GAME_RES_MAX_HEIGHT, "the rows of the minimap in mapSpans_F4960");
+int16_t (* const minimapRows_12C1F0_12C1E0)[2] = reinterpret_cast<int16_t (*)[2]>(mapSpans_F4960);
 
 // 99B58: two palette colours of each player (the dots and the names)
-static const uint8_t playerColors_99B58_99B58[8][2] = {
+const uint8_t playerColors_99B58_99B58[8][2] = {
 	{ 0xB7, 0x71 }, { 0x7D, 0x7A }, { 0x9D, 0x9A }, { 0x07, 0x5A }, { 0x1D, 0x1B }, { 0xDD, 0xDA }, { 0x3C, 0x39 }, { 0x10, 0x0E },
 };
 
 static Type_Mc1Entity* Entities()
 {
-	return mc1State_AE400_AE3F0->entities_0x7463_29795;
+	return mc1Entities;
 }
 
 static int16_t ReadS16(const uint8_t* data)
@@ -49,6 +51,9 @@ void DrawMinimapTerrain_49300_49640(int32_t screenX, int32_t screenY, int32_t wo
 		height >>= 1;
 		scale *= 2;
 	}
+	// port: the rows of the minimap (a scaled one in the 640 UI) within the buffer
+	if (height > GAME_RES_MAX_HEIGHT)
+		height = GAME_RES_MAX_HEIGHT;
 	uint8_t* screen = *workScreen_12EFF4_12EFE4 + screenX + screenY * *screenWidth_12EFF0_12EFE0;
 	if (mode)
 	{
@@ -117,7 +122,7 @@ static bool MinimapPoint(const Type_Mc1Position& position, int32_t worldX, int32
 }
 
 void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t worldX, int32_t worldY, int32_t width, int32_t height,
-	int32_t yaw, int32_t scale, int32_t /*unused*/, int32_t /*mode*/)
+	int32_t yaw, int32_t scale, int32_t /*unused*/, int32_t /*mode*/, uint8_t uiScale)
 {
 	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
 	Type_Mc1Settings_AE408_AE3F8* settings = mc1Settings_AE408_AE3F8;
@@ -128,7 +133,10 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 		scale *= 2;
 		width >>= 1;
 		height >>= 1;
+		uiScale = 1; // port: the low res UI stays the original
 	}
+	if (height > GAME_RES_MAX_HEIGHT)
+		height = GAME_RES_MAX_HEIGHT;
 	uint8_t* screen = *workScreen_12EFF4_12EFE4 + screenX + screenY * *screenWidth_12EFF0_12EFE0;
 	const int32_t k = 0x10000 / scale;
 	const int32_t centreX = width / 2;
@@ -136,6 +144,11 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 	yaw &= 0x7FF;
 	const int32_t sinK = -(Maths::sin_DB750[yaw] * k) >> 16;
 	const int32_t cosK = k * Maths::sin_DB750[512 + yaw] >> 16;
+	const uint8_t markScale = (*videoMode_12F02E_12F01E & 1) ? 1 : MapMarkScale(uiScale);
+	const uint8_t iconScale = (*videoMode_12F02E_12F01E & 1) ? 1 : MapIconScale(uiScale);
+	const int32_t markOffset = CalculateScaleOffset(markScale);
+	const int32_t blipShift = markOffset - CalculateScaleOffset(uiScale);
+	const uint32_t pitch = *screenWidth_12EFF0_12EFE0;
 	SetFont_5A3C0_5A8D0(1);
 	Type_Mc1Entity& wizard = Entities()[state->players_0x340B_13323[state->currentPlayer_0x08_8].entityIndex_0x0A_10];
 	// the spell 5 (playerData + 2AEh) shows the names of the players
@@ -156,8 +169,9 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 		const int32_t toX = ((cosK * dx - dy * sinK) >> 16) + centreX;
 		const int32_t toY = ((cosK * dy + dx * sinK) >> 16) + centreY;
 		const int32_t length = IntegerSqrt_410CE_4140E((toX - fromX) * (toX - fromX) + (toY - fromY) * (toY - fromY));
-		const uint16_t angle = Atan2_40F87_412C7((int16_t)(toX - fromX), (int16_t)(toY - fromY));
-		for (int32_t r = (state->players_0x340B_13323[state->currentPlayer_0x08_8].turn_0x12_18 & 3) + 4; r <= length; r += 4)
+		const uint16_t angle = Atan2_40F87_412C7((int16_t)(toX - fromX), (int16_t)(toY - fromY)) & 0x7FF;
+		for (int32_t r = ((state->players_0x340B_13323[state->currentPlayer_0x08_8].turn_0x12_18 & 3) + 4) * markScale; r <= length;
+			r += 4 * markScale)
 		{
 			const int32_t x = (Maths::sin_DB750[angle] * r >> 16) + fromX;
 			const int32_t y = (Maths::sin_DB750[512 + angle] * -r >> 16) + fromY;
@@ -165,13 +179,12 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 				break;
 			if (x < minimapRows_12C1F0_12C1E0[y][1] || x >= minimapRows_12C1F0_12C1E0[y][0])
 				break;
-			uint8_t* pixel = screen + x + y * *screenWidth_12EFF0_12EFE0;
-			*pixel = tables_B7934_B7924.blend_0x4000[*pixel][colorLookup_AD168_AD158[0xFFF]];
+			DrawCastleRopeDot(screen, nullptr, x, y, (uint16_t)width, (uint16_t)height, markScale, colorLookup_AD168_AD158[0xFFF]);
 		}
 	}
 
 	// the entities: a dot (1 or 2x2 pixels) of a colour, or a sprite (castles 3Ah / 42h + the player, S and T)
-	for (Type_Mc1Entity* entity = &Entities()[1]; entity < &Entities()[1000]; entity++)
+	for (Type_Mc1Entity* entity = &Entities()[1]; entity < &Entities()[mc1EntityCount]; entity++)
 	{
 		uint8_t sprite = 0;
 		uint8_t color = 0;
@@ -262,9 +275,14 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 		int32_t x, y;
 		if (!MinimapPoint(entity->position_0x48_72, worldX, worldY, cosK, sinK, centreX, centreY, width, height, &x, &y))
 			continue;
-		uint8_t* pixel = screen + x + y * *screenWidth_12EFF0_12EFE0;
+		uint8_t* pixel = screen + x + y * pitch;
 		if (sprite <= 1)
 		{
+			if (markScale > 1)
+			{
+				DrawMapBlock(screen, nullptr, x - blipShift, y - blipShift, (uint16_t)width, (uint16_t)height, size * markScale, color, false);
+				continue;
+			}
 			pixel[0] = color;
 			if (size > 1)
 			{
@@ -279,7 +297,7 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 			if (*videoMode_12F02E_12F01E & 1)
 				DrawBitmap320_60CE0_611F0((int16_t)drawX, (int16_t)drawY, bitmap, 1);
 			else
-				DrawBitmap640_60D18_61228((int16_t)drawX, (int16_t)drawY, bitmap, 1);
+				DrawBitmap640_60D18_61228((int16_t)(screenX + drawX), (int16_t)(screenY + drawY), bitmap, iconScale);
 		};
 		if (*videoMode_12F02E_12F01E == 1)
 		{
@@ -292,9 +310,9 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 				draw(x * 2 - bitmap.width_4 / 2, y * 2 - bitmap.height_5 / 2);
 		}
 		else if (sprite < 0x3C)
-			draw(x, y - bitmap.height_5);
+			draw(x, y - bitmap.height_5 * iconScale);
 		else
-			draw(x - bitmap.width_4 / 2, y - bitmap.height_5);
+			draw(x - bitmap.width_4 * iconScale / 2, y - bitmap.height_5 * iconScale);
 	}
 
 	// the names of the other players at their wizards
@@ -313,16 +331,45 @@ void DrawMinimapEntities_48710_48A50(int32_t screenX, int32_t screenY, int32_t w
 			const char* name = state->players_0x340B_13323[i].name_0x40A_1034;
 			if (*videoMode_12F02E_12F01E == 1)
 				DrawText_5A180_5A690(name, (int16_t)(x * 2 + 2), (int16_t)(y * 2), *PlayerColor(PlayerOf(other), 1));
-			else
-				DrawText_5A180_5A690(name, (int16_t)(x + 2), (int16_t)y, *PlayerColor(PlayerOf(other), 1));
+			else // port: as MC2, to the right of the dot (markScale) and at the UI scale; x + 2 at 1
+				DrawText_5A180_5A690(name, (int16_t)(screenX + x - markOffset + markScale + uiScale),
+					(int16_t)(screenY + y - markOffset), *PlayerColor(PlayerOf(other), 1), uiScale);
 		}
 	}
 
 	// the cross in the middle, fading out to the ends
 	int32_t count = width / 12;
 	const int32_t step = 0x800 / count;
-	uint8_t* centre = screen + width / 2 + height / 2 * *screenWidth_12EFF0_12EFE0 - 1;
 	const uint8_t* tables = (const uint8_t*)&tables_B7934_B7924;
+	if (markScale > 1)
+	{
+		// port: as the MC2 cross at 2x or more, a markScale x markScale block centred on the pixel of the 1x cross and
+		// four arms markScale wide of the same length, each pixel faded once (as the original, less at each step out)
+		const int32_t blockX = width / 2 - 1 - markOffset;
+		const int32_t blockY = height / 2 - markOffset;
+		auto fadePixel = [&](int32_t px, int32_t py, int32_t level) {
+			if (px < 0 || px >= width || py < 0 || py >= height)
+				return;
+			uint8_t* pixel = screen + px + py * pitch;
+			*pixel = tables[(level & 0xFF00) + *pixel];
+		};
+		for (int32_t py = blockY; py < blockY + markScale; py++)
+			for (int32_t px = blockX; px < blockX + markScale; px++)
+				fadePixel(px, py, 0x2C00);
+		for (int32_t i = 1; i <= count; i++)
+		{
+			const int32_t level = 0x2C00 - i * step;
+			for (int32_t t = 0; t < markScale; t++)
+			{
+				fadePixel(blockX - i, blockY + t, level);                 // west
+				fadePixel(blockX + markScale - 1 + i, blockY + t, level); // east
+				fadePixel(blockX + t, blockY - i, level);                 // north
+				fadePixel(blockX + t, blockY + markScale - 1 + i, level); // south
+			}
+		}
+		return;
+	}
+	uint8_t* centre = screen + width / 2 + height / 2 * *screenWidth_12EFF0_12EFE0 - 1;
 	int32_t fade = 0x2C00;
 	*centre = tables[fade + *centre];
 	uint8_t* up = centre;

@@ -1,12 +1,14 @@
 #include "Mc1Hmi.h"
 
 #include <cstring>
+#include <filesystem>
 #include <mutex>
 #include <string>
 #include <vector>
 
 #include "../../remc2/engine/Sound.h"
 #include "../../remc2/portability/awe32/Awe32Mdi.h"
+#include "../../remc2/portability/awe32/Awe32Rom.h"
 #include "../../remc2/portability/port_filesystem.h"
 #include "../../remc2/portability/port_sdl_sound.h"
 
@@ -21,6 +23,7 @@ static std::string SoundDriverPath(const char* file)
 static const int kHmiSampleSlots = 32; // HMI mixes up to 32 samples, MC1 walks all of them
 static HDIGDRIVER digDriver = nullptr;
 static HSAMPLE digSamples[kHmiSampleSlots];
+static uint16_t digSampleIds[kHmiSampleSlots]; // wSampleID of the slot (sosDIGISetSampleVolume)
 static int32_t digSampleRate = 11025;
 static int digSlotCount = 0;
 
@@ -45,6 +48,18 @@ uint16_t sosDIGIInitDriver_64846_64D56(uint16_t sampleRate, uint16_t* driverHand
 	io.DMA_16_bit = -1;
 	std::string path = SoundDriverPath("SB16.DIG");
 	digDriver = AilInstallDigDriverFile_93330((char*)path.c_str(), &io);
+	if (!digDriver)
+	{
+		// without the data of MC2: the emulation does not run the driver, a driver image of the header alone does
+		std::vector<uint8_t> image(sizeof(VDI_HDR), 0);
+		memcpy(image.data(), "AIL3DIG", 7);
+		if (AIL_DRIVER* driver = AilInstallDriver_93010(image.data(), (int32_t)image.size()))
+		{
+			digDriver = CreateDigDriver_A2EA0(driver, io);
+			if (!digDriver)
+				AilUninstallDriver_93160(driver);
+		}
+	}
 	if (!digDriver)
 	{
 		Logger->error("MC1 sound: SB16.DIG not installed ({})", path);
@@ -107,6 +122,9 @@ uint16_t sosDIGIStartSample_6535C_6586C(uint16_t driverHandle, Type_SosStartSamp
 	AilSetSamplePlaybackRate_93D90(sample, digSampleRate);
 	if (start->flags_0x1C_28 & SOS_VOLUME)
 		AilSetSampleVolume_93E30(sample, start->volume_0x10_16 * 127 / 0x7FFF);
+	digSampleIds[slot] = start->sampleId_0x12_18;
+	// the pan of HMI 0 left - FFFFh right, of MSS 0 - 127
+	AilSetSampleVolumePan_93ED0(sample, (start->flags_0x1C_28 & SOS_PANNING) ? start->pan_0x32_50 * 127 / 0xFFFF : 64);
 	// the remc2 emulation hands the loop count to SDL_mixer: 0 plays once, -1 forever
 	if (start->flags_0x1C_28 & SOS_LOOPING)
 		AilSetSampleLoopCount_93F70(sample, start->loopCount_0x0C_12 == -1 ? -1 : start->loopCount_0x0C_12);
@@ -114,6 +132,17 @@ uint16_t sosDIGIStartSample_6535C_6586C(uint16_t driverHandle, Type_SosStartSamp
 		AilSetSampleLoopCount_93F70(sample, 0);
 	AilStartSample_93B50(sample);
 	return (uint16_t)slot;
+}
+
+uint16_t sosDIGISetSampleVolume_66118_66628(uint16_t driverHandle, uint16_t sampleId, uint16_t volume)
+{
+	for (int slot = 0; slot < kHmiSampleSlots; slot++)
+		if (!sosDIGISampleDone_651F8_65708(driverHandle, slot) && digSampleIds[slot] == sampleId)
+		{
+			AilSetSampleVolume_93E30(digSamples[slot], volume * 127 / 0x7FFF);
+			return 0;
+		}
+	return 0x0A; // _ERR_INVALID_HANDLE
 }
 
 uint16_t sosDIGIStopSample_65965_65E75(uint16_t /*driverHandle*/, uint16_t sampleHandle)
@@ -316,6 +345,20 @@ uint16_t sosMIDIInitDriver_6035F_6086F(uint16_t deviceId, uint16_t* driverHandle
 	mdiDriver = AilInstakkMidiDriverFile_95850((char*)path.c_str(), &io);
 	if (!mdiDriver)
 	{
+		// without the data of MC2: SBAWE32.MDI packed by gzip next to the wave ROM (awe32RomFolder/data2.binz)
+		std::string error;
+		const std::string rom = Awe32Rom::Locate(awe32RomFolder, error);
+		std::vector<uint8_t> image;
+		if (!rom.empty() && Awe32Rom::Read((std::filesystem::path(rom).parent_path() / "data2.binz").string(), image, error))
+			if (AIL_DRIVER* driver = AilInstallDriver_93010(image.data(), (int32_t)image.size()))
+			{
+				mdiDriver = InitAilDriver_A6FB0(driver, &io);
+				if (!mdiDriver)
+					AilUninstallDriver_93160(driver);
+			}
+	}
+	if (!mdiDriver)
+	{
 		Logger->error("MC1 music: SBAWE32.MDI not installed ({})", path);
 		return 1;
 	}
@@ -454,6 +497,16 @@ bool sosMIDISongDone_5D7F0_5DD00(uint16_t songHandle)
 	if (songHandle >= kMaxSongs)
 		return true;
 	return !songs[songHandle].playing;
+}
+
+uint16_t sosMIDISendMIDIData_5EDA0_5F2B0(uint16_t /*driverHandle*/, const uint8_t* data, uint16_t length)
+{
+	std::lock_guard<std::recursive_mutex> lock(Awe32Mdi::Mutex());
+	if (length == 3)
+		SendMidi(data[0], data[1], data[2]);
+	else if (length == 2)
+		SendMidi(data[0], data[1], 0);
+	return 0;
 }
 
 uint16_t sosMIDIEnableChannelStealing_5EDD6_5F2E6(uint16_t enable)

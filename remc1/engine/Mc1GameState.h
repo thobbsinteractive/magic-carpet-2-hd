@@ -68,7 +68,7 @@ typedef struct Type_Mc1Entity {
 	int16_t word_0x22_34; // set with word_0x1E / word_0x20 by the creatures
 	int16_t word_0x24_36;
 	uint16_t word_0x26_38; // the sender of the damage that killed the wizard (46540)
-	uint8_t unknown_0x28_40[2];
+	uint16_t word_0x28_40; // the sender of the last damage (the creatures)
 	uint16_t word_0x2A_42; // 27D30: the entity whose word_0x30 is set when the building is done
 	int16_t word_0x2C_44;
 	int16_t word_0x2E_46;
@@ -88,7 +88,7 @@ typedef struct Type_Mc1Entity {
 	uint8_t byte_0x42_66;
 	uint8_t byte_0x43_67;
 	uint8_t byte_0x44_68;
-	uint8_t unknown_0x45_69;
+	uint8_t byte_0x45_69;
 	uint8_t actionIndex_0x46_70; // the record of 14 bytes in the actions of the class (MC2 actionIndex_0x45)
 	uint8_t byte_0x47_71;
 	Type_Mc1Position position_0x48_72; // MC2 position_0x4C
@@ -105,7 +105,7 @@ typedef struct Type_Mc1Entity {
 	int32_t mana_0x8C_140; // MC2 mana_0x90
 	uint16_t owner_0x90_144; // the entity index of the owner
 	uint16_t target_0x92_146; // the entity index of the target
-	uint8_t unknown_0x94_148[0x96 - 0x94];
+	uint16_t word_0x94_148; // the kind of the target of the computer wizard (15420)
 	Type_Mc1Position target_0x96_150; // moved by MoveEntity_41EC0 (MC2 axis_0x9A_154x)
 	uint8_t* typeParams_0x9C_156; // dword_98F38 records (MC2 typeParams_0xA0)
 	uint8_t* playerData_0xA0_160; // dword_B7330 (MC2 playerData_0xA4)
@@ -147,7 +147,7 @@ typedef struct {
 	uint8_t byte_0x42_66;
 	uint8_t byte_0x43_67;
 	uint8_t byte_0x44_68;
-	uint8_t unknown_0x45_69;
+	uint8_t byte_0x45_69;
 	uint8_t actionIndex_0x46_70; // the record of 14 bytes in the actions of the class (MC2 actionIndex_0x45)
 	uint8_t byte_0x47_71;
 	Type_Mc1Position position_0x48_72; // MC2 position_0x4C
@@ -164,7 +164,7 @@ typedef struct {
 	int32_t mana_0x8C_140; // MC2 mana_0x90
 	uint16_t owner_0x90_144; // the entity index of the owner
 	uint16_t target_0x92_146; // the entity index of the target
-	uint8_t unknown_0x94_148[0x96 - 0x94];
+	uint16_t word_0x94_148; // the kind of the target of the computer wizard (15420)
 	Type_Mc1Position target_0x96_150; // moved by MoveEntity_41EC0 (MC2 axis_0x9A_154x)
 	uint32_t typeParams_0x9C_156; // dword_98F38 records (MC2 typeParams_0xA0)
 	uint32_t playerData_0xA0_160; // dword_B7330 (MC2 playerData_0xA4)

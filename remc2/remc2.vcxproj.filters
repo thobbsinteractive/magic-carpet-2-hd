@@ -488,6 +488,9 @@
     <ClCompile Include="..\remc1\engine\Mc1SceneryActions.cpp">
       <Filter>Source Files\remc1</Filter>
     </ClCompile>
+    <ClCompile Include="..\remc1\engine\Mc1Spells.cpp">
+      <Filter>Source Files\remc1</Filter>
+    </ClCompile>
     <ClCompile Include="..\remc1\engine\Mc1Models.cpp">
       <Filter>Source Files\remc1</Filter>
     </ClCompile>
@@ -501,6 +504,9 @@
       <Filter>Source Files\remc1</Filter>
     </ClCompile>
     <ClCompile Include="..\remc1\engine\Mc1Minimap.cpp">
+      <Filter>Source Files\remc1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\remc1\engine\Mc1Panel.cpp">
       <Filter>Source Files\remc1</Filter>
     </ClCompile>
     <ClCompile Include="..\remc1\engine\Mc1Wizard.cpp">
@@ -530,6 +536,24 @@
     <ClCompile Include="..\remc1\engine\Mc1Blocks.cpp">
       <Filter>Source Files\remc1</Filter>
     </ClCompile>
+    <ClCompile Include="..\remc1\engine\Mc1Castle.cpp">
+      <Filter>Source Files\remc1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\remc1\engine\Mc1ComputerWizard.cpp">
+      <Filter>Source Files\remc1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\remc1\engine\Mc1Regression.cpp">
+      <Filter>Source Files\remc1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\remc1\engine\Mc1Save.cpp">
+      <Filter>Source Files\remc1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\remc1\engine\Mc1Network.cpp">
+      <Filter>Source Files\remc1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\remc1\engine\Mc1Creatures.cpp">
+      <Filter>Source Files\remc1</Filter>
+    </ClCompile>
     <ClCompile Include="..\remc1\engine\Mc1TextureMaps.cpp">
       <Filter>Source Files\remc1</Filter>
     </ClCompile>
@@ -549,9 +573,6 @@
       <Filter>Source Files\remc1</Filter>
     </ClCompile>
     <ClCompile Include="..\remc1\engine\Mc1Game.cpp">
-      <Filter>Source Files\remc1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\remc1\engine\Mc1NotPorted.cpp">
       <Filter>Source Files\remc1</Filter>
     </ClCompile>
     <ClInclude Include="..\remc1\Mc1Main.h">
@@ -590,6 +611,9 @@
     <ClInclude Include="..\remc1\engine\Mc1SceneryActions.h">
       <Filter>Header Files\remc1</Filter>
     </ClInclude>
+    <ClInclude Include="..\remc1\engine\Mc1Spells.h">
+      <Filter>Header Files\remc1</Filter>
+    </ClInclude>
     <ClInclude Include="..\remc1\engine\Mc1Models.h">
       <Filter>Header Files\remc1</Filter>
     </ClInclude>
@@ -603,6 +627,9 @@
       <Filter>Header Files\remc1</Filter>
     </ClInclude>
     <ClInclude Include="..\remc1\engine\Mc1Minimap.h">
+      <Filter>Header Files\remc1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\remc1\engine\Mc1Panel.h">
       <Filter>Header Files\remc1</Filter>
     </ClInclude>
     <ClInclude Include="..\remc1\engine\Mc1Wizard.h">
@@ -635,6 +662,24 @@
     <ClInclude Include="..\remc1\engine\Mc1Blocks.h">
       <Filter>Header Files\remc1</Filter>
     </ClInclude>
+    <ClInclude Include="..\remc1\engine\Mc1Castle.h">
+      <Filter>Header Files\remc1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\remc1\engine\Mc1ComputerWizard.h">
+      <Filter>Header Files\remc1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\remc1\engine\Mc1Regression.h">
+      <Filter>Header Files\remc1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\remc1\engine\Mc1Save.h">
+      <Filter>Header Files\remc1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\remc1\engine\Mc1Network.h">
+      <Filter>Header Files\remc1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\remc1\engine\Mc1Creatures.h">
+      <Filter>Header Files\remc1</Filter>
+    </ClInclude>
     <ClInclude Include="..\remc1\engine\Mc1TextureMaps.h">
       <Filter>Header Files\remc1</Filter>
     </ClInclude>
@@ -657,9 +702,6 @@
       <Filter>Header Files\remc1</Filter>
     </ClInclude>
     <ClInclude Include="..\remc1\engine\Mc1GameState.h">
-      <Filter>Header Files\remc1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\remc1\engine\Mc1NotPorted.h">
       <Filter>Header Files\remc1</Filter>
     </ClInclude>
     <ClCompile Include="remc2.cpp">

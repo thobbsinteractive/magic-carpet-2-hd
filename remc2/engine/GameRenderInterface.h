@@ -43,6 +43,10 @@ bool Mc1TerrainTypeFlat(uint8_t terrainType); // 90168: the types shaded flat (m
 bool Mc1StereogramMode(); // screen size 2 without VFX1: the world is a depth image turned into a random dot stereogram
 inline int Mc1StereogramShade(int depth) // 2A700 / 2F170: the depth as the shade of the depth image
 {
+	if (depth > 0x1400)
+		depth = 0x1400;
+	else if (depth < 0)
+		depth = 0;
 	return 0x400000 - (0x1400 - depth) * 0x15E;
 }
 // 30D90: the random dot stereogram from the depth image (width/height of the view port, rows by pitch)
@@ -57,9 +61,11 @@ struct RenderSpriteSource
 	void (*tmapUsed)(uint16_t tmap); // the frame of the last use of the group of the tmap
 	Type_SpriteDef_D951C* (*spriteDef)(int16_t index);
 	type_animations1* (*animation)(uint16_t tmap); // the animation of an animated tmap
+	int (*entityCount)(); // MC1: 1000 or more (mc1EntityLimit)
 };
 extern const RenderSpriteSource* renderSprites; // nullptr: MC2
 type_entity_0x6E8E* RenderEntity(uint16_t index);
+int RenderEntityCount();
 Type_Sprite** RenderLoadedTmap(uint16_t tmap);
 bool RenderLoadTmap(uint16_t tmap);
 void RenderTmapUsed(uint16_t tmap);

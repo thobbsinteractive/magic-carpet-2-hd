@@ -189,7 +189,7 @@
     <PostBuildEvent>
       <Command>
 		XCOPY "$(SolutionDir)enhancedassets\MC2\music-ogg" "$(TargetDir)MC2\music-ogg\" /S /Y
-		XCOPY "$(SolutionDir)enhancedassets\MC2\awe32data" "$(TargetDir)MC2\awe32data\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\sound\awe32data" "$(TargetDir)sound\awe32data\" /S /Y
       </Command>
     </PostBuildEvent>
     <Manifest>
@@ -223,7 +223,7 @@
     <PostBuildEvent>
       <Command>
         XCOPY "$(SolutionDir)enhancedassets\MC2\music-ogg" "$(TargetDir)MC2\music-ogg\" /S /Y
-        XCOPY "$(SolutionDir)enhancedassets\MC2\awe32data" "$(TargetDir)MC2\awe32data\" /S /Y
+        XCOPY "$(SolutionDir)enhancedassets\sound\awe32data" "$(TargetDir)sound\awe32data\" /S /Y
       </Command>
     </PostBuildEvent>
     <Manifest>
@@ -259,7 +259,7 @@
 		XCOPY "$(SolutionDir)config.json" "$(TargetDir)" /Y
 		XCOPY "$(SolutionDir)remc2\font" "$(TargetDir)font\" /S /Y
 		XCOPY "$(SolutionDir)enhancedassets\MC2\music-ogg" "$(TargetDir)MC2\music-ogg\" /S /Y
-		XCOPY "$(SolutionDir)enhancedassets\MC2\awe32data" "$(TargetDir)MC2\awe32data\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\sound\awe32data" "$(TargetDir)sound\awe32data\" /S /Y
       </Command>
     </PostBuildEvent>
     <Manifest>
@@ -297,7 +297,7 @@
 		XCOPY "$(SolutionDir)config.json" "$(TargetDir)" /Y
 		XCOPY "$(SolutionDir)remc2\font" "$(TargetDir)font\" /S /Y
 		XCOPY "$(SolutionDir)enhancedassets\MC2\music-ogg" "$(TargetDir)MC2\music-ogg\" /S /Y
-		XCOPY "$(SolutionDir)enhancedassets\MC2\awe32data" "$(TargetDir)MC2\awe32data\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\sound\awe32data" "$(TargetDir)sound\awe32data\" /S /Y
 	  </Command>
     </PostBuildEvent>
     <Manifest>
@@ -322,7 +322,7 @@
     <PostBuildEvent>
       <Command>
 		XCOPY "$(SolutionDir)enhancedassets\MC2\music-ogg" "$(TargetDir)MC2\music-ogg\" /S /Y
-		XCOPY "$(SolutionDir)enhancedassets\MC2\awe32data" "$(TargetDir)MC2\awe32data\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\sound\awe32data" "$(TargetDir)sound\awe32data\" /S /Y
 	  </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -343,7 +343,7 @@
     <PostBuildEvent>
       <Command>
 		XCOPY "$(SolutionDir)enhancedassets\MC2\music-ogg" "$(TargetDir)MC2\music-ogg\" /S /Y
-		XCOPY "$(SolutionDir)enhancedassets\MC2\awe32data" "$(TargetDir)MC2\awe32data\" /S /Y
+		XCOPY "$(SolutionDir)enhancedassets\sound\awe32data" "$(TargetDir)sound\awe32data\" /S /Y
 	  </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -486,11 +486,13 @@
     <ClInclude Include="..\remc1\engine\Mc1Scenery.h" />
     <ClInclude Include="..\remc1\engine\Mc1Terrain.h" />
     <ClInclude Include="..\remc1\engine\Mc1SceneryActions.h" />
+    <ClInclude Include="..\remc1\engine\Mc1Spells.h" />
     <ClInclude Include="..\remc1\engine\Mc1Models.h" />
     <ClInclude Include="..\remc1\engine\Mc1World.h" />
     <ClInclude Include="..\remc1\engine\Mc1Frame.h" />
     <ClInclude Include="..\remc1\engine\Mc1Input.h" />
     <ClInclude Include="..\remc1\engine\Mc1Minimap.h" />
+    <ClInclude Include="..\remc1\engine\Mc1Panel.h" />
     <ClInclude Include="..\remc1\engine\Mc1Wizard.h" />
     <ClInclude Include="..\remc1\engine\Mc1Render.h" />
     <ClInclude Include="..\remc1\engine\Mc1PlayerEvents.h" />
@@ -501,6 +503,12 @@
     <ClInclude Include="..\remc1\engine\Mc1Shared.h" />
     <ClInclude Include="..\remc1\engine\Mc1Screen.h" />
     <ClInclude Include="..\remc1\engine\Mc1Blocks.h" />
+    <ClInclude Include="..\remc1\engine\Mc1Castle.h" />
+    <ClInclude Include="..\remc1\engine\Mc1ComputerWizard.h" />
+    <ClInclude Include="..\remc1\engine\Mc1Regression.h" />
+    <ClInclude Include="..\remc1\engine\Mc1Save.h" />
+    <ClInclude Include="..\remc1\engine\Mc1Network.h" />
+    <ClInclude Include="..\remc1\engine\Mc1Creatures.h" />
     <ClInclude Include="..\remc1\engine\Mc1TextureMaps.h" />
     <ClInclude Include="..\remc1\engine\Mc1Install.h" />
     <ClInclude Include="..\remc1\engine\Mc1Files.h" />
@@ -509,7 +517,6 @@
     <ClInclude Include="..\remc1\engine\Mc1System.h" />
     <ClInclude Include="..\remc1\engine\Mc1Game.h" />
     <ClInclude Include="..\remc1\engine\Mc1GameState.h" />
-    <ClInclude Include="..\remc1\engine\Mc1NotPorted.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="utilities\Maths.h" />
     <ClInclude Include="utilities\SafeQueue.h" />
@@ -594,17 +601,44 @@
     <ClCompile Include="portability\port_filesystem.cpp" />
     <ClCompile Include="portability\port_outputs.cpp" />
     <ClCompile Include="portability\port_sdl_sound.cpp" />
-    <ClCompile Include="portability\awe32\Awe32Mdi.cpp" />
-    <ClCompile Include="portability\awe32\Awe32Rom.cpp" />
-    <ClCompile Include="portability\awe32\Emu8000.cpp" />
+    <!-- the AWE32 emulation optimized in the debug builds too, unoptimized it is too slow for the music -->
+    <ClCompile Include="portability\awe32\Awe32Mdi.cpp">
+      <Optimization Condition="$(Configuration.StartsWith('Debug'))">MaxSpeed</Optimization>
+      <BasicRuntimeChecks Condition="$(Configuration.StartsWith('Debug'))">Default</BasicRuntimeChecks>
+      <EnableASAN Condition="$(Configuration.StartsWith('Debug'))">false</EnableASAN>
+    </ClCompile>
+    <ClCompile Include="portability\awe32\Awe32Rom.cpp">
+      <Optimization Condition="$(Configuration.StartsWith('Debug'))">MaxSpeed</Optimization>
+      <BasicRuntimeChecks Condition="$(Configuration.StartsWith('Debug'))">Default</BasicRuntimeChecks>
+      <EnableASAN Condition="$(Configuration.StartsWith('Debug'))">false</EnableASAN>
+    </ClCompile>
+    <ClCompile Include="portability\awe32\Emu8000.cpp">
+      <Optimization Condition="$(Configuration.StartsWith('Debug'))">MaxSpeed</Optimization>
+      <BasicRuntimeChecks Condition="$(Configuration.StartsWith('Debug'))">Default</BasicRuntimeChecks>
+      <EnableASAN Condition="$(Configuration.StartsWith('Debug'))">false</EnableASAN>
+    </ClCompile>
     <ClCompile Include="portability\awe32\Emu8000Box.cpp">
+      <Optimization Condition="$(Configuration.StartsWith('Debug'))">MaxSpeed</Optimization>
+      <BasicRuntimeChecks Condition="$(Configuration.StartsWith('Debug'))">Default</BasicRuntimeChecks>
+      <EnableASAN Condition="$(Configuration.StartsWith('Debug'))">false</EnableASAN>
       <AdditionalIncludeDirectories>$(ProjectDir)portability\awe32\86box\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>AWE32EMU_WITH_86BOX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="portability\awe32\I18n.cpp" />
-    <ClCompile Include="portability\awe32\SoundFont.cpp" />
-    <ClCompile Include="portability\awe32\Synth.cpp" />
+    <ClCompile Include="portability\awe32\SoundFont.cpp">
+      <Optimization Condition="$(Configuration.StartsWith('Debug'))">MaxSpeed</Optimization>
+      <BasicRuntimeChecks Condition="$(Configuration.StartsWith('Debug'))">Default</BasicRuntimeChecks>
+      <EnableASAN Condition="$(Configuration.StartsWith('Debug'))">false</EnableASAN>
+    </ClCompile>
+    <ClCompile Include="portability\awe32\Synth.cpp">
+      <Optimization Condition="$(Configuration.StartsWith('Debug'))">MaxSpeed</Optimization>
+      <BasicRuntimeChecks Condition="$(Configuration.StartsWith('Debug'))">Default</BasicRuntimeChecks>
+      <EnableASAN Condition="$(Configuration.StartsWith('Debug'))">false</EnableASAN>
+    </ClCompile>
     <ClCompile Include="portability\awe32\86box\snd_emu8k.c">
+      <Optimization Condition="$(Configuration.StartsWith('Debug'))">MaxSpeed</Optimization>
+      <BasicRuntimeChecks Condition="$(Configuration.StartsWith('Debug'))">Default</BasicRuntimeChecks>
+      <EnableASAN Condition="$(Configuration.StartsWith('Debug'))">false</EnableASAN>
       <AdditionalIncludeDirectories>$(ProjectDir)portability\awe32\86box\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>AWE32EMU_WITH_86BOX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAs>CompileAsC</CompileAs>
@@ -625,11 +659,13 @@
     <ClCompile Include="..\remc1\engine\Mc1Scenery.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Terrain.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1SceneryActions.cpp" />
+    <ClCompile Include="..\remc1\engine\Mc1Spells.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Models.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1World.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Frame.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Input.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Minimap.cpp" />
+    <ClCompile Include="..\remc1\engine\Mc1Panel.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Wizard.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Render.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1PlayerEvents.cpp" />
@@ -639,6 +675,12 @@
     <ClCompile Include="..\remc1\engine\Mc1Menu.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Screen.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Blocks.cpp" />
+    <ClCompile Include="..\remc1\engine\Mc1Castle.cpp" />
+    <ClCompile Include="..\remc1\engine\Mc1ComputerWizard.cpp" />
+    <ClCompile Include="..\remc1\engine\Mc1Regression.cpp" />
+    <ClCompile Include="..\remc1\engine\Mc1Save.cpp" />
+    <ClCompile Include="..\remc1\engine\Mc1Network.cpp" />
+    <ClCompile Include="..\remc1\engine\Mc1Creatures.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1TextureMaps.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Install.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Files.cpp" />
@@ -646,7 +688,6 @@
     <ClCompile Include="..\remc1\engine\Mc1Search.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1System.cpp" />
     <ClCompile Include="..\remc1\engine\Mc1Game.cpp" />
-    <ClCompile Include="..\remc1\engine\Mc1NotPorted.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-nonASA|Win32'">Create</PrecompiledHeader>

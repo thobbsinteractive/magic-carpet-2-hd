@@ -44,22 +44,16 @@ std::string SaveDirectory()
 }
 std::string packedDataFile;
 
-// data.binz, "MC2DATZ1": u32 files; per file u8 name length, name (path relative to CD_Files), u32 size,
-// u32 packed size, bytes packed by LzCompress (lzcompress.h). Unpacked once per process, as CLEVELS.
-std::string UnpackPackedData()
+// data.binz, "MC2DATZ1": u32 files; per file u8 name length, name (path relative to the target folder), u32 size,
+// u32 packed size, bytes packed by LzCompress (lzcompress.h)
+static void UnpackDataFile(const std::string& packedFile, const std::filesystem::path& target)
 {
-	static const std::filesystem::path dir = std::filesystem::temp_directory_path() / ("remc2-data-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
-	static bool unpacked = false;
-	if (unpacked)
-		return dir.string();
-	unpacked = true;
-	std::filesystem::create_directories(dir / "NETHERW");
-	std::filesystem::create_directories(dir / "CD_Files");
-	FILE* file = fopen(packedDataFile.c_str(), "rb");
+	std::filesystem::create_directories(target);
+	FILE* file = fopen(packedFile.c_str(), "rb");
 	if (!file)
 	{
-		Logger->error("Packed game data {} not found", packedDataFile);
-		return dir.string();
+		Logger->error("Packed game data {} not found", packedFile);
+		return;
 	}
 	std::vector<uint8_t> data;
 	fseek(file, 0, SEEK_END);
@@ -70,8 +64,8 @@ std::string UnpackPackedData()
 	fclose(file);
 	if (data.size() < 12 || memcmp(data.data(), "MC2DATZ1", 8) != 0)
 	{
-		Logger->error("{} is not MC2DATZ1", packedDataFile);
-		return dir.string();
+		Logger->error("{} is not MC2DATZ1", packedFile);
+		return;
 	}
 	auto get32 = [&data](size_t p) { return (uint32_t)data[p] | (uint32_t)data[p + 1] << 8 | (uint32_t)data[p + 2] << 16 | (uint32_t)data[p + 3] << 24; };
 	const uint32_t files = get32(8);
@@ -84,7 +78,7 @@ std::string UnpackPackedData()
 		p += 8;
 		const std::vector<uint8_t> bytes = LzDecompress(&data[p], packedSize, size);
 		p += packedSize;
-		const std::filesystem::path out = dir / "CD_Files" / name;
+		const std::filesystem::path out = target / name;
 		std::filesystem::create_directories(out.parent_path());
 		if (FILE* outFile = fopen(out.string().c_str(), "wb"))
 		{
@@ -92,8 +86,34 @@ std::string UnpackPackedData()
 			fclose(outFile);
 		}
 	}
-	Logger->info("Packed game data unpacked to {}", dir.string());
+	Logger->info("Packed game data unpacked to {}", target.string());
+}
+
+// MC2: data.binz to CD_Files, NETHERW empty. Unpacked once per process, as CLEVELS.
+std::string UnpackPackedData()
+{
+	static const std::filesystem::path dir = std::filesystem::temp_directory_path() / ("remc2-data-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+	static bool unpacked = false;
+	if (unpacked)
+		return dir.string();
+	unpacked = true;
+	std::filesystem::create_directories(dir / "NETHERW");
+	UnpackDataFile(packedDataFile, dir / "CD_Files");
 	return dir.string();
+}
+
+// MC1 and Hidden Worlds: mc1data.binz next to data.binz to MC1 (the CD files), MC1/CARPET.CD (the install folder)
+// empty. Unpacked once per process.
+std::string UnpackMc1PackedData()
+{
+	static const std::filesystem::path dir = std::filesystem::temp_directory_path() / ("remc2-mc1data-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+	static bool unpacked = false;
+	if (unpacked)
+		return (dir / "MC1").string();
+	unpacked = true;
+	std::filesystem::create_directories(dir / "MC1" / "CARPET.CD");
+	UnpackDataFile((std::filesystem::path(packedDataFile).parent_path() / "mc1data.binz").string(), dir / "MC1");
+	return (dir / "MC1").string();
 }
 
 int* endTestsCode;
@@ -1137,17 +1157,33 @@ void End_thread(int backCode)
 		exit(backCode);
 }
 
+uint8_t* GetScreenBufferAllocation()
+{
+	return pre_pdwScreenBuffer_351628 ? &pre_pdwScreenBuffer_351628[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)] : nullptr;
+}
+
+void AllocateScreenBuffer()
+{
+	pre_pdwScreenBuffer_351628 = (uint8_t*)malloc((GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT) * 3); // Allow x 3 padding for sprite rendering
+	pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
+}
+
+void FreeScreenBuffer()
+{
+	if (pre_pdwScreenBuffer_351628)
+		free(pre_pdwScreenBuffer_351628);
+	// GetScreenBufferAllocation tells MC1 whether the buffer is there
+	pre_pdwScreenBuffer_351628 = nullptr;
+	pdwScreenBuffer_351628 = nullptr;
+}
+
 void support_begin() {
 	readbuffer = (uint8_t*)malloc(1000000);//fix it max 64000
 	printbuffer = (char*)malloc(printBufferSize);
 	//printbuffer[0] = '\0';
 	printbuffer2 = (char*)malloc(printBufferSize);
 
-	//pre_pdwScreenBuffer_351628 = (uint8_t*)malloc(2228224);// 640x480
-	//pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[1114112];// 640x480
-
-	pre_pdwScreenBuffer_351628 = (uint8_t*)malloc((GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT) * 3); // Allow x 3 padding for sprite rendering
-	pdwScreenBuffer_351628 = &pre_pdwScreenBuffer_351628[(GAME_RES_MAX_WIDTH * GAME_RES_MAX_HEIGHT)];
+	AllocateScreenBuffer();
 
 	//smalltitBuffer_E9C38= (uint8_t*)malloc(64000);
 	//x_D41A0_BYTEARRAY_4_0xDE_heapbuffer= (uint8_t*)malloc(64000);
@@ -1189,7 +1225,7 @@ void support_end() {
 	if (readbuffer)free(readbuffer);
 	if (printbuffer)free(printbuffer);//char* buffer; // [esp+0h] [ebp-2h]
 	if (printbuffer2)free(printbuffer2);//char v11; // [esp+40h] [ebp+3Eh]
-	if (pre_pdwScreenBuffer_351628)free(pre_pdwScreenBuffer_351628);
+	FreeScreenBuffer();
 	//free(smalltitBuffer_E9C38);
 	/*for (int i = 0;i < 0x1c;i++)
 		free(off_D918C[i]);*/

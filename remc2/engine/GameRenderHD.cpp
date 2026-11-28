@@ -247,6 +247,19 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 			v49 = iScreenWidth_DE560 - (uint16_t)viewPort.Width_DE564;
 			v50 = (uint16_t)viewPort.Height_DE568;
 
+			if (RenderMc1() && world_D41A0.m_GameSettings.m_Display.xxxx_0x2191 == 1)
+			{
+				// MC1 31454: every pixel by the old one * 256 + the new one (MC2 only the first 4)
+				v37 = (x_BYTE*)m_ptrBlurBuffer_E9C3C;
+				for (; v50; v50--)
+				{
+					for (int i = 0; i < 4 * v51; i++)
+						v35[i] = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + ((uint8_t)v35[i] << 8 | (uint8_t)v37[i])];
+					v35 += 4 * v51 + v49;
+					v37 += 4 * v51 + v49;
+				}
+				goto LABEL_44;
+			}
 			if (world_D41A0.m_GameSettings.m_Display.xxxx_0x2191 != 1)
 			{
 				v37 = (x_BYTE*)m_ptrBlurBuffer_E9C3C;
@@ -341,6 +354,10 @@ void GameRenderHD::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 		DrawTerrainAndParticles_3C080(vPosX - v31, vPosY - v30, vYaw, posZ, pitch, roll, fov);
 		viewPort.SetRenderViewPortSize_BCD45(v32, 0, 0, 0);
 		viewShiftX_D4324 = 0;
+		const size_t eyeSize = (size_t)iScreenWidth_DE560 * (uint16_t)viewPort.Height_DE568;
+		if (RenderMc1() && ptrMemoryBuffer_E9C3C && ptrMemoryBuffer_E9C3C != m_ptrBlurBuffer_E9C3C
+			&& eyeSize <= (size_t)gameResWidth * gameResHeight)
+			memcpy(ptrMemoryBuffer_E9C3C, m_ptrBlurBuffer_E9C3C, eyeSize);
 	}
 }
 
@@ -696,7 +713,7 @@ void GameRenderHD::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 		m_tileRows_v17--;
 	}
 
-	spriteRender_F2C20.tileCutOffDistance_0x15 = (400 * (m_viewDistanceScale * m_viewDistanceScale)) << 16; //Distance cut-off for tile render
+	spriteRender_F2C20.tileCutOffDistance_0x15 = Mc1StereogramMode() ? 400 << 16 : (400 * (m_viewDistanceScale * m_viewDistanceScale)) << 16;
 	v278x = 0;
 	spriteRender_F2C20.fogThickness_0x12 = (136 * m_viewDistanceScale * m_viewDistanceScale) << 16;
 	v22 = v277[0];
@@ -1823,7 +1840,7 @@ uint16_t GameRenderHD::DrawTileSpriteReflections_3FD60(int a2x, uint8_t playersC
 	result = m_ptrStr_E9C38_smalltit[a2x].haveBillboard_36;
 	do
 	{
-		if (result < 0x3E8u)
+		if (result < RenderEntityCount())
 		{
 			v3x = RenderEntity(result);
 			v41x = v3x;
@@ -1853,8 +1870,8 @@ uint16_t GameRenderHD::DrawTileSpriteReflections_3FD60(int a2x, uint8_t playersC
 					v9x = RenderSpriteDef(v41x->spriteIndex_0x5A_90);
 					v10 = v6 * spriteRender_F2C20.projectionScale_0x18 / v40;
 					v11 = spriteRender_F2C20.projectionScale_0x18 * v42 / v40 + spriteRender_F2C20.horizonOffset_0x22;
-					spriteRender_F2C20.screenY_0x04 = ((v10 * spriteRender_F2C20.cos_0x11 - spriteRender_F2C20.sin_0x0d * v11) >> 16) + spriteRender_F2C20.centerX_0x24;
-					spriteRender_F2C20.screenX_0x03 = spriteRender_F2C20.centerY_0x10 - ((spriteRender_F2C20.sin_0x0d * v10 + v11 * spriteRender_F2C20.cos_0x11) >> 16);
+					spriteRender_F2C20.screenY_0x04 = static_cast<int>(((static_cast<int64_t>(v10) * spriteRender_F2C20.cos_0x11 - static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v11) >> 16) + spriteRender_F2C20.centerX_0x24);
+					spriteRender_F2C20.screenX_0x03 = static_cast<int>(spriteRender_F2C20.centerY_0x10 - ((static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v10 + static_cast<int64_t>(v11) * spriteRender_F2C20.cos_0x11) >> 16));
 					v12 = v9x->kind_12;
 					x_BYTE_F2CC6 = 0;
 					switch (v12)
@@ -4209,7 +4226,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 	{
 		//adress 21f370
 
-		if (mc1Depth && result >= 1000)
+		if (mc1Depth && result >= RenderEntityCount())
 			break;
 		v3x = RenderEntity(result);
 		spriteRender_F2C20.entity_0x14x = v3x;
@@ -4239,8 +4256,8 @@ void GameRenderHD::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 						{
 							v8 = v5 * spriteRender_F2C20.projectionScale_0x18 / v99;
 							v9 = spriteRender_F2C20.projectionScale_0x18 * v98 / v99 + spriteRender_F2C20.horizonOffset_0x22;
-							spriteRender_F2C20.screenY_0x04 = ((v8 * spriteRender_F2C20.cos_0x11 - spriteRender_F2C20.sin_0x0d * v9) >> 16) + spriteRender_F2C20.centerX_0x24;
-							spriteRender_F2C20.screenX_0x03 = spriteRender_F2C20.centerY_0x10 - ((spriteRender_F2C20.sin_0x0d * v8 + v9 * spriteRender_F2C20.cos_0x11) >> 16);
+							spriteRender_F2C20.screenY_0x04 = static_cast<int>(((static_cast<int64_t>(v8) * spriteRender_F2C20.cos_0x11 - static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v9) >> 16) + spriteRender_F2C20.centerX_0x24);
+							spriteRender_F2C20.screenX_0x03 = static_cast<int>(spriteRender_F2C20.centerY_0x10 - ((static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v8 + static_cast<int64_t>(v9) * spriteRender_F2C20.cos_0x11) >> 16));
 							v10 = v7x->kind_12;
 							x_BYTE_F2CC6 = 0;
 							switch (v10)
@@ -4557,7 +4574,7 @@ void GameRenderHD::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 			}
 			v51 = v100 * v100 + v49 * v49;
 			// MC1 2F170: no cut off, the depth as the shade
-			if (v100 > 64 && (mc1Depth || v51 < spriteRender_F2C20.tileCutOffDistance_0x15))
+			if (v100 > 64 && ((mc1Depth && m_viewDistanceScale == 1) || v51 < spriteRender_F2C20.tileCutOffDistance_0x15)) // MC1 2F170: no cut off in the depth image, within the original grid (view distance 1)
 			{
 				if (mc1Depth)
 				{
@@ -4578,8 +4595,8 @@ void GameRenderHD::DrawSprites_3E360(int a2x, Type_Sprite** m_ptrLoadedSprites_F
 				v52x = RenderSpriteDef(spriteRender_F2C20.entity_0x14x->spriteIndex_0x5A_90);
 				v53 = v49 * spriteRender_F2C20.projectionScale_0x18 / v100;
 				v54 = spriteRender_F2C20.projectionScale_0x18 * (v48 - spriteRender_F2C20.cameraZ_0x20) / v100 + spriteRender_F2C20.horizonOffset_0x22;
-				spriteRender_F2C20.screenY_0x04 = ((v53 * spriteRender_F2C20.cos_0x11 - spriteRender_F2C20.sin_0x0d * v54) >> 16) + spriteRender_F2C20.centerX_0x24;
-				spriteRender_F2C20.screenX_0x03 = spriteRender_F2C20.centerY_0x10 - ((spriteRender_F2C20.sin_0x0d * v53 + v54 * spriteRender_F2C20.cos_0x11) >> 16);
+				spriteRender_F2C20.screenY_0x04 = static_cast<int>(((static_cast<int64_t>(v53) * spriteRender_F2C20.cos_0x11 - static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v54) >> 16) + spriteRender_F2C20.centerX_0x24);
+				spriteRender_F2C20.screenX_0x03 = static_cast<int>(spriteRender_F2C20.centerY_0x10 - ((static_cast<int64_t>(spriteRender_F2C20.sin_0x0d) * v53 + static_cast<int64_t>(v54) * spriteRender_F2C20.cos_0x11) >> 16));
 				v55 = v52x->kind_12;
 				x_BYTE_F2CC6 = 0;
 				switch (v55)

@@ -1,6 +1,7 @@
 #include "Mc1PlayerEvents.h"
 
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 
 #include "Mc1Entity.h"
@@ -11,11 +12,14 @@
 #include "Mc1Level.h"
 #include "Mc1MainMenu.h"
 #include "Mc1Movie.h"
-#include "Mc1NotPorted.h"
+#include "Mc1Network.h"
+#include "Mc1Save.h"
+#include "Mc1Regression.h"
 #include "Mc1Screen.h"
 #include "Mc1Sound.h"
 #include "Mc1Terrain.h"
 #include "Mc1World.h"
+#include "../../remc2/engine/Basic.h"
 #include "../../remc2/engine/read_config.h"
 #include "../../remc2/engine/Scene.h"
 #include "../../remc2/shared/EventDispatcher.h"
@@ -24,16 +28,18 @@ uint8_t networkJoined_93959_93959 = 0;
 int16_t networkIndex_9395A_9395A = 0;
 int16_t networkCount_9395C_9395C = 0;
 uint16_t networkMaster_9398A_9398A = 0;
-uint32_t networkHandles_93990_93990[8];
 uint8_t networkActive_939B0_939B0[8];
 
 static Type_Mc1Entity* Entities()
 {
-	return mc1State_AE400_AE3F0->entities_0x7463_29795;
+	return mc1Entities;
 }
 
 static uint16_t EntityIndex(const Type_Mc1Entity* entity)
 {
+	// the wizard at DOS address 0 (no free entity): (0 - 26AF3h) / A4h
+	if (entity == EntityAtAddressZero())
+		return mc1MissingEntityIndex;
 	return (uint16_t)(entity - Entities());
 }
 
@@ -131,9 +137,9 @@ static void GiveAllSpells(Type_Mc1Entity* wizard)
 		}
 	}
 	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
-	for (int i = 1; i < 1000; i++)
-		if (state->entities_0x7463_29795[i].class_0x40_64 == 0x0B)
-			state->entities_0x7463_29795[i].flags_0x10_16 &= ~1u;
+	for (int i = 1; i < mc1EntityCount; i++)
+		if (mc1Entities[i].class_0x40_64 == 0x0B)
+			mc1Entities[i].flags_0x10_16 &= ~1u;
 }
 
 // the cheats 3-5: the wizards of the others by the model (0 / 1 players, 2 castles, 3 balloons) die
@@ -144,10 +150,39 @@ static void DestroyWizardsByModel(const Type_Mc1Entity* wizard, uint8_t model, u
 			entity->life_0x0C_12 = -1;
 }
 
+// port: the input of player 0 played back from a recording of DOSBox (dosbox-x-remc2 branch mc1, REMC1_RECORD at
+// 3C9D0), the file of the regression test or in the env REMC1_PLAY; at its end the input is left to the player
+static void PlayRecordedInput(Type_Mc1PlayerInput* input)
+{
+	static_assert(sizeof(Type_Mc1PlayerInput) == 10, "the record of DOSBox");
+	static FILE* file = nullptr;
+	static bool opened = false;
+	if (!opened)
+	{
+		opened = true;
+		const std::string regressionInput = Mc1RegressionInput();
+		if (!regressionInput.empty())
+			file = fopen(regressionInput.c_str(), "rb");
+		else if (const char* path = getenv("REMC1_PLAY"))
+			file = fopen(path, "rb");
+	}
+	if (!file)
+		return;
+	Type_Mc1PlayerInput recorded;
+	if (fread(&recorded, 1, sizeof(recorded), file) != sizeof(recorded))
+	{
+		fclose(file);
+		file = nullptr;
+		return;
+	}
+	*input = recorded;
+}
+
 void PlayerEvents_3C9D0_3CD10()
 {
 	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
 	Type_Mc1Settings_AE408_AE3F8* settings = mc1Settings_AE408_AE3F8;
+	PlayRecordedInput(&state->playerInputs_0x7413_29715[0]);
 	uint8_t nextMovie = 0;
 	if (settings->flags_0x00_0 & 0x10)
 	{
@@ -219,11 +254,11 @@ void PlayerEvents_3C9D0_3CD10()
 			break;
 		case 10:
 			if (!(settings->flags_0x00_0 & 0x10))
-				sub_3E410_3E750(10000);
+				SaveMovieGame_3E410_3E750(10000);
 			break;
 		case 11:
 			if (!(settings->flags_0x00_0 & 0x10))
-				sub_3E350_3E690(10000);
+				LoadMovieGame_3E350_3E690(10000);
 			break;
 		case 12: // start recording the movie
 			if (!(settings->flags_0x00_0 & 0x20) && current)
@@ -299,7 +334,7 @@ void PlayerEvents_3C9D0_3CD10()
 			if (input->param_0x01_1 == -1)
 				break;
 			WriteS16(playerData + (input->command_0x00_0 == 21 ? 0x3AC : 0x3B0), input->param_0x01_1);
-			sub_55370_558A0(0, player->index_0x07_7, 0x0E);
+			QueueSound_55370_558A0(0, player->index_0x07_7, 0x0E);
 			SetPlayerMode_3DC90_3DFD0(player, 0);
 			break;
 		case 23: // a spell into a slot
@@ -309,7 +344,7 @@ void PlayerEvents_3C9D0_3CD10()
 				if (playerData[0x304 + slot] == (uint8_t)input->param2_0x02_2)
 					playerData[0x304 + slot] = 0xFF;
 			playerData[0x304 + input->param_0x01_1] = (uint8_t)input->param2_0x02_2;
-			sub_55370_558A0(0, player->index_0x07_7, 0x0E);
+			QueueSound_55370_558A0(0, player->index_0x07_7, 0x0E);
 			break;
 		case 24: // the first spell from a slot
 		case 25: // the second spell from a slot
@@ -322,7 +357,7 @@ void PlayerEvents_3C9D0_3CD10()
 				const Type_Mc1Entity& spell = Entities()[ReadS32(playerData + 0x214 + slot * 4)];
 				playerData[0x34C + (int8_t)spell.model_0x41_65] = 0x20;
 			}
-			sub_55370_558A0(0, player->index_0x07_7, 0x0E);
+			QueueSound_55370_558A0(0, player->index_0x07_7, 0x0E);
 			break;
 		}
 		case 26: // all leave
@@ -435,13 +470,31 @@ void SetPlayerMode_3DC90_3DFD0(Type_Mc1Player_340B* player, uint8_t mode)
 			SetCenterMouse_59720_59C30();
 			RestoreScreenSize_31A60_31AA0();
 		}
-		sub_55370_558A0(0, player->index_0x07_7, 0x0E);
+		QueueSound_55370_558A0(0, player->index_0x07_7, 0x0E);
 		// port: the scene of the gamepad of remc2 (MC2 SetMenuCursorPosition_52E90, DrawBottomSpellsMenu_2ECC0)
-		static const Scene scenes[5] = { Scene::FLIGHT, Scene::FLIGHT_MENU, Scene::SPELL_MENU, Scene::CHAT_MENU, Scene::FLIGHT_MENU };
-		if (mode < 5)
-			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, scenes[mode]);
+		Mc1SetModeScene(mode);
 	}
 	CheckCd_3DD10_3E050();
+}
+
+// port: the scene of remc2 (E_SCENE_CHANGE) for the gamepad (port_sdl_joystick): flight (the stick steers) or a menu (it
+// moves the pointer), dead (a button is Space, the rebirth). Sent when it changes: MC1 has no listener of its own (MC2
+// keeps its scene in sub_main), so the last one sent is kept here
+void Mc1SetScene(Scene scene)
+{
+	static int lastScene = -1;
+	if (lastScene == (int)scene || !EventDispatcher::I)
+		return;
+	lastScene = (int)scene;
+	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, scene);
+}
+
+// the scene of the player's mode: 0 the flight, 1 / 4 the menus over the flight, 2 the map and the spells, 3 a message
+void Mc1SetModeScene(uint8_t mode)
+{
+	static const Scene scenes[5] = { Scene::FLIGHT, Scene::FLIGHT_MENU, Scene::SPELL_MENU, Scene::CHAT_MENU, Scene::FLIGHT_MENU };
+	if (mode < 5)
+		Mc1SetScene(scenes[mode]);
 }
 
 void CheckCd_3DD10_3E050()
@@ -462,14 +515,14 @@ void RecordOrPlayMovieInput_3E9D0_3ED10(Type_Mc1PlayerInput* input)
 		if (!settings->movieFile_0x09_9 && input == &state->playerInputs_0x7413_29715[0])
 		{
 			sprintf(path, "%s/mvi%05d.dat", "movie", settings->movie_0x0D_13);
-			settings->movieFile_0x09_9 = DataFileIO::CreateOrOpenFile(path, 0x200);
+			settings->movieFile_0x09_9 = DataFileIO::CreateOrOpenFile(Mc1DataFilePath(path).c_str(), 0x200);
 			if (!settings->movieFile_0x09_9)
 			{
 				settings->flags_0x00_0 &= ~4u;
 				return;
 			}
-			sub_3E350_3E690(settings->movie_0x0D_13);
-			sub_3E4B0_3E7F0(settings->movie_0x0D_13);
+			LoadMovieGame_3E350_3E690(settings->movie_0x0D_13);
+			LoadMovieMaps_3E4B0_3E7F0(settings->movie_0x0D_13);
 			ReloadTmaps_59420_59930();
 			InitInputChange_356E0_35AA0();
 		}
@@ -499,15 +552,15 @@ void RecordOrPlayMovieInput_3E9D0_3ED10(Type_Mc1PlayerInput* input)
 	if (!settings->movieFile_0x09_9 && input == &state->playerInputs_0x7413_29715[0])
 	{
 		sprintf(path, "%s/mvi%05d.dat", "movie", settings->movie_0x0D_13);
-		settings->movieFile_0x09_9 = DataFileIO::CreateOrOpenFile(path, 0x222);
+		settings->movieFile_0x09_9 = DataFileIO::CreateOrOpenFile(Mc1DataFilePath(path).c_str(), 0x222);
 		if (!settings->movieFile_0x09_9)
 		{
 			settings->flags_0x00_0 &= ~2u;
 			return;
 		}
 		MarkLoadedTmaps_593B0_598C0();
-		sub_3E410_3E750(settings->movie_0x0D_13);
-		sub_3E580_3E8C0(settings->movie_0x0D_13);
+		SaveMovieGame_3E410_3E750(settings->movie_0x0D_13);
+		SaveMovieMaps_3E580_3E8C0(settings->movie_0x0D_13);
 		RebuildFreeLists_37220_375E0();
 		state->reuseTop_0x11F1_4593 = -1;
 		settings->credits_0xA1_161 = 3;
@@ -551,20 +604,20 @@ void RemoveNetworkPlayer_43760_43AA0(int16_t player)
 		{
 			if (i == networkIndex_9395A_9395A)
 				continue;
-			sub_42C70_42FB0(i);
-			sub_42DE0_43120(networkHandles_93990_93990[i]);
+			CancelNcb_42C70_42FB0(i);
+			HangUp_42DE0_43120(networkNcbs_93990_93990[i]);
 		}
 		char name[0x14];
-		sprintf(name, "%s%d", "TESTER", networkIndex_9395A_9395A);
-		sub_42D40_43080(networkHandles_93990_93990[player], name);
+		sprintf(name, "%s%d", networkName_939B8_939B8, networkIndex_9395A_9395A);
+		DeleteName_42D40_43080(networkNcbs_93990_93990[player], name);
 		networkJoined_93959_93959 = 0;
 	}
 	else
 	{
-		sub_42C70_42FB0(player);
-		sub_42DE0_43120(networkHandles_93990_93990[player]);
+		CancelNcb_42C70_42FB0(player);
+		HangUp_42DE0_43120(networkNcbs_93990_93990[player]);
 	}
-	sub_43150_43490();
+	UpdateNetworkActive_43150_43490();
 	// the first one still in the game sends the commands
 	for (int16_t i = 0; i < networkCount_9395C_9395C; i++)
 		if (networkActive_939B0_939B0[i])
@@ -583,16 +636,16 @@ void ExchangeAll_43930_43C70(uint8_t* buffer, uint32_t size)
 		// the master: the part of each one in, then all to all
 		for (int16_t i = 0; i < networkCount_9395C_9395C; i++)
 			if (i != networkIndex_9395A_9395A)
-				sub_438D0_43C10((uint16_t)i, buffer + i * size, size);
+				ReceiveFrom_438D0_43C10((uint16_t)i, buffer + i * size, size);
 		for (int16_t i = 0; i < networkCount_9395C_9395C; i++)
 			if (i != networkIndex_9395A_9395A)
-				sub_43870_43BB0((uint16_t)i, buffer, networkCount_9395C_9395C * size);
+				SendTo_43870_43BB0((uint16_t)i, buffer, networkCount_9395C_9395C * size);
 	}
 	else
 	{
 		// the own part to the master, all from it
-		sub_43870_43BB0(networkMaster_9398A_9398A, buffer + networkIndex_9395A_9395A * size, size);
-		sub_438D0_43C10(networkMaster_9398A_9398A, buffer, networkCount_9395C_9395C * size);
+		SendTo_43870_43BB0(networkMaster_9398A_9398A, buffer + networkIndex_9395A_9395A * size, size);
+		ReceiveFrom_438D0_43C10(networkMaster_9398A_9398A, buffer, networkCount_9395C_9395C * size);
 	}
 }
 
@@ -610,6 +663,10 @@ void CreatePlayerWizard_44D30_45070(Type_Mc1Player_340B* player, Type_Mc1Entity*
 	{
 		wizard = CreateEntity_373F0_377B0(&position, 3, player->computer_0x09_9 == 1 ? 1 : 0);
 		created = true;
+		//!!!!! no free entity (the levels 17 and 39 fill all 1000): the original goes on with a wizard at DOS address 0
+		//!!!!! and the entity index FC3Ah (the interrupt table overwritten)
+		if (!wizard)
+			wizard = EntityAtAddressZero();
 	}
 	else
 	{
@@ -678,7 +735,7 @@ void CreatePlayerWizard_44D30_45070(Type_Mc1Player_340B* player, Type_Mc1Entity*
 				{
 					castle->id_0x18_24 = wizard->id_0x18_24;
 					WriteS16(playerData + 0x32, (int16_t)EntityIndex(castle));
-					sub_55370_558A0((int16_t)EntityIndex(wizard), -1, 0x1E);
+					QueueSound_55370_558A0((int16_t)EntityIndex(wizard), -1, 0x1E);
 					// each level of the castle stamped through entity 0
 					Type_Mc1Entity& stamp = Entities()[0];
 					for (int floor = 0; floor < level[0x9794 + computer]; floor++)
@@ -940,7 +997,9 @@ void SetCenterMouse_59720_59C30()
 	if (*videoMode_12F02E_12F01E == 1)
 		SetMousePosition_59750_59C60(0x140, 0xC8);
 	else
-		SetMousePosition_59750_59C60(0x140, 0xF0);
+		// 140h x F0h at 640x480; port: the centre of the UI's coordinates at the other resolutions, where the flight
+		// takes its straight ahead (MouseToMove_169E0)
+		SetMousePosition_59750_59C60((int16_t)(UiScreenWidth() / 2), (int16_t)(UiScreenHeight() / 2));
 }
 
 void SetMousePosition_59750_59C60(int16_t x, int16_t y)
@@ -951,23 +1010,21 @@ void SetMousePosition_59750_59C60(int16_t x, int16_t y)
 		return;
 	if (x == -1)
 		return;
+	// the last pixel but one: 27Eh x 18Eh / 1DEh; port: of the screen at the other resolutions (the same at 640x480)
+	const bool low = (*videoMode_12F02E_12F01E & 1) != 0;
 	if (x > 0)
 	{
-		if (x > 0x27E)
-			x = 0x27E;
+		const int16_t maxX = low ? 0x27E : (int16_t)(UiScreenWidth() - 2);
+		if (x > maxX)
+			x = maxX;
 		mousePos_9AD90_9AD90->x = x;
 	}
 	if (y > 0)
 	{
-		const int16_t maxY = (*videoMode_12F02E_12F01E & 1) ? 0x18E : 0x1DE;
+		const int16_t maxY = low ? 0x18E : (int16_t)(UiScreenHeight() - 2);
 		if (y > maxY)
 			y = maxY;
 		mousePos_9AD90_9AD90->y = y;
 	}
-	else
-		y = mousePos_9AD90_9AD90->y;
-	if (*videoMode_12F02E_12F01E & 1)
-		VGA_Set_mouse(x / 2, y / 2);
-	else
-		VGA_Set_mouse(x, y);
+	VGA_Set_mouse(mousePos_9AD90_9AD90->x, mousePos_9AD90_9AD90->y);
 }

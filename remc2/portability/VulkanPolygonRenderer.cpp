@@ -866,7 +866,8 @@ void VulkanPolygonRenderer::SetPalette(const uint8_t* rgb768)
 void VulkanPolygonRenderer::SetClearColourIndex(uint8_t paletteIndex) 
 {
 	m_clearPaletteIndex = paletteIndex;
-	m_clearColorSet = false; 
+	m_clearColorSet = false;
+	RefreshClearColour();   // the colour now from the current palette, not only at the next SetPalette
 }
 
 bool VulkanPolygonRenderer::CreateShadeLutTexture()

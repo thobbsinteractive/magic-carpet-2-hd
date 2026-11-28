@@ -11,7 +11,6 @@
 #include "Mc1Game.h"
 #include "Mc1Install.h"
 #include "Mc1Menu.h"
-#include "Mc1NotPorted.h"
 #include "Mc1Shared.h"
 #include "Mc1Sound.h"
 #include "Mc1TextureMaps.h"
@@ -88,7 +87,115 @@ void LoadLevel_407A0_40AE0()
 	byte_939E5_939E5 = sound;
 	InitPlayers_3DD50_3E090();
 	Type_Mc1Player_340B* player = &state->players_0x340B_13323[state->currentPlayer_0x08_8];
-	SumLevelMana_48230_48570(&state->entities_0x7463_29795[player->entityIndex_0x0A_10]);
+	SumLevelMana_48230_48570(&mc1Entities[player->entityIndex_0x0A_10]);
+}
+
+void RestartLevel_408D0_40C10()
+{
+	// the level lost (6 == 4): LoadLevel_407A0 again, without the loading texts and with the players of the level
+	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
+	uint8_t sound = byte_939E5_939E5;
+	byte_939E5_939E5 = 0;
+	ClearLevel_40550_40890();
+	LoadLevelData_3E100_3E440((int16_t)mc1Settings_AE408_AE3F8->levelIndex_0x11_17, &state->level_0x2F503_193795);
+	state->playerCount_0x0A_10 = state->level_0x2F503_193795.playerCount_0x9792_38802;
+	GenerateLevelMap_31AA0_31AE0(&state->level_0x2F503_193795);
+	InitEntities_371C0_37580();
+	CreateFeatures_36430_367F0(&state->level_0x2F503_193795);
+	memset(&featurePosition_AE454_AE444, 0, sizeof(featurePosition_AE454_AE444));
+	RebuildFreeLists_37220_375E0();
+	state->reuseTop_0x11F1_4593 = -1;
+	CreateLevelModels_37440_37800(0, 1);
+	byte_939E5_939E5 = sound;
+	InitPlayers_3DD50_3E090();
+	Type_Mc1Player_340B* player = &state->players_0x340B_13323[state->currentPlayer_0x08_8];
+	SumLevelMana_48230_48570(&mc1Entities[player->entityIndex_0x0A_10]);
+}
+
+static int32_t ReadPd32(const uint8_t* playerData, int32_t offset)
+{
+	int32_t value;
+	memcpy(&value, playerData + offset, sizeof(value));
+	return value;
+}
+
+static void WritePd32(uint8_t* playerData, int32_t offset, int32_t value)
+{
+	memcpy(playerData + offset, &value, sizeof(value));
+}
+
+static int16_t ReadPd16(const uint8_t* playerData, int32_t offset)
+{
+	int16_t value;
+	memcpy(&value, playerData + offset, sizeof(value));
+	return value;
+}
+
+static int32_t AtMost100(int32_t value)
+{
+	return value > 100 ? 100 : value;
+}
+
+void LevelWonStats_448E0_44C20()
+{
+	// the level won: the spells got (pd+37Ch), the percents (up to 100) of the spells of the level (16Bh), of the
+	// creatures (167h of the count of the level), 15Bh of 157h (16Fh), the mana of the castle and the balloons (173h)
+	// and their average (177h); 17Bh becomes the time of the level
+	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
+	Type_Mc1Player_340B& player = state->players_0x340B_13323[state->currentPlayer_0x08_8];
+	Type_Mc1Entity* wizard = &mc1Entities[player.entityIndex_0x0A_10];
+	uint8_t* playerData = wizard->playerData_0xA0_160;
+	const Type_Mc1CreatureStats& stats = state->creatureStats_0x38C9F_232607;
+	int32_t found = 0;
+	int32_t total = 0;
+	for (int32_t i = 0; i < 24; i++)
+	{
+		if (stats.class12_0x04[i])
+		{
+			total++;
+			if (ReadPd16(playerData, 0x2A4 + i * 2))
+			{
+				found++;
+				playerData[0x37C + i] = 1;
+			}
+		}
+		if (ReadPd16(playerData, 0x2A4 + i * 2))
+			playerData[0x37C + i] = 1;
+	}
+	WritePd32(playerData, 0x16B, total ? AtMost100(found * 100 / total) : 100);
+	if (stats.creatures_0x00)
+		WritePd32(playerData, 0x167, AtMost100(ReadPd32(playerData, 0x167) * 100 / stats.creatures_0x00));
+	else
+		WritePd32(playerData, 0x167, 100);
+	if (ReadPd32(playerData, 0x157))
+		WritePd32(playerData, 0x16F, AtMost100(ReadPd32(playerData, 0x15B) * 100 / ReadPd32(playerData, 0x157)));
+	else
+		WritePd32(playerData, 0x16F, 100);
+	uint16_t castle;
+	memcpy(&castle, playerData + 0x32, sizeof(castle));
+	const int32_t mana = mc1Entities[castle].mana_0x8C_140 + ReadPd32(playerData, 0x134);
+	WritePd32(playerData, 0x173, AtMost100(mana * 100 / mc1Settings_AE408_AE3F8->manaStats_0xB8_184.total_0x04));
+	int32_t sum = 0;
+	int32_t count = 0;
+	if (total)
+	{
+		sum += ReadPd32(playerData, 0x16B);
+		count = 1;
+	}
+	if (stats.creatures_0x00)
+	{
+		sum += ReadPd32(playerData, 0x167);
+		count++;
+	}
+	if (ReadPd32(playerData, 0x157))
+	{
+		sum += ReadPd32(playerData, 0x16F);
+		count++;
+	}
+	sum += ReadPd32(playerData, 0x173);
+	count++;
+	WritePd32(playerData, 0x177, sum / count);
+	WritePd32(playerData, 0x17B, (int32_t)timerTicks_AC5D4_AC5C4 - ReadPd32(playerData, 0x17B));
 }
 
 void ClearLevel_40550_40890()
@@ -103,7 +210,7 @@ void ClearLevel_40550_40890()
 	state->byte_0x244_580 = 0;
 	memset(&state->creatureStats_0x38C9F_232607, 0, sizeof(state->creatureStats_0x38C9F_232607));
 	memset(state->playerStarts_0x23D9_9177, 0, sizeof(state->playerStarts_0x23D9_9177));
-	memset(state->entities_0x7463_29795, 0, sizeof(state->entities_0x7463_29795));
+	memset(mc1Entities, 0, mc1EntityCount * sizeof(Type_Mc1Entity));
 	settings->flag_0x17_23 = 0;
 	memset(settings->colorIndex_0x5D_93, 0, sizeof(settings->colorIndex_0x5D_93));
 	settings->speedIndex_0x96_150 = 0;
@@ -579,7 +686,7 @@ void SumLevelMana_48230_48570(Type_Mc1Entity* playerEntity)
 	// the players start from playerData +142h, the owners and the total get the mana of the entities
 	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
 	Type_Mc1Settings_AE408_AE3F8* settings = mc1Settings_AE408_AE3F8;
-	Type_Mc1Entity* entities = state->entities_0x7463_29795;
+	Type_Mc1Entity* entities = mc1Entities;
 	for (uint16_t i = 0; i < state->playerCount_0x0A_10; i++)
 	{
 		Type_Mc1Entity* entity = &entities[state->players_0x340B_13323[i].entityIndex_0x0A_10];
@@ -588,7 +695,7 @@ void SumLevelMana_48230_48570(Type_Mc1Entity* playerEntity)
 	}
 	settings->manaStats_0xB8_184.dword_0x08 = 0;
 	settings->manaStats_0xB8_184.total_0x04 = PlayerDataInt(playerEntity, 0x142);
-	for (int i = 1; i < 1000; i++)
+	for (int i = 1; i < mc1EntityCount; i++)
 	{
 		Type_Mc1Entity* entity = &entities[i];
 		switch (entity->class_0x40_64)
@@ -620,7 +727,7 @@ Type_Mc1Entity* AddManaToOwner_48340_48680(Type_Mc1Entity* entity)
 	Type_Mc1Entity* owner = nullptr;
 	if (entity->owner_0x90_144)
 	{
-		owner = &mc1State_AE400_AE3F0->entities_0x7463_29795[entity->owner_0x90_144];
+		owner = &mc1Entities[entity->owner_0x90_144];
 		owner->dword_0x88_136 += entity->mana_0x8C_140;
 	}
 	mc1Settings_AE408_AE3F8->manaStats_0xB8_184.total_0x04 += entity->mana_0x8C_140;

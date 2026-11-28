@@ -9,8 +9,9 @@
 #include "Mc1Input.h"
 #include "Mc1TextureMaps.h"
 #include "Mc1Level.h"
-#include "Mc1NotPorted.h"
+#include "Mc1Menu.h"
 #include "Mc1PlayerEvents.h"
+#include "Mc1Regression.h"
 #include "Mc1Shared.h"
 #include "Mc1Screen.h"
 #include "Mc1Sound.h"
@@ -21,7 +22,7 @@
 
 static Type_Mc1Entity* Entities()
 {
-	return mc1State_AE400_AE3F0->entities_0x7463_29795;
+	return mc1Entities;
 }
 
 static bool InList(const Type_Mc1Entity* entity)
@@ -59,14 +60,18 @@ void GameLoop_34610_349D0()
 {
 	mc1Settings_AE408_AE3F8->flag_0x17_23 = 0;
 	CurrentPlayer().levelResult_0x02_2 = 0;
+	// port: the gamepad of remc2 into the level: the scene of the player's mode (the level starts in the flight, mode 0,
+	// set without SetPlayerMode_3DC90, which sends it later)
+	Mc1SetModeScene(CurrentPlayer().mode_0x44A_1098);
 	while (!CurrentPlayer().exitGame_0x04_4 && !(CurrentPlayer().levelResult_0x02_2 & 8))
 		GameFrame_34530_348F0();
 	// port: the gamepad of remc2 back to the menus (MC2 DrawEndGameTable_82C20)
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::PREAMBLE_MENU);
+	Mc1SetScene(Scene::PREAMBLE_MENU);
 }
 
 void GameFrame_34530_348F0()
 {
+	SetFrameStart(std::chrono::system_clock::now());
 	Type_Mc1Settings_AE408_AE3F8* settings = mc1Settings_AE408_AE3F8;
 	if (!mc1State_AE400_AE3F0->screenSize_0x219B_8603)
 		UpdatePalette_34690_34A50();
@@ -76,7 +81,7 @@ void GameFrame_34530_348F0()
 		ProcessInput_17C20_17C20();
 	PlayerEvents_3C9D0_3CD10();
 	if (!(settings->flags_0x00_0 & 0x10000))
-		sub_415C0_41900();
+		CheckLevelWon_415C0_41900();
 	// the speed: 1, 4 or 16 ticks of the world in a frame
 	switch (settings->speedIndex_0x96_150)
 	{
@@ -92,11 +97,20 @@ void GameFrame_34530_348F0()
 			WorldTick_41780_41AC0();
 		break;
 	}
-	sub_55100_55630();
+	PlayQueuedSounds_55100_55630();
+	if (mc1AsGame)
+	{
+		// port: -asgame, at the first 20FB0 as REMC1_POKE of dbxrecord.py / mkregression.py: the flags of -custom
+		// cleared (100h: no level won check) and the menu item 5 (a new game), so a won level goes on to the results
+		mc1AsGame = 0;
+		settings->flags_0x00_0 &= ~0xFF00u;
+		mainMenuItem_12CBCE_12CBBE = 5;
+	}
+	Mc1RegressionFrame(); // port: the regression test compares the state with DOSBox
 	DrawFrame_20FB0_20FB0();
 	// the ticks of the frame for 5A560, then the time of the frame
 	settings->frameTicks_0x99_153 = timerTicks_AC5D4_AC5C4 - settings->frameTicks_0x99_153;
-	sub_5A560_5AA70();
+	DrawDebugInfo_5A560_5AA70();
 	settings->frameTicks_0x99_153 = timerTicks_AC5D4_AC5C4;
 	BlendAndBlit_30B30_30B70();
 }
@@ -119,7 +133,7 @@ void WorldTick_41780_41AC0()
 	state->rand_0x04_4 = state->rand_0x04_4 * 0x24A1 + 0x24DF;
 	if (settings->flags_0x00_0 & 0x10000)
 		return;
-	for (int i = 1; i < 1000; i++)
+	for (int i = 1; i < mc1EntityCount; i++)
 	{
 		Type_Mc1Entity* entity = &Entities()[i];
 		if (entity->class_0x40_64 && (entity->flags_0x10_16 & 0x400))
@@ -136,7 +150,7 @@ void WorldTick_41780_41AC0()
 	Type_Mc1Entity* lastClass9 = nullptr;
 	Type_Mc1Entity* lastMana = nullptr;
 	Type_Mc1Entity* lastBuilding = nullptr;
-	for (int i = 1; i < 1000; i++)
+	for (int i = 1; i < mc1EntityCount; i++)
 	{
 		Type_Mc1Entity* entity = &Entities()[i];
 		switch (entity->class_0x40_64)
@@ -167,7 +181,7 @@ void WorldTick_41780_41AC0()
 		UpdateCreatureAlerts_54F00_55430();
 	UpdateAttackRecords_16540_16540();
 	SumLevelMana_48230_48570(&Entities()[CurrentPlayer().entityIndex_0x0A_10]);
-	for (int i = 1; i < 1000; i++)
+	for (int i = 1; i < mc1EntityCount; i++)
 	{
 		Type_Mc1Entity* entity = &Entities()[i];
 		if (!entity->class_0x40_64)
@@ -311,4 +325,41 @@ uint8_t SetPlayerCamera_41B20_41E60(Type_Mc1Player_340B* player, Type_Mc1Entity*
 	pitch -= tilt / 8;
 	record.pitch_0x08_8 = (int16_t)pitch;
 	return 1;
+}
+
+void CheckLevelWon_415C0_41900()
+{
+	// a player whose castle with the balloons has the mana percent of the level (word at 9790h of the level) for 16
+	// frames: the level is won (levelResult 2)
+	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
+	Type_Mc1Settings_AE408_AE3F8* settings = mc1Settings_AE408_AE3F8;
+	if (settings->flags_0x00_0 & 0x110)
+		return;
+	uint16_t target;
+	memcpy(&target, (const uint8_t*)&state->level_0x2F503_193795 + 0x9790, sizeof(target));
+	for (uint32_t i = 0; i < state->playerCount_0x0A_10; i++)
+	{
+		Type_Mc1Player_340B& player = state->players_0x340B_13323[i];
+		if (!player.active_0x06_6)
+			continue;
+		const uint8_t* playerData = Entities()[player.entityIndex_0x0A_10].playerData_0xA0_160;
+		const uint16_t castle = ReadU16(playerData + 0x32);
+		if (!castle || !settings->manaStats_0xB8_184.total_0x04)
+			continue;
+		int32_t balloons;
+		memcpy(&balloons, playerData + 0x134, sizeof(balloons));
+		const int32_t percent = (Entities()[castle].mana_0x8C_140 + balloons) * 100 / settings->manaStats_0xB8_184.total_0x04;
+		uint16_t frames;
+		memcpy(&frames, &player.unknown_0x00_0, sizeof(frames));
+		if (percent > (int32_t)target)
+		{
+			if ((int16_t)frames >= 0x10)
+				player.levelResult_0x02_2 |= 2;
+			else
+				frames++;
+		}
+		else
+			frames = 0;
+		memcpy(&player.unknown_0x00_0, &frames, sizeof(frames));
+	}
 }

@@ -269,22 +269,26 @@ set(SOURCE_FILES_REMC1
     "../remc1/engine/Mc1Scenery.h"
     "../remc1/engine/Mc1Terrain.cpp"
     "../remc1/engine/Mc1SceneryActions.cpp"
+    "../remc1/engine/Mc1Spells.cpp"
     "../remc1/engine/Mc1Models.cpp"
     "../remc1/engine/Mc1World.cpp"
     "../remc1/engine/Mc1Frame.cpp"
     "../remc1/engine/Mc1Input.cpp"
     "../remc1/engine/Mc1Minimap.cpp"
+    "../remc1/engine/Mc1Panel.cpp"
     "../remc1/engine/Mc1Wizard.cpp"
     "../remc1/engine/Mc1Render.cpp"
     "../remc1/engine/Mc1PlayerEvents.cpp"
     "../remc1/engine/Mc1Actions.cpp"
     "../remc1/engine/Mc1Terrain.h"
     "../remc1/engine/Mc1SceneryActions.h"
+    "../remc1/engine/Mc1Spells.h"
     "../remc1/engine/Mc1Models.h"
     "../remc1/engine/Mc1World.h"
     "../remc1/engine/Mc1Frame.h"
     "../remc1/engine/Mc1Input.h"
     "../remc1/engine/Mc1Minimap.h"
+    "../remc1/engine/Mc1Panel.h"
     "../remc1/engine/Mc1Wizard.h"
     "../remc1/engine/Mc1Render.h"
     "../remc1/engine/Mc1PlayerEvents.h"
@@ -299,7 +303,19 @@ set(SOURCE_FILES_REMC1
     "../remc1/engine/Mc1Screen.cpp"
     "../remc1/engine/Mc1Screen.h"
     "../remc1/engine/Mc1Blocks.cpp"
+    "../remc1/engine/Mc1Castle.cpp"
+    "../remc1/engine/Mc1ComputerWizard.cpp"
+    "../remc1/engine/Mc1Regression.cpp"
+    "../remc1/engine/Mc1Save.cpp"
+    "../remc1/engine/Mc1Network.cpp"
+    "../remc1/engine/Mc1Creatures.cpp"
     "../remc1/engine/Mc1Blocks.h"
+    "../remc1/engine/Mc1Castle.h"
+    "../remc1/engine/Mc1ComputerWizard.h"
+    "../remc1/engine/Mc1Regression.h"
+    "../remc1/engine/Mc1Save.h"
+    "../remc1/engine/Mc1Network.h"
+    "../remc1/engine/Mc1Creatures.h"
     "../remc1/engine/Mc1TextureMaps.cpp"
     "../remc1/engine/Mc1TextureMaps.h"
     "../remc1/engine/Mc1Install.cpp"
@@ -315,8 +331,6 @@ set(SOURCE_FILES_REMC1
     "../remc1/engine/Mc1Game.cpp"
     "../remc1/engine/Mc1Game.h"
     "../remc1/engine/Mc1GameState.h"
-    "../remc1/engine/Mc1NotPorted.cpp"
-    "../remc1/engine/Mc1NotPorted.h"
 )
 source_group("Source Files\\remc1" FILES ${SOURCE_FILES_REMC1})
 set(ALL_FILES
@@ -358,8 +372,12 @@ install(
 install(
     DIRECTORY
     ${CMAKE_SOURCE_DIR}/enhancedassets/MC2/music-ogg
-    ${CMAKE_SOURCE_DIR}/enhancedassets/MC2/awe32data
     DESTINATION bin/MC2
+)
+install(
+    DIRECTORY
+    ${CMAKE_SOURCE_DIR}/enhancedassets/sound/awe32data
+    DESTINATION bin/sound
 )
 install(
     DIRECTORY

@@ -15,6 +15,10 @@ enum Mc1Variant : uint8_t {
 extern Mc1Variant mc1Variant;
 extern Type_Mc1State_AE400_AE3F0* mc1State_AE400_AE3F0;
 extern Type_Mc1Settings_AE408_AE3F8* mc1Settings_AE408_AE3F8;
+// port: the entities (not in the state +7463h), mc1EntityCount of them used: 1000 or more by mc1EntityLimit (int16
+// indexes: 32767 at most)
+extern Type_Mc1Entity* mc1Entities;
+extern int32_t mc1EntityCount;
 extern uint8_t* textPointers_AE238_AE228[80];
 // the video mode is videoMode_12F02E_12F01E (Mc1Shared.h)
 extern uint8_t byte_939CC_939CC;
@@ -24,6 +28,9 @@ extern uint8_t byte_939E5_939E5;
 extern uint8_t menuDone_96880_96880;
 extern uint8_t* vesaInfo_12F080_12F070;
 extern uint8_t debugOption_AE45A_AE44A;
+// port: -asgame, the level as started from the menu: -custom with the menu initialised and the English texts
+// (TopProcedure_340B0 / 34470), at the first frame the flags of -custom cleared (GameFrame_34530_348F0)
+extern uint8_t mc1AsGame;
 extern uint8_t inputDevices_90B23_90B23;
 extern uint8_t joystickFound_B7700_B76F0;
 extern uint8_t byte_A9058_A9058;
@@ -37,4 +44,5 @@ void Cleanup_34C60_35020();
 void PrintStartTexts_5ACA0_5B1B0();
 void PrintLoadingText_5AD10_5B220(const char* text);
 void LoadGameData_34B00_34EC0();
+void ToggleResolution_34C80_35040();
 void InitGameData_34B40_34F00();

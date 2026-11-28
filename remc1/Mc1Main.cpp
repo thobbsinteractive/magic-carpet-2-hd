@@ -8,10 +8,12 @@
 
 #include "engine/Mc1Files.h"
 #include "engine/Mc1Game.h"
+#include "engine/Mc1Network.h"
 #include "engine/Mc1Screen.h"
 #include "engine/Mc1System.h"
 #include "engine/Select.h"
 #include "../remc2/engine/CommandLineParser.h"
+#include "../remc2/engine/engine_support.h"
 #include "../remc2/engine/read_config.h"
 #include "../remc2/portability/port_filesystem.h"
 #include "../remc2/portability/port_sdl_vga_mouse.h"
@@ -26,6 +28,16 @@ static std::string Mc1FolderPath(const std::string& folder)
 		return path;
 	std::filesystem::path folderPath(folder);
 	return folderPath.is_absolute() ? folder : get_exe_path() + "/" + folder;
+}
+
+// the folder of the CD files, port: also directly in the parent folder (MC1/ instead of MC1/CD_Files)
+static std::string Mc1CdPath(const std::string& folder)
+{
+	const std::string path = Mc1FolderPath(folder);
+	const std::filesystem::path parent = std::filesystem::path(path).parent_path();
+	if (!std::filesystem::exists(std::filesystem::path(path) / "DATA") && std::filesystem::exists(parent / "DATA"))
+		return parent.string();
+	return path;
 }
 
 int Mc1Main(int argc, char** argv)
@@ -44,11 +56,17 @@ int Mc1Main(int argc, char** argv)
 	}
 	EventDispatcher::I = new EventDispatcher();
 
+	// port: the screen buffer of MC2 (support_begin, without its MC2 tables) for the work screen (pdwScreenBuffer_351628):
+	// big enough for every game resolution, with room either side for the sprites drawn past the edges. Released also when
+	// the regression tests leave by thread_exit_exception
+	AllocateScreenBuffer();
+	struct ScreenBufferGuard { ~ScreenBufferGuard() { FreeScreenBuffer(); } } screenBufferGuard;
+
 	// -game select shows the Magic Carpet Plus selector, -game mc1 / mc1hw start the game directly
 	int16_t game = SELECTED_MAGIC_CARPET;
 	if (CommandLineParams.GetGameType() == GameType::SELECT)
 	{
-		game = RunSelect_10010(Mc1FolderPath(magicCarpetPaths.m_CdFolder));
+		game = RunSelect_10010(Mc1CdPath(magicCarpetPaths.m_CdFolder));
 		Logger->info("MC1 selector result: {}", game);
 		// the game starts on the empty text screen, as the DOS game after SELECT.EXE
 		if (game != SELECTED_NONE)
@@ -61,22 +79,30 @@ int Mc1Main(int argc, char** argv)
 		// the game gets the parameters remc2 does not know (e.g. -level 5 -cheat 1), as on the DOS command line
 		mc1Variant = game == SELECTED_HIDDEN_WORLDS ? MC1_VARIANT_HW : MC1_VARIANT_MC1;
 		const GamePaths& paths = game == SELECTED_HIDDEN_WORLDS ? hiddenWorldsPaths : magicCarpetPaths;
-		mc1DataPath = Mc1FolderPath(paths.m_CdFolder);
+		mc1DataPath = Mc1CdPath(paths.m_CdFolder);
 		mc1InstallPath = Mc1FolderPath(paths.m_GameFolder);
+		if (PackedGameData())
+		{
+			// regression tests without the game: the CD files from mc1data.binz, the install folder empty
+			mc1DataPath = UnpackMc1PackedData();
+			mc1InstallPath = mc1DataPath + "/CARPET.CD";
+		}
 		std::vector<std::string> gameArgs;
 		gameArgs.push_back(argc > 0 ? argv[0] : "remc2");
 		for (const std::string& param : CommandLineParams.GetUnknownParams())
-			gameArgs.push_back(param);
-		std::vector<char*> gameArgv;
+			gameArgs.push_back(param);		std::vector<char*> gameArgv;
 		for (std::string& arg : gameArgs)
 			gameArgv.push_back(&arg[0]);
 		gameArgv.push_back(nullptr);
 		Main_404F0_40830((int)gameArgs.size(), gameArgv.data());
+		StopNetworkLibrary();
 		// the original left its memory to DOS
 		FreeMc1Memory();
 		FreeCursorBuffers();
 		*workScreen_12EFF4_12EFE4 = nullptr;
 		mc1State_AE400_AE3F0 = nullptr;
+		mc1Entities = nullptr;
+		sdlInputLocked = false;
 		mc1Settings_AE408_AE3F8 = nullptr;
 		vesaInfo_12F080_12F070 = nullptr;
 		*blurBuffer_AE404_AE3F4 = nullptr;

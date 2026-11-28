@@ -154,7 +154,7 @@ void GameRenderNG::DrawWorld_411A0(int posX, int posY, int16_t yaw, int16_t posZ
 			viewPort.SetRenderViewPortSize_BCD45(m_blurBuffer, 0, 0, 0);
 			DrawTerrainAndParticles_3C080(cameraX, cameraY, yawIndex, posZ, pitch, roll, fov);
 			viewPort.SetRenderViewPortSize_BCD45(screen, 0, 0, 0);
-			BlendBlurBuffer(screen, m_blurBuffer, world_D41A0.m_GameSettings.m_Display.xxxx_0x2191 == 1);
+			BlendBlurBuffer(screen, m_blurBuffer, world_D41A0.m_GameSettings.m_Display.xxxx_0x2191 == 1, RenderMc1() && world_D41A0.m_GameSettings.m_Display.xxxx_0x2191 == 1);
 		}
 		else
 		{
@@ -200,20 +200,29 @@ void GameRenderNG::SetScreenBuffers()
 	m_columnsCapacity = lines - 1;
 	m_largeScratch.resize(m_rowsOffset + 4 * lines + 0x100);
 	m_scratch = m_largeScratch.data();
+	// MC1: its own blur buffer (ptrMemoryBuffer_E9C3C, the screen size: 34C80 allocates gameResWidth x gameResHeight),
+	// as below 640x480, since the red-blue stereo (F10) joins the second eye from it in 30B30 after the frame
+	if (RenderMc1() && ptrMemoryBuffer_E9C3C && screenWidth_18062C <= gameResWidth && screenHeight_180624 <= gameResHeight)
+	{
+		m_largeBlurBuffer.clear();
+		m_blurBuffer = ptrMemoryBuffer_E9C3C;
+		return;
+	}
 	m_largeBlurBuffer.resize(screenWidth_18062C * screenHeight_180624);
 	m_blurBuffer = m_largeBlurBuffer.data();
 }
 
 // Screen pixel = blend of the new frame (blur buffer) and the screen, groups of 4 pixels of each line.
 // swapFirstGroup: the original builds the index of the first group of the first line as screen << 8 | buffer.
-void GameRenderNG::BlendBlurBuffer(uint8_t* screen, const uint8_t* buffer, bool swapFirstGroup)
+// swapFirstGroup: MC2 the old pixel * 256 + the new one only in the first 4, swapAll: MC1 31454 in all of them
+void GameRenderNG::BlendBlurBuffer(uint8_t* screen, const uint8_t* buffer, bool swapFirstGroup, bool swapAll)
 {
 	const int drawnWidth = DrawnWidth();
 	for (int row = 0; row < viewPort.Height_DE568; row++)
 	{
 		for (int column = 0; column < drawnWidth; column++)
 		{
-			const bool swap = swapFirstGroup && row == 0 && column < 4;
+			const bool swap = swapAll || (swapFirstGroup && row == 0 && column < 4);
 			const int index = swap ? screen[column] << 8 | buffer[column] : buffer[column] << 8 | screen[column];
 			screen[column] = ColourLookupTable_F6EE0[COLOUR_BLEND_LOOKUP_OFFSET + index];
 		}
@@ -394,7 +403,8 @@ void GameRenderNG::DrawTerrainAndParticles_3C080(__int16 posX, __int16 posY, __i
 		}
 	}
 
-	spriteRender_F2C20.tileCutOffDistance_0x15 = static_cast<int>(m_cutOffDistance);//21d2df
+	m_drawCutOff = Mc1StereogramMode() ? m_standardCutOff : m_cutOffDistance;
+	spriteRender_F2C20.tileCutOffDistance_0x15 = static_cast<int>(m_drawCutOff);//21d2df
 	spriteRender_F2C20.fogThickness_0x12 = static_cast<int>(m_fogEnd - m_fogStart);
 	spriteRender_F2C20.horizonOffset_0x22 = pitch * viewPort.Width_DE564 >> 8;
 	const int rollIndex = roll & 0x7FF;
@@ -475,7 +485,7 @@ void GameRenderNG::ProjectTiles(TerrainProjection projection, uint8_t mapX, uint
 			int depth = tile.y_12;
 			const int64_t distance = static_cast<int64_t>(depth) * depth + static_cast<int64_t>(tile.x_0) * tile.x_0;
 			tile.haveBillboard_36 = 0;
-			if (depth <= -256 || distance >= m_cutOffDistance)
+			if (depth <= -256 || distance >= m_drawCutOff)
 				tile.triangleFeatures_38 |= 2;
 			else
 			{
@@ -996,7 +1006,7 @@ void GameRenderNG::DrawSprites_3E360(int tileIndex, bool mc1Depth)//21f360
 	uint16_t entityIndex = m_tiles[tileIndex].haveBillboard_36;
 	do
 	{
-		if (mc1Depth && entityIndex >= 1000)
+		if (mc1Depth && entityIndex >= RenderEntityCount())
 			break;
 		type_entity_0x6E8E* entity = RenderEntity(entityIndex);
 		spriteRender_F2C20.entity_0x14x = entity;
@@ -1037,7 +1047,7 @@ void GameRenderNG::DrawEntity(type_entity_0x6E8E* entity, const type_E9C38_small
 		//21f40c
 		const int height = GetTerrainAlt2_B5C60(entity->position_0x4C_76.x, entity->position_0x4C_76.y) - spriteRender_F2C20.cameraZ_0x20;
 		const int64_t distance = static_cast<int64_t>(depth) * depth + static_cast<int64_t>(across) * across;
-		if (depth > 64 && distance < m_cutOffDistance)
+		if (depth > 64 && distance < m_drawCutOff)
 		{
 			spriteRender_F2C20.fogShade_0x00 = SpriteLight(distance);
 			const Type_SpriteDef_D951C& def = *RenderSpriteDef(spriteRender_F2C20.entity_0x14x->spriteIndex_0x5A_90);
@@ -1099,7 +1109,7 @@ void GameRenderNG::DrawEntity(type_entity_0x6E8E* entity, const type_E9C38_small
 		}
 	}
 	const int64_t distance = static_cast<int64_t>(depth) * depth + static_cast<int64_t>(across) * across;
-	if (depth <= 64 || (!mc1Depth && distance >= m_cutOffDistance))//MC1 2F170: no cut off
+	if (depth <= 64 || (mc1Depth ? m_viewDistanceScale > 1 && distance >= m_standardCutOff : distance >= m_drawCutOff))
 		return;
 	// a longer view: the game logic (EmuUpdateState_21490) reacts to the seen flag, only the entities of the original grid and
 	// cut-off set it (the rows behind the camera and the far tiles are drawn only here)
@@ -1152,7 +1162,7 @@ void GameRenderNG::DrawTileSpriteReflections_3FD60(int tileIndex)
 	uint16_t entityIndex = m_tiles[tileIndex].haveBillboard_36;
 	do
 	{
-		if (entityIndex < 1000)
+		if (entityIndex < RenderEntityCount())
 		{
 			entity = RenderEntity(entityIndex);
 			if (!(entity->flags_0xc_12_15.byte[0] & 0x21))
@@ -1162,7 +1172,7 @@ void GameRenderNG::DrawTileSpriteReflections_3FD60(int tileIndex)
 				int depth;
 				EntityViewPosition(entity, m_tiles[tileIndex], across, depth);
 				const int64_t distance = static_cast<int64_t>(depth) * depth + static_cast<int64_t>(across) * across;
-				if (depth > 64 && distance < m_cutOffDistance)
+				if (depth > 64 && distance < m_drawCutOff)
 				{
 					spriteRender_F2C20.fogShade_0x00 = SpriteLight(distance);
 					const Type_SpriteDef_D951C& def = *RenderSpriteDef(entity->spriteIndex_0x5A_90);

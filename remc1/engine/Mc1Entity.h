@@ -11,11 +11,18 @@ extern uint8_t creatureTypes_98F38_98F38[31][32]; // the records of typeParams_0
 extern uint8_t playerData_B7330_B7320[0xF0 * 4]; // playerData_0xA0 of the new entities
 extern const uint8_t frameCounts_90AD8_90AD8[42]; // by the kind of the sprite
 
+// port: a missing entity (no free one): the original writes to DOS address 0 and stores the index FC3Ah
+// ((0 - 26AF3h) / A4h), which reads the zero memory at 26AF3h + FC3Ah * A4h
+constexpr uint16_t mc1MissingEntityIndex = 0xFC3A;
+Type_Mc1Entity* EntityAtAddressZero();
+uint8_t* DosAddressZero();
+void ResetDosAddressZero();
 void InitEntities_371C0_37580();
 void RebuildFreeLists_37220_375E0();
 Type_Mc1Entity* AllocEntity_372C0_37680();
 void SetSprite_36FA0_37360(Type_Mc1Entity* entity, int16_t sprite);
 void SetSpriteBox_37030_373F0(Type_Mc1Entity* entity, int16_t sprite);
+void SetSpriteDoubleBox_370A0_37460(Type_Mc1Entity* entity, int16_t sprite);
 void SetSpriteHalfBox_370E0_374A0(Type_Mc1Entity* entity, int16_t sprite);
 void ResetLife_36DE0_371A0(Type_Mc1Entity* entity);
 void SetBox_37130_374F0(Type_Mc1Entity* entity, int16_t width, int16_t height);
@@ -45,3 +52,4 @@ void SendMailAround_120B0_120B0(Type_Mc1Entity* entity, uint8_t kind, int32_t va
 void SetHalfMana_36F90_37350(Type_Mc1Entity* entity); // mana = maxLife / 2
 int32_t GetFreeEntityCount_37710_37AD0();
 int32_t MoveOnMap_41CC0_42000(Type_Mc1Entity* entity, Type_Mc1Position* position); // out of the map and in again
+void SendFireMail_124F0_124F0(Type_Mc1Entity* entity, uint8_t kind, int32_t value);

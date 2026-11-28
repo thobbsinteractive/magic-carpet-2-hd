@@ -3,15 +3,19 @@
 #include <cstdio>
 #include <cstring>
 
+#include "Mc1Blocks.h"
+#include "Mc1Entity.h"
 #include "Mc1Files.h"
 #include "Mc1Game.h"
 #include "Mc1Graphics.h"
 #include "Mc1Level.h"
 #include "Mc1Minimap.h"
-#include "Mc1NotPorted.h"
+#include "Mc1Panel.h"
 #include "Mc1Render.h"
 #include "Mc1Screen.h"
 #include "Mc1Shared.h"
+#include "Mc1Sound.h"
+#include "Mc1System.h"
 
 uint8_t screenCleared_90094_90094 = 0x63; // 0 cleared for the game view, 2 for the map
 uint8_t clearedSetting_90096_90096 = 0x28; // the view port setting the screen was cleared for
@@ -74,7 +78,7 @@ static const char* helpLines[] = {
 
 static Type_Mc1Entity* Entities()
 {
-	return mc1State_AE400_AE3F0->entities_0x7463_29795;
+	return mc1Entities;
 }
 
 static int16_t ReadS16(const uint8_t* data)
@@ -96,7 +100,7 @@ static void ClearScreen()
 	if (*videoMode_12F02E_12F01E & 1)
 		ClearScreen320_411D7_41517(*workScreen_12EFF4_12EFE4, 320, 0xC8, 0);
 	else
-		ClearScreen640_411FD_4153D(*workScreen_12EFF4_12EFE4, 640, 0x1E0, 0);
+		ClearScreen640_411FD_4153D(*workScreen_12EFF4_12EFE4, *screenWidth_12EFF0_12EFE0, *screenHeight_12EFF8_12EFE8, 0); // port: as MC2, the screen size
 }
 
 // 30D90 from the last record of the player (the camera)
@@ -130,10 +134,10 @@ static uint8_t BlinkRed()
 	return colorLookup_AD168_AD158[level << 8];
 }
 
-static bool MouseInCell(int32_t x, int32_t y)
+static bool MouseInCell(int32_t x, int32_t y, int32_t scale = 1)
 {
-	return mousePos_9AD90_9AD90->x >= x && mousePos_9AD90_9AD90->x < x + 0x40
-		&& mousePos_9AD90_9AD90->y >= y && mousePos_9AD90_9AD90->y < y + spritesIndex[3].height_5;
+	return mousePos_9AD90_9AD90->x >= x && mousePos_9AD90_9AD90->x < x + 0x40 * scale
+		&& mousePos_9AD90_9AD90->y >= y && mousePos_9AD90_9AD90->y < y + spritesIndex[3].height_5 * scale;
 }
 
 // 20FF4: the world, the minimap, the icons and the texts
@@ -157,19 +161,28 @@ static void DrawGame(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& play
 		return;
 	const Type_Mc1PlayerRecord& camera = player.records_0x24A_586[player.word_0x0E_14];
 	const int32_t mapWidth = *viewportWidth_12F000_12EFF0 - 2 * (int32_t)((uint32_t)*viewportWidth_12F000_12EFF0 / 5);
+	// port: the top bar (the minimap in the panel) and the spell icons placed and scaled as in MC2; the original
+	// positions at 640x480 and 320x200
+	const uint8_t scale = Mc1UiScale();
+	int16_t topBarX, topBarY;
+	Mc1GetTopBarPosition(&topBarX, &topBarY);
 	if (state->map_0x2199_8601)
 	{
-		DrawMinimapTerrain_49300_49640(0, 0, camera.x_0x00_0, camera.y_0x02_2, 0x80, 0x80, camera.yaw_0x06_6, 0x100, mapWidth, 0);
-		DrawMinimapEntities_48710_48A50(0, 0, camera.x_0x00_0, camera.y_0x02_2, 0x80, 0x80, camera.yaw_0x06_6, 0x100, mapWidth, 0);
+		DrawMinimapTerrain_49300_49640(topBarX, topBarY, camera.x_0x00_0, camera.y_0x02_2, 0x80 * scale, 0x80 * scale, camera.yaw_0x06_6,
+			0x100 / scale, mapWidth, 0);
+		DrawMinimapEntities_48710_48A50(topBarX, topBarY, camera.x_0x00_0, camera.y_0x02_2, 0x80 * scale, 0x80 * scale, camera.yaw_0x06_6,
+			0x100 / scale, mapWidth, 0, scale);
 	}
 	SetFont_5A3C0_5A8D0(1);
 	if (state->icons_0x219A_8602)
 	{
 		// the spells of the two buttons: the slot (playerData + 3ACh / 3B0h) of the spell entities (+ 214h)
 		const uint8_t* playerData = wizard->playerData_0xA0_160;
-		sub_23D40_23D40(0x1FE, 2, &Entities()[ReadS32(playerData + 0x214 + ReadS16(playerData + 0x3AC) * 4)], 0);
-		sub_23D40_23D40(0x23E, 2, &Entities()[ReadS32(playerData + 0x214 + ReadS16(playerData + 0x3B0) * 4)], 0);
-		sub_22E50_22E50(wizard);
+		int16_t leftX, rightX, iconsY;
+		Mc1SpellIconsPosition(&leftX, &rightX, &iconsY);
+		DrawSpellIcon_23D40_23D40(leftX, iconsY, &Entities()[ReadS32(playerData + 0x214 + ReadS16(playerData + 0x3AC) * 4)], 0, scale);
+		DrawSpellIcon_23D40_23D40(rightX, iconsY, &Entities()[ReadS32(playerData + 0x214 + ReadS16(playerData + 0x3B0) * 4)], 0, scale);
+		DrawPlayerPanel_22E50_22E50(wizard, topBarX, topBarY, scale);
 	}
 	SetFont_5A3C0_5A8D0(1);
 	if (settings->flags_0x00_0 & 0x200)
@@ -178,22 +191,23 @@ static void DrawGame(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& play
 		return;
 	}
 	SetFont_5A3C0_5A8D0(1);
-	const int32_t x = 0x84;
-	int32_t y = 0x32;
+	const int32_t x = topBarX + 0x84 * scale;
+	int32_t y = topBarY + 0x32 * scale;
+	const int32_t lineHeight = GetLineHeight_5A3B0_5A8C0() * ((*videoMode_12F02E_12F01E & 1) ? 1 : scale);
 	if (player.levelResult_0x02_2 & 2)
 	{
 		// the texts 60 and 61 (the level is completed)
 		DrawText_5A180_5A690((const char*)textPointers_AE238_AE228[60], x, (int16_t)y,
-			state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey());
-		y += GetLineHeight_5A3B0_5A8C0();
+			state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey(), scale);
+		y += lineHeight;
 		DrawText_5A180_5A690((const char*)textPointers_AE238_AE228[61], x, (int16_t)y,
-			state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey());
-		y += GetLineHeight_5A3B0_5A8C0();
+			state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey(), scale);
+		y += lineHeight;
 	}
 	if (settings->flags_0x00_0 & 0x10000)
 	{
-		DrawText_5A180_5A690("PAUSED!", x, (int16_t)y, state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey());
-		y += GetLineHeight_5A3B0_5A8C0();
+		DrawText_5A180_5A690("PAUSED!", x, (int16_t)y, state->setting_0x2198_8600 == 0x28 ? colorLookup_AD168_AD158[0] : BlinkGrey(), scale);
+		y += lineHeight;
 	}
 	// the messages from the players: 0 a message, 1 being typed, 2 a text, 3 a message to all (blinking first)
 	char buffer[0x100];
@@ -207,29 +221,29 @@ static void DrawGame(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& play
 			if (message.time_0x40_64 <= 0)
 				break;
 			snprintf(buffer, sizeof(buffer), "%s %s", name, message.text_0x00_0);
-			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red());
-			y += GetLineHeight_5A3B0_5A8C0();
+			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red(), scale);
+			y += lineHeight;
 			message.time_0x40_64--;
 			break;
 		case 1:
 			snprintf(buffer, sizeof(buffer), ">%s?", message.text_0x00_0);
-			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red());
-			y += GetLineHeight_5A3B0_5A8C0();
+			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red(), scale);
+			y += lineHeight;
 			break;
 		case 2:
 			if (message.time_0x40_64 <= 0)
 				break;
 			snprintf(buffer, sizeof(buffer), "%s", message.text_0x00_0);
-			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red());
-			y += GetLineHeight_5A3B0_5A8C0();
+			DrawText_5A180_5A690(buffer, x, (int16_t)y, Red(), scale);
+			y += lineHeight;
 			message.time_0x40_64--;
 			break;
 		case 3:
 			if (message.time_0x40_64 <= 0)
 				break;
 			snprintf(buffer, sizeof(buffer), "[%s] %s", name, message.text_0x00_0);
-			DrawText_5A180_5A690(buffer, x, (int16_t)y, message.time_0x40_64 > 100 ? BlinkRed() : Red());
-			y += GetLineHeight_5A3B0_5A8C0();
+			DrawText_5A180_5A690(buffer, x, (int16_t)y, message.time_0x40_64 > 100 ? BlinkRed() : Red(), scale);
+			y += lineHeight;
 			message.time_0x40_64--;
 			break;
 		}
@@ -280,11 +294,18 @@ static void DrawMap(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& playe
 	}
 	else
 	{
-		DrawMinimapTerrain_49300_49640(0, 0, camera.x_0x00_0, camera.y_0x02_2, 0x17E, 0x19E, camera.yaw_0x06_6, 0xAA, width, 1);
-		DrawMinimapEntities_48710_48A50(0, 0, camera.x_0x00_0, camera.y_0x02_2, 0x17E, 0x19E, camera.yaw_0x06_6, 0xAA, width, 1);
+		const uint8_t scale = Mc1UiScale();
+		int32_t mapWidth, mapHeight;
+		Mc1MapSize(&mapWidth, &mapHeight, scale);
+		DrawMinimapTerrain_49300_49640(0, 0, camera.x_0x00_0, camera.y_0x02_2, mapWidth, mapHeight, camera.yaw_0x06_6, 0xAA / scale, width, 1);
+		DrawMinimapEntities_48710_48A50(0, 0, camera.x_0x00_0, camera.y_0x02_2, mapWidth, mapHeight, camera.yaw_0x06_6, 0xAA / scale, width, 1,
+			scale);
+		if (mousePos_9AD90_9AD90->y >= mapHeight - (0x19E - 0x17E) * scale)
+			DrawPlayersTable_22880_22880();
+		return;
 	}
 	if (mousePos_9AD90_9AD90->y >= 0x17E)
-		sub_22880_22880();
+		DrawPlayersTable_22880_22880();
 }
 
 // 21FDC: the spells of the wizard in a grid of 4 x 6 (the one under the mouse larger), then the map
@@ -294,9 +315,14 @@ static void DrawSpells(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& pl
 	ClearScreen();
 	Type_Mc1Entity* wizard = &Entities()[player.entityIndex_0x0A_10];
 	const uint8_t* playerData = wizard->playerData_0xA0_160;
-	const int32_t cellHeight = spritesIndex[3].height_5;
-	int32_t x = 0x180;
-	int32_t y = *videoMode_12F02E_12F01E == 1 ? 0xA2 : 0xC2;
+	// port: the table placed and scaled as the MC2 spell menu; the original 180h, A2h / C2h at 640x480 and 320x200
+	const uint8_t scale = Mc1UiScale();
+	int16_t tableX, tableY;
+	Mc1SpellTablePosition(&tableX, &tableY, scale);
+	const int32_t cellWidth = 0x40 * scale;
+	const int32_t cellHeight = spritesIndex[3].height_5 * scale;
+	int32_t x = tableX;
+	int32_t y = tableY;
 	int32_t selectedX = 0;
 	int32_t selectedY = 0;
 	settings->selectedSpell_0x16_22 = -1;
@@ -312,7 +338,7 @@ static void DrawSpells(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& pl
 			// the mana of the spell over the mana of the castle (playerData + 32h): not selectable
 			const uint16_t castle = (uint16_t)ReadS16(playerData + 0x32);
 			const bool usable = !entity->dword_0x84_132 || (castle && entity->dword_0x84_132 <= Entities()[castle].mana_0x8C_140);
-			if (usable && MouseInCell(x, y))
+			if (usable && MouseInCell(x, y, scale))
 			{
 				settings->selectedSpell_0x16_22 = (int8_t)i;
 				selectedX = x;
@@ -320,26 +346,26 @@ static void DrawSpells(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& pl
 			}
 			else
 			{
-				sub_24230_24230(x, y, entity, 0);
+				DrawSpellCell_24230_24230(x, y, entity, 0, scale);
 				highlight = true;
 			}
 		}
 		else
 		{
-			sub_23CF0_23CF0(x, y, spell);
+			DrawSpellAbsent_23CF0_23CF0(x, y, spell, scale);
 			highlight = true;
 		}
-		if (highlight && joystickFound_B7700_B76F0 && MouseInCell(x, y))
+		if (highlight && joystickFound_B7700_B76F0 && MouseInCell(x, y, scale))
 		{
 			if (*videoMode_12F02E_12F01E & 1)
-				sub_24D20_24D20(x, y, spritesIndex[3].width_4, cellHeight, White());
+				FrameRect320_24D20_24D20(x, y, spritesIndex[3].width_4 * scale, cellHeight, White());
 			else
-				sub_24DA0_24DA0(x, y, spritesIndex[3].width_4, cellHeight, White());
+				FrameRect640_24DA0_24DA0(x, y, spritesIndex[3].width_4 * scale, cellHeight, White());
 		}
-		x += 0x40;
-		if (x >= 0x280)
+		x += cellWidth;
+		if (x >= tableX + 4 * cellWidth)
 		{
-			x = 0x180;
+			x = tableX;
 			y += cellHeight;
 		}
 	}
@@ -347,7 +373,7 @@ static void DrawSpells(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_340B& pl
 	{
 		const int16_t index = ReadS16(playerData + 0x2A4 + spellOrder_99B88_99B88[settings->selectedSpell_0x16_22] * 2);
 		if (index > 0)
-			sub_23D40_23D40((int16_t)selectedX, (int16_t)selectedY, &Entities()[index], 1);
+			DrawSpellIcon_23D40_23D40((int16_t)selectedX, (int16_t)selectedY, &Entities()[index], 1, scale);
 	}
 	DrawMap(state, player);
 }
@@ -432,4 +458,91 @@ void DrawFrame_20FB0_20FB0()
 	}
 	if (settings->flags_0x00_0 & 4)
 		DrawCredits();
+}
+
+// 5A560 / 5AA70 (after the frame): with the flag 8 of the player (+5) the version, the counters and the memory, then
+// the CD flag 2 set by the password F851B9h (always)
+void DrawDebugInfo_5A560_5AA70()
+{
+	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
+	Type_Mc1Settings_AE408_AE3F8* settings = mc1Settings_AE408_AE3F8;
+	Type_Mc1Player_340B& player = state->players_0x340B_13323[state->currentPlayer_0x08_8];
+	if (player.pause_0x05_5 & 8)
+	{
+		// the labels red (AE068), the values blue (AD177: the colour 00Fh)
+		const uint8_t label = colorLookup_AD168_AD158[0xF00];
+		const uint8_t value = colorLookup_AD168_AD158[0x00F];
+		const int32_t x = 0x140;
+		int32_t y = 0;
+		char text[0x100];
+		const auto line = [&](const char* string, uint8_t color) {
+			DrawText_5A180_5A690(string, x, (int16_t)y, color);
+			y += GetLineHeight_5A3B0_5A8C0();
+		};
+		SetFont_5A3C0_5A8D0(1);
+		line("Product name", label);
+		line("Magic Carpet", value);
+		line("Version number", label);
+		line("Beta v8.0", value);
+		line("Version date", label);
+		snprintf(text, sizeof(text), "%s %s", mc1Variant == MC1_VARIANT_HW ? "16:16:43" : "16:26:18", "Jun 05 1995");
+		line(text, value);
+		line("Programmer", label);
+		line("Bullfrog, Sean Cooper.", value);
+		line("Supplied to", label);
+		line("PUBLIC", value);
+		line("Level Number", label);
+		snprintf(text, sizeof(text), "%d", settings->levelIndex_0x11_17);
+		line(text, value);
+		if (settings->flags_0x00_0 & 0x10)
+		{
+			line("Transfer rate:", label);
+			snprintf(text, sizeof(text), "%d", (int32_t)settings->networkTicks_0x9D_157);
+			line(text, value);
+		}
+		line("GameTurn:", label);
+		snprintf(text, sizeof(text), "%d", (int32_t)settings->frameTicks_0x99_153);
+		line(text, value);
+		line("Sound Number", label);
+		snprintf(text, sizeof(text), "%d", byte_939EC_939EC);
+		line(text, value);
+		line("Game turn", label);
+		int32_t turn;
+		memcpy(&turn, (const uint8_t*)&player + 0x12, sizeof(turn));
+		snprintf(text, sizeof(text), "%d %d", turn, (int32_t)timerTicks_AC5D4_AC5C4);
+		line(text, value);
+		line("Thing", label);
+		// port: the active ones of all the entities (the original 1000 - the free ones)
+		snprintf(text, sizeof(text), "Thing %d, Active %d", 0xA4, mc1EntityCount - GetFreeEntityCount_37710_37AD0());
+		line(text, value);
+		snprintf(text, sizeof(text), "Carpet %d", 0x38D09);
+		line(text, value);
+		snprintf(text, sizeof(text), "Tape %d", 0x8E7E);
+		line(text, value);
+		snprintf(text, sizeof(text), "Heap %d", (int32_t)settings->heapSize_0xAC_172);
+		line(text, value);
+		// 63338: the used and the free memory of the heap, port: of its own blocks (16 MB as the original heap)
+		uint32_t used = 0;
+		for (const Mc1Allocation& allocation : Mc1Allocations())
+			used += allocation.size;
+		line("Memory (Used/Free)", label);
+		snprintf(text, sizeof(text), "%d/%d", (int32_t)used, (int32_t)(0x1000000 - used));
+		line(text, value);
+		// the blocks in columns from the left, "s<size>,u<tag>" (red: no handle of a file group, the port has none)
+		int32_t blockX = 0;
+		int32_t blockY = 0;
+		for (const Mc1Allocation& allocation : Mc1Allocations())
+		{
+			snprintf(text, sizeof(text), "s%7.7d,u%01d", (int32_t)allocation.size, allocation.tag);
+			DrawText_5A180_5A690(text, (int16_t)blockX, (int16_t)blockY, label);
+			blockY += GetLineHeight_5A3B0_5A8C0();
+			if ((int16_t)blockY > 0x190 - (int16_t)GetLineHeight_5A3B0_5A8C0())
+			{
+				blockX += GetSpaceWidth_5A3A0_5A8B0() * 12;
+				blockY = 0;
+			}
+		}
+	}
+	if (settings->password_0x19_25 == 0xF851B9)
+		settings->cd_0x18_24 |= 2;
 }

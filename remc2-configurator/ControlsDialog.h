@@ -43,6 +43,7 @@ private:
 	wxChoice* m_spellMenuMarkKey = nullptr;
 
 	wxButton* m_xboxPresetButton = nullptr;
+	wxButton* m_thrustmasterPresetButton = nullptr;
 	wxSpinCtrl* m_controllerId = nullptr;
 	wxSpinCtrl* m_buttonMiniMap = nullptr;
 	wxSpinCtrl* m_buttonSpell = nullptr;
@@ -94,6 +95,7 @@ private:
 	void OnModernLayout(wxCommandEvent&);
 	void OnClassicLayout(wxCommandEvent&);
 	void OnXBoxPreset(wxCommandEvent& evt);
+	void OnThrustmasterPreset(wxCommandEvent& evt);
 	void LoadKeyboardLayout(const wxString& layoutName);
 
 	void CreateMousePage();

@@ -6,12 +6,20 @@
 #include "Mc1Files.h"
 #include "Mc1Game.h"
 #include "Mc1Level.h"
+#include "Mc1Menu.h"
+#include "Mc1MenuSound.h"
 #include "Mc1Movie.h"
-#include "Mc1NotPorted.h"
+#include "Mc1Save.h"
 #include "Mc1Screen.h"
 #include "Mc1Shared.h"
 #include "Mc1Sound.h"
 #include "Mc1TextureMaps.h"
+#include "../../remc2/engine/Basic.h"
+#include "../../remc2/engine/Vr.h"
+#include "../../remc2/portability/port_filesystem.h"
+#include "../../remc2/engine/read_config.h"
+#include "../../remc2/portability/port_sdl_vga_mouse.h"
+#include "../../remc2/shared/EventDispatcher.h"
 
 // 9AD0C: the character of a scan code (UK keyboard); 70h-73h are a pointer (its value in DOSBox), 7Ch-7Fh the
 // variable 9AD88 (0 or 1), no letter or digit there
@@ -39,6 +47,34 @@ int32_t vfxIndexY_90B14_90B14 = 0;
 uint8_t vfxTracking_9AD08_9AD08 = 0; // the VFX1 head tracker moves the mouse
 int16_t vfxTrackerY_12EE9E_12EE8E = 0; // read by 5B210
 int16_t vfxTrackerX_12EEA0_12EE90 = 0;
+
+// the VFX1 driver code of MC1 is the one of MC2 (Vr.cpp): 5AF50 = 75650, 5B210 = 75910, 5B2B0 = 759B0;
+// 9AD08 = E12EC (the head), 12EE9C-12EEA0 = 17D6CC; the CyberPuck (9AD09 = E12ED, 12EEDA) MC1 never reads
+int32_t InitVfx_5AF50_5B460()
+{
+	if (!DetectVrDevice_75650())
+		return 0;
+	if (vrDeviceActive_E12EC)
+		vfxTracking_9AD08_9AD08 = 1;
+	return 1;
+}
+
+int32_t ReadVfx_5B210_5B720()
+{
+	if (!ShutdownVrDevice_75910())
+		return 0;
+	if (vfxTracking_9AD08_9AD08)
+	{
+		vfxTrackerY_12EE9E_12EE8E = vrJoystick_17D6CC[1];
+		vfxTrackerX_12EEA0_12EE90 = vrJoystick_17D6CC[2];
+	}
+	return 1;
+}
+
+void SetVfxMouse_5B2B0_5B7C0()
+{
+	SetMouseMinMaxVert_759B0(); // int 33h 6008h of the VFX1 mouse driver
+}
 // B7700-B772A (joystickFound_B7700_B76F0 in Mc1Game): set by the calibration 3F820 / 3FB60
 uint8_t secondStick_B7701_B76F1 = 0;
 int16_t joyX_B7702_B76F2 = 0; // -1..1 digital, -80h..80h analog
@@ -62,10 +98,33 @@ uint16_t joy2ScaleMaxY_B7724_B7714 = 0;
 int16_t joy2ScaleMinX_B7726_B7716 = 0;
 int16_t joy2ScaleMinY_B7728_B7718 = 0;
 uint8_t joyButtons_B772A_B771A = 0; // the bits 10h-80h of 201h, 0 pressed
+// 90B24-90B36: the places of the sprites of the calibration on the sound setup (the record + 4 is the sprite)
+static const int16_t joyTopLeftX_90B24_90B24 = 0x18A;
+static const int16_t joyTopLeftY_90B26_90B26 = 0xE2;
+static const int16_t joyBottomRightX_90B2C_90B2C = 0x18A;
+static const int16_t joyBottomRightY_90B2E_90B2E = 0xE0;
+static const int16_t joyCentreX_90B34_90B34 = 0x18A;
+static const int16_t joyCentreY_90B36_90B36 = 0xE4;
+
+// memset(B7700, 0, 2Bh)
+static void ResetJoystickState()
+{
+	joystickFound_B7700_B76F0 = 0;
+	secondStick_B7701_B76F1 = 0;
+	joyX_B7702_B76F2 = joyY_B7704_B76F4 = 0;
+	joyMaxX_B7706_B76F6 = joyMaxY_B7708_B76F8 = joyMinX_B770A_B76FA = joyMinY_B770C_B76FC = 0;
+	joyScaleMaxX_B770E_B76FE = joyScaleMaxY_B7710_B7700 = 0;
+	joyScaleMinX_B7712_B7702 = joyScaleMinY_B7714_B7704 = 0;
+	joy2X_B7716_B7706 = joy2Y_B7718_B7708 = 0;
+	joy2MaxX_B771A_B770A = joy2MaxY_B771C_B770C = joy2MinX_B771E_B770E = joy2MinY_B7720_B7710 = 0;
+	joy2ScaleMaxX_B7722_B7712 = joy2ScaleMaxY_B7724_B7714 = 0;
+	joy2ScaleMinX_B7726_B7716 = joy2ScaleMinY_B7728_B7718 = 0;
+	joyButtons_B772A_B771A = 0;
+}
 
 static Type_Mc1Entity* Entities()
 {
-	return mc1State_AE400_AE3F0->entities_0x7463_29795;
+	return mc1Entities;
 }
 
 static Type_Mc1PlayerInput& CurrentInput()
@@ -182,20 +241,69 @@ void SetPlayerCommand_188A0_188A0(uint16_t command, uint8_t param)
 	}
 }
 
+// port: the SDL stick in flight, sent by port_sdl_joystick as E_JOYSTICK_AXIS (-32767..32767) in place of mouse motion
+static int16_t joystickYaw = 0;
+static int16_t joystickPitch = 0;
+
+static void Mc1OnJoystickAxis(int16_t yaw, int16_t pitch)
+{
+	joystickYaw = yaw;
+	joystickPitch = pitch;
+}
+
+// port: the last used device steers, the mouse has priority (as MC2 ComputeMousePlayerMovement_17060)
+static bool JoystickSteers()
+{
+	static bool registered = false;
+	if (!registered && EventDispatcher::I)
+	{
+		std::function<void(int16_t, int16_t)> callBack = Mc1OnJoystickAxis;
+		EventDispatcher::I->RegisterEvent(new Event<int16_t, int16_t>(EventType::E_JOYSTICK_AXIS, callBack));
+		registered = true;
+	}
+
+	static bool joystickSteers = false;
+	static int16_t lastMouseX = mousePos_9AD90_9AD90->x;
+	static int16_t lastMouseY = mousePos_9AD90_9AD90->y;
+	const bool mouseMoved = mousePos_9AD90_9AD90->x != lastMouseX || mousePos_9AD90_9AD90->y != lastMouseY;
+	lastMouseX = mousePos_9AD90_9AD90->x;
+	lastMouseY = mousePos_9AD90_9AD90->y;
+	if (sdlInputLocked || mouseMoved)
+		joystickSteers = false;
+	else if (joystickYaw || joystickPitch)
+		joystickSteers = true;
+	return joystickSteers;
+}
+
+// port: disableLRButtonsMenuOpen (config.json, as MC2 PlayerInput): both mouse buttons do not open or close the spells
+// mode (the map); not while the recorded input plays (sdlInputLocked), which is the original's
+static bool Mc1LRButtonsMenuOpenDisabled()
+{
+	return disableLRButtonsMenuOpen && !sdlInputLocked;
+}
+
 void MouseToMove_169E0_169E0()
 {
 	if (mc1Settings_AE408_AE3F8->speedIndex_0x96_150)
 		return;
 	int32_t moveX, moveY;
-	if (*videoMode_12F02E_12F01E == 1)
+	if (JoystickSteers())
+	{
+		// the stick as the offset of the mouse from the centre, a released stick flies level
+		moveX = joystickYaw * 0x7F / 0x7FFF;
+		moveY = -joystickPitch * 0x7F / 0x7FFF;
+	}
+	else if (*videoMode_12F02E_12F01E == 1)
 	{
 		moveX = (mousePos_9AD90_9AD90->x * 0x80 - 0xA000) / 0x140;
 		moveY = -(mousePos_9AD90_9AD90->y * 0x80 - 0x6400) / 0xC8;
 	}
 	else
 	{
-		moveX = (mousePos_9AD90_9AD90->x * 0x80 - 0xA000) / 0x140;
-		moveY = -((mousePos_9AD90_9AD90->y * 0x80 - 0x7800) / 0xF0);
+		const int32_t centreX = UiScreenWidth() / 2;
+		const int32_t centreY = UiScreenHeight() / 2;
+		moveX = (mousePos_9AD90_9AD90->x * 0x80 - centreX * 0x80) / centreX;
+		moveY = -((mousePos_9AD90_9AD90->y * 0x80 - centreY * 0x80) / centreY);
 	}
 	if (moveX < -0x7F)
 		moveX = -0x7F;
@@ -205,6 +313,13 @@ void MouseToMove_169E0_169E0()
 		moveY = -0x7F;
 	if (moveY > 0x7F)
 		moveY = 0x7F;
+	if (!sdlInputLocked)
+	{
+		if (!invertYAxis)
+			moveY = -moveY;
+		if (invertXAxis)
+			moveX = -moveX;
+	}
 	CurrentInput().moveX_0x03_3 = (int8_t)moveX;
 	CurrentInput().moveY_0x04_4 = (int8_t)moveY;
 }
@@ -258,8 +373,8 @@ void FunctionKeys_16B00_16B00()
 				MarkLoadedTmaps_593B0_598C0();
 				state->creatureStats_0x38C9F_232607.savedLevel_0x64 = settings->levelIndex_0x11_17;
 				state->creatureStats_0x38C9F_232607.savedTimer_0x66 = timerTicks_AC5D4_AC5C4;
-				sub_3E750_3EA90(0xC7);
-				sub_3E8C0_3EC00(0xC7);
+				SaveGame_3E750_3EA90(0xC7);
+				SaveMaps_3E8C0_3EC00(0xC7);
 				RebuildFreeLists_37220_375E0();
 				state->reuseTop_0x11F1_4593 = -1;
 				ShowMessage("Game saved.", 100, 0);
@@ -269,8 +384,8 @@ void FunctionKeys_16B00_16B00()
 		case 0x26: // L: load the game
 			if (!(settings->flags_0x00_0 & 0x10))
 			{
-				sub_3E690_3E9D0(0xC7);
-				sub_3E7F0_3EB30(0xC7);
+				LoadGame_3E690_3E9D0(0xC7);
+				LoadMaps_3E7F0_3EB30(0xC7);
 				settings->levelIndex_0x11_17 = state->creatureStats_0x38C9F_232607.savedLevel_0x64;
 				timerTicks_AC5D4_AC5C4 = state->creatureStats_0x38C9F_232607.savedTimer_0x66;
 				ReloadTmaps_59420_59930();
@@ -336,7 +451,7 @@ void FunctionKeys_16B00_16B00()
 	{
 		// R
 		if (state->options_0x21AD_8621[10] && !state->screenSize_0x219B_8603)
-			sub_34C80();
+			ToggleResolution_34C80_35040();
 		key = 0;
 	}
 	if (key == 0x39)
@@ -466,6 +581,13 @@ void FunctionKeys_16B00_16B00()
 			break;
 		}
 		break;
+	case 0x57: // port: F11, the anaglyph (red / cyan glasses) on / off, the hardware renderer only (as MC2)
+		if (m_render == "HW")
+		{
+			anaglyphMode = !anaglyphMode;
+			ShowMessage(anaglyphMode ? "Anaglyph On" : "Anaglyph Off", 0x32, 2);
+		}
+		break;
 	default:
 		return;
 	}
@@ -581,6 +703,158 @@ void ReadDigitalJoystick_3F413_3F753()
 	joyButtons_B772A_B771A = 0xFF;
 }
 
+// 3F4CE / 3F80E: the axes present (the one-shots end): B7700 the first stick, B7701 the second
+static void DetectGamePort_3F4CE_3F80E()
+{
+	uint8_t bits = 0;
+	for (int32_t count = 0x2710; count >= 0; count--)
+	{
+		bits = ReadGamePort();
+		if (!(bits & 0x0F))
+			break;
+	}
+	joystickFound_B7700_B76F0 = (bits & 3) ? 0 : 1;
+	secondStick_B7701_B76F1 = (bits & 0x0C) ? 0 : 1;
+}
+
+// 3F398 / 3F6D8: the digital stick, the dead zone from half to one and a half of the centre counts
+static void CentreDigitalJoystick_3F398_3F6D8()
+{
+	uint16_t x = 0;
+	uint16_t y = 0;
+	for (int32_t count = 0x2710; count; count--)
+	{
+		const uint8_t bits = ReadGamePort();
+		if (!(bits & 3))
+		{
+			joystickFound_B7700_B76F0 = 2;
+			joyMinX_B770A_B76FA = (int16_t)(x >> 1);
+			joyMaxX_B7706_B76F6 = (int16_t)((x >> 1) + x);
+			joyMinY_B770C_B76FC = (int16_t)(y >> 1);
+			joyMaxY_B7708_B76F8 = (int16_t)((y >> 1) + y);
+			return;
+		}
+		if (bits & 1)
+			x++;
+		if (bits & 2)
+			y++;
+	}
+	joystickFound_B7700_B76F0 = 0;
+}
+
+// 3F54D / 3F88D: the raw counts of both sticks and the buttons
+static void ReadJoystickCounts_3F54D_3F88D()
+{
+	const GamePortCounts counts = ReadGamePortCounts_3F76D_3FAAD();
+	joyButtons_B772A_B771A = counts.bits;
+	joyX_B7702_B76F2 = counts.x;
+	joyY_B7704_B76F4 = counts.y;
+	joy2X_B7716_B7706 = counts.x2;
+	joy2Y_B7718_B7708 = counts.y2;
+}
+
+// 3FB30 / 3FE70: the sound setup with the sprite until the joystick button 1 is pressed and released
+static void WaitJoystickButton_3FB30_3FE70(int16_t x, int16_t y, bitmap_pos_struct_t* sprite)
+{
+	for (int32_t release = 0; release < 2; release++)
+	{
+		do
+		{
+			CopyBackScreen();
+			DrawSoundSetup_4B560_4B8A0();
+			if (sprite) //!!!!! the original tests (x + y) * 6 + sprite
+			{
+				if (*videoMode_12F02E_12F01E & 1)
+					DrawBitmap320_60CE0_611F0(x, y, *sprite, 1);
+				else
+					DrawBitmap640_60D18_61228(x, y, *sprite, 1);
+			}
+			ReadDigitalJoystick_3F413_3F753();
+			BlitScreen();
+		} while (release ? !(joyButtons_B772A_B771A & 0x10) : (joyButtons_B772A_B771A & 0x10));
+		WaitBeam_5CC54_5D164(0);
+	}
+}
+
+// 3F7D0 / 3FB10: the digital joystick (the gamepad of the sound setup)
+void InitDigitalJoystick_3F7D0_3FB10(bitmap_pos_struct_t* sprite)
+{
+	ResetJoystickState();
+	DetectGamePort_3F4CE_3F80E();
+	CentreDigitalJoystick_3F398_3F6D8();
+	if (!joystickFound_B7700_B76F0)
+		return;
+	CentreDigitalJoystick_3F398_3F6D8();
+	WaitJoystickButton_3FB30_3FE70(joyCentreX_90B34_90B34, joyCentreY_90B36_90B36, sprite);
+	inputDevices_90B23_90B23 = 2;
+}
+
+// the average of 16 readings of the counts
+static void AverageJoystickCounts(int32_t& x, int32_t& y)
+{
+	int16_t sumX = 0;
+	int16_t sumY = 0;
+	for (int32_t i = 0; i < 16; i++)
+	{
+		ReadJoystickCounts_3F54D_3F88D();
+		sumX += joyX_B7702_B76F2;
+		sumY += joyY_B7704_B76F4;
+	}
+	x = sumX / 16;
+	y = sumY / 16;
+}
+
+// 3F820 / 3FB60: the analog joystick, the stick to the top left, the bottom right and the centre with the button;
+// the dead zones 3/10 of the way from the centre, the scales 40000h / the rest of the way
+void InitAnalogJoystick_3F820_3FB60(bitmap_pos_struct_t* sprite1, bitmap_pos_struct_t* sprite2, bitmap_pos_struct_t* sprite3, uint8_t flags)
+{
+	DetectGamePort_3F4CE_3F80E();
+	CentreDigitalJoystick_3F398_3F6D8();
+	if (!joystickFound_B7700_B76F0)
+		return;
+	joystickFound_B7700_B76F0 = 1;
+	int32_t leftX, topY, rightX, bottomY, centreX, centreY;
+	WaitJoystickButton_3FB30_3FE70(joyTopLeftX_90B24_90B24, joyTopLeftY_90B26_90B26, sprite1);
+	AverageJoystickCounts(leftX, topY);
+	WaitJoystickButton_3FB30_3FE70(joyBottomRightX_90B2C_90B2C, joyBottomRightY_90B2E_90B2E, sprite2);
+	AverageJoystickCounts(rightX, bottomY);
+	WaitJoystickButton_3FB30_3FE70(joyCentreX_90B34_90B34, joyCentreY_90B36_90B36, sprite3);
+	AverageJoystickCounts(centreX, centreY);
+	uint16_t range = (uint16_t)(rightX - centreX);
+	if (range > 0x1E)
+	{
+		joyMaxX_B7706_B76F6 = (int16_t)(range * 3 / 10 + (uint16_t)centreX);
+		joyScaleMaxX_B770E_B76FE = (uint16_t)(0x40000 / ((int32_t)(uint16_t)rightX - joyMaxX_B7706_B76F6));
+	}
+	else
+		joyMaxX_B7706_B76F6 = 0x2710;
+	range = (uint16_t)(bottomY - centreY);
+	if (range > 0x1E)
+	{
+		joyMaxY_B7708_B76F8 = (int16_t)(range * 3 / 10 + (uint16_t)centreY);
+		joyScaleMaxY_B7710_B7700 = (uint16_t)(0x40000 / ((int32_t)(uint16_t)bottomY - joyMaxY_B7708_B76F8));
+	}
+	else
+		joyMaxY_B7708_B76F8 = 0x2710;
+	range = (uint16_t)(centreY - topY);
+	if (range > 0x1E)
+	{
+		joyMinY_B770C_B76FC = (int16_t)((uint16_t)centreY - range * 3 / 10);
+		joyScaleMinY_B7714_B7704 = (int16_t)(0x40000 / (joyMinY_B770C_B76FC - (int32_t)(uint16_t)topY));
+	}
+	else
+		joyMinY_B770C_B76FC = 0;
+	range = (uint16_t)(centreX - leftX);
+	if (range > 0x1E)
+	{
+		joyMinX_B770A_B76FA = (int16_t)((uint16_t)centreX - range * 3 / 10);
+		joyScaleMinX_B7712_B7702 = (int16_t)(0x40000 / (joyMinX_B770A_B76FA - (int32_t)(uint16_t)leftX));
+	}
+	else
+		joyMinX_B770A_B76FA = 0;
+	inputDevices_90B23_90B23 = flags;
+}
+
 // the joystick buttons 1 and 2 (the bits 10h and 20h, 0 pressed) as the mouse buttons
 static void JoystickButtons()
 {
@@ -626,7 +900,7 @@ static void JoystickArrows()
 			(*pressedKeys_12EEF0_12EEE0)[0x4B] = 1;
 	}
 	else if (vfxTracking_9AD08_9AD08 && !button3Up)
-		sub_5B2B0_5B7C0();
+		SetVfxMouse_5B2B0_5B7C0();
 }
 
 static void ClearArrows()
@@ -705,7 +979,7 @@ void JoystickInput_3FCA0_3FFE0(int32_t mode, int32_t minX, int32_t minY, int32_t
 		// the VFX1 head moves the mouse, the average of the last 2 readings
 		if (*mouseInstalled_9AD98_9AD98)
 			ResetMouse_3F370_3F6B0();
-		sub_5B210_5B720();
+		ReadVfx_5B210_5B720();
 		vfxSamplesY_90B0C_90B0C[vfxIndexY_90B14_90B14] = vfxTrackerY_12EE9E_12EE8E;
 		vfxIndexY_90B14_90B14 = (vfxIndexY_90B14_90B14 + 1) % 2;
 		const int32_t y = (int16_t)(vfxSamplesY_90B0C_90B0C[0] + vfxSamplesY_90B0C_90B0C[1]) / 2;
@@ -919,7 +1193,7 @@ static void ProcessGameInput(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_34
 	{
 		// R
 		if (state->options_0x21AD_8621[10])
-			sub_34C80();
+			ToggleResolution_34C80_35040();
 		key = 0;
 	}
 	if (key == 0x39)
@@ -932,11 +1206,20 @@ static void ProcessGameInput(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_34
 	}
 	if (*mouseLeftPressed_12EFDE_12EFCE && *mouseRightPressed_12EFDC_12EFCC)
 	{
-		// both buttons: the spells mode
-		if (!(settings->flags_0x00_0 & 0x200) && wizard->life_0x0C_12 >= 0)
-			SetPlayerCommand_188A0_188A0(0x14, 2);
-		*mouseRightPressed_12EFDC_12EFCC = 0;
-		*mouseLeftPressed_12EFDE_12EFCE = 0;
+		if (Mc1LRButtonsMenuOpenDisabled())
+		{
+			// port: disableLRButtonsMenuOpen (as MC2): both buttons fire, the left one stays pressed (MC2 clears the
+			// right one only); Return still opens the spells mode
+			*mouseRightPressed_12EFDC_12EFCC = 0;
+		}
+		else
+		{
+			// both buttons: the spells mode
+			if (!(settings->flags_0x00_0 & 0x200) && wizard->life_0x0C_12 >= 0)
+				SetPlayerCommand_188A0_188A0(0x14, 2);
+			*mouseRightPressed_12EFDC_12EFCC = 0;
+			*mouseLeftPressed_12EFDE_12EFCE = 0;
+		}
 	}
 	if (key >= 2 && key <= 0x0B)
 	{
@@ -1002,7 +1285,8 @@ static void ProcessSpellsInput(Type_Mc1State_AE400_AE3F0* state, Type_Mc1Player_
 		}
 		key = 0;
 	}
-	if ((*mouseLeftPressed_12EFDE_12EFCE && *mouseRightPressed_12EFDC_12EFCC) || key == 0x1C)
+	// both buttons or Return back to the game; port: Return only with disableLRButtonsMenuOpen (as MC2 case 7)
+	if ((*mouseLeftPressed_12EFDE_12EFCE && *mouseRightPressed_12EFDC_12EFCC && !Mc1LRButtonsMenuOpenDisabled()) || key == 0x1C)
 	{
 		key = 0;
 		*mouseRightPressed_12EFDC_12EFCC = 0;

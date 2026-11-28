@@ -262,7 +262,7 @@ void(*ptrDrawBitmap_F01E8)(int16_t, int16_t, bitmap_pos_struct_t, uint8_t scale)
 
 char cdChecked_D3F48 = 0; // weak
 char savedScreenSize_D47D8 = 0; // weak
-int16_t mapSpans_F4960[1664 * 8]; // Was 1664. Seems to be used in rendering the map 2x indexes ar a time. fix it -  weak
+int16_t mapSpans_F4960[MAP_SPANS_COUNT]; // Was 1664. Seems to be used in rendering the map 2x indexes ar a time. fix it -  weak
 char spellIndex_D94FF[29] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,0,3,0 }; // idb
 int16_t mousePosX_E375C = 320; // weak
 int16_t mousePosY_E375E = 200; // weak
@@ -377,6 +377,11 @@ int GetTopBarWidth(uint8_t scale)
 	// 2 pixel border either side, the panel around the mini-map and the 3 health/mana panels
 	return (4 + (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[MINI_MAP_PANEL].width_4
 		+ 3 * (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[HEALTH_PANEL].width_4) * scale;
+}
+
+uint8_t GetInGameUiScale()
+{
+	return UseInGameUiLayout() ? (uint8_t)gameUiScale : 1;
 }
 
 void GetTopBarPosition(int16_t* posX, int16_t* posY)
@@ -932,6 +937,30 @@ void SetPauseMenuClosed_41B60()//222b60
 		IsPauseMenuOpen_D47D9--;
 }
 
+static Scene GetMenuScene(uint16_t menuState)
+{
+	if (gameState_D41A4.OptionsSettingFlag_24 & GAME_PAUSED)
+		return Scene::FLIGHT_MENU;
+
+	switch (menuState)
+	{
+	case (int)MenuState::SHOW_CHAT_MENU:
+		return Scene::CHAT_MENU;
+	case (int)MenuState::SHOW_BOTTOM_MENU:
+	case (int)MenuState::SHOW_MAP_BOTTOM_MENU:
+		return Scene::SPELL_MENU;
+	case (int)MenuState::SHOW_IN_GAME_OPTIONS:
+	case (int)MenuState::SHOW_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_GAME_OPTIONS:
+	case (int)MenuState::SHOW_MAP_VOLUME_OPTIONS:
+	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
+	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
+		return Scene::FLIGHT_MENU;
+	default:
+		return Scene::FLIGHT;
+	}
+}
+
 //----- (00052E90) --------------------------------------------------------
 void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState, bool useSound, uint8_t scale)//233e90
 {
@@ -994,7 +1023,6 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 		if (newMenuState == currentMenuState && !(gameState_D41A4.OptionsSettingFlag_24 & GAME_PAUSED))
 		{
 			RestoreMousePosition_548B0(playStr);
-			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
 		}
 		break;
 	case (int)MenuState::SHOW_CHAT_MENU:
@@ -1007,8 +1035,6 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	case (int)MenuState::SHOW_OK_CANCEL_OPTIONS:
 	case (int)MenuState::SHOW_MAP_OK_CANCEL_OPTIONS:
 		RestoreMousePosition_548B0(playStr);
-		if (!(gameState_D41A4.OptionsSettingFlag_24 & GAME_PAUSED))
-			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT);
 		FlvInitSet_473B0();
 		break;
 	default:
@@ -1087,6 +1113,11 @@ void SetMenuCursorPosition_52E90(type_str_0x2BDE* playStr, uint16_t newMenuState
 	}
 	if (useSound)
 		PrepareEventSound_6E450(0, playStr->playerSlot_0x007_2BE4_11237, 14);
+
+	const Scene menuScene = GetMenuScene(newMenuState);
+	if (GetCurrentScene() != menuScene)
+		EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, menuScene);
+
 	CheckCdPresent_53120();
 }
 
@@ -1256,10 +1287,9 @@ static uint8_t MapEntityScale()
 }
 
 //Draws one dot of the castle rope as a scale x scale block centred on (posX, posY), blended into the map and clipped to the map shape
-static void DrawCastleRopeDot(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, uint8_t scale)
+void DrawCastleRopeDot(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, uint8_t scale, uint8_t ropeColour)
 {
 	const int offset = CalculateScaleOffset(scale);
-	const uint8_t ropeColour = (uint8_t)(*xadataclrd0dat.colorPalette_var28)[4095];
 	for (int y = posY - offset; y < posY - offset + scale; y++)
 	{
 		if (y < 0 || y >= height)
@@ -1277,8 +1307,8 @@ static void DrawCastleRopeDot(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX,
 	}
 }
 
-//Size multiplier for the map markings: the UI scale times the mapEntityScale
-static uint8_t MapMarkScale(uint8_t scale)
+//Size multiplier for the map markings: the UI scale times the mapEntityScale (also the MC1 maps, remc1 Mc1Minimap.cpp)
+uint8_t MapMarkScale(uint8_t scale)
 {
 	return (uint8_t)(scale * MapEntityScale());
 }
@@ -1290,14 +1320,14 @@ static uint8_t MapIconEntityScale()
 	return (uint8_t)((MapEntityScale() + 1) / 2);
 }
 
-//Size multiplier for the map icons: the UI scale times half the mapEntityScale
-static uint8_t MapIconScale(uint8_t scale)
+//Size multiplier for the map icons: the UI scale times half the mapEntityScale (also the MC1 maps)
+uint8_t MapIconScale(uint8_t scale)
 {
 	return (uint8_t)(scale * MapIconEntityScale());
 }
 
 //Fills a size x size block with its top left at (posX, posY), clipped to the width x height of the map
-static void DrawMapBlock(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, int size, uint8_t colour, bool setAlpha)
+void DrawMapBlock(uint8_t* mapBuffer, uint8_t* mapBuffer2, int posX, int posY, uint16_t width, uint16_t height, int size, uint8_t colour, bool setAlpha)
 {
 	for (int y = posY; y < posY + size; y++)
 	{
@@ -1528,7 +1558,7 @@ void DrawMinimapEntitiesB_61A00(int16_t x, int16_t y, int16_t posX, int16_t posY
 		//castle rope: a dotted line from the player to their castle, the dots and the gaps between them grow with the map marking scale
 		for (i = (world_D41A0.players_0x2BDE[world_D41A0.LevelIndex_0xc].Turn_2BE0_11248 & 3) * markScale;
 			;
-			DrawCastleRopeDot(ptrMapBufferStart_v84, nullptr, v29, v85, width, height, markScale))
+			DrawCastleRopeDot(ptrMapBufferStart_v84, nullptr, v29, v85, width, height, markScale, (uint8_t)(*xadataclrd0dat.colorPalette_var28)[4095]))
 		{
 			i += 4 * markScale;
 			if (i > v75)
@@ -2182,7 +2212,7 @@ void DrawMinimapEntities_627F0(int16_t x, int16_t y, int16_t posX, int16_t posY,
 			v94 = v24 + (-v30 * (signed int)Maths::sin_DB750[0x200 + v89] >> 16);
 			if (v31 < 0 || v31 >= width || v94 < 0 || v94 >= height || v31 < mapSpans_F4960[1 + 2 * v94] || v31 >= mapSpans_F4960[2 * v94])
 				break;
-			DrawCastleRopeDot(v99x, v100x, v31, v94, width, height, ropeScale);
+			DrawCastleRopeDot(v99x, v100x, v31, v94, width, height, ropeScale, (uint8_t)(*xadataclrd0dat.colorPalette_var28)[4095]);
 		}
 	}
 	for (iy = &world_D41A0.entities_0x6E8E[1]; iy <= &world_D41A0.entities_0x6E8E[0x3e8 - 1]; iy++)
@@ -4534,7 +4564,6 @@ void DrawOkCancelMenu_30A60(int16_t posTextX, int16_t posTextY, uint8_t scale)//
 			DrawBitmap_2BB40(inputState_18058C.mouse_1805B0.x, inputState_18058C.mouse_1805B0.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[cursorSpriteIndex_D419E], scale);
 		}
 	}
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 }
 
 //----- (00052D70) --------------------------------------------------------
@@ -4686,7 +4715,6 @@ void DrawChatMenu_2F6B0(uint8_t scale)//2106b0
 	{
 		DrawBitmap_2BB40(inputState_18058C.mouse_1805B0.x, inputState_18058C.mouse_1805B0.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[cursorSpriteIndex_D419E], scale);
 	}
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::CHAT_MENU);
 }
 // 8E3D5: using guessed type x_DWORD sprintf(x_DWORD, const char *, ...);
 // D419E: using guessed type char cursorSpriteIndex_D419E;
@@ -4766,7 +4794,6 @@ void DrawPauseMenu_2FD90(uint8_t scale)//210d90
 			}
 			posY += heigth;
 			DrawBitmap_2BB40(posX, posY, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[SHOW_ICON], scale);//Settings button
-			EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 		}
 		if (inputState_18058C.joystickMode_1805C2 == 8
 			|| inputState_18058C.joystickMode_1805C2 == 12
@@ -4927,8 +4954,6 @@ void DrawInGameOptionsMenu_30050(uint8_t scale)//211050
 		DrawText_2BC10((char*)"OK", okayBtnTextXPos + (33 * scale), okayBtnPosY + (2 * scale), v12, scale);
 	else
 		DrawText_2BC10((char*)"OK", (640 - gameState_D41A4.optionsMenuWidth_186) / 2 + (gameState_D41A4.optionsMenuWidth_186 - OPTIONS_MENU_BTN_WIDTH) / 2 + 33, 379, v12);	
-
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::FLIGHT_MENU);
 
 	if (inputState_18058C.joystickMode_1805C2 == 8
 		|| inputState_18058C.joystickMode_1805C2 == 12
@@ -6369,7 +6394,6 @@ void DrawBottomSpellsMenu_2ECC0()//20fcc0
 	{
 		DrawBitmap_2BB40(inputState_18058C.mouse_1805B0.x, inputState_18058C.mouse_1805B0.y, (*filearray_2aa18c[filearrayindex_MSPRD00DATTAB].posistruct)[cursorSpriteIndex_D419E]);
 	}
-	EventDispatcher::I->DispatchEvent(EventType::E_SCENE_CHANGE, Scene::SPELL_MENU);
 }
 
 //----- (00054960) --------------------------------------------------------

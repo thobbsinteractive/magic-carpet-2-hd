@@ -1,6 +1,7 @@
 #include "Mc1Game.h"
 #include "../../remc2/portability/port_outputs.h"
 
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -8,20 +9,26 @@
 #include "Mc1Blocks.h"
 #include "Mc1Files.h"
 #include "Mc1Graphics.h"
+#include "Mc1Input.h"
 #include "Mc1Install.h"
+#include "Mc1Entity.h"
 #include "Mc1EntityTables.h"
 #include "Mc1Level.h"
 #include "Mc1PlayerEvents.h"
+#include "Mc1Regression.h"
 #include "Mc1Menu.h"
+#include "Mc1Network.h"
 #include "Mc1Sound.h"
 #include "Mc1World.h"
-#include "Mc1NotPorted.h"
 #include "Mc1Screen.h"
 #include "Mc1Search.h"
 #include "Mc1TextureMaps.h"
 #include "Mc1System.h"
 #include "../../remc2/engine/Graphics.h"
 #include "../../remc2/engine/PlayerInput.h"
+#include "../../remc2/engine/CommandLineParser.h"
+#include "../../remc2/engine/read_config.h"
+#include "../../remc2/portability/port_sdl_vga_mouse.h"
 #include "../../remc2/portability/port_filesystem.h"
 
 #if defined(__linux__) || defined(__APPLE__)
@@ -32,6 +39,8 @@
 Mc1Variant mc1Variant = MC1_VARIANT_MC1;
 Type_Mc1State_AE400_AE3F0* mc1State_AE400_AE3F0 = nullptr;
 Type_Mc1Settings_AE408_AE3F8* mc1Settings_AE408_AE3F8 = nullptr;
+Type_Mc1Entity* mc1Entities = nullptr;
+int32_t mc1EntityCount = 1000;
 uint8_t* textPointers_AE238_AE228[80];
 uint8_t byte_939CC_939CC = 1;
 uint8_t byte_939CD_939CD = 1;
@@ -40,6 +49,7 @@ uint8_t byte_939E5_939E5 = 1;
 uint8_t menuDone_96880_96880 = 0;
 uint8_t* vesaInfo_12F080_12F070 = nullptr;
 uint8_t debugOption_AE45A_AE44A = 0;
+uint8_t mc1AsGame = 0;
 uint8_t inputDevices_90B23_90B23 = 0;
 uint8_t joystickFound_B7700_B76F0 = 0;
 uint8_t byte_A9058_A9058 = 0;
@@ -47,6 +57,12 @@ uint8_t byte_A9058_A9058 = 0;
 static Type_Mc1Player_340B* CurrentPlayer()
 {
 	return &mc1State_AE400_AE3F0->players_0x340B_13323[mc1State_AE400_AE3F0->currentPlayer_0x08_8];
+}
+
+static bool AutoHighResolution()
+{
+	return CommandLineParams.DoAutoChangeRes() && gameResWidth >= 640 && gameResHeight >= 480
+		&& mc1State_AE400_AE3F0->options_0x21AD_8621[10] && *videoMode_12F02E_12F01E == 1 && !sdlInputLocked;
 }
 
 int Main_404F0_40830(int argc, char** argv)
@@ -76,11 +92,13 @@ int TopProcedure_340B0(int argc, char** argv)
 		InitGraphics_44730_44A70();
 		if (mc1Settings_AE408_AE3F8->flags_0x00_0 & 0x100)
 		{
+			if (mc1AsGame)
+				InitMenu_4A980_4ACC0(); // port: -asgame, the menu for after the level (REMC1_POKE of dbxrecord.py)
 			byte_939CD_939CD = 0;
 			byte_939E5_939E5 = 0;
 			byte_939CC_939CC = 0;
 			byte_939E4_939E4 = 0;
-			LoadFileGroup_40440_40780(ftextFiles_995D8_995D8);
+			LoadFileGroup_40440_40780(mc1AsGame ? etextFiles_99580_99580 : ftextFiles_995D8_995D8);
 			SetTextPointers_44700_44A40((char*)textData_AE41C_AE40C, (char**)textPointers_AE238_AE228, 80);
 		}
 		else
@@ -98,7 +116,7 @@ int TopProcedure_340B0(int argc, char** argv)
 				screenMode = 1;
 				if (*videoMode_12F02E_12F01E == 8)
 				{
-					sub_34C80();
+					ToggleResolution_34C80_35040();
 					screenMode = 8;
 				}
 				ShrinkHeapForMenu_41490_417D0();
@@ -127,8 +145,8 @@ int TopProcedure_340B0(int argc, char** argv)
 				if (!(mc1Settings_AE408_AE3F8->flags_0x00_0 & 4))
 				{
 					SetFullScreen_31A00_31A40();
-					if (screenMode == 8)
-						sub_34C80();
+					if (screenMode == 8 || AutoHighResolution())
+						ToggleResolution_34C80_35040();
 					RestoreScreenSize_31A60_31AA0();
 				}
 				SetAllocationTag_42530_42870(3);
@@ -160,14 +178,14 @@ int TopProcedure_340B0(int argc, char** argv)
 					if (player->levelResult_0x02_2 & 2)
 					{
 						player->levelResult_0x02_2 = 2;
-						sub_448E0_44C20();
+						LevelWonStats_448E0_44C20();
 						mc1Settings_AE408_AE3F8->levelIndex_0x11_17++;
 					}
 					else
 						player->levelResult_0x02_2 = 8;
 					break;
 				}
-				sub_408D0_40C10();
+				RestartLevel_408D0_40C10();
 				CurrentPlayer()->levelResult_0x02_2 = 4;
 			}
 			FadeInOut_61CC0_621D0(nullptr, 0x10, false, 10);
@@ -177,7 +195,7 @@ int TopProcedure_340B0(int argc, char** argv)
 	// the original calls an empty function (nullsub_2) when flag 8 is set
 	FadeInOut_61CC0_621D0(nullptr, 0x10, false, 10);
 	Cleanup_34C60_35020();
-	sub_433C0_43700();
+	FreeNetwork_433C0_43700();
 	return 0;
 }
 
@@ -196,11 +214,13 @@ int TopProcedure_34470(int argc, char** argv)
 		InitGraphics_44730_44A70();
 		if (mc1Settings_AE408_AE3F8->flags_0x00_0 & 0x100)
 		{
+			if (mc1AsGame)
+				InitMenu_4A980_4ACC0(); // port: -asgame, the menu for after the level (REMC1_POKE of dbxrecord.py)
 			byte_939CD_939CD = 0;
 			byte_939E5_939E5 = 0;
 			byte_939CC_939CC = 0;
 			byte_939E4_939E4 = 0;
-			LoadFileGroup_40440_40780(ftextFiles_995D8_995D8);
+			LoadFileGroup_40440_40780(mc1AsGame ? etextFiles_99580_99580 : ftextFiles_995D8_995D8);
 			SetTextPointers_44700_44A40((char*)textData_AE41C_AE40C, (char**)textPointers_AE238_AE228, 80);
 		}
 		else
@@ -218,7 +238,7 @@ int TopProcedure_34470(int argc, char** argv)
 				screenMode = 1;
 				if (*videoMode_12F02E_12F01E == 8)
 				{
-					sub_35040();
+					ToggleResolution_34C80_35040();
 					screenMode = 8;
 				}
 				ShrinkHeapForMenu_41490_417D0();
@@ -247,8 +267,8 @@ int TopProcedure_34470(int argc, char** argv)
 				if (!(mc1Settings_AE408_AE3F8->flags_0x00_0 & 4))
 				{
 					SetFullScreen_31A00_31A40();
-					if (screenMode == 8)
-						sub_35040();
+					if (screenMode == 8 || AutoHighResolution())
+						ToggleResolution_34C80_35040();
 					RestoreScreenSize_31A60_31AA0();
 				}
 				SetAllocationTag_42530_42870(3);
@@ -280,14 +300,14 @@ int TopProcedure_34470(int argc, char** argv)
 					if (player->levelResult_0x02_2 & 2)
 					{
 						player->levelResult_0x02_2 = 2;
-						sub_448E0_44C20();
+						LevelWonStats_448E0_44C20();
 						mc1Settings_AE408_AE3F8->levelIndex_0x11_17++;
 					}
 					else
 						player->levelResult_0x02_2 = 8;
 					break;
 				}
-				sub_408D0_40C10();
+				RestartLevel_408D0_40C10();
 				CurrentPlayer()->levelResult_0x02_2 = 4;
 			}
 			FadeInOut_61CC0_621D0(nullptr, 0x10, false, 10);
@@ -296,7 +316,7 @@ int TopProcedure_34470(int argc, char** argv)
 	}
 	FadeInOut_61CC0_621D0(nullptr, 0x10, false, 10);
 	Cleanup_34C60_35020();
-	sub_433C0_43700();
+	FreeNetwork_433C0_43700();
 	return 0;
 }
 
@@ -370,6 +390,8 @@ int16_t ProcessCommandLine_34DD0_35190(uint16_t argc, char** argv)
 			network = 1;
 		else if (!_stricmp("custom", option))
 			custom = 1;
+		else if (!_stricmp("asgame", option))
+			mc1AsGame = 1; // port
 		else if (!_stricmp("setsound", option))
 			setSound = 1;
 		else if (!_stricmp("demo", option))
@@ -424,6 +446,8 @@ int16_t ProcessCommandLine_34DD0_35190(uint16_t argc, char** argv)
 			CopyArgument(sessionName, value);
 			i++;
 		}
+		else if (ParseNetworkOption(option, argc, argv, i))
+			; // port: server <port> / client <ip> <server port> <own port> with --network, as MC2
 		else
 		{
 			myprintf("ERROR : Incorrect command : %d\n", i);
@@ -436,6 +460,7 @@ int16_t ProcessCommandLine_34DD0_35190(uint16_t argc, char** argv)
 
 	if (network)
 	{
+		StartNetworkLibrary();
 		InitNetwork_43270_435B0();
 		network = 0; // cleared here, so the session code below never runs
 	}
@@ -454,11 +479,7 @@ int16_t ProcessCommandLine_34DD0_35190(uint16_t argc, char** argv)
 	}
 	if (analogJoystick)
 	{
-		// the shared command line calls the game's own joystick setup
-		if (mc1Variant == MC1_VARIANT_HW)
-			InitAnalogJoystick_3FB60(nullptr, nullptr, nullptr, 0); //!!!!! stack garbage in the original
-		else
-			InitAnalogJoystick_3F820(nullptr, nullptr, nullptr, 0); //!!!!! stack garbage in the original
+		InitAnalogJoystick_3F820_3FB60(nullptr, nullptr, nullptr, 0); //!!!!! stack garbage in the original
 		if (joystickFound_B7700_B76F0)
 		{
 			joystickFound_B7700_B76F0 = 1;
@@ -467,10 +488,7 @@ int16_t ProcessCommandLine_34DD0_35190(uint16_t argc, char** argv)
 	}
 	if (analogJoystick2)
 	{
-		if (mc1Variant == MC1_VARIANT_HW)
-			InitAnalogJoystick_3FB60(nullptr, nullptr, nullptr, 0); //!!!!! stack garbage in the original
-		else
-			InitAnalogJoystick_3F820(nullptr, nullptr, nullptr, 0); //!!!!! stack garbage in the original
+		InitAnalogJoystick_3F820_3FB60(nullptr, nullptr, nullptr, 0); //!!!!! stack garbage in the original
 		if (joystickFound_B7700_B76F0)
 		{
 			joystickFound_B7700_B76F0 = 1;
@@ -483,6 +501,16 @@ int16_t ProcessCommandLine_34DD0_35190(uint16_t argc, char** argv)
 	mc1Settings_AE408_AE3F8 = (Type_Mc1Settings_AE408_AE3F8*)Malloc_42540_42880(sizeof(Type_Mc1Settings_AE408_AE3F8));
 	Type_Mc1State_AE400_AE3F0* state = mc1State_AE400_AE3F0;
 	Type_Mc1Settings_AE408_AE3F8* settings = mc1Settings_AE408_AE3F8;
+	// port: the regression tests and the input recorded in DOSBox (REMC1_PLAY) always with the 1000 entities of the original
+	const bool asOriginal = !Mc1RegressionInput().empty() || getenv("REMC1_PLAY");
+	mc1EntityCount = asOriginal ? 1000 : (std::min)((std::max)(mc1EntityLimit, 1000), 32767);
+	// port: and only with the recorded input, the real keyboard, mouse and joystick ignored
+	sdlInputLocked = asOriginal;
+	// port: 10000h of them, so the index of a missing entity (FC3Ah) reads a zero entity as in DOS
+	mc1Entities = (Type_Mc1Entity*)Malloc_42540_42880(0x10000 * sizeof(Type_Mc1Entity));
+	ResetDosAddressZero();
+	mc1Entities[mc1MissingEntityIndex].typeParams_0x9C_156 = DosAddressZero(); // its zero pointers: DOS address 0
+	mc1Entities[mc1MissingEntityIndex].playerData_0xA0_160 = DosAddressZero();
 	for (uint8_t& option_ : state->options_0x21AD_8621)
 		option_ = 1;
 	DetectCpu_19470_19470();
@@ -585,6 +613,50 @@ void LoadGameData_34B00_34EC0()
 		LoadFileGroup_40440_40780(screenFilesHires_99898_99898);
 	RelocateTabs_59500_59A10(tabRelocations_99974_99974);
 	InitSearchRings_11540_11540();
+}
+
+// 34C80 / 35040: the other resolution (MCGA 320x200 or 640x480): its screen files and sprites, the blur buffer
+void ToggleResolution_34C80_35040()
+{
+	FadeInOut_61CC0_621D0(nullptr, 0x10, false, 10);
+	SetScreenModeAndPalette_315C0_31600();
+	Free_426E0_42A20(*blurBuffer_AE404_AE3F4);
+	*blurBuffer_AE404_AE3F4 = nullptr;
+	ResetMouse_3F370_3F6B0();
+	UnrelocateTabs_59560_59A70(tabRelocations_99974_99974);
+	uint32_t blurSize;
+	if (*videoMode_12F02E_12F01E == 1)
+	{
+		FreeFileGroup_61610_61B20(screenFilesMcga_997BC_997BC);
+		*videoMode_12F02E_12F01E = 8;
+		LoadFileGroup_40440_40780(screenFilesHires_99898_99898);
+		blurSize = gameResWidth * gameResHeight;
+	}
+	else
+	{
+		FreeFileGroup_61610_61B20(screenFilesHires_99898_99898);
+		*videoMode_12F02E_12F01E = 1;
+		LoadFileGroup_40440_40780(screenFilesMcga_997BC_997BC);
+		blurSize = 320 * 200;
+	}
+	*blurBuffer_AE404_AE3F4 = (uint8_t*)Malloc_42540_42880(blurSize);
+	RelocateTabs_59500_59A10(tabRelocations_99974_99974);
+
+	//!!!!! the original gives the work screen as the palette (the new one is zero: black until the next fade)
+	if (*videoMode_12F02E_12F01E & 1)
+		SetGameVideoMode320x200AndPalette(*workScreen_12EFF4_12EFE4);
+	else
+		SetGameVideoMode640AndPalette(*workScreen_12EFF4_12EFE4);
+
+	if (*videoMode_12F02E_12F01E & 1)
+		ClearScreen320_411D7_41517(*workScreen_12EFF4_12EFE4, 320, 200, 0);
+	else
+		ClearScreen640_411FD_4153D(*workScreen_12EFF4_12EFE4, *screenWidth_12EFF0_12EFE0, *screenHeight_12EFF8_12EFE8, 0); // port: the screen size, the work screen is the buffer of remc2
+
+	InstallMouse_5C214_5C724();
+	SetCenterMouse_59720_59C30();
+	SetCursor_5C05C_5C56C(pointersIndex[0]);
+	mc1Settings_AE408_AE3F8->flag_0x17_23 = 0;
 }
 
 void InitGameData_34B40_34F00()

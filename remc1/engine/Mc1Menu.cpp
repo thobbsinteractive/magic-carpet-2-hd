@@ -10,7 +10,7 @@
 #include "Mc1Install.h"
 #include "Mc1MenuSound.h"
 #include "Mc1Movie.h"
-#include "Mc1NotPorted.h"
+#include "Mc1Network.h"
 #include "Mc1Shared.h"
 #include "Mc1Sound.h"
 #include "Mc1System.h"
@@ -199,10 +199,10 @@ void RunMenu_4AB20_4AE60()
 		MainMenu_4BD60_4C0A0();
 		break;
 	case 4:
-		sub_4D680_4D9C0();
+		NetworkGameScreen_4D680_4D9C0();
 		break;
 	case 5:
-		sub_4E5B0_4E8F0();
+		LevelResults_4E5B0_4E8F0();
 		break;
 	case 6:
 		SelectLanguage_4F3F0_4F730();
@@ -217,7 +217,7 @@ void RunMenu_4AB20_4AE60()
 		PlayLogoIntro_4EE70_4F1B0();
 		break;
 	case 10:
-		sub_4D560_4D8A0();
+		PlayOutro_4D560_4D8A0();
 		break;
 	}
 	dword_12CBB0_12CBA0++;
